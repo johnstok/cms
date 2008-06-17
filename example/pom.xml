@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?><project>
+  <parent>
+    <artifactId>build</artifactId>
+    <groupId>CCC7</groupId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>CCC7</groupId>
+  <artifactId>example</artifactId>
+  <name>example</name>
+  <version>0.0.1-SNAPSHOT</version>
+  <url>http://maven.apache.org</url>
+</project>
