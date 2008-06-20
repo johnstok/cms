@@ -16,6 +16,6 @@
     </dependency>
   </dependencies>
   <modules>
-    <module>example</module>
+
   </modules>
 </project>
