@@ -16,6 +16,6 @@
     </dependency>
   </dependencies>
   <modules>
-
+    <module>content-creator</module>
   </modules>
 </project>
