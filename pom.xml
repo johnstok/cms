@@ -16,6 +16,7 @@
     </dependency>
   </dependencies>
   <modules>
+    <module>core-domain</module>
     <module>content-creator</module>
   </modules>
 </project>
