@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<parent>
+		<artifactId>build</artifactId>
+		<groupId>CCC7</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>CCC7</groupId>
+	<artifactId>content-creator</artifactId>
+	<packaging>war</packaging>
+	<name>content-creator Maven Webapp</name>
+	<version>0.0.1-SNAPSHOT</version>
+	<url>http://maven.apache.org</url>
+	<build>
+		<finalName>content-creator</finalName>
+		<plugins>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<configuration>
+							<tasks>
+                                <!-- 
+                                 | Here we are replicating the behaviour of a GWT compile script, eg:
+                                 | @java -Xmx256M -cp "%~dp0\src;%~dp0\bin;C:/Documents and Settings/keith.CIVIC/Desktop/gwt-windows-1.5.0/gwt-user.jar;C:/Documents and Settings/keith.CIVIC/Desktop/gwt-windows-1.5.0/gwt-dev-windows.jar" com.google.gwt.dev.GWTCompiler -out "%~dp0\www" %* ccc.view.gwt.ContentCreator
+                                 -->
+                                 
+								<!-- property name="compile_classpath" refid="maven.compile.classpath"/>
+				                <echo message="compile classpath: ${compile_classpath}"/ -->
+							
+								<echo
+									message="Running GWT compiler" />
+								<java
+									classname="com.google.gwt.dev.GWTCompiler"
+									fork="true"
+									failonerror="true"
+									maxmemory="256m">
+									<arg value="-out" />
+									<arg value="${basedir}/www" />
+									<arg value="ccc.view.contentcreator.ContentCreator" />
+
+									<classpath>
+										<pathelement
+											location="${basedir}/src/main/resources" />
+										<pathelement
+                                            location="${basedir}/src/main/java" />
+										<pathelement
+											path="${compile_classpath}" />
+									</classpath>
+								</java>
+
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-servlet</artifactId>
+			<version>1.5-RC1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-user</artifactId>
+			<version>1.5-RC1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-dev</artifactId>
+			<version>1.5-RC1</version>
+		</dependency>
+		<!-- 
+		<dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.0.72</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-servlet</artifactId>
+            <version>1.5-RC1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate</artifactId>
+            <version>3.2.6.ga</version>
+        </dependency>
+        -->
+	</dependencies>
+</project>
