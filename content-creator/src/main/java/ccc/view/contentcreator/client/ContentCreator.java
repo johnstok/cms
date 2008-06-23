@@ -1,6 +1,10 @@
 package ccc.view.contentcreator.client;
 
+
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -19,7 +23,7 @@ public class ContentCreator implements EntryPoint {
    */
   public void onModuleLoad() {
     Image img = new Image("http://code.google.com/webtoolkit/logo-185x175.png");
-    Button button = new Button("Click me");
+    Button button = new Button("Clik me");
 
     VerticalPanel vPanel = new VerticalPanel();
     // We can add style names.
@@ -52,8 +56,23 @@ public class ContentCreator implements EntryPoint {
     
     button.addClickListener(new ClickListener() {
       public void onClick(Widget sender) {
-        dialogBox.center();
-        dialogBox.show();
+         
+         ResourceServiceAsync resourceService = (ResourceServiceAsync) GWT.create(ResourceService.class);
+
+         AsyncCallback<String> callback = new AsyncCallback<String>() {
+           public void onSuccess(String result) {
+             Window.alert(result);
+           }
+
+           public void onFailure(Throwable caught) {
+              Window.alert(caught.getMessage());
+           }
+         };
+
+         resourceService.save(callback);
+
+//        dialogBox.center();
+//        dialogBox.show();
       }
     });
   }

@@ -29,27 +29,18 @@
                                 
                                 <property name="compile_classpath" refid="maven.compile.classpath"/>
 				                <path id="gwt.compile.classpath">
-	                                <pathelement
-	                                    location="${basedir}/src/main/resources" />
-	                                <pathelement
-	                                    location="${basedir}/src/main/java" />
-	                                <pathelement
-	                                    path="${compile_classpath}" />
+	                                <pathelement location="${basedir}/src/main/resources"/>
+	                                <pathelement location="${basedir}/src/main/java"/>
+	                                <pathelement path="${compile_classpath}"/>
                                 </path>
                                 <property name="gwt_compile_classpath" refid="gwt.compile.classpath"/>
                                 <!-- echo message="gwt compile classpath: ${gwt_compile_classpath}"/ -->
 							
-								<echo
-									message="Running GWT compiler" />
-								<java
-									classname="com.google.gwt.dev.GWTCompiler"
-									classpath="${gwt_compile_classpath}"
-									fork="true"
-									failonerror="true"
-									maxmemory="256m">
-									<arg value="-out" />
-									<arg value="${basedir}/www" />
-									<arg value="ccc.view.contentcreator.ContentCreator" />
+								<echo message="Running GWT compiler"/>
+								<java classname="com.google.gwt.dev.GWTCompiler" classpath="${gwt_compile_classpath}" fork="true" failonerror="true" maxmemory="256m">
+									<arg value="-out"/>
+									<arg value="${basedir}/www"/>
+									<arg value="ccc.view.contentcreator.ContentCreator"/>
 
 
 								</java>
@@ -81,22 +72,20 @@
 			<artifactId>gwt-dev</artifactId>
 			<version>1.5-RC1</version>
 		</dependency>
-		<!-- 
 		<dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>1.0.72</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-servlet</artifactId>
-            <version>1.5-RC1</version>
-        </dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.0.72</version>
+		</dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate</artifactId>
             <version>3.2.6.ga</version>
         </dependency>
-        -->
-	</dependencies>
+	  <dependency>
+      <groupId>CCC7</groupId>
+      <artifactId>core-domain</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
 </project>
