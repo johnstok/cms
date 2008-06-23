@@ -9,7 +9,7 @@
 	<groupId>CCC7</groupId>
 	<artifactId>content-creator</artifactId>
 	<packaging>war</packaging>
-	<name>content-creator Maven Webapp</name>
+	<name>content-creator</name>
 	<version>0.0.1-SNAPSHOT</version>
 	<url>http://maven.apache.org</url>
 	<build>
@@ -22,25 +22,34 @@
 						<phase>compile</phase>
 						<configuration>
 							<tasks>
-                                <!-- 
-                                 | Here we are replicating the behaviour of a GWT compile script, eg:
-                                 | @java -Xmx256M -cp "%~dp0\src;%~dp0\bin;C:/Documents and Settings/keith.CIVIC/Desktop/gwt-windows-1.5.0/gwt-user.jar;C:/Documents and Settings/keith.CIVIC/Desktop/gwt-windows-1.5.0/gwt-dev-windows.jar" com.google.gwt.dev.GWTCompiler -out "%~dp0\www" %* ccc.view.gwt.ContentCreator
-                                 -->
-                                
-                                <property name="compile_classpath" refid="maven.compile.classpath"/>
-				                <path id="gwt.compile.classpath">
-	                                <pathelement location="${basedir}/src/main/resources"/>
-	                                <pathelement location="${basedir}/src/main/java"/>
-	                                <pathelement path="${compile_classpath}"/>
-                                </path>
-                                <property name="gwt_compile_classpath" refid="gwt.compile.classpath"/>
-                                <!-- echo message="gwt compile classpath: ${gwt_compile_classpath}"/ -->
-							
-								<echo message="Running GWT compiler"/>
-								<java classname="com.google.gwt.dev.GWTCompiler" classpath="${gwt_compile_classpath}" fork="true" failonerror="true" maxmemory="256m">
-									<arg value="-out"/>
-									<arg value="${basedir}/www"/>
-									<arg value="ccc.view.contentcreator.ContentCreator"/>
+								<!-- 
+									| Here we are replicating the behaviour of a GWT compile script, eg:
+									| @java -Xmx256M -cp "%~dp0\src;%~dp0\bin;C:/Documents and Settings/keith.CIVIC/Desktop/gwt-windows-1.5.0/gwt-user.jar;C:/Documents and Settings/keith.CIVIC/Desktop/gwt-windows-1.5.0/gwt-dev-windows.jar" com.google.gwt.dev.GWTCompiler -out "%~dp0\www" %* ccc.view.gwt.ContentCreator
+								-->
+
+								<property name="compile_classpath"
+									refid="maven.compile.classpath" />
+								<path id="gwt.compile.classpath">
+									<pathelement
+										location="${basedir}/src/main/resources" />
+									<pathelement
+										location="${basedir}/src/main/java" />
+									<pathelement
+										path="${compile_classpath}" />
+								</path>
+								<property name="gwt_compile_classpath"
+									refid="gwt.compile.classpath" />
+								<!-- echo message="gwt compile classpath: ${gwt_compile_classpath}"/ -->
+
+								<echo message="Running GWT compiler" />
+								<java
+									classname="com.google.gwt.dev.GWTCompiler"
+									classpath="${gwt_compile_classpath}" fork="true"
+									failonerror="true" maxmemory="256m">
+									<arg value="-out" />
+									<arg value="${basedir}/www" />
+									<arg
+										value="ccc.view.contentcreator.ContentCreator" />
 
 
 								</java>
@@ -77,15 +86,15 @@
 			<artifactId>h2</artifactId>
 			<version>1.0.72</version>
 		</dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate</artifactId>
-            <version>3.2.6.ga</version>
-        </dependency>
-	  <dependency>
-      <groupId>CCC7</groupId>
-      <artifactId>core-domain</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-    </dependency>
-  </dependencies>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate</artifactId>
+			<version>3.2.6.ga</version>
+		</dependency>
+		<dependency>
+			<groupId>CCC7</groupId>
+			<artifactId>core-domain</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
 </project>
