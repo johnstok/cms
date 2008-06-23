@@ -16,6 +16,20 @@
 		<finalName>content-creator</finalName>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.0</version>
+				<configuration>
+					<webResources>
+						<resource>
+							<directory>
+								target\www\ccc.view.contentcreator.ContentCreator
+							</directory>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
 					<execution>
@@ -47,11 +61,9 @@
 									classpath="${gwt_compile_classpath}" fork="true"
 									failonerror="true" maxmemory="256m">
 									<arg value="-out" />
-									<arg value="${basedir}/www" />
+									<arg value="${basedir}/target/www" />
 									<arg
 										value="ccc.view.contentcreator.ContentCreator" />
-
-
 								</java>
 
 							</tasks>
@@ -75,11 +87,13 @@
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
 			<version>1.5-RC1</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-dev</artifactId>
 			<version>1.5-RC1</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
