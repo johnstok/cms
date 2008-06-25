@@ -6,38 +6,7 @@
 <hibernate-configuration>
 
     <session-factory>
-
-        <!-- Connection mgmt -->
-        <property name="connection.datasource">java:ccc</property>
-        <property name="connection.release_mode">after_statement</property>
-        <property name="connection.aggressive_release">true</property>
-
-        <!-- SQL dialect -->
-        <property name="dialect">org.hibernate.dialect.H2Dialect</property>
-
-        <!-- Session mgmt -->
-        <property name="session_factory_name">ccc-persistence</property>
-        <property name="current_session_context_class">jta</property>
-
-        <!-- Caching  -->
-        <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
-        <property name="cache.use_query_cache">false</property>
-        <property name="cache.use_second_level_cache">false</property>
-        
-        <!-- Debugging -->
-        <property name="show_sql">true</property>
-        <property name="format_sql">true</property>
-        <property name="use_sql_comments">true</property>
-
-        <!-- Transactions  -->
-        <property name="hibernate.transaction.manager_lookup_class">org.hibernate.transaction.JBossTransactionManagerLookup</property>
-        <property name="transaction.factory_class">org.hibernate.transaction.JTATransactionFactory</property>
-        
-        <!-- Drop and re-create the database schema on startup -->
-        <property name="hbm2ddl.auto">create</property>
-
         <mapping resource="ccc/domain/Resource.hbm.xml"/>
-
     </session-factory>
 
 </hibernate-configuration>
