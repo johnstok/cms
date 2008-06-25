@@ -11,14 +11,14 @@
 	<url>http://maven.apache.org</url>
 	<!-- repositories>
 		<repository>
-			<id>codehaus</id>
-			<url>http://repository.codehaus.org/org/codehaus/mojo/</url>
+		<id>codehaus</id>
+		<url>http://repository.codehaus.org/org/codehaus/mojo/</url>
 		</repository>
 		<repository>
-			<id>jboss</id>
-			<url>http://repository.jboss.org/maven2</url>
+		<id>jboss</id>
+		<url>http://repository.jboss.org/maven2</url>
 		</repository>
-	</repositories -->
+		</repositories -->
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -31,6 +31,7 @@
 	<modules>
 		<module>core-domain</module>
 		<module>content-creator</module>
+		<module>business-services</module>
 	</modules>
 
 	<build>
@@ -43,7 +44,11 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
-		</plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jboss-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
 	</build>
 
 	<reporting>

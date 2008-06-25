@@ -12,7 +12,10 @@
 
 package ccc.remoting.gwt;
 
-import ccc.persistence.TrivialPersistence;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
+import ccc.services.ResourceManager;
 import ccc.view.contentcreator.client.ResourceService;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -32,6 +35,12 @@ public class ResourceServiceImpl extends RemoteServiceServlet implements Resourc
     * @see ccc.view.contentcreator.client.ResourceService#save()
     */
    public String save() {
-      return TrivialPersistence.save();
+      try {
+         ((ResourceManager)new InitialContext().lookup("ResourceManagerEJB/local")).create();
+      } catch (NamingException e) {
+         // TODO Auto-generated catch block
+         throw new RuntimeException(e);
+      }
+      return "Saved";
    }
 }
