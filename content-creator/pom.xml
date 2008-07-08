@@ -23,7 +23,7 @@
 					<webResources>
 						<resource>
 							<directory>
-								${basedir}\target\www\ccc.view.contentcreator.ContentCreator
+								${basedir}/target/www/ccc.view.contentcreator.ContentCreator
 							</directory>
 						</resource>
 					</webResources>
