@@ -44,11 +44,29 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>jboss-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jboss-maven-plugin</artifactId>
+				<configuration>
+					<serverName>default</serverName>
+					<hostName>localhost</hostName>
+					<port>8080</port>
+					<deployUrlPath>
+						<![CDATA[
+			                /jmx-console/HtmlAdaptor?action=invokeOpByName&name=jboss.system:service%3DMainDeployer&methodName=redeploy&argType=java.net.URL&arg0=
+			            ]]>
+					</deployUrlPath>
+					<undeployUrlPath>
+						<![CDATA[
+			                /jmx-console/HtmlAdaptor?action=invokeOpByName&name=jboss.system:service%3DMainDeployer&methodName=undeploy&argType=java.net.URL&arg0=
+			            ]]>
+					</undeployUrlPath>
+					<fileName>
+							${project.build.directory}/${project.build.finalName}.${project.packaging}
+					</fileName>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 
 	<reporting>
