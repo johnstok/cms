@@ -66,6 +66,13 @@
 					</fileName>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<configuration>
+					<tagBase>http://svn.civiccomputing.com/CCC7/branch</tagBase>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -99,5 +106,10 @@
             </plugin>
 		</plugins>
 	</reporting>
-
+	<scm>
+		<connection>scm:svn:scm:svn:http://svn.civiccomputing.com/CCC7</connection>
+		<developerConnection>scm:svn:http://svn.civiccomputing.com/CCC7</developerConnection>
+		<tag>trunk</tag>
+		<url>https://websvn.civiccomputing.com/wsvn/CCC7/</url>
+	</scm>
 </project>
