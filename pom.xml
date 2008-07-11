@@ -1,12 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>CCC7</groupId>
 	<artifactId>build</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>build</name>
 	<url>http://maven.apache.org</url>
 	<!-- repositories>
@@ -71,6 +68,7 @@
 				<artifactId>maven-release-plugin</artifactId>
 				<configuration>
 					<tagBase>http://svn.civiccomputing.com/CCC7/branch</tagBase>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -107,9 +105,9 @@
 		</plugins>
 	</reporting>
 	<scm>
-		<connection>scm:svn:scm:svn:http://svn.civiccomputing.com/CCC7</connection>
-		<developerConnection>scm:svn:http://svn.civiccomputing.com/CCC7</developerConnection>
+		<connection>scm:svn:scm:svn:http://svn.civiccomputing.com/CCC7/build-0.0.1</connection>
+		<developerConnection>scm:svn:http://svn.civiccomputing.com/CCC7/branch/build-0.0.1</developerConnection>
 		<tag>trunk</tag>
-		<url>https://websvn.civiccomputing.com/wsvn/CCC7/</url>
+		<url>https://websvn.civiccomputing.com/wsvn/CCC7/build-0.0.1</url>
 	</scm>
 </project>

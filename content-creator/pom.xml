@@ -1,16 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<artifactId>build</artifactId>
 		<groupId>CCC7</groupId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.0.1</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>CCC7</groupId>
 	<artifactId>content-creator</artifactId>
 	<packaging>war</packaging>
 	<name>content-creator</name>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<url>http://maven.apache.org</url>
 	<build>
 		<finalName>content-creator</finalName>
@@ -41,29 +40,20 @@
 									| @java -Xmx256M -cp "%~dp0\src;%~dp0\bin;C:/Documents and Settings/keith.CIVIC/Desktop/gwt-windows-1.5.0/gwt-user.jar;C:/Documents and Settings/keith.CIVIC/Desktop/gwt-windows-1.5.0/gwt-dev-windows.jar" com.google.gwt.dev.GWTCompiler -out "%~dp0\www" %* ccc.view.gwt.ContentCreator
 								-->
 
-								<property name="compile_classpath"
-									refid="maven.compile.classpath" />
+								<property name="compile_classpath" refid="maven.compile.classpath" />
 								<path id="gwt.compile.classpath">
-									<pathelement
-										location="${basedir}/src/main/resources" />
-									<pathelement
-										location="${basedir}/src/main/java" />
-									<pathelement
-										path="${compile_classpath}" />
+									<pathelement location="${basedir}/src/main/resources" />
+									<pathelement location="${basedir}/src/main/java" />
+									<pathelement path="${compile_classpath}" />
 								</path>
-								<property name="gwt_compile_classpath"
-									refid="gwt.compile.classpath" />
+								<property name="gwt_compile_classpath" refid="gwt.compile.classpath" />
 								<!-- echo message="gwt compile classpath: ${gwt_compile_classpath}"/ -->
 
 								<echo message="Running GWT compiler" />
-								<java
-									classname="com.google.gwt.dev.GWTCompiler"
-									classpath="${gwt_compile_classpath}" fork="true"
-									failonerror="true" maxmemory="256m">
+								<java classname="com.google.gwt.dev.GWTCompiler" classpath="${gwt_compile_classpath}" fork="true" failonerror="true" maxmemory="256m">
 									<arg value="-out" />
 									<arg value="${basedir}/target/www" />
-									<arg
-										value="ccc.view.contentcreator.ContentCreator" />
+									<arg value="ccc.view.contentcreator.ContentCreator" />
 								</java>
 
 							</tasks>
@@ -98,13 +88,13 @@
 		<dependency>
 			<groupId>CCC7</groupId>
 			<artifactId>core-domain</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.1</version>
             <scope>provided</scope>
 		</dependency>
         <dependency>
             <groupId>CCC7</groupId>
             <artifactId>business-services</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.0.1</version>
             <scope>provided</scope>
         </dependency>
 	</dependencies>
