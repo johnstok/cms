@@ -69,7 +69,7 @@
 				<configuration>
 					<autoVersionSubmodules>true</autoVersionSubmodules>
 					<scmCommentPrefix>[build] </scmCommentPrefix>
-					<tag>release-${version}</tag>
+					<tagBase>http://svn.civiccomputing.com/CCC7/releases</tagBase>
 				</configuration>
 			</plugin>
 		</plugins>
