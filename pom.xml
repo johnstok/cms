@@ -68,6 +68,7 @@
 				<artifactId>maven-release-plugin</artifactId>
 				<configuration>
 					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<tagBase>http://svn.civiccomputing.com/CCC7/branches</tagBase>
 				</configuration>
 			</plugin>
 		</plugins>
