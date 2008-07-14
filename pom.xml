@@ -3,7 +3,7 @@
 	<groupId>CCC7</groupId>
 	<artifactId>build</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.6-SNAPSHOT</version>
+	<version>0.0.6</version>
 	<name>build</name>
 	<url>http://maven.apache.org</url>
 	<!-- repositories>
@@ -104,7 +104,7 @@
 		</plugins>
 	</reporting>
 	<scm>
-		<connection>scm:svn:http://svn.civiccomputing.com/CCC7</connection>
-		<developerConnection>scm:svn:http://svn.civiccomputing.com/CCC7</developerConnection>
+		<connection>scm:svn:http://svn.civiccomputing.com/CCC7/tags/build-0.0.6</connection>
+		<developerConnection>scm:svn:http://svn.civiccomputing.com/CCC7/tags/build-0.0.6</developerConnection>
 	</scm>
 </project>
