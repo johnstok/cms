@@ -2,12 +2,12 @@
   <parent>
     <artifactId>build</artifactId>
     <groupId>CCC7</groupId>
-    <version>0.0.3</version>
+    <version>0.0.4-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>CCC7</groupId>
   <artifactId>core-domain</artifactId>
   <name>core-domain</name>
-  <version>0.0.3</version>
+  <version>0.0.4-SNAPSHOT</version>
   <url>http://maven.apache.org</url>
 </project>
