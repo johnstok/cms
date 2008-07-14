@@ -2,14 +2,14 @@
 	<parent>
 		<artifactId>build</artifactId>
 		<groupId>CCC7</groupId>
-		<version>0.0.4-SNAPSHOT</version>
+		<version>0.0.4</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>CCC7</groupId>
 	<artifactId>content-creator</artifactId>
 	<packaging>war</packaging>
 	<name>content-creator</name>
-	<version>0.0.4-SNAPSHOT</version>
+	<version>0.0.4</version>
 	<url>http://maven.apache.org</url>
 	<build>
 		<finalName>content-creator</finalName>
@@ -88,13 +88,13 @@
 		<dependency>
 			<groupId>CCC7</groupId>
 			<artifactId>core-domain</artifactId>
-			<version>0.0.4-SNAPSHOT</version>
+			<version>0.0.4</version>
             <scope>provided</scope>
 		</dependency>
         <dependency>
             <groupId>CCC7</groupId>
             <artifactId>business-services</artifactId>
-            <version>0.0.4-SNAPSHOT</version>
+            <version>0.0.4</version>
             <scope>provided</scope>
         </dependency>
 	</dependencies>
