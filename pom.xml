@@ -104,7 +104,7 @@
 		</plugins>
 	</reporting>
 	<scm>
-		<connection>scm:svn:http://svn.civiccomputing.com/CCC7/iterations</connection>
-		<developerConnection>scm:svn:http://svn.civiccomputing.com/CCC7/iterations</developerConnection>
+		<connection>scm:svn:http://svn.civiccomputing.com/CCC7</connection>
+		<developerConnection>scm:svn:http://svn.civiccomputing.com/CCC7</developerConnection>
 	</scm>
 </project>
