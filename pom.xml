@@ -69,6 +69,7 @@
 				<configuration>
 					<autoVersionSubmodules>true</autoVersionSubmodules>
 					<scmCommentPrefix>[build] </scmCommentPrefix>
+					<tag>release-${version}</tag>
 				</configuration>
 			</plugin>
 		</plugins>
