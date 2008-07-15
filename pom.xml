@@ -1,9 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>CCC7</groupId>
 	<artifactId>build</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.7</version>
+	<version>0.0.7-SNAPSHOT</version>
 	<name>build</name>
 	<url>http://maven.apache.org</url>
 	<!-- repositories>
@@ -29,7 +30,8 @@
 		<module>core-domain</module>
 		<module>content-creator</module>
 		<module>business-services</module>
-	</modules>
+        <module>content-server</module>
+  </modules>
 
 	<build>
 		<plugins>
@@ -49,14 +51,10 @@
 					<hostName>localhost</hostName>
 					<port>8080</port>
 					<deployUrlPath>
-						<![CDATA[
-			                /jmx-console/HtmlAdaptor?action=invokeOpByName&name=jboss.system:service%3DMainDeployer&methodName=redeploy&argType=java.net.URL&arg0=
-			            ]]>
+			                /jmx-console/HtmlAdaptor?action=invokeOpByName&amp;name=jboss.system:service%3DMainDeployer&amp;methodName=redeploy&amp;argType=java.net.URL&amp;arg0=
 					</deployUrlPath>
 					<undeployUrlPath>
-						<![CDATA[
-			                /jmx-console/HtmlAdaptor?action=invokeOpByName&name=jboss.system:service%3DMainDeployer&methodName=undeploy&argType=java.net.URL&arg0=
-			            ]]>
+			                /jmx-console/HtmlAdaptor?action=invokeOpByName&amp;name=jboss.system:service%3DMainDeployer&amp;methodName=undeploy&amp;argType=java.net.URL&amp;arg0=
 					</undeployUrlPath>
 					<fileName>
 							${project.build.directory}/${project.build.finalName}.${project.packaging}
@@ -104,7 +102,7 @@
 		</plugins>
 	</reporting>
 	<scm>
-		<connection>scm:svn:http://svn.civiccomputing.com/CCC7/build-0.0.7</connection>
-		<developerConnection>scm:svn:http://svn.civiccomputing.com/CCC7/tags/build-0.0.7</developerConnection>
+		<connection>scm:svn:http://svn.civiccomputing.com/CCC7</connection>
+		<developerConnection>scm:svn:http://svn.civiccomputing.com/CCC7</developerConnection>
 	</scm>
 </project>
