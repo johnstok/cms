@@ -11,6 +11,8 @@
  */
 package ccc.services;
 
+import ccc.domain.Resource;
+
 
 /**
  * TODO Add Description for this type.
@@ -19,5 +21,17 @@ package ccc.services;
  */
 public interface ResourceManager {
 
+   /**
+    * TODO: Add a description of this method.
+    *
+    */
    public void create();
+   
+   /**
+    * TODO: Add a description of this method.
+    *
+    * @param absoulteURI
+    * @return
+    */
+   public Resource lookup(String absoulteURI);
 }
