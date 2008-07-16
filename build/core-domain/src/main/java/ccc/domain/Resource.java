@@ -11,49 +11,40 @@
  */
 package ccc.domain;
 
-import java.util.UUID;
 
 
 /**
- * A simple resource.
+ * An abstract superclass that contains shared behaviour for the different types
+ * of CCC resource.
  *
  * @author Civic Computing Ltd
  */
-public class Resource {
-   private UUID id = UUID.randomUUID();
-   private int version = -1;
-   
+public abstract class Resource extends Entity {
    
    /**
-    * @see java.lang.Object#toString()
+    * Query the type of this resource.
+    *
+    * @return The ResourceType that describes this resource.
     */
-   public String toString() {
-      return this.getClass().getName()+": "+id.toString()+" [version="+version+"]";
-   }
-   
-   /**
-    * @see java.lang.Object#hashCode()
-    */
-   public int hashCode() {
+   public abstract ResourceType type();
 
-      final int prime = 31;
-      int result = 1;
-      result = prime * result + ((id == null) ? 0 : id.hashCode());
-      return result;
-   }
-   
    /**
-    * @see java.lang.Object#equals(java.lang.Object)
+    * Type-safe helper method to convert an instance of {@link Resource} to an
+    * instance of {@link Content}.
+    *
+    * @return
     */
-   public boolean equals(Object obj) {
+   public Content asContent() {
+      return Content.class.cast(this);
+   }
 
-      if (this == obj) return true;
-      if (obj == null) return false;
-      if (getClass() != obj.getClass()) return false;
-      final Resource other = (Resource) obj;
-      if (id == null) {
-         if (other.id != null) return false;
-      } else if (!id.equals(other.id)) return false;
-      return true;
+   /**
+    * Type-safe helper method to convert an instance of {@link Resource} to an
+    * instance of {@link Folder}.
+    *
+    * @return
+    */
+   public Folder asFolder() {
+      return Folder.class.cast(this);
    }
 }
