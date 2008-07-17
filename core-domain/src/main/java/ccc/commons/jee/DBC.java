@@ -14,19 +14,16 @@ package ccc.commons.jee;
 
 /**
  * A helper class to support design-by-contract (DBC).
- * 
+ *
  * @author Civic Computing Ltd
  */
-public class DBC {
-    
-    /**
-     * Constructor.
-     */
-    private DBC() { /* No-Op */ }
+public final class DBC {
+
+    private DBC() { /* NO-OP */ }
 
     /**
      * Factory method.
-     * 
+     *
      * @return An instance of DBC.
      */
     public static DBC require() {
@@ -36,7 +33,7 @@ public class DBC {
 
     /**
      * Factory method.
-     * 
+     *
      * @return An instance of DBC.
      */
     public static DBC ensure() {
@@ -46,20 +43,30 @@ public class DBC {
 
     /**
      * Assert that the specified value is not null.
-     * 
-     * @param object
+     *
+     * @param object The object to test for NULL.
      */
-    public void notNull(Object object) {
-        if (null==object) throw new IllegalArgumentException("Specified value may not be NULL.");
+    public void notNull(final Object object) {
+        if (null==object) {
+            throw new IllegalArgumentException(
+                "Specified value may not be NULL.");
+        }
     }
-    
+
     /**
-     * Assert that the specified string is not empty.
-     * 
-     * @param string
+     * Assert that the specified string is not empty. A string is considered
+     * empty if either 1. It is NULL or 2. It has a length of 0.
+     *
+     * @param string The string that may not be empty.
      */
-    public void notEmpty(String string) {
-        if (null==string) throw new IllegalArgumentException("Specified string may not be NULL.");
-        if (string.length() < 1) throw new IllegalArgumentException("Specified string must have length > 0.");
+    public void notEmpty(final String string) {
+        if (null==string) {
+            throw new IllegalArgumentException(
+                "Specified string may not be NULL.");
+        }
+        if (string.length() < 1) {
+            throw new IllegalArgumentException(
+                "Specified string must have length > 0.");
+        }
     }
 }

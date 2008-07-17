@@ -17,11 +17,14 @@ import junit.framework.TestCase;
 
 /**
  * Tests for the {@link Content} class.
- * 
+ *
  * @author Civic Computing Ltd
  */
-public class ContentTest extends TestCase {
+public final class ContentTest extends TestCase {
 
+    /**
+     * Test.
+     */
     public void testConstructorCanGenerateURL() {
 
         // ARRANGE
@@ -35,6 +38,9 @@ public class ContentTest extends TestCase {
         assertEquals(ResourceName.escape(content.name()), content.url());
     }
 
+    /**
+     * Test.
+     */
     public void testAddNewParagraph() {
 
         // ARRANGE
@@ -48,6 +54,9 @@ public class ContentTest extends TestCase {
 
     }
 
+    /**
+     * Test.
+     */
     public void testDeleteParagraph() {
 
         // ARRANGE
@@ -60,6 +69,8 @@ public class ContentTest extends TestCase {
 
         // Assert
         assertEquals(1, content.paragraphs().size());
-        assertEquals("<H1>Footer</H1>", content.paragraphs().get("footer").body());
+        assertEquals(
+            "<H1>Footer</H1>",
+            content.paragraphs().get("footer").body());
     }
 }
