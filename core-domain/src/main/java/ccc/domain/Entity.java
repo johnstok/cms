@@ -14,30 +14,36 @@ package ccc.domain;
 
 import java.util.UUID;
 
+
 /**
  * TODO Add Description for this type.
  *
  * @author Civic Computing Ltd
  */
-public class Entity {
+public abstract class Entity {
 
-   protected UUID id = UUID.randomUUID();
-   private int version = -1;
+    /** id : UUID */
+    protected UUID id = UUID.randomUUID();
+    private final int version = -1;
 
-   /**
-    * @see java.lang.Object#toString()
-    */
-   public String toString() {
-      return this.getClass().getName()+": "+id.toString()+" [version="+version+"]";
-   }
+    /**
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return
+            this.getClass().getName() + ": "
+            + id.toString()
+            + " [version=" + version + "]";
+    }
 
-   /**
-    * Accessor for the id field.
-    *
-    * @return
-    */
-   public UUID id() {
-      return id;
-   }
+    /**
+     * Accessor for the id field.
+     *
+     * @return This entity's id as a Java {@link UUID}.
+     */
+    public final UUID id() {
+        return id;
+    }
 
 }

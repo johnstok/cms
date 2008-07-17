@@ -9,14 +9,19 @@
  * Changes: see subversion log
  *-----------------------------------------------------------------------------
  */
+
 package ccc.domain;
 
-
 /**
- * TODO Add Description for this type.
+ * An enumeration of the valid types of a resource.
  *
  * @author Civic Computing Ltd
  */
 public enum ResourceType {
-   CONTENT, FOLDER
+
+    /** CONTENT : ResourceType. */
+    CONTENT,
+
+    /** FOLDER : ResourceType. */
+    FOLDER;
 }

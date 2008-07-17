@@ -20,9 +20,9 @@ import java.util.List;
  *
  * @author Civic Computing Ltd
  */
-public class Folder extends Resource {
-   
-   private List<Resource> entries = new ArrayList<Resource>();
+public final class Folder extends Resource {
+
+   private final List<Resource> entries = new ArrayList<Resource>();
 
    /**
     * @see ccc.domain.Resource#type()
@@ -33,30 +33,29 @@ public class Folder extends Resource {
    }
 
    /**
-    * TODO: Add a description of this method.
+    * Accessor for size.
     *
-    * @return
+    * @return The number of resources contained by this folder.
     */
    public int size() {
       return entries.size();
    }
 
    /**
-    * TODO: Add a description of this method.
+    * Add a resource to this folder.
     *
-    * @param content
+    * @param resource The resource to add.
     */
-   public void add(Resource resource) {
+   public void add(final Resource resource) {
       entries.add(resource);
    }
 
    /**
-    * TODO: Add a description of this method.
+    * Accessor for entries.
     *
-    * @return
+    * @return A list of all the resources in this folder.
     */
    public List<Resource> entries() {
-
       return entries;
    }
 
