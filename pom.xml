@@ -37,6 +37,7 @@
 		<module>business-services</module>
         <module>content-server</module>
         <module>services-ejb3</module>
+	    <module>data-migration</module>
   </modules>
 
 	<build>
