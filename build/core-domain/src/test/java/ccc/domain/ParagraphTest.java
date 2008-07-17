@@ -19,33 +19,41 @@ import junit.framework.TestCase;
  *
  * @author Civic Computing Ltd
  */
-public class ParagraphTest extends TestCase {
+public final class ParagraphTest extends TestCase {
 
+    /**
+     * Test.
+     */
     public void testConstructorRejectsBadData() {
-        
+
         // ACT
         new Paragraph("foo");
-        
+
         try {
             new Paragraph(null);
             fail("NULL should be rejected.");
         } catch (IllegalArgumentException e) {
             assertEquals("Specified string may not be NULL.", e.getMessage());
         }
-        
+
         try {
             new Paragraph("");
             fail("Zero length string should be rejected.");
         } catch (IllegalArgumentException e) {
-            assertEquals("Specified string must have length > 0.", e.getMessage());
+            assertEquals(
+                "Specified string must have length > 0.",
+                e.getMessage());
         }
     }
-    
+
+    /**
+     * Test.
+     */
     public void testBodyAccessor() {
-        
+
         // ARRANGE
         Paragraph foo = new Paragraph("foo");
-        
+
         // ASSERT
         assertEquals("foo", foo.body());
     }

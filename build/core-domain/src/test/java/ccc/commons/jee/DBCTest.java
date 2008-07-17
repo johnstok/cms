@@ -12,22 +12,25 @@
 
 package ccc.commons.jee;
 
+import static ccc.commons.jee.DBC.require;
 import junit.framework.TestCase;
-import static ccc.commons.jee.DBC.*;
 
 
 /**
- * TODO Add Description for this type.
- * 
+ * Tests for the DBC class.
+ *
  * @author Civic Computing Ltd
  */
-public class DBCTest extends TestCase {
+public final class DBCTest extends TestCase {
 
+    /**
+     * Test.
+     */
     public void testRequireNotNull() {
-        
+
         // ACT
         require().notNull(new Object());
-        
+
         try {
             require().notNull(null);
             fail("NULL should be rejected.");
@@ -35,24 +38,29 @@ public class DBCTest extends TestCase {
             assertEquals("Specified value may not be NULL.", e.getMessage());
         }
     }
-    
+
+    /**
+     * Test.
+     */
     public void testRequireNotEmpty() {
-        
+
         // ACT
         require().notEmpty("foo");
-        
+
         try {
             require().notEmpty(null);
             fail("NULL should be rejected.");
         } catch (IllegalArgumentException e) {
             assertEquals("Specified string may not be NULL.", e.getMessage());
         }
-        
+
         try {
             require().notEmpty("");
             fail("Zero length string should be rejected.");
         } catch (IllegalArgumentException e) {
-            assertEquals("Specified string must have length > 0.", e.getMessage());
+            assertEquals(
+                "Specified string must have length > 0.",
+                e.getMessage());
         }
     }
 }
