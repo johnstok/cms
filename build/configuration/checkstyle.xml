@@ -66,8 +66,6 @@ under the License.
 
     <module name="TreeWalker">
 
-        <property name="cacheFile" value="${checkstyle.cache.file}"/>
-
         <!-- Checks for Javadoc comments.                     -->
         <!-- See http://checkstyle.sf.net/config_javadoc.html -->
         <module name="JavadocMethod"/>
@@ -134,7 +132,8 @@ under the License.
         <module name="TypecastParenPad"/>
         <module name="TabCharacter"/>
         <module name="WhitespaceAfter"/>
-        <module name="WhitespaceAround"/>
+        <!-- Disabled: doesn't play well with Generics. -->
+        <!-- module name="WhitespaceAround" /-->
 
 
         <!-- Modifier Checks                                    -->
