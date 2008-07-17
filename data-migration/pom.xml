@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <parent>
+    <artifactId>build</artifactId>
+    <groupId>CCC7</groupId>
+    <version>0.0.7-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>CCC7</groupId>
+  <artifactId>data-migration</artifactId>
+  <name>data-migration</name>
+  <version>0.0.7-SNAPSHOT</version>
+  <url>http://maven.apache.org</url>
+  <dependencies>
+    <dependency>
+    	<groupId>CCC7</groupId>
+    	<artifactId>core-domain</artifactId>
+    	<version>0.0.7-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>1.0.74</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.oracle</groupId>
+      <artifactId>ojdbc14_g</artifactId>
+      <version>10.2.0.4.0</version>
+    </dependency>
+  </dependencies>
+</project>
