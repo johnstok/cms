@@ -11,33 +11,33 @@
  */
 package ccc.domain;
 
-import static ccc.commons.jee.DBC.*;
+import static ccc.commons.jee.DBC.require;
 
 /**
- * TODO Add Description for this type.
+ * A paragraph of HTML.
  *
  * @author Civic Computing Ltd
  */
-public class Paragraph {
+public final class Paragraph {
 
-    private String body;
+    private final String body;
 
     /**
      * Constructor.
      *
-     * @param string
+     * @param body The HTML body for this paragraph - as a string.
      */
-    public Paragraph(String body) {
-        
+    public Paragraph(final String body) {
+
         require().notEmpty(body);
-        
+
         this.body = body;
     }
 
     /**
      * Accessor for the paragraph body.
      *
-     * @return
+     * @return The HTML as a string.
      */
     public String body() {
         return body;

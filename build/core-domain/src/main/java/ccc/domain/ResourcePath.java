@@ -11,8 +11,9 @@
  */
 package ccc.domain;
 
+import static java.util.Collections.unmodifiableList;
+
 import java.util.ArrayList;
-import static java.util.Collections.*;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,42 +24,54 @@ import java.util.regex.Pattern;
  *
  * @author Civic Computing Ltd
  */
-public class ResourcePath {
-    
+public final class ResourcePath {
+
     private final List<ResourceName> elements;
-    private final Pattern PATH_PATTERN = Pattern.compile("(/(\\w+))+");
-    
+    /** PATH_PATTERN : Pattern. */
+    public static final Pattern PATH_PATTERN = Pattern.compile("(/(\\w+))+");
+
     /**
      * Constructor.
      *
-     * @param pathString
+     * Converts a string into a ResourcePath, performing validation. A valid
+     * path should match the java.util.regex regular expression defined by
+     * {@value ResourcePath#PATH_PATTERN}.
+     *
+     * @param pathString The absolute resource path, represented as a string.
      */
-    public ResourcePath(String pathString) {
-        
+    public ResourcePath(final String pathString) {
+
         Matcher m = PATH_PATTERN.matcher(pathString);
-        
-        if (!m.matches()) throw new RuntimeException(pathString+" does not match the regular expression: "+PATH_PATTERN);
-        
+
+        if (!m.matches()) {
+            throw new RuntimeException(
+                pathString
+                +" does not match the regular expression: "
+                +PATH_PATTERN);
+        }
+
         List<ResourceName> parts = new ArrayList<ResourceName>();
 
         m = Pattern.compile("/(\\w+)").matcher(pathString);
         while (m.find()) {
-            parts.add(new ResourceName(pathString.substring(m.start()+1, m.end())));
+            parts.add(
+                new ResourceName(pathString.substring(m.start()+1, m.end())));
         }
         elements = unmodifiableList(parts);
     }
-    
+
     /**
      * Copy Constructor.
      *
      * @param stem
      * @param newElement
      */
-    private ResourcePath(ResourcePath stem, ResourceName newElement) {
+    private ResourcePath(final ResourcePath stem,
+                         final ResourceName newElement) {
         List<ResourceName> parts = new ArrayList<ResourceName>();
         parts.addAll(stem.elements);
         parts.add(newElement);
-        
+
         elements = unmodifiableList(parts);
     }
 
@@ -70,11 +83,11 @@ public class ResourcePath {
     }
 
     /**
-     * Append a resource name to an existing path.
+     * Append a resource name to the end of an existing path.
      *
      * @param resourceName
      */
-    public ResourcePath append(ResourceName resourceName) {
+    public ResourcePath append(final ResourceName resourceName) {
         return new ResourcePath(this, resourceName);
     }
 
@@ -84,14 +97,14 @@ public class ResourcePath {
     @Override
     public String toString() {
         StringBuilder toString = new StringBuilder();
-        
+
         for (ResourceName element : elements) {
             toString.append('/');
             toString.append(element.toString());
         }
-        
+
         return toString.toString();
     }
 
-    
+
 }

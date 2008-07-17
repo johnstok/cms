@@ -11,8 +11,6 @@
  */
 package ccc.domain;
 
-
-
 /**
  * An abstract superclass that contains shared behaviour for the different types
  * of CCC resource.
@@ -20,7 +18,7 @@ package ccc.domain;
  * @author Civic Computing Ltd
  */
 public abstract class Resource extends Entity {
-   
+
    /**
     * Query the type of this resource.
     *
@@ -32,9 +30,9 @@ public abstract class Resource extends Entity {
     * Type-safe helper method to convert an instance of {@link Resource} to an
     * instance of {@link Content}.
     *
-    * @return
+    * @return This resource as Content.
     */
-   public Content asContent() {
+   public final Content asContent() {
       return Content.class.cast(this);
    }
 
@@ -42,9 +40,9 @@ public abstract class Resource extends Entity {
     * Type-safe helper method to convert an instance of {@link Resource} to an
     * instance of {@link Folder}.
     *
-    * @return
+    * @return This resource as a Folder.
     */
-   public Folder asFolder() {
+   public final Folder asFolder() {
       return Folder.class.cast(this);
    }
 }
