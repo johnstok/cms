@@ -24,6 +24,11 @@
 			<version>3.8.1</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymock</artifactId>
+			<version>2.4</version>
+		</dependency>
 	</dependencies>
 
 	<modules>
@@ -31,6 +36,7 @@
 		<module>content-creator</module>
 		<module>business-services</module>
         <module>content-server</module>
+        <module>services-ejb3</module>
   </modules>
 
 	<build>
