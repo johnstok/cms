@@ -54,4 +54,16 @@ public final class ResourcePathTest extends TestCase {
         // ASSERT
         assertEquals(pathString, path.toString());
     }
+    
+    public void testCreatePathFromResourceName() {
+        
+        // ARRANGE
+        ResourceName name = new ResourceName("foo");
+        
+        // ACT
+        ResourcePath path = new ResourcePath(name);
+        
+        // ASSERT
+        assertEquals("/foo", path.toString());
+    }
 }
