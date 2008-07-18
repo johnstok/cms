@@ -1,24 +1,33 @@
+/*-----------------------------------------------------------------------------
+ * Copyright (c) 2008 Civic Computing Ltd
+ * All rights reserved.
+ *
+ * Revision      $Rev$
+ * Modified by   $Author$
+ * Modified on   $Date$
+ *
+ * Changes: see subversion log
+ *-----------------------------------------------------------------------------
+ */
 package ccc.services.adaptors;
 
 import ccc.domain.Resource;
+import ccc.domain.ResourcePath;
 import ccc.services.ResourceManager;
 
+
 /**
- * TODO Add Description for this type.
+ * An adaptor for the {@link ResourceManager} interface. Useful for testing.
  *
  * @author Civic Computing Ltd
  */
-public class ResourceManagerAdaptor implements ResourceManager {
+public abstract class ResourceManagerAdaptor implements ResourceManager {
 
-   @Override
-   public void create() {
-
-      throw new UnsupportedOperationException("Method not implemented.");
-   }
-
-   @Override
-   public Resource lookup(String absoulteURI) {
-
-      throw new UnsupportedOperationException("Method not implemented.");
-   }
+    /**
+     * @see ccc.services.ResourceManager#lookup(ccc.domain.ResourcePath)
+     */
+    @Override
+    public Resource lookup(final ResourcePath absoulteURI) {
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
 }

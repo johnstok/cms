@@ -12,10 +12,6 @@
 
 package ccc.remoting.gwt;
 
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-
-import ccc.services.ResourceManager;
 import ccc.view.contentcreator.client.ResourceService;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -23,24 +19,19 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
  * Implementation of {@link ResourceService}.
- * 
+ *
  * @author Civic Computing Ltd
  */
-public class ResourceServiceImpl extends RemoteServiceServlet implements ResourceService {
+public class ResourceServiceImpl extends RemoteServiceServlet
+                              implements ResourceService {
 
-   /** serialVersionUID : long */
+   /** serialVersionUID : long. */
    private static final long serialVersionUID = 4907235349044174242L;
 
    /**
     * @see ccc.view.contentcreator.client.ResourceService#save()
     */
-   public String save() {
-      try {
-         ((ResourceManager)new InitialContext().lookup("ResourceManagerEJB/local")).create();
-      } catch (NamingException e) {
-         // TODO Auto-generated catch block
-         throw new RuntimeException(e);
-      }
+   public final String save() {
       return "Saved";
    }
 }
