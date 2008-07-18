@@ -12,26 +12,21 @@
 package ccc.services;
 
 import ccc.domain.Resource;
+import ccc.domain.ResourcePath;
 
 
 /**
- * TODO Add Description for this type.
+ * Business methods that operate on resources.
  *
  * @author Civic Computing Ltd
  */
 public interface ResourceManager {
 
    /**
-    * TODO: Add a description of this method.
+    * Lookup a resource, given its absolute path.
     *
+    * @param path The absolute path to the resource.
+    * @return The resource.
     */
-   public void create();
-   
-   /**
-    * TODO: Add a description of this method.
-    *
-    * @param absoulteURI
-    * @return
-    */
-   public Resource lookup(String absoulteURI);
+   Resource lookup(ResourcePath path);
 }

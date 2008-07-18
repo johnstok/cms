@@ -18,8 +18,8 @@ import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import ccc.domain.Content;
 import ccc.domain.Resource;
+import ccc.domain.ResourcePath;
 import ccc.services.ResourceManager;
 
 
@@ -31,33 +31,23 @@ import ccc.services.ResourceManager;
 @Stateless
 @TransactionAttribute(REQUIRED)
 public class ResourceManagerEJB implements ResourceManager {
-   
-   @PersistenceContext(unitName="ccc-persistence") private EntityManager em;
-   
+
+   @PersistenceContext(unitName="ccc-persistence") private final EntityManager em;
+
    /**
     * Constructor.
     *
     * @param em2
     */
-   public ResourceManagerEJB(EntityManager entityManager) {
+   public ResourceManagerEJB(final EntityManager entityManager) {
       em = entityManager;
    }
-   
+
    /**
-    * @see ccc.services.ResourceManager#create()
+    * @see ResourceManager#lookup(java.lang.String)
     */
    @Override
-   public void create() {
-      Resource r = null;
-      em.persist(r);
-      System.out.println("created");      
-   }
-   
-   /**
-    * @see ccc.services.ResourceManager#lookup(java.lang.String)
-    */
-   @Override
-   public Resource lookup(String absoulteURI) {
+   public Resource lookup(final ResourcePath absoulteURI) {
       return Resource.class.cast(em.createQuery(null).getSingleResult());
    }
 
