@@ -12,7 +12,7 @@
 
 package ccc.domain;
 
-import static java.util.Collections.unmodifiableList;
+import static java.util.Collections.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ public final class Folder extends Resource {
     /**
      * Constructor.
      *
-     * @param name
+     * @param name The unique name for this resource.
      */
     public Folder(final ResourceName name) {
         super(name);
@@ -75,8 +75,9 @@ public final class Folder extends Resource {
      * TODO: Add a description of this method.
      * TODO: Work out why we need a cast here...
      *
-     * @param path
-     * @return
+     * @param <T> The type of the resource at the specified path.
+     * @param path The path to a resource, relative to this folder.
+     * @return The resource at the specified path.
      */
     public <T extends Resource> T navigateTo(final ResourcePath path) {
 
@@ -86,7 +87,9 @@ public final class Folder extends Resource {
 
             if (ResourceType.FOLDER != currentPosition.type()) {
                 throw new CCCException(
-                    currentPosition.name()+" in path "+path+" is not a folder.");
+                    currentPosition.name()
+                        +" in path "+path
+                        +" is not a folder.");
             }
 
             currentPosition = currentPosition.asFolder().findEntryByName(name);
@@ -96,10 +99,11 @@ public final class Folder extends Resource {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Find the entry in this folder with the specified name.
+     * Throws a CCCException if no resource exists with the specified name.
      *
-     * @param name
-     * @return
+     * @param name The name of the resource.
+     * @return The resource with the specified name.
      */
     public Resource findEntryByName(final ResourceName name) {
         for (Resource entry : entries) {
