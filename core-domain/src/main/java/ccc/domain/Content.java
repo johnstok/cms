@@ -12,8 +12,12 @@
 
 package ccc.domain;
 
+import static java.util.Collections.unmodifiableMap;
+
 import java.util.HashMap;
 import java.util.Map;
+
+import ccc.commons.jee.DBC;
 
 
 /**
@@ -23,20 +27,27 @@ import java.util.Map;
  */
 public final class Content extends Resource {
 
-    private String name = id.toString();
-    private ResourceName url = ResourceName.escape(name);
-    private final Map<String, Paragraph> content =
-        new HashMap<String, Paragraph>();
+    /**
+     * Constructor.
+     *
+     * @param name
+     */
+    public Content(final ResourceName name) {
+        super(name);
+    }
 
     /**
      * Constructor.
      *
-     * @param name The name by which a user refers to this resource.
+     * @param name
+     * @param title
      */
-    public Content(final String name) {
-        this.name = name;
-        url = ResourceName.escape(name);
+    public Content(final ResourceName name, final String title) {
+        super(name, title);
     }
+
+    private final Map<String, Paragraph> content =
+        new HashMap<String, Paragraph>();
 
     /**
      * @see ccc.domain.Resource#type()
@@ -44,24 +55,6 @@ public final class Content extends Resource {
     @Override
     public ResourceType type() {
         return ResourceType.CONTENT;
-    }
-
-    /**
-     * Accessor for URL.
-     *
-     * @return The URL for this resource, as a {@link ResourceName}.
-     */
-    public ResourceName url() {
-        return url;
-    }
-
-    /**
-     * Accessor for the name field.
-     *
-     * @return The content's name, as a string.
-     */
-    public String name() {
-        return name;
     }
 
     /**
@@ -81,7 +74,7 @@ public final class Content extends Resource {
      * @return A map from unique key to the corresponding paragraph data.
      */
     public Map<String, Paragraph> paragraphs() {
-        return content; // TODO: make a defensive copy
+        return unmodifiableMap(content);
     }
 
     /**
@@ -90,6 +83,7 @@ public final class Content extends Resource {
      * @param paragraphKey The key identifying the paragraph to be deleted.
      */
     public void deleteParagraph(final String paragraphKey) {
-        content.remove(paragraphKey); // TODO: validate parameters
+        DBC.require().notEmpty(paragraphKey);
+        content.remove(paragraphKey);
     }
 }

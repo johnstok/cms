@@ -18,8 +18,11 @@ import javax.persistence.Query;
 
 import junit.framework.TestCase;
 import ccc.domain.Content;
+import ccc.domain.Folder;
 import ccc.domain.Paragraph;
+import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
+import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.ResourceType;
 
@@ -37,31 +40,26 @@ public class ResourceManagerEJBTest extends TestCase {
     public final void testLookup() {
 
         // ARRANGE
+        final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
+        final Folder foo = new Folder(new ResourceName("foo"));
+        final Content bar = new Content(new ResourceName("bar"))
+                                    .addParagraph(
+                                        "default",
+                                        new Paragraph("<H1>Default</H!>"));
+        contentRoot.add(foo);
+        foo.add(bar);
+
         EntityManager em = new EntityManagerAdaptor() {
-
-            /**
-             * @see EntityManagerAdaptor#createQuery(java.lang.String)
-             */
-            @Override
-            public Query createQuery(String arg0) {
-
+            /**@see EntityManagerAdaptor#createQuery(java.lang.String)*/
+            @Override public Query createNamedQuery(String arg0) {
                 return new QueryAdaptor() {
-
-                    /**
-                     * @see ccc.services.ejb3.QueryAdaptor#getSingleResult()
-                     */
+                    /** @see ccc.services.ejb3.QueryAdaptor#getSingleResult() */
                     @Override
-                    public Object getSingleResult() {
-                        return
-                            new Content("My name")
-                                .addParagraph(
-                                    "default",
-                                    new Paragraph("<H1>Default</H!>"));
-                    }
+                    public Object getSingleResult() { return contentRoot; }
                 };
             }
-
         };
+
         ResourceManagerEJB resourceMgr = new ResourceManagerEJB(em);
 
         // ACT
