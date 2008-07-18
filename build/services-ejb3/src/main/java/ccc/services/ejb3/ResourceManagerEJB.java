@@ -11,6 +11,7 @@
  */
 package ccc.services.ejb3;
 
+import static ccc.domain.Queries.RESOURCES_ROR_PATH;
 import static javax.ejb.TransactionAttributeType.REQUIRED;
 
 import javax.ejb.Stateless;
@@ -32,12 +33,13 @@ import ccc.services.ResourceManager;
 @TransactionAttribute(REQUIRED)
 public class ResourceManagerEJB implements ResourceManager {
 
-   @PersistenceContext(unitName="ccc-persistence") private final EntityManager em;
+   @PersistenceContext(unitName="ccc-persistence")
+       private final EntityManager em;
 
    /**
     * Constructor.
     *
-    * @param em2
+    * @param entityManager A JPA entity manager.
     */
    public ResourceManagerEJB(final EntityManager entityManager) {
       em = entityManager;
@@ -47,8 +49,12 @@ public class ResourceManagerEJB implements ResourceManager {
     * @see ResourceManager#lookup(java.lang.String)
     */
    @Override
-   public Resource lookup(final ResourcePath absoulteURI) {
-      return Resource.class.cast(em.createQuery(null).getSingleResult());
+   public Resource lookup(final ResourcePath absoluteURI) {
+      return
+          Resource.class.cast(
+              em.createNamedQuery(RESOURCES_ROR_PATH)
+                 .setParameter("path", absoluteURI)
+                 .getSingleResult());
    }
 
 }
