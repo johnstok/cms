@@ -83,6 +83,17 @@ public final class ResourcePath {
     }
 
     /**
+     * Constructor.
+     *
+     * @param name
+     */
+    public ResourcePath(ResourceName name) {
+        List<ResourceName> parts = new ArrayList<ResourceName>();
+        parts.add(name);
+        elements = unmodifiableList(parts);
+    }
+
+    /**
      * Append a resource name to the end of an existing path. For example, with
      * an existing path '/foo' calling append('bar') will return a new path
      * object that represents '/foo/bar'.

@@ -6,6 +6,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import ccc.commons.jee.JNDI;
+import ccc.services.ResourceManager;
+
 /**
  * Hello world!
  *
@@ -17,7 +20,14 @@ public class App
         Connection connection = getConnection();
         Queries queries = new Queries(connection);
         ResultSet rs = queries.selectFolders();
-        Migrations migrations = new MigrationsLogger(new Console() {
+//        Migrations migrations = consoleMigrations();
+        Migrations migrations = new MigrationsEJB(JNDI.<ResourceManager>get("ResourceManagerEJB/remote"));
+        migrations.migrateFolders(rs);
+    }
+
+    private static MigrationsLogger consoleMigrations() {
+
+        return new MigrationsLogger(new Console() {
 
             @Override
             public void print(String input) {
@@ -25,7 +35,6 @@ public class App
             }
             
         });
-        migrations.migrateFolders(rs);
     }
     
     private static Connection getConnection() {
