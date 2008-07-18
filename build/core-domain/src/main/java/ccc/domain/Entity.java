@@ -16,14 +16,14 @@ import java.util.UUID;
 
 
 /**
- * TODO Add Description for this type.
+ * Abstract base class extended by entity classes that require persistence.
  *
  * @author Civic Computing Ltd
  */
 public abstract class Entity {
 
-    /** id : UUID */
-    protected UUID id = UUID.randomUUID();
+    /** id : UUID. */
+    private final UUID id = UUID.randomUUID();
     private final int version = -1;
 
     /**

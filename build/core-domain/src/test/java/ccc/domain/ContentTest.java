@@ -25,17 +25,17 @@ public final class ContentTest extends TestCase {
     /**
      * Test.
      */
-    public void testConstructorCanGenerateURL() {
+    public void testConstructorCanGenerateName() {
 
         // ARRANGE
-        String name = "!*'();:@&=+$,/\\?%#[]foo BAR_123.~-";
+        ResourceName name = new ResourceName("foo");
 
         // ACT
         Content content = new Content(name);
 
         // ASSERT
+        assertEquals(name.toString(), content.title());
         assertEquals(name, content.name());
-        assertEquals(ResourceName.escape(content.name()), content.url());
     }
 
     /**
@@ -44,7 +44,7 @@ public final class ContentTest extends TestCase {
     public void testAddNewParagraph() {
 
         // ARRANGE
-        Content content = new Content("Name");
+        Content content = new Content(new ResourceName("foo"), "Title");
 
         // ACT
         content.addParagraph("header", new Paragraph("<H1>Header</H1>"));
@@ -60,7 +60,7 @@ public final class ContentTest extends TestCase {
     public void testDeleteParagraph() {
 
         // ARRANGE
-        Content content = new Content("Name");
+        Content content = new Content(new ResourceName("foo"), "Title");
         content.addParagraph("header", new Paragraph("<H1>Header</H1>"));
         content.addParagraph("footer", new Paragraph("<H1>Footer</H1>"));
 
@@ -72,5 +72,20 @@ public final class ContentTest extends TestCase {
         assertEquals(
             "<H1>Footer</H1>",
             content.paragraphs().get("footer").body());
+    }
+
+    /**
+     * Test.
+     */
+    public void testConstructorRejectsEmptyNames() {
+        // ACT
+        try {
+            new Content(null);
+            fail("Resources should reject NULL for the name parameter.");
+
+         // ASSERT
+        } catch (IllegalArgumentException e) {
+            assertEquals("Specified value may not be NULL.", e.getMessage());
+        }
     }
 }

@@ -100,11 +100,11 @@ public final class ResourceName {
     /**
      * Escape a string to provide a valid ResourceName.
      *
-     * @param invalidCharacters
-     * @return
+     * @param invalidCharacters A string that may contain invalid characters.
+     * @return A resource name representing the string, where all invalid
+     *      characters have been escaped to '_'.
      */
     public static ResourceName escape(final String invalidCharacters) {
-
         String validCharacters = invalidCharacters.replaceAll("\\W", "_");
         return new ResourceName(validCharacters);
     }

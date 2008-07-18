@@ -59,8 +59,8 @@ class QueryAdaptor implements Query {
 
     @Override
     public Query setParameter(final String arg0, final Object arg1) {
-
-        throw new UnsupportedOperationException("Method not implemented.");
+        /* NO-OP */
+        return this;
     }
 
     @Override

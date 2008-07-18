@@ -83,9 +83,12 @@ public final class ResourcePath {
     }
 
     /**
-     * Append a resource name to the end of an existing path.
+     * Append a resource name to the end of an existing path. For example, with
+     * an existing path '/foo' calling append('bar') will return a new path
+     * object that represents '/foo/bar'.
      *
-     * @param resourceName
+     * @param resourceName The name of the resource to append.
+     * @return A new resource path.
      */
     public ResourcePath append(final ResourceName resourceName) {
         return new ResourcePath(this, resourceName);
@@ -104,6 +107,15 @@ public final class ResourcePath {
         }
 
         return toString.toString();
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
+    public List<ResourceName> elements() {
+        return elements; // Already unmodifiable.
     }
 
 

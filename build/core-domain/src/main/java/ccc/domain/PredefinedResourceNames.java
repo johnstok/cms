@@ -13,14 +13,14 @@ package ccc.domain;
 
 
 /**
- * TODO Add Description for this type.
+ * A list of resource names for predefined resources.
  *
  * @author Civic Computing Ltd
  */
-public final class Queries {
+public final class PredefinedResourceNames {
 
-    private Queries() { /* NO-OP */ }
+    private PredefinedResourceNames() { /* NO-OP */ }
 
-    /** RESOURCE_BY_URL : String. */
-    public static final String RESOURCE_BY_URL = null;
+    /** CONTENT : ResourceName. */
+    public static final ResourceName CONTENT = new ResourceName("content");
 }
