@@ -13,14 +13,12 @@ import ccc.services.ResourceManager;
  * Hello world!
  *
  */
-public class App 
-{
-    public static void main( String[] args )
-    {
+public class App {
+    public static void main(String[] args) {
         Connection connection = getConnection();
         Queries queries = new Queries(connection);
         ResultSet rs = queries.selectFolders();
-//        Migrations migrations = consoleMigrations();
+//      Migrations migrations = consoleMigrations();
         Migrations migrations = new MigrationsEJB(JNDI.<ResourceManager>get("ResourceManagerEJB/remote"));
         migrations.migrateFolders(rs);
     }
@@ -33,17 +31,17 @@ public class App
             public void print(String input) {
                 System.out.println(input);
             }
-            
+
         });
     }
-    
+
     private static Connection getConnection() {
         Connection connection = null;
         try {
             // Load the JDBC driver
             String driverName = "oracle.jdbc.driver.OracleDriver";
             Class.forName(driverName);
-        
+
             // Create a connection to the database
             String serverName = "poseidon";
             String portNumber = "1521";

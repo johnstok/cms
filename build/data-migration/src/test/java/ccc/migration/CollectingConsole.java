@@ -16,5 +16,4 @@ final class CollectingConsole implements Console {
     public void print(String input) {
         inputList.add(input);
     }
-    
 }

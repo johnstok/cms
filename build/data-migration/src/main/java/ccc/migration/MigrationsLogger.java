@@ -38,7 +38,6 @@ public class MigrationsLogger implements Migrations {
      */
     @Override
     public void migrateFolders(ResultSet resultSet) {
-        
         try {
             while (resultSet.next()) {
                 console.print(resultSet.getString("NAME"));
@@ -46,7 +45,6 @@ public class MigrationsLogger implements Migrations {
         } catch (SQLException e) {
             throw new MigrationException(e);
         }
-        
     }
 
 }

@@ -22,5 +22,5 @@ import java.sql.ResultSet;
 public interface Migrations {
 
     public void migrateFolders(ResultSet resultSet);
-    
+
 }
