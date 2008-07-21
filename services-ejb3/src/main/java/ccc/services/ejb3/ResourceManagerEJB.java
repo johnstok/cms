@@ -19,6 +19,7 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -48,7 +49,7 @@ public class ResourceManagerEJB implements ResourceManager {
      * Constructor.
      */
     private ResourceManagerEJB() {}
-    
+
     /**
      * Constructor.
      *
@@ -71,13 +72,14 @@ public class ResourceManagerEJB implements ResourceManager {
      */
     @Override
     public void createFolder(final String pathString) {
-        ResourcePath path = new ResourcePath(pathString);
+        final ResourcePath path = new ResourcePath(pathString);
         Folder currentFolder = contentRoot();
-        for (ResourceName name : path.elements()) {
+        for (final ResourceName name : path.elements()) {
             try {
                 currentFolder = currentFolder.findEntryByName(name).asFolder();
-            } catch(CCCException e) {
-                Folder newFolder = new Folder(name);
+            } catch(final CCCException e) {
+                final Folder newFolder = new Folder(name);
+                em.persist(newFolder);
                 currentFolder.add(newFolder);
                 currentFolder = newFolder;
             }
@@ -89,8 +91,9 @@ public class ResourceManagerEJB implements ResourceManager {
      */
     @Override
     public void createRoot() {
-        Folder contentRoot = contentRoot();
-        if (null == contentRoot) {
+        try {
+            contentRoot();
+        } catch (final NoResultException e) {
             em.persist(new Folder(PredefinedResourceNames.CONTENT));
         }
     }
@@ -103,11 +106,11 @@ public class ResourceManagerEJB implements ResourceManager {
      */
     private Folder contentRoot() {
 
-        Query q = em.createNamedQuery(RESOURCE_BY_URL);
-        q.setParameter("url", PredefinedResourceNames.CONTENT);
-        Object singleResult = q.getSingleResult();
+        final Query q = em.createNamedQuery(RESOURCE_BY_URL);
+        q.setParameter("name", PredefinedResourceNames.CONTENT);
+        final Object singleResult = q.getSingleResult();
 
-        Folder contentRoot = Folder.class.cast(singleResult);
+        final Folder contentRoot = Folder.class.cast(singleResult);
         return contentRoot;
     }
 }

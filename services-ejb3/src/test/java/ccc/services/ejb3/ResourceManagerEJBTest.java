@@ -17,6 +17,7 @@ import static ccc.domain.Queries.*;
 import static org.easymock.EasyMock.*;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import junit.framework.TestCase;
@@ -27,6 +28,7 @@ import ccc.domain.Content;
 import ccc.domain.Folder;
 import ccc.domain.Paragraph;
 import ccc.domain.PredefinedResourceNames;
+import ccc.domain.Queries;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
@@ -39,7 +41,7 @@ import ccc.services.ResourceManager;
  *
  * @author Civic Computing Ltd
  */
-public class ResourceManagerEJBTest extends TestCase {
+public final class ResourceManagerEJBTest extends TestCase {
 
     /**
      * Test.
@@ -56,7 +58,7 @@ public class ResourceManagerEJBTest extends TestCase {
         contentRoot.add(foo);
         foo.add(bar);
 
-        EntityManager em = new EntityManagerAdaptor() {
+        final EntityManager em = new EntityManagerAdaptor() {
             /**@see EntityManagerAdaptor#createQuery(java.lang.String)*/
             @Override public Query createNamedQuery(String arg0) {
                 return new QueryAdaptor() {
@@ -67,14 +69,14 @@ public class ResourceManagerEJBTest extends TestCase {
             }
         };
 
-        ResourceManagerEJB resourceMgr = new ResourceManagerEJB(em);
+        final ResourceManagerEJB resourceMgr = new ResourceManagerEJB(em);
 
         // ACT
-        Resource resource = resourceMgr.lookup(new ResourcePath("/foo/bar"));
+        final Resource resource = resourceMgr.lookup(new ResourcePath("/foo/bar"));
 
         // ASSERT
         assertEquals(ResourceType.CONTENT, resource.type());
-        Content content = resource.asContent();
+        final Content content = resource.asContent();
         assertEquals(1, content.paragraphs().size());
     }
 
@@ -86,24 +88,27 @@ public class ResourceManagerEJBTest extends TestCase {
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
 
-        EntityManager em = new EntityManagerAdaptor() {
-            /**@see EntityManagerAdaptor#createQuery(java.lang.String)*/
-            @Override public Query createNamedQuery(String arg0) {
-                return new QueryAdaptor() {
-                    /** @see ccc.services.ejb3.QueryAdaptor#getSingleResult() */
-                    @Override
-                    public Object getSingleResult() { return contentRoot; }
-                };
-            }
-        };
+        final EntityManager em = createMock(EntityManager.class);
+        expect(em.createNamedQuery(Queries.RESOURCE_BY_URL))
+            .andReturn(new QueryAdaptor() {
+                /** @see ccc.services.ejb3.QueryAdaptor#getSingleResult() */
+                @Override
+                public Object getSingleResult() { return contentRoot; }
+            })
+            .anyTimes();
+        em.persist(isA(Folder.class));
+        em.persist(isA(Folder.class));
+        em.persist(isA(Folder.class));
+        replay(em);
 
-        ResourceManager resourceMgr = new ResourceManagerEJB(em);
+        final ResourceManager resourceMgr = new ResourceManagerEJB(em);
 
         // ACT
         resourceMgr.createFolder("/foo/bar");
         resourceMgr.createFolder("/foo/baz");
 
-        // ASSERT
+        // VERIFY
+        verify(em);
         assertEquals(1, contentRoot.size());
         assertEquals("foo", contentRoot.entries().get(0).name().toString());
         assertEquals(2, contentRoot.entries().get(0).asFolder().size());
@@ -123,25 +128,26 @@ public class ResourceManagerEJBTest extends TestCase {
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
 
-        EntityManager em = new EntityManagerAdaptor() {
-            /**@see EntityManagerAdaptor#createQuery(java.lang.String)*/
-            @Override public Query createNamedQuery(String arg0) {
-                return new QueryAdaptor() {
-                    /** @see ccc.services.ejb3.QueryAdaptor#getSingleResult() */
-                    @Override
-                    public Object getSingleResult() { return contentRoot; }
-                };
-            }
-        };
+        final EntityManager em = createMock(EntityManager.class);
+        expect(em.createNamedQuery(Queries.RESOURCE_BY_URL))
+            .andReturn(new QueryAdaptor() {
+                /** @see ccc.services.ejb3.QueryAdaptor#getSingleResult() */
+                @Override
+                public Object getSingleResult() { return contentRoot; }
+            })
+            .anyTimes();
+        em.persist(isA(Folder.class));
+        replay(em);
 
-        ResourceManager resourceMgr = new ResourceManagerEJB(em);
+        final ResourceManager resourceMgr = new ResourceManagerEJB(em);
 
         // ACT
         resourceMgr.createFolder("/foo");
         resourceMgr.createFolder("/foo");
         resourceMgr.createFolder("/foo");
 
-        // ASSERT
+        // VERIFY
+        verify(em);
         assertEquals(1, contentRoot.size());
         assertEquals("foo", contentRoot.entries().get(0).name().toString());
     }
@@ -152,19 +158,15 @@ public class ResourceManagerEJBTest extends TestCase {
     public void testCreateRoot() {
 
         // ARRANGE
-        Capture<Folder> contentRoot = new Capture<Folder>();
-        EntityManager em = createMock(EntityManager.class);
-        expect(em.createNamedQuery(RESOURCE_BY_URL)).andReturn(
-            new QueryAdaptor() {
-                    /** @see ccc.services.ejb3.QueryAdaptor#getSingleResult() */
-                    @Override
-                    public Object getSingleResult() { return null; }
-                });
+        final Capture<Folder> contentRoot = new Capture<Folder>();
+        final EntityManager em = createMock(EntityManager.class);
+        expect(em.createNamedQuery(RESOURCE_BY_URL))
+            .andThrow(new NoResultException());
         em.persist(capture(contentRoot));
         replay(em);
 
 
-        ResourceManager resourceMgr = new ResourceManagerEJB(em);
+        final ResourceManager resourceMgr = new ResourceManagerEJB(em);
 
         // ACT
         resourceMgr.createRoot();
@@ -182,7 +184,7 @@ public class ResourceManagerEJBTest extends TestCase {
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
 
-        EntityManager em = createMock(EntityManager.class);
+        final EntityManager em = createMock(EntityManager.class);
         expect(em.createNamedQuery(RESOURCE_BY_URL)).andReturn(
             new QueryAdaptor() {
                 /** @see ccc.services.ejb3.QueryAdaptor#getSingleResult() */
@@ -191,7 +193,7 @@ public class ResourceManagerEJBTest extends TestCase {
             });
         replay(em);
 
-        ResourceManager resourceMgr = new ResourceManagerEJB(em);
+        final ResourceManager resourceMgr = new ResourceManagerEJB(em);
 
         // ACT
         resourceMgr.createRoot();
