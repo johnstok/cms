@@ -3,5 +3,16 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-  <display-name>Archetype Created Web Application</display-name>
+  <display-name>CCC Content Server</display-name>
+  
+  <servlet>
+    <servlet-name>content</servlet-name>
+    <servlet-class>ccc.content.server.ContentServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>content</servlet-name>
+    <url-pattern>/content/*</url-pattern>
+  </servlet-mapping>
 </web-app>
+
