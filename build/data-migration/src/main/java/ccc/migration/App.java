@@ -10,16 +10,34 @@ import ccc.commons.jee.JNDI;
 import ccc.services.ResourceManager;
 
 /**
- * Hello world!
+ * Entry class for the migration application.
  *
  */
-public class App {
-    public static void main(String[] args) {
+public final class App {
+
+    private App() { /* NO-OP */ }
+
+    /**
+     * Entry point for this application.
+     *
+     * @param args String array of application arguments.
+     */
+    public static void main(final String[] args) {
+
+        // Migrations migrations = consoleMigrations();
+        Migrations migrations =
+            new MigrationsEJB(
+                JNDI.<ResourceManager>get("ResourceManagerEJB/remote"));
+
+        // Create a root content folder.
+        migrations.createContentRoot();
+
+        // Establish a queries instance to communicate with the legacy DB.
         Connection connection = getConnection();
         Queries queries = new Queries(connection);
+
+        // Migrate folders
         ResultSet rs = queries.selectFolders();
-//      Migrations migrations = consoleMigrations();
-        Migrations migrations = new MigrationsEJB(JNDI.<ResourceManager>get("ResourceManagerEJB/remote"));
         migrations.migrateFolders(rs);
     }
 
@@ -28,7 +46,7 @@ public class App {
         return new MigrationsLogger(new Console() {
 
             @Override
-            public void print(String input) {
+            public void print(final String input) {
                 System.out.println(input);
             }
 
@@ -46,7 +64,11 @@ public class App {
             String serverName = "poseidon";
             String portNumber = "1521";
             String sid = "DEV";
-            String url = "jdbc:oracle:thin:@" + serverName + ":" + portNumber + ":" + sid;
+            String url =
+                "jdbc:oracle:thin:@"
+                + serverName + ":"
+                + portNumber + ":"
+                + sid;
             String username = "asb_pepez";
             String password = "d3asb_pepez";
             connection = DriverManager.getConnection(url, username, password);

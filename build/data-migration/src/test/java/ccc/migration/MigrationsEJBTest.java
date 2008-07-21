@@ -11,26 +11,33 @@
  */
 package ccc.migration;
 
+import static org.easymock.EasyMock.*;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static org.easymock.EasyMock.*;
+import junit.framework.TestCase;
+
 import org.h2.tools.Csv;
 
 import ccc.services.ResourceManager;
 
-import junit.framework.TestCase;
-
 
 /**
- * TODO Add Description for this type.
+ * Tests for the {@link MigrationsEJB}.
  *
  * @author Civic Computing Ltd
  */
-public class MigrationsEJBTest extends TestCase {
+public final class MigrationsEJBTest extends TestCase {
 
+    /**
+     * Test.
+     *
+     * @throws IOException If an error occurs in the {@link ResultSet}.
+     * @throws SQLException If an error occurs in the {@link ResultSet}.
+     */
     public void testMigrateFolders() throws SQLException, IOException {
 
         // ARRANGE
@@ -42,11 +49,31 @@ public class MigrationsEJBTest extends TestCase {
         manager.createFolder("/testName");
         replay(manager);
 
-        // ACT
         MigrationsEJB migrationsEJB = new MigrationsEJB(manager);
+
+        // ACT
         migrationsEJB.migrateFolders(rs);
 
         // VERIFY
+        verify(manager);
+    }
+
+    /**
+     * Test.
+     */
+    public void testCreateContentRoot() {
+
+        // ARRANGE
+        ResourceManager manager = createMock(ResourceManager.class);
+        manager.createRoot();
+        replay(manager);
+
+        Migrations migrationsEJB = new MigrationsEJB(manager);
+
+        // ACT
+        migrationsEJB.createContentRoot();
+
+        // VERFIY
         verify(manager);
     }
 

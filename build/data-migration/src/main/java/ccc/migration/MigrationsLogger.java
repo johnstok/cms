@@ -29,7 +29,7 @@ public class MigrationsLogger implements Migrations {
      *
      * @param console
      */
-    public MigrationsLogger(Console console) {
+    public MigrationsLogger(final Console console) {
         this.console = console;
     }
 
@@ -37,7 +37,7 @@ public class MigrationsLogger implements Migrations {
      * @see ccc.migration.Migrations#migrateFolders(java.sql.ResultSet)
      */
     @Override
-    public void migrateFolders(ResultSet resultSet) {
+    public void migrateFolders(final ResultSet resultSet) {
         try {
             while (resultSet.next()) {
                 console.print(resultSet.getString("NAME"));
@@ -45,6 +45,14 @@ public class MigrationsLogger implements Migrations {
         } catch (SQLException e) {
             throw new MigrationException(e);
         }
+    }
+
+    /**
+     * @see ccc.migration.Migrations#createContentRoot()
+     */
+    @Override
+    public void createContentRoot() {
+        throw new UnsupportedOperationException("Method not implemented.");
     }
 
 }

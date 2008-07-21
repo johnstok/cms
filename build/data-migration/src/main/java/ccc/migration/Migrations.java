@@ -15,12 +15,22 @@ import java.sql.ResultSet;
 
 
 /**
- * TODO Add Description for this type.
+ * API definition for supported CCC migrations.
  *
  * @author Civic Computing Ltd
  */
 public interface Migrations {
 
-    public void migrateFolders(ResultSet resultSet);
+    /**
+     * Migrate folders into the CCC server.
+     *
+     * @param resultSet A sql {@link ResultSet} containing a record for each
+     *  folder to be migrated.
+     */
+    void migrateFolders(ResultSet resultSet);
 
+    /**
+     * Create a folder for the root of all CCC content.
+     */
+    void createContentRoot();
 }
