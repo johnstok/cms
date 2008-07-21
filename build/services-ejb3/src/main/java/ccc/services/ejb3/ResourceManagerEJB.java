@@ -15,6 +15,7 @@ package ccc.services.ejb3;
 import static ccc.domain.Queries.*;
 import static javax.ejb.TransactionAttributeType.*;
 
+import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -40,6 +41,7 @@ import ccc.services.ResourceManager;
 @Stateless
 @TransactionAttribute(REQUIRED)
 @Remote(ResourceManager.class)
+@Local(ResourceManager.class)
 public class ResourceManagerEJB implements ResourceManager {
 
     @PersistenceContext(unitName = "ccc-persistence")
