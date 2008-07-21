@@ -1,18 +1,38 @@
-<?xml version="1.0" encoding="UTF-8"?><project>
-  <parent>
-    <artifactId>build</artifactId>
-    <groupId>CCC7</groupId>
-    <version>0.0.7-SNAPSHOT</version>
-  </parent>
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>CCC7</groupId>
-  <artifactId>content-server</artifactId>
-  <packaging>war</packaging>
-  <name>content-server</name>
-  <version>0.0.7-SNAPSHOT</version>
-  <url>http://maven.apache.org</url>
-  <build>
-    <finalName>content-server</finalName>
-  </build>
-  <dependencies></dependencies>
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<parent>
+		<artifactId>build</artifactId>
+		<groupId>CCC7</groupId>
+		<version>0.0.7-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>CCC7</groupId>
+	<artifactId>content-server</artifactId>
+	<packaging>war</packaging>
+	<name>content-server</name>
+	<version>0.0.7-SNAPSHOT</version>
+	<url>http://maven.apache.org</url>
+	<build>
+		<finalName>content-server</finalName>
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+        <dependency>
+            <groupId>CCC7</groupId>
+            <artifactId>business-services</artifactId>
+            <version>0.0.7-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>CCC7</groupId>
+            <artifactId>core-domain</artifactId>
+            <version>0.0.7-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+	</dependencies>
 </project>
