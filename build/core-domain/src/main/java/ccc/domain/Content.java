@@ -12,7 +12,7 @@
 
 package ccc.domain;
 
-import static java.util.Collections.unmodifiableMap;
+import static java.util.Collections.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +26,13 @@ import ccc.commons.jee.DBC;
  * @author Civic Computing Ltd
  */
 public final class Content extends Resource {
+
+    /**
+     * Constructor.
+     * N.B. This constructor should only be used for persistence.
+     */
+    @SuppressWarnings("unused")
+    private Content() { super(); }
 
     /**
      * Constructor.
@@ -46,7 +53,7 @@ public final class Content extends Resource {
         super(name, title);
     }
 
-    private final Map<String, Paragraph> content =
+    private Map<String, Paragraph> content =
         new HashMap<String, Paragraph>();
 
     /**

@@ -12,7 +12,7 @@
 
 package ccc.domain;
 
-import static ccc.commons.jee.DBC.require;
+import static ccc.commons.jee.DBC.*;
 
 /**
  * An abstract superclass that contains shared behaviour for the different types
@@ -24,6 +24,12 @@ public abstract class Resource extends Entity {
 
     private String       title = id().toString();
     private ResourceName name  = ResourceName.escape(title);
+
+    /**
+     * Constructor.
+     */
+    @SuppressWarnings("unused")
+    protected Resource() { /* NO-OP */ }
 
     /**
      * Constructor.

@@ -7,6 +7,9 @@
 
     <session-factory>
         <mapping resource="ccc/domain/Resource.hbm.xml"/>
+        <mapping resource="ccc/domain/Content.hbm.xml"/>
+        <mapping resource="ccc/domain/Folder.hbm.xml"/>
+        <mapping resource="ccc/domain/Queries.hbm.xml"/>
     </session-factory>
 
 </hibernate-configuration>

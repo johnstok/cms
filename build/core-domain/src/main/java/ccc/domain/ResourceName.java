@@ -12,6 +12,7 @@
 
 package ccc.domain;
 
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 
@@ -27,9 +28,16 @@ import java.util.regex.Pattern;
  */
 public final class ResourceName {
 
-    private final String  representation;
+    private String  representation = escapeString(UUID.randomUUID().toString());
     private final String  validCharacters = "\\w+";
     private final Pattern validRegex      = Pattern.compile(validCharacters);
+
+    /**
+     * Constructor.
+     * N.B. This constructor should only be used for persistence.
+     */
+    @SuppressWarnings("unused")
+    private ResourceName() { /* NO-OP */}
 
     /**
      * Constructor.
@@ -105,7 +113,11 @@ public final class ResourceName {
      *      characters have been escaped to '_'.
      */
     public static ResourceName escape(final String invalidCharacters) {
-        String validCharacters = invalidCharacters.replaceAll("\\W", "_");
+        final String validCharacters = escapeString(invalidCharacters);
         return new ResourceName(validCharacters);
+    }
+
+    private static String escapeString(final String invalidCharacters) {
+        return invalidCharacters.replaceAll("\\W", "_");
     }
 }

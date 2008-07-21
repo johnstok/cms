@@ -20,6 +20,8 @@ import junit.framework.TestCase;
 /**
  * Tests for the {@link Folder} class.
  *
+ * TODO: Disallow null input to the add() method.
+ *
  * @author Civic Computing Ltd
  */
 public final class FolderTest extends TestCase {
