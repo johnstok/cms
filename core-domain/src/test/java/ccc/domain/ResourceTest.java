@@ -17,6 +17,8 @@ import junit.framework.TestCase;
 /**
  * Tests for the {@link Resource} class.
  *
+ * TODO: Test titles > 256 are disallowed.
+ *
  * @author Civic Computing Ltd
  */
 public final class ResourceTest extends TestCase {

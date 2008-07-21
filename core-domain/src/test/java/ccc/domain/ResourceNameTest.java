@@ -18,6 +18,8 @@ import junit.framework.TestCase;
 /**
  * Tests for the {@link ResourceName} class.
  *
+ * TODO: Test max length of 256 chars.
+ *
  * @author Civic Computing Ltd
  */
 public final class ResourceNameTest extends TestCase {

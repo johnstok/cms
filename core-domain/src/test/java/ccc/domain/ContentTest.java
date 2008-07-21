@@ -18,6 +18,9 @@ import junit.framework.TestCase;
 /**
  * Tests for the {@link Content} class.
  *
+ * TODO: test that null keys are disallowed.
+ * TODO: test that max key length is 256.
+ *
  * @author Civic Computing Ltd
  */
 public final class ContentTest extends TestCase {

@@ -22,5 +22,5 @@ public final class Queries {
     private Queries() { /* NO-OP */ }
 
     /** RESOURCE_BY_URL : String. */
-    public static final String RESOURCE_BY_URL = null;
+    public static final String RESOURCE_BY_URL = "RESOURCE_BY_URL";
 }

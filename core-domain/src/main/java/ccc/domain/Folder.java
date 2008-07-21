@@ -27,6 +27,13 @@ public final class Folder extends Resource {
 
     /**
      * Constructor.
+     * N.B. This constructor should only be used for persistence.
+     */
+    @SuppressWarnings("unused")
+    private Folder() { super(); }
+
+    /**
+     * Constructor.
      *
      * @param name The unique name for this resource.
      */
@@ -34,7 +41,7 @@ public final class Folder extends Resource {
         super(name);
     }
 
-    private final List<Resource> entries = new ArrayList<Resource>();
+    private List<Resource> entries = new ArrayList<Resource>();
 
     /**
      * @see ccc.domain.Resource#type()
@@ -83,7 +90,7 @@ public final class Folder extends Resource {
 
         Resource currentPosition = this;
 
-        for (ResourceName name : path.elements()) {
+        for (final ResourceName name : path.elements()) {
 
             if (ResourceType.FOLDER != currentPosition.type()) {
                 throw new CCCException(
@@ -106,7 +113,7 @@ public final class Folder extends Resource {
      * @return The resource with the specified name.
      */
     public Resource findEntryByName(final ResourceName name) {
-        for (Resource entry : entries) {
+        for (final Resource entry : entries) {
             if (entry.name().equals(name)) {
                 return entry;
             }
