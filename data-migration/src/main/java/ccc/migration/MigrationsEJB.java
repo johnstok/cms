@@ -26,14 +26,14 @@ import ccc.services.ResourceManager;
  */
 public class MigrationsEJB implements Migrations {
 
-    private ResourceManager manager;
+    private final ResourceManager manager;
 
     /**
      * Constructor.
      *
      * @param manager
      */
-    public MigrationsEJB(ResourceManager manager) {
+    public MigrationsEJB(final ResourceManager manager) {
         this.manager = manager;
     }
 
@@ -41,7 +41,7 @@ public class MigrationsEJB implements Migrations {
      * @see ccc.migration.Migrations#migrateFolders(java.sql.ResultSet)
      */
     @Override
-    public void migrateFolders(ResultSet resultSet) {
+    public void migrateFolders(final ResultSet resultSet) {
 
         try {
             while (resultSet.next()) {
@@ -53,6 +53,14 @@ public class MigrationsEJB implements Migrations {
             // TODO Auto-generated catch block
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * @see ccc.migration.Migrations#createContentRoot()
+     */
+    @Override
+    public void createContentRoot() {
+        manager.createRoot();
     }
 
 }
