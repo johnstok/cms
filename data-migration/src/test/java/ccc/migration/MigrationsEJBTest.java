@@ -37,17 +37,17 @@ public class MigrationsEJBTest extends TestCase {
         final ResultSet rs = Csv.getInstance().read(
             new StringReader("testName, 1, 0"),
             new String[]{"NAME", "CONTENT_ID", "PARENT_ID"});
-        
+
         ResourceManager manager = createMock(ResourceManager.class);
         manager.createFolder("/testName");
         replay(manager);
-        
+
         // ACT
         MigrationsEJB migrationsEJB = new MigrationsEJB(manager);
         migrationsEJB.migrateFolders(rs);
-        
+
         // VERIFY
         verify(manager);
     }
-    
+
 }

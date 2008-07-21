@@ -27,7 +27,7 @@ import ccc.services.ResourceManager;
 public class MigrationsEJB implements Migrations {
 
     private ResourceManager manager;
-    
+
     /**
      * Constructor.
      *

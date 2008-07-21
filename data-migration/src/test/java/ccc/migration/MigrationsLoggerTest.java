@@ -46,19 +46,19 @@ public class MigrationsLoggerTest extends TestCase {
 
     public void testMigrateFolders() throws SQLException, IOException {
         // ARRANGE
-        
+
         final ResultSet rs = Csv.getInstance().read(
             new StringReader("testName, 1, 0"),
             new String[]{"NAME", "CONTENT_ID", "PARENT_ID"});
-        
+
         CollectingConsole console = new CollectingConsole();
-        
+
         MigrationsLogger logger = new MigrationsLogger(console);
         logger.migrateFolders(rs);
-        
+
         // ASSERT
         assertEquals(1, console.inputList.size());
-        
+
     }
-    
+
 }
