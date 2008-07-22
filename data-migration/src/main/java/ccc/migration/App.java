@@ -3,7 +3,6 @@ package ccc.migration;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import ccc.commons.jee.JNDI;
@@ -24,33 +23,17 @@ public final class App {
      */
     public static void main(final String[] args) {
 
-        // Migrations migrations = consoleMigrations();
-        Migrations migrations =
-            new MigrationsEJB(
-                JNDI.<ResourceManager>get("ResourceManagerEJB/remote"));
-
-        // Create a root content folder.
-        migrations.createContentRoot();
-
         // Establish a queries instance to communicate with the legacy DB.
         Connection connection = getConnection();
         Queries queries = new Queries(connection);
+        
+        // Migrations migrations = consoleMigrations();
+        MigrationsEJB migrations =
+            new MigrationsEJB(
+                JNDI.<ResourceManager>get("ResourceManagerEJB/remote"),
+                queries);
 
-        // Migrate folders
-        ResultSet rs = queries.selectFolders();
-        migrations.migrateFolders(rs);
-    }
-
-    private static MigrationsLogger consoleMigrations() {
-
-        return new MigrationsLogger(new Console() {
-
-            @Override
-            public void print(final String input) {
-                System.out.println(input);
-            }
-
-        });
+        migrations.migrate();
     }
 
     private static Connection getConnection() {
@@ -79,4 +62,33 @@ public final class App {
         }
         return connection;
     }
+    
+//  /**
+//  * TODO: Add a description of this method.
+//  *
+//  * @param rootFolder
+//  */
+// private static void prettyPrint(Folder rootFolder) {
+//     int indent = 0;
+//     System.out.println(rootFolder.name());
+//     prettyPrint(rootFolder.entries(), indent+2);
+// }
+//
+// /**
+//  * TODO: Add a description of this method.
+//  *
+//  * @param entries
+//  * @param i
+//  */
+// private static void prettyPrint(List<Resource> entries, int i) {
+//     for (Resource entry : entries) {
+//         for (int a=0 ; a < i ; a++) {
+//             System.out.print(" ");
+//         }
+//         System.out.println(entry.name());
+//         if (entry.type() == ResourceType.FOLDER) {
+//             prettyPrint(entry.asFolder().entries(), i+2);
+//         }
+//     }
+// }
 }

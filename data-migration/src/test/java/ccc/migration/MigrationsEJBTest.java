@@ -15,8 +15,12 @@ import static org.easymock.EasyMock.*;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import junit.framework.TestCase;
 
@@ -50,11 +54,16 @@ public final class MigrationsEJBTest extends TestCase {
         replay(manager);
 
         // ACT
-        MigrationsEJB migrationsEJB = new MigrationsEJB(manager);
-        migrationsEJB.migrateFolders(rs);
+        MigrationsEJB migrationsEJB = new MigrationsEJB(manager, getQueries());
+        List<Integer> results = migrationsEJB.migrateFolders(rs);
 
         // VERIFY
         verify(manager);
+
+        // ASSERT
+        List<Integer> expectedList = new ArrayList<Integer>();
+        expectedList.add(1);
+        assertEquals(expectedList, results);
     }
     
     public void testMigratePages() throws SQLException, IOException {
@@ -68,7 +77,7 @@ public final class MigrationsEJBTest extends TestCase {
         manager.createContent("/testPage");
         replay(manager);
 
-        MigrationsEJB migrationsEJB = new MigrationsEJB(manager);
+        MigrationsEJB migrationsEJB = new MigrationsEJB(manager, getQueries());
 
         // ACT
         migrationsEJB.migratePages(rs);
@@ -88,7 +97,7 @@ public final class MigrationsEJBTest extends TestCase {
         manager.createRoot();
         replay(manager);
 
-        Migrations migrationsEJB = new MigrationsEJB(manager);
+        MigrationsEJB migrationsEJB = new MigrationsEJB(manager, getQueries());
 
         // ACT
         migrationsEJB.createContentRoot();
@@ -97,4 +106,24 @@ public final class MigrationsEJBTest extends TestCase {
         verify(manager);
     }
 
+    private Queries getQueries() {
+        Connection connection = new ConnectionAdapter() {
+            @Override
+            public Statement createStatement() throws SQLException {
+                Statement statement = new StatementAdaptor() {
+
+                    @Override
+                    public ResultSet executeQuery(final String sql)
+                    throws SQLException {
+                        ResultSet resultSet = new ResultSetAdapter();
+                        return resultSet;
+                    }
+
+                };
+                return statement;
+            }
+        };
+        return new Queries(connection);
+    }
+    
 }
