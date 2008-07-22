@@ -33,6 +33,7 @@ import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
+import ccc.domain.ResourceType;
 import ccc.services.ResourceManager;
 
 
@@ -142,9 +143,20 @@ public class ResourceManagerEJB implements ResourceManager {
         
         List<ResourceName> elements = path.elements();
         final ResourceName name = elements.get(elements.size()-1);
+        
+        boolean resourceExists = true;
+        boolean resourceIsFolder = false;
+        
         try {
-            parentFolder.findEntryByName(name).asContent();
+            Resource resource = parentFolder.findEntryByName(name);
+            resourceIsFolder = resource.type()==ResourceType.FOLDER;
         } catch(final CCCException e) {
+            resourceExists = false;
+        }
+        
+        if (resourceExists && resourceIsFolder) {
+            throw new CCCException("A folder already exists at the path "+pathString);
+        } else if (!resourceExists) {
             final Content newContent = new Content(name);
             em.persist(newContent);
             parentFolder.add(newContent);
