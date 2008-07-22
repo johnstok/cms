@@ -26,6 +26,7 @@ import junit.framework.TestCase;
 
 import org.easymock.Capture;
 
+import ccc.domain.CCCException;
 import ccc.domain.Content;
 import ccc.domain.Folder;
 import ccc.domain.Paragraph;
@@ -270,6 +271,46 @@ public final class ResourceManagerEJBTest extends TestCase {
         resourceMgr.createContent("/foo/page1");
         resourceMgr.createContent("/foo/page1");
 
+        // VERIFY
+        verify(em);
+        assertEquals(1, contentRoot.size());
+        assertEquals(1, contentRoot.entries().size());
+        assertEquals("foo", contentRoot.entries().get(0).name().toString());
+        assertEquals("page1", contentRoot.entries().get(0).asFolder().entries().get(0).name().toString());
+    }
+    
+    /**
+     * Test.
+     */
+    public void testCreateContentFailsWhenFolderExists() {
+        
+        // ARRANGE
+        final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
+        
+        final EntityManager em = createMock(EntityManager.class);
+        expect(em.createNamedQuery(Queries.RESOURCE_BY_URL))
+        .andReturn(new QueryAdaptor() {
+            /** @see ccc.services.ejb3.QueryAdaptor#getSingleResult() */
+            @Override
+            public Object getSingleResult() { return contentRoot; }
+        })
+        .anyTimes();
+        em.persist(isA(Folder.class));
+        em.persist(isA(Folder.class));
+        replay(em);
+        
+        final ResourceManager resourceMgr = new ResourceManagerEJB(em);
+        
+        // ACT
+        resourceMgr.createFolder("/foo");
+        resourceMgr.createFolder("/foo/page1");
+        try {
+            resourceMgr.createContent("/foo/page1");
+            fail("Creation of a content with the same name as an existing folder should fail.");
+        } catch (CCCException e) {
+            assertEquals("A folder already exists at the path /foo/page1", e.getMessage());
+        }
+        
         // VERIFY
         verify(em);
         assertEquals(1, contentRoot.size());
