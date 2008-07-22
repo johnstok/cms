@@ -42,4 +42,12 @@ public interface ResourceManager {
      * Create the root folder for content.
      */
     void createRoot();
+    
+    /**
+     * Create a content, based on the specified path.
+     *
+     * @param pathString
+     */
+    void createContent(String pathString);
+    
 }

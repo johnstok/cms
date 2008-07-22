@@ -15,6 +15,8 @@ package ccc.services.ejb3;
 import static ccc.domain.Queries.*;
 import static javax.ejb.TransactionAttributeType.*;
 
+import java.util.List;
+
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -25,6 +27,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import ccc.domain.CCCException;
+import ccc.domain.Content;
 import ccc.domain.Folder;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
@@ -75,8 +78,20 @@ public class ResourceManagerEJB implements ResourceManager {
     @Override
     public void createFolder(final String pathString) {
         final ResourcePath path = new ResourcePath(pathString);
+        createFoldersForPath(path.elements());
+    }
+
+    /**
+     * Creates new folders for the path in case folders do not exist
+     * already.
+     *
+     * @param elements
+     * @return 
+     */
+    private Folder createFoldersForPath(final List<ResourceName> elements) {
+
         Folder currentFolder = contentRoot();
-        for (final ResourceName name : path.elements()) {
+        for (final ResourceName name : elements) {
             try {
                 currentFolder = currentFolder.findEntryByName(name).asFolder();
             } catch(final CCCException e) {
@@ -86,6 +101,7 @@ public class ResourceManagerEJB implements ResourceManager {
                 currentFolder = newFolder;
             }
         }
+        return currentFolder;
     }
 
     /**
@@ -114,5 +130,24 @@ public class ResourceManagerEJB implements ResourceManager {
 
         final Folder contentRoot = Folder.class.cast(singleResult);
         return contentRoot;
+    }
+
+    /**
+     * @see ccc.services.ResourceManager#createContent(java.lang.String)
+     */
+    @Override
+    public void createContent(String pathString) {
+        final ResourcePath path = new ResourcePath(pathString);
+        Folder parentFolder = createFoldersForPath(path.elementsToTop());
+        
+        List<ResourceName> elements = path.elements();
+        final ResourceName name = elements.get(elements.size()-1);
+        try {
+            parentFolder.findEntryByName(name).asContent();
+        } catch(final CCCException e) {
+            final Content newContent = new Content(name);
+            em.persist(newContent);
+            parentFolder.add(newContent);
+        }
     }
 }

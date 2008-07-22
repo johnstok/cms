@@ -47,5 +47,12 @@ public abstract class ResourceManagerAdaptor implements ResourceManager {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /**
+     * @see ccc.services.ResourceManager#createContent(java.lang.String)
+     */
+    @Override
+    public void createContent(String pathString) {
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
 
 }

@@ -56,6 +56,24 @@ public class MigrationsEJB implements Migrations {
     }
 
     /**
+     * @see ccc.migration.Migrations#migratePages(java.sql.ResultSet)
+     */
+    @Override
+    public void migratePages(ResultSet resultSet) {
+
+        try {
+            while (resultSet.next()) {
+                ResourceName name = ResourceName.escape(resultSet.getString("NAME"));
+                ResourcePath path = new ResourcePath(name);
+                manager.createContent(path.toString());
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * @see ccc.migration.Migrations#createContentRoot()
      */
     @Override

@@ -48,6 +48,20 @@ public class MigrationsLogger implements Migrations {
     }
 
     /**
+     * @see ccc.migration.Migrations#migratePages(java.sql.ResultSet)
+     */
+    @Override
+    public void migratePages(ResultSet resultSet) {
+        try {
+            while (resultSet.next()) {
+                console.print(resultSet.getString("NAME"));
+            }
+        } catch (SQLException e) {
+            throw new MigrationException(e);
+        }
+
+    }
+    /**
      * @see ccc.migration.Migrations#createContentRoot()
      */
     @Override

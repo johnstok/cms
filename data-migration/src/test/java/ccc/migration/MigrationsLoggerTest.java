@@ -44,21 +44,46 @@ public class MigrationsLoggerTest extends TestCase {
         super.tearDown();
     }
 
+    /**
+     * Tests folder migration with collection logger.
+     *
+     * @throws SQLException
+     * @throws IOException
+     */
     public void testMigrateFolders() throws SQLException, IOException {
+
         // ARRANGE
 
         final ResultSet rs = Csv.getInstance().read(
-            new StringReader("testName, 1, 0"),
+            new StringReader("testFolder, 1, 0"),
             new String[]{"NAME", "CONTENT_ID", "PARENT_ID"});
 
         CollectingConsole console = new CollectingConsole();
-
         MigrationsLogger logger = new MigrationsLogger(console);
+
+        // ACT
         logger.migrateFolders(rs);
 
         // ASSERT
         assertEquals(1, console.inputList.size());
 
+    }
+
+    public void testMigrateContent() throws SQLException, IOException {
+
+        // ARRANGE
+        final ResultSet rs = Csv.getInstance().read(
+            new StringReader("testPage, 1, 0"),
+            new String[]{"NAME", "CONTENT_ID", "PARENT_ID"});
+
+        CollectingConsole console = new CollectingConsole();
+        MigrationsLogger logger = new MigrationsLogger(console);
+
+        // ACT
+        logger.migratePages(rs);
+
+        // ASSERT
+        assertEquals(1, console.inputList.size());
     }
 
 }

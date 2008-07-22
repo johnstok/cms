@@ -21,6 +21,11 @@ public class Queries {
         connection = conn;
     }
 
+    /**
+     * Returns resultset of all folders with active version.
+     *
+     * @return
+     */
     public ResultSet selectFolders() {
         try {
             Statement statement;
@@ -42,6 +47,22 @@ public class Queries {
             ps.setLong(1, contentId);
             return ps.executeQuery();
 
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Returns resultset of all pages with active version.
+     *
+     * @return
+     */
+    public ResultSet selectPages() {
+        try {
+            Statement statement;
+            statement = connection.createStatement();
+            return statement.executeQuery("SELECT * FROM C3_PAGES, C3_CONTENT WHERE " +
+            "C3_CONTENT.VERSION_ID=0 AND C3_PAGES.VERSION_ID=0 AND C3_PAGES.PAGE_ID=C3_CONTENT.CONTENT_ID");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
