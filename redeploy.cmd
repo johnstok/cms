@@ -15,3 +15,6 @@ cd ..
 cd services-ejb3
 call mvn jboss:deploy
 cd ..
+cd content-server
+call mvn jboss:deploy
+cd ..
