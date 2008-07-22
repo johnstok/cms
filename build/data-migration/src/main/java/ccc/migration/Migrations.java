@@ -33,4 +33,12 @@ public interface Migrations {
      * Create a folder for the root of all CCC content.
      */
     void createContentRoot();
+
+    /**
+     * Migrate pages into the CCC server.
+     *
+     * @param resultSet A sql {@link ResultSet} containing a record for each
+     *  page to be migrated.
+     */
+    void migratePages(ResultSet resultSet);
 }

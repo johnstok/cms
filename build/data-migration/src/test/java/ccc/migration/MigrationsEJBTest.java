@@ -42,20 +42,40 @@ public final class MigrationsEJBTest extends TestCase {
 
         // ARRANGE
         final ResultSet rs = Csv.getInstance().read(
-            new StringReader("testName, 1, 0"),
+            new StringReader("testFolder, 1, 0"),
             new String[]{"NAME", "CONTENT_ID", "PARENT_ID"});
 
         ResourceManager manager = createMock(ResourceManager.class);
-        manager.createFolder("/testName");
+        manager.createFolder("/testFolder");
+        replay(manager);
+
+        // ACT
+        MigrationsEJB migrationsEJB = new MigrationsEJB(manager);
+        migrationsEJB.migrateFolders(rs);
+
+        // VERIFY
+        verify(manager);
+    }
+    
+    public void testMigratePages() throws SQLException, IOException {
+        
+        // ARRANGE
+        final ResultSet rs = Csv.getInstance().read(
+            new StringReader("testPage, 1, 0"),
+            new String[]{"NAME", "CONTENT_ID", "PARENT_ID"});
+
+        ResourceManager manager = createMock(ResourceManager.class);
+        manager.createContent("/testPage");
         replay(manager);
 
         MigrationsEJB migrationsEJB = new MigrationsEJB(manager);
 
         // ACT
-        migrationsEJB.migrateFolders(rs);
+        migrationsEJB.migratePages(rs);
 
         // VERIFY
         verify(manager);
+        
     }
 
     /**

@@ -128,6 +128,21 @@ public final class ResourcePath {
     public List<ResourceName> elements() {
         return elements; // Already unmodifiable.
     }
+    
+    /**
+     * Returns list of all but topmost elements. In case of
+     * root/empty path empty list is returned.
+     *
+     * @return
+     */
+    public List<ResourceName> elementsToTop() {
+        List<ResourceName> limitedElements = new ArrayList<ResourceName>(elements);
+        if (limitedElements.size() > 1) {
+            limitedElements.remove(limitedElements.size()-1);
+        }
+        
+        return limitedElements;
+    }
 
 
 }
