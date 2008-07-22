@@ -1,6 +1,7 @@
 package ccc.migration;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -35,31 +36,32 @@ public class QueriesTest extends TestCase {
         }
     }
 
-    public void testSelectFolders() throws SQLException {
+    public void testSelectResources() throws SQLException {
 
         // ARRANGE
         Connection connection = new ConnectionAdapter() {
 
             @Override
-            public Statement createStatement() throws SQLException {
-                Statement statement = new StatementAdaptor() {
+            public PreparedStatement prepareStatement(String sql) throws SQLException {
+                PreparedStatement ps = new PreparedStatementAdapter() {
 
                     @Override
-                    public ResultSet executeQuery(String sql)
-                    throws SQLException {
+                    public ResultSet executeQuery() throws SQLException {
                         ResultSet resultSet = new ResultSetAdapter();
                         return resultSet;
                     }
 
+                    @Override
+                    public void setInt(int parameterIndex, int x) throws SQLException {
+                    }
                 };
-                return statement;
+                return ps;
             }
-
         };
         Queries queries = new Queries(connection);
 
         // ACT
-        ResultSet rs = queries.selectFolders();
+        ResultSet rs = queries.selectResources(0);
 
         // ASSERT
         assertFalse("ResultSet should not contain any data.", rs.next());
@@ -97,16 +99,4 @@ public class QueriesTest extends TestCase {
         assertFalse("ResultSet should not contain any data.", rs.next());
     }
 
-//  public void testSelectPagesFromFolder() {
-
-//  // ARRANGE
-//  Connection connection = new ConnectionAdapter();
-//  Queries queries = new Queries(connection);
-
-//  // ACT
-//  ResultSet rs = queries.selectPagesFromFolder(null);
-
-//  // ASSERT
-
-//  }
 }

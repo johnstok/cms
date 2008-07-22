@@ -13,7 +13,10 @@ package ccc.migration;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
+import ccc.domain.CCCException;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.services.ResourceManager;
@@ -24,41 +27,79 @@ import ccc.services.ResourceManager;
  *
  * @author Civic Computing Ltd
  */
-public class MigrationsEJB implements Migrations {
+public class MigrationsEJB {
 
     private final ResourceManager manager;
+    private final Queries queries;
 
     /**
      * Constructor.
      *
      * @param manager
+     * @param queries 
      */
-    public MigrationsEJB(final ResourceManager manager) {
+    public MigrationsEJB(final ResourceManager manager, Queries queries) {
         this.manager = manager;
+        this.queries = queries;
+    }
+    
+    public void migrate() {
+
+        // Create a root content folder.
+        createContentRoot();
+        ResourcePath rootFolder = new ResourcePath(new ResourceName("Root"));
+        
+        // Walk the tree migrating each resource
+        migrateChildren(rootFolder, 0, queries);
+    }
+    
+    private void migrateChildren(ResourcePath rootFolder, Integer parent, Queries queries) {
+        try {
+            ResultSet rs = queries.selectResources(parent);
+            while (rs.next()) {
+                String type = rs.getString("CONTENT_TYPE");
+                if (type.equals("FOLDER")) {
+                    ResourcePath childFolder =
+                        rootFolder.append(ResourceName.escape(rs.getString("NAME")));
+                    System.out.println(rootFolder.toString()+"/"+rs.getString("NAME"));
+                    migrateChildren(childFolder, rs.getInt("CONTENT_ID"), queries);
+                } 
+                else if (type.equals("PAGE")) {
+                    System.out.println(">"+rootFolder.toString()+"/"+rs.getString("NAME"));
+                }
+                else {
+                    System.out.println("Unkown resource type");
+                }
+            }
+            
+        } 
+        catch (SQLException e) {
+            throw new CCCException("Migration failed.", e);
+        }
     }
 
     /**
      * @see ccc.migration.Migrations#migrateFolders(java.sql.ResultSet)
      */
-    @Override
-    public void migrateFolders(final ResultSet resultSet) {
-
+    public List<Integer> migrateFolders(final ResultSet resultSet) {
+        List<Integer> idList = new ArrayList<Integer>();
         try {
             while (resultSet.next()) {
                 ResourceName name = ResourceName.escape(resultSet.getString("NAME"));
                 ResourcePath path = new ResourcePath(name);
                 manager.createFolder(path.toString());
+                idList.add(resultSet.getInt("CONTENT_ID"));
             }
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             throw new RuntimeException(e);
         }
+        return idList;
     }
 
     /**
      * @see ccc.migration.Migrations#migratePages(java.sql.ResultSet)
      */
-    @Override
     public void migratePages(ResultSet resultSet) {
 
         try {
@@ -76,7 +117,6 @@ public class MigrationsEJB implements Migrations {
     /**
      * @see ccc.migration.Migrations#createContentRoot()
      */
-    @Override
     public void createContentRoot() {
         manager.createRoot();
     }
