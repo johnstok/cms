@@ -13,15 +13,21 @@ package ccc.domain;
 
 import static ccc.commons.jee.DBC.require;
 
+import java.io.Serializable;
+
 /**
  * A paragraph of HTML.
  *
  * @author Civic Computing Ltd
  */
-public final class Paragraph {
+public final class Paragraph implements Serializable {
 
-    private final String body;
+    private String body = "";
 
+    private Paragraph() { // NO-OP
+        // for hibernate
+    }
+    
     /**
      * Constructor.
      *

@@ -14,7 +14,6 @@ package ccc.services;
 
 import java.util.Map;
 
-import ccc.domain.Content;
 import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
@@ -54,5 +53,11 @@ public interface ResourceManager {
      */
     void createContent(String pathString);
     
-    void createParagraphsForContent(Content content, Map<String, Paragraph> paragraphs);
+    /**
+     * Create paragraphs for given content
+     *
+     * @param content
+     * @param paragraphs
+     */
+    void createParagraphsForContent(String pathString, Map<String, Paragraph> paragraphs);
 }

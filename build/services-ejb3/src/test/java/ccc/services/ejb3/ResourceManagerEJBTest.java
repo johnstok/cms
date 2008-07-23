@@ -16,7 +16,6 @@ import static ccc.domain.PredefinedResourceNames.*;
 import static ccc.domain.Queries.*;
 import static org.easymock.EasyMock.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,7 +88,7 @@ public final class ResourceManagerEJBTest extends TestCase {
     /**
      * Test.
      */
-    public void testCreateFolder() {
+    public  void testCreateFolder() {
 
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
@@ -337,7 +336,6 @@ public final class ResourceManagerEJBTest extends TestCase {
         .anyTimes();
         em.persist(isA(Folder.class));  // foo
         em.persist(isA(Content.class)); // foo/page1
-        em.persist(isA(Paragraph.class)); //foo/page/paragraphs
         replay(em);
         
         final ResourceManager resourceMgr = new ResourceManagerEJB(em);
@@ -347,8 +345,8 @@ public final class ResourceManagerEJBTest extends TestCase {
 
         // ACT
         resourceMgr.createContent("/foo/page1");
-        Resource resource = resourceMgr.lookup(new ResourcePath("/foo/page1"));
-        resourceMgr.createParagraphsForContent(resource.asContent(), paragraphs);
+
+        resourceMgr.createParagraphsForContent("/foo/page1", paragraphs);
         
         // VERIFY
         verify(em);

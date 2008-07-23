@@ -64,7 +64,7 @@ public abstract class ResourceManagerAdaptor implements ResourceManager {
      * @see ccc.services.ResourceManager#createParagraphsForContent(ccc.domain.Content, java.util.List)
      */
     @Override
-    public void createParagraphsForContent(Content content, Map<String, Paragraph> paragraphs) {
+    public void createParagraphsForContent(String patString, Map<String, Paragraph> paragraphs) {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
