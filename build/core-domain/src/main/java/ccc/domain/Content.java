@@ -14,8 +14,8 @@ package ccc.domain;
 
 import static java.util.Collections.*;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import ccc.commons.jee.DBC;
 
@@ -27,6 +27,8 @@ import ccc.commons.jee.DBC;
  */
 public final class Content extends Resource {
 
+    private Map<String, Paragraph> content = new TreeMap<String, Paragraph>();
+
     /**
      * Constructor.
      * N.B. This constructor should only be used for persistence.
@@ -37,7 +39,7 @@ public final class Content extends Resource {
     /**
      * Constructor.
      *
-     * @param name
+     * @param name The name of the resource.
      */
     public Content(final ResourceName name) {
         super(name);
@@ -46,18 +48,15 @@ public final class Content extends Resource {
     /**
      * Constructor.
      *
-     * @param name
-     * @param title
+     * @param name The name of the resource.
+     * @param title The title of the resource.
      */
     public Content(final ResourceName name, final String title) {
         super(name, title);
     }
 
-    private Map<String, Paragraph> content =
-        new HashMap<String, Paragraph>();
-
     /**
-     * @see ccc.domain.Resource#type()
+     * {@inheritDoc}
      */
     @Override
     public ResourceType type() {
@@ -67,11 +66,14 @@ public final class Content extends Resource {
     /**
      * Add a new paragraph for this content.
      *
-     * @param key
-     * @param paragraph
+     * @param key A unique string that identifies this paragraph.
+     * @param paragraph The paragraph to be added.
+     * @return 'this' - useful for method chaining.
      */
     public Content addParagraph(final String key, final Paragraph paragraph) {
-        content.put(key, paragraph); // TODO: validate parameters
+        DBC.require().notEmpty(key);
+        DBC.require().notNull(paragraph);
+        content.put(key, paragraph);
         return this;
     }
 
