@@ -22,10 +22,18 @@
 		<servlet-name>content</servlet-name>
 		<servlet-class>ccc.content.server.ContentServlet</servlet-class>
 	</servlet>
+	   <servlet>
+        <servlet-name>error</servlet-name>
+        <servlet-class>ccc.content.server.ErrorServlet</servlet-class>
+    </servlet>
 
 	<servlet-mapping>
 		<servlet-name>content</servlet-name>
 		<url-pattern>/content/*</url-pattern>
 	</servlet-mapping>
+	   <servlet-mapping>
+        <servlet-name>error</servlet-name>
+        <url-pattern>/error</url-pattern>
+    </servlet-mapping>
 </web-app>
 
