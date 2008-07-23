@@ -25,6 +25,8 @@ import java.util.List;
  */
 public final class Folder extends Resource {
 
+    private List<Resource> entries = new ArrayList<Resource>();
+
     /**
      * Constructor.
      * N.B. This constructor should only be used for persistence.
@@ -41,10 +43,8 @@ public final class Folder extends Resource {
         super(name);
     }
 
-    private List<Resource> entries = new ArrayList<Resource>();
-
     /**
-     * @see ccc.domain.Resource#type()
+     * {@inheritDoc}
      */
     @Override
     public ResourceType type() {

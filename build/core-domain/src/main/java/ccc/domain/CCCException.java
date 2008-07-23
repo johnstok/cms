@@ -13,53 +13,45 @@ package ccc.domain;
 
 
 /**
- * TODO Add Description for this type.
+ * A base class for CCC specific exceptions.
  *
  * @author Civic Computing Ltd
  */
 public class CCCException extends RuntimeException {
 
+    /** serialVersionUID : long. */
+    private static final long serialVersionUID = -6055828034404769897L;
+
+    /**
+     * Constructor.
+     */
+    public CCCException() { super(); }
+
     /**
      * Constructor.
      *
+     * @param message The error message.
      */
-    public CCCException() {
-
-    // TODO Auto-generated constructor stub
+    public CCCException(final String message) {
+        super(message);
     }
 
     /**
      * Constructor.
      *
-     * @param arg0
+     * @param cause The root cause of the error.
      */
-    public CCCException(String arg0) {
-
-        super(arg0);
-        // TODO Auto-generated constructor stub
+    public CCCException(final Throwable cause) {
+        super(cause);
     }
 
     /**
      * Constructor.
      *
-     * @param arg0
+     * @param message The error message.
+     * @param cause The root cause of the error.
      */
-    public CCCException(Throwable arg0) {
-
-        super(arg0);
-        // TODO Auto-generated constructor stub
+    public CCCException(final String message, final Throwable cause) {
+        super(message, cause);
     }
-
-    /**
-     * Constructor.
-     *
-     * @param arg0
-     * @param arg1
-     */
-    public CCCException(String arg0, Throwable arg1) {
-
-        super(arg0, arg1);
-        // TODO Auto-generated constructor stub
-    }
-
 }
