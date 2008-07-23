@@ -11,7 +11,7 @@
  */
 package ccc.domain;
 
-import static ccc.commons.jee.DBC.require;
+import static ccc.commons.jee.DBC.*;
 
 import java.io.Serializable;
 
@@ -22,22 +22,22 @@ import java.io.Serializable;
  */
 public final class Paragraph implements Serializable {
 
+    /** serialVersionUID : long. */
+    private static final long serialVersionUID = 5380775783010664543L;
+
     private String body = "";
 
-    private Paragraph() { // NO-OP
-        // for hibernate
-    }
-    
+    @SuppressWarnings("unused")
+    private Paragraph() { /* NO-OP */ }
+
     /**
      * Constructor.
      *
-     * @param body The HTML body for this paragraph - as a string.
+     * @param bodyString The HTML body for this paragraph - as a string.
      */
-    public Paragraph(final String body) {
-
-        require().notEmpty(body);
-
-        this.body = body;
+    public Paragraph(final String bodyString) {
+        require().notEmpty(bodyString);
+        body = bodyString;
     }
 
     /**
@@ -48,5 +48,4 @@ public final class Paragraph implements Serializable {
     public String body() {
         return body;
     }
-
 }

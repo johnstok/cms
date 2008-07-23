@@ -27,7 +27,7 @@ public abstract class Entity {
     private final int version = -1;
 
     /**
-     * @see java.lang.Object#toString()
+     * {@inheritDoc}
      */
     @Override
     public String toString() {

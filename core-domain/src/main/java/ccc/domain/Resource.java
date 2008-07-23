@@ -35,25 +35,26 @@ public abstract class Resource extends Entity {
      * Constructor.
      * Sets the resource's title to be the same as the name.
      *
-     * @param name The name for this resource.
+     * @param resourceName The name for this resource.
      */
-    protected Resource(final ResourceName name) {
-        require().notNull(name);
-        this.name = name;
-        title = name.toString();
+    protected Resource(final ResourceName resourceName) {
+        require().notNull(resourceName);
+        name = resourceName;
+        title = resourceName.toString();
     }
 
     /**
      * Constructor.
      *
-     * @param name
-     * @param title
+     * @param resourceName The name for this resource.
+     * @param titleString The title of this resource as a string.
      */
-    protected Resource(final ResourceName name, final String title) {
-        require().notNull(name);
-        require().notEmpty(title);
-        this.name = name;
-        this.title = title;
+    protected Resource(final ResourceName resourceName,
+                       final String titleString) {
+        require().notNull(resourceName);
+        require().notEmpty(titleString);
+        name = resourceName;
+        title = titleString;
     }
 
     /**
@@ -97,7 +98,7 @@ public abstract class Resource extends Entity {
      *
      * @return The content's title, as a string.
      */
-    public String title() {
+    public final String title() {
         return title;
     }
 }

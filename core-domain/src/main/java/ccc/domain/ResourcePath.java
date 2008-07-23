@@ -11,7 +11,7 @@
  */
 package ccc.domain;
 
-import static java.util.Collections.unmodifiableList;
+import static java.util.Collections.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +50,7 @@ public final class ResourcePath {
                 +PATH_PATTERN);
         }
 
-        List<ResourceName> parts = new ArrayList<ResourceName>();
+        final List<ResourceName> parts = new ArrayList<ResourceName>();
 
         m = Pattern.compile("/(\\w+)").matcher(pathString);
         while (m.find()) {
@@ -68,7 +68,7 @@ public final class ResourcePath {
      */
     private ResourcePath(final ResourcePath stem,
                          final ResourceName newElement) {
-        List<ResourceName> parts = new ArrayList<ResourceName>();
+        final List<ResourceName> parts = new ArrayList<ResourceName>();
         parts.addAll(stem.elements);
         parts.add(newElement);
 
@@ -84,11 +84,12 @@ public final class ResourcePath {
 
     /**
      * Constructor.
+     * Constructs a path with a single element.
      *
-     * @param name
+     * @param name The name of the path element.
      */
-    public ResourcePath(ResourceName name) {
-        List<ResourceName> parts = new ArrayList<ResourceName>();
+    public ResourcePath(final ResourceName name) {
+        final List<ResourceName> parts = new ArrayList<ResourceName>();
         parts.add(name);
         elements = unmodifiableList(parts);
     }
@@ -106,13 +107,13 @@ public final class ResourcePath {
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * {@inheritDoc}
      */
     @Override
     public String toString() {
-        StringBuilder toString = new StringBuilder();
+        final StringBuilder toString = new StringBuilder();
 
-        for (ResourceName element : elements) {
+        for (final ResourceName element : elements) {
             toString.append('/');
             toString.append(element.toString());
         }
@@ -121,26 +122,30 @@ public final class ResourcePath {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Query method.
+     * Returns the elements of this path as a list of
+     * {@link ResourceName names}.
      *
-     * @return
+     * @return A list of resource names, representing the path.
      */
     public List<ResourceName> elements() {
         return elements; // Already unmodifiable.
     }
-    
+
     /**
      * Returns list of all but topmost elements. In case of
      * root/empty path empty list is returned.
      *
-     * @return
+     * @return A list of resource names.
      */
     public List<ResourceName> elementsToTop() {
-        List<ResourceName> limitedElements = new ArrayList<ResourceName>(elements);
+        final List<ResourceName> limitedElements =
+            new ArrayList<ResourceName>(elements);
+
         if (limitedElements.size() > 1) {
             limitedElements.remove(limitedElements.size()-1);
         }
-        
+
         return limitedElements;
     }
 

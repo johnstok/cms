@@ -42,38 +42,38 @@ public final class ResourceName {
     /**
      * Constructor.
      *
-     * @param representation
+     * @param stringRepresentation
+     *  The representation of this name - as a string.
      */
-    public ResourceName(final String representation) {
+    public ResourceName(final String stringRepresentation) {
 
-        if (null == representation) {
+        if (null == stringRepresentation) {
             throw new RuntimeException("A resource name may not be NULL.");
         }
-        if (representation.length() < 1) {
+        if (stringRepresentation.length() < 1) {
             throw new RuntimeException(
                 "A resource name must be longer than zero characters.");
         }
-        if (!validRegex.matcher(representation).matches()) {
+        if (!validRegex.matcher(stringRepresentation).matches()) {
             throw new RuntimeException(
-                representation
+                stringRepresentation
                 + " does not match the java.util.regex pattern '"
                 + validCharacters + "'.");
         }
 
-        this.representation = representation;
+        representation = stringRepresentation;
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * {@inheritDoc}
      */
     @Override
     public String toString() {
-
         return representation;
     }
 
     /**
-     * @see java.lang.Object#hashCode()
+     * {@inheritDoc}
      */
     @Override
     public int hashCode() {
@@ -88,7 +88,7 @@ public final class ResourceName {
     }
 
     /**
-     * @see java.lang.Object#equals(java.lang.Object)
+     * {@inheritDoc}
      */
     @Override
     public boolean equals(final Object obj) {
