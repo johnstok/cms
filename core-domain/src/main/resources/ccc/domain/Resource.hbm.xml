@@ -2,6 +2,19 @@
 <!DOCTYPE hibernate-mapping PUBLIC
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+ 
+<!-- 
+    ========================================================================
+    * Copyright (c) 2008 Civic Computing Ltd
+    * All rights reserved.
+    *
+    * Revision      $Rev: 125 $
+    * Modified by   $Author$
+    * Modified on   $Date$
+    *
+    * Changes: see SubVersion log
+    ========================================================================
+-->
 
 <hibernate-mapping default-access="field">
 	<class name="ccc.domain.Resource" abstract="true">
