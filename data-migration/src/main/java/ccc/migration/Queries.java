@@ -39,4 +39,24 @@ public class Queries {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Returns result set of all paragraphs with active version for specified
+     * page. Sequences are not joined.
+     * 
+     * @param i
+     * @return
+     */
+    public ResultSet selectParagraphs(int pageId) {
+        try {
+            PreparedStatement ps;
+            ps = connection.prepareStatement(
+                "SELECT * FROM  C3_PARAGRAPHS WHERE C3_PARAGRAPHS.PAGE_ID = ? " +
+                "AND VERSION_ID = 0 ORDER BY SEQ");
+            ps.setInt(1, pageId);
+            return ps.executeQuery();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

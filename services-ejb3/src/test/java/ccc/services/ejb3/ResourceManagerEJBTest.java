@@ -16,7 +16,10 @@ import static ccc.domain.PredefinedResourceNames.*;
 import static ccc.domain.Queries.*;
 import static org.easymock.EasyMock.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -317,5 +320,48 @@ public final class ResourceManagerEJBTest extends TestCase {
         assertEquals(1, contentRoot.entries().size());
         assertEquals("foo", contentRoot.entries().get(0).name().toString());
         assertEquals("page1", contentRoot.entries().get(0).asFolder().entries().get(0).name().toString());
+    }
+    
+    public void testCreateParagraph() {
+        
+        // ARRANGE
+        final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
+        
+        final EntityManager em = createMock(EntityManager.class);
+        expect(em.createNamedQuery(Queries.RESOURCE_BY_URL))
+        .andReturn(new QueryAdaptor() {
+            /** @see ccc.services.ejb3.QueryAdaptor#getSingleResult() */
+            @Override
+            public Object getSingleResult() { return contentRoot; }
+        })
+        .anyTimes();
+        em.persist(isA(Folder.class));  // foo
+        em.persist(isA(Content.class)); // foo/page1
+        em.persist(isA(Paragraph.class)); //foo/page/paragraphs
+        replay(em);
+        
+        final ResourceManager resourceMgr = new ResourceManagerEJB(em);
+        
+        Map<String, Paragraph> paragraphs = new HashMap<String, Paragraph>();
+        paragraphs.put("HEADER", new Paragraph("test text"));
+
+        // ACT
+        resourceMgr.createContent("/foo/page1");
+        Resource resource = resourceMgr.lookup(new ResourcePath("/foo/page1"));
+        resourceMgr.createParagraphsForContent(resource.asContent(), paragraphs);
+        
+        // VERIFY
+        verify(em);
+        assertEquals(1, contentRoot.size());
+        assertEquals(1, contentRoot.entries().size());
+
+        Folder folder = contentRoot.entries().get(0).asFolder();
+        assertEquals("foo", folder.name().toString());
+        
+        Content content = folder.entries().get(0).asContent();
+        assertEquals("page1", content.name().toString());
+        
+        assertEquals(1, content.paragraphs().size());
+        assertEquals("test text", content.paragraphs().get("HEADER").body());
     }
 }
