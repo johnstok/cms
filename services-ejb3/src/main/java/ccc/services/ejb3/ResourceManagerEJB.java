@@ -12,6 +12,7 @@
 
 package ccc.services.ejb3;
 
+import static ccc.commons.jee.DBC.require;
 import static ccc.domain.Queries.*;
 import static javax.ejb.TransactionAttributeType.*;
 
@@ -171,11 +172,12 @@ public class ResourceManagerEJB implements ResourceManager {
      * @see ccc.services.ResourceManager#createParagraphsForContent(ccc.domain.Content, java.util.List)
      */
     @Override
-    public void createParagraphsForContent(Content content, Map<String, Paragraph> paragraphs) {
+    public void createParagraphsForContent(final String pathString, final Map<String, Paragraph> paragraphs) {
+        
+        Content content = lookup(new ResourcePath(pathString)).asContent();
 
         for (String key : paragraphs.keySet()) {
             Paragraph paragraph = paragraphs.get(key);
-            em.persist(paragraph);
             content.addParagraph(key, paragraph);
         }
     }
