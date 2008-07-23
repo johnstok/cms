@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import junit.framework.TestCase;
 
@@ -62,38 +61,6 @@ public class QueriesTest extends TestCase {
 
         // ACT
         ResultSet rs = queries.selectResources(0);
-
-        // ASSERT
-        assertFalse("ResultSet should not contain any data.", rs.next());
-    }
-    
-    /**
-     * Test page selecting.
-     *
-     * @throws SQLException
-     */
-    public void testSelectPages() throws SQLException {
-        // ARRANGE
-        Connection connection = new ConnectionAdapter() {
-            @Override
-            public Statement createStatement() throws SQLException {
-                Statement statement = new StatementAdaptor() {
-
-                    @Override
-                    public ResultSet executeQuery(final String sql)
-                    throws SQLException {
-                        ResultSet resultSet = new ResultSetAdapter();
-                        return resultSet;
-                    }
-
-                };
-                return statement;
-            }
-        };
-        Queries queries = new Queries(connection);
-
-        // ACT
-        ResultSet rs = queries.selectPages();
 
         // ASSERT
         assertFalse("ResultSet should not contain any data.", rs.next());
