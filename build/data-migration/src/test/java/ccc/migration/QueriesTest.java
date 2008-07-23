@@ -65,5 +65,36 @@ public class QueriesTest extends TestCase {
         // ASSERT
         assertFalse("ResultSet should not contain any data.", rs.next());
     }
+    
+    public void testSelectParagraphs() throws SQLException {
+        
+        // ARRANGE
+        Connection connection = new ConnectionAdapter() {
+
+            @Override
+            public PreparedStatement prepareStatement(String sql) throws SQLException {
+                PreparedStatement ps = new PreparedStatementAdapter() {
+
+                    @Override
+                    public ResultSet executeQuery() throws SQLException {
+                        ResultSet resultSet = new ResultSetAdapter();
+                        return resultSet;
+                    }
+
+                    @Override
+                    public void setInt(int parameterIndex, int x) throws SQLException {
+                    }
+                };
+                return ps;
+            }
+        };
+        Queries queries = new Queries(connection);
+
+        // ACT
+        ResultSet rs = queries.selectParagraphs(0);
+
+        // ASSERT
+        assertFalse("ResultSet should not contain any data.", rs.next());
+    }
 
 }

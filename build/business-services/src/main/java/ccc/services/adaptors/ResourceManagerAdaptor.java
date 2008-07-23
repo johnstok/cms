@@ -11,6 +11,11 @@
  */
 package ccc.services.adaptors;
 
+import java.util.List;
+import java.util.Map;
+
+import ccc.domain.Content;
+import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 import ccc.services.ResourceManager;
@@ -52,6 +57,14 @@ public abstract class ResourceManagerAdaptor implements ResourceManager {
      */
     @Override
     public void createContent(String pathString) {
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+    
+    /**
+     * @see ccc.services.ResourceManager#createParagraphsForContent(ccc.domain.Content, java.util.List)
+     */
+    @Override
+    public void createParagraphsForContent(Content content, Map<String, Paragraph> paragraphs) {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 

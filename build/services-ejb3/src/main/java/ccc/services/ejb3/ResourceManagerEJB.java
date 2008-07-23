@@ -16,6 +16,7 @@ import static ccc.domain.Queries.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -29,6 +30,7 @@ import javax.persistence.Query;
 import ccc.domain.CCCException;
 import ccc.domain.Content;
 import ccc.domain.Folder;
+import ccc.domain.Paragraph;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
@@ -162,6 +164,19 @@ public class ResourceManagerEJB implements ResourceManager {
             final Content newContent = new Content(name);
             em.persist(newContent);
             parentFolder.add(newContent);
+        }
+    }
+
+    /**
+     * @see ccc.services.ResourceManager#createParagraphsForContent(ccc.domain.Content, java.util.List)
+     */
+    @Override
+    public void createParagraphsForContent(Content content, Map<String, Paragraph> paragraphs) {
+
+        for (String key : paragraphs.keySet()) {
+            Paragraph paragraph = paragraphs.get(key);
+            em.persist(paragraph);
+            content.addParagraph(key, paragraph);
         }
     }
 }
