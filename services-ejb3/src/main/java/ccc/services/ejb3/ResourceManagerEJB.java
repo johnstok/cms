@@ -100,6 +100,8 @@ public class ResourceManagerEJB implements ResourceManager {
                 em.persist(newFolder);
                 currentFolder.add(newFolder);
                 currentFolder = newFolder;
+            } catch(ClassCastException e) {
+                System.err.println("Retrived resource does not match expected type.");
             }
         }
         return currentFolder;

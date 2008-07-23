@@ -48,31 +48,45 @@ public class MigrationsEJB {
         // Create a root content folder.
         createContentRoot();
         ResourcePath rootFolder = new ResourcePath(new ResourceName("Root"));
+        manager.createFolder("/Root");
         
         // Walk the tree migrating each resource
         migrateChildren(rootFolder, 0, queries);
     }
     
-    private void migrateChildren(ResourcePath rootFolder, Integer parent, Queries queries) {
+    private void migrateChildren(ResourcePath path, Integer parent, Queries queries) {
         try {
             ResultSet rs = queries.selectResources(parent);
             while (rs.next()) {
                 String type = rs.getString("CONTENT_TYPE");
                 if (type.equals("FOLDER")) {
+                    System.out.println(path.toString()+"/"+rs.getString("NAME"));
+                    
                     ResourcePath childFolder =
-                        rootFolder.append(ResourceName.escape(rs.getString("NAME")));
-                    System.out.println(rootFolder.toString()+"/"+rs.getString("NAME"));
+                        path.append(ResourceName.escape(rs.getString("NAME")));
+                    manager.createFolder(childFolder.toString());
                     migrateChildren(childFolder, rs.getInt("CONTENT_ID"), queries);
                 } 
                 else if (type.equals("PAGE")) {
-                    System.out.println(">"+rootFolder.toString()+"/"+rs.getString("NAME"));
+                    System.out.println(">"+path.toString()+"/"+rs.getString("NAME"));
+                    ResourcePath childContent =
+                        path.append(ResourceName.escape(rs.getString("NAME")));
+                    try {
+                        manager.createContent(childContent.toString());
+                    } catch (javax.ejb.EJBException e) {
+                        if (e.getCausedByException().getClass().equals(CCCException.class)) {
+                            System.out.print(">>>>>> "+e.getMessage());
+                        }
+                        else {
+                            throw e;
+                        }
+                    }
                 }
                 else {
                     System.out.println("Unkown resource type");
                 }
             }
-            
-        } 
+        }
         catch (SQLException e) {
             throw new CCCException("Migration failed.", e);
         }
