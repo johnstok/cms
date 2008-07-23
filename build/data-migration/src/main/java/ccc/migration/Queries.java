@@ -32,7 +32,7 @@ public class Queries {
             PreparedStatement ps;
             ps = connection.prepareStatement(
                 "SELECT * FROM  C3_CONTENT WHERE C3_CONTENT.PARENT_ID = ? " +
-                "AND VERSION_ID = 0");
+                "AND VERSION_ID = 0 AND STATUS = 'PUBLISHED'");
             ps.setInt(1, i);
             return ps.executeQuery();
         } catch (SQLException e) {
@@ -45,7 +45,8 @@ public class Queries {
             PreparedStatement ps;
             ps = connection.prepareStatement("SELECT * FROM C3_PAGES, C3_CONTENT WHERE " +
                 " C3_CONTENT.PARENT_ID = ? AND C3_CONTENT.VERSION_ID=0 AND " +
-            " C3_PAGES.VERSION_ID=0 AND C3_PAGES.PAGE_ID=C3_CONTENT.CONTENT_ID");
+            " C3_PAGES.VERSION_ID=0 AND C3_PAGES.PAGE_ID=C3_CONTENT.CONTENT_ID " +
+            " AND STATUS = 'PUBLISHED'");
 
             ps.setInt(1, parentId);
             return ps.executeQuery();
