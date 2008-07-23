@@ -93,42 +93,6 @@ public class MigrationsEJB {
     }
 
     /**
-     * @see ccc.migration.Migrations#migrateFolders(java.sql.ResultSet)
-     */
-    public List<Integer> migrateFolders(final ResultSet resultSet) {
-        List<Integer> idList = new ArrayList<Integer>();
-        try {
-            while (resultSet.next()) {
-                ResourceName name = ResourceName.escape(resultSet.getString("NAME"));
-                ResourcePath path = new ResourcePath(name);
-                manager.createFolder(path.toString());
-                idList.add(resultSet.getInt("CONTENT_ID"));
-            }
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            throw new RuntimeException(e);
-        }
-        return idList;
-    }
-
-    /**
-     * @see ccc.migration.Migrations#migratePages(java.sql.ResultSet)
-     */
-    public void migratePages(ResultSet resultSet) {
-
-        try {
-            while (resultSet.next()) {
-                ResourceName name = ResourceName.escape(resultSet.getString("NAME"));
-                ResourcePath path = new ResourcePath(name);
-                manager.createContent(path.toString());
-            }
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
      * @see ccc.migration.Migrations#createContentRoot()
      */
     public void createContentRoot() {
