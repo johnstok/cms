@@ -12,7 +12,7 @@
 
 package ccc.domain;
 
-import java.util.UUID;
+import ccc.commons.jee.UID;
 
 
 /**
@@ -22,8 +22,8 @@ import java.util.UUID;
  */
 public abstract class Entity {
 
-    /** id : UUID. */
-    private final UUID id = UUID.randomUUID();
+    /** id : UID. */
+    private final UID id = new UID();
     private final int version = -1;
 
     /**
@@ -40,9 +40,9 @@ public abstract class Entity {
     /**
      * Accessor for the id field.
      *
-     * @return This entity's id as a Java {@link UUID}.
+     * @return This entity's id as a {@link UID}.
      */
-    public final UUID id() {
+    public final UID id() {
         return id;
     }
 
