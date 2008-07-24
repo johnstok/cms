@@ -27,19 +27,43 @@ public final class ResourcePathTest extends TestCase {
     /**
      * Test.
      */
+    public void testEmptyPathsAreAllowed() {
+
+        // ACT
+        final ResourcePath empty = new ResourcePath();
+
+        // ASSERT
+        assertEquals(0, empty.elements().size());
+    }
+
+    /**
+     * Test.
+     */
+    public void testRootPathIsAllowed() {
+
+        // ACT
+        final ResourcePath root = new ResourcePath("/");
+
+        // ASSERT
+        assertEquals(0, root.elements().size());
+    }
+
+    /**
+     * Test.
+     */
     public void testAppendReturnsNewInstances() {
 
         // ARRANGE
-        ResourcePath path = new ResourcePath();
+        final ResourcePath path = new ResourcePath();
 
         // ACT
-        ResourcePath firstPath = path.append(new ResourceName("foo"));
-        ResourcePath secondPath = firstPath.append(new ResourceName("bar"));
+        final ResourcePath firstPath = path.append(new ResourceName("foo"));
+        final ResourcePath secondPath = firstPath.append(new ResourceName("bar"));
 
         // ASSERT
-        assertEquals("", path.toString());
-        assertEquals("/foo", firstPath.toString());
-        assertEquals("/foo/bar", secondPath.toString());
+        assertEquals("/", path.toString());
+        assertEquals("/foo/", firstPath.toString());
+        assertEquals("/foo/bar/", secondPath.toString());
     }
 
     /**
@@ -48,10 +72,10 @@ public final class ResourcePathTest extends TestCase {
     public void testParsingOfStringToPath() {
 
         // ARRANGE
-        String pathString = "/foo/bar/baz";
+        final String pathString = "/foo/bar/baz/";
 
         // ACT
-        ResourcePath path = new ResourcePath(pathString);
+        final ResourcePath path = new ResourcePath(pathString);
 
         // ASSERT
         assertEquals(pathString, path.toString());
@@ -64,13 +88,13 @@ public final class ResourcePathTest extends TestCase {
     public void testCreatePathFromResourceName() {
 
         // ARRANGE
-        ResourceName name = new ResourceName("foo");
+        final ResourceName name = new ResourceName("foo");
 
         // ACT
-        ResourcePath path = new ResourcePath(name);
+        final ResourcePath path = new ResourcePath(name);
 
         // ASSERT
-        assertEquals("/foo", path.toString());
+        assertEquals("/foo/", path.toString());
     }
 
     /**
@@ -80,13 +104,13 @@ public final class ResourcePathTest extends TestCase {
     public void testElementsToTop() {
 
         // ARRANGE
-        ResourcePath rootPath = new ResourcePath();
-        ResourcePath path = new ResourcePath("/first/second");
-        
-        // ACT    
-        List<ResourceName> rootElements = rootPath.elementsToTop();
-        List<ResourceName> elements = path.elementsToTop();
-        
+        final ResourcePath rootPath = new ResourcePath();
+        final ResourcePath path = new ResourcePath("/first/second/");
+
+        // ACT
+        final List<ResourceName> rootElements = rootPath.elementsToTop();
+        final List<ResourceName> elements = path.elementsToTop();
+
         // ASSERT
         assertEquals(0, rootElements.size());
         assertEquals(1, elements.size());

@@ -160,11 +160,15 @@ public class ContentServlet extends HttpServlet {
             if (entry.type() == ResourceType.FOLDER) {
                 pw.write("<A href=\"");
                 pw.write(entry.name().toString());
-                pw.write("\">");
+                pw.write("/\">");
                 pw.write(entry.name().toString());
                 pw.write("</A>");
             } else {
+                pw.write("<A href=\"");
                 pw.write(entry.name().toString());
+                pw.write("/\">");
+                pw.write(entry.name().toString());
+                pw.write("</A>");
             }
             pw.write("</LI>");
         }

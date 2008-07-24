@@ -28,7 +28,7 @@ public final class ResourcePath {
 
     private final List<ResourceName> elements;
     /** PATH_PATTERN : Pattern. */
-    public static final Pattern PATH_PATTERN = Pattern.compile("(/(\\w+))+");
+    public static final Pattern PATH_PATTERN = Pattern.compile("/((\\w+)/)*");
 
     /**
      * Constructor.
@@ -111,11 +111,11 @@ public final class ResourcePath {
      */
     @Override
     public String toString() {
-        final StringBuilder toString = new StringBuilder();
+        final StringBuilder toString = new StringBuilder("/");
 
         for (final ResourceName element : elements) {
-            toString.append('/');
             toString.append(element.toString());
+            toString.append('/');
         }
 
         return toString.toString();

@@ -94,8 +94,8 @@ public final class ContentServletTest extends TestCase {
         verify(response);
         assertEquals(
             "<H1>top</H1>"
-            + "<UL><LI><A href=\"child_a\">child_a</A></LI>"
-            + "<LI>child_b</LI></UL>",
+            + "<UL><LI><A href=\"child_a/\">child_a</A></LI>"
+            + "<LI><A href=\"child_b/\">child_b</A></LI></UL>",
             output.toString());
     }
 
@@ -136,7 +136,7 @@ public final class ContentServletTest extends TestCase {
         // EXPECT
         response.setHeader("Pragma", "no-cache");
         response.setHeader("Cache-Control", "no-cache");
-        expect(request.getPathInfo()).andReturn("/foo");
+        expect(request.getPathInfo()).andReturn("/foo/");
         response.setContentType("text/html");
         expect(response.getWriter()).andReturn(new PrintWriter(output));
         replay(request, response);
@@ -186,7 +186,7 @@ public final class ContentServletTest extends TestCase {
         // EXPECT
         response.setHeader("Pragma", "no-cache");
         response.setHeader("Cache-Control", "no-cache");
-        expect(request.getPathInfo()).andReturn("/foo");
+        expect(request.getPathInfo()).andReturn("/foo/");
         response.setContentType("text/html");
         expect(response.getWriter()).andReturn(new PrintWriter(output));
         replay(request, response);

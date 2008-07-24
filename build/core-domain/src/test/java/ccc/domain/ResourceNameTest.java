@@ -54,13 +54,13 @@ public final class ResourceNameTest extends TestCase {
     public void testZeroLengthStringIsRejected() {
 
         // ARRANGE
-        String zeroLength = "";
+        final String zeroLength = "";
 
         // ACT
         try {
             new ResourceName(zeroLength);
             fail("ResourceName failed to reject a zero length string.");
-        } catch (RuntimeException e) {
+        } catch (final RuntimeException e) {
 
             // ASSERT
             assertEquals(
@@ -78,7 +78,7 @@ public final class ResourceNameTest extends TestCase {
         try {
             new ResourceName(null);
             fail("ResourceName failed to reject a NULL string.");
-        } catch (RuntimeException e) {
+        } catch (final RuntimeException e) {
 
             // ASSERT
             assertEquals("A resource name may not be NULL.", e.getMessage());
@@ -91,10 +91,10 @@ public final class ResourceNameTest extends TestCase {
     public void testToStringReturnsStringRepresentation() {
 
         // ARRANGE
-        ResourceName name = new ResourceName(WORD_CHARACTERS);
+        final ResourceName name = new ResourceName(WORD_CHARACTERS);
 
         // ACT
-        String stringRepresentation = name.toString();
+        final String stringRepresentation = name.toString();
 
         // ASSERT
         assertEquals(WORD_CHARACTERS, stringRepresentation);
@@ -106,13 +106,13 @@ public final class ResourceNameTest extends TestCase {
     public void testSpaceIsRejected() {
 
         // ARRANGE
-        String whitespace = " ";
+        final String whitespace = " ";
 
         // ACT
         try {
             new ResourceName(whitespace);
             fail("ResourceName failed to reject whitespace.");
-        } catch (RuntimeException e) {
+        } catch (final RuntimeException e) {
 
             // ASSERT
             assertEquals(
@@ -127,13 +127,13 @@ public final class ResourceNameTest extends TestCase {
     public void testPeriodIsRejected() {
 
         // ARRANGE
-        String period = ".";
+        final String period = ".";
 
         // ACT
         try {
             new ResourceName(period);
             fail("ResourceName failed to reject period.");
-        } catch (RuntimeException e) {
+        } catch (final RuntimeException e) {
 
             // ASSERT
             assertEquals(
@@ -148,13 +148,13 @@ public final class ResourceNameTest extends TestCase {
     public void testTildeIsRejected() {
 
         // ARRANGE
-        String tilde = "~";
+        final String tilde = "~";
 
         // ACT
         try {
             new ResourceName(tilde);
             fail("ResourceName failed to reject tilde.");
-        } catch (RuntimeException e) {
+        } catch (final RuntimeException e) {
 
             // ASSERT
             assertEquals(
@@ -169,17 +169,35 @@ public final class ResourceNameTest extends TestCase {
     public void testDashIsRejected() {
 
         // ARRANGE
-        String dash = "-";
+        final String dash = "-";
 
         // ACT
         try {
             new ResourceName(dash);
             fail("ResourceName failed to reject dash.");
-        } catch (RuntimeException e) {
+        } catch (final RuntimeException e) {
 
             // ASSERT
             assertEquals(
                 "- does not match the java.util.regex pattern '\\w+'.",
+                e.getMessage());
+        }
+    }
+
+    public void testBackslashIsRejected() {
+
+        // ARRANGE
+        final String backslash = "\\";
+
+        // ACT
+        try {
+            new ResourceName(backslash);
+            fail("ResourceName failed to reject backslash.");
+        } catch (final RuntimeException e) {
+
+            // ASSERT
+            assertEquals(
+                "\\ does not match the java.util.regex pattern '\\w+'.",
                 e.getMessage());
         }
     }
@@ -190,17 +208,17 @@ public final class ResourceNameTest extends TestCase {
     public void testRfc3986ReservedCharactersAreRejected() {
 
         // ARRANGE
-        String[] reservedChars =
+        final String[] reservedChars =
             new String[] {"!", "*", "'", "(", ")", ";", ":", "@", "&", "=",
                           "+", "$", ",", "/", "?", "%", "#", "[", "]"
                          };
 
-        for (String reservedChar : reservedChars) {
+        for (final String reservedChar : reservedChars) {
             // ACT
             try {
                 new ResourceName(reservedChar);
                 fail("ResourceName failed to reject reserved.");
-            } catch (RuntimeException e) {
+            } catch (final RuntimeException e) {
 
                 // ASSERT
                 assertEquals(
@@ -217,8 +235,8 @@ public final class ResourceNameTest extends TestCase {
     public void testEquals() {
 
         // ARRANGE
-        ResourceName foo = new ResourceName("fooBAR_123");
-        ResourceName bar = new ResourceName("fooBAR_123");
+        final ResourceName foo = new ResourceName("fooBAR_123");
+        final ResourceName bar = new ResourceName("fooBAR_123");
 
         // ASSERT
         assertEquals(foo, bar);
@@ -231,8 +249,8 @@ public final class ResourceNameTest extends TestCase {
     public void testHashCode() {
 
         // ARRANGE
-        ResourceName foo = new ResourceName("fooBAR_123");
-        ResourceName bar = new ResourceName("fooBAR_123");
+        final ResourceName foo = new ResourceName("fooBAR_123");
+        final ResourceName bar = new ResourceName("fooBAR_123");
 
         // ASSERT
         assertEquals(foo.hashCode(), bar.hashCode());
@@ -244,11 +262,11 @@ public final class ResourceNameTest extends TestCase {
     public void testEscapeMethod() {
 
         // ARRANGE
-        String invalidCharacters = "!*'();:@&=+$,/\\?%#[]foo BAR_123.~-";
-        String expectedName = "____________________foo_BAR_123___";
+        final String invalidCharacters = "!*'();:@&=+$,/\\?%#[]foo BAR_123.~-";
+        final String expectedName = "____________________foo_BAR_123___";
 
         // ACT
-        ResourceName validCharacters = ResourceName.escape(invalidCharacters);
+        final ResourceName validCharacters = ResourceName.escape(invalidCharacters);
 
         // ASSERT
         assertEquals(new ResourceName(expectedName), validCharacters);
