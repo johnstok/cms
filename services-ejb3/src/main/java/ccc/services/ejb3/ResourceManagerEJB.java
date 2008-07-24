@@ -12,16 +12,16 @@
 
 package ccc.services.ejb3;
 
-import static ccc.commons.jee.DBC.require;
 import static ccc.domain.Queries.*;
 import static javax.ejb.TransactionAttributeType.*;
+import static javax.persistence.PersistenceContextType.*;
 
 import java.util.List;
 import java.util.Map;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
-import javax.ejb.Stateless;
+import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -41,23 +41,26 @@ import ccc.services.ResourceManager;
 
 
 /**
- * TODO Add Description for this type.
+ * EJB3 implementation of {@link ResourceManager}.
  *
  * @author Civic Computing Ltd
  */
-@Stateless
+@Stateful
 @TransactionAttribute(REQUIRED)
 @Remote(ResourceManager.class)
 @Local(ResourceManager.class)
 public class ResourceManagerEJB implements ResourceManager {
 
-    @PersistenceContext(unitName = "ccc-persistence")
+    @PersistenceContext(
+        unitName = "ccc-persistence",
+        type     = EXTENDED)
     private EntityManager em;
 
     /**
      * Constructor.
      */
-    private ResourceManagerEJB() {}
+    @SuppressWarnings("unused")
+    private ResourceManagerEJB() { /* NO-OP */ }
 
     /**
      * Constructor.
@@ -69,7 +72,7 @@ public class ResourceManagerEJB implements ResourceManager {
     }
 
     /**
-     * @see ResourceManager#lookup(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public Resource lookup(final ResourcePath path) {
@@ -77,7 +80,7 @@ public class ResourceManagerEJB implements ResourceManager {
     }
 
     /**
-     * @see ccc.services.ResourceManager#createFolder(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public void createFolder(final String pathString) {
@@ -90,7 +93,7 @@ public class ResourceManagerEJB implements ResourceManager {
      * already.
      *
      * @param elements
-     * @return 
+     * @return
      */
     private Folder createFoldersForPath(final List<ResourceName> elements) {
 
@@ -103,15 +106,16 @@ public class ResourceManagerEJB implements ResourceManager {
                 em.persist(newFolder);
                 currentFolder.add(newFolder);
                 currentFolder = newFolder;
-            } catch(ClassCastException e) {
-                System.err.println("Retrived resource does not match expected type.");
+            } catch(final ClassCastException e) {
+                System.err.println(
+                    "Retrived resource does not match expected type.");
             }
         }
         return currentFolder;
     }
 
     /**
-     * @see ccc.services.ResourceManager#createRoot()
+     * {@inheritDoc}
      */
     @Override
     public void createRoot() {
@@ -139,28 +143,29 @@ public class ResourceManagerEJB implements ResourceManager {
     }
 
     /**
-     * @see ccc.services.ResourceManager#createContent(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
-    public void createContent(String pathString) {
+    public void createContent(final String pathString) {
         final ResourcePath path = new ResourcePath(pathString);
-        Folder parentFolder = createFoldersForPath(path.elementsToTop());
-        
-        List<ResourceName> elements = path.elements();
+        final Folder parentFolder = createFoldersForPath(path.elementsToTop());
+
+        final List<ResourceName> elements = path.elements();
         final ResourceName name = elements.get(elements.size()-1);
-        
+
         boolean resourceExists = true;
         boolean resourceIsFolder = false;
-        
+
         try {
-            Resource resource = parentFolder.findEntryByName(name);
+            final Resource resource = parentFolder.findEntryByName(name);
             resourceIsFolder = resource.type()==ResourceType.FOLDER;
         } catch(final CCCException e) {
             resourceExists = false;
         }
-        
+
         if (resourceExists && resourceIsFolder) {
-            throw new CCCException("A folder already exists at the path "+pathString);
+            throw new CCCException(
+                "A folder already exists at the path "+pathString);
         } else if (!resourceExists) {
             final Content newContent = new Content(name);
             em.persist(newContent);
@@ -169,15 +174,18 @@ public class ResourceManagerEJB implements ResourceManager {
     }
 
     /**
-     * @see ccc.services.ResourceManager#createParagraphsForContent(ccc.domain.Content, java.util.List)
+     * {@inheritDoc}
      */
     @Override
-    public void createParagraphsForContent(final String pathString, final Map<String, Paragraph> paragraphs) {
-        
-        Content content = lookup(new ResourcePath(pathString)).asContent();
+    public void createParagraphsForContent(
+                                   final String pathString,
+                                   final Map<String, Paragraph> paragraphs) {
 
-        for (String key : paragraphs.keySet()) {
-            Paragraph paragraph = paragraphs.get(key);
+        final Content content =
+            lookup(new ResourcePath(pathString)).asContent();
+
+        for (final String key : paragraphs.keySet()) {
+            final Paragraph paragraph = paragraphs.get(key);
             content.addParagraph(key, paragraph);
         }
     }
