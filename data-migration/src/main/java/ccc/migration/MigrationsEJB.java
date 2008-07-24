@@ -37,46 +37,45 @@ public class MigrationsEJB {
      * Constructor.
      *
      * @param manager
-     * @param queries 
+     * @param queries
      */
-    public MigrationsEJB(final ResourceManager manager, Queries queries) {
+    public MigrationsEJB(final ResourceManager manager, final Queries queries) {
         this.manager = manager;
         this.queries = queries;
     }
-    
+
     public void migrate() {
 
         // Create a root content folder.
         createContentRoot();
-        ResourcePath rootFolder = new ResourcePath(new ResourceName("Root"));
-        manager.createFolder("/Root");
-        
+        final ResourcePath rootFolder = new ResourcePath();
+
         // Walk the tree migrating each resource
         migrateChildren(rootFolder, 0, queries);
     }
-    
-    private void migrateChildren(ResourcePath path, Integer parent, Queries queries) {
+
+    private void migrateChildren(final ResourcePath path, final Integer parent, final Queries queries) {
         try {
-            ResultSet rs = queries.selectResources(parent);
+            final ResultSet rs = queries.selectResources(parent);
             while (rs.next()) {
-                String type = rs.getString("CONTENT_TYPE");
+                final String type = rs.getString("CONTENT_TYPE");
                 if (type.equals("FOLDER")) {
                     System.out.println(path.toString()+"/"+rs.getString("NAME"));
-                    
-                    ResourcePath childFolder =
+
+                    final ResourcePath childFolder =
                         path.append(ResourceName.escape(rs.getString("NAME")));
                     manager.createFolder(childFolder.toString());
                     migrateChildren(childFolder, rs.getInt("CONTENT_ID"), queries);
-                } 
+                }
                 else if (type.equals("PAGE")) {
                     System.out.println(">"+path.toString()+"/"+rs.getString("NAME"));
-                    ResourcePath childContent =
+                    final ResourcePath childContent =
                         path.append(ResourceName.escape(rs.getString("NAME")));
                     try {
                         manager.createContent(childContent.toString());
                         migrateParagraphs(childContent, rs.getInt("CONTENT_ID"));
-                        
-                    } catch (javax.ejb.EJBException e) {
+
+                    } catch (final javax.ejb.EJBException e) {
                         if (e.getCausedByException().getClass().equals(CCCException.class)) {
                             System.err.print(">>>>>> "+e.getMessage());
                         }
@@ -90,7 +89,7 @@ public class MigrationsEJB {
                 }
             }
         }
-        catch (SQLException e) {
+        catch (final SQLException e) {
             throw new CCCException("Migration failed.", e);
         }
     }
@@ -100,25 +99,25 @@ public class MigrationsEJB {
      *
      * @param childContent
      * @param pageId
-     * @throws SQLException 
+     * @throws SQLException
      */
-    private void migrateParagraphs(final ResourcePath path, int pageId) throws SQLException {
+    private void migrateParagraphs(final ResourcePath path, final int pageId) throws SQLException {
         System.out.println("#### migrating paragraphs for "+pageId );
-        Map<String, Paragraph> map = new HashMap<String, Paragraph>();
+        final Map<String, Paragraph> map = new HashMap<String, Paragraph>();
 
-        ResultSet rs = queries.selectParagraphs(pageId);
+        final ResultSet rs = queries.selectParagraphs(pageId);
         // populate map
         while (rs.next()) {
-            String key = rs.getString("PARA_TYPE");
-            String text = rs.getString("TEXT");
+            final String key = rs.getString("PARA_TYPE");
+            final String text = rs.getString("TEXT");
             // ignore empty/null texts
             if (text == null) {
                 continue;
             }
             if (map.containsKey(key)) {
                 // merge
-                String existingText = map.get(key).body();
-                String newText = existingText + text;
+                final String existingText = map.get(key).body();
+                final String newText = existingText + text;
                 map.put(key, new Paragraph(newText));
                 System.out.println("#### merged texts for Paragraph "+key );
             } else {
