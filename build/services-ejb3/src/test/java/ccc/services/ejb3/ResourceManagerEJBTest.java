@@ -77,7 +77,8 @@ public final class ResourceManagerEJBTest extends TestCase {
         final ResourceManagerEJB resourceMgr = new ResourceManagerEJB(em);
 
         // ACT
-        final Resource resource = resourceMgr.lookup(new ResourcePath("/foo/bar"));
+        final Resource resource =
+            resourceMgr.lookup(new ResourcePath("/foo/bar/"));
 
         // ASSERT
         assertEquals(ResourceType.CONTENT, resource.type());
@@ -109,8 +110,8 @@ public final class ResourceManagerEJBTest extends TestCase {
         final ResourceManager resourceMgr = new ResourceManagerEJB(em);
 
         // ACT
-        resourceMgr.createFolder("/foo/bar");
-        resourceMgr.createFolder("/foo/baz");
+        resourceMgr.createFolder("/foo/bar/");
+        resourceMgr.createFolder("/foo/baz/");
 
         // VERIFY
         verify(em);
@@ -147,9 +148,9 @@ public final class ResourceManagerEJBTest extends TestCase {
         final ResourceManager resourceMgr = new ResourceManagerEJB(em);
 
         // ACT
-        resourceMgr.createFolder("/foo");
-        resourceMgr.createFolder("/foo");
-        resourceMgr.createFolder("/foo");
+        resourceMgr.createFolder("/foo/");
+        resourceMgr.createFolder("/foo/");
+        resourceMgr.createFolder("/foo/");
 
         // VERIFY
         verify(em);
@@ -230,22 +231,22 @@ public final class ResourceManagerEJBTest extends TestCase {
         final ResourceManager resourceMgr = new ResourceManagerEJB(em);
 
         // ACT
-        resourceMgr.createContent("/foo/page1");
-        resourceMgr.createContent("/foo/page2");
+        resourceMgr.createContent("/foo/page1/");
+        resourceMgr.createContent("/foo/page2/");
 
         // VERIFY
         verify(em);
         assertEquals(1, contentRoot.size());
         assertEquals("foo", contentRoot.entries().get(0).name().toString());
         assertEquals(2, contentRoot.entries().get(0).asFolder().size());
-        
-        List<Resource> entries = contentRoot.entries().get(0).asFolder().entries();
+
+        final List<Resource> entries = contentRoot.entries().get(0).asFolder().entries();
         assertEquals(ResourceType.CONTENT, entries.get(0).type());
         assertEquals(ResourceType.CONTENT, entries.get(1).type());
         assertEquals("page1", entries.get(0).name().toString());
         assertEquals("page2", entries.get(1).name().toString());
     }
-    
+
     /**
      * Test.
      */
@@ -269,9 +270,9 @@ public final class ResourceManagerEJBTest extends TestCase {
         final ResourceManager resourceMgr = new ResourceManagerEJB(em);
 
         // ACT
-        resourceMgr.createFolder("/foo");
-        resourceMgr.createContent("/foo/page1");
-        resourceMgr.createContent("/foo/page1");
+        resourceMgr.createFolder("/foo/");
+        resourceMgr.createContent("/foo/page1/");
+        resourceMgr.createContent("/foo/page1/");
 
         // VERIFY
         verify(em);
@@ -280,15 +281,15 @@ public final class ResourceManagerEJBTest extends TestCase {
         assertEquals("foo", contentRoot.entries().get(0).name().toString());
         assertEquals("page1", contentRoot.entries().get(0).asFolder().entries().get(0).name().toString());
     }
-    
+
     /**
      * Test.
      */
     public void testCreateContentFailsWhenFolderExists() {
-        
+
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
-        
+
         final EntityManager em = createMock(EntityManager.class);
         expect(em.createNamedQuery(Queries.RESOURCE_BY_URL))
         .andReturn(new QueryAdaptor() {
@@ -300,19 +301,19 @@ public final class ResourceManagerEJBTest extends TestCase {
         em.persist(isA(Folder.class));
         em.persist(isA(Folder.class));
         replay(em);
-        
+
         final ResourceManager resourceMgr = new ResourceManagerEJB(em);
-        
+
         // ACT
-        resourceMgr.createFolder("/foo");
-        resourceMgr.createFolder("/foo/page1");
+        resourceMgr.createFolder("/foo/");
+        resourceMgr.createFolder("/foo/page1/");
         try {
-            resourceMgr.createContent("/foo/page1");
+            resourceMgr.createContent("/foo/page1/");
             fail("Creation of a content with the same name as an existing folder should fail.");
-        } catch (CCCException e) {
-            assertEquals("A folder already exists at the path /foo/page1", e.getMessage());
+        } catch (final CCCException e) {
+            assertEquals("A folder already exists at the path /foo/page1/", e.getMessage());
         }
-        
+
         // VERIFY
         verify(em);
         assertEquals(1, contentRoot.size());
@@ -320,12 +321,12 @@ public final class ResourceManagerEJBTest extends TestCase {
         assertEquals("foo", contentRoot.entries().get(0).name().toString());
         assertEquals("page1", contentRoot.entries().get(0).asFolder().entries().get(0).name().toString());
     }
-    
+
     public void testCreateParagraph() {
-        
+
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
-        
+
         final EntityManager em = createMock(EntityManager.class);
         expect(em.createNamedQuery(Queries.RESOURCE_BY_URL))
         .andReturn(new QueryAdaptor() {
@@ -337,28 +338,28 @@ public final class ResourceManagerEJBTest extends TestCase {
         em.persist(isA(Folder.class));  // foo
         em.persist(isA(Content.class)); // foo/page1
         replay(em);
-        
+
         final ResourceManager resourceMgr = new ResourceManagerEJB(em);
-        
-        Map<String, Paragraph> paragraphs = new HashMap<String, Paragraph>();
+
+        final Map<String, Paragraph> paragraphs = new HashMap<String, Paragraph>();
         paragraphs.put("HEADER", new Paragraph("test text"));
 
         // ACT
-        resourceMgr.createContent("/foo/page1");
+        resourceMgr.createContent("/foo/page1/");
 
-        resourceMgr.createParagraphsForContent("/foo/page1", paragraphs);
-        
+        resourceMgr.createParagraphsForContent("/foo/page1/", paragraphs);
+
         // VERIFY
         verify(em);
         assertEquals(1, contentRoot.size());
         assertEquals(1, contentRoot.entries().size());
 
-        Folder folder = contentRoot.entries().get(0).asFolder();
+        final Folder folder = contentRoot.entries().get(0).asFolder();
         assertEquals("foo", folder.name().toString());
-        
-        Content content = folder.entries().get(0).asContent();
+
+        final Content content = folder.entries().get(0).asContent();
         assertEquals("page1", content.name().toString());
-        
+
         assertEquals(1, content.paragraphs().size());
         assertEquals("test text", content.paragraphs().get("HEADER").body());
     }
