@@ -47,8 +47,9 @@ public final class ErrorServletTest extends TestCase {
         final HttpServletResponse response =
             createMock(HttpServletResponse.class);
         final RuntimeException re = new RuntimeException();
-        expect(request.getAttribute(SessionKeys.EXCEPTION_KEY)).andReturn(re);
 
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        expect(request.getAttribute(SessionKeys.EXCEPTION_KEY)).andReturn(re);
         expect(response.getWriter()).andReturn(new PrintWriter(output));
         replay(request, response);
 
