@@ -32,7 +32,7 @@ public final class FolderTest extends TestCase {
     public void testFolderTypeIsFolder() {
 
         // ACT
-        Resource resource = new Folder(new ResourceName("foo"));
+        final Resource resource = new Folder(new ResourceName("foo"));
 
         // ASSERT
         assertEquals(ResourceType.FOLDER, resource.type());
@@ -44,7 +44,7 @@ public final class FolderTest extends TestCase {
     public void testResourceCanCastToFolder() {
 
         // ACT
-        Resource resource = new Folder(new ResourceName("foo"));
+        final Resource resource = new Folder(new ResourceName("foo"));
 
         // ASSERT
         assertEquals(Folder.class, resource.asFolder().getClass());
@@ -56,7 +56,7 @@ public final class FolderTest extends TestCase {
     public void testEmptyFolderHasSizeZero() {
 
         // ACT
-        int size = new Folder(new ResourceName("foo")).size();
+        final int size = new Folder(new ResourceName("foo")).size();
 
         // ASSERT
         assertEquals(0, size);
@@ -68,7 +68,7 @@ public final class FolderTest extends TestCase {
     public void testAddContentToFolder() {
 
         // ARRANGE
-        Folder folder = new Folder(new ResourceName("foo"));
+        final Folder folder = new Folder(new ResourceName("foo"));
         final Content content = new Content(new ResourceName("Name"));
 
         // ACT
@@ -85,7 +85,7 @@ public final class FolderTest extends TestCase {
     public void testAddFolderToFolder() {
 
         // ARRANGE
-        Folder folder = new Folder(new ResourceName("foo"));
+        final Folder folder = new Folder(new ResourceName("foo"));
         final Folder entry = new Folder(new ResourceName("bar"));
 
         // ACT
@@ -99,14 +99,14 @@ public final class FolderTest extends TestCase {
     public void testFolderEntriesCollectionIsUnmodifiable() {
 
         // ARRANGE
-        Folder foo = new Folder(new ResourceName("foo"));
+        final Folder foo = new Folder(new ResourceName("foo"));
         // ACT
         try {
             foo.entries().add(new Content(new ResourceName("bar")));
             fail("A folder's entries collection should be unmodifiable.");
 
          // ASSERT
-        } catch (UnsupportedOperationException e) {
+        } catch (final UnsupportedOperationException e) {
             ; /* TODO: Add an assert for the error message? */
         }
     }
@@ -119,7 +119,7 @@ public final class FolderTest extends TestCase {
         foo.add(bar);
 
         // ACT
-        Resource expected = foo.findEntryByName(new ResourceName("bar"));
+        final Resource expected = foo.findEntryByName(new ResourceName("bar"));
 
         // ASSERT
         assertSame(expected, bar);
@@ -128,15 +128,15 @@ public final class FolderTest extends TestCase {
     public void testNavigateToContent() {
 
         // ARRANGE
-        Folder content = new Folder(new ResourceName("content"));
-        Folder ab = new Folder(new ResourceName("ab"));
-        Content cd = new Content(new ResourceName("cd"));
+        final Folder content = new Folder(new ResourceName("content"));
+        final Folder ab = new Folder(new ResourceName("ab"));
+        final Content cd = new Content(new ResourceName("cd"));
         ab.add(cd);
         content.add(ab);
-        ResourcePath path = new ResourcePath("/ab/cd");
+        final ResourcePath path = new ResourcePath("/ab/cd/");
 
         // ACT
-        Content expectedContent = content.navigateTo(path);
+        final Content expectedContent = content.navigateTo(path);
 
         // ASSERT
         assertSame(cd, expectedContent);
@@ -145,17 +145,34 @@ public final class FolderTest extends TestCase {
     public void testNavigateToFolder() {
 
         // ARRANGE
-        Folder content = new Folder(new ResourceName("content"));
-        Folder ab = new Folder(new ResourceName("ab"));
-        Folder cd = new Folder(new ResourceName("cd"));
+        final Folder content = new Folder(new ResourceName("content"));
+        final Folder ab = new Folder(new ResourceName("ab"));
+        final Folder cd = new Folder(new ResourceName("cd"));
         ab.add(cd);
         content.add(ab);
-        ResourcePath path = new ResourcePath("/ab/cd");
+        final ResourcePath path = new ResourcePath("/ab/cd/");
 
         // ACT
-        Folder expectedFolder = content.navigateTo(path);
+        final Folder expectedFolder = content.navigateTo(path);
 
         // ASSERT
         assertSame(cd, expectedFolder);
+    }
+
+    public void testNavigateToEmptyPath() {
+
+        // ARRANGE
+        final Folder content = new Folder(new ResourceName("content"));
+        final Folder ab = new Folder(new ResourceName("ab"));
+        final Folder cd = new Folder(new ResourceName("cd"));
+        ab.add(cd);
+        content.add(ab);
+        final ResourcePath path = new ResourcePath("/");
+
+        // ACT
+        final Folder expectedFolder = content.navigateTo(path);
+
+        // ASSERT
+        assertSame(content, expectedFolder);
     }
 }

@@ -45,19 +45,20 @@ public interface ResourceManager {
      * Create the root folder for content.
      */
     void createRoot();
-    
+
     /**
      * Create a content, based on the specified path.
      *
      * @param pathString
      */
     void createContent(String pathString);
-    
+
     /**
-     * Create paragraphs for given content
+     * Create paragraphs for given content.
      *
-     * @param content
+     * @param pathString
      * @param paragraphs
      */
-    void createParagraphsForContent(String pathString, Map<String, Paragraph> paragraphs);
+    void createParagraphsForContent(String pathString,
+                                    Map<String, Paragraph> paragraphs);
 }
