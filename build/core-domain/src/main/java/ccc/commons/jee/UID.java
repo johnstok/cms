@@ -43,7 +43,7 @@ public class UID implements Serializable {
     public UID() {
         this(
             new GeneralHashFunctionLibrary()
-                .DJBHash(
+                .djbHash(
                     System.currentTimeMillis()
                     + ""
                     + Math.random()));
