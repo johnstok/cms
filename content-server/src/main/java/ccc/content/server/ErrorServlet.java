@@ -38,6 +38,7 @@ public final class ErrorServlet extends HttpServlet {
                          final HttpServletResponse response)
                   throws ServletException, IOException {
 
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         final Exception e = getException(request);
         final PrintWriter pw = response.getWriter();
         e.printStackTrace(pw);
