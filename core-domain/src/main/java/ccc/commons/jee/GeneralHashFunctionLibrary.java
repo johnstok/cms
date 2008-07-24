@@ -1,209 +1,226 @@
+/*-----------------------------------------------------------------------------
+ *
+ * Imported from http://www.partow.net/programming/hashfunctions/ on 2008-07-24.
+ *
+ * Copyright notice:
+ * Free use of the General Purpose Hash Function Algorithms Library is
+ * permitted under the guidelines and in accordance with the most current
+ * version of the Common Public License.
+ * http://www.opensource.org/licenses/cpl.php
+ *
+ * Revision      $Rev$
+ * Modified by   $Author$
+ * Modified on   $Date$
+ *
+ * Changes: see SubVersion log
+ *-----------------------------------------------------------------------------
+ */
 package ccc.commons.jee;
 
-/*
- **************************************************************************
- *                                                                        *
- *          General Purpose Hash Function Algorithms Library              *
- *                                                                        *
- * Author: Arash Partow - 2002                                            *
- * URL: http://www.partow.net                                             *
- * URL: http://www.partow.net/programming/hashfunctions/index.html        *
- *                                                                        *
- * Copyright notice:                                                      *
- * Free use of the General Purpose Hash Function Algorithms Library is    *
- * permitted under the guidelines and in accordance with the most current *
- * version of the Common Public License.                                  *
- * http://www.opensource.org/licenses/cpl.php                             *
- *                                                                        *
- **************************************************************************
-*/
+/**
+ * General Purpose Hash Function Algorithms Library.
+ *
+ * @author Arash Partow
+ */
+class GeneralHashFunctionLibrary {
 
+    /**
+     * A simple hash function from Robert Sedgwick's Algorithms in C book.
+     * I've added some simple optimizations to the algorithm in order to
+     * speed up its hashing process.
+     *
+     * @param str The string to hash.
+     * @return The hash as a long.
+     */
+    public long rsHash(final String str) {
 
-class GeneralHashFunctionLibrary
-{
+        final int b = 378551;
+        int a = 63689;
+        long hash = 0;
 
+        for (int i = 0; i < str.length(); i++) {
+            hash = hash * a + str.charAt(i);
+            a = a * b;
+        }
 
-   public long RSHash(final String str)
-   {
-      final int b     = 378551;
-      int a     = 63689;
-      long hash = 0;
+        return hash;
+    }
 
-      for(int i = 0; i < str.length(); i++)
-      {
-         hash = hash * a + str.charAt(i);
-         a    = a * b;
-      }
+    /**
+     * A bitwise hash function written by Justin Sobel.
+     *
+     * @param str The string to hash.
+     * @return The hash as a long.
+     */
+    public long jsHash(final String str) {
 
-      return hash;
-   }
-   /* End Of RS Hash Function */
+        long hash = 1315423911;
 
+        for (int i = 0; i < str.length(); i++) {
+            hash ^= ((hash << 5) + str.charAt(i) + (hash >> 2));
+        }
 
-   public long JSHash(final String str)
-   {
-      long hash = 1315423911;
+        return hash;
+    }
 
-      for(int i = 0; i < str.length(); i++)
-      {
-         hash ^= ((hash << 5) + str.charAt(i) + (hash >> 2));
-      }
+    /**
+     * This hash algorithm is based on work by Peter J. Weinberger of AT&T Bell
+     * Labs. The book Compilers (Principles, Techniques and Tools) by Aho, Sethi
+     * and Ulman, recommends the use of hash functions that employ the hashing
+     * methodology found in this particular algorithm.
+     *
+     * @param str The string to hash.
+     * @return The hash as a long.
+     */
+    public long pjwHash(final String str) {
 
-      return hash;
-   }
-   /* End Of JS Hash Function */
+        final long bitsInUnsignedInt = (4 * 8);
+        final long threeQuarters = ((bitsInUnsignedInt * 3) / 4);
+        final long oneEighth = (bitsInUnsignedInt / 8);
+        long highBits = (long) (0xFFFFFFFF) << (bitsInUnsignedInt - oneEighth);
+        long hash = 0;
+        long test = 0;
 
+        for (int i = 0; i < str.length(); i++) {
+            hash = (hash << oneEighth) + str.charAt(i);
 
-   public long PJWHash(final String str)
-   {
-      final long BitsInUnsignedInt = (4 * 8);
-      final long ThreeQuarters     = ((BitsInUnsignedInt  * 3) / 4);
-      final long OneEighth         = (BitsInUnsignedInt / 8);
-      long HighBits          = (long)(0xFFFFFFFF) << (BitsInUnsignedInt - OneEighth);
-      long hash              = 0;
-      long test              = 0;
+            if ((test = hash & highBits) != 0) {
+                hash = ((hash ^ (test >> threeQuarters)) & (~highBits));
+            }
+        }
 
-      for(int i = 0; i < str.length(); i++)
-      {
-         hash = (hash << OneEighth) + str.charAt(i);
+        return hash;
+    }
 
-         if((test = hash & HighBits)  != 0)
-         {
-            hash = (( hash ^ (test >> ThreeQuarters)) & (~HighBits));
-         }
-      }
+    /**
+     * Similar to the PJW Hash function, but tweaked for 32-bit processors. Its
+     * the hash function widely used on most UNIX systems.
+     *
+     * @param str The string to hash.
+     * @return The hash as a long.
+     */
+    public long elfHash(final String str) {
 
-      return hash;
-   }
-   /* End Of  P. J. Weinberger Hash Function */
+        long hash = 0;
+        long x = 0;
 
+        for (int i = 0; i < str.length(); i++) {
+            hash = (hash << 4) + str.charAt(i);
 
-   public long ELFHash(final String str)
-   {
-      long hash = 0;
-      long x    = 0;
+            if ((x = hash & 0xF0000000L) != 0) {
+                hash ^= (x >> 24);
+            }
+            hash &= ~x;
+        }
 
-      for(int i = 0; i < str.length(); i++)
-      {
-         hash = (hash << 4) + str.charAt(i);
+        return hash;
+    }
 
-         if((x = hash & 0xF0000000L) != 0)
-         {
-            hash ^= (x >> 24);
-         }
-         hash &= ~x;
-      }
+    /**
+     * This hash function comes from Brian Kernighan and Dennis Ritchie's book
+     * "The C Programming Language". It is a simple hash function using a
+     * strange set of possible seeds which all constitute a pattern of
+     * 31....31...31 etc, it seems to be very similar to the DJB hash function.
+     *
+     * @param str The string to hash.
+     * @return The hash as a long.
+     */
+    public long bkdrHash(final String str) {
 
-      return hash;
-   }
-   /* End Of ELF Hash Function */
+        final long seed = 131; // 31 131 1313 13131 131313 etc..
+        long hash = 0;
 
+        for (int i = 0; i < str.length(); i++) {
+            hash = (hash * seed) + str.charAt(i);
+        }
 
-   public long BKDRHash(final String str)
-   {
-      final long seed = 131; // 31 131 1313 13131 131313 etc..
-      long hash = 0;
+        return hash;
+    }
 
-      for(int i = 0; i < str.length(); i++)
-      {
-         hash = (hash * seed) + str.charAt(i);
-      }
+    /**
+     * This is the algorithm of choice which is used in the open source SDBM
+     * project. The hash function seems to have a good over-all distribution for
+     * many different data sets. It seems to work well in situations where there
+     * is a high variance in the MSBs of the elements in a data set.
+     *
+     * @param str The string to hash.
+     * @return The hash as a long.
+     */
+    public long sdbmHash(final String str) {
 
-      return hash;
-   }
-   /* End Of BKDR Hash Function */
+        long hash = 0;
 
+        for (int i = 0; i < str.length(); i++) {
+            hash = str.charAt(i) + (hash << 6) + (hash << 16) - hash;
+        }
 
-   public long SDBMHash(final String str)
-   {
-      long hash = 0;
+        return hash;
+    }
 
-      for(int i = 0; i < str.length(); i++)
-      {
-         hash = str.charAt(i) + (hash << 6) + (hash << 16) - hash;
-      }
+    /**
+     * An algorithm produced by Professor Daniel J. Bernstein and shown first to
+     * the world on the usenet newsgroup comp.lang.c. It is one of the most
+     * efficient hash functions ever published.
+     *
+     * @param str The string to hash.
+     * @return The hash as a long.
+     */
+    public long djbHash(final String str) {
 
-      return hash;
-   }
-   /* End Of SDBM Hash Function */
+        long hash = 5381;
 
+        for (int i = 0; i < str.length(); i++) {
+            hash = ((hash << 5) + hash) + str.charAt(i);
+        }
 
-   public long DJBHash(final String str)
-   {
-      long hash = 5381;
+        return hash;
+    }
 
-      for(int i = 0; i < str.length(); i++)
-      {
-         hash = ((hash << 5) + hash) + str.charAt(i);
-      }
+    /**
+     * An algorithm proposed by Donald E. Knuth in The Art Of Computer
+     * Programming Volume 3, under the topic of sorting and search chapter 6.4.
+     *
+     * @param str The string to hash.
+     * @return The hash as a long.
+     */
+    public long dekHash(final String str) {
 
-      return hash;
-   }
-   /* End Of DJB Hash Function */
+        long hash = str.length();
 
+        for (int i = 0; i < str.length(); i++) {
+            hash = ((hash << 5) ^ (hash >> 27)) ^ str.charAt(i);
+        }
 
-   public long DEKHash(final String str)
-   {
-      long hash = str.length();
+        return hash;
+    }
 
-      for(int i = 0; i < str.length(); i++)
-      {
-         hash = ((hash << 5) ^ (hash >> 27)) ^ str.charAt(i);
-      }
+    /**
+     * An algorithm produced by me Arash Partow. I took ideas from all of the
+     * above hash functions making a hybrid rotative and additive hash function
+     * algorithm. There isn't any real mathematical analysis explaining why one
+     * should use this hash function instead of the others described above other
+     * than the fact that I tired to resemble the design as close as possible to
+     * a simple LFSR. An empirical result which demonstrated the distributive
+     * abilities of the hash algorithm was obtained using a hash-table with
+     * 100003 buckets, hashing The Project Gutenberg Etext of Webster's
+     * Unabridged Dictionary, the longest encountered chain length was 7, the
+     * average chain length was 2, the number of empty buckets was 4579.
+     *
+     * @param str The string to hash.
+     * @return The hash as a long.
+     */
+    public long apHash(final String str) {
 
-      return hash;
-   }
-   /* End Of DEK Hash Function */
+        long hash = 0xAAAAAAAA;
 
+        for (int i = 0; i < str.length(); i++) {
+            if ((i & 1) == 0) {
+                hash ^= ((hash << 7) ^ str.charAt(i) * (hash >> 3));
+            } else {
+                hash ^= (~((hash << 11) + str.charAt(i) ^ (hash >> 5)));
+            }
+        }
 
-   public long BPHash(final String str)
-   {
-      long hash = 0;
-
-      for(int i = 0; i < str.length(); i++)
-      {
-         hash = hash << 7 ^ str.charAt(i);
-      }
-
-      return hash;
-   }
-   /* End Of BP Hash Function */
-
-
-   public long FNVHash(final String str)
-   {
-      final long fnv_prime = 0x811C9DC5;
-      long hash = 0;
-
-      for(int i = 0; i < str.length(); i++)
-      {
-      hash *= fnv_prime;
-      hash ^= str.charAt(i);
-      }
-
-      return hash;
-   }
-   /* End Of FNV Hash Function */
-
-
-   public long APHash(final String str)
-   {
-      long hash = 0xAAAAAAAA;
-
-      for(int i = 0; i < str.length(); i++)
-      {
-         if ((i & 1) == 0)
-         {
-            hash ^= ((hash << 7) ^ str.charAt(i) * (hash >> 3));
-         }
-         else
-         {
-            hash ^= (~((hash << 11) + str.charAt(i) ^ (hash >> 5)));
-         }
-      }
-
-      return hash;
-   }
-   /* End Of AP Hash Function */
-
+        return hash;
+    }
 }
