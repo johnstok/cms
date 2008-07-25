@@ -16,6 +16,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.dbutils.DbUtils;
+
 import ccc.domain.CCCException;
 import ccc.domain.Paragraph;
 import ccc.domain.ResourceName;
@@ -53,15 +55,13 @@ public class MigrationsEJB {
         // Walk the tree migrating each resource
         migrateChildren(rootFolder, 0, queries);
     }
-
     private void migrateChildren(final ResourcePath path, final Integer parent, final Queries queries) {
+        final ResultSet rs = queries.selectResources(parent);
         try {
-            final ResultSet rs = queries.selectResources(parent);
             while (rs.next()) {
                 final String type = rs.getString("CONTENT_TYPE");
                 if (type.equals("FOLDER")) {
                     System.out.println(path.toString()+"/"+rs.getString("NAME"));
-
                     final ResourcePath childFolder =
                         path.append(ResourceName.escape(rs.getString("NAME")));
                     manager.createFolder(childFolder.toString());
@@ -70,19 +70,9 @@ public class MigrationsEJB {
                 else if (type.equals("PAGE")) {
                     System.out.println(">"+path.toString()+"/"+rs.getString("NAME"));
                     final ResourcePath childContent =
-                        path.append(ResourceName.escape(rs.getString("NAME")));
-                    try {
-                        manager.createContent(childContent.toString());
-                        migrateParagraphs(childContent, rs.getInt("CONTENT_ID"));
-
-                    } catch (final javax.ejb.EJBException e) {
-                        if (e.getCausedByException().getClass().equals(CCCException.class)) {
-                            System.err.print(">>>>>> "+e.getMessage());
-                        }
-                        else {
-                            throw e;
-                        }
-                    }
+                        path.append(ResourceName.escape(rs.getString("NAME")+"_content"));
+                    manager.createContent(childContent.toString());
+                    migrateParagraphs(childContent, rs.getInt("CONTENT_ID"));
                 }
                 else {
                     System.out.println("Unkown resource type");
@@ -91,6 +81,9 @@ public class MigrationsEJB {
         }
         catch (final SQLException e) {
             throw new CCCException("Migration failed.", e);
+        }
+        finally {
+            DbUtils.closeQuietly(rs);
         }
     }
 
@@ -119,13 +112,15 @@ public class MigrationsEJB {
                 final String existingText = map.get(key).body();
                 final String newText = existingText + text;
                 map.put(key, new Paragraph(newText));
-                System.out.println("#### merged texts for Paragraph "+key );
+                System.out.println("#### merged texts for Paragraph "+key+
+                    "Seq "+rs.getString("SEQ"));
             } else {
                 // new item
                 map.put(key, new Paragraph(text));
                 System.out.println("#### Created Paragraph "+key );
             }
         }
+        DbUtils.close(rs);
         manager.createParagraphsForContent(path.toString(), map);
     }
 

@@ -4,6 +4,9 @@ package ccc.migration;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Date;
+
+import org.apache.commons.dbutils.DbUtils;
 
 import ccc.commons.jee.JNDI;
 import ccc.services.ResourceManager;
@@ -22,7 +25,7 @@ public final class App {
      * @param args String array of application arguments.
      */
     public static void main(final String[] args) {
-
+        Long startTime = new Date().getTime();
         // Establish a queries instance to communicate with the legacy DB.
         Connection connection = getConnection();
         Queries queries = new Queries(connection);
@@ -34,10 +37,16 @@ public final class App {
                 queries);
 
         migrations.migrate();
+        DbUtils.closeQuietly(connection);
+        Long elapsedTime = new Date().getTime() - startTime;
+        
+        System.out.println("Migration finished in "+elapsedTime/1000+" seconds");
     }
 
     private static Connection getConnection() {
         Connection connection = null;
+        
+        // TODO 24 Jul 2008 petteri: Read from properties
         try {
             // Load the JDBC driver
             String driverName = "oracle.jdbc.driver.OracleDriver";
