@@ -39,15 +39,80 @@
 			<version>4.2.2.GA</version>
 		</dependency>
 		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>3.3.2.GA</version>
-			<scope>provided</scope>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-ejb_3.0_spec</artifactId>
+			<version>1.0</version>
 		</dependency>
-	  <dependency>
-      <groupId>commons-dbutils</groupId>
-      <artifactId>commons-dbutils</artifactId>
-      <version>1.1</version>
-    </dependency>
-  </dependencies>
+		<dependency>
+			<groupId>commons-dbutils</groupId>
+			<artifactId>commons-dbutils</artifactId>
+			<version>1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>CCC7</groupId>
+			<artifactId>services-ejb3</artifactId>
+			<version>0.0.7-SNAPSHOT</version>
+			<scope>runtime</scope>
+		</dependency>
+	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>acceptance</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>run-data-migration</id>
+								<phase>pre-integration-test</phase>
+								<configuration>
+									<tasks>
+										<echo>Running migration</echo>
+
+										<property
+											name="compile_classpath" refid="maven.compile.classpath" />
+										<property
+											name="runtime_classpath" refid="maven.runtime.classpath" />
+										<property name="test_classpath"
+											refid="maven.test.classpath" />
+										<property
+											name="plugin_classpath" refid="maven.plugin.classpath" />
+
+										<echo
+											message="compile classpath: ${compile_classpath}" />
+										<echo
+											message="runtime classpath: ${runtime_classpath}" />
+										<echo
+											message="test classpath:    ${test_classpath}" />
+										<echo
+											message="plugin classpath:  ${plugin_classpath}" />
+
+										<path
+											id="migration.classpath">
+											<pathelement
+												path="${test_classpath}" />
+										</path>
+										<property
+											name="migration_classpath" refid="migration.classpath" />
+										<echo
+											message="data migration classpath: ${migration_classpath}" />
+										<java
+											classname="ccc.migration.App" fork="false" failonerror="true"
+											classpath="${migration_classpath}">
+										</java>
+
+									</tasks>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
