@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>CCC7</groupId>
 	<artifactId>build</artifactId>
@@ -7,16 +9,18 @@
 	<version>0.0.7-SNAPSHOT</version>
 	<name>build</name>
 	<url>http://maven.apache.org</url>
+
 	<repositories>
-		<!-- repository>
-		<id>codehaus</id>
-		<url>http://repository.codehaus.org/org/codehaus/mojo/</url>
-		</repository -->
 		<repository>
-		<id>jboss</id>
-		<url>http://repository.jboss.org/maven2</url>
+			<id>jboss</id>
+			<url>http://repository.jboss.org/maven2</url>
+		</repository>
+		<repository>
+			<id>openqa.org</id>
+			<url>http://archiva.openqa.org/repository/releases</url>
 		</repository>
 	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -28,17 +32,25 @@
 			<groupId>org.easymock</groupId>
 			<artifactId>easymock</artifactId>
 			<version>2.4</version>
+			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.openqa.selenium.client-drivers</groupId>
+			<artifactId>selenium-java-client-driver</artifactId>
+			<version>1.0-beta-1</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 	<modules>
 		<module>core-domain</module>
 		<module>content-creator</module>
 		<module>business-services</module>
-        <module>content-server</module>
-        <module>services-ejb3</module>
-	    <module>data-migration</module>
-  </modules>
+		<module>content-server</module>
+		<module>services-ejb3</module>
+		<module>data-migration</module>
+	</modules>
 
 	<build>
 		<plugins>
@@ -58,13 +70,13 @@
 					<hostName>localhost</hostName>
 					<port>8080</port>
 					<deployUrlPath>
-			                /jmx-console/HtmlAdaptor?action=invokeOpByName&amp;name=jboss.system:service%3DMainDeployer&amp;methodName=redeploy&amp;argType=java.net.URL&amp;arg0=
+						/jmx-console/HtmlAdaptor?action=invokeOpByName&amp;name=jboss.system:service%3DMainDeployer&amp;methodName=redeploy&amp;argType=java.net.URL&amp;arg0=
 					</deployUrlPath>
 					<undeployUrlPath>
-			                /jmx-console/HtmlAdaptor?action=invokeOpByName&amp;name=jboss.system:service%3DMainDeployer&amp;methodName=undeploy&amp;argType=java.net.URL&amp;arg0=
+						/jmx-console/HtmlAdaptor?action=invokeOpByName&amp;name=jboss.system:service%3DMainDeployer&amp;methodName=undeploy&amp;argType=java.net.URL&amp;arg0=
 					</undeployUrlPath>
 					<fileName>
-							${project.build.directory}/${project.build.finalName}.${project.packaging}
+						${project.build.directory}/${project.build.finalName}.${project.packaging}
 					</fileName>
 				</configuration>
 			</plugin>
@@ -89,27 +101,34 @@
 					<xmlOutput>true</xmlOutput>
 				</configuration>
 			</plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <configuration>
-                    <configLocation>configuration/checkstyle.xml</configLocation>
-                </configuration>
-            </plugin>
-            <plugin>
-            	<groupId>org.codehaus.mojo</groupId>
-            	<artifactId>cobertura-maven-plugin</artifactId>
-            	<configuration>
-            		<formats>
-            			<format>html</format>
-            			<format>xml</format>
-            		</formats>
-            	</configuration>
-            </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<configuration>
+					<configLocation>
+						configuration/checkstyle.xml
+					</configLocation>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+				<configuration>
+					<formats>
+						<format>html</format>
+						<format>xml</format>
+					</formats>
+				</configuration>
+			</plugin>
 		</plugins>
 	</reporting>
+
 	<scm>
-		<connection>scm:svn:http://svn.civiccomputing.com/CCC7</connection>
-		<developerConnection>scm:svn:http://svn.civiccomputing.com/CCC7</developerConnection>
+		<connection>
+			scm:svn:http://svn.civiccomputing.com/CCC7
+		</connection>
+		<developerConnection>
+			scm:svn:http://svn.civiccomputing.com/CCC7
+		</developerConnection>
 	</scm>
 </project>
