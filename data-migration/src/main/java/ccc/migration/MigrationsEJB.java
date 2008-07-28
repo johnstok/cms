@@ -60,17 +60,24 @@ public class MigrationsEJB {
         try {
             while (rs.next()) {
                 final String type = rs.getString("CONTENT_TYPE");
+                final String name = rs.getString("NAME");
+                System.out.println(path.toString()+name);
+                // ignore null/empty name
+                if (name == null || name.equals("")) {
+                    System.out.println("NO NAME");
+                    continue;
+                }
                 if (type.equals("FOLDER")) {
-                    System.out.println(path.toString()+"/"+rs.getString("NAME"));
+                    System.out.println("FOLDER");
                     final ResourcePath childFolder =
-                        path.append(ResourceName.escape(rs.getString("NAME")));
+                        path.append(ResourceName.escape(name));
                     manager.createFolder(childFolder.toString());
                     migrateChildren(childFolder, rs.getInt("CONTENT_ID"), queries);
                 }
                 else if (type.equals("PAGE")) {
-                    System.out.println(">"+path.toString()+"/"+rs.getString("NAME"));
+                    System.out.println("PAGE");
                     final ResourcePath childContent =
-                        path.append(ResourceName.escape(rs.getString("NAME")+"_content"));
+                        path.append(ResourceName.escape(name+"_content"));
                     manager.createContent(childContent.toString());
                     migrateParagraphs(childContent, rs.getInt("CONTENT_ID"));
                 }
@@ -104,7 +111,7 @@ public class MigrationsEJB {
             final String key = rs.getString("PARA_TYPE");
             final String text = rs.getString("TEXT");
             // ignore empty/null texts
-            if (text == null) {
+            if (text == null || text.equals("")) {
                 continue;
             }
             if (map.containsKey(key)) {
