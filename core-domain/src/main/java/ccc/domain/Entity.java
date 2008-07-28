@@ -12,6 +12,8 @@
 
 package ccc.domain;
 
+import java.io.Serializable;
+
 import ccc.commons.jee.UID;
 
 
@@ -20,7 +22,7 @@ import ccc.commons.jee.UID;
  *
  * @author Civic Computing Ltd
  */
-public abstract class Entity {
+public abstract class Entity implements Serializable {
 
     /** id : UID. */
     private final UID id = new UID();

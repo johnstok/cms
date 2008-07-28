@@ -69,7 +69,6 @@ public class MigrationIntegrationTest extends TestCase {
         migrationsEJB.migrate();
         
         // VERIFY
-        
         Resource resource = manager.lookup(new ResourcePath("/Home/"));
         assertNotNull("Resource /home/ must not be null", resource);
         resource = manager.lookup(new ResourcePath("/Home/blue_panel_content/"));
