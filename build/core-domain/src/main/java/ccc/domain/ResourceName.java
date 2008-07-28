@@ -12,6 +12,7 @@
 
 package ccc.domain;
 
+import java.io.Serializable;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -26,7 +27,7 @@ import java.util.regex.Pattern;
  *
  * @author Civic Computing Ltd
  */
-public final class ResourceName {
+public final class ResourceName implements Serializable {
 
     private String  representation = escapeString(UUID.randomUUID().toString());
     private final String  validCharacters = "\\w+";

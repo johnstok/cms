@@ -13,6 +13,7 @@ package ccc.domain;
 
 import static java.util.Collections.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -24,7 +25,7 @@ import java.util.regex.Pattern;
  *
  * @author Civic Computing Ltd
  */
-public final class ResourcePath {
+public final class ResourcePath implements Serializable {
 
     private final List<ResourceName> elements;
     /** PATH_PATTERN : Pattern. */
