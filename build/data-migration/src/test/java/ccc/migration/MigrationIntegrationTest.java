@@ -18,6 +18,7 @@ import java.sql.Statement;
 import ccc.commons.jee.JNDI;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
+import ccc.domain.ResourceType;
 import ccc.services.ResourceManager;
 import junit.framework.TestCase;
 
@@ -71,7 +72,10 @@ public class MigrationIntegrationTest extends TestCase {
         // VERIFY
         Resource resource = manager.lookup(new ResourcePath("/Home/"));
         assertNotNull("Resource /home/ must not be null", resource);
+        assertEquals("Resource type must be folder ", ResourceType.FOLDER, resource.type());
+        
         resource = manager.lookup(new ResourcePath("/Home/blue_panel_content/"));
         assertNotNull("Resource /Home/blue_panel_content/ must not be null", resource);
+        assertEquals("Resource type must be content ", ResourceType.CONTENT, resource.type());
     }
 }
