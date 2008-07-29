@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.dbutils.DbUtils;
+import org.apache.log4j.Logger;
 
 import ccc.domain.CCCException;
 import ccc.domain.Paragraph;
@@ -35,6 +36,8 @@ public class MigrationsEJB {
     private final ResourceManager manager;
     private final Queries queries;
 
+    private static Logger log = Logger.getLogger(ccc.migration.MigrationsEJB.class);
+    
     /**
      * Constructor.
      *
@@ -61,28 +64,28 @@ public class MigrationsEJB {
             while (rs.next()) {
                 final String type = rs.getString("CONTENT_TYPE");
                 final String name = rs.getString("NAME");
-                System.out.println(path.toString()+name);
+                log.debug(path.toString()+name);
                 // ignore null/empty name
                 if (name == null || name.equals("")) {
-                    System.out.println("NO NAME");
+                    log.debug("NO NAME");
                     continue;
                 }
                 if (type.equals("FOLDER")) {
-                    System.out.println("FOLDER");
+                    log.debug("FOLDER");
                     final ResourcePath childFolder =
                         path.append(ResourceName.escape(name));
                     manager.createFolder(childFolder.toString());
                     migrateChildren(childFolder, rs.getInt("CONTENT_ID"), queries);
                 }
                 else if (type.equals("PAGE")) {
-                    System.out.println("PAGE");
+                    log.debug("PAGE");
                     final ResourcePath childContent =
                         path.append(ResourceName.escape(name+"_content"));
                     manager.createContent(childContent.toString());
                     migrateParagraphs(childContent, rs.getInt("CONTENT_ID"));
                 }
                 else {
-                    System.out.println("Unkown resource type");
+                    log.debug("Unkown resource type");
                 }
             }
         }
@@ -102,7 +105,7 @@ public class MigrationsEJB {
      * @throws SQLException
      */
     private void migrateParagraphs(final ResourcePath path, final int pageId) throws SQLException {
-        System.out.println("#### migrating paragraphs for "+pageId );
+        log.debug("#### migrating paragraphs for "+pageId );
         final Map<String, Paragraph> map = new HashMap<String, Paragraph>();
 
         final ResultSet rs = queries.selectParagraphs(pageId);
@@ -119,12 +122,12 @@ public class MigrationsEJB {
                 final String existingText = map.get(key).body();
                 final String newText = existingText + text;
                 map.put(key, new Paragraph(newText));
-                System.out.println("#### merged texts for Paragraph "+key+
+                log.debug("#### merged texts for Paragraph "+key+
                     "Seq "+rs.getString("SEQ"));
             } else {
                 // new item
                 map.put(key, new Paragraph(text));
-                System.out.println("#### Created Paragraph "+key );
+                log.debug("#### Created Paragraph "+key );
             }
         }
         DbUtils.close(rs);
