@@ -17,13 +17,16 @@ import static java.util.Collections.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import ccc.commons.jee.DBC;
+import ccc.commons.jee.JSON;
+
 
 /**
  * A folder that can contain other resources.
  *
  * @author Civic Computing Ltd
  */
-public final class Folder extends Resource {
+public final class Folder extends Resource implements JSONable {
 
     private List<Resource> entries = new ArrayList<Resource>();
 
@@ -66,6 +69,7 @@ public final class Folder extends Resource {
      * @param resource The resource to add.
      */
     public void add(final Resource resource) {
+        DBC.require().notNull(resource);
         entries.add(resource);
     }
 
@@ -119,6 +123,32 @@ public final class Folder extends Resource {
             }
         }
         throw new CCCException("No entry '"+name+"' in folder '"+name()+"'");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toJSON() {
+        return
+            JSON.object()
+                .add("name", name().toString())
+                .add("entries", entryReferences())
+                .toString();
+    }
+
+    /**
+     * Retrieve a list of references, one for each entry in this folder.
+     *
+     * @return
+     */
+    public List<ResourceRef> entryReferences() {
+
+        final List<ResourceRef> resourceRefs = new ArrayList<ResourceRef>();
+        for (final Resource entry : entries) {
+            resourceRefs.add(new ResourceRef(entry.name(), entry.id(), entry.type()));
+        }
+        return resourceRefs;
     }
 
 }

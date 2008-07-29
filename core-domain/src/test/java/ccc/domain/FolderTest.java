@@ -13,6 +13,7 @@
 package ccc.domain;
 
 import java.util.Collections;
+import java.util.List;
 
 import junit.framework.TestCase;
 
@@ -20,11 +21,88 @@ import junit.framework.TestCase;
 /**
  * Tests for the {@link Folder} class.
  *
- * TODO: Disallow null input to the add() method.
- *
  * @author Civic Computing Ltd
  */
 public final class FolderTest extends TestCase {
+
+    /**
+     * Test.
+     */
+    public void testEntryReferencesAccessor() {
+
+        // ARRANGE
+        final Folder content = new Folder(new ResourceName("content"));
+        final Folder ab = new Folder(new ResourceName("ab"));
+        final Content cd = new Content(new ResourceName("cd"));
+        content.add(cd);
+        content.add(ab);
+
+        // ACT
+        final List<ResourceRef> resourceRefs = content.entryReferences();
+
+        // ASSERT
+        assertEquals(2, resourceRefs.size());
+        assertEquals("cd", resourceRefs.get(0).name().toString());
+        assertEquals(cd.id(), resourceRefs.get(0).id());
+        assertEquals("ab", resourceRefs.get(1).name().toString());
+        assertEquals(ab.id(), resourceRefs.get(1).id());
+    }
+
+    /**
+     * Test.
+     */
+    public void testToJsonWithNoChildren() {
+
+        // ARRANGE
+        final Folder folder = new Folder(new ResourceName("foo"));
+
+        // ACT
+        final String json = folder.toJSON();
+
+        // ASSERT
+        assertEquals("{\"name\": \"foo\",\"entries\": []}", json);
+    }
+
+    /**
+     * Test.
+     */
+    public void testToJsonWithChildren() {
+
+        // ARRANGE
+        final Folder parent = new Folder(new ResourceName("foo"));
+        final Folder child = new Folder(new ResourceName("bar"));
+        parent.add(child);
+        // ACT
+        final String json = parent.toJSON();
+
+        // ASSERT
+        assertEquals(
+            "{" +
+            "\"name\": \"foo\"," +
+            "\"entries\": [" +
+                "{\"name\": \"bar\"," +
+                "\"id\": \""+child.id().toString()+"\"," +
+                "\"type\": \"FOLDER\"}]}", json);
+    }
+
+    /**
+     * Test.
+     */
+    public void testNullContentCannotBeAddedToFolders() {
+
+        // ARRANGE
+        final Folder f = new Folder(new ResourceName("foo"));
+
+        // ACT
+        try {
+            f.add(null);
+            fail("The add() method should reject a NULL resource.");
+
+        // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals("Specified value may not be NULL.", e.getMessage());
+        }
+    }
 
     /**
      * Test.

@@ -95,5 +95,13 @@ public class UID implements Serializable {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return String.valueOf(representation);
+    }
+
 
 }

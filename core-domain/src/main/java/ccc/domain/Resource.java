@@ -20,7 +20,7 @@ import static ccc.commons.jee.DBC.*;
  *
  * @author Civic Computing Ltd
  */
-public abstract class Resource extends Entity {
+public abstract class Resource extends Entity implements JSONable {
 
     private String       title = id().toString();
     private ResourceName name  = ResourceName.escape(title);

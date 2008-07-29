@@ -26,6 +26,21 @@ public final class ResourceTest extends TestCase {
     /**
      * Test.
      */
+    public void testToJson() {
+
+        // ARRANGE
+        final Resource resource = new DummyResource(new ResourceName("foo"));
+
+        // ACT
+        final String json = resource.toJSON();
+
+        // ASSERT
+        assertEquals("{}", json);
+    }
+
+    /**
+     * Test.
+     */
     public void testResourceConstructorRejectsNullUrl() {
 
         // ACT
@@ -34,7 +49,7 @@ public final class ResourceTest extends TestCase {
             fail("Resources should reject NULL for the url parameter.");
 
          // ASSERT
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals("Specified value may not be NULL.", e.getMessage());
         }
     }
@@ -50,19 +65,12 @@ public final class ResourceTest extends TestCase {
             fail("Resources should reject the ZLS for the url parameter.");
 
          // ASSERT
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals(
                 "Specified string must have length > 0.", e.getMessage());
         }
     }
 
-
-//    /**
-//     * Test.
-//     */
-//    public void testAddMetadata() {
-//        fail();
-//    }
 
     /**
      * Dummy resource for testing only.
@@ -70,6 +78,9 @@ public final class ResourceTest extends TestCase {
      * @author Civic Computing Ltd
      */
     private final class DummyResource extends Resource {
+
+        /** serialVersionUID : long. */
+        private static final long serialVersionUID = 1264881241929108542L;
 
         /**
          * Constructor.
@@ -91,6 +102,9 @@ public final class ResourceTest extends TestCase {
 
         @Override
         public ResourceType type() { return ResourceType.FOLDER; }
+
+        @Override
+        public String toJSON() { return "{}"; }
     }
 
 }
