@@ -25,8 +25,8 @@ import ccc.commons.jee.UID;
 public abstract class Entity implements Serializable {
 
     /** id : UID. */
-    private final UID id = new UID();
-    private final int version = -1;
+    private UID id = new UID();
+    private int version = -1;
 
     /**
      * {@inheritDoc}

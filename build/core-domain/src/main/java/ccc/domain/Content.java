@@ -27,6 +27,8 @@ import ccc.commons.jee.DBC;
  */
 public final class Content extends Resource {
 
+    /** serialVersionUID : long. */
+    private static final long serialVersionUID = 2797475534849447269L;
     private Map<String, Paragraph> content = new TreeMap<String, Paragraph>();
 
     /**
@@ -94,5 +96,14 @@ public final class Content extends Resource {
     public void deleteParagraph(final String paragraphKey) {
         DBC.require().notEmpty(paragraphKey);
         content.remove(paragraphKey);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toJSON() {
+
+        throw new UnsupportedOperationException("Method not implemented.");
     }
 }

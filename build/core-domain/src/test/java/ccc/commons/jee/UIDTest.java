@@ -9,6 +9,7 @@
  * Changes: see subversion log
  *-----------------------------------------------------------------------------
  */
+
 package ccc.commons.jee;
 
 import java.util.HashSet;
@@ -24,22 +25,34 @@ import junit.framework.TestCase;
  */
 public class UIDTest extends TestCase {
 
+    public void testToString() {
+
+        // ARRANGE
+        final UID a = new UID(1L);
+
+        // ACT
+        final String aString = a.toString();
+
+        // ASSERT
+        assertEquals("1", aString);
+    }
+
     public void testUniqueness() {
 
         // ARRANGE
         final Set<UID> uids = new HashSet<UID>();
 
         // ACT
-        for (int i=0; i<1000000; i++) {
+        for (int i = 0; i < 1000000; i++) {
             final UID uid = new UID();
 
-        // ASSERT
+            // ASSERT
             assertFalse("Duplicate found!", uids.contains(uid));
             uids.add(uid);
         }
     }
 
-    public void testEqualUidsAreEqual(){
+    public void testEqualUidsAreEqual() {
 
         // ARRANGE
         final UID a = new UID(1L);
@@ -49,7 +62,7 @@ public class UIDTest extends TestCase {
         assertEquals(a, b);
     }
 
-    public void testInequalUidsAreNotEqual(){
+    public void testInequalUidsAreNotEqual() {
 
         // ARRANGE
         final UID a = new UID(1L);
