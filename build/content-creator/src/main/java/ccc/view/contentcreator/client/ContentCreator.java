@@ -1,79 +1,97 @@
-package ccc.view.contentcreator.client;
 
+package ccc.view.contentcreator.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.HorizontalSplitPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.Tree;
+import com.google.gwt.user.client.ui.TreeItem;
+import com.google.gwt.user.client.ui.TreeListener;
+
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class ContentCreator implements EntryPoint {
 
-  /**
-   * This is the entry point method.
-   */
-  public void onModuleLoad() {
-    Image img = new Image("http://code.google.com/webtoolkit/logo-185x175.png");
-    Button button = new Button("Clik me");
+    /**
+     * This is the entry point method.
+     */
+    public void onModuleLoad() {
 
-    VerticalPanel vPanel = new VerticalPanel();
-    // We can add style names.
-    vPanel.addStyleName("widePanel");
-    vPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
-    vPanel.add(img);
-    vPanel.add(button);
+        final TreeItem root = new TreeItem("root");
+        populate(root);
 
-    // Add image and button to the RootPanel
-    RootPanel.get().add(vPanel);
+        final Tree t = new Tree();
+        t.addItem(root);
+        t.addTreeListener(new TreeListener() {
 
-    // Create the dialog box
-    final DialogBox dialogBox = new DialogBox();
-    dialogBox.setText("Welcome to GWT!");
-    dialogBox.setAnimationEnabled(true);
-    Button closeButton = new Button("close");
-    VerticalPanel dialogVPanel = new VerticalPanel();
-    dialogVPanel.setWidth("100%");
-    dialogVPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
-    dialogVPanel.add(closeButton);
+            public void onTreeItemSelected(final TreeItem arg0) {
 
-    closeButton.addClickListener(new ClickListener() {
-      public void onClick(Widget sender) {
-        dialogBox.hide();
-      }
-    });
+                GWT.log("Selected: " + arg0, null);
+            }
 
-    // Set the contents of the Widget
-    dialogBox.setWidget(dialogVPanel);
-    
-    button.addClickListener(new ClickListener() {
-      public void onClick(Widget sender) {
-         
-         ResourceServiceAsync resourceService = (ResourceServiceAsync) GWT.create(ResourceService.class);
+            public void onTreeItemStateChanged(final TreeItem arg0) {
 
-         AsyncCallback<String> callback = new AsyncCallback<String>() {
-           public void onSuccess(String result) {
-             Window.alert(result);
-           }
+                GWT.log("Children displayed: " + arg0.getState(), null);
+                populate(arg0);
+            }
 
-           public void onFailure(Throwable caught) {
-              Window.alert(caught.getMessage());
-           }
-         };
+        });
 
-         resourceService.save(callback);
+        final Label label = new Label("Hello");
 
-//        dialogBox.center();
-//        dialogBox.show();
-      }
-    });
-  }
+        final HorizontalSplitPanel hsp = new HorizontalSplitPanel();
+        hsp.setSplitPosition("50%");
+        hsp.setLeftWidget(t);
+        hsp.setRightWidget(label);
+
+        RootPanel.get().setSize("800px", "800px");
+        RootPanel.get().add(hsp);
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param root
+     */
+    private void populate(final TreeItem root) {
+
+        final ResourceServiceAsync resourceService = (ResourceServiceAsync) GWT.create(ResourceService.class);
+
+        final AsyncCallback<String> callback = new AsyncCallback<String>() {
+
+            public void onSuccess(String result) {
+
+                root.removeItems();
+                JSONValue jsonResult = JSONParser.parse(result);
+                JSONArray entries = jsonResult.isObject().get("entries").isArray();
+                for (int i=0; i<entries.size(); i++) {
+                    JSONObject entry = entries.get(i).isObject();
+                    String name = entry.get("name").isString().stringValue();
+                    final TreeItem item = new TreeItem(name);
+                    if(entry.get("type").isString().stringValue().equals("FOLDER")) {
+                        item.addItem("Loading contents...");
+                    }
+                    root.addItem(item);
+                }
+            }
+
+            public void onFailure(Throwable caught) {
+
+                GWT.log("Error!", caught);
+            }
+        };
+
+        final String absolutePath = GWTSupport.calculatePathForTreeItem(root);
+        resourceService.getResource(absolutePath, callback);
+
+    }
 }

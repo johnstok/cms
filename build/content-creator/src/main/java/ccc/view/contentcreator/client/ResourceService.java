@@ -21,5 +21,6 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
  */
 @RemoteServiceRelativePath("resource")
 public  interface ResourceService extends RemoteService {
-  public String save();
+  public String getContentRoot();
+  public String getResource(String absolutePath);
 }
