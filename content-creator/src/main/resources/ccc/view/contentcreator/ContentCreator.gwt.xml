@@ -2,6 +2,7 @@
 
       <!-- Inherit the core Web Toolkit stuff.                        -->
       <inherits name='com.google.gwt.user.User'/>
+      <inherits name="com.google.gwt.json.JSON" />
 	
       <!-- Inherit the default GWT style sheet.  You can change       -->
       <!-- the theme of your GWT application by uncommenting          -->
@@ -11,7 +12,6 @@
       <!-- <inherits name="com.google.gwt.user.theme.dark.Dark"/>     -->
 
       <!-- Other module inherits                                      -->
-
 
       <!-- Specify the app entry point class.                         -->
       <entry-point class='ccc.view.contentcreator.client.ContentCreator'/>

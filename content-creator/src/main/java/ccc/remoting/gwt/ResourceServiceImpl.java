@@ -12,6 +12,10 @@
 
 package ccc.remoting.gwt;
 
+import ccc.commons.jee.JNDI;
+import ccc.domain.Folder;
+import ccc.domain.ResourcePath;
+import ccc.services.ResourceManager;
 import ccc.view.contentcreator.client.ResourceService;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -23,15 +27,34 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
  * @author Civic Computing Ltd
  */
 public class ResourceServiceImpl extends RemoteServiceServlet
-                              implements ResourceService {
+                                    implements ResourceService {
 
-   /** serialVersionUID : long. */
-   private static final long serialVersionUID = 4907235349044174242L;
+    /** serialVersionUID : long. */
+    private static final long serialVersionUID = 4907235349044174242L;
 
-   /**
-    * @see ccc.view.contentcreator.client.ResourceService#save()
-    */
-   public final String save() {
-      return "Saved";
-   }
+    /**
+     * {@inheritDoc}
+     */
+    public String getContentRoot() {
+        return getResource("/");
+    }
+
+    /**
+     * Accessor for the resource manager.
+     *
+     * @return A ResourceManager.
+     */
+    ResourceManager resourceManager() {
+        return JNDI.get("ResourceManagerEJB/local");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getResource(final String absolutePath) {
+        final Folder root =
+            resourceManager().lookup(new ResourcePath(absolutePath)).asFolder();
+        return root.toJSON();
+    }
 }
