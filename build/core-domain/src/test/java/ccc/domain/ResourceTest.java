@@ -61,7 +61,7 @@ public final class ResourceTest extends TestCase {
 
         // ACT
         try {
-            new DummyResource(new ResourceName("foo"),"");
+            new DummyResource(new ResourceName("foo"), "");
             fail("Resources should reject the ZLS for the url parameter.");
 
          // ASSERT

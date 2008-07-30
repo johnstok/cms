@@ -20,26 +20,30 @@ import ccc.domain.JSONable;
 
 
 /**
- * TODO Add Description for this type.
+ * A helper class that provides JSON serialisation.
  *
  * @author Civic Computing Ltd
  */
-public class JSON {
+public final class JSON {
+
+    private JSON() { /* NO-OP */ }
 
     /**
-     * TODO Add Description for this type.
+     * This class models a JSON object.
      *
      * @author Civic Computing Ltd
      */
-    public static class Object {
+    public static final class Object {
 
-        private Map<String, String> elements = new LinkedHashMap<String, String>();
+        private Map<String, String> elements =
+            new LinkedHashMap<String, String>();
 
         /**
-         * TODO: Add a description of this method.
+         * Add a string field to this object.
          *
-         * @param key
-         * @param value
+         * @param key The key for the string.
+         * @param value The value of the string.
+         * @return 'this' to allow method chaining.
          */
         public Object add(final String key, final String value) {
             elements.put(key, "\""+value+"\"");
@@ -53,7 +57,8 @@ public class JSON {
         public String toString() {
 
             final StringBuilder jsonString = new StringBuilder("{");
-            for (final Map.Entry<String, String> element : elements.entrySet()) {
+            for (final Map.Entry<String, String> element
+                                                    : elements.entrySet()) {
                 jsonString.append("\"");
                 jsonString.append(element.getKey());
                 jsonString.append("\": ");
@@ -69,10 +74,11 @@ public class JSON {
         }
 
         /**
-         * TODO: Add a description of this method.
+         * Add a list of {@link JSONable} objects as an array.
          *
-         * @param key
-         * @param list
+         * @param key The key for the array.
+         * @param list The elements of the array, as a list.
+         * @return 'this' to allow method chaining.
          */
         public Object add(final String key,
                           final List<? extends JSONable> list) {
@@ -94,12 +100,11 @@ public class JSON {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Create a new JSON object.
      *
-     * @return
+     * @return The JSON object.
      */
     public static Object object() {
-
         return new Object();
     }
 

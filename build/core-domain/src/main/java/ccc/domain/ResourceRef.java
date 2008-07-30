@@ -12,28 +12,32 @@
 
 package ccc.domain;
 
+import java.util.UUID;
+
 import ccc.commons.jee.JSON;
-import ccc.commons.jee.UID;
 
 
 /**
- * TODO Add Description for this type.
+ * This class models a reference to a resource.
  *
  * @author Civic Computing Ltd
  */
 public class ResourceRef implements JSONable {
 
     private ResourceName name;
-    private UID          id;
+    private UUID         id;
     private ResourceType type;
 
     /**
      * Constructor.
      *
-     * @param name
-     * @param id
+     * @param name The name of the resource.
+     * @param id The unique ID for the resource.
+     * @param type The type of the resource.
      */
-    public ResourceRef(final ResourceName name, final UID id, final ResourceType type) {
+    public ResourceRef(final ResourceName name,
+                       final UUID id,
+                       final ResourceType type) {
 
         this.name = name;
         this.id = id;
@@ -41,20 +45,20 @@ public class ResourceRef implements JSONable {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor for the name field.
      *
-     * @return
+     * @return The name as a {@link ResourceName}.
      */
-    public ResourceName name() {
+    public final ResourceName name() {
         return name;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor for the ID field.
      *
-     * @return
+     * @return The ID as a {@link UUID}.
      */
-    public UID id() {
+    public final UUID id() {
         return id;
     }
 
@@ -62,8 +66,7 @@ public class ResourceRef implements JSONable {
      * {@inheritDoc}
      */
     @Override
-    public String toJSON() {
-
+    public final String toJSON() {
         return
             JSON.object()
                 .add("name", name.toString())

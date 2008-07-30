@@ -28,6 +28,8 @@ import ccc.commons.jee.JSON;
  */
 public final class Folder extends Resource implements JSONable {
 
+    /** serialVersionUID : long. */
+    private static final long serialVersionUID = 2800863951865644693L;
     private List<Resource> entries = new ArrayList<Resource>();
 
     /**
@@ -83,8 +85,8 @@ public final class Folder extends Resource implements JSONable {
     }
 
     /**
-     * TODO: Add a description of this method.
-     * TODO: Work out why we need a cast here...
+     * Navigate from this folder to another resource described by the
+     * specified path.
      *
      * @param <T> The type of the resource at the specified path.
      * @param path The path to a resource, relative to this folder.
@@ -106,7 +108,7 @@ public final class Folder extends Resource implements JSONable {
             currentPosition = currentPosition.asFolder().findEntryByName(name);
 
         }
-        return (T)currentPosition;
+        return (T)currentPosition; // TODO: Work out why we need a cast here...
     }
 
     /**
@@ -140,13 +142,14 @@ public final class Folder extends Resource implements JSONable {
     /**
      * Retrieve a list of references, one for each entry in this folder.
      *
-     * @return
+     * @return A list of resource references.
      */
     public List<ResourceRef> entryReferences() {
 
         final List<ResourceRef> resourceRefs = new ArrayList<ResourceRef>();
         for (final Resource entry : entries) {
-            resourceRefs.add(new ResourceRef(entry.name(), entry.id(), entry.type()));
+            resourceRefs.add(
+                new ResourceRef(entry.name(), entry.id(), entry.type()));
         }
         return resourceRefs;
     }
