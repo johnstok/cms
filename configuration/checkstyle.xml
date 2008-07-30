@@ -189,7 +189,7 @@ under the License.
             <property name="format" value="\s+$"/>
             <property name="message" value="Line has trailing spaces."/>
         </module>
-        <module name="TodoComment"/>
+        <!-- module name="TodoComment"/ -->
         <module name="UpperEll"/>
 
     </module>
