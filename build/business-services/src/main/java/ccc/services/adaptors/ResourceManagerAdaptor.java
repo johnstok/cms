@@ -11,10 +11,8 @@
  */
 package ccc.services.adaptors;
 
-import java.util.List;
 import java.util.Map;
 
-import ccc.domain.Content;
 import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
@@ -29,7 +27,7 @@ import ccc.services.ResourceManager;
 public abstract class ResourceManagerAdaptor implements ResourceManager {
 
     /**
-     * @see ccc.services.ResourceManager#lookup(ccc.domain.ResourcePath)
+     * {@inheritDoc}
      */
     @Override
     public Resource lookup(final ResourcePath absoulteURI) {
@@ -37,7 +35,7 @@ public abstract class ResourceManagerAdaptor implements ResourceManager {
     }
 
     /**
-     * @see ccc.services.ResourceManager#createFolder(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public void createFolder(final String pathString) {
@@ -45,7 +43,7 @@ public abstract class ResourceManagerAdaptor implements ResourceManager {
     }
 
     /**
-     * @see ccc.services.ResourceManager#createRoot()
+     * {@inheritDoc}
      */
     @Override
     public void createRoot() {
@@ -53,18 +51,20 @@ public abstract class ResourceManagerAdaptor implements ResourceManager {
     }
 
     /**
-     * @see ccc.services.ResourceManager#createContent(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
-    public void createContent(String pathString) {
+    public void createContent(final String pathString) {
         throw new UnsupportedOperationException("Method not implemented.");
     }
-    
+
     /**
-     * @see ccc.services.ResourceManager#createParagraphsForContent(ccc.domain.Content, java.util.List)
+     * {@inheritDoc}
      */
     @Override
-    public void createParagraphsForContent(String patString, Map<String, Paragraph> paragraphs) {
+    public void createParagraphsForContent(
+                                   final String patString,
+                                   final Map<String, Paragraph> paragraphs) {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
