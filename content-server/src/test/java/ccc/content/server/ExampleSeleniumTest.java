@@ -22,23 +22,34 @@ import com.thoughtworks.selenium.Selenium;
  *
  * @author Civic Computing Ltd
  */
-public class ExampleSeleniumTest extends TestCase {
+public final class ExampleSeleniumTest extends TestCase {
 
     private Selenium selenium;
+    private final int port = 5555;
+    private final String browser = "*iexplore";
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setUp() throws Exception {
         final String url = "http://localhost:8080/";
-        selenium = new DefaultSelenium("localhost", 5555, "*iexplore", url);
+        selenium = new DefaultSelenium("localhost", port, browser, url);
         selenium.start();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void tearDown() throws Exception {
         selenium.stop();
     }
 
-    public void testGoogle() throws Throwable {
+    /**
+     * Test.
+     */
+    public void testGoogle() {
         selenium.open("/content-server/content/");
         selenium.click("link=Home");
         selenium.waitForPageToLoad("30000");
