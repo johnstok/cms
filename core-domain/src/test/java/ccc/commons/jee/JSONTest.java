@@ -28,6 +28,22 @@ public final class JSONTest extends TestCase {
 
     /**
      * Test.
+     * TODO Add MUCH more depth to this test.
+     */
+    public void testStringEscaping() {
+
+        // ACT
+        final String json =
+            JSON.object()
+                .add("bad-chars", "\\")
+                .toString();
+
+        // ASSERT
+        assertEquals("{\"bad-chars\": \"\\\\\"}", json);
+    }
+
+    /**
+     * Test.
      */
     public void testEmptyObject() {
 

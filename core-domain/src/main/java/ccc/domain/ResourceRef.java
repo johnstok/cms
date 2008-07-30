@@ -89,19 +89,19 @@ public class ResourceRef implements JSONable {
     /**
      * Add an item of metadata.
      *
-     * @param key
-     * @param value
+     * @param key The name of this metadata item.
+     * @param value The value for this metadata item.
      */
-    public void addMetadata(final String key, final String value) {
+    public final void addMetadata(final String key, final String value) {
         metadata.put(key, value);
     }
 
     /**
      * Accessor for metadata.
      *
-     * @return
+     * @return This reference's metadata as a hashmap.
      */
-    public Map<String, String> metadata() {
+    public final Map<String, String> metadata() {
         return Collections.unmodifiableMap(metadata);
     }
 

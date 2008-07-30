@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import ccc.commons.jee.DBC;
+import ccc.commons.jee.JSON;
 
 
 /**
@@ -103,7 +104,10 @@ public final class Content extends Resource {
      */
     @Override
     public String toJSON() {
-
-        throw new UnsupportedOperationException("Method not implemented.");
+        return
+            JSON.object()
+                .add("title", title())
+                .add("paragraphs", content)
+                .toString();
     }
 }

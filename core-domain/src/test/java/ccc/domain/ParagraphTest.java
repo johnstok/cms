@@ -24,6 +24,21 @@ public final class ParagraphTest extends TestCase {
     /**
      * Test.
      */
+    public void testToJson() {
+
+        // ARRANGE
+        final Paragraph foo = new Paragraph("foo");
+
+        // ACT
+        final String jsonString = foo.toJSON();
+
+        // ASSERT
+        assertEquals("{\"body\": \"foo\"}", jsonString);
+    }
+
+    /**
+     * Test.
+     */
     public void testConstructorRejectsBadData() {
 
         // ACT
@@ -32,14 +47,14 @@ public final class ParagraphTest extends TestCase {
         try {
             new Paragraph(null);
             fail("NULL should be rejected.");
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals("Specified string may not be NULL.", e.getMessage());
         }
 
         try {
             new Paragraph("");
             fail("Zero length string should be rejected.");
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals(
                 "Specified string must have length > 0.",
                 e.getMessage());
@@ -52,7 +67,7 @@ public final class ParagraphTest extends TestCase {
     public void testBodyAccessor() {
 
         // ARRANGE
-        Paragraph foo = new Paragraph("foo");
+        final Paragraph foo = new Paragraph("foo");
 
         // ASSERT
         assertEquals("foo", foo.body());

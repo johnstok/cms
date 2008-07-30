@@ -46,8 +46,63 @@ public final class JSON {
          * @return 'this' to allow method chaining.
          */
         public Object add(final String key, final String value) {
-            elements.put(key, "\""+value+"\"");
+            final String escapedString = escape(value);
+            elements.put(key, "\""+escapedString+"\"");
             return this;
+        }
+
+        /**
+         * " => \" , \ => \\
+         * @param s
+         * @return
+         */
+        public static String escape(final String s){
+            if(s==null) {
+                return null;
+            }
+            final StringBuffer sb=new StringBuffer();
+            for(int i=0; i<s.length(); i++){
+                final char ch=s.charAt(i);
+                switch(ch){
+                case '"':
+                    sb.append("\\\"");
+                    break;
+                case '\\':
+                    sb.append("\\\\");
+                    break;
+                case '\b':
+                    sb.append("\\b");
+                    break;
+                case '\f':
+                    sb.append("\\f");
+                    break;
+                case '\n':
+                    sb.append("\\n");
+                    break;
+                case '\r':
+                    sb.append("\\r");
+                    break;
+                case '\t':
+                    sb.append("\\t");
+                    break;
+                case '/':
+                    sb.append("\\/");
+                    break;
+                default:
+                    if(ch>='\u0000' && ch<='\u001F'){
+                        final String ss=Integer.toHexString(ch);
+                        sb.append("\\u");
+                        for(int k=0;k<4-ss.length();k++){
+                            sb.append('0');
+                        }
+                        sb.append(ss.toUpperCase());
+                    }
+                    else{
+                        sb.append(ch);
+                    }
+                }
+            }//for
+            return sb.toString();
         }
 
         /**
@@ -94,6 +149,39 @@ public final class JSON {
             }
             value.append("]");
             elements.put(key, value.toString());
+            return this;
+        }
+
+        /**
+         * Add a map from String to JSONable as an object.
+         *
+         * @param key
+         * @param values
+         * @return
+         */
+        public Object add(final String key,
+                          final Map<String, ? extends JSONable> values) {
+
+            final Object map = object();
+            for (final Map.Entry<String, ? extends JSONable> value
+                                                        : values.entrySet()) {
+
+                map.add(value.getKey(), value.getValue());
+            }
+            final String jsonMap = map.toString();
+            elements.put(key, jsonMap);
+
+            return this;
+        }
+
+        /**
+         * TODO: Add a description of this method.
+         *
+         * @param key
+         * @param value
+         */
+        private Object add(final String key, final JSONable value) {
+            elements.put(key, value.toJSON());
             return this;
         }
 

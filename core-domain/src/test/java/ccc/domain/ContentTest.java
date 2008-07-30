@@ -28,13 +28,30 @@ public final class ContentTest extends TestCase {
     /**
      * Test.
      */
+    public void testToJson() {
+
+        // ARRANGE
+        final Content content = new Content(new ResourceName("foo"), "Foo?");
+        content.addParagraph("bar", new Paragraph("bar"));
+        content.addParagraph("baz", new Paragraph("baz"));
+
+        // ACT
+        final String jsonString = content.toJSON();
+
+        // ASSERT
+        assertEquals("{\"title\": \"Foo?\",\"paragraphs\": {\"bar\": {\"body\": \"bar\"},\"baz\": {\"body\": \"baz\"}}}", jsonString);
+    }
+
+    /**
+     * Test.
+     */
     public void testConstructorCanGenerateName() {
 
         // ARRANGE
-        ResourceName name = new ResourceName("foo");
+        final ResourceName name = new ResourceName("foo");
 
         // ACT
-        Content content = new Content(name);
+        final Content content = new Content(name);
 
         // ASSERT
         assertEquals(name.toString(), content.title());
@@ -47,7 +64,7 @@ public final class ContentTest extends TestCase {
     public void testAddNewParagraph() {
 
         // ARRANGE
-        Content content = new Content(new ResourceName("foo"), "Title");
+        final Content content = new Content(new ResourceName("foo"), "Title");
 
         // ACT
         content.addParagraph("header", new Paragraph("<H1>Header</H1>"));
@@ -63,7 +80,7 @@ public final class ContentTest extends TestCase {
     public void testDeleteParagraph() {
 
         // ARRANGE
-        Content content = new Content(new ResourceName("foo"), "Title");
+        final Content content = new Content(new ResourceName("foo"), "Title");
         content.addParagraph("header", new Paragraph("<H1>Header</H1>"));
         content.addParagraph("footer", new Paragraph("<H1>Footer</H1>"));
 
@@ -87,7 +104,7 @@ public final class ContentTest extends TestCase {
             fail("Resources should reject NULL for the name parameter.");
 
          // ASSERT
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals("Specified value may not be NULL.", e.getMessage());
         }
     }
