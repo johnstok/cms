@@ -75,7 +75,7 @@ public class ResourceManagerEJB implements ResourceManager {
      * {@inheritDoc}
      */
     @Override
-    public Resource lookup(final ResourcePath path) {
+    public final Resource lookup(final ResourcePath path) {
         return contentRoot().navigateTo(path);
     }
 
@@ -83,7 +83,7 @@ public class ResourceManagerEJB implements ResourceManager {
      * {@inheritDoc}
      */
     @Override
-    public void createFolder(final String pathString) {
+    public final void createFolder(final String pathString) {
         final ResourcePath path = new ResourcePath(pathString);
         createFoldersForPath(path.elements());
     }
@@ -118,7 +118,7 @@ public class ResourceManagerEJB implements ResourceManager {
      * {@inheritDoc}
      */
     @Override
-    public void createRoot() {
+    public final void createRoot() {
         try {
             contentRoot();
         } catch (final NoResultException e) {
@@ -146,7 +146,7 @@ public class ResourceManagerEJB implements ResourceManager {
      * {@inheritDoc}
      */
     @Override
-    public void createContent(final String pathString) {
+    public final void createContent(final String pathString) {
         final ResourcePath path = new ResourcePath(pathString);
         final Folder parentFolder = createFoldersForPath(path.elementsToTop());
 
@@ -177,7 +177,7 @@ public class ResourceManagerEJB implements ResourceManager {
      * {@inheritDoc}
      */
     @Override
-    public void createParagraphsForContent(
+    public final void createParagraphsForContent(
                                    final String pathString,
                                    final Map<String, Paragraph> paragraphs) {
 
