@@ -29,6 +29,8 @@ import java.util.regex.Pattern;
  */
 public final class ResourceName implements Serializable {
 
+    /** serialVersionUID : long. */
+    private static final long serialVersionUID = 8023247880499438161L;
     private String  representation = escapeString(UUID.randomUUID().toString());
     private final String  validCharacters = "\\w+";
     private final Pattern validRegex      = Pattern.compile(validCharacters);

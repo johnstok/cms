@@ -77,12 +77,12 @@ public final class FolderTest extends TestCase {
 
         // ASSERT
         assertEquals(
-            "{" +
-            "\"name\": \"foo\"," +
-            "\"entries\": [" +
-                "{\"name\": \"bar\"," +
-                "\"id\": \""+child.id().toString()+"\"," +
-                "\"type\": \"FOLDER\"}]}", json);
+            "{"
+            + "\"name\": \"foo\","
+            + "\"entries\": ["
+                + "{\"name\": \"bar\","
+                + "\"id\": \""+child.id().toString()+"\","
+                + "\"type\": \"FOLDER\"}]}", json);
     }
 
     /**
@@ -174,6 +174,9 @@ public final class FolderTest extends TestCase {
         assertEquals(Collections.singletonList(entry), folder.entries());
     }
 
+    /**
+     * Test.
+     */
     public void testFolderEntriesCollectionIsUnmodifiable() {
 
         // ARRANGE
@@ -189,6 +192,9 @@ public final class FolderTest extends TestCase {
         }
     }
 
+    /**
+     * Test.
+     */
     public void testFindEntryByUrl() {
 
         // ARRANGE
@@ -203,6 +209,9 @@ public final class FolderTest extends TestCase {
         assertSame(expected, bar);
     }
 
+    /**
+     * Test.
+     */
     public void testNavigateToContent() {
 
         // ARRANGE
@@ -220,6 +229,9 @@ public final class FolderTest extends TestCase {
         assertSame(cd, expectedContent);
     }
 
+    /**
+     * Test.
+     */
     public void testNavigateToFolder() {
 
         // ARRANGE
@@ -237,6 +249,9 @@ public final class FolderTest extends TestCase {
         assertSame(cd, expectedFolder);
     }
 
+    /**
+     * Test.
+     */
     public void testNavigateToEmptyPath() {
 
         // ARRANGE

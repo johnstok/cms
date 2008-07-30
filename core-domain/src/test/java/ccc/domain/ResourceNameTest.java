@@ -184,6 +184,9 @@ public final class ResourceNameTest extends TestCase {
         }
     }
 
+    /**
+     * Test.
+     */
     public void testBackslashIsRejected() {
 
         // ARRANGE
@@ -266,7 +269,8 @@ public final class ResourceNameTest extends TestCase {
         final String expectedName = "____________________foo_BAR_123___";
 
         // ACT
-        final ResourceName validCharacters = ResourceName.escape(invalidCharacters);
+        final ResourceName validCharacters =
+            ResourceName.escape(invalidCharacters);
 
         // ASSERT
         assertEquals(new ResourceName(expectedName), validCharacters);

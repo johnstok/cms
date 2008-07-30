@@ -24,5 +24,5 @@ public interface JSONable {
      *
      * @return A JSON representation of this object as a String
      */
-    public String toJSON();
+    String toJSON();
 }

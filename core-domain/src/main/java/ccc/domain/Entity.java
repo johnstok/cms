@@ -13,8 +13,7 @@
 package ccc.domain;
 
 import java.io.Serializable;
-
-import ccc.commons.jee.UID;
+import java.util.UUID;
 
 
 /**
@@ -24,8 +23,8 @@ import ccc.commons.jee.UID;
  */
 public abstract class Entity implements Serializable {
 
-    /** id : UID. */
-    private UID id = new UID();
+    /** id : UUID. */
+    private UUID id = UUID.randomUUID();
     private int version = -1;
 
     /**
@@ -42,9 +41,9 @@ public abstract class Entity implements Serializable {
     /**
      * Accessor for the id field.
      *
-     * @return This entity's id as a {@link UID}.
+     * @return This entity's id as a {@link UUID}.
      */
-    public final UID id() {
+    public final UUID id() {
         return id;
     }
 

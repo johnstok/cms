@@ -27,9 +27,11 @@ import java.util.regex.Pattern;
  */
 public final class ResourcePath implements Serializable {
 
-    private final List<ResourceName> elements;
+    /** serialVersionUID : long. */
+    private static final long serialVersionUID = -5755885435816868422L;
     /** PATH_PATTERN : Pattern. */
     public static final Pattern PATH_PATTERN = Pattern.compile("/((\\w+)/)*");
+    private final List<ResourceName> elements;
 
     /**
      * Constructor.

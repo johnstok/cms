@@ -58,7 +58,8 @@ public final class ResourcePathTest extends TestCase {
 
         // ACT
         final ResourcePath firstPath = path.append(new ResourceName("foo"));
-        final ResourcePath secondPath = firstPath.append(new ResourceName("bar"));
+        final ResourcePath secondPath =
+            firstPath.append(new ResourceName("bar"));
 
         // ASSERT
         assertEquals("/", path.toString());
