@@ -37,7 +37,7 @@ public interface ResourceManager {
     /**
      * Create a folder, based on the specified path.
      *
-     * @param pathString
+     * @param pathString The string representation of the path.
      */
     void createFolder(String pathString);
 
@@ -49,15 +49,16 @@ public interface ResourceManager {
     /**
      * Create a content, based on the specified path.
      *
-     * @param pathString
+     * @param pathString The string representation of the path.
      */
     void createContent(String pathString);
 
     /**
      * Create paragraphs for given content.
      *
-     * @param pathString
-     * @param paragraphs
+     * @param pathString The string representation of the path.
+     * @param paragraphs A map containing the paragraphs to create, and their
+     *      respective keys.
      */
     void createParagraphsForContent(String pathString,
                                     Map<String, Paragraph> paragraphs);
