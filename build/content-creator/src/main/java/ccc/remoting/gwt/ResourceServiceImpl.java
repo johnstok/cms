@@ -13,7 +13,7 @@
 package ccc.remoting.gwt;
 
 import ccc.commons.jee.JNDI;
-import ccc.domain.Folder;
+import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 import ccc.services.ResourceManager;
 import ccc.view.contentcreator.client.ResourceService;
@@ -53,8 +53,8 @@ public class ResourceServiceImpl extends RemoteServiceServlet
      */
     @Override
     public String getResource(final String absolutePath) {
-        final Folder root =
-            resourceManager().lookup(new ResourcePath(absolutePath)).asFolder();
+        final Resource root =
+            resourceManager().lookup(new ResourcePath(absolutePath));
         return root.toJSON();
     }
 }

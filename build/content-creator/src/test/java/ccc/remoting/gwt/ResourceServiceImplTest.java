@@ -22,6 +22,7 @@ import ccc.services.adaptors.ResourceManagerAdaptor;
 
 /**
  * TODO Add Description for this type.
+ * TODO Test getResource().
  *
  * @author Civic Computing Ltd
  */
@@ -30,7 +31,7 @@ public class ResourceServiceImplTest extends TestCase {
     /**
      * Test.
      */
-    public void testDoGetHandlesContent() {
+    public void testGetContentRoot() {
 
         // ARRANGE
         final ResourceServiceImpl resourceService = new ResourceServiceImpl() {

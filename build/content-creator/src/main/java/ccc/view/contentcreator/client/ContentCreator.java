@@ -11,6 +11,8 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.WindowResizeListener;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalSplitPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -18,6 +20,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.TreeListener;
+import com.google.gwt.user.client.ui.Widget;
 
 
 /**
@@ -82,6 +85,8 @@ public class ContentCreator implements EntryPoint {
      */
     protected void displayChildrenInRightHandPane(final TreeItem item) {
 
+        final String absolutePath = GWTSupport.calculatePathForTreeItem(item);
+
         final ResourceServiceAsync resourceService =
             (ResourceServiceAsync) GWT.create(ResourceService.class);
 
@@ -102,12 +107,31 @@ public class ContentCreator implements EntryPoint {
                 for (int i=0; i<entries.size(); i++) {
                     JSONObject entry = entries.get(i).isObject();
 
-                    String name = entry.get("name").isString().stringValue();
+                    final String name = entry.get("name").isString().stringValue();
                     String type = entry.get("type").isString().stringValue();
 
                     children.setText(i+1, 0, type);
                     children.setText(i+1, 1, name);
-                    children.setText(i+1, 2, "");
+                    if (type.equals("CONTENT")) {
+                        children.setWidget(
+                            i+1,
+                            2,
+                            new Button(
+                                "edit",
+                                new ClickListener() {
+                                    public void onClick(Widget sender) {
+                                      new UpdateContentDialog(
+                                          absolutePath+name+"/",
+                                          name)
+                                          .show();
+                                    }
+                                }
+                            )
+                        );
+
+                    } else {
+                        children.setText(i+1, 2, "");
+                    }
                 }
 
                 hsp.setRightWidget(children);
@@ -118,7 +142,6 @@ public class ContentCreator implements EntryPoint {
             }
         };
 
-        final String absolutePath = GWTSupport.calculatePathForTreeItem(item);
         resourceService.getResource(absolutePath, callback);
     }
 
