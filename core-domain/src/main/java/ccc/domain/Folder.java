@@ -148,10 +148,29 @@ public final class Folder extends Resource implements JSONable {
 
         final List<ResourceRef> resourceRefs = new ArrayList<ResourceRef>();
         for (final Resource entry : entries) {
-            resourceRefs.add(
-                new ResourceRef(entry.name(), entry.id(), entry.type()));
+            final ResourceRef ref =
+                new ResourceRef(entry.name(), entry.id(), entry.type());
+            if(entry.type() == ResourceType.FOLDER) {
+                ref.addMetadata(
+                    "folder-count",
+                    String.valueOf(entry.asFolder().folderCount()));
+            }
+            resourceRefs.add(ref);
         }
         return resourceRefs;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
+    public int folderCount() {
+        int count = 0;
+        for (final Resource entry : entries) {
+            if (entry.type()==ResourceType.FOLDER) { count++; }
+        }
+        return count;
     }
 
 }

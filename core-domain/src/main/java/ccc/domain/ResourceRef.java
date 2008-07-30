@@ -12,6 +12,9 @@
 
 package ccc.domain;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import ccc.commons.jee.JSON;
@@ -27,6 +30,7 @@ public class ResourceRef implements JSONable {
     private ResourceName name;
     private UUID         id;
     private ResourceType type;
+    private Map<String, String> metadata = new HashMap<String, String>();
 
     /**
      * Constructor.
@@ -67,12 +71,38 @@ public class ResourceRef implements JSONable {
      */
     @Override
     public final String toJSON() {
-        return
-            JSON.object()
-                .add("name", name.toString())
-                .add("id", id.toString())
-                .add("type", type.toString())
-                .toString();
+
+        final ccc.commons.jee.JSON.Object jsonObject = JSON.object();
+
+        jsonObject
+            .add("name", name.toString())
+            .add("id", id.toString())
+            .add("type", type.toString());
+
+        for (final Map.Entry<String, String> metadatum : metadata.entrySet()) {
+            jsonObject.add(metadatum.getKey(), metadatum.getValue());
+        }
+
+        return jsonObject.toString();
+    }
+
+    /**
+     * Add an item of metadata.
+     *
+     * @param key
+     * @param value
+     */
+    public void addMetadata(final String key, final String value) {
+        metadata.put(key, value);
+    }
+
+    /**
+     * Accessor for metadata.
+     *
+     * @return
+     */
+    public Map<String, String> metadata() {
+        return Collections.unmodifiableMap(metadata);
     }
 
 }

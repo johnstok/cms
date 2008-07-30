@@ -28,7 +28,7 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      */
-    public void testEntryReferencesAccessor() {
+    public void testFolderCount() {
 
         // ARRANGE
         final Folder content = new Folder(new ResourceName("content"));
@@ -38,14 +38,41 @@ public final class FolderTest extends TestCase {
         content.add(ab);
 
         // ACT
+        final int folderCount = content.folderCount();
+
+        // ASSERT
+        assertEquals(1, folderCount);
+    }
+
+    /**
+     * Test.
+     */
+    public void testEntryReferencesAccessor() {
+
+        // ARRANGE
+        final Folder content = new Folder(new ResourceName("content"));
+        final Folder ab = new Folder(new ResourceName("ab"));
+        final Content cd = new Content(new ResourceName("cd"));
+        final Content ef = new Content(new ResourceName("ef"));
+        content.add(cd);
+        content.add(ab);
+        ab.add(ef);
+
+        // ACT
         final List<ResourceRef> resourceRefs = content.entryReferences();
 
         // ASSERT
         assertEquals(2, resourceRefs.size());
+
         assertEquals("cd", resourceRefs.get(0).name().toString());
         assertEquals(cd.id(), resourceRefs.get(0).id());
+        assertEquals(
+            null,
+            resourceRefs.get(0).metadata().get("folder-count"));
+
         assertEquals("ab", resourceRefs.get(1).name().toString());
         assertEquals(ab.id(), resourceRefs.get(1).id());
+        assertEquals("0", resourceRefs.get(1).metadata().get("folder-count"));
     }
 
     /**
@@ -70,8 +97,11 @@ public final class FolderTest extends TestCase {
 
         // ARRANGE
         final Folder parent = new Folder(new ResourceName("foo"));
-        final Folder child = new Folder(new ResourceName("bar"));
-        parent.add(child);
+        final Folder child1 = new Folder(new ResourceName("bar"));
+        final Folder child2 = new Folder(new ResourceName("baz"));
+        parent.add(child1);
+        child1.add(child2);
+
         // ACT
         final String json = parent.toJSON();
 
@@ -81,8 +111,9 @@ public final class FolderTest extends TestCase {
             + "\"name\": \"foo\","
             + "\"entries\": ["
                 + "{\"name\": \"bar\","
-                + "\"id\": \""+child.id().toString()+"\","
-                + "\"type\": \"FOLDER\"}]}", json);
+                + "\"id\": \""+child1.id().toString()+"\","
+                + "\"type\": \"FOLDER\","
+                + "\"folder-count\": \"1\"}]}", json);
     }
 
     /**
