@@ -106,8 +106,17 @@ public final class Content extends Resource {
     public String toJSON() {
         return
             JSON.object()
+                .add("id", id().toString())
                 .add("title", title())
                 .add("paragraphs", content)
                 .toString();
+    }
+
+    /**
+     * Deletes all paragraphs.
+     *
+     */
+    public void deleteAllParagraphs() {
+        content.clear();
     }
 }

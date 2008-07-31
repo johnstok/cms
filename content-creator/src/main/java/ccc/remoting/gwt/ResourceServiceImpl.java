@@ -12,7 +12,13 @@
 
 package ccc.remoting.gwt;
 
+import java.util.Iterator;
+import java.util.Map;
+import java.util.UUID;
+
 import ccc.commons.jee.JNDI;
+import ccc.domain.Content;
+import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 import ccc.services.ResourceManager;
@@ -56,5 +62,13 @@ public class ResourceServiceImpl extends RemoteServiceServlet
         final Resource root =
             resourceManager().lookup(new ResourcePath(absolutePath));
         return root.toJSON();
+    }
+
+    /**
+     * @see ccc.view.contentcreator.client.ResourceService#saveContent(java.lang.String, java.util.Map)
+     */
+    @Override
+    public void saveContent(String id, String title, Map<String, String> paragraphs) {
+        resourceManager().saveContent(id, title, paragraphs);
     }
 }

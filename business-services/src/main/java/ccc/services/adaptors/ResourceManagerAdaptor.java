@@ -12,6 +12,7 @@
 package ccc.services.adaptors;
 
 import java.util.Map;
+import java.util.UUID;
 
 import ccc.domain.Paragraph;
 import ccc.domain.Resource;
@@ -25,6 +26,20 @@ import ccc.services.ResourceManager;
  * @author Civic Computing Ltd
  */
 public abstract class ResourceManagerAdaptor implements ResourceManager {
+
+    @Override
+    public void saveContent(String id,
+                            String title,
+                            Map<String, String> paragraphs) {
+
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
+    @Override
+    public Resource lookup(UUID id) {
+
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
 
     /**
      * {@inheritDoc}

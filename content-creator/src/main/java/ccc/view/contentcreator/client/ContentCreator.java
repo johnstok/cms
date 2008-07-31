@@ -36,10 +36,12 @@ public class ContentCreator implements EntryPoint {
     public void onModuleLoad() {
 
         final TreeItem root = new TreeItem("root");
+        root.ensureDebugId("root_treeitem");
         populate(root);
 
         final Tree t = new Tree();
         t.addItem(root);
+        t.ensureDebugId("folder_tree");
         t.addTreeListener(new TreeListener() {
 
             public void onTreeItemSelected(final TreeItem arg0) {
@@ -73,6 +75,7 @@ public class ContentCreator implements EntryPoint {
             public void onWindowResized(final int width, final int height) {
                 RootPanel.get().setSize("100%",
                     height+"px");
+                hsp.setHeight((height-10)+"px");
             }
         });
         RootPanel.get().add(hsp);

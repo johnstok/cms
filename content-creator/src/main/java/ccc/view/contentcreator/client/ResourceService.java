@@ -11,6 +11,8 @@
  */
 package ccc.view.contentcreator.client;
 
+import java.util.Map;
+
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
@@ -23,4 +25,6 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public  interface ResourceService extends RemoteService {
   public String getContentRoot();
   public String getResource(String absolutePath);
+  public void saveContent(String id, String title, Map<String, String> paragraphs);
+  
 }
