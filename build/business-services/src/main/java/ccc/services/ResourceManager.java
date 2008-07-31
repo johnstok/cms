@@ -13,6 +13,7 @@
 package ccc.services;
 
 import java.util.Map;
+import java.util.UUID;
 
 import ccc.domain.Paragraph;
 import ccc.domain.Resource;
@@ -62,4 +63,21 @@ public interface ResourceManager {
      */
     void createParagraphsForContent(String pathString,
                                     Map<String, Paragraph> paragraphs);
+
+    /**
+     * Lookup a resource, given its id.
+     *
+     * @param id
+     * @return The resource.
+     */
+    Resource lookup(UUID id);
+
+    /**
+     * Recreates content's paragraphs.
+     *
+     * @param id
+     * @param title
+     * @param paragraphs
+     */
+    void saveContent(String id, String title, Map<String, String> paragraphs);
 }

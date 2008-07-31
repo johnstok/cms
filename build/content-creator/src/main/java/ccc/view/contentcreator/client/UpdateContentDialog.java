@@ -12,9 +12,13 @@
 
 package ccc.view.contentcreator.client;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -34,7 +38,15 @@ public class UpdateContentDialog extends DialogBox {
 
     private final String contentPath;
     private final String title;
-
+    private final Map<String, RichTextArea> richTexts = 
+        new HashMap<String, RichTextArea>();
+    
+    final ResourceServiceAsync resourceService =
+        (ResourceServiceAsync) GWT.create(ResourceService.class);
+    
+    JSONObject content;
+    private TextBox titleTextBox = new TextBox();
+    
     /**
      * Constructor.
      *
@@ -58,12 +70,10 @@ public class UpdateContentDialog extends DialogBox {
      * @param title
      */
     private void drawGUI() {
-
         // Set the dialog box's caption.
         setText(title);
 
         final VerticalPanel vPanel = new VerticalPanel();
-        final TextBox titleTextBox = new TextBox();
         final TabPanel paragraphsTabPanel = new TabPanel();
         vPanel.add(titleTextBox);
         vPanel.add(paragraphsTabPanel);
@@ -77,10 +87,31 @@ public class UpdateContentDialog extends DialogBox {
                 }
             )
         );
-        setWidget(vPanel);
+        
+        Button saveButton = new Button("Save", new ClickListener() {
+            public void onClick(Widget arg0) {
+                Map<String,String> paragraphs = new HashMap<String, String>();
+                for (String key : richTexts.keySet()) {
+                    paragraphs.put(key, richTexts.get(key).getHTML());
+                }
+                
+                String id = content.get("id").isString().stringValue();
+                AsyncCallback<Void> callback = new AsyncCallback<Void>() {
+                    public void onFailure(Throwable arg0) {
+                        GWT.log("Content saving failed", arg0);
+                    }
+                    public void onSuccess(Void arg0) {
 
-        final ResourceServiceAsync resourceService =
-            (ResourceServiceAsync) GWT.create(ResourceService.class);
+                    }
+            
+                };
+                resourceService.saveContent(id, titleTextBox.getText()
+                    , paragraphs, callback );
+            }
+        }
+        );
+        vPanel.add(saveButton);
+        setWidget(vPanel);
 
         final JSONCallback callback = new JSONCallback() {
 
@@ -90,10 +121,11 @@ public class UpdateContentDialog extends DialogBox {
             @Override
             public void onSuccess(final JSONValue jsonResult) {
 
+                content = jsonResult.isObject();
                 final String jsonTitle =
-                    jsonResult.isObject().get("title").isString().stringValue();
+                    content.get("title").isString().stringValue();
                 final JSONObject paragraphs =
-                    jsonResult.isObject().get("paragraphs").isObject();
+                    content.get("paragraphs").isObject();
 
                 titleTextBox.setText(jsonTitle);
                 for (String key : paragraphs.keySet()) {
@@ -108,6 +140,8 @@ public class UpdateContentDialog extends DialogBox {
                     rtPanel.add(toolbar);
                     rtPanel.add(bodyRTA);
                     paragraphsTabPanel.add(rtPanel, key);
+                    
+                    richTexts.put(key, bodyRTA);
                 }
 
                 paragraphsTabPanel.selectTab(0);

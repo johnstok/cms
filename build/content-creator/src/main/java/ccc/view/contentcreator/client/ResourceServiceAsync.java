@@ -11,6 +11,8 @@
  */
 package ccc.view.contentcreator.client;
 
+import java.util.Map;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
@@ -28,4 +30,6 @@ public interface ResourceServiceAsync {
      * @param callback
      */
     public void getResource(String absolutePath, AsyncCallback<String> callback);
+
+    public void saveContent(String id, String title, Map<String, String> paragraphs, AsyncCallback<Void> callback);
 }

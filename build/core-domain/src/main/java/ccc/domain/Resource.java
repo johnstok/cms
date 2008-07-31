@@ -101,4 +101,13 @@ public abstract class Resource extends Entity implements JSONable {
     public final String title() {
         return title;
     }
+    
+    /**
+     * Sets the title of the resource.
+     *
+     * @param title
+     */
+    public final void title(String title) {
+        this.title = title;
+    }
 }

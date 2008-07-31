@@ -39,7 +39,7 @@ public final class ContentTest extends TestCase {
         final String jsonString = content.toJSON();
 
         // ASSERT
-        assertEquals("{\"title\": \"Foo?\",\"paragraphs\": {\"bar\": {\"body\": \"bar\"},\"baz\": {\"body\": \"baz\"}}}", jsonString);
+        assertEquals("{\"id\": \""+content.id().toString()+"\",\"title\": \"Foo?\",\"paragraphs\": {\"bar\": {\"body\": \"bar\"},\"baz\": {\"body\": \"baz\"}}}", jsonString);
     }
 
     /**
@@ -107,5 +107,19 @@ public final class ContentTest extends TestCase {
         } catch (final IllegalArgumentException e) {
             assertEquals("Specified value may not be NULL.", e.getMessage());
         }
+    }
+    
+    public void testDeleteAllParagraphs() {
+
+        // ARRANGE
+        final Content content = new Content(new ResourceName("foo"), "Title");
+        content.addParagraph("header", new Paragraph("<H1>Header</H1>"));
+        content.addParagraph("footer", new Paragraph("<H1>Footer</H1>"));
+
+        // ACT
+        content.deleteAllParagraphs();
+
+        // ASSERT
+        assertEquals(0, content.paragraphs().size());
     }
 }

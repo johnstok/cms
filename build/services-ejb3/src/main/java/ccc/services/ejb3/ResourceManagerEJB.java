@@ -18,6 +18,7 @@ import static javax.persistence.PersistenceContextType.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -187,6 +188,31 @@ public class ResourceManagerEJB implements ResourceManager {
         for (final String key : paragraphs.keySet()) {
             final Paragraph paragraph = paragraphs.get(key);
             content.addParagraph(key, paragraph);
+        }
+    }
+
+    /**
+     * @see ccc.services.ResourceManager#lookup(java.util.UUID)
+     */
+    @Override
+    public Resource lookup(UUID id) {
+       return em.find(Resource.class, id);
+    }
+
+    /**
+     * @see ccc.services.ResourceManager#saveContent(java.lang.String, java.lang.String, java.util.Map)
+     */
+    @Override
+    public void saveContent(String id,
+                            String title,
+                            Map<String, String> paragraphs) {
+        
+        Content content = lookup(UUID.fromString(id)).asContent();
+        content.title(title);
+        content.deleteAllParagraphs();
+        
+        for (String key : paragraphs.keySet()) {
+            content.addParagraph(key, new Paragraph(paragraphs.get(key)));
         }
     }
 }

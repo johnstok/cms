@@ -12,9 +12,14 @@
 
 package ccc.services.ejb3;
 
-import static ccc.domain.PredefinedResourceNames.*;
-import static ccc.domain.Queries.*;
-import static org.easymock.EasyMock.*;
+import static ccc.domain.PredefinedResourceNames.CONTENT;
+import static ccc.domain.Queries.RESOURCE_BY_URL;
+import static org.easymock.EasyMock.capture;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 
 import java.util.HashMap;
 import java.util.List;
@@ -380,5 +385,66 @@ public final class ResourceManagerEJBTest extends TestCase {
 
         assertEquals(1, content.paragraphs().size());
         assertEquals("test text", content.paragraphs().get("HEADER").body());
+    }
+    
+    public void testLookupFromId() {
+
+        // ARRANGE
+        final Content bar = new Content(new ResourceName("bar"))
+                                    .addParagraph(
+                                        "default",
+                                        new Paragraph("<H1>Default</H1>"));
+
+        final EntityManager em = new EntityManagerAdaptor() {
+
+            @Override
+            public <T> T find(Class<T> arg0, Object arg1) {
+                return (T)bar;
+            }
+            
+        };
+
+        final ResourceManagerEJB resourceMgr = new ResourceManagerEJB(em);
+
+        // ACT
+        final Resource resource =
+            resourceMgr.lookup(bar.id());
+
+        // ASSERT
+        assertEquals(ResourceType.CONTENT, resource.type());
+        final Content content = resource.asContent();
+        assertEquals(1, content.paragraphs().size());
+    }
+    
+    /**
+     * Test.
+     */
+    public void testSaveContent() {
+        
+        // ARRANGE
+        final Content content = new Content(new ResourceName("test"));
+        content.addParagraph("abc", new Paragraph("def"));
+        
+        final EntityManager em = new EntityManagerAdaptor() {
+
+            @Override
+            public <T> T find(Class<T> arg0, Object arg1) {
+                return (T)content;
+            }
+            
+        };
+
+        final ResourceManagerEJB resourceMgr = new ResourceManagerEJB(em);
+        
+        // ACT
+        Map<String, String> paragraphs = new HashMap<String, String>();
+        paragraphs.put("foo", "bar");
+        resourceMgr.saveContent(content.id().toString(), "new title", paragraphs);
+        
+        // ASSERT
+        assertEquals("new title", content.title());
+        assertEquals(1, content.paragraphs().size());
+        assertEquals("foo", content.paragraphs().keySet().iterator().next());
+        assertEquals("bar", content.paragraphs().get("foo").body());
     }
 }
