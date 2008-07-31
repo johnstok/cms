@@ -14,9 +14,7 @@ package ccc.view.contentcreator.client;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -40,7 +38,9 @@ public class UpdateContentDialog extends DialogBox {
     /**
      * Constructor.
      *
-     * @param contentPath The absolute path to the content resource this dialog will update.
+     * @param contentPath The absolute path to the content resource this dialog
+     *          will update.
+     * @param title The title for the dialog.
      */
     UpdateContentDialog(final String contentPath, final String title) {
 
@@ -82,17 +82,20 @@ public class UpdateContentDialog extends DialogBox {
         final ResourceServiceAsync resourceService =
             (ResourceServiceAsync) GWT.create(ResourceService.class);
 
-        final AsyncCallback<String> callback = new AsyncCallback<String>() {
+        final JSONCallback callback = new JSONCallback() {
 
-            public void onSuccess(String result) {
-                JSONValue jsonResult = JSONParser.parse(result);
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void onSuccess(final JSONValue jsonResult) {
 
-                final String title =
+                final String jsonTitle =
                     jsonResult.isObject().get("title").isString().stringValue();
                 final JSONObject paragraphs =
                     jsonResult.isObject().get("paragraphs").isObject();
 
-                titleTextBox.setText(title);
+                titleTextBox.setText(jsonTitle);
                 for (String key : paragraphs.keySet()) {
                     RichTextArea bodyRTA = new RichTextArea();
                     bodyRTA.setWidth("100%");
@@ -108,10 +111,6 @@ public class UpdateContentDialog extends DialogBox {
                 }
 
                 paragraphsTabPanel.selectTab(0);
-            }
-
-            public void onFailure(Throwable caught) {
-                GWT.log("Error!", caught);
             }
         };
 
