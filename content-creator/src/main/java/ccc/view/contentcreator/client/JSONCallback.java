@@ -27,7 +27,6 @@ public abstract class JSONCallback implements AsyncCallback<String> {
     /**
      * {@inheritDoc}
      */
-    @Override
     public final void onFailure(final Throwable caught) {
         Window.alert("Error: "+caught.getMessage());
     }
@@ -35,7 +34,6 @@ public abstract class JSONCallback implements AsyncCallback<String> {
     /**
      * {@inheritDoc}
      */
-    @Override
     public final void onSuccess(final String result) {
         final JSONValue jsonResult = JSONParser.parse(result);
         onSuccess(jsonResult);
