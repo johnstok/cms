@@ -12,14 +12,9 @@
 
 package ccc.services.ejb3;
 
-import static ccc.domain.PredefinedResourceNames.CONTENT;
-import static ccc.domain.Queries.RESOURCE_BY_URL;
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
+import static ccc.domain.PredefinedResourceNames.*;
+import static ccc.domain.Queries.*;
+import static org.easymock.EasyMock.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -386,7 +381,7 @@ public final class ResourceManagerEJBTest extends TestCase {
         assertEquals(1, content.paragraphs().size());
         assertEquals("test text", content.paragraphs().get("HEADER").body());
     }
-    
+
     public void testLookupFromId() {
 
         // ARRANGE
@@ -395,14 +390,7 @@ public final class ResourceManagerEJBTest extends TestCase {
                                         "default",
                                         new Paragraph("<H1>Default</H1>"));
 
-        final EntityManager em = new EntityManagerAdaptor() {
-
-            @Override
-            public <T> T find(Class<T> arg0, Object arg1) {
-                return (T)bar;
-            }
-            
-        };
+        final EntityManager em = new SimpleEM(bar);
 
         final ResourceManagerEJB resourceMgr = new ResourceManagerEJB(em);
 
@@ -415,36 +403,58 @@ public final class ResourceManagerEJBTest extends TestCase {
         final Content content = resource.asContent();
         assertEquals(1, content.paragraphs().size());
     }
-    
+
     /**
      * Test.
      */
     public void testSaveContent() {
-        
+
         // ARRANGE
         final Content content = new Content(new ResourceName("test"));
         content.addParagraph("abc", new Paragraph("def"));
-        
-        final EntityManager em = new EntityManagerAdaptor() {
 
-            @Override
-            public <T> T find(Class<T> arg0, Object arg1) {
-                return (T)content;
-            }
-            
-        };
+        final EntityManager em = new SimpleEM(content);
 
         final ResourceManagerEJB resourceMgr = new ResourceManagerEJB(em);
-        
+
         // ACT
-        Map<String, String> paragraphs = new HashMap<String, String>();
+        final Map<String, String> paragraphs = new HashMap<String, String>();
         paragraphs.put("foo", "bar");
-        resourceMgr.saveContent(content.id().toString(), "new title", paragraphs);
-        
+        resourceMgr.saveContent(
+            content.id().toString(),
+            "new title", paragraphs);
+
         // ASSERT
         assertEquals("new title", content.title());
         assertEquals(1, content.paragraphs().size());
         assertEquals("foo", content.paragraphs().keySet().iterator().next());
         assertEquals("bar", content.paragraphs().get("foo").body());
+    }
+
+    /**
+     * Helper class for testing.
+     *
+     * @author Civic Computing Ltd
+     */
+    private final class SimpleEM extends EntityManagerAdaptor {
+
+        /** content : Content. */
+        private final Content content;
+
+        /**
+         * Constructor.
+         *
+         * @param content The content to return from find().
+         */
+        private SimpleEM(final Content content) {
+
+            this.content = content;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public <T> T find(final Class<T> type, final Object id) {
+            return (T) content;
+        }
     }
 }
