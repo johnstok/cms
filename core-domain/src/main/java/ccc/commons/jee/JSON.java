@@ -52,11 +52,12 @@ public final class JSON {
         }
 
         /**
-         * " => \" , \ => \\
-         * @param s
-         * @return
+         * Escape strings using JSON escape rules.
+         *
+         * @param s The string to escape.
+         * @return The escaped string.
          */
-        public static String escape(final String s){
+        public String escape(final String s){
             if(s==null) {
                 return null;
             }
@@ -92,16 +93,15 @@ public final class JSON {
                     if(ch>='\u0000' && ch<='\u001F'){
                         final String ss=Integer.toHexString(ch);
                         sb.append("\\u");
-                        for(int k=0;k<4-ss.length();k++){
+                        for(int k=0; k<4-ss.length(); k++){
                             sb.append('0');
                         }
                         sb.append(ss.toUpperCase());
-                    }
-                    else{
+                    } else {
                         sb.append(ch);
                     }
                 }
-            }//for
+            }
             return sb.toString();
         }
 
@@ -155,9 +155,10 @@ public final class JSON {
         /**
          * Add a map from String to JSONable as an object.
          *
-         * @param key
-         * @param values
-         * @return
+         * @param key The key under which the object will be stored.
+         * @param values The map of key -> JSONable that contains each property
+         *        of the new object.
+         * @return 'this' to allow method chaining.
          */
         public Object add(final String key,
                           final Map<String, ? extends JSONable> values) {
@@ -175,10 +176,11 @@ public final class JSON {
         }
 
         /**
-         * TODO: Add a description of this method.
+         * Add an instance of JSONable as a new property of the object.
          *
-         * @param key
-         * @param value
+         * @param key The key under which the object will be stored.
+         * @param value The JSONable object.
+         * @return 'this' to allow method chaining.
          */
         private Object add(final String key, final JSONable value) {
             elements.put(key, value.toJSON());
