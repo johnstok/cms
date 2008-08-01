@@ -90,6 +90,15 @@ public class UpdateContentDialog extends DialogBox {
         
         Button saveButton = new Button("Save", new ClickListener() {
             public void onClick(Widget arg0) {
+                // validate
+                if (titleTextBox.getText() == null || 
+                        titleTextBox.getText().trim().length() == 0) {
+                    titleTextBox.setStyleName("gwt-TextBox-error");
+                    return;
+                } else {
+                    titleTextBox.setStyleName("gwt-TextBox");
+                }
+                
                 Map<String,String> paragraphs = new HashMap<String, String>();
                 for (String key : richTexts.keySet()) {
                     paragraphs.put(key, richTexts.get(key).getHTML());
@@ -101,9 +110,8 @@ public class UpdateContentDialog extends DialogBox {
                         GWT.log("Content saving failed", arg0);
                     }
                     public void onSuccess(Void arg0) {
-
+                        hide();
                     }
-            
                 };
                 resourceService.saveContent(id, titleTextBox.getText()
                     , paragraphs, callback );

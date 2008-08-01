@@ -11,21 +11,13 @@
  */
 package ccc.remoting.gwt;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
 import junit.framework.TestCase;
-import ccc.domain.Content;
 import ccc.domain.Folder;
-import ccc.domain.Paragraph;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
-import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.services.ResourceManager;
 import ccc.services.adaptors.ResourceManagerAdaptor;
-import ccc.view.contentcreator.client.ResourceService;
 
 
 /**
