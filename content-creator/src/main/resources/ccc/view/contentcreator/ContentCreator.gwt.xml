@@ -1,25 +1,25 @@
 <module>
 
-      <!-- Inherit the core Web Toolkit stuff.                        -->
-      <inherits name='com.google.gwt.user.User'/>
-      <inherits name="com.google.gwt.json.JSON" />
-      <inherits name="com.google.gwt.user.Debug" />
-	
-      <!-- Inherit the default GWT style sheet.  You can change       -->
-      <!-- the theme of your GWT application by uncommenting          -->
-      <!-- any one of the following lines.                            -->
-      <inherits name='com.google.gwt.user.theme.standard.Standard'/>
-      <!-- <inherits name="com.google.gwt.user.theme.chrome.Chrome"/> -->
-      <!-- <inherits name="com.google.gwt.user.theme.dark.Dark"/>     -->
+	<!-- Inherit the core Web Toolkit stuff. -->
+	<inherits name="com.google.gwt.user.User" />
+	<inherits name="com.google.gwt.json.JSON" />
+	<inherits name="com.google.gwt.user.Debug" />
+	<inherits name="com.google.gwt.i18n.I18N"/>
 
-      <!-- Other module inherits                                      -->
+	<!-- Inherit the default GWT style sheet. -->
+	<inherits name="com.google.gwt.user.theme.standard.Standard" />
 
-      <!-- Specify the app entry point class.                         -->
-      <entry-point class='ccc.view.contentcreator.client.ContentCreator'/>
-      
-      <servlet path="/resource" class="ccc.remoting.gwt.ResourceServiceImpl" />
-    
-      <!-- Specify the application specific style sheet.              -->
-      <stylesheet src='ContentCreator.css' />
-	
+	<!-- Supported locales. -->
+	<extend-property name="locale" values="fi" />
+
+	<!-- Specify the app entry point class. -->
+	<entry-point class="ccc.view.contentcreator.client.ContentCreator" />
+
+	<!-- RPC servlet bindings. -->
+	<servlet path="/resource"
+		class="ccc.remoting.gwt.ResourceServiceImpl" />
+
+	<!-- Specify the application specific style sheet. -->
+	<stylesheet src="ContentCreator.css" />
+
 </module>

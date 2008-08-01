@@ -36,32 +36,29 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class UpdateContentDialog extends DialogBox {
 
-    private final String contentPath;
-    private final String title;
-    private final Map<String, RichTextArea> richTexts = 
+    private final Constants constants = GWT.create(Constants.class);
+    private final String title = constants.updateContent();
+    private final Map<String, RichTextArea> richTexts =
         new HashMap<String, RichTextArea>();
-    
-    final ResourceServiceAsync resourceService =
+    private final ResourceServiceAsync resourceService =
         (ResourceServiceAsync) GWT.create(ResourceService.class);
-    
-    JSONObject content;
-    private TextBox titleTextBox = new TextBox();
-    
+    private final TextBox titleTextBox = new TextBox();
+
+    private final String contentPath;
+    private JSONObject content;
+
     /**
      * Constructor.
      *
      * @param contentPath The absolute path to the content resource this dialog
      *          will update.
-     * @param title The title for the dialog.
      */
-    UpdateContentDialog(final String contentPath, final String title) {
+    UpdateContentDialog(final String contentPath) {
 
         super(false, true);
         this.contentPath = contentPath;
-        this.title = title;
 
         drawGUI();
-
     }
 
     /**
@@ -79,7 +76,7 @@ public class UpdateContentDialog extends DialogBox {
         vPanel.add(paragraphsTabPanel);
         vPanel.add(
             new Button(
-                "Cancel",
+                constants.cancel(),
                 new ClickListener() {
                     public void onClick(final Widget sender) {
                         hide();
@@ -87,37 +84,36 @@ public class UpdateContentDialog extends DialogBox {
                 }
             )
         );
-        
-        Button saveButton = new Button("Save", new ClickListener() {
-            public void onClick(Widget arg0) {
-                // validate
-                if (titleTextBox.getText() == null || 
-                        titleTextBox.getText().trim().length() == 0) {
+
+        final Button saveButton = new Button(constants.save(), new ClickListener() {
+            public void onClick(final Widget arg0) {
+
+                if (titleTextBox.getText() == null
+                        || titleTextBox.getText().trim().length() == 0) {
                     titleTextBox.setStyleName("gwt-TextBox-error");
                     return;
                 } else {
                     titleTextBox.setStyleName("gwt-TextBox");
                 }
-                
-                Map<String,String> paragraphs = new HashMap<String, String>();
+
+                Map<String, String> paragraphs = new HashMap<String, String>();
                 for (String key : richTexts.keySet()) {
                     paragraphs.put(key, richTexts.get(key).getHTML());
                 }
-                
+
                 String id = content.get("id").isString().stringValue();
                 AsyncCallback<Void> callback = new AsyncCallback<Void>() {
-                    public void onFailure(Throwable arg0) {
+                    public void onFailure(final Throwable arg0) {
                         GWT.log("Content saving failed", arg0);
                     }
-                    public void onSuccess(Void arg0) {
+                    public void onSuccess(final Void arg0) {
                         hide();
                     }
                 };
                 resourceService.saveContent(id, titleTextBox.getText()
-                    , paragraphs, callback );
+                    , paragraphs, callback);
             }
-        }
-        );
+        });
         vPanel.add(saveButton);
         setWidget(vPanel);
 
@@ -148,7 +144,7 @@ public class UpdateContentDialog extends DialogBox {
                     rtPanel.add(toolbar);
                     rtPanel.add(bodyRTA);
                     paragraphsTabPanel.add(rtPanel, key);
-                    
+
                     richTexts.put(key, bodyRTA);
                 }
 

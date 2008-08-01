@@ -26,7 +26,9 @@ import com.google.gwt.user.client.ui.Widget;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
-public class ContentCreator implements EntryPoint {
+public final class ContentCreator implements EntryPoint {
+
+    private final Constants constants = GWT.create(Constants.class);
 
     private HorizontalSplitPanel hsp = new HorizontalSplitPanel();
 
@@ -68,7 +70,7 @@ public class ContentCreator implements EntryPoint {
         // replaced with css markup
 
         RootPanel.get().setSize("100%",
-            Window.getClientHeight()+"px");
+        Window.getClientHeight()+"px");
 
         Window.addWindowResizeListener(new WindowResizeListener() {
 
@@ -95,7 +97,7 @@ public class ContentCreator implements EntryPoint {
 
         final AsyncCallback<String> callback = new AsyncCallback<String>() {
 
-            public void onSuccess(String result) {
+            public void onSuccess(final String result) {
 
                 JSONValue jsonResult = JSONParser.parse(result);
                 JSONArray entries =
@@ -103,14 +105,15 @@ public class ContentCreator implements EntryPoint {
 
                 final Grid children = new Grid(entries.size()+1, 3);
                 children.setWidth("100%");
-                children.setText(0, 0, "Type");
-                children.setText(0, 1, "Title");
-                children.setText(0, 2, "Actions");
+                children.setText(0, 0, constants.type());
+                children.setText(0, 1, constants.title());
+                children.setText(0, 2, constants.actions());
 
                 for (int i=0; i<entries.size(); i++) {
                     JSONObject entry = entries.get(i).isObject();
 
-                    final String name = entry.get("name").isString().stringValue();
+                    final String name =
+                        entry.get("name").isString().stringValue();
                     String type = entry.get("type").isString().stringValue();
 
                     children.setText(i+1, 0, type);
@@ -120,12 +123,11 @@ public class ContentCreator implements EntryPoint {
                             i+1,
                             2,
                             new Button(
-                                "edit",
+                                constants.edit(),
                                 new ClickListener() {
-                                    public void onClick(Widget sender) {
+                                    public void onClick(final Widget sender) {
                                       new UpdateContentDialog(
-                                          absolutePath+name+"/",
-                                          "Update Content")
+                                          absolutePath+name+"/")
                                           .show();
                                     }
                                 }
@@ -140,7 +142,7 @@ public class ContentCreator implements EntryPoint {
                 hsp.setRightWidget(children);
             }
 
-            public void onFailure(Throwable caught) {
+            public void onFailure(final Throwable caught) {
                 GWT.log("Error!", caught);
             }
         };
@@ -160,7 +162,7 @@ public class ContentCreator implements EntryPoint {
 
         final AsyncCallback<String> callback = new AsyncCallback<String>() {
 
-            public void onSuccess(String result) {
+            public void onSuccess(final String result) {
 
                 parentItem.removeItems();
                 /*
@@ -185,13 +187,14 @@ public class ContentCreator implements EntryPoint {
                 }
             }
 
-            public void onFailure(Throwable caught) {
+            public void onFailure(final Throwable caught) {
 
                 GWT.log("Error!", caught);
             }
         };
 
-        final String absolutePath = GWTSupport.calculatePathForTreeItem(parentItem);
+        final String absolutePath =
+            GWTSupport.calculatePathForTreeItem(parentItem);
         resourceService.getResource(absolutePath, callback);
 
     }
