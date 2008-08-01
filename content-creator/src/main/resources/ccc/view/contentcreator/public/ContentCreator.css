@@ -31,3 +31,9 @@ button {
 img {
   margin-top: 20px;
 }
+
+.gwt-TextBox-error {
+	padding:2px;
+	background: #FF3833;
+}
+

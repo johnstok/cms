@@ -125,7 +125,7 @@ public class ContentCreator implements EntryPoint {
                                     public void onClick(Widget sender) {
                                       new UpdateContentDialog(
                                           absolutePath+name+"/",
-                                          name)
+                                          "Update Content")
                                           .show();
                                     }
                                 }
