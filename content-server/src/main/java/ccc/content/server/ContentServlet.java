@@ -47,12 +47,25 @@ import ccc.services.ResourceManager;
  *
  * @author Civic Computing Ltd
  */
-public class ContentServlet extends HttpServlet {
+public final class ContentServlet extends HttpServlet {
 
     /** serialVersionUID : long. */
     private static final long serialVersionUID = -5743085540949007873L;
+    private ResourceManager resourceManager;
 
+    /**
+     * Constructor.
+     *
+     * @param rManager The resource manager used to lookup resources.
+     */
+    public ContentServlet(final ResourceManager rManager) {
+        resourceManager = rManager;
+    }
 
+    /**
+     * Constructor.
+     */
+    public ContentServlet() { /* NO-OP */ }
 
     /**
      * Get the content for the specified relative URI. This method reads the
@@ -126,7 +139,7 @@ public class ContentServlet extends HttpServlet {
      * @param content The content to write to the response.
      * @throws IOException If writing to the response fails.
      */
-    final void write(final HttpServletResponse resp,
+    void write(final HttpServletResponse resp,
                        final Content content) throws IOException {
 
         resp.setContentType("text/html");
@@ -154,7 +167,7 @@ public class ContentServlet extends HttpServlet {
      * @param folder The content to write to the response.
      * @throws IOException If writing to the response fails.
      */
-    final void write(final HttpServletResponse resp,
+    void write(final HttpServletResponse resp,
                      final Folder folder) throws IOException {
 
         resp.setContentType("text/html");
@@ -189,7 +202,10 @@ public class ContentServlet extends HttpServlet {
      * @return A ResourceManager.
      */
     ResourceManager resourceManager() {
-        return JNDI.get("ResourceManagerEJB/local");
+        if (resourceManager == null) {
+            resourceManager = JNDI.get("ResourceManagerEJB/local");
+        }
+        return resourceManager;
     }
 
     /* --------------------------------------------------------------------
@@ -209,7 +225,7 @@ public class ContentServlet extends HttpServlet {
      * {@inheritDoc}
      */
     @Override
-    protected final void doGet(final HttpServletRequest request,
+    protected void doGet(final HttpServletRequest request,
                                final HttpServletResponse response)
                         throws ServletException,
                                IOException {
@@ -246,7 +262,7 @@ public class ContentServlet extends HttpServlet {
      *
      * @param response The response that should not be cached.
      */
-    final void disableCachingFor(final HttpServletResponse response) {
+    void disableCachingFor(final HttpServletResponse response) {
         // TODO Add setting of 'Expires' header to some time in the past?
         response.setHeader("Pragma", "no-cache"); // Mostly useless
         response.setHeader("Cache-Control", "no-cache"); // HTTP 1.1
@@ -258,7 +274,7 @@ public class ContentServlet extends HttpServlet {
      * @param resource The resource that will be transformed by the template.
      * @return The name of the resource as a string.
      */
-    final String lookupTemplateForResource(final Resource resource) {
+    String lookupTemplateForResource(final Resource resource) {
 
         switch (resource.type()) {
             case CONTENT:
@@ -278,7 +294,7 @@ public class ContentServlet extends HttpServlet {
      * @param template The template used to render the resource.
      * @return The html rendering as a string.
      */
-    final String render(final Resource resource, final String template) {
+    String render(final Resource resource, final String template) {
 
         final VelocityContext context = new VelocityContext();
         context.put("resource", resource);
