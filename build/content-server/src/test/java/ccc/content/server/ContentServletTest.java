@@ -36,12 +36,66 @@ import ccc.services.adaptors.ResourceManagerAdaptor;
 /**
  * Tests for the ContentServlet.
  *
+ * TODO: velocity logging.
+ * TODO: velocity character encoding.
+ * TODO: velocity property setting.
+ * TODO: Factor templates out of write methods.
+ *
  * @author Civic Computing Ltd
  */
 public final class ContentServletTest extends TestCase {
 
     private HttpServletResponse response;
     private HttpServletRequest  request;
+
+    /**
+     * Test.
+     */
+    public void testRenderResource() {
+
+        // ARRANGE
+        final Content foo = new Content(new ResourceName("foo"));
+        foo.addParagraph("bar", new Paragraph("baz"));
+        final String template = "Hello $resource.id()";
+
+        // ACT
+        final String html = new ContentServlet().render(foo, template);
+
+        // ASSERT
+        assertEquals("Hello "+foo.id(), html);
+    }
+
+    /**
+     * Test.
+     */
+    public void testLookupTemplateForContent() {
+
+        // ARRANGE
+        final Content foo = new Content(new ResourceName("foo"));
+
+        // ACT
+        final String templateName =
+            new ContentServlet().lookupTemplateForResource(foo);
+
+        // ASSERT
+        assertEquals("content.vm", templateName);
+    }
+
+    /**
+     * Test.
+     */
+    public void testLookupTemplateForFolder() {
+
+        // ARRANGE
+        final Folder foo = new Folder(new ResourceName("foo"));
+
+        // ACT
+        final String templateName =
+            new ContentServlet().lookupTemplateForResource(foo);
+
+        // ASSERT
+        assertEquals("folder.vm", templateName);
+    }
 
     /**
      * Test.

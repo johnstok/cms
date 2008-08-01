@@ -14,12 +14,20 @@ package ccc.content.server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
+import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.exception.MethodInvocationException;
+import org.apache.velocity.exception.ParseErrorException;
+import org.apache.velocity.exception.ResourceNotFoundException;
 
 import ccc.commons.jee.JNDI;
 import ccc.domain.CCCException;
@@ -118,7 +126,7 @@ public class ContentServlet extends HttpServlet {
      * @param content The content to write to the response.
      * @throws IOException If writing to the response fails.
      */
-    void write(final HttpServletResponse resp,
+    final void write(final HttpServletResponse resp,
                        final Content content) throws IOException {
 
         resp.setContentType("text/html");
@@ -146,8 +154,8 @@ public class ContentServlet extends HttpServlet {
      * @param folder The content to write to the response.
      * @throws IOException If writing to the response fails.
      */
-    void write(final HttpServletResponse resp,
-                       final Folder folder) throws IOException {
+    final void write(final HttpServletResponse resp,
+                     final Folder folder) throws IOException {
 
         resp.setContentType("text/html");
         final PrintWriter pw = resp.getWriter();
@@ -201,7 +209,7 @@ public class ContentServlet extends HttpServlet {
      * {@inheritDoc}
      */
     @Override
-    protected void doGet(final HttpServletRequest request,
+    protected final void doGet(final HttpServletRequest request,
                                final HttpServletResponse response)
                         throws ServletException,
                                IOException {
@@ -238,10 +246,65 @@ public class ContentServlet extends HttpServlet {
      *
      * @param response The response that should not be cached.
      */
-    void disableCachingFor(final HttpServletResponse response) {
+    final void disableCachingFor(final HttpServletResponse response) {
         // TODO Add setting of 'Expires' header to some time in the past?
         response.setHeader("Pragma", "no-cache"); // Mostly useless
         response.setHeader("Cache-Control", "no-cache"); // HTTP 1.1
+    }
+
+    /**
+     * Locate an appropriate template for rendering a resource as XHTML.
+     *
+     * @param resource The resource that will be transformed by the template.
+     * @return The name of the resource as a string.
+     */
+    final String lookupTemplateForResource(final Resource resource) {
+
+        switch (resource.type()) {
+            case CONTENT:
+                return "content.vm";
+            case FOLDER:
+                return "folder.vm";
+            default:
+                throw new CCCException(
+                    "Unsupported resource type: "+resource.type());
+        }
+    }
+
+    /**
+     * Render a resource with the specified template.
+     *
+     * @param resource The resource that will be rendered.
+     * @param template The template used to render the resource.
+     * @return The html rendering as a string.
+     */
+    final String render(final Resource resource, final String template) {
+
+        final VelocityContext context = new VelocityContext();
+        context.put("resource", resource);
+
+        final StringWriter html = new StringWriter();
+        final VelocityEngine ve = new VelocityEngine();
+
+        try {
+            ve.init();
+        } catch (final Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            Velocity.evaluate(context, html, "????", template);
+        } catch (final ParseErrorException e) {
+            throw new CCCException(e);
+        } catch (final MethodInvocationException e) {
+            throw new CCCException(e);
+        } catch (final ResourceNotFoundException e) {
+            throw new CCCException(e);
+        } catch (final IOException e) {
+            throw new CCCException(e);
+        }
+
+        return html.toString();
     }
 
 }
