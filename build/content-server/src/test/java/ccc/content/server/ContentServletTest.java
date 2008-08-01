@@ -29,7 +29,6 @@ import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
-import ccc.services.ResourceManager;
 import ccc.services.adaptors.ResourceManagerAdaptor;
 
 
@@ -163,18 +162,9 @@ public final class ContentServletTest extends TestCase {
 
         // ARRANGE
         final StringWriter output = new StringWriter();
-        final ContentServlet contentServlet = new ContentServlet() {
-
-            /** serialVersionUID : long */
-            private static final long serialVersionUID = 7146453466370673791L;
-
-            /**
-             * @see ccc.content.server.ContentServlet#resourceManager()
-             */
-            @Override
-            protected ResourceManager resourceManager() {
-
-                return new ResourceManagerAdaptor() {
+        final ContentServlet contentServlet =
+            new ContentServlet(
+                new ResourceManagerAdaptor() {
 
                     /** @see ResourceManagerAdaptor#lookup(java.lang.String) */
                     @Override
@@ -183,9 +173,7 @@ public final class ContentServletTest extends TestCase {
                             new Content(new ResourceName("name"))
                                 .addParagraph("Header", new Paragraph("<br/>"));
                     }
-                };
-            }
-        };
+                });
 
         // EXPECT
         response.setHeader("Pragma", "no-cache");
@@ -215,27 +203,15 @@ public final class ContentServletTest extends TestCase {
 
         // ARRANGE
         final StringWriter output = new StringWriter();
-        final ContentServlet contentServlet = new ContentServlet() {
+        final ContentServlet contentServlet =
+            new ContentServlet(new ResourceManagerAdaptor() {
+                /** @see ResourceManagerAdaptor#lookup(java.lang.String) */
+                @Override
+                public Resource lookup(final ResourcePath path) {
 
-            /** serialVersionUID : long. */
-            private static final long serialVersionUID = 2262124294292394015L;
-
-            /**
-             * @see ccc.content.server.ContentServlet#resourceManager()
-             */
-            @Override
-            protected ResourceManager resourceManager() {
-
-                return new ResourceManagerAdaptor() {
-
-                    /** @see ResourceManagerAdaptor#lookup(java.lang.String) */
-                    @Override
-                    public Resource lookup(final ResourcePath path) {
-                        return new Folder(new ResourceName("foo"));
-                    }
-                };
-            }
-        };
+                    return new Folder(new ResourceName("foo"));
+                }
+            });
 
         // EXPECT
         response.setHeader("Pragma", "no-cache");
