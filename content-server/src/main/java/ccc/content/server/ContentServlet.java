@@ -13,9 +13,9 @@
 package ccc.content.server;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Map;
+import java.nio.charset.Charset;
+import java.util.Properties;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -23,20 +23,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
+import org.apache.velocity.runtime.RuntimeConstants;
 
 import ccc.commons.jee.JNDI;
+import ccc.commons.jee.Resources;
 import ccc.domain.CCCException;
 import ccc.domain.Content;
 import ccc.domain.Folder;
-import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
-import ccc.domain.ResourceType;
 import ccc.services.ResourceManager;
 
 
@@ -79,7 +78,7 @@ public final class ContentServlet extends HttpServlet {
      *       session locale setting]
      * TODO: Character encoding:
      *  log: [request content-type;
-     *        response content-type;
+     *        response content-type;    // Done
      *        Accept-Charset header;
      *        Accept-encoding header]
      *
@@ -103,6 +102,7 @@ public final class ContentServlet extends HttpServlet {
                     throws IOException {
 
         disableCachingFor(response);
+        configureCharacterEncoding(response);
 
         final ResourcePath contentPath =
             new ResourcePath(request.getPathInfo());
@@ -140,24 +140,12 @@ public final class ContentServlet extends HttpServlet {
      * @throws IOException If writing to the response fails.
      */
     void write(final HttpServletResponse resp,
-                       final Content content) throws IOException {
+               final Content content) throws IOException {
 
+        final String template = lookupTemplateForResource(content);
+        final String html = render(content, template);
         resp.setContentType("text/html");
-        final PrintWriter pw = resp.getWriter();
-
-        pw.write("<H1>");
-        pw.write(content.name().toString());
-        pw.write("</H1>");
-
-        for (final Map.Entry<String, Paragraph> paragraph
-                : content.paragraphs().entrySet()) {
-            pw.write("<H2>");
-            pw.write(paragraph.getKey());
-            pw.write("</H2>");
-            pw.write("<P>");
-            pw.write(paragraph.getValue().body());
-            pw.write("</P>");
-        }
+        resp.getWriter().write(html);
     }
 
     /**
@@ -170,30 +158,10 @@ public final class ContentServlet extends HttpServlet {
     void write(final HttpServletResponse resp,
                      final Folder folder) throws IOException {
 
+        final String template = lookupTemplateForResource(folder);
+        final String html = render(folder, template);
         resp.setContentType("text/html");
-        final PrintWriter pw = resp.getWriter();
-        pw.write("<H1>");
-        pw.write(folder.name().toString());
-        pw.write("</H1>");
-        pw.write("<UL>");
-        for (final Resource entry : folder.entries()) {
-            pw.write("<LI>");
-            if (entry.type() == ResourceType.FOLDER) {
-                pw.write("<A href=\"");
-                pw.write(entry.name().toString());
-                pw.write("/\">");
-                pw.write(entry.name().toString());
-                pw.write("</A>");
-            } else {
-                pw.write("<A href=\"");
-                pw.write(entry.name().toString());
-                pw.write("/\">");
-                pw.write(entry.name().toString());
-                pw.write("</A>");
-            }
-            pw.write("</LI>");
-        }
-        pw.write("</UL>");
+        resp.getWriter().write(html);
     }
 
     /**
@@ -278,9 +246,15 @@ public final class ContentServlet extends HttpServlet {
 
         switch (resource.type()) {
             case CONTENT:
-                return "content.vm";
+                return
+                Resources.readIntoString(
+                    getClass().getResource("default-content-template.txt"),
+                    Charset.forName("ISO-8859-1"));
             case FOLDER:
-                return "folder.vm";
+                return
+                Resources.readIntoString(
+                    getClass().getResource("default-folder-template.txt"),
+                    Charset.forName("ISO-8859-1"));
             default:
                 throw new CCCException(
                     "Unsupported resource type: "+resource.type());
@@ -296,20 +270,24 @@ public final class ContentServlet extends HttpServlet {
      */
     String render(final Resource resource, final String template) {
 
-        final VelocityContext context = new VelocityContext();
-        context.put("resource", resource);
-
         final StringWriter html = new StringWriter();
-        final VelocityEngine ve = new VelocityEngine();
+
+        final Properties velocityProperties = new Properties();
+        velocityProperties.setProperty(
+            RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS,
+            "org.apache.velocity.runtime.log.Log4JLogChute");
+        velocityProperties.setProperty(
+            "runtime.log.logsystem.log4j.logger",
+            getClass().getName());
 
         try {
+            final VelocityEngine ve = new VelocityEngine(velocityProperties);
             ve.init();
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
-        }
+            final VelocityContext context = new VelocityContext();
+            context.put("resource", resource);
 
-        try {
-            Velocity.evaluate(context, html, "????", template);
+            ve.evaluate(context, html, "????", template);
+
         } catch (final ParseErrorException e) {
             throw new CCCException(e);
         } catch (final MethodInvocationException e) {
@@ -318,9 +296,20 @@ public final class ContentServlet extends HttpServlet {
             throw new CCCException(e);
         } catch (final IOException e) {
             throw new CCCException(e);
+        } catch (final Exception e) {
+            throw new CCCException(e);
         }
 
         return html.toString();
     }
 
+    /**
+     * Set the character encoding for a response.
+     *
+     * @param response The response for which we'll set the char encoding.
+     *
+     */
+    void configureCharacterEncoding(final HttpServletResponse response) {
+        response.setCharacterEncoding("UTF-8");
+    }
 }

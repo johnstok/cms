@@ -17,12 +17,14 @@ import static org.easymock.EasyMock.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.charset.Charset;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
+import ccc.commons.jee.Resources;
 import ccc.domain.Content;
 import ccc.domain.Folder;
 import ccc.domain.Paragraph;
@@ -34,11 +36,6 @@ import ccc.services.adaptors.ResourceManagerAdaptor;
 
 /**
  * Tests for the ContentServlet.
- *
- * TODO: velocity logging.
- * TODO: velocity character encoding.
- * TODO: velocity property setting.
- * TODO: Factor templates out of write methods.
  *
  * @author Civic Computing Ltd
  */
@@ -77,7 +74,11 @@ public final class ContentServletTest extends TestCase {
             new ContentServlet().lookupTemplateForResource(foo);
 
         // ASSERT
-        assertEquals("content.vm", templateName);
+        assertEquals(
+            Resources.readIntoString(
+                getClass().getResource("default-content-template.txt"),
+                Charset.forName("ISO-8859-1")),
+            templateName);
     }
 
     /**
@@ -93,7 +94,11 @@ public final class ContentServletTest extends TestCase {
             new ContentServlet().lookupTemplateForResource(foo);
 
         // ASSERT
-        assertEquals("folder.vm", templateName);
+        assertEquals(
+            Resources.readIntoString(
+                getClass().getResource("default-folder-template.txt"),
+                Charset.forName("ISO-8859-1")),
+            templateName);
     }
 
     /**
@@ -119,7 +124,15 @@ public final class ContentServletTest extends TestCase {
         // ASSERT
         verify(response);
         assertEquals(
-            "<H1>foo</H1><H2>key1</H2><P>para1</P><H2>key2</H2><P>para2</P>",
+            "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" "
+            + "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n"
+            + "<html xmlns=\"http://www.w3.org/1999/xhtml\">"
+            + "<head><title>foo</title></head>"
+            + "<body>\r\n"
+            + "<h1>foo</h1>\r\n"
+            + "<h2>key1</h2><p>para1</p>\r\n"
+            + "<h2>key2</h2><p>para2</p>\r\n"
+            + "</body></html>",
             output.toString());
     }
 
@@ -146,9 +159,14 @@ public final class ContentServletTest extends TestCase {
         // ASSERT
         verify(response);
         assertEquals(
-            "<H1>top</H1>"
-            + "<UL><LI><A href=\"child_a/\">child_a</A></LI>"
-            + "<LI><A href=\"child_b/\">child_b</A></LI></UL>",
+            "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" "
+            + "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n"
+            + "<html xmlns=\"http://www.w3.org/1999/xhtml\">"
+            + "<head><title>Folder: top</title></head>"
+            + "<body>\r\n<h1>Folder: top</h1>\r\n"
+            + "<ul>\r\n<li><a href=\"child_a/\">child_a</a></li>\r\n"
+            + "<li><a href=\"child_b/\">child_b</a></li>\r\n</ul>\r\n"
+            + "</body></html>",
             output.toString());
     }
 
@@ -178,8 +196,9 @@ public final class ContentServletTest extends TestCase {
         // EXPECT
         response.setHeader("Pragma", "no-cache");
         response.setHeader("Cache-Control", "no-cache");
-        expect(request.getPathInfo()).andReturn("/foo/");
+        response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html");
+        expect(request.getPathInfo()).andReturn("/foo/");
         expect(response.getWriter()).andReturn(new PrintWriter(output));
         replay(request, response);
 
@@ -189,7 +208,12 @@ public final class ContentServletTest extends TestCase {
         // VERIFY
         verify(request, response);
         assertEquals(
-            "<H1>name</H1><H2>Header</H2><P><br/></P>",
+            "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" "
+            + "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n"
+            + "<html xmlns=\"http://www.w3.org/1999/xhtml\">"
+            + "<head><title>name</title></head>"
+            + "<body>\r\n<h1>name</h1>\r\n<h2>Header</h2><p><br/></p>\r\n"
+            + "</body></html>",
             output.toString());
     }
 
@@ -216,8 +240,9 @@ public final class ContentServletTest extends TestCase {
         // EXPECT
         response.setHeader("Pragma", "no-cache");
         response.setHeader("Cache-Control", "no-cache");
-        expect(request.getPathInfo()).andReturn("/foo/");
+        response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html");
+        expect(request.getPathInfo()).andReturn("/foo/");
         expect(response.getWriter()).andReturn(new PrintWriter(output));
         replay(request, response);
 
@@ -226,7 +251,13 @@ public final class ContentServletTest extends TestCase {
 
         // VERIFY
         verify(request, response);
-        assertEquals("<H1>foo</H1><UL></UL>", output.toString());
+        assertEquals(
+            "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" "
+            + "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n"
+            + "<html xmlns=\"http://www.w3.org/1999/xhtml\">"
+            + "<head><title>Folder: foo</title></head>"
+            + "<body>\r\n<h1>Folder: foo</h1>\r\n<ul>\r\n</ul>\r\n</body>"
+            + "</html>", output.toString());
     }
 
     /**
@@ -241,6 +272,22 @@ public final class ContentServletTest extends TestCase {
 
         // ACT
         new ContentServlet().disableCachingFor(response);
+
+        // VERIFY
+        verify(response);
+    }
+
+    /**
+     * Test.
+     */
+    public void testCharacterEncodingIsSetToUtf8() {
+
+        // ARRANGE
+        response.setCharacterEncoding("UTF-8");
+        replay(response);
+
+        // ACT
+        new ContentServlet().configureCharacterEncoding(response);
 
         // VERIFY
         verify(response);
