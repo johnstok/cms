@@ -61,12 +61,12 @@ public final class ResourceRefTest extends TestCase {
 
         // ASSERT
         assertEquals(
-            "{" +
-            "\"name\": \"foo\"," +
-            "\"id\": \"7842c70f-87d8-41da-bd58-f4e8adbaf5b8\"," +
-            "\"type\": \"FOLDER\"," +
-            "\"children-count\": \"2\"" +
-            "}",
+            "{"
+            + "\"name\": \"foo\","
+            + "\"id\": \"7842c70f-87d8-41da-bd58-f4e8adbaf5b8\","
+            + "\"type\": \"FOLDER\","
+            + "\"children-count\": \"2\""
+            + "}",
             jsonString);
     }
 }

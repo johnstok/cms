@@ -52,9 +52,9 @@ public abstract class Resource extends Entity implements JSONable {
     protected Resource(final ResourceName resourceName,
                        final String titleString) {
         require().notNull(resourceName);
-        require().notEmpty(titleString);
+
         name = resourceName;
-        title = titleString;
+        title(titleString);
     }
 
     /**
@@ -101,13 +101,14 @@ public abstract class Resource extends Entity implements JSONable {
     public final String title() {
         return title;
     }
-    
+
     /**
      * Sets the title of the resource.
      *
-     * @param title
+     * @param titleString The new title for this resource.
      */
-    public final void title(String title) {
-        this.title = title;
+    public final void title(final String titleString) {
+        require().notEmpty(titleString);
+        title = titleString;
     }
 }

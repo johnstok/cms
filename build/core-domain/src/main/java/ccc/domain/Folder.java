@@ -108,7 +108,7 @@ public final class Folder extends Resource implements JSONable {
             currentPosition = currentPosition.asFolder().findEntryByName(name);
 
         }
-        return (T)currentPosition; // TODO: Work out why we need a cast here...
+        return (T) currentPosition; // TODO: Work out why we need a cast here...
     }
 
     /**
