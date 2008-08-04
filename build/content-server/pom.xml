@@ -20,7 +20,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<excludes>
-						<exclude>**/*SeleniumTest.java</exclude>
+						<exclude>**/*AcceptanceTest.java</exclude>
 						<exclude>**/*$*</exclude>
 					</excludes>
 				</configuration>
@@ -86,7 +86,7 @@
 									</excludes>
 									<includes>
 										<include>
-											**/*SeleniumTest.java
+											**/*AcceptanceTest.java
 										</include>
 									</includes>
 								</configuration>
