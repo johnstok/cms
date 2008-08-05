@@ -29,8 +29,8 @@ import junit.framework.TestCase;
 import org.easymock.Capture;
 
 import ccc.domain.CCCException;
-import ccc.domain.Page;
 import ccc.domain.Folder;
+import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Queries;
@@ -382,6 +382,9 @@ public final class ResourceManagerEJBTest extends TestCase {
         assertEquals("test text", page.paragraphs().get("HEADER").body());
     }
 
+    /**
+     * Test.
+     */
     public void testLookupFromId() {
 
         // ARRANGE
@@ -438,8 +441,8 @@ public final class ResourceManagerEJBTest extends TestCase {
      */
     private final class SimpleEM extends EntityManagerAdaptor {
 
-        /** page : Page. */
-        private final Page page;
+        /** _page : Page. */
+        private final Page _page;
 
         /**
          * Constructor.
@@ -448,13 +451,13 @@ public final class ResourceManagerEJBTest extends TestCase {
          */
         private SimpleEM(final Page page) {
 
-            this.page = page;
+            _page = page;
         }
 
         @SuppressWarnings("unchecked")
         @Override
         public <T> T find(final Class<T> type, final Object id) {
-            return (T) page;
+            return (T) _page;
         }
     }
 }
