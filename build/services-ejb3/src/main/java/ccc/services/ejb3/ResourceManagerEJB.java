@@ -30,8 +30,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import ccc.domain.CCCException;
-import ccc.domain.Page;
 import ccc.domain.Folder;
+import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
@@ -55,7 +55,7 @@ public class ResourceManagerEJB implements ResourceManager {
     @PersistenceContext(
         unitName = "ccc-persistence",
         type     = EXTENDED)
-    private EntityManager em;
+    private EntityManager _em;
 
     /**
      * Constructor.
@@ -69,7 +69,7 @@ public class ResourceManagerEJB implements ResourceManager {
      * @param entityManager A JPA entity manager.
      */
     public ResourceManagerEJB(final EntityManager entityManager) {
-        em = entityManager;
+        _em = entityManager;
     }
 
     /**
@@ -104,7 +104,7 @@ public class ResourceManagerEJB implements ResourceManager {
                 currentFolder = currentFolder.findEntryByName(name).asFolder();
             } catch(final CCCException e) {
                 final Folder newFolder = new Folder(name);
-                em.persist(newFolder);
+                _em.persist(newFolder);
                 currentFolder.add(newFolder);
                 currentFolder = newFolder;
             } catch(final ClassCastException e) {
@@ -123,7 +123,7 @@ public class ResourceManagerEJB implements ResourceManager {
         try {
             contentRoot();
         } catch (final NoResultException e) {
-            em.persist(new Folder(PredefinedResourceNames.CONTENT));
+            _em.persist(new Folder(PredefinedResourceNames.CONTENT));
         }
     }
 
@@ -135,7 +135,7 @@ public class ResourceManagerEJB implements ResourceManager {
      */
     private Folder contentRoot() {
 
-        final Query q = em.createNamedQuery(RESOURCE_BY_URL);
+        final Query q = _em.createNamedQuery(RESOURCE_BY_URL);
         q.setParameter("name", PredefinedResourceNames.CONTENT);
         final Object singleResult = q.getSingleResult();
 
@@ -169,7 +169,7 @@ public class ResourceManagerEJB implements ResourceManager {
                 "A folder already exists at the path "+pathString);
         } else if (!resourceExists) {
             final Page newContent = new Page(name);
-            em.persist(newContent);
+            _em.persist(newContent);
             parentFolder.add(newContent);
         }
     }
@@ -192,26 +192,26 @@ public class ResourceManagerEJB implements ResourceManager {
     }
 
     /**
-     * @see ccc.services.ResourceManager#lookup(java.util.UUID)
+     * {@inheritDoc}
      */
     @Override
-    public Resource lookup(UUID id) {
-       return em.find(Resource.class, id);
+    public final Resource lookup(final UUID id) {
+       return _em.find(Resource.class, id);
     }
 
     /**
-     * @see ccc.services.ResourceManager#saveContent(java.lang.String, java.lang.String, java.util.Map)
+     * {@inheritDoc}
      */
     @Override
-    public void saveContent(String id,
-                            String title,
-                            Map<String, String> paragraphs) {
-        
-        Page page = lookup(UUID.fromString(id)).asPage();
+    public final void saveContent(final String id,
+                            final String title,
+                            final Map<String, String> paragraphs) {
+
+        final Page page = lookup(UUID.fromString(id)).asPage();
         page.title(title);
         page.deleteAllParagraphs();
-        
-        for (String key : paragraphs.keySet()) {
+
+        for (final String key : paragraphs.keySet()) {
             page.addParagraph(key, new Paragraph(paragraphs.get(key)));
         }
     }
