@@ -23,8 +23,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
  */
 @RemoteServiceRelativePath("resource")
 public  interface ResourceService extends RemoteService {
-  public String getContentRoot();
-  public String getResource(String absolutePath);
-  public void saveContent(String id, String title, Map<String, String> paragraphs);
-  
+  String getContentRoot();
+  String getResource(String absolutePath);
+  void saveContent(String id, String title, Map<String, String> paragraphs);
 }

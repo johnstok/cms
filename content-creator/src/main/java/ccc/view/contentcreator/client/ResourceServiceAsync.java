@@ -21,7 +21,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @author Civic Computing Ltd
  */
 public interface ResourceServiceAsync {
-    public void getContentRoot(AsyncCallback<String> callback);
+    void getContentRoot(AsyncCallback<String> callback);
 
     /**
      * TODO: Add a description of this method.
@@ -29,7 +29,7 @@ public interface ResourceServiceAsync {
      * @param absolutePath
      * @param callback
      */
-    public void getResource(String absolutePath, AsyncCallback<String> callback);
+    void getResource(String absolutePath, AsyncCallback<String> callback);
 
-    public void saveContent(String id, String title, Map<String, String> paragraphs, AsyncCallback<Void> callback);
+    void saveContent(String id, String title, Map<String, String> paragraphs, AsyncCallback<Void> callback);
 }

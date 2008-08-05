@@ -92,6 +92,7 @@ public final class Folder extends Resource implements JSONable {
      * @param path The path to a resource, relative to this folder.
      * @return The resource at the specified path.
      */
+    @SuppressWarnings("unchecked")
     public <T extends Resource> T navigateTo(final ResourcePath path) {
 
         Resource currentPosition = this;
@@ -161,9 +162,11 @@ public final class Folder extends Resource implements JSONable {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Query method - returns the number of folders that are children of this
+     * folder.
      *
-     * @return
+     * @return The number of folders that are children of this folder, as an
+     *      integer.
      */
     public int folderCount() {
         int count = 0;

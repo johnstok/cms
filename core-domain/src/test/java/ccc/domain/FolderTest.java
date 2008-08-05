@@ -219,7 +219,7 @@ public final class FolderTest extends TestCase {
 
          // ASSERT
         } catch (final UnsupportedOperationException e) {
-            ; /* TODO: Add an assert for the error message? */
+            assertNull(e.getMessage());
         }
     }
 
