@@ -33,7 +33,7 @@ public final class FolderTest extends TestCase {
         // ARRANGE
         final Folder content = new Folder(new ResourceName("content"));
         final Folder ab = new Folder(new ResourceName("ab"));
-        final Content cd = new Content(new ResourceName("cd"));
+        final Page cd = new Page(new ResourceName("cd"));
         content.add(cd);
         content.add(ab);
 
@@ -52,8 +52,8 @@ public final class FolderTest extends TestCase {
         // ARRANGE
         final Folder content = new Folder(new ResourceName("content"));
         final Folder ab = new Folder(new ResourceName("ab"));
-        final Content cd = new Content(new ResourceName("cd"));
-        final Content ef = new Content(new ResourceName("ef"));
+        final Page cd = new Page(new ResourceName("cd"));
+        final Page ef = new Page(new ResourceName("ef"));
         content.add(cd);
         content.add(ab);
         ab.add(ef);
@@ -178,14 +178,14 @@ public final class FolderTest extends TestCase {
 
         // ARRANGE
         final Folder folder = new Folder(new ResourceName("foo"));
-        final Content content = new Content(new ResourceName("Name"));
+        final Page page = new Page(new ResourceName("Name"));
 
         // ACT
-        folder.add(content);
+        folder.add(page);
 
         // ASSERT
         assertEquals(1, folder.size());
-        assertEquals(Collections.singletonList(content), folder.entries());
+        assertEquals(Collections.singletonList(page), folder.entries());
     }
 
     /**
@@ -214,7 +214,7 @@ public final class FolderTest extends TestCase {
         final Folder foo = new Folder(new ResourceName("foo"));
         // ACT
         try {
-            foo.entries().add(new Content(new ResourceName("bar")));
+            foo.entries().add(new Page(new ResourceName("bar")));
             fail("A folder's entries collection should be unmodifiable.");
 
          // ASSERT
@@ -248,13 +248,13 @@ public final class FolderTest extends TestCase {
         // ARRANGE
         final Folder content = new Folder(new ResourceName("content"));
         final Folder ab = new Folder(new ResourceName("ab"));
-        final Content cd = new Content(new ResourceName("cd"));
+        final Page cd = new Page(new ResourceName("cd"));
         ab.add(cd);
         content.add(ab);
         final ResourcePath path = new ResourcePath("/ab/cd/");
 
         // ACT
-        final Content expectedContent = content.navigateTo(path);
+        final Page expectedContent = content.navigateTo(path);
 
         // ASSERT
         assertSame(cd, expectedContent);

@@ -66,12 +66,12 @@ public abstract class Resource extends Entity implements JSONable {
 
     /**
      * Type-safe helper method to convert an instance of {@link Resource} to an
-     * instance of {@link Content}.
+     * instance of {@link Page}.
      *
-     * @return This resource as Content.
+     * @return This resource as a Page.
      */
-    public final Content asContent() {
-        return Content.class.cast(this);
+    public final Page asPage() {
+        return Page.class.cast(this);
     }
 
     /**

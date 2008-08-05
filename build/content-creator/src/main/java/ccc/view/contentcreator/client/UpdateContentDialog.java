@@ -104,7 +104,7 @@ public class UpdateContentDialog extends DialogBox {
                 String id = content.get("id").isString().stringValue();
                 AsyncCallback<Void> callback = new AsyncCallback<Void>() {
                     public void onFailure(final Throwable arg0) {
-                        GWT.log("Content saving failed", arg0);
+                        GWT.log("Page saving failed", arg0);
                     }
                     public void onSuccess(final Void arg0) {
                         hide();

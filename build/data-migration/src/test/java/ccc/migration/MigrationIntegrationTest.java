@@ -76,6 +76,6 @@ public class MigrationIntegrationTest extends TestCase {
         
         resource = manager.lookup(new ResourcePath("/Home/blue_panel_content/"));
         assertNotNull("Resource /Home/blue_panel_content/ must not be null", resource);
-        assertEquals("Resource type must be content ", ResourceType.CONTENT, resource.type());
+        assertEquals("Resource type must be content ", ResourceType.PAGE, resource.type());
     }
 }

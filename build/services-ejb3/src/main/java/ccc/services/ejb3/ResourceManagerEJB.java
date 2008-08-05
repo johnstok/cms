@@ -30,7 +30,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import ccc.domain.CCCException;
-import ccc.domain.Content;
+import ccc.domain.Page;
 import ccc.domain.Folder;
 import ccc.domain.Paragraph;
 import ccc.domain.PredefinedResourceNames;
@@ -168,7 +168,7 @@ public class ResourceManagerEJB implements ResourceManager {
             throw new CCCException(
                 "A folder already exists at the path "+pathString);
         } else if (!resourceExists) {
-            final Content newContent = new Content(name);
+            final Page newContent = new Page(name);
             em.persist(newContent);
             parentFolder.add(newContent);
         }
@@ -182,12 +182,12 @@ public class ResourceManagerEJB implements ResourceManager {
                                    final String pathString,
                                    final Map<String, Paragraph> paragraphs) {
 
-        final Content content =
-            lookup(new ResourcePath(pathString)).asContent();
+        final Page page =
+            lookup(new ResourcePath(pathString)).asPage();
 
         for (final String key : paragraphs.keySet()) {
             final Paragraph paragraph = paragraphs.get(key);
-            content.addParagraph(key, paragraph);
+            page.addParagraph(key, paragraph);
         }
     }
 
@@ -207,12 +207,12 @@ public class ResourceManagerEJB implements ResourceManager {
                             String title,
                             Map<String, String> paragraphs) {
         
-        Content content = lookup(UUID.fromString(id)).asContent();
-        content.title(title);
-        content.deleteAllParagraphs();
+        Page page = lookup(UUID.fromString(id)).asPage();
+        page.title(title);
+        page.deleteAllParagraphs();
         
         for (String key : paragraphs.keySet()) {
-            content.addParagraph(key, new Paragraph(paragraphs.get(key)));
+            page.addParagraph(key, new Paragraph(paragraphs.get(key)));
         }
     }
 }

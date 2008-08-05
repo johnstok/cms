@@ -32,7 +32,7 @@ import org.apache.velocity.runtime.RuntimeConstants;
 import ccc.commons.jee.JNDI;
 import ccc.commons.jee.Resources;
 import ccc.domain.CCCException;
-import ccc.domain.Content;
+import ccc.domain.Page;
 import ccc.domain.Folder;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
@@ -119,9 +119,9 @@ public final class ContentServlet extends HttpServlet {
                        final Resource resource) throws IOException {
 
         switch (resource.type()) {
-            case CONTENT:
-                final Content content = resource.asContent();
-                write(resp, content);
+            case PAGE:
+                final Page page = resource.asPage();
+                write(resp, page);
                 break;
             case FOLDER:
                 final Folder folder = resource.asFolder();
@@ -136,14 +136,14 @@ public final class ContentServlet extends HttpServlet {
      * Write content to the response.
      *
      * @param resp The response.
-     * @param content The content to write to the response.
+     * @param page The content to write to the response.
      * @throws IOException If writing to the response fails.
      */
     void write(final HttpServletResponse resp,
-               final Content content) throws IOException {
+               final Page page) throws IOException {
 
-        final String template = lookupTemplateForResource(content);
-        final String html = render(content, template);
+        final String template = lookupTemplateForResource(page);
+        final String html = render(page, template);
         resp.setContentType("text/html");
         resp.getWriter().write(html);
     }
@@ -245,7 +245,7 @@ public final class ContentServlet extends HttpServlet {
     String lookupTemplateForResource(final Resource resource) {
 
         switch (resource.type()) {
-            case CONTENT:
+            case PAGE:
                 return
                 Resources.readIntoString(
                     getClass().getResource("default-content-template.txt"),

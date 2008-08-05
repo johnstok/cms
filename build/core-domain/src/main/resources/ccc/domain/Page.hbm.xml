@@ -18,11 +18,11 @@
 
 <hibernate-mapping default-access="field">
     <joined-subclass
-        name="ccc.domain.Content" extends="ccc.domain.Resource">
+        name="ccc.domain.Page" extends="ccc.domain.Resource">
         <key column="id" />
         
         <!-- 
-         | TODO: We need to provide a TreeMap here!
+         | TODO: We need to provide a LinkedHashMap here!
          -->
         <map name="content">
             <key column="id"  not-null="true" />
