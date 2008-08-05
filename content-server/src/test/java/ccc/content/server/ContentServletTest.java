@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
 import ccc.commons.jee.Resources;
-import ccc.domain.Content;
+import ccc.domain.Page;
 import ccc.domain.Folder;
 import ccc.domain.Paragraph;
 import ccc.domain.Resource;
@@ -50,7 +50,7 @@ public final class ContentServletTest extends TestCase {
     public void testRenderResource() {
 
         // ARRANGE
-        final Content foo = new Content(new ResourceName("foo"));
+        final Page foo = new Page(new ResourceName("foo"));
         foo.addParagraph("bar", new Paragraph("baz"));
         final String template = "Hello $resource.id()";
 
@@ -67,7 +67,7 @@ public final class ContentServletTest extends TestCase {
     public void testLookupTemplateForContent() {
 
         // ARRANGE
-        final Content foo = new Content(new ResourceName("foo"));
+        final Page foo = new Page(new ResourceName("foo"));
 
         // ACT
         final String templateName =
@@ -110,16 +110,16 @@ public final class ContentServletTest extends TestCase {
 
         // ARRANGE
         final StringWriter output = new StringWriter();
-        final Content content = new Content(new ResourceName("foo"));
-        content.addParagraph("key1", new Paragraph("para1"));
-        content.addParagraph("key2", new Paragraph("para2"));
+        final Page page = new Page(new ResourceName("foo"));
+        page.addParagraph("key1", new Paragraph("para1"));
+        page.addParagraph("key2", new Paragraph("para2"));
 
         response.setContentType("text/html");
         expect(response.getWriter()).andReturn(new PrintWriter(output));
         replay(response);
 
         // ACT
-        new ContentServlet().write(response, content);
+        new ContentServlet().write(response, page);
 
         // ASSERT
         verify(response);
@@ -147,7 +147,7 @@ public final class ContentServletTest extends TestCase {
         final StringWriter output = new StringWriter();
         final Folder top = new Folder(new ResourceName("top"));
         top.add(new Folder(new ResourceName("child_a")));
-        top.add(new Content(new ResourceName("child_b")));
+        top.add(new Page(new ResourceName("child_b")));
 
         response.setContentType("text/html");
         expect(response.getWriter()).andReturn(new PrintWriter(output));
@@ -188,7 +188,7 @@ public final class ContentServletTest extends TestCase {
                     @Override
                     public Resource lookup(final ResourcePath path) {
                         return
-                            new Content(new ResourceName("name"))
+                            new Page(new ResourceName("name"))
                                 .addParagraph("Header", new Paragraph("<br/>"));
                     }
                 });

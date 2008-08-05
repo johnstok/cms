@@ -26,7 +26,7 @@ import ccc.commons.jee.JSON;
  *
  * @author Civic Computing Ltd
  */
-public final class Content extends Resource {
+public final class Page extends Resource {
 
     /** serialVersionUID : long. */
     private static final long serialVersionUID = 2797475534849447269L;
@@ -37,14 +37,14 @@ public final class Content extends Resource {
      * N.B. This constructor should only be used for persistence.
      */
     @SuppressWarnings("unused")
-    private Content() { super(); }
+    private Page() { super(); }
 
     /**
      * Constructor.
      *
      * @param name The name of the resource.
      */
-    public Content(final ResourceName name) {
+    public Page(final ResourceName name) {
         super(name);
     }
 
@@ -54,7 +54,7 @@ public final class Content extends Resource {
      * @param name The name of the resource.
      * @param title The title of the resource.
      */
-    public Content(final ResourceName name, final String title) {
+    public Page(final ResourceName name, final String title) {
         super(name, title);
     }
 
@@ -63,7 +63,7 @@ public final class Content extends Resource {
      */
     @Override
     public ResourceType type() {
-        return ResourceType.CONTENT;
+        return ResourceType.PAGE;
     }
 
     /**
@@ -73,7 +73,7 @@ public final class Content extends Resource {
      * @param paragraph The paragraph to be added.
      * @return 'this' - useful for method chaining.
      */
-    public Content addParagraph(final String key, final Paragraph paragraph) {
+    public Page addParagraph(final String key, final Paragraph paragraph) {
         DBC.require().notEmpty(key);
         DBC.require().notNull(paragraph);
         content.put(key, paragraph);

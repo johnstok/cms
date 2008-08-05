@@ -19,11 +19,11 @@ package ccc.view.contentcreator.client;
 public interface Constants extends com.google.gwt.i18n.client.Constants {
 
     /**
-     * "Update Content".
+     * "Update Page".
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Update Content")
+    @DefaultStringValue("Update Page")
     String updateContent();
 
     /**

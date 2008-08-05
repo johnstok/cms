@@ -19,8 +19,8 @@ package ccc.domain;
  */
 public enum ResourceType {
 
-    /** CONTENT : ResourceType. */
-    CONTENT,
+    /** PAGE : ResourceType. */
+    PAGE,
 
     /** FOLDER : ResourceType. */
     FOLDER;

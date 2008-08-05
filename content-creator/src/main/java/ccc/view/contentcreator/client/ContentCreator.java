@@ -118,7 +118,7 @@ public final class ContentCreator implements EntryPoint {
 
                     children.setText(i+1, 0, type);
                     children.setText(i+1, 1, name);
-                    if (type.equals("CONTENT")) {
+                    if (type.equals("PAGE")) {
                         children.setWidget(
                             i+1,
                             2,

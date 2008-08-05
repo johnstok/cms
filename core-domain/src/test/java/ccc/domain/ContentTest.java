@@ -16,7 +16,7 @@ import junit.framework.TestCase;
 
 
 /**
- * Tests for the {@link Content} class.
+ * Tests for the {@link Page} class.
  *
  * TODO: test that null keys are disallowed.
  * TODO: test that max key length is 256.
@@ -31,17 +31,17 @@ public final class ContentTest extends TestCase {
     public void testToJson() {
 
         // ARRANGE
-        final Content content = new Content(new ResourceName("foo"), "Foo?");
-        content.addParagraph("bar", new Paragraph("bar"));
-        content.addParagraph("baz", new Paragraph("baz"));
+        final Page page = new Page(new ResourceName("foo"), "Foo?");
+        page.addParagraph("bar", new Paragraph("bar"));
+        page.addParagraph("baz", new Paragraph("baz"));
 
         // ACT
-        final String jsonString = content.toJSON();
+        final String jsonString = page.toJSON();
 
         // ASSERT
         assertEquals(
             "{\"id\": \""
-            + content.id().toString()
+            + page.id().toString()
             + "\",\"title\": \"Foo?\",\"paragraphs\": "
             + "{\"bar\": {\"body\": \"bar\"},\"baz\": {\"body\": \"baz\"}}}",
             jsonString);
@@ -56,11 +56,11 @@ public final class ContentTest extends TestCase {
         final ResourceName name = new ResourceName("foo");
 
         // ACT
-        final Content content = new Content(name);
+        final Page page = new Page(name);
 
         // ASSERT
-        assertEquals(name.toString(), content.title());
-        assertEquals(name, content.name());
+        assertEquals(name.toString(), page.title());
+        assertEquals(name, page.name());
     }
 
     /**
@@ -69,13 +69,13 @@ public final class ContentTest extends TestCase {
     public void testAddNewParagraph() {
 
         // ARRANGE
-        final Content content = new Content(new ResourceName("foo"), "Title");
+        final Page page = new Page(new ResourceName("foo"), "Title");
 
         // ACT
-        content.addParagraph("header", new Paragraph("<H1>Header</H1>"));
+        page.addParagraph("header", new Paragraph("<H1>Header</H1>"));
 
         // Assert
-        assertEquals(1, content.paragraphs().size());
+        assertEquals(1, page.paragraphs().size());
 
     }
 
@@ -85,18 +85,18 @@ public final class ContentTest extends TestCase {
     public void testDeleteParagraph() {
 
         // ARRANGE
-        final Content content = new Content(new ResourceName("foo"), "Title");
-        content.addParagraph("header", new Paragraph("<H1>Header</H1>"));
-        content.addParagraph("footer", new Paragraph("<H1>Footer</H1>"));
+        final Page page = new Page(new ResourceName("foo"), "Title");
+        page.addParagraph("header", new Paragraph("<H1>Header</H1>"));
+        page.addParagraph("footer", new Paragraph("<H1>Footer</H1>"));
 
         // ACT
-        content.deleteParagraph("header");
+        page.deleteParagraph("header");
 
         // Assert
-        assertEquals(1, content.paragraphs().size());
+        assertEquals(1, page.paragraphs().size());
         assertEquals(
             "<H1>Footer</H1>",
-            content.paragraphs().get("footer").body());
+            page.paragraphs().get("footer").body());
     }
 
     /**
@@ -105,7 +105,7 @@ public final class ContentTest extends TestCase {
     public void testConstructorRejectsEmptyNames() {
         // ACT
         try {
-            new Content(null);
+            new Page(null);
             fail("Resources should reject NULL for the name parameter.");
 
          // ASSERT
@@ -120,14 +120,14 @@ public final class ContentTest extends TestCase {
     public void testDeleteAllParagraphs() {
 
         // ARRANGE
-        final Content content = new Content(new ResourceName("foo"), "Title");
-        content.addParagraph("header", new Paragraph("<H1>Header</H1>"));
-        content.addParagraph("footer", new Paragraph("<H1>Footer</H1>"));
+        final Page page = new Page(new ResourceName("foo"), "Title");
+        page.addParagraph("header", new Paragraph("<H1>Header</H1>"));
+        page.addParagraph("footer", new Paragraph("<H1>Footer</H1>"));
 
         // ACT
-        content.deleteAllParagraphs();
+        page.deleteAllParagraphs();
 
         // ASSERT
-        assertEquals(0, content.paragraphs().size());
+        assertEquals(0, page.paragraphs().size());
     }
 }

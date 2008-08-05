@@ -29,7 +29,7 @@ import junit.framework.TestCase;
 import org.easymock.Capture;
 
 import ccc.domain.CCCException;
-import ccc.domain.Content;
+import ccc.domain.Page;
 import ccc.domain.Folder;
 import ccc.domain.Paragraph;
 import ccc.domain.PredefinedResourceNames;
@@ -56,7 +56,7 @@ public final class ResourceManagerEJBTest extends TestCase {
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
         final Folder foo = new Folder(new ResourceName("foo"));
-        final Content bar = new Content(new ResourceName("bar"))
+        final Page bar = new Page(new ResourceName("bar"))
                                     .addParagraph(
                                         "default",
                                         new Paragraph("<H1>Default</H!>"));
@@ -82,9 +82,9 @@ public final class ResourceManagerEJBTest extends TestCase {
             resourceMgr.lookup(new ResourcePath("/foo/bar/"));
 
         // ASSERT
-        assertEquals(ResourceType.CONTENT, resource.type());
-        final Content content = resource.asContent();
-        assertEquals(1, content.paragraphs().size());
+        assertEquals(ResourceType.PAGE, resource.type());
+        final Page page = resource.asPage();
+        assertEquals(1, page.paragraphs().size());
     }
 
     /**
@@ -226,8 +226,8 @@ public final class ResourceManagerEJBTest extends TestCase {
             })
             .anyTimes();
         em.persist(isA(Folder.class));
-        em.persist(isA(Content.class));
-        em.persist(isA(Content.class));
+        em.persist(isA(Page.class));
+        em.persist(isA(Page.class));
         replay(em);
 
         final ResourceManager resourceMgr = new ResourceManagerEJB(em);
@@ -244,8 +244,8 @@ public final class ResourceManagerEJBTest extends TestCase {
 
         final List<Resource> entries =
             contentRoot.entries().get(0).asFolder().entries();
-        assertEquals(ResourceType.CONTENT, entries.get(0).type());
-        assertEquals(ResourceType.CONTENT, entries.get(1).type());
+        assertEquals(ResourceType.PAGE, entries.get(0).type());
+        assertEquals(ResourceType.PAGE, entries.get(1).type());
         assertEquals("page1", entries.get(0).name().toString());
         assertEquals("page2", entries.get(1).name().toString());
     }
@@ -267,7 +267,7 @@ public final class ResourceManagerEJBTest extends TestCase {
             })
             .anyTimes();
         em.persist(isA(Folder.class));
-        em.persist(isA(Content.class));
+        em.persist(isA(Page.class));
         replay(em);
 
         final ResourceManager resourceMgr = new ResourceManagerEJB(em);
@@ -316,7 +316,7 @@ public final class ResourceManagerEJBTest extends TestCase {
         resourceMgr.createFolder("/foo/page1/");
         try {
             resourceMgr.createContent("/foo/page1/");
-            fail("Creation of content with"
+            fail("Creation of page with"
                     + "same name as existing folder should fail.");
         } catch (final CCCException e) {
             assertEquals(
@@ -353,7 +353,7 @@ public final class ResourceManagerEJBTest extends TestCase {
         })
         .anyTimes();
         em.persist(isA(Folder.class));  // foo
-        em.persist(isA(Content.class)); // foo/page1
+        em.persist(isA(Page.class)); // foo/page1
         replay(em);
 
         final ResourceManager resourceMgr = new ResourceManagerEJB(em);
@@ -375,17 +375,17 @@ public final class ResourceManagerEJBTest extends TestCase {
         final Folder folder = contentRoot.entries().get(0).asFolder();
         assertEquals("foo", folder.name().toString());
 
-        final Content content = folder.entries().get(0).asContent();
-        assertEquals("page1", content.name().toString());
+        final Page page = folder.entries().get(0).asPage();
+        assertEquals("page1", page.name().toString());
 
-        assertEquals(1, content.paragraphs().size());
-        assertEquals("test text", content.paragraphs().get("HEADER").body());
+        assertEquals(1, page.paragraphs().size());
+        assertEquals("test text", page.paragraphs().get("HEADER").body());
     }
 
     public void testLookupFromId() {
 
         // ARRANGE
-        final Content bar = new Content(new ResourceName("bar"))
+        final Page bar = new Page(new ResourceName("bar"))
                                     .addParagraph(
                                         "default",
                                         new Paragraph("<H1>Default</H1>"));
@@ -399,9 +399,9 @@ public final class ResourceManagerEJBTest extends TestCase {
             resourceMgr.lookup(bar.id());
 
         // ASSERT
-        assertEquals(ResourceType.CONTENT, resource.type());
-        final Content content = resource.asContent();
-        assertEquals(1, content.paragraphs().size());
+        assertEquals(ResourceType.PAGE, resource.type());
+        final Page page = resource.asPage();
+        assertEquals(1, page.paragraphs().size());
     }
 
     /**
@@ -410,10 +410,10 @@ public final class ResourceManagerEJBTest extends TestCase {
     public void testSaveContent() {
 
         // ARRANGE
-        final Content content = new Content(new ResourceName("test"));
-        content.addParagraph("abc", new Paragraph("def"));
+        final Page page = new Page(new ResourceName("test"));
+        page.addParagraph("abc", new Paragraph("def"));
 
-        final EntityManager em = new SimpleEM(content);
+        final EntityManager em = new SimpleEM(page);
 
         final ResourceManagerEJB resourceMgr = new ResourceManagerEJB(em);
 
@@ -421,14 +421,14 @@ public final class ResourceManagerEJBTest extends TestCase {
         final Map<String, String> paragraphs = new HashMap<String, String>();
         paragraphs.put("foo", "bar");
         resourceMgr.saveContent(
-            content.id().toString(),
+            page.id().toString(),
             "new title", paragraphs);
 
         // ASSERT
-        assertEquals("new title", content.title());
-        assertEquals(1, content.paragraphs().size());
-        assertEquals("foo", content.paragraphs().keySet().iterator().next());
-        assertEquals("bar", content.paragraphs().get("foo").body());
+        assertEquals("new title", page.title());
+        assertEquals(1, page.paragraphs().size());
+        assertEquals("foo", page.paragraphs().keySet().iterator().next());
+        assertEquals("bar", page.paragraphs().get("foo").body());
     }
 
     /**
@@ -438,23 +438,23 @@ public final class ResourceManagerEJBTest extends TestCase {
      */
     private final class SimpleEM extends EntityManagerAdaptor {
 
-        /** content : Content. */
-        private final Content content;
+        /** page : Page. */
+        private final Page page;
 
         /**
          * Constructor.
          *
-         * @param content The content to return from find().
+         * @param page The page to return from find().
          */
-        private SimpleEM(final Content content) {
+        private SimpleEM(final Page page) {
 
-            this.content = content;
+            this.page = page;
         }
 
         @SuppressWarnings("unchecked")
         @Override
         public <T> T find(final Class<T> type, final Object id) {
-            return (T) content;
+            return (T) page;
         }
     }
 }
