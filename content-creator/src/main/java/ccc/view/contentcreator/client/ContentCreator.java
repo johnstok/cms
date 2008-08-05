@@ -1,6 +1,8 @@
 
 package ccc.view.contentcreator.client;
 
+import java.util.ArrayList;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.json.client.JSONArray;
@@ -8,6 +10,8 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.WindowResizeListener;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -41,11 +45,32 @@ public final class ContentCreator implements EntryPoint {
         root.ensureDebugId("root_treeitem");
         populate(root);
 
-        final Tree t = new Tree();
+        final Tree t = new Tree() {
+            /**
+             * @see com.google.gwt.user.client.ui.Tree#onBrowserEvent(com.google.gwt.user.client.Event)
+             */
+            @Override
+            public void onBrowserEvent(Event event) {
+                // Handle double-clicks
+                if ( DOM.eventGetType(event) == Event.ONDBLCLICK) {
+                    Element e = DOM.eventGetTarget(event);
+                    
+                    ArrayList<Element> chain = new ArrayList<Element>();
+                    collectElementChain(chain, getElement(), e);
+
+                    TreeItem item = findItemByChain(chain, 0, root);
+                    item.setState(!item.getState(), true);
+                }
+                else {
+                    super.onBrowserEvent(event);
+                }
+            }
+        };
+        
+        t.sinkEvents(Event.ONDBLCLICK);
         t.addItem(root);
         t.ensureDebugId("folder_tree");
         t.addTreeListener(new TreeListener() {
-
             public void onTreeItemSelected(final TreeItem arg0) {
 
                 GWT.log("Selected: " + arg0, null);
@@ -151,7 +176,7 @@ public final class ContentCreator implements EntryPoint {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Populates child tree items for given parentItem.
      *
      * @param parentItem
      */
@@ -178,12 +203,12 @@ public final class ContentCreator implements EntryPoint {
                     if(entry.get("type").isString().stringValue().equals("FOLDER")) {
                         String name = entry.get("name").isString().stringValue();
                         final TreeItem item = new TreeItem(name);
+                        item.ensureDebugId(name);
                         if(new Integer(entry.get("folder-count").isString().stringValue())>0) {
                             item.addItem("Loading contents...");
                         }
                         parentItem.addItem(item);
                     }
-
                 }
             }
 
@@ -197,5 +222,51 @@ public final class ContentCreator implements EntryPoint {
             GWTSupport.calculatePathForTreeItem(parentItem);
         resourceService.getResource(absolutePath, callback);
 
+    }
+    
+    /**
+     * Copied from Tree
+     *
+     * @param chain
+     * @param hRoot
+     * @param hElem
+     */
+    private void collectElementChain(ArrayList<Element> chain, Element hRoot,
+                                     Element hElem) {
+        if ((hElem == null) || (hElem == hRoot)) {
+            return;
+        }
+
+        collectElementChain(chain, hRoot, DOM.getParent(hElem));
+        chain.add(hElem);
+    }
+    
+    /**
+     * Copied from Tree
+     *
+     * @param chain
+     * @param idx
+     * @param root
+     * @return
+     */
+    private TreeItem findItemByChain(ArrayList<Element> chain, int idx,
+                                     TreeItem root) {
+        if (idx == chain.size()) {
+            return root;
+        }
+
+        Element hCurElem = chain.get(idx);
+        for (int i = 0, n = root.getChildCount(); i < n; ++i) {
+            TreeItem child = root.getChild(i);
+            if (child.getElement() == hCurElem) {
+                TreeItem retItem = findItemByChain(chain, idx + 1, root.getChild(i));
+                if (retItem == null) {
+                    return child;
+                }
+                return retItem;
+            }
+        }
+
+        return findItemByChain(chain, idx + 1, root);
     }
 }

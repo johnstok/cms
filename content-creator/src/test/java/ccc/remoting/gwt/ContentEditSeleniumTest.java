@@ -50,24 +50,22 @@ public final class ContentEditSeleniumTest extends TestCase {
      * Test.
      */
     public void testContentEdit() {
-        selenium.setSpeed("1000"); // give time to tree expands
-        
+        selenium.setSpeed("5000"); // give time to tree expands
+
         selenium.open("/content-creator/");
         assertEquals("ContentCreator", selenium.getTitle());
-        selenium.clickAt("//div[@id='gwt-debug-folder_tree-root-child0']/table/tbody/tr/td[1]/img", "");
-        selenium.clickAt("//div[@id='gwt-debug-folder_tree-root-child0']/div/div[3]/table/tbody/tr/td[1]/img", "");
-        selenium.clickAt("gwt-uid-14", "25,11");
+        selenium.mouseDown("gwt-debug-folder_tree-root-child0-content");
+
+        assertEquals("Home", selenium.getText("//body[@id='ext-gen6']/div/div/div[3]/table/tbody/tr[2]/td[2]"));
+        selenium.doubleClick("gwt-debug-folder_tree-root-child0-content");
+        assertTrue(selenium.isElementPresent("gwt-debug-Other-content"));
+        selenium.mouseDown("gwt-debug-Other-content");
         selenium.click("//button[@type='button']");
-        assertEquals("blue_panel_content", selenium.getValue("//input[@type='text']"));
-        selenium.type("//input[@type='text']", "Test7");
-        selenium.click("//td[2]/div/table/tbody/tr[4]/td/button");
+        selenium.type("//input[@type='text']", "Media_content2");
+        selenium.click("//body[@id='ext-gen6']/div[2]/div/table/tbody/tr[2]/td[2]/div/table/tbody/tr[4]/td/button");
         selenium.click("//button[@type='button']");
-        assertEquals("Test7", selenium.getValue("//input[@type='text']"));
-        selenium.clickAt("//input[@type='text']", "-1,13");
-        selenium.type("//input[@type='text']", "");
-        selenium.click("//td[2]/div/table/tbody/tr[4]/td/button");
-        assertEquals("", selenium.getValue("//input[@type='text']"));
-        selenium.type("//input[@type='text']", "blue_panel_content");
-        selenium.click("//td[2]/div/table/tbody/tr[4]/td/button");
+        assertEquals("Media_content2", selenium.getValue("//input[@type='text']"));
+        selenium.type("//input[@type='text']", "Media_content");
+        selenium.click("//body[@id='ext-gen6']/div[2]/div/table/tbody/tr[2]/td[2]/div/table/tbody/tr[4]/td/button");
     }
 }
