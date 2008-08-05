@@ -12,16 +12,14 @@
 
 package ccc.remoting.gwt;
 
-import java.util.Iterator;
 import java.util.Map;
-import java.util.UUID;
 
+import ccc.commons.jee.DBC;
 import ccc.commons.jee.JNDI;
-import ccc.domain.Content;
-import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 import ccc.services.ResourceManager;
+import ccc.services.adaptors.ResourceManagerAdaptor;
 import ccc.view.contentcreator.client.ResourceService;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -32,11 +30,28 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
  *
  * @author Civic Computing Ltd
  */
-public class ResourceServiceImpl extends RemoteServiceServlet
+public final class ResourceServiceImpl extends RemoteServiceServlet
                                     implements ResourceService {
 
     /** serialVersionUID : long. */
     private static final long serialVersionUID = 4907235349044174242L;
+    private ResourceManager resourceManager;
+
+    /**
+     * Constructor.
+     *
+     */
+    public ResourceServiceImpl() { super(); }
+
+    /**
+     * Constructor.
+     *
+     * @param resourceManager The resource manager for this servlet.
+     */
+    public ResourceServiceImpl(final ResourceManagerAdaptor resourceManager) {
+        DBC.require().notNull(resourceManager);
+        this.resourceManager = resourceManager;
+    }
 
     /**
      * {@inheritDoc}
@@ -51,7 +66,10 @@ public class ResourceServiceImpl extends RemoteServiceServlet
      * @return A ResourceManager.
      */
     ResourceManager resourceManager() {
-        return JNDI.get("ResourceManagerEJB/local");
+        if (resourceManager == null) {
+            resourceManager = JNDI.get("ResourceManagerEJB/local");
+        }
+        return resourceManager;
     }
 
     /**
@@ -65,10 +83,12 @@ public class ResourceServiceImpl extends RemoteServiceServlet
     }
 
     /**
-     * @see ccc.view.contentcreator.client.ResourceService#saveContent(java.lang.String, java.util.Map)
+     * {@inheritDoc}
      */
     @Override
-    public void saveContent(String id, String title, Map<String, String> paragraphs) {
+    public void saveContent(final String id,
+                            final String title,
+                            final Map<String, String> paragraphs) {
         resourceManager().saveContent(id, title, paragraphs);
     }
 }

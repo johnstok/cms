@@ -39,7 +39,12 @@ public final class ContentTest extends TestCase {
         final String jsonString = content.toJSON();
 
         // ASSERT
-        assertEquals("{\"id\": \""+content.id().toString()+"\",\"title\": \"Foo?\",\"paragraphs\": {\"bar\": {\"body\": \"bar\"},\"baz\": {\"body\": \"baz\"}}}", jsonString);
+        assertEquals(
+            "{\"id\": \""
+            + content.id().toString()
+            + "\",\"title\": \"Foo?\",\"paragraphs\": "
+            + "{\"bar\": {\"body\": \"bar\"},\"baz\": {\"body\": \"baz\"}}}",
+            jsonString);
     }
 
     /**
@@ -108,7 +113,10 @@ public final class ContentTest extends TestCase {
             assertEquals("Specified value may not be NULL.", e.getMessage());
         }
     }
-    
+
+    /**
+     * Test.
+     */
     public void testDeleteAllParagraphs() {
 
         // ARRANGE

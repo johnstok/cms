@@ -90,19 +90,41 @@ public final class JSON {
                     sb.append("\\/");
                     break;
                 default:
-                    if(ch>='\u0000' && ch<='\u001F'){
-                        final String ss=Integer.toHexString(ch);
-                        sb.append("\\u");
-                        for(int k=0; k<4-ss.length(); k++){
-                            sb.append('0');
-                        }
-                        sb.append(ss.toUpperCase());
+                    if(isAsciiControlChar(ch)){
+                        unicodeEscapeThenAppend(ch, sb);
                     } else {
                         sb.append(ch);
                     }
                 }
             }
             return sb.toString();
+        }
+
+        /**
+         * Convert a character to its unicode escaped character.
+         *
+         * @param ch The char to escape.
+         * @param sb The escaped equivalent as a String, in the form '\u0001'.
+         */
+        private void unicodeEscapeThenAppend(final char ch,
+                                             final StringBuffer sb) {
+            final int maxZeroPadding = 4;
+            final String ss=Integer.toHexString(ch);
+            sb.append("\\u");
+            for(int k=0; k<maxZeroPadding-ss.length(); k++){
+                sb.append('0');
+            }
+            sb.append(ss.toUpperCase());
+        }
+
+        /**
+         * Test to see if a character is an ASCII escape character.
+         *
+         * @param ch The char to test.
+         * @return True if the character is an escape char, false otherwise.
+         */
+        private boolean isAsciiControlChar(final char ch) {
+            return ch>='\u0000' && ch<='\u001F';
         }
 
         /**
