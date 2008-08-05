@@ -27,17 +27,22 @@ import ccc.services.ResourceManager;
  */
 public abstract class ResourceManagerAdaptor implements ResourceManager {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void saveContent(String id,
-                            String title,
-                            Map<String, String> paragraphs) {
+    public void saveContent(final String id,
+                            final String title,
+                        final Map<String, String> paragraphs) {
 
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Resource lookup(UUID id) {
-
+    public Resource lookup(final UUID id) {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
