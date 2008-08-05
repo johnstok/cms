@@ -67,7 +67,7 @@ public interface ResourceManager {
     /**
      * Lookup a resource, given its id.
      *
-     * @param id
+     * @param id The unique identifier for the resource to look up.
      * @return The resource.
      */
     Resource lookup(UUID id);
@@ -75,9 +75,11 @@ public interface ResourceManager {
     /**
      * Recreates content's paragraphs.
      *
-     * @param id
-     * @param title
-     * @param paragraphs
+     * @param id A string representing the unique identifier for the content.
+     * @param title The new title for the content.
+     * @param paragraphs The new paragraphs for the content. All existing
+     *      paragraphs will be removed and replaced with the paragraphs
+     *      specified here.
      */
     void saveContent(String id, String title, Map<String, String> paragraphs);
 }
