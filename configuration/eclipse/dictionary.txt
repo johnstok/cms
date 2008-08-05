@@ -34,3 +34,15 @@ partow
 donald
 gutenberg
 etext
+rev
+metadata
+charset
+hashmap
+html
+petteri
+css
+jul
+xhtml
+namespace
+url
+unicode
