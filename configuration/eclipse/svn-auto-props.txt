@@ -1,0 +1,4 @@
+[auto-props]
+*.xml = svn:keywords=Date Author Revision
+*.java = svn:keywords=Date Author Revision
+*.properties = svn:keywords=Date Author Revision
