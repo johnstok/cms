@@ -73,10 +73,28 @@ public final class ContentEditSeleniumTest extends TestCase {
         selenium.click("//button[@type='button']");
         assertEquals("Media_content2", selenium.getValue("//input[@type='text']"));
         selenium.selectFrame("xpath=//iframe[@id='gwt-debug-bodyRTACONTENT']");
-        assertEquals("Media_content2", selenium.getValue("//input[@type='text']"));
+        assertEquals("New Test Content", selenium.getText("//html/body"));
+        selenium.selectFrame("relative=top");
         
         selenium.type("//input[@type='text']", "Media_content");
-        selenium.focus("gwt-debug-dialogBox");
         selenium.click("gwt-debug-saveButton");
+    }
+    
+    /**
+     * Test.
+     */
+    public void testContentEditLocalization() {
+        selenium.setSpeed("1000");
+        selenium.open("/content-creator?locale=fi");
+        assertEquals("ContentCreator", selenium.getTitle());
+        selenium.doubleClick("gwt-debug-folder_tree-root-child0-content");
+        selenium.mouseDown("gwt-debug-Other-content");
+        assertEquals("Media_content", selenium.getText("gwt-debug-children_grid-1-1"));
+        
+        assertEquals("Tyyppi", selenium.getText("gwt-debug-children_grid-0-0"));
+        assertEquals("Otsikko", selenium.getText("gwt-debug-children_grid-0-1"));
+        assertEquals("Toiminnat", selenium.getText("gwt-debug-children_grid-0-2"));
+        selenium.click("//button[@type='button']");
+        assertEquals("Päivitä sisältö", selenium.getText("gwt-debug-dialogBox-caption"));
     }
 }
