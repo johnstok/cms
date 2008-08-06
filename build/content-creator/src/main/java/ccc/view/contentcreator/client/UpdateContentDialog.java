@@ -99,7 +99,11 @@ public class UpdateContentDialog extends DialogBox {
 
                 Map<String, String> paragraphs = new HashMap<String, String>();
                 for (String key : richTexts.keySet()) {
-                    paragraphs.put(key, richTexts.get(key).getHTML());
+                    String body = richTexts.get(key).getHTML();
+                    if (null == body || body.trim().length()==0) {
+                        body = "<!-- empty -->";
+                    }
+                    paragraphs.put(key, body);
                 }
 
                 String id = content.get("id").isString().stringValue();
