@@ -57,7 +57,7 @@ public class UpdateContentDialog extends DialogBox {
 
         super(false, true);
         this.contentPath = contentPath;
-
+        this.ensureDebugId("dialogBox");
         drawGUI();
     }
 
@@ -74,6 +74,7 @@ public class UpdateContentDialog extends DialogBox {
         final TabPanel paragraphsTabPanel = new TabPanel();
         vPanel.add(titleTextBox);
         vPanel.add(paragraphsTabPanel);
+        vPanel.ensureDebugId("vPanel");
         vPanel.add(
             new Button(
                 constants.cancel(),
@@ -114,6 +115,7 @@ public class UpdateContentDialog extends DialogBox {
                     , paragraphs, callback);
             }
         });
+        saveButton.ensureDebugId("saveButton");
         vPanel.add(saveButton);
         setWidget(vPanel);
 
@@ -134,6 +136,7 @@ public class UpdateContentDialog extends DialogBox {
                 titleTextBox.setText(jsonTitle);
                 for (String key : paragraphs.keySet()) {
                     RichTextArea bodyRTA = new RichTextArea();
+                    bodyRTA.ensureDebugId("bodyRTA"+key);
                     bodyRTA.setWidth("100%");
                     RichTextToolbar toolbar = new RichTextToolbar(bodyRTA);
                     bodyRTA.setHTML(

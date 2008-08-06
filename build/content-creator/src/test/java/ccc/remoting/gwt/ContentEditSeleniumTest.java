@@ -50,22 +50,33 @@ public final class ContentEditSeleniumTest extends TestCase {
      * Test.
      */
     public void testContentEdit() {
-        selenium.setSpeed("5000"); // give time to tree expands
-
+        selenium.setSpeed("1000");
         selenium.open("/content-creator/");
         assertEquals("ContentCreator", selenium.getTitle());
         selenium.mouseDown("gwt-debug-folder_tree-root-child0-content");
-
-        assertEquals("Home", selenium.getText("//body[@id='ext-gen6']/div/div/div[3]/table/tbody/tr[2]/td[2]"));
+        assertEquals("Other", selenium.getText("gwt-debug-Other-content"));
         selenium.doubleClick("gwt-debug-folder_tree-root-child0-content");
-        assertTrue(selenium.isElementPresent("gwt-debug-Other-content"));
         selenium.mouseDown("gwt-debug-Other-content");
+        assertEquals("Media_content", selenium.getText("gwt-debug-children_grid-1-1"));
         selenium.click("//button[@type='button']");
+
+        assertEquals("Media_content", selenium.getValue("//input[@type='text']"));
         selenium.type("//input[@type='text']", "Media_content2");
-        selenium.click("//body[@id='ext-gen6']/div[2]/div/table/tbody/tr[2]/td[2]/div/table/tbody/tr[4]/td/button");
+
+        selenium.selectFrame("xpath=//iframe[@id='gwt-debug-bodyRTACONTENT']");
+        selenium.isElementPresent("//html/body");
+        selenium.type("//html/body", "New Test Content");
+
+        selenium.selectFrame("relative=top");
+        selenium.click("gwt-debug-saveButton");
+
         selenium.click("//button[@type='button']");
         assertEquals("Media_content2", selenium.getValue("//input[@type='text']"));
+        selenium.selectFrame("xpath=//iframe[@id='gwt-debug-bodyRTACONTENT']");
+        assertEquals("Media_content2", selenium.getValue("//input[@type='text']"));
+        
         selenium.type("//input[@type='text']", "Media_content");
-        selenium.click("//body[@id='ext-gen6']/div[2]/div/table/tbody/tr[2]/td[2]/div/table/tbody/tr[4]/td/button");
+        selenium.focus("gwt-debug-dialogBox");
+        selenium.click("gwt-debug-saveButton");
     }
 }
