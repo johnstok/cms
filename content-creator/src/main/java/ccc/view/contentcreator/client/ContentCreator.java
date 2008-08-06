@@ -129,6 +129,7 @@ public final class ContentCreator implements EntryPoint {
                     jsonResult.isObject().get("entries").isArray();
 
                 final Grid children = new Grid(entries.size()+1, 3);
+                children.ensureDebugId("children_grid");
                 children.setWidth("100%");
                 children.setText(0, 0, constants.type());
                 children.setText(0, 1, constants.title());
