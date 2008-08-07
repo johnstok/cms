@@ -19,17 +19,17 @@
 <hibernate-mapping default-access="field">
 	<class name="ccc.domain.Resource" abstract="true">
 	
-		<id name="id">
+		<id name="_id">
 			<generator class="assigned" />
 		</id>
 		
-		<version name="version" unsaved-value="negative" />
+		<version name="_version" unsaved-value="negative" />
 
 		<property name="_title" not-null="true" type="string"
 			length="256" />
 
 		<component name="_name" class="ccc.domain.ResourceName">
-			<property name="representation" not-null="true"
+			<property name="_representation" not-null="true"
 				type="string" length="256" />
 		</component>
 

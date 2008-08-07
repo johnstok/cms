@@ -20,9 +20,9 @@
     <joined-subclass
         name="ccc.domain.Folder"  extends="ccc.domain.Resource">
         
-        <key column="id" />
+        <key column="_id" />
         
-        <list name="entries">
+        <list name="_entries">
             <key column="parent_id" />
             <list-index column="parent_index" />
             <one-to-many class="ccc.domain.Resource" />
