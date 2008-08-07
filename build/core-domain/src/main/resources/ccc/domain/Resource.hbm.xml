@@ -25,10 +25,10 @@
 		
 		<version name="version" unsaved-value="negative" />
 
-		<property name="title" not-null="true" type="string"
+		<property name="_title" not-null="true" type="string"
 			length="256" />
 
-		<component name="name" class="ccc.domain.ResourceName">
+		<component name="_name" class="ccc.domain.ResourceName">
 			<property name="representation" not-null="true"
 				type="string" length="256" />
 		</component>

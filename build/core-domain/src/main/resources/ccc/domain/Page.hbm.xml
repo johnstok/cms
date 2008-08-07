@@ -28,7 +28,7 @@
             <key column="id"  not-null="true" />
             <map-key type="string" length="256" />
             <composite-element class="ccc.domain.Paragraph">
-                <property name="body" not-null="true" type="text"></property>
+                <property name="_body" not-null="true" type="text"></property>
             </composite-element>
         </map>
     </joined-subclass>

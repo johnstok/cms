@@ -22,8 +22,8 @@ import static ccc.commons.jee.DBC.*;
  */
 public abstract class Resource extends Entity implements JSONable {
 
-    private String       title = id().toString();
-    private ResourceName name  = ResourceName.escape(title);
+    private String       _title = id().toString();
+    private ResourceName _name  = ResourceName.escape(_title);
 
     /**
      * Constructor.
@@ -35,26 +35,26 @@ public abstract class Resource extends Entity implements JSONable {
      * Constructor.
      * Sets the resource's title to be the same as the name.
      *
-     * @param resourceName The name for this resource.
+     * @param name The name for this resource.
      */
-    protected Resource(final ResourceName resourceName) {
-        require().notNull(resourceName);
-        name = resourceName;
-        title = resourceName.toString();
+    protected Resource(final ResourceName name) {
+        require().notNull(name);
+        _name = name;
+        _title = name.toString();
     }
 
     /**
      * Constructor.
      *
-     * @param resourceName The name for this resource.
-     * @param titleString The title of this resource as a string.
+     * @param name The name for this resource.
+     * @param title The title of this resource, as a string.
      */
-    protected Resource(final ResourceName resourceName,
-                       final String titleString) {
-        require().notNull(resourceName);
+    protected Resource(final ResourceName name,
+                       final String title) {
+        require().notNull(name);
 
-        name = resourceName;
-        title(titleString);
+        _name = name;
+        title(title);
     }
 
     /**
@@ -90,7 +90,7 @@ public abstract class Resource extends Entity implements JSONable {
      * @return The name for this resource, as a {@link ResourceName}.
      */
     public final ResourceName name() {
-        return name;
+        return _name;
     }
 
     /**
@@ -99,7 +99,7 @@ public abstract class Resource extends Entity implements JSONable {
      * @return The content's title, as a string.
      */
     public final String title() {
-        return title;
+        return _title;
     }
 
     /**
@@ -109,6 +109,6 @@ public abstract class Resource extends Entity implements JSONable {
      */
     public final void title(final String titleString) {
         require().notEmpty(titleString);
-        title = titleString;
+        _title = titleString;
     }
 }

@@ -27,7 +27,7 @@ public final class Paragraph implements Serializable, JSONable {
     /** serialVersionUID : long. */
     private static final long serialVersionUID = 5380775783010664543L;
 
-    private String body = "";
+    private String _body = "";
 
     @SuppressWarnings("unused")
     private Paragraph() { /* NO-OP */ }
@@ -39,7 +39,7 @@ public final class Paragraph implements Serializable, JSONable {
      */
     public Paragraph(final String bodyString) {
         require().notEmpty(bodyString);
-        body = bodyString;
+        _body = bodyString;
     }
 
     /**
@@ -48,7 +48,7 @@ public final class Paragraph implements Serializable, JSONable {
      * @return The HTML as a string.
      */
     public String body() {
-        return body;
+        return _body;
     }
 
     /**
@@ -58,7 +58,7 @@ public final class Paragraph implements Serializable, JSONable {
     public String toJSON() {
         return
             JSON.object()
-                .add("body", body)
+                .add("body", _body)
                 .toString();
     }
 }
