@@ -73,4 +73,20 @@ public interface Constants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Actions")
     String actions();
+    
+    /**
+     * "Help".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Help")
+    String help();
+    
+    /**
+     * "Manual".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Manual")
+    String manual();
 }
