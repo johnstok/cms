@@ -12,7 +12,7 @@
 
 package ccc.commons.jee;
 
-import static ccc.commons.jee.DBC.require;
+import static ccc.commons.jee.DBC.*;
 import junit.framework.TestCase;
 
 
@@ -34,7 +34,7 @@ public final class DBCTest extends TestCase {
         try {
             require().notNull(null);
             fail("NULL should be rejected.");
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals("Specified value may not be NULL.", e.getMessage());
         }
     }
@@ -50,14 +50,23 @@ public final class DBCTest extends TestCase {
         try {
             require().notEmpty(null);
             fail("NULL should be rejected.");
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals("Specified string may not be NULL.", e.getMessage());
         }
 
         try {
             require().notEmpty("");
             fail("Zero length string should be rejected.");
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Specified string must have length > 0.",
+                e.getMessage());
+        }
+
+        try {
+            require().notEmpty("   ");
+            fail("A string with only spaces should be rejected.");
+        } catch (final IllegalArgumentException e) {
             assertEquals(
                 "Specified string must have length > 0.",
                 e.getMessage());

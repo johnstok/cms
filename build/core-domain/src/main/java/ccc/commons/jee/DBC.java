@@ -64,7 +64,7 @@ public final class DBC {
             throw new IllegalArgumentException(
                 "Specified string may not be NULL.");
         }
-        if (string.length() < 1) {
+        if (string.trim().length() < 1) {
             throw new IllegalArgumentException(
                 "Specified string must have length > 0.");
         }
