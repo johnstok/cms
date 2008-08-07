@@ -1,7 +1,9 @@
 <assembly>
 	<id>binary-release</id>
 	<formats>
+		<format>tar.gz</format>
 		<format>zip</format>
+		<format>dir</format>
 	</formats>
 	<moduleSets>
 		<moduleSet>
@@ -12,12 +14,24 @@
 			</binaries>
 		</moduleSet>
 	</moduleSets>
-	<!-- Not quite got the copy of jBoss working yet -->
-	<!-- fileSets>
+	<fileSets>
 		<fileSet>
-			<directory>..\deploy\jboss-4.2.2.GA</directory>
+			<directory>..\deploy</directory>
 			<lineEnding>keep</lineEnding>
-			<outputDirectory>container</outputDirectory>
+			<outputDirectory>containers</outputDirectory>
+			<excludes>
+				<exclude>jboss-4.2.2.GA\server\all\**</exclude>
+				<exclude>jboss-4.2.2.GA\server\minimal\**</exclude>
+				<exclude>jboss-4.2.2.GA\server\default\log\**</exclude>
+				<exclude>jboss-4.2.2.GA\server\default\work\**</exclude>
+				<exclude>jboss-4.2.2.GA\server\default\tmp\**</exclude>
+				<exclude>jboss-4.2.2.GA\server\default\data\**</exclude>
+			</excludes>
 		</fileSet>
-	</fileSets -->
+		<fileSet>
+			<directory>..\dbms</directory>
+			<lineEnding>keep</lineEnding>
+			<outputDirectory>db-config</outputDirectory>
+		</fileSet>
+	</fileSets>
 </assembly>
