@@ -35,7 +35,7 @@ public final class JSON {
      */
     public static final class Object {
 
-        private Map<String, String> elements =
+        private Map<String, String> _elements =
             new LinkedHashMap<String, String>();
 
         /**
@@ -47,7 +47,7 @@ public final class JSON {
          */
         public Object add(final String key, final String value) {
             final String escapedString = escape(value);
-            elements.put(key, "\""+escapedString+"\"");
+            _elements.put(key, "\""+escapedString+"\"");
             return this;
         }
 
@@ -135,7 +135,7 @@ public final class JSON {
 
             final StringBuilder jsonString = new StringBuilder("{");
             for (final Map.Entry<String, String> element
-                                                    : elements.entrySet()) {
+                                                    : _elements.entrySet()) {
                 jsonString.append("\"");
                 jsonString.append(element.getKey());
                 jsonString.append("\": ");
@@ -170,7 +170,7 @@ public final class JSON {
                 value.deleteCharAt(value.length()-1);
             }
             value.append("]");
-            elements.put(key, value.toString());
+            _elements.put(key, value.toString());
             return this;
         }
 
@@ -192,7 +192,7 @@ public final class JSON {
                 map.add(value.getKey(), value.getValue());
             }
             final String jsonMap = map.toString();
-            elements.put(key, jsonMap);
+            _elements.put(key, jsonMap);
 
             return this;
         }
@@ -205,7 +205,7 @@ public final class JSON {
          * @return 'this' to allow method chaining.
          */
         private Object add(final String key, final JSONable value) {
-            elements.put(key, value.toJSON());
+            _elements.put(key, value.toJSON());
             return this;
         }
 

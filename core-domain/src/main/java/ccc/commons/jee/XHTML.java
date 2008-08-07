@@ -50,22 +50,22 @@ public final class XHTML {
      * @author Civic Computing Ltd
      */
     private static class XhtmlErrorHandler implements ErrorHandler {
-        private Collection<String> errors = new ArrayList<String>();
+        private Collection<String> _errors = new ArrayList<String>();
 
         public void warning(final SAXParseException e) {
-            errors.add(constructErrorMessage(e));
+            _errors.add(constructErrorMessage(e));
         }
 
         public void error(final SAXParseException e) {
-            errors.add(constructErrorMessage(e));
+            _errors.add(constructErrorMessage(e));
         }
 
         public void fatalError(final SAXParseException e) {
-            errors.add(constructErrorMessage(e));
+            _errors.add(constructErrorMessage(e));
         }
 
         Collection<String> getErrors() {
-            return errors;
+            return _errors;
         }
 
         private String constructErrorMessage(final SAXParseException e) {
@@ -117,7 +117,7 @@ public final class XHTML {
             final XhtmlErrorHandler errorHandler = new XhtmlErrorHandler();
             final DocumentBuilder parser = createParser(errorHandler);
             parser.parse(page);
-            return errorHandler.errors.size() == 0;
+            return errorHandler._errors.size() == 0;
         } catch (final ParserConfigurationException e) {
             throw new RuntimeException(e);
         } catch (final SAXException e) {
@@ -193,7 +193,7 @@ public final class XHTML {
             final XhtmlErrorHandler errorHandler = new XhtmlErrorHandler();
             final DocumentBuilder parser = createParser(errorHandler);
             parser.parse(page);
-            for (final String error : errorHandler.errors) {
+            for (final String error : errorHandler._errors) {
                 out.println(error);
             }
         } catch (final ParserConfigurationException e) {
