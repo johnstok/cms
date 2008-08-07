@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.commons.jee.JSON;
+import ccc.commons.JSON;
 
 
 /**
@@ -72,7 +72,7 @@ public class ResourceRef implements JSONable {
     @Override
     public final String toJSON() {
 
-        final ccc.commons.jee.JSON.Object jsonObject = JSON.object();
+        final ccc.commons.JSON.Object jsonObject = JSON.object();
 
         jsonObject
             .add("name", _name.toString())

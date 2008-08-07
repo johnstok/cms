@@ -16,7 +16,7 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 
 import junit.framework.TestCase;
-import ccc.commons.jee.JNDI;
+import ccc.commons.JNDI;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 import ccc.domain.ResourceType;

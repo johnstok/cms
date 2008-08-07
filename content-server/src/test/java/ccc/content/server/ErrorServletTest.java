@@ -11,7 +11,7 @@
  */
 package ccc.content.server;
 
-import static ccc.commons.jee.Exceptions.*;
+import static ccc.commons.Exceptions.*;
 import static org.easymock.EasyMock.*;
 
 import java.io.IOException;

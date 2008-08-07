@@ -14,9 +14,9 @@ package ccc.remoting.gwt;
 
 import java.util.Map;
 
-import ccc.commons.jee.DBC;
-import ccc.commons.jee.JNDI;
-import ccc.commons.jee.Registry;
+import ccc.commons.DBC;
+import ccc.commons.JNDI;
+import ccc.commons.Registry;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 import ccc.services.ResourceManager;

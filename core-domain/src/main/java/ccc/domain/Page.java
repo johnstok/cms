@@ -17,8 +17,8 @@ import static java.util.Collections.*;
 import java.util.Map;
 import java.util.TreeMap;
 
-import ccc.commons.jee.DBC;
-import ccc.commons.jee.JSON;
+import ccc.commons.DBC;
+import ccc.commons.JSON;
 
 
 /**

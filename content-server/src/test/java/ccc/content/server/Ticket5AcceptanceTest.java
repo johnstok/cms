@@ -17,7 +17,7 @@ import java.io.InputStream;
 import java.net.URL;
 
 import junit.framework.TestCase;
-import ccc.commons.jee.XHTML;
+import ccc.commons.XHTML;
 
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.Selenium;

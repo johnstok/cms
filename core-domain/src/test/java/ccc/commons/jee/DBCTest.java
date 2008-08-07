@@ -12,7 +12,7 @@
 
 package ccc.commons.jee;
 
-import static ccc.commons.jee.DBC.*;
+import static ccc.commons.DBC.*;
 import junit.framework.TestCase;
 
 

@@ -9,7 +9,7 @@
  * Changes: see subversion log
  *-----------------------------------------------------------------------------
  */
-package ccc.commons.jee;
+package ccc.commons;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

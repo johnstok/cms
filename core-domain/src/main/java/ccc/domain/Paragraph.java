@@ -11,11 +11,11 @@
  */
 package ccc.domain;
 
-import static ccc.commons.jee.DBC.*;
+import static ccc.commons.DBC.*;
 
 import java.io.Serializable;
 
-import ccc.commons.jee.JSON;
+import ccc.commons.JSON;
 
 /**
  * A paragraph of HTML.

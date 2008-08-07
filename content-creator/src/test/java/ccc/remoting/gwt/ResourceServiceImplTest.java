@@ -12,7 +12,7 @@
 package ccc.remoting.gwt;
 
 import junit.framework.TestCase;
-import ccc.commons.jee.MapRegistry;
+import ccc.commons.MapRegistry;
 import ccc.domain.Folder;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;

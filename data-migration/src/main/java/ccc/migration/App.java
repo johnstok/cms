@@ -8,7 +8,7 @@ import java.util.Date;
 
 import org.apache.commons.dbutils.DbUtils;
 
-import ccc.commons.jee.JNDI;
+import ccc.commons.JNDI;
 import ccc.services.ResourceManager;
 
 /**
