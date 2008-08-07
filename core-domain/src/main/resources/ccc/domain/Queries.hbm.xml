@@ -19,6 +19,6 @@
 <hibernate-mapping default-access="field">
 	<query name="RESOURCE_BY_URL">
 		from ccc.domain.Resource r
-	   where r.name = :name
+	   where r._name = :name
 	</query>
 </hibernate-mapping>
