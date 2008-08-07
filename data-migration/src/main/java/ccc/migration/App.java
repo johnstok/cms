@@ -25,53 +25,53 @@ public final class App {
      * @param args String array of application arguments.
      */
     public static void main(final String[] args) {
-        Long startTime = new Date().getTime();
+        final Long startTime = new Date().getTime();
         // Establish a queries instance to communicate with the legacy DB.
-        Connection connection = getConnection();
-        Queries queries = new Queries(connection);
-        
+        final Connection connection = getConnection();
+        final Queries queries = new Queries(connection);
+
         // Migrations migrations = consoleMigrations();
-        MigrationsEJB migrations =
+        final MigrationsEJB migrations =
             new MigrationsEJB(
-                JNDI.<ResourceManager>get("ResourceManagerEJB/remote"),
+                new JNDI().<ResourceManager>get("ResourceManagerEJB/remote"),
                 queries);
 
         migrations.migrate();
         DbUtils.closeQuietly(connection);
-        Long elapsedTime = new Date().getTime() - startTime;
-        
+        final Long elapsedTime = new Date().getTime() - startTime;
+
         System.out.println("Migration finished in "+elapsedTime/1000+" seconds");
     }
 
     private static Connection getConnection() {
         Connection connection = null;
-        
+
         // TODO 24 Jul 2008 petteri: Read from properties
         try {
             // Load the JDBC driver
-            String driverName = "oracle.jdbc.driver.OracleDriver";
+            final String driverName = "oracle.jdbc.driver.OracleDriver";
             Class.forName(driverName);
 
             // Create a connection to the database
-            String serverName = "poseidon";
-            String portNumber = "1521";
-            String sid = "DEV";
-            String url =
+            final String serverName = "poseidon";
+            final String portNumber = "1521";
+            final String sid = "DEV";
+            final String url =
                 "jdbc:oracle:thin:@"
                 + serverName + ":"
                 + portNumber + ":"
                 + sid;
-            String username = "asb_pepez";
-            String password = "d3asb_pepez";
+            final String username = "asb_pepez";
+            final String password = "d3asb_pepez";
             connection = DriverManager.getConnection(url, username, password);
-        } catch (ClassNotFoundException e) {
+        } catch (final ClassNotFoundException e) {
             throw new MigrationException(e);
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             throw new MigrationException(e);
         }
         return connection;
     }
-    
+
 //  /**
 //  * TODO: Add a description of this method.
 //  *

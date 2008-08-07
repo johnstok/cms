@@ -24,9 +24,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
+import ccc.commons.jee.MapRegistry;
 import ccc.commons.jee.Resources;
-import ccc.domain.Page;
 import ccc.domain.Folder;
+import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
@@ -182,6 +183,8 @@ public final class ContentServletTest extends TestCase {
         final StringWriter output = new StringWriter();
         final ContentServlet contentServlet =
             new ContentServlet(
+                new MapRegistry(
+                    "ResourceManagerEJB/local",
                 new ResourceManagerAdaptor() {
 
                     /** @see ResourceManagerAdaptor#lookup(java.lang.String) */
@@ -191,7 +194,7 @@ public final class ContentServletTest extends TestCase {
                             new Page(new ResourceName("name"))
                                 .addParagraph("Header", new Paragraph("<br/>"));
                     }
-                });
+                }));
 
         // EXPECT
         response.setHeader("Pragma", "no-cache");
@@ -228,14 +231,17 @@ public final class ContentServletTest extends TestCase {
         // ARRANGE
         final StringWriter output = new StringWriter();
         final ContentServlet contentServlet =
-            new ContentServlet(new ResourceManagerAdaptor() {
+            new ContentServlet(
+                new MapRegistry(
+                    "ResourceManagerEJB/local",
+                new ResourceManagerAdaptor() {
                 /** @see ResourceManagerAdaptor#lookup(java.lang.String) */
                 @Override
                 public Resource lookup(final ResourcePath path) {
 
                     return new Folder(new ResourceName("foo"));
                 }
-            });
+            }));
 
         // EXPECT
         response.setHeader("Pragma", "no-cache");

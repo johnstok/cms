@@ -29,11 +29,13 @@ import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeConstants;
 
+import ccc.commons.jee.DBC;
 import ccc.commons.jee.JNDI;
+import ccc.commons.jee.Registry;
 import ccc.commons.jee.Resources;
 import ccc.domain.CCCException;
-import ccc.domain.Page;
 import ccc.domain.Folder;
+import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 import ccc.services.ResourceManager;
@@ -50,15 +52,16 @@ public final class ContentServlet extends HttpServlet {
 
     /** serialVersionUID : long. */
     private static final long serialVersionUID = -5743085540949007873L;
-    private ResourceManager resourceManager;
+    private Registry _registry = new JNDI();
 
     /**
      * Constructor.
      *
-     * @param rManager The resource manager used to lookup resources.
+     * @param registry The registry for this servlet.
      */
-    public ContentServlet(final ResourceManager rManager) {
-        resourceManager = rManager;
+    public ContentServlet(final Registry registry) {
+        DBC.require().notNull(registry);
+        _registry = registry;
     }
 
     /**
@@ -170,10 +173,7 @@ public final class ContentServlet extends HttpServlet {
      * @return A ResourceManager.
      */
     ResourceManager resourceManager() {
-        if (resourceManager == null) {
-            resourceManager = JNDI.get("ResourceManagerEJB/local");
-        }
-        return resourceManager;
+        return _registry.get("ResourceManagerEJB/local");
     }
 
     /* --------------------------------------------------------------------
