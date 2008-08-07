@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static ccc.commons.jee.DBC.*;
+import static ccc.commons.DBC.*;
 
 /**
  * TODO Add Description for this type.

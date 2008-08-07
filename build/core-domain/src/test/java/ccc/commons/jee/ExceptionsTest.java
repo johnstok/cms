@@ -14,6 +14,8 @@ package ccc.commons.jee;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import ccc.commons.Exceptions;
+
 import junit.framework.TestCase;
 
 

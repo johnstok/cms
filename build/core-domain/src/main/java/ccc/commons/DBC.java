@@ -10,7 +10,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.commons.jee;
+package ccc.commons;
 
 /**
  * A helper class to support design-by-contract (DBC).

@@ -10,7 +10,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.commons.jee;
+package ccc.commons;
 
 import java.util.LinkedHashMap;
 import java.util.List;

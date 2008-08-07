@@ -12,7 +12,7 @@
 
 package ccc.domain;
 
-import static ccc.commons.jee.DBC.*;
+import static ccc.commons.DBC.*;
 
 /**
  * An abstract superclass that contains shared behaviour for the different types

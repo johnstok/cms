@@ -29,10 +29,10 @@ import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeConstants;
 
-import ccc.commons.jee.DBC;
-import ccc.commons.jee.JNDI;
-import ccc.commons.jee.Registry;
-import ccc.commons.jee.Resources;
+import ccc.commons.DBC;
+import ccc.commons.JNDI;
+import ccc.commons.Registry;
+import ccc.commons.Resources;
 import ccc.domain.CCCException;
 import ccc.domain.Folder;
 import ccc.domain.Page;

@@ -24,8 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
-import ccc.commons.jee.MapRegistry;
-import ccc.commons.jee.Resources;
+import ccc.commons.MapRegistry;
+import ccc.commons.Resources;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;

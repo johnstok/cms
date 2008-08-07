@@ -13,6 +13,8 @@ package ccc.commons.jee;
 
 import java.nio.charset.Charset;
 
+import ccc.commons.Resources;
+
 import junit.framework.TestCase;
 
 
