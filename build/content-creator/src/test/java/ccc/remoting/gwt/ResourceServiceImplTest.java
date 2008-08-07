@@ -17,7 +17,7 @@ import ccc.domain.Folder;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
-import ccc.services.adaptors.ResourceManagerAdaptor;
+import ccc.services.adaptors.ContentManagerAdaptor;
 
 
 /**
@@ -37,9 +37,9 @@ public final class ResourceServiceImplTest extends TestCase {
         final ResourceServiceImpl resourceService =
             new ResourceServiceImpl(
                 new MapRegistry(
-                "ResourceManagerEJB/local",
-                new ResourceManagerAdaptor() {
-                    /** @see ResourceManagerAdaptor#lookup(java.lang.String) */
+                "ContentManagerEJB/local",
+                new ContentManagerAdaptor() {
+                    /** @see ContentManagerAdaptor#lookup(java.lang.String) */
                     @Override
                     public Resource lookup(final ResourcePath path) {
                         return

@@ -20,7 +20,7 @@ import ccc.commons.JNDI;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 import ccc.domain.ResourceType;
-import ccc.services.ResourceManager;
+import ccc.services.ContentManager;
 
 
 /**
@@ -63,8 +63,8 @@ public class MigrationIntegrationTest extends TestCase {
 
         // ARRANGE
         final Queries queries = new Queries(conn);
-        final ResourceManager manager = new JNDI().<ResourceManager>get("ResourceManagerEJB/remote");
-        assertNotNull("ResourceManager must not be null", manager);
+        final ContentManager manager = new JNDI().<ContentManager>get("ContentManagerEJB/remote");
+        assertNotNull("ContentManager must not be null", manager);
 
         final MigrationsEJB migrationsEJB = new MigrationsEJB(manager, queries);
 

@@ -38,7 +38,7 @@ import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
-import ccc.services.ResourceManager;
+import ccc.services.ContentManager;
 
 
 /**
@@ -109,7 +109,7 @@ public final class ContentServlet extends HttpServlet {
 
         final ResourcePath contentPath =
             new ResourcePath(request.getPathInfo());
-        final Resource resource = resourceManager().lookup(contentPath);
+        final Resource resource = contentManager().lookup(contentPath);
 
         write(response, resource);
     }
@@ -170,10 +170,10 @@ public final class ContentServlet extends HttpServlet {
     /**
      * Accessor for the resource manager.
      *
-     * @return A ResourceManager.
+     * @return A ContentManager.
      */
-    ResourceManager resourceManager() {
-        return _registry.get("ResourceManagerEJB/local");
+    ContentManager contentManager() {
+        return _registry.get("ContentManagerEJB/local");
     }
 
     /* --------------------------------------------------------------------

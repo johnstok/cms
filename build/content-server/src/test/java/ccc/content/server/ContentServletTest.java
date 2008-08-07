@@ -32,7 +32,7 @@ import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
-import ccc.services.adaptors.ResourceManagerAdaptor;
+import ccc.services.adaptors.ContentManagerAdaptor;
 
 
 /**
@@ -184,10 +184,10 @@ public final class ContentServletTest extends TestCase {
         final ContentServlet contentServlet =
             new ContentServlet(
                 new MapRegistry(
-                    "ResourceManagerEJB/local",
-                new ResourceManagerAdaptor() {
+                    "ContentManagerEJB/local",
+                new ContentManagerAdaptor() {
 
-                    /** @see ResourceManagerAdaptor#lookup(java.lang.String) */
+                    /** @see ContentManagerAdaptor#lookup(java.lang.String) */
                     @Override
                     public Resource lookup(final ResourcePath path) {
                         return
@@ -233,9 +233,9 @@ public final class ContentServletTest extends TestCase {
         final ContentServlet contentServlet =
             new ContentServlet(
                 new MapRegistry(
-                    "ResourceManagerEJB/local",
-                new ResourceManagerAdaptor() {
-                /** @see ResourceManagerAdaptor#lookup(java.lang.String) */
+                    "ContentManagerEJB/local",
+                new ContentManagerAdaptor() {
+                /** @see ContentManagerAdaptor#lookup(java.lang.String) */
                 @Override
                 public Resource lookup(final ResourcePath path) {
 

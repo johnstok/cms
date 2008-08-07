@@ -17,15 +17,15 @@ import java.util.UUID;
 import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
-import ccc.services.ResourceManager;
+import ccc.services.ContentManager;
 
 
 /**
- * An adaptor for the {@link ResourceManager} interface. Useful for testing.
+ * An adaptor for the {@link ContentManager} interface. Useful for testing.
  *
  * @author Civic Computing Ltd
  */
-public abstract class ResourceManagerAdaptor implements ResourceManager {
+public abstract class ContentManagerAdaptor implements ContentManager {
 
     /**
      * {@inheritDoc}

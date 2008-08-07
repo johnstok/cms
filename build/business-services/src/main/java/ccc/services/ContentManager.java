@@ -25,7 +25,7 @@ import ccc.domain.ResourcePath;
  *
  * @author Civic Computing Ltd
  */
-public interface ResourceManager {
+public interface ContentManager {
 
     /**
      * Lookup a resource, given its absolute path.
