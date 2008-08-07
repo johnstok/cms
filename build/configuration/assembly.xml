@@ -1,0 +1,23 @@
+<assembly>
+	<id>binary-release</id>
+	<formats>
+		<format>zip</format>
+	</formats>
+	<moduleSets>
+		<moduleSet>
+			<binaries>
+				<includeDependencies>false</includeDependencies>
+				<outputDirectory>modules</outputDirectory>
+				<unpack>false</unpack>
+			</binaries>
+		</moduleSet>
+	</moduleSets>
+	<!-- Not quite got the copy of jBoss working yet -->
+	<!-- fileSets>
+		<fileSet>
+			<directory>..\deploy\jboss-4.2.2.GA</directory>
+			<lineEnding>keep</lineEnding>
+			<outputDirectory>container</outputDirectory>
+		</fileSet>
+	</fileSets -->
+</assembly>
