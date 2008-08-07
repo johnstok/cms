@@ -19,13 +19,13 @@
 <hibernate-mapping default-access="field">
     <joined-subclass
         name="ccc.domain.Page" extends="ccc.domain.Resource">
-        <key column="id" />
+        <key column="_id" />
         
         <!-- 
          | TODO: We need to provide a LinkedHashMap here!
          -->
-        <map name="content">
-            <key column="id"  not-null="true" />
+        <map name="_content">
+            <key column="_id"  not-null="true" />
             <map-key type="string" length="256" />
             <composite-element class="ccc.domain.Paragraph">
                 <property name="_body" not-null="true" type="text"></property>
