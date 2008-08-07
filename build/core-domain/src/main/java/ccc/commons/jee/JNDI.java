@@ -25,17 +25,13 @@ import javax.naming.NamingException;
  *
  * @author Civic Computing Ltd
  */
-public final class JNDI {
-
-    private JNDI() { /* NO_OP */ }
+public final class JNDI implements Registry {
 
     /**
-     * Put an object into JNDI.
-     *
-     * @param location Location in the JNDI tree.
-     * @param object The object to put.
+     * {@inheritDoc}
      */
-    public static void put(final String location, final Object object) {
+    @Override
+    public void put(final String location, final Object object) {
 
         try {
             jndiContext().rebind(location, object);
@@ -52,7 +48,7 @@ public final class JNDI {
      * @return {@link Context}
      * @throws NamingException Thrown if creation of the JNDI context fails.
      */
-    private static Context jndiContext() throws NamingException {
+    private Context jndiContext() throws NamingException {
 
         final Hashtable<String, String> env = new Hashtable<String, String>();
         env.put(
@@ -66,16 +62,13 @@ public final class JNDI {
         return jndiContext;
     }
 
+
     /**
-     * Get an object from JNDI.
-     *
-     * @param <T> The type of the object at the specified location.
-     * @param location Location in the JNDI tree.
-     * @return The object at the specified location or NULL if the location is
-     *         not bound.
+     * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
-    public static <T> T get(final String location) {
+    @Override
+    public <T> T get(final String location) {
         try {
             final Object o = jndiContext().lookup(location);
             return (T) o;

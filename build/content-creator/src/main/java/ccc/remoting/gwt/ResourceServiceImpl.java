@@ -16,10 +16,10 @@ import java.util.Map;
 
 import ccc.commons.jee.DBC;
 import ccc.commons.jee.JNDI;
+import ccc.commons.jee.Registry;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 import ccc.services.ResourceManager;
-import ccc.services.adaptors.ResourceManagerAdaptor;
 import ccc.view.contentcreator.client.ResourceService;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -35,7 +35,7 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
 
     /** serialVersionUID : long. */
     private static final long serialVersionUID = 4907235349044174242L;
-    private ResourceManager resourceManager;
+    private Registry _registry = new JNDI();
 
     /**
      * Constructor.
@@ -46,11 +46,11 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     /**
      * Constructor.
      *
-     * @param resourceManager The resource manager for this servlet.
+     * @param registry The registry for this servlet.
      */
-    public ResourceServiceImpl(final ResourceManagerAdaptor resourceManager) {
-        DBC.require().notNull(resourceManager);
-        this.resourceManager = resourceManager;
+    public ResourceServiceImpl(final Registry registry) {
+        DBC.require().notNull(registry);
+        _registry = registry;
     }
 
     /**
@@ -66,10 +66,7 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
      * @return A ResourceManager.
      */
     ResourceManager resourceManager() {
-        if (resourceManager == null) {
-            resourceManager = JNDI.get("ResourceManagerEJB/local");
-        }
-        return resourceManager;
+        return _registry.get("ResourceManagerEJB/local");
     }
 
     /**

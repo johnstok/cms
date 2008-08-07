@@ -12,6 +12,7 @@
 package ccc.remoting.gwt;
 
 import junit.framework.TestCase;
+import ccc.commons.jee.MapRegistry;
 import ccc.domain.Folder;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
@@ -34,15 +35,17 @@ public final class ResourceServiceImplTest extends TestCase {
 
         // ARRANGE
         final ResourceServiceImpl resourceService =
-            new ResourceServiceImpl(new ResourceManagerAdaptor() {
-
-                /** @see ResourceManagerAdaptor#lookup(java.lang.String) */
-                @Override
-                public Resource lookup(final ResourcePath path) {
-                    return
-                        new Folder(PredefinedResourceNames.CONTENT);
-                }
-            });
+            new ResourceServiceImpl(
+                new MapRegistry(
+                "ResourceManagerEJB/local",
+                new ResourceManagerAdaptor() {
+                    /** @see ResourceManagerAdaptor#lookup(java.lang.String) */
+                    @Override
+                    public Resource lookup(final ResourcePath path) {
+                        return
+                            new Folder(PredefinedResourceNames.CONTENT);
+                    }
+            }));
 
         // ACT
         final String jsonRoot = resourceService.getContentRoot();
