@@ -31,7 +31,7 @@ public final class ResourcePath implements Serializable {
     private static final long serialVersionUID = -5755885435816868422L;
     /** PATH_PATTERN : Pattern. */
     public static final Pattern PATH_PATTERN = Pattern.compile("/((\\w+)/)*");
-    private final List<ResourceName> elements;
+    private final List<ResourceName> _elements;
 
     /**
      * Constructor.
@@ -60,7 +60,7 @@ public final class ResourcePath implements Serializable {
             parts.add(
                 new ResourceName(pathString.substring(m.start()+1, m.end())));
         }
-        elements = unmodifiableList(parts);
+        _elements = unmodifiableList(parts);
     }
 
     /**
@@ -72,17 +72,17 @@ public final class ResourcePath implements Serializable {
     private ResourcePath(final ResourcePath stem,
                          final ResourceName newElement) {
         final List<ResourceName> parts = new ArrayList<ResourceName>();
-        parts.addAll(stem.elements);
+        parts.addAll(stem._elements);
         parts.add(newElement);
 
-        elements = unmodifiableList(parts);
+        _elements = unmodifiableList(parts);
     }
 
     /**
      * Constructor.
      */
     public ResourcePath() {
-        elements = unmodifiableList(new ArrayList<ResourceName>());
+        _elements = unmodifiableList(new ArrayList<ResourceName>());
     }
 
     /**
@@ -94,7 +94,7 @@ public final class ResourcePath implements Serializable {
     public ResourcePath(final ResourceName name) {
         final List<ResourceName> parts = new ArrayList<ResourceName>();
         parts.add(name);
-        elements = unmodifiableList(parts);
+        _elements = unmodifiableList(parts);
     }
 
     /**
@@ -116,7 +116,7 @@ public final class ResourcePath implements Serializable {
     public String toString() {
         final StringBuilder toString = new StringBuilder("/");
 
-        for (final ResourceName element : elements) {
+        for (final ResourceName element : _elements) {
             toString.append(element.toString());
             toString.append('/');
         }
@@ -132,7 +132,7 @@ public final class ResourcePath implements Serializable {
      * @return A list of resource names, representing the path.
      */
     public List<ResourceName> elements() {
-        return elements; // Already unmodifiable.
+        return _elements; // Already unmodifiable.
     }
 
     /**
@@ -143,7 +143,7 @@ public final class ResourcePath implements Serializable {
      */
     public List<ResourceName> elementsToTop() {
         final List<ResourceName> limitedElements =
-            new ArrayList<ResourceName>(elements);
+            new ArrayList<ResourceName>(_elements);
 
         if (limitedElements.size() > 1) {
             limitedElements.remove(limitedElements.size()-1);

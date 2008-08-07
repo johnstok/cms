@@ -23,9 +23,8 @@ import java.util.UUID;
  */
 public abstract class Entity implements Serializable {
 
-    /** id : UUID. */
-    private UUID id = UUID.randomUUID();
-    private int version = -1;
+    private UUID _id      = UUID.randomUUID();
+    private int  _version = -1;
 
     /**
      * {@inheritDoc}
@@ -34,8 +33,8 @@ public abstract class Entity implements Serializable {
     public String toString() {
         return
             this.getClass().getName() + ": "
-            + id.toString()
-            + " [version=" + version + "]";
+            + _id.toString()
+            + " [version=" + _version + "]";
     }
 
     /**
@@ -44,7 +43,7 @@ public abstract class Entity implements Serializable {
      * @return This entity's id as a {@link UUID}.
      */
     public final UUID id() {
-        return id;
+        return _id;
     }
 
 }

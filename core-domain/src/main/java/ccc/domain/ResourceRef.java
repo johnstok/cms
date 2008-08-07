@@ -27,10 +27,10 @@ import ccc.commons.jee.JSON;
  */
 public class ResourceRef implements JSONable {
 
-    private ResourceName name;
-    private UUID         id;
-    private ResourceType type;
-    private Map<String, String> metadata = new HashMap<String, String>();
+    private ResourceName        _name;
+    private UUID                _id;
+    private ResourceType        _type;
+    private Map<String, String> _metadata = new HashMap<String, String>();
 
     /**
      * Constructor.
@@ -43,9 +43,9 @@ public class ResourceRef implements JSONable {
                        final UUID id,
                        final ResourceType type) {
 
-        this.name = name;
-        this.id = id;
-        this.type = type;
+        _name = name;
+        _id = id;
+        _type = type;
     }
 
     /**
@@ -54,7 +54,7 @@ public class ResourceRef implements JSONable {
      * @return The name as a {@link ResourceName}.
      */
     public final ResourceName name() {
-        return name;
+        return _name;
     }
 
     /**
@@ -63,7 +63,7 @@ public class ResourceRef implements JSONable {
      * @return The ID as a {@link UUID}.
      */
     public final UUID id() {
-        return id;
+        return _id;
     }
 
     /**
@@ -75,11 +75,11 @@ public class ResourceRef implements JSONable {
         final ccc.commons.jee.JSON.Object jsonObject = JSON.object();
 
         jsonObject
-            .add("name", name.toString())
-            .add("id", id.toString())
-            .add("type", type.toString());
+            .add("name", _name.toString())
+            .add("id", _id.toString())
+            .add("type", _type.toString());
 
-        for (final Map.Entry<String, String> metadatum : metadata.entrySet()) {
+        for (final Map.Entry<String, String> metadatum : _metadata.entrySet()) {
             jsonObject.add(metadatum.getKey(), metadatum.getValue());
         }
 
@@ -93,7 +93,7 @@ public class ResourceRef implements JSONable {
      * @param value The value for this metadata item.
      */
     public final void addMetadata(final String key, final String value) {
-        metadata.put(key, value);
+        _metadata.put(key, value);
     }
 
     /**
@@ -102,7 +102,7 @@ public class ResourceRef implements JSONable {
      * @return This reference's metadata as a hashmap.
      */
     public final Map<String, String> metadata() {
-        return Collections.unmodifiableMap(metadata);
+        return Collections.unmodifiableMap(_metadata);
     }
 
 }

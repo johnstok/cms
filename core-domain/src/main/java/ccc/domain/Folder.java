@@ -30,7 +30,7 @@ public final class Folder extends Resource implements JSONable {
 
     /** serialVersionUID : long. */
     private static final long serialVersionUID = 2800863951865644693L;
-    private List<Resource> entries = new ArrayList<Resource>();
+    private List<Resource> _entries = new ArrayList<Resource>();
 
     /**
      * Constructor.
@@ -62,7 +62,7 @@ public final class Folder extends Resource implements JSONable {
      * @return The number of resources contained by this folder.
      */
     public int size() {
-        return entries.size();
+        return _entries.size();
     }
 
     /**
@@ -72,7 +72,7 @@ public final class Folder extends Resource implements JSONable {
      */
     public void add(final Resource resource) {
         DBC.require().notNull(resource);
-        entries.add(resource);
+        _entries.add(resource);
     }
 
     /**
@@ -81,7 +81,7 @@ public final class Folder extends Resource implements JSONable {
      * @return A list of all the resources in this folder.
      */
     public List<Resource> entries() {
-        return unmodifiableList(entries);
+        return unmodifiableList(_entries);
     }
 
     /**
@@ -120,7 +120,7 @@ public final class Folder extends Resource implements JSONable {
      * @return The resource with the specified name.
      */
     public Resource findEntryByName(final ResourceName name) {
-        for (final Resource entry : entries) {
+        for (final Resource entry : _entries) {
             if (entry.name().equals(name)) {
                 return entry;
             }
@@ -148,7 +148,7 @@ public final class Folder extends Resource implements JSONable {
     public List<ResourceRef> entryReferences() {
 
         final List<ResourceRef> resourceRefs = new ArrayList<ResourceRef>();
-        for (final Resource entry : entries) {
+        for (final Resource entry : _entries) {
             final ResourceRef ref =
                 new ResourceRef(entry.name(), entry.id(), entry.type());
             if(entry.type() == ResourceType.FOLDER) {
@@ -170,7 +170,7 @@ public final class Folder extends Resource implements JSONable {
      */
     public int folderCount() {
         int count = 0;
-        for (final Resource entry : entries) {
+        for (final Resource entry : _entries) {
             if (entry.type()==ResourceType.FOLDER) { count++; }
         }
         return count;
