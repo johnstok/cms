@@ -9,6 +9,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
@@ -20,10 +21,12 @@ import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalSplitPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.TreeListener;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 
@@ -35,11 +38,18 @@ public final class ContentCreator implements EntryPoint {
     private final Constants constants = GWT.create(Constants.class);
 
     private HorizontalSplitPanel hsp = new HorizontalSplitPanel();
+    
+    /** MENUBAR_HEIGHT : Reserved space for menu bar. */
+    private static int MENUBAR_HEIGHT = 30;
 
     /**
      * This is the entry point method.
      */
     public void onModuleLoad() {
+
+        final VerticalPanel mainPanel = new VerticalPanel();
+        mainPanel.setWidth("100%");
+        mainPanel.setHeight("100%");
 
         final TreeItem root = new TreeItem("root");
         root.ensureDebugId("root_treeitem");
@@ -54,7 +64,7 @@ public final class ContentCreator implements EntryPoint {
                 // Handle double-clicks
                 if ( DOM.eventGetType(event) == Event.ONDBLCLICK) {
                     Element e = DOM.eventGetTarget(event);
-                    
+
                     ArrayList<Element> chain = new ArrayList<Element>();
                     collectElementChain(chain, getElement(), e);
 
@@ -66,7 +76,7 @@ public final class ContentCreator implements EntryPoint {
                 }
             }
         };
-        
+
         t.sinkEvents(Event.ONDBLCLICK);
         t.addItem(root);
         t.ensureDebugId("folder_tree");
@@ -82,30 +92,39 @@ public final class ContentCreator implements EntryPoint {
                 GWT.log("Children displayed: " + arg0.getState(), null);
                 populate(arg0);
             }
-
         });
 
         final Label label = new Label("Hello");
-
+        hsp.setSize("100%", (Window.getClientHeight() - MENUBAR_HEIGHT) + "px");
         hsp.setSplitPosition("35%");
         hsp.setLeftWidget(t);
         hsp.setRightWidget(label);
-
-        // TODO 30 Jul 2008 petteri: Check if Window.getClientHeight() can be
-        // replaced with css markup
-
-        RootPanel.get().setSize("100%",
-        Window.getClientHeight()+"px");
 
         Window.addWindowResizeListener(new WindowResizeListener() {
 
             public void onWindowResized(final int width, final int height) {
                 RootPanel.get().setSize("100%",
-                    height+"px");
-                hsp.setHeight((height-10)+"px");
+                    height + "px");
+                hsp.setSize("100%", (height - MENUBAR_HEIGHT) + "px");
             }
         });
-        RootPanel.get().add(hsp);
+
+        Command manualCmd = new Command() {
+            public void execute() {
+              Window.open("manual/ContentCreatorManual.html",
+                  "_blank", "resizable=yes,scrollbars=yes,status=no");
+            }
+          };
+
+        MenuBar menu = new MenuBar();
+        MenuBar helpMenu = new MenuBar(true);
+        helpMenu.addItem(constants.manual(), manualCmd);
+        menu.addItem(constants.help(), helpMenu);
+
+        mainPanel.add(menu);
+        mainPanel.add(hsp);
+        
+        RootPanel.get().add(mainPanel);
     }
 
     /**
@@ -135,7 +154,7 @@ public final class ContentCreator implements EntryPoint {
                 children.setText(0, 1, constants.title());
                 children.setText(0, 2, constants.actions());
 
-                for (int i=0; i<entries.size(); i++) {
+                for (int i = 0; i < entries.size(); i++) {
                     JSONObject entry = entries.get(i).isObject();
 
                     final String name =
@@ -224,9 +243,9 @@ public final class ContentCreator implements EntryPoint {
         resourceService.getResource(absolutePath, callback);
 
     }
-    
+
     /**
-     * Copied from Tree
+     * Copied from Tree.
      *
      * @param chain
      * @param hRoot
@@ -241,9 +260,9 @@ public final class ContentCreator implements EntryPoint {
         collectElementChain(chain, hRoot, DOM.getParent(hElem));
         chain.add(hElem);
     }
-    
+
     /**
-     * Copied from Tree
+     * Copied from Tree.
      *
      * @param chain
      * @param idx
