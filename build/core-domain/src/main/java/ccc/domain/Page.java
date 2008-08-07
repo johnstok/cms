@@ -30,7 +30,7 @@ public final class Page extends Resource {
 
     /** serialVersionUID : long. */
     private static final long serialVersionUID = 2797475534849447269L;
-    private Map<String, Paragraph> content = new TreeMap<String, Paragraph>();
+    private Map<String, Paragraph> _content = new TreeMap<String, Paragraph>();
 
     /**
      * Constructor.
@@ -76,7 +76,7 @@ public final class Page extends Resource {
     public Page addParagraph(final String key, final Paragraph paragraph) {
         DBC.require().notEmpty(key);
         DBC.require().notNull(paragraph);
-        content.put(key, paragraph);
+        _content.put(key, paragraph);
         return this;
     }
 
@@ -86,7 +86,7 @@ public final class Page extends Resource {
      * @return A map from unique key to the corresponding paragraph data.
      */
     public Map<String, Paragraph> paragraphs() {
-        return unmodifiableMap(content);
+        return unmodifiableMap(_content);
     }
 
     /**
@@ -96,7 +96,7 @@ public final class Page extends Resource {
      */
     public void deleteParagraph(final String paragraphKey) {
         DBC.require().notEmpty(paragraphKey);
-        content.remove(paragraphKey);
+        _content.remove(paragraphKey);
     }
 
     /**
@@ -108,7 +108,7 @@ public final class Page extends Resource {
             JSON.object()
                 .add("id", id().toString())
                 .add("title", title())
-                .add("paragraphs", content)
+                .add("paragraphs", _content)
                 .toString();
     }
 
@@ -117,6 +117,6 @@ public final class Page extends Resource {
      *
      */
     public void deleteAllParagraphs() {
-        content.clear();
+        _content.clear();
     }
 }

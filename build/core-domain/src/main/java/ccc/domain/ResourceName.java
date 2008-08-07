@@ -31,9 +31,9 @@ public final class ResourceName implements Serializable {
 
     /** serialVersionUID : long. */
     private static final long serialVersionUID = 8023247880499438161L;
-    private String  representation = escapeString(UUID.randomUUID().toString());
-    private final String  validCharacters = "\\w+";
-    private final Pattern validRegex      = Pattern.compile(validCharacters);
+    private String _representation = escapeString(UUID.randomUUID().toString());
+    private final String  _validCharacters = "\\w+";
+    private final Pattern _validRegex = Pattern.compile(_validCharacters);
 
     /**
      * Constructor.
@@ -57,14 +57,14 @@ public final class ResourceName implements Serializable {
             throw new RuntimeException(
                 "A resource name must be longer than zero characters.");
         }
-        if (!validRegex.matcher(stringRepresentation).matches()) {
+        if (!_validRegex.matcher(stringRepresentation).matches()) {
             throw new RuntimeException(
                 stringRepresentation
                 + " does not match the java.util.regex pattern '"
-                + validCharacters + "'.");
+                + _validCharacters + "'.");
         }
 
-        representation = stringRepresentation;
+        _representation = stringRepresentation;
     }
 
     /**
@@ -72,7 +72,7 @@ public final class ResourceName implements Serializable {
      */
     @Override
     public String toString() {
-        return representation;
+        return _representation;
     }
 
     /**
@@ -86,7 +86,7 @@ public final class ResourceName implements Serializable {
         result =
             prime
             * result
-            + ((representation == null) ? 0 : representation.hashCode());
+            + ((_representation == null) ? 0 : _representation.hashCode());
         return result;
     }
 
@@ -100,9 +100,9 @@ public final class ResourceName implements Serializable {
         if (obj == null) { return false; }
         if (getClass() != obj.getClass()) { return false; }
         final ResourceName other = (ResourceName) obj;
-        if (representation == null) {
-            if (other.representation != null) { return false; }
-        } else if (!representation.equals(other.representation)) {
+        if (_representation == null) {
+            if (other._representation != null) { return false; }
+        } else if (!_representation.equals(other._representation)) {
             return false;
         }
         return true;
