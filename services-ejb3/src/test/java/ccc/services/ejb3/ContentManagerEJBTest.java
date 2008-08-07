@@ -38,15 +38,15 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.ResourceType;
-import ccc.services.ResourceManager;
+import ccc.services.ContentManager;
 
 
 /**
- * Tests for the {@link ResourceManagerEJB} class.
+ * Tests for the {@link ContentManagerEJB} class.
  *
  * @author Civic Computing Ltd
  */
-public final class ResourceManagerEJBTest extends TestCase {
+public final class ContentManagerEJBTest extends TestCase {
 
     /**
      * Test.
@@ -75,7 +75,7 @@ public final class ResourceManagerEJBTest extends TestCase {
             }
         };
 
-        final ResourceManagerEJB resourceMgr = new ResourceManagerEJB(em);
+        final ContentManagerEJB resourceMgr = new ContentManagerEJB(em);
 
         // ACT
         final Resource resource =
@@ -108,7 +108,7 @@ public final class ResourceManagerEJBTest extends TestCase {
         em.persist(isA(Folder.class));
         replay(em);
 
-        final ResourceManager resourceMgr = new ResourceManagerEJB(em);
+        final ContentManager resourceMgr = new ContentManagerEJB(em);
 
         // ACT
         resourceMgr.createFolder("/foo/bar/");
@@ -146,7 +146,7 @@ public final class ResourceManagerEJBTest extends TestCase {
         em.persist(isA(Folder.class));
         replay(em);
 
-        final ResourceManager resourceMgr = new ResourceManagerEJB(em);
+        final ContentManager resourceMgr = new ContentManagerEJB(em);
 
         // ACT
         resourceMgr.createFolder("/foo/");
@@ -173,7 +173,7 @@ public final class ResourceManagerEJBTest extends TestCase {
         replay(em);
 
 
-        final ResourceManager resourceMgr = new ResourceManagerEJB(em);
+        final ContentManager resourceMgr = new ContentManagerEJB(em);
 
         // ACT
         resourceMgr.createRoot();
@@ -200,7 +200,7 @@ public final class ResourceManagerEJBTest extends TestCase {
             });
         replay(em);
 
-        final ResourceManager resourceMgr = new ResourceManagerEJB(em);
+        final ContentManager resourceMgr = new ContentManagerEJB(em);
 
         // ACT
         resourceMgr.createRoot();
@@ -230,7 +230,7 @@ public final class ResourceManagerEJBTest extends TestCase {
         em.persist(isA(Page.class));
         replay(em);
 
-        final ResourceManager resourceMgr = new ResourceManagerEJB(em);
+        final ContentManager resourceMgr = new ContentManagerEJB(em);
 
         // ACT
         resourceMgr.createContent("/foo/page1/");
@@ -270,7 +270,7 @@ public final class ResourceManagerEJBTest extends TestCase {
         em.persist(isA(Page.class));
         replay(em);
 
-        final ResourceManager resourceMgr = new ResourceManagerEJB(em);
+        final ContentManager resourceMgr = new ContentManagerEJB(em);
 
         // ACT
         resourceMgr.createFolder("/foo/");
@@ -309,7 +309,7 @@ public final class ResourceManagerEJBTest extends TestCase {
         em.persist(isA(Folder.class));
         replay(em);
 
-        final ResourceManager resourceMgr = new ResourceManagerEJB(em);
+        final ContentManager resourceMgr = new ContentManagerEJB(em);
 
         // ACT
         resourceMgr.createFolder("/foo/");
@@ -356,7 +356,7 @@ public final class ResourceManagerEJBTest extends TestCase {
         em.persist(isA(Page.class)); // foo/page1
         replay(em);
 
-        final ResourceManager resourceMgr = new ResourceManagerEJB(em);
+        final ContentManager resourceMgr = new ContentManagerEJB(em);
 
         final Map<String, Paragraph> paragraphs =
             new HashMap<String, Paragraph>();
@@ -395,7 +395,7 @@ public final class ResourceManagerEJBTest extends TestCase {
 
         final EntityManager em = new SimpleEM(bar);
 
-        final ResourceManagerEJB resourceMgr = new ResourceManagerEJB(em);
+        final ContentManagerEJB resourceMgr = new ContentManagerEJB(em);
 
         // ACT
         final Resource resource =
@@ -418,7 +418,7 @@ public final class ResourceManagerEJBTest extends TestCase {
 
         final EntityManager em = new SimpleEM(page);
 
-        final ResourceManagerEJB resourceMgr = new ResourceManagerEJB(em);
+        final ContentManagerEJB resourceMgr = new ContentManagerEJB(em);
 
         // ACT
         final Map<String, String> paragraphs = new HashMap<String, String>();

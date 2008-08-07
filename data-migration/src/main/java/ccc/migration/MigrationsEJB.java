@@ -23,7 +23,7 @@ import ccc.domain.CCCException;
 import ccc.domain.Paragraph;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
-import ccc.services.ResourceManager;
+import ccc.services.ContentManager;
 
 
 /**
@@ -33,7 +33,7 @@ import ccc.services.ResourceManager;
  */
 public class MigrationsEJB {
 
-    private final ResourceManager manager;
+    private final ContentManager manager;
     private final Queries queries;
 
     private static Logger log = Logger.getLogger(ccc.migration.MigrationsEJB.class);
@@ -44,7 +44,7 @@ public class MigrationsEJB {
      * @param manager
      * @param queries
      */
-    public MigrationsEJB(final ResourceManager manager, final Queries queries) {
+    public MigrationsEJB(final ContentManager manager, final Queries queries) {
         this.manager = manager;
         this.queries = queries;
     }

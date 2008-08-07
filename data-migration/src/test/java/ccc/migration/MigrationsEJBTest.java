@@ -21,7 +21,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import junit.framework.TestCase;
-import ccc.services.ResourceManager;
+import ccc.services.ContentManager;
 
 
 /**
@@ -38,7 +38,7 @@ public final class MigrationsEJBTest extends TestCase {
     public void testCreateContentRoot() {
 
         // ARRANGE
-        ResourceManager manager = createMock(ResourceManager.class);
+        ContentManager manager = createMock(ContentManager.class);
         manager.createRoot();
         replay(manager);
 

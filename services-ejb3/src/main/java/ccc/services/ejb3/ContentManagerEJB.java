@@ -38,19 +38,19 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.ResourceType;
-import ccc.services.ResourceManager;
+import ccc.services.ContentManager;
 
 
 /**
- * EJB3 implementation of {@link ResourceManager}.
+ * EJB3 implementation of {@link ContentManager}.
  *
  * @author Civic Computing Ltd
  */
 @Stateful
 @TransactionAttribute(REQUIRED)
-@Remote(ResourceManager.class)
-@Local(ResourceManager.class)
-public class ResourceManagerEJB implements ResourceManager {
+@Remote(ContentManager.class)
+@Local(ContentManager.class)
+public class ContentManagerEJB implements ContentManager {
 
     @PersistenceContext(
         unitName = "ccc-persistence",
@@ -61,14 +61,14 @@ public class ResourceManagerEJB implements ResourceManager {
      * Constructor.
      */
     @SuppressWarnings("unused")
-    private ResourceManagerEJB() { /* NO-OP */ }
+    private ContentManagerEJB() { /* NO-OP */ }
 
     /**
      * Constructor.
      *
      * @param entityManager A JPA entity manager.
      */
-    public ResourceManagerEJB(final EntityManager entityManager) {
+    public ContentManagerEJB(final EntityManager entityManager) {
         _em = entityManager;
     }
 

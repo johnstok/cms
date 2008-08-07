@@ -19,7 +19,7 @@ import ccc.commons.JNDI;
 import ccc.commons.Registry;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
-import ccc.services.ResourceManager;
+import ccc.services.ContentManager;
 import ccc.view.contentcreator.client.ResourceService;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -63,10 +63,10 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     /**
      * Accessor for the resource manager.
      *
-     * @return A ResourceManager.
+     * @return A ContentManager.
      */
-    ResourceManager resourceManager() {
-        return _registry.get("ResourceManagerEJB/local");
+    ContentManager contentManager() {
+        return _registry.get("ContentManagerEJB/local");
     }
 
     /**
@@ -75,7 +75,7 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     @Override
     public String getResource(final String absolutePath) {
         final Resource root =
-            resourceManager().lookup(new ResourcePath(absolutePath));
+            contentManager().lookup(new ResourcePath(absolutePath));
         return root.toJSON();
     }
 
@@ -86,6 +86,6 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     public void saveContent(final String id,
                             final String title,
                             final Map<String, String> paragraphs) {
-        resourceManager().saveContent(id, title, paragraphs);
+        contentManager().saveContent(id, title, paragraphs);
     }
 }

@@ -9,7 +9,7 @@ import java.util.Date;
 import org.apache.commons.dbutils.DbUtils;
 
 import ccc.commons.JNDI;
-import ccc.services.ResourceManager;
+import ccc.services.ContentManager;
 
 /**
  * Entry class for the migration application.
@@ -33,7 +33,7 @@ public final class App {
         // Migrations migrations = consoleMigrations();
         final MigrationsEJB migrations =
             new MigrationsEJB(
-                new JNDI().<ResourceManager>get("ResourceManagerEJB/remote"),
+                new JNDI().<ContentManager>get("ContentManagerEJB/remote"),
                 queries);
 
         migrations.migrate();
