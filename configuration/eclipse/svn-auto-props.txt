@@ -1,0 +1,4 @@
+[auto-props]
+*.xml = svn:keywords=Date Author Revision,svn:eol-style=LF
+*.java = svn:keywords=Date Author Revision,svn:eol-style=LF
+*.properties = svn:keywords=Date Author Revision,svn:eol-style=LF

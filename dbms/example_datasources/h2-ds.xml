@@ -1,0 +1,10 @@
+<datasources>
+
+  <xa-datasource>
+    <jndi-name>ccc</jndi-name>
+    <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
+    <xa-datasource-property name="URL">jdbc:h2:mem:ccc;DB_CLOSE_DELAY=-1</xa-datasource-property>
+    <xa-datasource-property name="User">ccc</xa-datasource-property>
+  </xa-datasource>
+
+</datasources>

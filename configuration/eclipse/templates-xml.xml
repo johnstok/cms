@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><templates><template autoinsert="true" context="xml_new" deleted="false" description="add an outline for a package.html file" enabled="true" name="package_html">&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"&gt;&#13;
+&lt;html&gt;&#13;
+&lt;head&gt;&#13;
+&lt;!-- &#13;
+    ========================================================================&#13;
+    * Copyright (c) 2008 Civic Computing Ltd.&#13;
+    * All rights reserved.&#13;
+    *&#13;
+    * Revision      $$Rev$$&#13;
+    * Modified by   $$Author$$&#13;
+    * Modified on   $$Date$$&#13;
+    *&#13;
+    * Changes: see SubVersion log.&#13;
+    ========================================================================&#13;
+--&gt;&#13;
+&lt;/head&gt;&#13;
+&lt;body bgcolor="white"&gt;&#13;
+&#13;
+${cursor}Provide a one sentence summary...&#13;
+&#13;
+&lt;br/&gt;&#13;
+&#13;
+Provide any further details...&#13;
+&#13;
+&lt;/body&gt;&#13;
+&lt;/html&gt;&#13;
+</template></templates>
