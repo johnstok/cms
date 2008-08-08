@@ -10,13 +10,12 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.commons.jee;
+package ccc.commons;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.TestCase;
-import ccc.commons.JSON;
 import ccc.domain.JSONable;
 
 
