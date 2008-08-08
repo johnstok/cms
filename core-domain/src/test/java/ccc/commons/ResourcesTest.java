@@ -9,11 +9,9 @@
  * Changes: see subversion log
  *-----------------------------------------------------------------------------
  */
-package ccc.commons.jee;
+package ccc.commons;
 
 import java.nio.charset.Charset;
-
-import ccc.commons.Resources;
 
 import junit.framework.TestCase;
 

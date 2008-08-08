@@ -9,12 +9,10 @@
  * Changes: see subversion log
  *-----------------------------------------------------------------------------
  */
-package ccc.commons.jee;
+package ccc.commons;
 
 import java.io.IOException;
 import java.io.InputStream;
-
-import ccc.commons.XHTML;
 
 import junit.framework.TestCase;
 
