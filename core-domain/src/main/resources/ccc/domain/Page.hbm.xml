@@ -24,7 +24,7 @@
         <!-- 
          | TODO: We need to provide a LinkedHashMap here!
          -->
-        <map name="_content">
+        <map name="_content" sort="ccc.commons.AlphanumComparator">
             <key column="_id"  not-null="true" />
             <map-key type="string" length="256" />
             <composite-element class="ccc.domain.Paragraph">
