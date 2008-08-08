@@ -45,12 +45,12 @@
 	</dependencies>
 
 	<modules>
-		<module>core-domain</module>
-		<module>content-creator</module>
-		<module>business-services</module>
-		<module>content-server</module>
-		<module>services-ejb3</module>
-		<module>data-migration</module>
+		<module>modules/core-domain</module>
+		<module>modules/content-creator</module>
+		<module>modules/business-services</module>
+		<module>modules/content-server</module>
+		<module>modules/services-ejb3</module>
+		<module>modules/data-migration</module>
 	</modules>
 
 	<build>

@@ -16,7 +16,7 @@
 	</moduleSets>
 	<fileSets>
 		<fileSet>
-			<directory>..\deploy</directory>
+			<directory>deploy</directory>
 			<lineEnding>keep</lineEnding>
 			<outputDirectory>containers</outputDirectory>
 			<excludes>
@@ -29,7 +29,7 @@
 			</excludes>
 		</fileSet>
 		<fileSet>
-			<directory>..\dbms</directory>
+			<directory>dbms</directory>
 			<lineEnding>keep</lineEnding>
 			<outputDirectory>db-config</outputDirectory>
 		</fileSet>
