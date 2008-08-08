@@ -2,13 +2,13 @@
   <parent>
     <artifactId>build</artifactId>
     <groupId>CCC7</groupId>
-    <version>0.0.8-SNAPSHOT</version>
+    <version>0.0.8</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>CCC7</groupId>
   <artifactId>services-ejb3</artifactId>
   <name>services-ejb3</name>
-  <version>0.0.8-SNAPSHOT</version>
+  <version>0.0.8</version>
   <url>http://maven.apache.org</url>
   <dependencies>
         <dependency>
