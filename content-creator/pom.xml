@@ -97,19 +97,19 @@
 		<dependency>
 			<groupId>CCC7</groupId>
 			<artifactId>core-domain</artifactId>
-			<version>0.0.7</version>
+			<version>7.0.0-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>CCC7</groupId>
 			<artifactId>business-services</artifactId>
-			<version>0.0.7</version>
+			<version>7.0.0-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
         <dependency>
             <groupId>CCC7</groupId>
             <artifactId>data-migration</artifactId>
-            <version>0.0.7</version>
+            <version>7.0.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
 	</dependencies>
