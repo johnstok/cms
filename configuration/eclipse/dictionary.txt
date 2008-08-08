@@ -46,3 +46,6 @@ xhtml
 namespace
 url
 unicode
+registry
+registries
+martin
