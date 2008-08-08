@@ -2,13 +2,13 @@
 	<parent>
 		<artifactId>build</artifactId>
 		<groupId>CCC7</groupId>
-		<version>0.0.8-SNAPSHOT</version>
+		<version>0.0.8</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>CCC7</groupId>
 	<artifactId>data-migration</artifactId>
 	<name>data-migration</name>
-	<version>0.0.8-SNAPSHOT</version>
+	<version>0.0.8</version>
 	<url>http://maven.apache.org</url>
 	<dependencies>
 		<dependency>
@@ -92,8 +92,8 @@
 
 										<echo message="compile classpath: ${compile_classpath}" />
 										<echo message="runtime classpath: ${runtime_classpath}" />
-										<echo message="test classpath:    ${test_classpath}" />
-										<echo message="plugin classpath:  ${plugin_classpath}" />
+										<echo message="test classpath: ${test_classpath}" />
+										<echo message="plugin classpath: ${plugin_classpath}" />
 
 										<path id="migration.classpath">
 											<pathelement path="${test_classpath}" />
