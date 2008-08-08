@@ -1,21 +1,20 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<artifactId>build</artifactId>
 		<groupId>CCC7</groupId>
-		<version>0.0.7-SNAPSHOT</version>
+		<version>0.0.7</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>CCC7</groupId>
 	<artifactId>data-migration</artifactId>
 	<name>data-migration</name>
-	<version>0.0.7-SNAPSHOT</version>
+	<version>0.0.7</version>
 	<url>http://maven.apache.org</url>
 	<dependencies>
 		<dependency>
 			<groupId>CCC7</groupId>
 			<artifactId>core-domain</artifactId>
-			<version>0.0.7-SNAPSHOT</version>
+			<version>0.0.7</version>
 		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
@@ -31,7 +30,7 @@
 		<dependency>
 			<groupId>CCC7</groupId>
 			<artifactId>business-services</artifactId>
-			<version>0.0.7-SNAPSHOT</version>
+			<version>0.0.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.client</groupId>
@@ -51,7 +50,7 @@
 		<dependency>
 			<groupId>CCC7</groupId>
 			<artifactId>services-ejb3</artifactId>
-			<version>0.0.7-SNAPSHOT</version>
+			<version>0.0.7</version>
 			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
@@ -86,36 +85,22 @@
 									<tasks>
 										<echo>Running migration</echo>
 
-										<property
-											name="compile_classpath" refid="maven.compile.classpath" />
-										<property
-											name="runtime_classpath" refid="maven.runtime.classpath" />
-										<property name="test_classpath"
-											refid="maven.test.classpath" />
-										<property
-											name="plugin_classpath" refid="maven.plugin.classpath" />
+										<property name="compile_classpath" refid="maven.compile.classpath" />
+										<property name="runtime_classpath" refid="maven.runtime.classpath" />
+										<property name="test_classpath" refid="maven.test.classpath" />
+										<property name="plugin_classpath" refid="maven.plugin.classpath" />
 
-										<echo
-											message="compile classpath: ${compile_classpath}" />
-										<echo
-											message="runtime classpath: ${runtime_classpath}" />
-										<echo
-											message="test classpath:    ${test_classpath}" />
-										<echo
-											message="plugin classpath:  ${plugin_classpath}" />
+										<echo message="compile classpath: ${compile_classpath}" />
+										<echo message="runtime classpath: ${runtime_classpath}" />
+										<echo message="test classpath:    ${test_classpath}" />
+										<echo message="plugin classpath:  ${plugin_classpath}" />
 
-										<path
-											id="migration.classpath">
-											<pathelement
-												path="${test_classpath}" />
+										<path id="migration.classpath">
+											<pathelement path="${test_classpath}" />
 										</path>
-										<property
-											name="migration_classpath" refid="migration.classpath" />
-										<echo
-											message="data migration classpath: ${migration_classpath}" />
-										<java
-											classname="ccc.migration.App" fork="false" failonerror="true"
-											classpath="${migration_classpath}">
+										<property name="migration_classpath" refid="migration.classpath" />
+										<echo message="data migration classpath: ${migration_classpath}" />
+										<java classname="ccc.migration.App" fork="false" failonerror="true" classpath="${migration_classpath}">
 										</java>
 
 									</tasks>
