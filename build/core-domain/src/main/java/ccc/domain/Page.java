@@ -15,8 +15,10 @@ package ccc.domain;
 import static java.util.Collections.*;
 
 import java.util.Map;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
+import ccc.commons.AlphanumComparator;
 import ccc.commons.DBC;
 import ccc.commons.JSON;
 
@@ -30,7 +32,8 @@ public final class Page extends Resource {
 
     /** serialVersionUID : long. */
     private static final long serialVersionUID = 2797475534849447269L;
-    private Map<String, Paragraph> _content = new TreeMap<String, Paragraph>();
+    private SortedMap<String, Paragraph> _content =
+        new TreeMap<String, Paragraph>(new AlphanumComparator());
 
     /**
      * Constructor.

@@ -103,9 +103,9 @@ public final class Ticket5AcceptanceTest extends TestCase {
         selenium.waitForPageToLoad("30000");
         selenium.click("link=Your_Rights___Responsibilities_content");
         selenium.waitForPageToLoad("30000");
-        assertEquals("SUMMARY", selenium.getText("//h2[1]"));
-        assertEquals("CONTENT", selenium.getText("//h2[2]"));
-        assertEquals("HEADER", selenium.getText("//h2[4]"));
+        assertEquals("CONTENT", selenium.getText("//h2[1]"));
+        assertEquals("HEADER", selenium.getText("//h2[3]"));
+        assertEquals("SUMMARY", selenium.getText("//h2[6]"));
 
     }
 
