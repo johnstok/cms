@@ -16,7 +16,7 @@
 		<dependency>
 			<groupId>CCC7</groupId>
 			<artifactId>core-domain</artifactId>
-			<version>0.0.7</version>
+			<version>7.0.0-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
