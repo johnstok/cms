@@ -11,6 +11,11 @@
 	<version>7.0.0-SNAPSHOT</version>
 	<url>http://maven.apache.org</url>
 	<dependencies>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.14</version>
+        </dependency>
 		<dependency>
 			<groupId>CCC7</groupId>
 			<artifactId>core-domain</artifactId>
@@ -85,23 +90,14 @@
 									<tasks>
 										<echo>Running migration</echo>
 
-										<property name="compile_classpath" refid="maven.compile.classpath" />
-										<property name="runtime_classpath" refid="maven.runtime.classpath" />
 										<property name="test_classpath" refid="maven.test.classpath" />
-										<property name="plugin_classpath" refid="maven.plugin.classpath" />
-
-										<echo message="compile classpath: ${compile_classpath}" />
-										<echo message="runtime classpath: ${runtime_classpath}" />
-										<echo message="test classpath: ${test_classpath}" />
-										<echo message="plugin classpath: ${plugin_classpath}" />
-
 										<path id="migration.classpath">
 											<pathelement path="${test_classpath}" />
 										</path>
 										<property name="migration_classpath" refid="migration.classpath" />
 										<echo message="data migration classpath: ${migration_classpath}" />
-										<java classname="ccc.migration.App" fork="false" failonerror="true" classpath="${migration_classpath}">
-										</java>
+										
+										<java classname="ccc.migration.App" fork="true" failonerror="true" classpath="${migration_classpath}" />
 
 									</tasks>
 								</configuration>
