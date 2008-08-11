@@ -68,7 +68,7 @@ public final class Ticket5AcceptanceTest extends TestCase {
             new URL(
                 "http://localhost:8080/content-server/content/"
                 + "Young_People/Tell_us_your_story/"
-                + "Tell_us_your_story_content/")
+                + "Tell_us_your_story/")
             .openStream();
 
         // ACT
@@ -89,9 +89,9 @@ public final class Ticket5AcceptanceTest extends TestCase {
         selenium.click("link=Home");
         selenium.waitForPageToLoad("30000");
         assertEquals("Folder: Home", selenium.getTitle());
-        selenium.click("link=blue_panel_content");
+        selenium.click("link=blue_panel");
         selenium.waitForPageToLoad("30000");
-        assertEquals("blue_panel_content", selenium.getTitle());
+        assertEquals("blue_panel", selenium.getTitle());
     }
 
     /**
@@ -101,7 +101,7 @@ public final class Ticket5AcceptanceTest extends TestCase {
         selenium.open("/content-server/content/");
         selenium.click("link=Information_for_the_Public");
         selenium.waitForPageToLoad("30000");
-        selenium.click("link=Your_Rights___Responsibilities_content");
+        selenium.click("link=Your_Rights___Responsibilities");
         selenium.waitForPageToLoad("30000");
         assertEquals("CONTENT", selenium.getText("//h2[1]"));
         assertEquals("HEADER", selenium.getText("//h2[3]"));
