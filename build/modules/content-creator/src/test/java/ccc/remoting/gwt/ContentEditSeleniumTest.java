@@ -53,14 +53,14 @@ public final class ContentEditSeleniumTest extends TestCase {
         selenium.setSpeed("1000");
         selenium.open("/content-creator/");
         assertEquals("ContentCreator", selenium.getTitle());
-        selenium.mouseDown("gwt-debug-folder_tree-root-child0-content");
-        assertEquals("Other", selenium.getText("gwt-debug-Other-content"));
-        selenium.doubleClick("gwt-debug-folder_tree-root-child0-content");
-        selenium.mouseDown("gwt-debug-Other-content");
-        assertEquals("Media_content", selenium.getText("gwt-debug-children_grid-1-1"));
+        selenium.mouseDown("gwt-debug-folder_tree-root-child0");
+        assertEquals("Other", selenium.getText("gwt-debug-Other"));
+        selenium.doubleClick("gwt-debug-folder_tree-root-child0");
+        selenium.mouseDown("gwt-debug-Other");
+        assertEquals("Media", selenium.getText("gwt-debug-children_grid-1-1"));
         selenium.click("//button[@type='button']");
 
-        assertEquals("Media_content", selenium.getValue("//input[@type='text']"));
+        assertEquals("Media", selenium.getValue("//input[@type='text']"));
         selenium.type("//input[@type='text']", "Media_content2");
 
         selenium.selectFrame("xpath=//iframe[@id='gwt-debug-bodyRTACONTENT']");
@@ -76,7 +76,7 @@ public final class ContentEditSeleniumTest extends TestCase {
         assertEquals("New Test Content", selenium.getText("//html/body"));
         selenium.selectFrame("relative=top");
         
-        selenium.type("//input[@type='text']", "Media_content");
+        selenium.type("//input[@type='text']", "Media");
         selenium.click("gwt-debug-saveButton");
     }
     
@@ -87,9 +87,9 @@ public final class ContentEditSeleniumTest extends TestCase {
         selenium.setSpeed("1000");
         selenium.open("/content-creator?locale=fi");
         assertEquals("ContentCreator", selenium.getTitle());
-        selenium.doubleClick("gwt-debug-folder_tree-root-child0-content");
-        selenium.mouseDown("gwt-debug-Other-content");
-        assertEquals("Media_content", selenium.getText("gwt-debug-children_grid-1-1"));
+        selenium.doubleClick("gwt-debug-folder_tree-root-child0");
+        selenium.mouseDown("gwt-debug-Other");
+        assertEquals("Media", selenium.getText("gwt-debug-children_grid-1-1"));
         
         assertEquals("Tyyppi", selenium.getText("gwt-debug-children_grid-0-0"));
         assertEquals("Otsikko", selenium.getText("gwt-debug-children_grid-0-1"));
