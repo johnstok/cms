@@ -8,9 +8,6 @@ import java.util.Date;
 
 import org.apache.commons.dbutils.DbUtils;
 
-import ccc.commons.JNDI;
-import ccc.services.ContentManager;
-
 /**
  * Entry class for the migration application.
  *
@@ -31,10 +28,8 @@ public final class App {
         final Queries queries = new Queries(connection);
 
         // Migrations migrations = consoleMigrations();
-        final MigrationsEJB migrations =
-            new MigrationsEJB(
-                new JNDI().<ContentManager>get("ContentManagerEJB/remote"),
-                queries);
+        final Migrations migrations =
+            new Migrations(queries);
 
         migrations.migrate();
         DbUtils.closeQuietly(connection);

@@ -66,7 +66,7 @@ public class MigrationIntegrationTest extends TestCase {
         final ContentManager manager = new JNDI().<ContentManager>get("ContentManagerEJB/remote");
         assertNotNull("ContentManager must not be null", manager);
 
-        final MigrationsEJB migrationsEJB = new MigrationsEJB(manager, queries);
+        final Migrations migrationsEJB = new Migrations(queries);
 
         // ACT
         migrationsEJB.migrate();

@@ -147,7 +147,7 @@ public class ContentManagerEJB implements ContentManager {
      * {@inheritDoc}
      */
     @Override
-    public final void createContent(final String pathString) {
+    public final void createContent(final String pathString, String title) {
         final ResourcePath path = new ResourcePath(pathString);
         final Folder parentFolder = createFoldersForPath(path.elementsToTop());
 
@@ -168,7 +168,7 @@ public class ContentManagerEJB implements ContentManager {
             throw new CCCException(
                 "A folder already exists at the path "+pathString);
         } else if (!resourceExists) {
-            final Page newContent = new Page(name);
+            final Page newContent = new Page(name, title);
             _em.persist(newContent);
             parentFolder.add(newContent);
         }
