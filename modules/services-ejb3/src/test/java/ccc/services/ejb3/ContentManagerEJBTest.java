@@ -233,8 +233,8 @@ public final class ContentManagerEJBTest extends TestCase {
         final ContentManager resourceMgr = new ContentManagerEJB(em);
 
         // ACT
-        resourceMgr.createContent("/foo/page1/");
-        resourceMgr.createContent("/foo/page2/");
+        resourceMgr.createContent("/foo/page1/", "page1");
+        resourceMgr.createContent("/foo/page2/", "page2");
 
         // VERIFY
         verify(em);
@@ -274,8 +274,8 @@ public final class ContentManagerEJBTest extends TestCase {
 
         // ACT
         resourceMgr.createFolder("/foo/");
-        resourceMgr.createContent("/foo/page1/");
-        resourceMgr.createContent("/foo/page1/");
+        resourceMgr.createContent("/foo/page1/", "page1");
+        resourceMgr.createContent("/foo/page1/", "page1");
 
         // VERIFY
         verify(em);
@@ -315,7 +315,7 @@ public final class ContentManagerEJBTest extends TestCase {
         resourceMgr.createFolder("/foo/");
         resourceMgr.createFolder("/foo/page1/");
         try {
-            resourceMgr.createContent("/foo/page1/");
+            resourceMgr.createContent("/foo/page1/", "page1");
             fail("Creation of page with"
                     + "same name as existing folder should fail.");
         } catch (final CCCException e) {
@@ -363,7 +363,7 @@ public final class ContentManagerEJBTest extends TestCase {
         paragraphs.put("HEADER", new Paragraph("test text"));
 
         // ACT
-        resourceMgr.createContent("/foo/page1/");
+        resourceMgr.createContent("/foo/page1/","page1");
 
         resourceMgr.createParagraphsForContent("/foo/page1/", paragraphs);
 

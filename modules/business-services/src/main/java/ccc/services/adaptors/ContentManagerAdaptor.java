@@ -74,7 +74,7 @@ public abstract class ContentManagerAdaptor implements ContentManager {
      * {@inheritDoc}
      */
     @Override
-    public void createContent(final String pathString) {
+    public void createContent(final String pathString, final String title) {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 

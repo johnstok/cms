@@ -51,8 +51,9 @@ public interface ContentManager {
      * Create a content, based on the specified path.
      *
      * @param pathString The string representation of the path.
+     * @param title The title.
      */
-    void createContent(String pathString);
+    void createContent(String pathString, String title);
 
     /**
      * Create paragraphs for given content.
