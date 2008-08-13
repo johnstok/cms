@@ -28,7 +28,7 @@ import ccc.services.ContentManager;
  *
  * @author Civic Computing Ltd
  */
-public class MigrationIntegrationTest extends TestCase {
+public class MigrationAcceptanceTest extends TestCase {
     private Connection conn = null;
     /**
      * @see junit.framework.TestCase#setUp()
@@ -76,8 +76,8 @@ public class MigrationIntegrationTest extends TestCase {
         assertNotNull("Resource /home/ must not be null", resource);
         assertEquals("Resource type must be folder ", ResourceType.FOLDER, resource.type());
 
-        resource = manager.lookup(new ResourcePath("/Home/blue_panel_content/"));
-        assertNotNull("Resource /Home/blue_panel_content/ must not be null", resource);
-        assertEquals("Resource type must be content ", ResourceType.PAGE, resource.type());
+        resource = manager.lookup(new ResourcePath("/Home/blue_panel/"));
+        assertNotNull("Resource /Home/blue_panel/ must not be null", resource);
+        assertEquals("Resource type must be page ", ResourceType.PAGE, resource.type());
     }
 }
