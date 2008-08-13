@@ -49,3 +49,11 @@ unicode
 registry
 registries
 martin
+alphanum
+franklin
+andre
+david
+koelle
+migowski
+keith
+aug
