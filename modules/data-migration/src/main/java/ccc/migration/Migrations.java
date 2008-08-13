@@ -22,9 +22,10 @@ import org.apache.log4j.Logger;
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
 import ccc.domain.CCCException;
+import ccc.domain.Folder;
+import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.ResourceName;
-import ccc.domain.ResourcePath;
 import ccc.services.AssetManager;
 import ccc.services.ContentManager;
 
@@ -36,10 +37,11 @@ import ccc.services.ContentManager;
  */
 public class Migrations {
 
-    private final Queries queries;
-    private Registry _registry = new JNDI();
+    private final Queries _queries;
+    private final Registry _registry = new JNDI();
 
-    private static Logger log = Logger.getLogger(ccc.migration.Migrations.class);
+    private static Logger log =
+        Logger.getLogger(ccc.migration.Migrations.class);
 
     /**
      * Constructor.
@@ -48,87 +50,107 @@ public class Migrations {
      * @param queries
      */
     public Migrations(final Queries queries) {
-        this.queries = queries;
+        this._queries = queries;
     }
 
+    /**
+     * TODO: Add a description of this method.
+     *
+     */
     public void migrate() {
 
         // Create a root assets folder.
         assetManager().createRoot();
 
         // Create a root content folder.
-    	contentManager().createRoot();
-        final ResourcePath rootFolder = new ResourcePath();
+        contentManager().createRoot();
 
         // Walk the tree migrating each resource
-        migrateChildren(rootFolder, 0, queries);
+        migrateChildren(contentManager().lookupRoot(), 0, _queries);
     }
-    private void migrateChildren(final ResourcePath path, final Integer parent, final Queries queries) {
+
+    private void migrateChildren(final Folder parentFolder,
+                                 final Integer parent,
+                                 final Queries queries) {
+
         final ResultSet rs = queries.selectResources(parent);
+
         try {
             while (rs.next()) {
                 final String type = rs.getString("CONTENT_TYPE");
                 final String name = rs.getString("NAME");
-                log.debug(path.toString()+name);
+
+                log.debug(parentFolder.name().toString());
+
                 // ignore null/empty name
                 if (name == null || name.equals("")) {
                     log.debug("NO NAME");
                     continue;
                 }
+
                 if (type.equals("FOLDER")) {
-                    log.debug("FOLDER");
-                    ResourcePath childFolder =
-                        path.append(ResourceName.escape(name));
-                    try {
-                    	contentManager().createFolder(childFolder.toString());
-                    }
-                    catch (final Exception e) {
-                    	log.error("Name conflict : "+e.getMessage());
-                    	childFolder = path.append(ResourceName.escape(name+"_renamed"));
-                    	contentManager().createFolder(childFolder.toString());
-					}
-                    migrateChildren(childFolder, rs.getInt("CONTENT_ID"), queries);
-                }
-                else if (type.equals("PAGE")) {
-                    log.debug("PAGE");
-                    ResourcePath childContent =
-                        path.append(ResourceName.escape(name));
-                    try {
-                    	contentManager().createContent(childContent.toString(), name);
-                    }
-                    catch (final Exception e) {
-                    	log.error("Name conflict : "+e.getMessage());
-                    	childContent =
-                            path.append(ResourceName.escape(name+"_renamed"));
-                    	contentManager().createContent(childContent.toString(), name);
-					}
-                    migrateParagraphs(childContent, rs.getInt("CONTENT_ID"));
-                }
-                else {
+                    migrateFolder(parentFolder, queries, rs, name);
+                } else if (type.equals("PAGE")) {
+                    migratePage(parentFolder, rs, name);
+                } else {
                     log.debug("Unkown resource type");
                 }
             }
-        }
-        catch (final SQLException e) {
+        } catch (final SQLException e) {
             throw new CCCException("Migration failed.", e);
-        }
-        finally {
+        } finally {
             DbUtils.closeQuietly(rs);
+        }
+    }
+
+    private void migrateFolder(final Folder parentFolder,
+                               final Queries queries,
+                               final ResultSet rs,
+                               final String name) throws SQLException {
+
+        log.debug("FOLDER");
+        Folder child = new Folder(ResourceName.escape(name));
+
+        try {
+            contentManager().create(parentFolder.id(), child);
+        } catch (final Exception e) {
+            log.error("Name conflict : "+e.getMessage());
+        }
+        migrateChildren(child, rs.getInt("CONTENT_ID"), queries);
+    }
+
+    private void migratePage(final Folder parentFolder,
+                             final ResultSet rs,
+                             final String name) throws SQLException {
+
+        log.debug("PAGE");
+        Page childPage = new Page(ResourceName.escape(name));
+        final Map<String, Paragraph> paragraphs =
+            migrateParagraphs(rs.getInt("CONTENT_ID"));
+        for (String key : paragraphs.keySet()) {
+            childPage.addParagraph(key, paragraphs.get(key));
+        }
+        try {
+            contentManager().create(parentFolder.id(), childPage);
+        } catch (final Exception e) {
+            log.error("Name conflict : "+e.getMessage());
         }
     }
 
     /**
      * Merges paragraphs, creates Paragraph objects and calls manager.
      *
-     * @param childContent
+     * @param path
      * @param pageId
      * @throws SQLException
      */
-    private void migrateParagraphs(final ResourcePath path, final int pageId) throws SQLException {
-        log.debug("#### migrating paragraphs for "+pageId );
+    private Map<String, Paragraph>
+        migrateParagraphs(final int pageId) throws SQLException {
+
+        log.debug("#### migrating paragraphs for "+pageId);
         final Map<String, Paragraph> map = new HashMap<String, Paragraph>();
 
-        final ResultSet rs = queries.selectParagraphs(pageId);
+        final ResultSet rs = _queries.selectParagraphs(pageId);
         // populate map
         while (rs.next()) {
             final String key = rs.getString("PARA_TYPE");
@@ -147,11 +169,11 @@ public class Migrations {
             } else {
                 // new item
                 map.put(key, new Paragraph(text));
-                log.debug("#### Created Paragraph "+key );
+                log.debug("#### Created Paragraph "+key);
             }
         }
         DbUtils.close(rs);
-        contentManager().createParagraphsForContent(path.toString(), map);
+        return map;
     }
 
     /**

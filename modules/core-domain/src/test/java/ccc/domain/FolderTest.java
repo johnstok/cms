@@ -82,12 +82,13 @@ public final class FolderTest extends TestCase {
 
         // ARRANGE
         final Folder folder = new Folder(new ResourceName("foo"));
-
+        folder.displayTemplateName("template");
+        
         // ACT
         final String json = folder.toJSON();
 
         // ASSERT
-        assertEquals("{\"name\": \"foo\",\"entries\": []}", json);
+        assertEquals("{\"name\": \"foo\",\"displayTemplateName\": \"template\",\"entries\": []}", json);
     }
 
     /**
@@ -109,6 +110,7 @@ public final class FolderTest extends TestCase {
         assertEquals(
             "{"
             + "\"name\": \"foo\","
+            + "\"displayTemplateName\": \"null\","
             + "\"entries\": ["
                 + "{\"name\": \"bar\","
                 + "\"id\": \""+child1.id().toString()+"\","

@@ -12,8 +12,8 @@
 
 package ccc.services.ejb3;
 
-import static javax.ejb.TransactionAttributeType.*;
-import static javax.persistence.PersistenceContextType.*;
+import static javax.ejb.TransactionAttributeType.REQUIRED;
+import static javax.persistence.PersistenceContextType.EXTENDED;
 
 import java.util.Map;
 import java.util.UUID;
@@ -26,6 +26,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
+import ccc.domain.CCCException;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
@@ -73,6 +74,9 @@ public class ContentManagerEJB implements ContentManager {
 
     private void create(final UUID folderId, final Resource newResource) {
         final Folder folder = lookup(folderId);
+        if (null==folder) {
+            throw new CCCException("No folder exists with id: "+folderId);
+        }
         folder.add(newResource);
         _em.persist(newResource);
     }
@@ -113,10 +117,11 @@ public class ContentManagerEJB implements ContentManager {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public final <T extends Resource> T lookup(final ResourcePath path) {
         return
-            new Queries().lookupRoot(
+            (T) new Queries().lookupRoot(
                 _em, PredefinedResourceNames.CONTENT).navigateTo(path);
     }
 

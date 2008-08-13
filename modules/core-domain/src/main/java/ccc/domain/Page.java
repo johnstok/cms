@@ -111,6 +111,7 @@ public final class Page extends Resource {
             JSON.object()
                 .add("id", id().toString())
                 .add("title", title())
+                .add("displayTemplateName", displayTemplateName())
                 .add("paragraphs", _content)
                 .toString();
     }
