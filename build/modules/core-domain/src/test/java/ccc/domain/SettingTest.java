@@ -15,12 +15,15 @@ import junit.framework.TestCase;
 
 
 /**
- * TODO Add Description for this type.
+ * Tests for the {@link Setting} class.
  *
  * @author Civic Computing Ltd
  */
-public class SettingTest extends TestCase {
+public final class SettingTest extends TestCase {
 
+    /**
+     * Test.
+     */
     public void testConstructorRejectsEmptyName() {
 
         // ARRANGE
@@ -38,6 +41,9 @@ public class SettingTest extends TestCase {
         }
     }
 
+    /**
+     * Test.
+     */
     public void testConstructorRejectsNullName() {
 
         // ARRANGE
@@ -55,6 +61,9 @@ public class SettingTest extends TestCase {
         }
     }
 
+    /**
+     * Test.
+     */
     public void testConstructorRejectsNullValue() {
 
         // ARRANGE
@@ -72,6 +81,9 @@ public class SettingTest extends TestCase {
         }
     }
 
+    /**
+     * Test.
+     */
     public void testAccessors() {
 
         // ARRANGE
@@ -86,6 +98,9 @@ public class SettingTest extends TestCase {
         assertEquals(value, s.value());
     }
 
+    /**
+     * Test.
+     */
     public void testValueMutator() {
 
         // ARRANGE
@@ -101,6 +116,9 @@ public class SettingTest extends TestCase {
         assertEquals("baz", s.value());
     }
 
+    /**
+     * Test.
+     */
     public void testValueMutatorRejectsNull() {
 
         // ARRANGE

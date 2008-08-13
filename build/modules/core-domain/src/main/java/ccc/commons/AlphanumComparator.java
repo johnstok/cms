@@ -42,25 +42,28 @@ import java.util.Comparator;
 public class AlphanumComparator implements Comparator<String>, Serializable {
     /** serialVersionUID : long. */
     private static final long serialVersionUID = 764112939098681753L;
+    private final int _zeroChar = 48;
+    private final int _nineChar = 57;
 
-    private final boolean isDigit(final char ch) {
-        return ch >= 48 && ch <= 57;
+    private boolean isDigit(final char ch) {
+        return ch >= _zeroChar && ch <= _nineChar;
     }
 
     /**
      * Length of string is passed in for improved efficiency (only need to
-     * calculate it once)
-    **/
-    private final String getChunk(final String s, final int slength, int marker)
-    {
+     * calculate it once).
+     **/
+    private String getChunk(final String s,
+                            final int slength,
+                            final int startMarker) {
+
         final StringBuilder chunk = new StringBuilder();
+        int marker = startMarker;
         char c = s.charAt(marker);
         chunk.append(c);
         marker++;
-        if (isDigit(c))
-        {
-            while (marker < slength)
-            {
+        if (isDigit(c)) {
+            while (marker < slength) {
                 c = s.charAt(marker);
                 if (!isDigit(c)) {
                     break;
@@ -68,10 +71,8 @@ public class AlphanumComparator implements Comparator<String>, Serializable {
                 chunk.append(c);
                 marker++;
             }
-        } else
-        {
-            while (marker < slength)
-            {
+        } else {
+            while (marker < slength) {
                 c = s.charAt(marker);
                 if (isDigit(c)) {
                     break;
@@ -83,10 +84,12 @@ public class AlphanumComparator implements Comparator<String>, Serializable {
         return chunk.toString();
     }
 
-    public int compare(final String o1, final String o2)
-    {
-        if (!(o1 instanceof String) || !(o2 instanceof String))
-        {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final int compare(final String o1, final String o2) {
+        if (!(o1 instanceof String) || !(o2 instanceof String)) {
             return 0;
         }
         final String s1 = o1;
@@ -97,8 +100,7 @@ public class AlphanumComparator implements Comparator<String>, Serializable {
         final int s1Length = s1.length();
         final int s2Length = s2.length();
 
-        while (thisMarker < s1Length && thatMarker < s2Length)
-        {
+        while (thisMarker < s1Length && thatMarker < s2Length) {
             final String thisChunk = getChunk(s1, s1Length, thisMarker);
             thisMarker += thisChunk.length();
 
@@ -107,25 +109,20 @@ public class AlphanumComparator implements Comparator<String>, Serializable {
 
             // If both chunks contain numeric characters, sort them numerically
             int result = 0;
-            if (isDigit(thisChunk.charAt(0)) && isDigit(thatChunk.charAt(0)))
-            {
+            if (isDigit(thisChunk.charAt(0)) && isDigit(thatChunk.charAt(0))) {
                 // Simple chunk comparison by length.
                 final int thisChunkLength = thisChunk.length();
                 result = thisChunkLength - thatChunk.length();
                 // If equal, the first different number counts
-                if (result == 0)
-                {
-                    for (int i = 0; i < thisChunkLength; i++)
-                    {
+                if (result == 0) {
+                    for (int i = 0; i < thisChunkLength; i++) {
                         result = thisChunk.charAt(i) - thatChunk.charAt(i);
-                        if (result != 0)
-                        {
+                        if (result != 0) {
                             return result;
                         }
                     }
                 }
-            } else
-            {
+            } else {
                 result = thisChunk.compareTo(thatChunk);
             }
 
