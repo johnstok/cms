@@ -23,5 +23,8 @@ public enum ResourceType {
     PAGE,
 
     /** FOLDER : ResourceType. */
-    FOLDER;
+    FOLDER,
+
+    /** TEMPLATE : ResourceType. */
+    TEMPLATE;
 }

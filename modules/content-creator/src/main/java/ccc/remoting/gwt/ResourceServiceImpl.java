@@ -19,8 +19,10 @@ import ccc.commons.JNDI;
 import ccc.commons.Registry;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
+import ccc.services.AssetManager;
 import ccc.services.ContentManager;
 import ccc.view.contentcreator.client.ResourceService;
+import ccc.view.contentcreator.dto.TemplateDTO;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -61,12 +63,21 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     }
 
     /**
-     * Accessor for the resource manager.
+     * Accessor for the content manager.
      *
      * @return A ContentManager.
      */
     ContentManager contentManager() {
         return _registry.get("ContentManagerEJB/local");
+    }
+
+    /**
+     * Accessor for the asset manager.
+     *
+     * @return An AssetManager.
+     */
+    AssetManager assetManager() {
+        return _registry.get("AssetManagerEJB/local");
     }
 
     /**
@@ -87,5 +98,14 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
                             final String title,
                             final Map<String, String> paragraphs) {
         contentManager().saveContent(id, title, paragraphs);
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param dto
+     */
+    public void createTemplate(final TemplateDTO dto) {
+        assetManager().createDisplayTemplate(DTOs.templateFrom(dto));
     }
 }

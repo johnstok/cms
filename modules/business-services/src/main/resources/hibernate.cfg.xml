@@ -9,6 +9,7 @@
         <mapping resource="ccc/domain/Resource.hbm.xml"/>
         <mapping resource="ccc/domain/Page.hbm.xml"/>
         <mapping resource="ccc/domain/Folder.hbm.xml"/>
+        <mapping resource="ccc/domain/Template.hbm.xml"/>
         <mapping resource="ccc/domain/Queries.hbm.xml"/>
     </session-factory>
 

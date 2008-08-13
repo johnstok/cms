@@ -13,6 +13,8 @@ package ccc.view.contentcreator.client;
 
 import java.util.Map;
 
+import ccc.view.contentcreator.dto.TemplateDTO;
+
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
@@ -26,4 +28,5 @@ public  interface ResourceService extends RemoteService {
   String getContentRoot();
   String getResource(String absolutePath);
   void saveContent(String id, String title, Map<String, String> paragraphs);
+  void createTemplate(final TemplateDTO dto);
 }

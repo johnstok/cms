@@ -73,7 +73,7 @@ public interface Constants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Actions")
     String actions();
-    
+
     /**
      * "Help".
      *
@@ -81,7 +81,7 @@ public interface Constants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Help")
     String help();
-    
+
     /**
      * "Manual".
      *
@@ -89,4 +89,44 @@ public interface Constants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Manual")
     String manual();
+
+    /**
+     * "Create display template".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Create display template")
+    String createDisplayTemplate();
+
+    /**
+     * "Assets".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Assets")
+    String assets();
+
+    /**
+     * "Description".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Description")
+    String description();
+
+    /**
+     * "Body".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Body")
+    String body();
+
+    /**
+     * "Error!".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Error!")
+    String error();
 }

@@ -10,10 +10,16 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.view.contentcreator.client;
+package ccc.view.contentcreator.dialogs;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import ccc.view.contentcreator.client.Constants;
+import ccc.view.contentcreator.client.JSONCallback;
+import ccc.view.contentcreator.client.ResourceService;
+import ccc.view.contentcreator.client.ResourceServiceAsync;
+import ccc.view.contentcreator.widgets.RichTextToolbar;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.json.client.JSONObject;
@@ -53,7 +59,7 @@ public class UpdateContentDialog extends DialogBox {
      * @param contentPath The absolute path to the content resource this dialog
      *          will update.
      */
-    UpdateContentDialog(final String contentPath) {
+    public UpdateContentDialog(final String contentPath) {
 
         super(false, true);
         this.contentPath = contentPath;
