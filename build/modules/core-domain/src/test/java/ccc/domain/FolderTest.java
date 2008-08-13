@@ -299,4 +299,49 @@ public final class FolderTest extends TestCase {
         // ASSERT
         assertSame(content, expectedFolder);
     }
+
+    /**
+     * Test.
+     */
+    public void testHasEntryWithName() {
+
+        // ARRANGE
+        final Page p = new Page(new ResourceName("page"));
+        final Folder f = new Folder(new ResourceName("folder"));
+        f.add(p);
+
+        // ACT
+        final boolean expectTrue =
+            f.hasEntryWithName(new ResourceName("page"));
+        final boolean expectFalse =
+            f.hasEntryWithName(new ResourceName("missing"));
+
+        // ASSERT
+        assertTrue(
+            "folder.hasEntryWithName() should return true.",
+            expectTrue);
+        assertFalse(
+            "folder.hasEntryWithName() should return false.",
+            expectFalse);
+    }
+
+    public void testAddRejectsResourcesWithExistingNames() {
+
+        // ARRANGE
+        final Page p = new Page(new ResourceName("page"));
+        final Folder f = new Folder(new ResourceName("folder"));
+        f.add(p);
+
+        // ACT
+        try {
+            f.add(new Page(new ResourceName("page")));
+            fail("Resources with existing names should be rejected.");
+
+        // ASSERT
+        } catch (final CCCException e) {
+            assertEquals(
+                "Folder already contains a resource with name 'page'.",
+                e.getMessage());
+        }
+    }
 }

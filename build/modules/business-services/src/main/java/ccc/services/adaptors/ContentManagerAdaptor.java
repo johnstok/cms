@@ -14,7 +14,8 @@ package ccc.services.adaptors;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.domain.Paragraph;
+import ccc.domain.Folder;
+import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 import ccc.services.ContentManager;
@@ -31,9 +32,7 @@ public abstract class ContentManagerAdaptor implements ContentManager {
      * {@inheritDoc}
      */
     @Override
-    public void saveContent(final String id,
-                            final String title,
-                        final Map<String, String> paragraphs) {
+    public void create(final UUID folderId, final Folder newFolder) {
 
         throw new UnsupportedOperationException("Method not implemented.");
     }
@@ -42,23 +41,8 @@ public abstract class ContentManagerAdaptor implements ContentManager {
      * {@inheritDoc}
      */
     @Override
-    public Resource lookup(final UUID id) {
-        throw new UnsupportedOperationException("Method not implemented.");
-    }
+    public void create(final UUID folderId, final Page newPage) {
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Resource lookup(final ResourcePath absoulteURI) {
-        throw new UnsupportedOperationException("Method not implemented.");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void createFolder(final String pathString) {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
@@ -67,6 +51,7 @@ public abstract class ContentManagerAdaptor implements ContentManager {
      */
     @Override
     public void createRoot() {
+
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
@@ -74,7 +59,8 @@ public abstract class ContentManagerAdaptor implements ContentManager {
      * {@inheritDoc}
      */
     @Override
-    public void createContent(final String pathString, final String title) {
+    public <T extends Resource> T lookup(final ResourcePath path) {
+
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
@@ -82,9 +68,28 @@ public abstract class ContentManagerAdaptor implements ContentManager {
      * {@inheritDoc}
      */
     @Override
-    public void createParagraphsForContent(
-                                   final String patString,
-                                   final Map<String, Paragraph> paragraphs) {
+    public <T extends Resource> T lookup(final UUID id) {
+
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Folder lookupRoot() {
+
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void update(final UUID id,
+                       final String newTitle,
+                       final Map<String, String> newParagraphs) {
+
         throw new UnsupportedOperationException("Method not implemented.");
     }
 

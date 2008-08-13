@@ -15,13 +15,14 @@ package ccc.services;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.domain.Paragraph;
+import ccc.domain.Folder;
+import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 
 
 /**
- * Business methods that operate on resources.
+ * Business methods that operate on content.
  *
  * @author Civic Computing Ltd
  */
@@ -31,16 +32,26 @@ public interface ContentManager {
      * Lookup a resource, given its absolute path.
      *
      * @param path The absolute path to the resource.
+     * @param <T> The type of the resource to look up.
      * @return The resource.
      */
-    Resource lookup(ResourcePath path);
+    <T extends Resource> T lookup(ResourcePath path);
 
     /**
-     * Create a folder, based on the specified path.
+     * Lookup a resource, given its id.
      *
-     * @param pathString The string representation of the path.
+     * @param id The unique identifier for the resource to look up.
+     * @param <T> The type of the resource to look up.
+     * @return The resource.
      */
-    void createFolder(String pathString);
+    <T extends Resource> T lookup(UUID id);
+
+    /**
+     * Look up the root folder for content.
+     *
+     * @return The root folder for content.
+     */
+    Folder lookupRoot();
 
     /**
      * Create the root folder for content.
@@ -48,39 +59,29 @@ public interface ContentManager {
     void createRoot();
 
     /**
-     * Create a content, based on the specified path.
+     * Create a folder, based on the specified path.
      *
-     * @param pathString The string representation of the path.
-     * @param title The title.
+     * @param folderId The {@link UUID} for the containing folder/
+     * @param newFolder The folder to be created.
      */
-    void createContent(String pathString, String title);
+    void create(UUID folderId, Folder newFolder);
 
     /**
-     * Create paragraphs for given content.
+     * Create a page, based on the specified path.
      *
-     * @param pathString The string representation of the path.
-     * @param paragraphs A map containing the paragraphs to create, and their
-     *      respective keys.
+     * @param folderId The {@link UUID} for the containing folder/
+     * @param newPage The page to be created.
      */
-    void createParagraphsForContent(String pathString,
-                                    Map<String, Paragraph> paragraphs);
+    void create(UUID folderId, Page newPage);
 
     /**
-     * Lookup a resource, given its id.
+     * Recreates a page's paragraphs.
      *
-     * @param id The unique identifier for the resource to look up.
-     * @return The resource.
-     */
-    Resource lookup(UUID id);
-
-    /**
-     * Recreates content's paragraphs.
-     *
-     * @param id A string representing the unique identifier for the content.
-     * @param title The new title for the content.
-     * @param paragraphs The new paragraphs for the content. All existing
+     * @param id The unique identifier for the page.
+     * @param newTitle The new title for the page.
+     * @param newParagraphs The new paragraphs for the page. All existing
      *      paragraphs will be removed and replaced with the paragraphs
      *      specified here.
      */
-    void saveContent(String id, String title, Map<String, String> paragraphs);
+    void update(UUID id, String newTitle, Map<String, String> newParagraphs);
 }

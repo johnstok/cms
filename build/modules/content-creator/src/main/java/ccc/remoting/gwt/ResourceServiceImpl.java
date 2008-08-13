@@ -13,6 +13,7 @@
 package ccc.remoting.gwt;
 
 import java.util.Map;
+import java.util.UUID;
 
 import ccc.commons.DBC;
 import ccc.commons.JNDI;
@@ -85,9 +86,9 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
      */
     @Override
     public String getResource(final String absolutePath) {
-        final Resource root =
+        final Resource resource =
             contentManager().lookup(new ResourcePath(absolutePath));
-        return root.toJSON();
+        return resource.toJSON();
     }
 
     /**
@@ -97,13 +98,13 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     public void saveContent(final String id,
                             final String title,
                             final Map<String, String> paragraphs) {
-        contentManager().saveContent(id, title, paragraphs);
+        contentManager().update(UUID.fromString(id), title, paragraphs);
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Create a new template.
      *
-     * @param dto
+     * @param dto A DTO representing the template.
      */
     public void createTemplate(final TemplateDTO dto) {
         assetManager().createDisplayTemplate(DTOs.templateFrom(dto));

@@ -39,7 +39,7 @@ import ccc.services.AssetManager;
 @TransactionAttribute(REQUIRED)
 @Remote(AssetManager.class)
 @Local(AssetManager.class)
-public class AssetManagerEJB extends ManagerSupport implements AssetManager {
+public class AssetManagerEJB implements AssetManager {
 
     @PersistenceContext(
         unitName = "ccc-persistence",
@@ -67,7 +67,7 @@ public class AssetManagerEJB extends ManagerSupport implements AssetManager {
     @Override
     public final void createDisplayTemplate(final Template template) {
         final Folder templateFolder =
-            lookupRoot(_entityManager, PredefinedResourceNames.ASSETS)
+            new Queries().lookupRoot(_entityManager, PredefinedResourceNames.ASSETS)
                 .navigateTo(new ResourcePath("/templates/"));
 
         _entityManager.persist(template);
@@ -80,7 +80,7 @@ public class AssetManagerEJB extends ManagerSupport implements AssetManager {
     @Override
     public void createRoot() {
         try {
-            lookupRoot(_entityManager, PredefinedResourceNames.ASSETS);
+            new Queries().lookupRoot(_entityManager, PredefinedResourceNames.ASSETS);
         } catch (final NoResultException e) {
             final Folder root = new Folder(PredefinedResourceNames.ASSETS);
             final Folder templates = new Folder(new ResourceName("templates"));

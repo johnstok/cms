@@ -21,6 +21,9 @@ import junit.framework.TestCase;
  */
 public class TemplateDTOTest extends TestCase {
 
+    /**
+     * Test.
+     */
     public void testConstructor() {
 
         // ARRANGE
