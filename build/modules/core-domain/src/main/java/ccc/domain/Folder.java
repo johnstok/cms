@@ -142,6 +142,7 @@ public final class Folder extends Resource implements JSONable {
         return
             JSON.object()
                 .add("name", name().toString())
+                .add("displayTemplateName", displayTemplateName())
                 .add("entries", entryReferences())
                 .toString();
     }

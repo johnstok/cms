@@ -250,7 +250,7 @@ public final class ContentManagerEJBTest extends TestCase {
                     + "same name as existing folder should fail.");
         } catch (final CCCException e) {
             assertEquals(
-                "A resource already exists at the path /foo/page1/",
+                "Folder already contains a resource with name 'page1'.",
                 e.getMessage());
         }
 

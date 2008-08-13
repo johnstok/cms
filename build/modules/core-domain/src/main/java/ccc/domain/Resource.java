@@ -24,6 +24,7 @@ public abstract class Resource extends Entity implements JSONable {
 
     private String       _title = id().toString();
     private ResourceName _name  = ResourceName.escape(_title);
+    private String _displayTemplateName = null;
 
     /**
      * Constructor.
@@ -110,5 +111,23 @@ public abstract class Resource extends Entity implements JSONable {
     public final void title(final String titleString) {
         require().notEmpty(titleString);
         _title = titleString;
+    }
+
+    /**
+     * Accessor for the display template name.
+     *
+     * @return The display template name.
+     */
+    public final String displayTemplateName() {
+        return _displayTemplateName;
+    }
+
+    /**
+     * Sets the display template name of the resource.
+     *
+     * @param displayTemplateName The new display template name.
+     */
+    public final void displayTemplateName(final String displayTemplateName) {
+        _displayTemplateName = displayTemplateName;
     }
 }

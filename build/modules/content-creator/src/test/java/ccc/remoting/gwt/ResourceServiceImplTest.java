@@ -58,7 +58,9 @@ public final class ResourceServiceImplTest extends TestCase {
 
         // ASSERT
         assertEquals(
-            "{\"name\": \"content\",\"entries\": []}",
+            "{\"name\": \"content\"," +
+            "\"displayTemplateName\": \"null\"," +
+            "\"entries\": []}",
             jsonRoot);
     }
 

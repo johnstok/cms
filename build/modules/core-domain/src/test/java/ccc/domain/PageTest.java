@@ -32,6 +32,7 @@ public final class PageTest extends TestCase {
 
         // ARRANGE
         final Page page = new Page(new ResourceName("foo"), "Foo?");
+        page.displayTemplateName("template");
         page.addParagraph("bar", new Paragraph("bar"));
         page.addParagraph("baz", new Paragraph("baz"));
 
@@ -42,7 +43,9 @@ public final class PageTest extends TestCase {
         assertEquals(
             "{\"id\": \""
             + page.id().toString()
-            + "\",\"title\": \"Foo?\",\"paragraphs\": "
+            + "\",\"title\": \"Foo?\""
+            + ",\"displayTemplateName\": \"template\""
+            + ",\"paragraphs\": "
             + "{\"bar\": {\"body\": \"bar\"},\"baz\": {\"body\": \"baz\"}}}",
             jsonString);
     }

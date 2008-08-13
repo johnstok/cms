@@ -5,6 +5,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Properties;
+
+import oracle.jdbc.pool.OracleDataSource;
 
 import org.apache.commons.dbutils.DbUtils;
 
@@ -58,7 +61,19 @@ public final class App {
                 + sid;
             final String username = "asb_pepez";
             final String password = "d3asb_pepez";
-            connection = DriverManager.getConnection(url, username, password);
+            
+            
+            OracleDataSource ods = new OracleDataSource();
+            Properties props = new Properties();
+            props.put("user", username);
+            props.put("password", password);
+            props.put("oracle.jdbc.FreeMemoryOnEnterImplicitCache", true);
+            ods.setConnectionProperties(props);
+            ods.setURL(url);
+            connection = ods.getConnection();
+            
+            
+//            connection = DriverManager.getConnection(url, username, password);
         } catch (final ClassNotFoundException e) {
             throw new MigrationException(e);
         } catch (final SQLException e) {

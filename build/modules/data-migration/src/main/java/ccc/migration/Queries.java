@@ -1,11 +1,11 @@
 package ccc.migration;
 
+import static ccc.commons.DBC.require;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import static ccc.commons.DBC.*;
 
 /**
  * TODO Add Description for this type.
@@ -31,7 +31,8 @@ public class Queries {
         try {
             PreparedStatement ps;
             ps = connection.prepareStatement(
-                "SELECT * FROM  C3_CONTENT WHERE C3_CONTENT.PARENT_ID = ? " +
+                "SELECT CONTENT_ID, CONTENT_TYPE, NAME FROM " +
+                "C3_CONTENT WHERE C3_CONTENT.PARENT_ID = ? " +
                 "AND VERSION_ID = 0 AND STATUS = 'PUBLISHED'");
             ps.setInt(1, i);
             return ps.executeQuery();
@@ -43,7 +44,7 @@ public class Queries {
     /**
      * Returns result set of all paragraphs with active version for specified
      * page. Sequences are not joined.
-     * 
+     *
      * @param i
      * @return
      */
