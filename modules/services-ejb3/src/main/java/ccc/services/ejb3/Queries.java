@@ -11,6 +11,12 @@
  */
 package ccc.services.ejb3;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import ccc.domain.Folder;
+import ccc.domain.ResourceName;
+
 
 /**
  * TODO Add Description for this type.
@@ -19,7 +25,25 @@ package ccc.services.ejb3;
  */
 public final class Queries {
 
-    private Queries() { /* NO-OP */ }
+    Queries() { /* NO-OP */ }
+
+    /**
+     * Look up the root folder for the content hierarchy.
+     *
+     * @param em The entity manager used to look up the root.
+     * @param name The name of the resource.
+     * @return The folder with the specified name.
+     */
+    protected final Folder lookupRoot(final EntityManager em,
+                                 final ResourceName name) {
+
+        final Query q = em.createNamedQuery(RESOURCE_BY_URL);
+        q.setParameter("name", name);
+        final Object singleResult = q.getSingleResult();
+
+        final Folder folder = Folder.class.cast(singleResult);
+        return folder;
+    }
 
     /** RESOURCE_BY_URL : String. */
     public static final String RESOURCE_BY_URL = "RESOURCE_BY_URL";

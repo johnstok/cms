@@ -19,7 +19,6 @@ import org.easymock.Capture;
 import ccc.commons.MapRegistry;
 import ccc.domain.Folder;
 import ccc.domain.PredefinedResourceNames;
-import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 import ccc.domain.Template;
 import ccc.services.AssetManager;
@@ -46,9 +45,9 @@ public final class ResourceServiceImplTest extends TestCase {
                 new MapRegistry(
                 "ContentManagerEJB/local",
                 new ContentManagerAdaptor() {
-                    /** @see ContentManagerAdaptor#lookup(java.lang.String) */
+                    @SuppressWarnings("unchecked")
                     @Override
-                    public Resource lookup(final ResourcePath path) {
+                    public Folder lookup(final ResourcePath path) {
                         return
                             new Folder(PredefinedResourceNames.CONTENT);
                     }

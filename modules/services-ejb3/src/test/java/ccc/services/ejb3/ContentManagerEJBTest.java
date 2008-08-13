@@ -93,25 +93,26 @@ public final class ContentManagerEJBTest extends TestCase {
 
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
+        final Folder foo = new Folder(new ResourceName("foo"));
+        final Folder bar = new Folder(new ResourceName("bar"));
+        final Folder baz = new Folder(new ResourceName("baz"));
 
-        final EntityManager em = createMock(EntityManager.class);
-        expect(em.createNamedQuery(Queries.RESOURCE_BY_URL))
-            .andReturn(new QueryAdaptor() {
-                /** @see ccc.services.ejb3.QueryAdaptor#getSingleResult() */
-                @Override
-                public Object getSingleResult() { return contentRoot; }
-            })
-            .anyTimes();
-        em.persist(isA(Folder.class));
-        em.persist(isA(Folder.class));
-        em.persist(isA(Folder.class));
+        final EntityManager em = createStrictMock(EntityManager.class);
+        expect(em.find(Resource.class, contentRoot.id()))
+            .andReturn(contentRoot);
+        em.persist(foo);
+        expect(em.find(Resource.class, foo.id())).andReturn(foo);
+        em.persist(bar);
+        expect(em.find(Resource.class, foo.id())).andReturn(foo);
+        em.persist(baz);
         replay(em);
 
         final ContentManager resourceMgr = new ContentManagerEJB(em);
 
         // ACT
-        resourceMgr.createFolder("/foo/bar/");
-        resourceMgr.createFolder("/foo/baz/");
+        resourceMgr.create(contentRoot.id(), foo);
+        resourceMgr.create(foo.id(), bar);
+        resourceMgr.create(foo.id(), baz);
 
         // VERIFY
         verify(em);
@@ -124,38 +125,6 @@ public final class ContentManagerEJBTest extends TestCase {
                 .entries().get(0).asFolder()
                 .entries().get(1).name().toString());
 
-    }
-
-    /**
-     * Test.
-     */
-    public void testCreateFolderIsIdempotent() {
-
-        // ARRANGE
-        final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
-
-        final EntityManager em = createMock(EntityManager.class);
-        expect(em.createNamedQuery(Queries.RESOURCE_BY_URL))
-            .andReturn(new QueryAdaptor() {
-                /** @see ccc.services.ejb3.QueryAdaptor#getSingleResult() */
-                @Override
-                public Object getSingleResult() { return contentRoot; }
-            })
-            .anyTimes();
-        em.persist(isA(Folder.class));
-        replay(em);
-
-        final ContentManager resourceMgr = new ContentManagerEJB(em);
-
-        // ACT
-        resourceMgr.createFolder("/foo/");
-        resourceMgr.createFolder("/foo/");
-        resourceMgr.createFolder("/foo/");
-
-        // VERIFY
-        verify(em);
-        assertEquals(1, contentRoot.size());
-        assertEquals("foo", contentRoot.entries().get(0).name().toString());
     }
 
     /**
@@ -215,25 +184,26 @@ public final class ContentManagerEJBTest extends TestCase {
 
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
+        final Folder foo = new Folder(new ResourceName("foo"));
+        final Page page1 = new Page(new ResourceName("page1"));
+        final Page page2 = new Page(new ResourceName("page2"));
 
-        final EntityManager em = createMock(EntityManager.class);
-        expect(em.createNamedQuery(Queries.RESOURCE_BY_URL))
-            .andReturn(new QueryAdaptor() {
-                /** @see ccc.services.ejb3.QueryAdaptor#getSingleResult() */
-                @Override
-                public Object getSingleResult() { return contentRoot; }
-            })
-            .anyTimes();
-        em.persist(isA(Folder.class));
-        em.persist(isA(Page.class));
-        em.persist(isA(Page.class));
+        final EntityManager em = createStrictMock(EntityManager.class);
+        expect(em.find(Resource.class, contentRoot.id()))
+            .andReturn(contentRoot);
+        em.persist(foo);
+        expect(em.find(Resource.class, foo.id())).andReturn(foo);
+        em.persist(page1);
+        expect(em.find(Resource.class, foo.id())).andReturn(foo);
+        em.persist(page2);
         replay(em);
 
         final ContentManager resourceMgr = new ContentManagerEJB(em);
 
         // ACT
-        resourceMgr.createContent("/foo/page1/", "page1");
-        resourceMgr.createContent("/foo/page2/", "page2");
+        resourceMgr.create(contentRoot.id(), foo);
+        resourceMgr.create(foo.id(), page1);
+        resourceMgr.create(foo.id(), page2);
 
         // VERIFY
         verify(em);
@@ -252,74 +222,35 @@ public final class ContentManagerEJBTest extends TestCase {
     /**
      * Test.
      */
-    public void testCreateContentIsIdempotent() {
-
-        // ARRANGE
-        final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
-
-        final EntityManager em = createMock(EntityManager.class);
-        expect(em.createNamedQuery(Queries.RESOURCE_BY_URL))
-            .andReturn(new QueryAdaptor() {
-                /** @see ccc.services.ejb3.QueryAdaptor#getSingleResult() */
-                @Override
-                public Object getSingleResult() { return contentRoot; }
-            })
-            .anyTimes();
-        em.persist(isA(Folder.class));
-        em.persist(isA(Page.class));
-        replay(em);
-
-        final ContentManager resourceMgr = new ContentManagerEJB(em);
-
-        // ACT
-        resourceMgr.createFolder("/foo/");
-        resourceMgr.createContent("/foo/page1/", "page1");
-        resourceMgr.createContent("/foo/page1/", "page1");
-
-        // VERIFY
-        verify(em);
-        assertEquals(1, contentRoot.size());
-        assertEquals(1, contentRoot.entries().size());
-        assertEquals("foo", contentRoot.entries().get(0).name().toString());
-        assertEquals(
-            "page1",
-            contentRoot
-                .entries().get(0).asFolder()
-                .entries().get(0).name().toString());
-    }
-
-    /**
-     * Test.
-     */
     public void testCreateContentFailsWhenFolderExists() {
 
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
+        final Folder foo = new Folder(new ResourceName("foo"));
+        final Folder page1F = new Folder(new ResourceName("page1"));
+        final Page page1P = new Page(new ResourceName("page1"));
 
-        final EntityManager em = createMock(EntityManager.class);
-        expect(em.createNamedQuery(Queries.RESOURCE_BY_URL))
-        .andReturn(new QueryAdaptor() {
-            /** @see ccc.services.ejb3.QueryAdaptor#getSingleResult() */
-            @Override
-            public Object getSingleResult() { return contentRoot; }
-        })
-        .anyTimes();
-        em.persist(isA(Folder.class));
-        em.persist(isA(Folder.class));
+        final EntityManager em = createStrictMock(EntityManager.class);
+        expect(em.find(Resource.class, contentRoot.id()))
+            .andReturn(contentRoot);
+        em.persist(foo);
+        expect(em.find(Resource.class, foo.id())).andReturn(foo);
+        em.persist(page1F);
+        expect(em.find(Resource.class, foo.id())).andReturn(foo);
         replay(em);
 
         final ContentManager resourceMgr = new ContentManagerEJB(em);
 
         // ACT
-        resourceMgr.createFolder("/foo/");
-        resourceMgr.createFolder("/foo/page1/");
+        resourceMgr.create(contentRoot.id(), foo);
+        resourceMgr.create(foo.id(), page1F);
         try {
-            resourceMgr.createContent("/foo/page1/", "page1");
+            resourceMgr.create(foo.id(), page1P);
             fail("Creation of page with"
                     + "same name as existing folder should fail.");
         } catch (final CCCException e) {
             assertEquals(
-                "A folder already exists at the path /foo/page1/",
+                "A resource already exists at the path /foo/page1/",
                 e.getMessage());
         }
 
@@ -342,29 +273,23 @@ public final class ContentManagerEJBTest extends TestCase {
 
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
+        final Folder foo = new Folder(new ResourceName("foo"));
+        final Page page1 = new Page(new ResourceName("page1"));
+        page1.addParagraph("HEADER", new Paragraph("test text"));
 
-        final EntityManager em = createMock(EntityManager.class);
-        expect(em.createNamedQuery(Queries.RESOURCE_BY_URL))
-        .andReturn(new QueryAdaptor() {
-            /** @see ccc.services.ejb3.QueryAdaptor#getSingleResult() */
-            @Override
-            public Object getSingleResult() { return contentRoot; }
-        })
-        .anyTimes();
-        em.persist(isA(Folder.class));  // foo
-        em.persist(isA(Page.class)); // foo/page1
+        final EntityManager em = createStrictMock(EntityManager.class);
+        expect(em.find(Resource.class, contentRoot.id()))
+            .andReturn(contentRoot);
+        em.persist(foo);
+        expect(em.find(Resource.class, foo.id())).andReturn(foo);
+        em.persist(page1);
         replay(em);
 
         final ContentManager resourceMgr = new ContentManagerEJB(em);
 
-        final Map<String, Paragraph> paragraphs =
-            new HashMap<String, Paragraph>();
-        paragraphs.put("HEADER", new Paragraph("test text"));
-
         // ACT
-        resourceMgr.createContent("/foo/page1/", "page1");
-
-        resourceMgr.createParagraphsForContent("/foo/page1/", paragraphs);
+        resourceMgr.create(contentRoot.id(), foo);
+        resourceMgr.create(foo.id(), page1);
 
         // VERIFY
         verify(em);
@@ -422,8 +347,8 @@ public final class ContentManagerEJBTest extends TestCase {
         // ACT
         final Map<String, String> paragraphs = new HashMap<String, String>();
         paragraphs.put("foo", "bar");
-        resourceMgr.saveContent(
-            page.id().toString(),
+        resourceMgr.update(
+            page.id(),
             "new title", paragraphs);
 
         // ASSERT

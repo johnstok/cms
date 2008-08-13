@@ -15,7 +15,6 @@ package ccc.services.ejb3;
 import static javax.ejb.TransactionAttributeType.*;
 import static javax.persistence.PersistenceContextType.*;
 
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -27,15 +26,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
-import ccc.domain.CCCException;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
-import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
-import ccc.domain.ResourceType;
 import ccc.services.ContentManager;
 
 
@@ -48,12 +44,12 @@ import ccc.services.ContentManager;
 @TransactionAttribute(REQUIRED)
 @Remote(ContentManager.class)
 @Local(ContentManager.class)
-public class ContentManagerEJB extends
-ManagerSupport implements ContentManager {
+public class ContentManagerEJB implements ContentManager {
 
     @PersistenceContext(
         unitName = "ccc-persistence",
-        type     = EXTENDED) EntityManager _em;
+        type     = EXTENDED)
+    private EntityManager _em;
 
     /**
      * Constructor.
@@ -70,23 +66,31 @@ ManagerSupport implements ContentManager {
         _em = entityManager;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final Resource lookup(final ResourcePath path) {
-        return
-            lookupRoot(_em, PredefinedResourceNames.CONTENT).navigateTo(path);
+
+    /* ===================================================================
+     * CREATE
+     * =================================================================*/
+
+    private void create(final UUID folderId, final Resource newResource) {
+        final Folder folder = lookup(folderId);
+        folder.add(newResource);
+        _em.persist(newResource);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public final void createFolder(final String pathString) {
-        final ResourcePath path = new ResourcePath(pathString);
-        createFoldersForPath(
-            _em, PredefinedResourceNames.CONTENT, path.elements());
+    public final void create(final UUID folderId, final Folder newFolder) {
+        create(folderId, (Resource) newFolder);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void create(final UUID folderId, final Page newPage) {
+        create(folderId, (Resource) newPage);
     }
 
     /**
@@ -95,85 +99,63 @@ ManagerSupport implements ContentManager {
     @Override
     public final void createRoot() {
         try {
-            lookupRoot(_em, PredefinedResourceNames.CONTENT);
+            new Queries().lookupRoot(_em, PredefinedResourceNames.CONTENT);
         } catch (final NoResultException e) {
             _em.persist(new Folder(PredefinedResourceNames.CONTENT));
         }
     }
 
+
+    /* ===================================================================
+     * RETRIEVE
+     * =================================================================*/
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public final void createContent(final String pathString,
-                                    final String title) {
-        final ResourcePath path = new ResourcePath(pathString);
-        final Folder parentFolder =
-            createFoldersForPath(
-                _em, PredefinedResourceNames.CONTENT, path.elementsToTop());
+    public final <T extends Resource> T lookup(final ResourcePath path) {
+        return
+            new Queries().lookupRoot(
+                _em, PredefinedResourceNames.CONTENT).navigateTo(path);
+    }
 
-        final List<ResourceName> elements = path.elements();
-        final ResourceName name = elements.get(elements.size()-1);
-
-        boolean resourceExists = true;
-        boolean resourceIsFolder = false;
-
-        try {
-            final Resource resource = parentFolder.findEntryByName(name);
-            resourceIsFolder = resource.type()==ResourceType.FOLDER;
-        } catch(final CCCException e) {
-            resourceExists = false;
-        }
-
-        if (resourceExists && resourceIsFolder) {
-            throw new CCCException(
-                "A folder already exists at the path "+pathString);
-        } else if (!resourceExists) {
-            final Page newContent = new Page(name, title);
-            _em.persist(newContent);
-            parentFolder.add(newContent);
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public final <T extends Resource> T lookup(final UUID id) {
+        return (T) _em.find(Resource.class, id);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public final void createParagraphsForContent(
-                                   final String pathString,
-                                   final Map<String, Paragraph> paragraphs) {
-
-        final Page page =
-            lookup(new ResourcePath(pathString)).asPage();
-
-        for (final String key : paragraphs.keySet()) {
-            final Paragraph paragraph = paragraphs.get(key);
-            page.addParagraph(key, paragraph);
-        }
+    public final Folder lookupRoot() {
+        return new Queries().lookupRoot(_em, PredefinedResourceNames.CONTENT);
     }
+
+
+    /* ===================================================================
+     * UPDATE
+     * =================================================================*/
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public final Resource lookup(final UUID id) {
-        return super.lookup(_em, id);
-    }
+    public final void update(final UUID id,
+                             final String newTitle,
+                             final Map<String, String> newParagraphs) {
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final void saveContent(final String id,
-                            final String title,
-                            final Map<String, String> paragraphs) {
-
-        final Page page = lookup(UUID.fromString(id)).asPage();
-        page.title(title);
+        final Page page = lookup(id);
+        page.title(newTitle);
         page.deleteAllParagraphs();
 
-        for (final String key : paragraphs.keySet()) {
-            page.addParagraph(key, new Paragraph(paragraphs.get(key)));
+        for (final String key : newParagraphs.keySet()) {
+            page.addParagraph(key, new Paragraph(newParagraphs.get(key)));
         }
     }
 }

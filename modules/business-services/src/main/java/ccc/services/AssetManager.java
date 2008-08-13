@@ -15,7 +15,7 @@ import ccc.domain.Template;
 
 
 /**
- * TODO Add Description for this type.
+ * Business methods that operate on assets.
  *
  * @author Civic Computing Ltd
  */

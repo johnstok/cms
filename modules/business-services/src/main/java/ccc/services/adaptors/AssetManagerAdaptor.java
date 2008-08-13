@@ -16,7 +16,7 @@ import ccc.services.AssetManager;
 
 
 /**
- * TODO Add Description for this type.
+ * An adaptor for the {@link AssetManager} interface. Useful for testing.
  *
  * @author Civic Computing Ltd
  */
@@ -26,8 +26,7 @@ public class AssetManagerAdaptor implements AssetManager {
      * {@inheritDoc}
      */
     @Override
-    public void createDisplayTemplate(Template template) {
-
+    public void createDisplayTemplate(final Template template) {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
@@ -36,7 +35,6 @@ public class AssetManagerAdaptor implements AssetManager {
      */
     @Override
     public void createRoot() {
-
         throw new UnsupportedOperationException("Method not implemented.");
     }
 

@@ -28,6 +28,9 @@
 		<property name="_title" not-null="true" type="string"
 			length="256" />
 
+        <!-- 
+            TODO: Name should be immutable.
+         -->
 		<component name="_name" class="ccc.domain.ResourceName">
 			<property name="_representation" not-null="true"
 				type="string" length="256" />

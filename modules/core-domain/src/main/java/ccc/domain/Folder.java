@@ -72,6 +72,12 @@ public final class Folder extends Resource implements JSONable {
      */
     public void add(final Resource resource) {
         DBC.require().notNull(resource);
+        if (hasEntryWithName(resource.name())) {
+            throw new CCCException(
+                "Folder already contains a resource with name '"
+                + resource.name()
+                + "'.");
+        }
         _entries.add(resource);
     }
 
@@ -203,4 +209,19 @@ public final class Folder extends Resource implements JSONable {
 //         }
 //     }
 // }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param resourceName
+     * @return
+     */
+    public boolean hasEntryWithName(final ResourceName resourceName) {
+        for (final Resource entry : entries()) {
+            if (entry.name().equals(resourceName)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

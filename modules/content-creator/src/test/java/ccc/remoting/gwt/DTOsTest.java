@@ -17,12 +17,15 @@ import ccc.view.contentcreator.dto.TemplateDTO;
 
 
 /**
- * TODO Add Description for this type.
+ * Tests for the {@link DTOs} class.
  *
  * @author Civic Computing Ltd
  */
 public class DTOsTest extends TestCase {
 
+    /**
+     * Test.
+     */
     public void testFromTemplateDto() {
 
         // ARRANGE

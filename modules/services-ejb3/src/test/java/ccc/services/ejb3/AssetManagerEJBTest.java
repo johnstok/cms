@@ -75,7 +75,6 @@ public final class AssetManagerEJBTest extends TestCase {
 
         // ARRANGE
         final Capture<Folder> assetsRoot = new Capture<Folder>();
-        final Capture<Folder> templates = new Capture<Folder>();
         final EntityManager em = createStrictMock(EntityManager.class);
         expect(em.createNamedQuery(RESOURCE_BY_URL))
             .andThrow(new NoResultException());
@@ -92,6 +91,9 @@ public final class AssetManagerEJBTest extends TestCase {
         // VERIFY
         verify(em);
         assertEquals(ASSETS, assetsRoot.getValue().name());
-        assertEquals("templates", assetsRoot.getValue().entries().get(0).asFolder().name().toString());
+        assertEquals(
+            "templates",
+            assetsRoot.getValue()
+                .entries().get(0).asFolder().name().toString());
     }
 }
