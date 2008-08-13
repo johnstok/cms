@@ -27,17 +27,6 @@ public abstract class Entity implements Serializable {
     private int  _version = -1;
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return
-            this.getClass().getName() + ": "
-            + _id.toString()
-            + " [version=" + _version + "]";
-    }
-
-    /**
      * Accessor for the id field.
      *
      * @return This entity's id as a {@link UUID}.
@@ -46,4 +35,12 @@ public abstract class Entity implements Serializable {
         return _id;
     }
 
+    /**
+     * Accessor for the version field.
+     *
+     * @return This entity's version, as an integer.
+     */
+    public final int version() {
+        return _version;
+    }
 }

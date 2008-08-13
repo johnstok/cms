@@ -15,11 +15,14 @@ import ccc.commons.DBC;
 
 
 /**
- * TODO Add Description for this type.
+ * A setting, represented as a key:value pair.
  *
  * @author Civic Computing Ltd
  */
-public class Setting {
+public class Setting extends Entity {
+
+    /** serialVersionUID : long. */
+    private static final long serialVersionUID = 1669421605591024452L;
 
     private String _name;
     private String _value;
@@ -27,8 +30,8 @@ public class Setting {
     /**
      * Constructor.
      *
-     * @param string
-     * @param value
+     * @param name The name of this setting.
+     * @param value The value of this setting.
      */
     public Setting(final String name, final String value) {
         DBC.require().notEmpty(name);
@@ -37,29 +40,29 @@ public class Setting {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor for name.
      *
-     * @return
+     * @return The name, as a string.
      */
-    public String name() {
+    public final String name() {
         return _name;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor for value.
      *
-     * @return
+     * @return The value, as a string.
      */
-    public String value() {
+    public final String value() {
         return _value;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * The value as a string.
      *
-     * @param value
+     * @param value The new value for this setting.
      */
-    public void value(final String value) {
+    public final void value(final String value) {
         DBC.require().notNull(value);
         _value = value;
     }
