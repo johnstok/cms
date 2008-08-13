@@ -12,7 +12,6 @@
 
 package ccc.services.ejb3;
 
-import static ccc.domain.Queries.*;
 import static javax.ejb.TransactionAttributeType.*;
 import static javax.persistence.PersistenceContextType.*;
 
@@ -27,7 +26,6 @@ import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 import ccc.domain.CCCException;
 import ccc.domain.Folder;
@@ -50,12 +48,12 @@ import ccc.services.ContentManager;
 @TransactionAttribute(REQUIRED)
 @Remote(ContentManager.class)
 @Local(ContentManager.class)
-public class ContentManagerEJB implements ContentManager {
+public class ContentManagerEJB extends
+ManagerSupport implements ContentManager {
 
     @PersistenceContext(
         unitName = "ccc-persistence",
-        type     = EXTENDED)
-    private EntityManager _em;
+        type     = EXTENDED) EntityManager _em;
 
     /**
      * Constructor.
@@ -77,7 +75,8 @@ public class ContentManagerEJB implements ContentManager {
      */
     @Override
     public final Resource lookup(final ResourcePath path) {
-        return contentRoot().navigateTo(path);
+        return
+            lookupRoot(_em, PredefinedResourceNames.CONTENT).navigateTo(path);
     }
 
     /**
@@ -86,33 +85,8 @@ public class ContentManagerEJB implements ContentManager {
     @Override
     public final void createFolder(final String pathString) {
         final ResourcePath path = new ResourcePath(pathString);
-        createFoldersForPath(path.elements());
-    }
-
-    /**
-     * Creates new folders for the path in case folders do not exist
-     * already.
-     *
-     * @param elements
-     * @return
-     */
-    private Folder createFoldersForPath(final List<ResourceName> elements) {
-
-        Folder currentFolder = contentRoot();
-        for (final ResourceName name : elements) {
-            try {
-                currentFolder = currentFolder.findEntryByName(name).asFolder();
-            } catch(final CCCException e) {
-                final Folder newFolder = new Folder(name);
-                _em.persist(newFolder);
-                currentFolder.add(newFolder);
-                currentFolder = newFolder;
-            } catch(final ClassCastException e) {
-                System.err.println(
-                    "Retrived resource does not match expected type.");
-            }
-        }
-        return currentFolder;
+        createFoldersForPath(
+            _em, PredefinedResourceNames.CONTENT, path.elements());
     }
 
     /**
@@ -121,35 +95,22 @@ public class ContentManagerEJB implements ContentManager {
     @Override
     public final void createRoot() {
         try {
-            contentRoot();
+            lookupRoot(_em, PredefinedResourceNames.CONTENT);
         } catch (final NoResultException e) {
             _em.persist(new Folder(PredefinedResourceNames.CONTENT));
         }
     }
 
     /**
-     * Look up the root folder for the content hierarchy.
-     * TODO: Factor this method to a helper class?
-     *
-     * @return
-     */
-    private Folder contentRoot() {
-
-        final Query q = _em.createNamedQuery(RESOURCE_BY_URL);
-        q.setParameter("name", PredefinedResourceNames.CONTENT);
-        final Object singleResult = q.getSingleResult();
-
-        final Folder contentRoot = Folder.class.cast(singleResult);
-        return contentRoot;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
-    public final void createContent(final String pathString, String title) {
+    public final void createContent(final String pathString,
+                                    final String title) {
         final ResourcePath path = new ResourcePath(pathString);
-        final Folder parentFolder = createFoldersForPath(path.elementsToTop());
+        final Folder parentFolder =
+            createFoldersForPath(
+                _em, PredefinedResourceNames.CONTENT, path.elementsToTop());
 
         final List<ResourceName> elements = path.elements();
         final ResourceName name = elements.get(elements.size()-1);
@@ -196,7 +157,7 @@ public class ContentManagerEJB implements ContentManager {
      */
     @Override
     public final Resource lookup(final UUID id) {
-       return _em.find(Resource.class, id);
+        return super.lookup(_em, id);
     }
 
     /**

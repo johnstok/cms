@@ -25,6 +25,7 @@ import ccc.domain.CCCException;
 import ccc.domain.Paragraph;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
+import ccc.services.AssetManager;
 import ccc.services.ContentManager;
 
 
@@ -37,9 +38,9 @@ public class Migrations {
 
     private final Queries queries;
     private Registry _registry = new JNDI();
-    
+
     private static Logger log = Logger.getLogger(ccc.migration.Migrations.class);
-    
+
     /**
      * Constructor.
      *
@@ -51,6 +52,9 @@ public class Migrations {
     }
 
     public void migrate() {
+
+        // Create a root assets folder.
+        assetManager().createRoot();
 
         // Create a root content folder.
     	contentManager().createRoot();
@@ -78,7 +82,7 @@ public class Migrations {
                     try {
                     	contentManager().createFolder(childFolder.toString());
                     }
-                    catch (Exception e) {
+                    catch (final Exception e) {
                     	log.error("Name conflict : "+e.getMessage());
                     	childFolder = path.append(ResourceName.escape(name+"_renamed"));
                     	contentManager().createFolder(childFolder.toString());
@@ -92,7 +96,7 @@ public class Migrations {
                     try {
                     	contentManager().createContent(childContent.toString(), name);
                     }
-                    catch (Exception e) {
+                    catch (final Exception e) {
                     	log.error("Name conflict : "+e.getMessage());
                     	childContent =
                             path.append(ResourceName.escape(name+"_renamed"));
@@ -151,11 +155,20 @@ public class Migrations {
     }
 
     /**
-     * Accessor for the resource manager.
+     * Accessor for the content manager.
      *
-     * @return A ContentManager.
+     * @return A {@link ContentManager}.
      */
     ContentManager contentManager() {
         return _registry.get("ContentManagerEJB/remote");
+    }
+
+    /**
+     * Accessor for the asset manager.
+     *
+     * @return An {@link AssetManager}.
+     */
+    AssetManager assetManager() {
+        return _registry.get("AssetManagerEJB/remote");
     }
 }

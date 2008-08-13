@@ -11,13 +11,20 @@
  */
 package ccc.remoting.gwt;
 
+import static org.easymock.EasyMock.*;
 import junit.framework.TestCase;
+
+import org.easymock.Capture;
+
 import ccc.commons.MapRegistry;
 import ccc.domain.Folder;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
+import ccc.domain.Template;
+import ccc.services.AssetManager;
 import ccc.services.adaptors.ContentManagerAdaptor;
+import ccc.view.contentcreator.dto.TemplateDTO;
 
 
 /**
@@ -50,9 +57,37 @@ public final class ResourceServiceImplTest extends TestCase {
         // ACT
         final String jsonRoot = resourceService.getContentRoot();
 
-        // VERIFY
+        // ASSERT
         assertEquals(
             "{\"name\": \"content\",\"entries\": []}",
             jsonRoot);
+    }
+
+    /**
+     * Test.
+     */
+    public void testCreateTemplate() {
+
+        // ARRANGE
+        final AssetManager am = createMock(AssetManager.class);
+        final Capture<Template> actual = new Capture<Template>();
+        am.createDisplayTemplate(capture(actual));
+        replay(am);
+
+        final ResourceServiceImpl resourceService =
+            new ResourceServiceImpl(
+                new MapRegistry("AssetManagerEJB/local", am));
+
+        // ACT
+        resourceService.createTemplate(
+            new TemplateDTO("title",
+                            "description",
+                            "body"));
+
+        // ASSERT
+        verify(am);
+        assertEquals("title", actual.getValue().title());
+        assertEquals("description", actual.getValue().description());
+        assertEquals("body", actual.getValue().body());
     }
 }

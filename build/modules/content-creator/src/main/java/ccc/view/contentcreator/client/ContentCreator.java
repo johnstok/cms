@@ -3,6 +3,9 @@ package ccc.view.contentcreator.client;
 
 import java.util.ArrayList;
 
+import ccc.view.contentcreator.commands.CreateDisplayTemplateCommand;
+import ccc.view.contentcreator.dialogs.UpdateContentDialog;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.json.client.JSONArray;
@@ -38,9 +41,9 @@ public final class ContentCreator implements EntryPoint {
     private final Constants constants = GWT.create(Constants.class);
 
     private HorizontalSplitPanel hsp = new HorizontalSplitPanel();
-    
+
     /** MENUBAR_HEIGHT : Reserved space for menu bar. */
-    private static int MENUBAR_HEIGHT = 30;
+    private static final int MENUBAR_HEIGHT = 30;
 
     /**
      * This is the entry point method.
@@ -57,12 +60,12 @@ public final class ContentCreator implements EntryPoint {
 
         final Tree t = new Tree() {
             /**
-             * @see com.google.gwt.user.client.ui.Tree#onBrowserEvent(com.google.gwt.user.client.Event)
+             * {@inheritDoc}
              */
             @Override
-            public void onBrowserEvent(Event event) {
+            public void onBrowserEvent(final Event event) {
                 // Handle double-clicks
-                if ( DOM.eventGetType(event) == Event.ONDBLCLICK) {
+                if (DOM.eventGetType(event) == Event.ONDBLCLICK) {
                     Element e = DOM.eventGetTarget(event);
 
                     ArrayList<Element> chain = new ArrayList<Element>();
@@ -70,8 +73,7 @@ public final class ContentCreator implements EntryPoint {
 
                     TreeItem item = findItemByChain(chain, 0, root);
                     item.setState(!item.getState(), true);
-                }
-                else {
+                } else {
                     super.onBrowserEvent(event);
                 }
             }
@@ -109,21 +111,28 @@ public final class ContentCreator implements EntryPoint {
             }
         });
 
-        Command manualCmd = new Command() {
+        final Command manualCmd = new Command() {
             public void execute() {
               Window.open("manual/ContentCreatorManual.html",
                   "_blank", "resizable=yes,scrollbars=yes,status=no");
             }
           };
 
-        MenuBar menu = new MenuBar();
-        MenuBar helpMenu = new MenuBar(true);
+        final MenuBar menu = new MenuBar();
+
+        final MenuBar helpMenu = new MenuBar(true);
         helpMenu.addItem(constants.manual(), manualCmd);
         menu.addItem(constants.help(), helpMenu);
 
+        final MenuBar assetsMenu = new MenuBar(true);
+        assetsMenu.addItem(
+            constants.createDisplayTemplate(),
+            new CreateDisplayTemplateCommand());
+        menu.addItem(constants.assets(), assetsMenu);
+
         mainPanel.add(menu);
         mainPanel.add(hsp);
-        
+
         RootPanel.get().add(mainPanel);
     }
 
@@ -214,10 +223,13 @@ public final class ContentCreator implements EntryPoint {
                  * Bug in GWT 1.5 RC 1
                  * http://code.google.com/p/google-web-toolkit/issues/detail?id=2491
                  */
-                DOM.setStyleAttribute(parentItem.getElement(),"paddingLeft","0px");
+                DOM.setStyleAttribute(
+                    parentItem.getElement(),
+                    "paddingLeft","0px");
 
                 JSONValue jsonResult = JSONParser.parse(result);
-                JSONArray entries = jsonResult.isObject().get("entries").isArray();
+                JSONArray entries =
+                    jsonResult.isObject().get("entries").isArray();
                 for (int i=0; i<entries.size(); i++) {
                     JSONObject entry = entries.get(i).isObject();
                     if(entry.get("type").isString().stringValue().equals("FOLDER")) {
@@ -244,15 +256,9 @@ public final class ContentCreator implements EntryPoint {
 
     }
 
-    /**
-     * Copied from Tree.
-     *
-     * @param chain
-     * @param hRoot
-     * @param hElem
-     */
-    private void collectElementChain(ArrayList<Element> chain, Element hRoot,
-                                     Element hElem) {
+    private void collectElementChain(final ArrayList<Element> chain,
+                                     final Element hRoot,
+                                     final Element hElem) {
         if ((hElem == null) || (hElem == hRoot)) {
             return;
         }
@@ -261,25 +267,19 @@ public final class ContentCreator implements EntryPoint {
         chain.add(hElem);
     }
 
-    /**
-     * Copied from Tree.
-     *
-     * @param chain
-     * @param idx
-     * @param root
-     * @return
-     */
-    private TreeItem findItemByChain(ArrayList<Element> chain, int idx,
-                                     TreeItem root) {
+    private TreeItem findItemByChain(final ArrayList<Element> chain,
+                                     final int idx,
+                                     final TreeItem root) {
         if (idx == chain.size()) {
             return root;
         }
 
-        Element hCurElem = chain.get(idx);
+        final Element hCurElem = chain.get(idx);
         for (int i = 0, n = root.getChildCount(); i < n; ++i) {
-            TreeItem child = root.getChild(i);
+            final TreeItem child = root.getChild(i);
             if (child.getElement() == hCurElem) {
-                TreeItem retItem = findItemByChain(chain, idx + 1, root.getChild(i));
+                final TreeItem retItem =
+                    findItemByChain(chain, idx + 1, root.getChild(i));
                 if (retItem == null) {
                     return child;
                 }

@@ -66,33 +66,4 @@ public final class App {
         }
         return connection;
     }
-
-//  /**
-//  * TODO: Add a description of this method.
-//  *
-//  * @param rootFolder
-//  */
-// private static void prettyPrint(Folder rootFolder) {
-//     int indent = 0;
-//     System.out.println(rootFolder.name());
-//     prettyPrint(rootFolder.entries(), indent+2);
-// }
-//
-// /**
-//  * TODO: Add a description of this method.
-//  *
-//  * @param entries
-//  * @param i
-//  */
-// private static void prettyPrint(List<Resource> entries, int i) {
-//     for (Resource entry : entries) {
-//         for (int a=0 ; a < i ; a++) {
-//             System.out.print(" ");
-//         }
-//         System.out.println(entry.name());
-//         if (entry.type() == ResourceType.FOLDER) {
-//             prettyPrint(entry.asFolder().entries(), i+2);
-//         }
-//     }
-// }
 }

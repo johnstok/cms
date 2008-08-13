@@ -9,8 +9,8 @@
  * Changes: see subversion log
  *-----------------------------------------------------------------------------
  */
-package ccc.domain;
 
+package ccc.domain;
 
 /**
  * A list of resource names for predefined resources.
@@ -23,4 +23,7 @@ public final class PredefinedResourceNames {
 
     /** CONTENT : ResourceName. */
     public static final ResourceName CONTENT = new ResourceName("content");
+
+    /** ASSETS : ResourceName. */
+    public static final ResourceName ASSETS  = new ResourceName("assets");
 }

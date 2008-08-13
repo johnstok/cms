@@ -13,7 +13,7 @@
 package ccc.services.ejb3;
 
 import static ccc.domain.PredefinedResourceNames.*;
-import static ccc.domain.Queries.*;
+import static ccc.services.ejb3.Queries.*;
 import static org.easymock.EasyMock.*;
 
 import java.util.HashMap;
@@ -33,7 +33,6 @@ import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.PredefinedResourceNames;
-import ccc.domain.Queries;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
@@ -363,7 +362,7 @@ public final class ContentManagerEJBTest extends TestCase {
         paragraphs.put("HEADER", new Paragraph("test text"));
 
         // ACT
-        resourceMgr.createContent("/foo/page1/","page1");
+        resourceMgr.createContent("/foo/page1/", "page1");
 
         resourceMgr.createParagraphsForContent("/foo/page1/", paragraphs);
 

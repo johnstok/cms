@@ -13,6 +13,8 @@ package ccc.view.contentcreator.client;
 
 import java.util.Map;
 
+import ccc.view.contentcreator.dto.TemplateDTO;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
@@ -32,4 +34,6 @@ public interface ResourceServiceAsync {
     void getResource(String absolutePath, AsyncCallback<String> callback);
 
     void saveContent(String id, String title, Map<String, String> paragraphs, AsyncCallback<Void> callback);
+
+    void createTemplate(final TemplateDTO dto, AsyncCallback<Void> callback);
 }
