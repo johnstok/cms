@@ -4,7 +4,7 @@ body {
 }
 
 div,td {
-  color:#000000
+  color:#000000;
 }
 
 a:link {
@@ -39,4 +39,9 @@ img {
 
 .gwt-FeedbackPanel-error {
     background: #FF3833;
+}
+
+.ccc-Frame {
+  border-style: none;
+  align: top;
 }

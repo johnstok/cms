@@ -4,7 +4,9 @@ package ccc.view.contentcreator.client;
 import java.util.ArrayList;
 
 import ccc.view.contentcreator.commands.CreateDisplayTemplateCommand;
+import ccc.view.contentcreator.dialogs.PreviewContentDialog;
 import ccc.view.contentcreator.dialogs.UpdateContentDialog;
+import ccc.view.contentcreator.widgets.ButtonBar;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -19,9 +21,9 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.WindowResizeListener;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalSplitPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuBar;
@@ -172,24 +174,47 @@ public final class ContentCreator implements EntryPoint {
 
                     children.setText(i+1, 0, type);
                     children.setText(i+1, 1, name);
+                    children.getCellFormatter().setHorizontalAlignment(i+1, 2, HasHorizontalAlignment.ALIGN_RIGHT);
                     if (type.equals("PAGE")) {
                         children.setWidget(
                             i+1,
                             2,
-                            new Button(
-                                constants.edit(),
+                            new ButtonBar()
+                            .add(constants.edit(),
                                 new ClickListener() {
                                     public void onClick(final Widget sender) {
                                       new UpdateContentDialog(
                                           absolutePath+name+"/")
-                                          .show();
+                                          .center();
+                                    }
+                                }
+                            )
+                            .add(constants.preview(),
+                                new ClickListener() {
+                                    public void onClick(final Widget sender) {
+                                      new PreviewContentDialog(
+                                          absolutePath+name+"/")
+                                          .center();
                                     }
                                 }
                             )
                         );
 
                     } else {
-                        children.setText(i+1, 2, "");
+                        children.setWidget(
+                            i+1,
+                            2,
+                            new ButtonBar()
+                            .add(constants.preview(),
+                                new ClickListener() {
+                                    public void onClick(final Widget sender) {
+                                      new PreviewContentDialog(
+                                          absolutePath+name+"/")
+                                          .center();
+                                    }
+                                }
+                            )
+                        );
                     }
                 }
 

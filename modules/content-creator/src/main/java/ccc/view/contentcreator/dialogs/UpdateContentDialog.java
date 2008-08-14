@@ -76,58 +76,63 @@ public class UpdateContentDialog extends DialogBox {
         // Set the dialog box's caption.
         setText(title);
 
-        final VerticalPanel vPanel = new VerticalPanel();
         final TabPanel paragraphsTabPanel = new TabPanel();
+
+        final VerticalPanel vPanel = new VerticalPanel();
+        vPanel.setSize("800px", "600px");
+        setWidget(vPanel);
+        vPanel.ensureDebugId("vPanel");
         vPanel.add(titleTextBox);
         vPanel.add(paragraphsTabPanel);
-        vPanel.ensureDebugId("vPanel");
+
+
         vPanel.add(
-            new Button(
-                constants.cancel(),
-                new ClickListener() {
-                    public void onClick(final Widget sender) {
-                        hide();
+            new Button(constants.cancel(),
+                    new ClickListener() {
+                        public void onClick(final Widget sender) {
+                            hide();
+                        }
                     }
-                }
-            )
-        );
+                ));
 
         final Button saveButton = new Button(constants.save(), new ClickListener() {
-            public void onClick(final Widget arg0) {
+                    public void onClick(final Widget arg0) {
 
-                if (titleTextBox.getText() == null
-                        || titleTextBox.getText().trim().length() == 0) {
-                    titleTextBox.setStyleName("gwt-TextBox-error");
-                    return;
-                } else {
-                    titleTextBox.setStyleName("gwt-TextBox");
-                }
+                        if (titleTextBox.getText() == null
+                                || titleTextBox.getText().trim().length() == 0) {
+                            titleTextBox.setStyleName("gwt-TextBox-error");
+                            return;
+                        } else {
+                            titleTextBox.setStyleName("gwt-TextBox");
+                        }
 
-                Map<String, String> paragraphs = new HashMap<String, String>();
-                for (String key : richTexts.keySet()) {
-                    String body = richTexts.get(key).getHTML();
-                    if (null == body || body.trim().length()==0) {
-                        body = "<!-- empty -->";
-                    }
-                    paragraphs.put(key, body);
-                }
+                        final Map<String, String> paragraphs = new HashMap<String, String>();
+                        for (final String key : richTexts.keySet()) {
+                            String body = richTexts.get(key).getHTML();
+                            if (null == body || body.trim().length()==0) {
+                                body = "<!-- empty -->";
+                            }
+                            paragraphs.put(key, body);
+                        }
 
-                String id = content.get("id").isString().stringValue();
-                AsyncCallback<Void> callback = new AsyncCallback<Void>() {
-                    public void onFailure(final Throwable arg0) {
-                        GWT.log("Page saving failed", arg0);
+                        final String id = content.get("id").isString().stringValue();
+                        final AsyncCallback<Void> callback = new AsyncCallback<Void>() {
+                            public void onFailure(final Throwable arg0) {
+                                GWT.log("Page saving failed", arg0);
+                            }
+                            public void onSuccess(final Void arg0) {
+                                hide();
+                            }
+                        };
+                        resourceService.saveContent(id, titleTextBox.getText()
+                            , paragraphs, callback);
                     }
-                    public void onSuccess(final Void arg0) {
-                        hide();
-                    }
-                };
-                resourceService.saveContent(id, titleTextBox.getText()
-                    , paragraphs, callback);
-            }
-        });
+                });
         saveButton.ensureDebugId("saveButton");
         vPanel.add(saveButton);
-        setWidget(vPanel);
+
+        paragraphsTabPanel.setSize("100%", "100%");
+        titleTextBox.setWidth("100%");
 
         final JSONCallback callback = new JSONCallback() {
 
@@ -148,6 +153,7 @@ public class UpdateContentDialog extends DialogBox {
                     RichTextArea bodyRTA = new RichTextArea();
                     bodyRTA.ensureDebugId("bodyRTA"+key);
                     bodyRTA.setWidth("100%");
+                    bodyRTA.setHeight("100%");
                     RichTextToolbar toolbar = new RichTextToolbar(bodyRTA);
                     bodyRTA.setHTML(
                         paragraphs

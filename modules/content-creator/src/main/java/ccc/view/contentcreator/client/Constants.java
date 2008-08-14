@@ -129,4 +129,12 @@ public interface Constants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Error!")
     String error();
+
+    /**
+     * "Preview".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Preview")
+    String preview();
 }
