@@ -31,10 +31,11 @@ public final class JNDI implements Registry {
      * {@inheritDoc}
      */
     @Override
-    public void put(final String location, final Object object) {
+    public Registry put(final String location, final Object object) {
 
         try {
             jndiContext().rebind(location, object);
+            return this;
         } catch (final NamingException ne) {
             throw new RuntimeException(
                 "Error binding JNDI location: " + location,

@@ -212,10 +212,10 @@ public final class Folder extends Resource implements JSONable {
 // }
 
     /**
-     * TODO: Add a description of this method.
+     * Query whether this folder has an entry with the specified name.
      *
-     * @param resourceName
-     * @return
+     * @param resourceName The name of the resource.
+     * @return True if an entry exists, false otherwise.
      */
     public boolean hasEntryWithName(final ResourceName resourceName) {
         for (final Resource entry : entries()) {
@@ -224,5 +224,21 @@ public final class Folder extends Resource implements JSONable {
             }
         }
         return false;
+    }
+
+    /**
+     * Retrieve the entries in this folder in a type-safe list.
+     *
+     * @param resourceType A class representing the type of resources in this
+     *      folder.
+     * @param <T> The type of the resources in this folder.
+     * @return The entries in this folder as a type-safe list.
+     */
+    public <T extends Resource> List<T> entries(final Class<T> resourceType) {
+        final List<T> entries = new ArrayList<T>();
+        for (final Resource entry : _entries) {
+            entries.add((T)entry); // TODO: Refactor to have entry.as(resourceType.class);
+        }
+        return entries;
     }
 }

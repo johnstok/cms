@@ -19,6 +19,7 @@ import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
+import ccc.domain.Template;
 
 
 /**
@@ -84,4 +85,11 @@ public interface ContentManager {
      *      specified here.
      */
     void update(UUID id, String newTitle, Map<String, String> newParagraphs);
+
+    /**
+     * Sets the new default template for content.
+     *
+     * @param newDefault
+     */
+    void setDefaultTemplate(Template newDefault);
 }

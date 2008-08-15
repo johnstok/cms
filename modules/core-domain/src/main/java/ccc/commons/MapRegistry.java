@@ -32,6 +32,11 @@ public final class MapRegistry implements Registry {
         put(location, object);
     }
 
+    /**
+     * Constructor.
+     */
+    public MapRegistry() { super(); }
+
     private final Map<String, Object> _map = new HashMap<String, Object>();
 
     /**
@@ -48,8 +53,9 @@ public final class MapRegistry implements Registry {
      * {@inheritDoc}
      */
     @Override
-    public void put(final String location, final Object object) {
+    public Registry put(final String location, final Object object) {
         DBC.require().notEmpty(location);
         _map.put(location, object);
+        return this;
     }
 }

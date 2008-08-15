@@ -28,6 +28,26 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      */
+    public void testTypedEntries() {
+
+        // ARRANGE
+        final Folder content = new Folder(new ResourceName("content"));
+        final Page ab = new Page(new ResourceName("ab"));
+        final Page cd = new Page(new ResourceName("cd"));
+        content.add(cd);
+        content.add(ab);
+
+        // ACT
+        final List<Page> pages = content.entries(Page.class);
+
+        // ASSERT
+        assertEquals(2, pages.size());
+        assertEquals(content.entries(), pages);
+    }
+
+    /**
+     * Test.
+     */
     public void testFolderCount() {
 
         // ARRANGE
@@ -83,7 +103,7 @@ public final class FolderTest extends TestCase {
         // ARRANGE
         final Folder folder = new Folder(new ResourceName("foo"));
         folder.displayTemplateName("template");
-        
+
         // ACT
         final String json = folder.toJSON();
 

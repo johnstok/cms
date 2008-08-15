@@ -12,8 +12,8 @@
 
 package ccc.services.ejb3;
 
-import static javax.ejb.TransactionAttributeType.REQUIRED;
-import static javax.persistence.PersistenceContextType.EXTENDED;
+import static javax.ejb.TransactionAttributeType.*;
+import static javax.persistence.PersistenceContextType.*;
 
 import java.util.Map;
 import java.util.UUID;
@@ -33,6 +33,7 @@ import ccc.domain.Paragraph;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
+import ccc.domain.Template;
 import ccc.services.ContentManager;
 
 
@@ -162,5 +163,20 @@ public class ContentManagerEJB implements ContentManager {
         for (final String key : newParagraphs.keySet()) {
             page.addParagraph(key, new Paragraph(newParagraphs.get(key)));
         }
+    }
+
+
+    /* ===================================================================
+     * OTHER
+     * =================================================================*/
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setDefaultTemplate(final Template newDefault) {
+        // TODO: Should we check if the supplied template exists in the db?
+        // Or perhaps we should store a reference to it?
+        lookupRoot().displayTemplateName(newDefault.name().toString());
     }
 }

@@ -11,6 +11,9 @@
  */
 package ccc.services.adaptors;
 
+import java.util.UUID;
+
+import ccc.domain.Resource;
 import ccc.domain.Template;
 import ccc.services.AssetManager;
 
@@ -20,7 +23,7 @@ import ccc.services.AssetManager;
  *
  * @author Civic Computing Ltd
  */
-public class AssetManagerAdaptor implements AssetManager {
+public abstract class AssetManagerAdaptor implements AssetManager {
 
     /**
      * {@inheritDoc}
@@ -37,5 +40,15 @@ public class AssetManagerAdaptor implements AssetManager {
     public void createRoot() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T extends Resource> T lookup(final UUID id) {
+
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
 
 }

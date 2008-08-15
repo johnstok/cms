@@ -12,6 +12,8 @@
 
 package ccc.remoting.gwt;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -20,6 +22,7 @@ import ccc.commons.JNDI;
 import ccc.commons.Registry;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
+import ccc.domain.Template;
 import ccc.services.AssetManager;
 import ccc.services.ContentManager;
 import ccc.view.contentcreator.client.ResourceService;
@@ -108,5 +111,33 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
      */
     public void createTemplate(final TemplateDTO dto) {
         assetManager().createDisplayTemplate(DTOs.templateFrom(dto));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setDefaultTemplate(final String templateId) {
+        final Template newDefault =
+            assetManager().lookup(UUID.fromString(templateId));
+        contentManager().setDefaultTemplate(newDefault);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<TemplateDTO> listTemplates() {
+        final List<TemplateDTO> dtos = new ArrayList<TemplateDTO>();
+        final List<Template> templates = assetManager().lookupTemplates();
+        for (final Template template : templates) {
+            // TODO: Should probably factor this object creation to DTOs.
+            final TemplateDTO dto = new TemplateDTO(template.title(),
+                                              template.description(),
+                                              template.body());
+            dto.setId(template.id().toString());
+            dtos.add(dto);
+        }
+        return dtos;
     }
 }

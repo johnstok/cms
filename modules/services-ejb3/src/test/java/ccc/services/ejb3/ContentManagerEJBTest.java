@@ -37,6 +37,7 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.ResourceType;
+import ccc.domain.Template;
 import ccc.services.ContentManager;
 
 
@@ -46,6 +47,36 @@ import ccc.services.ContentManager;
  * @author Civic Computing Ltd
  */
 public final class ContentManagerEJBTest extends TestCase {
+
+    /**
+     * Test.
+     */
+    public void testSetDefaultTemplate() {
+
+        // ARRANGE
+        final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
+        final Template defaultTemplate = new Template("foo", "bar", "baz");
+
+        final EntityManager em = new EntityManagerAdaptor() {
+            /** {@inheritDoc} */ @Override
+            public Query createNamedQuery(final String arg0) {
+                return new QueryAdaptor() {
+                    /** {@inheritDoc} */ @Override
+                    public Object getSingleResult() { return contentRoot; }
+                };
+            }
+        };
+
+        final ContentManagerEJB resourceMgr = new ContentManagerEJB(em);
+
+        // ACT
+        resourceMgr.setDefaultTemplate(defaultTemplate);
+
+        // ASSERT
+        assertEquals(
+            defaultTemplate.name().toString(),
+            contentRoot.displayTemplateName());
+    }
 
     /**
      * Test.

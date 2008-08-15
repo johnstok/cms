@@ -36,6 +36,7 @@ public interface Registry {
      *
      * @param location Location in the in the registry.
      * @param object The object to put.
+     * @return 'this' to allow a registry to be used in a 'fluently'.
      */
-    void put(final String location, final Object object);
+    Registry put(final String location, final Object object);
 }
