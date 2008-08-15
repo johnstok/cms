@@ -113,7 +113,7 @@ public final class ContentManagerEJBTest extends TestCase {
 
         // ASSERT
         assertEquals(ResourceType.PAGE, resource.type());
-        final Page page = resource.asPage();
+        final Page page = resource.as(Page.class);
         assertEquals(1, page.paragraphs().size());
     }
 
@@ -149,11 +149,11 @@ public final class ContentManagerEJBTest extends TestCase {
         verify(em);
         assertEquals(1, contentRoot.size());
         assertEquals("foo", contentRoot.entries().get(0).name().toString());
-        assertEquals(2, contentRoot.entries().get(0).asFolder().size());
+        assertEquals(2, contentRoot.entries().get(0).as(Folder.class).size());
         assertEquals(
             "baz",
             contentRoot
-                .entries().get(0).asFolder()
+                .entries().get(0).as(Folder.class)
                 .entries().get(1).name().toString());
 
     }
@@ -240,10 +240,10 @@ public final class ContentManagerEJBTest extends TestCase {
         verify(em);
         assertEquals(1, contentRoot.size());
         assertEquals("foo", contentRoot.entries().get(0).name().toString());
-        assertEquals(2, contentRoot.entries().get(0).asFolder().size());
+        assertEquals(2, contentRoot.entries().get(0).as(Folder.class).size());
 
         final List<Resource> entries =
-            contentRoot.entries().get(0).asFolder().entries();
+            contentRoot.entries().get(0).as(Folder.class).entries();
         assertEquals(ResourceType.PAGE, entries.get(0).type());
         assertEquals(ResourceType.PAGE, entries.get(1).type());
         assertEquals("page1", entries.get(0).name().toString());
@@ -293,7 +293,7 @@ public final class ContentManagerEJBTest extends TestCase {
         assertEquals(
             "page1",
             contentRoot
-                .entries().get(0).asFolder()
+                .entries().get(0).as(Folder.class)
                 .entries().get(0).name().toString());
     }
 
@@ -327,10 +327,10 @@ public final class ContentManagerEJBTest extends TestCase {
         assertEquals(1, contentRoot.size());
         assertEquals(1, contentRoot.entries().size());
 
-        final Folder folder = contentRoot.entries().get(0).asFolder();
+        final Folder folder = contentRoot.entries().get(0).as(Folder.class);
         assertEquals("foo", folder.name().toString());
 
-        final Page page = folder.entries().get(0).asPage();
+        final Page page = folder.entries().get(0).as(Page.class);
         assertEquals("page1", page.name().toString());
 
         assertEquals(1, page.paragraphs().size());
@@ -358,7 +358,7 @@ public final class ContentManagerEJBTest extends TestCase {
 
         // ASSERT
         assertEquals(ResourceType.PAGE, resource.type());
-        final Page page = resource.asPage();
+        final Page page = resource.as(Page.class);
         assertEquals(1, page.paragraphs().size());
     }
 

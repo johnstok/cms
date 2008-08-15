@@ -148,6 +148,6 @@ public final class AssetManagerEJBTest extends TestCase {
         assertEquals(
             "templates",
             assetsRoot.getValue()
-                .entries().get(0).asFolder().name().toString());
+                .entries().get(0).as(Folder.class).name().toString());
     }
 }
