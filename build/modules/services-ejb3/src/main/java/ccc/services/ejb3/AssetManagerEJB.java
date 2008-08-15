@@ -71,7 +71,8 @@ public class AssetManagerEJB implements AssetManager {
     @Override
     public final void createDisplayTemplate(final Template template) {
         final Folder templateFolder =
-            new Queries().lookupRoot(_entityManager, PredefinedResourceNames.ASSETS)
+            new Queries().lookupRoot(_entityManager,
+                                     PredefinedResourceNames.ASSETS)
                 .navigateTo(new ResourcePath("/templates/"));
 
         _entityManager.persist(template);
@@ -84,7 +85,8 @@ public class AssetManagerEJB implements AssetManager {
     @Override
     public void createRoot() {
         try {
-            new Queries().lookupRoot(_entityManager, PredefinedResourceNames.ASSETS);
+            new Queries().lookupRoot(_entityManager,
+                                     PredefinedResourceNames.ASSETS);
         } catch (final NoResultException e) {
             final Folder root = new Folder(PredefinedResourceNames.ASSETS);
             final Folder templates = new Folder(new ResourceName("templates"));
@@ -113,7 +115,9 @@ public class AssetManagerEJB implements AssetManager {
             new Queries().lookupRoot(_entityManager,
                                      PredefinedResourceNames.ASSETS);
         final Folder templates =
-            assetRoot.navigateTo(new ResourcePath("/templates/")).asFolder();
+            assetRoot
+                .navigateTo(new ResourcePath("/templates/"))
+                .as(Folder.class);
 
         return templates.entries(Template.class);
     }

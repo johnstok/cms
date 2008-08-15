@@ -66,23 +66,16 @@ public abstract class Resource extends Entity implements JSONable {
     public abstract ResourceType type();
 
     /**
-     * Type-safe helper method to convert an instance of {@link Resource} to an
-     * instance of {@link Page}.
+     * Type-safe helper method to convert an instance of {@link Resource} to a
+     * subclass.
      *
+     * @param <T> The type that this resource should be converted to.
+     * @param resourceType The class representing the type that this resource
+     *      should be converted to.
      * @return This resource as a Page.
      */
-    public final Page asPage() {
-        return Page.class.cast(this);
-    }
-
-    /**
-     * Type-safe helper method to convert an instance of {@link Resource} to an
-     * instance of {@link Folder}.
-     *
-     * @return This resource as a Folder.
-     */
-    public final Folder asFolder() {
-        return Folder.class.cast(this);
+    public final <T extends Resource> T as(final Class<T> resourceType) {
+        return resourceType.cast(this);
     }
 
     /**

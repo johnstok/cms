@@ -112,7 +112,8 @@ public final class Folder extends Resource implements JSONable {
                         +" is not a folder.");
             }
 
-            currentPosition = currentPosition.asFolder().findEntryByName(name);
+            currentPosition =
+                currentPosition.as(Folder.class).findEntryByName(name);
 
         }
         return (T) currentPosition; // TODO: Work out why we need a cast here...
@@ -161,7 +162,7 @@ public final class Folder extends Resource implements JSONable {
             if(entry.type() == ResourceType.FOLDER) {
                 ref.addMetadata(
                     "folder-count",
-                    String.valueOf(entry.asFolder().folderCount()));
+                    String.valueOf(entry.as(Folder.class).folderCount()));
             }
             resourceRefs.add(ref);
         }
@@ -237,7 +238,7 @@ public final class Folder extends Resource implements JSONable {
     public <T extends Resource> List<T> entries(final Class<T> resourceType) {
         final List<T> entries = new ArrayList<T>();
         for (final Resource entry : _entries) {
-            entries.add((T)entry); // TODO: Refactor to have entry.as(resourceType.class);
+            entries.add(entry.as(resourceType));
         }
         return entries;
     }

@@ -123,11 +123,11 @@ public final class ContentServlet extends HttpServlet {
 
         switch (resource.type()) {
             case PAGE:
-                final Page page = resource.asPage();
+                final Page page = resource.as(Page.class);
                 write(resp, page);
                 break;
             case FOLDER:
-                final Folder folder = resource.asFolder();
+                final Folder folder = resource.as(Folder.class);
                 write(resp, folder);
                 break;
             default:

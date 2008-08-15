@@ -108,7 +108,10 @@ public final class FolderTest extends TestCase {
         final String json = folder.toJSON();
 
         // ASSERT
-        assertEquals("{\"name\": \"foo\",\"displayTemplateName\": \"template\",\"entries\": []}", json);
+        assertEquals(
+            "{\"name\": \"foo\","
+                + "\"displayTemplateName\": \"template\",\"entries\": []}",
+            json);
     }
 
     /**
@@ -178,7 +181,7 @@ public final class FolderTest extends TestCase {
         final Resource resource = new Folder(new ResourceName("foo"));
 
         // ASSERT
-        assertEquals(Folder.class, resource.asFolder().getClass());
+        assertEquals(Folder.class, resource.as(Folder.class).getClass());
     }
 
     /**
@@ -347,6 +350,9 @@ public final class FolderTest extends TestCase {
             expectFalse);
     }
 
+    /**
+     * Test.
+     */
     public void testAddRejectsResourcesWithExistingNames() {
 
         // ARRANGE
