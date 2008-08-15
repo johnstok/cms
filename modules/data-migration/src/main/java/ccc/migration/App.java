@@ -2,7 +2,6 @@ package ccc.migration;
 
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.Properties;
@@ -38,7 +37,7 @@ public final class App {
         DbUtils.closeQuietly(connection);
         final Long elapsedTime = new Date().getTime() - startTime;
 
-        System.out.println("Migration finished in "+elapsedTime/1000+" seconds");
+        System.out.println("Migration finished in "+elapsedTime/1000+" secs");
     }
 
     private static Connection getConnection() {
@@ -59,10 +58,9 @@ public final class App {
                 + serverName + ":"
                 + portNumber + ":"
                 + sid;
-            final String username = "asb_pepez";
-            final String password = "d3asb_pepez";
-            
-            
+            final String username = "ccc_migration";
+            final String password = "d3ccc_migration";
+
             OracleDataSource ods = new OracleDataSource();
             Properties props = new Properties();
             props.put("user", username);
@@ -71,8 +69,8 @@ public final class App {
             ods.setConnectionProperties(props);
             ods.setURL(url);
             connection = ods.getConnection();
-            
-            
+
+
 //            connection = DriverManager.getConnection(url, username, password);
         } catch (final ClassNotFoundException e) {
             throw new MigrationException(e);

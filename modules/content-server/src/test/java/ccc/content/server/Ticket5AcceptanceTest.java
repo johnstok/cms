@@ -57,55 +57,57 @@ public final class Ticket5AcceptanceTest extends TestCase {
         assertTrue("Root folder did not supply valid XHTML", isValid);
     }
 
-    /**
-     * Test.
-     * @throws IOException If the test can't access the test deployment.
-     */
-    public void testCharactersAreEscapedCorrectly() throws IOException {
-
-        // ARRANGE
-        final InputStream page =
-            new URL(
-                "http://localhost:8080/content-server/content/"
-                + "Young_People/Tell_us_your_story/"
-                + "Tell_us_your_story/")
-            .openStream();
-
-        // ACT
-        final String optionCount =
-            XHTML.evaluateXPath(page, "count(//xhtml:form)");
-
-        // ASSERT
-        assertEquals("1", optionCount);
-
-    }
+//    /**
+//     * Test.
+//     * @throws IOException If the test can't access the test deployment.
+//     */
+//    public void testCharactersAreEscapedCorrectly() throws IOException {
+//
+//        // ARRANGE
+//        final InputStream page =
+//            new URL(
+//                "http://localhost:8080/content-server/content/"
+//                + "Young_People/Tell_us_your_story/"
+//                + "Tell_us_your_story/")
+//            .openStream();
+//
+//        // ACT
+//        final String optionCount =
+//            XHTML.evaluateXPath(page, "count(//xhtml:form)");
+//
+//        // ASSERT
+//        assertEquals("1", optionCount);
+//
+//    }
 
     /**
      * Test.
      */
     public void testTitlesAreSetCorrectly() {
-        selenium.open("/content-server/content/");
+        selenium.setSpeed("1000");
+        selenium.open("content-server/content/");
         assertEquals("Folder: content", selenium.getTitle());
         selenium.click("link=Home");
         selenium.waitForPageToLoad("30000");
         assertEquals("Folder: Home", selenium.getTitle());
-        selenium.click("link=blue_panel");
+        selenium.click("link=About_Us");
         selenium.waitForPageToLoad("30000");
-        assertEquals("blue_panel", selenium.getTitle());
+        assertEquals("Folder: About_Us", selenium.getTitle());
     }
 
     /**
      * Test.
      */
     public void testEachContentParagraphIsPresent() {
-        selenium.open("/content-server/content/");
-        selenium.click("link=Information_for_the_Public");
+        selenium.setSpeed("1000");
+        selenium.open("content-server/content/");
+        selenium.click("link=Training_and_Development");
         selenium.waitForPageToLoad("30000");
-        selenium.click("link=Your_Rights___Responsibilities");
+        selenium.click("link=Linked_Approval_Schemes");
         selenium.waitForPageToLoad("30000");
         assertEquals("CONTENT", selenium.getText("//h2[1]"));
-        assertEquals("HEADER", selenium.getText("//h2[3]"));
-        assertEquals("SUMMARY", selenium.getText("//h2[6]"));
+        assertEquals("HEADER", selenium.getText("//h2[4]"));
+        assertEquals("Relationship", selenium.getText("//h2[5]"));
 
     }
 

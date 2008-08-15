@@ -57,10 +57,10 @@ public final class ContentEditSeleniumTest extends TestCase {
         assertEquals("Other", selenium.getText("gwt-debug-Other"));
         selenium.doubleClick("gwt-debug-folder_tree-root-child0");
         selenium.mouseDown("gwt-debug-Other");
-        assertEquals("Media", selenium.getText("gwt-debug-children_grid-1-1"));
+        assertEquals("Search", selenium.getText("gwt-debug-children_grid-1-1"));
         selenium.click("//button[@type='button']");
 
-        assertEquals("Media", selenium.getValue("//input[@type='text']"));
+        assertEquals("Search", selenium.getValue("//input[@type='text']"));
         selenium.type("//input[@type='text']", "Media_content2");
 
         selenium.selectFrame("xpath=//iframe[@id='gwt-debug-bodyRTACONTENT']");
@@ -75,11 +75,11 @@ public final class ContentEditSeleniumTest extends TestCase {
         selenium.selectFrame("xpath=//iframe[@id='gwt-debug-bodyRTACONTENT']");
         assertEquals("New Test Content", selenium.getText("//html/body"));
         selenium.selectFrame("relative=top");
-        
-        selenium.type("//input[@type='text']", "Media");
+
+        selenium.type("//input[@type='text']", "Search");
         selenium.click("gwt-debug-saveButton");
     }
-    
+
     /**
      * Test.
      */
@@ -89,8 +89,8 @@ public final class ContentEditSeleniumTest extends TestCase {
         assertEquals("ContentCreator", selenium.getTitle());
         selenium.doubleClick("gwt-debug-folder_tree-root-child0");
         selenium.mouseDown("gwt-debug-Other");
-        assertEquals("Media", selenium.getText("gwt-debug-children_grid-1-1"));
-        
+        assertEquals("Search", selenium.getText("gwt-debug-children_grid-1-1"));
+
         assertEquals("Tyyppi", selenium.getText("gwt-debug-children_grid-0-0"));
         assertEquals("Otsikko", selenium.getText("gwt-debug-children_grid-0-1"));
         assertEquals("Toiminnat", selenium.getText("gwt-debug-children_grid-0-2"));
