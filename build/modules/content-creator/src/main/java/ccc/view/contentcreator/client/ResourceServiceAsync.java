@@ -11,6 +11,7 @@
  */
 package ccc.view.contentcreator.client;
 
+import java.util.List;
 import java.util.Map;
 
 import ccc.view.contentcreator.dto.TemplateDTO;
@@ -36,4 +37,8 @@ public interface ResourceServiceAsync {
     void saveContent(String id, String title, Map<String, String> paragraphs, AsyncCallback<Void> callback);
 
     void createTemplate(final TemplateDTO dto, AsyncCallback<Void> callback);
+
+    void setDefaultTemplate(String templateId, AsyncCallback<Void> callback);
+
+    void listTemplates(AsyncCallback<List<TemplateDTO>> callback);
 }

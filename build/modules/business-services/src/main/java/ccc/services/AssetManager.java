@@ -11,6 +11,10 @@
  */
 package ccc.services;
 
+import java.util.List;
+import java.util.UUID;
+
+import ccc.domain.Resource;
 import ccc.domain.Template;
 
 
@@ -32,5 +36,21 @@ public interface AssetManager {
      * Create the root folder for assets.
      */
     void createRoot();
+
+    /**
+     * Lookup a resource, given its id.
+     *
+     * @param id The unique identifier for the resource to look up.
+     * @param <T> The type of the resource to look up.
+     * @return The resource.
+     */
+    <T extends Resource> T lookup(UUID id);
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
+    List<Template> lookupTemplates();
 
 }

@@ -11,6 +11,7 @@
  */
 package ccc.view.contentcreator.client;
 
+import java.util.List;
 import java.util.Map;
 
 import ccc.view.contentcreator.dto.TemplateDTO;
@@ -29,4 +30,6 @@ public  interface ResourceService extends RemoteService {
   String getResource(String absolutePath);
   void saveContent(String id, String title, Map<String, String> paragraphs);
   void createTemplate(final TemplateDTO dto);
+  void setDefaultTemplate(String templateId);
+  List<TemplateDTO> listTemplates();
 }

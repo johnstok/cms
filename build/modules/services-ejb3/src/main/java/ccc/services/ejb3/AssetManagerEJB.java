@@ -14,6 +14,9 @@ package ccc.services.ejb3;
 import static javax.ejb.TransactionAttributeType.*;
 import static javax.persistence.PersistenceContextType.*;
 
+import java.util.List;
+import java.util.UUID;
+
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateful;
@@ -24,6 +27,7 @@ import javax.persistence.PersistenceContext;
 
 import ccc.domain.Folder;
 import ccc.domain.PredefinedResourceNames;
+import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.Template;
@@ -88,6 +92,30 @@ public class AssetManagerEJB implements AssetManager {
             _entityManager.persist(root);
             root.add(templates);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     * TODO: Remove - duplicate of same method on content manager.
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public final <T extends Resource> T lookup(final UUID id) {
+        return (T) _entityManager.find(Resource.class, id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Template> lookupTemplates() {
+        final Folder assetRoot =
+            new Queries().lookupRoot(_entityManager,
+                                     PredefinedResourceNames.ASSETS);
+        final Folder templates =
+            assetRoot.navigateTo(new ResourcePath("/templates/")).asFolder();
+
+        return templates.entries(Template.class);
     }
 
 }

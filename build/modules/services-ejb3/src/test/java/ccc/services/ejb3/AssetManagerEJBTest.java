@@ -15,6 +15,8 @@ import static ccc.domain.PredefinedResourceNames.*;
 import static ccc.services.ejb3.Queries.*;
 import static org.easymock.EasyMock.*;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 
@@ -24,6 +26,7 @@ import org.easymock.Capture;
 
 import ccc.domain.Folder;
 import ccc.domain.PredefinedResourceNames;
+import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
 import ccc.services.AssetManager;
@@ -35,6 +38,57 @@ import ccc.services.AssetManager;
  * @author Civic Computing Ltd
  */
 public final class AssetManagerEJBTest extends TestCase {
+
+    /**
+     * Test.
+     */
+    public void testLookupTemplates() {
+
+        // ARRANGE
+        final Folder assetRoot = new Folder(PredefinedResourceNames.ASSETS);
+        final Folder templateFolder = new Folder(new ResourceName("templates"));
+        final Template expected = new Template("title", "description", "body");
+        assetRoot.add(templateFolder);
+        templateFolder.add(expected);
+
+        final EntityManager em = createStrictMock(EntityManager.class);
+        expect(em.createNamedQuery(Queries.RESOURCE_BY_URL)).andReturn(
+            new QueryAdaptor() {
+                /**  {@inheritDoc} */ @Override
+                public Object getSingleResult() { return assetRoot; }
+            });
+        replay(em);
+
+        final AssetManager am = new AssetManagerEJB(em);
+
+        // ACT
+        final List<Template> templates = am.lookupTemplates();
+
+        // ASSERT
+        verify(em);
+        assertEquals(1, templates.size());
+        assertEquals(expected, templates.get(0));
+    }
+
+    /**
+     * Test.
+     */
+    public void testLookupFromUuid() {
+
+        // ARRANGE
+        final Template t = new Template("title", "description", "body");
+        final EntityManager em = createMock(EntityManager.class);
+        expect(em.find(Resource.class, t.id())).andReturn(t);
+        replay(em);
+        final AssetManager am = new AssetManagerEJB(em);
+
+        // ACT
+        final Template actual = am.lookup(t.id());
+
+        // ASSERT
+        assertEquals(t, actual);
+        verify(em);
+    }
 
     /**
      * Test.

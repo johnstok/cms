@@ -27,7 +27,7 @@ public class CreateDisplayTemplateCommand implements Command {
      * {@inheritDoc}
      */
     public void execute() {
-        new CreateContentTemplateDialog().show();
+        new CreateContentTemplateDialog().center();
     }
 
 }

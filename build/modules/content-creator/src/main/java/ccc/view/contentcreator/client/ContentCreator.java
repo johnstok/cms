@@ -4,6 +4,7 @@ package ccc.view.contentcreator.client;
 import java.util.ArrayList;
 
 import ccc.view.contentcreator.commands.CreateDisplayTemplateCommand;
+import ccc.view.contentcreator.commands.UpdateOptionsCommand;
 import ccc.view.contentcreator.dialogs.PreviewContentDialog;
 import ccc.view.contentcreator.dialogs.UpdateContentDialog;
 import ccc.view.contentcreator.widgets.ButtonBar;
@@ -122,15 +123,21 @@ public final class ContentCreator implements EntryPoint {
 
         final MenuBar menu = new MenuBar();
 
-        final MenuBar helpMenu = new MenuBar(true);
-        helpMenu.addItem(constants.manual(), manualCmd);
-        menu.addItem(constants.help(), helpMenu);
+        final MenuBar toolsMenu = new MenuBar(true);
+        toolsMenu.addItem(
+            constants.options(),
+            new UpdateOptionsCommand());
+        menu.addItem(constants.tools(), toolsMenu);
 
         final MenuBar assetsMenu = new MenuBar(true);
         assetsMenu.addItem(
             constants.createDisplayTemplate(),
             new CreateDisplayTemplateCommand());
         menu.addItem(constants.assets(), assetsMenu);
+
+        final MenuBar helpMenu = new MenuBar(true);
+        helpMenu.addItem(constants.manual(), manualCmd);
+        menu.addItem(constants.help(), helpMenu);
 
         mainPanel.add(menu);
         mainPanel.add(hsp);

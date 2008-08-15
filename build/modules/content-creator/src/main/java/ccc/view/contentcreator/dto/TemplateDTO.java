@@ -26,6 +26,7 @@ public class TemplateDTO implements Serializable {
     private String _title = "";
     private String _description = "";
     private String _body = "";
+    private String _id = null;
 
     private TemplateDTO() { super(); }
 
@@ -90,5 +91,23 @@ public class TemplateDTO implements Serializable {
             errors.add("Body may not be empty.");
         }
         return errors;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
+    public String getId() {
+        return _id;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param id
+     */
+    public void setId(final String id) {
+        _id = id;
     }
 }

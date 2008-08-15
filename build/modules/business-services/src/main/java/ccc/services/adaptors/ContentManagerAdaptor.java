@@ -18,6 +18,7 @@ import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
+import ccc.domain.Template;
 import ccc.services.ContentManager;
 
 
@@ -27,6 +28,15 @@ import ccc.services.ContentManager;
  * @author Civic Computing Ltd
  */
 public abstract class ContentManagerAdaptor implements ContentManager {
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setDefaultTemplate(final Template newDefault) {
+
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
 
     /**
      * {@inheritDoc}
