@@ -35,4 +35,18 @@ public class DTOs {
             templateDTO.getBody());
     }
 
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param template
+     * @return
+     */
+    public static TemplateDTO dtoFrom(final Template template) {
+        final TemplateDTO dto = new TemplateDTO(template.title(),
+            template.description(),
+            template.body());
+        dto.setId(template.id().toString());
+        return dto;
+    }
+
 }

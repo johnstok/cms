@@ -17,7 +17,8 @@ import ccc.view.contentcreator.client.Constants;
 import ccc.view.contentcreator.client.ResourceService;
 import ccc.view.contentcreator.client.ResourceServiceAsync;
 import ccc.view.contentcreator.dialogs.UpdateOptionsDialog;
-import ccc.view.contentcreator.dto.TemplateDTO;
+import ccc.view.contentcreator.dto.DTO;
+import ccc.view.contentcreator.dto.OptionDTO;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Command;
@@ -41,15 +42,15 @@ public class UpdateOptionsCommand implements Command {
      */
     public void execute() {
 
-        _resourceService.listTemplates(
-            new AsyncCallback<List<TemplateDTO>>(){
+        _resourceService.listOptions(
+            new AsyncCallback<List<OptionDTO<? extends DTO>>>(){
 
                 public void onFailure(final Throwable arg0) {
                     Window.alert(_constants.error());
                 }
 
-                public void onSuccess(final List<TemplateDTO> templates) {
-                    new UpdateOptionsDialog(templates).center();
+                public void onSuccess(final List<OptionDTO<? extends DTO>> options) {
+                    new UpdateOptionsDialog(options).center();
                 }});
 
     }

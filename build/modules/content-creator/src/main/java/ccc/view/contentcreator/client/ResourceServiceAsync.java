@@ -14,6 +14,8 @@ package ccc.view.contentcreator.client;
 import java.util.List;
 import java.util.Map;
 
+import ccc.view.contentcreator.dto.DTO;
+import ccc.view.contentcreator.dto.OptionDTO;
 import ccc.view.contentcreator.dto.TemplateDTO;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -38,7 +40,9 @@ public interface ResourceServiceAsync {
 
     void createTemplate(final TemplateDTO dto, AsyncCallback<Void> callback);
 
-    void setDefaultTemplate(String templateId, AsyncCallback<Void> callback);
-
     void listTemplates(AsyncCallback<List<TemplateDTO>> callback);
+
+    void listOptions(AsyncCallback<List<OptionDTO<? extends DTO>>> callback);
+
+    void updateOptions(List<OptionDTO<? extends DTO>> options, AsyncCallback<Void> callback);
 }

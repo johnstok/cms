@@ -17,6 +17,8 @@ import java.util.List;
 import ccc.view.contentcreator.client.Constants;
 import ccc.view.contentcreator.client.ResourceService;
 import ccc.view.contentcreator.client.ResourceServiceAsync;
+import ccc.view.contentcreator.dto.DTO;
+import ccc.view.contentcreator.dto.OptionDTO;
 import ccc.view.contentcreator.dto.TemplateDTO;
 import ccc.view.contentcreator.widgets.ButtonBar;
 import ccc.view.contentcreator.widgets.FeedbackPanel;
@@ -25,6 +27,7 @@ import ccc.view.contentcreator.widgets.TwoColumnForm;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.ListBox;
@@ -46,19 +49,21 @@ public class UpdateOptionsDialog extends DialogBox {
     private final ResourceServiceAsync _resourceService =
         (ResourceServiceAsync) GWT.create(ResourceService.class);
     private final ListBox _defaultTemplate = new ListBox();
+    private final List<OptionDTO<? extends DTO>> _options;
 
     /**
      * Constructor.
      * @param templates
      */
-    public UpdateOptionsDialog(final List<TemplateDTO> templates) {
+    public UpdateOptionsDialog(final List<OptionDTO<? extends DTO>> options) {
         super(false, true);
+        _options = options;
         setText(_title);
         setWidget(_widget);
-        drawGUI(templates);
+        drawGUI();
     }
 
-    private void drawGUI(final List<TemplateDTO> templates) {
+    private void drawGUI() {
 
         final FeedbackPanel fPanel = new FeedbackPanel();
         fPanel.setVisible(false);
@@ -68,9 +73,45 @@ public class UpdateOptionsDialog extends DialogBox {
             new TwoColumnForm(1)
                 .add(_constants.defaultTemplate(), _defaultTemplate)
             );
-        for (final TemplateDTO template : templates) {
+
+        // populate combo box
+        _defaultTemplate.addItem("", null); // No value.
+        for (final TemplateDTO template :
+                    _options.get(0).<TemplateDTO>makeTypeSafe().getChoices()) {
             _defaultTemplate.addItem(template.getTitle(), template.getId());
         }
+
+        // If there is a current value set it
+//        final TemplateDTO currentValue = _options.get(0).<TemplateDTO>makeTypeSafe().getCurrentValue();
+//        if (null != currentValue) {
+//            for (int i=0; i<_defaultTemplate.getItemCount(); i++) {
+//                if (_defaultTemplate.getValue(i).equals(
+//                    currentValue.getId())) {
+//                    _defaultTemplate.setSelectedIndex(i);
+//                    break;
+//                }
+//            }
+//        }
+
+        // Add a change listener
+        _defaultTemplate.addChangeListener(new ChangeListener(){
+            public void onChange(final Widget arg0) {
+                final ListBox lb = (ListBox)arg0;
+                final int selected = lb.getSelectedIndex();
+                final String templateId = lb.getValue(selected);
+                if (null == templateId) {
+                    _options.get(0).<TemplateDTO>makeTypeSafe().setCurrentValue(null);
+                } else {
+                    for (final TemplateDTO template :
+                        _options.get(0).<TemplateDTO>makeTypeSafe().getChoices()) {
+                        if (template.getId().equals(templateId)) {
+                            _options.get(0).<TemplateDTO>makeTypeSafe().setCurrentValue(template);
+                            return;
+                        }
+                    }
+                    Window.alert("No template: "+templateId);
+                }
+            }});
 
         _widget.add(
             new ButtonBar()
@@ -84,12 +125,9 @@ public class UpdateOptionsDialog extends DialogBox {
                     _constants.save(),
                     new ClickListener() {
                         public void onClick(final Widget sender) {
-                            final int selected = _defaultTemplate.getSelectedIndex();
-                            final String templateId =
-                                _defaultTemplate.getValue(selected);
                             _resourceService
-                                .setDefaultTemplate(templateId,
-                                                    new DisposingCallback());
+                                .updateOptions(_options,
+                                               new DisposingCallback());
                         }})
             );
     }

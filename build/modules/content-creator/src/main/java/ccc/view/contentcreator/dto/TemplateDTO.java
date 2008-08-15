@@ -21,7 +21,7 @@ import java.util.List;
  *
  * @author Civic Computing Ltd
  */
-public class TemplateDTO implements Serializable {
+public class TemplateDTO implements Serializable, DTO {
 
     private String _title = "";
     private String _description = "";

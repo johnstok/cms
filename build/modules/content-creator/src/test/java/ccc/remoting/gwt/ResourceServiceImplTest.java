@@ -14,6 +14,7 @@ package ccc.remoting.gwt;
 import static java.util.Arrays.*;
 import static org.easymock.EasyMock.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -28,6 +29,9 @@ import ccc.domain.Template;
 import ccc.services.AssetManager;
 import ccc.services.ContentManager;
 import ccc.services.adaptors.ContentManagerAdaptor;
+import ccc.view.contentcreator.client.ResourceService;
+import ccc.view.contentcreator.dto.DTO;
+import ccc.view.contentcreator.dto.OptionDTO;
 import ccc.view.contentcreator.dto.TemplateDTO;
 
 
@@ -42,32 +46,45 @@ public final class ResourceServiceImplTest extends TestCase {
     /**
      * Test.
      */
-    public void testListTemplates() {
+    public void testListOptions() {
 
         // ARRANGE
-        final AssetManager am = createMock(AssetManager.class);
         final Template foo = new Template("foo", "foo", "foo");
         final Template bar = new Template("bar", "bar", "bar");
+        final Folder root = new Folder(PredefinedResourceNames.CONTENT);
+        // TODO: Set a default template for the root.
+
+        final AssetManager am = createStrictMock(AssetManager.class);
         expect(am.lookupTemplates())
             .andReturn(asList(new Template[]{foo, bar}));
-        replay(am);
 
-        final ResourceServiceImpl rsi =
+        final ContentManager cm = createStrictMock(ContentManager.class);
+
+        replay(am, cm);
+
+        final ResourceService rs =
             new ResourceServiceImpl(
                 new MapRegistry()
                     .put("AssetManagerEJB/local", am)
             );
 
         // ACT
-        final List<TemplateDTO> templates = rsi.listTemplates();
+        final List<OptionDTO<? extends DTO>> options = rs.listOptions();
 
         // ASSERT
-        verify(am);
+        verify(am, cm);
+
+        final OptionDTO<TemplateDTO> templateOption =
+            options.get(0).makeTypeSafe();
+        final List<TemplateDTO> templates = templateOption.getChoices();
+        final TemplateDTO current = templateOption.getCurrentValue();
+
         assertEquals(2, templates.size());
         assertEquals(templates.get(0).getTitle(), "foo");
         assertEquals(templates.get(0).getId(), foo.id().toString());
         assertEquals(templates.get(1).getBody(), "bar");
         assertEquals(templates.get(1).getId(), bar.id().toString());
+//        assertEquals(root.displayTemplateName(), current);
     }
 
     /**
@@ -76,17 +93,25 @@ public final class ResourceServiceImplTest extends TestCase {
     public void testSetDefaultTemplate() {
 
         // ARRANGE
-        final Template defaultTemplate = new Template("foo", "bar", "baz");
+        final List<OptionDTO<? extends DTO>> options =
+            new ArrayList<OptionDTO<? extends DTO>>();
+        final Template t = new Template("foo", "bar", "baz");
+        final OptionDTO<TemplateDTO> defaultTemplate =
+            new OptionDTO<TemplateDTO>(null,
+                                       new ArrayList<TemplateDTO>(),
+                                       OptionDTO.Type.CHOICES);
+        defaultTemplate.setCurrentValue(DTOs.dtoFrom(t));
+        options.add(defaultTemplate);
 
         final ContentManager cm = createMock(ContentManager.class);
-        cm.setDefaultTemplate(defaultTemplate);
+        cm.setDefaultTemplate(t);
 
         final AssetManager am = createMock(AssetManager.class);
-        expect(am.lookup(defaultTemplate.id())).andReturn(defaultTemplate);
+        expect(am.lookup(t.id())).andReturn(t);
 
         replay(cm, am);
 
-        final ResourceServiceImpl rsi =
+        final ResourceService rsi =
             new ResourceServiceImpl(
                 new MapRegistry()
                     .put("ContentManagerEJB/local", cm)
@@ -94,7 +119,7 @@ public final class ResourceServiceImplTest extends TestCase {
             );
 
         // ACT
-        rsi.setDefaultTemplate(defaultTemplate.id().toString());
+        rsi.updateOptions(options);
 
         // ASSERT
         verify(cm, am);
