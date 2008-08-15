@@ -12,6 +12,8 @@
 
 package ccc.remoting.gwt;
 
+import static ccc.remoting.gwt.DTOs.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +28,8 @@ import ccc.domain.Template;
 import ccc.services.AssetManager;
 import ccc.services.ContentManager;
 import ccc.view.contentcreator.client.ResourceService;
+import ccc.view.contentcreator.dto.DTO;
+import ccc.view.contentcreator.dto.OptionDTO;
 import ccc.view.contentcreator.dto.TemplateDTO;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -113,11 +117,7 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
         assetManager().createDisplayTemplate(DTOs.templateFrom(dto));
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setDefaultTemplate(final String templateId) {
+    private void setDefaultTemplate(final String templateId) {
         final Template newDefault =
             assetManager().lookup(UUID.fromString(templateId));
         contentManager().setDefaultTemplate(newDefault);
@@ -131,13 +131,35 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
         final List<TemplateDTO> dtos = new ArrayList<TemplateDTO>();
         final List<Template> templates = assetManager().lookupTemplates();
         for (final Template template : templates) {
-            // TODO: Should probably factor this object creation to DTOs.
-            final TemplateDTO dto = new TemplateDTO(template.title(),
-                                              template.description(),
-                                              template.body());
-            dto.setId(template.id().toString());
-            dtos.add(dto);
+            dtos.add(dtoFrom(template));
         }
         return dtos;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<OptionDTO<? extends DTO>> listOptions() {
+        final List<OptionDTO<? extends DTO>> options = new ArrayList<OptionDTO<? extends DTO>>();
+
+        final OptionDTO<TemplateDTO> defaultTemplate =
+            new OptionDTO<TemplateDTO>(null,
+                                       listTemplates(),
+                                       OptionDTO.Type.CHOICES);
+        options.add(defaultTemplate);
+
+        return options;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateOptions(final List<OptionDTO<? extends DTO>> options) {
+        final OptionDTO<TemplateDTO> defaultTemplate = options.get(0).makeTypeSafe();
+        if (defaultTemplate.hasChanged()) {
+            setDefaultTemplate(defaultTemplate.getCurrentValue().getId());
+        }
     }
 }
