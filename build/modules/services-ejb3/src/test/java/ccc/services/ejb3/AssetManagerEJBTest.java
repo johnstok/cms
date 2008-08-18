@@ -33,7 +33,7 @@ import ccc.services.AssetManager;
 
 
 /**
- * TODO Add Description for this type.
+ * Tests for the {@link AssetManagerEJB} class.
  *
  * @author Civic Computing Ltd
  */

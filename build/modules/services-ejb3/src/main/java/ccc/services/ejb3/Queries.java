@@ -19,12 +19,15 @@ import ccc.domain.ResourceName;
 
 
 /**
- * TODO Add Description for this type.
+ * Queries used by the business layer.
  *
  * @author Civic Computing Ltd
  */
 public final class Queries {
 
+    /**
+     * Constructor.
+     */
     Queries() { /* NO-OP */ }
 
     /**
@@ -34,7 +37,7 @@ public final class Queries {
      * @param name The name of the resource.
      * @return The folder with the specified name.
      */
-    protected final Folder lookupRoot(final EntityManager em,
+    protected Folder lookupRoot(final EntityManager em,
                                  final ResourceName name) {
 
         final Query q = em.createNamedQuery(RESOURCE_BY_URL);

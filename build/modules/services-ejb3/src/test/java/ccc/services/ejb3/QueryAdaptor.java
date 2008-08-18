@@ -9,7 +9,7 @@ import javax.persistence.Query;
 import javax.persistence.TemporalType;
 
 /**
- * TODO Add Description for this type.
+ * Adaptor for the {@link Query} interface, useful for testing.
  *
  * @author Civic Computing Ltd
  */
