@@ -102,7 +102,7 @@ public final class FolderTest extends TestCase {
 
         // ARRANGE
         final Folder folder = new Folder(new ResourceName("foo"));
-        folder.displayTemplateName("template");
+        folder.displayTemplateName(new Template("template", "", ""));
 
         // ACT
         final String json = folder.toJSON();

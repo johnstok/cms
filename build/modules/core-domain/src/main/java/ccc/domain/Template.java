@@ -29,7 +29,7 @@ public class Template extends Resource {
      * N.B. This constructor should only be used for persistence.
      */
     @SuppressWarnings("unused")
-    private Template() { super(); }
+    protected Template() { super(); }
 
     /**
      * Constructor.
@@ -68,7 +68,7 @@ public class Template extends Resource {
      *
      * @return The description as a string.
      */
-    public final String description() {
+    public String description() {
         return _description;
     }
 
@@ -77,8 +77,7 @@ public class Template extends Resource {
      *
      * @return The body as a string.
      */
-    public final String body() {
+    public String body() {
         return _body;
     }
-
 }

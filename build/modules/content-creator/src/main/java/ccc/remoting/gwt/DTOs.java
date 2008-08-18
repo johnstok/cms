@@ -11,6 +11,8 @@
  */
 package ccc.remoting.gwt;
 
+import java.util.UUID;
+
 import ccc.domain.Template;
 import ccc.view.contentcreator.dto.TemplateDTO;
 
@@ -29,10 +31,17 @@ public class DTOs {
      * @return
      */
     public static Template templateFrom(final TemplateDTO templateDTO) {
-        return new Template(
+        final Template t = new Template(
             templateDTO.getTitle(),
             templateDTO.getDescription(),
             templateDTO.getBody());
+
+
+        if (null!=templateDTO.getId()) {
+            t.id(UUID.fromString(templateDTO.getId()));
+        }
+
+        return t;
     }
 
     /**

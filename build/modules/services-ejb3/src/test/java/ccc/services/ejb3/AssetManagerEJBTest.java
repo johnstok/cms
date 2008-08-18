@@ -42,6 +42,46 @@ public final class AssetManagerEJBTest extends TestCase {
     /**
      * Test.
      */
+    public void testCreateOrRetrieveTemplate() {
+
+        // ARRANGE
+        final Folder assetRoot = new Folder(PredefinedResourceNames.ASSETS);
+        final Folder templateFolder = new Folder(new ResourceName("templates"));
+        final Template t = new Template("title", "description", "body");
+        assetRoot.add(templateFolder);
+
+        final EntityManager em = createStrictMock(EntityManager.class);
+        expect(em.createNamedQuery(Queries.RESOURCE_BY_URL)).andReturn(
+            new QueryAdaptor() {
+                /**  {@inheritDoc} */ @Override
+                public Object getSingleResult() { return assetRoot; }
+            });
+        em.persist(t);
+        expect(em.createNamedQuery(Queries.RESOURCE_BY_URL)).andReturn(
+            new QueryAdaptor() {
+                /**  {@inheritDoc} */ @Override
+                public Object getSingleResult() { return assetRoot; }
+            });
+        replay(em);
+
+        final AssetManager am = new AssetManagerEJB(em);
+
+        // ACT
+        final Template created = am.createOrRetrieve(t);
+        final Template retrieved = am.createOrRetrieve(t);
+
+        // ASSERT
+        verify(em);
+        assertSame(t, created);
+        assertSame(t, retrieved);
+        assertTrue(
+            "Templates folder should contain template.",
+            templateFolder.entries().contains(t));
+    }
+
+    /**
+     * Test.
+     */
     public void testLookupTemplates() {
 
         // ARRANGE

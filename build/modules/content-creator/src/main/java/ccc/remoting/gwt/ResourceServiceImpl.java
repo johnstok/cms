@@ -22,6 +22,7 @@ import java.util.UUID;
 import ccc.commons.DBC;
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
+import ccc.domain.Folder;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 import ccc.domain.Template;
@@ -118,9 +119,14 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     }
 
     private void setDefaultTemplate(final String templateId) {
-        final Template newDefault =
-            assetManager().lookup(UUID.fromString(templateId));
-        contentManager().setDefaultTemplate(newDefault);
+        if (null==templateId) {
+            contentManager().setDefaultTemplate(null);
+        } else {
+            final Template newDefault =
+                assetManager().lookup(UUID.fromString(templateId));
+            contentManager().setDefaultTemplate(newDefault);
+        }
+
     }
 
     /**
@@ -141,12 +147,18 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
      */
     @Override
     public List<OptionDTO<? extends DTO>> listOptions() {
-        final List<OptionDTO<? extends DTO>> options = new ArrayList<OptionDTO<? extends DTO>>();
+
+        final List<OptionDTO<? extends DTO>> options =
+            new ArrayList<OptionDTO<? extends DTO>>();
+
+        final Folder contentRoot = contentManager().lookupRoot();
+        final Template rootTemplate = contentRoot.displayTemplateName();
 
         final OptionDTO<TemplateDTO> defaultTemplate =
-            new OptionDTO<TemplateDTO>(null,
-                                       listTemplates(),
-                                       OptionDTO.Type.CHOICES);
+            new OptionDTO<TemplateDTO>(
+                   (null==rootTemplate) ? null : dtoFrom(rootTemplate),
+                   listTemplates(),
+                   OptionDTO.Type.CHOICES);
         options.add(defaultTemplate);
 
         return options;
@@ -157,9 +169,14 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
      */
     @Override
     public void updateOptions(final List<OptionDTO<? extends DTO>> options) {
-        final OptionDTO<TemplateDTO> defaultTemplate = options.get(0).makeTypeSafe();
+        final OptionDTO<TemplateDTO> defaultTemplate =
+            options.get(0).makeTypeSafe();
         if (defaultTemplate.hasChanged()) {
-            setDefaultTemplate(defaultTemplate.getCurrentValue().getId());
+            setDefaultTemplate(
+                (null==defaultTemplate.getCurrentValue())
+                    ? null
+                    : defaultTemplate.getCurrentValue().getId()
+                );
         }
     }
 }
