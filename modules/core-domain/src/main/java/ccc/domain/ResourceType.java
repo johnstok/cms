@@ -26,5 +26,8 @@ public enum ResourceType {
     FOLDER,
 
     /** TEMPLATE : ResourceType. */
-    TEMPLATE;
+    TEMPLATE,
+
+    /** FILE : ResourceType. */
+    FILE;
 }

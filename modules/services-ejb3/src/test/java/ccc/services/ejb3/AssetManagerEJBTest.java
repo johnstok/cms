@@ -11,9 +11,15 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.domain.PredefinedResourceNames.*;
-import static ccc.services.ejb3.Queries.*;
-import static org.easymock.EasyMock.*;
+import static ccc.domain.PredefinedResourceNames.ASSETS;
+import static ccc.services.ejb3.Queries.RESOURCE_BY_URL;
+import static org.easymock.EasyMock.capture;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 
 import java.util.List;
 
@@ -24,6 +30,9 @@ import junit.framework.TestCase;
 
 import org.easymock.Capture;
 
+import ccc.domain.CCCException;
+import ccc.domain.File;
+import ccc.domain.FileData;
 import ccc.domain.Folder;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
@@ -189,5 +198,59 @@ public final class AssetManagerEJBTest extends TestCase {
             "templates",
             assetsRoot.getValue()
                 .entries().get(0).as(Folder.class).name().toString());
+    }
+
+    /**
+     * Test.
+     *
+     */
+    public void testCreateFileData() {
+
+        // ARRANGE
+        final FileData fileData = new FileData("test".getBytes());
+        final File file = new File(
+            new ResourceName("file"), "title", "desc", fileData);
+
+        final EntityManager em = createMock(EntityManager.class);
+        em.persist(fileData);
+        em.persist(file);
+        replay(em);
+
+        final AssetManager am = new AssetManagerEJB(em);
+
+        // ACT
+        am.createFile(file);
+
+        // VERIFY
+        verify(em);
+    }
+
+    /**
+     * Test.
+     *
+     */
+    public void testRejectTooBigFileData() {
+
+        // ARRANGE
+        byte[] fatData = new byte[33*1024*1024];
+        final FileData fileData = new FileData(fatData);
+        final File file = new File(
+            new ResourceName("file"), "title", "desc", fileData);
+        final EntityManager em = createMock(EntityManager.class);
+        replay(em);
+        final AssetManager am = new AssetManagerEJB(em);
+
+        // ACT
+        try {
+            am.createFile(file);
+            fail("Creation of file data over 32MB should fail");
+        } catch (final CCCException e) {
+            assertEquals(
+                "File data is too large.",
+                e.getMessage());
+        }
+
+        // VERIFY
+        verify(em);
     }
 }
