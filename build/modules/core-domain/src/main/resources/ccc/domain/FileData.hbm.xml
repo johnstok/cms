@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!-- 
+    ========================================================================
+    * Copyright (c) 2008 Civic Computing Ltd.
+    * All rights reserved.
+    *
+    * Revision      $$Rev$$
+    * Modified by   $$Author$$
+    * Modified on   $$Date$$
+    *
+    * Changes: see SubVersion log.
+    ========================================================================
+-->
+<hibernate-mapping default-access="field">
+	<class name="ccc.domain.FileData">
+
+		<id name="_id">
+			<generator class="assigned" />
+		</id>
+
+		<version name="_version" unsaved-value="negative" />
+		
+		<property name="_data" not-null="true" type="binary" length="33554432"/>
+	</class>
+</hibernate-mapping>

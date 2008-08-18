@@ -14,6 +14,7 @@ package ccc.services;
 import java.util.List;
 import java.util.UUID;
 
+import ccc.domain.File;
 import ccc.domain.Resource;
 import ccc.domain.Template;
 
@@ -52,6 +53,13 @@ public interface AssetManager {
      * @return
      */
     List<Template> lookupTemplates();
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param file The File object to create
+     */
+    void createFile(File file);
 
     /**
      * TODO: Add a description of this method.

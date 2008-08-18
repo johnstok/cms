@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!-- 
+    ========================================================================
+    * Copyright (c) 2008 Civic Computing Ltd.
+    * All rights reserved.
+    *
+    * Revision      $$Rev$$
+    * Modified by   $$Author$$
+    * Modified on   $$Date$$
+    *
+    * Changes: see SubVersion log.
+    ========================================================================
+-->
+
+<hibernate-mapping default-access="field">
+	<joined-subclass name="ccc.domain.File"
+		extends="ccc.domain.Resource">
+		<key column="_id" />
+		
+		<property name="_description" not-null="true" type="string" length="1024" />
+		
+		<list name="_fileDatas">
+            <key column="file_id" />
+            <list-index column="file_index" />
+            <one-to-many class="ccc.domain.FileData" />
+        </list>
+	</joined-subclass>
+</hibernate-mapping>

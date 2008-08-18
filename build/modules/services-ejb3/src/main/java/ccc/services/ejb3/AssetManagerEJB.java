@@ -11,8 +11,8 @@
  */
 package ccc.services.ejb3;
 
-import static javax.ejb.TransactionAttributeType.*;
-import static javax.persistence.PersistenceContextType.*;
+import static javax.ejb.TransactionAttributeType.REQUIRED;
+import static javax.persistence.PersistenceContextType.EXTENDED;
 
 import java.util.List;
 import java.util.UUID;
@@ -25,6 +25,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
+import ccc.domain.CCCException;
+import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
@@ -49,6 +51,8 @@ public class AssetManagerEJB implements AssetManager {
         unitName = "ccc-persistence",
         type     = EXTENDED)
     private EntityManager _entityManager;
+
+    private final int _MAX_FILE_SIZE = 32*1024;
 
     /**
      * Constructor.
@@ -138,6 +142,19 @@ public class AssetManagerEJB implements AssetManager {
             assetRoot
             .navigateTo(new ResourcePath("/templates/"));
         return templates;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void createFile(File file) {
+        // check size
+        if (file.fileData().data().length > _MAX_FILE_SIZE*1024) {
+            throw new CCCException("File data is too large.");
+        }
+        _entityManager.persist(file.fileData());
+        _entityManager.persist(file);
     }
 
 }
