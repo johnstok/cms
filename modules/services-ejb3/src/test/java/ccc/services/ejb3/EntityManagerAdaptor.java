@@ -7,7 +7,7 @@ import javax.persistence.LockModeType;
 import javax.persistence.Query;
 
 /**
- * TODO Add Description for this type.
+ * Adaptor for the {@link EntityManager} interface, useful for testing.
  *
  * @author Civic Computing Ltd
  */
