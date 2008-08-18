@@ -40,7 +40,7 @@ public final class Page extends Resource {
      * N.B. This constructor should only be used for persistence.
      */
     @SuppressWarnings("unused")
-    private Page() { super(); }
+    protected Page() { super(); }
 
     /**
      * Constructor.
@@ -111,7 +111,9 @@ public final class Page extends Resource {
             JSON.object()
                 .add("id", id().toString())
                 .add("title", title())
-                .add("displayTemplateName", displayTemplateName())
+                .add("displayTemplateName",
+                     (null==displayTemplateName())
+                         ? null : displayTemplateName().name().toString())
                 .add("paragraphs", _content)
                 .toString();
     }

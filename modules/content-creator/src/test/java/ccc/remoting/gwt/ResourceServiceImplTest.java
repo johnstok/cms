@@ -52,20 +52,21 @@ public final class ResourceServiceImplTest extends TestCase {
         final Template foo = new Template("foo", "foo", "foo");
         final Template bar = new Template("bar", "bar", "bar");
         final Folder root = new Folder(PredefinedResourceNames.CONTENT);
-        // TODO: Set a default template for the root.
+        root.displayTemplateName(foo);
 
         final AssetManager am = createStrictMock(AssetManager.class);
         expect(am.lookupTemplates())
             .andReturn(asList(new Template[]{foo, bar}));
 
         final ContentManager cm = createStrictMock(ContentManager.class);
-
+        expect(cm.lookupRoot()).andReturn(root);
         replay(am, cm);
 
         final ResourceService rs =
             new ResourceServiceImpl(
                 new MapRegistry()
                     .put("AssetManagerEJB/local", am)
+                    .put("ContentManagerEJB/local", cm)
             );
 
         // ACT
@@ -84,7 +85,7 @@ public final class ResourceServiceImplTest extends TestCase {
         assertEquals(templates.get(0).getId(), foo.id().toString());
         assertEquals(templates.get(1).getBody(), "bar");
         assertEquals(templates.get(1).getId(), bar.id().toString());
-//        assertEquals(root.displayTemplateName(), current);
+        assertEquals(root.displayTemplateName(), DTOs.templateFrom(current));
     }
 
     /**

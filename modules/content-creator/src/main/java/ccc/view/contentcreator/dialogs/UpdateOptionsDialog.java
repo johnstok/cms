@@ -75,23 +75,23 @@ public class UpdateOptionsDialog extends DialogBox {
             );
 
         // populate combo box
-        _defaultTemplate.addItem("", null); // No value.
+        _defaultTemplate.addItem("<none>", "<none>"); // No value.
         for (final TemplateDTO template :
                     _options.get(0).<TemplateDTO>makeTypeSafe().getChoices()) {
             _defaultTemplate.addItem(template.getTitle(), template.getId());
         }
 
         // If there is a current value set it
-//        final TemplateDTO currentValue = _options.get(0).<TemplateDTO>makeTypeSafe().getCurrentValue();
-//        if (null != currentValue) {
-//            for (int i=0; i<_defaultTemplate.getItemCount(); i++) {
-//                if (_defaultTemplate.getValue(i).equals(
-//                    currentValue.getId())) {
-//                    _defaultTemplate.setSelectedIndex(i);
-//                    break;
-//                }
-//            }
-//        }
+        final TemplateDTO currentValue = _options.get(0).<TemplateDTO>makeTypeSafe().getCurrentValue();
+        if (null != currentValue) {
+            for (int i=0; i<_defaultTemplate.getItemCount(); i++) {
+                if (_defaultTemplate.getValue(i).equals(
+                    currentValue.getId())) {
+                    _defaultTemplate.setSelectedIndex(i);
+                    break;
+                }
+            }
+        }
 
         // Add a change listener
         _defaultTemplate.addChangeListener(new ChangeListener(){
@@ -99,7 +99,7 @@ public class UpdateOptionsDialog extends DialogBox {
                 final ListBox lb = (ListBox)arg0;
                 final int selected = lb.getSelectedIndex();
                 final String templateId = lb.getValue(selected);
-                if (null == templateId) {
+                if ("<none>".equals(templateId)) {
                     _options.get(0).<TemplateDTO>makeTypeSafe().setCurrentValue(null);
                 } else {
                     for (final TemplateDTO template :

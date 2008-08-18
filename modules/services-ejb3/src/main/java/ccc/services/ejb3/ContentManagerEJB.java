@@ -175,8 +175,6 @@ public class ContentManagerEJB implements ContentManager {
      */
     @Override
     public void setDefaultTemplate(final Template newDefault) {
-        // TODO: Should we check if the supplied template exists in the db?
-        // Or perhaps we should store a reference to it?
-        lookupRoot().displayTemplateName(newDefault.name().toString());
+        lookupRoot().displayTemplateName(newDefault);
     }
 }

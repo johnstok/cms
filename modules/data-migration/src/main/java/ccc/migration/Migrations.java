@@ -25,6 +25,7 @@ import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.ResourceName;
+import ccc.domain.Template;
 import ccc.services.AssetManager;
 import ccc.services.ContentManager;
 
@@ -37,6 +38,8 @@ public class Migrations {
 
     private final Queries _queries;
     private final Registry _registry = new JNDI();
+    private static final Map<String, Template> templates =
+        new HashMap<String, Template>();
 
     private static Logger log =
         Logger.getLogger(ccc.migration.Migrations.class);
@@ -48,7 +51,7 @@ public class Migrations {
      * @param queries Queries
      */
     public Migrations(final Queries queries) {
-        this._queries = queries;
+        _queries = queries;
     }
 
     /**
@@ -74,7 +77,7 @@ public class Migrations {
 
         final List<ResourceBean> resources = queries.selectResources(parent);
 
-            for (ResourceBean r : resources) {
+            for (final ResourceBean r : resources) {
 
                 log.debug("type "+r.type());
                 log.debug("name "+r.name());
@@ -108,18 +111,31 @@ public class Migrations {
                                final String name,
                                final String displayTemplate) {
 
-        log.debug("FOLDER");
-        Folder child = new Folder(ResourceName.escape(name));
-        child.displayTemplateName(displayTemplate);
-
         try {
+            log.debug("FOLDER");
+            Folder child = new Folder(ResourceName.escape(name));
+
+            if (null!=displayTemplate) {
+                Template template =
+                    (templates.containsKey(displayTemplate))
+                        ? templates.get(displayTemplate)
+                        : new Template(displayTemplate, "", "");
+                template = assetManager().createOrRetrieve(template);
+                child.displayTemplateName(template);
+                if (!templates.containsKey(displayTemplate)) {
+                    templates.put(displayTemplate, template);
+                }
+            }
+
             contentManager().create(UUID.fromString(parentFolderId), child);
+
+            final String childId = child.id().toString();
+            child = null;
+            migrateChildren(childId, contentId, _queries);
+
         } catch (final Exception e) {
-            log.error("Name conflict : "+e.getMessage());
+            log.error(e.getMessage());
         }
-        String childId = child.id().toString();
-        child = null;
-        migrateChildren(childId, contentId, _queries);
     }
 
     private void migratePage(final String parentFolderId,
@@ -127,20 +143,33 @@ public class Migrations {
                              final String name,
                              final String displayTemplate) {
 
-        log.debug("PAGE");
-        Page childPage = new Page(ResourceName.escape(name));
-        childPage.displayTemplateName(displayTemplate);
-
-        final Map<String, StringBuffer> paragraphs =
-            migrateParagraphs(contentId);
-        for (String key : paragraphs.keySet()) {
-            childPage.addParagraph(key,
-                new Paragraph(paragraphs.get(key).toString()));
-        }
         try {
+            log.debug("PAGE");
+            final Page childPage = new Page(ResourceName.escape(name));
+
+            if (null!=displayTemplate) {
+                Template template =
+                    (templates.containsKey(displayTemplate))
+                        ? templates.get(displayTemplate)
+                        : new Template(displayTemplate, "", "");
+                template = assetManager().createOrRetrieve(template);
+                childPage.displayTemplateName(template);
+                if (!templates.containsKey(displayTemplate)) {
+                    templates.put(displayTemplate, template);
+                }
+            }
+
+            final Map<String, StringBuffer> paragraphs =
+                migrateParagraphs(contentId);
+            for (final String key : paragraphs.keySet()) {
+                childPage.addParagraph(key,
+                    new Paragraph(paragraphs.get(key).toString()));
+            }
+
             contentManager().create(UUID.fromString(parentFolderId), childPage);
+
         } catch (final Exception e) {
-            log.error("Name conflict : "+e.getMessage());
+            log.error(e.getMessage());
         }
     }
 
@@ -161,14 +190,14 @@ public class Migrations {
         final List<ParagraphBean> paragraphs =
             _queries.selectParagraphs(pageId);
         // populate map
-        for (ParagraphBean p : paragraphs) {
+        for (final ParagraphBean p : paragraphs) {
             // ignore empty/null texts
             if (p.text() == null || p.text().trim().equals("")) {
                 continue;
             }
             if (map.containsKey(p.key())) {
                 // merge
-                StringBuffer sb = map.get(p.key());
+                final StringBuffer sb = map.get(p.key());
                 map.put(p.key(), sb.append(p.text()));
                 log.debug("#### merged texts for Paragraph "+p.key());
             } else {

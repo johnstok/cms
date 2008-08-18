@@ -28,13 +28,9 @@
 		<property name="_title" not-null="true" type="string"
 			length="256" />
 			
-		<property name="_displayTemplateName" not-null="false"
-			type="string" length="256" />
+		<many-to-one name="_template" not-null="false" />
 
-        <!-- 
-            TODO: Name should be immutable.
-         -->
-		<component name="_name" class="ccc.domain.ResourceName">
+		<component name="_name" class="ccc.domain.ResourceName" update="false">
 			<property name="_representation" not-null="true"
 				type="string" length="256" />
 		</component>

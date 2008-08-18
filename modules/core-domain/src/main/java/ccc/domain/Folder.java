@@ -37,7 +37,7 @@ public final class Folder extends Resource implements JSONable {
      * N.B. This constructor should only be used for persistence.
      */
     @SuppressWarnings("unused")
-    private Folder() { super(); }
+    protected Folder() { super(); }
 
     /**
      * Constructor.
@@ -143,7 +143,9 @@ public final class Folder extends Resource implements JSONable {
         return
             JSON.object()
                 .add("name", name().toString())
-                .add("displayTemplateName", displayTemplateName())
+                .add("displayTemplateName",
+                     (null==displayTemplateName())
+                         ? null : displayTemplateName().name().toString())
                 .add("entries", entryReferences())
                 .toString();
     }

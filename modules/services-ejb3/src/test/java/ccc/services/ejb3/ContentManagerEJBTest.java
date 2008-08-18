@@ -74,7 +74,7 @@ public final class ContentManagerEJBTest extends TestCase {
 
         // ASSERT
         assertEquals(
-            defaultTemplate.name().toString(),
+            defaultTemplate,
             contentRoot.displayTemplateName());
     }
 

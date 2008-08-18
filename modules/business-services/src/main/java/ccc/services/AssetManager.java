@@ -53,4 +53,12 @@ public interface AssetManager {
      */
     List<Template> lookupTemplates();
 
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param template
+     * @return
+     */
+    Template createOrRetrieve(Template template);
+
 }

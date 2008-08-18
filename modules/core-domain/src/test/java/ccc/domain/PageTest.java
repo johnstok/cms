@@ -32,7 +32,7 @@ public final class PageTest extends TestCase {
 
         // ARRANGE
         final Page page = new Page(new ResourceName("foo"), "Foo?");
-        page.displayTemplateName("template");
+        page.displayTemplateName(new Template("template", "", ""));
         page.addParagraph("bar", new Paragraph("bar"));
         page.addParagraph("baz", new Paragraph("baz"));
 
