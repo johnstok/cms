@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import ccc.view.contentcreator.commands.CreateDisplayTemplateCommand;
 import ccc.view.contentcreator.commands.UpdateOptionsCommand;
+import ccc.view.contentcreator.commands.UploadFileCommand;
 import ccc.view.contentcreator.dialogs.PreviewContentDialog;
 import ccc.view.contentcreator.dialogs.UpdateContentDialog;
 import ccc.view.contentcreator.widgets.ButtonBar;
@@ -43,7 +44,7 @@ public final class ContentCreator implements EntryPoint {
 
     private final Constants constants = GWT.create(Constants.class);
 
-    private HorizontalSplitPanel hsp = new HorizontalSplitPanel();
+    private final HorizontalSplitPanel hsp = new HorizontalSplitPanel();
 
     /** MENUBAR_HEIGHT : Reserved space for menu bar. */
     private static final int MENUBAR_HEIGHT = 30;
@@ -127,6 +128,9 @@ public final class ContentCreator implements EntryPoint {
         toolsMenu.addItem(
             constants.options(),
             new UpdateOptionsCommand());
+        toolsMenu.addItem(
+            constants.uploadFile(),
+            new UploadFileCommand(t));
         menu.addItem(constants.tools(), toolsMenu);
 
         final MenuBar assetsMenu = new MenuBar(true);

@@ -28,8 +28,7 @@ public class File extends Resource implements JSONable {
     private static final long serialVersionUID = -8514993906228600518L;
     private String _description;
 
-    // File data is store as one-to-many relationship because Hibernate does
-    // not support lazy loading for one-to-one relations.
+    // FIXME: check lazy loading for one-to-many relationship
     private final List<FileData> _fileDatas = new ArrayList<FileData>();
 
     /**

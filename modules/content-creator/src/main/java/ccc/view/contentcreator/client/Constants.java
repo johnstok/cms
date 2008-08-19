@@ -161,4 +161,44 @@ public interface Constants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Default Template")
     String defaultTemplate();
+
+    /**
+     * "Upload File".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Upload File")
+    String uploadFile();
+
+    /**
+     * "File Name".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("File Name")
+    String fileName();
+
+    /**
+     * "File".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("File")
+    String file();
+
+    /**
+     * "Upload File to".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Upload File to")
+    String uploadFileTo();
+
+    /**
+     * "Upload".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Upload")
+    String upload();
 }
