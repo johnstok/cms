@@ -11,8 +11,8 @@
  */
 package ccc.services.ejb3;
 
-import static javax.ejb.TransactionAttributeType.REQUIRED;
-import static javax.persistence.PersistenceContextType.EXTENDED;
+import static javax.ejb.TransactionAttributeType.*;
+import static javax.persistence.PersistenceContextType.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -52,7 +52,8 @@ public class AssetManagerEJB implements AssetManager {
         type     = EXTENDED)
     private EntityManager _entityManager;
 
-    private final int _MAX_FILE_SIZE = 32*1024;
+    /** MAX_FILE_SIZE_BYTES : int. */
+    static final int MAX_FILE_SIZE_BYTES = 32*1024*1024;
 
     /**
      * Constructor.
@@ -148,9 +149,9 @@ public class AssetManagerEJB implements AssetManager {
      * {@inheritDoc}
      */
     @Override
-    public void createFile(File file) {
+    public void createFile(final File file) {
         // check size
-        if (file.fileData().data().length > _MAX_FILE_SIZE*1024) {
+        if (file.fileData().data().length > MAX_FILE_SIZE_BYTES) {
             throw new CCCException("File data is too large.");
         }
         _entityManager.persist(file.fileData());

@@ -11,15 +11,9 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.domain.PredefinedResourceNames.ASSETS;
-import static ccc.services.ejb3.Queries.RESOURCE_BY_URL;
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
+import static ccc.domain.PredefinedResourceNames.*;
+import static ccc.services.ejb3.Queries.*;
+import static org.easymock.EasyMock.*;
 
 import java.util.List;
 
@@ -232,7 +226,7 @@ public final class AssetManagerEJBTest extends TestCase {
     public void testRejectTooBigFileData() {
 
         // ARRANGE
-        byte[] fatData = new byte[33*1024*1024];
+        final byte[] fatData = new byte[AssetManagerEJB.MAX_FILE_SIZE_BYTES+1];
         final FileData fileData = new FileData(fatData);
         final File file = new File(
             new ResourceName("file"), "title", "desc", fileData);
