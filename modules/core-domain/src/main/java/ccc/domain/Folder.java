@@ -244,4 +244,32 @@ public final class Folder extends Resource implements JSONable {
         }
         return entries;
     }
+
+    /**
+     * Query method to determine if this folder contains any pages.
+     *
+     * @return true if the folder contains any pages, false otherwise.
+     */
+    public boolean hasPages() {
+        for (final Resource r : _entries) {
+            if (r.type().equals(ResourceType.PAGE)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Accessor method for the first page in this folder.
+     *
+     * @return The first page in the list of entries.
+     */
+    public Page firstPage() {
+        for (final Resource r : _entries) {
+            if (r.type().equals(ResourceType.PAGE)) {
+                return r.as(Page.class);
+            }
+        }
+        throw new CCCException("No pages in this folder.");
+    }
 }

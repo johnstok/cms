@@ -36,63 +36,57 @@ public final class Ticket5AcceptanceTest extends TestCase {
 
     /**
      * Test.
+     * TODO: This test doesn't make sense any more - delete or replace?
      * @throws IOException If the test can't access the test deployment.
      */
-    public void testValidXhtmlForFolder() throws IOException {
-
-        // ARRANGE
-        final InputStream page =
-            new URL("http://localhost:8080/content-server/content/")
-            .openStream();
-
-        // ACT
-        final boolean isValid = XHTML.isValid(page);
-        if (!isValid) {
-            XHTML.printErrors(
-                new URL("http://localhost:8080/content-server/content/")
-                .openStream(), System.out);
-        }
-
-        // ASSERT
-        assertTrue("Root folder did not supply valid XHTML", isValid);
-    }
-
-//    /**
-//     * Test.
-//     * @throws IOException If the test can't access the test deployment.
-//     */
-//    public void testCharactersAreEscapedCorrectly() throws IOException {
+//    public void testValidXhtmlForFolder() throws IOException {
 //
 //        // ARRANGE
 //        final InputStream page =
-//            new URL(
-//                "http://localhost:8080/content-server/content/"
-//                + "Young_People/Tell_us_your_story/"
-//                + "Tell_us_your_story/")
+//            new URL("http://localhost:8080/content-server/content/")
 //            .openStream();
 //
 //        // ACT
-//        final String optionCount =
-//            XHTML.evaluateXPath(page, "count(//xhtml:form)");
+//        final boolean isValid = XHTML.isValid(page);
+//        if (!isValid) {
+//            XHTML.printErrors(
+//                new URL("http://localhost:8080/content-server/content/")
+//                .openStream(), System.out);
+//        }
 //
 //        // ASSERT
-//        assertEquals("1", optionCount);
-//
+//        assertTrue("Root folder did not supply valid XHTML", isValid);
 //    }
+
+    /**
+     * Test.
+     * @throws IOException If the test can't access the test deployment.
+     */
+    public void testCharactersAreEscapedCorrectly() throws IOException {
+
+        // ARRANGE
+        final InputStream page =
+            new URL(
+                "http://localhost:8080/content-server/content/"
+                + "Our_Work/Our_Work/")
+            .openStream();
+
+        // ACT
+        final String optionCount =
+            XHTML.evaluateXPath(page, "count(//xhtml:h2)");
+
+        // ASSERT
+        assertEquals("5", optionCount);
+
+    }
 
     /**
      * Test.
      */
     public void testTitlesAreSetCorrectly() {
         selenium.setSpeed("1000");
-        selenium.open("content-server/content/");
-        assertEquals("Folder: content", selenium.getTitle());
-        selenium.click("link=Home");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Folder: Home", selenium.getTitle());
-        selenium.click("link=About_Us");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("Folder: About_Us", selenium.getTitle());
+        selenium.open("content-server/content/Our_Work/Our_Work/");
+        assertEquals("Our_Work", selenium.getTitle());
     }
 
     /**
@@ -100,13 +94,10 @@ public final class Ticket5AcceptanceTest extends TestCase {
      */
     public void testEachContentParagraphIsPresent() {
         selenium.setSpeed("1000");
-        selenium.open("content-server/content/");
-        selenium.click("link=Training_and_Development");
-        selenium.waitForPageToLoad("30000");
-        selenium.click("link=Linked_Approval_Schemes");
+        selenium.open("content-server/content/Our_Work/Our_Work/");
         selenium.waitForPageToLoad("30000");
         assertEquals("CONTENT", selenium.getText("//h2[1]"));
-        assertEquals("HEADER", selenium.getText("//h2[4]"));
+        assertEquals("HEADER", selenium.getText("//h2[3]"));
         assertEquals("Relationship", selenium.getText("//h2[5]"));
 
     }
