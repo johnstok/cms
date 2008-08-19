@@ -12,12 +12,12 @@ import java.util.List;
 import org.apache.commons.dbutils.DbUtils;
 
 /**
- * TODO Add Description for this type.
+ * Queries for data migration.
  *
  * @author Civic Computing Ltd
  */
 public class Queries {
-    private final Connection connection;
+    private final Connection _connection;
 
     /**
      * Constructor.
@@ -26,7 +26,7 @@ public class Queries {
      */
     public Queries(final Connection conn) {
         require().notNull(conn);
-        connection = conn;
+        _connection = conn;
     }
 
     /**
@@ -41,7 +41,7 @@ public class Queries {
         PreparedStatement ps = null;
         List<ResourceBean> resultList = new ArrayList<ResourceBean>();
         try {
-            ps = connection.prepareStatement(
+            ps = _connection.prepareStatement(
                 "SELECT CONTENT_ID, CONTENT_TYPE, NAME, PAGE FROM " +
                 "C3_CONTENT, C3_DISPLAY_TEMPLATES WHERE " +
                 "C3_CONTENT.PARENT_ID = ? AND VERSION_ID = 0 AND " +
@@ -82,7 +82,7 @@ public class Queries {
         List<ParagraphBean> resultList = new ArrayList<ParagraphBean>();
 
         try {
-            ps = connection.prepareStatement(
+            ps = _connection.prepareStatement(
                 "SELECT * FROM  C3_PARAGRAPHS " +
                 "WHERE C3_PARAGRAPHS.PAGE_ID = ? " +
                 "AND VERSION_ID = 0 ORDER BY SEQ");

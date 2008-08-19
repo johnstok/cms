@@ -55,11 +55,12 @@ public interface AssetManager {
     List<Template> lookupTemplates();
 
     /**
-     * TODO: Add a description of this method.
+     * Create a file.
      *
-     * @param file The File object to create
+     * @param file The File to persists.
+     * @param path The path of the folder acting as a parent for file.
      */
-    void createFile(File file);
+    void createFile(File file, final String path);
 
     /**
      * Create or retrieve a template. First try to look up this template, if it
