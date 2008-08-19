@@ -41,11 +41,11 @@
 
 	<modules>
 		<module>modules/core-domain</module>
-		<module>modules/content-creator</module>
 		<module>modules/business-services</module>
 		<module>modules/content-server</module>
 		<module>modules/services-ejb3</module>
 		<module>modules/data-migration</module>
+		<module>modules/content-creator</module>
 	</modules>
 
 	<build>

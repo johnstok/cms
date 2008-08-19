@@ -115,6 +115,9 @@ public final class ContentServletTest extends TestCase {
         page.addParagraph("key1", new Paragraph("para1"));
         page.addParagraph("key2", new Paragraph("para2"));
 
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html");
         expect(response.getWriter()).andReturn(new PrintWriter(output));
         replay(response);
@@ -150,6 +153,9 @@ public final class ContentServletTest extends TestCase {
         top.add(new Folder(new ResourceName("child_a")));
         top.add(new Page(new ResourceName("child_b")));
 
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html");
         expect(response.getWriter()).andReturn(new PrintWriter(output));
         replay(response);
@@ -226,30 +232,30 @@ public final class ContentServletTest extends TestCase {
      * @throws IOException If there is an error writing to the response.
      * @throws ServletException If execution of the servlet fails.
      */
-    public void testDoGetHandlesFolders() throws ServletException, IOException {
+    public void testDoGetHandlesFolderWithPages() throws ServletException, IOException {
 
         // ARRANGE
+        final Folder foo = new Folder(new ResourceName("foo"));
+        final Folder baz = new Folder(new ResourceName("baz"));
+        final Page bar = new Page(new ResourceName("bar"));
+        foo.add(baz);
+        foo.add(bar);
+
         final StringWriter output = new StringWriter();
         final ContentServlet contentServlet =
             new ContentServlet(
                 new MapRegistry(
                     "ContentManagerEJB/local",
                 new ContentManagerAdaptor() {
-                /** @see ContentManagerAdaptor#lookup(java.lang.String) */
-                @Override
+                /** {@inheritDoc} */ @Override
                 public Resource lookup(final ResourcePath path) {
-
-                    return new Folder(new ResourceName("foo"));
+                    return foo;
                 }
             }));
 
         // EXPECT
-        response.setHeader("Pragma", "no-cache");
-        response.setHeader("Cache-Control", "no-cache");
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html");
+        response.sendRedirect("bar/");
         expect(request.getPathInfo()).andReturn("/foo/");
-        expect(response.getWriter()).andReturn(new PrintWriter(output));
         replay(request, response);
 
         // ACT
@@ -257,13 +263,45 @@ public final class ContentServletTest extends TestCase {
 
         // VERIFY
         verify(request, response);
-        assertEquals(
-            "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" "
-            + "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n"
-            + "<html xmlns=\"http://www.w3.org/1999/xhtml\">"
-            + "<head><title>Folder: foo</title></head>"
-            + "<body>\r\n<h1>Folder: foo</h1>\r\n<ul>\r\n</ul>\r\n</body>"
-            + "</html>", output.toString());
+        assertEquals("", output.toString());
+    }
+
+    /**
+     * Test.
+     *
+     * @throws IOException If there is an error writing to the response.
+     * @throws ServletException If execution of the servlet fails.
+     */
+    public void testDoGetHandlesFolderWithoutPages() throws ServletException, IOException {
+
+        // ARRANGE
+        final Folder foo = new Folder(new ResourceName("foo"));
+        final Folder baz = new Folder(new ResourceName("baz"));
+        foo.add(baz);
+
+        final StringWriter output = new StringWriter();
+        final ContentServlet contentServlet =
+            new ContentServlet(
+                new MapRegistry(
+                    "ContentManagerEJB/local",
+                    new ContentManagerAdaptor() {
+                        /** {@inheritDoc} */ @Override
+                        public Resource lookup(final ResourcePath path) {
+                            return foo;
+                        }
+                    }));
+
+        // EXPECT
+        expect(request.getPathInfo()).andReturn("/foo/");
+        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        replay(request, response);
+
+        // ACT
+        contentServlet.doGet(request, response);
+
+        // VERIFY
+        verify(request, response);
+        assertEquals("", output.toString());
     }
 
     /**

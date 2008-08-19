@@ -28,6 +28,48 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      */
+    public void testFirstPage() {
+
+        // ARRANGE
+        final Folder pages = new Folder(new ResourceName("content"));
+        final Page ab = new Page(new ResourceName("ab"));
+        final Page cd = new Page(new ResourceName("cd"));
+        pages.add(ab);
+        pages.add(cd);
+
+        // ACT
+        final Page firstChild = pages.firstPage();
+
+        // ASSERT
+        assertEquals(ab, firstChild);
+    }
+
+    /**
+     * Test.
+     */
+    public void testHasPages() {
+
+        // ARRANGE
+        final Folder noPages = new Folder(new ResourceName("content"));
+        final Folder pages = new Folder(new ResourceName("content"));
+        final Page ab = new Page(new ResourceName("ab"));
+        final Page cd = new Page(new ResourceName("cd"));
+        noPages.add(pages);
+        pages.add(ab);
+        pages.add(cd);
+
+        // ACT
+        final boolean hasPages = pages.hasPages();
+        final boolean hasNoPages = !noPages.hasPages();
+
+        // ASSERT
+        assertTrue("hasPages should be true", hasPages);
+        assertTrue("hasNoPages should be true", hasNoPages);
+    }
+
+    /**
+     * Test.
+     */
     public void testTypedEntries() {
 
         // ARRANGE

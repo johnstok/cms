@@ -104,32 +104,38 @@ public final class ContentServlet extends HttpServlet {
                            final HttpServletResponse response)
                     throws IOException {
 
-        disableCachingFor(response);
-        configureCharacterEncoding(response);
-
         final ResourcePath contentPath =
             new ResourcePath(request.getPathInfo());
         final Resource resource = contentManager().lookup(contentPath);
 
-        write(response, resource);
+        handleResource(request, response, resource, contentPath);
     }
 
     /**
      * Accepts any type of resource and routes it to the appropriate
      * type-specific write() method.
      */
-    private void write(final HttpServletResponse resp,
-                       final Resource resource) throws IOException {
+    private void handleResource(final HttpServletRequest request, final HttpServletResponse resp,
+                                final Resource resource,
+                                final ResourcePath contentPath)
+                         throws IOException {
 
         switch (resource.type()) {
+
             case PAGE:
                 final Page page = resource.as(Page.class);
                 write(resp, page);
                 break;
+
             case FOLDER:
                 final Folder folder = resource.as(Folder.class);
-                write(resp, folder);
+                if (!folder.hasPages()) {
+                    resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                } else {
+                    resp.sendRedirect(folder.firstPage().name()+"/");
+                }
                 break;
+
             default:
                 throw new CCCException("Unsupported resource type!");
         }
@@ -145,6 +151,8 @@ public final class ContentServlet extends HttpServlet {
     void write(final HttpServletResponse resp,
                final Page page) throws IOException {
 
+        disableCachingFor(resp);
+        configureCharacterEncoding(resp);
         final String template = lookupTemplateForResource(page);
         final String html = render(page, template);
         resp.setContentType("text/html");
@@ -161,6 +169,8 @@ public final class ContentServlet extends HttpServlet {
     void write(final HttpServletResponse resp,
                      final Folder folder) throws IOException {
 
+        disableCachingFor(resp);
+        configureCharacterEncoding(resp);
         final String template = lookupTemplateForResource(folder);
         final String html = render(folder, template);
         resp.setContentType("text/html");
