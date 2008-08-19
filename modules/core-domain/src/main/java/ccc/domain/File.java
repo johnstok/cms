@@ -45,6 +45,7 @@ public class File extends Resource implements JSONable {
      * @param name The name of the file.
      * @param title The title of the file.
      * @param description The description of the file.
+     * @param fileData The binary content of the file.
      */
     public File(final ResourceName name,
                 final String title,
