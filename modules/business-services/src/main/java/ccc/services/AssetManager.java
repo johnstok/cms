@@ -48,9 +48,9 @@ public interface AssetManager {
     <T extends Resource> T lookup(UUID id);
 
     /**
-     * TODO: Add a description of this method.
+     * Look up all templates available.
      *
-     * @return
+     * @return A list of templates available in the CCC.
      */
     List<Template> lookupTemplates();
 
@@ -62,10 +62,12 @@ public interface AssetManager {
     void createFile(File file);
 
     /**
-     * TODO: Add a description of this method.
+     * Create or retrieve a template. First try to look up this template, if it
+     * exists return the current template. Otherwise persist the supplied
+     * template.
      *
-     * @param template
-     * @return
+     * @param template An copy of the template stored in memory.
+     * @return The current version of the template.
      */
     Template createOrRetrieve(Template template);
 

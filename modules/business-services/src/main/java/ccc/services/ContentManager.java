@@ -89,7 +89,7 @@ public interface ContentManager {
     /**
      * Sets the new default template for content.
      *
-     * @param newDefault
+     * @param newDefault The template to set as default.
      */
     void setDefaultTemplate(Template newDefault);
 }
