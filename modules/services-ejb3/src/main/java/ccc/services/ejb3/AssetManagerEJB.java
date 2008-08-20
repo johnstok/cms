@@ -25,7 +25,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
-import ccc.domain.CCCException;
 import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.PredefinedResourceNames;
@@ -51,9 +50,6 @@ public class AssetManagerEJB implements AssetManager {
         unitName = "ccc-persistence",
         type     = EXTENDED)
     private EntityManager _entityManager;
-
-    /** MAX_FILE_SIZE_BYTES : int. */
-    static final int MAX_FILE_SIZE_BYTES = 32*1024*1024;
 
     /**
      * Constructor.
@@ -150,10 +146,6 @@ public class AssetManagerEJB implements AssetManager {
      */
     @Override
     public void createFile(final File file, final String path) {
-        // check size
-        if (file.fileData().data().length > MAX_FILE_SIZE_BYTES) {
-            throw new CCCException("File data is too large.");
-        }
         _entityManager.persist(file.fileData());
         _entityManager.persist(file);
         Folder folder = (Folder) new Queries().lookupRoot(
