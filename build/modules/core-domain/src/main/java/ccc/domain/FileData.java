@@ -11,6 +11,9 @@
  */
 package ccc.domain;
 
+import java.sql.Blob;
+import java.sql.SQLException;
+
 import ccc.commons.DBC;
 
 
@@ -24,9 +27,10 @@ public class FileData extends Entity {
 
     /** serialVersionUID : long. */
     private static final long serialVersionUID = 4924963689426238574L;
+    private Blob _data = null;
 
-    private byte[] _data = null;
-
+    /** MAX_FILE_SIZE : int. */
+    public static final int MAX_FILE_SIZE = 32*1024*1024;
     /**
      * Constructor.
      * N.B. This constructor should only be used for persistence.
@@ -41,9 +45,17 @@ public class FileData extends Entity {
      *
      * @param data Data of the file.
      */
-    public FileData(final byte[] data) {
+    public FileData(final Blob data) {
         super();
         DBC.require().notNull(data);
+        try {
+            if (data.length() > MAX_FILE_SIZE) {
+                    throw new IllegalArgumentException(
+                        "Data size must be under "+MAX_FILE_SIZE);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         _data = data;
     }
 
@@ -52,7 +64,7 @@ public class FileData extends Entity {
      *
      * @return The description as a byte array.
      */
-    public byte[] data() {
+    public Blob data() {
         return _data;
     }
 }

@@ -13,6 +13,8 @@ package ccc.domain;
 
 import junit.framework.TestCase;
 
+import org.hibernate.lob.BlobImpl;
+
 
 /**
  * TODO Add Description for this type.
@@ -38,5 +40,28 @@ public class FileDataTest extends TestCase {
         } catch (final IllegalArgumentException e) {
             assertEquals("Specified value may not be NULL.", e.getMessage());
         }
+    }
+
+
+    /**
+     * Test.
+     *
+     */
+    public void testRejectTooBigFileData() {
+
+        // ARRANGE
+        final byte[] fatData = new byte[FileData.MAX_FILE_SIZE+1];
+
+        // ACT
+        try {
+            @SuppressWarnings("unused")
+            final FileData fileData = new FileData(new BlobImpl(fatData));
+            fail("Creation of file data over 32MB should fail");
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Data size must be under 33554432",
+                e.getMessage());
+        }
+
     }
 }

@@ -24,6 +24,6 @@
 
 		<version name="_version" unsaved-value="negative" />
 		
-		<property name="_data" not-null="true" type="binary" length="33554432"/>
+		<property name="_data" not-null="true" type="blob" length="33554432"/>
 	</class>
 </hibernate-mapping>

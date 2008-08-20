@@ -2,6 +2,8 @@ package ccc.remoting.gwt;
 
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Blob;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -14,6 +16,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.Logger;
+import org.hibernate.lob.BlobImpl;
 
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
@@ -21,7 +24,6 @@ import ccc.domain.File;
 import ccc.domain.FileData;
 import ccc.domain.ResourceName;
 import ccc.services.AssetManager;
-import ccc.services.ContentManager;
 
 
 /**
@@ -38,7 +40,6 @@ public class FileUploadServlet extends HttpServlet {
 
     private final int _maxMemorySize = 500*1024;
     private final java.io.File _tempDirectory = new java.io.File("/tmp");
-    private final long _maxRequestSize = 32*1024*1024;
 
     private final Registry _registry = new JNDI();
 
@@ -50,6 +51,8 @@ public class FileUploadServlet extends HttpServlet {
     throws ServletException, IOException {
 
         response.setContentType("text/html");
+
+        InputStream dataStream = null;
 
         try {
             // Check that we have a file upload request
@@ -70,9 +73,9 @@ public class FileUploadServlet extends HttpServlet {
             ServletFileUpload upload = new ServletFileUpload(factory);
 
             // Set overall request size constraint
-            upload.setSizeMax(_maxRequestSize);
+            upload.setFileSizeMax(FileData.MAX_FILE_SIZE);
+            int dataSize = 0;
 
-            byte[] data = null;
             String fileName = null;
             String title = null;
             String description = null;
@@ -92,11 +95,13 @@ public class FileUploadServlet extends HttpServlet {
                         path = item.getString();
                     }
                 } else {
-                    data = item.get();
+                    dataSize = (int) item.getSize();
+                    dataStream = item.getInputStream();
                 }
             }
+            Blob dataBlob = new BlobImpl(dataStream, dataSize);
 
-            FileData fileData = new FileData(data);
+            FileData fileData = new FileData(dataBlob);
             File file = new File(
                 new ResourceName(fileName), title, description, fileData);
             // Call EJB
@@ -104,8 +109,14 @@ public class FileUploadServlet extends HttpServlet {
             response.getWriter().write("File was uploaded successfully.");
 
         } catch (FileUploadException e) {
-            response.getWriter().write("File Upload failed.");
+            response.getWriter().write("File Upload failed. "+e.getMessage());
             log.error("File Upload failed "+e.getMessage(), e);
+        } finally {
+            try {
+                dataStream.close();
+            } catch (Exception e) {
+                log.error("DataStream closing failed "+e.getMessage(), e);
+            }
         }
     }
 
@@ -117,14 +128,4 @@ public class FileUploadServlet extends HttpServlet {
     AssetManager assetManager() {
         return _registry.get("AssetManagerEJB/local");
     }
-
-    /**
-     * Accessor for the content manager.
-     *
-     * @return A ContentManager.
-     */
-    ContentManager contentManager() {
-        return _registry.get("ContentManagerEJB/local");
-    }
-
 }

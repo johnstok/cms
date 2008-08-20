@@ -29,8 +29,8 @@ import javax.persistence.NoResultException;
 import junit.framework.TestCase;
 
 import org.easymock.Capture;
+import org.hibernate.lob.BlobImpl;
 
-import ccc.domain.CCCException;
 import ccc.domain.File;
 import ccc.domain.FileData;
 import ccc.domain.Folder;
@@ -208,7 +208,7 @@ public final class AssetManagerEJBTest extends TestCase {
 
         // ARRANGE
         final Folder assetRoot = new Folder(PredefinedResourceNames.ASSETS);
-        final FileData fileData = new FileData("test".getBytes());
+        final FileData fileData = new FileData(new BlobImpl("test".getBytes()));
         final File file = new File(
             new ResourceName("file"), "title", "desc", fileData);
 
@@ -227,35 +227,6 @@ public final class AssetManagerEJBTest extends TestCase {
 
         // ACT
         am.createFile(file, "/");
-
-        // VERIFY
-        verify(em);
-    }
-
-    /**
-     * Test.
-     *
-     */
-    public void testRejectTooBigFileData() {
-
-        // ARRANGE
-        final byte[] fatData = new byte[AssetManagerEJB.MAX_FILE_SIZE_BYTES+1];
-        final FileData fileData = new FileData(fatData);
-        final File file = new File(
-            new ResourceName("file"), "title", "desc", fileData);
-        final EntityManager em = createMock(EntityManager.class);
-        replay(em);
-        final AssetManager am = new AssetManagerEJB(em);
-
-        // ACT
-        try {
-            am.createFile(file, "/");
-            fail("Creation of file data over 32MB should fail");
-        } catch (final CCCException e) {
-            assertEquals(
-                "File data is too large.",
-                e.getMessage());
-        }
 
         // VERIFY
         verify(em);
