@@ -13,10 +13,22 @@
 		</servlet-class>
 	</servlet>
 
+	<servlet>
+		<servlet-name>FileUploadServlet</servlet-name>
+		<servlet-class>
+			ccc.remoting.gwt.FileUploadServlet
+		</servlet-class>
+	</servlet>
+
 	<!-- Standard Action Servlet Mapping -->
 	<servlet-mapping>
 		<servlet-name>Resource</servlet-name>
 		<url-pattern>/resource</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>FileUploadServlet</servlet-name>
+		<url-pattern>/upload</url-pattern>
 	</servlet-mapping>
 
 	<welcome-file-list>
