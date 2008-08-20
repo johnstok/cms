@@ -11,9 +11,6 @@
  */
 package ccc.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ccc.commons.DBC;
 
 
@@ -28,8 +25,7 @@ public class File extends Resource implements JSONable {
     private static final long serialVersionUID = -8514993906228600518L;
     private String _description;
 
-    // FIXME: check lazy loading for one-to-many relationship
-    private final List<FileData> _fileDatas = new ArrayList<FileData>();
+    private FileData _fileData;
 
     /**
      * Constructor.
@@ -54,7 +50,7 @@ public class File extends Resource implements JSONable {
         DBC.require().notNull(fileData);
 
         _description = description;
-        _fileDatas.add(fileData);
+        _fileData = fileData;
     }
 
 
@@ -90,6 +86,6 @@ public class File extends Resource implements JSONable {
      * @return A list of data for this file.
      */
     public FileData fileData() {
-        return _fileDatas.get(0);
+        return _fileData;
     }
 }
