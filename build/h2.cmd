@@ -1,6 +1,6 @@
 @ echo off
 cls
-set h2_version=1.0.76
+set h2_version=1.0.77
 echo  ----------------
 echo   H2 [V. %h2_version%]
 echo  ----------------
