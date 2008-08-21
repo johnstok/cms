@@ -40,7 +40,11 @@ public abstract class JSONCallback implements AsyncCallback<String> {
      * {@inheritDoc}
      */
     public final void onFailure(final Throwable caught) {
-        _app.alert("Error: "+caught.getMessage());
+        // TODO: should be using a message, not a constant.
+        _app.alert(
+            _app.constants().error()
+            + ": " //$NON-NLS-1$
+            + caught.getMessage());
     }
 
     /**
