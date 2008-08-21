@@ -19,7 +19,7 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * @author Civic Computing Ltd.
  */
-final class HidingClickListener implements ClickListener {
+final class DisposingClickListener implements ClickListener {
 
     private final AppDialog _dialog;
 
@@ -28,7 +28,7 @@ final class HidingClickListener implements ClickListener {
      *
      * @param dialog The dialog that will hidden.
      */
-    public HidingClickListener(final AppDialog dialog) {
+    public DisposingClickListener(final AppDialog dialog) {
         _dialog = dialog;
     }
 

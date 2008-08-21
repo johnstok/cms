@@ -14,15 +14,17 @@ package ccc.view.contentcreator.dialogs;
 
 import java.util.List;
 
+import ccc.view.contentcreator.callbacks.DisposingCallback;
 import ccc.view.contentcreator.client.Constants;
 import ccc.view.contentcreator.client.GwtApp;
 import ccc.view.contentcreator.client.ResourceServiceAsync;
+import ccc.view.contentcreator.controls.ListControl;
+import ccc.view.contentcreator.controls.PanelControl;
 import ccc.view.contentcreator.dto.DTO;
 import ccc.view.contentcreator.dto.OptionDTO;
 import ccc.view.contentcreator.dto.TemplateDTO;
 import ccc.view.contentcreator.widgets.ButtonBar;
 import ccc.view.contentcreator.widgets.FeedbackPanel;
-import ccc.view.contentcreator.widgets.PanelControl;
 import ccc.view.contentcreator.widgets.TwoColumnForm;
 
 import com.google.gwt.user.client.Window;
@@ -122,7 +124,7 @@ public class UpdateOptionsDialog {
             new ButtonBar(_app)
                 .add(
                     _constants.cancel(),
-                    new HidingClickListener(_delegate))
+                    new DisposingClickListener(_delegate))
                 .add(
                     _constants.save(),
                     new ClickListener() {

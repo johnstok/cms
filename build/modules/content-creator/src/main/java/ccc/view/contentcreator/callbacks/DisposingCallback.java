@@ -1,6 +1,7 @@
-package ccc.view.contentcreator.dialogs;
+package ccc.view.contentcreator.callbacks;
 
 import ccc.view.contentcreator.client.GwtApp;
+import ccc.view.contentcreator.dialogs.AppDialog;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -9,7 +10,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  *
  * @author Civic Computing Ltd.
  */
-final class DisposingCallback implements AsyncCallback<Void> {
+public final class DisposingCallback implements AsyncCallback<Void> {
 
     private final AppDialog _dialog;
     private final GwtApp    _app;

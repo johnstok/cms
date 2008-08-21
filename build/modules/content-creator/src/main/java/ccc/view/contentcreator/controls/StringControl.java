@@ -9,7 +9,8 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.view.contentcreator.dialogs;
+package ccc.view.contentcreator.controls;
+
 
 
 /**

@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.view.contentcreator.dialogs;
+package ccc.view.contentcreator.controls;
 
 
 /**
@@ -17,20 +17,27 @@ package ccc.view.contentcreator.dialogs;
  *
  * @author Civic Computing Ltd.
  */
-public interface FileControl extends Control {
+public interface Control {
 
     /**
      * TODO: Add a description of this method.
      *
      * @param string
      */
-    void setName(String string);
+    void setWidth(String string);
 
     /**
      * TODO: Add a description of this method.
      *
-     * @return
+     * @param string
      */
-    String getFilename();
+    void setHeight(String string);
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param b
+     */
+    void setVisible(boolean b);
 
 }

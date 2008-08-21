@@ -12,8 +12,9 @@
 package ccc.view.contentcreator.widgets;
 
 import ccc.view.contentcreator.client.GwtApp;
-import ccc.view.contentcreator.dialogs.Control;
-import ccc.view.contentcreator.dialogs.GridControl;
+import ccc.view.contentcreator.controls.CompositeControl;
+import ccc.view.contentcreator.controls.Control;
+import ccc.view.contentcreator.controls.GridControl;
 
 
 /**

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import ccc.view.contentcreator.commands.CreateDisplayTemplateCommand;
 import ccc.view.contentcreator.commands.UpdateOptionsCommand;
 import ccc.view.contentcreator.commands.UploadFileCommand;
-import ccc.view.contentcreator.dialogs.GridControl;
+import ccc.view.contentcreator.controls.GridControl;
 import ccc.view.contentcreator.dialogs.PreviewContentDialog;
 import ccc.view.contentcreator.dialogs.UpdateContentDialog;
 import ccc.view.contentcreator.widgets.ButtonBar;
