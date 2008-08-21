@@ -12,6 +12,8 @@
 package ccc.view.contentcreator.widgets;
 
 import ccc.view.contentcreator.client.GwtApp;
+import ccc.view.contentcreator.controls.CompositeControl;
+import ccc.view.contentcreator.controls.PanelControl;
 
 import com.google.gwt.user.client.ui.ClickListener;
 

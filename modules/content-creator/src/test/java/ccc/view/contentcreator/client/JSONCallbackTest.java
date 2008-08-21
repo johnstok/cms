@@ -14,6 +14,8 @@ package ccc.view.contentcreator.client;
 import static org.easymock.EasyMock.*;
 import junit.framework.TestCase;
 
+import ccc.view.contentcreator.callbacks.JSONCallback;
+
 import com.google.gwt.json.client.JSONValue;
 
 

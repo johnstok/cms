@@ -11,13 +11,13 @@
  */
 package ccc.view.contentcreator.client;
 
+import ccc.view.contentcreator.controls.Control;
+import ccc.view.contentcreator.controls.FileControl;
+import ccc.view.contentcreator.controls.GridControl;
+import ccc.view.contentcreator.controls.ListControl;
+import ccc.view.contentcreator.controls.PanelControl;
+import ccc.view.contentcreator.controls.StringControl;
 import ccc.view.contentcreator.dialogs.AppDialog;
-import ccc.view.contentcreator.dialogs.Control;
-import ccc.view.contentcreator.dialogs.FileControl;
-import ccc.view.contentcreator.dialogs.GridControl;
-import ccc.view.contentcreator.dialogs.ListControl;
-import ccc.view.contentcreator.dialogs.StringControl;
-import ccc.view.contentcreator.widgets.PanelControl;
 
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FormHandler;

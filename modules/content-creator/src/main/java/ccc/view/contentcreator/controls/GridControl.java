@@ -9,9 +9,8 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.view.contentcreator.dialogs;
+package ccc.view.contentcreator.controls;
 
-import com.google.gwt.user.client.ui.ChangeListener;
 
 
 /**
@@ -19,43 +18,31 @@ import com.google.gwt.user.client.ui.ChangeListener;
  *
  * @author Civic Computing Ltd.
  */
-public interface ListControl extends Control {
+public interface GridControl extends Control {
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param row
+     * @param i
+     * @param widget
+     */
+    void setWidget(int row, int i, Control widget);
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param i
+     * @param j
+     * @param type
+     */
+    void setText(int i, int j, String type);
 
     /**
      * TODO: Add a description of this method.
      *
      * @param string
-     * @param string2
      */
-    void addItem(String string, String string2);
-
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @return
-     */
-    int getItemCount();
-
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param i
-     * @return
-     */
-    Object getValue(int i);
-
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param i
-     */
-    void setSelectedIndex(int i);
-
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param changeListener
-     */
-    void addChangeListener(ChangeListener changeListener);
+    void ensureDebugId(String string);
 
 }

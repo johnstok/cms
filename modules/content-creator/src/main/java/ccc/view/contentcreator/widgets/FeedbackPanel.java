@@ -14,6 +14,8 @@ package ccc.view.contentcreator.widgets;
 import java.util.List;
 
 import ccc.view.contentcreator.client.GwtApp;
+import ccc.view.contentcreator.controls.CompositeControl;
+import ccc.view.contentcreator.controls.PanelControl;
 
 
 /**

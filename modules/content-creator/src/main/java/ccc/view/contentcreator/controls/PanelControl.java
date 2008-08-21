@@ -9,9 +9,8 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.view.contentcreator.widgets;
+package ccc.view.contentcreator.controls;
 
-import ccc.view.contentcreator.dialogs.Control;
 
 import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
 import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConstant;

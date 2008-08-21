@@ -14,8 +14,9 @@ package ccc.view.contentcreator.dialogs;
 
 import ccc.view.contentcreator.client.Constants;
 import ccc.view.contentcreator.client.GwtApp;
+import ccc.view.contentcreator.controls.Control;
+import ccc.view.contentcreator.controls.PanelControl;
 import ccc.view.contentcreator.widgets.ButtonBar;
-import ccc.view.contentcreator.widgets.PanelControl;
 
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -59,7 +60,7 @@ public class PreviewContentDialog {
         _gui.add(
             new ButtonBar(_app)
                 .add(_constants.cancel(),
-                     new HidingClickListener(_delegate)));
+                     new DisposingClickListener(_delegate)));
 
         _delegate.gui(_gui);
     }

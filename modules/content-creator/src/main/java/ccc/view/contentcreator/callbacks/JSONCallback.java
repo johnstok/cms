@@ -9,7 +9,9 @@
  * Changes: see subversion log
  *-----------------------------------------------------------------------------
  */
-package ccc.view.contentcreator.client;
+package ccc.view.contentcreator.callbacks;
+
+import ccc.view.contentcreator.client.GwtApp;
 
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;

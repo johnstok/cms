@@ -15,9 +15,9 @@ package ccc.view.contentcreator.dialogs;
 import java.util.HashMap;
 import java.util.Map;
 
+import ccc.view.contentcreator.callbacks.JSONCallback;
 import ccc.view.contentcreator.client.Constants;
 import ccc.view.contentcreator.client.GwtAppImpl;
-import ccc.view.contentcreator.client.JSONCallback;
 import ccc.view.contentcreator.client.ResourceService;
 import ccc.view.contentcreator.client.ResourceServiceAsync;
 import ccc.view.contentcreator.widgets.RichTextToolbar;

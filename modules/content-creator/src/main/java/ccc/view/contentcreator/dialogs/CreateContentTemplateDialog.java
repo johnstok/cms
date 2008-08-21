@@ -12,13 +12,15 @@
 
 package ccc.view.contentcreator.dialogs;
 
+import ccc.view.contentcreator.callbacks.DisposingCallback;
 import ccc.view.contentcreator.client.Constants;
 import ccc.view.contentcreator.client.GwtApp;
 import ccc.view.contentcreator.client.ResourceServiceAsync;
+import ccc.view.contentcreator.controls.PanelControl;
+import ccc.view.contentcreator.controls.StringControl;
 import ccc.view.contentcreator.dto.TemplateDTO;
 import ccc.view.contentcreator.widgets.ButtonBar;
 import ccc.view.contentcreator.widgets.FeedbackPanel;
-import ccc.view.contentcreator.widgets.PanelControl;
 import ccc.view.contentcreator.widgets.TwoColumnForm;
 
 import com.google.gwt.user.client.ui.ClickListener;
@@ -80,7 +82,7 @@ public class CreateContentTemplateDialog {
             new ButtonBar(_app)
                 .add(
                     _constants.cancel(),
-                    new HidingClickListener(_delegate))
+                    new DisposingClickListener(_delegate))
                 .add(
                     _constants.save(),
                     new ClickListener() {
