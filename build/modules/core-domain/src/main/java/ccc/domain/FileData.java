@@ -11,8 +11,11 @@
  */
 package ccc.domain;
 
+import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
+
+import org.hibernate.lob.BlobImpl;
 
 import ccc.commons.DBC;
 
@@ -34,6 +37,8 @@ public class FileData extends Entity {
     /**
      * Constructor.
      * N.B. This constructor should only be used for persistence.
+     * @param dataSize
+     * @param dataStream
      */
     @SuppressWarnings("unused")
     private FileData() {
@@ -43,26 +48,28 @@ public class FileData extends Entity {
     /**
      * Constructor.
      *
-     * @param data Data of the file.
+     * @param dataStream The data as an InputStream.
+     * @param dataSize The size of the data.
      */
-    public FileData(final Blob data) {
+    public FileData(final InputStream dataStream, final int dataSize) {
         super();
-        DBC.require().notNull(data);
+        DBC.require().notNull(dataStream);
+
+        _data = new BlobImpl(dataStream, dataSize);
         try {
-            if (data.length() > MAX_FILE_SIZE) {
+            if (_data.length() > MAX_FILE_SIZE) {
                     throw new IllegalArgumentException(
                         "Data size must be under "+MAX_FILE_SIZE);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        _data = data;
     }
 
     /**
      * Accessor for the file's data.
      *
-     * @return The description as a byte array.
+     * @return The data as a blob.
      */
     public Blob data() {
         return _data;
