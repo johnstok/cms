@@ -39,7 +39,6 @@ public class FileUploadServlet extends HttpServlet {
     private static Logger log = Logger.getLogger(FileUploadServlet.class);
 
     private final int _maxMemorySize = 500*1024;
-    private final java.io.File _tempDirectory = new java.io.File("/tmp");
 
     private final Registry _registry = new JNDI();
 
@@ -67,7 +66,6 @@ public class FileUploadServlet extends HttpServlet {
 
             // Set factory constraints
             factory.setSizeThreshold(_maxMemorySize);
-            factory.setRepository(_tempDirectory);
 
             // Create a new file upload handler
             ServletFileUpload upload = new ServletFileUpload(factory);
