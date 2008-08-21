@@ -13,7 +13,6 @@ package ccc.view.contentcreator.client;
 
 import static org.easymock.EasyMock.*;
 import junit.framework.TestCase;
-
 import ccc.view.contentcreator.callbacks.JSONCallback;
 
 import com.google.gwt.json.client.JSONValue;
@@ -34,16 +33,21 @@ public class JSONCallbackTest extends TestCase {
     public void testConstructor() {
 
         // ARRANGE
+        final Constants constants = createStrictMock(Constants.class);
+        expect(constants.error()).andReturn("Error");
+
         final Application app = createStrictMock(Application.class);
+        expect(app.constants()).andReturn(constants);
         app.alert("Error: foo"); //$NON-NLS-1$
-        replay(app);
+
+        replay(app, constants);
 
         // ACT
         new TestCallback(app)
             .onFailure(new RuntimeException("foo")); //$NON-NLS-1$
 
         // ASSERT
-        verify(app);
+        verify(app, constants);
     }
 
     /**
