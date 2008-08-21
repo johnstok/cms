@@ -21,6 +21,7 @@ import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -202,13 +203,17 @@ public final class AssetManagerEJBTest extends TestCase {
 
     /**
      * Test.
+     * @throws SQLException
      *
      */
-    public void testCreateFileData() {
+    public void testCreateFileData() throws SQLException {
 
         // ARRANGE
         final Folder assetRoot = new Folder(PredefinedResourceNames.ASSETS);
-        final FileData fileData = new FileData(new BlobImpl("test".getBytes()));
+        FileData fileData;
+        fileData = new FileData(
+            new BlobImpl("test".getBytes()).getBinaryStream(), "test".length());
+
         final File file = new File(
             new ResourceName("file"), "title", "desc", fileData);
 

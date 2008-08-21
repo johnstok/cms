@@ -3,7 +3,6 @@ package ccc.remoting.gwt;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Blob;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -16,7 +15,6 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.Logger;
-import org.hibernate.lob.BlobImpl;
 
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
@@ -97,9 +95,8 @@ public class FileUploadServlet extends HttpServlet {
                     dataStream = item.getInputStream();
                 }
             }
-            Blob dataBlob = new BlobImpl(dataStream, dataSize);
 
-            FileData fileData = new FileData(dataBlob);
+            FileData fileData = new FileData(dataStream, dataSize);
             File file = new File(
                 new ResourceName(fileName), title, description, fileData);
             // Call EJB

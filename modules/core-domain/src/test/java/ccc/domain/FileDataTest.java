@@ -11,6 +11,9 @@
  */
 package ccc.domain;
 
+import java.sql.Blob;
+import java.sql.SQLException;
+
 import junit.framework.TestCase;
 
 import org.hibernate.lob.BlobImpl;
@@ -33,7 +36,7 @@ public class FileDataTest extends TestCase {
 
         // ACT
         try {
-            new FileData(null);
+            new FileData(null, 0);
             fail("The constructor should reject a NULL file data.");
 
         // ASSERT
@@ -45,17 +48,21 @@ public class FileDataTest extends TestCase {
 
     /**
      * Test.
+     * @throws SQLException
      *
      */
-    public void testRejectTooBigFileData() {
+    public void testRejectTooBigFileData() throws SQLException {
 
         // ARRANGE
         final byte[] fatData = new byte[FileData.MAX_FILE_SIZE+1];
+        Blob blob = new BlobImpl(fatData);
 
         // ACT
         try {
             @SuppressWarnings("unused")
-            final FileData fileData = new FileData(new BlobImpl(fatData));
+
+            final FileData fileData = new FileData(
+                blob.getBinaryStream(), FileData.MAX_FILE_SIZE+1);
             fail("Creation of file data over 32MB should fail");
         } catch (final IllegalArgumentException e) {
             assertEquals(
