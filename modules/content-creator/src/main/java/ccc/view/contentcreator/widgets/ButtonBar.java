@@ -11,10 +11,9 @@
  */
 package ccc.view.contentcreator.widgets;
 
-import com.google.gwt.user.client.ui.Button;
+import ccc.view.contentcreator.client.GwtApp;
+
 import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 
 
 /**
@@ -22,14 +21,16 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
  *
  * @author Civic Computing Ltd
  */
-public class ButtonBar extends Composite {
+public class ButtonBar implements CompositeControl {
 
-    private final HorizontalPanel _hPanel = new HorizontalPanel();
+    private final GwtApp _app;
+    private final PanelControl _hPanel;
 
-    public ButtonBar() {
-        super();
-        initWidget(_hPanel);
+    public ButtonBar(final GwtApp app) {
+        _app = app;
+        _hPanel = _app.horizontalPanel();
     }
+
 
     /**
      * Add a new button.
@@ -41,7 +42,29 @@ public class ButtonBar extends Composite {
     public ButtonBar add(final String buttonTitle,
                          final ClickListener clickListener) {
 
-        _hPanel.add(new Button(buttonTitle, clickListener));
+        _hPanel.add(_app.button(buttonTitle, clickListener));
         return this;
+    }
+
+    /** {@inheritDoc} */
+    public void setHeight(final String height) {
+        _hPanel.setHeight(height);
+    }
+
+    /** {@inheritDoc} */
+    public void setWidth(final String width) {
+        _hPanel.setWidth(width);
+    }
+
+
+    /** {@inheritDoc} */
+    public void setVisible(final boolean b) {
+        _hPanel.setVisible(b);
+    }
+
+
+    /** {@inheritDoc} */
+    public Object rootWidget() {
+        return _hPanel;
     }
 }

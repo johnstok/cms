@@ -16,21 +16,27 @@ import java.util.List;
 
 
 /**
- * TODO Add Description for this type.
+ * A dto that describes an option.
+ * @param <T> The type of the option.
  *
  * @author Civic Computing Ltd.
  */
-public class OptionDTO<T> implements Serializable {
+public class OptionDTO<T extends DTO> implements Serializable {
 
+
+    /** serialVersionUID : long. */
+    private static final long serialVersionUID = 1L;
 
     /**
-     * TODO Add Description for this type.
+     * Valid types for an {@link OptionDTO}.
      *
      * @author Civic Computing Ltd.
      */
     public enum Type {
-        TEXT_SINGLE_LINE, CHOICES
-
+        /** TEXT_SINGLE_LINE : Type. */
+        TEXT_SINGLE_LINE,
+        /** CHOICES : Type. */
+        CHOICES
     }
 
     private T _currentValue;
@@ -38,14 +44,15 @@ public class OptionDTO<T> implements Serializable {
     private List<T> _choices;
     private boolean _hasChanged = false;
 
+    @SuppressWarnings("unused") // Necessary for serialisation.
     private OptionDTO() { super(); }
 
     /**
      * Constructor.
      *
-     * @param currentValue
-     * @param choices
-     * @param type
+     * @param currentValue The current value of the option.
+     * @param choices The possible values for the option.
+     * @param type The type of the option.
      */
     public OptionDTO(final T currentValue,
                      final List<T> choices,
@@ -57,62 +64,64 @@ public class OptionDTO<T> implements Serializable {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor for the current value.
      *
-     * @return
+     * @return The current value of this option.
      */
     public T getCurrentValue() {
         return _currentValue;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor for type.
      *
-     * @return
+     * @return The type of this option.
      */
     public Type getType() {
         return _type;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Retrieve a list of the valid choices for this option.
      *
-     * @return
+     * @return A list of choices.
      */
     public List<T> getChoices() {
         return _choices;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Perform an explicit cast to convert the type parameter for this object.
      * TODO: Better way to do this???
      *
-     * @return
+     * @param <R> The type parameter for the {@link OptionDTO}.
+     * @return 'this' as type OptionDTO<R>.
      */
     @SuppressWarnings("unchecked")
-    public <R> OptionDTO<R> makeTypeSafe() {
+    public <R extends DTO> OptionDTO<R> makeTypeSafe() {
         return (OptionDTO<R>) this;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Set the current value.
      *
-     * @param expected
+     * @param newCurrentValue The new current value.
      */
     public void setCurrentValue(final T newCurrentValue) {
         if ((null==newCurrentValue && null==_currentValue)
-            || (null!=newCurrentValue && newCurrentValue.equals(_currentValue))) {
+            || (null!=newCurrentValue
+                && newCurrentValue.equals(_currentValue))) {
             return;
-        } else {
-            _currentValue = newCurrentValue;
-            _hasChanged = true;
         }
+
+        _currentValue = newCurrentValue;
+        _hasChanged = true;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Query whether the current value has changed.
      *
-     * @return
+     * @return true if the current value has changed, false otherwise.
      */
     public boolean hasChanged() {
         return _hasChanged;

@@ -92,7 +92,6 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     /**
      * {@inheritDoc}
      */
-    @Override
     public String getResource(final String absolutePath) {
         final Resource resource =
             contentManager().lookup(new ResourcePath(absolutePath));
@@ -102,7 +101,6 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     /**
      * {@inheritDoc}
      */
-    @Override
     public void saveContent(final String id,
                             final String title,
                             final Map<String, String> paragraphs) {
@@ -132,7 +130,6 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     /**
      * {@inheritDoc}
      */
-    @Override
     public List<TemplateDTO> listTemplates() {
         final List<TemplateDTO> dtos = new ArrayList<TemplateDTO>();
         final List<Template> templates = assetManager().lookupTemplates();
@@ -145,7 +142,6 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     /**
      * {@inheritDoc}
      */
-    @Override
     public List<OptionDTO<? extends DTO>> listOptions() {
 
         final List<OptionDTO<? extends DTO>> options =
@@ -167,7 +163,6 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     /**
      * {@inheritDoc}
      */
-    @Override
     public void updateOptions(final List<OptionDTO<? extends DTO>> options) {
         final OptionDTO<TemplateDTO> defaultTemplate =
             options.get(0).makeTypeSafe();

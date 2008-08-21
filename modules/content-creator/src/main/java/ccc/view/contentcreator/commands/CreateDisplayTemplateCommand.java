@@ -11,9 +11,8 @@
  */
 package ccc.view.contentcreator.commands;
 
+import ccc.view.contentcreator.client.GwtApp;
 import ccc.view.contentcreator.dialogs.CreateContentTemplateDialog;
-
-import com.google.gwt.user.client.Command;
 
 
 /**
@@ -21,13 +20,22 @@ import com.google.gwt.user.client.Command;
  *
  * @author Civic Computing Ltd
  */
-public class CreateDisplayTemplateCommand implements Command {
+public class CreateDisplayTemplateCommand extends ApplicationCommand {
+
+    /**
+     * Constructor.
+     *
+     * @param application
+     */
+    public CreateDisplayTemplateCommand(final GwtApp application) {
+        super(application);
+    }
 
     /**
      * {@inheritDoc}
      */
     public void execute() {
-        new CreateContentTemplateDialog().center();
+        new CreateContentTemplateDialog(_app).center();
     }
 
 }
