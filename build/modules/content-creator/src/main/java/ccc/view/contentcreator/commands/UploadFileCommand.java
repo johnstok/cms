@@ -12,10 +12,9 @@
 package ccc.view.contentcreator.commands;
 
 import ccc.view.contentcreator.client.GWTSupport;
+import ccc.view.contentcreator.client.GwtApp;
 import ccc.view.contentcreator.dialogs.UploadFileDialog;
 
-import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Tree;
 
 /**
@@ -23,15 +22,17 @@ import com.google.gwt.user.client.ui.Tree;
  *
  * @author Civic Computing Ltd
  */
-public class UploadFileCommand implements Command {
+public class UploadFileCommand extends ApplicationCommand {
     private Tree _tree = null;
 
     /**
      * Constructor.
      *
      * @param t Tree to be passed as a parameter.
+     * @param application The application used by this command.
      */
-    public UploadFileCommand(final Tree t) {
+    public UploadFileCommand(final GwtApp application, final Tree t) {
+        super(application);
         _tree = t;
     }
 
@@ -40,12 +41,13 @@ public class UploadFileCommand implements Command {
      */
     public void execute() {
         if (_tree.getSelectedItem() == null) {
-            Window.alert("Select a folder from the tree first.");
+            _app.alert("Select a folder from the tree first.");
+            return;
         }
         final String name = _tree.getSelectedItem().getText();
         final String absolutePath =
             GWTSupport.calculatePathForTreeItem(_tree.getSelectedItem());
 
-        new UploadFileDialog(absolutePath, name).center();
+        new UploadFileDialog(_app, absolutePath, name).center();
     }
 }

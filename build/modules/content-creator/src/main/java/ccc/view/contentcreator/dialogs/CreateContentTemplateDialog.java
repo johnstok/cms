@@ -13,21 +13,15 @@
 package ccc.view.contentcreator.dialogs;
 
 import ccc.view.contentcreator.client.Constants;
-import ccc.view.contentcreator.client.ResourceService;
+import ccc.view.contentcreator.client.GwtApp;
 import ccc.view.contentcreator.client.ResourceServiceAsync;
 import ccc.view.contentcreator.dto.TemplateDTO;
 import ccc.view.contentcreator.widgets.ButtonBar;
 import ccc.view.contentcreator.widgets.FeedbackPanel;
+import ccc.view.contentcreator.widgets.PanelControl;
 import ccc.view.contentcreator.widgets.TwoColumnForm;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 
@@ -36,49 +30,57 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * @author Civic Computing Ltd
  */
-public class CreateContentTemplateDialog extends DialogBox {
+public class CreateContentTemplateDialog {
 
-    private final Constants _constants = GWT.create(Constants.class);
-    private final String    _title     = _constants.createDisplayTemplate();
-    private final VerticalPanel _widget = new VerticalPanel();
+    private final AppDialog     _delegate;
+    private final GwtApp        _app;
+    private final Constants     _constants;
+    private final PanelControl  _gui;
+    private final ResourceServiceAsync _resourceService;
 
-    private final ResourceServiceAsync _resourceService =
-        (ResourceServiceAsync) GWT.create(ResourceService.class);
-    private final TextBox _templateTitle = new TextBox();
-    private final TextBox _description = new TextBox();
-    private final TextArea _body = new TextArea();
+    private final StringControl _templateTitle;
+    private final StringControl _description;
+    private final StringControl _body;
 
     /**
      * Constructor.
+     *
+     * @param app
      */
-    public CreateContentTemplateDialog() {
-        super(false, true);
-        setText(_title);
-        setWidget(_widget);
+    public CreateContentTemplateDialog(final GwtApp app) {
+
+        _app = app;
+        _constants = _app.constants();
+        _delegate = _app.dialog(_constants.createDisplayTemplate());
+        _gui = _app.verticalPanel();
+        _resourceService = _app.lookupService();
+
+        _templateTitle = _app.textBox();
+        _description = _app.textBox();
+        _body = _app.textArea();
+
         drawGUI();
+        _delegate.gui(_gui);
     }
 
     private void drawGUI() {
 
-        final FeedbackPanel fPanel = new FeedbackPanel();
+        final FeedbackPanel fPanel = new FeedbackPanel(_app);
         fPanel.setVisible(false);
-        _widget.add(fPanel);
+        _gui.add(fPanel);
 
-        _widget.add(
-            new TwoColumnForm(3)
+        _gui.add(
+            new TwoColumnForm(_app, 3)
                 .add(_constants.title(), _templateTitle)
                 .add(_constants.description(), _description)
                 .add(_constants.body(), _body)
             );
 
-        _widget.add(
-            new ButtonBar()
+        _gui.add(
+            new ButtonBar(_app)
                 .add(
                     _constants.cancel(),
-                    new ClickListener() {
-                        public void onClick(final Widget sender) {
-                            hide();
-                        }})
+                    new HidingClickListener(_delegate))
                 .add(
                     _constants.save(),
                     new ClickListener() {
@@ -87,12 +89,12 @@ public class CreateContentTemplateDialog extends DialogBox {
                             if (dto.isValid()) {
                                 _resourceService.createTemplate(
                                     dto,
-                                    new DisposingCallback());
+                                    new DisposingCallback(_app, _delegate));
                             } else {
-                                final FeedbackPanel fPanel =
-                                    (FeedbackPanel) _widget.getWidget(0);
-                                fPanel.displayErrors(dto.validate());
-                                fPanel.setVisible(true);
+                                final FeedbackPanel foo =
+                                    (FeedbackPanel) _gui.child(0);
+                                foo.displayErrors(dto.validate());
+                                foo.setVisible(true);
                             }
                         }})
             );
@@ -100,22 +102,16 @@ public class CreateContentTemplateDialog extends DialogBox {
 
     private TemplateDTO model() {
         return new TemplateDTO(
-            _templateTitle.getText(),
-            _description.getText(),
-            _body.getText());
+            _templateTitle.model(),
+            _description.model(),
+            _body.model());
     }
 
     /**
-     * A simple call-back that displays an error or disposes the dialog.
+     * TODO: Add a description of this method.
      *
-     * @author Civic Computing Ltd.
      */
-    private final class DisposingCallback implements AsyncCallback<Void> {
-        public void onFailure(final Throwable arg0) {
-            Window.alert(_constants.error());
-        }
-        public void onSuccess(final Void arg0) {
-            hide();
-        }
+    public void center() {
+        _delegate.center();
     }
 }

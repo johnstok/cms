@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import ccc.view.contentcreator.commands.CreateDisplayTemplateCommand;
 import ccc.view.contentcreator.commands.UpdateOptionsCommand;
 import ccc.view.contentcreator.commands.UploadFileCommand;
+import ccc.view.contentcreator.dialogs.GridControl;
 import ccc.view.contentcreator.dialogs.PreviewContentDialog;
 import ccc.view.contentcreator.dialogs.UpdateContentDialog;
 import ccc.view.contentcreator.widgets.ButtonBar;
@@ -24,8 +25,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.WindowResizeListener;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.Grid;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalSplitPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuBar;
@@ -127,16 +126,16 @@ public final class ContentCreator implements EntryPoint {
         final MenuBar toolsMenu = new MenuBar(true);
         toolsMenu.addItem(
             constants.options(),
-            new UpdateOptionsCommand());
+            new UpdateOptionsCommand(new GwtAppImpl()));
         toolsMenu.addItem(
             constants.uploadFile(),
-            new UploadFileCommand(t));
+            new UploadFileCommand(new GwtAppImpl(), t));
         menu.addItem(constants.tools(), toolsMenu);
 
         final MenuBar assetsMenu = new MenuBar(true);
         assetsMenu.addItem(
             constants.createDisplayTemplate(),
-            new CreateDisplayTemplateCommand());
+            new CreateDisplayTemplateCommand(new GwtAppImpl()));
         menu.addItem(constants.assets(), assetsMenu);
 
         final MenuBar helpMenu = new MenuBar(true);
@@ -169,7 +168,7 @@ public final class ContentCreator implements EntryPoint {
                 JSONArray entries =
                     jsonResult.isObject().get("entries").isArray();
 
-                final Grid children = new Grid(entries.size()+1, 3);
+                final GridControl children = new GwtAppImpl().grid(entries.size()+1, 3);
                 children.ensureDebugId("children_grid");
                 children.setWidth("100%");
                 children.setText(0, 0, constants.type());
@@ -185,12 +184,13 @@ public final class ContentCreator implements EntryPoint {
 
                     children.setText(i+1, 0, type);
                     children.setText(i+1, 1, name);
-                    children.getCellFormatter().setHorizontalAlignment(i+1, 2, HasHorizontalAlignment.ALIGN_RIGHT);
+                    // TODO: Add this line back in...
+//                    children.getCellFormatter().setHorizontalAlignment(i+1, 2, HasHorizontalAlignment.ALIGN_RIGHT);
                     if (type.equals("PAGE")) {
                         children.setWidget(
                             i+1,
                             2,
-                            new ButtonBar()
+                            new ButtonBar(new GwtAppImpl())
                             .add(constants.edit(),
                                 new ClickListener() {
                                     public void onClick(final Widget sender) {
@@ -203,7 +203,7 @@ public final class ContentCreator implements EntryPoint {
                             .add(constants.preview(),
                                 new ClickListener() {
                                     public void onClick(final Widget sender) {
-                                      new PreviewContentDialog(
+                                      new PreviewContentDialog(new GwtAppImpl(),
                                           absolutePath+name+"/")
                                           .center();
                                     }
@@ -215,11 +215,11 @@ public final class ContentCreator implements EntryPoint {
                         children.setWidget(
                             i+1,
                             2,
-                            new ButtonBar()
+                            new ButtonBar(new GwtAppImpl())
                             .add(constants.preview(),
                                 new ClickListener() {
                                     public void onClick(final Widget sender) {
-                                      new PreviewContentDialog(
+                                      new PreviewContentDialog(new GwtAppImpl(),
                                           absolutePath+name+"/")
                                           .center();
                                     }
@@ -229,7 +229,7 @@ public final class ContentCreator implements EntryPoint {
                     }
                 }
 
-                hsp.setRightWidget(children);
+                hsp.setRightWidget((Widget) children);
             }
 
             public void onFailure(final Throwable caught) {

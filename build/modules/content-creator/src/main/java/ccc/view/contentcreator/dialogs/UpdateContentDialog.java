@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ccc.view.contentcreator.client.Constants;
+import ccc.view.contentcreator.client.GwtAppImpl;
 import ccc.view.contentcreator.client.JSONCallback;
 import ccc.view.contentcreator.client.ResourceService;
 import ccc.view.contentcreator.client.ResourceServiceAsync;
@@ -99,14 +100,15 @@ public class UpdateContentDialog extends DialogBox {
                     public void onClick(final Widget arg0) {
 
                         if (titleTextBox.getText() == null
-                                || titleTextBox.getText().trim().length() == 0) {
+                            || titleTextBox.getText().trim().length() == 0) {
                             titleTextBox.setStyleName("gwt-TextBox-error");
                             return;
-                        } else {
-                            titleTextBox.setStyleName("gwt-TextBox");
                         }
 
-                        final Map<String, String> paragraphs = new HashMap<String, String>();
+                        titleTextBox.setStyleName("gwt-TextBox");
+
+                        final Map<String, String> paragraphs =
+                            new HashMap<String, String>();
                         for (final String key : richTexts.keySet()) {
                             String body = richTexts.get(key).getHTML();
                             if (null == body || body.trim().length()==0) {
@@ -115,15 +117,17 @@ public class UpdateContentDialog extends DialogBox {
                             paragraphs.put(key, body);
                         }
 
-                        final String id = content.get("id").isString().stringValue();
-                        final AsyncCallback<Void> callback = new AsyncCallback<Void>() {
-                            public void onFailure(final Throwable arg0) {
-                                GWT.log("Page saving failed", arg0);
-                            }
-                            public void onSuccess(final Void arg0) {
-                                hide();
-                            }
-                        };
+                        final String id =
+                            content.get("id").isString().stringValue();
+                        final AsyncCallback<Void> callback =
+                            new AsyncCallback<Void>() {
+                                public void onFailure(final Throwable arg0) {
+                                    GWT.log("Page saving failed", arg0);
+                                }
+                                public void onSuccess(final Void arg0) {
+                                    hide();
+                                }
+                            };
                         resourceService.saveContent(id, titleTextBox.getText()
                             , paragraphs, callback);
                     }
@@ -134,7 +138,7 @@ public class UpdateContentDialog extends DialogBox {
         paragraphsTabPanel.setSize("100%", "100%");
         titleTextBox.setWidth("100%");
 
-        final JSONCallback callback = new JSONCallback() {
+        final JSONCallback callback = new JSONCallback(new GwtAppImpl()) {
 
             /**
              * {@inheritDoc}

@@ -12,21 +12,16 @@
 package ccc.view.contentcreator.dialogs;
 
 import ccc.view.contentcreator.client.Constants;
+import ccc.view.contentcreator.client.GwtApp;
 import ccc.view.contentcreator.widgets.ButtonBar;
+import ccc.view.contentcreator.widgets.PanelControl;
 import ccc.view.contentcreator.widgets.TwoColumnForm;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FormHandler;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.FormSubmitCompleteEvent;
 import com.google.gwt.user.client.ui.FormSubmitEvent;
-import com.google.gwt.user.client.ui.Hidden;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 
@@ -35,14 +30,18 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * @author Civic Computing Ltd
  */
-public class UploadFileDialog extends DialogBox {
+public class UploadFileDialog {
 
-    private final VerticalPanel _panel = new VerticalPanel();
-    private final Constants _constants = GWT.create(Constants.class);
-    private final TextBox _title = new TextBox();
-    private final TextBox _description = new TextBox();
-    private final TextBox _fileName = new TextBox();
-    private final FileUpload _upload = new FileUpload();
+    private final AppDialog     _delegate;
+    private final GwtApp        _app;
+    private final Constants     _constants;
+    private final PanelControl  _gui;
+
+    private final StringControl _title;
+    private final StringControl _description;
+    private final StringControl _fileName;
+    private final FileControl   _upload;
+    private final StringControl _path;
 
     /**
      * Constructor.
@@ -50,42 +49,49 @@ public class UploadFileDialog extends DialogBox {
      * @param absolutePath The path of the folder.
      *
      */
-    public UploadFileDialog(final String absolutePath, final String name) {
-        super(false, true);
+    public UploadFileDialog(final GwtApp app,
+                            final String absolutePath,
+                            final String name) {
+
+        _app = app;
+        _constants = _app.constants();
+        _delegate = _app.dialog(_constants.uploadFileTo()+": "+name);
+        _gui = _app.verticalPanel();
+
+        _title = _app.textBox();
+        _description = _app.textBox();
+        _fileName = _app.textBox();
+        _upload = _app.fileUpload();
+        _path = _app.hidden();
+
         // Create a FormPanel and point it at a service.
-        final FormPanel form = new FormPanel();
-        form.setAction("upload");
-
-        setText(_constants.uploadFileTo()+": "+name);
-
-        form.setEncoding(FormPanel.ENCODING_MULTIPART);
-        form.setMethod(FormPanel.METHOD_POST);
-
-        form.setWidget(_panel);
+        final PanelControl form =
+            _app.formPanel("upload",
+                           FormPanel.ENCODING_MULTIPART,
+                           FormPanel.METHOD_POST,
+                           new FileUploadFormHandler(),
+                           _gui);
 
         _fileName.setName("fileName");
         _title.setName("title");
         _description.setName("description");
-
-        _panel.add(new TwoColumnForm(3)
-        .add(_constants.fileName(), _fileName)
-        .add(_constants.title(), _title)
-        .add(_constants.description(), _description)
-        );
-
         _upload.setName("file");
-        _panel.add(_upload);
+        _path.setName("path");
 
-        Hidden hiddenPath = new Hidden("path", absolutePath);
-        _panel.add(hiddenPath);
+        _path.model(absolutePath);
 
-        _panel.add(new ButtonBar()
+        _gui.add(
+            new TwoColumnForm(_app, 4)
+                .add(_constants.fileName(), _fileName)
+                .add(_constants.title(), _title)
+                .add(_constants.description(), _description)
+                .add(_constants.localFile(), _upload)
+            );
+        _gui.add(_path);
+        _gui.add(new ButtonBar(_app)
             .add(
                 _constants.cancel(),
-                new ClickListener() {
-                    public void onClick(final Widget sender) {
-                        hide();
-                    }})
+                new HidingClickListener(_delegate))
             .add(
                 _constants.upload(),
                 new ClickListener() {
@@ -94,9 +100,8 @@ public class UploadFileDialog extends DialogBox {
                         }})
         );
 
-        // Add an event handler to the form.
-        form.addFormHandler(new FileUploadFormHandler());
-        setWidget(form);
+        form.add(_gui);
+        _delegate.gui(form);
     }
 
 
@@ -108,16 +113,16 @@ public class UploadFileDialog extends DialogBox {
     private final class FileUploadFormHandler implements FormHandler {
 
         public void onSubmit(final FormSubmitEvent event) {
-            StringBuffer errorText = new StringBuffer();
-            if (_fileName.getText().length() == 0) {
+            final StringBuffer errorText = new StringBuffer();
+            if (_fileName.model().length() == 0) {
                 errorText.append(_constants.fileName());
                 errorText.append("\n");
             }
-            if (_description.getText().length() == 0) {
+            if (_description.model().length() == 0) {
                 errorText.append(_constants.description());
                 errorText.append("\n");
             }
-            if (_title.getText().length() == 0) {
+            if (_title.model().length() == 0) {
                 errorText.append(_constants.title());
                 errorText.append("\n");
             }
@@ -127,15 +132,24 @@ public class UploadFileDialog extends DialogBox {
                 errorText.append("\n");
             }
             if (errorText.length() > 0) {
-                Window.alert("Following fields must not be empty: \n"
+                _app.alert("Following fields must not be empty: \n"
                     +errorText.toString());
                 event.setCancelled(true);
             }
         }
 
         public void onSubmitComplete(final FormSubmitCompleteEvent event) {
-            Window.alert(event.getResults());
-            hide();
+            _app.alert(event.getResults());
+            _delegate.hide();
         }
+    }
+
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     */
+    public void center() {
+        _delegate.center();
     }
 }

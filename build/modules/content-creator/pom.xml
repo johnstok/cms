@@ -16,6 +16,15 @@
 	<build>
 		<finalName>content-creator</finalName>
 		<plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
@@ -34,6 +43,7 @@
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
 					<execution>
+					    <id>gwt-compile</id>
 						<phase>compile</phase>
 						<configuration>
 							<tasks>
@@ -73,6 +83,34 @@
 							<goal>run</goal>
 						</goals>
 					</execution>
+                    <!-- execution>
+                        <id>gwt-tests</id>
+                        <phase>test</phase>
+                        <configuration>
+                            <tasks>
+  
+                                <property name="test_classpath" refid="maven.test.classpath" />
+                                <path id="gwt.test.classpath">
+                                    <pathelement location="${basedir}/src/main/resources" />
+                                    <pathelement location="${basedir}/src/main/java" />
+                                    <pathelement location="${basedir}/src/test-gwt/java" />
+                                    <pathelement path="${test_classpath}" />
+                                </path>
+                                <property name="gwt_test_classpath" refid="gwt.test.classpath" />
+                                <echo message="gwt test classpath: ${gwt_test_classpath}"/>
+
+                                <echo message="Running GWT tests" />
+                                <java classname="junit.textui.TestRunner" classpath="${gwt_test_classpath}" fork="true" failonerror="true" maxmemory="256m">
+                                    <sysproperty key="gwt.args" value="-out target/www-test"/>
+                                    <arg value="ccc.view.contentcreator.ContentCreatorGwtTestSuite" />
+                                </java>
+
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution -->
 				</executions>
 			</plugin>
 			<plugin>

@@ -13,22 +13,32 @@ package ccc.view.contentcreator.client;
 
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 /**
- * TODO Add Description for this type.
+ * A callback extension to simplify working with JSON.
  *
  * @author Civic Computing Ltd
  */
 public abstract class JSONCallback implements AsyncCallback<String> {
 
+    private final GwtApp _app;
+
+    /**
+     * Constructor.
+     *
+     * @param application The application instance for use by this callback.
+     */
+    public JSONCallback(final GwtApp application) {
+        _app = application;
+    }
+
     /**
      * {@inheritDoc}
      */
     public final void onFailure(final Throwable caught) {
-        Window.alert("Error: "+caught.getMessage());
+        _app.alert("Error: "+caught.getMessage());
     }
 
     /**

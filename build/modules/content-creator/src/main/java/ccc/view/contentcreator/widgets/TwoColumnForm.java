@@ -11,10 +11,9 @@
  */
 package ccc.view.contentcreator.widgets;
 
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FocusWidget;
-import com.google.gwt.user.client.ui.Grid;
-import com.google.gwt.user.client.ui.Label;
+import ccc.view.contentcreator.client.GwtApp;
+import ccc.view.contentcreator.dialogs.Control;
+import ccc.view.contentcreator.dialogs.GridControl;
 
 
 /**
@@ -22,20 +21,15 @@ import com.google.gwt.user.client.ui.Label;
  *
  * @author Civic Computing Ltd
  */
-public class TwoColumnForm extends Composite {
+public class TwoColumnForm implements CompositeControl {
 
-    private final Grid _grid;
-    private int _nextRow = 0;
+    private final GwtApp      _app;
+    private final GridControl _grid;
+    private int               _nextRow = 0;
 
-    /**
-     * Constructor.
-     *
-     * @param numRows
-     */
-    public TwoColumnForm(final int numRows) {
-        super();
-        _grid = new Grid(numRows, 2);
-        initWidget(_grid);
+    public TwoColumnForm(final GwtApp app, final int numRows) {
+        _app = app;
+        _grid = _app.grid(numRows, 2);
     }
 
     /**
@@ -46,12 +40,32 @@ public class TwoColumnForm extends Composite {
      * @return
      */
     public TwoColumnForm add(final String label,
-                         final FocusWidget widget) {
+                             final Control widget) {
 
-        _grid.setWidget(_nextRow, 0, new Label(label));
+        _grid.setWidget(_nextRow, 0, _app.label(label));
         _grid.setWidget(_nextRow, 1, widget);
         _nextRow++;
 
         return this;
+    }
+
+    /** {@inheritDoc} */
+    public void setHeight(final String string) {
+        _grid.setHeight(string);
+    }
+
+    /** {@inheritDoc} */
+    public void setVisible(final boolean b) {
+        _grid.setVisible(b);
+    }
+
+    /** {@inheritDoc} */
+    public void setWidth(final String string) {
+        _grid.setWidth(string);
+    }
+
+    /** {@inheritDoc} */
+    public Object rootWidget() {
+        return _grid;
     }
 }
