@@ -37,16 +37,23 @@
 			<version>1.0-beta-1</version>
 			<scope>test</scope>
 		</dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.0.77</version>
+            <scope>test</scope>
+        </dependency>
 	</dependencies>
 
-	<modules>
-		<module>modules/core-domain</module>
-		<module>modules/business-services</module>
-		<module>modules/content-server</module>
-		<module>modules/services-ejb3</module>
-		<module>modules/data-migration</module>
-		<module>modules/content-creator</module>
-	</modules>
+    <modules>
+        <module>modules/core-domain</module>
+        <module>modules/business-services</module>
+        <module>modules/services-ejb3</module>
+        <module>modules/data-migration</module>
+        <module>modules/content-creator</module>
+        <module>modules/content-server</module>
+        <module>modules/template-editor</module>
+  </modules>
 
 	<build>
 	    <finalName>CCC-${version}</finalName>
