@@ -6,28 +6,35 @@ import ccc.view.contentcreator.dialogs.ApplicationDialog;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
- * A simple call-back that displays an error or disposes the dialog.
+ * A simple call-back that displays an alert on error or disposes the dialog on
+ * success.
  *
  * @author Civic Computing Ltd.
  */
 public final class DisposingCallback implements AsyncCallback<Void> {
 
     private final ApplicationDialog _dialog;
-    private final Application    _app;
+    private final Application       _app;
 
     /**
      * Constructor.
      *
+     * @param app A reference to a valid application.
      * @param dialog The dialog that will hidden.
      */
-    public DisposingCallback(final Application app, final ApplicationDialog dialog) {
+    public DisposingCallback(final Application app,
+                             final ApplicationDialog dialog) {
         _dialog = dialog;
         _app = app;
     }
 
     /** {@inheritDoc} */
     public void onFailure(final Throwable arg0) {
-        _app.alert("Error: "+arg0.getMessage());
+        // TODO: should be using a message, not a constant.
+        _app.alert(
+            _app.constants().error()
+            + ": " //$NON-NLS-1$
+            + arg0.getMessage());
     }
 
     /** {@inheritDoc} */
