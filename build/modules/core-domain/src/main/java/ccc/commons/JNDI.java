@@ -12,6 +12,7 @@
 
 package ccc.commons;
 
+import java.io.Serializable;
 import java.util.Hashtable;
 
 import javax.naming.Context;
@@ -25,7 +26,11 @@ import javax.naming.NamingException;
  *
  * @author Civic Computing Ltd
  */
-public final class JNDI implements Registry {
+public final class JNDI implements Registry, Serializable {
+
+    /** serialVersionUID : long. */
+    private static final long serialVersionUID = 273226444180630502L;
+
 
     /**
      * {@inheritDoc}

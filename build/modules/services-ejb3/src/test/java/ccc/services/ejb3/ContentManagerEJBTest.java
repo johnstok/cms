@@ -394,7 +394,7 @@ public final class ContentManagerEJBTest extends TestCase {
      *
      * @author Civic Computing Ltd
      */
-    private final class SimpleEM extends EntityManagerAdaptor {
+    private static final class SimpleEM extends EntityManagerAdaptor {
 
         /** _page : Page. */
         private final Page _page;

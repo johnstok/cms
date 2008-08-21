@@ -26,7 +26,7 @@ import ccc.commons.JSON;
  *
  * @author Civic Computing Ltd
  */
-public final class Folder extends Resource implements JSONable {
+public final class Folder extends Resource {
 
     /** serialVersionUID : long. */
     private static final long serialVersionUID = 2800863951865644693L;

@@ -14,6 +14,7 @@ package ccc.commons;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import ccc.domain.JSONable;
@@ -110,11 +111,11 @@ public final class JSON {
                                              final StringBuffer sb) {
             final int maxZeroPadding = 4;
             final String ss=Integer.toHexString(ch);
-            sb.append("\\u");
+            sb.append("\\u"); //$NON-NLS-1$
             for(int k=0; k<maxZeroPadding-ss.length(); k++){
                 sb.append('0');
             }
-            sb.append(ss.toUpperCase());
+            sb.append(ss.toUpperCase(Locale.US));
         }
 
         /**

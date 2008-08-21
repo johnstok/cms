@@ -49,30 +49,35 @@ public final class XHTML {
      *
      * @author Civic Computing Ltd
      */
-    private static class XhtmlErrorHandler implements ErrorHandler {
+    static class XhtmlErrorHandler implements ErrorHandler {
         private Collection<String> _errors = new ArrayList<String>();
 
+        /** {@inheritDoc} */
         public void warning(final SAXParseException e) {
             _errors.add(constructErrorMessage(e));
         }
 
+        /** {@inheritDoc} */
         public void error(final SAXParseException e) {
             _errors.add(constructErrorMessage(e));
         }
 
+        /** {@inheritDoc} */
         public void fatalError(final SAXParseException e) {
             _errors.add(constructErrorMessage(e));
         }
 
+        /** {@inheritDoc} */
         Collection<String> getErrors() {
             return _errors;
         }
 
         private String constructErrorMessage(final SAXParseException e) {
-            final StringBuffer fullMessage = new StringBuffer().
-                    append("Line: ").append(e.getLineNumber()).
-                    append(", Column: ").append(e.getColumnNumber()).
-                    append(", Error: ").append(e.getMessage());
+            final StringBuffer fullMessage =
+                new StringBuffer()
+                .append("Line: ").append(e.getLineNumber()) //$NON-NLS-1$
+                .append(", Column: ").append(e.getColumnNumber()) //$NON-NLS-1$
+                .append(", Error: ").append(e.getMessage()); //$NON-NLS-1$
             return fullMessage.toString();
         }
     }
@@ -83,8 +88,9 @@ public final class XHTML {
      *
      * @author Civic Computing Ltd
      */
-    private static class XHTMLContext implements NamespaceContext {
+    static class XHTMLContext implements NamespaceContext {
 
+        /** {@inheritDoc} */
         public String getNamespaceURI(final String prefix) {
             DBC.require().notNull(prefix);
             if ("xhtml".equals(prefix)) {
@@ -96,10 +102,12 @@ public final class XHTML {
             }
         }
 
+        /** {@inheritDoc} */
         public String getPrefix(final String uri) {
             throw new UnsupportedOperationException();
         }
 
+        /** {@inheritDoc} */
         public Iterator<?> getPrefixes(final String uri) {
             throw new UnsupportedOperationException();
         }

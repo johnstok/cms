@@ -77,7 +77,7 @@ public final class ResourceTest extends TestCase {
      *
      * @author Civic Computing Ltd
      */
-    private final class DummyResource extends Resource {
+    private static final class DummyResource extends Resource {
 
         /** serialVersionUID : long. */
         private static final long serialVersionUID = 1264881241929108542L;

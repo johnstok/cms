@@ -19,7 +19,7 @@ import ccc.commons.DBC;
  *
  * @author Civic Computing Ltd
  */
-public class File extends Resource implements JSONable {
+public class File extends Resource {
 
     /** serialVersionUID : long. */
     private static final long serialVersionUID = -8514993906228600518L;
