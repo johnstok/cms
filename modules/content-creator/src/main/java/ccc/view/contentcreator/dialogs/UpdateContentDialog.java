@@ -17,7 +17,7 @@ import java.util.Map;
 
 import ccc.view.contentcreator.callbacks.JSONCallback;
 import ccc.view.contentcreator.client.Constants;
-import ccc.view.contentcreator.client.GwtAppImpl;
+import ccc.view.contentcreator.client.GwtApplication;
 import ccc.view.contentcreator.client.ResourceService;
 import ccc.view.contentcreator.client.ResourceServiceAsync;
 import ccc.view.contentcreator.widgets.RichTextToolbar;
@@ -138,7 +138,7 @@ public class UpdateContentDialog extends DialogBox {
         paragraphsTabPanel.setSize("100%", "100%");
         titleTextBox.setWidth("100%");
 
-        final JSONCallback callback = new JSONCallback(new GwtAppImpl()) {
+        final JSONCallback callback = new JSONCallback(new GwtApplication()) {
 
             /**
              * {@inheritDoc}

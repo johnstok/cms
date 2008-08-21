@@ -11,7 +11,7 @@
  */
 package ccc.view.contentcreator.callbacks;
 
-import ccc.view.contentcreator.client.GwtApp;
+import ccc.view.contentcreator.client.Application;
 
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
@@ -25,14 +25,14 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public abstract class JSONCallback implements AsyncCallback<String> {
 
-    private final GwtApp _app;
+    private final Application _app;
 
     /**
      * Constructor.
      *
      * @param application The application instance for use by this callback.
      */
-    public JSONCallback(final GwtApp application) {
+    public JSONCallback(final Application application) {
         _app = application;
     }
 

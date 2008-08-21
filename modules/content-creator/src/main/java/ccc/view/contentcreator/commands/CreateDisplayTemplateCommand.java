@@ -11,7 +11,7 @@
  */
 package ccc.view.contentcreator.commands;
 
-import ccc.view.contentcreator.client.GwtApp;
+import ccc.view.contentcreator.client.Application;
 import ccc.view.contentcreator.dialogs.CreateContentTemplateDialog;
 
 
@@ -27,7 +27,7 @@ public class CreateDisplayTemplateCommand extends ApplicationCommand {
      *
      * @param application
      */
-    public CreateDisplayTemplateCommand(final GwtApp application) {
+    public CreateDisplayTemplateCommand(final Application application) {
         super(application);
     }
 

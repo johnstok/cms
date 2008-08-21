@@ -19,7 +19,7 @@ import ccc.view.contentcreator.controls.PanelControl;
  *
  * @author Civic Computing Ltd.
  */
-public interface AppDialog {
+public interface ApplicationDialog {
 
     /**
      * Hide the dialog.

@@ -12,7 +12,7 @@
 package ccc.view.contentcreator.commands;
 
 import ccc.view.contentcreator.client.GWTSupport;
-import ccc.view.contentcreator.client.GwtApp;
+import ccc.view.contentcreator.client.Application;
 import ccc.view.contentcreator.dialogs.UploadFileDialog;
 
 import com.google.gwt.user.client.ui.Tree;
@@ -31,7 +31,7 @@ public class UploadFileCommand extends ApplicationCommand {
      * @param t Tree to be passed as a parameter.
      * @param application The application used by this command.
      */
-    public UploadFileCommand(final GwtApp application, final Tree t) {
+    public UploadFileCommand(final Application application, final Tree t) {
         super(application);
         _tree = t;
     }

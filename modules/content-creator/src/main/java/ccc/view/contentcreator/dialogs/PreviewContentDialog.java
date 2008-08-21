@@ -12,8 +12,9 @@
 
 package ccc.view.contentcreator.dialogs;
 
+import ccc.view.contentcreator.callbacks.DisposingClickListener;
 import ccc.view.contentcreator.client.Constants;
-import ccc.view.contentcreator.client.GwtApp;
+import ccc.view.contentcreator.client.Application;
 import ccc.view.contentcreator.controls.Control;
 import ccc.view.contentcreator.controls.PanelControl;
 import ccc.view.contentcreator.widgets.ButtonBar;
@@ -28,8 +29,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  */
 public class PreviewContentDialog {
 
-    private final AppDialog     _delegate;
-    private final GwtApp        _app;
+    private final ApplicationDialog     _delegate;
+    private final Application        _app;
     private final Constants     _constants;
     private final PanelControl _gui;
 
@@ -42,7 +43,7 @@ public class PreviewContentDialog {
      * @param app The application for this dialog.
      * @param resourcePath The content resource to preview.
      */
-    public PreviewContentDialog(final GwtApp app, final String resourcePath) {
+    public PreviewContentDialog(final Application app, final String resourcePath) {
 
         _app = app;
         _constants = _app.constants();

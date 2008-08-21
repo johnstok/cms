@@ -126,16 +126,16 @@ public final class ContentCreator implements EntryPoint {
         final MenuBar toolsMenu = new MenuBar(true);
         toolsMenu.addItem(
             constants.options(),
-            new UpdateOptionsCommand(new GwtAppImpl()));
+            new UpdateOptionsCommand(new GwtApplication()));
         toolsMenu.addItem(
             constants.uploadFile(),
-            new UploadFileCommand(new GwtAppImpl(), t));
+            new UploadFileCommand(new GwtApplication(), t));
         menu.addItem(constants.tools(), toolsMenu);
 
         final MenuBar assetsMenu = new MenuBar(true);
         assetsMenu.addItem(
             constants.createDisplayTemplate(),
-            new CreateDisplayTemplateCommand(new GwtAppImpl()));
+            new CreateDisplayTemplateCommand(new GwtApplication()));
         menu.addItem(constants.assets(), assetsMenu);
 
         final MenuBar helpMenu = new MenuBar(true);
@@ -168,7 +168,7 @@ public final class ContentCreator implements EntryPoint {
                 JSONArray entries =
                     jsonResult.isObject().get("entries").isArray();
 
-                final GridControl children = new GwtAppImpl().grid(entries.size()+1, 3);
+                final GridControl children = new GwtApplication().grid(entries.size()+1, 3);
                 children.ensureDebugId("children_grid");
                 children.setWidth("100%");
                 children.setText(0, 0, constants.type());
@@ -190,7 +190,7 @@ public final class ContentCreator implements EntryPoint {
                         children.setWidget(
                             i+1,
                             2,
-                            new ButtonBar(new GwtAppImpl())
+                            new ButtonBar(new GwtApplication())
                             .add(constants.edit(),
                                 new ClickListener() {
                                     public void onClick(final Widget sender) {
@@ -203,7 +203,7 @@ public final class ContentCreator implements EntryPoint {
                             .add(constants.preview(),
                                 new ClickListener() {
                                     public void onClick(final Widget sender) {
-                                      new PreviewContentDialog(new GwtAppImpl(),
+                                      new PreviewContentDialog(new GwtApplication(),
                                           absolutePath+name+"/")
                                           .center();
                                     }
@@ -215,11 +215,11 @@ public final class ContentCreator implements EntryPoint {
                         children.setWidget(
                             i+1,
                             2,
-                            new ButtonBar(new GwtAppImpl())
+                            new ButtonBar(new GwtApplication())
                             .add(constants.preview(),
                                 new ClickListener() {
                                     public void onClick(final Widget sender) {
-                                      new PreviewContentDialog(new GwtAppImpl(),
+                                      new PreviewContentDialog(new GwtApplication(),
                                           absolutePath+name+"/")
                                           .center();
                                     }

@@ -11,7 +11,7 @@
  */
 package ccc.view.contentcreator.commands;
 
-import ccc.view.contentcreator.client.GwtApp;
+import ccc.view.contentcreator.client.Application;
 
 import com.google.gwt.user.client.Command;
 
@@ -23,15 +23,15 @@ import com.google.gwt.user.client.Command;
  */
 public abstract class ApplicationCommand implements Command {
 
-    /** _app : GwtApp. */
-    protected final GwtApp _app;
+    /** _app : Application. */
+    protected final Application _app;
 
     /**
      * Constructor.
      *
      * @param application The application used by this command.
      */
-    protected ApplicationCommand(final GwtApp application) {
+    protected ApplicationCommand(final Application application) {
         _app = application;
     }
 }

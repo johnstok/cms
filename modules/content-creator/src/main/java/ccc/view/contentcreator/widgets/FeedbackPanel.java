@@ -13,7 +13,7 @@ package ccc.view.contentcreator.widgets;
 
 import java.util.List;
 
-import ccc.view.contentcreator.client.GwtApp;
+import ccc.view.contentcreator.client.Application;
 import ccc.view.contentcreator.controls.CompositeControl;
 import ccc.view.contentcreator.controls.PanelControl;
 
@@ -25,10 +25,10 @@ import ccc.view.contentcreator.controls.PanelControl;
  */
 public class FeedbackPanel implements CompositeControl {
 
-    private final GwtApp _app;
+    private final Application _app;
     private final PanelControl _vPanel;
 
-    public FeedbackPanel(final GwtApp app) {
+    public FeedbackPanel(final Application app) {
         _app = app;
         _vPanel = _app.verticalPanel();
     }

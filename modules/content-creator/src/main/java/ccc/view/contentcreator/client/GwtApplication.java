@@ -18,7 +18,7 @@ import ccc.view.contentcreator.controls.GridControl;
 import ccc.view.contentcreator.controls.ListControl;
 import ccc.view.contentcreator.controls.PanelControl;
 import ccc.view.contentcreator.controls.StringControl;
-import ccc.view.contentcreator.dialogs.AppDialog;
+import ccc.view.contentcreator.dialogs.ApplicationDialog;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
@@ -44,11 +44,11 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConst
 
 
 /**
- * GWT implementation of {@link GwtApp}.
+ * GWT implementation of {@link Application}.
  *
  * @author Civic Computing Ltd.
  */
-public class GwtAppImpl implements GwtApp {
+public class GwtApplication implements Application {
 
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
@@ -88,7 +88,7 @@ public class GwtAppImpl implements GwtApp {
     }
 
     /** {@inheritDoc} */
-    public AppDialog dialog(final String title) {
+    public ApplicationDialog dialog(final String title) {
         return new GwtAppDialog(title);
     }
 
@@ -376,7 +376,7 @@ public class GwtAppImpl implements GwtApp {
      */
     private static class GwtAppDialog
                  extends DialogBox
-              implements AppDialog {
+              implements ApplicationDialog {
 
         /**
          * Constructor.

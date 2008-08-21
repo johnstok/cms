@@ -11,8 +11,9 @@
  */
 package ccc.view.contentcreator.dialogs;
 
+import ccc.view.contentcreator.callbacks.DisposingClickListener;
 import ccc.view.contentcreator.client.Constants;
-import ccc.view.contentcreator.client.GwtApp;
+import ccc.view.contentcreator.client.Application;
 import ccc.view.contentcreator.controls.FileControl;
 import ccc.view.contentcreator.controls.PanelControl;
 import ccc.view.contentcreator.controls.StringControl;
@@ -34,8 +35,8 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class UploadFileDialog {
 
-    private final AppDialog     _delegate;
-    private final GwtApp        _app;
+    private final ApplicationDialog     _delegate;
+    private final Application        _app;
     private final Constants     _constants;
     private final PanelControl  _gui;
 
@@ -51,7 +52,7 @@ public class UploadFileDialog {
      * @param absolutePath The path of the folder.
      *
      */
-    public UploadFileDialog(final GwtApp app,
+    public UploadFileDialog(final Application app,
                             final String absolutePath,
                             final String name) {
 

@@ -11,7 +11,7 @@
  */
 package ccc.view.contentcreator.widgets;
 
-import ccc.view.contentcreator.client.GwtApp;
+import ccc.view.contentcreator.client.Application;
 import ccc.view.contentcreator.controls.CompositeControl;
 import ccc.view.contentcreator.controls.PanelControl;
 
@@ -25,10 +25,10 @@ import com.google.gwt.user.client.ui.ClickListener;
  */
 public class ButtonBar implements CompositeControl {
 
-    private final GwtApp _app;
+    private final Application _app;
     private final PanelControl _hPanel;
 
-    public ButtonBar(final GwtApp app) {
+    public ButtonBar(final Application app) {
         _app = app;
         _hPanel = _app.horizontalPanel();
     }

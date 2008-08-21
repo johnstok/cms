@@ -14,7 +14,7 @@ package ccc.view.contentcreator.commands;
 import java.util.List;
 
 import ccc.view.contentcreator.client.Constants;
-import ccc.view.contentcreator.client.GwtApp;
+import ccc.view.contentcreator.client.Application;
 import ccc.view.contentcreator.client.ResourceServiceAsync;
 import ccc.view.contentcreator.dialogs.UpdateOptionsDialog;
 import ccc.view.contentcreator.dto.DTO;
@@ -37,7 +37,7 @@ public class UpdateOptionsCommand extends ApplicationCommand {
      *
      * @param application
      */
-    public UpdateOptionsCommand(final GwtApp application) {
+    public UpdateOptionsCommand(final Application application) {
 
         super(application);
         // TODO Auto-generated constructor stub

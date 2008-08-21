@@ -17,7 +17,7 @@ import ccc.view.contentcreator.controls.GridControl;
 import ccc.view.contentcreator.controls.ListControl;
 import ccc.view.contentcreator.controls.PanelControl;
 import ccc.view.contentcreator.controls.StringControl;
-import ccc.view.contentcreator.dialogs.AppDialog;
+import ccc.view.contentcreator.dialogs.ApplicationDialog;
 
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FormHandler;
@@ -28,7 +28,7 @@ import com.google.gwt.user.client.ui.FormHandler;
  *
  * @author Civic Computing Ltd.
  */
-public interface GwtApp {
+public interface Application {
 
     void alert(String message);
 
@@ -59,7 +59,7 @@ public interface GwtApp {
      *
      * @return
      */
-    AppDialog dialog(String title);
+    ApplicationDialog dialog(String title);
 
     /**
      * TODO: Add a description of this method.
