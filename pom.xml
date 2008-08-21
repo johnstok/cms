@@ -52,7 +52,7 @@
         <module>modules/data-migration</module>
         <module>modules/content-creator</module>
         <module>modules/content-server</module>
-        <module>modules/template-editor</module>
+        <!-- module>modules/template-editor</module -->
   </modules>
 
 	<build>
