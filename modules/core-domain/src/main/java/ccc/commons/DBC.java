@@ -49,7 +49,7 @@ public final class DBC {
     public void notNull(final Object object) {
         if (null==object) {
             throw new IllegalArgumentException(
-                "Specified value may not be NULL.");
+                "Specified value may not be NULL."); //$NON-NLS-1$
         }
     }
 
@@ -62,11 +62,11 @@ public final class DBC {
     public void notEmpty(final String string) {
         if (null==string) {
             throw new IllegalArgumentException(
-                "Specified string may not be NULL.");
+                "Specified string may not be NULL."); //$NON-NLS-1$
         }
         if (string.trim().length() < 1) {
             throw new IllegalArgumentException(
-                "Specified string must have length > 0.");
+                "Specified string must have length > 0."); //$NON-NLS-1$
         }
     }
 }

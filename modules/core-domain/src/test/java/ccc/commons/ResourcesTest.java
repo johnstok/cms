@@ -19,6 +19,8 @@ import junit.framework.TestCase;
 /**
  * Tests for the resources class.
  *
+ * TODO: Test that readIntoString() closes in-memory stream under error.
+ *
  * @author Civic Computing Ltd
  */
 public final class ResourcesTest extends TestCase {

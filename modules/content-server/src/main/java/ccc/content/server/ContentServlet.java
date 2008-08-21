@@ -108,16 +108,15 @@ public final class ContentServlet extends HttpServlet {
             new ResourcePath(request.getPathInfo());
         final Resource resource = contentManager().lookup(contentPath);
 
-        handleResource(request, response, resource, contentPath);
+        handleResource(response, resource);
     }
 
     /**
      * Accepts any type of resource and routes it to the appropriate
      * type-specific write() method.
      */
-    private void handleResource(final HttpServletRequest request, final HttpServletResponse resp,
-                                final Resource resource,
-                                final ResourcePath contentPath)
+    private void handleResource(final HttpServletResponse resp,
+                                final Resource resource)
                          throws IOException {
 
         switch (resource.type()) {

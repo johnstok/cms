@@ -89,9 +89,6 @@ public class AlphanumComparator implements Comparator<String>, Serializable {
      */
     @Override
     public final int compare(final String o1, final String o2) {
-        if (!(o1 instanceof String) || !(o2 instanceof String)) {
-            return 0;
-        }
         final String s1 = o1;
         final String s2 = o2;
 

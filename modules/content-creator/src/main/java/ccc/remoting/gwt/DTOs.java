@@ -18,17 +18,19 @@ import ccc.view.contentcreator.dto.TemplateDTO;
 
 
 /**
- * TODO Add Description for this type.
+ * Helper methods for DTOs.
  *
  * @author Civic Computing Ltd
  */
-public class DTOs {
+public final class DTOs {
+
+    private DTOs() { super(); }
 
     /**
-     * TODO: Add a description of this method.
+     * Create a {@link Template} from a {@link TemplateDTO}.
      *
-     * @param templateDTO
-     * @return
+     * @param templateDTO The dto from which to create the template.
+     * @return A valid template.
      */
     public static Template templateFrom(final TemplateDTO templateDTO) {
         final Template t = new Template(
@@ -45,10 +47,10 @@ public class DTOs {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Create a  {@link TemplateDTO} from a {@link Template}.
      *
-     * @param template
-     * @return
+     * @param template The template from which to create a dto.
+     * @return A dto representing the template.
      */
     public static TemplateDTO dtoFrom(final Template template) {
         final TemplateDTO dto = new TemplateDTO(template.title(),
