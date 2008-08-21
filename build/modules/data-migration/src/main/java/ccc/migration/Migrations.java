@@ -11,7 +11,6 @@
  */
 package ccc.migration;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +29,7 @@ import ccc.services.AssetManager;
 import ccc.services.ContentManager;
 
 /**
- * TODO Add Description for this type.
+ * Data migration from CCC6 to CCC7.
  *
  * @author Civic Computing Ltd
  */
@@ -55,7 +54,7 @@ public class Migrations {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Creates root and migrates all children under it.
      *
      */
     public void migrate() {
@@ -77,33 +76,33 @@ public class Migrations {
 
         final List<ResourceBean> resources = queries.selectResources(parent);
 
-            for (final ResourceBean r : resources) {
+        for (final ResourceBean r : resources) {
 
-                log.debug("type "+r.type());
-                log.debug("name "+r.name());
+            log.debug("type "+r.type());
+            log.debug("name "+r.name());
 
-                // ignore null/empty name
-                if (r.name() == null || r.name().trim().equals("")) {
-                    log.debug("NO NAME");
-                    continue;
-                }
-
-                if (r.type().equals("FOLDER")) {
-                    migrateFolder(
-                        parentFolderId,
-                        r.contentId(),
-                        r.name(),
-                        r.displayTemplate());
-                } else if (r.type().equals("PAGE")) {
-                    migratePage(
-                        parentFolderId,
-                        r.contentId(),
-                        r.name(),
-                        r.displayTemplate());
-                } else {
-                    log.debug("Unkown resource type");
-                }
+            // ignore null/empty name
+            if (r.name() == null || r.name().trim().equals("")) {
+                log.debug("NO NAME");
+                continue;
             }
+
+            if (r.type().equals("FOLDER")) {
+                migrateFolder(
+                    parentFolderId,
+                    r.contentId(),
+                    r.name(),
+                    r.displayTemplate());
+            } else if (r.type().equals("PAGE")) {
+                migratePage(
+                    parentFolderId,
+                    r.contentId(),
+                    r.name(),
+                    r.displayTemplate());
+            } else {
+                log.debug("Unkown resource type");
+            }
+        }
     }
 
     private void migrateFolder(final String parentFolderId,
@@ -118,13 +117,13 @@ public class Migrations {
             if (null!=displayTemplate) {
                 Template template =
                     (templates.containsKey(displayTemplate))
-                        ? templates.get(displayTemplate)
+                    ? templates.get(displayTemplate)
                         : new Template(displayTemplate, "", "");
-                template = assetManager().createOrRetrieve(template);
-                child.displayTemplateName(template);
-                if (!templates.containsKey(displayTemplate)) {
-                    templates.put(displayTemplate, template);
-                }
+                    template = assetManager().createOrRetrieve(template);
+                    child.displayTemplateName(template);
+                    if (!templates.containsKey(displayTemplate)) {
+                        templates.put(displayTemplate, template);
+                    }
             }
 
             contentManager().create(UUID.fromString(parentFolderId), child);
@@ -150,13 +149,13 @@ public class Migrations {
             if (null!=displayTemplate) {
                 Template template =
                     (templates.containsKey(displayTemplate))
-                        ? templates.get(displayTemplate)
+                    ? templates.get(displayTemplate)
                         : new Template(displayTemplate, "", "");
-                template = assetManager().createOrRetrieve(template);
-                childPage.displayTemplateName(template);
-                if (!templates.containsKey(displayTemplate)) {
-                    templates.put(displayTemplate, template);
-                }
+                    template = assetManager().createOrRetrieve(template);
+                    childPage.displayTemplateName(template);
+                    if (!templates.containsKey(displayTemplate)) {
+                        templates.put(displayTemplate, template);
+                    }
             }
 
             final Map<String, StringBuffer> paragraphs =
@@ -178,10 +177,9 @@ public class Migrations {
      *
      * @param path
      * @param pageId
-     * @throws SQLException
      */
     private Map<String, StringBuffer>
-        migrateParagraphs(final int pageId) {
+    migrateParagraphs(final int pageId) {
 
         log.debug("#### migrating paragraphs for "+pageId);
         final Map<String, StringBuffer> map =

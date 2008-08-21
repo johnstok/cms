@@ -42,12 +42,12 @@ public class Queries {
         List<ResourceBean> resultList = new ArrayList<ResourceBean>();
         try {
             ps = _connection.prepareStatement(
-                "SELECT CONTENT_ID, CONTENT_TYPE, NAME, PAGE FROM " +
-                "C3_CONTENT, C3_DISPLAY_TEMPLATES WHERE " +
-                "C3_CONTENT.PARENT_ID = ? AND VERSION_ID = 0 AND " +
-                "STATUS = 'PUBLISHED' AND " +
-                "C3_CONTENT.DISPLAY_TEMPLATE_ID = " +
-                "C3_DISPLAY_TEMPLATES.TEMPLATE_ID(+)");
+                "SELECT CONTENT_ID, CONTENT_TYPE, NAME, PAGE FROM "
+                + "C3_CONTENT, C3_DISPLAY_TEMPLATES WHERE "
+                + "C3_CONTENT.PARENT_ID = ? AND VERSION_ID = 0 AND "
+                + "STATUS = 'PUBLISHED' AND "
+                + "C3_CONTENT.DISPLAY_TEMPLATE_ID = "
+                + "C3_DISPLAY_TEMPLATES.TEMPLATE_ID(+)");
             ps.setInt(1, i);
             rs = ps.executeQuery();
 
@@ -83,9 +83,9 @@ public class Queries {
 
         try {
             ps = _connection.prepareStatement(
-                "SELECT * FROM  C3_PARAGRAPHS " +
-                "WHERE C3_PARAGRAPHS.PAGE_ID = ? " +
-                "AND VERSION_ID = 0 ORDER BY SEQ");
+                "SELECT * FROM  C3_PARAGRAPHS "
+                + "WHERE C3_PARAGRAPHS.PAGE_ID = ? "
+                + "AND VERSION_ID = 0 ORDER BY SEQ");
             ps.setInt(1, pageId);
             rs = ps.executeQuery();
 
