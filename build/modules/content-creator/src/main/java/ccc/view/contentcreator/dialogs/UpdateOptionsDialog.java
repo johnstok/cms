@@ -15,8 +15,9 @@ package ccc.view.contentcreator.dialogs;
 import java.util.List;
 
 import ccc.view.contentcreator.callbacks.DisposingCallback;
+import ccc.view.contentcreator.callbacks.DisposingClickListener;
 import ccc.view.contentcreator.client.Constants;
-import ccc.view.contentcreator.client.GwtApp;
+import ccc.view.contentcreator.client.Application;
 import ccc.view.contentcreator.client.ResourceServiceAsync;
 import ccc.view.contentcreator.controls.ListControl;
 import ccc.view.contentcreator.controls.PanelControl;
@@ -41,8 +42,8 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class UpdateOptionsDialog {
 
-    private final AppDialog     _delegate;
-    private final GwtApp        _app;
+    private final ApplicationDialog     _delegate;
+    private final Application        _app;
     private final Constants     _constants;
     private final PanelControl  _gui;
     private final ResourceServiceAsync _resourceService;
@@ -54,7 +55,7 @@ public class UpdateOptionsDialog {
      * Constructor.
      * @param templates
      */
-    public UpdateOptionsDialog(final GwtApp app,
+    public UpdateOptionsDialog(final Application app,
                                final List<OptionDTO<? extends DTO>> options) {
 
         _app = app;

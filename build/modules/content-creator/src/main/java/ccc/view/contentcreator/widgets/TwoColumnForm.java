@@ -11,7 +11,7 @@
  */
 package ccc.view.contentcreator.widgets;
 
-import ccc.view.contentcreator.client.GwtApp;
+import ccc.view.contentcreator.client.Application;
 import ccc.view.contentcreator.controls.CompositeControl;
 import ccc.view.contentcreator.controls.Control;
 import ccc.view.contentcreator.controls.GridControl;
@@ -24,11 +24,11 @@ import ccc.view.contentcreator.controls.GridControl;
  */
 public class TwoColumnForm implements CompositeControl {
 
-    private final GwtApp      _app;
+    private final Application      _app;
     private final GridControl _grid;
     private int               _nextRow = 0;
 
-    public TwoColumnForm(final GwtApp app, final int numRows) {
+    public TwoColumnForm(final Application app, final int numRows) {
         _app = app;
         _grid = _app.grid(numRows, 2);
     }

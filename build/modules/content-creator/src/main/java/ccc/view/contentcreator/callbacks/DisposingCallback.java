@@ -1,7 +1,7 @@
 package ccc.view.contentcreator.callbacks;
 
-import ccc.view.contentcreator.client.GwtApp;
-import ccc.view.contentcreator.dialogs.AppDialog;
+import ccc.view.contentcreator.client.Application;
+import ccc.view.contentcreator.dialogs.ApplicationDialog;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -12,15 +12,15 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public final class DisposingCallback implements AsyncCallback<Void> {
 
-    private final AppDialog _dialog;
-    private final GwtApp    _app;
+    private final ApplicationDialog _dialog;
+    private final Application    _app;
 
     /**
      * Constructor.
      *
      * @param dialog The dialog that will hidden.
      */
-    public DisposingCallback(final GwtApp app, final AppDialog dialog) {
+    public DisposingCallback(final Application app, final ApplicationDialog dialog) {
         _dialog = dialog;
         _app = app;
     }

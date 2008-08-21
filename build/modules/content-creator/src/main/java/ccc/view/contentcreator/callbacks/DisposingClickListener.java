@@ -9,7 +9,9 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.view.contentcreator.dialogs;
+package ccc.view.contentcreator.callbacks;
+
+import ccc.view.contentcreator.dialogs.ApplicationDialog;
 
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Widget;
@@ -19,16 +21,16 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * @author Civic Computing Ltd.
  */
-final class DisposingClickListener implements ClickListener {
+public final class DisposingClickListener implements ClickListener {
 
-    private final AppDialog _dialog;
+    private final ApplicationDialog _dialog;
 
     /**
      * Constructor.
      *
      * @param dialog The dialog that will hidden.
      */
-    public DisposingClickListener(final AppDialog dialog) {
+    public DisposingClickListener(final ApplicationDialog dialog) {
         _dialog = dialog;
     }
 

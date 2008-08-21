@@ -34,7 +34,7 @@ public class JSONCallbackTest extends TestCase {
     public void testConstructor() {
 
         // ARRANGE
-        final GwtApp app = createStrictMock(GwtApp.class);
+        final Application app = createStrictMock(Application.class);
         app.alert("Error: foo"); //$NON-NLS-1$
         replay(app);
 
@@ -58,7 +58,7 @@ public class JSONCallbackTest extends TestCase {
          *
          * @param application The application for this callback.
          */
-        TestCallback(final GwtApp application) {
+        TestCallback(final Application application) {
             super(application);
         }
 
