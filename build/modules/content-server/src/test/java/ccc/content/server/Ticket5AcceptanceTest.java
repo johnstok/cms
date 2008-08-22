@@ -32,7 +32,7 @@ public final class Ticket5AcceptanceTest extends TestCase {
 
     private Selenium     selenium;
     private final int    port    = 5555;
-    private final String browser = "*iexplore";
+    private final String browser = "*custom firefox -P Selenium -no-remote";
 
     /**
      * Test.
