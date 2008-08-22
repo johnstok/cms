@@ -26,7 +26,7 @@ public final class ContentEditSeleniumTest extends TestCase {
 
     private Selenium selenium;
     private final int port = 5555;
-    private final String browser = "*iexplore";
+    private final String browser = "*custom firefox -P Selenium -no-remote";
 
     /**
      * {@inheritDoc}
