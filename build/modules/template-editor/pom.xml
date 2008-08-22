@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<parent>
+		<artifactId>build</artifactId>
+		<groupId>CCC7</groupId>
+		<version>7.0.0-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>CCC7</groupId>
+	<artifactId>template-editor</artifactId>
+	<name>template-editor</name>
+	<version>7.0.0-SNAPSHOT</version>
+	<description />
+	<dependencies>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jul-to-slf4j</artifactId>
+			<version>1.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>jsyntaxpane</groupId>
+			<artifactId>jsyntaxpane</artifactId>
+			<version>080717</version>
+		</dependency>
+		<dependency>
+			<groupId>org.xhtmlrenderer</groupId>
+			<artifactId>core-renderer</artifactId>
+			<version>R7</version>
+		</dependency>
+		<dependency>
+            <groupId>CCC7</groupId>
+            <artifactId>core-domain</artifactId>
+            <version>7.0.0-SNAPSHOT</version>
+        </dependency>
+	</dependencies>
+	<!-- 
+	mvn install:install-file -DgroupId=jsyntaxpane -DartifactId=jsyntaxpane -Dversion=080717 -Dpackaging=jar -Dfile=JSyntaxPane-080717.jar
+	mvn install:install-file -DgroupId=org.xhtmlrenderer -DartifactId=core-renderer -Dversion=R7 -Dpackaging=jar -Dfile=core-renderer-R7.jar
+	 -->
+</project>
