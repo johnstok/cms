@@ -19,7 +19,7 @@ import com.google.gwt.user.client.ui.ClickListener;
 
 
 /**
- * TODO Add Description for this type.
+ * A series of buttons in a horizontal row.
  *
  * @author Civic Computing Ltd
  */
@@ -28,18 +28,22 @@ public class ButtonBar implements CompositeControl {
     private final Application _app;
     private final PanelControl _hPanel;
 
+    /**
+     * Constructor.
+     *
+     * @param app A reference to the application.
+     */
     public ButtonBar(final Application app) {
         _app = app;
         _hPanel = _app.horizontalPanel();
     }
 
-
     /**
      * Add a new button.
      *
-     * @param buttonTitle
-     * @param clickListener
-     * @return
+     * @param buttonTitle The title of the button.
+     * @param clickListener The action the button will perform.
+     * @return 'this' to allow a fluent API.
      */
     public ButtonBar add(final String buttonTitle,
                          final ClickListener clickListener) {
@@ -58,12 +62,10 @@ public class ButtonBar implements CompositeControl {
         _hPanel.setWidth(width);
     }
 
-
     /** {@inheritDoc} */
     public void setVisible(final boolean b) {
         _hPanel.setVisible(b);
     }
-
 
     /** {@inheritDoc} */
     public Object rootWidget() {
