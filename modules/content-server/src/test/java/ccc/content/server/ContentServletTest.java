@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import junit.framework.TestCase;
 import ccc.commons.MapRegistry;
 import ccc.commons.Resources;
+import ccc.commons.VelocityProcessor;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
@@ -47,6 +48,7 @@ public final class ContentServletTest extends TestCase {
 
     /**
      * Test.
+     * TODO: move to core-domain.
      */
     public void testRenderResource() {
 
@@ -56,7 +58,7 @@ public final class ContentServletTest extends TestCase {
         final String template = "Hello $resource.id()";
 
         // ACT
-        final String html = new ContentServlet().render(foo, template);
+        final String html = new VelocityProcessor().render(foo, template);
 
         // ASSERT
         assertEquals("Hello "+foo.id(), html);
