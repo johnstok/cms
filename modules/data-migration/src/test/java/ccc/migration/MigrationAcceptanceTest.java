@@ -12,11 +12,14 @@
 package ccc.migration;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
+import java.util.Map;
+import java.util.Properties;
 
 import junit.framework.TestCase;
+import oracle.jdbc.pool.OracleDataSource;
 import ccc.commons.JNDI;
+import ccc.domain.Page;
+import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 import ccc.domain.ResourceType;
@@ -29,27 +32,48 @@ import ccc.services.ContentManager;
  * @author Civic Computing Ltd
  */
 public class MigrationAcceptanceTest extends TestCase {
-    private Connection conn = null;
+    private Connection _conn = null;
+
     /**
-     * @see junit.framework.TestCase#setUp()
+     * {@inheritDoc}
      */
     @Override
     protected void setUp() throws Exception {
         super.setUp();
 
-        Class.forName("org.h2.Driver");
-        conn = DriverManager.getConnection(
-            "jdbc:h2:mem:CCC_INTEGRATION;DB_CLOSE_DELAY=-1;MAX_MEMORY_UNDO=500000", "CCC", "CCC");
-        final Statement stat = conn.createStatement();
+        final String driverName = "oracle.jdbc.driver.OracleDriver";
+        Class.forName(driverName);
 
-        // import CSV file to memory DB
-        stat.execute("CREATE TABLE C3_CONTENT AS SELECT * FROM CSVREAD('src/test/resources/C3_CONTENT.csv')");
-        stat.execute("CREATE TABLE C3_PARAGRAPHS AS SELECT * FROM CSVREAD('src/test/resources/C3_PARAGRAPHS.csv')");
-        stat.close();
+        // Create a connection to the database
+        final String serverName = "poseidon";
+        final String portNumber = "1521";
+        final String sid = "DEV";
+        final String url =
+            "jdbc:oracle:thin:@"
+            + serverName + ":"
+            + portNumber + ":"
+            + sid;
+        final String username = "ccc_migration";
+        final String password = "d3ccc_migration";
+
+        OracleDataSource ods = new OracleDataSource();
+        Properties props = new Properties();
+        props.put("user", username);
+        props.put("password", password);
+        props.put("oracle.jdbc.FreeMemoryOnEnterImplicitCache", true);
+        ods.setConnectionProperties(props);
+        ods.setURL(url);
+        _conn = ods.getConnection();
+
+        final Queries queries = new Queries(_conn);
+
+        final Migrations migrationsEJB = new Migrations(queries);
+
+        migrationsEJB.migrate();
     }
 
     /**
-     * @see junit.framework.TestCase#tearDown()
+     * {@inheritDoc}
      */
     @Override
     protected void tearDown() throws Exception {
@@ -57,27 +81,126 @@ public class MigrationAcceptanceTest extends TestCase {
         super.tearDown();
     }
 
-
-    public void testMigration() {
-        // JBoss should be running and application deployed
+    /**
+     * Test.
+     *
+     */
+    public void testFolderMigration() {
 
         // ARRANGE
-        final Queries queries = new Queries(conn);
-        final ContentManager manager = new JNDI().<ContentManager>get("ContentManagerEJB/remote");
-        assertNotNull("ContentManager must not be null", manager);
-
-        final Migrations migrationsEJB = new Migrations(queries);
+        ContentManager manager = new JNDI().<ContentManager>get(
+            "ContentManagerEJB/remote");
 
         // ACT
-        migrationsEJB.migrate();
+        Resource resource = manager.lookup(new ResourcePath("/Home/"));
 
         // VERIFY
-        Resource resource = manager.lookup(new ResourcePath("/Home/"));
         assertNotNull("Resource /home/ must not be null", resource);
-        assertEquals("Resource type must be folder ", ResourceType.FOLDER, resource.type());
+        assertEquals("Resource type must be folder ",
+            ResourceType.FOLDER, resource.type());
+    }
 
-        resource = manager.lookup(new ResourcePath("/Home/blue_panel/"));
-        assertNotNull("Resource /Home/blue_panel/ must not be null", resource);
-        assertEquals("Resource type must be page ", ResourceType.PAGE, resource.type());
+    /**
+     * Test.
+     *
+     */
+    public void testPageMigration() {
+
+        // ARRANGE
+        ContentManager manager = new JNDI().<ContentManager>get(
+            "ContentManagerEJB/remote");
+        String path = "/Home/ASH_Scotland_Manifesto_2007/";
+
+        // ACT
+        Resource resource = manager.lookup(
+            new ResourcePath(path));
+
+        // VERIFY
+        assertNotNull("Resource "+path+" must not be null", resource);
+        assertEquals("Resource type must be content ",
+            ResourceType.PAGE, resource.type());
+    }
+
+    /**
+     * Test.
+     *
+     */
+    public void testParagraphMigration() {
+
+        // ARRANGE
+        // old ID: 3391
+        String path = "/Information_Service/Key_topics/Smoking_Cessation/"
+            +"A_Smoking_Cessation_Policy_for_Scotland/Introduction/";
+        ContentManager manager = new JNDI().<ContentManager>get(
+            "ContentManagerEJB/remote");
+
+        // ACT
+        Page resource = manager.eagerPageLookup(new ResourcePath(path));
+
+        // VERIFY
+        assertNotNull("Resource "+path+" must not be null", resource);
+        assertEquals("Resource type must be content ",
+            ResourceType.PAGE, resource.type());
+
+        assertEquals("Resource title must be content ",
+            resource.title(), "Introduction");
+
+        Map<String, Paragraph> paragraphs = resource.paragraphs();
+        assertNotNull("Paragraphs must not be null", paragraphs);
+
+        assertNotNull("Paragraph HEADER must not be null",
+            paragraphs.get("HEADER"));
+        assertEquals("Paragraph HEADER body ",
+            paragraphs.get("HEADER").body(),
+            "A Smoking Cessation Policy for Scotland");
+    }
+
+    /**
+     * Test.
+     *
+     */
+    public void testDisplayNameNullMigration() {
+        // ARRANGE
+        // old ID: 3391
+        String path = "/Information_Service/Key_topics/Smoking_Cessation/"
+            +"A_Smoking_Cessation_Policy_for_Scotland/Introduction/";
+        ContentManager manager = new JNDI().<ContentManager>get(
+            "ContentManagerEJB/remote");
+
+        // ACT
+        Page resource = manager.eagerPageLookup(new ResourcePath(path));
+
+        // VERIFY
+        assertNotNull("Resource "+path+" must not be null", resource);
+        assertEquals("Resource type must be content ",
+            ResourceType.PAGE, resource.type());
+
+        assertEquals("Display template should be null",
+            null, resource.displayTemplateName());
+
+    }
+
+    /**
+     * Test.
+     *
+     */
+    public void testDisplayNameNotNullMigration() {
+        // ARRANGE
+        // old ID: 3391
+        String path = "/Quit_Smoking/Quit_smoking/";
+        ContentManager manager = new JNDI().<ContentManager>get(
+        "ContentManagerEJB/remote");
+
+        // ACT
+        Page resource = manager.eagerPageLookup(new ResourcePath(path));
+
+        // VERIFY
+        assertNotNull("Resource "+path+" must not be null", resource);
+        assertEquals("Resource type must be content ",
+            ResourceType.PAGE, resource.type());
+
+        assertEquals("Display template should be ",
+            "ash_display_sectionhome.jsp",
+            resource.displayTemplateName().title());
     }
 }

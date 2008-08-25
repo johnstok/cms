@@ -12,8 +12,8 @@
 
 package ccc.services.ejb3;
 
-import static javax.ejb.TransactionAttributeType.*;
-import static javax.persistence.PersistenceContextType.*;
+import static javax.ejb.TransactionAttributeType.REQUIRED;
+import static javax.persistence.PersistenceContextType.EXTENDED;
 
 import java.util.Map;
 import java.util.UUID;
@@ -33,6 +33,7 @@ import ccc.domain.Paragraph;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
+import ccc.domain.ResourceType;
 import ccc.domain.Template;
 import ccc.services.ContentManager;
 
@@ -133,6 +134,28 @@ public class ContentManagerEJB implements ContentManager {
     @Override
     public final <T extends Resource> T lookup(final UUID id) {
         return (T) _em.find(Resource.class, id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public final Page eagerPageLookup(final ResourcePath path) {
+        Resource resource = new Queries().lookupRoot(
+            _em, PredefinedResourceNames.CONTENT).navigateTo(path);
+        if (resource == null) {
+            return null;
+        }
+        if (resource.type() != ResourceType.PAGE) {
+            throw new CCCException("Id does not belong to a page.");
+        }
+        Page p = resource.as(Page.class);
+        p.paragraphs().size();
+        if (p.displayTemplateName() != null) {
+            p.displayTemplateName().body();
+        }
+        return p;
     }
 
     /**
