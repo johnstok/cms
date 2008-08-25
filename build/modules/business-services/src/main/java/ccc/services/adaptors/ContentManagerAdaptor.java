@@ -29,6 +29,12 @@ import ccc.services.ContentManager;
  */
 public abstract class ContentManagerAdaptor implements ContentManager {
 
+    @Override
+    public Page eagerPageLookup(ResourcePath path) {
+
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
     /**
      * {@inheritDoc}
      */

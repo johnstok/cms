@@ -92,4 +92,13 @@ public interface ContentManager {
      * @param newDefault The template to set as default.
      */
     void setDefaultTemplate(Template newDefault);
+
+    /**
+     * For migration testing. Lookup a Page, given its path.
+     * Initialises paragraph collection and template.
+     *
+     * @param path The absolute path to the resource.
+     * @return The resource.
+     */
+    Page eagerPageLookup(ResourcePath path);
 }
