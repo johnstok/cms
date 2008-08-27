@@ -53,6 +53,10 @@ public final class DTOs {
      * @return A dto representing the template.
      */
     public static TemplateDTO dtoFrom(final Template template) {
+        if (null==template) {
+            return null;
+        }
+
         final TemplateDTO dto = new TemplateDTO(template.title(),
             template.description(),
             template.body());
