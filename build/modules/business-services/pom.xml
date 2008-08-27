@@ -64,7 +64,7 @@
             </build>
         </profile>
         <profile>
-            <id>data-integration</id>
+            <id>migration-acceptance</id>
             <build>
                 <plugins>
                     <plugin>

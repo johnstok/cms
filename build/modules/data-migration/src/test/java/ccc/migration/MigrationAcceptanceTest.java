@@ -15,6 +15,9 @@ import java.sql.Connection;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.ejb.EJBException;
+import javax.persistence.NoResultException;
+
 import junit.framework.TestCase;
 import oracle.jdbc.pool.OracleDataSource;
 import ccc.commons.JNDI;
@@ -41,6 +44,8 @@ public class MigrationAcceptanceTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
+        ContentManager manager = new JNDI().<ContentManager>get(
+        "ContentManagerEJB/remote");
         final String driverName = "oracle.jdbc.driver.OracleDriver";
         Class.forName(driverName);
 
@@ -67,9 +72,19 @@ public class MigrationAcceptanceTest extends TestCase {
 
         final Queries queries = new Queries(_conn);
 
-        final Migrations migrationsEJB = new Migrations(queries);
-
-        migrationsEJB.migrate();
+        /*
+         * Rather stupid way to check whether migration is done already.
+         * Maybe TestNG would be a better choice.
+         */
+        try {
+            manager.lookupRoot();
+        } catch (EJBException e) {
+            if (e.getCausedByException().getClass()
+                    == NoResultException.class) {
+                final Migrations migrationsEJB = new Migrations(queries);
+                migrationsEJB.migrate();
+            }
+        }
     }
 
     /**
@@ -79,6 +94,7 @@ public class MigrationAcceptanceTest extends TestCase {
     protected void tearDown() throws Exception {
 
         super.tearDown();
+        _conn.close();
     }
 
     /**
@@ -89,7 +105,7 @@ public class MigrationAcceptanceTest extends TestCase {
 
         // ARRANGE
         ContentManager manager = new JNDI().<ContentManager>get(
-            "ContentManagerEJB/remote");
+        "ContentManagerEJB/remote");
 
         // ACT
         Resource resource = manager.lookup(new ResourcePath("/Home/"));
@@ -108,7 +124,7 @@ public class MigrationAcceptanceTest extends TestCase {
 
         // ARRANGE
         ContentManager manager = new JNDI().<ContentManager>get(
-            "ContentManagerEJB/remote");
+        "ContentManagerEJB/remote");
         String path = "/Home/ASH_Scotland_Manifesto_2007/";
 
         // ACT
@@ -132,7 +148,7 @@ public class MigrationAcceptanceTest extends TestCase {
         String path = "/Information_Service/Key_topics/Smoking_Cessation/"
             +"A_Smoking_Cessation_Policy_for_Scotland/Introduction/";
         ContentManager manager = new JNDI().<ContentManager>get(
-            "ContentManagerEJB/remote");
+        "ContentManagerEJB/remote");
 
         // ACT
         Page resource = manager.eagerPageLookup(new ResourcePath(path));
@@ -152,7 +168,7 @@ public class MigrationAcceptanceTest extends TestCase {
             paragraphs.get("HEADER"));
         assertEquals("Paragraph HEADER body ",
             paragraphs.get("HEADER").body(),
-            "A Smoking Cessation Policy for Scotland");
+        "A Smoking Cessation Policy for Scotland");
     }
 
     /**
@@ -165,7 +181,7 @@ public class MigrationAcceptanceTest extends TestCase {
         String path = "/Information_Service/Key_topics/Smoking_Cessation/"
             +"A_Smoking_Cessation_Policy_for_Scotland/Introduction/";
         ContentManager manager = new JNDI().<ContentManager>get(
-            "ContentManagerEJB/remote");
+        "ContentManagerEJB/remote");
 
         // ACT
         Page resource = manager.eagerPageLookup(new ResourcePath(path));
