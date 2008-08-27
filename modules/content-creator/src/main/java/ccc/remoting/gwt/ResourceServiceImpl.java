@@ -116,12 +116,12 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
         assetManager().createDisplayTemplate(DTOs.templateFrom(dto));
     }
 
-    private void setDefaultTemplate(final String templateId) {
-        if (null==templateId) {
+    private void setDefaultTemplate(final TemplateDTO templateDTO) {
+        if (null==templateDTO) {
             contentManager().setDefaultTemplate(null);
         } else {
             final Template newDefault =
-                assetManager().lookup(UUID.fromString(templateId));
+                assetManager().lookup(UUID.fromString(templateDTO.getId()));
             contentManager().setDefaultTemplate(newDefault);
         }
 
@@ -151,10 +151,9 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
         final Template rootTemplate = contentRoot.displayTemplateName();
 
         final OptionDTO<TemplateDTO> defaultTemplate =
-            new OptionDTO<TemplateDTO>(
-                   (null==rootTemplate) ? null : dtoFrom(rootTemplate),
-                   listTemplates(),
-                   OptionDTO.Type.CHOICES);
+            new OptionDTO<TemplateDTO>(dtoFrom(rootTemplate),
+                                       listTemplates(),
+                                       OptionDTO.Type.CHOICES);
         options.add(defaultTemplate);
 
         return options;
@@ -167,11 +166,7 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
         final OptionDTO<TemplateDTO> defaultTemplate =
             options.get(0).makeTypeSafe();
         if (defaultTemplate.hasChanged()) {
-            setDefaultTemplate(
-                (null==defaultTemplate.getCurrentValue())
-                    ? null
-                    : defaultTemplate.getCurrentValue().getId()
-                );
+            setDefaultTemplate(defaultTemplate.getCurrentValue());
         }
     }
 }
