@@ -14,8 +14,8 @@ package ccc.view.contentcreator.dialogs;
 
 import ccc.view.contentcreator.callbacks.DisposingCallback;
 import ccc.view.contentcreator.callbacks.DisposingClickListener;
-import ccc.view.contentcreator.client.Constants;
 import ccc.view.contentcreator.client.Application;
+import ccc.view.contentcreator.client.Constants;
 import ccc.view.contentcreator.client.ResourceServiceAsync;
 import ccc.view.contentcreator.controls.PanelControl;
 import ccc.view.contentcreator.controls.StringControl;
@@ -44,6 +44,7 @@ public class CreateContentTemplateDialog {
     private final StringControl _templateTitle;
     private final StringControl _description;
     private final StringControl _body;
+    private final FeedbackPanel _feedbackPanel;
 
     /**
      * Constructor.
@@ -61,6 +62,7 @@ public class CreateContentTemplateDialog {
         _templateTitle = _app.textBox();
         _description = _app.textBox();
         _body = _app.textArea();
+        _feedbackPanel = new FeedbackPanel(_app);
 
         drawGUI();
         _delegate.gui(_gui);
@@ -68,9 +70,8 @@ public class CreateContentTemplateDialog {
 
     private void drawGUI() {
 
-        final FeedbackPanel fPanel = new FeedbackPanel(_app);
-        fPanel.setVisible(false);
-        _gui.add(fPanel);
+        _feedbackPanel.setVisible(false);
+        _gui.add(_feedbackPanel);
 
         _gui.add(
             new TwoColumnForm(_app, 3)
@@ -94,10 +95,8 @@ public class CreateContentTemplateDialog {
                                     dto,
                                     new DisposingCallback(_app, _delegate));
                             } else {
-                                final FeedbackPanel foo =
-                                    (FeedbackPanel) _gui.child(0);
-                                foo.displayErrors(dto.validate());
-                                foo.setVisible(true);
+                                _feedbackPanel.displayErrors(dto.validate());
+                                _feedbackPanel.setVisible(true);
                             }
                         }})
             );
