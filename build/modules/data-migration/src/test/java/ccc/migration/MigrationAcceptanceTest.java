@@ -11,15 +11,9 @@
  */
 package ccc.migration;
 
-import java.sql.Connection;
 import java.util.Map;
-import java.util.Properties;
-
-import javax.ejb.EJBException;
-import javax.persistence.NoResultException;
 
 import junit.framework.TestCase;
-import oracle.jdbc.pool.OracleDataSource;
 import ccc.commons.JNDI;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
@@ -35,7 +29,6 @@ import ccc.services.ContentManager;
  * @author Civic Computing Ltd
  */
 public class MigrationAcceptanceTest extends TestCase {
-    private Connection _conn = null;
 
     /**
      * {@inheritDoc}
@@ -43,48 +36,6 @@ public class MigrationAcceptanceTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-
-        ContentManager manager = new JNDI().<ContentManager>get(
-        "ContentManagerEJB/remote");
-        final String driverName = "oracle.jdbc.driver.OracleDriver";
-        Class.forName(driverName);
-
-        // Create a connection to the database
-        final String serverName = "poseidon";
-        final String portNumber = "1521";
-        final String sid = "DEV";
-        final String url =
-            "jdbc:oracle:thin:@"
-            + serverName + ":"
-            + portNumber + ":"
-            + sid;
-        final String username = "ccc_migration";
-        final String password = "d3ccc_migration";
-
-        OracleDataSource ods = new OracleDataSource();
-        Properties props = new Properties();
-        props.put("user", username);
-        props.put("password", password);
-        props.put("oracle.jdbc.FreeMemoryOnEnterImplicitCache", true);
-        ods.setConnectionProperties(props);
-        ods.setURL(url);
-        _conn = ods.getConnection();
-
-        final Queries queries = new Queries(_conn);
-
-        /*
-         * Rather stupid way to check whether migration is done already.
-         * Maybe TestNG would be a better choice.
-         */
-        try {
-            manager.lookupRoot();
-        } catch (EJBException e) {
-            if (e.getCausedByException().getClass()
-                    == NoResultException.class) {
-                final Migrations migrationsEJB = new Migrations(queries);
-                migrationsEJB.migrate();
-            }
-        }
     }
 
     /**
@@ -94,7 +45,6 @@ public class MigrationAcceptanceTest extends TestCase {
     protected void tearDown() throws Exception {
 
         super.tearDown();
-        _conn.close();
     }
 
     /**
