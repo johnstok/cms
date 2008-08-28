@@ -120,33 +120,6 @@
 			<build>
 				<plugins>
 					<plugin>
-						<artifactId>maven-antrun-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>run-data-migration</id>
-								<phase>pre-integration-test</phase>
-								<configuration>
-									<tasks>
-										<echo>Running migration</echo>
-
-										<property name="test_classpath" refid="maven.test.classpath" />
-										<path id="migration.classpath">
-											<pathelement path="${test_classpath}" />
-										</path>
-										<property name="migration_classpath" refid="migration.classpath" />
-										<echo message="data migration classpath: ${migration_classpath}" />
-										
-										<java classname="ccc.migration.App" fork="true" failonerror="true" classpath="${migration_classpath}" />
-
-									</tasks>
-								</configuration>
-								<goals>
-									<goal>run</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-surefire-plugin</artifactId>
 						<executions>
