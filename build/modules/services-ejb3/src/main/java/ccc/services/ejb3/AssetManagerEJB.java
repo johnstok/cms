@@ -31,7 +31,9 @@ import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
+import ccc.domain.Setting;
 import ccc.domain.Template;
+import ccc.domain.Setting.Name;
 import ccc.services.AssetManager;
 import ccc.services.QueryManager;
 
@@ -88,14 +90,15 @@ public final class AssetManagerEJB implements AssetManager {
      */
     @Override
     public void createRoot() {
-        final Maybe<Folder> assetRoot =
-            _qm.lookupRoot(PredefinedResourceNames.ASSETS);
+        final Maybe<Folder> assetRoot = _qm.findAssetsRoot();
 
         if (!assetRoot.isPresent()) {
             final Folder root = new Folder(PredefinedResourceNames.ASSETS);
             final Folder templates = new Folder(new ResourceName("templates"));
             _entityManager.persist(templates);
             _entityManager.persist(root);
+            _entityManager.persist(
+                new Setting(Name.ASSETS_ROOT_FOLDER_ID, root.id().toString()));
             root.add(templates);
         }
     }
@@ -106,7 +109,7 @@ public final class AssetManagerEJB implements AssetManager {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public final <T extends Resource> T lookup(final UUID id) {
+    public <T extends Resource> T lookup(final UUID id) {
         return (T) _entityManager.find(Resource.class, id);
     }
 
@@ -139,12 +142,9 @@ public final class AssetManagerEJB implements AssetManager {
     }
 
     private Folder templatesFolder() {
-
-        final Folder assetRoot =
-            _qm.lookupRoot(PredefinedResourceNames.ASSETS).get();
+        final Folder assetRoot = _qm.findAssetsRoot().get();
         final Folder templates =
-            assetRoot
-            .navigateTo(new ResourcePath("/templates/"));
+            assetRoot .navigateTo(new ResourcePath("/templates/"));
         return templates;
     }
 
@@ -155,8 +155,8 @@ public final class AssetManagerEJB implements AssetManager {
     public void createFile(final File file, final String path) {
         _entityManager.persist(file.fileData());
         _entityManager.persist(file);
-        final Folder folder = (Folder) _qm.lookupRoot(
-            PredefinedResourceNames.CONTENT).get().navigateTo(new ResourcePath(path));
+        final Folder folder =
+            _qm.findAssetsRoot().get().navigateTo(new ResourcePath(path));
         folder.add(file);
     }
 

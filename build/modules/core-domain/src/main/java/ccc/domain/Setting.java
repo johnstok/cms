@@ -29,6 +29,13 @@ public class Setting extends Entity {
 
     /**
      * Constructor.
+     * N.B. This constructor should only be used for persistence.
+     */
+    @SuppressWarnings("unused")
+    private Setting() { super(); }
+
+    /**
+     * Constructor.
      *
      * @param name The name of this setting.
      * @param value The value of this setting.
@@ -74,5 +81,5 @@ public class Setting extends Entity {
      */
     public static enum Name {
         /** CONTENT_ROOT_FOLDER_ID : Name. */
-        CONTENT_ROOT_FOLDER_ID}
+        CONTENT_ROOT_FOLDER_ID, ASSETS_ROOT_FOLDER_ID}
 }

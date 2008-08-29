@@ -34,6 +34,7 @@ import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 import ccc.domain.ResourceType;
+import ccc.domain.Setting;
 import ccc.domain.Template;
 import ccc.services.ContentManager;
 import ccc.services.QueryManager;
@@ -112,10 +113,15 @@ public final class ContentManagerEJB implements ContentManager {
     @Override
     public final void createRoot() {
         final Maybe<Folder> contentRoot =
-            _qm.lookupRoot(PredefinedResourceNames.CONTENT);
+            _qm.findContentRoot();
 
         if (!contentRoot.isPresent()) {
-            _em.persist(new Folder(PredefinedResourceNames.CONTENT));
+            final Folder root = new Folder(PredefinedResourceNames.CONTENT);
+            _em.persist(root);
+            _em.persist(
+                new Setting(
+                    Setting.Name.CONTENT_ROOT_FOLDER_ID,
+                    root.id().toString()));
         }
     }
 
@@ -131,8 +137,7 @@ public final class ContentManagerEJB implements ContentManager {
     @Override
     public final <T extends Resource> T lookup(final ResourcePath path) {
         return
-            (T) _qm.lookupRoot(
-                PredefinedResourceNames.CONTENT).get().navigateTo(path);
+            (T) _qm.findContentRoot().get().navigateTo(path);
     }
 
     /**
@@ -150,8 +155,7 @@ public final class ContentManagerEJB implements ContentManager {
     @SuppressWarnings("unchecked")
     @Override
     public final Page eagerPageLookup(final ResourcePath path) {
-        final Resource resource = _qm.lookupRoot(
-            PredefinedResourceNames.CONTENT).get().navigateTo(path);
+        final Resource resource = _qm.findContentRoot().get().navigateTo(path);
         if (resource == null) {
             return null;
         }
@@ -171,7 +175,7 @@ public final class ContentManagerEJB implements ContentManager {
      */
     @Override
     public final Folder lookupRoot() {
-        return _qm.lookupRoot(PredefinedResourceNames.CONTENT).get();
+        return _qm.findContentRoot().get();
     }
 
 
