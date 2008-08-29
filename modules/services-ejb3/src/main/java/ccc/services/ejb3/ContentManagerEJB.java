@@ -12,8 +12,8 @@
 
 package ccc.services.ejb3;
 
-import static javax.ejb.TransactionAttributeType.REQUIRED;
-import static javax.persistence.PersistenceContextType.EXTENDED;
+import static javax.ejb.TransactionAttributeType.*;
+import static javax.persistence.PersistenceContextType.*;
 
 import java.util.Map;
 import java.util.UUID;
@@ -105,7 +105,7 @@ public class ContentManagerEJB implements ContentManager {
     @Override
     public final void createRoot() {
         try {
-            new Queries().lookupRoot(_em, PredefinedResourceNames.CONTENT);
+            new Queries(_em).lookupRoot(PredefinedResourceNames.CONTENT);
         } catch (final NoResultException e) {
             _em.persist(new Folder(PredefinedResourceNames.CONTENT));
         }
@@ -123,8 +123,8 @@ public class ContentManagerEJB implements ContentManager {
     @Override
     public final <T extends Resource> T lookup(final ResourcePath path) {
         return
-            (T) new Queries().lookupRoot(
-                _em, PredefinedResourceNames.CONTENT).navigateTo(path);
+            (T) new Queries(_em).lookupRoot(
+                PredefinedResourceNames.CONTENT).navigateTo(path);
     }
 
     /**
@@ -142,15 +142,15 @@ public class ContentManagerEJB implements ContentManager {
     @SuppressWarnings("unchecked")
     @Override
     public final Page eagerPageLookup(final ResourcePath path) {
-        Resource resource = new Queries().lookupRoot(
-            _em, PredefinedResourceNames.CONTENT).navigateTo(path);
+        final Resource resource = new Queries(_em).lookupRoot(
+            PredefinedResourceNames.CONTENT).navigateTo(path);
         if (resource == null) {
             return null;
         }
         if (resource.type() != ResourceType.PAGE) {
             throw new CCCException("Id does not belong to a page.");
         }
-        Page p = resource.as(Page.class);
+        final Page p = resource.as(Page.class);
         p.paragraphs().size();
         if (p.displayTemplateName() != null) {
             p.displayTemplateName().body();
@@ -163,7 +163,7 @@ public class ContentManagerEJB implements ContentManager {
      */
     @Override
     public final Folder lookupRoot() {
-        return new Queries().lookupRoot(_em, PredefinedResourceNames.CONTENT);
+        return new Queries(_em).lookupRoot(PredefinedResourceNames.CONTENT);
     }
 
 

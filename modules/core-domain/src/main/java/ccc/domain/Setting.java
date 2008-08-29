@@ -24,7 +24,7 @@ public class Setting extends Entity {
     /** serialVersionUID : long. */
     private static final long serialVersionUID = 1669421605591024452L;
 
-    private String _name;
+    private Name _name;
     private String _value;
 
     /**
@@ -33,8 +33,8 @@ public class Setting extends Entity {
      * @param name The name of this setting.
      * @param value The value of this setting.
      */
-    public Setting(final String name, final String value) {
-        DBC.require().notEmpty(name);
+    public Setting(final Name name, final String value) {
+        DBC.require().notNull(name);
         _name = name;
         value(value);
     }
@@ -44,7 +44,7 @@ public class Setting extends Entity {
      *
      * @return The name, as a string.
      */
-    public final String name() {
+    public final Name name() {
         return _name;
     }
 
@@ -67,4 +67,12 @@ public class Setting extends Entity {
         _value = value;
     }
 
+    /**
+     * Valid setting names.
+     *
+     * @author Civic Computing Ltd.
+     */
+    public static enum Name {
+        /** CONTENT_ROOT_FOLDER_ID : Name. */
+        CONTENT_ROOT_FOLDER_ID}
 }

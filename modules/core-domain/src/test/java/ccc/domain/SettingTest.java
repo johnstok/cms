@@ -12,6 +12,7 @@
 package ccc.domain;
 
 import junit.framework.TestCase;
+import ccc.domain.Setting.Name;
 
 
 /**
@@ -30,13 +31,13 @@ public final class SettingTest extends TestCase {
 
         // ACT
         try {
-            new Setting("", null);
+            new Setting(Name.CONTENT_ROOT_FOLDER_ID, null);
             fail("Empty name should be rejected.");
 
         // ASSERT
         } catch (final IllegalArgumentException e) {
             assertEquals(
-                "Specified string must have length > 0.",
+                "Specified value may not be NULL.",
                 e.getMessage());
         }
     }
@@ -56,7 +57,7 @@ public final class SettingTest extends TestCase {
         // ASSERT
         } catch (final IllegalArgumentException e) {
             assertEquals(
-                "Specified string may not be NULL.",
+                "Specified value may not be NULL.",
                 e.getMessage());
         }
     }
@@ -70,7 +71,7 @@ public final class SettingTest extends TestCase {
 
         // ACT
         try {
-            new Setting("a", null);
+            new Setting(Name.CONTENT_ROOT_FOLDER_ID, null);
             fail("NULL value should be rejected.");
 
         // ASSERT
@@ -87,7 +88,7 @@ public final class SettingTest extends TestCase {
     public void testAccessors() {
 
         // ARRANGE
-        final String name = "foo";
+        final Name name = Name.CONTENT_ROOT_FOLDER_ID;
         final String value = "bar";
 
         // ACT
@@ -104,7 +105,7 @@ public final class SettingTest extends TestCase {
     public void testValueMutator() {
 
         // ARRANGE
-        final String name = "foo";
+        final Name name = Name.CONTENT_ROOT_FOLDER_ID;
         final String value = "bar";
         final Setting s = new Setting(name, value);
 
@@ -122,9 +123,9 @@ public final class SettingTest extends TestCase {
     public void testValueMutatorRejectsNull() {
 
         // ARRANGE
-        final String name = "foo";
+        final Name name = Name.CONTENT_ROOT_FOLDER_ID;
         final String value = "bar";
-        final Setting s = new Setting(name, value);
+        final Setting s = new Setting(Name.CONTENT_ROOT_FOLDER_ID, value);
 
         // ACT
         try {
