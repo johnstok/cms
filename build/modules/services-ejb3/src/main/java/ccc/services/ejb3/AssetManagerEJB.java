@@ -11,8 +11,8 @@
  */
 package ccc.services.ejb3;
 
-import static javax.ejb.TransactionAttributeType.REQUIRED;
-import static javax.persistence.PersistenceContextType.EXTENDED;
+import static javax.ejb.TransactionAttributeType.*;
+import static javax.persistence.PersistenceContextType.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -81,8 +81,8 @@ public class AssetManagerEJB implements AssetManager {
     @Override
     public void createRoot() {
         try {
-            new Queries().lookupRoot(_entityManager,
-                                     PredefinedResourceNames.ASSETS);
+            new Queries(_entityManager)
+                .lookupRoot(PredefinedResourceNames.ASSETS);
         } catch (final NoResultException e) {
             final Folder root = new Folder(PredefinedResourceNames.ASSETS);
             final Folder templates = new Folder(new ResourceName("templates"));
@@ -133,8 +133,8 @@ public class AssetManagerEJB implements AssetManager {
     private Folder templatesFolder() {
 
         final Folder assetRoot =
-            new Queries().lookupRoot(_entityManager,
-                PredefinedResourceNames.ASSETS);
+            new Queries(_entityManager)
+                .lookupRoot(PredefinedResourceNames.ASSETS);
         final Folder templates =
             assetRoot
             .navigateTo(new ResourcePath("/templates/"));
@@ -148,8 +148,7 @@ public class AssetManagerEJB implements AssetManager {
     public void createFile(final File file, final String path) {
         _entityManager.persist(file.fileData());
         _entityManager.persist(file);
-        Folder folder = (Folder) new Queries().lookupRoot(
-            _entityManager,
+        final Folder folder = (Folder) new Queries(_entityManager).lookupRoot(
             PredefinedResourceNames.CONTENT).navigateTo(new ResourcePath(path));
         folder.add(file);
     }
