@@ -11,27 +11,20 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.domain.PredefinedResourceNames.ASSETS;
-import static ccc.services.ejb3.Queries.RESOURCE_BY_URL;
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
+import static ccc.domain.PredefinedResourceNames.*;
+import static org.easymock.EasyMock.*;
 
 import java.sql.SQLException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 
 import junit.framework.TestCase;
 
 import org.easymock.Capture;
 import org.hibernate.lob.BlobImpl;
 
+import ccc.commons.Maybe;
 import ccc.domain.File;
 import ccc.domain.FileData;
 import ccc.domain.Folder;
@@ -40,6 +33,7 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
 import ccc.services.AssetManager;
+import ccc.services.QueryManager;
 
 
 /**
@@ -61,20 +55,20 @@ public final class AssetManagerEJBTest extends TestCase {
         assetRoot.add(templateFolder);
 
         final EntityManager em = createStrictMock(EntityManager.class);
-        expect(em.createNamedQuery(Queries.RESOURCE_BY_URL)).andReturn(
+        expect(em.createNamedQuery(QueryManagerEJB.RESOURCE_BY_URL)).andReturn(
             new QueryAdaptor() {
                 /**  {@inheritDoc} */ @Override
                 public Object getSingleResult() { return assetRoot; }
             });
         em.persist(t);
-        expect(em.createNamedQuery(Queries.RESOURCE_BY_URL)).andReturn(
+        expect(em.createNamedQuery(QueryManagerEJB.RESOURCE_BY_URL)).andReturn(
             new QueryAdaptor() {
                 /**  {@inheritDoc} */ @Override
                 public Object getSingleResult() { return assetRoot; }
             });
         replay(em);
 
-        final AssetManager am = new AssetManagerEJB(em);
+        final AssetManager am = new AssetManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
         final Template created = am.createOrRetrieve(t);
@@ -102,14 +96,14 @@ public final class AssetManagerEJBTest extends TestCase {
         templateFolder.add(expected);
 
         final EntityManager em = createStrictMock(EntityManager.class);
-        expect(em.createNamedQuery(Queries.RESOURCE_BY_URL)).andReturn(
+        expect(em.createNamedQuery(QueryManagerEJB.RESOURCE_BY_URL)).andReturn(
             new QueryAdaptor() {
                 /**  {@inheritDoc} */ @Override
                 public Object getSingleResult() { return assetRoot; }
             });
         replay(em);
 
-        final AssetManager am = new AssetManagerEJB(em);
+        final AssetManager am = new AssetManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
         final List<Template> templates = am.lookupTemplates();
@@ -130,7 +124,7 @@ public final class AssetManagerEJBTest extends TestCase {
         final EntityManager em = createMock(EntityManager.class);
         expect(em.find(Resource.class, t.id())).andReturn(t);
         replay(em);
-        final AssetManager am = new AssetManagerEJB(em);
+        final AssetManager am = new AssetManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
         final Template actual = am.lookup(t.id());
@@ -152,7 +146,7 @@ public final class AssetManagerEJBTest extends TestCase {
         final Template t = new Template("title", "description", "body");
 
         final EntityManager em = createMock(EntityManager.class);
-        expect(em.createNamedQuery(Queries.RESOURCE_BY_URL)).andReturn(
+        expect(em.createNamedQuery(QueryManagerEJB.RESOURCE_BY_URL)).andReturn(
             new QueryAdaptor() {
                 /** @see ccc.services.ejb3.QueryAdaptor#getSingleResult() */
                 @Override
@@ -161,7 +155,8 @@ public final class AssetManagerEJBTest extends TestCase {
         em.persist(t);
         replay(em);
 
-        final AssetManager am = new AssetManagerEJB(em);
+        final AssetManager am =
+            new AssetManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
         am.createDisplayTemplate(t);
@@ -178,22 +173,25 @@ public final class AssetManagerEJBTest extends TestCase {
     public void testCreateRoot() {
 
         // ARRANGE
+        final QueryManager qm = createStrictMock(QueryManager.class);
+        expect(qm.lookupRoot(PredefinedResourceNames.ASSETS))
+            .andReturn(new Maybe<Folder>());
+        replay(qm);
+
         final Capture<Folder> assetsRoot = new Capture<Folder>();
         final EntityManager em = createStrictMock(EntityManager.class);
-        expect(em.createNamedQuery(RESOURCE_BY_URL))
-            .andThrow(new NoResultException());
         em.persist(capture(assetsRoot));
         em.persist(isA(Folder.class));
         replay(em);
 
 
-        final AssetManager am = new AssetManagerEJB(em);
+        final AssetManager am = new AssetManagerEJB(em, qm);
 
         // ACT
         am.createRoot();
 
         // VERIFY
-        verify(em);
+        verify(qm, em);
         assertEquals(ASSETS, assetsRoot.getValue().name());
         assertEquals(
             "templates",
@@ -220,7 +218,7 @@ public final class AssetManagerEJBTest extends TestCase {
         final EntityManager em = createMock(EntityManager.class);
         em.persist(fileData);
         em.persist(file);
-        expect(em.createNamedQuery(Queries.RESOURCE_BY_URL)).andReturn(
+        expect(em.createNamedQuery(QueryManagerEJB.RESOURCE_BY_URL)).andReturn(
             new QueryAdaptor() {
                 /** @see ccc.services.ejb3.QueryAdaptor#getSingleResult() */
                 @Override
@@ -228,7 +226,7 @@ public final class AssetManagerEJBTest extends TestCase {
             });
         replay(em);
 
-        final AssetManager am = new AssetManagerEJB(em);
+        final AssetManager am = new AssetManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
         am.createFile(file, "/");

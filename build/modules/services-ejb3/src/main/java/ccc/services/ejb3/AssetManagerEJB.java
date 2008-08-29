@@ -22,9 +22,9 @@ import javax.ejb.Remote;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
+import ccc.commons.Maybe;
 import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.PredefinedResourceNames;
@@ -33,6 +33,7 @@ import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.Template;
 import ccc.services.AssetManager;
+import ccc.services.QueryManager;
 
 
 /**
@@ -44,12 +45,16 @@ import ccc.services.AssetManager;
 @TransactionAttribute(REQUIRED)
 @Remote(AssetManager.class)
 @Local(AssetManager.class)
-public class AssetManagerEJB implements AssetManager {
+public final class AssetManagerEJB implements AssetManager {
 
     @PersistenceContext(
         unitName = "ccc-persistence",
         type     = EXTENDED)
     private EntityManager _entityManager;
+
+
+    @javax.annotation.Resource(mappedName="QueryManagerEJB/local")
+    private QueryManager _qm;
 
     /**
      * Constructor.
@@ -61,9 +66,12 @@ public class AssetManagerEJB implements AssetManager {
      * Constructor.
      *
      * @param entityManager A JPA entity manager.
+     * @param queryManager A CCC query manager.
      */
-    AssetManagerEJB(final EntityManager entityManager) {
+    AssetManagerEJB(final EntityManager entityManager,
+                    final QueryManager queryManager) {
         _entityManager = entityManager;
+        _qm = queryManager;
     }
 
     /**
@@ -80,10 +88,10 @@ public class AssetManagerEJB implements AssetManager {
      */
     @Override
     public void createRoot() {
-        try {
-            new Queries(_entityManager)
-                .lookupRoot(PredefinedResourceNames.ASSETS);
-        } catch (final NoResultException e) {
+        final Maybe<Folder> assetRoot =
+            _qm.lookupRoot(PredefinedResourceNames.ASSETS);
+
+        if (!assetRoot.isPresent()) {
             final Folder root = new Folder(PredefinedResourceNames.ASSETS);
             final Folder templates = new Folder(new ResourceName("templates"));
             _entityManager.persist(templates);
@@ -133,8 +141,7 @@ public class AssetManagerEJB implements AssetManager {
     private Folder templatesFolder() {
 
         final Folder assetRoot =
-            new Queries(_entityManager)
-                .lookupRoot(PredefinedResourceNames.ASSETS);
+            _qm.lookupRoot(PredefinedResourceNames.ASSETS).get();
         final Folder templates =
             assetRoot
             .navigateTo(new ResourcePath("/templates/"));
@@ -148,8 +155,8 @@ public class AssetManagerEJB implements AssetManager {
     public void createFile(final File file, final String path) {
         _entityManager.persist(file.fileData());
         _entityManager.persist(file);
-        final Folder folder = (Folder) new Queries(_entityManager).lookupRoot(
-            PredefinedResourceNames.CONTENT).navigateTo(new ResourcePath(path));
+        final Folder folder = (Folder) _qm.lookupRoot(
+            PredefinedResourceNames.CONTENT).get().navigateTo(new ResourcePath(path));
         folder.add(file);
     }
 

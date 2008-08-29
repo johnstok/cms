@@ -12,15 +12,19 @@
 package ccc.services.ejb3;
 
 import static javax.ejb.TransactionAttributeType.*;
+import static javax.persistence.PersistenceContextType.*;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import ccc.commons.DBC;
+import ccc.commons.Maybe;
 import ccc.domain.Folder;
 import ccc.domain.ResourceName;
 import ccc.domain.Setting;
@@ -29,7 +33,7 @@ import ccc.services.QueryManager;
 
 
 /**
- * Queries used by the business layer.
+ * QueryManagerEJB used by the business layer.
  *
  * @author Civic Computing Ltd.
  */
@@ -37,33 +41,43 @@ import ccc.services.QueryManager;
 @TransactionAttribute(REQUIRED)
 @Remote(QueryManager.class)
 @Local(QueryManager.class)
-public final class Queries implements QueryManager {
+public final class QueryManagerEJB implements QueryManager {
 
-    private final EntityManager _em;
+    @PersistenceContext(
+        unitName = "ccc-persistence",
+        type     = EXTENDED)
+    private EntityManager _em;
+
+    /**
+     * Constructor.
+     */
+    @SuppressWarnings("unused")
+    private QueryManagerEJB() { /* NO-OP */ }
+
 
     /**
      * Constructor.
      * @param em The entity manager used to perform queries.
      */
-    Queries(final EntityManager em) {
+    QueryManagerEJB(final EntityManager em) {
         DBC.require().notNull(em);
         _em = em;
     }
 
-    /**
-     * Look up the root folder for the content hierarchy.
-     *
-     * @param name The name of the resource.
-     * @return The folder with the specified name.
-     */
-    protected Folder lookupRoot(final ResourceName name) {
+    /** {@inheritDoc} */
+    public Maybe<Folder> lookupRoot(final ResourceName name) {
 
         final Query q = _em.createNamedQuery(RESOURCE_BY_URL);
         q.setParameter("name", name);
-        final Object singleResult = q.getSingleResult();
 
-        final Folder folder = Folder.class.cast(singleResult);
-        return folder;
+        try {
+            final Object singleResult = q.getSingleResult();
+            final Folder folder = Folder.class.cast(singleResult);
+            return new Maybe<Folder>(folder);
+        } catch (final NoResultException e) {
+            return new Maybe<Folder>();
+        }
+
     }
 
     /** {@inheritDoc} */

@@ -23,9 +23,9 @@ import javax.ejb.Remote;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
+import ccc.commons.Maybe;
 import ccc.domain.CCCException;
 import ccc.domain.Folder;
 import ccc.domain.Page;
@@ -36,6 +36,7 @@ import ccc.domain.ResourcePath;
 import ccc.domain.ResourceType;
 import ccc.domain.Template;
 import ccc.services.ContentManager;
+import ccc.services.QueryManager;
 
 
 /**
@@ -47,12 +48,15 @@ import ccc.services.ContentManager;
 @TransactionAttribute(REQUIRED)
 @Remote(ContentManager.class)
 @Local(ContentManager.class)
-public class ContentManagerEJB implements ContentManager {
+public final class ContentManagerEJB implements ContentManager {
 
     @PersistenceContext(
         unitName = "ccc-persistence",
         type     = EXTENDED)
     private EntityManager _em;
+
+    @javax.annotation.Resource(mappedName="QueryManagerEJB/local")
+    private QueryManager _qm;
 
     /**
      * Constructor.
@@ -64,9 +68,12 @@ public class ContentManagerEJB implements ContentManager {
      * Constructor.
      *
      * @param entityManager A JPA entity manager.
+     * @param queryManager A CCC QueryManager.
      */
-    public ContentManagerEJB(final EntityManager entityManager) {
+    ContentManagerEJB(final EntityManager entityManager,
+                             final QueryManager queryManager) {
         _em = entityManager;
+        _qm = queryManager;
     }
 
 
@@ -104,9 +111,10 @@ public class ContentManagerEJB implements ContentManager {
      */
     @Override
     public final void createRoot() {
-        try {
-            new Queries(_em).lookupRoot(PredefinedResourceNames.CONTENT);
-        } catch (final NoResultException e) {
+        final Maybe<Folder> contentRoot =
+            _qm.lookupRoot(PredefinedResourceNames.CONTENT);
+
+        if (!contentRoot.isPresent()) {
             _em.persist(new Folder(PredefinedResourceNames.CONTENT));
         }
     }
@@ -123,8 +131,8 @@ public class ContentManagerEJB implements ContentManager {
     @Override
     public final <T extends Resource> T lookup(final ResourcePath path) {
         return
-            (T) new Queries(_em).lookupRoot(
-                PredefinedResourceNames.CONTENT).navigateTo(path);
+            (T) _qm.lookupRoot(
+                PredefinedResourceNames.CONTENT).get().navigateTo(path);
     }
 
     /**
@@ -142,8 +150,8 @@ public class ContentManagerEJB implements ContentManager {
     @SuppressWarnings("unchecked")
     @Override
     public final Page eagerPageLookup(final ResourcePath path) {
-        final Resource resource = new Queries(_em).lookupRoot(
-            PredefinedResourceNames.CONTENT).navigateTo(path);
+        final Resource resource = _qm.lookupRoot(
+            PredefinedResourceNames.CONTENT).get().navigateTo(path);
         if (resource == null) {
             return null;
         }
@@ -163,7 +171,7 @@ public class ContentManagerEJB implements ContentManager {
      */
     @Override
     public final Folder lookupRoot() {
-        return new Queries(_em).lookupRoot(PredefinedResourceNames.CONTENT);
+        return _qm.lookupRoot(PredefinedResourceNames.CONTENT).get();
     }
 
 
