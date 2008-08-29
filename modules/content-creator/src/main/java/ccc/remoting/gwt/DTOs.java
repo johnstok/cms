@@ -13,7 +13,14 @@ package ccc.remoting.gwt;
 
 import java.util.UUID;
 
+import ccc.domain.Folder;
+import ccc.domain.Page;
+import ccc.domain.Resource;
 import ccc.domain.Template;
+import ccc.view.contentcreator.dto.DTO;
+import ccc.view.contentcreator.dto.FolderDTO;
+import ccc.view.contentcreator.dto.PageDTO;
+import ccc.view.contentcreator.dto.ResourceDTO;
 import ccc.view.contentcreator.dto.TemplateDTO;
 
 
@@ -62,6 +69,45 @@ public final class DTOs {
             template.body());
         dto.setId(template.id().toString());
         return dto;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param resource
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static <T extends DTO> T dtoFrom(final Resource resource) {
+
+        switch (resource.type()) {
+            case FOLDER:
+                final Folder f = resource.as(Folder.class);
+                return (T) new FolderDTO(
+                    f.id().toString(),
+                    f.type().toString(),
+                    f.name().toString(),
+                    f.title(),
+                    f.folderCount()
+                );
+
+            case PAGE:
+                final Page p = resource.as(Page.class);
+                return (T) new PageDTO(
+                    p.id().toString(),
+                    p.type().toString(),
+                    p.name().toString(),
+                    p.title()
+                );
+
+            default:
+                return (T) new ResourceDTO(
+                    resource.id().toString(),
+                    resource.type().toString(),
+                    resource.name().toString(),
+                    resource.title()
+                );
+        }
     }
 
 }

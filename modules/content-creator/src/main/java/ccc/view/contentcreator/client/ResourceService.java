@@ -16,7 +16,9 @@ import java.util.List;
 import java.util.Map;
 
 import ccc.view.contentcreator.dto.DTO;
+import ccc.view.contentcreator.dto.FolderDTO;
 import ccc.view.contentcreator.dto.OptionDTO;
+import ccc.view.contentcreator.dto.ResourceDTO;
 import ccc.view.contentcreator.dto.TemplateDTO;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -31,9 +33,9 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("resource")
 public interface ResourceService extends RemoteService {
 
-    String getContentRoot();
+    FolderDTO getContentRoot();
 
-    String getResource(String absolutePath);
+    FolderDTO getResource(String absolutePath);
 
     void saveContent(String id, String title, Map<String, String> paragraphs);
 
@@ -44,4 +46,8 @@ public interface ResourceService extends RemoteService {
     List<OptionDTO<? extends DTO>> listOptions();
 
     void updateOptions(List<OptionDTO<? extends DTO>> options);
+
+    List<FolderDTO> getFolderChildren(FolderDTO folder);
+
+    List<ResourceDTO> getChildren(FolderDTO folder);
 }

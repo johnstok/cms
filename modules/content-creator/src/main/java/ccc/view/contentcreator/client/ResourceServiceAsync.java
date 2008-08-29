@@ -15,7 +15,9 @@ import java.util.List;
 import java.util.Map;
 
 import ccc.view.contentcreator.dto.DTO;
+import ccc.view.contentcreator.dto.FolderDTO;
 import ccc.view.contentcreator.dto.OptionDTO;
+import ccc.view.contentcreator.dto.ResourceDTO;
 import ccc.view.contentcreator.dto.TemplateDTO;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -26,7 +28,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @author Civic Computing Ltd
  */
 public interface ResourceServiceAsync {
-    void getContentRoot(AsyncCallback<String> callback);
+    void getContentRoot(AsyncCallback<? extends DTO> callback);
 
     /**
      * TODO: Add a description of this method.
@@ -34,7 +36,7 @@ public interface ResourceServiceAsync {
      * @param absolutePath
      * @param callback
      */
-    void getResource(String absolutePath, AsyncCallback<String> callback);
+    void getResource(String absolutePath, AsyncCallback<? extends DTO> callback);
 
     void saveContent(String id, String title, Map<String, String> paragraphs, AsyncCallback<Void> callback);
 
@@ -45,4 +47,14 @@ public interface ResourceServiceAsync {
     void listOptions(AsyncCallback<List<OptionDTO<? extends DTO>>> callback);
 
     void updateOptions(List<OptionDTO<? extends DTO>> options, AsyncCallback<Void> callback);
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param id
+     * @param callback
+     */
+    void getFolderChildren(FolderDTO folder, AsyncCallback<List<FolderDTO>> callback);
+
+    void getChildren(FolderDTO folder, AsyncCallback<List<ResourceDTO>> callback);
 }

@@ -1,0 +1,301 @@
+/*-----------------------------------------------------------------------------
+ * Copyright (c) 2008 Civic Computing Ltd.
+ * All rights reserved.
+ *
+ * Revision      $Rev$
+ * Modified by   $Author$
+ * Modified on   $Date$
+ *
+ * Changes: see subversion log.
+ *-----------------------------------------------------------------------------
+ */
+package ccc.view.contentcreator.dialogs;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import ccc.view.contentcreator.client.Application;
+import ccc.view.contentcreator.client.ResourceServiceAsync;
+import ccc.view.contentcreator.dto.FolderDTO;
+import ccc.view.contentcreator.dto.ResourceDTO;
+
+import com.extjs.gxt.ui.client.Events;
+import com.extjs.gxt.ui.client.Style.LayoutRegion;
+import com.extjs.gxt.ui.client.Style.Scroll;
+import com.extjs.gxt.ui.client.Style.SelectionMode;
+import com.extjs.gxt.ui.client.binder.TableBinder;
+import com.extjs.gxt.ui.client.binder.TreeBinder;
+import com.extjs.gxt.ui.client.data.BaseTreeLoader;
+import com.extjs.gxt.ui.client.data.ModelData;
+import com.extjs.gxt.ui.client.data.ModelStringProvider;
+import com.extjs.gxt.ui.client.data.RpcProxy;
+import com.extjs.gxt.ui.client.data.TreeLoader;
+import com.extjs.gxt.ui.client.event.BaseEvent;
+import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.event.MenuEvent;
+import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.event.TreeEvent;
+import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.store.TreeStore;
+import com.extjs.gxt.ui.client.util.Margins;
+import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.LayoutContainer;
+import com.extjs.gxt.ui.client.widget.layout.AccordionLayout;
+import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
+import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
+import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+import com.extjs.gxt.ui.client.widget.menu.Menu;
+import com.extjs.gxt.ui.client.widget.menu.MenuItem;
+import com.extjs.gxt.ui.client.widget.table.Table;
+import com.extjs.gxt.ui.client.widget.table.TableColumn;
+import com.extjs.gxt.ui.client.widget.table.TableColumnModel;
+import com.extjs.gxt.ui.client.widget.table.TableItem;
+import com.extjs.gxt.ui.client.widget.tree.Tree;
+import com.extjs.gxt.ui.client.widget.tree.TreeItem;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+
+
+/**
+ * TODO Add Description for this type.
+ *
+ * @author Civic Computing Ltd.
+ */
+public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
+
+    private final Application _app;
+    private final ListStore<ResourceDTO> _detailsStore =
+        new ListStore<ResourceDTO>();
+    private final LayoutContainer _view;
+    private final Tree _contentTree;
+
+    public GXTResourceExplorerPanel(final Application app) {
+        _app = app;
+        final ResourceServiceAsync rsa = _app.lookupService();
+
+        _contentTree = createResourceTree(rsa);
+        _contentTree.addListener(
+            Events.SelectionChange,
+            new Listener<BaseEvent>(){
+                public void handleEvent(final BaseEvent be) {
+                    final TreeEvent te = (TreeEvent) be;
+                    final FolderDTO f =
+                        (FolderDTO) te.tree.getSelectedItem().getModel();
+
+                    rsa.getChildren(f, new AsyncCallback<List<ResourceDTO>>(){
+
+                        public void onSuccess(final List<ResourceDTO> result) {
+                            _detailsStore.removeAll();
+                            _detailsStore.add(result);
+                        }
+
+                        public void onFailure(final Throwable arg0) {
+                            _app.alert("Error looking up content root: "+arg0);
+                        }});
+                }});
+
+        _view = createLeftRightPane(
+            createResourceNavigator(),
+            createFolderViewer());
+
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
+    private ContentPanel createFolderViewer() {
+        final ContentPanel left = new ContentPanel();
+        left.setHeading("Resource Details");
+        left.setLayout(new FitLayout());
+
+         final List<TableColumn> columns = new ArrayList<TableColumn>();
+
+         TableColumn col = new TableColumn("name", "Name", 180);
+         col.setMinWidth(75);
+         col.setMaxWidth(300);
+         columns.add(col);
+
+         col = new TableColumn("title", "Title", 75);
+         columns.add(col);
+
+         final TableColumnModel cm = new TableColumnModel(columns);
+
+         final Table tbl = new Table(cm);
+              tbl.setSelectionMode(SelectionMode.SINGLE);
+              tbl.setHorizontalScroll(true);
+              tbl.setBorders(false);
+
+
+          final TableBinder<ResourceDTO> binder =
+              new TableBinder<ResourceDTO>(tbl, _detailsStore){
+                /** {@inheritDoc} */
+                @Override
+                protected TableItem createItem(ResourceDTO model) {
+                    TableItem ti = super.createItem(model);
+                    ti.setId(model.getName());
+                    return ti;
+                }
+              };
+          binder.init();
+
+          final Menu contextMenu = new Menu();
+          contextMenu.setWidth(130);
+
+          final MenuItem insert = new MenuItem();
+          insert.setText("Insert Item");
+          insert.addSelectionListener(new SelectionListener<MenuEvent>() {
+            @Override
+         public void componentSelected(final MenuEvent ce) {
+              final TableItem item = tbl.getSelectedItem();
+              if (item != null) {
+                _app.alert("Clicked: "+item.getModel());
+              }
+            }
+          });
+          contextMenu.add(insert);
+
+          tbl.setContextMenu(contextMenu);
+
+         left.add(tbl);
+
+        return left;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
+    private LayoutContainer createResourceNavigator() {
+
+         final ContentPanel cp = new ContentPanel();
+         cp.setLayout(new AccordionLayout());
+         cp.setBodyBorder(false);
+         cp.setHeading("Resource Navigator");
+
+//         final ContentPanel assetsPanel = new ContentPanel();
+//         assetsPanel.setScrollMode(Scroll.AUTO);
+//         assetsPanel.setHeading("Assets");
+//         assetsPanel.add(_assetsTree);
+//         cp.add(assetsPanel);
+
+         final ContentPanel contentPanel = new ContentPanel();
+         contentPanel.setScrollMode(Scroll.AUTO);
+         contentPanel.setHeading("Content");
+         contentPanel.add(_contentTree);
+         cp.add(contentPanel);
+
+        return cp;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
+    private Tree createResourceTree(final ResourceServiceAsync rsa) {
+
+        final RpcProxy<FolderDTO, List<FolderDTO>> proxy =
+            new RpcProxy<FolderDTO, List<FolderDTO>>() {
+                @Override
+                protected void load(FolderDTO loadConfig,
+                                    AsyncCallback<List<FolderDTO>> callback) {
+                    rsa.getFolderChildren(loadConfig, callback);
+                }
+            };
+
+        final TreeLoader loader =
+            new BaseTreeLoader(proxy) {
+                @Override
+                public boolean hasChildren(ModelData parent) {
+                    return ((FolderDTO) parent).getFolderCount() > 0;
+                }
+            };
+
+        final TreeStore<FolderDTO> store = new TreeStore<FolderDTO>(loader);
+
+        final Tree tree = new Tree();
+
+        final TreeBinder<FolderDTO> binder = new TreeBinder<FolderDTO>(tree, store){
+            /** {@inheritDoc} */
+            @Override
+            protected void update(TreeItem item, FolderDTO model) {
+                super.update(item, model);
+                item.setId(model.getName());
+            }
+        };
+
+        binder.setIconProvider(
+            new ModelStringProvider<FolderDTO>() {
+
+              public String getStringValue(final FolderDTO model, final String property) {
+                return (null==model) ?
+                    null
+                    :
+                 "images/gxt/icons/folder.gif";
+              }
+         });
+
+        rsa.getContentRoot(new AsyncCallback<FolderDTO>(){
+
+            public void onSuccess(final FolderDTO result) {
+                loader.load(result);
+            }
+
+            public void onFailure(final Throwable arg0) {
+                _app.alert("Error looking up content root: "+arg0);
+            }});
+
+        tree.setSelectionMode(SelectionMode.SINGLE);
+
+         final Menu contextMenu = new Menu();
+
+         final MenuItem uploadFile = new MenuItem();
+         uploadFile.setText(_app.constants().uploadFile());
+         uploadFile.addSelectionListener(new SelectionListener<MenuEvent>() {
+             @Override
+             public void componentSelected(final MenuEvent ce) {
+                 final FolderDTO item =
+                     (FolderDTO) tree.getSelectionModel().getSelectedItem().getModel();
+                 new UploadFileDialog(_app, "/", "/").center();
+             }
+         });
+
+         contextMenu.add(uploadFile);
+         tree.setContextMenu(contextMenu);
+
+        return tree;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param left
+     * @param right
+     * @return
+     */
+    private LayoutContainer createLeftRightPane(final LayoutContainer left,
+                                                final LayoutContainer right) {
+
+        final LayoutContainer lc = new LayoutContainer();
+        lc.setLayout(new BorderLayout());
+
+         final BorderLayoutData westData = new BorderLayoutData(LayoutRegion.WEST, 400);
+         westData.setSplit(true);
+         westData.setCollapsible(true);
+         westData.setMargins(new Margins(5, 0, 5, 5));
+
+         final BorderLayoutData centerData = new BorderLayoutData(LayoutRegion.CENTER);
+         centerData.setMargins(new Margins(5));
+
+         lc.add(left, westData);
+         lc.add(right, centerData);
+        return lc;
+    }
+
+    /** {@inheritDoc} */
+    public LayoutContainer view() {
+        return _view;
+    }
+}

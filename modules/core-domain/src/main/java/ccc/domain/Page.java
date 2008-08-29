@@ -20,7 +20,6 @@ import java.util.TreeMap;
 
 import ccc.commons.AlphanumComparator;
 import ccc.commons.DBC;
-import ccc.commons.JSON;
 
 
 /**
@@ -100,22 +99,6 @@ public final class Page extends Resource {
     public void deleteParagraph(final String paragraphKey) {
         DBC.require().notEmpty(paragraphKey);
         _content.remove(paragraphKey);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toJSON() {
-        return
-            JSON.object()
-                .add("id", id().toString())
-                .add("title", title())
-                .add("displayTemplateName",
-                     (null==displayTemplateName())
-                         ? null : displayTemplateName().name().toString())
-                .add("paragraphs", _content)
-                .toString();
     }
 
     /**

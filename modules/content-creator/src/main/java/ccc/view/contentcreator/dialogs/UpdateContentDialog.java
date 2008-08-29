@@ -15,16 +15,14 @@ package ccc.view.contentcreator.dialogs;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.view.contentcreator.callbacks.JSONCallback;
 import ccc.view.contentcreator.client.Constants;
-import ccc.view.contentcreator.client.GwtApplication;
 import ccc.view.contentcreator.client.ResourceService;
 import ccc.view.contentcreator.client.ResourceServiceAsync;
+import ccc.view.contentcreator.dto.PageDTO;
 import ccc.view.contentcreator.widgets.RichTextToolbar;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -138,19 +136,16 @@ public class UpdateContentDialog extends DialogBox {
         paragraphsTabPanel.setSize("100%", "100%");
         titleTextBox.setWidth("100%");
 
-        final JSONCallback callback = new JSONCallback(new GwtApplication()) {
+        final AsyncCallback<PageDTO> callback = new AsyncCallback<PageDTO>() {
 
             /**
              * {@inheritDoc}
              */
-            @Override
-            public void onSuccess(final JSONValue jsonResult) {
+            public void onSuccess(final PageDTO jsonResult) {
 
-                content = jsonResult.isObject();
-                final String jsonTitle =
-                    content.get("title").isString().stringValue();
-                final JSONObject paragraphs =
-                    content.get("paragraphs").isObject();
+                final String jsonTitle = jsonResult.getTitle();
+                final Map<String, String> paragraphs =
+                    jsonResult.getParagraphs();
 
                 titleTextBox.setText(jsonTitle);
                 for (String key : paragraphs.keySet()) {
@@ -159,10 +154,7 @@ public class UpdateContentDialog extends DialogBox {
                     bodyRTA.setWidth("100%");
                     bodyRTA.setHeight("100%");
                     RichTextToolbar toolbar = new RichTextToolbar(bodyRTA);
-                    bodyRTA.setHTML(
-                        paragraphs
-                            .get(key).isObject()
-                            .get("body").isString().stringValue());
+                    bodyRTA.setHTML(paragraphs.get(key));
                     final VerticalPanel rtPanel = new VerticalPanel();
                     rtPanel.add(toolbar);
                     rtPanel.add(bodyRTA);
@@ -172,6 +164,11 @@ public class UpdateContentDialog extends DialogBox {
                 }
 
                 paragraphsTabPanel.selectTab(0);
+            }
+
+            public void onFailure(Throwable arg0) {
+
+                throw new UnsupportedOperationException("Method not implemented.");
             }
         };
 

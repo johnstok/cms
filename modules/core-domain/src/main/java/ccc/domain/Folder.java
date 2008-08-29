@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ccc.commons.DBC;
-import ccc.commons.JSON;
 
 
 /**
@@ -133,21 +132,6 @@ public final class Folder extends Resource {
             }
         }
         throw new CCCException("No entry '"+name+"' in folder '"+name()+"'");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toJSON() {
-        return
-            JSON.object()
-                .add("name", name().toString())
-                .add("displayTemplateName",
-                     (null==displayTemplateName())
-                         ? null : displayTemplateName().name().toString())
-                .add("entries", entryReferences())
-                .toString();
     }
 
     /**

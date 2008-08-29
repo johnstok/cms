@@ -17,15 +17,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.commons.JSON;
-
 
 /**
  * This class models a reference to a resource.
  *
  * @author Civic Computing Ltd
  */
-public class ResourceRef implements JSONable {
+public class ResourceRef {
 
     private ResourceName        _name;
     private UUID                _id;
@@ -64,26 +62,6 @@ public class ResourceRef implements JSONable {
      */
     public final UUID id() {
         return _id;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final String toJSON() {
-
-        final ccc.commons.JSON.Object jsonObject = JSON.object();
-
-        jsonObject
-            .add("name", _name.toString())
-            .add("id", _id.toString())
-            .add("type", _type.toString());
-
-        for (final Map.Entry<String, String> metadatum : _metadata.entrySet()) {
-            jsonObject.add(metadatum.getKey(), metadatum.getValue());
-        }
-
-        return jsonObject.toString();
     }
 
     /**

@@ -42,31 +42,4 @@ public final class ResourceRefTest extends TestCase {
         assertEquals(1, reference.metadata().size());
         assertEquals("2", reference.metadata().get("children-count"));
     }
-
-    /**
-     * Test.
-     */
-    public void testToJson() {
-
-        // ARRANGE
-        final ResourceRef reference =
-            new ResourceRef(
-                new ResourceName("foo"),
-                UUID.fromString("7842c70f-87d8-41da-bd58-f4e8adbaf5b8"),
-                ResourceType.FOLDER);
-        reference.addMetadata("children-count", String.valueOf(2));
-
-        // ACT
-        final String jsonString = reference.toJSON();
-
-        // ASSERT
-        assertEquals(
-            "{"
-            + "\"name\": \"foo\","
-            + "\"id\": \"7842c70f-87d8-41da-bd58-f4e8adbaf5b8\","
-            + "\"type\": \"FOLDER\","
-            + "\"children-count\": \"2\""
-            + "}",
-            jsonString);
-    }
 }

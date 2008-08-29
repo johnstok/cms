@@ -25,12 +25,15 @@ import ccc.commons.Registry;
 import ccc.domain.Folder;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
+import ccc.domain.ResourceType;
 import ccc.domain.Template;
 import ccc.services.AssetManager;
 import ccc.services.ContentManager;
 import ccc.view.contentcreator.client.ResourceService;
 import ccc.view.contentcreator.dto.DTO;
+import ccc.view.contentcreator.dto.FolderDTO;
 import ccc.view.contentcreator.dto.OptionDTO;
+import ccc.view.contentcreator.dto.ResourceDTO;
 import ccc.view.contentcreator.dto.TemplateDTO;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -67,8 +70,10 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     /**
      * {@inheritDoc}
      */
-    public String getContentRoot() {
-        return getResource("/");
+    public FolderDTO getContentRoot() {
+        final Resource resource =
+            contentManager().lookup(new ResourcePath("/"));
+        return DTOs.dtoFrom(resource);
     }
 
     /**
@@ -92,10 +97,10 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     /**
      * {@inheritDoc}
      */
-    public String getResource(final String absolutePath) {
+    public FolderDTO getResource(final String absolutePath) {
         final Resource resource =
-            contentManager().lookup(new ResourcePath(absolutePath));
-        return resource.toJSON();
+            contentManager().lookup(UUID.fromString(absolutePath));
+        return DTOs.dtoFrom(resource);
     }
 
     /**
@@ -168,5 +173,29 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
         if (defaultTemplate.hasChanged()) {
             setDefaultTemplate(defaultTemplate.getCurrentValue());
         }
+    }
+
+    /** {@inheritDoc} */
+    public List<FolderDTO> getFolderChildren(final FolderDTO folder) {
+        final Folder parent =
+            contentManager().lookup(UUID.fromString(folder.getId()));
+        final List<FolderDTO> children = new ArrayList<FolderDTO>();
+        for (final Resource r : parent.entries()) {
+            if (r.type() == ResourceType.FOLDER) {
+                children.add(DTOs.<FolderDTO>dtoFrom(r));
+            }
+        }
+        return children;
+    }
+
+    /** {@inheritDoc} */
+    public List<ResourceDTO> getChildren(final FolderDTO folder) {
+        final Folder parent =
+            contentManager().lookup(UUID.fromString(folder.getId()));
+        final List<ResourceDTO> children = new ArrayList<ResourceDTO>();
+        for (final Resource r : parent.entries()) {
+            children.add(DTOs.<ResourceDTO>dtoFrom(r));
+        }
+        return children;
     }
 }

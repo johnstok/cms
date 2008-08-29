@@ -19,6 +19,7 @@ import junit.framework.TestCase;
 
 /**
  * Tests for {@link ResourcePath}.
+ * TODO: Check for null input to constructor.
  *
  * @author Civic Computing Ltd
  */

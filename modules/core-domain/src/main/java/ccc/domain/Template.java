@@ -56,14 +56,6 @@ public class Template extends Resource {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final String toJSON() {
-        return "{}";
-    }
-
-    /**
      * Accessor for the template's description.
      *
      * @return The description as a string.

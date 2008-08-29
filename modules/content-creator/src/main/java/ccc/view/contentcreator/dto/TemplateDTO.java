@@ -11,7 +11,6 @@
  */
 package ccc.view.contentcreator.dto;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,13 +20,14 @@ import java.util.List;
  *
  * @author Civic Computing Ltd
  */
-public class TemplateDTO implements Serializable, DTO {
+public class TemplateDTO implements DTO {
 
     private String _title = "";
     private String _description = "";
     private String _body = "";
     private String _id = null;
 
+    @SuppressWarnings("unused")
     private TemplateDTO() { super(); }
 
     /**

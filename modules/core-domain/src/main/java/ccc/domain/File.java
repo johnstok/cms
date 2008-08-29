@@ -63,15 +63,6 @@ public class File extends Resource {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toJSON() {
-
-        throw new UnsupportedOperationException("Method not implemented.");
-    }
-
-    /**
      * Accessor for the file's description.
      *
      * @return The description as a string.

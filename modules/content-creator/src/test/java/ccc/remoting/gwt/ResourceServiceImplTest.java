@@ -16,6 +16,7 @@ import static org.easymock.EasyMock.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import junit.framework.TestCase;
 
@@ -23,7 +24,9 @@ import org.easymock.Capture;
 
 import ccc.commons.MapRegistry;
 import ccc.domain.Folder;
+import ccc.domain.Page;
 import ccc.domain.PredefinedResourceNames;
+import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.Template;
 import ccc.services.AssetManager;
@@ -31,7 +34,9 @@ import ccc.services.ContentManager;
 import ccc.services.adaptors.ContentManagerAdaptor;
 import ccc.view.contentcreator.client.ResourceService;
 import ccc.view.contentcreator.dto.DTO;
+import ccc.view.contentcreator.dto.FolderDTO;
 import ccc.view.contentcreator.dto.OptionDTO;
+import ccc.view.contentcreator.dto.ResourceDTO;
 import ccc.view.contentcreator.dto.TemplateDTO;
 
 
@@ -42,6 +47,62 @@ import ccc.view.contentcreator.dto.TemplateDTO;
  * @author Civic Computing Ltd
  */
 public final class ResourceServiceImplTest extends TestCase {
+
+    /**
+     * Test.
+     */
+    public void testGetChildren() {
+
+        // ARRANGE
+        final Folder parent = new Folder(new ResourceName("parent"));
+        parent.add(new Folder(new ResourceName("child")));
+        parent.add(new Page(new ResourceName("page")));
+        final FolderDTO parentDTO = DTOs.dtoFrom(parent);
+        final ContentManager cm = createStrictMock(ContentManager.class);
+        expect(cm.lookup(parent.id())).andReturn(parent);
+        replay(cm);
+
+        final ResourceService rs =
+            new ResourceServiceImpl(
+                new MapRegistry()
+                    .put("ContentManagerEJB/local", cm)
+            );
+
+        // ACT
+        final List<ResourceDTO> children = rs.getChildren(parentDTO);
+
+        // ASSERT
+        verify(cm);
+        assertEquals(2, children.size());
+    }
+
+    /**
+     * Test.
+     */
+    public void testGetFolderChildren() {
+
+        // ARRANGE
+        final Folder parent = new Folder(new ResourceName("parent"));
+        parent.add(new Folder(new ResourceName("child")));
+        parent.add(new Page(new ResourceName("page")));
+        final FolderDTO parentDTO = DTOs.dtoFrom(parent);
+        final ContentManager cm = createStrictMock(ContentManager.class);
+        expect(cm.lookup(parent.id())).andReturn(parent);
+        replay(cm);
+
+        final ResourceService rs =
+            new ResourceServiceImpl(
+                new MapRegistry()
+                    .put("ContentManagerEJB/local", cm)
+            );
+
+        // ACT
+        final List<FolderDTO> children = rs.getFolderChildren(parentDTO);
+
+        // ASSERT
+        verify(cm);
+        assertEquals(1, children.size());
+    }
 
     /**
      * Test.
@@ -132,6 +193,7 @@ public final class ResourceServiceImplTest extends TestCase {
     public void testGetContentRoot() {
 
         // ARRANGE
+        final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
         final ResourceServiceImpl resourceService =
             new ResourceServiceImpl(
                 new MapRegistry(
@@ -140,20 +202,46 @@ public final class ResourceServiceImplTest extends TestCase {
                     @SuppressWarnings("unchecked")
                     @Override
                     public Folder lookup(final ResourcePath path) {
-                        return
-                            new Folder(PredefinedResourceNames.CONTENT);
+                        return contentRoot;
                     }
             }));
 
         // ACT
-        final String jsonRoot = resourceService.getContentRoot();
+        final FolderDTO jsonRoot = resourceService.getContentRoot();
 
         // ASSERT
         assertEquals(
-            "{\"name\": \"content\"," +
-            "\"displayTemplateName\": \"null\"," +
-            "\"entries\": []}",
-            jsonRoot);
+            contentRoot.id().toString(),
+            jsonRoot.getId());
+    }
+
+    /**
+     * Test.
+     */
+    public void testGetResource() {
+
+        // ARRANGE
+        final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
+        final ResourceServiceImpl resourceService =
+            new ResourceServiceImpl(
+                new MapRegistry(
+                "ContentManagerEJB/local",
+                new ContentManagerAdaptor() {
+                    @SuppressWarnings("unchecked")
+                    @Override
+                    public Folder lookup(final UUID id) {
+                        return contentRoot;
+                    }
+            }));
+
+        // ACT
+        final FolderDTO jsonRoot =
+            resourceService.getResource(contentRoot.id().toString());
+
+        // ASSERT
+        assertEquals(
+            contentRoot.id().toString(),
+            jsonRoot.getId());
     }
 
     /**
