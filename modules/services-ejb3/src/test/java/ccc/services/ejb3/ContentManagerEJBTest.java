@@ -13,7 +13,7 @@
 package ccc.services.ejb3;
 
 import static ccc.domain.PredefinedResourceNames.*;
-import static ccc.services.ejb3.Queries.*;
+import static ccc.services.ejb3.QueryManagerEJB.*;
 import static org.easymock.EasyMock.*;
 
 import java.util.HashMap;
@@ -21,13 +21,13 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import junit.framework.TestCase;
 
 import org.easymock.Capture;
 
+import ccc.commons.Maybe;
 import ccc.domain.CCCException;
 import ccc.domain.Folder;
 import ccc.domain.Page;
@@ -39,6 +39,7 @@ import ccc.domain.ResourcePath;
 import ccc.domain.ResourceType;
 import ccc.domain.Template;
 import ccc.services.ContentManager;
+import ccc.services.QueryManager;
 
 
 /**
@@ -67,7 +68,7 @@ public final class ContentManagerEJBTest extends TestCase {
             }
         };
 
-        final ContentManagerEJB resourceMgr = new ContentManagerEJB(em);
+        final ContentManagerEJB resourceMgr = new ContentManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
         resourceMgr.setDefaultTemplate(defaultTemplate);
@@ -105,7 +106,7 @@ public final class ContentManagerEJBTest extends TestCase {
             }
         };
 
-        final ContentManagerEJB resourceMgr = new ContentManagerEJB(em);
+        final ContentManagerEJB resourceMgr = new ContentManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
         final Resource resource =
@@ -138,7 +139,7 @@ public final class ContentManagerEJBTest extends TestCase {
         em.persist(baz);
         replay(em);
 
-        final ContentManager resourceMgr = new ContentManagerEJB(em);
+        final ContentManager resourceMgr = new ContentManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
         resourceMgr.create(contentRoot.id(), foo);
@@ -164,21 +165,24 @@ public final class ContentManagerEJBTest extends TestCase {
     public void testCreateRoot() {
 
         // ARRANGE
+        final QueryManager qm = createStrictMock(QueryManager.class);
+        expect(qm.lookupRoot(PredefinedResourceNames.CONTENT))
+            .andReturn(new Maybe<Folder>());
+        replay(qm);
+
         final Capture<Folder> contentRoot = new Capture<Folder>();
         final EntityManager em = createMock(EntityManager.class);
-        expect(em.createNamedQuery(RESOURCE_BY_URL))
-            .andThrow(new NoResultException());
         em.persist(capture(contentRoot));
         replay(em);
 
 
-        final ContentManager resourceMgr = new ContentManagerEJB(em);
+        final ContentManager resourceMgr = new ContentManagerEJB(em, qm);
 
         // ACT
         resourceMgr.createRoot();
 
         // VERIFY
-        verify(em);
+        verify(qm, em);
         assertEquals(CONTENT, contentRoot.getValue().name());
     }
 
@@ -199,7 +203,7 @@ public final class ContentManagerEJBTest extends TestCase {
             });
         replay(em);
 
-        final ContentManager resourceMgr = new ContentManagerEJB(em);
+        final ContentManager resourceMgr = new ContentManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
         resourceMgr.createRoot();
@@ -229,7 +233,7 @@ public final class ContentManagerEJBTest extends TestCase {
         em.persist(page2);
         replay(em);
 
-        final ContentManager resourceMgr = new ContentManagerEJB(em);
+        final ContentManager resourceMgr = new ContentManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
         resourceMgr.create(contentRoot.id(), foo);
@@ -270,7 +274,7 @@ public final class ContentManagerEJBTest extends TestCase {
         expect(em.find(Resource.class, foo.id())).andReturn(foo);
         replay(em);
 
-        final ContentManager resourceMgr = new ContentManagerEJB(em);
+        final ContentManager resourceMgr = new ContentManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
         resourceMgr.create(contentRoot.id(), foo);
@@ -316,7 +320,7 @@ public final class ContentManagerEJBTest extends TestCase {
         em.persist(page1);
         replay(em);
 
-        final ContentManager resourceMgr = new ContentManagerEJB(em);
+        final ContentManager resourceMgr = new ContentManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
         resourceMgr.create(contentRoot.id(), foo);
@@ -350,7 +354,7 @@ public final class ContentManagerEJBTest extends TestCase {
 
         final EntityManager em = new SimpleEM(bar);
 
-        final ContentManagerEJB resourceMgr = new ContentManagerEJB(em);
+        final ContentManagerEJB resourceMgr = new ContentManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
         final Resource resource =
@@ -373,7 +377,7 @@ public final class ContentManagerEJBTest extends TestCase {
 
         final EntityManager em = new SimpleEM(page);
 
-        final ContentManagerEJB resourceMgr = new ContentManagerEJB(em);
+        final ContentManagerEJB resourceMgr = new ContentManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
         final Map<String, String> paragraphs = new HashMap<String, String>();

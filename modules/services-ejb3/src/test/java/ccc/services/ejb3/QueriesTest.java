@@ -23,7 +23,7 @@ import ccc.domain.Setting.Name;
 
 
 /**
- * Tests for the {@link Queries} class.
+ * Tests for the {@link QueryManagerEJB} class.
  *
  * @author Civic Computing Ltd.
  */
@@ -47,7 +47,7 @@ public class QueriesTest extends TestCase {
             .andReturn(q);
         replay(em);
 
-        final Queries qs = new Queries(em);
+        final QueryManagerEJB qs = new QueryManagerEJB(em);
 
         // ACT
         final Setting s = qs.findSetting(Name.CONTENT_ROOT_FOLDER_ID);
@@ -62,7 +62,7 @@ public class QueriesTest extends TestCase {
      */
     public void testConstructor() {
         // ACT
-        final Queries q = new Queries(Testing.dummy(EntityManager.class));
+        final QueryManagerEJB q = new QueryManagerEJB(Testing.dummy(EntityManager.class));
     }
 
     /**
@@ -72,7 +72,7 @@ public class QueriesTest extends TestCase {
 
         // ACT
         try {
-            final Queries q = new Queries(null);
+            final QueryManagerEJB q = new QueryManagerEJB(null);
             fail("Null should be rejected.");
 
         // ASSERT
