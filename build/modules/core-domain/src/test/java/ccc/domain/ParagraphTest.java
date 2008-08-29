@@ -24,21 +24,6 @@ public final class ParagraphTest extends TestCase {
     /**
      * Test.
      */
-    public void testToJson() {
-
-        // ARRANGE
-        final Paragraph foo = new Paragraph("foo");
-
-        // ACT
-        final String jsonString = foo.toJSON();
-
-        // ASSERT
-        assertEquals("{\"body\": \"foo\"}", jsonString);
-    }
-
-    /**
-     * Test.
-     */
     public void testConstructorRejectsBadData() {
 
         // ACT

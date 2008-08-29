@@ -26,21 +26,6 @@ public final class ResourceTest extends TestCase {
     /**
      * Test.
      */
-    public void testToJson() {
-
-        // ARRANGE
-        final Resource resource = new DummyResource(new ResourceName("foo"));
-
-        // ACT
-        final String json = resource.toJSON();
-
-        // ASSERT
-        assertEquals("{}", json);
-    }
-
-    /**
-     * Test.
-     */
     public void testResourceConstructorRejectsNullUrl() {
 
         // ACT
@@ -102,9 +87,6 @@ public final class ResourceTest extends TestCase {
 
         @Override
         public ResourceType type() { return ResourceType.FOLDER; }
-
-        @Override
-        public String toJSON() { return "{}"; }
     }
 
 }

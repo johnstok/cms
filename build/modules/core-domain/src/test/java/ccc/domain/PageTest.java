@@ -28,31 +28,6 @@ public final class PageTest extends TestCase {
     /**
      * Test.
      */
-    public void testToJson() {
-
-        // ARRANGE
-        final Page page = new Page(new ResourceName("foo"), "Foo?");
-        page.displayTemplateName(new Template("template", "", ""));
-        page.addParagraph("bar", new Paragraph("bar"));
-        page.addParagraph("baz", new Paragraph("baz"));
-
-        // ACT
-        final String jsonString = page.toJSON();
-
-        // ASSERT
-        assertEquals(
-            "{\"id\": \""
-            + page.id().toString()
-            + "\",\"title\": \"Foo?\""
-            + ",\"displayTemplateName\": \"template\""
-            + ",\"paragraphs\": "
-            + "{\"bar\": {\"body\": \"bar\"},\"baz\": {\"body\": \"baz\"}}}",
-            jsonString);
-    }
-
-    /**
-     * Test.
-     */
     public void testConstructorCanGenerateName() {
 
         // ARRANGE

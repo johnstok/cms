@@ -140,52 +140,6 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      */
-    public void testToJsonWithNoChildren() {
-
-        // ARRANGE
-        final Folder folder = new Folder(new ResourceName("foo"));
-        folder.displayTemplateName(new Template("template", "", ""));
-
-        // ACT
-        final String json = folder.toJSON();
-
-        // ASSERT
-        assertEquals(
-            "{\"name\": \"foo\","
-                + "\"displayTemplateName\": \"template\",\"entries\": []}",
-            json);
-    }
-
-    /**
-     * Test.
-     */
-    public void testToJsonWithChildren() {
-
-        // ARRANGE
-        final Folder parent = new Folder(new ResourceName("foo"));
-        final Folder child1 = new Folder(new ResourceName("bar"));
-        final Folder child2 = new Folder(new ResourceName("baz"));
-        parent.add(child1);
-        child1.add(child2);
-
-        // ACT
-        final String json = parent.toJSON();
-
-        // ASSERT
-        assertEquals(
-            "{"
-            + "\"name\": \"foo\","
-            + "\"displayTemplateName\": \"null\","
-            + "\"entries\": ["
-                + "{\"name\": \"bar\","
-                + "\"id\": \""+child1.id().toString()+"\","
-                + "\"type\": \"FOLDER\","
-                + "\"folder-count\": \"1\"}]}", json);
-    }
-
-    /**
-     * Test.
-     */
     public void testNullContentCannotBeAddedToFolders() {
 
         // ARRANGE

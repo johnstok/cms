@@ -15,14 +15,12 @@ import static ccc.commons.DBC.*;
 
 import java.io.Serializable;
 
-import ccc.commons.JSON;
-
 /**
  * A paragraph of HTML.
  *
  * @author Civic Computing Ltd
  */
-public final class Paragraph implements Serializable, JSONable {
+public final class Paragraph implements Serializable {
 
     /** serialVersionUID : long. */
     private static final long serialVersionUID = 5380775783010664543L;
@@ -49,16 +47,5 @@ public final class Paragraph implements Serializable, JSONable {
      */
     public String body() {
         return _body;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toJSON() {
-        return
-            JSON.object()
-                .add("body", _body)
-                .toString();
     }
 }
