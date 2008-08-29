@@ -9,7 +9,7 @@
  * Changes: see subversion log
  *-----------------------------------------------------------------------------
  */
-package ccc.domain;
+package ccc.commons;
 
 
 /**

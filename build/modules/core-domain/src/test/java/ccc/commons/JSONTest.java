@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.TestCase;
-import ccc.domain.JSONable;
 
 
 /**
