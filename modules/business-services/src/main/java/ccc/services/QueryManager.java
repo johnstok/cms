@@ -13,7 +13,6 @@ package ccc.services;
 
 import ccc.commons.Maybe;
 import ccc.domain.Folder;
-import ccc.domain.ResourceName;
 import ccc.domain.Setting;
 import ccc.domain.Setting.Name;
 
@@ -31,13 +30,27 @@ public interface QueryManager {
      * @param name The name of the setting to find.
      * @return The setting with the specified name.
      */
-    Setting findSetting(final Name name);
+    Maybe<Setting> findSetting(final Name name);
 
     /**
-     * Look up the root folder for the content hierarchy.
+     * TODO: Add a description of this method.
      *
-     * @param name The name of the resource.
-     * @return The folder with the specified name.
+     * @return
      */
-    Maybe<Folder> lookupRoot(final ResourceName name);
+    Maybe<Folder> findContentRoot();
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
+    Maybe<Folder> findAssetsRoot();
+
+//    /**
+//     * Look up the root folder for the content hierarchy.
+//     *
+//     * @param name The name of the resource.
+//     * @return The folder with the specified name.
+//     */
+//    Maybe<Folder> lookupRoot(final ResourceName name);
 }

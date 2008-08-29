@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+ 
+<!-- 
+    ========================================================================
+    * Copyright (c) 2008 Civic Computing Ltd
+    * All rights reserved.
+    *
+    * Revision      $Rev$
+    * Modified by   $Author$
+    * Modified on   $Date$
+    *
+    * Changes: see SubVersion log
+    ========================================================================
+-->
+
+<hibernate-mapping default-access="field">
+
+	<typedef class="ccc.services.ejb3.support.EnumUserType" name="settingName">
+	    <param name="type">ccc.domain.Setting$Name</param>
+	</typedef>
+	
+    <class name="ccc.domain.Setting">
+    
+        <id name="_id">
+            <generator class="assigned" />
+        </id>
+        
+        <version
+            name="_version"
+            unsaved-value="negative" />
+        
+        <property
+            name="_value"
+            not-null="true"
+            type="string"
+            length="256" />
+            
+        <property
+            name="_name"
+            not-null="true"
+            type="settingName"
+            length="256"
+            unique="true" />
+        
+    </class>
+</hibernate-mapping>

@@ -85,4 +85,19 @@ public class MaybeTest extends TestCase {
         // ASSERT
         assertFalse("isPresent should be false.", isPresent);
     }
+
+    /**
+     * Test.
+     */
+    public void testIsPresentWithNullPassedToConstructor() {
+
+        // ARRANGE
+        final Maybe<Object> m = new Maybe<Object>(null);
+
+        // ACT
+        final boolean isPresent = m.isPresent();
+
+        // ASSERT
+        assertFalse("isPresent should be false.", isPresent);
+    }
 }

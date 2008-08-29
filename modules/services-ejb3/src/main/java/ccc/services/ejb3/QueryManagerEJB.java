@@ -14,6 +14,8 @@ package ccc.services.ejb3;
 import static javax.ejb.TransactionAttributeType.*;
 import static javax.persistence.PersistenceContextType.*;
 
+import java.util.UUID;
+
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateful;
@@ -82,11 +84,51 @@ public final class QueryManagerEJB implements QueryManager {
 
     /** {@inheritDoc} */
     @Override
-    public Setting findSetting(final Name name) {
+    public Maybe<Setting> findSetting(final Name name) {
         final Query q =
             _em.createQuery(NamedQueries.SETTING_BY_NAME.queryString());
         q.setParameter("name", name);
-        return (Setting) q.getSingleResult();
+
+        try {
+            final Setting s = (Setting) q.getSingleResult();
+            return new Maybe<Setting>(s);
+        } catch (final NoResultException e) {
+            return new Maybe<Setting>();
+        }
+
+
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Maybe<Folder> findContentRoot() {
+        final Maybe<Setting> rootId = findSetting(Name.CONTENT_ROOT_FOLDER_ID);
+
+        if (rootId.isPresent()) {
+            final Folder root =
+                _em.find(
+                    Folder.class,
+                    UUID.fromString(rootId.get().value()));
+            return new Maybe<Folder>(root);
+        }
+
+        return new Maybe<Folder>();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Maybe<Folder> findAssetsRoot() {
+        final Maybe<Setting> rootId = findSetting(Name.ASSETS_ROOT_FOLDER_ID);
+
+        if (rootId.isPresent()) {
+            final Folder root =
+                _em.find(
+                    Folder.class,
+                    UUID.fromString(rootId.get().value()));
+            return new Maybe<Folder>(root);
+        }
+
+        return new Maybe<Folder>();
     }
 
     /** RESOURCE_BY_URL : String. */
@@ -97,9 +139,10 @@ public final class QueryManagerEJB implements QueryManager {
      *
      * @author Civic Computing Ltd.
      */
-    private static enum NamedQueries {
+    static enum NamedQueries {
 
-        SETTING_BY_NAME("from Setting s where s.name=:name");
+        /** SETTING_BY_NAME : NamedQueries. */
+        SETTING_BY_NAME("from ccc.domain.Setting s where s._name=:name");
 
         private final String _queryString;
 
@@ -107,9 +150,13 @@ public final class QueryManagerEJB implements QueryManager {
             _queryString = qString;
         }
 
+        /**
+         * TODO: Add a description of this method.
+         *
+         * @return
+         */
         String queryString() {
             return _queryString;
         }
     }
-
 }

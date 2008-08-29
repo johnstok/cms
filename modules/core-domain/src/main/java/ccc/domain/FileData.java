@@ -34,11 +34,10 @@ public class FileData extends Entity {
 
     /** MAX_FILE_SIZE : int. */
     public static final int MAX_FILE_SIZE = 32*1024*1024;
+
     /**
      * Constructor.
      * N.B. This constructor should only be used for persistence.
-     * @param dataSize
-     * @param dataStream
      */
     @SuppressWarnings("unused")
     private FileData() {
@@ -61,7 +60,7 @@ public class FileData extends Entity {
                     throw new IllegalArgumentException(
                         "Data size must be under "+MAX_FILE_SIZE);
             }
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             throw new RuntimeException(e);
         }
     }

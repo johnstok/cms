@@ -6,13 +6,14 @@
 <hibernate-configuration>
 
     <session-factory>
-        <mapping resource="ccc/domain/Resource.hbm.xml"/>
+        <!-- mapping resource="ccc/domain/Resource.hbm.xml"/>
         <mapping resource="ccc/domain/Page.hbm.xml"/>
         <mapping resource="ccc/domain/Folder.hbm.xml"/>
         <mapping resource="ccc/domain/Template.hbm.xml"/>
         <mapping resource="ccc/domain/Queries.hbm.xml"/>
         <mapping resource="ccc/domain/File.hbm.xml"/>
         <mapping resource="ccc/domain/FileData.hbm.xml"/>
+        <mapping resource="ccc/domain/Setting.hbm.xml"/-->
     </session-factory>
 
 </hibernate-configuration>

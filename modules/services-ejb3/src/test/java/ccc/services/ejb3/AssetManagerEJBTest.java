@@ -31,6 +31,7 @@ import ccc.domain.Folder;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
+import ccc.domain.Setting;
 import ccc.domain.Template;
 import ccc.services.AssetManager;
 import ccc.services.QueryManager;
@@ -54,28 +55,23 @@ public final class AssetManagerEJBTest extends TestCase {
         final Template t = new Template("title", "description", "body");
         assetRoot.add(templateFolder);
 
+        final QueryManager qm = createStrictMock(QueryManager.class);
+        expect(qm.findAssetsRoot())
+            .andReturn(new Maybe<Folder>(assetRoot)).times(2);
+        replay(qm);
+
         final EntityManager em = createStrictMock(EntityManager.class);
-        expect(em.createNamedQuery(QueryManagerEJB.RESOURCE_BY_URL)).andReturn(
-            new QueryAdaptor() {
-                /**  {@inheritDoc} */ @Override
-                public Object getSingleResult() { return assetRoot; }
-            });
         em.persist(t);
-        expect(em.createNamedQuery(QueryManagerEJB.RESOURCE_BY_URL)).andReturn(
-            new QueryAdaptor() {
-                /**  {@inheritDoc} */ @Override
-                public Object getSingleResult() { return assetRoot; }
-            });
         replay(em);
 
-        final AssetManager am = new AssetManagerEJB(em, new QueryManagerEJB(em));
+        final AssetManager am = new AssetManagerEJB(em, qm);
 
         // ACT
         final Template created = am.createOrRetrieve(t);
         final Template retrieved = am.createOrRetrieve(t);
 
         // ASSERT
-        verify(em);
+        verify(em, qm);
         assertSame(t, created);
         assertSame(t, retrieved);
         assertTrue(
@@ -95,21 +91,20 @@ public final class AssetManagerEJBTest extends TestCase {
         assetRoot.add(templateFolder);
         templateFolder.add(expected);
 
+        final QueryManager qm = createStrictMock(QueryManager.class);
+        expect(qm.findAssetsRoot()).andReturn(new Maybe<Folder>(assetRoot));
+        replay(qm);
+
         final EntityManager em = createStrictMock(EntityManager.class);
-        expect(em.createNamedQuery(QueryManagerEJB.RESOURCE_BY_URL)).andReturn(
-            new QueryAdaptor() {
-                /**  {@inheritDoc} */ @Override
-                public Object getSingleResult() { return assetRoot; }
-            });
         replay(em);
 
-        final AssetManager am = new AssetManagerEJB(em, new QueryManagerEJB(em));
+        final AssetManager am = new AssetManagerEJB(em, qm);
 
         // ACT
         final List<Template> templates = am.lookupTemplates();
 
         // ASSERT
-        verify(em);
+        verify(em, qm);
         assertEquals(1, templates.size());
         assertEquals(expected, templates.get(0));
     }
@@ -124,7 +119,8 @@ public final class AssetManagerEJBTest extends TestCase {
         final EntityManager em = createMock(EntityManager.class);
         expect(em.find(Resource.class, t.id())).andReturn(t);
         replay(em);
-        final AssetManager am = new AssetManagerEJB(em, new QueryManagerEJB(em));
+        final AssetManager am =
+            new AssetManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
         final Template actual = am.lookup(t.id());
@@ -145,24 +141,22 @@ public final class AssetManagerEJBTest extends TestCase {
         assetRoot.add(templateFolder);
         final Template t = new Template("title", "description", "body");
 
+        final QueryManager qm = createStrictMock(QueryManager.class);
+        expect(qm.findAssetsRoot()).andReturn(new Maybe<Folder>(assetRoot));
+        replay(qm);
+
         final EntityManager em = createMock(EntityManager.class);
-        expect(em.createNamedQuery(QueryManagerEJB.RESOURCE_BY_URL)).andReturn(
-            new QueryAdaptor() {
-                /** @see ccc.services.ejb3.QueryAdaptor#getSingleResult() */
-                @Override
-                public Object getSingleResult() { return assetRoot; }
-            });
         em.persist(t);
         replay(em);
 
         final AssetManager am =
-            new AssetManagerEJB(em, new QueryManagerEJB(em));
+            new AssetManagerEJB(em, qm);
 
         // ACT
         am.createDisplayTemplate(t);
 
         // ASSERT
-        verify(em);
+        verify(em, qm);
         assertEquals(1, templateFolder.size());
         assertEquals(t, templateFolder.entries().get(0));
     }
@@ -174,14 +168,14 @@ public final class AssetManagerEJBTest extends TestCase {
 
         // ARRANGE
         final QueryManager qm = createStrictMock(QueryManager.class);
-        expect(qm.lookupRoot(PredefinedResourceNames.ASSETS))
-            .andReturn(new Maybe<Folder>());
+        expect(qm.findAssetsRoot()).andReturn(new Maybe<Folder>());
         replay(qm);
 
         final Capture<Folder> assetsRoot = new Capture<Folder>();
         final EntityManager em = createStrictMock(EntityManager.class);
         em.persist(capture(assetsRoot));
         em.persist(isA(Folder.class));
+        em.persist(isA(Setting.class));
         replay(em);
 
 
@@ -215,23 +209,21 @@ public final class AssetManagerEJBTest extends TestCase {
         final File file = new File(
             new ResourceName("file"), "title", "desc", fileData);
 
+        final QueryManager qm = createStrictMock(QueryManager.class);
+        expect(qm.findAssetsRoot()).andReturn(new Maybe<Folder>(assetRoot));
+        replay(qm);
+
         final EntityManager em = createMock(EntityManager.class);
         em.persist(fileData);
         em.persist(file);
-        expect(em.createNamedQuery(QueryManagerEJB.RESOURCE_BY_URL)).andReturn(
-            new QueryAdaptor() {
-                /** @see ccc.services.ejb3.QueryAdaptor#getSingleResult() */
-                @Override
-                public Object getSingleResult() { return assetRoot; }
-            });
         replay(em);
 
-        final AssetManager am = new AssetManagerEJB(em, new QueryManagerEJB(em));
+        final AssetManager am = new AssetManagerEJB(em, qm);
 
         // ACT
         am.createFile(file, "/");
 
         // VERIFY
-        verify(em);
+        verify(em, qm);
     }
 }
