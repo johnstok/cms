@@ -7,7 +7,6 @@
 	<persistence-unit name="ccc-persistence">
 	   <jta-data-source>java:/ccc</jta-data-source>
 		<properties>
-			<property name="hibernate.ejb.cfgfile" value="/hibernate.cfg.xml" />
 				
 	        <!-- Connection mgmt -->
 	        <property name="hibernate.connection.release_mode" value="after_statement" />
