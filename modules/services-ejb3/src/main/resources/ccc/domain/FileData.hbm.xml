@@ -18,7 +18,7 @@
 <hibernate-mapping default-access="field">
 	<class name="ccc.domain.FileData">
 
-		<id name="_id">
+		<id name="_id" type="ccc.services.ejb3.support.UUIDUserType">
 			<generator class="assigned" />
 		</id>
 
