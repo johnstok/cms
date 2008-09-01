@@ -22,6 +22,7 @@ import java.util.UUID;
 import ccc.commons.DBC;
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
+import ccc.domain.CCCException;
 import ccc.domain.Folder;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
@@ -30,6 +31,7 @@ import ccc.domain.Template;
 import ccc.services.AssetManager;
 import ccc.services.ContentManager;
 import ccc.view.contentcreator.client.ResourceService;
+import ccc.view.contentcreator.client.Root;
 import ccc.view.contentcreator.dto.DTO;
 import ccc.view.contentcreator.dto.FolderDTO;
 import ccc.view.contentcreator.dto.OptionDTO;
@@ -70,10 +72,21 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     /**
      * {@inheritDoc}
      */
-    public FolderDTO getContentRoot() {
-        final Resource resource =
-            contentManager().lookup(new ResourcePath("/"));
-        return DTOs.dtoFrom(resource);
+    public FolderDTO getRoot(final Root root) {
+        switch (root) {
+            case CONTENT:
+                final Resource contentResource =
+                    contentManager().lookup(new ResourcePath("/"));
+                return DTOs.dtoFrom(contentResource);
+
+            case ASSETS:
+                final Resource assetResource =
+                    assetManager().lookup(new ResourcePath("/"));
+                return DTOs.dtoFrom(assetResource);
+
+            default:
+                throw new CCCException("Unable to look up root: "+root);
+        }
     }
 
     /**

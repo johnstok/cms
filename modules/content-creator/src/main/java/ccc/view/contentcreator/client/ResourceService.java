@@ -33,7 +33,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("resource")
 public interface ResourceService extends RemoteService {
 
-    FolderDTO getContentRoot();
+    FolderDTO getRoot(Root root);
 
     FolderDTO getResource(String absolutePath);
 

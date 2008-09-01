@@ -46,6 +46,8 @@ public class ResourceDTO extends BaseModelData implements DTO {
         set("title", title);
     }
 
+    @SuppressWarnings("unused")
+    private ResourceDTO() { super(); }
 
     /**
      * TODO: Add a description of this method.

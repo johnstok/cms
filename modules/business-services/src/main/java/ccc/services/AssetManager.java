@@ -16,6 +16,7 @@ import java.util.UUID;
 
 import ccc.domain.File;
 import ccc.domain.Resource;
+import ccc.domain.ResourcePath;
 import ccc.domain.Template;
 
 
@@ -25,6 +26,16 @@ import ccc.domain.Template;
  * @author Civic Computing Ltd
  */
 public interface AssetManager {
+
+    /**
+     * Lookup a resource, given its absolute path.
+     * TODO: Remove - duplicate of {@link ContentManager#lookup(ResourcePath)}.
+     *
+     * @param path The absolute path to the resource.
+     * @param <T> The type of the resource to look up.
+     * @return The resource.
+     */
+    <T extends Resource> T lookup(ResourcePath path);
 
     /**
      * Creates a new template.

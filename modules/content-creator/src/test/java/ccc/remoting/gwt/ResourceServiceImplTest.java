@@ -33,6 +33,7 @@ import ccc.services.AssetManager;
 import ccc.services.ContentManager;
 import ccc.services.adaptors.ContentManagerAdaptor;
 import ccc.view.contentcreator.client.ResourceService;
+import ccc.view.contentcreator.client.Root;
 import ccc.view.contentcreator.dto.DTO;
 import ccc.view.contentcreator.dto.FolderDTO;
 import ccc.view.contentcreator.dto.OptionDTO;
@@ -207,7 +208,7 @@ public final class ResourceServiceImplTest extends TestCase {
             }));
 
         // ACT
-        final FolderDTO jsonRoot = resourceService.getContentRoot();
+        final FolderDTO jsonRoot = resourceService.getRoot(Root.CONTENT);
 
         // ASSERT
         assertEquals(
