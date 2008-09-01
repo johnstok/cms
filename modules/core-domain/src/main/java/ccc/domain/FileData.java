@@ -40,9 +40,7 @@ public class FileData extends Entity {
      * N.B. This constructor should only be used for persistence.
      */
     @SuppressWarnings("unused")
-    private FileData() {
-        super();
-    }
+    protected FileData() { super(); }
 
     /**
      * Constructor.
