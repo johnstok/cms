@@ -14,6 +14,7 @@ package ccc.content.server;
 
 /**
  * Constants for use with CCC Servlets.
+ * TODO: should be an enum.
  *
  * @author Civic Computing Ltd
  */
