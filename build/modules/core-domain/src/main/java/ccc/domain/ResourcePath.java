@@ -30,7 +30,11 @@ public final class ResourcePath implements Serializable {
     /** serialVersionUID : long. */
     private static final long serialVersionUID = -5755885435816868422L;
     /** PATH_PATTERN : Pattern. */
-    public static final Pattern PATH_PATTERN = Pattern.compile("/((\\w+)/)*");
+    public static final Pattern PATH_PATTERN =
+        Pattern.compile("/(("+ResourceName._validCharacters+")/)*");
+    /** TOKEN_PATTERN : String. */
+    public static final String TOKEN_PATTERN =
+        "/("+ResourceName._validCharacters+")";
     private final List<ResourceName> _elements;
 
     /**
@@ -55,7 +59,7 @@ public final class ResourcePath implements Serializable {
 
         final List<ResourceName> parts = new ArrayList<ResourceName>();
 
-        m = Pattern.compile("/(\\w+)").matcher(pathString);
+        m = Pattern.compile(TOKEN_PATTERN).matcher(pathString);
         while (m.find()) {
             parts.add(
                 new ResourceName(pathString.substring(m.start()+1, m.end())));
