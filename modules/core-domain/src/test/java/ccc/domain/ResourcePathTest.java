@@ -74,7 +74,7 @@ public final class ResourcePathTest extends TestCase {
     public void testParsingOfStringToPath() {
 
         // ARRANGE
-        final String pathString = "/foo/bar/baz/";
+        final String pathString = "/fo_o/b.ar/baz/";
 
         // ACT
         final ResourcePath path = new ResourcePath(pathString);
