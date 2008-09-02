@@ -12,8 +12,8 @@
 
 package ccc.domain;
 
+import static ccc.domain.ResourceName.*;
 import junit.framework.TestCase;
-
 
 /**
  * Tests for the {@link ResourceName} class.
@@ -32,6 +32,8 @@ public final class ResourceNameTest extends TestCase {
         "0123456789";
     private static final String UNDERSCORE         =
         "_";
+    private static final String PERIOD         =
+        ".";
     private static final String WORD_CHARACTERS    =
         LOWERCASE_ALPHABET + UPPERCASE_ALPHABET + DIGITS + UNDERSCORE;
 
@@ -46,6 +48,7 @@ public final class ResourceNameTest extends TestCase {
         new ResourceName(DIGITS);
         new ResourceName(UNDERSCORE);
         new ResourceName(WORD_CHARACTERS);
+        new ResourceName(PERIOD);
     }
 
     /**
@@ -116,28 +119,8 @@ public final class ResourceNameTest extends TestCase {
 
             // ASSERT
             assertEquals(
-                "  does not match the java.util.regex pattern '\\w+'.",
-                e.getMessage());
-        }
-    }
-
-    /**
-     * Test.
-     */
-    public void testPeriodIsRejected() {
-
-        // ARRANGE
-        final String period = ".";
-
-        // ACT
-        try {
-            new ResourceName(period);
-            fail("ResourceName failed to reject period.");
-        } catch (final RuntimeException e) {
-
-            // ASSERT
-            assertEquals(
-                ". does not match the java.util.regex pattern '\\w+'.",
+                "  does not match the java.util.regex pattern '"
+                    + _validCharacters+"'.",
                 e.getMessage());
         }
     }
@@ -158,7 +141,8 @@ public final class ResourceNameTest extends TestCase {
 
             // ASSERT
             assertEquals(
-                "~ does not match the java.util.regex pattern '\\w+'.",
+                "~ does not match the java.util.regex pattern '"
+                    + _validCharacters+"'.",
                 e.getMessage());
         }
     }
@@ -179,7 +163,8 @@ public final class ResourceNameTest extends TestCase {
 
             // ASSERT
             assertEquals(
-                "- does not match the java.util.regex pattern '\\w+'.",
+                "- does not match the java.util.regex pattern '"
+                    + _validCharacters+"'.",
                 e.getMessage());
         }
     }
@@ -200,7 +185,8 @@ public final class ResourceNameTest extends TestCase {
 
             // ASSERT
             assertEquals(
-                "\\ does not match the java.util.regex pattern '\\w+'.",
+                "\\ does not match the java.util.regex pattern '"
+                    + _validCharacters+"'.",
                 e.getMessage());
         }
     }
@@ -226,7 +212,8 @@ public final class ResourceNameTest extends TestCase {
                 // ASSERT
                 assertEquals(
                     reservedChar
-                        + " does not match the java.util.regex pattern '\\w+'.",
+                        + " does not match the java.util.regex pattern '"
+                    + _validCharacters+"'.",
                     e.getMessage());
             }
         }
@@ -266,7 +253,7 @@ public final class ResourceNameTest extends TestCase {
 
         // ARRANGE
         final String invalidCharacters = "!*'();:@&=+$,/\\?%#[]foo BAR_123.~-";
-        final String expectedName = "____________________foo_BAR_123___";
+        final String expectedName = "____________________foo_BAR_123.__";
 
         // ACT
         final ResourceName validCharacters =
