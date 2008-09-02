@@ -32,7 +32,7 @@ public final class ResourceName implements Serializable {
     /** serialVersionUID : long. */
     private static final long serialVersionUID = 8023247880499438161L;
     private String _representation = escapeString(UUID.randomUUID().toString());
-    private final String  _validCharacters = "\\w+";
+    public static final String  _validCharacters = "[\\.\\w]+";
     private final Pattern _validRegex = Pattern.compile(_validCharacters);
 
     /**
@@ -121,6 +121,6 @@ public final class ResourceName implements Serializable {
     }
 
     private static String escapeString(final String invalidCharacters) {
-        return invalidCharacters.replaceAll("\\W", "_");
+        return invalidCharacters.replaceAll("[^\\.\\w]", "_");
     }
 }
