@@ -33,6 +33,7 @@ import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
+import ccc.domain.Template;
 import ccc.services.adaptors.ContentManagerAdaptor;
 
 
@@ -70,7 +71,17 @@ public final class ContentServletTest extends TestCase {
     public void testLookupTemplateForContent() {
 
         // ARRANGE
+        final String body =
+            Resources.readIntoString(
+                getClass().getResource("default-content-template.txt"),
+                Charset.forName("ISO-8859-1"));
+        final Template t =
+            new Template(
+                "foo",
+                "bar",
+                body);
         final Page foo = new Page(new ResourceName("foo"));
+        foo.displayTemplateName(t);
 
         // ACT
         final String templateName =
@@ -78,9 +89,7 @@ public final class ContentServletTest extends TestCase {
 
         // ASSERT
         assertEquals(
-            Resources.readIntoString(
-                getClass().getResource("default-content-template.txt"),
-                Charset.forName("ISO-8859-1")),
+            t.body(),
             templateName);
     }
 
@@ -113,7 +122,17 @@ public final class ContentServletTest extends TestCase {
 
         // ARRANGE
         final StringWriter output = new StringWriter();
+        final String body =
+            Resources.readIntoString(
+                getClass().getResource("default-content-template.txt"),
+                Charset.forName("ISO-8859-1"));
+        final Template t =
+            new Template(
+                "foo",
+                "bar",
+                body);
         final Page page = new Page(new ResourceName("foo"));
+        page.displayTemplateName(t);
         page.addParagraph("key1", new Paragraph("para1"));
         page.addParagraph("key2", new Paragraph("para2"));
 
@@ -189,6 +208,19 @@ public final class ContentServletTest extends TestCase {
 
         // ARRANGE
         final StringWriter output = new StringWriter();
+        final String body =
+            Resources.readIntoString(
+                getClass().getResource("default-content-template.txt"),
+                Charset.forName("ISO-8859-1"));
+        final Template t =
+            new Template(
+                "foo",
+                "bar",
+                body);
+        final Page p =
+            new Page(new ResourceName("name"))
+                .addParagraph("Header", new Paragraph("<br/>"));
+        p.displayTemplateName(t);
         final ContentServlet contentServlet =
             new ContentServlet(
                 new MapRegistry(
@@ -197,9 +229,7 @@ public final class ContentServletTest extends TestCase {
                     /** {@inheritDoc} */
                     @Override @SuppressWarnings("unchecked")
                     public Resource lookup(final ResourcePath path) {
-                        return
-                            new Page(new ResourceName("name"))
-                                .addParagraph("Header", new Paragraph("<br/>"));
+                        return p;
                     }
                 }));
 
