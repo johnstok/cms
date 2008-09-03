@@ -79,3 +79,7 @@ com
 civiccomputing
 redeploy
 undeploy
+enum
+stateful
+stateless
+datasource
