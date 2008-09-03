@@ -34,6 +34,9 @@ import ccc.domain.ResourceName;
  */
 public class PreviewAction extends AbstractAction {
 
+    /** serialVersionUID : long. */
+    private static final long serialVersionUID = -95808082525224723L;
+
     private BasicPanel previewPane;
     private JEditorPane editorPane;
 
