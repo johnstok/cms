@@ -33,24 +33,16 @@ public interface QueryManager {
     Maybe<Setting> findSetting(final Name name);
 
     /**
-     * TODO: Add a description of this method.
+     * Retrieve the folder that represents the root of all stored content.
      *
-     * @return
+     * @return The root folder, wrapped in a {@link Maybe}.
      */
     Maybe<Folder> findContentRoot();
 
     /**
-     * TODO: Add a description of this method.
+     * Retrieve the folder that represents the root of all stored content.
      *
-     * @return
+     * @return The root folder, wrapped in a {@link Maybe}.
      */
     Maybe<Folder> findAssetsRoot();
-
-//    /**
-//     * Look up the root folder for the content hierarchy.
-//     *
-//     * @param name The name of the resource.
-//     * @return The folder with the specified name.
-//     */
-//    Maybe<Folder> lookupRoot(final ResourceName name);
 }
