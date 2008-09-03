@@ -22,11 +22,10 @@ import javax.persistence.EntityManager;
 import junit.framework.TestCase;
 
 import org.easymock.Capture;
-import org.hibernate.lob.BlobImpl;
 
 import ccc.commons.Maybe;
+import ccc.domain.Data;
 import ccc.domain.File;
-import ccc.domain.FileData;
 import ccc.domain.Folder;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
@@ -202,26 +201,26 @@ public final class AssetManagerEJBTest extends TestCase {
 
         // ARRANGE
         final Folder assetRoot = new Folder(PredefinedResourceNames.ASSETS);
-        FileData fileData;
-        fileData = new FileData(
-            new BlobImpl("test".getBytes()).getBinaryStream(), "test".length());
+//        FileData fileData;
+//        fileData = new FileData(
+//            new BlobImpl("test".getBytes()).getBinaryStream(), "test".length());
 
         final File file = new File(
-            new ResourceName("file"), "title", "desc", fileData);
+            new ResourceName("file"), "title", "desc", new Data());
 
         final QueryManager qm = createStrictMock(QueryManager.class);
-        expect(qm.findAssetsRoot()).andReturn(new Maybe<Folder>(assetRoot));
         replay(qm);
 
         final EntityManager em = createMock(EntityManager.class);
-        em.persist(fileData);
+//        em.persist(fileData);
+        expect(em.find(Resource.class, assetRoot.id())).andReturn(assetRoot);
         em.persist(file);
         replay(em);
 
         final AssetManager am = new AssetManagerEJB(em, qm);
 
         // ACT
-        am.createFile(file, "/");
+        am.createFile(file, assetRoot.id());
 
         // VERIFY
         verify(em, qm);

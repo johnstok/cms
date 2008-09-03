@@ -16,14 +16,12 @@
     ========================================================================
 -->
 <hibernate-mapping default-access="field">
-	<class name="ccc.domain.FileData">
-
-		<id name="_id" type="ccc.services.ejb3.support.UUIDUserType">
-			<generator class="assigned" />
-		</id>
-
-		<version name="_version" unsaved-value="negative" />
-		
-		<property name="_data" not-null="true" type="blob" length="33554432"/>
-	</class>
+    <database-object>
+        <create>CREATE TABLE DATA(
+    _ID VARCHAR(255) NOT NULL,
+    _VERSION INTEGER NOT NULL,
+    _BYTES BLOB NOT NULL
+)</create>
+        <drop>DROP TABLE data</drop>
+    </database-object>
 </hibernate-mapping>

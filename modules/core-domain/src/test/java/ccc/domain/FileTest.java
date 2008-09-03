@@ -28,12 +28,12 @@ public class FileTest extends TestCase {
     public void testRejectNullParameters() {
 
         // ARRANGE
-        final FileData fileData = null;
+        final Data data = null;
 
         // ACT
         try {
             new File(
-                new ResourceName("file"), "title", "desc", fileData);
+                new ResourceName("file"), "title", "desc", data);
             fail("The constructor should reject a NULL file data.");
 
         // ASSERT

@@ -24,8 +24,10 @@
 		<property name="_description" not-null="true" type="string"
 			length="1024" />
 
-		<many-to-one name="_fileData" class="ccc.domain.FileData"
-			unique="true" />
+		<component name="_data" class="ccc.domain.Data" unique="true">
+            <property name="_id" not-null="true" column="_data"
+                type="ccc.services.ejb3.support.UUIDUserType" />
+        </component>
 
 	</joined-subclass>
 </hibernate-mapping>

@@ -4,6 +4,7 @@ package ccc.remoting.gwt;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,10 +19,11 @@ import org.apache.log4j.Logger;
 
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
+import ccc.domain.Data;
 import ccc.domain.File;
-import ccc.domain.FileData;
 import ccc.domain.ResourceName;
 import ccc.services.AssetManager;
+import ccc.services.DataManager;
 
 
 /**
@@ -34,6 +36,8 @@ public class FileUploadServlet extends HttpServlet {
     /** serialVersionUID : long. */
     private static final long serialVersionUID = 4396761206168690263L;
 
+    private static final long MAX_FILE_SIZE = 32*1024*1024;
+
     private static Logger log = Logger.getLogger(FileUploadServlet.class);
 
     private final int _maxMemorySize = 500*1024;
@@ -43,6 +47,7 @@ public class FileUploadServlet extends HttpServlet {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void service(final HttpServletRequest request,
                         final HttpServletResponse response)
     throws ServletException, IOException {
@@ -60,26 +65,26 @@ public class FileUploadServlet extends HttpServlet {
             }
 
             // Create a factory for disk-based file items
-            DiskFileItemFactory factory = new DiskFileItemFactory();
+            final DiskFileItemFactory factory = new DiskFileItemFactory();
 
             // Set factory constraints
             factory.setSizeThreshold(_maxMemorySize);
 
             // Create a new file upload handler
-            ServletFileUpload upload = new ServletFileUpload(factory);
+            final ServletFileUpload upload = new ServletFileUpload(factory);
 
             // Set overall request size constraint
-            upload.setFileSizeMax(FileData.MAX_FILE_SIZE);
+            upload.setFileSizeMax(MAX_FILE_SIZE);
             int dataSize = 0;
 
             String fileName = null;
             String title = null;
             String description = null;
-            String path = null;
+            UUID path = null;
 
             // Parse the request
-            List<FileItem> items = upload.parseRequest(request);
-            for (FileItem item : items) {
+            final List<FileItem> items = upload.parseRequest(request);
+            for (final FileItem item : items) {
                 if (item.isFormField()) {
                     if (item.getFieldName().equals("fileName")) {
                         fileName = item.getString();
@@ -88,7 +93,7 @@ public class FileUploadServlet extends HttpServlet {
                     } else if (item.getFieldName().equals("description")) {
                         description = item.getString();
                     } else if (item.getFieldName().equals("path")) {
-                        path = item.getString();
+                        path = UUID.fromString(item.getString());
                     }
                 } else {
                     dataSize = (int) item.getSize();
@@ -96,20 +101,23 @@ public class FileUploadServlet extends HttpServlet {
                 }
             }
 
-            FileData fileData = new FileData(dataStream, dataSize);
-            File file = new File(
-                new ResourceName(fileName), title, description, fileData);
+//            final FileData fileData = new FileData(dataStream, dataSize);
+            final Data d = new Data();
+            final File file = new File(
+                new ResourceName(fileName), title, description, d);
+
             // Call EJB
+            dataManager().create(d, dataStream);
             assetManager().createFile(file, path);
             response.getWriter().write("File was uploaded successfully.");
 
-        } catch (FileUploadException e) {
+        } catch (final FileUploadException e) {
             response.getWriter().write("File Upload failed. "+e.getMessage());
             log.error("File Upload failed "+e.getMessage(), e);
         } finally {
             try {
                 dataStream.close();
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 log.error("DataStream closing failed "+e.getMessage(), e);
             }
         }
@@ -122,5 +130,14 @@ public class FileUploadServlet extends HttpServlet {
      */
     AssetManager assetManager() {
         return _registry.get("AssetManagerEJB/local");
+    }
+
+    /**
+     * Accessor for the data manager.
+     *
+     * @return An AssetManager.
+     */
+    DataManager dataManager() {
+        return _registry.get("DataManagerEJB/local");
     }
 }

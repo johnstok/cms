@@ -82,8 +82,7 @@ public final class AssetManagerEJB implements AssetManager {
     @SuppressWarnings("unchecked")
     @Override
     public final <T extends Resource> T lookup(final ResourcePath path) {
-        return
-            (T) _qm.findAssetsRoot().get().navigateTo(path);
+        return (T) _qm.findAssetsRoot().get().navigateTo(path);
     }
 
     /**
@@ -162,11 +161,9 @@ public final class AssetManagerEJB implements AssetManager {
      * {@inheritDoc}
      */
     @Override
-    public void createFile(final File file, final String path) {
-        _entityManager.persist(file.fileData());
+    public void createFile(final File file, final UUID parentId) {
         _entityManager.persist(file);
-        final Folder folder =
-            _qm.findAssetsRoot().get().navigateTo(new ResourcePath(path));
+        final Folder folder = lookup(parentId).as(Folder.class);
         folder.add(file);
     }
 

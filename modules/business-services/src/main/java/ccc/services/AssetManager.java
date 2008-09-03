@@ -69,9 +69,9 @@ public interface AssetManager {
      * Create a file.
      *
      * @param file The File to persists.
-     * @param path The path of the folder acting as a parent for file.
+     * @param path The unique id of the folder acting as a parent for file.
      */
-    void createFile(File file, final String path);
+    void createFile(File file, final UUID path);
 
     /**
      * Create or retrieve a template. First try to look up this template, if it
