@@ -14,7 +14,6 @@ package ccc.services.ejb3;
 import static ccc.domain.PredefinedResourceNames.*;
 import static org.easymock.EasyMock.*;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -194,16 +193,14 @@ public final class AssetManagerEJBTest extends TestCase {
 
     /**
      * Test.
-     * @throws SQLException
-     *
      */
-    public void testCreateFileData() throws SQLException {
+    public void testCreateFileData() {
 
         // ARRANGE
         final Folder assetRoot = new Folder(PredefinedResourceNames.ASSETS);
 //        FileData fileData;
 //        fileData = new FileData(
-//            new BlobImpl("test".getBytes()).getBinaryStream(), "test".length());
+//          new BlobImpl("test".getBytes()).getBinaryStream(), "test".length());
 
         final File file = new File(
             new ResourceName("file"), "title", "desc", new Data());

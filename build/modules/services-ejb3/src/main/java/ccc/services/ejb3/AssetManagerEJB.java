@@ -81,7 +81,7 @@ public final class AssetManagerEJB implements AssetManager {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public final <T extends Resource> T lookup(final ResourcePath path) {
+    public <T extends Resource> T lookup(final ResourcePath path) {
         return (T) _qm.findAssetsRoot().get().navigateTo(path);
     }
 
@@ -89,7 +89,7 @@ public final class AssetManagerEJB implements AssetManager {
      * {@inheritDoc}
      */
     @Override
-    public final void createDisplayTemplate(final Template template) {
+    public void createDisplayTemplate(final Template template) {
         _entityManager.persist(template);
         templatesFolder().add(template);
     }

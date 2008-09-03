@@ -26,11 +26,14 @@ import org.hibernate.usertype.UserType;
 /**
  * TODO Add Description for this type.
  *
+ * @param <T> The type of the enum to persist.
+ *
  * @author Civic Computing Ltd.
  */
-public class EnumUserType<T extends Enum<T>> implements UserType, ParameterizedType {
+public class EnumUserType<T extends Enum<T>> implements UserType,
+                                                        ParameterizedType {
 
-    private Class<T> enumClass;
+    private Class<T> _enumClass;
 
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
@@ -38,7 +41,7 @@ public class EnumUserType<T extends Enum<T>> implements UserType, ParameterizedT
     public void setParameterValues(final Properties parameters) {
         final String enumClassName = parameters.getProperty("type");
         try {
-            enumClass = (Class<T>) Class.forName(enumClassName);
+            _enumClass = (Class<T>) Class.forName(enumClassName);
         } catch (final ClassNotFoundException cnfe) {
             throw new HibernateException("Enum class not found.", cnfe);
         }
@@ -90,7 +93,7 @@ public class EnumUserType<T extends Enum<T>> implements UserType, ParameterizedT
         if (null == value) {
             return null;
         }
-        return Enum.valueOf(this.enumClass, value);
+        return Enum.valueOf(this._enumClass, value);
 
     }
 
@@ -102,7 +105,7 @@ public class EnumUserType<T extends Enum<T>> implements UserType, ParameterizedT
         if (value==null) {
             st.setNull(index, Types.VARCHAR);
         } else {
-            st.setString(index, enumClass.cast(value).name());
+            st.setString(index, _enumClass.cast(value).name());
         }
     }
 
@@ -117,7 +120,7 @@ public class EnumUserType<T extends Enum<T>> implements UserType, ParameterizedT
     /** {@inheritDoc} */
     @Override
     public Class<T> returnedClass() {
-        return enumClass;
+        return _enumClass;
     }
 
     /** {@inheritDoc} */

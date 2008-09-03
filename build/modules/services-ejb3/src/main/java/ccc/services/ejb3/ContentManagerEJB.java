@@ -95,7 +95,7 @@ public final class ContentManagerEJB implements ContentManager {
      * {@inheritDoc}
      */
     @Override
-    public final void create(final UUID folderId, final Folder newFolder) {
+    public void create(final UUID folderId, final Folder newFolder) {
         create(folderId, (Resource) newFolder);
     }
 
@@ -103,7 +103,7 @@ public final class ContentManagerEJB implements ContentManager {
      * {@inheritDoc}
      */
     @Override
-    public final void create(final UUID folderId, final Page newPage) {
+    public void create(final UUID folderId, final Page newPage) {
         create(folderId, (Resource) newPage);
     }
 
@@ -111,7 +111,7 @@ public final class ContentManagerEJB implements ContentManager {
      * {@inheritDoc}
      */
     @Override
-    public final void createRoot() {
+    public void createRoot() {
         final Maybe<Folder> contentRoot =
             _qm.findContentRoot();
 
@@ -135,7 +135,7 @@ public final class ContentManagerEJB implements ContentManager {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public final <T extends Resource> T lookup(final ResourcePath path) {
+    public <T extends Resource> T lookup(final ResourcePath path) {
         return
             (T) _qm.findContentRoot().get().navigateTo(path);
     }
@@ -145,7 +145,7 @@ public final class ContentManagerEJB implements ContentManager {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public final <T extends Resource> T lookup(final UUID id) {
+    public <T extends Resource> T lookup(final UUID id) {
         return (T) _em.find(Resource.class, id);
     }
 
@@ -154,7 +154,7 @@ public final class ContentManagerEJB implements ContentManager {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public final Page eagerPageLookup(final ResourcePath path) {
+    public Page eagerPageLookup(final ResourcePath path) {
         final Resource resource = _qm.findContentRoot().get().navigateTo(path);
         if (resource == null) {
             return null;
@@ -174,7 +174,7 @@ public final class ContentManagerEJB implements ContentManager {
      * {@inheritDoc}
      */
     @Override
-    public final Folder lookupRoot() {
+    public Folder lookupRoot() {
         return _qm.findContentRoot().get();
     }
 
@@ -187,7 +187,7 @@ public final class ContentManagerEJB implements ContentManager {
      * {@inheritDoc}
      */
     @Override
-    public final void update(final UUID id,
+    public void update(final UUID id,
                              final String newTitle,
                              final Map<String, String> newParagraphs) {
 
@@ -195,8 +195,11 @@ public final class ContentManagerEJB implements ContentManager {
         page.title(newTitle);
         page.deleteAllParagraphs();
 
-        for (final String key : newParagraphs.keySet()) {
-            page.addParagraph(key, new Paragraph(newParagraphs.get(key)));
+        for (final Map.Entry<String, String> paragraph
+                : newParagraphs.entrySet()) {
+            page.addParagraph(
+                paragraph.getKey(),
+                new Paragraph(paragraph.getValue()));
         }
     }
 

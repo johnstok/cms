@@ -138,7 +138,7 @@ public class QueriesTest extends TestCase {
 
         // ACT
         try {
-            final QueryManagerEJB q = new QueryManagerEJB(null);
+            new QueryManagerEJB(null);
             fail("Null should be rejected.");
 
         // ASSERT

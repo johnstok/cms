@@ -151,9 +151,9 @@ public final class QueryManagerEJB implements QueryManager {
         }
 
         /**
-         * TODO: Add a description of this method.
+         * Accessor for the query string.
          *
-         * @return
+         * @return The JPA query as a string.
          */
         String queryString() {
             return _queryString;

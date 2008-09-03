@@ -51,7 +51,7 @@ public class DataManagerEJBTest extends TestCase {
 
     /**
      * Test.
-     * @throws SQLException
+     * @throws SQLException sometimes.
      */
     @SuppressWarnings("boxing")
     public void testCreate() throws SQLException {
@@ -63,7 +63,9 @@ public class DataManagerEJBTest extends TestCase {
         final PreparedStatement ps = createStrictMock(PreparedStatement.class);
         ps.setString(1, d.id().toString());
         ps.setInt(2, 0);
-        ps.setBinaryStream(3, dummyStream, Integer.MAX_VALUE);
+        ps.setBinaryStream(DataManagerEJB.STREAM_POSITION_CREATE,
+                           dummyStream,
+                           Integer.MAX_VALUE);
         expect(ps.execute()).andReturn(true);
         ps.close();
         replay(ps);
@@ -89,7 +91,7 @@ public class DataManagerEJBTest extends TestCase {
 
     /**
      * Test.
-     * @throws SQLException
+     * @throws SQLException sometimes.
      */
     @SuppressWarnings("boxing")
     public void testRetrieve() throws SQLException {
@@ -136,8 +138,8 @@ public class DataManagerEJBTest extends TestCase {
 
     /**
      * Test.
-     * @throws SQLException
-     * @throws IOException
+     * @throws SQLException sometimes.
+     * @throws IOException sometimes.
      */
     public void testCreateWithInMemoryDb() throws SQLException, IOException {
 
@@ -183,10 +185,9 @@ public class DataManagerEJBTest extends TestCase {
 
     /**
      * Test.
-     * @throws SQLException
-     * @throws IOException
+     * @throws SQLException sometimes.
      */
-    public void testRetrieveWithInMemoryDb() throws SQLException, IOException {
+    public void testRetrieveWithInMemoryDb() throws SQLException {
 
         // ARRANGE
         final Data d = new Data();

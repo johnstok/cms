@@ -129,7 +129,8 @@ public final class ContentManagerEJBTest extends TestCase {
         em.persist(baz);
         replay(em);
 
-        final ContentManager resourceMgr = new ContentManagerEJB(em, new QueryManagerEJB(em));
+        final ContentManager resourceMgr =
+            new ContentManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
         resourceMgr.create(contentRoot.id(), foo);
@@ -223,7 +224,8 @@ public final class ContentManagerEJBTest extends TestCase {
         em.persist(page2);
         replay(em);
 
-        final ContentManager resourceMgr = new ContentManagerEJB(em, new QueryManagerEJB(em));
+        final ContentManager resourceMgr =
+            new ContentManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
         resourceMgr.create(contentRoot.id(), foo);
@@ -264,7 +266,8 @@ public final class ContentManagerEJBTest extends TestCase {
         expect(em.find(Resource.class, foo.id())).andReturn(foo);
         replay(em);
 
-        final ContentManager resourceMgr = new ContentManagerEJB(em, new QueryManagerEJB(em));
+        final ContentManager resourceMgr =
+            new ContentManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
         resourceMgr.create(contentRoot.id(), foo);
@@ -310,7 +313,8 @@ public final class ContentManagerEJBTest extends TestCase {
         em.persist(page1);
         replay(em);
 
-        final ContentManager resourceMgr = new ContentManagerEJB(em, new QueryManagerEJB(em));
+        final ContentManager resourceMgr =
+            new ContentManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
         resourceMgr.create(contentRoot.id(), foo);
@@ -344,7 +348,8 @@ public final class ContentManagerEJBTest extends TestCase {
 
         final EntityManager em = new SimpleEM(bar);
 
-        final ContentManagerEJB resourceMgr = new ContentManagerEJB(em, new QueryManagerEJB(em));
+        final ContentManagerEJB resourceMgr =
+            new ContentManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
         final Resource resource =
@@ -367,7 +372,8 @@ public final class ContentManagerEJBTest extends TestCase {
 
         final EntityManager em = new SimpleEM(page);
 
-        final ContentManagerEJB resourceMgr = new ContentManagerEJB(em, new QueryManagerEJB(em));
+        final ContentManagerEJB resourceMgr =
+            new ContentManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
         final Map<String, String> paragraphs = new HashMap<String, String>();
@@ -398,8 +404,7 @@ public final class ContentManagerEJBTest extends TestCase {
          *
          * @param page The page to return from find().
          */
-        private SimpleEM(final Page page) {
-
+        SimpleEM(final Page page) {
             _page = page;
         }
 
