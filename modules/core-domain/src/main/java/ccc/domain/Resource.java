@@ -22,9 +22,10 @@ import static ccc.commons.DBC.*;
  */
 public abstract class Resource extends Entity {
 
-    private String       _title = id().toString();
-    private ResourceName _name  = ResourceName.escape(_title);
-    private Template _template = null;
+    private String       _title    = id().toString();
+    private ResourceName _name     = ResourceName.escape(_title);
+    private Template     _template = null;
+    private Folder       _parent   = null;
 
     /**
      * Constructor.
@@ -122,5 +123,39 @@ public abstract class Resource extends Entity {
      */
     public void displayTemplateName(final Template template) {
         _template = template;
+    }
+
+    /**
+     * Accessor for the resource's parent.
+     *
+     * @return The folder containing this resource.
+     */
+    public Folder parent() {
+        return _parent;
+    }
+
+    /**
+     * Mutator for the resource's parent. <i>This method should only be called
+     * by the {@link Folder} class.</i>
+     *
+     * @param parent The folder containing this resource.
+     */
+    void parent(final Folder parent) {
+        _parent = parent;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     * TODO: Update the signature to allow a default to be supplied?
+     *
+     * @return
+     */
+    public Template computeTemplate() {
+        return
+            (null!=_template)
+            ? displayTemplateName()
+            : (null!=_parent)
+              ? _parent.computeTemplate()
+              : null;
     }
 }

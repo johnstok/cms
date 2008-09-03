@@ -195,7 +195,7 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      */
-    public void testAddContentToFolder() {
+    public void testAddPageToFolder() {
 
         // ARRANGE
         final Folder folder = new Folder(new ResourceName("foo"));
@@ -207,6 +207,26 @@ public final class FolderTest extends TestCase {
         // ASSERT
         assertEquals(1, folder.size());
         assertEquals(Collections.singletonList(page), folder.entries());
+        assertEquals(folder, page.parent());
+    }
+
+    /**
+     * Test.
+     */
+    public void testRemovePageFromFolder() {
+
+        // ARRANGE
+        final Folder folder = new Folder(new ResourceName("foo"));
+        final Page page = new Page(new ResourceName("Name"));
+        folder.add(page);
+
+        // ACT
+        folder.remove(page);
+
+        // ASSERT
+        assertEquals(0, folder.size());
+        assertEquals(Collections.emptyList(), folder.entries());
+        assertNull("Should be null.", page.parent());
     }
 
     /**
@@ -224,6 +244,7 @@ public final class FolderTest extends TestCase {
         // ASSERT
         assertEquals(1, folder.size());
         assertEquals(Collections.singletonList(entry), folder.entries());
+        assertEquals(folder, entry.parent());
     }
 
     /**

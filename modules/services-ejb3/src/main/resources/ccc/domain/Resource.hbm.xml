@@ -36,5 +36,14 @@
 		</component>
 
         <!-- Add a read only property to access the parent_id column -->
+        
+        <many-to-one
+            name="_parent"
+            not-null="false"
+            column="parent_id"
+            insert="false"
+            update="false"
+        />
+        
 	</class>
 </hibernate-mapping>
