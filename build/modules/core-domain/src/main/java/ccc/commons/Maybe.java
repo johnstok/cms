@@ -21,9 +21,9 @@ package ccc.commons;
  * An instance of Maybe can be queried to determine whether it contains a value.
  *
  * <br><br>For more information see:
- * <br>http://en.wikipedia.org/wiki/Monad_(functional_programming)#Maybe_monad
+ * <br>http://blog.tmorris.net/maybe-in-java/
  * <br>http://rickyclarkson.blogspot.com/2008/07/optional-values-in-java.html
- * <br>http://lukeplant.me.uk/blog.php?id=1107301659
+ * <br>http://en.wikipedia.org/wiki/Monad_(functional_programming)#Maybe_monad
  *
  * @param <T> The type of the value that this maybe represents.
  *
@@ -54,11 +54,9 @@ public class Maybe<T> {
     /**
      * Determine whether this maybe represents a defined value.
      *
-     * TODO: Rename to isDefined()?
-     *
      * @return True if a value is defined false otherwise.
      */
-    public boolean isPresent() {
+    public boolean isDefined() {
         return !(null==_value);
     }
 
@@ -69,7 +67,7 @@ public class Maybe<T> {
      * @return The value represented by the maybe.
      */
     public T get() {
-        if (isPresent()) {
+        if (isDefined()) {
             return _value;
         }
         throw new IllegalStateException("Maybe does not contain a value.");

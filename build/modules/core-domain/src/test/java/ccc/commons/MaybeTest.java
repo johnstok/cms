@@ -65,7 +65,7 @@ public class MaybeTest extends TestCase {
         final Maybe<Object> m = new Maybe<Object>(new Object());
 
         // ACT
-        final boolean isPresent = m.isPresent();
+        final boolean isPresent = m.isDefined();
 
         // ASSERT
         assertTrue("isPresent should be true.", isPresent);
@@ -80,7 +80,7 @@ public class MaybeTest extends TestCase {
         final Maybe<Object> m = new Maybe<Object>();
 
         // ACT
-        final boolean isPresent = m.isPresent();
+        final boolean isPresent = m.isDefined();
 
         // ASSERT
         assertFalse("isPresent should be false.", isPresent);
@@ -95,7 +95,7 @@ public class MaybeTest extends TestCase {
         final Maybe<Object> m = new Maybe<Object>(null);
 
         // ACT
-        final boolean isPresent = m.isPresent();
+        final boolean isPresent = m.isDefined();
 
         // ASSERT
         assertFalse("isPresent should be false.", isPresent);

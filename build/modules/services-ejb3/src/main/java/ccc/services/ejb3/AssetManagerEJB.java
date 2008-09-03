@@ -101,7 +101,7 @@ public final class AssetManagerEJB implements AssetManager {
     public void createRoot() {
         final Maybe<Folder> assetRoot = _qm.findAssetsRoot();
 
-        if (!assetRoot.isPresent()) {
+        if (!assetRoot.isDefined()) {
             final Folder root = new Folder(PredefinedResourceNames.ASSETS);
             final Folder templates = new Folder(new ResourceName("templates"));
             _entityManager.persist(templates);
