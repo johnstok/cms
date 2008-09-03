@@ -115,7 +115,7 @@ public final class ContentManagerEJB implements ContentManager {
         final Maybe<Folder> contentRoot =
             _qm.findContentRoot();
 
-        if (!contentRoot.isPresent()) {
+        if (!contentRoot.isDefined()) {
             final Folder root = new Folder(PredefinedResourceNames.CONTENT);
             _em.persist(root);
             _em.persist(

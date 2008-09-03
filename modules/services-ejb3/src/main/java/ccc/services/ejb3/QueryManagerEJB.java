@@ -104,7 +104,7 @@ public final class QueryManagerEJB implements QueryManager {
     public Maybe<Folder> findContentRoot() {
         final Maybe<Setting> rootId = findSetting(Name.CONTENT_ROOT_FOLDER_ID);
 
-        if (rootId.isPresent()) {
+        if (rootId.isDefined()) {
             final Folder root =
                 _em.find(
                     Folder.class,
@@ -120,7 +120,7 @@ public final class QueryManagerEJB implements QueryManager {
     public Maybe<Folder> findAssetsRoot() {
         final Maybe<Setting> rootId = findSetting(Name.ASSETS_ROOT_FOLDER_ID);
 
-        if (rootId.isPresent()) {
+        if (rootId.isDefined()) {
             final Folder root =
                 _em.find(
                     Folder.class,
