@@ -72,7 +72,9 @@ public class AssetsServletTest extends TestCase {
 
         final HttpServletResponse response =
             createStrictMock(HttpServletResponse.class);
-        // response.setHeader("Content-Disposition", "filename=\""+dummyFile.name()+"\"" ) ;
+        // response.setHeader(
+//                "Content-Disposition",
+//                "filename=\""+dummyFile.name()+"\"" ) ;
         // Content-Type: text/html; charset=ISO-8859-4
         // Content-Description: just a small picture of me
         // Content-Length

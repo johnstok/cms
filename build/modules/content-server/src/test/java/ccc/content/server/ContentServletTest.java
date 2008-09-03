@@ -43,8 +43,8 @@ import ccc.services.adaptors.ContentManagerAdaptor;
  */
 public final class ContentServletTest extends TestCase {
 
-    private HttpServletResponse response;
-    private HttpServletRequest  request;
+    private HttpServletResponse _response;
+    private HttpServletRequest  _request;
 
     /**
      * Test.
@@ -107,7 +107,7 @@ public final class ContentServletTest extends TestCase {
     /**
      * Test.
      *
-     * @throws IOException If there is an error writing to the response.
+     * @throws IOException If there is an error writing to the _response.
      */
     public void testContentRenderCorrectly() throws IOException {
 
@@ -117,18 +117,18 @@ public final class ContentServletTest extends TestCase {
         page.addParagraph("key1", new Paragraph("para1"));
         page.addParagraph("key2", new Paragraph("para2"));
 
-        response.setHeader("Pragma", "no-cache");
-        response.setHeader("Cache-Control", "no-cache");
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html");
-        expect(response.getWriter()).andReturn(new PrintWriter(output));
-        replay(response);
+        _response.setHeader("Pragma", "no-cache");
+        _response.setHeader("Cache-Control", "no-cache");
+        _response.setCharacterEncoding("UTF-8");
+        _response.setContentType("text/html");
+        expect(_response.getWriter()).andReturn(new PrintWriter(output));
+        replay(_response);
 
         // ACT
-        new ContentServlet().write(response, page);
+        new ContentServlet().write(_response, page);
 
         // ASSERT
-        verify(response);
+        verify(_response);
         assertEquals(
             "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" "
             + "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n"
@@ -145,7 +145,7 @@ public final class ContentServletTest extends TestCase {
     /**
      * Test.
      *
-     * @throws IOException If there is an error writing to the response.
+     * @throws IOException If there is an error writing to the _response.
      */
     public void testFoldersRenderCorrectly() throws IOException {
 
@@ -155,18 +155,18 @@ public final class ContentServletTest extends TestCase {
         top.add(new Folder(new ResourceName("child_a")));
         top.add(new Page(new ResourceName("child_b")));
 
-        response.setHeader("Pragma", "no-cache");
-        response.setHeader("Cache-Control", "no-cache");
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html");
-        expect(response.getWriter()).andReturn(new PrintWriter(output));
-        replay(response);
+        _response.setHeader("Pragma", "no-cache");
+        _response.setHeader("Cache-Control", "no-cache");
+        _response.setCharacterEncoding("UTF-8");
+        _response.setContentType("text/html");
+        expect(_response.getWriter()).andReturn(new PrintWriter(output));
+        replay(_response);
 
         // ACT
-        new ContentServlet().write(response, top);
+        new ContentServlet().write(_response, top);
 
         // ASSERT
-        verify(response);
+        verify(_response);
         assertEquals(
             "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" "
             + "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n"
@@ -182,7 +182,7 @@ public final class ContentServletTest extends TestCase {
     /**
      * Test.
      *
-     * @throws IOException If there is an error writing to the response.
+     * @throws IOException If there is an error writing to the _response.
      * @throws ServletException If execution of the servlet fails.
      */
     public void testDoGetHandlesContent() throws ServletException, IOException {
@@ -194,9 +194,8 @@ public final class ContentServletTest extends TestCase {
                 new MapRegistry(
                     "ContentManagerEJB/local",
                 new ContentManagerAdaptor() {
-
-                    /** @see ContentManagerAdaptor#lookup(java.lang.String) */
-                    @Override
+                    /** {@inheritDoc} */
+                    @Override @SuppressWarnings("unchecked")
                     public Resource lookup(final ResourcePath path) {
                         return
                             new Page(new ResourceName("name"))
@@ -205,19 +204,19 @@ public final class ContentServletTest extends TestCase {
                 }));
 
         // EXPECT
-        response.setHeader("Pragma", "no-cache");
-        response.setHeader("Cache-Control", "no-cache");
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html");
-        expect(request.getPathInfo()).andReturn("/foo/");
-        expect(response.getWriter()).andReturn(new PrintWriter(output));
-        replay(request, response);
+        _response.setHeader("Pragma", "no-cache");
+        _response.setHeader("Cache-Control", "no-cache");
+        _response.setCharacterEncoding("UTF-8");
+        _response.setContentType("text/html");
+        expect(_request.getPathInfo()).andReturn("/foo/");
+        expect(_response.getWriter()).andReturn(new PrintWriter(output));
+        replay(_request, _response);
 
         // ACT
-        contentServlet.doGet(request, response);
+        contentServlet.doGet(_request, _response);
 
         // VERIFY
-        verify(request, response);
+        verify(_request, _response);
         assertEquals(
             "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" "
             + "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n"
@@ -231,10 +230,11 @@ public final class ContentServletTest extends TestCase {
     /**
      * Test.
      *
-     * @throws IOException If there is an error writing to the response.
+     * @throws IOException If there is an error writing to the _response.
      * @throws ServletException If execution of the servlet fails.
      */
-    public void testDoGetHandlesFolderWithPages() throws ServletException, IOException {
+    public void testDoGetHandlesFolderWithPages() throws ServletException,
+                                                         IOException {
 
         // ARRANGE
         final Folder foo = new Folder(new ResourceName("foo"));
@@ -249,32 +249,33 @@ public final class ContentServletTest extends TestCase {
                 new MapRegistry(
                     "ContentManagerEJB/local",
                 new ContentManagerAdaptor() {
-                /** {@inheritDoc} */ @Override
-                public Resource lookup(final ResourcePath path) {
+                /** {@inheritDoc} */ @Override @SuppressWarnings("unchecked")
+                public Folder lookup(final ResourcePath path) {
                     return foo;
                 }
             }));
 
         // EXPECT
-        response.sendRedirect("bar/");
-        expect(request.getPathInfo()).andReturn("/foo/");
-        replay(request, response);
+        _response.sendRedirect("bar/");
+        expect(_request.getPathInfo()).andReturn("/foo/");
+        replay(_request, _response);
 
         // ACT
-        contentServlet.doGet(request, response);
+        contentServlet.doGet(_request, _response);
 
         // VERIFY
-        verify(request, response);
+        verify(_request, _response);
         assertEquals("", output.toString());
     }
 
     /**
      * Test.
      *
-     * @throws IOException If there is an error writing to the response.
+     * @throws IOException If there is an error writing to the _response.
      * @throws ServletException If execution of the servlet fails.
      */
-    public void testDoGetHandlesFolderWithoutPages() throws ServletException, IOException {
+    public void testDoGetHandlesFolderWithoutPages() throws ServletException,
+                                                            IOException {
 
         // ARRANGE
         final Folder foo = new Folder(new ResourceName("foo"));
@@ -287,22 +288,23 @@ public final class ContentServletTest extends TestCase {
                 new MapRegistry(
                     "ContentManagerEJB/local",
                     new ContentManagerAdaptor() {
-                        /** {@inheritDoc} */ @Override
+                        /** {@inheritDoc} */
+                        @Override @SuppressWarnings("unchecked")
                         public Resource lookup(final ResourcePath path) {
                             return foo;
                         }
                     }));
 
         // EXPECT
-        expect(request.getPathInfo()).andReturn("/foo/");
-        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        replay(request, response);
+        expect(_request.getPathInfo()).andReturn("/foo/");
+        _response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        replay(_request, _response);
 
         // ACT
-        contentServlet.doGet(request, response);
+        contentServlet.doGet(_request, _response);
 
         // VERIFY
-        verify(request, response);
+        verify(_request, _response);
         assertEquals("", output.toString());
     }
 
@@ -312,15 +314,15 @@ public final class ContentServletTest extends TestCase {
     public void testDisablementOfResponseCaching() {
 
         // ARRANGE
-        response.setHeader("Pragma", "no-cache");
-        response.setHeader("Cache-Control", "no-cache");
-        replay(response);
+        _response.setHeader("Pragma", "no-cache");
+        _response.setHeader("Cache-Control", "no-cache");
+        replay(_response);
 
         // ACT
-        new ContentServlet().disableCachingFor(response);
+        new ContentServlet().disableCachingFor(_response);
 
         // VERIFY
-        verify(response);
+        verify(_response);
     }
 
     /**
@@ -329,14 +331,14 @@ public final class ContentServletTest extends TestCase {
     public void testCharacterEncodingIsSetToUtf8() {
 
         // ARRANGE
-        response.setCharacterEncoding("UTF-8");
-        replay(response);
+        _response.setCharacterEncoding("UTF-8");
+        replay(_response);
 
         // ACT
-        new ContentServlet().configureCharacterEncoding(response);
+        new ContentServlet().configureCharacterEncoding(_response);
 
         // VERIFY
-        verify(response);
+        verify(_response);
     }
 
     /**
@@ -345,8 +347,8 @@ public final class ContentServletTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        response = createMock(HttpServletResponse.class);
-        request = createMock(HttpServletRequest.class);
+        _response = createMock(HttpServletResponse.class);
+        _request = createMock(HttpServletRequest.class);
     }
 
     /**
@@ -355,7 +357,7 @@ public final class ContentServletTest extends TestCase {
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();
-        response = null;
-        request = null;
+        _response = null;
+        _request = null;
     }
 }

@@ -37,6 +37,9 @@ import ccc.services.DataManager;
  */
 public class AssetsServlet extends HttpServlet {
 
+    /** serialVersionUID : long. */
+    private static final long serialVersionUID = -5337311771335251212L;
+
     /** _registry : Registry. */
     private Registry _registry = new JNDI();
 
@@ -48,7 +51,7 @@ public class AssetsServlet extends HttpServlet {
     /**
      * Constructor.
      *
-     * @param registry
+     * @param registry The registry used by this class.
      */
     public AssetsServlet(final Registry registry) {
         _registry = registry;
