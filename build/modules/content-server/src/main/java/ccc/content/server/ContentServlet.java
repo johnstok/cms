@@ -255,10 +255,7 @@ public final class ContentServlet extends HttpServlet {
 
         switch (resource.type()) {
             case PAGE:
-                return
-                Resources.readIntoString(
-                    getClass().getResource("default-content-template.txt"),
-                    Charset.forName("ISO-8859-1"));
+                return resource.computeTemplate().body();
             case FOLDER:
                 return
                 Resources.readIntoString(
