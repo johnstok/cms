@@ -83,3 +83,6 @@ enum
 stateful
 stateless
 datasource
+monad
+haskell
+docs
