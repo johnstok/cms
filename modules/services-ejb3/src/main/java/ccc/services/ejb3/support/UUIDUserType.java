@@ -92,7 +92,7 @@ public class UUIDUserType implements UserType {
         if (value==null) {
             st.setNull(index, Types.VARCHAR);
         } else {
-            st.setString(index, ((UUID)value).toString());
+            st.setString(index, ((UUID) value).toString());
         }
     }
 

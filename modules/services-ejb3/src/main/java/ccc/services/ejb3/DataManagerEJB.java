@@ -85,7 +85,9 @@ public class DataManagerEJB implements DataManager {
                 try {
                     ps.setString(1, data.id().toString());
                     ps.setInt(2, 0);
-                    ps.setBinaryStream(3, dataStream, Integer.MAX_VALUE);
+                    ps.setBinaryStream(STREAM_POSITION_CREATE,
+                                       dataStream,
+                                       Integer.MAX_VALUE);
                     ps.execute();
                 } finally {
                     try {
@@ -163,4 +165,7 @@ public class DataManagerEJB implements DataManager {
     /** RETRIEVE_STATEMENT : String. */
     public static final String RETRIEVE_STATEMENT =
         "SELECT _bytes FROM data WHERE _id=?";
+
+    /** STREAM_POSITION_CREATE : int. */
+    public static final int STREAM_POSITION_CREATE = 3;
 }
