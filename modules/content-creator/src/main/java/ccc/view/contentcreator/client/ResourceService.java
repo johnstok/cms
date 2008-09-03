@@ -50,4 +50,6 @@ public interface ResourceService extends RemoteService {
     List<FolderDTO> getFolderChildren(FolderDTO folder);
 
     List<ResourceDTO> getChildren(FolderDTO folder);
+
+    void createFolder(FolderDTO parent, String name);
 }

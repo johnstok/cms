@@ -209,4 +209,12 @@ public interface Constants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Local file")
     String localFile();
+
+    /**
+     * "Create folder".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Create folder")
+    String createFolder();
 }
