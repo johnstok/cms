@@ -30,7 +30,8 @@ public final class IO {
     /**
      * Copy from an input stream to an output stream.
      * Optimisation based on:
-     * http://java.sun.com/docs/books/performance/1st_edition/html/JPIOPerformance.fm.html
+     * http://java.sun.com/
+     * docs/books/performance/1st_edition/html/JPIOPerformance.fm.html
      *
      * @param is The {@link InputStream} to copy from.
      * @param os The {@link OutputStream} to copy to.

@@ -12,7 +12,6 @@
 package ccc.commons;
 
 import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -40,7 +39,7 @@ public final class MapRegistry implements Registry {
      */
     public MapRegistry() { super(); }
 
-    private final Map<String, Object> _map = new HashMap<String, Object>();
+    private final HashMap<String, Object> _map = new HashMap<String, Object>();
 
     /**
      * {@inheritDoc}

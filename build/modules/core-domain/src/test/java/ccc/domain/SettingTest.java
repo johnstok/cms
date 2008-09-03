@@ -123,7 +123,6 @@ public final class SettingTest extends TestCase {
     public void testValueMutatorRejectsNull() {
 
         // ARRANGE
-        final Name name = Name.CONTENT_ROOT_FOLDER_ID;
         final String value = "bar";
         final Setting s = new Setting(Name.CONTENT_ROOT_FOLDER_ID, value);
 

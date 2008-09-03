@@ -31,10 +31,10 @@ public final class ResourcePath implements Serializable {
     private static final long serialVersionUID = -5755885435816868422L;
     /** PATH_PATTERN : Pattern. */
     public static final Pattern PATH_PATTERN =
-        Pattern.compile("/(("+ResourceName._validCharacters+")/)*");
+        Pattern.compile("/(("+ResourceName.VALID_CHARACTERS+")/)*");
     /** TOKEN_PATTERN : String. */
     public static final String TOKEN_PATTERN =
-        "/("+ResourceName._validCharacters+")";
+        "/("+ResourceName.VALID_CHARACTERS+")";
     private final List<ResourceName> _elements;
 
     /**

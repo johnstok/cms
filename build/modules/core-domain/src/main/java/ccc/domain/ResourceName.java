@@ -31,9 +31,11 @@ public final class ResourceName implements Serializable {
 
     /** serialVersionUID : long. */
     private static final long serialVersionUID = 8023247880499438161L;
+    /** VALID_CHARACTERS : String. */
+    public static final String  VALID_CHARACTERS = "[\\.\\w]+";
+
     private String _representation = escapeString(UUID.randomUUID().toString());
-    public static final String  _validCharacters = "[\\.\\w]+";
-    private final Pattern _validRegex = Pattern.compile(_validCharacters);
+    private final Pattern _validRegex = Pattern.compile(VALID_CHARACTERS);
 
     /**
      * Constructor.
@@ -61,7 +63,7 @@ public final class ResourceName implements Serializable {
             throw new RuntimeException(
                 stringRepresentation
                 + " does not match the java.util.regex pattern '"
-                + _validCharacters + "'.");
+                + VALID_CHARACTERS + "'.");
         }
 
         _representation = stringRepresentation;

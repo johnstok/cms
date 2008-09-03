@@ -36,7 +36,7 @@ public class IOTest extends TestCase {
         final ByteArrayOutputStream os = new ByteArrayOutputStream();
 
         // ACT
-        IO.copy(is,os);
+        IO.copy(is, os);
 
         // ASSERT
         assertTrue(

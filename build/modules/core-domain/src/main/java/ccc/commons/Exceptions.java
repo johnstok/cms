@@ -9,6 +9,7 @@
  * Changes: see subversion log
  *-----------------------------------------------------------------------------
  */
+
 package ccc.commons;
 
 import java.io.PrintWriter;
@@ -31,9 +32,16 @@ public final class Exceptions {
      * @return The stack trace as a string.
      */
     public static String stackTraceFor(final Throwable t) {
+
         final StringWriter stackTrace = new StringWriter();
         t.printStackTrace(new PrintWriter(stackTrace));
         return stackTrace.toString();
     }
 
+    /**
+     * Handle an exception that we can do nothing sensible with.
+     *
+     * @param t The exception to ignore.
+     */
+    public static void swallow(final Throwable t) { /* NO-OP */ }
 }
