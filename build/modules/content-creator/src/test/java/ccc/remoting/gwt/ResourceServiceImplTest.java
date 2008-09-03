@@ -52,6 +52,33 @@ public final class ResourceServiceImplTest extends TestCase {
     /**
      * Test.
      */
+    public void testCreateFolder() {
+
+        // ARRANGE
+        final Folder parent = new Folder(new ResourceName("parent"));
+        final Capture<Folder> actual = new Capture<Folder>();
+        final ContentManager cm = createStrictMock(ContentManager.class);
+        cm.create(eq(parent.id()), capture(actual));
+        replay(cm);
+
+        final ResourceService rs =
+            new ResourceServiceImpl(
+                new MapRegistry()
+                    .put("ContentManagerEJB/local", cm)
+            );
+
+        // ACT
+        rs.createFolder(
+            new FolderDTO(parent.id().toString(), null, null, null, 0), "foo");
+
+        // ASSERT
+        verify(cm);
+        assertEquals(new ResourceName("foo"), actual.getValue().name());
+    }
+
+    /**
+     * Test.
+     */
     public void testGetChildren() {
 
         // ARRANGE

@@ -57,4 +57,6 @@ public interface ResourceServiceAsync {
     void getFolderChildren(FolderDTO folder, AsyncCallback<List<FolderDTO>> callback);
 
     void getChildren(FolderDTO folder, AsyncCallback<List<ResourceDTO>> callback);
+
+    void createFolder(FolderDTO parent, String name, AsyncCallback<Void> callback);
 }

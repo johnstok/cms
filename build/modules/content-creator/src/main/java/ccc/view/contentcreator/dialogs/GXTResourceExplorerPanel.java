@@ -36,15 +36,20 @@ import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.event.TreeEvent;
+import com.extjs.gxt.ui.client.event.WindowEvent;
+import com.extjs.gxt.ui.client.event.WindowListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.store.TreeStore;
 import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
+import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.layout.AccordionLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
 import com.extjs.gxt.ui.client.widget.table.Table;
@@ -53,6 +58,7 @@ import com.extjs.gxt.ui.client.widget.table.TableColumnModel;
 import com.extjs.gxt.ui.client.widget.table.TableItem;
 import com.extjs.gxt.ui.client.widget.tree.Tree;
 import com.extjs.gxt.ui.client.widget.tree.TreeItem;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
@@ -270,11 +276,65 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
                 final FolderDTO item = (FolderDTO) tree.getSelectionModel()
                                                        .getSelectedItem()
                                                        .getModel();
-                new UploadFileDialog(_app, "/", "/").center();
+                new UploadFileDialog(_app,
+                                     item.getId(),
+                                     item.getName()).center();
             }
         });
-
         contextMenu.add(uploadFile);
+
+        final MenuItem createFolder = new MenuItem();
+        createFolder.setText(_app.constants().createFolder());
+        createFolder.addSelectionListener(new SelectionListener<MenuEvent>() {
+
+            @Override public void componentSelected(final MenuEvent ce) {
+
+                final FolderDTO item = (FolderDTO) tree.getSelectionModel()
+                                                       .getSelectedItem()
+                                                       .getModel();
+
+                final Dialog complex = new Dialog();
+                complex.setButtons(Dialog.OKCANCEL);
+                complex.setAutoHeight(true);
+                complex.setWidth(400);
+                complex.setHeading("Create folder");
+                complex.setHideOnButtonClick(true);
+                complex.setLayout(new FormLayout());
+
+                final TextField<String> text = new TextField<String>();
+                text.setFieldLabel("Name");
+                text.setEmptyText("The folder name");
+                text.setAllowBlank(false);
+                complex.add(text);
+
+                complex.addWindowListener(
+                    new WindowListener(){
+                        /** {@inheritDoc} */
+                        @Override public void windowHide(final WindowEvent we) {
+                            final String action = complex.getButtonPressed().getText();
+                            GWT.log(
+                                "Button: "+complex.getButtonPressed().getText(),
+                                null);
+                            if ("Ok".equals(action)) {
+                                rsa.createFolder(
+                                    item,
+                                    text.getValue(),
+                                    new ErrorReportingCallback<Void>(_app){
+                                        @Override public void onSuccess(final Void result) {
+                                            // TODO: refresh the folder...
+                                        }
+                                    }
+                                );
+                            }
+                        }
+                    });
+
+                complex.show();
+
+            }
+        });
+        contextMenu.add(createFolder);
+
         tree.setContextMenu(contextMenu);
 
         return tree;

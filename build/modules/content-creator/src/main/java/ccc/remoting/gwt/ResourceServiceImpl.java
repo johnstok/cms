@@ -25,6 +25,7 @@ import ccc.commons.Registry;
 import ccc.domain.CCCException;
 import ccc.domain.Folder;
 import ccc.domain.Resource;
+import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.ResourceType;
 import ccc.domain.Template;
@@ -210,5 +211,11 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
             children.add(DTOs.<ResourceDTO>dtoFrom(r));
         }
         return children;
+    }
+
+    /** {@inheritDoc} */
+    public void createFolder(final FolderDTO parent, final String name) {
+        contentManager().create(UUID.fromString(parent.getId()),
+                                new Folder(new ResourceName(name)));
     }
 }
