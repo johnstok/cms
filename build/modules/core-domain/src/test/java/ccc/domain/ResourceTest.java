@@ -26,6 +26,142 @@ public final class ResourceTest extends TestCase {
     /**
      * Test.
      */
+    public void testComputeTemplateReturnsNullWhenNoTemplateIsFound() {
+
+        // ARRANGE
+        final Folder f1 = new Folder();
+        final Folder f2 = new Folder();
+        final Resource r = new Page();
+
+        f2.add(f1);
+        f1.add(r);
+
+        // ACT
+        final Template actual = r.computeTemplate();
+
+        // ASSERT
+        assertNull("Should be null.", actual);
+        assertNull("Should be null.", new Page().computeTemplate());
+    }
+
+    /**
+     * Test.
+     */
+    public void testComputeTemplateLooksInCalleeFirst() {
+
+        // ARRANGE
+        final Template t1 = new Template();
+        final Template t2 = new Template();
+        final Template t3 = new Template();
+
+        final Folder f1 = new Folder();
+        f1.displayTemplateName(t1);
+        final Folder f2 = new Folder();
+        f2.displayTemplateName(t2);
+        final Resource r = new Page();
+        r.displayTemplateName(t3);
+
+        f2.add(f1);
+        f1.add(r);
+
+        // ACT
+        final Template actual = r.computeTemplate();
+
+        // ASSERT
+        assertEquals(t3, actual);
+    }
+
+    /**
+     * Test.
+     */
+    public void testComputeTemplateRecursesToParent() {
+
+        // ARRANGE
+        final Template t = new Template();
+        final Resource r = new Page();
+        final Folder f1 = new Folder();
+        final Folder f2 = new Folder();
+        f2.add(f1);
+        f1.add(r);
+        f2.displayTemplateName(t);
+
+        // ACT
+        final Template actual = r.computeTemplate();
+
+        // ASSERT
+        assertEquals(t, actual);
+    }
+
+    /**
+     * Test.
+     */
+    public void testParentCanBeChanged() {
+
+        // ARRANGE
+        final Resource r = new Page();
+        final Folder f1 = new Folder();
+        final Folder f2 = new Folder();
+        r.parent(f1);
+
+        // ACT
+        r.parent(f2);
+
+        // ASSERT
+        assertEquals(f2, r.parent());
+    }
+
+    /**
+     * Test.
+     */
+    public void testParentCanBeCleared() {
+
+        // ARRANGE
+        final Resource r = new Page();
+        final Folder f = new Folder();
+        r.parent(f);
+
+        // ACT
+        r.parent(null);
+
+        // ASSERT
+        assertNull("Should be null.", r.parent());
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testParentMutator() {
+
+        // ARRANGE
+        final Resource r = new Page();
+        final Folder expected = new Folder();
+
+        // ACT
+        r.parent(expected);
+
+        // ASSERT
+        assertEquals(expected, r.parent());
+    }
+
+    /**
+     * Test.
+     */
+    public void testParentAccessor() {
+
+        // ARRANGE
+        final Resource r = new Page();
+
+        // ACT
+        final Folder actual = r.parent();
+
+        // ASSERT
+        assertNull("Should be null.", actual);
+    }
+
+    /**
+     * Test.
+     */
     public void testResourceConstructorRejectsNullUrl() {
 
         // ACT

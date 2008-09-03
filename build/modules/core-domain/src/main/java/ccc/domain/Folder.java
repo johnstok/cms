@@ -78,6 +78,7 @@ public final class Folder extends Resource {
                 + "'.");
         }
         _entries.add(resource);
+        resource.parent(this);
     }
 
     /**
@@ -255,5 +256,16 @@ public final class Folder extends Resource {
             }
         }
         throw new CCCException("No pages in this folder.");
+    }
+
+    /**
+     * Remove a resource from this folder.
+     *
+     * @param resource The resource to remove.
+     */
+    public void remove(final Resource resource) {
+        DBC.require().notNull(resource);
+        _entries.remove(resource);
+        resource.parent(null);
     }
 }
