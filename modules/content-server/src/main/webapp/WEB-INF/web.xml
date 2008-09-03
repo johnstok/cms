@@ -1,9 +1,9 @@
 <!DOCTYPE web-app PUBLIC
  "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
- 
+
 <!-- 
-    ========================================================================
+	========================================================================
 	* Copyright (c) 2008 Civic Computing Ltd
 	* All rights reserved.
 	*
@@ -12,7 +12,7 @@
 	* Modified on   $Date$
 	*
 	* Changes: see SubVersion log
-    ========================================================================
+	========================================================================
 -->
 
 <web-app>
@@ -22,18 +22,26 @@
 		<servlet-name>content</servlet-name>
 		<servlet-class>ccc.content.server.ContentServlet</servlet-class>
 	</servlet>
-	   <servlet>
-        <servlet-name>error</servlet-name>
-        <servlet-class>ccc.content.server.ErrorServlet</servlet-class>
-    </servlet>
+	<servlet>
+		<servlet-name>assets</servlet-name>
+		<servlet-class>ccc.content.server.AssetsServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>error</servlet-name>
+		<servlet-class>ccc.content.server.ErrorServlet</servlet-class>
+	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>content</servlet-name>
 		<url-pattern>/content/*</url-pattern>
 	</servlet-mapping>
-	   <servlet-mapping>
-        <servlet-name>error</servlet-name>
-        <url-pattern>/error</url-pattern>
-    </servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>assets</servlet-name>
+		<url-pattern>/assets/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>error</servlet-name>
+		<url-pattern>/error</url-pattern>
+	</servlet-mapping>
 </web-app>
 
