@@ -30,9 +30,9 @@ import com.thoughtworks.selenium.Selenium;
  */
 public final class Ticket5AcceptanceTest extends TestCase {
 
-    private Selenium     selenium;
-    private final int    port    = 5555;
-    private final String browser = "*custom firefox -P Selenium -no-remote";
+    private Selenium     _selenium;
+    private final int    _port    = 5555;
+    private final String _browser = "*custom firefox -P Selenium -no-remote";
 
     /**
      * Test.
@@ -84,21 +84,21 @@ public final class Ticket5AcceptanceTest extends TestCase {
      * Test.
      */
     public void testTitlesAreSetCorrectly() {
-        selenium.setSpeed("1000");
-        selenium.open("content-server/content/Our_Work/Our_Work/");
-        assertEquals("Our_Work", selenium.getTitle());
+        _selenium.setSpeed("1000");
+        _selenium.open("content-server/content/Our_Work/Our_Work/");
+        assertEquals("Our_Work", _selenium.getTitle());
     }
 
     /**
      * Test.
      */
     public void testEachContentParagraphIsPresent() {
-        selenium.setSpeed("1000");
-        selenium.open("content-server/content/Our_Work/Our_Work/");
-        selenium.waitForPageToLoad("30000");
-        assertEquals("CONTENT", selenium.getText("//h2[1]"));
-        assertEquals("HEADER", selenium.getText("//h2[3]"));
-        assertEquals("Relationship", selenium.getText("//h2[5]"));
+        _selenium.setSpeed("1000");
+        _selenium.open("content-server/content/Our_Work/Our_Work/");
+        _selenium.waitForPageToLoad("30000");
+        assertEquals("CONTENT", _selenium.getText("//h2[1]"));
+        assertEquals("HEADER", _selenium.getText("//h2[3]"));
+        assertEquals("Relationship", _selenium.getText("//h2[5]"));
 
     }
 
@@ -108,8 +108,8 @@ public final class Ticket5AcceptanceTest extends TestCase {
     @Override
     public void setUp() throws Exception {
         final String url = "http://localhost:8080/";
-        selenium = new DefaultSelenium("localhost", port, browser, url);
-        selenium.start();
+        _selenium = new DefaultSelenium("localhost", _port, _browser, url);
+        _selenium.start();
     }
 
     /**
@@ -117,6 +117,6 @@ public final class Ticket5AcceptanceTest extends TestCase {
      */
     @Override
     protected void tearDown() throws Exception {
-        selenium.stop();
+        _selenium.stop();
     }
 }
