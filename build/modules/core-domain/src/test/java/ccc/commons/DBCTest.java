@@ -26,6 +26,38 @@ public final class DBCTest extends TestCase {
     /**
      * Test.
      */
+    public void testToBeFalse() {
+
+        // ACT
+        require().toBeFalse(false);
+
+        try {
+            require().toBeFalse(true);
+            fail("True conditions should be rejected.");
+        } catch (final IllegalArgumentException e) {
+            assertEquals("Specified expression must be false.", e.getMessage());
+        }
+    }
+
+    /**
+     * Test.
+     */
+    public void testToBeTrue() {
+
+        // ACT
+        require().toBeTrue(true);
+
+        try {
+            require().toBeTrue(false);
+            fail("False conditions should be rejected.");
+        } catch (final IllegalArgumentException e) {
+            assertEquals("Specified expression must be true.", e.getMessage());
+        }
+    }
+
+    /**
+     * Test.
+     */
     public void testRequireNotNull() {
 
         // ACT

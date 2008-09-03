@@ -69,4 +69,28 @@ public final class DBC {
                 "Specified string must have length > 0."); //$NON-NLS-1$
         }
     }
+
+    /**
+     * Assert that the specified condition is false.
+     *
+     * @param condition The condition to check.
+     */
+    public void toBeFalse(final boolean condition) {
+        if (condition) {
+            throw new IllegalArgumentException(
+                "Specified expression must be false.");
+        }
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param b
+     */
+    public void toBeTrue(final boolean condition) {
+        if (!condition) {
+            throw new IllegalArgumentException(
+                "Specified expression must be true.");
+        }
+    }
 }
