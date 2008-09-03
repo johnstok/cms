@@ -65,6 +65,15 @@ public class ResourceRef {
     }
 
     /**
+     * Accessor for the type field.
+     *
+     * @return The type of the resource to which this reference points.
+     */
+    public final ResourceType type() {
+        return _type;
+    }
+
+    /**
      * Add an item of metadata.
      *
      * @param key The name of this metadata item.

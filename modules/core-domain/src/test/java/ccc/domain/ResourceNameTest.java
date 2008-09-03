@@ -120,7 +120,7 @@ public final class ResourceNameTest extends TestCase {
             // ASSERT
             assertEquals(
                 "  does not match the java.util.regex pattern '"
-                    + _validCharacters+"'.",
+                    + VALID_CHARACTERS+"'.",
                 e.getMessage());
         }
     }
@@ -142,7 +142,7 @@ public final class ResourceNameTest extends TestCase {
             // ASSERT
             assertEquals(
                 "~ does not match the java.util.regex pattern '"
-                    + _validCharacters+"'.",
+                    + VALID_CHARACTERS+"'.",
                 e.getMessage());
         }
     }
@@ -164,7 +164,7 @@ public final class ResourceNameTest extends TestCase {
             // ASSERT
             assertEquals(
                 "- does not match the java.util.regex pattern '"
-                    + _validCharacters+"'.",
+                    + VALID_CHARACTERS+"'.",
                 e.getMessage());
         }
     }
@@ -186,7 +186,7 @@ public final class ResourceNameTest extends TestCase {
             // ASSERT
             assertEquals(
                 "\\ does not match the java.util.regex pattern '"
-                    + _validCharacters+"'.",
+                    + VALID_CHARACTERS+"'.",
                 e.getMessage());
         }
     }
@@ -213,7 +213,7 @@ public final class ResourceNameTest extends TestCase {
                 assertEquals(
                     reservedChar
                         + " does not match the java.util.regex pattern '"
-                    + _validCharacters+"'.",
+                    + VALID_CHARACTERS+"'.",
                     e.getMessage());
             }
         }

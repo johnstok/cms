@@ -80,6 +80,17 @@ public final class XHTML {
                 .append(", Error: ").append(e.getMessage()); //$NON-NLS-1$
             return fullMessage.toString();
         }
+
+        /**
+         * Accessor for the errors collection.
+         *
+         * TODO: make defensive copy?
+         *
+         * @return A collection of strings, one per error.
+         */
+        public Collection<String> errors() {
+            return _errors;
+        }
     }
 
     /**
@@ -125,7 +136,7 @@ public final class XHTML {
             final XhtmlErrorHandler errorHandler = new XhtmlErrorHandler();
             final DocumentBuilder parser = createParser(errorHandler);
             parser.parse(page);
-            return errorHandler._errors.size() == 0;
+            return errorHandler.errors().size() == 0;
         } catch (final ParserConfigurationException e) {
             throw new RuntimeException(e);
         } catch (final SAXException e) {
@@ -201,7 +212,7 @@ public final class XHTML {
             final XhtmlErrorHandler errorHandler = new XhtmlErrorHandler();
             final DocumentBuilder parser = createParser(errorHandler);
             parser.parse(page);
-            for (final String error : errorHandler._errors) {
+            for (final String error : errorHandler.errors()) {
                 out.println(error);
             }
         } catch (final ParserConfigurationException e) {

@@ -11,6 +11,8 @@
  */
 package ccc.commons;
 
+import static ccc.commons.Exceptions.*;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -38,11 +40,11 @@ public final class Resources {
         DBC.require().notNull(url);
         DBC.require().notNull(charset);
 
+        InputStreamReader isr = null;
         try {
             final StringBuffer sb = new StringBuffer();
             final char[] buffer = new char[BUFFER_SIZE];
-            final InputStreamReader isr =
-                new InputStreamReader(url.openStream(), charset);
+            isr = new InputStreamReader(url.openStream(), charset);
             int bytesRead = isr.read(buffer, 0, buffer.length);
             while (bytesRead>0) {
                 sb.append(buffer, 0, bytesRead);
@@ -52,6 +54,14 @@ public final class Resources {
             return sb.toString();
         } catch (final IOException e) {
             throw new RuntimeException(e);
+        } finally {
+            if (null!=isr) {
+                try {
+                    isr.close();
+                } catch (final IOException e) {
+                    swallow(e);
+                }
+            }
         }
     }
 

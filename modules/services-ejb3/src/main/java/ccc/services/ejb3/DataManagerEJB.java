@@ -12,6 +12,7 @@
 
 package ccc.services.ejb3;
 
+import static ccc.commons.Exceptions.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.io.InputStream;
@@ -78,7 +79,8 @@ public class DataManagerEJB implements DataManager {
             final Connection c = _datasource.getConnection();
 
             try {
-                final PreparedStatement ps = c.prepareStatement(CREATE_STATEMENT);
+                final PreparedStatement ps =
+                    c.prepareStatement(CREATE_STATEMENT);
 
                 try {
                     ps.setString(1, data.id().toString());
@@ -104,16 +106,6 @@ public class DataManagerEJB implements DataManager {
         }
     }
 
-    /**
-     * Handle an exception that we can do nothing sensible with. TODO: Move to
-     * commons?
-     *
-     * @param t The exception to ignore.
-     */
-    private void swallow(final Throwable t) { /* NO-OP */
-
-    }
-
     /** {@inheritDoc} */
     @Override
     public void retrieve(final Data data, final OutputStream dataStream) {
@@ -122,7 +114,8 @@ public class DataManagerEJB implements DataManager {
             final Connection c = _datasource.getConnection();
 
             try {
-                final PreparedStatement ps = c.prepareStatement(RETRIEVE_STATEMENT);
+                final PreparedStatement ps =
+                    c.prepareStatement(RETRIEVE_STATEMENT);
 
                 try {
                     ps.setString(1, data.id().toString());
@@ -164,8 +157,10 @@ public class DataManagerEJB implements DataManager {
     }
 
     /** CREATE_STATEMENT : String. */
-    static final String        CREATE_STATEMENT   = "INSERT INTO data (_id, _version, _bytes) VALUES (?,?,?)";
+    static final String        CREATE_STATEMENT   =
+        "INSERT INTO data (_id, _version, _bytes) VALUES (?,?,?)";
 
     /** RETRIEVE_STATEMENT : String. */
-    public static final String RETRIEVE_STATEMENT = "SELECT _bytes FROM data WHERE _id=?";
+    public static final String RETRIEVE_STATEMENT =
+        "SELECT _bytes FROM data WHERE _id=?";
 }

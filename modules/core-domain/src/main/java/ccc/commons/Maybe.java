@@ -13,7 +13,19 @@ package ccc.commons;
 
 
 /**
- * TODO Add Description for this type.
+ * This class is a trivial, incomplete expression of the 'Maybe' monad found
+ * in functional programming languages such as haskell. The purpose of this
+ * class is to allow a non-null value to be returned from methods whose
+ * behaviour may in some cases be undefined.
+ *
+ * An instance of Maybe can be queried to determine whether it contains a value.
+ *
+ * <br><br>For more information see:
+ * <br>http://en.wikipedia.org/wiki/Monad_(functional_programming)#Maybe_monad
+ * <br>http://rickyclarkson.blogspot.com/2008/07/optional-values-in-java.html
+ * <br>http://lukeplant.me.uk/blog.php?id=1107301659
+ *
+ * @param <T> The type of the value that this maybe represents.
  *
  * @author Civic Computing Ltd.
  */
@@ -24,33 +36,37 @@ public class Maybe<T> {
     /**
      * Constructor.
      *
-     * @param object
+     * @param value The value this maybe will represent. If null is passed this
+     * maybe is considered to represent undefined value.
      */
     public Maybe(final T value) {
         _value = value;
     }
 
     /**
-     * Constructor.
+     * Constructor. Create a maybe that represents an undefined value.
      *
      */
     public Maybe() {
-        _value = null;
+        this(null);
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Determine whether this maybe represents a defined value.
      *
-     * @return
+     * TODO: Rename to isDefined()?
+     *
+     * @return True if a value is defined false otherwise.
      */
     public boolean isPresent() {
         return !(null==_value);
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Retrieve the value this maybe represents. Throws an IllegalStateException
+     * if the maybe represents an undefined value.
      *
-     * @return
+     * @return The value represented by the maybe.
      */
     public T get() {
         if (isPresent()) {

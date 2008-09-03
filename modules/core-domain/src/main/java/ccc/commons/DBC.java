@@ -83,9 +83,9 @@ public final class DBC {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Assert that the specified condition is true.
      *
-     * @param b
+     * @param condition The condition to check.
      */
     public void toBeTrue(final boolean condition) {
         if (!condition) {
