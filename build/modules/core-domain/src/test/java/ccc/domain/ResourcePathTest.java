@@ -118,4 +118,19 @@ public final class ResourcePathTest extends TestCase {
         assertEquals(1, elements.size());
     }
 
+    /**
+     * Test equals.
+     */
+    public void testEquals() {
+
+        // ARRANGE
+        final ResourcePath p1 = new ResourcePath("/p/");
+        final ResourcePath p2 = new ResourcePath("/p/");
+
+        // ACT
+        final boolean areEqual = p1.equals(p2);
+
+        // ASSERT
+        assertTrue("Should be true.", areEqual);
+    }
 }

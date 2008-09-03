@@ -156,5 +156,42 @@ public final class ResourcePath implements Serializable {
         return limitedElements;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public int hashCode() {
+
+        final int prime = 31;
+        int result = 1;
+        result =
+            prime
+            * result
+            + ((_elements == null) ? 0 : _elements.hashCode());
+        return result;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean equals(final Object obj) {
+
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ResourcePath other = (ResourcePath) obj;
+        if (_elements == null) {
+            if (other._elements != null) {
+                return false;
+            }
+        } else if (!_elements.equals(other._elements)) {
+            return false;
+        }
+        return true;
+    }
+
 
 }
