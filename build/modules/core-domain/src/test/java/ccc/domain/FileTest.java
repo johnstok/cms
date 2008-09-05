@@ -11,6 +11,9 @@
  */
 package ccc.domain;
 
+import javax.activation.MimeType;
+import javax.activation.MimeTypeParseException;
+
 import junit.framework.TestCase;
 
 
@@ -20,6 +23,50 @@ import junit.framework.TestCase;
  * @author Civic Computing Ltd
  */
 public class FileTest extends TestCase {
+
+    /**
+     * Test.
+     * @throws MimeTypeParseException sometimes.
+     */
+    public void testMimeTypeProperty() throws MimeTypeParseException {
+
+        // ARRANGE
+        final File f =
+            new File(new ResourceName("foo"),
+                "foo",
+                "desc",
+                new Data(),
+                1L,
+                new MimeType("foo/bar"));
+
+        // ACT
+        final MimeType actual = f.mimeType();
+
+        // ASSERT
+        assertTrue(
+            "Mime types should match",
+            new MimeType("foo", "bar").match(actual));
+    }
+
+    /**
+     * Test.
+     */
+    public void testFileSizeProperty() {
+
+        // ARRANGE
+        final File f =
+            new File(new ResourceName("foo"),
+                "foo",
+                "desc",
+                new Data(),
+                1L);
+
+        // ACT
+        final long actual = f.size();
+
+        // ASSERT
+        assertEquals(1L, actual);
+    }
 
     /**
      * Test.
@@ -33,7 +80,7 @@ public class FileTest extends TestCase {
         // ACT
         try {
             new File(
-                new ResourceName("file"), "title", "desc", data);
+                new ResourceName("file"), "title", "desc", data, 0L);
             fail("The constructor should reject a NULL file data.");
 
         // ASSERT
