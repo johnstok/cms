@@ -93,7 +93,7 @@ public final class ContentServlet extends CCCServlet {
 
         final String pathString =
             removeTrailing('/',
-                nvl("/", request.getPathInfo()));
+                nvl(request.getPathInfo(), "/"));
         final ResourcePath contentPath = new ResourcePath(pathString);
         final Resource resource = contentManager().lookup(contentPath);
 

@@ -26,6 +26,23 @@ public final class ResourceTest extends TestCase {
     /**
      * Test.
      */
+    public void testAbsolutePath() {
+
+        // ARRANGE
+        final Folder f = new Folder(new ResourceName("foo"));
+        final Page p = new Page(new ResourceName("bar"));
+        f.add(p);
+
+        // ACT
+        final ResourcePath actual = p.absolutePath();
+
+        // ASSERT
+        assertEquals(new ResourcePath("/foo/bar"), actual);
+    }
+
+    /**
+     * Test.
+     */
     public void testComputeTemplateReturnsNullWhenNoTemplateIsFound() {
 
         // ARRANGE

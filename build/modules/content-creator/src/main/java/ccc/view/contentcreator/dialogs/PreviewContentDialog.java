@@ -13,8 +13,8 @@
 package ccc.view.contentcreator.dialogs;
 
 import ccc.view.contentcreator.callbacks.DisposingClickListener;
-import ccc.view.contentcreator.client.Constants;
 import ccc.view.contentcreator.client.Application;
+import ccc.view.contentcreator.client.Constants;
 import ccc.view.contentcreator.controls.Control;
 import ccc.view.contentcreator.controls.PanelControl;
 import ccc.view.contentcreator.widgets.ButtonBar;
@@ -48,7 +48,7 @@ public class PreviewContentDialog {
         _app = app;
         _constants = _app.constants();
         _delegate = _app.dialog(_constants.preview());
-        _contentServerBaseUrl = _app.hostURL()+"content-server/content";
+        _contentServerBaseUrl = _app.hostURL()+"content-server";
 
         _previewFrame = _app.frame(_contentServerBaseUrl+resourcePath);
         _previewFrame.setWidth("800px");

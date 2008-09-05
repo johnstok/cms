@@ -158,4 +158,16 @@ public abstract class Resource extends Entity {
               ? _parent.computeTemplate()
               : null;
     }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
+    public ResourcePath absolutePath() {
+        return
+            (null==parent())
+                ? new ResourcePath(name())
+                : parent().absolutePath().append(name());
+    }
 }
