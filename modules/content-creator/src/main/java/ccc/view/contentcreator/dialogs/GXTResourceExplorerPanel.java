@@ -225,7 +225,11 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
                 @Override protected void load(
                                 final FolderDTO loadConfig,
                                 final AsyncCallback<List<FolderDTO>> callback) {
-                    rsa.getFolderChildren(loadConfig, callback);
+                    if (null==loadConfig){
+                     rsa.getRoot(root, new OneItemListCallback(callback));
+                    } else {
+                     rsa.getFolderChildren(loadConfig, callback);
+                    }
                 }
             };
 
@@ -255,12 +259,7 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
                 return (null == model) ? null : "images/gxt/icons/folder.gif";
             }
         });
-
-        rsa.getRoot(root, new ErrorReportingCallback<FolderDTO>(_app) {
-            @Override public void onSuccess(final FolderDTO result) {
-                loader.load(result);
-            }
-        });
+        loader.load(null);
 
         tree.setSelectionMode(SelectionMode.SINGLE);
 
