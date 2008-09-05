@@ -69,12 +69,12 @@ public class AssetsServletTest extends TestCase {
         replay(dm);
 
         final AssetManager am = createStrictMock(AssetManager.class);
-        expect(am.lookup(new ResourcePath("/foo.txt/"))).andReturn(dummyFile);
+        expect(am.lookup(new ResourcePath("/foo.txt"))).andReturn(dummyFile);
         replay(am);
 
         final HttpServletRequest request =
             createStrictMock(HttpServletRequest.class);
-        expect(request.getPathInfo()).andReturn("/foo.txt/");
+        expect(request.getPathInfo()).andReturn("/foo.txt");
         replay(request);
 
         final HttpServletResponse response =

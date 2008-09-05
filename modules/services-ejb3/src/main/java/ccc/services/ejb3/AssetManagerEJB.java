@@ -153,7 +153,7 @@ public final class AssetManagerEJB implements AssetManager {
     private Folder templatesFolder() {
         final Folder assetRoot = _qm.findAssetsRoot().get();
         final Folder templates =
-            assetRoot .navigateTo(new ResourcePath("/templates/"));
+            assetRoot .navigateTo(new ResourcePath("/templates"));
         return templates;
     }
 

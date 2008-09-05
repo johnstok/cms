@@ -12,6 +12,8 @@
 
 package ccc.content.server;
 
+import static ccc.commons.Strings.*;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 
@@ -21,7 +23,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import ccc.commons.Registry;
 import ccc.commons.Resources;
-import ccc.commons.VelocityProcessor;
 import ccc.domain.CCCException;
 import ccc.domain.Folder;
 import ccc.domain.Page;
@@ -90,8 +91,10 @@ public final class ContentServlet extends CCCServlet {
                            final HttpServletResponse response)
                     throws IOException {
 
-        final ResourcePath contentPath =
-            new ResourcePath(request.getPathInfo());
+        final String pathString =
+            removeTrailing('/',
+                nvl("/", request.getPathInfo()));
+        final ResourcePath contentPath = new ResourcePath(pathString);
         final Resource resource = contentManager().lookup(contentPath);
 
         handleResource(response, resource);
@@ -117,7 +120,7 @@ public final class ContentServlet extends CCCServlet {
                 if (!folder.hasPages()) {
                     resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 } else {
-                    resp.sendRedirect(folder.firstPage().name()+"/");
+                    resp.sendRedirect(folder.name()+"/"+folder.firstPage().name());
                 }
                 break;
 
