@@ -18,7 +18,6 @@ import java.nio.charset.Charset;
 import java.util.Properties;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -29,8 +28,6 @@ import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeConstants;
 
-import ccc.commons.DBC;
-import ccc.commons.JNDI;
 import ccc.commons.Registry;
 import ccc.commons.Resources;
 import ccc.domain.CCCException;
@@ -38,7 +35,6 @@ import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
-import ccc.services.ContentManager;
 
 
 /**
@@ -48,11 +44,10 @@ import ccc.services.ContentManager;
  *
  * @author Civic Computing Ltd
  */
-public final class ContentServlet extends HttpServlet {
+public final class ContentServlet extends CCCServlet {
 
     /** serialVersionUID : long. */
     private static final long serialVersionUID = -5743085540949007873L;
-    private Registry _registry = new JNDI();
 
     /**
      * Constructor.
@@ -60,14 +55,13 @@ public final class ContentServlet extends HttpServlet {
      * @param registry The registry for this servlet.
      */
     public ContentServlet(final Registry registry) {
-        DBC.require().notNull(registry);
-        _registry = registry;
+        super(registry);
     }
 
     /**
      * Constructor.
      */
-    public ContentServlet() { /* NO-OP */ }
+    public ContentServlet() { super(); }
 
     /**
      * Get the content for the specified relative URI. This method reads the
@@ -177,21 +171,6 @@ public final class ContentServlet extends HttpServlet {
     }
 
     /**
-     * Accessor for the resource manager.
-     *
-     * @return A ContentManager.
-     */
-    ContentManager contentManager() {
-        return _registry.get("ContentManagerEJB/local");
-    }
-
-    /* --------------------------------------------------------------------
-     * Helper methods - will be refactored to an abstract base class in due
-     * course.
-     * --------------------------------------------------------------------
-     */
-
-    /**
      * Process a GET request.
      *
      * This method provides error handling for both committed and uncommitted
@@ -235,17 +214,6 @@ public final class ContentServlet extends HttpServlet {
     }
 
     /**
-     * Disable caching for the response.
-     *
-     * @param response The response that should not be cached.
-     */
-    void disableCachingFor(final HttpServletResponse response) {
-        // TODO Add setting of 'Expires' header to some time in the past?
-        response.setHeader("Pragma", "no-cache"); // Mostly useless
-        response.setHeader("Cache-Control", "no-cache"); // HTTP 1.1
-    }
-
-    /**
      * Locate an appropriate template for rendering a resource as XHTML.
      *
      * @param resource The resource that will be transformed by the template.
@@ -265,16 +233,6 @@ public final class ContentServlet extends HttpServlet {
                 throw new CCCException(
                     "Unsupported resource type: "+resource.type());
         }
-    }
-
-    /**
-     * Set the character encoding for a response.
-     *
-     * @param response The response for which we'll set the char encoding.
-     *
-     */
-    void configureCharacterEncoding(final HttpServletResponse response) {
-        response.setCharacterEncoding("UTF-8");
     }
 
     /**

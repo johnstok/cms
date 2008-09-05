@@ -16,6 +16,8 @@ import static org.easymock.EasyMock.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import javax.activation.MimeType;
+import javax.activation.MimeTypeParseException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,7 +33,7 @@ import ccc.services.DataManager;
 
 
 /**
- * TODO Add Description for this type.
+ * Tests for the {@link AssetsServlet}.
  *
  * @author Civic Computing Ltd.
  */
@@ -40,8 +42,11 @@ public class AssetsServletTest extends TestCase {
     /**
      * Test.
      * @throws IOException If stream manipulation fails.
+     * @throws MimeTypeParseException  If it can't create the mime type.
      */
-    public void testGetForExistingFileReturnsData() throws IOException {
+    public void testGetForExistingFileReturnsData()
+                                            throws IOException,
+                                                   MimeTypeParseException {
 
         // ARRANGE
         final ByteArrayOutputStream actual = new ByteArrayOutputStream();
@@ -55,7 +60,9 @@ public class AssetsServletTest extends TestCase {
             new File(new ResourceName("foo.txt"),
                      "foo.txt",
                      "my desc",
-                     dummyData);
+                     dummyData,
+                     2345L,
+                     new MimeType("text", "plain"));
 
         final DataManager dm = createStrictMock(DataManager.class);
         dm.retrieve(dummyData, os);
@@ -72,12 +79,23 @@ public class AssetsServletTest extends TestCase {
 
         final HttpServletResponse response =
             createStrictMock(HttpServletResponse.class);
-        // response.setHeader(
-//                "Content-Disposition",
-//                "filename=\""+dummyFile.name()+"\"" ) ;
-        // Content-Type: text/html; charset=ISO-8859-4
-        // Content-Description: just a small picture of me
-        // Content-Length
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader(
+            "Cache-Control",
+            "private, must-revalidate, max-age=0");
+        response.setHeader("Expires", "0");
+        response.setHeader(
+            "Content-Disposition",
+            "inline; filename=\""+dummyFile.name()+"\"");
+        response.setHeader(
+            "Content-Type",
+            dummyFile.mimeType().toString());
+        response.setHeader(
+            "Content-Description",
+            dummyFile.description());
+        response.setHeader(
+            "Content-Length",
+            String.valueOf(dummyFile.size()));
 
         expect(response.getOutputStream()).andReturn(os);
         replay(response);

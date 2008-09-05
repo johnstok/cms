@@ -136,9 +136,8 @@ public final class ContentServletTest extends TestCase {
         page.addParagraph("key1", new Paragraph("para1"));
         page.addParagraph("key2", new Paragraph("para2"));
 
-        _response.setHeader("Pragma", "no-cache");
-        _response.setHeader("Cache-Control", "no-cache");
-        _response.setCharacterEncoding("UTF-8");
+        new ContentServlet().disableCachingFor(_response);
+        new ContentServlet().configureCharacterEncoding(_response);
         _response.setContentType("text/html");
         expect(_response.getWriter()).andReturn(new PrintWriter(output));
         replay(_response);
@@ -174,9 +173,8 @@ public final class ContentServletTest extends TestCase {
         top.add(new Folder(new ResourceName("child_a")));
         top.add(new Page(new ResourceName("child_b")));
 
-        _response.setHeader("Pragma", "no-cache");
-        _response.setHeader("Cache-Control", "no-cache");
-        _response.setCharacterEncoding("UTF-8");
+        new ContentServlet().disableCachingFor(_response);
+        new ContentServlet().configureCharacterEncoding(_response);
         _response.setContentType("text/html");
         expect(_response.getWriter()).andReturn(new PrintWriter(output));
         replay(_response);
@@ -234,9 +232,8 @@ public final class ContentServletTest extends TestCase {
                 }));
 
         // EXPECT
-        _response.setHeader("Pragma", "no-cache");
-        _response.setHeader("Cache-Control", "no-cache");
-        _response.setCharacterEncoding("UTF-8");
+        new ContentServlet().disableCachingFor(_response);
+        new ContentServlet().configureCharacterEncoding(_response);
         _response.setContentType("text/html");
         expect(_request.getPathInfo()).andReturn("/foo/");
         expect(_response.getWriter()).andReturn(new PrintWriter(output));
@@ -344,8 +341,11 @@ public final class ContentServletTest extends TestCase {
     public void testDisablementOfResponseCaching() {
 
         // ARRANGE
-        _response.setHeader("Pragma", "no-cache");
-        _response.setHeader("Cache-Control", "no-cache");
+        _response.setHeader("Pragma", "no-cache");   // non-spec, but supported
+        _response.setHeader(
+            "Cache-Control",
+            "private, must-revalidate, max-age=0"); // equivalent to 'no-cache'
+        _response.setHeader("Expires", "0");
         replay(_response);
 
         // ACT

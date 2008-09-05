@@ -15,16 +15,12 @@ package ccc.content.server;
 import java.io.IOException;
 
 import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ccc.commons.JNDI;
 import ccc.commons.Registry;
 import ccc.domain.File;
 import ccc.domain.ResourcePath;
-import ccc.services.AssetManager;
-import ccc.services.DataManager;
 
 
 /**
@@ -35,18 +31,15 @@ import ccc.services.DataManager;
  *
  * @author Civic Computing Ltd.
  */
-public class AssetsServlet extends HttpServlet {
+public class AssetsServlet extends CCCServlet {
 
     /** serialVersionUID : long. */
     private static final long serialVersionUID = -5337311771335251212L;
 
-    /** _registry : Registry. */
-    private Registry _registry = new JNDI();
-
     /**
      * Constructor.
      */
-    public AssetsServlet() { /* NO-OP */ }
+    public AssetsServlet() { super(); }
 
     /**
      * Constructor.
@@ -54,21 +47,33 @@ public class AssetsServlet extends HttpServlet {
      * @param registry The registry used by this class.
      */
     public AssetsServlet(final Registry registry) {
-        _registry = registry;
+        super(registry);
     }
 
-    /** {@inheritDoc}
-     * @throws IOException */
-    @Override protected void doGet(final HttpServletRequest req,
-                                   final HttpServletResponse resp)
+    /** {@inheritDoc} */
+    @Override protected void doGet(final HttpServletRequest request,
+                                   final HttpServletResponse response)
                             throws IOException {
-        final ResourcePath path = new ResourcePath(req.getPathInfo());
-        final AssetManager am = _registry.get("AssetManagerEJB/local");
-        final File f = am.lookup(path).as(File.class);
-        final ServletOutputStream os = resp.getOutputStream();
-        final DataManager dm = _registry.get("DataManagerEJB/local");
-        dm.retrieve(f.fileData(), os);
+
+        final ResourcePath path = new ResourcePath(request.getPathInfo());
+        final File f = assetManager().lookup(path).as(File.class);
+
+        disableCachingFor(response);
+
+        response.setHeader(
+            "Content-Disposition",
+            "inline; filename=\""+f.name()+"\"");
+        response.setHeader(
+            "Content-Type",
+            f.mimeType().toString());
+        response.setHeader(
+            "Content-Description",
+            f.description());
+        response.setHeader(
+            "Content-Length",
+            String.valueOf(f.size()));
+
+        final ServletOutputStream os = response.getOutputStream();
+        dataManager().retrieve(f.fileData(), os);
     }
-
-
 }
