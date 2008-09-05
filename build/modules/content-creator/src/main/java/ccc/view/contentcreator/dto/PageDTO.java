@@ -31,9 +31,11 @@ public class PageDTO extends ResourceDTO implements DTO {
      * @param type
      * @param name
      * @param title
+     * @param paragraphs
      */
-    public PageDTO(final String id, final String type, final String name, final String title) {
+    public PageDTO(final String id, final String type, final String name, final String title, final Map<String, String> paragraphs) {
         super(id, type, name, title);
+        set("paras", paragraphs);
     }
 
     /**
@@ -42,7 +44,7 @@ public class PageDTO extends ResourceDTO implements DTO {
      * @return
      */
     public Map<String, String> getParagraphs() {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return get("paras");
     }
 
 }

@@ -11,13 +11,15 @@
  */
 package ccc.remoting.gwt;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import ccc.domain.Folder;
 import ccc.domain.Page;
+import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.Template;
-import ccc.view.contentcreator.dto.DTO;
 import ccc.view.contentcreator.dto.FolderDTO;
 import ccc.view.contentcreator.dto.PageDTO;
 import ccc.view.contentcreator.dto.ResourceDTO;
@@ -78,7 +80,7 @@ public final class DTOs {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public static <T extends DTO> T dtoFrom(final Resource resource) {
+    public static <T extends ResourceDTO> T dtoFrom(final Resource resource) {
 
         switch (resource.type()) {
             case FOLDER:
@@ -93,11 +95,16 @@ public final class DTOs {
 
             case PAGE:
                 final Page p = resource.as(Page.class);
+                final Map<String, String> paragraphs = new HashMap<String, String>();
+                for (final Map.Entry<String, Paragraph> para : p.paragraphs().entrySet()) {
+                    paragraphs.put(para.getKey(), para.getValue().body());
+                }
                 return (T) new PageDTO(
                     p.id().toString(),
                     p.type().toString(),
                     p.name().toString(),
-                    p.title()
+                    p.title(),
+                    paragraphs
                 );
 
             default:

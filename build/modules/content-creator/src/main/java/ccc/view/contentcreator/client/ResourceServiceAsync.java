@@ -43,7 +43,7 @@ public interface ResourceServiceAsync {
      * @param absolutePath
      * @param callback
      */
-    void getResource(String absolutePath, AsyncCallback<? extends DTO> callback);
+    void getResource(String absolutePath, AsyncCallback<? extends ResourceDTO> callback);
 
     /**
      * TODO: Add a description of this method.

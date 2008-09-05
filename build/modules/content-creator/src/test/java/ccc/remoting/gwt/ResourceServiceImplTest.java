@@ -291,7 +291,9 @@ public final class ResourceServiceImplTest extends TestCase {
 
         // ACT
         final FolderDTO jsonRoot =
-            resourceService.getResource(contentRoot.id().toString());
+            (FolderDTO) resourceService.getResource(contentRoot
+                                                        .id()
+                                                        .toString());
 
         // ASSERT
         assertEquals(

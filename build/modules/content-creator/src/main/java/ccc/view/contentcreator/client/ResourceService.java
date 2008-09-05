@@ -47,7 +47,7 @@ public interface ResourceService extends RemoteService {
      * @param absolutePath
      * @return
      */
-    FolderDTO getResource(String absolutePath);
+    ResourceDTO getResource(String absolutePath);
 
     /**
      * TODO: Add a description of this method.
