@@ -77,12 +77,12 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
         switch (root) {
             case CONTENT:
                 final Resource contentResource =
-                    contentManager().lookup(new ResourcePath("/"));
+                    contentManager().lookup(new ResourcePath(""));
                 return DTOs.dtoFrom(contentResource);
 
             case ASSETS:
                 final Resource assetResource =
-                    assetManager().lookup(new ResourcePath("/"));
+                    assetManager().lookup(new ResourcePath(""));
                 return DTOs.dtoFrom(assetResource);
 
             default:

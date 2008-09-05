@@ -99,7 +99,7 @@ public final class ContentManagerEJBTest extends TestCase {
 
         // ACT
         final Resource resource =
-            resourceMgr.lookup(new ResourcePath("/foo/bar/"));
+            resourceMgr.lookup(new ResourcePath("/foo/bar"));
 
         // ASSERT
         verify(qm);

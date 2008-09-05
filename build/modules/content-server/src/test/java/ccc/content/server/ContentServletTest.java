@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletResponse;
 import junit.framework.TestCase;
 import ccc.commons.MapRegistry;
 import ccc.commons.Resources;
-import ccc.commons.VelocityProcessor;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
@@ -39,6 +38,9 @@ import ccc.services.adaptors.ContentManagerAdaptor;
 
 /**
  * Tests for the ContentServlet.
+ * TODO: test redirect
+ * TODO: test pathInfo = null
+ * TODO: test pathInfo = '/'
  *
  * @author Civic Computing Ltd
  */
@@ -235,7 +237,7 @@ public final class ContentServletTest extends TestCase {
         new ContentServlet().disableCachingFor(_response);
         new ContentServlet().configureCharacterEncoding(_response);
         _response.setContentType("text/html");
-        expect(_request.getPathInfo()).andReturn("/foo/");
+        expect(_request.getPathInfo()).andReturn("/foo");
         expect(_response.getWriter()).andReturn(new PrintWriter(output));
         replay(_request, _response);
 
@@ -283,8 +285,8 @@ public final class ContentServletTest extends TestCase {
             }));
 
         // EXPECT
-        _response.sendRedirect("bar/");
-        expect(_request.getPathInfo()).andReturn("/foo/");
+        _response.sendRedirect("foo/bar");
+        expect(_request.getPathInfo()).andReturn("/foo");
         replay(_request, _response);
 
         // ACT
@@ -323,7 +325,7 @@ public final class ContentServletTest extends TestCase {
                     }));
 
         // EXPECT
-        expect(_request.getPathInfo()).andReturn("/foo/");
+        expect(_request.getPathInfo()).andReturn("/foo");
         _response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         replay(_request, _response);
 

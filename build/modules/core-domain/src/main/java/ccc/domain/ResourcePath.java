@@ -31,7 +31,7 @@ public final class ResourcePath implements Serializable {
     private static final long serialVersionUID = -5755885435816868422L;
     /** PATH_PATTERN : Pattern. */
     public static final Pattern PATH_PATTERN =
-        Pattern.compile("/(("+ResourceName.VALID_CHARACTERS+")/)*");
+        Pattern.compile("(/"+ResourceName.VALID_CHARACTERS+")*");
     /** TOKEN_PATTERN : String. */
     public static final String TOKEN_PATTERN =
         "/("+ResourceName.VALID_CHARACTERS+")";
@@ -118,11 +118,11 @@ public final class ResourcePath implements Serializable {
      */
     @Override
     public String toString() {
-        final StringBuilder toString = new StringBuilder("/");
+        final StringBuilder toString = new StringBuilder();
 
         for (final ResourceName element : _elements) {
-            toString.append(element.toString());
             toString.append('/');
+            toString.append(element.toString());
         }
 
         return toString.toString();

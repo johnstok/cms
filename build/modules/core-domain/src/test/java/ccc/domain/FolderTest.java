@@ -293,7 +293,7 @@ public final class FolderTest extends TestCase {
         final Page cd = new Page(new ResourceName("cd"));
         ab.add(cd);
         content.add(ab);
-        final ResourcePath path = new ResourcePath("/ab/cd/");
+        final ResourcePath path = new ResourcePath("/ab/cd");
 
         // ACT
         final Page expectedContent = content.navigateTo(path);
@@ -313,7 +313,7 @@ public final class FolderTest extends TestCase {
         final Folder cd = new Folder(new ResourceName("cd"));
         ab.add(cd);
         content.add(ab);
-        final ResourcePath path = new ResourcePath("/ab/cd/");
+        final ResourcePath path = new ResourcePath("/ab/cd");
 
         // ACT
         final Folder expectedFolder = content.navigateTo(path);
@@ -333,7 +333,7 @@ public final class FolderTest extends TestCase {
         final Folder cd = new Folder(new ResourceName("cd"));
         ab.add(cd);
         content.add(ab);
-        final ResourcePath path = new ResourcePath("/");
+        final ResourcePath path = new ResourcePath("");
 
         // ACT
         final Folder expectedFolder = content.navigateTo(path);

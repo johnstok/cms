@@ -40,32 +40,20 @@ public final class ResourcePathTest extends TestCase {
     /**
      * Test.
      */
-    public void testRootPathIsAllowed() {
-
-        // ACT
-        final ResourcePath root = new ResourcePath("/");
-
-        // ASSERT
-        assertEquals(0, root.elements().size());
-    }
-
-    /**
-     * Test.
-     */
     public void testAppendReturnsNewInstances() {
 
         // ARRANGE
         final ResourcePath path = new ResourcePath();
 
         // ACT
-        final ResourcePath firstPath = path.append(new ResourceName("foo"));
+        final ResourcePath firstPath = path.append(new ResourceName("f.oo"));
         final ResourcePath secondPath =
-            firstPath.append(new ResourceName("bar"));
+            firstPath.append(new ResourceName("ba_r"));
 
         // ASSERT
-        assertEquals("/", path.toString());
-        assertEquals("/foo/", firstPath.toString());
-        assertEquals("/foo/bar/", secondPath.toString());
+        assertEquals("", path.toString());
+        assertEquals("/f.oo", firstPath.toString());
+        assertEquals("/f.oo/ba_r", secondPath.toString());
     }
 
     /**
@@ -74,7 +62,7 @@ public final class ResourcePathTest extends TestCase {
     public void testParsingOfStringToPath() {
 
         // ARRANGE
-        final String pathString = "/fo_o/b.ar/baz/";
+        final String pathString = "/fo_o/b.ar/baz";
 
         // ACT
         final ResourcePath path = new ResourcePath(pathString);
@@ -96,7 +84,7 @@ public final class ResourcePathTest extends TestCase {
         final ResourcePath path = new ResourcePath(name);
 
         // ASSERT
-        assertEquals("/foo/", path.toString());
+        assertEquals("/foo", path.toString());
     }
 
     /**
@@ -107,7 +95,7 @@ public final class ResourcePathTest extends TestCase {
 
         // ARRANGE
         final ResourcePath rootPath = new ResourcePath();
-        final ResourcePath path = new ResourcePath("/first/second/");
+        final ResourcePath path = new ResourcePath("/first/second");
 
         // ACT
         final List<ResourceName> rootElements = rootPath.elementsToTop();
@@ -124,8 +112,8 @@ public final class ResourcePathTest extends TestCase {
     public void testEquals() {
 
         // ARRANGE
-        final ResourcePath p1 = new ResourcePath("/p/");
-        final ResourcePath p2 = new ResourcePath("/p/");
+        final ResourcePath p1 = new ResourcePath("/p");
+        final ResourcePath p2 = new ResourcePath("/p");
 
         // ACT
         final boolean areEqual = p1.equals(p2);
