@@ -69,7 +69,6 @@ public class CreateApplicationWindow implements Runnable {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(preview, BorderLayout.SOUTH);
         frame.getContentPane().add(pane);
-//        frame.pack();
         frame.setSize(800, 600);
 
         frame.setVisible(true);
