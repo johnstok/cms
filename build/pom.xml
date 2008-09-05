@@ -45,6 +45,12 @@
             <version>1.0.78</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.14</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <modules>
@@ -111,9 +117,7 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
                     <descriptors>
-                        <descriptor>
-                            configuration\assembly.xml
-                        </descriptor>
+                        <descriptor>configuration\assembly.xml</descriptor>
                     </descriptors>
                     <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
@@ -154,9 +158,7 @@
     </build>
 
     <scm>
-        <connection>
-            scm:svn:http://svn.civiccomputing.com/CCC7
-        </connection>
+        <connection>scm:svn:http://svn.civiccomputing.com/CCC7</connection>
         <developerConnection>
             scm:svn:http://svn.civiccomputing.com/CCC7
         </developerConnection>
