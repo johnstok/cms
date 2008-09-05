@@ -1,0 +1,136 @@
+## <%@ taglib uri="/WEB-INF/Communicata-Taglib.tld" prefix="ctl" %>
+## <%@ taglib uri="/WEB-INF/CCC-Taglib.tld" prefix="ccctl" %>
+## <%@ taglib uri="/WEB-INF/Menu-Taglib.tld" prefix="mtl" %>
+## <%@ page errorPage="error.jsp" %>
+## <ccctl:CheckContent />
+## <ctl:pageNotCachedTag />
+#*
+<%
+//RETRIEVE STYLE & SET SESSION
+String szStyle = communicata.Util.nvl(request.getParameter("pStyle"),"");
+if(szStyle.equals("")) szStyle = communicata.Util.nvl((String) session.getAttribute("theStyle"),"Rich");
+session.setAttribute("theStyle",szStyle);
+%>
+<%
+//RETRIEVE STYLE & SET text size
+String szSize = communicata.Util.nvl(request.getParameter("pSize"),"");
+if(szSize.equals("")) szSize = communicata.Util.nvl((String) session.getAttribute("theSize"),"default");
+session.setAttribute("theSize",szSize);
+%>
+*#
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html dir="ltr" xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<!-- Include is:CCC_DisplayTemplateSource.jsp-->
+##<title>ASH Scotland - Action on Smoking and Health - <ccctl:displayPageElement element="NAME"/></title>
+<title>ASH Scotland - Action on Smoking and Health - $resource.title()</title>
+
+<link href="http://www.ashscotland.org.uk/css/basic.css" rel="stylesheet" type="text/css" media="screen" /> ## should be relative
+
+## <% if(szStyle.equalsIgnoreCase("Rich")){ %>
+<style type="text/css" media="screen">
+<!--
+@import url(http://www.ashscotland.org.uk/css/advanced.css); ## should be relative
+-->
+</style>
+## <%}%>
+## <% if(szSize.equalsIgnoreCase("default")){ %>
+<style type="text/css" media="screen">
+<!--
+@import url(http://www.ashscotland.org.uk/css/text-normal.css); ## should be relative
+-->
+</style>
+## <%}%>
+
+#*
+<% if(szSize.equalsIgnoreCase("larger")){ %>
+<style type="text/css" media="screen">
+<!--
+@import url(css/text-larger.css);
+-->
+</style>
+<%}%>
+<% if(szSize.equalsIgnoreCase("largest")){ %>
+<style type="text/css" media="screen">
+<!--
+@import url(css/text-largest.css);
+-->
+</style>
+<%}%>
+*#
+
+## <link href="css/print.css" rel="stylesheet" type="text/css" media="print" />
+<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1" />
+<meta name="robots" content="noodp" />
+## <meta name="description" content="<ccctl:displayPageElement element="Description_Custom" />" />
+<meta name="description" content="$resource.paragraphs().get("Description_Custom").body()" />
+## <meta name="keywords" content="<ccctl:displayPageElement element="Keywords_Custom" />" />
+<meta name="keywords" content="$resource.paragraphs().get("Keywords_Custom").body()" />
+## <link rel="shortcut icon" href="images/favicon.ico" />
+## <script type="text/javascript" language="JavaScript" src="FS_Functions.js"></script>
+## <ccctl:displayPageElement element="JSCRIPT" />
+</head>
+
+<body
+## id="<ccctl:displayPageElement element="STYLESHEET" />" 
+## class="<ccctl:displayPageElement element="PARENTHEADER" />"
+>
+
+## <ccctl:WebSideStory/>
+
+<a name="top"></a>
+<div id="container">
+
+<!-- header include -->
+## <jsp:include page="ash_top.jsp" flush="true" />
+<!-- header include ends -->
+
+<div id="middle">
+
+<!-- left content -->
+<div id="left">
+<div id="navborder">
+<a name="sectionnav" class="skiplinks"></a>
+<em class="skiplinks">Section Navigation:&nbsp;</em>
+## <mtl:subMenu id="ulRootMenu2" folderRootLevel="1"  startLevel="1" />
+<hr class="skiplinks" />
+</div>
+</div>
+<!-- left content ends -->
+
+<!-- right content -->
+<div id="right">
+<a name="content" class="skiplinks"></a>
+## <ccctl:displayIndex endText="</ul></div>" startText="<div id=\"index\"><ul id=\"subnav\">" useTable="no" leftItem="<li>" rightItem="</li>" separator="" />
+## <ccctl:displayPageElement element="HEADER" startText="<h1>" endText="</h1>" />
+<h1>$resource.paragraphs().get("HEADER").body()</h1>
+## <ccctl:displayPageElement element="PanelOne_Custom" startText="<div id=\"panelOne\">" endText="</div>" />
+## <ccctl:displayPageElement element="PanelTwo_Custom" startText="<div id=\"panelTwo\">" endText="</div>" />
+## <ccctl:displayPageElement element="PanelThree_Custom" startText="<div id=\"panelThree\">" endText="</div>" />
+## <ccctl:displayPageElement element="CONTENT" />
+$resource.paragraphs().get("CONTENT").body()
+</div>
+<!-- right content ends -->
+
+<div class="divclear"><hr class="skiplinks" /></div>
+</div>
+
+<!-- footer include -->
+<div id="footer">
+<div id="toolbar">
+<p><em class="skiplinks">Useful Links:&nbsp;</em></p>
+<p>
+<a href="#top">&circ; Back to top</a><span class="skiplinks">&nbsp;|&nbsp;</span>
+<a href="javascript:self.print();" class="print">Print this page</a><span class="skiplinks">&nbsp;|&nbsp;</span>
+<a href="controller?p_service=Content.show&amp;p_applic=CCC&amp;pContentID=3825&amp;pMenuID=11&amp;">Content Disclaimer</a>
+<span style="float:right;">&nbsp;&copy; ASH Scotland 2005</span>
+</p>
+<p class="small">ASH Scotland is a registered Scottish charity (SC 010412) and a company limited by guarantee (Scottish company no 141711).<br />The registered office is 8 Frederick Street, Edinburgh EH2 2HB</p>
+</div>	
+</div>
+<!-- footer include ends -->
+
+</div>
+</body>
+</html>
