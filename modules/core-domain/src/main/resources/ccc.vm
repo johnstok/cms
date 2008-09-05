@@ -1,0 +1,2 @@
+#macro( hello )hello!#end
+#macro( echo $msg)$msg#end
