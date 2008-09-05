@@ -28,7 +28,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @author Civic Computing Ltd
  */
 public interface ResourceServiceAsync {
-    void getRoot(Root root, AsyncCallback<? extends DTO> callback);
+    void getRoot(Root root, AsyncCallback<FolderDTO> callback);
 
     /**
      * TODO: Add a description of this method.
