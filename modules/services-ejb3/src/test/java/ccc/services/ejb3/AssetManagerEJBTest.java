@@ -203,7 +203,7 @@ public final class AssetManagerEJBTest extends TestCase {
 //          new BlobImpl("test".getBytes()).getBinaryStream(), "test".length());
 
         final File file = new File(
-            new ResourceName("file"), "title", "desc", new Data());
+            new ResourceName("file"), "title", "desc", new Data(), 0);
 
         final QueryManager qm = createStrictMock(QueryManager.class);
         replay(qm);

@@ -11,6 +11,9 @@
  */
 package ccc.domain;
 
+import javax.activation.MimeType;
+import javax.activation.MimeTypeParseException;
+
 import ccc.commons.DBC;
 
 
@@ -28,6 +31,8 @@ public class File extends Resource {
 
     private String _description;
     private Data _data;
+    private long _size;
+    private MimeType _mimeType;
 
     /**
      * Constructor.
@@ -37,24 +42,64 @@ public class File extends Resource {
     private File() { super(); }
 
     /**
+     * Constructor. Assumes a mime type of "application/octet-stream".
+     *
+     * @param name The name of the file.
+     * @param title The title of the file.
+     * @param description The description of the file.
+     * @param data A token representing the binary content of the file.
+     * @param size The size of the file in bytes.
+     */
+    public File(final ResourceName name,
+                final String title,
+                final String description,
+                final Data data,
+                final long size) {
+        this(name, title, description, data, size, defaultMimeType());
+    }
+
+    /**
+     * Create a mime type representing the default value
+     * ('application/octet-stream').
+     *
+     * @return An instance of {@link MimeType}.
+     */
+    public static MimeType defaultMimeType() {
+        try {
+            return new MimeType("application", "octet-stream");
+        } catch (final MimeTypeParseException e) {
+            throw new CCCException(
+                "Failed to create mimetype: application/octet-stream", e);
+        }
+    }
+
+
+    /**
      * Constructor.
      *
      * @param name The name of the file.
      * @param title The title of the file.
      * @param description The description of the file.
      * @param data A token representing the binary content of the file.
+     * @param size The size of the file in bytes.
+     * @param mimeType The mime type for the file.
      */
     public File(final ResourceName name,
                 final String title,
                 final String description,
-                final Data data) {
+                final Data data,
+                final long size,
+                final MimeType mimeType) {
+
         super(name, title);
         DBC.require().notNull(data);
+        // TODO: null tests for other param's...
 
         _description = description;
         _data = data;
+        _size = size;
+        _mimeType = mimeType; // TODO: Defensive copy???
     }
-
 
     /**
      * {@inheritDoc}
@@ -80,5 +125,23 @@ public class File extends Resource {
      */
     public Data fileData() {
         return _data;
+    }
+
+    /**
+     * Accessor for size.
+     *
+     * @return The size of the file in bytes, as a long.
+     */
+    public long size() {
+        return _size;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
+    public MimeType mimeType() {
+        return _mimeType;
     }
 }

@@ -23,10 +23,19 @@
 
 		<property name="_description" not-null="true" type="string"
 			length="1024" />
+			
+	    <property name="_size" not-null="true" type="long" />
 
 		<component name="_data" class="ccc.domain.Data" unique="true">
             <property name="_id" not-null="true" column="_data"
                 type="ccc.services.ejb3.support.UUIDUserType" />
+        </component>
+        
+        <component name="_mimeType" class="javax.activation.MimeType">
+            <property name="primaryType" not-null="true" column="_mime_primary_type"
+                type="string" access="property" />
+            <property name="subType" not-null="true" column="_mime_sub_type"
+                type="string" access="property" />
         </component>
 
 	</joined-subclass>
