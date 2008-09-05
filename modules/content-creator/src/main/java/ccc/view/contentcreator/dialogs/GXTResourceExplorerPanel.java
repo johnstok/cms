@@ -181,6 +181,17 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
         });
         contextMenu.add(preview);
 
+        final MenuItem update = new MenuItem();
+        update.setText(_app.constants().edit());
+        update.addSelectionListener(new SelectionListener<MenuEvent>() {
+            @Override public void componentSelected(final MenuEvent ce) {
+                final ResourceDTO item = (ResourceDTO)tbl.getSelectedItem().getModel();
+                        new UpdateContentDialog(item.getId()).center();
+                }
+            }
+        );
+        contextMenu.add(update);
+
         tbl.setContextMenu(contextMenu);
 
         left.add(tbl);

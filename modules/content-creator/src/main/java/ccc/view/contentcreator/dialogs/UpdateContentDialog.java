@@ -22,7 +22,6 @@ import ccc.view.contentcreator.dto.PageDTO;
 import ccc.view.contentcreator.widgets.RichTextToolbar;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -50,7 +49,6 @@ public class UpdateContentDialog extends DialogBox {
     private final TextBox titleTextBox = new TextBox();
 
     private final String contentPath;
-    private JSONObject content;
 
     /**
      * Constructor.
@@ -115,8 +113,6 @@ public class UpdateContentDialog extends DialogBox {
                             paragraphs.put(key, body);
                         }
 
-                        final String id =
-                            content.get("id").isString().stringValue();
                         final AsyncCallback<Void> callback =
                             new AsyncCallback<Void>() {
                                 public void onFailure(final Throwable arg0) {
@@ -126,7 +122,7 @@ public class UpdateContentDialog extends DialogBox {
                                     hide();
                                 }
                             };
-                        resourceService.saveContent(id, titleTextBox.getText()
+                        resourceService.saveContent(contentPath, titleTextBox.getText()
                             , paragraphs, callback);
                     }
                 });
