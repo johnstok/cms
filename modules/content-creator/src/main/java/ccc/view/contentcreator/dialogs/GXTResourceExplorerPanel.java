@@ -164,18 +164,22 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
         final Menu contextMenu = new Menu();
         contextMenu.setWidth(130);
 
-        final MenuItem insert = new MenuItem();
-        insert.setText("Insert Item");
-        insert.addSelectionListener(new SelectionListener<MenuEvent>() {
-
+        final MenuItem preview = new MenuItem();
+        preview.setText(_app.constants().preview());
+        preview.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override public void componentSelected(final MenuEvent ce) {
-                final TableItem item = tbl.getSelectedItem();
-                if (item != null) {
-                    _app.alert("Clicked: " + item.getModel());
-                }
+                final ResourceDTO item = (ResourceDTO)tbl.getSelectedItem().getModel();
+                _app.lookupService().getAbsolutePath(item, new AsyncCallback<String>() {
+                    public void onFailure(final Throwable arg0) {
+                        throw new UnsupportedOperationException("Method not implemented.");
+                    }
+                    public void onSuccess(final String arg0) {
+                        new PreviewContentDialog(_app, arg0).center();
+                    }
+                });
             }
         });
-        contextMenu.add(insert);
+        contextMenu.add(preview);
 
         tbl.setContextMenu(contextMenu);
 

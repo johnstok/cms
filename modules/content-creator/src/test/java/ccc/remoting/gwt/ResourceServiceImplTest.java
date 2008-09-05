@@ -52,6 +52,33 @@ public final class ResourceServiceImplTest extends TestCase {
     /**
      * Test.
      */
+    public void testGetAbsolutePath() {
+
+        // ARRANGE
+        final Folder f = new Folder(new ResourceName("foo"));
+        final Page p = new Page(new ResourceName("bar"));
+        f.add(p);
+
+        final ContentManager cm = createStrictMock(ContentManager.class);
+        expect(cm.lookup(p.id())).andReturn(p);
+        replay(cm);
+
+        final ResourceService rs =
+            new ResourceServiceImpl(
+                new MapRegistry()
+                    .put("ContentManagerEJB/local", cm)
+            );
+
+        // ACT
+        final String actual = rs.getAbsolutePath(DTOs.<ResourceDTO>dtoFrom(p));
+
+        // ASSERT
+        assertEquals("/foo/bar", actual);
+    }
+
+    /**
+     * Test.
+     */
     public void testCreateFolder() {
 
         // ARRANGE

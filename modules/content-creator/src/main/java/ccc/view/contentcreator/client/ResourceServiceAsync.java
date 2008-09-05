@@ -28,6 +28,13 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @author Civic Computing Ltd
  */
 public interface ResourceServiceAsync {
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param root
+     * @param callback
+     */
     void getRoot(Root root, AsyncCallback<FolderDTO> callback);
 
     /**
@@ -38,14 +45,44 @@ public interface ResourceServiceAsync {
      */
     void getResource(String absolutePath, AsyncCallback<? extends DTO> callback);
 
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param id
+     * @param title
+     * @param paragraphs
+     * @param callback
+     */
     void saveContent(String id, String title, Map<String, String> paragraphs, AsyncCallback<Void> callback);
 
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param dto
+     * @param callback
+     */
     void createTemplate(final TemplateDTO dto, AsyncCallback<Void> callback);
 
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param callback
+     */
     void listTemplates(AsyncCallback<List<TemplateDTO>> callback);
 
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param callback
+     */
     void listOptions(AsyncCallback<List<OptionDTO<? extends DTO>>> callback);
 
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param options
+     * @param callback
+     */
     void updateOptions(List<OptionDTO<? extends DTO>> options, AsyncCallback<Void> callback);
 
     /**
@@ -56,7 +93,28 @@ public interface ResourceServiceAsync {
      */
     void getFolderChildren(FolderDTO folder, AsyncCallback<List<FolderDTO>> callback);
 
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param folder
+     * @param callback
+     */
     void getChildren(FolderDTO folder, AsyncCallback<List<ResourceDTO>> callback);
 
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param parent
+     * @param name
+     * @param callback
+     */
     void createFolder(FolderDTO parent, String name, AsyncCallback<Void> callback);
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param item
+     * @param asyncCallback
+     */
+    void getAbsolutePath(ResourceDTO item, AsyncCallback<String> asyncCallback);
 }
