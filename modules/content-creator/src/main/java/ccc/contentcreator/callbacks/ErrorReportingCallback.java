@@ -46,9 +46,4 @@ public abstract class ErrorReportingCallback<T> implements AsyncCallback<T> {
             + ": " //$NON-NLS-1$
             + caught.getMessage());
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public abstract void onSuccess(T result);
 }

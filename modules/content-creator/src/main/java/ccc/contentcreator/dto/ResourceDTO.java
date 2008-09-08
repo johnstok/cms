@@ -16,53 +16,60 @@ import com.extjs.gxt.ui.client.data.BaseModelData;
 
 
 /**
- * TODO Add Description for this type.
+ * A dto for a CCC resource.
  *
  * @author Civic Computing Ltd.
  */
 public class ResourceDTO extends BaseModelData implements DTO {
 
-//    private String _id;
-//    private String _type;
-//    private String _name;
-//    private String _title;
+    /** serialVersionUID : long. */
+    private static final long serialVersionUID = -8271277006169824547L;
 
     /**
      * Constructor.
      *
-     * @param title
+     * @param title The title of the resource.
+     * @param id The uuid for the resource.
+     * @param name The name of the resource.
+     * @param type The type of the resource.
      */
     public ResourceDTO(final String id,
                        final String type,
                        final String name,
                        final String title) {
-//        _id = id;
-//        _type = type;
-//        _name = name;
-//        _title = title;
+
         set("id", id);
         set("type", type);
         set("name", name);
         set("title", title);
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings("unused") // Required for GWT
     private ResourceDTO() { super(); }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor for the id property.
      *
-     * @return
+     * @return The id as a string.
      */
     public String getId() {
         return get("id");
     }
 
-
+    /**
+     * Accessor for the name field.
+     *
+     * @return The name as a string.
+     */
     public String getName() {
         return get("name");
     }
 
+    /**
+     * Accessor for the title.
+     *
+     * @return The title as a string.
+     */
     public String getTitle() {
         return get("title");
     }

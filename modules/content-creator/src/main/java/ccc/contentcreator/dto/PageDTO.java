@@ -15,33 +15,40 @@ import java.util.Map;
 
 
 /**
- * TODO Add Description for this type.
+ * A dto for a CCC page.
  *
  * @author Civic Computing Ltd.
  */
-public class PageDTO extends ResourceDTO implements DTO {
+public class PageDTO extends ResourceDTO {
 
-    @SuppressWarnings("unused")
+    /** serialVersionUID : long. */
+    private static final long serialVersionUID = 3436208980887326540L;
+
+    @SuppressWarnings("unused") // Required for GWT
     private PageDTO() { super(null, null, null, null); }
 
     /**
      * Constructor.
      *
-     * @param id
-     * @param type
-     * @param name
-     * @param title
-     * @param paragraphs
+     * @param title The title of the resource.
+     * @param id The uuid for the resource.
+     * @param name The name of the resource.
+     * @param type The type of the resource.
+     * @param paragraphs The paragraphs of the page.
      */
-    public PageDTO(final String id, final String type, final String name, final String title, final Map<String, String> paragraphs) {
+    public PageDTO(final String id,
+                   final String type,
+                   final String name,
+                   final String title,
+                   final Map<String, String> paragraphs) {
         super(id, type, name, title);
         set("paras", paragraphs);
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor for the paragraphs property.
      *
-     * @return
+     * @return A map representing the page's paragraphs.
      */
     public Map<String, String> getParagraphs() {
         return get("paras");
