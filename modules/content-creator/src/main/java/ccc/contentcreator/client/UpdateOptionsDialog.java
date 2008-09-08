@@ -10,7 +10,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.contentcreator.dialogs;
+package ccc.contentcreator.client;
 
 import java.util.List;
 
@@ -24,9 +24,6 @@ import ccc.contentcreator.callbacks.DisposingClickListener;
 import ccc.contentcreator.dto.DTO;
 import ccc.contentcreator.dto.OptionDTO;
 import ccc.contentcreator.dto.TemplateDTO;
-import ccc.contentcreator.widgets.ButtonBar;
-import ccc.contentcreator.widgets.FeedbackPanel;
-import ccc.contentcreator.widgets.TwoColumnForm;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ChangeListener;

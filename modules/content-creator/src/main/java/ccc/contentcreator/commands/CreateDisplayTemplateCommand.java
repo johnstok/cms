@@ -12,7 +12,7 @@
 package ccc.contentcreator.commands;
 
 import ccc.contentcreator.api.Application;
-import ccc.contentcreator.dialogs.CreateContentTemplateDialog;
+import ccc.contentcreator.client.CreateContentTemplateDialog;
 
 
 /**

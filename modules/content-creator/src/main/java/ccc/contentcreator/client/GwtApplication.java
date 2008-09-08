@@ -22,7 +22,6 @@ import ccc.contentcreator.api.PanelControl;
 import ccc.contentcreator.api.ResourceService;
 import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.api.StringControl;
-import ccc.contentcreator.dialogs.ApplicationDialog;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
