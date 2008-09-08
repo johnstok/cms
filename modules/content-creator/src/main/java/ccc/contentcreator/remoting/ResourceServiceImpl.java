@@ -221,7 +221,8 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
 
     /** {@inheritDoc} */
     public String getAbsolutePath(final ResourceDTO item) {
-        final Resource r = contentManager().lookup(UUID.fromString(item.getId()));
+        final Resource r =
+            contentManager().lookup(UUID.fromString(item.getId()));
         return r.absolutePath().toString();
     }
 }

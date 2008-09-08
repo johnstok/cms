@@ -13,7 +13,7 @@ package ccc.contentcreator.client;
 
 import ccc.contentcreator.api.Application;
 import ccc.contentcreator.api.CompositeControl;
-import ccc.contentcreator.api.Constants;
+import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.Control;
 import ccc.contentcreator.api.FileControl;
 import ccc.contentcreator.api.GridControl;
@@ -65,8 +65,8 @@ public class GwtApplication implements Application {
     }
 
     /** {@inheritDoc} */
-    public Constants constants() {
-        return GWT.create(Constants.class);
+    public UIConstants constants() {
+        return GWT.create(UIConstants.class);
     }
 
     /** {@inheritDoc} */

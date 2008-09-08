@@ -74,10 +74,11 @@ public final class DTOs {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Convert a resource to a dto.
      *
-     * @param resource
-     * @return
+     * @param resource The resource to convert.
+     * @param <T> The type of the dto to return.
+     * @return A dto representing the specified resource.
      */
     @SuppressWarnings("unchecked")
     public static <T extends ResourceDTO> T dtoFrom(final Resource resource) {
@@ -95,8 +96,10 @@ public final class DTOs {
 
             case PAGE:
                 final Page p = resource.as(Page.class);
-                final Map<String, String> paragraphs = new HashMap<String, String>();
-                for (final Map.Entry<String, Paragraph> para : p.paragraphs().entrySet()) {
+                final Map<String, String> paragraphs =
+                    new HashMap<String, String>();
+                for (final Map.Entry<String, Paragraph> para
+                        : p.paragraphs().entrySet()) {
                     paragraphs.put(para.getKey(), para.getValue().body());
                 }
                 return (T) new PageDTO(

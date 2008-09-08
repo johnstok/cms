@@ -15,7 +15,7 @@ package ccc.contentcreator.client;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.contentcreator.api.Constants;
+import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.ResourceService;
 import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.dto.PageDTO;
@@ -39,8 +39,8 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class UpdateContentDialog extends DialogBox {
 
-    private final Constants constants = GWT.create(Constants.class);
-    private final String title = constants.updateContent();
+    private final UIConstants uIConstants = GWT.create(UIConstants.class);
+    private final String title = uIConstants.updateContent();
     private final Map<String, RichTextArea> richTexts =
         new HashMap<String, RichTextArea>();
     private final ResourceServiceAsync resourceService =
@@ -83,7 +83,7 @@ public class UpdateContentDialog extends DialogBox {
 
 
         vPanel.add(
-            new Button(constants.cancel(),
+            new Button(uIConstants.cancel(),
                     new ClickListener() {
                         public void onClick(final Widget sender) {
                             hide();
@@ -91,7 +91,7 @@ public class UpdateContentDialog extends DialogBox {
                     }
                 ));
 
-        final Button saveButton = new Button(constants.save(), new ClickListener() {
+        final Button saveButton = new Button(uIConstants.save(), new ClickListener() {
                     public void onClick(final Widget arg0) {
 
                         if (titleTextBox.getText() == null

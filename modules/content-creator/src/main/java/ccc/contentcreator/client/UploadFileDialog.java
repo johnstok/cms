@@ -12,7 +12,7 @@
 package ccc.contentcreator.client;
 
 import ccc.contentcreator.api.Application;
-import ccc.contentcreator.api.Constants;
+import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.FileControl;
 import ccc.contentcreator.api.PanelControl;
 import ccc.contentcreator.api.StringControl;
@@ -35,7 +35,7 @@ public class UploadFileDialog {
 
     private final ApplicationDialog     _delegate;
     private final Application        _app;
-    private final Constants     _constants;
+    private final UIConstants     _constants;
     private final PanelControl  _gui;
 
     private final StringControl _title;
