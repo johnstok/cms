@@ -96,7 +96,8 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
                     rsa.getChildren(
                         f,
                         new ErrorReportingCallback<List<ResourceDTO>>(_app) {
-                            public void onSuccess(final List<ResourceDTO> result) {
+                            public void onSuccess(
+                                              final List<ResourceDTO> result) {
                                 _detailsStore.removeAll();
                                 _detailsStore.add(result);
                             }
@@ -169,14 +170,14 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
         preview.setText(_app.constants().preview());
         preview.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override public void componentSelected(final MenuEvent ce) {
-                final ResourceDTO item = (ResourceDTO)tbl.getSelectedItem().getModel();
-                _app.lookupService().getAbsolutePath(item, new AsyncCallback<String>() {
-                    public void onFailure(final Throwable arg0) {
-                        throw new UnsupportedOperationException("Method not implemented.");
-                    }
-                    public void onSuccess(final String arg0) {
-                        new PreviewContentDialog(_app, arg0).center();
-                    }
+                final ResourceDTO item =
+                    (ResourceDTO) tbl.getSelectedItem().getModel();
+                _app.lookupService().getAbsolutePath(
+                    item,
+                    new ErrorReportingCallback<String>(_app) {
+                        public void onSuccess(final String arg0) {
+                            new PreviewContentDialog(_app, arg0).center();
+                        }
                 });
             }
         });
@@ -186,8 +187,9 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
         update.setText(_app.constants().edit());
         update.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override public void componentSelected(final MenuEvent ce) {
-                final ResourceDTO item = (ResourceDTO)tbl.getSelectedItem().getModel();
-                        new UpdateContentDialog(item.getId()).center();
+                    final ResourceDTO item =
+                        (ResourceDTO) tbl.getSelectedItem().getModel();
+                    new UpdateContentDialog(item.getId()).center();
                 }
             }
         );
@@ -213,12 +215,14 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
         cp.setHeading("Resource Navigator");
 
         final ContentPanel contentPanel = new ContentPanel();
+        contentPanel.getHeader().setId("content-navigator");
         contentPanel.setScrollMode(Scroll.AUTO);
         contentPanel.setHeading("Content");
         contentPanel.add(_contentTree);
         cp.add(contentPanel);
 
         final ContentPanel assetsPanel = new ContentPanel();
+        assetsPanel.getHeader().setId("assets-navigator");
         assetsPanel.setScrollMode(Scroll.AUTO);
         assetsPanel.setHeading("Assets");
         assetsPanel.add(_assetsTree);
@@ -242,7 +246,9 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
                                 final FolderDTO loadConfig,
                                 final AsyncCallback<List<FolderDTO>> callback) {
                     if (null==loadConfig){
-                     rsa.getRoot(root, new OneItemListCallback(callback));
+                        rsa.getRoot(
+                            root,
+                            new OneItemListCallback<FolderDTO>(callback));
                     } else {
                      rsa.getFolderChildren(loadConfig, callback);
                     }
@@ -326,7 +332,8 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
                     new WindowListener(){
                         /** {@inheritDoc} */
                         @Override public void windowHide(final WindowEvent we) {
-                            final String action = complex.getButtonPressed().getText();
+                            final String action =
+                                complex.getButtonPressed().getText();
                             GWT.log(
                                 "Button: "+complex.getButtonPressed().getText(),
                                 null);
@@ -335,9 +342,9 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
                                     item,
                                     text.getValue(),
                                     new ErrorReportingCallback<Void>(_app){
-                                        public void onSuccess(final Void result) {
-                                            // TODO: refresh the folder...
-                                        }
+                                    public void onSuccess(final Void result) {
+                                        // TODO: refresh the folder...
+                                    }
                                     }
                                 );
                             }

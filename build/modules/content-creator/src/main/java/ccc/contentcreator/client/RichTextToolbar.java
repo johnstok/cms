@@ -1,12 +1,12 @@
 /*
  * Copyright 2008 Google Inc.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -167,7 +167,7 @@ public class RichTextToolbar extends Composite {
   private class EventListener implements ClickListener, ChangeListener,
       KeyboardListener {
 
-    public void onChange(Widget sender) {
+    public void onChange(final Widget sender) {
       if (sender == backColors) {
         basic.setBackColor(backColors.getValue(backColors.getSelectedIndex()));
         backColors.setSelectedIndex(0);
@@ -183,7 +183,7 @@ public class RichTextToolbar extends Composite {
       }
     }
 
-    public void onClick(Widget sender) {
+    public void onClick(final Widget sender) {
       if (sender == bold) {
         basic.toggleBold();
       } else if (sender == italic) {
@@ -207,12 +207,12 @@ public class RichTextToolbar extends Composite {
       } else if (sender == justifyRight) {
         basic.setJustification(RichTextArea.Justification.RIGHT);
       } else if (sender == insertImage) {
-        String url = Window.prompt("Enter an image URL:", "http://");
+        final String url = Window.prompt("Enter an image URL:", "http://");
         if (url != null) {
           extended.insertImage(url);
         }
       } else if (sender == createLink) {
-        String url = Window.prompt("Enter a link URL:", "http://");
+        final String url = Window.prompt("Enter a link URL:", "http://");
         if (url != null) {
           extended.createLink(url);
         }
@@ -234,13 +234,13 @@ public class RichTextToolbar extends Composite {
       }
     }
 
-    public void onKeyDown(Widget sender, char keyCode, int modifiers) {
+    public void onKeyDown(final Widget sender, final char keyCode, final int modifiers) {
     }
 
-    public void onKeyPress(Widget sender, char keyCode, int modifiers) {
+    public void onKeyPress(final Widget sender, final char keyCode, final int modifiers) {
     }
 
-    public void onKeyUp(Widget sender, char keyCode, int modifiers) {
+    public void onKeyUp(final Widget sender, final char keyCode, final int modifiers) {
       if (sender == richText) {
         // We use the RichTextArea's onKeyUp event to update the toolbar status.
         // This will catch any cases where the user moves the cursur using the
@@ -293,13 +293,13 @@ public class RichTextToolbar extends Composite {
 
   /**
    * Creates a new toolbar that drives the given rich text area.
-   * 
+   *
    * @param richText the rich text area to be controlled
    */
-  public RichTextToolbar(RichTextArea richText) {
+  public RichTextToolbar(final RichTextArea richText) {
     this.richText = richText;
-    this.basic = richText.getBasicFormatter();
-    this.extended = richText.getExtendedFormatter();
+    basic = richText.getBasicFormatter();
+    extended = richText.getExtendedFormatter();
 
     outer.add(topPanel);
     outer.add(bottomPanel);
@@ -358,8 +358,8 @@ public class RichTextToolbar extends Composite {
     }
   }
 
-  private ListBox createColorList(String caption) {
-    ListBox lb = new ListBox();
+  private ListBox createColorList(final String caption) {
+    final ListBox lb = new ListBox();
     lb.addChangeListener(listener);
     lb.setVisibleItemCount(1);
 
@@ -374,7 +374,7 @@ public class RichTextToolbar extends Composite {
   }
 
   private ListBox createFontList() {
-    ListBox lb = new ListBox();
+    final ListBox lb = new ListBox();
     lb.addChangeListener(listener);
     lb.setVisibleItemCount(1);
 
@@ -390,7 +390,7 @@ public class RichTextToolbar extends Composite {
   }
 
   private ListBox createFontSizes() {
-    ListBox lb = new ListBox();
+    final ListBox lb = new ListBox();
     lb.addChangeListener(listener);
     lb.setVisibleItemCount(1);
 
@@ -405,15 +405,15 @@ public class RichTextToolbar extends Composite {
     return lb;
   }
 
-  private PushButton createPushButton(AbstractImagePrototype img, String tip) {
-    PushButton pb = new PushButton(img.createImage());
+  private PushButton createPushButton(final AbstractImagePrototype img, final String tip) {
+    final PushButton pb = new PushButton(img.createImage());
     pb.addClickListener(listener);
     pb.setTitle(tip);
     return pb;
   }
 
-  private ToggleButton createToggleButton(AbstractImagePrototype img, String tip) {
-    ToggleButton tb = new ToggleButton(img.createImage());
+  private ToggleButton createToggleButton(final AbstractImagePrototype img, final String tip) {
+    final ToggleButton tb = new ToggleButton(img.createImage());
     tb.addClickListener(listener);
     tb.setTitle(tip);
     return tb;
