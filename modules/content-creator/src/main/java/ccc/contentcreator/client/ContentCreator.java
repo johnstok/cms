@@ -1,6 +1,7 @@
 
 package ccc.contentcreator.client;
 
+import ccc.contentcreator.controls.Application;
 import ccc.contentcreator.dialogs.GXTResourceExplorerPanel;
 
 import com.extjs.gxt.ui.client.widget.LayoutContainer;

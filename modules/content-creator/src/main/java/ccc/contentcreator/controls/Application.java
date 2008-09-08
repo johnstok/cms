@@ -9,14 +9,8 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.client;
+package ccc.contentcreator.controls;
 
-import ccc.contentcreator.controls.Control;
-import ccc.contentcreator.controls.FileControl;
-import ccc.contentcreator.controls.GridControl;
-import ccc.contentcreator.controls.ListControl;
-import ccc.contentcreator.controls.PanelControl;
-import ccc.contentcreator.controls.StringControl;
 import ccc.contentcreator.dialogs.ApplicationDialog;
 
 import com.google.gwt.user.client.ui.ClickListener;

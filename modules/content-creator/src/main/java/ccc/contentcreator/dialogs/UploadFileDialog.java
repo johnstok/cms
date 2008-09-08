@@ -12,8 +12,8 @@
 package ccc.contentcreator.dialogs;
 
 import ccc.contentcreator.callbacks.DisposingClickListener;
-import ccc.contentcreator.client.Application;
-import ccc.contentcreator.client.Constants;
+import ccc.contentcreator.controls.Application;
+import ccc.contentcreator.controls.Constants;
 import ccc.contentcreator.controls.FileControl;
 import ccc.contentcreator.controls.PanelControl;
 import ccc.contentcreator.controls.StringControl;

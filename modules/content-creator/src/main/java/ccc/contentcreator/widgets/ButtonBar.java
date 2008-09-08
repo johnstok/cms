@@ -11,7 +11,7 @@
  */
 package ccc.contentcreator.widgets;
 
-import ccc.contentcreator.client.Application;
+import ccc.contentcreator.controls.Application;
 import ccc.contentcreator.controls.CompositeControl;
 import ccc.contentcreator.controls.PanelControl;
 
