@@ -16,7 +16,7 @@ package ccc.contentcreator.api;
  *
  * @author Civic Computing Ltd
  */
-public interface Constants extends com.google.gwt.i18n.client.Constants {
+public interface UIConstants extends com.google.gwt.i18n.client.Constants {
 
     /**
      * "Update Page".

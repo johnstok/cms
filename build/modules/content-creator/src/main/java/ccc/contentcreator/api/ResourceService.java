@@ -34,86 +34,89 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface ResourceService extends RemoteService {
 
     /**
-     * TODO: Add a description of this method.
+     * Retrieve a root folder.
      *
-     * @param root
-     * @return
+     * @param root The identifier for the root folder to retrieve.
+     * @return The root folder as a dto.
      */
     FolderDTO getRoot(Root root);
 
     /**
-     * TODO: Add a description of this method.
+     * Get the resource located at the specified path.
      *
-     * @param absolutePath
-     * @return
+     * @param absolutePath An absolute path to an existing resource.
+     * @return The resource as a dto.
      */
     ResourceDTO getResource(String absolutePath);
 
     /**
-     * TODO: Add a description of this method.
+     * Update the specified page on the server.
+     * TODO: should pass a PageDTO.
      *
-     * @param id
-     * @param title
-     * @param paragraphs
+     * @param id The uuid of the page to update.
+     * @param title The title of the page.
+     * @param paragraphs The paragraphs for the page.
      */
     void saveContent(String id, String title, Map<String, String> paragraphs);
 
     /**
-     * TODO: Add a description of this method.
+     * Create a new template in CCC.
      *
-     * @param dto
+     * @param dto Details of the new template to create.
      */
     void createTemplate(final TemplateDTO dto);
 
     /**
-     * TODO: Add a description of this method.
+     * List all the templates currently available in CCC.
      *
-     * @return
+     * @return A list of templates.
      */
     List<TemplateDTO> listTemplates();
 
     /**
-     * TODO: Add a description of this method.
+     * List the available server options.
      *
-     * @return
+     * @return A list of available options.
      */
     List<OptionDTO<? extends DTO>> listOptions();
 
     /**
-     * TODO: Add a description of this method.
+     * Update the specified list of options on the server.
      *
-     * @param options
+     * @param options The options to update.
      */
     void updateOptions(List<OptionDTO<? extends DTO>> options);
 
     /**
-     * TODO: Add a description of this method.
+     * List all of the folders that are children of the specified parent folder.
      *
-     * @param folder
-     * @return
+     * @param folder The parent folder.
+     * @return The list of child folders.
      */
     List<FolderDTO> getFolderChildren(FolderDTO folder);
 
     /**
-     * TODO: Add a description of this method.
+     * List all of the children of the specified parent folder.
      *
-     * @param folder
-     * @return
+     * @param folder The parent folder.
+     * @return The list of children.
      */
     List<ResourceDTO> getChildren(FolderDTO folder);
 
     /**
-     * TODO: Add a description of this method.
+     * Create a folder with the specified name.
      *
-     * @param parent
-     * @param name
+     * @param parent The parent folder within which the new folder should be
+     *  created.
+     * @param name The name of the new folder.
      */
     void createFolder(FolderDTO parent, String name);
 
     /**
-     * TODO: Add a description of this method.
+     * Determine the absolute path to a resource.
      *
-     * @param item
+     * @param resource The resource for which we want the absolute path.
+     * @return The absolute path as a string.
      */
-    String getAbsolutePath(ResourceDTO item);
+    String getAbsolutePath(ResourceDTO resource);
 }

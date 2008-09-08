@@ -15,7 +15,7 @@ package ccc.contentcreator.client;
 import java.util.List;
 
 import ccc.contentcreator.api.Application;
-import ccc.contentcreator.api.Constants;
+import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.ListControl;
 import ccc.contentcreator.api.PanelControl;
 import ccc.contentcreator.api.ResourceServiceAsync;
@@ -41,7 +41,7 @@ public class UpdateOptionsDialog {
 
     private final ApplicationDialog     _delegate;
     private final Application        _app;
-    private final Constants     _constants;
+    private final UIConstants     _constants;
     private final PanelControl  _gui;
     private final ResourceServiceAsync _resourceService;
 

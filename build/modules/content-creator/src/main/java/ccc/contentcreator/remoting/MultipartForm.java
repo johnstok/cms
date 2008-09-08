@@ -27,7 +27,7 @@ import ccc.domain.CCCException;
 
 
 /**
- * TODO: Add Description for this type.
+ * This class represents a mime encoded multi-part form.
  *
  * @author Civic Computing Ltd.
  */
@@ -42,7 +42,7 @@ public class MultipartForm {
     /**
      * Constructor.
      *
-     * @param items
+     * @param items The list of items on this form.
      */
     public MultipartForm(final List<FileItem> items) {
         DBC.require().notNull(items);
@@ -59,20 +59,22 @@ public class MultipartForm {
     /**
      * Constructor.
      *
-     * @param request
+     * @param request The HTTP request this form represents.
      */
     public MultipartForm(final HttpServletRequest request) {
         this(parseFileItems(request));
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Parse an HTTP request, extracting the file items.
      *
      * @param request
      * @return
      */
     @SuppressWarnings("unchecked")
-    private static List<FileItem> parseFileItems(final HttpServletRequest request) {
+    private static List<FileItem> parseFileItems(
+        final HttpServletRequest request) {
+
         DBC.require().notNull(request);
 
         // Check that we have a file upload request
@@ -101,10 +103,10 @@ public class MultipartForm {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Retrieve a file item by name.
      *
-     * @param string
-     * @return
+     * @param string The name of the item.
+     * @return The item identified by the specified name.
      */
     public FileItem get(final String string) {
         return _items.get(string);

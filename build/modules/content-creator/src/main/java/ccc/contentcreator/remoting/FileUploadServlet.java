@@ -34,8 +34,8 @@ public class FileUploadServlet extends HttpServlet {
 
     /** serialVersionUID : long. */
     private static final long serialVersionUID = 4396761206168690263L;
+    private static final Logger LOG = Logger.getLogger(FileUploadServlet.class);
 
-    private final Logger _log = Logger.getLogger(FileUploadServlet.class);
     private final Registry _registry = new JNDI();
 
     /**
@@ -57,7 +57,7 @@ public class FileUploadServlet extends HttpServlet {
             final FileItem description = form.get("description");
             final FileItem path        = form.get("path");
 
-            final String realName = file.getName(); // See #145
+//            final String realName = file.getName(); // See #145
             final UUID parentId = UUID.fromString(path.getString());
 
             final File f =
@@ -76,7 +76,7 @@ public class FileUploadServlet extends HttpServlet {
                 try {
                     dataStream.close();
                 } catch (final Exception e) {
-                    _log.error("DataStream closing failed "+e.getMessage(), e);
+                    LOG.error("DataStream closing failed "+e.getMessage(), e);
                 }
             }
             assetManager().createFile(f, parentId);
@@ -85,7 +85,7 @@ public class FileUploadServlet extends HttpServlet {
 
         } catch (final MimeTypeParseException e) {
             response.getWriter().write("File Upload failed. "+e.getMessage());
-            _log.error("File Upload failed "+e.getMessage(), e);
+            LOG.error("File Upload failed "+e.getMessage(), e);
         }
     }
 

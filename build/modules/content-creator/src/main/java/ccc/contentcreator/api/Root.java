@@ -13,10 +13,15 @@ package ccc.contentcreator.api;
 
 
 /**
- * TODO Add Description for this type.
+ * The root resource trees available in CCC.
  *
  * @author Civic Computing Ltd.
  */
 public enum Root {
-    CONTENT, ASSETS;
+
+    /** CONTENT : Root. */
+    CONTENT,
+
+    /** ASSETS : Root. */
+    ASSETS;
 }

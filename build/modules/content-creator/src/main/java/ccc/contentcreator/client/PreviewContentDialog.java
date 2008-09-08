@@ -13,7 +13,7 @@
 package ccc.contentcreator.client;
 
 import ccc.contentcreator.api.Application;
-import ccc.contentcreator.api.Constants;
+import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.Control;
 import ccc.contentcreator.api.PanelControl;
 import ccc.contentcreator.callbacks.DisposingClickListener;
@@ -30,7 +30,7 @@ public class PreviewContentDialog {
 
     private final ApplicationDialog     _delegate;
     private final Application        _app;
-    private final Constants     _constants;
+    private final UIConstants     _constants;
     private final PanelControl _gui;
 
     private final Control _previewFrame;

@@ -31,7 +31,7 @@ public interface Application {
      *
      * @return
      */
-    Constants constants();
+    UIConstants constants();
 
     /**
      * TODO: Add a description of this method.

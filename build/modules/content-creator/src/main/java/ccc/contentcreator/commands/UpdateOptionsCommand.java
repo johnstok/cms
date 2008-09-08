@@ -14,7 +14,7 @@ package ccc.contentcreator.commands;
 import java.util.List;
 
 import ccc.contentcreator.api.Application;
-import ccc.contentcreator.api.Constants;
+import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.client.UpdateOptionsDialog;
 import ccc.contentcreator.dto.DTO;
@@ -52,8 +52,8 @@ public class UpdateOptionsCommand extends ApplicationCommand {
         _resourceService.listOptions(
             new AsyncCallback<List<OptionDTO<? extends DTO>>>(){
 
-                private final Constants _constants =
-                    GWT.create(Constants.class);
+                private final UIConstants _constants =
+                    GWT.create(UIConstants.class);
 
                 public void onFailure(final Throwable arg0) {
                     Window.alert(_constants.error());
