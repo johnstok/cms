@@ -11,7 +11,7 @@
  */
 package ccc.contentcreator.api;
 
-import ccc.contentcreator.dialogs.ApplicationDialog;
+import ccc.contentcreator.client.ApplicationDialog;
 
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FormHandler;

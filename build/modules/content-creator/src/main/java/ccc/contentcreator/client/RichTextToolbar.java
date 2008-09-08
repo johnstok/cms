@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package ccc.contentcreator.widgets;
+package ccc.contentcreator.client;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.Constants;

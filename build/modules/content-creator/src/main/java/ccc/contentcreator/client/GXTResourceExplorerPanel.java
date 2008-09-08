@@ -10,7 +10,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.contentcreator.dialogs;
+package ccc.contentcreator.client;
 
 import java.util.ArrayList;
 import java.util.List;

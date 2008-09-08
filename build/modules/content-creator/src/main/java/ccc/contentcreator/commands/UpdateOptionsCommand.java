@@ -16,7 +16,7 @@ import java.util.List;
 import ccc.contentcreator.api.Application;
 import ccc.contentcreator.api.Constants;
 import ccc.contentcreator.api.ResourceServiceAsync;
-import ccc.contentcreator.dialogs.UpdateOptionsDialog;
+import ccc.contentcreator.client.UpdateOptionsDialog;
 import ccc.contentcreator.dto.DTO;
 import ccc.contentcreator.dto.OptionDTO;
 

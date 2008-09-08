@@ -10,14 +10,13 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.contentcreator.dialogs;
+package ccc.contentcreator.client;
 
 import ccc.contentcreator.api.Application;
 import ccc.contentcreator.api.Constants;
 import ccc.contentcreator.api.Control;
 import ccc.contentcreator.api.PanelControl;
 import ccc.contentcreator.callbacks.DisposingClickListener;
-import ccc.contentcreator.widgets.ButtonBar;
 
 import com.google.gwt.user.client.ui.VerticalPanel;
 

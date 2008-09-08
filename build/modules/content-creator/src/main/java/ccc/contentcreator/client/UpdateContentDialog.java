@@ -10,7 +10,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.contentcreator.dialogs;
+package ccc.contentcreator.client;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +19,6 @@ import ccc.contentcreator.api.Constants;
 import ccc.contentcreator.api.ResourceService;
 import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.dto.PageDTO;
-import ccc.contentcreator.widgets.RichTextToolbar;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;

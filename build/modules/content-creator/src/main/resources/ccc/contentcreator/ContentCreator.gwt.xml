@@ -18,9 +18,7 @@
 	
 	<source path="commands" />
 	<source path="dto" />
-	<source path="dialogs" />
 	<source path="client" />
-	<source path="widgets" />
 	<source path="api" />
 	<source path="callbacks" />
 

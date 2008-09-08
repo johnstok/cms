@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.dialogs;
+package ccc.contentcreator.client;
 
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 
