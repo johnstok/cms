@@ -33,7 +33,7 @@
 					<webResources>
 						<resource>
 							<directory>
-								${basedir}/target/www/ccc.view.contentcreator.ContentCreator
+								${basedir}/target/www/ccc.contentcreator.ContentCreator
 							</directory>
 						</resource>
 					</webResources>
@@ -74,7 +74,7 @@
 									<arg value="-out" />
 									<arg value="${basedir}/target/www" />
 									<arg
-										value="ccc.view.contentcreator.ContentCreator" />
+										value="ccc.contentcreator.ContentCreator" />
 								</java>
 
 							</tasks>
