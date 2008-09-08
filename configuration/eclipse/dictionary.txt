@@ -86,3 +86,15 @@ datasource
 monad
 haskell
 docs
+octet
+spec
+classpath
+inline
+vm
+uuid
+multi
+remoting
+api
+ejb
+javascript
+app
