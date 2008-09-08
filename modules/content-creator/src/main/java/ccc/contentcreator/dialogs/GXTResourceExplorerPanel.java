@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
+import ccc.contentcreator.callbacks.OneItemListCallback;
 import ccc.contentcreator.client.Application;
 import ccc.contentcreator.client.ResourceServiceAsync;
 import ccc.contentcreator.client.Root;
