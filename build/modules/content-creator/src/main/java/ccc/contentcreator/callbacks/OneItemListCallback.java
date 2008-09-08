@@ -9,31 +9,31 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.dialogs;
+package ccc.contentcreator.callbacks;
 
 import java.util.Collections;
 import java.util.List;
-
-import ccc.contentcreator.dto.FolderDTO;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 /**
- * TODO: Add Description for this type.
+ * This callback can be used to decorate an existing an existing callback,
+ * allowing its result to instead be returned as the single element of a list.
  *
+ * @param <T>
  * @author Civic Computing Ltd.
  */
-public class OneItemListCallback implements AsyncCallback<FolderDTO> {
+public class OneItemListCallback<T> implements AsyncCallback<T> {
 
-    private final AsyncCallback<List<FolderDTO>> _callback;
+    private final AsyncCallback<List<T>> _callback;
 
     /**
      * Constructor.
      *
      * @param callback The callback to wrap.
      */
-    public OneItemListCallback(final AsyncCallback<List<FolderDTO>> callback) {
+    public OneItemListCallback(final AsyncCallback<List<T>> callback) {
         _callback = callback;
     }
 
@@ -43,7 +43,7 @@ public class OneItemListCallback implements AsyncCallback<FolderDTO> {
     }
 
     /** {@inheritDoc} */
-    public void onSuccess(final FolderDTO arg0) {
+    public void onSuccess(final T arg0) {
         _callback.onSuccess(Collections.singletonList(arg0));
     }
 
