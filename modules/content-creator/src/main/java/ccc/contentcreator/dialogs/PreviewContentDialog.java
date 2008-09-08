@@ -12,11 +12,11 @@
 
 package ccc.contentcreator.dialogs;
 
+import ccc.contentcreator.api.Application;
+import ccc.contentcreator.api.Constants;
+import ccc.contentcreator.api.Control;
+import ccc.contentcreator.api.PanelControl;
 import ccc.contentcreator.callbacks.DisposingClickListener;
-import ccc.contentcreator.controls.Application;
-import ccc.contentcreator.controls.Constants;
-import ccc.contentcreator.controls.Control;
-import ccc.contentcreator.controls.PanelControl;
 import ccc.contentcreator.widgets.ButtonBar;
 
 import com.google.gwt.user.client.ui.VerticalPanel;

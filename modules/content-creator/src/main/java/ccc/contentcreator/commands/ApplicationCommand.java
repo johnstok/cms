@@ -11,7 +11,7 @@
  */
 package ccc.contentcreator.commands;
 
-import ccc.contentcreator.controls.Application;
+import ccc.contentcreator.api.Application;
 
 import com.google.gwt.user.client.Command;
 

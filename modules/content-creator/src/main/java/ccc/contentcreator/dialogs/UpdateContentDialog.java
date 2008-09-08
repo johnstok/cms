@@ -15,9 +15,9 @@ package ccc.contentcreator.dialogs;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.contentcreator.controls.Constants;
-import ccc.contentcreator.controls.ResourceService;
-import ccc.contentcreator.controls.ResourceServiceAsync;
+import ccc.contentcreator.api.Constants;
+import ccc.contentcreator.api.ResourceService;
+import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.dto.PageDTO;
 import ccc.contentcreator.widgets.RichTextToolbar;
 

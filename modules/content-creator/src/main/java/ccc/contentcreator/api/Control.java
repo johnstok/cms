@@ -9,8 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.controls;
-
+package ccc.contentcreator.api;
 
 
 /**
@@ -18,27 +17,27 @@ package ccc.contentcreator.controls;
  *
  * @author Civic Computing Ltd.
  */
-public interface StringControl extends Control {
-
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @return
-     */
-    String model();
+public interface Control {
 
     /**
      * TODO: Add a description of this method.
      *
      * @param string
      */
-    void setName(String string);
+    void setWidth(String string);
 
     /**
      * TODO: Add a description of this method.
      *
-     * @param absolutePath
+     * @param string
      */
-    void model(String absolutePath);
+    void setHeight(String string);
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param b
+     */
+    void setVisible(boolean b);
 
 }

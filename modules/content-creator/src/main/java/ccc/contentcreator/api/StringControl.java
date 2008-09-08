@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.controls;
+package ccc.contentcreator.api;
 
 
 
@@ -18,7 +18,14 @@ package ccc.contentcreator.controls;
  *
  * @author Civic Computing Ltd.
  */
-public interface FileControl extends Control {
+public interface StringControl extends Control {
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
+    String model();
 
     /**
      * TODO: Add a description of this method.
@@ -30,8 +37,8 @@ public interface FileControl extends Control {
     /**
      * TODO: Add a description of this method.
      *
-     * @return
+     * @param absolutePath
      */
-    String getFilename();
+    void model(String absolutePath);
 
 }

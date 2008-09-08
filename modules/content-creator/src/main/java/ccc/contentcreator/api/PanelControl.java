@@ -9,10 +9,11 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.controls;
+package ccc.contentcreator.api;
 
 
-import com.google.gwt.user.client.ui.ChangeListener;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
+import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConstant;
 
 
 /**
@@ -20,43 +21,54 @@ import com.google.gwt.user.client.ui.ChangeListener;
  *
  * @author Civic Computing Ltd.
  */
-public interface ListControl extends Control {
+public interface PanelControl extends Control {
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param alignBottom
+     */
+    void setVerticalAlignment(VerticalAlignmentConstant alignBottom);
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param alignRight
+     */
+    void setHorizontalAlignment(HorizontalAlignmentConstant alignRight);
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param frame
+     */
+    void add(Control frame);
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param i
+     * @return
+     */
+    Control child(int i);
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     */
+    void clear();
 
     /**
      * TODO: Add a description of this method.
      *
      * @param string
-     * @param string2
      */
-    void addItem(String string, String string2);
+    void setStyleName(String string);
 
     /**
      * TODO: Add a description of this method.
      *
-     * @return
      */
-    int getItemCount();
-
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param i
-     * @return
-     */
-    Object getValue(int i);
-
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param i
-     */
-    void setSelectedIndex(int i);
-
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param changeListener
-     */
-    void addChangeListener(ChangeListener changeListener);
+    void submit();
 
 }
