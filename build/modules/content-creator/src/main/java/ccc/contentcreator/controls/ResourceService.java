@@ -9,7 +9,8 @@
  * Changes: see SubVersion log
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.client;
+
+package ccc.contentcreator.controls;
 
 import java.util.List;
 import java.util.Map;
@@ -20,30 +21,33 @@ import ccc.contentcreator.dto.OptionDTO;
 import ccc.contentcreator.dto.ResourceDTO;
 import ccc.contentcreator.dto.TemplateDTO;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+
 
 /**
- * Asynchronous service for managing resources.
+ * Synchronous service for managing resources.
  *
  * @author Civic Computing Ltd
  */
-public interface ResourceServiceAsync {
+@RemoteServiceRelativePath("resource")
+public interface ResourceService extends RemoteService {
 
     /**
      * TODO: Add a description of this method.
      *
      * @param root
-     * @param callback
+     * @return
      */
-    void getRoot(Root root, AsyncCallback<FolderDTO> callback);
+    FolderDTO getRoot(Root root);
 
     /**
      * TODO: Add a description of this method.
      *
      * @param absolutePath
-     * @param callback
+     * @return
      */
-    void getResource(String absolutePath, AsyncCallback<? extends ResourceDTO> callback);
+    ResourceDTO getResource(String absolutePath);
 
     /**
      * TODO: Add a description of this method.
@@ -51,70 +55,65 @@ public interface ResourceServiceAsync {
      * @param id
      * @param title
      * @param paragraphs
-     * @param callback
      */
-    void saveContent(String id, String title, Map<String, String> paragraphs, AsyncCallback<Void> callback);
+    void saveContent(String id, String title, Map<String, String> paragraphs);
 
     /**
      * TODO: Add a description of this method.
      *
      * @param dto
-     * @param callback
      */
-    void createTemplate(final TemplateDTO dto, AsyncCallback<Void> callback);
+    void createTemplate(final TemplateDTO dto);
 
     /**
      * TODO: Add a description of this method.
      *
-     * @param callback
+     * @return
      */
-    void listTemplates(AsyncCallback<List<TemplateDTO>> callback);
+    List<TemplateDTO> listTemplates();
 
     /**
      * TODO: Add a description of this method.
      *
-     * @param callback
+     * @return
      */
-    void listOptions(AsyncCallback<List<OptionDTO<? extends DTO>>> callback);
+    List<OptionDTO<? extends DTO>> listOptions();
 
     /**
      * TODO: Add a description of this method.
      *
      * @param options
-     * @param callback
      */
-    void updateOptions(List<OptionDTO<? extends DTO>> options, AsyncCallback<Void> callback);
-
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param id
-     * @param callback
-     */
-    void getFolderChildren(FolderDTO folder, AsyncCallback<List<FolderDTO>> callback);
+    void updateOptions(List<OptionDTO<? extends DTO>> options);
 
     /**
      * TODO: Add a description of this method.
      *
      * @param folder
-     * @param callback
+     * @return
      */
-    void getChildren(FolderDTO folder, AsyncCallback<List<ResourceDTO>> callback);
+    List<FolderDTO> getFolderChildren(FolderDTO folder);
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param folder
+     * @return
+     */
+    List<ResourceDTO> getChildren(FolderDTO folder);
 
     /**
      * TODO: Add a description of this method.
      *
      * @param parent
      * @param name
-     * @param callback
      */
-    void createFolder(FolderDTO parent, String name, AsyncCallback<Void> callback);
+    void createFolder(FolderDTO parent, String name);
 
     /**
      * TODO: Add a description of this method.
      *
      * @param item
-     * @param asyncCallback
      */
-    void getAbsolutePath(ResourceDTO item, AsyncCallback<String> asyncCallback);
+    String getAbsolutePath(ResourceDTO item);
 }

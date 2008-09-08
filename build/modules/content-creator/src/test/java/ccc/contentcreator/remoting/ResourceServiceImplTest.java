@@ -23,8 +23,8 @@ import junit.framework.TestCase;
 import org.easymock.Capture;
 
 import ccc.commons.MapRegistry;
-import ccc.contentcreator.client.ResourceService;
-import ccc.contentcreator.client.Root;
+import ccc.contentcreator.controls.ResourceService;
+import ccc.contentcreator.controls.Root;
 import ccc.contentcreator.dto.DTO;
 import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.OptionDTO;

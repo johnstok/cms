@@ -16,11 +16,11 @@ import java.util.List;
 
 import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.callbacks.DisposingClickListener;
-import ccc.contentcreator.client.Application;
-import ccc.contentcreator.client.Constants;
-import ccc.contentcreator.client.ResourceServiceAsync;
+import ccc.contentcreator.controls.Application;
+import ccc.contentcreator.controls.Constants;
 import ccc.contentcreator.controls.ListControl;
 import ccc.contentcreator.controls.PanelControl;
+import ccc.contentcreator.controls.ResourceServiceAsync;
 import ccc.contentcreator.dto.DTO;
 import ccc.contentcreator.dto.OptionDTO;
 import ccc.contentcreator.dto.TemplateDTO;

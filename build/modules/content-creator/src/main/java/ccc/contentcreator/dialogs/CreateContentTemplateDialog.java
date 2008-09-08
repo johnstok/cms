@@ -14,10 +14,10 @@ package ccc.contentcreator.dialogs;
 
 import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.callbacks.DisposingClickListener;
-import ccc.contentcreator.client.Application;
-import ccc.contentcreator.client.Constants;
-import ccc.contentcreator.client.ResourceServiceAsync;
+import ccc.contentcreator.controls.Application;
+import ccc.contentcreator.controls.Constants;
 import ccc.contentcreator.controls.PanelControl;
+import ccc.contentcreator.controls.ResourceServiceAsync;
 import ccc.contentcreator.controls.StringControl;
 import ccc.contentcreator.dto.TemplateDTO;
 import ccc.contentcreator.widgets.ButtonBar;

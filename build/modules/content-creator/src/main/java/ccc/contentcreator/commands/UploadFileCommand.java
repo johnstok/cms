@@ -11,7 +11,7 @@
  */
 package ccc.contentcreator.commands;
 
-import ccc.contentcreator.client.Application;
+import ccc.contentcreator.controls.Application;
 import ccc.contentcreator.dialogs.UploadFileDialog;
 
 import com.google.gwt.user.client.ui.Tree;

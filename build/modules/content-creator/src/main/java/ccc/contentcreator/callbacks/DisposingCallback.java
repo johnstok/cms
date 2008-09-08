@@ -1,6 +1,6 @@
 package ccc.contentcreator.callbacks;
 
-import ccc.contentcreator.client.Application;
+import ccc.contentcreator.controls.Application;
 import ccc.contentcreator.dialogs.ApplicationDialog;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
