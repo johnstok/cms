@@ -20,5 +20,5 @@ import java.io.Serializable;
  * @author Civic Computing Ltd.
  */
 public interface DTO extends Serializable {
-
+    /* Marker interface */
 }

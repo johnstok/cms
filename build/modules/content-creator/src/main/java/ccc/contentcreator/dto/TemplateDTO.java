@@ -16,69 +16,81 @@ import java.util.List;
 
 
 /**
- * TODO Add Description for this type.
+ * A dto for a CCC template.
+ * TODO: should extend {@link ResourceDTO}.
+ * TODO: Pull validation methods up to {@link ResourceDTO}?
  *
- * @author Civic Computing Ltd
+ * @author Civic Computing Ltd.
  */
 public class TemplateDTO implements DTO {
+
+    /** serialVersionUID : long. */
+    private static final long serialVersionUID = 7676780306991591780L;
 
     private String _title = "";
     private String _description = "";
     private String _body = "";
     private String _id = null;
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings("unused") // Required for GWT
     private TemplateDTO() { super(); }
 
     /**
      * Constructor.
      *
-     * @param title
-     * @param description
-     * @param body
+     * @param title The title of the resource.
+     * @param body The body of the display template.
+     * @param description The description of the template.
      */
-    public TemplateDTO(final String title, final String description, final String body) {
+    public TemplateDTO(final String title,
+                       final String description,
+                       final String body) {
         _title = title;
         _description = description;
         _body = body;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor for the title.
      *
-     * @return
+     * @return The string representation of the title.
      */
     public String getTitle() {
         return _title;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor for the description.
      *
-     * @return
+     * @return The description as a string.
      */
     public String getDescription() {
         return _description;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor for the body.
      *
-     * @return
+     * @return The body as a string.
      */
     public String getBody() {
         return _body;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Determine whether the dto is valid.
      *
-     * @return
+     * @return True if valid, false otherwise.
      */
     public boolean isValid() {
         return validate().size()<1;
     }
 
+    /**
+     * Valid the dto.
+     *
+     * @return A list of strings representing validation errors.
+     */
     public List<String> validate() {
         final List<String> errors = new ArrayList<String>();
         if (null==_title || _title.length()<1) {
@@ -94,18 +106,18 @@ public class TemplateDTO implements DTO {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor for the id property.
      *
-     * @return
+     * @return The id as a string.
      */
     public String getId() {
         return _id;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Mutator for the id property.
      *
-     * @param id
+     * @param id The new id.
      */
     public void setId(final String id) {
         _id = id;

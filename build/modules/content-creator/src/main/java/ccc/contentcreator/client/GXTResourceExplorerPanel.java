@@ -96,7 +96,7 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
                     rsa.getChildren(
                         f,
                         new ErrorReportingCallback<List<ResourceDTO>>(_app) {
-                            @Override public void onSuccess(final List<ResourceDTO> result) {
+                            public void onSuccess(final List<ResourceDTO> result) {
                                 _detailsStore.removeAll();
                                 _detailsStore.add(result);
                             }
@@ -335,7 +335,7 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
                                     item,
                                     text.getValue(),
                                     new ErrorReportingCallback<Void>(_app){
-                                        @Override public void onSuccess(final Void result) {
+                                        public void onSuccess(final Void result) {
                                             // TODO: refresh the folder...
                                         }
                                     }
