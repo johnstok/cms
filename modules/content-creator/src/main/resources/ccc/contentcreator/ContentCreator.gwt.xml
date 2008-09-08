@@ -1,0 +1,34 @@
+<module>
+
+	<!-- Inherit the core Web Toolkit stuff. -->
+	<inherits name="com.google.gwt.user.User" />
+	<inherits name="com.google.gwt.json.JSON" />
+	<inherits name="com.google.gwt.user.Debug" />
+	<inherits name="com.google.gwt.i18n.I18N"/>
+    <inherits name='com.extjs.gxt.ui.GXT'/>
+
+	<!-- Inherit the default GWT style sheet. -->
+	<inherits name="com.google.gwt.user.theme.standard.Standard" />
+
+	<!-- Supported locales. -->
+	<extend-property name="locale" values="fi" />
+
+	<!-- Specify the app entry point class. -->
+	<entry-point class="ccc.contentcreator.client.ContentCreator" />
+	
+	<source path="commands" />
+	<source path="dto" />
+	<source path="dialogs" />
+	<source path="client" />
+	<source path="widgets" />
+	<source path="controls" />
+	<source path="callbacks" />
+
+	<!-- RPC servlet bindings. -->
+	<servlet path="/resource"
+		class="ccc.contentcreator.remoting.ResourceServiceImpl" />
+
+	<!-- Specify the application specific style sheet. -->
+	<stylesheet src="ContentCreator.css" />
+
+</module>
