@@ -9,14 +9,14 @@
 	<servlet>
 		<servlet-name>Resource</servlet-name>
 		<servlet-class>
-			ccc.remoting.gwt.ResourceServiceImpl
+			ccc.contentcreator.remoting.ResourceServiceImpl
 		</servlet-class>
 	</servlet>
 
 	<servlet>
 		<servlet-name>FileUploadServlet</servlet-name>
 		<servlet-class>
-			ccc.remoting.gwt.FileUploadServlet
+			ccc.contentcreator.remoting.FileUploadServlet
 		</servlet-class>
 	</servlet>
 
