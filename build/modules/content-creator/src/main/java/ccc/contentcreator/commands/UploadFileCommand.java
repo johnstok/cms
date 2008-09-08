@@ -12,10 +12,10 @@
 package ccc.contentcreator.commands;
 
 import ccc.contentcreator.client.Application;
-import ccc.contentcreator.client.GWTSupport;
 import ccc.contentcreator.dialogs.UploadFileDialog;
 
 import com.google.gwt.user.client.ui.Tree;
+import com.google.gwt.user.client.ui.TreeItem;
 
 /**
  * TODO Add Description for this type.
@@ -46,8 +46,25 @@ public class UploadFileCommand extends ApplicationCommand {
         }
         final String name = _tree.getSelectedItem().getText();
         final String absolutePath =
-            GWTSupport.calculatePathForTreeItem(_tree.getSelectedItem());
+            calculatePathForTreeItem(_tree.getSelectedItem());
 
         new UploadFileDialog(_app, absolutePath, name).center();
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param treeItem
+     * @return
+     */
+    public String calculatePathForTreeItem(final TreeItem treeItem) {
+
+        String path = "/";
+
+        if (null!=treeItem.getParentItem()) {
+            path = calculatePathForTreeItem(treeItem.getParentItem()) + treeItem.getText()+"/";
+        }
+
+        return path;
     }
 }
