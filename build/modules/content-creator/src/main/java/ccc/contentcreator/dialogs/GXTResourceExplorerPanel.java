@@ -15,11 +15,11 @@ package ccc.contentcreator.dialogs;
 import java.util.ArrayList;
 import java.util.List;
 
+import ccc.contentcreator.api.Application;
+import ccc.contentcreator.api.ResourceServiceAsync;
+import ccc.contentcreator.api.Root;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.callbacks.OneItemListCallback;
-import ccc.contentcreator.controls.Application;
-import ccc.contentcreator.controls.ResourceServiceAsync;
-import ccc.contentcreator.controls.Root;
 import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.ResourceDTO;
 

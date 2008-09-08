@@ -11,10 +11,10 @@
  */
 package ccc.contentcreator.widgets;
 
-import ccc.contentcreator.controls.Application;
-import ccc.contentcreator.controls.CompositeControl;
-import ccc.contentcreator.controls.Control;
-import ccc.contentcreator.controls.GridControl;
+import ccc.contentcreator.api.Application;
+import ccc.contentcreator.api.CompositeControl;
+import ccc.contentcreator.api.Control;
+import ccc.contentcreator.api.GridControl;
 
 
 /**

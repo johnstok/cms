@@ -13,9 +13,9 @@ package ccc.contentcreator.commands;
 
 import java.util.List;
 
-import ccc.contentcreator.controls.Application;
-import ccc.contentcreator.controls.Constants;
-import ccc.contentcreator.controls.ResourceServiceAsync;
+import ccc.contentcreator.api.Application;
+import ccc.contentcreator.api.Constants;
+import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.dialogs.UpdateOptionsDialog;
 import ccc.contentcreator.dto.DTO;
 import ccc.contentcreator.dto.OptionDTO;

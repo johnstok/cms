@@ -21,7 +21,7 @@
 	<source path="dialogs" />
 	<source path="client" />
 	<source path="widgets" />
-	<source path="controls" />
+	<source path="api" />
 	<source path="callbacks" />
 
 	<!-- RPC servlet bindings. -->

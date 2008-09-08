@@ -9,7 +9,8 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.controls;
+package ccc.contentcreator.api;
+
 
 
 /**
@@ -17,6 +18,6 @@ package ccc.contentcreator.controls;
  *
  * @author Civic Computing Ltd.
  */
-public enum Root {
-    CONTENT, ASSETS;
+public interface CompositeControl extends Control {
+    Object rootWidget();
 }

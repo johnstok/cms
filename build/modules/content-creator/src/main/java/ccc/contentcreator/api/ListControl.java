@@ -9,11 +9,10 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.controls;
+package ccc.contentcreator.api;
 
 
-import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
-import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConstant;
+import com.google.gwt.user.client.ui.ChangeListener;
 
 
 /**
@@ -21,28 +20,22 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConst
  *
  * @author Civic Computing Ltd.
  */
-public interface PanelControl extends Control {
+public interface ListControl extends Control {
 
     /**
      * TODO: Add a description of this method.
      *
-     * @param alignBottom
+     * @param string
+     * @param string2
      */
-    void setVerticalAlignment(VerticalAlignmentConstant alignBottom);
+    void addItem(String string, String string2);
 
     /**
      * TODO: Add a description of this method.
      *
-     * @param alignRight
+     * @return
      */
-    void setHorizontalAlignment(HorizontalAlignmentConstant alignRight);
-
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param frame
-     */
-    void add(Control frame);
+    int getItemCount();
 
     /**
      * TODO: Add a description of this method.
@@ -50,25 +43,20 @@ public interface PanelControl extends Control {
      * @param i
      * @return
      */
-    Control child(int i);
+    Object getValue(int i);
 
     /**
      * TODO: Add a description of this method.
      *
+     * @param i
      */
-    void clear();
+    void setSelectedIndex(int i);
 
     /**
      * TODO: Add a description of this method.
      *
-     * @param string
+     * @param changeListener
      */
-    void setStyleName(String string);
-
-    /**
-     * TODO: Add a description of this method.
-     *
-     */
-    void submit();
+    void addChangeListener(ChangeListener changeListener);
 
 }

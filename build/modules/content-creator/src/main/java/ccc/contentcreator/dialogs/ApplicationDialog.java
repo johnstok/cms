@@ -11,7 +11,7 @@
  */
 package ccc.contentcreator.dialogs;
 
-import ccc.contentcreator.controls.PanelControl;
+import ccc.contentcreator.api.PanelControl;
 
 
 /**

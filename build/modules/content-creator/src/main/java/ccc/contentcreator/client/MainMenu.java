@@ -13,8 +13,8 @@ package ccc.contentcreator.client;
 
 import java.util.List;
 
-import ccc.contentcreator.controls.Application;
-import ccc.contentcreator.controls.ResourceServiceAsync;
+import ccc.contentcreator.api.Application;
+import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.dialogs.CreateContentTemplateDialog;
 import ccc.contentcreator.dialogs.UpdateOptionsDialog;
 import ccc.contentcreator.dto.DTO;

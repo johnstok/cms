@@ -11,12 +11,12 @@
  */
 package ccc.contentcreator.dialogs;
 
+import ccc.contentcreator.api.Application;
+import ccc.contentcreator.api.Constants;
+import ccc.contentcreator.api.FileControl;
+import ccc.contentcreator.api.PanelControl;
+import ccc.contentcreator.api.StringControl;
 import ccc.contentcreator.callbacks.DisposingClickListener;
-import ccc.contentcreator.controls.Application;
-import ccc.contentcreator.controls.Constants;
-import ccc.contentcreator.controls.FileControl;
-import ccc.contentcreator.controls.PanelControl;
-import ccc.contentcreator.controls.StringControl;
 import ccc.contentcreator.widgets.ButtonBar;
 import ccc.contentcreator.widgets.TwoColumnForm;
 

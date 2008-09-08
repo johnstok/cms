@@ -9,7 +9,7 @@
  * Changes: see SubVersion log
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.controls;
+package ccc.contentcreator.api;
 
 import java.util.List;
 import java.util.Map;
