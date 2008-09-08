@@ -152,6 +152,13 @@
                         <format>html</format>
                         <format>xml</format>
                     </formats>
+                    <instrumentation>
+                        <excludes>
+                            <exclude>
+                                ccc/contentcreator/client/**/*.class
+                            </exclude>
+                        </excludes>
+                    </instrumentation>
                 </configuration>
             </plugin>
         </plugins>
