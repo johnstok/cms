@@ -22,7 +22,7 @@ import com.thoughtworks.selenium.Selenium;
  *
  * @author Civic Computing Ltd
  */
-public final class ContentEditSeleniumTest extends TestCase {
+public final class ContentEditAcceptanceTest extends TestCase {
 
     private Selenium selenium;
     private final int port = 5555;
