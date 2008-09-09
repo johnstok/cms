@@ -49,7 +49,7 @@ public abstract class ContentManagerAdaptor implements ContentManager {
      * {@inheritDoc}
      */
     @Override
-    public void create(final UUID folderId, final Folder newFolder) {
+    public Folder create(final UUID folderId, final Folder newFolder) {
 
         throw new UnsupportedOperationException("Method not implemented.");
     }

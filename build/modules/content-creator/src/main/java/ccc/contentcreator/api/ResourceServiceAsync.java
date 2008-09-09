@@ -85,8 +85,9 @@ public interface ResourceServiceAsync {
     /**
      * @see ResourceService#createFolder(FolderDTO, String)
      */
-    void createFolder(FolderDTO parent, String name,
-                      AsyncCallback<Void> callback);
+    void createFolder(FolderDTO parent,
+                      String name,
+                      AsyncCallback<FolderDTO> callback);
 
     /**
      * @see ResourceService#getAbsolutePath(ResourceDTO)

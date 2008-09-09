@@ -33,18 +33,18 @@ import com.extjs.gxt.ui.client.data.BaseTreeLoader;
 import com.extjs.gxt.ui.client.data.ModelStringProvider;
 import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.data.TreeLoader;
+import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.event.TreeEvent;
-import com.extjs.gxt.ui.client.event.WindowEvent;
-import com.extjs.gxt.ui.client.event.WindowListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.store.TreeStore;
 import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
+import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.layout.AccordionLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
@@ -59,7 +59,6 @@ import com.extjs.gxt.ui.client.widget.table.TableColumnModel;
 import com.extjs.gxt.ui.client.widget.table.TableItem;
 import com.extjs.gxt.ui.client.widget.tree.Tree;
 import com.extjs.gxt.ui.client.widget.tree.TreeItem;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
@@ -265,6 +264,7 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
         final TreeStore<FolderDTO> store = new TreeStore<FolderDTO>(loader);
 
         final Tree tree = new Tree();
+        tree.setSelectionMode(SelectionMode.SINGLE);
 
         final TreeBinder<FolderDTO> binder =
             new TreeBinder<FolderDTO>(tree, store) {
@@ -274,6 +274,7 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
                 item.setId(model.getName());
             }
         };
+        binder.setCaching(false);
 
         binder.setIconProvider(new ModelStringProvider<FolderDTO>() {
             public String getStringValue(final FolderDTO model,
@@ -283,9 +284,9 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
         });
         loader.load(null);
 
-        tree.setSelectionMode(SelectionMode.SINGLE);
 
         final Menu contextMenu = new Menu();
+        contextMenu.setId("navigator-menu");
 
         final MenuItem uploadFile = new MenuItem();
         uploadFile.setText(_app.constants().uploadFile());
@@ -305,17 +306,18 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
         contextMenu.add(uploadFile);
 
         final MenuItem createFolder = new MenuItem();
+        createFolder.setId("create-folder");
         createFolder.setText(_app.constants().createFolder());
         createFolder.addSelectionListener(new SelectionListener<MenuEvent>() {
 
-            @Override public void componentSelected(final MenuEvent ce) {
+            @Override public void componentSelected(final MenuEvent me) {
 
                 final FolderDTO item = (FolderDTO) tree.getSelectionModel()
                                                        .getSelectedItem()
                                                        .getModel();
 
                 final Dialog complex = new Dialog();
-                complex.setButtons(Dialog.OKCANCEL);
+                complex.setId("create-folder-dialog");
                 complex.setAutoHeight(true);
                 complex.setWidth(400);
                 complex.setHeading("Create folder");
@@ -323,33 +325,33 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
                 complex.setLayout(new FormLayout());
 
                 final TextField<String> text = new TextField<String>();
+                text.setId("folder-name");
                 text.setFieldLabel("Name");
                 text.setEmptyText("The folder name");
                 text.setAllowBlank(false);
                 complex.add(text);
 
-                complex.addWindowListener(
-                    new WindowListener(){
-                        /** {@inheritDoc} */
-                        @Override public void windowHide(final WindowEvent we) {
-                            final String action =
-                                complex.getButtonPressed().getText();
-                            GWT.log(
-                                "Button: "+complex.getButtonPressed().getText(),
-                                null);
-                            if ("Ok".equals(action)) {
+                complex.setButtons(Dialog.CANCEL);
+                final Button ok =
+                    new Button(
+                        "Ok",
+                        new SelectionListener<ComponentEvent>() {
+                            @Override
+                            public void componentSelected(ComponentEvent ce) {
                                 rsa.createFolder(
                                     item,
                                     text.getValue(),
-                                    new ErrorReportingCallback<Void>(_app){
-                                    public void onSuccess(final Void result) {
-                                        // TODO: refresh the folder...
-                                    }
+                                    new ErrorReportingCallback<FolderDTO>(_app){
+                                        public void onSuccess(final FolderDTO result) {
+                                            tree.fireEvent(Events.SelectionChange);
+                                            store.add((FolderDTO) tree.getSelectedItem().getModel(), result, false);
+                                        }
                                     }
                                 );
                             }
-                        }
-                    });
+                        });
+                ok.setId("create-folder-ok");
+                complex.getButtonBar().add(ok);
 
                 complex.show();
 
