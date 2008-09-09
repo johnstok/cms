@@ -21,6 +21,7 @@ import java.util.UUID;
 import junit.framework.TestCase;
 
 import org.easymock.Capture;
+import org.easymock.IAnswer;
 
 import ccc.commons.MapRegistry;
 import ccc.contentcreator.api.ResourceService;
@@ -30,8 +31,6 @@ import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.OptionDTO;
 import ccc.contentcreator.dto.ResourceDTO;
 import ccc.contentcreator.dto.TemplateDTO;
-import ccc.contentcreator.remoting.DTOs;
-import ccc.contentcreator.remoting.ResourceServiceImpl;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.PredefinedResourceNames;
@@ -85,9 +84,15 @@ public final class ResourceServiceImplTest extends TestCase {
 
         // ARRANGE
         final Folder parent = new Folder(new ResourceName("parent"));
+        final FolderDTO newFolder =
+            new FolderDTO(UUID.randomUUID().toString(), null, "foo", null, 0);
         final Capture<Folder> actual = new Capture<Folder>();
         final ContentManager cm = createStrictMock(ContentManager.class);
-        cm.create(eq(parent.id()), capture(actual));
+        expect(cm.create(eq(parent.id()), capture(actual))).andAnswer(
+            new IAnswer<Folder>(){
+                public Folder answer() throws Throwable {
+                    return actual.getValue();
+                }});
         replay(cm);
 
         final ResourceService rs =
@@ -97,8 +102,7 @@ public final class ResourceServiceImplTest extends TestCase {
             );
 
         // ACT
-        rs.createFolder(
-            new FolderDTO(parent.id().toString(), null, null, null, 0), "foo");
+        rs.createFolder(DTOs.<FolderDTO>dtoFrom(parent), "foo");
 
         // ASSERT
         verify(cm);

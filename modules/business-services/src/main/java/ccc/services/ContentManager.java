@@ -65,7 +65,7 @@ public interface ContentManager {
      * @param folderId The {@link UUID} for the containing folder/
      * @param newFolder The folder to be created.
      */
-    void create(UUID folderId, Folder newFolder);
+    Folder create(UUID folderId, Folder newFolder);
 
     /**
      * Create a page, based on the specified path.

@@ -109,8 +109,9 @@ public interface ResourceService extends RemoteService {
      * @param parent The parent folder within which the new folder should be
      *  created.
      * @param name The name of the new folder.
+     * @return A dto representing the new folder.
      */
-    void createFolder(FolderDTO parent, String name);
+    FolderDTO createFolder(FolderDTO parent, String name);
 
     /**
      * Determine the absolute path to a resource.

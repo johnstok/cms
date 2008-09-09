@@ -95,8 +95,9 @@ public final class ContentManagerEJB implements ContentManager {
      * {@inheritDoc}
      */
     @Override
-    public void create(final UUID folderId, final Folder newFolder) {
+    public Folder create(final UUID folderId, final Folder newFolder) {
         create(folderId, (Resource) newFolder);
+        return newFolder;
     }
 
     /**

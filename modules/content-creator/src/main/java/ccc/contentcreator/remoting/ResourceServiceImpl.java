@@ -214,9 +214,10 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     }
 
     /** {@inheritDoc} */
-    public void createFolder(final FolderDTO parent, final String name) {
-        contentManager().create(UUID.fromString(parent.getId()),
+    public FolderDTO createFolder(final FolderDTO parent, final String name) {
+        final Folder f = contentManager().create(UUID.fromString(parent.getId()),
                                 new Folder(new ResourceName(name)));
+        return DTOs.dtoFrom(f);
     }
 
     /** {@inheritDoc} */
