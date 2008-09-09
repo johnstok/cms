@@ -83,4 +83,11 @@ public interface AssetManager {
      */
     Template createOrRetrieve(Template template);
 
+    /**
+     * Update a template.
+     *
+     * @param t The new version of the template.
+     */
+    void update(Template t);
+
 }

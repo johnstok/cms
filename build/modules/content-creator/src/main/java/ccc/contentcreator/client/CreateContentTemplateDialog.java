@@ -13,10 +13,11 @@
 package ccc.contentcreator.client;
 
 import ccc.contentcreator.api.Application;
-import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.api.DialogMode;
 import ccc.contentcreator.api.PanelControl;
 import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.api.StringControl;
+import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.callbacks.DisposingClickListener;
 import ccc.contentcreator.dto.TemplateDTO;
@@ -42,6 +43,8 @@ public class CreateContentTemplateDialog {
     private final StringControl _description;
     private final StringControl _body;
     private final FeedbackPanel _feedbackPanel;
+    private String _id;
+    private DialogMode _mode;
 
     /**
      * Constructor.
@@ -50,6 +53,7 @@ public class CreateContentTemplateDialog {
      */
     public CreateContentTemplateDialog(final Application app) {
 
+        _mode = DialogMode.CREATE;
         _app = app;
         _constants = _app.constants();
         _delegate = _app.dialog(_constants.createDisplayTemplate());
@@ -63,6 +67,21 @@ public class CreateContentTemplateDialog {
 
         drawGUI();
         _delegate.gui(_gui);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param app
+     * @param item
+     */
+    public CreateContentTemplateDialog(final Application app, final TemplateDTO item) {
+        this(app);
+        _mode = DialogMode.UPDATE;
+        _templateTitle.model(item.getTitle());
+        _description.model(item.getDescription());
+        _body.model(item.getBody());
+        _id = item.getId();
     }
 
     private void drawGUI() {
@@ -88,9 +107,20 @@ public class CreateContentTemplateDialog {
                         public void onClick(final Widget sender) {
                             final TemplateDTO dto = model();
                             if (dto.isValid()) {
-                                _resourceService.createTemplate(
+                                switch (_mode) {
+                                    case CREATE:
+                                    _resourceService.createTemplate(
                                     dto,
                                     new DisposingCallback(_app, _delegate));
+                                    break;
+                                case UPDATE:
+                                    _resourceService.updateTemplate(
+                                        dto,
+                                        new DisposingCallback(_app, _delegate));
+                                    break;
+                                default:
+                                    _app.alert("Error.");
+                                }
                             } else {
                                 _feedbackPanel.displayErrors(dto.validate());
                                 _feedbackPanel.setVisible(true);
@@ -103,7 +133,8 @@ public class CreateContentTemplateDialog {
         return new TemplateDTO(
             _templateTitle.model(),
             _description.model(),
-            _body.model());
+            _body.model(),
+            _id);
     }
 
     /**

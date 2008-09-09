@@ -326,7 +326,8 @@ public final class ResourceServiceImplTest extends TestCase {
         resourceService.createTemplate(
             new TemplateDTO("title",
                             "description",
-                            "body"));
+                            "body",
+                            null));
 
         // ASSERT
         verify(am);

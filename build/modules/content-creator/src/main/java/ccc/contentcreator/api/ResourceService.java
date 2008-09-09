@@ -120,4 +120,11 @@ public interface ResourceService extends RemoteService {
      * @return The absolute path as a string.
      */
     String getAbsolutePath(ResourceDTO resource);
+
+    /**
+     * Update the specified template on the server.
+     *
+     * @param dto The dto representing the updated template.
+     */
+    void updateTemplate(TemplateDTO dto);
 }

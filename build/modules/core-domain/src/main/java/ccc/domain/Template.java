@@ -72,4 +72,22 @@ public class Template extends Resource {
     public String body() {
         return _body;
     }
+
+    /**
+     * Mutator for description.
+     *
+     * @param description The new description.
+     */
+    public void description(final String description) {
+        _description = description;
+    }
+
+    /**
+     * Mutator for body.
+     *
+     * @param body The new body.
+     */
+    public void body(final String body) {
+        _body = body;
+    }
 }
