@@ -54,11 +54,11 @@ public class MigrationAcceptanceTest extends TestCase {
     public void testFolderMigration() {
 
         // ARRANGE
-        ContentManager manager = new JNDI().<ContentManager>get(
+        final ContentManager manager = new JNDI().<ContentManager>get(
         "ContentManagerEJB/remote");
 
         // ACT
-        Resource resource = manager.lookup(new ResourcePath("/Home/"));
+        final Resource resource = manager.lookup(new ResourcePath("/Home"));
 
         // VERIFY
         assertNotNull("Resource /home/ must not be null", resource);
@@ -73,12 +73,12 @@ public class MigrationAcceptanceTest extends TestCase {
     public void testPageMigration() {
 
         // ARRANGE
-        ContentManager manager = new JNDI().<ContentManager>get(
+        final ContentManager manager = new JNDI().<ContentManager>get(
         "ContentManagerEJB/remote");
-        String path = "/Home/ASH_Scotland_Manifesto_2007/";
+        final String path = "/Home/ASH_Scotland_Manifesto_2007";
 
         // ACT
-        Resource resource = manager.lookup(
+        final Resource resource = manager.lookup(
             new ResourcePath(path));
 
         // VERIFY
@@ -95,13 +95,13 @@ public class MigrationAcceptanceTest extends TestCase {
 
         // ARRANGE
         // old ID: 3391
-        String path = "/Information_Service/Key_topics/Smoking_Cessation/"
-            +"A_Smoking_Cessation_Policy_for_Scotland/Introduction/";
-        ContentManager manager = new JNDI().<ContentManager>get(
+        final String path = "/Information_Service/Key_topics/Smoking_Cessation/"
+            +"A_Smoking_Cessation_Policy_for_Scotland/Introduction";
+        final ContentManager manager = new JNDI().<ContentManager>get(
         "ContentManagerEJB/remote");
 
         // ACT
-        Page resource = manager.eagerPageLookup(new ResourcePath(path));
+        final Page resource = manager.eagerPageLookup(new ResourcePath(path));
 
         // VERIFY
         assertNotNull("Resource "+path+" must not be null", resource);
@@ -111,7 +111,7 @@ public class MigrationAcceptanceTest extends TestCase {
         assertEquals("Resource title must be content ",
             resource.title(), "Introduction");
 
-        Map<String, Paragraph> paragraphs = resource.paragraphs();
+        final Map<String, Paragraph> paragraphs = resource.paragraphs();
         assertNotNull("Paragraphs must not be null", paragraphs);
 
         assertNotNull("Paragraph HEADER must not be null",
@@ -128,13 +128,13 @@ public class MigrationAcceptanceTest extends TestCase {
     public void testDisplayNameNullMigration() {
         // ARRANGE
         // old ID: 3391
-        String path = "/Information_Service/Key_topics/Smoking_Cessation/"
-            +"A_Smoking_Cessation_Policy_for_Scotland/Introduction/";
-        ContentManager manager = new JNDI().<ContentManager>get(
+        final String path = "/Information_Service/Key_topics/Smoking_Cessation/"
+            +"A_Smoking_Cessation_Policy_for_Scotland/Introduction";
+        final ContentManager manager = new JNDI().<ContentManager>get(
         "ContentManagerEJB/remote");
 
         // ACT
-        Page resource = manager.eagerPageLookup(new ResourcePath(path));
+        final Page resource = manager.eagerPageLookup(new ResourcePath(path));
 
         // VERIFY
         assertNotNull("Resource "+path+" must not be null", resource);
@@ -153,12 +153,12 @@ public class MigrationAcceptanceTest extends TestCase {
     public void testDisplayNameNotNullMigration() {
         // ARRANGE
         // old ID: 3391
-        String path = "/Quit_Smoking/Quit_smoking/";
-        ContentManager manager = new JNDI().<ContentManager>get(
+        final String path = "/Quit_Smoking/Quit_smoking";
+        final ContentManager manager = new JNDI().<ContentManager>get(
         "ContentManagerEJB/remote");
 
         // ACT
-        Page resource = manager.eagerPageLookup(new ResourcePath(path));
+        final Page resource = manager.eagerPageLookup(new ResourcePath(path));
 
         // VERIFY
         assertNotNull("Resource "+path+" must not be null", resource);
