@@ -14,9 +14,6 @@ package ccc.contentcreator.dto;
 import java.util.Arrays;
 import java.util.List;
 
-import ccc.contentcreator.dto.OptionDTO;
-import ccc.contentcreator.dto.TemplateDTO;
-
 import junit.framework.TestCase;
 
 
@@ -33,8 +30,8 @@ public class OptionDTOTest extends TestCase {
     public void testHasChanged() {
 
         // ARRANGE
-        final TemplateDTO a = new TemplateDTO("a", "a", "a");
-        final TemplateDTO b = new TemplateDTO("b", "b", "b");
+        final TemplateDTO a = new TemplateDTO("a", "a", "a", "a");
+        final TemplateDTO b = new TemplateDTO("b", "b", "b", "b");
 
 
         OptionDTO<TemplateDTO> option;
@@ -76,7 +73,7 @@ public class OptionDTOTest extends TestCase {
     public void testSetCurrentValue() {
 
         // ARRANGE
-        final TemplateDTO expected = new TemplateDTO("", "", "");
+        final TemplateDTO expected = new TemplateDTO("", "", "", "");
         final OptionDTO<TemplateDTO> option =
             new OptionDTO<TemplateDTO>(null, null, OptionDTO.Type.CHOICES);
         assertEquals(false, option.hasChanged());
@@ -95,7 +92,7 @@ public class OptionDTOTest extends TestCase {
     public void testCurrentValueAccessor() {
 
         // ARRANGE
-        final TemplateDTO current = new TemplateDTO("", "", "");
+        final TemplateDTO current = new TemplateDTO("", "", "", "");
         final OptionDTO<TemplateDTO> option =
             new OptionDTO<TemplateDTO>(current, null, OptionDTO.Type.CHOICES);
 
@@ -130,8 +127,8 @@ public class OptionDTOTest extends TestCase {
     public void testChoices() {
 
         // ARRANGE
-        final TemplateDTO a = new TemplateDTO("a", "a", "a");
-        final TemplateDTO b = new TemplateDTO("b", "b", "b");
+        final TemplateDTO a = new TemplateDTO("a", "a", "a", "a");
+        final TemplateDTO b = new TemplateDTO("b", "b", "b", "b");
         final List<TemplateDTO> choices =
             Arrays.asList(new TemplateDTO[]{a, b});
 

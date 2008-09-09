@@ -13,8 +13,6 @@ package ccc.contentcreator.dto;
 
 import java.util.UUID;
 
-import ccc.contentcreator.dto.TemplateDTO;
-
 import junit.framework.TestCase;
 
 
@@ -37,8 +35,7 @@ public class TemplateDTOTest extends TestCase {
         final String id = UUID.randomUUID().toString();
 
         // ACT
-        final TemplateDTO dto = new TemplateDTO(title, description, body);
-        dto.setId(id);
+        final TemplateDTO dto = new TemplateDTO(title, description, body, id);
 
         // ASSERT
         assertEquals(title, dto.getTitle());

@@ -66,10 +66,12 @@ public final class DTOs {
             return null;
         }
 
-        final TemplateDTO dto = new TemplateDTO(template.title(),
-            template.description(),
-            template.body());
-        dto.setId(template.id().toString());
+        final TemplateDTO dto =
+            new TemplateDTO(
+                template.title(),
+                template.description(),
+                template.body(),
+                template.id().toString());
         return dto;
     }
 
@@ -110,6 +112,8 @@ public final class DTOs {
                     paragraphs
                 );
 
+            case TEMPLATE:
+                return (T) dtoFrom(resource.as(Template.class));
             default:
                 return (T) new ResourceDTO(
                     resource.id().toString(),

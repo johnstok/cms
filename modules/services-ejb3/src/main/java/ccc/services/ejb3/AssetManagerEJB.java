@@ -167,4 +167,13 @@ public final class AssetManagerEJB implements AssetManager {
         folder.add(file);
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public void update(final Template t) {
+        final Template current = _entityManager.find(Template.class, t.id());
+        current.title(t.title());
+        current.description(t.description());
+        current.body(t.body());
+    }
+
 }

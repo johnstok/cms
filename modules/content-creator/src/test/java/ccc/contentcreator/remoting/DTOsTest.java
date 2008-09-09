@@ -11,9 +11,10 @@
  */
 package ccc.contentcreator.remoting;
 
+import java.util.UUID;
+
 import junit.framework.TestCase;
 import ccc.contentcreator.dto.TemplateDTO;
-import ccc.contentcreator.remoting.DTOs;
 import ccc.domain.Template;
 
 
@@ -30,10 +31,12 @@ public class DTOsTest extends TestCase {
     public void testFromTemplateDto() {
 
         // ARRANGE
+        final UUID id = UUID.randomUUID();
         final TemplateDTO dto =
             new TemplateDTO("title",
                             "description",
-                            "body");
+                            "body",
+                            id.toString());
 
         // ACT
         final Template actual = DTOs.templateFrom(dto);

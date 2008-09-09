@@ -79,4 +79,13 @@ public class ResourceDTO extends BaseModelData implements DTO {
     public String toString() {
         return getName();
     }
+
+    /**
+     * Accessor for type.
+     *
+     * @return The type as a string.
+     */
+    public Object getType() {
+        return get("type");
+    }
 }

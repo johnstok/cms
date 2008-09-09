@@ -93,4 +93,9 @@ public interface ResourceServiceAsync {
      * @see ResourceService#getAbsolutePath(ResourceDTO)
      */
     void getAbsolutePath(ResourceDTO item, AsyncCallback<String> asyncCallback);
+
+    /**
+     * @see ResourceService#updateTemplate(TemplateDTO);
+     */
+    void updateTemplate(TemplateDTO dto, AsyncCallback<Void> callback);
 }

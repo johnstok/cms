@@ -22,6 +22,7 @@ import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.callbacks.OneItemListCallback;
 import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.ResourceDTO;
+import ccc.contentcreator.dto.TemplateDTO;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
@@ -133,12 +134,13 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
 
         final List<TableColumn> columns = new ArrayList<TableColumn>();
 
-        TableColumn col = new TableColumn("name", "Name", 180);
-        col.setMinWidth(75);
-        col.setMaxWidth(300);
+        TableColumn col = new TableColumn("type", "Type", .1f);
         columns.add(col);
 
-        col = new TableColumn("title", "Title", 75);
+        col = new TableColumn("name", "Name", .45f);
+        columns.add(col);
+
+        col = new TableColumn("title", "Title", .45f);
         columns.add(col);
 
         final TableColumnModel cm = new TableColumnModel(columns);
@@ -188,7 +190,13 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
             @Override public void componentSelected(final MenuEvent ce) {
                     final ResourceDTO item =
                         (ResourceDTO) tbl.getSelectedItem().getModel();
-                    new UpdateContentDialog(item.getId()).center();
+                     if ("TEMPLATE".equals(item.getType())) {
+                         new CreateContentTemplateDialog(_app, (TemplateDTO) item).center();
+                     } else if ("PAGE".equals(item.getType())) {
+                         new UpdateContentDialog(item.getId()).center();
+                     } else {
+                         _app.alert("No editor available for this resource.");
+                     }
                 }
             }
         );

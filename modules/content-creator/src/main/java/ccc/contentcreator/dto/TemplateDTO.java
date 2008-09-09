@@ -17,23 +17,19 @@ import java.util.List;
 
 /**
  * A dto for a CCC template.
- * TODO: should extend {@link ResourceDTO}.
  * TODO: Pull validation methods up to {@link ResourceDTO}?
+ * TODO: Constructor params are in wrong order.
+ * TODO: Should have a proper name field - just copies title.
  *
  * @author Civic Computing Ltd.
  */
-public class TemplateDTO implements DTO {
+public class TemplateDTO extends ResourceDTO {
 
     /** serialVersionUID : long. */
     private static final long serialVersionUID = 7676780306991591780L;
 
-    private String _title = "";
-    private String _description = "";
-    private String _body = "";
-    private String _id = null;
-
     @SuppressWarnings("unused") // Required for GWT
-    private TemplateDTO() { super(); }
+    private TemplateDTO() { super(null, null, null, null); }
 
     /**
      * Constructor.
@@ -41,22 +37,15 @@ public class TemplateDTO implements DTO {
      * @param title The title of the resource.
      * @param body The body of the display template.
      * @param description The description of the template.
+     * @param id The uuid for the template.
      */
     public TemplateDTO(final String title,
                        final String description,
-                       final String body) {
-        _title = title;
-        _description = description;
-        _body = body;
-    }
-
-    /**
-     * Accessor for the title.
-     *
-     * @return The string representation of the title.
-     */
-    public String getTitle() {
-        return _title;
+                       final String body,
+                       final String id) {
+        super(id, "TEMPLATE", title, title);
+        set("description", description);
+        set("body", body);
     }
 
     /**
@@ -65,7 +54,7 @@ public class TemplateDTO implements DTO {
      * @return The description as a string.
      */
     public String getDescription() {
-        return _description;
+        return get("description");
     }
 
     /**
@@ -74,7 +63,7 @@ public class TemplateDTO implements DTO {
      * @return The body as a string.
      */
     public String getBody() {
-        return _body;
+        return get("body");
     }
 
     /**
@@ -93,33 +82,15 @@ public class TemplateDTO implements DTO {
      */
     public List<String> validate() {
         final List<String> errors = new ArrayList<String>();
-        if (null==_title || _title.length()<1) {
+        if (null==getTitle() || getTitle().length()<1) {
             errors.add("Title may not be empty.");
         }
-        if (null==_description || _description.length()<1) {
+        if (null==getDescription() || getDescription().length()<1) {
             errors.add("Description may not be empty.");
         }
-        if (null==_body || _body.length()<1) {
+        if (null==getBody() || getBody().length()<1) {
             errors.add("Body may not be empty.");
         }
         return errors;
-    }
-
-    /**
-     * Accessor for the id property.
-     *
-     * @return The id as a string.
-     */
-    public String getId() {
-        return _id;
-    }
-
-    /**
-     * Mutator for the id property.
-     *
-     * @param id The new id.
-     */
-    public void setId(final String id) {
-        _id = id;
     }
 }

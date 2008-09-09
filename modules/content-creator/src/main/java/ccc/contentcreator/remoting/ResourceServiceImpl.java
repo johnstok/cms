@@ -226,4 +226,10 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
             contentManager().lookup(UUID.fromString(item.getId()));
         return r.absolutePath().toString();
     }
+
+    /** {@inheritDoc} */
+    public void updateTemplate(final TemplateDTO dto) {
+        final Template t = DTOs.templateFrom(dto);
+        assetManager().update(t);
+    }
 }
