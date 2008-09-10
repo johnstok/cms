@@ -13,29 +13,32 @@
 package ccc.commons;
 
 /**
- * TODO: Add Description for this type.
+ * Helper methods for strings.
  *
  * @author Civic Computing Ltd.
  */
-public class Strings {
+public final class Strings {
+
+    private Strings() { super(); }
 
     /**
-     * TODO: Add a description of this method.
+     * NVL implementation.
      *
-     * @param original
-     * @param replacement
-     * @return
+     * @param original The original string.
+     * @param replacement The potential replacement.
+     * @return If original is null return the replacement, otherwise return
+     *     the original.
      */
     public static String nvl(final String original, final String replacement) {
         return (null != original) ? original : replacement;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Remove a trailing character from a string.
      *
-     * @param c
-     * @param foo
-     * @return
+     * @param c The character to remove.
+     * @param foo The string from which to remove.
+     * @return The string minus the char.
      */
     public static String removeTrailing(final char c, final String foo) {
         return
