@@ -268,4 +268,34 @@ public final class Folder extends Resource {
         _entries.remove(resource);
         resource.parent(null);
     }
+
+    /**
+     * Retrieve a list of all the pages in this folder.
+     *
+     * @return A list of pages.
+     */
+    public List<Page> pages() {
+        final List<Page> entries = new ArrayList<Page>();
+        for (final Resource entry : _entries) {
+            if (entry.type()==ResourceType.PAGE) {
+                entries.add(entry.as(Page.class));
+            }
+        }
+        return entries;
+    }
+
+    /**
+     * Retrieve a list of all the folders in this folder.
+     *
+     * @return A list of folders.
+     */
+    public List<Folder> folders() {
+        final List<Folder> entries = new ArrayList<Folder>();
+        for (final Resource entry : _entries) {
+            if (entry.type()==ResourceType.FOLDER) {
+                entries.add(entry.as(Folder.class));
+            }
+        }
+        return entries;
+    }
 }

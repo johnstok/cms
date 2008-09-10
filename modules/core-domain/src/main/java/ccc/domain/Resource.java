@@ -145,10 +145,11 @@ public abstract class Resource extends Entity {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Determine the template for this resource. Iterates up the parent
+     * hierarchy if necessary.
      * TODO: Update the signature to allow a default to be supplied?
      *
-     * @return
+     * @return The template or null if none is found.
      */
     public Template computeTemplate() {
         return
@@ -160,9 +161,9 @@ public abstract class Resource extends Entity {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Determine the absolute path for a resource.
      *
-     * @return
+     * @return The absolute path as a {@link ResourcePath}.
      */
     public ResourcePath absolutePath() {
         return

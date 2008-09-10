@@ -28,6 +28,52 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      */
+    public void testFolders() {
+
+            // ARRANGE
+            final Folder f = new Folder(new ResourceName("f"));
+            final Folder p = new Folder(new ResourceName("p"));
+            final Folder q = new Folder(new ResourceName("q"));
+            final Template r = new Template("r", "desc", "body");
+            f.add(p);
+            f.add(q);
+            f.add(r);
+
+            // ACT
+            final List<Folder> actual = f.folders();
+
+            // ASSERT
+            assertEquals(2, actual.size());
+            assertSame(p, actual.get(0));
+            assertSame(q, actual.get(1));
+    }
+
+    /**
+     * Test.
+     */
+    public void testPages() {
+
+            // ARRANGE
+            final Folder f = new Folder(new ResourceName("f"));
+            final Page p = new Page(new ResourceName("p"));
+            final Page q = new Page(new ResourceName("q"));
+            final Template r = new Template("r", "desc", "body");
+            f.add(p);
+            f.add(q);
+            f.add(r);
+
+            // ACT
+            final List<Page> actual = f.pages();
+
+            // ASSERT
+            assertEquals(2, actual.size());
+            assertSame(p, actual.get(0));
+            assertSame(q, actual.get(1));
+    }
+
+    /**
+     * Test.
+     */
     public void testFirstPage() {
 
         // ARRANGE

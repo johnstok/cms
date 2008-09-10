@@ -137,9 +137,10 @@ public class File extends Resource {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor for mime type.
+     * TODO: Make defensive copy?
      *
-     * @return
+     * @return The mime type.
      */
     public MimeType mimeType() {
         return _mimeType;
