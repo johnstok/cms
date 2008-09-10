@@ -12,7 +12,6 @@
 package ccc.content.server;
 
 import junit.framework.TestCase;
-import ccc.content.server.VelocityProcessor;
 import ccc.domain.Page;
 import ccc.domain.ResourceName;
 

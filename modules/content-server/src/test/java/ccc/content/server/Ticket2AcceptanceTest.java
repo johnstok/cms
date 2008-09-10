@@ -50,9 +50,13 @@ public final class Ticket2AcceptanceTest extends TestCase {
         _selenium.click("assets-navigator");
         _selenium.click("//div[@id='assets']/table/tbody/tr/td[2]/div");
         _selenium.click("//div[@id='templates']/table/tbody/tr/td[6]/span");
-        _selenium.click("//div[@id='ash_display.jsp']/table/tbody/tr/td[1]/div/div");
-        _selenium.click("//div[@id='ash_display_home.jsp']/table/tbody/tr/td[1]/div/div");
-        _selenium.click("//div[@id='ash_display_sectionhome.jsp']/table/tbody/tr/td[1]/div/div");
+        _selenium.click(
+            "//div[@id='ash_display.jsp']/table/tbody/tr/td[1]/div/div");
+        _selenium.click(
+            "//div[@id='ash_display_home.jsp']/table/tbody/tr/td[1]/div/div");
+        _selenium.click(
+            "//div[@id='ash_display_sectionhome.jsp']"
+            + "/table/tbody/tr/td[1]/div/div");
 
     }
 
