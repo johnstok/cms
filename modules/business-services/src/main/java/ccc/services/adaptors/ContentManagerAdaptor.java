@@ -14,6 +14,7 @@ package ccc.services.adaptors;
 import java.util.Map;
 import java.util.UUID;
 
+import ccc.commons.Maybe;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Resource;
@@ -76,7 +77,7 @@ public abstract class ContentManagerAdaptor implements ContentManager {
      * {@inheritDoc}
      */
     @Override
-    public <T extends Resource> T lookup(final ResourcePath path) {
+    public <T extends Resource> Maybe<T> lookup(final ResourcePath path) {
 
         throw new UnsupportedOperationException("Method not implemented.");
     }

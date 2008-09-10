@@ -45,9 +45,10 @@ public final class ErrorServletTest extends TestCase {
         final StringWriter output = new StringWriter();
         final HttpServletRequest request = createMock(HttpServletRequest.class);
         final HttpServletResponse response =
-            createMock(HttpServletResponse.class);
+            createStrictMock(HttpServletResponse.class);
         final RuntimeException re = new RuntimeException();
 
+        response.reset();
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         expect(request.getAttribute(SessionKeys.EXCEPTION_KEY)).andReturn(re);
         expect(response.getWriter()).andReturn(new PrintWriter(output));

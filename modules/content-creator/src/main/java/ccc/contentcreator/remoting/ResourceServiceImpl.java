@@ -72,12 +72,13 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
 
     /**
      * {@inheritDoc}
+     * TODO: Dodgy.
      */
     public FolderDTO getRoot(final Root root) {
         switch (root) {
             case CONTENT:
                 final Resource contentResource =
-                    contentManager().lookup(new ResourcePath(""));
+                    contentManager().lookup(new ResourcePath("")).get();
                 return DTOs.dtoFrom(contentResource);
 
             case ASSETS:

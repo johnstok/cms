@@ -24,6 +24,7 @@ import org.easymock.Capture;
 import org.easymock.IAnswer;
 
 import ccc.commons.MapRegistry;
+import ccc.commons.Maybe;
 import ccc.contentcreator.api.ResourceService;
 import ccc.contentcreator.api.Root;
 import ccc.contentcreator.dto.DTO;
@@ -262,8 +263,8 @@ public final class ResourceServiceImplTest extends TestCase {
                 new ContentManagerAdaptor() {
                     @SuppressWarnings("unchecked")
                     @Override
-                    public Folder lookup(final ResourcePath path) {
-                        return contentRoot;
+                    public Maybe<Folder> lookup(final ResourcePath path) {
+                        return new Maybe<Folder>(contentRoot);
                     }
             }));
 

@@ -19,12 +19,14 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
 import ccc.commons.MapRegistry;
+import ccc.commons.Maybe;
 import ccc.commons.Resources;
 import ccc.domain.Folder;
 import ccc.domain.Page;
@@ -246,8 +248,8 @@ public final class ContentServletTest extends TestCase {
 
                     /** {@inheritDoc} */
                     @Override @SuppressWarnings("unchecked")
-                    public Resource lookup(final ResourcePath path) {
-                        return p;
+                    public Maybe<Resource> lookup(final ResourcePath path) {
+                        return new Maybe<Resource>(p);
                     }
                 }));
 
@@ -297,8 +299,8 @@ public final class ContentServletTest extends TestCase {
                     "ContentManagerEJB/local",
                 new ContentManagerAdaptor() {
                 /** {@inheritDoc} */ @Override @SuppressWarnings("unchecked")
-                public Folder lookup(final ResourcePath path) {
-                    return foo;
+                public Maybe<Folder> lookup(final ResourcePath path) {
+                    return new Maybe<Folder>(foo);
                 }
             }));
 
@@ -325,6 +327,9 @@ public final class ContentServletTest extends TestCase {
                                                             IOException {
 
         // ARRANGE
+        final RequestDispatcher rd = createStrictMock(RequestDispatcher.class);
+        rd.forward(_request, _response);
+
         final Folder foo = new Folder(new ResourceName("foo"));
         final Folder baz = new Folder(new ResourceName("baz"));
         foo.add(baz);
@@ -337,21 +342,21 @@ public final class ContentServletTest extends TestCase {
                     new ContentManagerAdaptor() {
                         /** {@inheritDoc} */
                         @Override @SuppressWarnings("unchecked")
-                        public Resource lookup(final ResourcePath path) {
-                            return foo;
+                        public Maybe<Resource> lookup(final ResourcePath path) {
+                            return new Maybe<Resource>(foo);
                         }
                     }));
 
         // EXPECT
         expect(_request.getPathInfo()).andReturn("/foo");
-        _response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        replay(_request, _response);
+        expect(_request.getRequestDispatcher("/notfound")).andReturn(rd);
+        replay(_request, _response, rd);
 
         // ACT
         contentServlet.doGet(_request, _response);
 
         // VERIFY
-        verify(_request, _response);
+        verify(_request, _response, rd);
         assertEquals("", output.toString());
     }
 

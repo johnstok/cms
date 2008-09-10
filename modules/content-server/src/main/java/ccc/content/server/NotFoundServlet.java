@@ -1,18 +1,17 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2008 Civic Computing Ltd
+ * Copyright (c) 2008 Civic Computing Ltd.
  * All rights reserved.
  *
  * Revision      $Rev$
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log
+ * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
 package ccc.content.server;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,14 +20,14 @@ import javax.servlet.http.HttpServletResponse;
 
 
 /**
- * HTTP Servlet for handling errors encountered when processing another servlet.
+ * HTTP Servlet for handling 404 errors.
  *
- * @author Civic Computing Ltd
+ * @author Civic Computing Ltd.
  */
-public final class ErrorServlet extends HttpServlet {
+public final class NotFoundServlet extends HttpServlet {
 
     /** serialVersionUID : long. */
-    private static final long serialVersionUID = -4347736627221732133L;
+    private static final long serialVersionUID = -947336135238994823L;
 
     /**
      * {@inheritDoc}
@@ -42,10 +41,8 @@ public final class ErrorServlet extends HttpServlet {
         // disable caching
         // set mime type
         // set char encoding
-        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        final Exception e = getException(request);
-        final PrintWriter pw = response.getWriter();
-        e.printStackTrace(pw);
+        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        response.getWriter().write("<H1>Narp</H1>"); //TODO: Change.
     }
 
     /**
