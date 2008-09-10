@@ -47,7 +47,9 @@ public class VelocityProcessor {
      */
     private static final String VELOCITY_CONFIG =
         "resource.loader = classpath\n"
-        + "classpath.resource.loader.class = org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader\n"
+        + "classpath.resource.loader.class = "
+            + "org.apache.velocity.runtime.resource.loader."
+            + "ClasspathResourceLoader\n"
         + "classpath.resource.loader.description = Classpath resource loader\n"
         + "classpath.resource.loader.cache = true\n"
         + "classpath.resource.loader.modificationCheckInterval = -1\n"

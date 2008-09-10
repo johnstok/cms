@@ -120,7 +120,10 @@ public final class ContentServlet extends CCCServlet {
                 if (!folder.hasPages()) {
                     resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 } else {
-                    resp.sendRedirect(folder.name()+"/"+folder.firstPage().name());
+                    resp.sendRedirect(
+                        folder.name()
+                        + "/"
+                        + folder.firstPage().name());
                 }
                 break;
 
