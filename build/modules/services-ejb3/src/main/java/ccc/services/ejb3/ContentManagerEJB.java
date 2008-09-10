@@ -136,9 +136,15 @@ public final class ContentManagerEJB implements ContentManager {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <T extends Resource> T lookup(final ResourcePath path) {
-        return
-            (T) _qm.findContentRoot().get().navigateTo(path);
+    public <T extends Resource> Maybe<T> lookup(final ResourcePath path) {
+        final Folder contentRoot = _qm.findContentRoot().get();
+        try {
+            return
+                new Maybe<T>(
+                (T) contentRoot.navigateTo(path));
+        } catch (final CCCException e) {
+            return new Maybe<T>();
+        }
     }
 
     /**

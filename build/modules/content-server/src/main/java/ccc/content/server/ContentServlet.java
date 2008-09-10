@@ -21,6 +21,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ccc.commons.Maybe;
 import ccc.commons.Registry;
 import ccc.commons.Resources;
 import ccc.domain.CCCException;
@@ -86,27 +87,34 @@ public final class ContentServlet extends CCCServlet {
      * @param request
      * @param response
      * @throws IOException
+     * @throws ServletException
      */
     private void doSafeGet(final HttpServletRequest request,
                            final HttpServletResponse response)
-                    throws IOException {
+                    throws IOException, ServletException {
 
         final String pathString =
             removeTrailing('/',
                 nvl(request.getPathInfo(), "/"));
         final ResourcePath contentPath = new ResourcePath(pathString);
-        final Resource resource = contentManager().lookup(contentPath);
 
-        handleResource(response, resource);
+        final Maybe<Resource> resource = contentManager().lookup(contentPath);
+        if (resource.isDefined()) {
+            handleResource(response, request, resource.get());
+        } else {
+            dispatchNotFound(request, response);
+        }
     }
 
     /**
      * Accepts any type of resource and routes it to the appropriate
      * type-specific write() method.
+     * @throws ServletException
      */
     private void handleResource(final HttpServletResponse resp,
+                                final HttpServletRequest req,
                                 final Resource resource)
-                         throws IOException {
+                         throws IOException, ServletException {
 
         switch (resource.type()) {
 
@@ -118,7 +126,7 @@ public final class ContentServlet extends CCCServlet {
             case FOLDER:
                 final Folder folder = resource.as(Folder.class);
                 if (!folder.hasPages()) {
-                    resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                    dispatchNotFound(req, resp);
                 } else {
                     resp.sendRedirect(
                         folder.name()
@@ -203,10 +211,7 @@ public final class ContentServlet extends CCCServlet {
                     "Error caught on uncommited response"
                     + " - sending error message.",
                     e);
-                request.setAttribute(SessionKeys.EXCEPTION_KEY, e);
-                request
-                    .getRequestDispatcher("/error")
-                    .forward(request, response);
+                dispatchError(request, response, e);
             }
         }
     }
@@ -241,6 +246,8 @@ public final class ContentServlet extends CCCServlet {
      * @return The html rendering as a string.
      */
     public String render(final Resource resource, final String template) {
-        return new VelocityProcessor().render(resource, contentManager().lookupRoot(), template);
+        return new VelocityProcessor().render(resource,
+                                              contentManager().lookupRoot(),
+                                              template);
     }
 }

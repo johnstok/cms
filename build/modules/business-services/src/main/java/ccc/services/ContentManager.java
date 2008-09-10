@@ -15,6 +15,7 @@ package ccc.services;
 import java.util.Map;
 import java.util.UUID;
 
+import ccc.commons.Maybe;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Resource;
@@ -36,7 +37,7 @@ public interface ContentManager {
      * @param <T> The type of the resource to look up.
      * @return The resource.
      */
-    <T extends Resource> T lookup(ResourcePath path);
+    <T extends Resource> Maybe<T> lookup(ResourcePath path);
 
     /**
      * Lookup a resource, given its id.

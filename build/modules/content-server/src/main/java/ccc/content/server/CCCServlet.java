@@ -12,7 +12,11 @@
 
 package ccc.content.server;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ccc.commons.DBC;
@@ -25,6 +29,7 @@ import ccc.services.DataManager;
 
 /**
  * Shared behaviour for CCC servlets.
+ * TODO: Consider adding a UUID to each request?
  *
  * @author Civic Computing Ltd.
  */
@@ -96,6 +101,42 @@ public abstract class CCCServlet extends HttpServlet {
     protected void configureCharacterEncoding(
                                           final HttpServletResponse response) {
         response.setCharacterEncoding("UTF-8");
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
+    protected void dispatchNotFound(final HttpServletRequest request,
+                                    final HttpServletResponse response)
+                                          throws ServletException, IOException {
+        request
+            .getRequestDispatcher("/notfound")
+            .forward(request, response);
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param request
+     * @param response
+     * @param e
+     * @throws ServletException
+     * @throws IOException
+     */
+    protected void dispatchError(final HttpServletRequest request,
+                                 final HttpServletResponse response,
+                                 final RuntimeException e)
+                                          throws ServletException, IOException {
+
+        request.setAttribute(SessionKeys.EXCEPTION_KEY, e);
+        request
+            .getRequestDispatcher("/error")
+            .forward(request, response);
     }
 
 }

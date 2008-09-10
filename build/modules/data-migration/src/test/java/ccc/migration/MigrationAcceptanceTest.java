@@ -58,7 +58,8 @@ public class MigrationAcceptanceTest extends TestCase {
         "ContentManagerEJB/remote");
 
         // ACT
-        final Resource resource = manager.lookup(new ResourcePath("/Home"));
+        final Resource resource =
+            manager.lookup(new ResourcePath("/Home")).get();
 
         // VERIFY
         assertNotNull("Resource /home/ must not be null", resource);
@@ -78,8 +79,8 @@ public class MigrationAcceptanceTest extends TestCase {
         final String path = "/Home/ASH_Scotland_Manifesto_2007";
 
         // ACT
-        final Resource resource = manager.lookup(
-            new ResourcePath(path));
+        final Resource resource =
+            manager.lookup(new ResourcePath(path)).get();
 
         // VERIFY
         assertNotNull("Resource "+path+" must not be null", resource);
