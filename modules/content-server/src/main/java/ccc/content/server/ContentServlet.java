@@ -241,6 +241,6 @@ public final class ContentServlet extends CCCServlet {
      * @return The html rendering as a string.
      */
     public String render(final Resource resource, final String template) {
-        return new VelocityProcessor().render(resource, template);
+        return new VelocityProcessor().render(resource, contentManager().lookupRoot(), template);
     }
 }

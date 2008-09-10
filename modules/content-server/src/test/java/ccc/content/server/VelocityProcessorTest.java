@@ -33,7 +33,7 @@ public class VelocityProcessorTest extends TestCase {
 
         // ACT
         final String actual =
-            vp.render(new Page(new ResourceName("foo")), "#hello()");
+            vp.render(new Page(new ResourceName("foo")), null, "#hello()");
 
 
         // ASSERT
