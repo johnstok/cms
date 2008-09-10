@@ -28,6 +28,8 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * TODO Add Description for this type.
+ * TODO Class name is wrong - does update too.
+ * TODO Properly refresh object cache so GUI reflects changes.
  *
  * @author Civic Computing Ltd
  */

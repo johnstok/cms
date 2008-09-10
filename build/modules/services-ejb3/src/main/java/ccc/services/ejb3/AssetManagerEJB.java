@@ -40,6 +40,8 @@ import ccc.services.QueryManager;
 
 /**
  * EJB3 implementation of {@link AssetManager}.
+ * TODO: Revisit our 'update' methods - because we do manual copy we lose the
+ * benefit of optimistic offline lock.
  *
  * @author Civic Computing Ltd.
  */

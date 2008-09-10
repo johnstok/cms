@@ -61,7 +61,7 @@ public final class ContentServletTest extends TestCase {
         final String template = "Hello $resource.id()";
 
         // ACT
-        final String html = new VelocityProcessor().render(foo, template);
+        final String html = new VelocityProcessor().render(foo, null, template);
 
         // ASSERT
         assertEquals("Hello "+foo.id(), html);
@@ -145,7 +145,14 @@ public final class ContentServletTest extends TestCase {
         replay(_response);
 
         // ACT
-        new ContentServlet().write(_response, page);
+        new ContentServlet(
+            new MapRegistry(
+                "ContentManagerEJB/local",
+                new ContentManagerAdaptor() {
+                    /** {@inheritDoc} */@Override
+                    public Folder lookupRoot() { return null; }
+                })
+            ).write(_response, page);
 
         // ASSERT
         verify(_response);
@@ -182,7 +189,14 @@ public final class ContentServletTest extends TestCase {
         replay(_response);
 
         // ACT
-        new ContentServlet().write(_response, top);
+        new ContentServlet(
+            new MapRegistry(
+                "ContentManagerEJB/local",
+                new ContentManagerAdaptor() {
+                    /** {@inheritDoc} */@Override
+                    public Folder lookupRoot() { return null; }
+                })
+            ).write(_response, top);
 
         // ASSERT
         verify(_response);
@@ -226,6 +240,10 @@ public final class ContentServletTest extends TestCase {
                 new MapRegistry(
                     "ContentManagerEJB/local",
                 new ContentManagerAdaptor() {
+
+                    /** {@inheritDoc} */ @Override
+                    public Folder lookupRoot() { return null; }
+
                     /** {@inheritDoc} */
                     @Override @SuppressWarnings("unchecked")
                     public Resource lookup(final ResourcePath path) {

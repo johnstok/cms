@@ -24,6 +24,7 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeConstants;
 
 import ccc.domain.CCCException;
+import ccc.domain.Folder;
 import ccc.domain.Resource;
 
 
@@ -61,7 +62,7 @@ public class VelocityProcessor {
      * @param template The template used to render the resource.
      * @return The html rendering as a string.
      */
-    public String render(final Resource resource, final String template) {
+    public String render(final Resource resource, final Folder root, final String template) {
 
         final StringWriter renderedOutput = new StringWriter();
 
@@ -83,6 +84,7 @@ public class VelocityProcessor {
             ve.init();
             final VelocityContext context = new VelocityContext();
             context.put("resource", resource);
+            context.put("root", root);
 
             ve.evaluate(context, renderedOutput, "??", template); // What is ??
 
