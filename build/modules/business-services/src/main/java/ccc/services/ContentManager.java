@@ -64,6 +64,7 @@ public interface ContentManager {
      *
      * @param folderId The {@link UUID} for the containing folder/
      * @param newFolder The folder to be created.
+     * @return The newly created folder.
      */
     Folder create(UUID folderId, Folder newFolder);
 
