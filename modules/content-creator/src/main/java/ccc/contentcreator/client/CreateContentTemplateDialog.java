@@ -20,8 +20,11 @@ import ccc.contentcreator.api.StringControl;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.callbacks.DisposingClickListener;
+import ccc.contentcreator.callbacks.ErrorReportingCallback;
+import ccc.contentcreator.dto.ResourceDTO;
 import ccc.contentcreator.dto.TemplateDTO;
 
+import com.extjs.gxt.ui.client.store.ListStore;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -47,6 +50,8 @@ public class CreateContentTemplateDialog {
     private final FeedbackPanel _feedbackPanel;
     private String _id;
     private DialogMode _mode;
+    private ListStore<ResourceDTO> _store;
+    private TemplateDTO _model;
 
     /**
      * Constructor.
@@ -76,14 +81,19 @@ public class CreateContentTemplateDialog {
      *
      * @param app
      * @param item
+     * @param store
      */
-    public CreateContentTemplateDialog(final Application app, final TemplateDTO item) {
+    public CreateContentTemplateDialog(final Application app,
+                                       final TemplateDTO item,
+                                       final ListStore<ResourceDTO> store) {
         this(app);
         _mode = DialogMode.UPDATE;
         _templateTitle.model(item.getTitle());
         _description.model(item.getDescription());
         _body.model(item.getBody());
         _id = item.getId();
+        _store = store;
+        _model = item;
     }
 
     private void drawGUI() {
@@ -118,7 +128,15 @@ public class CreateContentTemplateDialog {
                                 case UPDATE:
                                     _resourceService.updateTemplate(
                                         dto,
-                                        new DisposingCallback(_app, _delegate));
+                                        new ErrorReportingCallback<Void>(_app){
+                                            public void onSuccess(final Void arg0) {
+                                                _model.set("title", dto.getTitle());
+                                                _model.set("name", dto.getName());
+                                                _model.set("description", dto.getDescription());
+                                                _model.set("body", dto.getBody());
+                                                _store.update(_model);
+                                                _delegate.hide();
+                                            }});
                                     break;
                                 default:
                                     _app.alert("Error.");

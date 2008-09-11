@@ -13,7 +13,6 @@ package ccc.contentcreator.client;
 
 import ccc.contentcreator.api.Application;
 import ccc.contentcreator.api.CompositeControl;
-import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.Control;
 import ccc.contentcreator.api.FileControl;
 import ccc.contentcreator.api.GridControl;
@@ -22,6 +21,7 @@ import ccc.contentcreator.api.PanelControl;
 import ccc.contentcreator.api.ResourceService;
 import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.api.StringControl;
+import ccc.contentcreator.api.UIConstants;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
@@ -193,6 +193,7 @@ public class GwtApplication implements Application {
         public GwtButtonControl(final String buttonTitle,
                                 final ClickListener clickListener) {
             super(buttonTitle, clickListener);
+            ensureDebugId(buttonTitle);
         }
     }
 

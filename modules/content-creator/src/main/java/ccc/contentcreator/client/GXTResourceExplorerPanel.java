@@ -168,6 +168,7 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
         contextMenu.setWidth(130);
 
         final MenuItem preview = new MenuItem();
+        preview.setId("preview-resource");
         preview.setText(_app.constants().preview());
         preview.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override public void componentSelected(final MenuEvent ce) {
@@ -185,13 +186,14 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
         contextMenu.add(preview);
 
         final MenuItem update = new MenuItem();
+        update.setId("edit-resource");
         update.setText(_app.constants().edit());
         update.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override public void componentSelected(final MenuEvent ce) {
                     final ResourceDTO item =
                         (ResourceDTO) tbl.getSelectedItem().getModel();
                      if ("TEMPLATE".equals(item.getType())) {
-                         new CreateContentTemplateDialog(_app, (TemplateDTO) item).center();
+                         new CreateContentTemplateDialog(_app, (TemplateDTO) item, _detailsStore).center();
                      } else if ("PAGE".equals(item.getType())) {
                          new UpdateContentDialog(item.getId()).center();
                      } else {

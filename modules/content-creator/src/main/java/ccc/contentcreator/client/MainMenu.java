@@ -49,6 +49,7 @@ public class MainMenu
         _app = app;
 
         final TextToolItem help = new TextToolItem(_app.constants().help());
+        help.setId("help-menu");
         final Menu helpMenu = new Menu();
         help.setMenu(helpMenu);
         final MenuItem openManual = new MenuItem();
@@ -63,9 +64,11 @@ public class MainMenu
         helpMenu.add(openManual);
 
         final TextToolItem assets = new TextToolItem(_app.constants().assets());
+        assets.setId("assets-menu");
         final Menu assetsMenu = new Menu();
         assets.setMenu(assetsMenu);
         final MenuItem createTemplate = new MenuItem();
+        createTemplate.setId("create-template-menu-item");
         createTemplate.setText(_app.constants().createDisplayTemplate());
         createTemplate.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override
@@ -76,10 +79,12 @@ public class MainMenu
         assetsMenu.add(createTemplate);
 
         final TextToolItem tools = new TextToolItem(_app.constants().tools());
+        tools.setId("tools-menu");
         final Menu toolsMenu = new Menu();
         tools.setMenu(toolsMenu);
 
         final MenuItem updateOptions = new MenuItem();
+        updateOptions.setId("update-options-menu-item");
         updateOptions.setText(_app.constants().options());
         updateOptions.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override
