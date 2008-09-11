@@ -37,7 +37,7 @@ public final class IO {
      * @param os The {@link OutputStream} to copy to.
      */
     public static void copy(final InputStream is, final OutputStream os) {
-        final int bufferSize = 10*1024; //10K
+        final int bufferSize = 8*1024; //8K
         final byte[] buffer = new byte[bufferSize];
         try {
             while (true) {
