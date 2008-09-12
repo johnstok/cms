@@ -11,6 +11,8 @@
  */
 package ccc.commons;
 
+import java.io.Serializable;
+
 import junit.framework.TestCase;
 
 
@@ -27,8 +29,8 @@ public class MaybeTest extends TestCase {
     public void testGetWhenPresent() {
 
         // ARRANGE
-        final Object o = new Object();
-        final Maybe<Object> m = new Maybe<Object>(o);
+        final Serializable o = new Serializable(){};
+        final Maybe<Serializable> m = new Maybe<Serializable>(o);
 
         // ACT
         final Object actual = m.get();
@@ -43,7 +45,7 @@ public class MaybeTest extends TestCase {
     public void testGetWhenNotPresent() {
 
         // ARRANGE
-        final Maybe<Object> m = new Maybe<Object>();
+        final Maybe<Serializable> m = new Maybe<Serializable>();
 
         // ACT
         try {
@@ -62,7 +64,8 @@ public class MaybeTest extends TestCase {
     public void testIsPresentWhenPresent() {
 
         // ARRANGE
-        final Maybe<Object> m = new Maybe<Object>(new Object());
+        final Maybe<Serializable> m =
+            new Maybe<Serializable>(new Serializable(){});
 
         // ACT
         final boolean isPresent = m.isDefined();
@@ -77,7 +80,7 @@ public class MaybeTest extends TestCase {
     public void testIsPresentWhenNotPresent() {
 
         // ARRANGE
-        final Maybe<Object> m = new Maybe<Object>();
+        final Maybe<Serializable> m = new Maybe<Serializable>();
 
         // ACT
         final boolean isPresent = m.isDefined();
@@ -92,7 +95,8 @@ public class MaybeTest extends TestCase {
     public void testIsPresentWithNullPassedToConstructor() {
 
         // ARRANGE
-        final Maybe<Object> m = new Maybe<Object>(null);
+        final Maybe<Serializable> m =
+            new Maybe<Serializable>(null);
 
         // ACT
         final boolean isPresent = m.isDefined();

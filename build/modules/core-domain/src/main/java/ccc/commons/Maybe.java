@@ -11,6 +11,8 @@
  */
 package ccc.commons;
 
+import java.io.Serializable;
+
 
 /**
  * This class is a trivial, incomplete expression of the 'Maybe' monad found
@@ -29,7 +31,7 @@ package ccc.commons;
  *
  * @author Civic Computing Ltd.
  */
-public class Maybe<T> {
+public class Maybe<T extends Serializable> {
 
     private final T _value;
 
