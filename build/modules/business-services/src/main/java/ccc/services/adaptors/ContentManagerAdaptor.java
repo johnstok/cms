@@ -111,4 +111,14 @@ public abstract class ContentManagerAdaptor implements ContentManager {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateTemplateForResource(final UUID resourceId,
+                                          final Template template) {
+
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
 }
