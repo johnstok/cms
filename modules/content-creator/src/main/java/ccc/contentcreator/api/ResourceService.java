@@ -127,4 +127,23 @@ public interface ResourceService extends RemoteService {
      * @param dto The dto representing the updated template.
      */
     void updateTemplate(TemplateDTO dto);
+
+    /**
+     * List the available template options for given resource.
+     *
+     * @param resource The resource to list templates for.
+     * @return A list of available options.
+     */
+    List<OptionDTO<? extends DTO>> listTemplateOptionsForResource(
+        ResourceDTO resource);
+
+    /**
+     * Update the specified resource's template on the server.
+     *
+     * @param options The options.
+     * @param resource The resource representing the updated resource.
+     */
+    void updateResourceTemplate(List<OptionDTO<? extends DTO>> options,
+                                ResourceDTO resource);
+
 }

@@ -11,8 +11,14 @@
  */
 package ccc.contentcreator.remoting;
 
-import static java.util.Arrays.*;
-import static org.easymock.EasyMock.*;
+import static java.util.Arrays.asList;
+import static org.easymock.EasyMock.capture;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -335,5 +341,45 @@ public final class ResourceServiceImplTest extends TestCase {
         assertEquals("title", actual.getValue().title());
         assertEquals("description", actual.getValue().description());
         assertEquals("body", actual.getValue().body());
+    }
+
+    /**
+     * Test.
+     */
+    public void testSetTemplateForResource() {
+
+        // ARRANGE
+        final Folder testFolder = new Folder(new ResourceName("testFolder"));
+
+        final List<OptionDTO<? extends DTO>> options =
+            new ArrayList<OptionDTO<? extends DTO>>();
+        final Template t = new Template("foo", "bar", "baz");
+        final OptionDTO<TemplateDTO> templateDTO =
+            new OptionDTO<TemplateDTO>(null,
+                                       new ArrayList<TemplateDTO>(),
+                                       OptionDTO.Type.CHOICES);
+        templateDTO.setCurrentValue(DTOs.dtoFrom(t));
+        options.add(templateDTO);
+
+        final ContentManager cm = createMock(ContentManager.class);
+        cm.updateTemplateForResource(testFolder.id(), t);
+
+        final AssetManager am = createMock(AssetManager.class);
+        expect(am.lookup(t.id())).andReturn(t);
+
+        replay(cm, am);
+
+        final ResourceService rsi =
+            new ResourceServiceImpl(
+                new MapRegistry()
+                    .put("ContentManagerEJB/local", cm)
+                    .put("AssetManagerEJB/local", am)
+            );
+
+        // ACT
+        rsi.updateResourceTemplate(options, DTOs.dtoFrom(testFolder));
+
+        // ASSERT
+        verify(cm, am);
     }
 }

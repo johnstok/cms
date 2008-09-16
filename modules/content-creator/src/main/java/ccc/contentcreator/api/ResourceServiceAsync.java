@@ -98,4 +98,17 @@ public interface ResourceServiceAsync {
      * @see ResourceService#updateTemplate(TemplateDTO);
      */
     void updateTemplate(TemplateDTO dto, AsyncCallback<Void> callback);
+
+    /**
+     * @see ResourceService#listTemplateOptionsForResource(ResourceDTO)
+     */
+    void listTemplateOptionsForResource(ResourceDTO item,
+                                        AsyncCallback<List<OptionDTO<? extends DTO>>> callback);
+
+    /**
+     * @see ResourceService#updateResourceTemplate(List, ResourceDTO)
+     */
+    void updateResourceTemplate(List<OptionDTO<? extends DTO>> options,
+                                ResourceDTO resource,
+                                AsyncCallback<Void> callback);
 }

@@ -217,4 +217,21 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Create folder")
     String createFolder();
+
+    /**
+     * "Choose template".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Choose template")
+    String chooseTemplate();
+
+    /**
+     * "Template".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Template")
+    String template();
+
 }

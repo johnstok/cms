@@ -12,7 +12,7 @@
 
 package ccc.contentcreator.remoting;
 
-import static ccc.contentcreator.remoting.DTOs.*;
+import static ccc.contentcreator.remoting.DTOs.dtoFrom;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -232,5 +232,44 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     public void updateTemplate(final TemplateDTO dto) {
         final Template t = DTOs.templateFrom(dto);
         assetManager().update(t);
+    }
+
+    /** {@inheritDoc} */
+    public List<OptionDTO<? extends DTO>>
+        listTemplateOptionsForResource(final ResourceDTO resourceDTO) {
+        final List<OptionDTO<? extends DTO>> options =
+            new ArrayList<OptionDTO<? extends DTO>>();
+
+        final Resource r =
+            contentManager().lookup(UUID.fromString(resourceDTO.getId()));
+
+        final Template selectedTemplate = r.displayTemplateName();
+
+        final OptionDTO<TemplateDTO> templates =
+            new OptionDTO<TemplateDTO>(dtoFrom(selectedTemplate),
+                                       listTemplates(),
+                                       OptionDTO.Type.CHOICES);
+        options.add(templates);
+
+        return options;
+    }
+
+    /** {@inheritDoc} */
+    public void updateResourceTemplate(final List<OptionDTO<? extends DTO>> options,
+                                       final ResourceDTO resourceDTO) {
+        final OptionDTO<TemplateDTO> option =
+            options.get(0).makeTypeSafe();
+
+        if (option.hasChanged()) {
+            TemplateDTO templateDTO = option.getCurrentValue();
+            if (null==templateDTO) {
+                contentManager().setDefaultTemplate(null);
+            } else {
+                final Template selectedTemplate =
+                    assetManager().lookup(UUID.fromString(templateDTO.getId()));
+                contentManager().updateTemplateForResource(
+                    UUID.fromString(resourceDTO.getId()), selectedTemplate);
+            }
+        }
     }
 }

@@ -103,4 +103,12 @@ public interface ContentManager {
      * @return The resource.
      */
     Page eagerPageLookup(ResourcePath path);
+
+    /**
+     * Updates resource with given template.
+     *
+     * @param resourceId UUID for the resource.
+     * @param template The template to set for the resource.
+     */
+    void updateTemplateForResource(UUID resourceId, Template template);
 }

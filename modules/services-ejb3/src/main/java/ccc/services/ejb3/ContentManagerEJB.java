@@ -12,8 +12,8 @@
 
 package ccc.services.ejb3;
 
-import static javax.ejb.TransactionAttributeType.*;
-import static javax.persistence.PersistenceContextType.*;
+import static javax.ejb.TransactionAttributeType.REQUIRED;
+import static javax.persistence.PersistenceContextType.EXTENDED;
 
 import java.util.Map;
 import java.util.UUID;
@@ -221,5 +221,16 @@ public final class ContentManagerEJB implements ContentManager {
     @Override
     public void setDefaultTemplate(final Template newDefault) {
         lookupRoot().displayTemplateName(newDefault);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateTemplateForResource(final UUID resourceId,
+                                          final Template template) {
+        Resource r = lookup(resourceId);
+        r.displayTemplateName(template);
+        _em.persist(r);
     }
 }

@@ -20,7 +20,9 @@ import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.api.Root;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.callbacks.OneItemListCallback;
+import ccc.contentcreator.dto.DTO;
 import ccc.contentcreator.dto.FolderDTO;
+import ccc.contentcreator.dto.OptionDTO;
 import ccc.contentcreator.dto.ResourceDTO;
 import ccc.contentcreator.dto.TemplateDTO;
 
@@ -60,6 +62,7 @@ import com.extjs.gxt.ui.client.widget.table.TableColumnModel;
 import com.extjs.gxt.ui.client.widget.table.TableItem;
 import com.extjs.gxt.ui.client.widget.tree.Tree;
 import com.extjs.gxt.ui.client.widget.tree.TreeItem;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
@@ -203,6 +206,40 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
             }
         );
         contextMenu.add(update);
+
+        final MenuItem chooseTemplate = new MenuItem();
+        chooseTemplate.setId("chooseTemplate-resource");
+        chooseTemplate.setText(_app.constants().chooseTemplate());
+        chooseTemplate.addSelectionListener(new SelectionListener<MenuEvent>() {
+            @Override
+            public void componentSelected(MenuEvent ce) {
+                final ResourceServiceAsync resourceService =
+                    _app.lookupService();
+
+                final ResourceDTO item =
+                    (ResourceDTO) tbl.getSelectedItem().getModel();
+
+                if ("PAGE".equals(item.getType()) ||
+                        "FOLDER".equals(item.getType())) {
+                    resourceService.listTemplateOptionsForResource(item,
+                        new AsyncCallback<List<OptionDTO<? extends DTO>>>(){
+
+                            public void onFailure(final Throwable arg0) {
+                                Window.alert(_app.constants().error());
+                            }
+
+                            public void onSuccess(
+                                       final List<OptionDTO<? extends DTO>> options) {
+                                new ChooseTemplateDialog(_app, options, item).center();
+                            }});
+
+                } else {
+                    _app.alert("Template cannot be chosen for this resource.");
+                }
+            }
+        }
+        );
+        contextMenu.add(chooseTemplate);
 
         tbl.setContextMenu(contextMenu);
 
