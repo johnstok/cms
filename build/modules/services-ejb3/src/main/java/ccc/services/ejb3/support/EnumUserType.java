@@ -24,7 +24,7 @@ import org.hibernate.usertype.UserType;
 
 
 /**
- * TODO Add Description for this type.
+ * A hibernate user type that can persist a Java 5 enum.
  *
  * @param <T> The type of the enum to persist.
  *
@@ -34,6 +34,15 @@ public class EnumUserType<T extends Enum<T>> implements UserType,
                                                         ParameterizedType {
 
     private Class<T> _enumClass;
+
+    /**
+     * Constructor.
+     *
+     * @param enumClass The enum this user type represents.
+     */
+    EnumUserType(final Class<T> enumClass) {
+        _enumClass = enumClass;
+    }
 
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
