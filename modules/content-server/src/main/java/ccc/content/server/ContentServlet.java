@@ -82,6 +82,7 @@ public final class ContentServlet extends CCCServlet {
      * TODO: How do we handle '/'? - return content root with folder template
      * TODO: Disable the default servlet.
      * TODO: Should be final but need to wait for resource injection...
+     * TODO: Add tests that NULL and '/' pathInfo is handled correctly.
      *
      *
      * @param request
@@ -128,10 +129,11 @@ public final class ContentServlet extends CCCServlet {
                 if (!folder.hasPages()) {
                     dispatchNotFound(req, resp);
                 } else {
-                    resp.sendRedirect(
-                        folder.name()
-                        + "/"
-                        + folder.firstPage().name());
+                    String currentURI = req.getRequestURI();
+                    if (!currentURI.endsWith("/")) {
+                        currentURI = currentURI+"/";
+                    }
+                    resp.sendRedirect(currentURI + folder.firstPage().name());
                 }
                 break;
 
