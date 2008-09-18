@@ -305,8 +305,51 @@ public final class ContentServletTest extends TestCase {
             }));
 
         // EXPECT
-        _response.sendRedirect("foo/bar");
+        _response.sendRedirect("/content/foo/bar");
         expect(_request.getPathInfo()).andReturn("/foo");
+        expect(_request.getRequestURI()).andReturn("/content/foo");
+        replay(_request, _response);
+
+        // ACT
+        contentServlet.doGet(_request, _response);
+
+        // VERIFY
+        verify(_request, _response);
+        assertEquals("", output.toString());
+    }
+
+    /**
+     * Test.
+     *
+     * @throws IOException If there is an error writing to the _response.
+     * @throws ServletException If execution of the servlet fails.
+     */
+    public void testDoGetHandlesFolderWithPagesTrailingSlash()
+        throws ServletException, IOException {
+
+        // ARRANGE
+        final Folder foo = new Folder(new ResourceName("foo"));
+        final Folder baz = new Folder(new ResourceName("baz"));
+        final Page bar = new Page(new ResourceName("bar"));
+        foo.add(baz);
+        foo.add(bar);
+
+        final StringWriter output = new StringWriter();
+        final ContentServlet contentServlet =
+            new ContentServlet(
+                new MapRegistry(
+                    "ContentManagerEJB/local",
+                    new ContentManagerAdaptor() {
+                        /** {@inheritDoc} */ @Override @SuppressWarnings("unchecked")
+                        public Maybe<Folder> lookup(final ResourcePath path) {
+                            return new Maybe<Folder>(foo);
+                        }
+                    }));
+
+        // EXPECT
+        _response.sendRedirect("/content/foo/bar");
+        expect(_request.getPathInfo()).andReturn("/foo/");
+        expect(_request.getRequestURI()).andReturn("/content/foo/");
         replay(_request, _response);
 
         // ACT
@@ -402,8 +445,8 @@ public final class ContentServletTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        _response = createMock(HttpServletResponse.class);
-        _request = createMock(HttpServletRequest.class);
+        _response = createStrictMock(HttpServletResponse.class);
+        _request = createStrictMock(HttpServletRequest.class);
     }
 
     /**
