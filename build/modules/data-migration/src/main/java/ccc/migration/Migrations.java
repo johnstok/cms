@@ -25,8 +25,8 @@ import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
-import ccc.services.AssetManager;
-import ccc.services.ContentManager;
+import ccc.services.AssetManagerRemote;
+import ccc.services.ContentManagerRemote;
 
 /**
  * Data migration from CCC6 to CCC7.
@@ -212,8 +212,8 @@ public class Migrations {
      *
      * @return A {@link ContentManager}.
      */
-    ContentManager contentManager() {
-        return _registry.get("ContentManagerEJB/remote");
+    ContentManagerRemote contentManager() {
+        return _registry.get("ContentManager/remote");
     }
 
     /**
@@ -221,7 +221,7 @@ public class Migrations {
      *
      * @return An {@link AssetManager}.
      */
-    AssetManager assetManager() {
-        return _registry.get("AssetManagerEJB/remote");
+    AssetManagerRemote assetManager() {
+        return _registry.get("AssetManager/remote");
     }
 }

@@ -32,7 +32,7 @@ import ccc.commons.DBC;
 import ccc.commons.IO;
 import ccc.domain.CCCException;
 import ccc.domain.Data;
-import ccc.services.DataManager;
+import ccc.services.DataManagerLocal;
 
 
 /**
@@ -43,10 +43,10 @@ import ccc.services.DataManager;
  *
  * @author Civic Computing Ltd.
  */
-@Stateless
+@Stateless(name="DataManager")
 @TransactionAttribute(REQUIRED)
-@Local(DataManager.class)
-public class DataManagerEJB implements DataManager {
+@Local(DataManagerLocal.class)
+public class DataManagerEJB implements DataManagerLocal {
 
     @Resource(mappedName = "java:/ccc")
     private DataSource _datasource;
@@ -55,10 +55,7 @@ public class DataManagerEJB implements DataManager {
      * Constructor.
      */
     @SuppressWarnings("unused")
-    private DataManagerEJB() {
-
-        super();
-    }
+    private DataManagerEJB() { super(); }
 
     /**
      * Constructor.

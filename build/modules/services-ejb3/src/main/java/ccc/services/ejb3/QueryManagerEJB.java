@@ -17,7 +17,6 @@ import static javax.persistence.PersistenceContextType.*;
 import java.util.UUID;
 
 import javax.ejb.Local;
-import javax.ejb.Remote;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
@@ -31,7 +30,7 @@ import ccc.domain.Folder;
 import ccc.domain.ResourceName;
 import ccc.domain.Setting;
 import ccc.domain.Setting.Name;
-import ccc.services.QueryManager;
+import ccc.services.QueryManagerLocal;
 
 
 /**
@@ -39,11 +38,10 @@ import ccc.services.QueryManager;
  *
  * @author Civic Computing Ltd.
  */
-@Stateful
+@Stateful(name="QueryManager")
 @TransactionAttribute(REQUIRED)
-@Remote(QueryManager.class)
-@Local(QueryManager.class)
-public final class QueryManagerEJB implements QueryManager {
+@Local(QueryManagerLocal.class)
+public final class QueryManagerEJB implements QueryManagerLocal {
 
     @PersistenceContext(
         unitName = "ccc-persistence",

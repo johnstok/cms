@@ -12,12 +12,13 @@
 
 package ccc.services.ejb3;
 
-import static javax.ejb.TransactionAttributeType.REQUIRED;
-import static javax.persistence.PersistenceContextType.EXTENDED;
+import static javax.ejb.TransactionAttributeType.*;
+import static javax.persistence.PersistenceContextType.*;
 
 import java.util.Map;
 import java.util.UUID;
 
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateful;
@@ -36,8 +37,9 @@ import ccc.domain.ResourcePath;
 import ccc.domain.ResourceType;
 import ccc.domain.Setting;
 import ccc.domain.Template;
-import ccc.services.ContentManager;
-import ccc.services.QueryManager;
+import ccc.services.ContentManagerLocal;
+import ccc.services.ContentManagerRemote;
+import ccc.services.QueryManagerLocal;
 
 
 /**
@@ -45,19 +47,22 @@ import ccc.services.QueryManager;
  *
  * @author Civic Computing Ltd
  */
-@Stateful
+@Stateful(name="ContentManager")
 @TransactionAttribute(REQUIRED)
-@Remote(ContentManager.class)
-@Local(ContentManager.class)
-public final class ContentManagerEJB implements ContentManager {
+@Remote(ContentManagerRemote.class)
+@Local(ContentManagerLocal.class)
+public final class ContentManagerEJB
+    implements
+        ContentManagerRemote,
+        ContentManagerLocal {
 
     @PersistenceContext(
         unitName = "ccc-persistence",
         type     = EXTENDED)
     private EntityManager _em;
 
-    @javax.annotation.Resource(mappedName="QueryManagerEJB/local")
-    private QueryManager _qm;
+    @EJB(name="QueryManager", beanInterface=QueryManagerLocal.class)
+    private QueryManagerLocal _qm;
 
     /**
      * Constructor.
@@ -72,7 +77,7 @@ public final class ContentManagerEJB implements ContentManager {
      * @param queryManager A CCC QueryManager.
      */
     ContentManagerEJB(final EntityManager entityManager,
-                             final QueryManager queryManager) {
+                      final QueryManagerLocal queryManager) {
         _em = entityManager;
         _qm = queryManager;
     }
@@ -229,7 +234,7 @@ public final class ContentManagerEJB implements ContentManager {
     @Override
     public void updateTemplateForResource(final UUID resourceId,
                                           final Template template) {
-        Resource r = lookup(resourceId);
+        final Resource r = lookup(resourceId);
         r.displayTemplateName(template);
         _em.persist(r);
     }

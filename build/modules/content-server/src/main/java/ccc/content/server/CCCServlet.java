@@ -22,9 +22,9 @@ import javax.servlet.http.HttpServletResponse;
 import ccc.commons.DBC;
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
-import ccc.services.AssetManager;
-import ccc.services.ContentManager;
-import ccc.services.DataManager;
+import ccc.services.AssetManagerLocal;
+import ccc.services.ContentManagerLocal;
+import ccc.services.DataManagerLocal;
 
 
 /**
@@ -57,8 +57,8 @@ public abstract class CCCServlet extends HttpServlet {
      *
      * @return A ContentManager.
      */
-    protected ContentManager contentManager() {
-        return _registry.get("ContentManagerEJB/local");
+    protected ContentManagerLocal contentManager() {
+        return _registry.get("ContentManager/local");
     }
 
     /**
@@ -66,8 +66,8 @@ public abstract class CCCServlet extends HttpServlet {
      *
      * @return A AssetManager.
      */
-    protected AssetManager assetManager() {
-        return _registry.get("AssetManagerEJB/local");
+    protected AssetManagerLocal assetManager() {
+        return _registry.get("AssetManager/local");
     }
 
     /**
@@ -75,8 +75,8 @@ public abstract class CCCServlet extends HttpServlet {
      *
      * @return A DataManager.
      */
-    protected DataManager dataManager() {
-        return _registry.get("DataManagerEJB/local");
+    protected DataManagerLocal dataManager() {
+        return _registry.get("DataManager/local");
     }
 
     /**

@@ -35,7 +35,7 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.Template;
-import ccc.services.ContentManager;
+import ccc.services.ContentManagerLocal;
 
 /**
  * Tests for the ContentServlet.
@@ -49,7 +49,7 @@ public final class ContentServletTest extends TestCase {
 
     private HttpServletResponse _response;
     private HttpServletRequest  _request;
-    private ContentManager _cm;
+    private ContentManagerLocal _cm;
 
     /**
      * Test.
@@ -152,7 +152,7 @@ public final class ContentServletTest extends TestCase {
         // ACT
         new ContentServlet(
             new MapRegistry(
-                "ContentManagerEJB/local",
+                "ContentManager/local",
                 _cm)
             ).write(_response, page);
 
@@ -196,7 +196,7 @@ public final class ContentServletTest extends TestCase {
         // ACT
         new ContentServlet(
             new MapRegistry(
-                "ContentManagerEJB/local",
+                "ContentManager/local",
                 _cm)
             ).write(_response, top);
 
@@ -234,14 +234,15 @@ public final class ContentServletTest extends TestCase {
                 .addParagraph("Header", new Paragraph("<br/>"));
         p.displayTemplateName(t);
 
-        expect(_cm.lookup(new ResourcePath("/foo"))).andReturn(new Maybe<Resource>(p));
+        expect(_cm.lookup(new ResourcePath("/foo")))
+            .andReturn(new Maybe<Resource>(p));
         expect(_cm.lookupRoot()).andReturn(null);
         replay(_cm);
 
         final ContentServlet contentServlet =
             new ContentServlet(
                 new MapRegistry(
-                    "ContentManagerEJB/local",
+                    "ContentManager/local",
                     _cm));
 
         // EXPECT
@@ -291,7 +292,7 @@ public final class ContentServletTest extends TestCase {
         final ContentServlet contentServlet =
             new ContentServlet(
                 new MapRegistry(
-                    "ContentManagerEJB/local",
+                    "ContentManager/local",
                     _cm));
 
         // EXPECT
@@ -332,7 +333,7 @@ public final class ContentServletTest extends TestCase {
         final ContentServlet contentServlet =
             new ContentServlet(
                 new MapRegistry(
-                    "ContentManagerEJB/local",
+                    "ContentManager/local",
                     _cm));
 
         // EXPECT
@@ -374,7 +375,7 @@ public final class ContentServletTest extends TestCase {
         final ContentServlet contentServlet =
             new ContentServlet(
                 new MapRegistry(
-                    "ContentManagerEJB/local",
+                    "ContentManager/local",
                     _cm
                 ));
 
@@ -435,7 +436,7 @@ public final class ContentServletTest extends TestCase {
         super.setUp();
         _response = createStrictMock(HttpServletResponse.class);
         _request = createStrictMock(HttpServletRequest.class);
-        _cm = createStrictMock(ContentManager.class);
+        _cm = createStrictMock(ContentManagerLocal.class);
     }
 
     /**

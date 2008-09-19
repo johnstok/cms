@@ -36,8 +36,8 @@ import ccc.domain.ResourcePath;
 import ccc.domain.ResourceType;
 import ccc.domain.Setting;
 import ccc.domain.Template;
-import ccc.services.ContentManager;
-import ccc.services.QueryManager;
+import ccc.services.ContentManagerLocal;
+import ccc.services.QueryManagerLocal;
 
 
 /**
@@ -56,7 +56,7 @@ public final class ContentManagerEJBTest extends TestCase {
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
         final Template defaultTemplate = new Template("foo", "bar", "baz");
 
-        final QueryManager qm = createStrictMock(QueryManager.class);
+        final QueryManagerLocal qm = createStrictMock(QueryManagerLocal.class);
         expect(qm.findContentRoot()).andReturn(new Maybe<Folder>(contentRoot));
         replay(qm);
 
@@ -87,7 +87,7 @@ public final class ContentManagerEJBTest extends TestCase {
         contentRoot.add(foo);
         foo.add(bar);
 
-        final QueryManager qm = createStrictMock(QueryManager.class);
+        final QueryManagerLocal qm = createStrictMock(QueryManagerLocal.class);
         expect(qm.findContentRoot()).andReturn(new Maybe<Folder>(contentRoot));
         replay(qm);
 
@@ -125,7 +125,7 @@ public final class ContentManagerEJBTest extends TestCase {
         em.persist(baz);
         replay(em);
 
-        final ContentManager resourceMgr =
+        final ContentManagerLocal resourceMgr =
             new ContentManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
@@ -152,7 +152,7 @@ public final class ContentManagerEJBTest extends TestCase {
     public void testCreateRoot() {
 
         // ARRANGE
-        final QueryManager qm = createStrictMock(QueryManager.class);
+        final QueryManagerLocal qm = createStrictMock(QueryManagerLocal.class);
         expect(qm.findContentRoot()).andReturn(new Maybe<Folder>());
         replay(qm);
 
@@ -164,7 +164,7 @@ public final class ContentManagerEJBTest extends TestCase {
         replay(em);
 
 
-        final ContentManager resourceMgr = new ContentManagerEJB(em, qm);
+        final ContentManagerLocal resourceMgr = new ContentManagerEJB(em, qm);
 
         // ACT
         resourceMgr.createRoot();
@@ -183,14 +183,14 @@ public final class ContentManagerEJBTest extends TestCase {
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
 
-        final QueryManager qm = createStrictMock(QueryManager.class);
+        final QueryManagerLocal qm = createStrictMock(QueryManagerLocal.class);
         expect(qm.findContentRoot()).andReturn(new Maybe<Folder>(contentRoot));
         replay(qm);
 
         final EntityManager em = createMock(EntityManager.class);
         replay(em);
 
-        final ContentManager resourceMgr = new ContentManagerEJB(em, qm);
+        final ContentManagerLocal resourceMgr = new ContentManagerEJB(em, qm);
 
         // ACT
         resourceMgr.createRoot();
@@ -220,7 +220,7 @@ public final class ContentManagerEJBTest extends TestCase {
         em.persist(page2);
         replay(em);
 
-        final ContentManager resourceMgr =
+        final ContentManagerLocal resourceMgr =
             new ContentManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
@@ -262,7 +262,7 @@ public final class ContentManagerEJBTest extends TestCase {
         expect(em.find(Resource.class, foo.id())).andReturn(foo);
         replay(em);
 
-        final ContentManager resourceMgr =
+        final ContentManagerLocal resourceMgr =
             new ContentManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
@@ -309,7 +309,7 @@ public final class ContentManagerEJBTest extends TestCase {
         em.persist(page1);
         replay(em);
 
-        final ContentManager resourceMgr =
+        final ContentManagerLocal resourceMgr =
             new ContentManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT

@@ -31,7 +31,7 @@ import junit.framework.TestCase;
 import org.h2.jdbcx.JdbcDataSource;
 
 import ccc.domain.Data;
-import ccc.services.DataManager;
+import ccc.services.DataManagerLocal;
 
 
 /**
@@ -80,7 +80,7 @@ public class DataManagerEJBTest extends TestCase {
         expect(ds.getConnection()).andReturn(c);
         replay(ds);
 
-        final DataManager dm = new DataManagerEJB(ds);
+        final DataManagerLocal dm = new DataManagerEJB(ds);
 
         // ACT
         dm.create(d, dummyStream);
@@ -124,7 +124,7 @@ public class DataManagerEJBTest extends TestCase {
         expect(ds.getConnection()).andReturn(c);
         replay(ds);
 
-        final DataManager dm = new DataManagerEJB(ds);
+        final DataManagerLocal dm = new DataManagerEJB(ds);
 
         // ACT
         dm.retrieve(d, os);
@@ -158,7 +158,7 @@ public class DataManagerEJBTest extends TestCase {
         s1.close();
         c.close();
 
-        final DataManager dm = new DataManagerEJB(ds);
+        final DataManagerLocal dm = new DataManagerEJB(ds);
 
         // ACT
         dm.create(new Data(), dummyStream);
@@ -206,7 +206,7 @@ public class DataManagerEJBTest extends TestCase {
         s1.close();
         c.close();
 
-        final DataManager dm = new DataManagerEJB(ds);
+        final DataManagerLocal dm = new DataManagerEJB(ds);
         dm.create(d, dummyStream);
 
         // ACT

@@ -17,6 +17,7 @@ import static javax.persistence.PersistenceContextType.*;
 import java.util.List;
 import java.util.UUID;
 
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateful;
@@ -34,8 +35,9 @@ import ccc.domain.ResourcePath;
 import ccc.domain.Setting;
 import ccc.domain.Template;
 import ccc.domain.Setting.Name;
-import ccc.services.AssetManager;
-import ccc.services.QueryManager;
+import ccc.services.AssetManagerLocal;
+import ccc.services.AssetManagerRemote;
+import ccc.services.QueryManagerLocal;
 
 
 /**
@@ -45,11 +47,14 @@ import ccc.services.QueryManager;
  *
  * @author Civic Computing Ltd.
  */
-@Stateful
+@Stateful(name="AssetManager")
 @TransactionAttribute(REQUIRED)
-@Remote(AssetManager.class)
-@Local(AssetManager.class)
-public final class AssetManagerEJB implements AssetManager {
+@Remote(AssetManagerRemote.class)
+@Local(AssetManagerLocal.class)
+public final class AssetManagerEJB
+    implements
+        AssetManagerLocal,
+        AssetManagerRemote {
 
     @PersistenceContext(
         unitName = "ccc-persistence",
@@ -57,8 +62,8 @@ public final class AssetManagerEJB implements AssetManager {
     private EntityManager _entityManager;
 
 
-    @javax.annotation.Resource(mappedName="QueryManagerEJB/local")
-    private QueryManager _qm;
+    @EJB(name="QueryManager", beanInterface=QueryManagerLocal.class)
+    private QueryManagerLocal _qm;
 
     /**
      * Constructor.
@@ -73,7 +78,7 @@ public final class AssetManagerEJB implements AssetManager {
      * @param queryManager A CCC query manager.
      */
     AssetManagerEJB(final EntityManager entityManager,
-                    final QueryManager queryManager) {
+                    final QueryManagerLocal queryManager) {
         _entityManager = entityManager;
         _qm = queryManager;
     }

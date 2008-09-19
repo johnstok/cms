@@ -12,7 +12,7 @@
 
 package ccc.contentcreator.remoting;
 
-import static ccc.contentcreator.remoting.DTOs.dtoFrom;
+import static ccc.contentcreator.remoting.DTOs.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +36,8 @@ import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.ResourceType;
 import ccc.domain.Template;
-import ccc.services.AssetManager;
-import ccc.services.ContentManager;
+import ccc.services.AssetManagerLocal;
+import ccc.services.ContentManagerLocal;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -96,8 +96,8 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
      *
      * @return A ContentManager.
      */
-    ContentManager contentManager() {
-        return _registry.get("ContentManagerEJB/local");
+    ContentManagerLocal contentManager() {
+        return _registry.get("ContentManager/local");
     }
 
     /**
@@ -105,8 +105,8 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
      *
      * @return An AssetManager.
      */
-    AssetManager assetManager() {
-        return _registry.get("AssetManagerEJB/local");
+    AssetManagerLocal assetManager() {
+        return _registry.get("AssetManager/local");
     }
 
     /**
@@ -261,7 +261,7 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
             options.get(0).makeTypeSafe();
 
         if (option.hasChanged()) {
-            TemplateDTO templateDTO = option.getCurrentValue();
+            final TemplateDTO templateDTO = option.getCurrentValue();
             if (null==templateDTO) {
                 contentManager().setDefaultTemplate(null);
             } else {

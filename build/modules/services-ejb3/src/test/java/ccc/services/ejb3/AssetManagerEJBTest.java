@@ -31,8 +31,8 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.Setting;
 import ccc.domain.Template;
-import ccc.services.AssetManager;
-import ccc.services.QueryManager;
+import ccc.services.AssetManagerLocal;
+import ccc.services.QueryManagerLocal;
 
 
 /**
@@ -53,7 +53,7 @@ public final class AssetManagerEJBTest extends TestCase {
         final Template t = new Template("title", "description", "body");
         assetRoot.add(templateFolder);
 
-        final QueryManager qm = createStrictMock(QueryManager.class);
+        final QueryManagerLocal qm = createStrictMock(QueryManagerLocal.class);
         expect(qm.findAssetsRoot())
             .andReturn(new Maybe<Folder>(assetRoot)).times(2);
         replay(qm);
@@ -62,7 +62,7 @@ public final class AssetManagerEJBTest extends TestCase {
         em.persist(t);
         replay(em);
 
-        final AssetManager am = new AssetManagerEJB(em, qm);
+        final AssetManagerLocal am = new AssetManagerEJB(em, qm);
 
         // ACT
         final Template created = am.createOrRetrieve(t);
@@ -89,14 +89,14 @@ public final class AssetManagerEJBTest extends TestCase {
         assetRoot.add(templateFolder);
         templateFolder.add(expected);
 
-        final QueryManager qm = createStrictMock(QueryManager.class);
+        final QueryManagerLocal qm = createStrictMock(QueryManagerLocal.class);
         expect(qm.findAssetsRoot()).andReturn(new Maybe<Folder>(assetRoot));
         replay(qm);
 
         final EntityManager em = createStrictMock(EntityManager.class);
         replay(em);
 
-        final AssetManager am = new AssetManagerEJB(em, qm);
+        final AssetManagerLocal am = new AssetManagerEJB(em, qm);
 
         // ACT
         final List<Template> templates = am.lookupTemplates();
@@ -117,7 +117,7 @@ public final class AssetManagerEJBTest extends TestCase {
         final EntityManager em = createMock(EntityManager.class);
         expect(em.find(Resource.class, t.id())).andReturn(t);
         replay(em);
-        final AssetManager am =
+        final AssetManagerLocal am =
             new AssetManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
@@ -139,7 +139,7 @@ public final class AssetManagerEJBTest extends TestCase {
         assetRoot.add(templateFolder);
         final Template t = new Template("title", "description", "body");
 
-        final QueryManager qm = createStrictMock(QueryManager.class);
+        final QueryManagerLocal qm = createStrictMock(QueryManagerLocal.class);
         expect(qm.findAssetsRoot()).andReturn(new Maybe<Folder>(assetRoot));
         replay(qm);
 
@@ -147,7 +147,7 @@ public final class AssetManagerEJBTest extends TestCase {
         em.persist(t);
         replay(em);
 
-        final AssetManager am =
+        final AssetManagerLocal am =
             new AssetManagerEJB(em, qm);
 
         // ACT
@@ -165,7 +165,7 @@ public final class AssetManagerEJBTest extends TestCase {
     public void testCreateRoot() {
 
         // ARRANGE
-        final QueryManager qm = createStrictMock(QueryManager.class);
+        final QueryManagerLocal qm = createStrictMock(QueryManagerLocal.class);
         expect(qm.findAssetsRoot()).andReturn(new Maybe<Folder>());
         replay(qm);
 
@@ -177,7 +177,7 @@ public final class AssetManagerEJBTest extends TestCase {
         replay(em);
 
 
-        final AssetManager am = new AssetManagerEJB(em, qm);
+        final AssetManagerLocal am = new AssetManagerEJB(em, qm);
 
         // ACT
         am.createRoot();
@@ -205,7 +205,7 @@ public final class AssetManagerEJBTest extends TestCase {
         final File file = new File(
             new ResourceName("file"), "title", "desc", new Data(), 0);
 
-        final QueryManager qm = createStrictMock(QueryManager.class);
+        final QueryManagerLocal qm = createStrictMock(QueryManagerLocal.class);
         replay(qm);
 
         final EntityManager em = createMock(EntityManager.class);
@@ -214,7 +214,7 @@ public final class AssetManagerEJBTest extends TestCase {
         em.persist(file);
         replay(em);
 
-        final AssetManager am = new AssetManagerEJB(em, qm);
+        final AssetManagerLocal am = new AssetManagerEJB(em, qm);
 
         // ACT
         am.createFile(file, assetRoot.id());
