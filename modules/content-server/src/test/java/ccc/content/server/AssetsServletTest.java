@@ -28,8 +28,8 @@ import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
-import ccc.services.AssetManager;
-import ccc.services.DataManager;
+import ccc.services.AssetManagerLocal;
+import ccc.services.DataManagerLocal;
 
 
 /**
@@ -64,11 +64,11 @@ public class AssetsServletTest extends TestCase {
                      2345L,
                      new MimeType("text", "plain"));
 
-        final DataManager dm = createStrictMock(DataManager.class);
+        final DataManagerLocal dm = createStrictMock(DataManagerLocal.class);
         dm.retrieve(dummyData, os);
         replay(dm);
 
-        final AssetManager am = createStrictMock(AssetManager.class);
+        final AssetManagerLocal am = createStrictMock(AssetManagerLocal.class);
         expect(am.lookup(new ResourcePath("/foo.txt"))).andReturn(dummyFile);
         replay(am);
 
@@ -101,8 +101,8 @@ public class AssetsServletTest extends TestCase {
         replay(response);
 
         // ACT
-        new AssetsServlet(new MapRegistry().put("AssetManagerEJB/local", am)
-                                           .put("DataManagerEJB/local", dm))
+        new AssetsServlet(new MapRegistry().put("AssetManager/local", am)
+                                           .put("DataManager/local", dm))
             .doGet(request, response);
 
         // ASSERT

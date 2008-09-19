@@ -20,7 +20,7 @@ import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 import ccc.domain.ResourceType;
-import ccc.services.ContentManager;
+import ccc.services.ContentManagerRemote;
 
 
 /**
@@ -31,31 +31,14 @@ import ccc.services.ContentManager;
 public class MigrationAcceptanceTest extends TestCase {
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void tearDown() throws Exception {
-
-        super.tearDown();
-    }
-
-    /**
      * Test.
      *
      */
     public void testFolderMigration() {
 
         // ARRANGE
-        final ContentManager manager = new JNDI().<ContentManager>get(
-        "ContentManagerEJB/remote");
+        final ContentManagerRemote manager =
+            new JNDI().<ContentManagerRemote>get("ContentManagerEJB/remote");
 
         // ACT
         final Resource resource =
@@ -74,8 +57,8 @@ public class MigrationAcceptanceTest extends TestCase {
     public void testPageMigration() {
 
         // ARRANGE
-        final ContentManager manager = new JNDI().<ContentManager>get(
-        "ContentManagerEJB/remote");
+        final ContentManagerRemote manager =
+            new JNDI().<ContentManagerRemote>get("ContentManagerEJB/remote");
         final String path = "/Home/ASH_Scotland_Manifesto_2007";
 
         // ACT
@@ -98,8 +81,8 @@ public class MigrationAcceptanceTest extends TestCase {
         // old ID: 3391
         final String path = "/Information_Service/Key_topics/Smoking_Cessation/"
             +"A_Smoking_Cessation_Policy_for_Scotland/Introduction";
-        final ContentManager manager = new JNDI().<ContentManager>get(
-        "ContentManagerEJB/remote");
+        final ContentManagerRemote manager =
+            new JNDI().<ContentManagerRemote>get("ContentManagerEJB/remote");
 
         // ACT
         final Page resource = manager.eagerPageLookup(new ResourcePath(path));
@@ -131,8 +114,8 @@ public class MigrationAcceptanceTest extends TestCase {
         // old ID: 3391
         final String path = "/Information_Service/Key_topics/Smoking_Cessation/"
             +"A_Smoking_Cessation_Policy_for_Scotland/Introduction";
-        final ContentManager manager = new JNDI().<ContentManager>get(
-        "ContentManagerEJB/remote");
+        final ContentManagerRemote manager =
+            new JNDI().<ContentManagerRemote>get("ContentManagerEJB/remote");
 
         // ACT
         final Page resource = manager.eagerPageLookup(new ResourcePath(path));
@@ -155,8 +138,8 @@ public class MigrationAcceptanceTest extends TestCase {
         // ARRANGE
         // old ID: 3391
         final String path = "/Quit_Smoking/Quit_smoking";
-        final ContentManager manager = new JNDI().<ContentManager>get(
-        "ContentManagerEJB/remote");
+        final ContentManagerRemote manager =
+            new JNDI().<ContentManagerRemote>get("ContentManagerEJB/remote");
 
         // ACT
         final Page resource = manager.eagerPageLookup(new ResourcePath(path));

@@ -20,10 +20,11 @@ import ccc.domain.Data;
 
 /**
  * API definition for data management.
+ * TODO: Should have package scope.
  *
  * @author Civic Computing Ltd.
  */
-public interface DataManager {
+interface DataManager {
 
     /**
      * Create a new item of binary data.

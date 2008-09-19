@@ -22,10 +22,11 @@ import ccc.domain.Template;
 
 /**
  * Business methods that operate on assets.
+ * TODO: Should have package scope.
  *
  * @author Civic Computing Ltd
  */
-public interface AssetManager {
+interface AssetManager {
 
     /**
      * Lookup a resource, given its absolute path.
