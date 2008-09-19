@@ -29,7 +29,7 @@ public class MaybeTest extends TestCase {
     public void testGetWhenPresent() {
 
         // ARRANGE
-        final Serializable o = new Serializable(){};
+        final Serializable o = new Exception();
         final Maybe<Serializable> m = new Maybe<Serializable>(o);
 
         // ACT
@@ -65,7 +65,7 @@ public class MaybeTest extends TestCase {
 
         // ARRANGE
         final Maybe<Serializable> m =
-            new Maybe<Serializable>(new Serializable(){});
+            new Maybe<Serializable>(new Exception());
 
         // ACT
         final boolean isPresent = m.isDefined();
