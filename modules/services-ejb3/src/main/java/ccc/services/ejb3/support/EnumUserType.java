@@ -44,6 +44,11 @@ public class EnumUserType<T extends Enum<T>> implements UserType,
         _enumClass = enumClass;
     }
 
+    /**
+     * Constructor.
+     */
+    public EnumUserType() { super(); }
+
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
     @Override
