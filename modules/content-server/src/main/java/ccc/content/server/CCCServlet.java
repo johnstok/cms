@@ -89,7 +89,7 @@ public abstract class CCCServlet extends HttpServlet {
         response.setHeader(
             "Cache-Control",
             "private, must-revalidate, max-age=0"); // equivalent to 'no-cache'
-        response.setHeader("Expires", "0");         // already expired
+        response.setHeader("Expires", "0");         // TODO: already expired, set to 'now' instead...
     }
 
     /**
