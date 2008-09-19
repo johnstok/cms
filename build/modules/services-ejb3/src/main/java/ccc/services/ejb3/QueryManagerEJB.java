@@ -69,7 +69,8 @@ public final class QueryManagerEJB implements QueryManager {
     /** {@inheritDoc} */
     public Maybe<Folder> lookupRoot(final ResourceName name) {
 
-        final Query q = _em.createNamedQuery(RESOURCE_BY_URL);
+        final Query q =
+            _em.createNamedQuery(NamedQueries.RESOURCE_BY_NAME.queryString());
         q.setParameter("name", name);
 
         try {
@@ -79,7 +80,6 @@ public final class QueryManagerEJB implements QueryManager {
         } catch (final NoResultException e) {
             return new Maybe<Folder>();
         }
-
     }
 
     /** {@inheritDoc} */
@@ -95,8 +95,6 @@ public final class QueryManagerEJB implements QueryManager {
         } catch (final NoResultException e) {
             return new Maybe<Setting>();
         }
-
-
     }
 
     /** {@inheritDoc} */
@@ -131,9 +129,6 @@ public final class QueryManagerEJB implements QueryManager {
         return new Maybe<Folder>();
     }
 
-    /** RESOURCE_BY_URL : String. */
-    public static final String RESOURCE_BY_URL = "RESOURCE_BY_URL";
-
     /**
      * Available named queries.
      *
@@ -142,7 +137,10 @@ public final class QueryManagerEJB implements QueryManager {
     static enum NamedQueries {
 
         /** SETTING_BY_NAME : NamedQueries. */
-        SETTING_BY_NAME("from ccc.domain.Setting s where s._name=:name");
+        SETTING_BY_NAME("from ccc.domain.Setting s where s._name=:name"),
+
+        /** RESOURCE_BY_NAME : NamedQueries. */
+        RESOURCE_BY_NAME("from ccc.domain.Resource r where r._name = :name");
 
         private final String _queryString;
 
