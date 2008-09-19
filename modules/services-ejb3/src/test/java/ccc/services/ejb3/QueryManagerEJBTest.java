@@ -33,7 +33,7 @@ import ccc.services.ejb3.QueryManagerEJB.NamedQueries;
  *
  * @author Civic Computing Ltd.
  */
-public class QueriesTest extends TestCase {
+public class QueryManagerEJBTest extends TestCase {
 
     /**
      * Test.
