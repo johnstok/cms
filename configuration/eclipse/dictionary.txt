@@ -98,3 +98,8 @@ api
 ejb
 javascript
 app
+throwable
+dodgy
+google
+cron
+hibernate
