@@ -11,14 +11,8 @@
  */
 package ccc.contentcreator.remoting;
 
-import static java.util.Arrays.asList;
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
+import static java.util.Arrays.*;
+import static org.easymock.EasyMock.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,12 +35,12 @@ import ccc.contentcreator.dto.TemplateDTO;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.PredefinedResourceNames;
+import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.Template;
 import ccc.services.AssetManager;
 import ccc.services.ContentManager;
-import ccc.services.adaptors.ContentManagerAdaptor;
 
 
 /**
@@ -262,22 +256,24 @@ public final class ResourceServiceImplTest extends TestCase {
 
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
+
+        final ContentManager cm = createStrictMock(ContentManager.class);
+        expect(cm.lookup(new ResourcePath("")))
+            .andReturn(new Maybe<Resource>(contentRoot));
+        replay(cm);
+
         final ResourceServiceImpl resourceService =
             new ResourceServiceImpl(
                 new MapRegistry(
                 "ContentManagerEJB/local",
-                new ContentManagerAdaptor() {
-                    @SuppressWarnings("unchecked")
-                    @Override
-                    public Maybe<Folder> lookup(final ResourcePath path) {
-                        return new Maybe<Folder>(contentRoot);
-                    }
-            }));
+                cm
+            ));
 
         // ACT
         final FolderDTO jsonRoot = resourceService.getRoot(Root.CONTENT);
 
         // ASSERT
+        verify(cm);
         assertEquals(
             contentRoot.id().toString(),
             jsonRoot.getId());
@@ -290,17 +286,18 @@ public final class ResourceServiceImplTest extends TestCase {
 
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
+
+        final ContentManager cm = createStrictMock(ContentManager.class);
+        expect(cm.lookup(contentRoot.id()))
+            .andReturn(contentRoot);
+        replay(cm);
+
         final ResourceServiceImpl resourceService =
             new ResourceServiceImpl(
                 new MapRegistry(
                 "ContentManagerEJB/local",
-                new ContentManagerAdaptor() {
-                    @SuppressWarnings("unchecked")
-                    @Override
-                    public Folder lookup(final UUID id) {
-                        return contentRoot;
-                    }
-            }));
+                cm
+            ));
 
         // ACT
         final FolderDTO jsonRoot =
@@ -309,6 +306,7 @@ public final class ResourceServiceImplTest extends TestCase {
                                                         .toString());
 
         // ASSERT
+        verify(cm);
         assertEquals(
             contentRoot.id().toString(),
             jsonRoot.getId());

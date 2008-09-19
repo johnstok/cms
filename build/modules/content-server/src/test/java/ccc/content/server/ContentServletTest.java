@@ -35,8 +35,7 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.Template;
-import ccc.services.adaptors.ContentManagerAdaptor;
-
+import ccc.services.ContentManager;
 
 /**
  * Tests for the ContentServlet.
@@ -50,6 +49,7 @@ public final class ContentServletTest extends TestCase {
 
     private HttpServletResponse _response;
     private HttpServletRequest  _request;
+    private ContentManager _cm;
 
     /**
      * Test.
@@ -146,18 +146,18 @@ public final class ContentServletTest extends TestCase {
         expect(_response.getWriter()).andReturn(new PrintWriter(output));
         replay(_response);
 
+        expect(_cm.lookupRoot()).andReturn(null);
+        replay(_cm);
+
         // ACT
         new ContentServlet(
             new MapRegistry(
                 "ContentManagerEJB/local",
-                new ContentManagerAdaptor() {
-                    /** {@inheritDoc} */@Override
-                    public Folder lookupRoot() { return null; }
-                })
+                _cm)
             ).write(_response, page);
 
         // ASSERT
-        verify(_response);
+        verify(_response, _cm);
         assertEquals(
             "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" "
             + "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n"
@@ -190,18 +190,18 @@ public final class ContentServletTest extends TestCase {
         expect(_response.getWriter()).andReturn(new PrintWriter(output));
         replay(_response);
 
+        expect(_cm.lookupRoot()).andReturn(null);
+        replay(_cm);
+
         // ACT
         new ContentServlet(
             new MapRegistry(
                 "ContentManagerEJB/local",
-                new ContentManagerAdaptor() {
-                    /** {@inheritDoc} */@Override
-                    public Folder lookupRoot() { return null; }
-                })
+                _cm)
             ).write(_response, top);
 
         // ASSERT
-        verify(_response);
+        verify(_response, _cm);
         assertEquals(
             "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" "
             + "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n"
@@ -228,30 +228,21 @@ public final class ContentServletTest extends TestCase {
             Resources.readIntoString(
                 getClass().getResource("default-content-template.txt"),
                 Charset.forName("ISO-8859-1"));
-        final Template t =
-            new Template(
-                "foo",
-                "bar",
-                body);
+        final Template t = new Template("foo", "bar", body);
         final Page p =
             new Page(new ResourceName("name"))
                 .addParagraph("Header", new Paragraph("<br/>"));
         p.displayTemplateName(t);
+
+        expect(_cm.lookup(new ResourcePath("/foo"))).andReturn(new Maybe<Resource>(p));
+        expect(_cm.lookupRoot()).andReturn(null);
+        replay(_cm);
+
         final ContentServlet contentServlet =
             new ContentServlet(
                 new MapRegistry(
                     "ContentManagerEJB/local",
-                new ContentManagerAdaptor() {
-
-                    /** {@inheritDoc} */ @Override
-                    public Folder lookupRoot() { return null; }
-
-                    /** {@inheritDoc} */
-                    @Override @SuppressWarnings("unchecked")
-                    public Maybe<Resource> lookup(final ResourcePath path) {
-                        return new Maybe<Resource>(p);
-                    }
-                }));
+                    _cm));
 
         // EXPECT
         new ContentServlet().disableCachingFor(_response);
@@ -265,7 +256,7 @@ public final class ContentServletTest extends TestCase {
         contentServlet.doGet(_request, _response);
 
         // VERIFY
-        verify(_request, _response);
+        verify(_request, _response, _cm);
         assertEquals(
             "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" "
             + "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n"
@@ -292,17 +283,16 @@ public final class ContentServletTest extends TestCase {
         foo.add(baz);
         foo.add(bar);
 
+        expect(_cm.lookup(new ResourcePath("/foo")))
+            .andReturn(new Maybe<Resource>(foo));
+        replay(_cm);
+
         final StringWriter output = new StringWriter();
         final ContentServlet contentServlet =
             new ContentServlet(
                 new MapRegistry(
                     "ContentManagerEJB/local",
-                new ContentManagerAdaptor() {
-                /** {@inheritDoc} */ @Override @SuppressWarnings("unchecked")
-                public Maybe<Folder> lookup(final ResourcePath path) {
-                    return new Maybe<Folder>(foo);
-                }
-            }));
+                    _cm));
 
         // EXPECT
         _response.sendRedirect("/content/foo/bar");
@@ -314,7 +304,7 @@ public final class ContentServletTest extends TestCase {
         contentServlet.doGet(_request, _response);
 
         // VERIFY
-        verify(_request, _response);
+        verify(_request, _response, _cm);
         assertEquals("", output.toString());
     }
 
@@ -334,17 +324,16 @@ public final class ContentServletTest extends TestCase {
         foo.add(baz);
         foo.add(bar);
 
+        expect(_cm.lookup(new ResourcePath("/foo")))
+            .andReturn(new Maybe<Resource>(foo));
+        replay(_cm);
+
         final StringWriter output = new StringWriter();
         final ContentServlet contentServlet =
             new ContentServlet(
                 new MapRegistry(
                     "ContentManagerEJB/local",
-                    new ContentManagerAdaptor() {
-                        /** {@inheritDoc} */ @Override @SuppressWarnings("unchecked")
-                        public Maybe<Folder> lookup(final ResourcePath path) {
-                            return new Maybe<Folder>(foo);
-                        }
-                    }));
+                    _cm));
 
         // EXPECT
         _response.sendRedirect("/content/foo/bar");
@@ -356,7 +345,7 @@ public final class ContentServletTest extends TestCase {
         contentServlet.doGet(_request, _response);
 
         // VERIFY
-        verify(_request, _response);
+        verify(_request, _response, _cm);
         assertEquals("", output.toString());
     }
 
@@ -377,18 +366,17 @@ public final class ContentServletTest extends TestCase {
         final Folder baz = new Folder(new ResourceName("baz"));
         foo.add(baz);
 
+        expect(_cm.lookup(new ResourcePath("/foo")))
+            .andReturn(new Maybe<Resource>(foo));
+        replay(_cm);
+
         final StringWriter output = new StringWriter();
         final ContentServlet contentServlet =
             new ContentServlet(
                 new MapRegistry(
                     "ContentManagerEJB/local",
-                    new ContentManagerAdaptor() {
-                        /** {@inheritDoc} */
-                        @Override @SuppressWarnings("unchecked")
-                        public Maybe<Resource> lookup(final ResourcePath path) {
-                            return new Maybe<Resource>(foo);
-                        }
-                    }));
+                    _cm
+                ));
 
         // EXPECT
         expect(_request.getPathInfo()).andReturn("/foo");
@@ -399,7 +387,7 @@ public final class ContentServletTest extends TestCase {
         contentServlet.doGet(_request, _response);
 
         // VERIFY
-        verify(_request, _response, rd);
+        verify(_request, _response, rd, _cm);
         assertEquals("", output.toString());
     }
 
@@ -447,6 +435,7 @@ public final class ContentServletTest extends TestCase {
         super.setUp();
         _response = createStrictMock(HttpServletResponse.class);
         _request = createStrictMock(HttpServletRequest.class);
+        _cm = createStrictMock(ContentManager.class);
     }
 
     /**
@@ -457,5 +446,6 @@ public final class ContentServletTest extends TestCase {
         super.tearDown();
         _response = null;
         _request = null;
+        _cm = null;
     }
 }

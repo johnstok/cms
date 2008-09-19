@@ -60,9 +60,7 @@ public final class ContentManagerEJBTest extends TestCase {
         expect(qm.findContentRoot()).andReturn(new Maybe<Folder>(contentRoot));
         replay(qm);
 
-        final EntityManager em = new EntityManagerAdaptor();
-
-        final ContentManagerEJB resourceMgr = new ContentManagerEJB(em, qm);
+        final ContentManagerEJB resourceMgr = new ContentManagerEJB(null, qm);
 
         // ACT
         resourceMgr.setDefaultTemplate(defaultTemplate);
@@ -93,9 +91,7 @@ public final class ContentManagerEJBTest extends TestCase {
         expect(qm.findContentRoot()).andReturn(new Maybe<Folder>(contentRoot));
         replay(qm);
 
-        final EntityManager em = new EntityManagerAdaptor();
-
-        final ContentManagerEJB resourceMgr = new ContentManagerEJB(em, qm);
+        final ContentManagerEJB resourceMgr = new ContentManagerEJB(null, qm);
 
         // ACT
         final Resource resource =
@@ -346,7 +342,9 @@ public final class ContentManagerEJBTest extends TestCase {
                                         "default",
                                         new Paragraph("<H1>Default</H1>"));
 
-        final EntityManager em = new SimpleEM(bar);
+        final EntityManager em = createStrictMock(EntityManager.class);
+        expect(em.find(Resource.class, bar.id())).andReturn(bar);
+        replay(em);
 
         final ContentManagerEJB resourceMgr =
             new ContentManagerEJB(em, new QueryManagerEJB(em));
@@ -356,6 +354,7 @@ public final class ContentManagerEJBTest extends TestCase {
             resourceMgr.lookup(bar.id());
 
         // ASSERT
+        verify(em);
         assertEquals(ResourceType.PAGE, resource.type());
         final Page page = resource.as(Page.class);
         assertEquals(1, page.paragraphs().size());
@@ -370,7 +369,9 @@ public final class ContentManagerEJBTest extends TestCase {
         final Page page = new Page(new ResourceName("test"));
         page.addParagraph("abc", new Paragraph("def"));
 
-        final EntityManager em = new SimpleEM(page);
+        final EntityManager em = createStrictMock(EntityManager.class);
+        expect(em.find(Resource.class, page.id())).andReturn(page);
+        replay(em);
 
         final ContentManagerEJB resourceMgr =
             new ContentManagerEJB(em, new QueryManagerEJB(em));
@@ -383,35 +384,10 @@ public final class ContentManagerEJBTest extends TestCase {
             "new title", paragraphs);
 
         // ASSERT
+        verify(em);
         assertEquals("new title", page.title());
         assertEquals(1, page.paragraphs().size());
         assertEquals("foo", page.paragraphs().keySet().iterator().next());
         assertEquals("bar", page.paragraphs().get("foo").body());
-    }
-
-    /**
-     * Helper class for testing.
-     *
-     * @author Civic Computing Ltd
-     */
-    private static final class SimpleEM extends EntityManagerAdaptor {
-
-        /** _page : Page. */
-        private final Page _page;
-
-        /**
-         * Constructor.
-         *
-         * @param page The page to return from find().
-         */
-        SimpleEM(final Page page) {
-            _page = page;
-        }
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public <T> T find(final Class<T> type, final Object id) {
-            return (T) _page;
-        }
     }
 }
