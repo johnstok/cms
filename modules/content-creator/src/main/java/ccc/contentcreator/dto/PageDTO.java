@@ -21,8 +21,6 @@ import java.util.Map;
  */
 public class PageDTO extends ResourceDTO {
 
-    /** serialVersionUID : long. */
-    private static final long serialVersionUID = 3436208980887326540L;
 
     @SuppressWarnings("unused") // Required for GWT
     private PageDTO() { super(null, null, null, null); }

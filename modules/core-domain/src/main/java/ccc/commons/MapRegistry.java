@@ -20,9 +20,7 @@ import java.util.HashMap;
  * @author Civic Computing Ltd
  */
 public final class MapRegistry implements Registry {
-
-    /** serialVersionUID : long. */
-    private static final long serialVersionUID = 6506031875905848371L;
+ 
 
     /**
      * Constructor. Create a map-based registry with a single item.

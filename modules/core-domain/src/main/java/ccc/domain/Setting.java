@@ -21,8 +21,6 @@ import ccc.commons.DBC;
  */
 public class Setting extends Entity {
 
-    /** serialVersionUID : long. */
-    private static final long serialVersionUID = 1669421605591024452L;
 
     private Name _name;
     private String _value;

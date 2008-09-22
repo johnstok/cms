@@ -19,8 +19,6 @@ package ccc.domain;
  */
 public class Template extends Resource {
 
-    /** serialVersionUID : long. */
-    private static final long serialVersionUID = -4937503495883222143L;
     private String _description;
     private String _body;
 

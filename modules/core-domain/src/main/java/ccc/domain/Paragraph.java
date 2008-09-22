@@ -22,8 +22,6 @@ import java.io.Serializable;
  */
 public final class Paragraph implements Serializable {
 
-    /** serialVersionUID : long. */
-    private static final long serialVersionUID = 5380775783010664543L;
 
     private String _body = "";
 

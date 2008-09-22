@@ -27,9 +27,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public final class ErrorServlet extends HttpServlet {
 
-    /** serialVersionUID : long. */
-    private static final long serialVersionUID = -4347736627221732133L;
-
     /**
      * {@inheritDoc}
      */

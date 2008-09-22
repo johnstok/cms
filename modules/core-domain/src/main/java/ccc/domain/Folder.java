@@ -27,8 +27,6 @@ import ccc.commons.DBC;
  */
 public final class Folder extends Resource {
 
-    /** serialVersionUID : long. */
-    private static final long serialVersionUID = 2800863951865644693L;
     private List<Resource> _entries = new ArrayList<Resource>();
 
     /**

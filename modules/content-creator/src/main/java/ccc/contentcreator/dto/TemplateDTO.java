@@ -25,8 +25,6 @@ import java.util.List;
  */
 public class TemplateDTO extends ResourceDTO {
 
-    /** serialVersionUID : long. */
-    private static final long serialVersionUID = 7676780306991591780L;
 
     @SuppressWarnings("unused") // Required for GWT
     private TemplateDTO() { super(null, null, null, null); }

@@ -68,8 +68,6 @@ public class EntityTest extends TestCase {
      * @author Civic Computing Ltd.
      */
     static class Foo extends Entity {
-        /** serialVersionUID : long. */
-        private static final long serialVersionUID = -5117612676679837744L;
     }
 
     /**
@@ -78,7 +76,5 @@ public class EntityTest extends TestCase {
      * @author Civic Computing Ltd.
      */
     static class Bar extends Entity {
-        /** serialVersionUID : long. */
-        private static final long serialVersionUID = 6612065863887360281L;
     }
 }

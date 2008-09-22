@@ -40,8 +40,7 @@ import java.util.Comparator;
  *   Collections.sort(your list, new AlphanumComparator());
  */
 public class AlphanumComparator implements Comparator<String>, Serializable {
-    /** serialVersionUID : long. */
-    private static final long serialVersionUID = 764112939098681753L;
+
     private final int _zeroChar = 48;
     private final int _nineChar = 57;
 

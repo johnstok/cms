@@ -21,8 +21,6 @@ package ccc.contentcreator.dto;
  */
 public class FolderDTO extends ResourceDTO {
 
-    /** serialVersionUID : long. */
-    private static final long serialVersionUID = 2612088448615151340L;
 
     @SuppressWarnings("unused") // Required for GWT
     private FolderDTO() { super(null, null, null, null); }

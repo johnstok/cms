@@ -26,8 +26,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public final class NotFoundServlet extends HttpServlet {
 
-    /** serialVersionUID : long. */
-    private static final long serialVersionUID = -947336135238994823L;
 
     /**
      * {@inheritDoc}
