@@ -31,6 +31,7 @@ import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+import com.extjs.gxt.ui.client.widget.layout.FormData;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -86,7 +87,7 @@ public class UpdateContentDialog extends Window {
 
         _title.setFieldLabel("Title");
         _title.setAllowBlank(false);
-        panel.add(_title /*, new FormData("100%")*/);
+        panel.add(_title, new FormData("100%"));
 
         addButton(
             new Button(
@@ -160,7 +161,7 @@ public class UpdateContentDialog extends Window {
                     TextArea area = new TextArea();
                     area.setFieldLabel(para.getKey());
                     area.setValue(para.getValue());
-                    panel.add(area /*, new FormData("100%")*/);
+                    panel.add(area, new FormData("100%"));
                     _paras.add(area);
                 }
 
