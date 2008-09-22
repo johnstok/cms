@@ -42,6 +42,7 @@ public final class ErrorServlet extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         final Exception e = getException(request);
         final PrintWriter pw = response.getWriter();
+        pw.write("<H1>Error:</H1>");
         e.printStackTrace(pw);
     }
 
