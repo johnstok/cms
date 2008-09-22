@@ -12,24 +12,27 @@
 
 package ccc.contentcreator.client;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.ResourceService;
 import ccc.contentcreator.api.ResourceServiceAsync;
+import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.dto.PageDTO;
 
+import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.widget.Window;
+import com.extjs.gxt.ui.client.widget.button.Button;
+import com.extjs.gxt.ui.client.widget.form.FormPanel;
+import com.extjs.gxt.ui.client.widget.form.TextArea;
+import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.RichTextArea;
-import com.google.gwt.user.client.ui.TabPanel;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
 
 
 /**
@@ -37,17 +40,15 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * @author Civic Computing Ltd
  */
-public class UpdateContentDialog extends DialogBox {
+public class UpdateContentDialog extends Window {
 
-    private final UIConstants uIConstants = GWT.create(UIConstants.class);
-    private final String title = uIConstants.updateContent();
-    private final Map<String, RichTextArea> richTexts =
-        new HashMap<String, RichTextArea>();
-    private final ResourceServiceAsync resourceService =
+    private final UIConstants _uiConstants = GWT.create(UIConstants.class);
+    private final List<TextArea> _paras = new ArrayList<TextArea>();
+    private final ResourceServiceAsync _resourceService =
         (ResourceServiceAsync) GWT.create(ResourceService.class);
-    private final TextBox titleTextBox = new TextBox();
 
-    private final String contentPath;
+    private final String _contentPath;
+    private final TextField<String> _title = new TextField<String>();
 
     /**
      * Constructor.
@@ -57,9 +58,14 @@ public class UpdateContentDialog extends DialogBox {
      */
     public UpdateContentDialog(final String contentPath) {
 
-        super(false, true);
-        this.contentPath = contentPath;
-        this.ensureDebugId("dialogBox");
+        setPlain(true);
+        setHeading(_uiConstants.updateContent());
+        setWidth(640);
+        setHeight(480);
+        setLayout(new FitLayout());
+
+        _contentPath = contentPath;
+        ensureDebugId("dialogBox");
         drawGUI();
     }
 
@@ -69,49 +75,55 @@ public class UpdateContentDialog extends DialogBox {
      * @param title
      */
     private void drawGUI() {
-        // Set the dialog box's caption.
-        setText(title);
-
-        final TabPanel paragraphsTabPanel = new TabPanel();
-
-        final VerticalPanel vPanel = new VerticalPanel();
-        vPanel.setSize("800px", "600px");
-        setWidget(vPanel);
-        vPanel.ensureDebugId("vPanel");
-        vPanel.add(titleTextBox);
-        vPanel.add(paragraphsTabPanel);
 
 
-        vPanel.add(
-            new Button(uIConstants.cancel(),
-                    new ClickListener() {
-                        public void onClick(final Widget sender) {
-                            hide();
-                        }
+        final FormPanel panel = new FormPanel();
+        panel.setWidth("100%");
+        panel.setBorders(false);
+        panel.setBodyBorder(false);
+        panel.setHeaderVisible(false);
+        add(panel);
+
+        _title.setFieldLabel("Title");
+        _title.setAllowBlank(false);
+        panel.add(_title /*, new FormData("100%")*/);
+
+        addButton(
+            new Button(
+                _uiConstants.cancel(),
+                new SelectionListener<ButtonEvent>() {
+                    @Override
+                    public void componentSelected(final ButtonEvent ce) {
+                        hide();
                     }
-                ));
+                }
+            ));
 
-        final Button saveButton = new Button(uIConstants.save(), new ClickListener() {
-                    public void onClick(final Widget arg0) {
+        addButton(
+            new Button(
+                _uiConstants.save(),
+                new SelectionListener<ButtonEvent>() {
+                @Override
+                public void componentSelected(final ButtonEvent ce) {
 
-                        if (titleTextBox.getText() == null
-                            || titleTextBox.getText().trim().length() == 0) {
-                            titleTextBox.setStyleName("gwt-TextBox-error");
+                        if (_title.getValue() == null
+                            || _title.getValue().trim().length() == 0) {
+//                            _title.setStyleName("gwt-TextBox-error");
                             return;
                         }
 
-                        titleTextBox.setStyleName("gwt-TextBox");
+//                        _title.setStyleName("gwt-TextBox");
 
                         final Map<String, String> paragraphs =
                             new HashMap<String, String>();
-                        for (final String key : richTexts.keySet()) {
-                            String body = richTexts.get(key).getHTML();
+                        for (final TextArea para : _paras) {
+                            String body = para.getValue();
                             if (null == body || body.trim().length()==0) {
                                 body = "<!-- empty -->";
                             }
-                            paragraphs.put(key, body);
+                            paragraphs.put(para.getFieldLabel(), body);
                         }
-
+//
                         final AsyncCallback<Void> callback =
                             new AsyncCallback<Void>() {
                                 public void onFailure(final Throwable arg0) {
@@ -119,55 +131,43 @@ public class UpdateContentDialog extends DialogBox {
                                 }
                                 public void onSuccess(final Void arg0) {
                                     hide();
+                                    //TODO: tree.fire_selection_event();
                                 }
                             };
-                        resourceService.saveContent(contentPath, titleTextBox.getText()
-                            , paragraphs, callback);
+
+//                            final AsyncCallback<Void> callback =
+//                                new DisposingCallback(_app, UpdateContentDialog.this);
+
+                        _resourceService.saveContent(
+                            _contentPath,
+                            _title.getValue(),
+                            paragraphs,
+                            callback);
                     }
-                });
-        saveButton.ensureDebugId("saveButton");
-        vPanel.add(saveButton);
+                }));
 
-        paragraphsTabPanel.setSize("100%", "100%");
-        titleTextBox.setWidth("100%");
+        final AsyncCallback<PageDTO> callback =
+            new ErrorReportingCallback<PageDTO>(null) {
 
-        final AsyncCallback<PageDTO> callback = new AsyncCallback<PageDTO>() {
+            /** {@inheritDoc} */
+            public void onSuccess(final PageDTO page) {
 
-            /**
-             * {@inheritDoc}
-             */
-            public void onSuccess(final PageDTO jsonResult) {
+                _title.setValue(page.getTitle());
 
-                final String jsonTitle = jsonResult.getTitle();
-                final Map<String, String> paragraphs =
-                    jsonResult.getParagraphs();
+                for (Map.Entry<String, String> para
+                            : page.getParagraphs().entrySet()) {
 
-                titleTextBox.setText(jsonTitle);
-                for (String key : paragraphs.keySet()) {
-                    RichTextArea bodyRTA = new RichTextArea();
-                    bodyRTA.ensureDebugId("bodyRTA"+key);
-                    bodyRTA.setWidth("100%");
-                    bodyRTA.setHeight("100%");
-                    RichTextToolbar toolbar = new RichTextToolbar(bodyRTA);
-                    bodyRTA.setHTML(paragraphs.get(key));
-                    final VerticalPanel rtPanel = new VerticalPanel();
-                    rtPanel.add(toolbar);
-                    rtPanel.add(bodyRTA);
-                    paragraphsTabPanel.add(rtPanel, key);
-
-                    richTexts.put(key, bodyRTA);
+                    TextArea area = new TextArea();
+                    area.setFieldLabel(para.getKey());
+                    area.setValue(para.getValue());
+                    panel.add(area /*, new FormData("100%")*/);
+                    _paras.add(area);
                 }
 
-                paragraphsTabPanel.selectTab(0);
-            }
-
-            public void onFailure(Throwable arg0) {
-
-                throw new UnsupportedOperationException("Method not implemented.");
             }
         };
 
-        resourceService.getResource(contentPath, callback);
+        _resourceService.getResource(_contentPath, callback);
     }
 
 }
