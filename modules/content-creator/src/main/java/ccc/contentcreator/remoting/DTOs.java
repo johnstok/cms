@@ -56,6 +56,36 @@ public final class DTOs {
     }
 
     /**
+     * Convert a resource to a dto.
+     *
+     * @param resource The resource to convert.
+     * @param <T> The type of the dto to return.
+     * @return A dto representing the specified resource.
+     */
+    @SuppressWarnings("unchecked")
+    public static <T extends ResourceDTO> T dtoFrom(final Resource resource) {
+
+        switch (resource.type()) {
+            case FOLDER:
+                return (T) dtoFrom(resource.as(Folder.class));
+
+            case PAGE:
+                return (T) dtoFrom(resource.as(Page.class));
+
+            case TEMPLATE:
+                return (T) dtoFrom(resource.as(Template.class));
+
+            default:
+                return (T) new ResourceDTO(
+                    resource.id().toString(),
+                    resource.type().toString(),
+                    resource.name().toString(),
+                    resource.title()
+                );
+        }
+    }
+
+    /**
      * Create a  {@link TemplateDTO} from a {@link Template}.
      *
      * @param template The template from which to create a dto.
@@ -68,60 +98,53 @@ public final class DTOs {
 
         final TemplateDTO dto =
             new TemplateDTO(
+                template.id().toString(),
+                template.type().toString(),
+                template.name().toString(),
                 template.title(),
                 template.description(),
-                template.body(),
-                template.id().toString());
+                template.body());
         return dto;
     }
 
     /**
-     * Convert a resource to a dto.
+     * Create a DTO for a folder resource.
      *
-     * @param resource The resource to convert.
-     * @param <T> The type of the dto to return.
-     * @return A dto representing the specified resource.
+     * @param f The folder.
+     * @return The DTO.
      */
-    @SuppressWarnings("unchecked")
-    public static <T extends ResourceDTO> T dtoFrom(final Resource resource) {
+    private static FolderDTO dtoFrom(final Folder f) {
 
-        switch (resource.type()) {
-            case FOLDER:
-                final Folder f = resource.as(Folder.class);
-                return (T) new FolderDTO(
-                    f.id().toString(),
-                    f.type().toString(),
-                    f.name().toString(),
-                    f.title(),
-                    f.folderCount()
-                );
+        return new FolderDTO(
+            f.id().toString(),
+            f.type().toString(),
+            f.name().toString(),
+            f.title(),
+            f.folderCount()
+        );
+    }
 
-            case PAGE:
-                final Page p = resource.as(Page.class);
-                final Map<String, String> paragraphs =
-                    new HashMap<String, String>();
-                for (final Map.Entry<String, Paragraph> para
-                        : p.paragraphs().entrySet()) {
-                    paragraphs.put(para.getKey(), para.getValue().body());
-                }
-                return (T) new PageDTO(
-                    p.id().toString(),
-                    p.type().toString(),
-                    p.name().toString(),
-                    p.title(),
-                    paragraphs
-                );
+    /**
+     * Create a DTO for a page resource.
+     *
+     * @param p The page.
+     * @return The DTO.
+     */
+    private static PageDTO dtoFrom(final Page p) {
 
-            case TEMPLATE:
-                return (T) dtoFrom(resource.as(Template.class));
-            default:
-                return (T) new ResourceDTO(
-                    resource.id().toString(),
-                    resource.type().toString(),
-                    resource.name().toString(),
-                    resource.title()
-                );
+        final Map<String, String> paragraphs =
+            new HashMap<String, String>();
+        for (final Map.Entry<String, Paragraph> para
+                : p.paragraphs().entrySet()) {
+            paragraphs.put(para.getKey(), para.getValue().body());
         }
+        return new PageDTO(
+            p.id().toString(),
+            p.type().toString(),
+            p.name().toString(),
+            p.title(),
+            paragraphs
+        );
     }
 
 }
