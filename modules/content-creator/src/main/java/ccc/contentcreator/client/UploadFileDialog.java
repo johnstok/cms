@@ -12,12 +12,14 @@
 package ccc.contentcreator.client;
 
 import ccc.contentcreator.api.Application;
-import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.FileControl;
 import ccc.contentcreator.api.PanelControl;
 import ccc.contentcreator.api.StringControl;
+import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.DisposingClickListener;
 
+import com.extjs.gxt.ui.client.Events;
+import com.extjs.gxt.ui.client.widget.tree.Tree;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FormHandler;
 import com.google.gwt.user.client.ui.FormPanel;
@@ -43,21 +45,25 @@ public class UploadFileDialog {
     private final StringControl _fileName;
     private final FileControl   _upload;
     private final StringControl _path;
+    private final Tree _tree;
 
     /**
      * Constructor.
      * @param name The name of the folder.
      * @param absolutePath The path of the folder.
+     * @param tree The left hand tree view in the main window.
      *
      */
     public UploadFileDialog(final Application app,
                             final String absolutePath,
-                            final String name) {
+                            final String name,
+                            final Tree tree) {
 
         _app = app;
         _constants = _app.constants();
         _delegate = _app.dialog(_constants.uploadFileTo()+": "+name);
         _gui = _app.verticalPanel();
+        _tree = tree;
 
         _title = _app.textBox();
         _description = _app.textBox();
@@ -141,6 +147,7 @@ public class UploadFileDialog {
 
         public void onSubmitComplete(final FormSubmitCompleteEvent event) {
             _app.alert(event.getResults());
+            _tree.fireEvent(Events.SelectionChange);
             _delegate.hide();
         }
     }

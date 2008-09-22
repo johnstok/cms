@@ -212,7 +212,7 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
         chooseTemplate.setText(_app.constants().chooseTemplate());
         chooseTemplate.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override
-            public void componentSelected(MenuEvent ce) {
+            public void componentSelected(final MenuEvent ce) {
                 final ResourceServiceAsync resourceService =
                     _app.lookupService();
 
@@ -347,7 +347,8 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
                                                        .getModel();
                 new UploadFileDialog(_app,
                                      item.getId(),
-                                     item.getName()).center();
+                                     item.getName(),
+                                     tree).center();
             }
         });
         contextMenu.add(uploadFile);
