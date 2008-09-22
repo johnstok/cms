@@ -40,7 +40,7 @@ public final class NotFoundServlet extends HttpServlet {
         // set mime type
         // set char encoding
         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        response.getWriter().write("<H1>Narp</H1>"); //TODO: Change.
+        response.getWriter().write("<H1>Not found.</H1>"); //TODO: Change.
     }
 
     /**

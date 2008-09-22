@@ -59,7 +59,7 @@ public final class ErrorServletTest extends TestCase {
 
         // ASSERT
         verify(request, response);
-        assertEquals(stackTraceFor(re), output.toString());
+        assertEquals("<H1>Error:</H1>"+stackTraceFor(re), output.toString());
     }
 
     /**
