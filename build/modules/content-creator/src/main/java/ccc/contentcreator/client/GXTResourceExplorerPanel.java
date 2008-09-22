@@ -94,6 +94,7 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
             new Listener<TreeEvent>() {
 
                 public void handleEvent(final TreeEvent te) {
+                    // TODO: handle getSelectedItem() being null.
                     final FolderDTO f =
                         (FolderDTO) te.tree.getSelectedItem().getModel();
                     rsa.getChildren(
@@ -198,7 +199,7 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
                      if ("TEMPLATE".equals(item.getType())) {
                          new CreateContentTemplateDialog(_app, (TemplateDTO) item, _detailsStore).center();
                      } else if ("PAGE".equals(item.getType())) {
-                         new UpdateContentDialog(item.getId()).center();
+                         new UpdateContentDialog(item.getId()).show();
                      } else {
                          _app.alert("No editor available for this resource.");
                      }
