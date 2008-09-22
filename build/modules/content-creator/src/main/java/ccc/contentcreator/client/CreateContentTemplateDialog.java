@@ -151,10 +151,12 @@ public class CreateContentTemplateDialog {
 
     private TemplateDTO model() {
         return new TemplateDTO(
+            _id,
+            "TEMPLATE",
+            _templateTitle.model(),
             _templateTitle.model(),
             _description.model(),
-            _body.model(),
-            _id);
+            _body.model());
     }
 
     /**

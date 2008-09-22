@@ -333,10 +333,13 @@ public final class ResourceServiceImplTest extends TestCase {
 
         // ACT
         resourceService.createTemplate(
-            new TemplateDTO("title",
-                            "description",
-                            "body",
-                            null));
+            new TemplateDTO(
+                null,
+                "TEMPLATE",
+                "name",
+                "title",
+                "description",
+                "body"));
 
         // ASSERT
         verify(am);

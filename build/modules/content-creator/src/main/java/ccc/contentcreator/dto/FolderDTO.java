@@ -24,8 +24,6 @@ public class FolderDTO extends ResourceDTO {
     /** serialVersionUID : long. */
     private static final long serialVersionUID = 2612088448615151340L;
 
-    private int _folderCount;
-
     @SuppressWarnings("unused") // Required for GWT
     private FolderDTO() { super(null, null, null, null); }
 
@@ -45,7 +43,7 @@ public class FolderDTO extends ResourceDTO {
                      final int folderCount) {
 
         super(id, type, name, title);
-        _folderCount = folderCount;
+        set("folderCount", folderCount);
     }
 
     /**
@@ -54,6 +52,6 @@ public class FolderDTO extends ResourceDTO {
      * @return The number of folders as an integer.
      */
     public int getFolderCount() {
-        return _folderCount;
+        return (Integer) get("folderCount");
     }
 }

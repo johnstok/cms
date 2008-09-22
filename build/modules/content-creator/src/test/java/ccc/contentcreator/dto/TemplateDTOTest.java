@@ -35,7 +35,14 @@ public class TemplateDTOTest extends TestCase {
         final String id = UUID.randomUUID().toString();
 
         // ACT
-        final TemplateDTO dto = new TemplateDTO(title, description, body, id);
+        final TemplateDTO dto =
+            new TemplateDTO(
+                id,
+                "TEMPLATE",
+                "name",
+                title,
+                description,
+                body);
 
         // ASSERT
         assertEquals(title, dto.getTitle());

@@ -33,10 +33,13 @@ public class DTOsTest extends TestCase {
         // ARRANGE
         final UUID id = UUID.randomUUID();
         final TemplateDTO dto =
-            new TemplateDTO("title",
-                            "description",
-                            "body",
-                            id.toString());
+            new TemplateDTO(
+                id.toString(),
+                "TEMPLATE",
+                "name",
+                "title",
+                "description",
+                "body");
 
         // ACT
         final Template actual = DTOs.templateFrom(dto);

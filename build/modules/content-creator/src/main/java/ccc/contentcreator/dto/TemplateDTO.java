@@ -34,16 +34,20 @@ public class TemplateDTO extends ResourceDTO {
     /**
      * Constructor.
      *
+     * @param id The uuid for the resource.
+     * @param type The type of the resource.
+     * @param name The name of the resource.
      * @param title The title of the resource.
-     * @param body The body of the display template.
      * @param description The description of the template.
-     * @param id The uuid for the template.
+     * @param body The body of the display template.
      */
-    public TemplateDTO(final String title,
+    public TemplateDTO(final String id,
+                       final String type,
+                       final String name,
+                       final String title,
                        final String description,
-                       final String body,
-                       final String id) {
-        super(id, "TEMPLATE", title, title);
+                       final String body) {
+        super(id, type, name, title);
         set("description", description);
         set("body", body);
     }
