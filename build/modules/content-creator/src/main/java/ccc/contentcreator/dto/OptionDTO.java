@@ -24,8 +24,6 @@ import java.util.List;
 public class OptionDTO<T extends DTO> implements Serializable {
 
 
-    /** serialVersionUID : long. */
-    private static final long serialVersionUID = 1L;
 
     /**
      * Valid types for an {@link OptionDTO}.

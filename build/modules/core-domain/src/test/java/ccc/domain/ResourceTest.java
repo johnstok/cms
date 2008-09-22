@@ -217,8 +217,6 @@ public final class ResourceTest extends TestCase {
      */
     private static final class DummyResource extends Resource {
 
-        /** serialVersionUID : long. */
-        private static final long serialVersionUID = 1264881241929108542L;
 
         /**
          * Constructor.

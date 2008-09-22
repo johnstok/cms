@@ -29,8 +29,6 @@ import ccc.commons.DBC;
  */
 public final class Page extends Resource {
 
-    /** serialVersionUID : long. */
-    private static final long serialVersionUID = 2797475534849447269L;
     private SortedMap<String, Paragraph> _content =
         new TreeMap<String, Paragraph>(new AlphanumComparator());
 

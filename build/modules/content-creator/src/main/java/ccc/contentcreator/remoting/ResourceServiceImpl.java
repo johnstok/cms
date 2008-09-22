@@ -50,8 +50,6 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 public final class ResourceServiceImpl extends RemoteServiceServlet
                                     implements ResourceService {
 
-    /** serialVersionUID : long. */
-    private static final long serialVersionUID = 4907235349044174242L;
     private Registry _registry = new JNDI();
 
     /**

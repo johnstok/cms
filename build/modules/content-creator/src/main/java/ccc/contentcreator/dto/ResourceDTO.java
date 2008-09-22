@@ -22,8 +22,6 @@ import com.extjs.gxt.ui.client.data.BaseModelData;
  */
 public class ResourceDTO extends BaseModelData implements DTO {
 
-    /** serialVersionUID : long. */
-    private static final long serialVersionUID = -8271277006169824547L;
 
     /**
      * Constructor.

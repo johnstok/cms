@@ -33,9 +33,6 @@ import ccc.domain.ResourcePath;
  */
 public class AssetsServlet extends CCCServlet {
 
-    /** serialVersionUID : long. */
-    private static final long serialVersionUID = -5337311771335251212L;
-
     /**
      * Constructor.
      */

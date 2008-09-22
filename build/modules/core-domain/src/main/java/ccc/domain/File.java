@@ -26,8 +26,6 @@ import ccc.commons.DBC;
  */
 public class File extends Resource {
 
-    /** serialVersionUID : long. */
-    private static final long serialVersionUID = -8514993906228600518L;
 
     private String _description;
     private Data _data;

@@ -32,8 +32,6 @@ import ccc.services.DataManagerLocal;
  */
 public class FileUploadServlet extends HttpServlet {
 
-    /** serialVersionUID : long. */
-    private static final long serialVersionUID = 4396761206168690263L;
     private static final Logger LOG = Logger.getLogger(FileUploadServlet.class);
 
     private final Registry _registry = new JNDI();

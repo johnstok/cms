@@ -21,7 +21,5 @@ package ccc.domain;
  */
 public class Data extends Entity {
 
-    /** serialVersionUID : long. */
-    private static final long serialVersionUID = 6833613743899093416L;
 
 }

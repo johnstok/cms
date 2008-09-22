@@ -19,8 +19,6 @@ package ccc.domain;
  */
 public class CCCException extends RuntimeException {
 
-    /** serialVersionUID : long. */
-    private static final long serialVersionUID = -6055828034404769897L;
 
     /**
      * Constructor.
