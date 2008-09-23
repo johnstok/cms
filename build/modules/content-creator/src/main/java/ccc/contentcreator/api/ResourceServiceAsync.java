@@ -14,6 +14,7 @@ package ccc.contentcreator.api;
 import java.util.List;
 import java.util.Map;
 
+import ccc.contentcreator.dto.AliasDTO;
 import ccc.contentcreator.dto.DTO;
 import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.OptionDTO;
@@ -111,4 +112,12 @@ public interface ResourceServiceAsync {
     void updateResourceTemplate(List<OptionDTO<? extends DTO>> options,
                                 ResourceDTO resource,
                                 AsyncCallback<Void> callback);
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param aliasDTO
+     * @param callback
+     */
+    void createAlias(AliasDTO aliasDTO, AsyncCallback<Void> callback);
 }

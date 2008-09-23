@@ -11,8 +11,14 @@
  */
 package ccc.contentcreator.remoting;
 
-import static java.util.Arrays.*;
-import static org.easymock.EasyMock.*;
+import static java.util.Arrays.asList;
+import static org.easymock.EasyMock.capture;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,11 +32,13 @@ import ccc.commons.MapRegistry;
 import ccc.commons.Maybe;
 import ccc.contentcreator.api.ResourceService;
 import ccc.contentcreator.api.Root;
+import ccc.contentcreator.dto.AliasDTO;
 import ccc.contentcreator.dto.DTO;
 import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.OptionDTO;
 import ccc.contentcreator.dto.ResourceDTO;
 import ccc.contentcreator.dto.TemplateDTO;
+import ccc.domain.Alias;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.PredefinedResourceNames;
@@ -386,5 +394,42 @@ public final class ResourceServiceImplTest extends TestCase {
 
         // ASSERT
         verify(cm, am);
+    }
+
+    /**
+     * Test.
+     */
+    public void testCreateAlias() {
+
+        // ARRANGE
+        final Folder root = new Folder(PredefinedResourceNames.CONTENT);
+        final Folder target = new Folder(new ResourceName("target"));
+        final ContentManagerLocal cm = createMock(ContentManagerLocal.class);
+        final Capture<Alias> actual = new Capture<Alias>();
+
+        expect(cm.lookup(new ResourcePath(""))).
+            andReturn(new Maybe<Resource>(root));
+        expect(cm.lookup(target.id())).andReturn(target);
+
+        cm.create(eq(root.id()), capture(actual));
+        replay(cm);
+
+        final ResourceServiceImpl resourceService =
+            new ResourceServiceImpl(
+                new MapRegistry("ContentManager/local", cm));
+
+        // ACT
+        resourceService.createAlias(
+            new AliasDTO(
+                null,
+                "ALIAS",
+                "name",
+                "title",
+                target.id().toString()));
+
+        // ASSERT
+        verify(cm);
+        assertEquals("name", actual.getValue().title());
+        assertEquals(target.id(), actual.getValue().target().id());
     }
 }

@@ -85,6 +85,7 @@ public class UpdateContentDialog extends Window {
         panel.setHeaderVisible(false);
         add(panel);
 
+        // TODO: Move "title" to constants.
         _title.setFieldLabel("Title");
         _title.setAllowBlank(false);
         panel.add(_title, new FormData("100%"));

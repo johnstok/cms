@@ -15,6 +15,7 @@ package ccc.contentcreator.api;
 import java.util.List;
 import java.util.Map;
 
+import ccc.contentcreator.dto.AliasDTO;
 import ccc.contentcreator.dto.DTO;
 import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.OptionDTO;
@@ -145,5 +146,11 @@ public interface ResourceService extends RemoteService {
      */
     void updateResourceTemplate(List<OptionDTO<? extends DTO>> options,
                                 ResourceDTO resource);
+    /**
+     * Create a new alias in CCC.
+     *
+     * @param aliasDTO Details of the new alias to create.
+     */
+    void createAlias(final AliasDTO aliasDTO);
 
 }

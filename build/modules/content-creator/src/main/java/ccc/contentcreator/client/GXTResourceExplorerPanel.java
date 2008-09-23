@@ -208,6 +208,20 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
         );
         contextMenu.add(update);
 
+        final MenuItem createAlias = new MenuItem();
+        createAlias.setId("create-alias");
+        createAlias.setText(_app.constants().createAlias());
+        createAlias.addSelectionListener(new SelectionListener<MenuEvent>() {
+
+            @Override public void componentSelected(final MenuEvent ce) {
+                final ResourceDTO item =
+                    (ResourceDTO) tbl.getSelectedItem().getModel();
+                new CreateAliasDialog(_app, item).show();
+            }
+
+        });
+        contextMenu.add(createAlias);
+
         final MenuItem chooseTemplate = new MenuItem();
         chooseTemplate.setId("chooseTemplate-resource");
         chooseTemplate.setText(_app.constants().chooseTemplate());

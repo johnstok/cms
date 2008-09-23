@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.commons.Maybe;
+import ccc.domain.Alias;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Resource;
@@ -61,7 +62,7 @@ interface ContentManager {
     void createRoot();
 
     /**
-     * Create a folder, based on the specified path.
+     * Create a folder in the specified folder.
      *
      * @param folderId The {@link UUID} for the containing folder/
      * @param newFolder The folder to be created.
@@ -70,7 +71,7 @@ interface ContentManager {
     Folder create(UUID folderId, Folder newFolder);
 
     /**
-     * Create a page, based on the specified path.
+     * Create a page in the specified folder.
      *
      * @param folderId The {@link UUID} for the containing folder/
      * @param newPage The page to be created.
@@ -111,4 +112,12 @@ interface ContentManager {
      * @param template The template to set for the resource.
      */
     void updateTemplateForResource(UUID resourceId, Template template);
+
+    /**
+     * Create an Alias in the specified folder.
+     *
+     * @param folderId The {@link UUID} for the containing folder/
+     * @param alias The Alias to be created.
+     */
+    void create(UUID folderId, Alias alias);
 }
