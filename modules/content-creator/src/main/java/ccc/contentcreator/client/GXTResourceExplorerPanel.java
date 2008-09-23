@@ -19,7 +19,6 @@ import ccc.contentcreator.api.Application;
 import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.api.Root;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.callbacks.OneItemListCallback;
 import ccc.contentcreator.dto.DTO;
 import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.OptionDTO;
@@ -31,18 +30,12 @@ import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.binder.TableBinder;
-import com.extjs.gxt.ui.client.binder.TreeBinder;
-import com.extjs.gxt.ui.client.data.BaseTreeLoader;
-import com.extjs.gxt.ui.client.data.ModelStringProvider;
-import com.extjs.gxt.ui.client.data.RpcProxy;
-import com.extjs.gxt.ui.client.data.TreeLoader;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.event.TreeEvent;
 import com.extjs.gxt.ui.client.store.ListStore;
-import com.extjs.gxt.ui.client.store.TreeStore;
 import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.Dialog;
@@ -61,7 +54,6 @@ import com.extjs.gxt.ui.client.widget.table.TableColumn;
 import com.extjs.gxt.ui.client.widget.table.TableColumnModel;
 import com.extjs.gxt.ui.client.widget.table.TableItem;
 import com.extjs.gxt.ui.client.widget.tree.Tree;
-import com.extjs.gxt.ui.client.widget.tree.TreeItem;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -301,51 +293,7 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
     private Tree createResourceTree(final ResourceServiceAsync rsa,
                                     final Root root) {
 
-        final RpcProxy<FolderDTO, List<FolderDTO>> proxy =
-            new RpcProxy<FolderDTO, List<FolderDTO>>() {
-                @Override protected void load(
-                                final FolderDTO loadConfig,
-                                final AsyncCallback<List<FolderDTO>> callback) {
-                    if (null==loadConfig){
-                        rsa.getRoot(
-                            root,
-                            new OneItemListCallback<FolderDTO>(callback));
-                    } else {
-                     rsa.getFolderChildren(loadConfig, callback);
-                    }
-                }
-            };
-
-        final TreeLoader<FolderDTO> loader =
-            new BaseTreeLoader<FolderDTO>(proxy) {
-            @Override public boolean hasChildren(final FolderDTO parent) {
-                return parent.getFolderCount() > 0;
-            }
-        };
-
-        final TreeStore<FolderDTO> store = new TreeStore<FolderDTO>(loader);
-
-        final Tree tree = new Tree();
-        tree.setSelectionMode(SelectionMode.SINGLE);
-
-        final TreeBinder<FolderDTO> binder =
-            new TreeBinder<FolderDTO>(tree, store) {
-            @Override protected void update(final TreeItem item,
-                                            final FolderDTO model) {
-                super.update(item, model);
-                item.setId(model.getName());
-            }
-        };
-        binder.setCaching(false);
-
-        binder.setIconProvider(new ModelStringProvider<FolderDTO>() {
-            public String getStringValue(final FolderDTO model,
-                                         final String property) {
-                return (null == model) ? null : "images/gxt/icons/folder.gif";
-            }
-        });
-        loader.load(null);
-
+        final ResourceTree tree = new ResourceTree(rsa, root);
 
         final Menu contextMenu = new Menu();
         contextMenu.setId("navigator-menu");
@@ -407,7 +355,7 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
                                     new ErrorReportingCallback<FolderDTO>(_app){
                                         public void onSuccess(final FolderDTO result) {
                                             tree.fireEvent(Events.SelectionChange);
-                                            store.add((FolderDTO) tree.getSelectedItem().getModel(), result, false);
+                                            tree.store().add((FolderDTO) tree.getSelectedItem().getModel(), result, false);
                                         }
                                     }
                                 );

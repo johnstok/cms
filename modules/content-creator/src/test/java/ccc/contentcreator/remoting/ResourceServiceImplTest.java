@@ -58,6 +58,11 @@ import ccc.services.ContentManagerLocal;
  */
 public final class ResourceServiceImplTest extends TestCase {
 
+    private ContentManagerLocal _cm;
+    private AssetManagerLocal _am;
+    private ResourceService _rsi;
+    private Folder _root;
+
     /**
      * Test.
      */
@@ -68,19 +73,12 @@ public final class ResourceServiceImplTest extends TestCase {
         final Page p = new Page(new ResourceName("bar"));
         f.add(p);
 
-        final ContentManagerLocal cm =
-            createStrictMock(ContentManagerLocal.class);
-        expect(cm.lookup(p.id())).andReturn(p);
-        replay(cm);
-
-        final ResourceService rs =
-            new ResourceServiceImpl(
-                new MapRegistry()
-                    .put("ContentManager/local", cm)
-            );
+        expect(_cm.lookup(p.id())).andReturn(p);
+        replay(_cm);
 
         // ACT
-        final String actual = rs.getAbsolutePath(DTOs.<ResourceDTO>dtoFrom(p));
+        final String actual =
+            _rsi.getAbsolutePath(DTOs.<ResourceDTO>dtoFrom(p));
 
         // ASSERT
         assertEquals("/foo/bar", actual);
@@ -94,26 +92,18 @@ public final class ResourceServiceImplTest extends TestCase {
         // ARRANGE
         final Folder parent = new Folder(new ResourceName("parent"));
         final Capture<Folder> actual = new Capture<Folder>();
-        final ContentManagerLocal cm =
-            createStrictMock(ContentManagerLocal.class);
-        expect(cm.create(eq(parent.id()), capture(actual))).andAnswer(
+        expect(_cm.create(eq(parent.id()), capture(actual))).andAnswer(
             new IAnswer<Folder>(){
                 public Folder answer() throws Throwable {
                     return actual.getValue();
                 }});
-        replay(cm);
-
-        final ResourceService rs =
-            new ResourceServiceImpl(
-                new MapRegistry()
-                    .put("ContentManager/local", cm)
-            );
+        replay(_cm);
 
         // ACT
-        rs.createFolder(DTOs.<FolderDTO>dtoFrom(parent), "foo");
+        _rsi.createFolder(DTOs.<FolderDTO>dtoFrom(parent), "foo");
 
         // ASSERT
-        verify(cm);
+        verify(_cm);
         assertEquals(new ResourceName("foo"), actual.getValue().name());
     }
 
@@ -127,22 +117,14 @@ public final class ResourceServiceImplTest extends TestCase {
         parent.add(new Folder(new ResourceName("child")));
         parent.add(new Page(new ResourceName("page")));
         final FolderDTO parentDTO = DTOs.dtoFrom(parent);
-        final ContentManagerLocal cm =
-            createStrictMock(ContentManagerLocal.class);
-        expect(cm.lookup(parent.id())).andReturn(parent);
-        replay(cm);
-
-        final ResourceService rs =
-            new ResourceServiceImpl(
-                new MapRegistry()
-                    .put("ContentManager/local", cm)
-            );
+        expect(_cm.lookup(parent.id())).andReturn(parent);
+        replay(_cm);
 
         // ACT
-        final List<ResourceDTO> children = rs.getChildren(parentDTO);
+        final List<ResourceDTO> children = _rsi.getChildren(parentDTO);
 
         // ASSERT
-        verify(cm);
+        verify(_cm);
         assertEquals(2, children.size());
     }
 
@@ -156,22 +138,15 @@ public final class ResourceServiceImplTest extends TestCase {
         parent.add(new Folder(new ResourceName("child")));
         parent.add(new Page(new ResourceName("page")));
         final FolderDTO parentDTO = DTOs.dtoFrom(parent);
-        final ContentManagerLocal cm =
-            createStrictMock(ContentManagerLocal.class);
-        expect(cm.lookup(parent.id())).andReturn(parent);
-        replay(cm);
 
-        final ResourceService rs =
-            new ResourceServiceImpl(
-                new MapRegistry()
-                    .put("ContentManager/local", cm)
-            );
+        expect(_cm.lookup(parent.id())).andReturn(parent);
+        replay(_cm);
 
         // ACT
-        final List<FolderDTO> children = rs.getFolderChildren(parentDTO);
+        final List<FolderDTO> children = _rsi.getFolderChildren(parentDTO);
 
         // ASSERT
-        verify(cm);
+        verify(_cm);
         assertEquals(1, children.size());
     }
 
@@ -432,4 +407,72 @@ public final class ResourceServiceImplTest extends TestCase {
         assertEquals("name", actual.getValue().title());
         assertEquals(target.id(), actual.getValue().target().id());
     }
+
+    /**
+     * Test.
+     */
+    public void testNameExistsInFolder() {
+
+        // ARRANGE
+        final Page p = new Page(new ResourceName("foo"));
+        _root.add(p);
+
+        expect(_cm.lookup(_root.id())).andReturn(_root);
+        replay(_cm);
+
+        // ACT
+        final boolean shouldBeTrue =
+            _rsi.nameExistsInFolder(DTOs.<FolderDTO>dtoFrom(_root), "foo");
+
+        // ASSERT
+        verify(_cm);
+        assertTrue("Name should exist", shouldBeTrue);
+    }
+
+    /**
+     * Test.
+     */
+    public void testNameNotUsedInFolder() {
+
+        // ARRANGE
+        final Page p = new Page(new ResourceName("foo"));
+        _root.add(p);
+
+        expect(_cm.lookup(_root.id())).andReturn(_root);
+        replay(_cm);
+
+        // ACT
+        final boolean shouldBeFalse =
+            _rsi.nameExistsInFolder(DTOs.<FolderDTO>dtoFrom(_root), "bar");
+
+
+        // ASSERT
+        verify(_cm);
+        assertFalse("Name shouldn't exist", shouldBeFalse);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected void setUp() throws Exception {
+        _cm = createStrictMock(ContentManagerLocal.class);
+        _am = createStrictMock(AssetManagerLocal.class);
+        _rsi =
+            new ResourceServiceImpl(
+                new MapRegistry()
+                    .put("ContentManager/local", _cm)
+                    .put("AssetManager/local", _am)
+            );
+        _root = new Folder(PredefinedResourceNames.CONTENT);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected void tearDown() throws Exception {
+        _cm = null;
+        _am = null;
+        _rsi = null;
+        _root = null;
+    }
+
 }

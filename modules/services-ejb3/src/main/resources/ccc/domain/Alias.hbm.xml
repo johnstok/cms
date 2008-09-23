@@ -21,6 +21,6 @@
         name="ccc.domain.Alias" extends="ccc.domain.Resource">
         <key column="_id" />
 
-		<many-to-one name="_target" not-null="true" />
+		<many-to-one name="_target" not-null="true" lazy="false"/>
     </joined-subclass>
 </hibernate-mapping>
