@@ -12,7 +12,8 @@
 
 package ccc.content.server;
 
-import static ccc.commons.Strings.*;
+import static ccc.commons.Strings.nvl;
+import static ccc.commons.Strings.removeTrailing;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -24,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import ccc.commons.Maybe;
 import ccc.commons.Registry;
 import ccc.commons.Resources;
+import ccc.domain.Alias;
 import ccc.domain.CCCException;
 import ccc.domain.Folder;
 import ccc.domain.Page;
@@ -110,12 +112,17 @@ public final class ContentServlet extends CCCServlet {
      * type-specific write() method.
      * @throws ServletException
      */
-    private void handleResource(final HttpServletResponse resp,
+    void handleResource(final HttpServletResponse resp,
                                 final HttpServletRequest req,
                                 final Resource resource)
                          throws IOException, ServletException {
 
         switch (resource.type()) {
+
+            case ALIAS:
+                final Alias alias = resource.as(Alias.class);
+                handleResource(resp, req, alias.target());
+                break;
 
             case PAGE:
                 final Page page = resource.as(Page.class);

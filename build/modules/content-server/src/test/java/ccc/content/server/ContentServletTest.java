@@ -12,7 +12,10 @@
 
 package ccc.content.server;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -28,6 +31,7 @@ import junit.framework.TestCase;
 import ccc.commons.MapRegistry;
 import ccc.commons.Maybe;
 import ccc.commons.Resources;
+import ccc.domain.Alias;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
@@ -50,6 +54,42 @@ public final class ContentServletTest extends TestCase {
     private HttpServletResponse _response;
     private HttpServletRequest  _request;
     private ContentManagerLocal _cm;
+
+    /**
+     * Test.
+     * @throws ServletException
+     * @throws IOException
+     */
+    public void testHandleResourceHandlesAlias()
+        throws IOException, ServletException {
+
+        // ARRANGE
+        final StringWriter output = new StringWriter();
+        final ContentServlet cs =
+            new ContentServlet(
+                new MapRegistry(
+                    "ContentManager/local",
+                    _cm));
+        final Template t = new Template("foo", "bar", "baz");
+        final Page p = new Page(new ResourceName("bar"));
+        p.displayTemplateName(t);
+        final Alias a = new Alias(new ResourceName("foo"), p);
+
+        expect(_cm.lookupRoot()).andReturn(null);
+        cs.disableCachingFor(_response);
+        cs.configureCharacterEncoding(_response);
+        _response.setContentType("text/html");
+        expect(_response.getWriter()).andReturn(new PrintWriter(output));
+
+        replay(_response, _request, _cm);
+
+        // ACT
+        cs.handleResource(_response, _request, a);
+
+        // ASSERT
+        verify(_response, _request, _cm);
+
+    }
 
     /**
      * Test.
