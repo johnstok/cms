@@ -12,7 +12,12 @@
 
 package ccc.services.ejb3;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.capture;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +30,7 @@ import junit.framework.TestCase;
 import org.easymock.Capture;
 
 import ccc.commons.Maybe;
+import ccc.domain.Alias;
 import ccc.domain.CCCException;
 import ccc.domain.Folder;
 import ccc.domain.Page;
@@ -389,5 +395,34 @@ public final class ContentManagerEJBTest extends TestCase {
         assertEquals(1, page.paragraphs().size());
         assertEquals("foo", page.paragraphs().keySet().iterator().next());
         assertEquals("bar", page.paragraphs().get("foo").body());
+    }
+
+    /**
+     * Test.
+     */
+    public void testCreateAlias() {
+
+        // ARRANGE
+        final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
+        final Folder foo = new Folder(new ResourceName("foo"));
+        contentRoot.add(foo);
+        final Alias alias = new Alias(new ResourceName("bar"), foo);
+
+        final EntityManager em = createStrictMock(EntityManager.class);
+        expect(em.find(Resource.class, contentRoot.id()))
+            .andReturn(contentRoot);
+        em.persist(alias);
+        replay(em);
+
+        final ContentManagerLocal resourceMgr =
+            new ContentManagerEJB(em, new QueryManagerEJB(em));
+
+        // ACT
+        resourceMgr.create(contentRoot.id(), alias);
+
+        // VERIFY
+        verify(em);
+        assertEquals(2, contentRoot.size());
+        assertEquals(alias, contentRoot.entries().get(1));
     }
 }

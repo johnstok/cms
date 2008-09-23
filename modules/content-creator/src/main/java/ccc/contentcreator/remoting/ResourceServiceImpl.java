@@ -12,7 +12,7 @@
 
 package ccc.contentcreator.remoting;
 
-import static ccc.contentcreator.remoting.DTOs.*;
+import static ccc.contentcreator.remoting.DTOs.dtoFrom;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +24,13 @@ import ccc.commons.JNDI;
 import ccc.commons.Registry;
 import ccc.contentcreator.api.ResourceService;
 import ccc.contentcreator.api.Root;
+import ccc.contentcreator.dto.AliasDTO;
 import ccc.contentcreator.dto.DTO;
 import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.OptionDTO;
 import ccc.contentcreator.dto.ResourceDTO;
 import ccc.contentcreator.dto.TemplateDTO;
+import ccc.domain.Alias;
 import ccc.domain.CCCException;
 import ccc.domain.Folder;
 import ccc.domain.Resource;
@@ -269,5 +271,23 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
                     UUID.fromString(resourceDTO.getId()), selectedTemplate);
             }
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void createAlias(final AliasDTO aliasDTO) {
+        final Resource target =
+            contentManager().lookup(UUID.fromString(aliasDTO.getTargetId()));
+
+        if (target == null) {
+            throw new CCCException("Target does not exists.");
+        }
+
+        final Resource location =
+            contentManager().lookup(new ResourcePath("")).get();
+
+        contentManager().create(location.id(),
+            new Alias(new ResourceName(aliasDTO.getName()), target));
     }
 }

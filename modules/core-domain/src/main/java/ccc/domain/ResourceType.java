@@ -29,5 +29,8 @@ public enum ResourceType {
     TEMPLATE,
 
     /** FILE : ResourceType. */
-    FILE;
+    FILE,
+
+    /** ALIAS : ResourceType. */
+    ALIAS;
 }

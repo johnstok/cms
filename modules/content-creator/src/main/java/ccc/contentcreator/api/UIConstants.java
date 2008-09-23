@@ -234,4 +234,28 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
     @DefaultStringValue("Template")
     String template();
 
+    /**
+     * "Create Alias".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Create Alias")
+    String createAlias();
+
+    /**
+     * "Target".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Target")
+    String target();
+
+    /**
+     * "Name".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Name")
+    String name();
+
 }
