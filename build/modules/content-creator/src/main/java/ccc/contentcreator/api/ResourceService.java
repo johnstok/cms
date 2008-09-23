@@ -153,4 +153,14 @@ public interface ResourceService extends RemoteService {
      */
     void createAlias(final AliasDTO aliasDTO);
 
+    /**
+     * Query whether given folder has a resource with given name.
+     *
+     * @param folder The folder to check.
+     * @param name The name of the resource.
+     * @return Returns true in case folder has a resource with given name,
+     *  false otherwise.
+     */
+    boolean nameExistsInFolder(final FolderDTO folder, final String name);
+
 }

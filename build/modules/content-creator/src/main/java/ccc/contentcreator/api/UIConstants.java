@@ -258,4 +258,12 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
     @DefaultStringValue("Name")
     String name();
 
+    /**
+     * "Folder".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Folder")
+    String folder();
+
 }

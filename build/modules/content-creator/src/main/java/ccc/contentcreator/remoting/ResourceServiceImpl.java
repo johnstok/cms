@@ -290,4 +290,15 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
         contentManager().create(location.id(),
             new Alias(new ResourceName(aliasDTO.getName()), target));
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean nameExistsInFolder(final FolderDTO folderDTO,
+                                      final String name) {
+        final Folder folder =
+            contentManager().lookup(UUID.fromString(folderDTO.getId())).as(Folder.class);
+
+        return folder.hasEntryWithName(new ResourceName(name));
+    }
 }

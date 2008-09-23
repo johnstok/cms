@@ -425,4 +425,39 @@ public final class ContentManagerEJBTest extends TestCase {
         assertEquals(2, contentRoot.size());
         assertEquals(alias, contentRoot.entries().get(1));
     }
+
+    /**
+     * Test.
+     */
+    public void testCreateAliasFailsForDuplicates() {
+
+        // ARRANGE
+        final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
+        final Folder foo = new Folder(new ResourceName("foo"));
+        contentRoot.add(foo);
+        final Alias alias = new Alias(new ResourceName("bar"), foo);
+        contentRoot.add(alias);
+        final Alias aliasCopy = new Alias(new ResourceName("bar"), foo);
+
+        final EntityManager em = createStrictMock(EntityManager.class);
+        expect(em.find(Resource.class, contentRoot.id()))
+            .andReturn(contentRoot);
+        replay(em);
+
+        final ContentManagerLocal resourceMgr =
+            new ContentManagerEJB(em, new QueryManagerEJB(em));
+
+        // ACT
+        try {
+            resourceMgr.create(contentRoot.id(), aliasCopy);
+            fail("Alias creation should fail for duplicate name");
+
+        // ASSERT
+        } catch (final CCCException e) {
+            assertEquals("Folder already contains a resource with name 'bar'.",
+                e.getMessage());
+        }
+        verify(em);
+    }
+
 }
