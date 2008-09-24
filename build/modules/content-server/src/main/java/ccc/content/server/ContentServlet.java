@@ -131,14 +131,22 @@ public final class ContentServlet extends CCCServlet {
 
             case FOLDER:
                 final Folder folder = resource.as(Folder.class);
-                if (!folder.hasPages()) {
-                    dispatchNotFound(req, resp);
-                } else {
+
+
+                if (folder.hasAliases()) {
+                    String currentURI = req.getRequestURI();
+                    if (!currentURI.endsWith("/")) {
+                        currentURI = currentURI+"/";
+                    }
+                    resp.sendRedirect(currentURI + folder.firstAlias().name());
+                } else if (folder.hasPages()) {
                     String currentURI = req.getRequestURI();
                     if (!currentURI.endsWith("/")) {
                         currentURI = currentURI+"/";
                     }
                     resp.sendRedirect(currentURI + folder.firstPage().name());
+                } else {
+                    dispatchNotFound(req, resp);
                 }
                 break;
 

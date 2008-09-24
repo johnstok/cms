@@ -12,7 +12,7 @@
 
 package ccc.domain;
 
-import static java.util.Collections.*;
+import static java.util.Collections.unmodifiableList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ import ccc.commons.DBC;
  */
 public final class Folder extends Resource {
 
-    private List<Resource> _entries = new ArrayList<Resource>();
+    private final List<Resource> _entries = new ArrayList<Resource>();
 
     /**
      * Constructor.
@@ -295,5 +295,33 @@ public final class Folder extends Resource {
             }
         }
         return entries;
+    }
+
+    /**
+     * Query method to determine if this folder contains any aliases.
+     *
+     * @return true if the folder contains any aliases, false otherwise.
+     */
+    public boolean hasAliases() {
+        for (final Resource r : _entries) {
+            if (r.type().equals(ResourceType.ALIAS)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Accessor method for the first alias in this folder.
+     *
+     * @return The first alias in the list of entries.
+     */
+    public Alias firstAlias() {
+        for (final Resource r : _entries) {
+            if (r.type().equals(ResourceType.ALIAS)) {
+                return r.as(Alias.class);
+            }
+        }
+        throw new CCCException("No aliases in this folder.");
     }
 }
