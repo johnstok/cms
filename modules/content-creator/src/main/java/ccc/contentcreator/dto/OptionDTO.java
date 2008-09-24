@@ -23,8 +23,6 @@ import java.util.List;
  */
 public class OptionDTO<T extends DTO> implements Serializable {
 
-
-
     /**
      * Valid types for an {@link OptionDTO}.
      *

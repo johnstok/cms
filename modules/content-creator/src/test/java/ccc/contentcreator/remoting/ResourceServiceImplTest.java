@@ -11,14 +11,8 @@
  */
 package ccc.contentcreator.remoting;
 
-import static java.util.Arrays.asList;
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
+import static java.util.Arrays.*;
+import static org.easymock.EasyMock.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -318,7 +312,7 @@ public final class ResourceServiceImplTest extends TestCase {
         resourceService.createTemplate(
             new TemplateDTO(
                 null,
-                "TEMPLATE",
+                0,
                 "name",
                 "title",
                 "description",
@@ -397,7 +391,7 @@ public final class ResourceServiceImplTest extends TestCase {
         resourceService.createAlias(
             new AliasDTO(
                 null,
-                "ALIAS",
+                0,
                 "name",
                 "title",
                 target.id().toString()));

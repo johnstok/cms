@@ -33,7 +33,7 @@ public class OptionDTOTest extends TestCase {
         final TemplateDTO a =
             new TemplateDTO(
                 null,
-                "TEMPLATE",
+                0,
                 "a",
                 "a",
                 "a",
@@ -41,7 +41,7 @@ public class OptionDTOTest extends TestCase {
         final TemplateDTO b =
             new TemplateDTO(
                 null,
-                "TEMPLATE",
+                0,
                 "b",
                 "b",
                 "b",
@@ -90,7 +90,7 @@ public class OptionDTOTest extends TestCase {
         final TemplateDTO expected =
             new TemplateDTO(
                 null,
-                "TEMPLATE",
+                0,
                 "name",
                 "title",
                 "description",
@@ -116,7 +116,7 @@ public class OptionDTOTest extends TestCase {
         final TemplateDTO current =
             new TemplateDTO(
                 null,
-                "TEMPLATE",
+                0,
                 "name",
                 "title",
                 "description",
@@ -158,7 +158,7 @@ public class OptionDTOTest extends TestCase {
         final TemplateDTO a =
             new TemplateDTO(
                 null,
-                "TEMPLATE",
+                0,
                 "name",
                 "title",
                 "description",
@@ -166,7 +166,7 @@ public class OptionDTOTest extends TestCase {
         final TemplateDTO b =
             new TemplateDTO(
                 null,
-                "TEMPLATE",
+                0,
                 "name",
                 "title",
                 "description",

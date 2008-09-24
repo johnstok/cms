@@ -149,10 +149,10 @@ public class CreateContentTemplateDialog {
             );
     }
 
-    private TemplateDTO model() {
+    private TemplateDTO model() { // TODO: update to handle version correctly.
         return new TemplateDTO(
             _id,
-            "TEMPLATE",
+            -1,
             _templateTitle.model(),
             _templateTitle.model(),
             _description.model(),

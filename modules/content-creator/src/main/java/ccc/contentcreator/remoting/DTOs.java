@@ -19,6 +19,7 @@ import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.PageDTO;
 import ccc.contentcreator.dto.ResourceDTO;
 import ccc.contentcreator.dto.TemplateDTO;
+import ccc.domain.CCCException;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
@@ -76,12 +77,8 @@ public final class DTOs {
                 return (T) dtoFrom(resource.as(Template.class));
 
             default:
-                return (T) new ResourceDTO(
-                    resource.id().toString(),
-                    resource.type().toString(),
-                    resource.name().toString(),
-                    resource.title()
-                );
+                throw new CCCException(
+                    "Cannot convert resource of type "+resource.type());
         }
     }
 
@@ -99,7 +96,7 @@ public final class DTOs {
         final TemplateDTO dto =
             new TemplateDTO(
                 template.id().toString(),
-                template.type().toString(),
+                template.version(),
                 template.name().toString(),
                 template.title(),
                 template.description(),
@@ -117,7 +114,7 @@ public final class DTOs {
 
         return new FolderDTO(
             f.id().toString(),
-            f.type().toString(),
+            f.version(),
             f.name().toString(),
             f.title(),
             f.folderCount()
@@ -140,7 +137,7 @@ public final class DTOs {
         }
         return new PageDTO(
             p.id().toString(),
-            p.type().toString(),
+            p.version(),
             p.name().toString(),
             p.title(),
             paragraphs
