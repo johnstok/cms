@@ -24,6 +24,23 @@ public class AliasTest extends TestCase {
     /**
      * Test.
      */
+    public void testCreateAliasWithTitle() {
+
+        // ARRANGE
+        final Page p = new Page(new ResourceName("foo"));
+
+        // ACT
+        final Alias alias = new Alias("bar", p);
+
+        // ASSERT
+        assertEquals(p, alias.target());
+        assertEquals("bar", alias.title());
+        assertEquals(new ResourceName("bar"), alias.name());
+    }
+
+    /**
+     * Test.
+     */
     public void testTypeReturnsAlias() {
 
         // ACT
@@ -36,7 +53,7 @@ public class AliasTest extends TestCase {
     /**
      * Test.
      */
-    public void testCreateAlias() {
+    public void testCreateAliasWithName() {
 
         // ARRANGE
         final Page p = new Page(new ResourceName("foo"));

@@ -1,27 +1,148 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2008 Civic Computing Ltd
+ * Copyright (c) 2008 Civic Computing Ltd.
  * All rights reserved.
  *
  * Revision      $Rev$
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log
+ * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
 package ccc.domain;
 
 import junit.framework.TestCase;
+import ccc.commons.Testing;
 
 
 /**
  * Tests for the {@link Resource} class.
  *
- * TODO: Test titles > 256 are disallowed.
- *
- * @author Civic Computing Ltd
+ * @author Civic Computing Ltd.
  */
 public final class ResourceTest extends TestCase {
+
+    /**
+     * Test.
+     */
+    public void testNameMutatorRejectsNull() {
+        // ACT
+        try {
+            final Resource r =
+                new Resource("foo"){
+                    @Override public ResourceType type() { return null; }
+                };
+            r.name((ResourceName) null);
+            fail("Null should be rejected.");
+
+        // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals("Specified value may not be NULL.", e.getMessage());
+        }
+    }
+
+    /**
+     * Test.
+     */
+    public void testTitleslongerThan256AreRejectedByFullConstructor() {
+
+        // ARRANGE
+        final String tooLongTitle = Testing.dummyString('a', 257);
+
+        // ACT
+        try {
+            new Resource(new ResourceName("x"), tooLongTitle) {
+                @Override public ResourceType type() { return null; }
+            };
+            fail("Title should be rejected - too long.");
+
+        // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Specified string exceeds max length of 256.",
+                e.getMessage());
+        }
+    }
+
+    /**
+     * Test.
+     */
+    public void testTitleslongerThan256AreRejected() {
+
+        // ARRANGE
+        final String tooLongTitle = Testing.dummyString('a', 257);
+
+        // ACT
+        try {
+            new Resource(tooLongTitle){
+                @Override public ResourceType type() { return null; }
+            };
+            fail("Title should be rejected - too long.");
+
+        // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Specified string exceeds max length of 256.",
+                e.getMessage());
+        }
+    }
+
+    /**
+     * Test.
+     */
+    public void testTitleslongerThan256AreRejectedByMutator() {
+
+        // ARRANGE
+        final String tooLongTitle = Testing.dummyString('a', 257);
+
+        // ACT
+        try {
+            final Resource r =
+                new Resource("foo"){
+                    @Override public ResourceType type() { return null; }
+                };
+            r.title(tooLongTitle);
+            fail("Title should be rejected - too long.");
+
+        // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Specified string exceeds max length of 256.",
+                e.getMessage());
+        }
+    }
+
+    /**
+     * Test.
+     */
+    public void testTitleOnlyConstructor() {
+        // ACT
+        final Resource r =
+            new Resource("foo?"){
+                @Override public ResourceType type() { return null; }
+            };
+
+        // ASSERT
+        assertEquals(new ResourceName("foo_"), r.name());
+        assertEquals("foo?", r.title());
+    }
+
+    /**
+     * Test.
+     */
+    public void testTitleOnlyConstructorRejectsNull() {
+        // ACT
+        try {
+            new Resource((String) null){
+                @Override public ResourceType type() { return null; }
+            };
+            fail("Null should be rejected.");
+
+        // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals("Specified value may not be NULL.", e.getMessage());
+        }
+    }
 
     /**
      * Test.

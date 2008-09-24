@@ -32,12 +32,22 @@ public final class Page extends Resource {
     private SortedMap<String, Paragraph> _content =
         new TreeMap<String, Paragraph>(new AlphanumComparator());
 
+
     /**
      * Constructor.
      * N.B. This constructor should only be used for persistence.
      */
     @SuppressWarnings("unused")
     protected Page() { super(); }
+
+    /**
+     * Constructor.
+     *
+     * @param title The title for the resource.
+     */
+    public Page(final String title) {
+        super(title);
+    }
 
     /**
      * Constructor.
@@ -57,6 +67,7 @@ public final class Page extends Resource {
     public Page(final ResourceName name, final String title) {
         super(name, title);
     }
+
 
     /**
      * {@inheritDoc}

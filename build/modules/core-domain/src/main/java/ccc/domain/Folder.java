@@ -12,7 +12,7 @@
 
 package ccc.domain;
 
-import static java.util.Collections.unmodifiableList;
+import static java.util.Collections.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +43,15 @@ public final class Folder extends Resource {
      */
     public Folder(final ResourceName name) {
         super(name);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param title The title for this resource.
+     */
+    public Folder(final String title) {
+        super(title);
     }
 
     /**

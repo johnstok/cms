@@ -22,6 +22,8 @@ import static ccc.commons.DBC.*;
  */
 public abstract class Resource extends Entity {
 
+    private static final int MAXIMUM_TITLE_LENGTH = 256;
+
     private String       _title    = id().toString();
     private ResourceName _name     = ResourceName.escape(_title);
     private Template     _template = null;
@@ -55,8 +57,20 @@ public abstract class Resource extends Entity {
                        final String title) {
         require().notNull(name);
 
-        _name = name;
+        name(name);
         title(title);
+    }
+
+    /**
+     * Constructor.
+     * The title parameter is escaped via {@link ResourceName#escape(String)} to
+     * determine the resource's name.
+     *
+     * @param title The title of this resource, as a string.
+     */
+    public Resource(final String title) {
+        title(title);
+        name(ResourceName.escape(title));
     }
 
     /**
@@ -104,6 +118,7 @@ public abstract class Resource extends Entity {
      */
     public void title(final String titleString) {
         require().notEmpty(titleString);
+        require().maxLength(titleString, MAXIMUM_TITLE_LENGTH);
         _title = titleString;
     }
 
@@ -170,5 +185,15 @@ public abstract class Resource extends Entity {
             (null==parent())
                 ? new ResourcePath(name())
                 : parent().absolutePath().append(name());
+    }
+
+    /**
+     * Mutator for the name field.
+     *
+     * @param resourceName The new resource name.
+     */
+    void name(final ResourceName resourceName) {
+        require().notNull(resourceName);
+        _name = resourceName;
     }
 }

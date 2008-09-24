@@ -28,6 +28,19 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      */
+    public void testCreateFolderWithTitle() {
+
+        // ACT
+        final Folder actual = new Folder("foo");
+
+        // ASSERT
+        assertEquals("foo", actual.title());
+        assertEquals(new ResourceName("foo"), actual.name());
+    }
+
+    /**
+     * Test.
+     */
     public void testFolders() {
 
             // ARRANGE
