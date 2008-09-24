@@ -53,4 +53,20 @@ public final class Testing {
                     }
                 }));
     }
+
+    /**
+     * Create a dummy string by repeating the specified character, 'length'
+     * times.
+     *
+     * @param c The character to repeat.
+     * @param length The length of the string.
+     * @return The dummy string 'c*length'.
+     */
+    public static String dummyString(final char c, final int length) {
+        final StringBuilder dummyString = new StringBuilder();
+        for (int i=0; i<length; i++) {
+            dummyString.append(c);
+        }
+        return dummyString.toString();
+    }
 }

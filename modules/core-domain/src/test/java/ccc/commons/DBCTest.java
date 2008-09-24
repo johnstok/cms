@@ -26,6 +26,33 @@ public final class DBCTest extends TestCase {
     /**
      * Test.
      */
+    public void testMaxLength() {
+
+        // ACT
+        require().maxLength("a", 1);
+        require().maxLength("aa", 2);
+        require().maxLength(" a", 2);
+        require().maxLength("a ", 2);
+        require().maxLength("  ", 2);
+        require().maxLength("", 0);
+        require().maxLength(" ", 1);
+        require().maxLength("", Integer.MAX_VALUE);
+
+        try {
+            require().maxLength("aa", 1);
+            fail("String should be rejected - too long.");
+
+        // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Specified string exceeds max length of 1.",
+                e.getMessage());
+        }
+    }
+
+    /**
+     * Test.
+     */
     public void testToBeFalse() {
 
         // ACT

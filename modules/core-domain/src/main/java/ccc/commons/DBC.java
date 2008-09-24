@@ -57,13 +57,12 @@ public final class DBC {
      * Assert that the specified string is not empty. A string is considered
      * empty if either 1. It is NULL or 2. It has a length of 0.
      *
+     * TODO: Rename to minLength and remove notNull test?
+     *
      * @param string The string that may not be empty.
      */
     public void notEmpty(final String string) {
-        if (null==string) {
-            throw new IllegalArgumentException(
-                "Specified string may not be NULL."); //$NON-NLS-1$
-        }
+        notNull(string);
         if (string.trim().length() < 1) {
             throw new IllegalArgumentException(
                 "Specified string must have length > 0."); //$NON-NLS-1$
@@ -91,6 +90,19 @@ public final class DBC {
         if (!condition) {
             throw new IllegalArgumentException(
                 "Specified expression must be true.");
+        }
+    }
+
+    /**
+     * Assert that the specified string is not longer than the specified length.
+     *
+     * @param stringToTest The string to test.
+     * @param maximumLength The length it should not exceed.
+     */
+    public void maxLength(final String stringToTest, final int maximumLength) {
+        if (stringToTest.length() > maximumLength) {
+            throw new IllegalArgumentException(
+                "Specified string exceeds max length of "+maximumLength+".");
         }
     }
 }
