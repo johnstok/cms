@@ -23,24 +23,24 @@ public class FolderDTO extends ResourceDTO {
 
 
     @SuppressWarnings("unused") // Required for GWT
-    private FolderDTO() { super(null, null, null, null); }
+    private FolderDTO() { super(null, null, null); }
 
     /**
      * Constructor.
      *
-     * @param title The title of the resource.
      * @param id The uuid for the resource.
+     * @param version The version of the resource.
      * @param name The name of the resource.
-     * @param type The type of the resource.
+     * @param title The title of the resource.
      * @param folderCount The number of folder contained by this folder.
      */
     public FolderDTO(final String id,
-                     final String type,
+                     final int version,
                      final String name,
                      final String title,
                      final int folderCount) {
 
-        super(id, type, name, title);
+        super(id, version, "FOLDER", name, title);
         set("folderCount", folderCount);
     }
 

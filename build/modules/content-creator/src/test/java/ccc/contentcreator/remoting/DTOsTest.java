@@ -35,7 +35,7 @@ public class DTOsTest extends TestCase {
         final TemplateDTO dto =
             new TemplateDTO(
                 id.toString(),
-                "TEMPLATE",
+                0,
                 "name",
                 "title",
                 "description",

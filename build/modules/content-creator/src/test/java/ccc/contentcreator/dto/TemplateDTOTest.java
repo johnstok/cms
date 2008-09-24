@@ -38,7 +38,7 @@ public class TemplateDTOTest extends TestCase {
         final TemplateDTO dto =
             new TemplateDTO(
                 id,
-                "TEMPLATE",
+                0,
                 "name",
                 title,
                 description,

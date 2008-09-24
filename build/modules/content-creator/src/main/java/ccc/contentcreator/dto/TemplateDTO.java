@@ -27,25 +27,25 @@ public class TemplateDTO extends ResourceDTO {
 
 
     @SuppressWarnings("unused") // Required for GWT
-    private TemplateDTO() { super(null, null, null, null); }
+    private TemplateDTO() { super(null, null, null); }
 
     /**
      * Constructor.
      *
      * @param id The uuid for the resource.
-     * @param type The type of the resource.
+     * @param version The version of the resource.
      * @param name The name of the resource.
      * @param title The title of the resource.
      * @param description The description of the template.
      * @param body The body of the display template.
      */
     public TemplateDTO(final String id,
-                       final String type,
+                       final int version,
                        final String name,
                        final String title,
                        final String description,
                        final String body) {
-        super(id, type, name, title);
+        super(id, version, "TEMPLATE", name, title);
         set("description", description);
         set("body", body);
     }

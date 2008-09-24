@@ -25,18 +25,43 @@ public class ResourceDTO extends BaseModelData implements DTO {
 
     /**
      * Constructor.
+     * This constructor requires values for id and version fields, it can
+     * be used to represent persisted (existing) resources.
      *
-     * @param title The title of the resource.
      * @param id The uuid for the resource.
+     * @param version The version of the resource.
+     * @param title The title of the resource.
      * @param name The name of the resource.
      * @param type The type of the resource.
      */
     public ResourceDTO(final String id,
+                       final int version,
                        final String type,
                        final String name,
                        final String title) {
 
         set("id", id);
+        set("version", version);
+        set("type", type);
+        set("name", name);
+        set("title", title);
+    }
+
+    /**
+     * Constructor.
+     * This constructor will set empty values for id and version fields, it can
+     * be used to represent unpersisted (new) resources.
+     *
+     * @param title The title of the resource.
+     * @param name The name of the resource.
+     * @param type The type of the resource.
+     */
+    public ResourceDTO(final String type,
+                       final String name,
+                       final String title) {
+
+        set("id", null);
+        set("version", -1);
         set("type", type);
         set("name", name);
         set("title", title);

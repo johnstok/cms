@@ -128,8 +128,6 @@ public class CreateAliasDialog extends Window implements ApplicationDialog {
                                             CreateAliasDialog.this);
                                     app.lookupService().createAlias(
                                         new AliasDTO(
-                                            null,
-                                            "ALIAS",
                                             _aliasName.getValue(),
                                             _aliasName.getValue(),
                                             _target.getId()),
