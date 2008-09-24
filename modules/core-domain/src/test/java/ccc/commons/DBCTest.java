@@ -110,7 +110,7 @@ public final class DBCTest extends TestCase {
             require().notEmpty(null);
             fail("NULL should be rejected.");
         } catch (final IllegalArgumentException e) {
-            assertEquals("Specified string may not be NULL.", e.getMessage());
+            assertEquals("Specified value may not be NULL.", e.getMessage());
         }
 
         try {
