@@ -276,7 +276,8 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     /**
      * {@inheritDoc}
      */
-    public void createAlias(final AliasDTO aliasDTO) {
+    public void createAlias(final FolderDTO folderDTO,
+                            final AliasDTO aliasDTO) {
         final Resource target =
             contentManager().lookup(UUID.fromString(aliasDTO.getTargetId()));
 
@@ -284,10 +285,14 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
             throw new CCCException("Target does not exists.");
         }
 
-        final Resource location =
-            contentManager().lookup(new ResourcePath("")).get();
+        final Resource parent =
+            contentManager().lookup(UUID.fromString(folderDTO.getId()));
 
-        contentManager().create(location.id(),
+        if (parent == null) {
+            throw new CCCException("Parent does not exists.");
+        }
+
+        contentManager().create(parent.id(),
             new Alias(new ResourceName(aliasDTO.getName()), target));
     }
 
@@ -297,7 +302,8 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     public boolean nameExistsInFolder(final FolderDTO folderDTO,
                                       final String name) {
         final Folder folder =
-            contentManager().lookup(UUID.fromString(folderDTO.getId())).as(Folder.class);
+            contentManager().lookup(
+                UUID.fromString(folderDTO.getId())).as(Folder.class);
 
         return folder.hasEntryWithName(new ResourceName(name));
     }

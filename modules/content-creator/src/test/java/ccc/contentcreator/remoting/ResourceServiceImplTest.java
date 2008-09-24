@@ -376,9 +376,8 @@ public final class ResourceServiceImplTest extends TestCase {
         final ContentManagerLocal cm = createMock(ContentManagerLocal.class);
         final Capture<Alias> actual = new Capture<Alias>();
 
-        expect(cm.lookup(new ResourcePath(""))).
-            andReturn(new Maybe<Resource>(root));
         expect(cm.lookup(target.id())).andReturn(target);
+        expect(cm.lookup(root.id())).andReturn(root);
 
         cm.create(eq(root.id()), capture(actual));
         replay(cm);
@@ -389,6 +388,7 @@ public final class ResourceServiceImplTest extends TestCase {
 
         // ACT
         resourceService.createAlias(
+           DTOs.<FolderDTO>dtoFrom(root),
             new AliasDTO(
                 null,
                 0,

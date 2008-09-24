@@ -149,9 +149,10 @@ public interface ResourceService extends RemoteService {
     /**
      * Create a new alias in CCC.
      *
+     * @param folderDTO The parent folder for the new alias.
      * @param aliasDTO Details of the new alias to create.
      */
-    void createAlias(final AliasDTO aliasDTO);
+    void createAlias(final FolderDTO folderDTO, final AliasDTO aliasDTO);
 
     /**
      * Query whether given folder has a resource with given name.
