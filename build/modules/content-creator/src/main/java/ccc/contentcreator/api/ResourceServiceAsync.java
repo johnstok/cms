@@ -114,19 +114,14 @@ public interface ResourceServiceAsync {
                                 AsyncCallback<Void> callback);
 
     /**
-     * TODO: Add a description of this method.
-     *
-     * @param aliasDTO
-     * @param callback
+     * @see ResourceService#createAlias(FolderDTO, AliasDTO)
      */
-    void createAlias(AliasDTO aliasDTO, AsyncCallback<Void> callback);
+    void createAlias(FolderDTO folderDTO,
+                     AliasDTO aliasDTO,
+                     AsyncCallback<Void> callback);
 
     /**
-     * TODO: Add a description of this method.
-     *
-     * @param folderDTO
-     * @param name
-     * @param callback
+     * @see ResourceService#nameExistsInFolder(FolderDTO, String)
      */
     void nameExistsInFolder(FolderDTO folderDTO,
                             String name,

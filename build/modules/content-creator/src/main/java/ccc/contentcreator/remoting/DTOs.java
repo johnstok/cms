@@ -15,10 +15,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import ccc.contentcreator.dto.AliasDTO;
 import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.PageDTO;
 import ccc.contentcreator.dto.ResourceDTO;
 import ccc.contentcreator.dto.TemplateDTO;
+import ccc.domain.Alias;
 import ccc.domain.CCCException;
 import ccc.domain.Folder;
 import ccc.domain.Page;
@@ -75,6 +77,9 @@ public final class DTOs {
 
             case TEMPLATE:
                 return (T) dtoFrom(resource.as(Template.class));
+
+            case ALIAS:
+                return (T) dtoFrom(resource.as(Alias.class));
 
             default:
                 throw new CCCException(
@@ -141,6 +146,23 @@ public final class DTOs {
             p.name().toString(),
             p.title(),
             paragraphs
+        );
+    }
+
+    /**
+     * Create a DTO for an alias resource.
+     *
+     * @param a The Alias.
+     * @return The DTO.
+     */
+    private static AliasDTO dtoFrom(final Alias a) {
+
+        return new AliasDTO(
+            a.id().toString(),
+            a.version(),
+            a.name().toString(),
+            a.title(),
+            a.target().id().toString()
         );
     }
 

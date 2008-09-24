@@ -17,6 +17,7 @@ import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.dto.AliasDTO;
+import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.ResourceDTO;
 
 import com.extjs.gxt.ui.client.Events;
@@ -44,7 +45,9 @@ public class CreateAliasDialog extends Window implements ApplicationDialog {
     private final TextField<String> _aliasName = new TextField<String>();
     private final TriggerField<String> _parentFolder =
         new TriggerField<String>();
+
     private final ResourceDTO _target;
+    private FolderDTO _parent = null;
     private final UIConstants _constants;
 
     /**
@@ -88,8 +91,8 @@ public class CreateAliasDialog extends Window implements ApplicationDialog {
                     folderSelect.addListener(Events.Close,
                         new Listener<ComponentEvent>() {
                         public void handleEvent(final ComponentEvent be) {
-                            _parentFolder.setValue(
-                                folderSelect.selectedFolder().getName());
+                            _parent = folderSelect.selectedFolder();
+                            _parentFolder.setValue(_parent.getName());
                         }});
                     folderSelect.show();
                 }});
@@ -114,7 +117,7 @@ public class CreateAliasDialog extends Window implements ApplicationDialog {
                 @Override
                 public void componentSelected(final ButtonEvent ce) {
                     app.lookupService().nameExistsInFolder(
-                        null, // Need a folder
+                        _parent,
                         _aliasName.getValue(),
                         new ErrorReportingCallback<Boolean>(app){
                             public void onSuccess(final Boolean nameExists) {
@@ -127,6 +130,7 @@ public class CreateAliasDialog extends Window implements ApplicationDialog {
                                             app,
                                             CreateAliasDialog.this);
                                     app.lookupService().createAlias(
+                                        _parent,
                                         new AliasDTO(
                                             _aliasName.getValue(),
                                             _aliasName.getValue(),
