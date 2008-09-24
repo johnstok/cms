@@ -435,4 +435,45 @@ public final class FolderTest extends TestCase {
                 e.getMessage());
         }
     }
+
+    /**
+     * Test.
+     */
+    public void testHasAliases() {
+
+        // ARRANGE
+        final Folder noAliases = new Folder(new ResourceName("content"));
+        final Folder withAliases = new Folder(new ResourceName("content"));
+        final Page ab = new Page(new ResourceName("ab"));
+        final Alias cd = new Alias(new ResourceName("cd"), ab);
+        noAliases.add(ab);
+        withAliases.add(cd);
+
+        // ACT
+        final boolean hasAliases = withAliases.hasAliases();
+        final boolean hasNoAliases = !noAliases.hasAliases();
+
+        // ASSERT
+        assertTrue("hasAliases should be true", hasAliases);
+        assertTrue("hasNoAliases should be true", hasNoAliases);
+    }
+
+    /**
+     * Test.
+     */
+    public void testFirstAlias() {
+
+        // ARRANGE
+        final Folder pages = new Folder(new ResourceName("content"));
+        final Page ab = new Page(new ResourceName("ab"));
+        final Alias cd = new Alias(new ResourceName("cd"), ab);
+        pages.add(ab);
+        pages.add(cd);
+
+        // ACT
+        final Alias firstChild = pages.firstAlias();
+
+        // ASSERT
+        assertEquals(cd, firstChild);
+    }
 }
