@@ -11,9 +11,11 @@
  */
 package ccc.domain;
 
+import ccc.commons.DBC;
+
 
 /**
- * TODO Add Description for this type.
+ * A template is used to define how a resource will be displayed.
  *
  * @author Civic Computing Ltd
  */
@@ -40,7 +42,7 @@ public class Template extends Resource {
                     final String description,
                     final String body) {
 
-        super(ResourceName.escape(title), title);
+        super(title);
         _description = description;
         _body = body;
     }
@@ -77,6 +79,7 @@ public class Template extends Resource {
      * @param description The new description.
      */
     public void description(final String description) {
+        DBC.require().notEmpty(description);
         _description = description;
     }
 
@@ -86,6 +89,7 @@ public class Template extends Resource {
      * @param body The new body.
      */
     public void body(final String body) {
+        DBC.require().notEmpty(body);
         _body = body;
     }
 }

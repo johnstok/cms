@@ -29,6 +29,18 @@ public final class PageTest extends TestCase {
      * Test.
      */
     public void testConstructorCanGenerateName() {
+        // ACT
+        final Page page = new Page("foo");
+
+        // ASSERT
+        assertEquals("foo", page.title());
+        assertEquals(new ResourceName("foo"), page.name());
+    }
+
+    /**
+     * Test.
+     */
+    public void testConstructorCanGenerateTitle() {
 
         // ARRANGE
         final ResourceName name = new ResourceName("foo");
@@ -83,7 +95,7 @@ public final class PageTest extends TestCase {
     public void testConstructorRejectsEmptyNames() {
         // ACT
         try {
-            new Page(null);
+            new Page((ResourceName)null);
             fail("Resources should reject NULL for the name parameter.");
 
          // ASSERT
