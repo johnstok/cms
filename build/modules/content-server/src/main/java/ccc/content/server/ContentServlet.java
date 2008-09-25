@@ -12,8 +12,7 @@
 
 package ccc.content.server;
 
-import static ccc.commons.Strings.nvl;
-import static ccc.commons.Strings.removeTrailing;
+import static ccc.commons.Strings.*;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -31,6 +30,7 @@ import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
+import ccc.domain.Template;
 
 
 /**
@@ -42,6 +42,22 @@ import ccc.domain.ResourcePath;
  */
 public final class ContentServlet extends CCCServlet {
 
+
+    private static final Template BUILT_IN_PAGE_TEMPLATE =
+        new Template(
+            "BUILT_IN_PAGE_TEMPLATE",
+            "BUILT_IN_PAGE_TEMPLATE",
+            Resources.readIntoString(
+                ContentServlet.class.getResource("default-page-template.txt"),
+                Charset.forName("UTF-8")));
+
+    private static final Template BUILT_IN_FOLDER_TEMPLATE =
+        new Template(
+            "BUILT_IN_FOLDER_TEMPLATE",
+            "BUILT_IN_FOLDER_TEMPLATE",
+            Resources.readIntoString(
+                ContentServlet.class.getResource("default-folder-template.txt"),
+                Charset.forName("UTF-8")));
 
     /**
      * Constructor.
@@ -241,12 +257,9 @@ public final class ContentServlet extends CCCServlet {
 
         switch (resource.type()) {
             case PAGE:
-                return resource.computeTemplate().body();
+                return resource.computeTemplate(BUILT_IN_PAGE_TEMPLATE).body();
             case FOLDER:
-                return
-                Resources.readIntoString(
-                    getClass().getResource("default-folder-template.txt"),
-                    Charset.forName("ISO-8859-1"));
+                return BUILT_IN_FOLDER_TEMPLATE.body();
             default:
                 throw new CCCException(
                     "Unsupported resource type: "+resource.type());
