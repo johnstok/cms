@@ -22,6 +22,8 @@ import ccc.commons.Testing;
  */
 public final class ResourceTest extends TestCase {
 
+    final Template _default = new Template();
+
     /**
      * Test.
      */
@@ -164,7 +166,7 @@ public final class ResourceTest extends TestCase {
     /**
      * Test.
      */
-    public void testComputeTemplateReturnsNullWhenNoTemplateIsFound() {
+    public void testComputeTemplateReturnsDefaultWhenNoTemplateIsFound() {
 
         // ARRANGE
         final Folder f1 = new Folder();
@@ -175,11 +177,11 @@ public final class ResourceTest extends TestCase {
         f1.add(r);
 
         // ACT
-        final Template actual = r.computeTemplate();
+        final Template actual = r.computeTemplate(_default);
 
         // ASSERT
-        assertNull("Should be null.", actual);
-        assertNull("Should be null.", new Page().computeTemplate());
+        assertSame(_default, actual);
+        assertSame(_default, new Page().computeTemplate(_default));
     }
 
     /**
@@ -203,7 +205,7 @@ public final class ResourceTest extends TestCase {
         f1.add(r);
 
         // ACT
-        final Template actual = r.computeTemplate();
+        final Template actual = r.computeTemplate(_default);
 
         // ASSERT
         assertEquals(t3, actual);
@@ -224,7 +226,7 @@ public final class ResourceTest extends TestCase {
         f2.displayTemplateName(t);
 
         // ACT
-        final Template actual = r.computeTemplate();
+        final Template actual = r.computeTemplate(_default);
 
         // ASSERT
         assertEquals(t, actual);

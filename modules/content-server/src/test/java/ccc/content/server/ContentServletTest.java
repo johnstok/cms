@@ -12,10 +12,7 @@
 
 package ccc.content.server;
 
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
+import static org.easymock.EasyMock.*;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -117,7 +114,7 @@ public final class ContentServletTest extends TestCase {
         // ARRANGE
         final String body =
             Resources.readIntoString(
-                getClass().getResource("default-content-template.txt"),
+                getClass().getResource("default-page-template.txt"),
                 Charset.forName("ISO-8859-1"));
         final Template t =
             new Template(
@@ -168,7 +165,7 @@ public final class ContentServletTest extends TestCase {
         final StringWriter output = new StringWriter();
         final String body =
             Resources.readIntoString(
-                getClass().getResource("default-content-template.txt"),
+                getClass().getResource("default-page-template.txt"),
                 Charset.forName("ISO-8859-1"));
         final Template t =
             new Template(
@@ -266,7 +263,7 @@ public final class ContentServletTest extends TestCase {
         final StringWriter output = new StringWriter();
         final String body =
             Resources.readIntoString(
-                getClass().getResource("default-content-template.txt"),
+                getClass().getResource("default-page-template.txt"),
                 Charset.forName("ISO-8859-1"));
         final Template t = new Template("foo", "bar", body);
         final Page p =

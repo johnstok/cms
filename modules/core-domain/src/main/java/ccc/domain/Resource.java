@@ -162,17 +162,17 @@ public abstract class Resource extends Entity {
     /**
      * Determine the template for this resource. Iterates up the parent
      * hierarchy if necessary.
-     * TODO: Update the signature to allow a default to be supplied?
      *
+     * @param def The default template to use if we cannot compute one.
      * @return The template or null if none is found.
      */
-    public Template computeTemplate() {
+    public Template computeTemplate(final Template def) {
         return
             (null!=_template)
             ? displayTemplateName()
             : (null!=_parent)
-              ? _parent.computeTemplate()
-              : null;
+              ? _parent.computeTemplate(def)
+              : def;
     }
 
     /**
