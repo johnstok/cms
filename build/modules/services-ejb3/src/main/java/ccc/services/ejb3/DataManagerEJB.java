@@ -21,17 +21,22 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 
 import ccc.commons.DBC;
 import ccc.commons.IO;
 import ccc.domain.CCCException;
 import ccc.domain.Data;
+import ccc.domain.File;
+import ccc.domain.Folder;
 import ccc.services.DataManagerLocal;
 
 
@@ -51,6 +56,9 @@ public class DataManagerEJB implements DataManagerLocal {
     @Resource(mappedName = "java:/ccc")
     private DataSource _datasource;
 
+    @PersistenceContext(unitName = "ccc-persistence")
+    private EntityManager _entityManager;
+
     /**
      * Constructor.
      */
@@ -61,11 +69,24 @@ public class DataManagerEJB implements DataManagerLocal {
      * Constructor.
      *
      * @param ds The JDBC datasource used to manage data.
+     * @param em The entityManager used to persist domain objects.
      */
-    public DataManagerEJB(final DataSource ds) {
-
+    public DataManagerEJB(final DataSource ds, final EntityManager em) {
         DBC.require().notNull(ds);
+        DBC.require().notNull(em);
         _datasource = ds;
+        _entityManager = em;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void createFile(final File file,
+                           final UUID parentId,
+                           final InputStream dataStream) {
+        _entityManager.persist(file);
+        final Folder folder = _entityManager.find(Folder.class, parentId);
+        folder.add(file);
+        create(file.fileData(), dataStream);
     }
 
     /** {@inheritDoc} */

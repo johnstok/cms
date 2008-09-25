@@ -14,7 +14,6 @@ package ccc.services;
 import java.util.List;
 import java.util.UUID;
 
-import ccc.domain.File;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 import ccc.domain.Template;
@@ -65,14 +64,6 @@ interface AssetManager {
      * @return A list of templates available in the CCC.
      */
     List<Template> lookupTemplates();
-
-    /**
-     * Create a file.
-     *
-     * @param file The File to persists.
-     * @param path The unique id of the folder acting as a parent for file.
-     */
-    void createFile(File file, final UUID path);
 
     /**
      * Create or retrieve a template. First try to look up this template, if it

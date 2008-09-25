@@ -12,7 +12,7 @@
 
 package ccc.contentcreator.remoting;
 
-import static ccc.contentcreator.remoting.DTOs.dtoFrom;
+import static ccc.contentcreator.remoting.DTOs.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,10 +112,19 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     /**
      * {@inheritDoc}
      */
-    public ResourceDTO getResource(final String absolutePath) {
-        final Resource resource =
-            contentManager().lookup(UUID.fromString(absolutePath));
+    public ResourceDTO getResource(final String resourceId) {
+        final Resource resource = lookupContent(resourceId);
         return DTOs.dtoFrom(resource);
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param resourceId
+     * @return
+     */
+    private <T extends Resource> T lookupContent(final String resourceId) {
+        return (T) contentManager().lookup(UUID.fromString(resourceId));
     }
 
     /**
@@ -151,12 +160,7 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
      * {@inheritDoc}
      */
     public List<TemplateDTO> listTemplates() {
-        final List<TemplateDTO> dtos = new ArrayList<TemplateDTO>();
-        final List<Template> templates = assetManager().lookupTemplates();
-        for (final Template template : templates) {
-            dtos.add(dtoFrom(template));
-        }
-        return dtos;
+        return dtoFrom(assetManager().lookupTemplates());
     }
 
     /**
@@ -278,16 +282,13 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
      */
     public void createAlias(final FolderDTO folderDTO,
                             final AliasDTO aliasDTO) {
-        final Resource target =
-            contentManager().lookup(UUID.fromString(aliasDTO.getTargetId()));
 
+        final Resource target = lookupContent(aliasDTO.getTargetId());
         if (target == null) {
             throw new CCCException("Target does not exists.");
         }
 
-        final Resource parent =
-            contentManager().lookup(UUID.fromString(folderDTO.getId()));
-
+        final Resource parent = lookupContent(folderDTO.getId());
         if (parent == null) {
             throw new CCCException("Parent does not exists.");
         }
@@ -301,10 +302,7 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
      */
     public boolean nameExistsInFolder(final FolderDTO folderDTO,
                                       final String name) {
-        final Folder folder =
-            contentManager().lookup(
-                UUID.fromString(folderDTO.getId())).as(Folder.class);
-
+        final Folder folder = lookupContent(folderDTO.getId());
         return folder.hasEntryWithName(new ResourceName(name));
     }
 }

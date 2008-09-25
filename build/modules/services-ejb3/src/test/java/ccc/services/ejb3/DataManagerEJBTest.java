@@ -11,6 +11,7 @@
  */
 package ccc.services.ejb3;
 
+import static ccc.commons.Testing.*;
 import static org.easymock.EasyMock.*;
 
 import java.io.ByteArrayInputStream;
@@ -24,6 +25,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.UUID;
 
+import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 
 import junit.framework.TestCase;
@@ -31,6 +33,10 @@ import junit.framework.TestCase;
 import org.h2.jdbcx.JdbcDataSource;
 
 import ccc.domain.Data;
+import ccc.domain.File;
+import ccc.domain.Folder;
+import ccc.domain.PredefinedResourceNames;
+import ccc.domain.ResourceName;
 import ccc.services.DataManagerLocal;
 
 
@@ -47,6 +53,53 @@ public class DataManagerEJBTest extends TestCase {
         } catch (final ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Test.
+     * @throws SQLException
+     */
+    public void testCreateFileData() throws SQLException {
+
+        // ARRANGE
+        final Folder assetRoot = new Folder(PredefinedResourceNames.ASSETS);
+        final InputStream dummyStream = new ByteArrayInputStream(new byte[]{1});
+
+        final File file = new File(
+            new ResourceName("file"), "title", "desc", new Data(), 0);
+
+        final PreparedStatement ps = createStrictMock(PreparedStatement.class);
+        ps.setString(1, file.fileData().id().toString());
+        ps.setInt(2, 0);
+        ps.setBinaryStream(DataManagerEJB.STREAM_POSITION_CREATE,
+                           dummyStream,
+                           Integer.MAX_VALUE);
+        expect(ps.execute()).andReturn(true);
+        ps.close();
+        replay(ps);
+
+        final Connection c = createStrictMock(Connection.class);
+        expect(c.prepareStatement(DataManagerEJB.CREATE_STATEMENT))
+            .andReturn(ps);
+        c.close();
+        replay(c);
+
+        final DataSource ds = createStrictMock(DataSource.class);
+        expect(ds.getConnection()).andReturn(c);
+        replay(ds);
+
+        final EntityManager em = createStrictMock(EntityManager.class);
+        em.persist(file);
+        expect(em.find(Folder.class, assetRoot.id())).andReturn(assetRoot);
+        replay(em);
+
+        final DataManagerLocal dm = new DataManagerEJB(ds, em);
+
+        // ACT
+        dm.createFile(file, assetRoot.id(), dummyStream);
+
+        // VERIFY
+        verify(ps, c, ds, em);
     }
 
     /**
@@ -80,7 +133,8 @@ public class DataManagerEJBTest extends TestCase {
         expect(ds.getConnection()).andReturn(c);
         replay(ds);
 
-        final DataManagerLocal dm = new DataManagerEJB(ds);
+        final DataManagerLocal dm =
+            new DataManagerEJB(ds, dummy(EntityManager.class));
 
         // ACT
         dm.create(d, dummyStream);
@@ -124,7 +178,8 @@ public class DataManagerEJBTest extends TestCase {
         expect(ds.getConnection()).andReturn(c);
         replay(ds);
 
-        final DataManagerLocal dm = new DataManagerEJB(ds);
+        final DataManagerLocal dm =
+            new DataManagerEJB(ds, dummy(EntityManager.class));
 
         // ACT
         dm.retrieve(d, os);
@@ -158,7 +213,8 @@ public class DataManagerEJBTest extends TestCase {
         s1.close();
         c.close();
 
-        final DataManagerLocal dm = new DataManagerEJB(ds);
+        final DataManagerLocal dm =
+            new DataManagerEJB(ds, dummy(EntityManager.class));
 
         // ACT
         dm.create(new Data(), dummyStream);
@@ -206,7 +262,8 @@ public class DataManagerEJBTest extends TestCase {
         s1.close();
         c.close();
 
-        final DataManagerLocal dm = new DataManagerEJB(ds);
+        final DataManagerLocal dm =
+            new DataManagerEJB(ds, dummy(EntityManager.class));
         dm.create(d, dummyStream);
 
         // ACT
