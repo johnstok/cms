@@ -23,8 +23,6 @@ import junit.framework.TestCase;
 import org.easymock.Capture;
 
 import ccc.commons.Maybe;
-import ccc.domain.Data;
-import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
@@ -189,37 +187,5 @@ public final class AssetManagerEJBTest extends TestCase {
             "templates",
             assetsRoot.getValue()
                 .entries().get(0).as(Folder.class).name().toString());
-    }
-
-    /**
-     * Test.
-     */
-    public void testCreateFileData() {
-
-        // ARRANGE
-        final Folder assetRoot = new Folder(PredefinedResourceNames.ASSETS);
-//        FileData fileData;
-//        fileData = new FileData(
-//          new BlobImpl("test".getBytes()).getBinaryStream(), "test".length());
-
-        final File file = new File(
-            new ResourceName("file"), "title", "desc", new Data(), 0);
-
-        final QueryManagerLocal qm = createStrictMock(QueryManagerLocal.class);
-        replay(qm);
-
-        final EntityManager em = createMock(EntityManager.class);
-//        em.persist(fileData);
-        expect(em.find(Resource.class, assetRoot.id())).andReturn(assetRoot);
-        em.persist(file);
-        replay(em);
-
-        final AssetManagerLocal am = new AssetManagerEJB(em, qm);
-
-        // ACT
-        am.createFile(file, assetRoot.id());
-
-        // VERIFY
-        verify(em, qm);
     }
 }

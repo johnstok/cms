@@ -69,7 +69,7 @@ public class FileUploadServlet extends HttpServlet {
 
             final InputStream dataStream = file.getInputStream();
             try {
-                dataManager().create(f.fileData(), dataStream);
+                dataManager().createFile(f, parentId, dataStream);
             } finally {
                 try {
                     dataStream.close();
@@ -77,7 +77,6 @@ public class FileUploadServlet extends HttpServlet {
                     LOG.error("DataStream closing failed "+e.getMessage(), e);
                 }
             }
-            assetManager().createFile(f, parentId);
 
             response.getWriter().write("File was uploaded successfully.");
 

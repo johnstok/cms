@@ -49,7 +49,7 @@ public class FolderDTO extends ResourceDTO {
      *
      * @return The number of folders as an integer.
      */
-    public int getFolderCount() {
-        return (Integer) get("folderCount");
+    public Integer getFolderCount() {
+        return get("folderCount");
     }
 }

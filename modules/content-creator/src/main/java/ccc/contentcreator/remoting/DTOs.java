@@ -11,17 +11,21 @@
  */
 package ccc.contentcreator.remoting;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import ccc.contentcreator.dto.AliasDTO;
+import ccc.contentcreator.dto.FileDTO;
 import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.PageDTO;
 import ccc.contentcreator.dto.ResourceDTO;
 import ccc.contentcreator.dto.TemplateDTO;
 import ccc.domain.Alias;
 import ccc.domain.CCCException;
+import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
@@ -59,6 +63,23 @@ public final class DTOs {
     }
 
     /**
+     * TODO: Add a description of this method.
+     *
+     * @param <T>
+     * @param <U>
+     * @param resources
+     * @return
+     */
+    public static <T extends ResourceDTO, U extends Resource> List<T>
+        dtoFrom(final List<U> resources) {
+        final List<T> dtos = new ArrayList<T>();
+        for (final U resource : resources) {
+            dtos.add((T) dtoFrom(resource));
+        }
+        return dtos;
+    }
+
+    /**
      * Convert a resource to a dto.
      *
      * @param resource The resource to convert.
@@ -80,6 +101,9 @@ public final class DTOs {
 
             case ALIAS:
                 return (T) dtoFrom(resource.as(Alias.class));
+
+            case FILE:
+                return (T) dtoFrom(resource.as(File.class));
 
             default:
                 throw new CCCException(
@@ -123,6 +147,26 @@ public final class DTOs {
             f.name().toString(),
             f.title(),
             f.folderCount()
+        );
+    }
+
+    /**
+     * Create a DTO for a file resource.
+     *
+     * @param f The file.
+     * @return The DTO.
+     */
+    private static FileDTO dtoFrom(final File f) {
+
+        return new FileDTO(
+            f.id().toString(),
+            f.version(),
+            f.name().toString(),
+            f.title(),
+            f.size(),
+            f.mimeType().toString(),
+            f.fileData().id().toString(),
+            f.description()
         );
     }
 

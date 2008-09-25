@@ -15,8 +15,11 @@ import java.util.UUID;
 
 import junit.framework.TestCase;
 import ccc.contentcreator.dto.AliasDTO;
+import ccc.contentcreator.dto.FileDTO;
 import ccc.contentcreator.dto.TemplateDTO;
 import ccc.domain.Alias;
+import ccc.domain.Data;
+import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
@@ -67,7 +70,26 @@ public class DTOsTest extends TestCase {
         final AliasDTO actual = DTOs.dtoFrom(alias);
 
         // ASSERT
-        assertEquals("alias", actual.getName().toString());
+        assertEquals("alias", actual.getName());
         assertEquals(target.id().toString(), actual.getTargetId());
+    }
+
+    /**
+     * Test.
+     */
+    public void testDtoFromFile() {
+
+        // ARRANGE
+        final File f = new File(new ResourceName("a"), "b", "c", new Data(), 0);
+
+        // ACT
+        final FileDTO actual = DTOs.dtoFrom(f);
+
+        // ASSERT
+        assertEquals("a", actual.getName().toString());
+        assertEquals(Long.valueOf(0), actual.getSize());
+        assertEquals("application/octet-stream", actual.getMimeType());
+        assertEquals("FILE", actual.getType());
+        assertEquals("c", actual.getDescription());
     }
 }

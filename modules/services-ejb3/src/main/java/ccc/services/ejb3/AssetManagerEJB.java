@@ -26,7 +26,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import ccc.commons.Maybe;
-import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
@@ -162,16 +161,6 @@ public final class AssetManagerEJB
         final Folder templates =
             assetRoot .navigateTo(new ResourcePath("/templates"));
         return templates;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void createFile(final File file, final UUID parentId) {
-        _entityManager.persist(file);
-        final Folder folder = lookup(parentId).as(Folder.class);
-        folder.add(file);
     }
 
     /** {@inheritDoc} */
