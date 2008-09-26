@@ -23,14 +23,21 @@ import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.dto.PageDTO;
 
+import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.ComponentEvent;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.util.Margins;
+import com.extjs.gxt.ui.client.widget.TabItem;
+import com.extjs.gxt.ui.client.widget.TabPanel;
 import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
-import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+import com.extjs.gxt.ui.client.widget.layout.AnchorData;
+import com.extjs.gxt.ui.client.widget.layout.AnchorLayout;
 import com.extjs.gxt.ui.client.widget.layout.FormData;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -59,11 +66,10 @@ public class UpdateContentDialog extends Window {
      */
     public UpdateContentDialog(final String contentPath) {
 
-        setPlain(true);
         setHeading(_uiConstants.updateContent());
         setWidth(640);
         setHeight(480);
-        setLayout(new FitLayout());
+        setLayout(new AnchorLayout());
 
         _contentPath = contentPath;
         ensureDebugId("dialogBox");
@@ -77,18 +83,25 @@ public class UpdateContentDialog extends Window {
      */
     private void drawGUI() {
 
-
         final FormPanel panel = new FormPanel();
         panel.setWidth("100%");
         panel.setBorders(false);
         panel.setBodyBorder(false);
         panel.setHeaderVisible(false);
-        add(panel);
+        add(panel, new AnchorData("100%"));
 
         // TODO: Move "title" to constants.
         _title.setFieldLabel("Title");
         _title.setAllowBlank(false);
         panel.add(_title, new FormData("100%"));
+
+        final TabPanel tabs = new TabPanel();
+
+        tabs.setPlain(true);
+        tabs.setTabScroll(true);
+        final AnchorData ld = new AnchorData("100% -59");
+        ld.setMargins(new Margins(0, 10, 0, 10));
+        add(tabs, ld);
 
         addButton(
             new Button(
@@ -159,10 +172,27 @@ public class UpdateContentDialog extends Window {
                 for (Map.Entry<String, String> para
                             : page.getParagraphs().entrySet()) {
 
-                    TextArea area = new TextArea();
+                    final TextArea area = new TextArea();
+                    area.setWidth("100%");
+                    area.setHeight("100%");
+                    area.setBorders(false);
                     area.setFieldLabel(para.getKey());
+                    area.setHideLabel(true);
                     area.setValue(para.getValue());
-                    panel.add(area, new FormData("100%"));
+
+                    final TabItem paraTab = new TabItem();
+                    paraTab.setText(para.getKey());
+                    paraTab.addListener(
+                        Events.Select,
+                        new Listener<ComponentEvent>( ){
+                            public void handleEvent(ComponentEvent be) {
+                                    area.focus();
+                                }
+                            });
+                    tabs.add(paraTab);
+
+                    paraTab.add(area);
+
                     _paras.add(area);
                 }
 
