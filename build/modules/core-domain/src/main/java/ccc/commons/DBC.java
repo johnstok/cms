@@ -105,4 +105,18 @@ public final class DBC {
                 "Specified string exceeds max length of "+maximumLength+".");
         }
     }
+
+    /**
+     * Assert that the specified string contains at least the specified number
+     * of characters.
+     *
+     * @param stringToTest The string to test.
+     * @param minimumLength The minimal acceptable length.
+     */
+    public void minLength(final String stringToTest, final int minimumLength) {
+        if (stringToTest.length() < minimumLength) {
+            throw new IllegalArgumentException(
+                "Specified string must have a min length of "+minimumLength+".");
+        }
+    }
 }

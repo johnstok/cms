@@ -26,6 +26,32 @@ public final class DBCTest extends TestCase {
     /**
      * Test.
      */
+    public void testMinLength() {
+
+        // ACT
+        require().minLength("a", 1);
+        require().minLength("aa", 2);
+        require().minLength(" a", 2);
+        require().minLength("a ", 2);
+        require().minLength("  ", 2);
+        require().minLength("", 0);
+        require().minLength(" ", 1);
+
+        try {
+            require().minLength("a", 2);
+            fail("String should be rejected - too short.");
+
+        // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Specified string must have a min length of 2.",
+                e.getMessage());
+        }
+    }
+
+    /**
+     * Test.
+     */
     public void testMaxLength() {
 
         // ACT
