@@ -69,6 +69,7 @@ public class CreateAliasDialog extends Window implements ApplicationDialog {
         panel.setBorders(false);
         panel.setBodyBorder(false);
         panel.setHeaderVisible(false);
+        panel.setId("AliasPanel");
         add(panel);
 
         _targetName.setFieldLabel(_constants.target());
@@ -78,10 +79,13 @@ public class CreateAliasDialog extends Window implements ApplicationDialog {
 
         _aliasName.setFieldLabel(_constants.name());
         _aliasName.setAllowBlank(false);
+        _aliasName.setId("AliasName");
+        _aliasName.setAllowBlank(false);
         panel.add(_aliasName, new FormData("100%"));
 
         _parentFolder.setFieldLabel(_constants.folder());
         _parentFolder.setValue("");
+        _parentFolder.setReadOnly(true);
         _parentFolder.addListener(
             Events.TriggerClick,
             new Listener<ComponentEvent>(){
@@ -98,48 +102,50 @@ public class CreateAliasDialog extends Window implements ApplicationDialog {
                 }});
         panel.add(_parentFolder, new FormData("100%"));
 
-
-        addButton(
-            new Button(
-                _constants.cancel(),
-                new SelectionListener<ButtonEvent>() {
-                    @Override
-                    public void componentSelected(final ButtonEvent ce) {
-                        hide();
-                    }
-                }
-            ));
-
-        addButton(
-            new Button(
-                _constants.save(),
-                new SelectionListener<ButtonEvent>() {
+        final Button cancel = new Button(
+            _constants.cancel(),
+            new SelectionListener<ButtonEvent>() {
                 @Override
                 public void componentSelected(final ButtonEvent ce) {
-                    app.lookupService().nameExistsInFolder(
-                        _parent,
-                        _aliasName.getValue(),
-                        new ErrorReportingCallback<Boolean>(app){
-                            public void onSuccess(final Boolean nameExists) {
-
-                                if (nameExists) {
-                                    app.alert("Name exists.");
-                                } else {
-                                    final DisposingCallback callback =
-                                        new DisposingCallback(
-                                            app,
-                                            CreateAliasDialog.this);
-                                    app.lookupService().createAlias(
-                                        _parent,
-                                        new AliasDTO(
-                                            _aliasName.getValue(),
-                                            _aliasName.getValue(),
-                                            _target.getId()),
-                                            callback);
-                                }
-                            }});
+                    hide();
                 }
-                }));
+            }
+        );
+        cancel.setId("aliasCancel");
+        addButton(cancel);
+
+        final Button save = new Button(
+            _constants.save(),
+            new SelectionListener<ButtonEvent>() {
+            @Override
+            public void componentSelected(final ButtonEvent ce) {
+                app.lookupService().nameExistsInFolder(
+                    _parent,
+                    _aliasName.getValue(),
+                    new ErrorReportingCallback<Boolean>(app){
+                        public void onSuccess(final Boolean nameExists) {
+
+                            if (nameExists) {
+                                app.alert("Name exists.");
+                            } else {
+                                final DisposingCallback callback =
+                                    new DisposingCallback(
+                                        app,
+                                        CreateAliasDialog.this);
+                                app.lookupService().createAlias(
+                                    _parent,
+                                    new AliasDTO(
+                                        _aliasName.getValue(),
+                                        _aliasName.getValue(),
+                                        _target.getId()),
+                                        callback);
+                            }
+                        }});
+            }
+            });
+        save.setId("aliasSave");
+
+        addButton(save);
     }
 
     /**
