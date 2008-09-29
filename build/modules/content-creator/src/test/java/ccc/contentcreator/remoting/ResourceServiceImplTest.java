@@ -11,8 +11,14 @@
  */
 package ccc.contentcreator.remoting;
 
-import static java.util.Arrays.*;
-import static org.easymock.EasyMock.*;
+import static java.util.Arrays.asList;
+import static org.easymock.EasyMock.capture;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -363,6 +369,43 @@ public final class ResourceServiceImplTest extends TestCase {
 
         // ASSERT
         verify(cm, am);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testSetNullTemplateForResource() {
+
+        // ARRANGE
+        final Folder testFolder = new Folder(new ResourceName("testFolder"));
+
+        final List<OptionDTO<? extends DTO>> options =
+            new ArrayList<OptionDTO<? extends DTO>>();
+        final Template t = new Template("foo", "bar", "baz");
+        final OptionDTO<TemplateDTO> templateDTO =
+            new OptionDTO<TemplateDTO>(DTOs.dtoFrom(t),
+                                       new ArrayList<TemplateDTO>(),
+                                       OptionDTO.Type.CHOICES);
+        templateDTO.setCurrentValue(null);
+        options.add(templateDTO);
+
+        final ContentManagerLocal cm = createMock(ContentManagerLocal.class);
+        cm.updateTemplateForResource(testFolder.id(), null);
+
+        replay(cm);
+
+        final ResourceService rsi =
+            new ResourceServiceImpl(
+                new MapRegistry()
+                    .put("ContentManager/local", cm)
+            );
+
+        // ACT
+        rsi.updateResourceTemplate(options, DTOs.dtoFrom(testFolder));
+
+        // ASSERT
+        verify(cm);
     }
 
     /**
