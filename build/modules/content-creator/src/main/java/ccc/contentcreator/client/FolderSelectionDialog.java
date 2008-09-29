@@ -47,18 +47,19 @@ public class FolderSelectionDialog extends Window {
         setLayout(new FitLayout());
         _tree = new ResourceTree(rsa, Root.CONTENT);
         add(_tree);
-        addButton(
-            new Button(
-                "OK", // TODO: Move to UIConstants
-                new SelectionListener<ComponentEvent>() {
-                    @Override
-                    public void componentSelected(final ComponentEvent ce) {
-                        if (null==_tree.getSelectedItem()) {
-                            // Error!
-                        } else {
-                            close();
-                        }
-                    }}));
+        final Button save = new Button(
+            "OK", // TODO: Move to UIConstants
+            new SelectionListener<ComponentEvent>() {
+                @Override
+                public void componentSelected(final ComponentEvent ce) {
+                    if (null==_tree.getSelectedItem()) {
+                        // Error!
+                    } else {
+                        close();
+                    }
+                }});
+        save.setId("FolderSelectSave");
+        addButton(save);
     }
 
     /**
