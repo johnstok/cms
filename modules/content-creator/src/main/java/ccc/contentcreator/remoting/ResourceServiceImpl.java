@@ -12,7 +12,7 @@
 
 package ccc.contentcreator.remoting;
 
-import static ccc.contentcreator.remoting.DTOs.*;
+import static ccc.contentcreator.remoting.DTOs.dtoFrom;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -267,7 +267,8 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
         if (option.hasChanged()) {
             final TemplateDTO templateDTO = option.getCurrentValue();
             if (null==templateDTO) {
-                contentManager().setDefaultTemplate(null);
+                contentManager().updateTemplateForResource(
+                    UUID.fromString(resourceDTO.getId()), null);
             } else {
                 final Template selectedTemplate =
                     assetManager().lookup(UUID.fromString(templateDTO.getId()));
