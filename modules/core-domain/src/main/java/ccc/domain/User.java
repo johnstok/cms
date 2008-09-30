@@ -12,21 +12,27 @@
 package ccc.domain;
 
 import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.Set;
 
 import ccc.commons.DBC;
+import ccc.commons.EmailAddress;
 
 
 /**
  * A user of the CCC system.
  *
+ * TODO: Change email field to type EmailAddress
+ *
  * @author Civic Computing Ltd.
  */
 public class User extends Entity {
 
+    public static final String  VALID_CHARACTERS = "[\\w]*";
+
     private String _username;
     private String _email;
-    private final EnumSet<CreatorRoles> _roles =
-        EnumSet.noneOf(CreatorRoles.class);
+    private Set<CreatorRoles> _roles = new HashSet<CreatorRoles>();
 
     /**
      * Constructor.
@@ -43,6 +49,7 @@ public class User extends Entity {
     public User(final String username) {
         DBC.require().notEmpty(username);
         DBC.require().minLength(username, USERNAME_MIN_LENGTH);
+        DBC.require().toMatch(VALID_CHARACTERS, username);
 
         _username = username;
     }
@@ -64,6 +71,8 @@ public class User extends Entity {
      * @param email The email.
      */
     public void email(final String email) {
+        DBC.require().notEmpty(email);
+        DBC.require().toBeTrue(EmailAddress.isValidText(email));
         _email = email;
     }
 
@@ -101,6 +110,6 @@ public class User extends Entity {
      * @return Roles of the user.
      */
     public EnumSet<CreatorRoles> roles() {
-        return _roles;
+        return EnumSet.copyOf(_roles);
     }
 }

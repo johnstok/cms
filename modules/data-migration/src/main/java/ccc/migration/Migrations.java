@@ -25,8 +25,10 @@ import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
+import ccc.domain.User;
 import ccc.services.AssetManagerRemote;
 import ccc.services.ContentManagerRemote;
+import ccc.services.UserManagerRemote;
 
 /**
  * Data migration from CCC6 to CCC7.
@@ -58,20 +60,25 @@ public class Migrations {
      *
      */
     public void migrate() {
-        // Create privileges
-
-        // Migrate users
-
-
         // Create a root assets folder.
-        assetManager().createRoot();
+//        assetManager().createRoot();
 
         // Create a root content folder.
-        contentManager().createRoot();
+//        contentManager().createRoot();
+
+        // Migrate users
+        migrateUsers(_queries);
 
         // Walk the tree migrating each resource
-        migrateChildren(
-            contentManager().lookupRoot().id().toString(), 0, _queries);
+//        migrateChildren(
+//            contentManager().lookupRoot().id().toString(), 0, _queries);
+    }
+
+    private void migrateUsers(final Queries queries) {
+        final List<User> users = queries.selectUsers();
+        for (final User user : users) {
+            userManager().createUser(user);
+        }
     }
 
     private void migrateChildren(final String parentFolderId,
@@ -227,5 +234,14 @@ public class Migrations {
      */
     AssetManagerRemote assetManager() {
         return _registry.get("AssetManager/remote");
+    }
+
+    /**
+     * Accessor for the user manager.
+     *
+     * @return An {@link UserManager}.
+     */
+    UserManagerRemote userManager() {
+        return _registry.get("UserManager/remote");
     }
 }
