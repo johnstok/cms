@@ -11,6 +11,8 @@
  */
 package ccc.domain;
 
+import java.util.EnumSet;
+
 import junit.framework.TestCase;
 
 
@@ -105,5 +107,49 @@ public class UserTest
         } catch (final IllegalArgumentException e) {
             assertEquals("Specified value may not be NULL.", e.getMessage());
         }
+    }
+
+    /**
+     * Test.
+     */
+    public void testAccessorForEmail() {
+
+        // ARRANGE
+        final User u = new User("dummy");
+        u.email("fooEmail");
+
+        // ACT
+        final String email = u.email();
+
+        // ASSERT
+        assertEquals("fooEmail", email);
+    }
+
+    /**
+     * Test.
+     */
+    public void testCreatorRoles() {
+
+        // ARRANGE
+        final User u = new User("dummy");
+        final EnumSet<CreatorRoles> expected =
+            EnumSet.of(
+                CreatorRoles.CONTENT_CREATOR,
+                CreatorRoles.SITE_BUILDER);
+
+        // ACT
+        u.addRole(CreatorRoles.CONTENT_CREATOR);
+        u.addRole(CreatorRoles.SITE_BUILDER);
+        u.addRole(CreatorRoles.SITE_BUILDER);
+
+        // ASSERT
+        assertEquals(2, u.roles().size());
+        assertEquals(expected, u.roles());
+        assertTrue(
+            "Should be site builder",
+            u.hasRole(CreatorRoles.SITE_BUILDER));
+        assertTrue(
+            "Should be content creator",
+            u.hasRole(CreatorRoles.CONTENT_CREATOR));
     }
 }

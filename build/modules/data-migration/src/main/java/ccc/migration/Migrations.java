@@ -58,6 +58,10 @@ public class Migrations {
      *
      */
     public void migrate() {
+        // Create privileges
+
+        // Migrate users
+
 
         // Create a root assets folder.
         assetManager().createRoot();

@@ -11,6 +11,9 @@ import java.util.List;
 
 import org.apache.commons.dbutils.DbUtils;
 
+import ccc.domain.CreatorRoles;
+import ccc.domain.User;
+
 /**
  * Queries for data migration.
  *
@@ -39,7 +42,7 @@ public class Queries {
     public List<ResourceBean> selectResources(final int i) {
         ResultSet rs = null;
         PreparedStatement ps = null;
-        List<ResourceBean> resultList = new ArrayList<ResourceBean>();
+        final List<ResourceBean> resultList = new ArrayList<ResourceBean>();
         try {
             ps = _connection.prepareStatement(
                 "SELECT CONTENT_ID, CONTENT_TYPE, NAME, PAGE FROM "
@@ -60,7 +63,7 @@ public class Queries {
                 resultList.add(new ResourceBean(
                     contentId, type, name, displayTemplate));
             }
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             throw new RuntimeException(e);
         } finally {
             DbUtils.closeQuietly(rs);
@@ -79,7 +82,7 @@ public class Queries {
     public List<ParagraphBean> selectParagraphs(final int pageId) {
         ResultSet rs = null;
         PreparedStatement ps = null;
-        List<ParagraphBean> resultList = new ArrayList<ParagraphBean>();
+        final List<ParagraphBean> resultList = new ArrayList<ParagraphBean>();
 
         try {
             ps = _connection.prepareStatement(
@@ -95,7 +98,7 @@ public class Queries {
                 final String text = rs.getString("TEXT");
                 resultList.add(new ParagraphBean(key, text));
             }
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             throw new RuntimeException(e);
         } finally {
             DbUtils.closeQuietly(rs);
@@ -103,4 +106,112 @@ public class Queries {
         }
         return resultList;
     }
+
+    /**
+     * Returns a list of users.
+     *
+     * @return The list of users.
+     */
+    public List<User> selectUsers() {
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+        final List<User> resultList = new ArrayList<User>();
+
+        try {
+            ps = _connection.prepareStatement(
+                "SELECT user_id, user_name, user_passwd, name FROM users");
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                final String userName = rs.getString("user_name");
+                final int userId = rs.getInt("user_id");
+                final User user = new User(userName);
+                selectEmailForUser(user, userId);
+                selectRolesForUser(user, userId);
+                resultList.add(user);
+            }
+        } catch (final SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DbUtils.closeQuietly(rs);
+            DbUtils.closeQuietly(ps);
+        }
+        return resultList;
+    }
+
+    /**
+     * Sets email for the specified user.
+     *
+     * @param user The user.
+     * @param userId The user ID.
+     */
+    public void selectEmailForUser(final User user, final int userId) {
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+
+        try {
+            ps = _connection.prepareStatement(
+                "SELECT users.user_id, user_data.attribute_value " +
+                "FROM users, user_data, user_data_attrib " +
+                "WHERE users.user_id = user_data.user_id " +
+                "AND user_data.attribute_id = user_data_attrib.attribute_id " +
+                "AND user_data_attrib.display_name = 'Email' " +
+                "AND users.user_id = ?");
+            ps.setInt(1, userId);
+            rs = ps.executeQuery();
+
+            require().toBeTrue(rs.next());
+            final String email = rs.getString("user_data.attribute_value");
+            user.email(email);
+            require().toBeFalse(rs.next());
+        } catch (final SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DbUtils.closeQuietly(rs);
+            DbUtils.closeQuietly(ps);
+        }
+    }
+
+    public void selectRolesForUser(final User user, final int userId) {
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+
+        try {
+            ps = _connection.prepareStatement(
+                "SELECT DISTINCT users.user_id, " +
+                    "profiles.application_name, " +
+                    "profiles.profile_name " +
+                "FROM users, user_profiles, profiles " +
+                "WHERE users.user_id = user_profiles.user_id " +
+                "AND user_profiles.profile_id= profiles.profile_id" +
+                "AND users.user_id = ?");
+            ps.setInt(1, userId);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                final String profile = rs.getString("profiles.profile_name");
+                if ("Writer".equalsIgnoreCase(profile) ||
+                        "Editor".equalsIgnoreCase(profile)) {
+                    user.addRole(CreatorRoles.CONTENT_CREATOR);
+                }
+                else if ("Total Control".equalsIgnoreCase(profile)) {
+                    user.addRole(CreatorRoles.SITE_BUILDER);
+                    user.addRole(CreatorRoles.CONTENT_CREATOR);
+                    user.addRole(CreatorRoles.ADMINISTRATOR);
+                }
+                else if ("Administrator".equalsIgnoreCase(profile)) {
+                    user.addRole(CreatorRoles.ADMINISTRATOR);
+                    user.addRole(CreatorRoles.CONTENT_CREATOR);
+                }
+            }
+
+        } catch (final SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DbUtils.closeQuietly(rs);
+            DbUtils.closeQuietly(ps);
+        }
+    }
+
+
 }
