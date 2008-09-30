@@ -44,6 +44,7 @@ public final class ResourceName implements Serializable {
 
     /**
      * Constructor.
+     * TODO: Use DBC class.
      *
      * @param stringRepresentation
      *  The representation of this name - as a string.

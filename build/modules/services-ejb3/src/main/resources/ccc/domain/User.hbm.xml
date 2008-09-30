@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+ 
+<!-- 
+    ========================================================================
+    * Copyright (c) 2008 Civic Computing Ltd
+    * All rights reserved.
+    *
+    * Revision      $Rev: 317 $
+    * Modified by   $Author$
+    * Modified on   $Date$
+    *
+    * Changes: see SubVersion log
+    ========================================================================
+-->
+
+<hibernate-mapping default-access="field">
+
+	<typedef class="ccc.services.ejb3.support.EnumUserType" name="CreatorRole">
+	    <param name="type">ccc.domain.CreatorRoles</param>
+	</typedef>
+	
+    <class name="ccc.domain.User">
+    
+        <id name="_id" type="ccc.services.ejb3.support.UUIDUserType">
+            <generator class="assigned" />
+        </id>
+        
+        <version
+            name="_version"
+            unsaved-value="negative" />
+        
+        <property
+            name="_username"
+            not-null="true"
+            type="string"
+            length="256" />
+        
+        <property
+            name="_email"
+            not-null="true"
+            type="string"
+            length="256" />
+            
+	    <set name="_roles">
+	        <key not-null="true"/>
+	        <element column="role" type="CreatorRole"/>
+	    </set>
+
+            
+    </class>
+</hibernate-mapping>

@@ -12,6 +12,8 @@
 
 package ccc.commons;
 
+import java.util.regex.Pattern;
+
 /**
  * A helper class to support design-by-contract (DBC).
  *
@@ -117,6 +119,13 @@ public final class DBC {
         if (stringToTest.length() < minimumLength) {
             throw new IllegalArgumentException(
                 "Specified string must have a min length of "+minimumLength+".");
+        }
+    }
+
+    public void toMatch(final String regex, final String stringToTest) {
+        if (!Pattern.matches(regex, stringToTest)) {
+            throw new IllegalArgumentException(
+                "Specified string does not match "+regex);
         }
     }
 }

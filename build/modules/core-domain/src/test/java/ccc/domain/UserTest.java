@@ -116,13 +116,13 @@ public class UserTest
 
         // ARRANGE
         final User u = new User("dummy");
-        u.email("fooEmail");
+        u.email("fooEmail@test.com");
 
         // ACT
         final String email = u.email();
 
         // ASSERT
-        assertEquals("fooEmail", email);
+        assertEquals("fooEmail@test.com", email);
     }
 
     /**
@@ -152,4 +152,61 @@ public class UserTest
             "Should be content creator",
             u.hasRole(CreatorRoles.CONTENT_CREATOR));
     }
+
+    /**
+     * Test.
+     */
+    public void testRejectsEmptyEmail() {
+
+        // ARRANGE
+        final User u = new User("dummy");
+
+        // ACT
+        try {
+            u.email(null);
+            fail("NULL should be rejected.");
+
+        // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals("Specified value may not be NULL.", e.getMessage());
+        }
+    }
+
+    /**
+     * Test.
+     */
+    public void testRejectsInvalidEmail() {
+
+        // ARRANGE
+        final User u = new User("dummy");
+
+        // ACT
+        try {
+            u.email("blaablaa");
+            fail("Invalid email should be rejected.");
+
+        // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals("Specified expression must be true.", e.getMessage());
+        }
+    }
+
+    /**
+     * Test.
+     */
+    public void testConstructorRejectsInvalidUsername() {
+
+        // ACT
+        try {
+            new User("Empty name");
+            fail("Spaces should be rejected.");
+
+        // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Specified string does not match [\\w]*",
+                e.getMessage());
+        }
+    }
+
 }

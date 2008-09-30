@@ -1,6 +1,6 @@
 package ccc.migration;
 
-import static ccc.commons.DBC.require;
+import static ccc.commons.DBC.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -109,6 +109,7 @@ public class Queries {
 
     /**
      * Returns a list of users.
+     * @param errors
      *
      * @return The list of users.
      */
@@ -125,10 +126,14 @@ public class Queries {
             while (rs.next()) {
                 final String userName = rs.getString("user_name");
                 final int userId = rs.getInt("user_id");
-                final User user = new User(userName);
-                selectEmailForUser(user, userId);
-                selectRolesForUser(user, userId);
-                resultList.add(user);
+                try {
+                    final User user = new User(userName);
+                    selectEmailForUser(user, userId);
+                    selectRolesForUser(user, userId);
+                    resultList.add(user);
+                } catch (final Exception e) {
+                    System.err.println(e.getMessage());
+                }
             }
         } catch (final SQLException e) {
             throw new RuntimeException(e);
@@ -160,10 +165,13 @@ public class Queries {
             ps.setInt(1, userId);
             rs = ps.executeQuery();
 
-            require().toBeTrue(rs.next());
-            final String email = rs.getString("user_data.attribute_value");
-            user.email(email);
-            require().toBeFalse(rs.next());
+            if (rs.next()) {
+                final String email = rs.getString("attribute_value");
+                user.email(email);
+                require().toBeFalse(rs.next());
+            } else {
+                System.err.println("user "+userId+" has no email.");
+            }
         } catch (final SQLException e) {
             throw new RuntimeException(e);
         } finally {
@@ -183,13 +191,13 @@ public class Queries {
                     "profiles.profile_name " +
                 "FROM users, user_profiles, profiles " +
                 "WHERE users.user_id = user_profiles.user_id " +
-                "AND user_profiles.profile_id= profiles.profile_id" +
+                "AND user_profiles.profile_id= profiles.profile_id " +
                 "AND users.user_id = ?");
             ps.setInt(1, userId);
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                final String profile = rs.getString("profiles.profile_name");
+                final String profile = rs.getString("profile_name");
                 if ("Writer".equalsIgnoreCase(profile) ||
                         "Editor".equalsIgnoreCase(profile)) {
                     user.addRole(CreatorRoles.CONTENT_CREATOR);
