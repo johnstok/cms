@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
  * @author Civic Computing Ltd
  */
 public final class ResourceName implements Serializable {
-    
+
     /** VALID_CHARACTERS : String. */
     public static final String  VALID_CHARACTERS = "[\\.\\w]+";
 
