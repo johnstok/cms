@@ -126,4 +126,14 @@ public interface ResourceServiceAsync {
     void nameExistsInFolder(FolderDTO folderDTO,
                             String name,
                             AsyncCallback<Boolean> callback);
+
+    /**
+     * @see ResourceService#listUsers()
+     */
+    void listUsers(AsyncCallback<Boolean> callback);
+
+    /**
+     * @see ResourceService#listUsers(String)
+     */
+    void listUsersWithRole(String role, AsyncCallback<Boolean> callback);
 }
