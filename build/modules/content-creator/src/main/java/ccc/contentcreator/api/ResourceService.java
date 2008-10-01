@@ -21,6 +21,7 @@ import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.OptionDTO;
 import ccc.contentcreator.dto.ResourceDTO;
 import ccc.contentcreator.dto.TemplateDTO;
+import ccc.contentcreator.dto.UserDTO;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -163,5 +164,20 @@ public interface ResourceService extends RemoteService {
      *  false otherwise.
      */
     boolean nameExistsInFolder(final FolderDTO folder, final String name);
+
+    /**
+     * Query all users.
+     *
+     * @return Returns list of users.
+     */
+    List<UserDTO> listUsers();
+
+    /**
+     * Query users with specified role.
+     *
+     * @param role The role as a string.
+     * @return Returns list of users.
+     */
+    List<UserDTO> listUsersWithRole(String role);
 
 }

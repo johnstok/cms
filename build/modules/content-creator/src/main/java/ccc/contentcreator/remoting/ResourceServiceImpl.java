@@ -12,7 +12,7 @@
 
 package ccc.contentcreator.remoting;
 
-import static ccc.contentcreator.remoting.DTOs.dtoFrom;
+import static ccc.contentcreator.remoting.DTOs.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,16 +30,20 @@ import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.OptionDTO;
 import ccc.contentcreator.dto.ResourceDTO;
 import ccc.contentcreator.dto.TemplateDTO;
+import ccc.contentcreator.dto.UserDTO;
 import ccc.domain.Alias;
 import ccc.domain.CCCException;
+import ccc.domain.CreatorRoles;
 import ccc.domain.Folder;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.ResourceType;
 import ccc.domain.Template;
+import ccc.domain.User;
 import ccc.services.AssetManagerLocal;
 import ccc.services.ContentManagerLocal;
+import ccc.services.UserManagerLocal;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -160,7 +164,7 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
      * {@inheritDoc}
      */
     public List<TemplateDTO> listTemplates() {
-        return dtoFrom(assetManager().lookupTemplates());
+        return dtoFrom(assetManager().lookupTemplates(), Template.class);
     }
 
     /**
@@ -305,5 +309,20 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
                                       final String name) {
         final Folder folder = lookupContent(folderDTO.getId());
         return folder.hasEntryWithName(new ResourceName(name));
+    }
+
+    /** {@inheritDoc} */
+    public List<UserDTO> listUsers() {
+        final UserManagerLocal um = _registry.get("UserManager/local");
+        final List<User> users = um.listUsers();
+        return DTOs.dtoFrom(users);
+    }
+
+    /** {@inheritDoc} */
+    public List<UserDTO> listUsersWithRole(final String role) {
+        final UserManagerLocal um = _registry.get("UserManager/local");
+        final List<User> users =
+            um.listUsersWithRole(CreatorRoles.valueOf(role));
+        return DTOs.dtoFrom(users);
     }
 }

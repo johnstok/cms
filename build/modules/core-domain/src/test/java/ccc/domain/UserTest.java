@@ -28,6 +28,21 @@ public class UserTest
     /**
      * Test.
      */
+    public void testRolesAccessorHandlesNoRoles() {
+
+        // ARRANGE
+        final User u = new User("dummy");
+
+        // ACT
+        final EnumSet<CreatorRoles> roles = u.roles();
+
+        // ASSERT
+        assertEquals(0, roles.size());
+    }
+
+    /**
+     * Test.
+     */
     public void testEqualityIsIdBased() {
 
         // ARRANGE

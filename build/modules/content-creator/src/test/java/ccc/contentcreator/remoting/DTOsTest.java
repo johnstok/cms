@@ -11,18 +11,23 @@
  */
 package ccc.contentcreator.remoting;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import junit.framework.TestCase;
 import ccc.contentcreator.dto.AliasDTO;
 import ccc.contentcreator.dto.FileDTO;
 import ccc.contentcreator.dto.TemplateDTO;
+import ccc.contentcreator.dto.UserDTO;
 import ccc.domain.Alias;
+import ccc.domain.CreatorRoles;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
+import ccc.domain.User;
 
 
 /**
@@ -91,5 +96,50 @@ public class DTOsTest extends TestCase {
         assertEquals("application/octet-stream", actual.getMimeType());
         assertEquals("FILE", actual.getType());
         assertEquals("c", actual.getDescription());
+    }
+
+    /**
+     * Test.
+     */
+    public void testDtoFromUser() {
+
+        // ARRANGE
+        final User u = new User("username");
+        u.email("test@test.com");
+        u.addRole(CreatorRoles.CONTENT_CREATOR);
+        u.addRole(CreatorRoles.SITE_BUILDER);
+
+        // ACT
+        final UserDTO userDTO = DTOs.dtoFrom(u);
+
+        // ASSERT
+        assertEquals(u.id().toString(), userDTO.getId());
+        assertEquals((Integer) u.version(), userDTO.getVersion());
+        assertEquals(u.email(), userDTO.getEmail());
+        assertTrue(userDTO.getRoles().contains(
+            CreatorRoles.CONTENT_CREATOR.name()));
+        assertTrue(userDTO.getRoles().contains(
+            CreatorRoles.SITE_BUILDER.name()));
+
+    }
+
+    /**
+     * Test.
+     */
+    public void testDtoFromUserList() {
+
+        // ARRANGE
+        final List<User> userList = new ArrayList<User>();
+        userList.add(new User("username1"));
+        userList.add(new User("username2"));
+
+        // ACT
+        final List<UserDTO> userDtos = DTOs.dtoFrom(userList);
+
+        // ASSERT
+        assertEquals(userList.size(), userDtos.size());
+        assertEquals("username1", userDtos.get(0).getUsername());
+        assertEquals("username2", userDtos.get(1).getUsername());
+
     }
 }
