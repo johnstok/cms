@@ -27,18 +27,18 @@ import ccc.domain.User;
  */
 public class UserManagerEJBTest extends TestCase {
 
-    private EntityManager em;
+    private EntityManager _em;
 
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {
-        em = createStrictMock(EntityManager.class);
+        _em = createStrictMock(EntityManager.class);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void tearDown() throws Exception {
-        em = null;
+        _em = null;
     }
 
     /**
@@ -49,16 +49,16 @@ public class UserManagerEJBTest extends TestCase {
         // ARRANGE
 
         final User u = new User("fooDummy");
-        em.persist(u);
-        replay(em);
+        _em.persist(u);
+        replay(_em);
 
-        final UserManagerEJB um = new UserManagerEJB(em);
+        final UserManagerEJB um = new UserManagerEJB(_em);
 
         // ACT
         um.createUser(u);
 
         // ASSERT
-        verify(em);
+        verify(_em);
 
     }
 }

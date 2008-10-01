@@ -118,10 +118,17 @@ public final class DBC {
     public void minLength(final String stringToTest, final int minimumLength) {
         if (stringToTest.length() < minimumLength) {
             throw new IllegalArgumentException(
-                "Specified string must have a min length of "+minimumLength+".");
+                "Specified string must have a min length of "
+                +minimumLength+".");
         }
     }
 
+    /**
+     * Assert that the specified string matches with given regular expression.
+     *
+     * @param regex The regular expression.
+     * @param stringToTest The string to test.
+     */
     public void toMatch(final String regex, final String stringToTest) {
         if (!Pattern.matches(regex, stringToTest)) {
             throw new IllegalArgumentException(

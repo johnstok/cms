@@ -28,6 +28,7 @@ import ccc.commons.EmailAddress;
  */
 public class User extends Entity {
 
+    /** VALID_CHARACTERS : String. */
     public static final String  VALID_CHARACTERS = "[\\w]*";
 
     private String _username;

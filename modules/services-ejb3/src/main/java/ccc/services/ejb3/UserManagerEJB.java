@@ -36,7 +36,6 @@ public class UserManagerEJB implements UserManagerRemote {
     @PersistenceContext(unitName = "ccc-persistence")
     private EntityManager _em;
 
-
     /**
      * Constructor.
      */
@@ -46,7 +45,7 @@ public class UserManagerEJB implements UserManagerRemote {
     /**
      * Constructor.
      *
-     * @param em
+     * @param em A JPA entity manager.
      */
     public UserManagerEJB(final EntityManager em) {
         _em = em;

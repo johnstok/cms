@@ -33,12 +33,12 @@ public class Password extends Entity {
     /**
      * Constructor.
      *
-     * @param user
-     * @param string
+     * @param user The user.
+     * @param passwordString The un-hashed password as a string.
      */
-    public Password(final User user, final String string) {
+    public Password(final User user, final String passwordString) {
         _user = user;
-        _hash = hash(string);
+        _hash = hash(passwordString);
 
     }
 
@@ -53,13 +53,13 @@ public class Password extends Entity {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Compares hash of the passwordString to the field hash.
      *
-     * @param string
-     * @return
+     * @param passwordString The un-hashed password as a string.
+     * @return True if passwordString's hash matches.
      */
-    public boolean matches(final String string) {
-        return Arrays.equals(hash(string), _hash);
+    public boolean matches(final String passwordString) {
+        return Arrays.equals(hash(passwordString), _hash);
     }
 
 
