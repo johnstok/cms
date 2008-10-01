@@ -156,12 +156,12 @@ public class Queries {
 
         try {
             ps = _connection.prepareStatement(
-                "SELECT users.user_id, user_data.attribute_value " +
-                "FROM users, user_data, user_data_attrib " +
-                "WHERE users.user_id = user_data.user_id " +
-                "AND user_data.attribute_id = user_data_attrib.attribute_id " +
-                "AND user_data_attrib.display_name = 'Email' " +
-                "AND users.user_id = ?");
+                "SELECT users.user_id, user_data.attribute_value "
+                + "FROM users, user_data, user_data_attrib "
+                + "WHERE users.user_id = user_data.user_id "
+                + "AND user_data.attribute_id = user_data_attrib.attribute_id "
+                + "AND user_data_attrib.display_name = 'Email' "
+                + "AND users.user_id = ?");
             ps.setInt(1, userId);
             rs = ps.executeQuery();
 
@@ -180,39 +180,42 @@ public class Queries {
         }
     }
 
+    /**
+     * Sets roles for the specified user.
+     *
+     * @param user The user.
+     * @param userId The user ID.
+     */
     public void selectRolesForUser(final User user, final int userId) {
         ResultSet rs = null;
         PreparedStatement ps = null;
 
         try {
             ps = _connection.prepareStatement(
-                "SELECT DISTINCT users.user_id, " +
-                    "profiles.application_name, " +
-                    "profiles.profile_name " +
-                "FROM users, user_profiles, profiles " +
-                "WHERE users.user_id = user_profiles.user_id " +
-                "AND user_profiles.profile_id= profiles.profile_id " +
-                "AND users.user_id = ?");
+                "SELECT DISTINCT users.user_id, "
+                    + "profiles.application_name, "
+                    + "profiles.profile_name "
+                + "FROM users, user_profiles, profiles "
+                + "WHERE users.user_id = user_profiles.user_id "
+                + "AND user_profiles.profile_id= profiles.profile_id "
+                + "AND users.user_id = ?");
             ps.setInt(1, userId);
             rs = ps.executeQuery();
 
             while (rs.next()) {
                 final String profile = rs.getString("profile_name");
-                if ("Writer".equalsIgnoreCase(profile) ||
-                        "Editor".equalsIgnoreCase(profile)) {
+                if ("Writer".equalsIgnoreCase(profile)
+                        || "Editor".equalsIgnoreCase(profile)) {
                     user.addRole(CreatorRoles.CONTENT_CREATOR);
-                }
-                else if ("Total Control".equalsIgnoreCase(profile)) {
+                } else if ("Total Control".equalsIgnoreCase(profile)) {
                     user.addRole(CreatorRoles.SITE_BUILDER);
                     user.addRole(CreatorRoles.CONTENT_CREATOR);
                     user.addRole(CreatorRoles.ADMINISTRATOR);
-                }
-                else if ("Administrator".equalsIgnoreCase(profile)) {
+                } else if ("Administrator".equalsIgnoreCase(profile)) {
                     user.addRole(CreatorRoles.ADMINISTRATOR);
                     user.addRole(CreatorRoles.CONTENT_CREATOR);
                 }
             }
-
         } catch (final SQLException e) {
             throw new RuntimeException(e);
         } finally {
