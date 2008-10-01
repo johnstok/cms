@@ -61,17 +61,17 @@ public class Migrations {
      */
     public void migrate() {
         // Create a root assets folder.
-//        assetManager().createRoot();
+        assetManager().createRoot();
 
         // Create a root content folder.
-//        contentManager().createRoot();
+        contentManager().createRoot();
 
         // Migrate users
         migrateUsers(_queries);
 
         // Walk the tree migrating each resource
-//        migrateChildren(
-//            contentManager().lookupRoot().id().toString(), 0, _queries);
+        migrateChildren(
+            contentManager().lookupRoot().id().toString(), 0, _queries);
     }
 
     private void migrateUsers(final Queries queries) {

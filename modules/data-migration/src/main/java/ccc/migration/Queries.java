@@ -170,7 +170,7 @@ public class Queries {
                 user.email(email);
                 require().toBeFalse(rs.next());
             } else {
-                System.err.println("user "+userId+" has no email.");
+                throw new RuntimeException("User "+userId+" has no email.");
             }
         } catch (final SQLException e) {
             throw new RuntimeException(e);
