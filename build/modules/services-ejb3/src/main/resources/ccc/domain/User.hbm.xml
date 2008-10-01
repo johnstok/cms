@@ -35,6 +35,7 @@
         <property
             name="_username"
             not-null="true"
+            unique="true"
             type="string"
             length="256" />
         

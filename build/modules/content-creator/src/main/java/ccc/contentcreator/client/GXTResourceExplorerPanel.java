@@ -26,7 +26,6 @@ import ccc.contentcreator.dto.ResourceDTO;
 import ccc.contentcreator.dto.TemplateDTO;
 
 import com.extjs.gxt.ui.client.Events;
-import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.binder.TableBinder;
@@ -36,15 +35,12 @@ import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.event.TreeEvent;
 import com.extjs.gxt.ui.client.store.ListStore;
-import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.layout.AccordionLayout;
-import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
-import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
@@ -68,9 +64,11 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
     private final Application            _app;
     private final ListStore<ResourceDTO> _detailsStore =
         new ListStore<ResourceDTO>();
-    private final LayoutContainer        _view;
+    private final LeftRightPane          _view;
     private final Tree                   _contentTree;
     private final Tree                   _assetsTree;
+    private final Tree                   _usersTree;
+    private final ContentPanel           _folderViewer;
 
     /**
      * Constructor.
@@ -82,10 +80,16 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
         _app = app;
         final ResourceServiceAsync rsa = _app.lookupService();
 
+        _view = new LeftRightPane();
+        _folderViewer = createFolderViewer();
+
         final Listener<TreeEvent> treeSelectionListener =
             new Listener<TreeEvent>() {
 
                 public void handleEvent(final TreeEvent te) {
+                    _detailsStore.removeAll();
+                    _view.setRightHandPane(_folderViewer);
+
                     // TODO: handle getSelectedItem() being null.
                     final FolderDTO f =
                         (FolderDTO) te.tree.getSelectedItem().getModel();
@@ -94,7 +98,6 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
                         new ErrorReportingCallback<List<ResourceDTO>>(_app) {
                             public void onSuccess(
                                               final List<ResourceDTO> result) {
-                                _detailsStore.removeAll();
                                 _detailsStore.add(result);
                             }
                     });
@@ -112,9 +115,10 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
             Events.SelectionChange,
             treeSelectionListener);
 
-        _view = createLeftRightPane(createResourceNavigator(),
-                                    createFolderViewer());
+        _usersTree = new UserTree(_view);
 
+        _view.setLeftHandPane(createResourceNavigator());
+        _view.setRightHandPane(_folderViewer);
     }
 
     /**
@@ -257,6 +261,7 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
 
     /**
      * TODO: Add a description of this method.
+     * TODO: Add headings to UIConstants.
      *
      * @return
      */
@@ -280,6 +285,13 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
         assetsPanel.setHeading("Assets");
         assetsPanel.add(_assetsTree);
         cp.add(assetsPanel);
+
+        final ContentPanel usersPanel = new ContentPanel();
+        usersPanel.getHeader().setId("user-navigator");
+        usersPanel.setScrollMode(Scroll.AUTO);
+        usersPanel.setHeading("Users");
+        usersPanel.add(_usersTree);
+        cp.add(usersPanel);
 
         return cp;
     }
@@ -373,34 +385,6 @@ public class GXTResourceExplorerPanel implements ResourceExplorerPanel {
         tree.setContextMenu(contextMenu);
 
         return tree;
-    }
-
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param left
-     * @param right
-     * @return
-     */
-    private LayoutContainer createLeftRightPane(final LayoutContainer left,
-                                                final LayoutContainer right) {
-
-        final LayoutContainer lc = new LayoutContainer();
-        lc.setLayout(new BorderLayout());
-
-        final BorderLayoutData westData =
-            new BorderLayoutData(LayoutRegion.WEST, 400);
-        westData.setSplit(true);
-        westData.setCollapsible(true);
-        westData.setMargins(new Margins(5, 0, 5, 5));
-
-        final BorderLayoutData centerData =
-            new BorderLayoutData(LayoutRegion.CENTER);
-        centerData.setMargins(new Margins(5));
-
-        lc.add(left, westData);
-        lc.add(right, centerData);
-        return lc;
     }
 
     /** {@inheritDoc} */

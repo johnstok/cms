@@ -12,17 +12,21 @@
 package ccc.services.ejb3;
 
 import static javax.ejb.TransactionAttributeType.*;
+import static javax.persistence.PersistenceContextType.*;
 
 import java.util.List;
 
+import javax.ejb.Local;
 import javax.ejb.Remote;
-import javax.ejb.Stateless;
+import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import ccc.domain.CreatorRoles;
 import ccc.domain.User;
+import ccc.services.UserManagerLocal;
 import ccc.services.UserManagerRemote;
 
 
@@ -31,12 +35,15 @@ import ccc.services.UserManagerRemote;
  *
  * @author Civic Computing Ltd.
  */
-@Stateless(name="UserManager")
+@Stateful(name="UserManager")
 @TransactionAttribute(REQUIRED)
 @Remote(UserManagerRemote.class)
-public class UserManagerEJB implements UserManagerRemote {
+@Local(UserManagerLocal.class)
+public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
 
-    @PersistenceContext(unitName = "ccc-persistence")
+    @PersistenceContext(
+        unitName = "ccc-persistence",
+        type     = EXTENDED)
     private EntityManager _em;
 
     /**
@@ -61,17 +68,52 @@ public class UserManagerEJB implements UserManagerRemote {
     }
 
     /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")
     @Override
     public List<User> listUsers() {
-
-        throw new UnsupportedOperationException("Method not implemented.");
+        final Query q =
+            _em.createQuery(NamedQueries.ALL_USERS.queryString());
+        return q.getResultList();
     }
 
     /** {@inheritDoc} */
     @Override
     public List<User> listUsersWithRole(final CreatorRoles role) {
+        final Query q =
+            _em.createQuery(NamedQueries.USERS_WITH_ROLE.queryString());
+        q.setParameter("role", role.name());
 
-        throw new UnsupportedOperationException("Method not implemented.");
+        return q.getResultList();
+    }
+
+
+    /**
+     * Available named queries.
+     *
+     * @author Civic Computing Ltd.
+     */
+    static enum NamedQueries {
+
+        /** ALL_USERS : NamedQueries. */
+        ALL_USERS("from ccc.domain.User"),
+
+        /** USERS_WITH_ROLE : NamedQueries. */
+        USERS_WITH_ROLE("from ccc.domain.User u where :role in elements(u._roles)");
+
+        private final String _queryString;
+
+        private NamedQueries(final String qString) {
+            _queryString = qString;
+        }
+
+        /**
+         * Accessor for the query string.
+         *
+         * @return The JPA query as a string.
+         */
+        String queryString() {
+            return _queryString;
+        }
     }
 
 }

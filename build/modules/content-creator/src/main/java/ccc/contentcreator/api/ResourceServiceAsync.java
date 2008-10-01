@@ -20,6 +20,7 @@ import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.OptionDTO;
 import ccc.contentcreator.dto.ResourceDTO;
 import ccc.contentcreator.dto.TemplateDTO;
+import ccc.contentcreator.dto.UserDTO;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -130,10 +131,10 @@ public interface ResourceServiceAsync {
     /**
      * @see ResourceService#listUsers()
      */
-    void listUsers(AsyncCallback<Boolean> callback);
+    void listUsers(AsyncCallback<List<UserDTO>> callback);
 
     /**
      * @see ResourceService#listUsers(String)
      */
-    void listUsersWithRole(String role, AsyncCallback<Boolean> callback);
+    void listUsersWithRole(String role, AsyncCallback<List<UserDTO>> callback);
 }
