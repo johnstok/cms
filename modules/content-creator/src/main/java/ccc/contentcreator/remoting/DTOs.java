@@ -13,8 +13,10 @@ package ccc.contentcreator.remoting;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import ccc.contentcreator.dto.AliasDTO;
@@ -23,14 +25,17 @@ import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.PageDTO;
 import ccc.contentcreator.dto.ResourceDTO;
 import ccc.contentcreator.dto.TemplateDTO;
+import ccc.contentcreator.dto.UserDTO;
 import ccc.domain.Alias;
 import ccc.domain.CCCException;
+import ccc.domain.CreatorRoles;
 import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.Template;
+import ccc.domain.User;
 
 
 /**
@@ -71,7 +76,7 @@ public final class DTOs {
      * @return
      */
     public static <T extends ResourceDTO, U extends Resource> List<T>
-        dtoFrom(final List<U> resources) {
+        dtoFrom(final List<U> resources, final Class<U> resourceType) {
         final List<T> dtos = new ArrayList<T>();
         for (final U resource : resources) {
             dtos.add((T) dtoFrom(resource));
@@ -210,4 +215,37 @@ public final class DTOs {
         );
     }
 
+    /**
+     * Create a DTO for an user resource.
+     *
+     * @param u The User.
+     * @return The DTO.
+     */
+    public static UserDTO dtoFrom(final User u) {
+        final UserDTO userDTO = new UserDTO();
+        userDTO.setId(u.id().toString());
+        userDTO.setVersion(u.version());
+        userDTO.setUsername(u.username());
+        userDTO.setEmail(u.email());
+        final Set<String> roles = new HashSet<String>();
+        for (final CreatorRoles role : u.roles()) {
+            roles.add(role.name());
+        }
+        userDTO.setRoles(roles);
+        return userDTO;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param userList
+     * @return
+     */
+    public static List<UserDTO> dtoFrom(final List<User> userList) {
+        final ArrayList<UserDTO> dtos = new ArrayList<UserDTO>();
+        for (final User u : userList) {
+            dtos.add(dtoFrom(u));
+        }
+        return dtos;
+    }
 }

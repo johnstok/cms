@@ -111,6 +111,9 @@ public class User extends Entity {
      * @return Roles of the user.
      */
     public EnumSet<CreatorRoles> roles() {
-        return EnumSet.copyOf(_roles);
+        return
+            (0==_roles.size())
+                ? EnumSet.noneOf(CreatorRoles.class)
+                : EnumSet.copyOf(_roles);
     }
 }

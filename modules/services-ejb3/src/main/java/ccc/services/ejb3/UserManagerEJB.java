@@ -13,12 +13,15 @@ package ccc.services.ejb3;
 
 import static javax.ejb.TransactionAttributeType.*;
 
+import java.util.List;
+
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import ccc.domain.CreatorRoles;
 import ccc.domain.User;
 import ccc.services.UserManagerRemote;
 
@@ -55,6 +58,20 @@ public class UserManagerEJB implements UserManagerRemote {
     @Override
     public void createUser(final User user) {
         _em.persist(user);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<User> listUsers() {
+
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<User> listUsersWithRole(final CreatorRoles role) {
+
+        throw new UnsupportedOperationException("Method not implemented.");
     }
 
 }

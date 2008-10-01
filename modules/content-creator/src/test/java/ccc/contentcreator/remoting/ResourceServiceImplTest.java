@@ -11,14 +11,8 @@
  */
 package ccc.contentcreator.remoting;
 
-import static java.util.Arrays.asList;
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
+import static java.util.Arrays.*;
+import static org.easymock.EasyMock.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +32,9 @@ import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.OptionDTO;
 import ccc.contentcreator.dto.ResourceDTO;
 import ccc.contentcreator.dto.TemplateDTO;
+import ccc.contentcreator.dto.UserDTO;
 import ccc.domain.Alias;
+import ccc.domain.CreatorRoles;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.PredefinedResourceNames;
@@ -46,8 +42,10 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.Template;
+import ccc.domain.User;
 import ccc.services.AssetManagerLocal;
 import ccc.services.ContentManagerLocal;
+import ccc.services.UserManagerLocal;
 
 
 /**
@@ -60,7 +58,8 @@ public final class ResourceServiceImplTest extends TestCase {
 
     private ContentManagerLocal _cm;
     private AssetManagerLocal _am;
-    private ResourceService _rsi;
+    private UserManagerLocal _um;
+    private ResourceServiceImpl _rsi;
     private Folder _root;
 
     /**
@@ -488,17 +487,68 @@ public final class ResourceServiceImplTest extends TestCase {
         assertFalse("Name shouldn't exist", shouldBeFalse);
     }
 
+    /**
+     * Test.
+     */
+    public void testListUsers() {
+
+        // ARRANGE
+        final List<User> users = new ArrayList<User>();
+        users.add(new User("username"));
+
+        expect(_um.listUsers()).andReturn(users);
+        replay(_um);
+
+        // ACT
+        final List<UserDTO> dtoList = _rsi.listUsers();
+
+        // ASSERT
+        verify(_um);
+        assertEquals(
+            DTOs.dtoFrom(users).get(0).getUsername(),
+            dtoList.get(0).getUsername());
+    }
+
+    /**
+     * Test.
+     */
+    public void testListUsersWithRole() {
+
+        // ARRANGE
+        final User admin = new User("admin");
+        admin.addRole(CreatorRoles.ADMINISTRATOR);
+        final List<User> users = new ArrayList<User>();
+        users.add(admin);
+
+        expect(_um.listUsersWithRole(CreatorRoles.ADMINISTRATOR))
+            .andReturn(users);
+        replay(_um);
+
+        // ACT
+        final List<UserDTO> dtoList =
+            _rsi.listUsersWithRole(CreatorRoles.ADMINISTRATOR.name());
+
+        // ASSERT
+        verify(_um);
+        assertEquals(1, dtoList.size());
+        assertTrue(
+            dtoList.get(0).getRoles().contains(
+                CreatorRoles.ADMINISTRATOR.name()));
+        assertEquals("admin", dtoList.get(0).getUsername());
+    }
 
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {
         _cm = createStrictMock(ContentManagerLocal.class);
         _am = createStrictMock(AssetManagerLocal.class);
+        _um = createStrictMock(UserManagerLocal.class);
         _rsi =
             new ResourceServiceImpl(
                 new MapRegistry()
                     .put("ContentManager/local", _cm)
                     .put("AssetManager/local", _am)
+                    .put("UserManager/local", _um)
             );
         _root = new Folder(PredefinedResourceNames.CONTENT);
     }
@@ -508,8 +558,10 @@ public final class ResourceServiceImplTest extends TestCase {
     protected void tearDown() throws Exception {
         _cm = null;
         _am = null;
+        _um = null;
         _rsi = null;
         _root = null;
     }
+
 
 }
