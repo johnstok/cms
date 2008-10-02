@@ -43,8 +43,8 @@ public class ResourceTree extends Tree {
     /**
      * Constructor.
      *
-     * @param rsa
-     * @param root
+     * @param rsa ResourceServiceAsync.
+     * @param root The root of the tree.
      */
     ResourceTree(final ResourceServiceAsync rsa, final Root root) {
 

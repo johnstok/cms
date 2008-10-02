@@ -52,7 +52,10 @@ public class ChooseTemplateDialog {
 
     /**
      * Constructor.
-     * @param templates
+     *
+     * @param app The Application
+     * @param options The list of OptionDTOs
+     * @param resource The ResourceDTO
      */
     public ChooseTemplateDialog(final Application app,
                                 final List<OptionDTO<? extends DTO>> options,
@@ -91,7 +94,8 @@ public class ChooseTemplateDialog {
         }
 
         // If there is a current value set it
-        final TemplateDTO currentValue = _options.get(0).<TemplateDTO>makeTypeSafe().getCurrentValue();
+        final TemplateDTO currentValue =
+            _options.get(0).<TemplateDTO>makeTypeSafe().getCurrentValue();
         if (null != currentValue) {
             for (int i=0; i<_templates.getItemCount(); i++) {
                 if (_templates.getValue(i).equals(
@@ -105,16 +109,18 @@ public class ChooseTemplateDialog {
         // Add a change listener
         _templates.addChangeListener(new ChangeListener(){
             public void onChange(final Widget arg0) {
-                final ListBox lb = (ListBox)arg0;
+                final ListBox lb = (ListBox) arg0;
                 final int selected = lb.getSelectedIndex();
                 final String templateId = lb.getValue(selected);
                 if ("<none>".equals(templateId)) {
-                    _options.get(0).<TemplateDTO>makeTypeSafe().setCurrentValue(null);
+                    _options.get(0).<TemplateDTO>makeTypeSafe().
+                    setCurrentValue(null);
                 } else {
-                    for (final TemplateDTO template :
-                        _options.get(0).<TemplateDTO>makeTypeSafe().getChoices()) {
+                    final OptionDTO<TemplateDTO> templateOpts =
+                        _options.get(0).<TemplateDTO>makeTypeSafe();
+                    for (final TemplateDTO template:templateOpts.getChoices()) {
                         if (template.getId().equals(templateId)) {
-                            _options.get(0).<TemplateDTO>makeTypeSafe().setCurrentValue(template);
+                            templateOpts.setCurrentValue(template);
                             return;
                         }
                     }
