@@ -52,8 +52,8 @@ public final class ContentCreator implements EntryPoint {
 
         final LayoutContainer vp = new LayoutContainer();
          vp.setLayout(new RowLayout());
-         vp.add(menu, new RowData(1,-1));
-         vp.add(content, new RowData(1,1));
+         vp.add(menu, new RowData(1, -1));
+         vp.add(content, new RowData(1, 1));
 
          final Viewport v = new Viewport();
          v.setLayout(new FitLayout());

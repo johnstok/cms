@@ -31,7 +31,7 @@ import com.extjs.gxt.ui.client.widget.menu.MenuItem;
 
 
 /**
- * TODO: Add Description for this type.
+ * Resource tree with contextual menus.
  *
  * @author Civic Computing Ltd.
  */
@@ -39,15 +39,18 @@ public class EnhancedResourceTree extends ResourceTree {
 
     /** _app : GwtApplication. */
     private GwtApplication _app = new GwtApplication();
-    LeftRightPane _view;
-    ResourceTable _rt = new ResourceTable();
+    /** _view : LeftRightPane. */
+    private LeftRightPane _view;
+    /** _rt : ResourceTable. */
+    private ResourceTable _rt = new ResourceTable();
 
 
     /**
      * Constructor.
      *
-     * @param rsa
-     * @param root
+     * @param rsa ResourceServiceAsync.
+     * @param root The root of the tree.
+     * @param view LeftRightPane of the surrounding view.
      */
     EnhancedResourceTree(final ResourceServiceAsync rsa,
                          final Root root,
@@ -124,7 +127,7 @@ public class EnhancedResourceTree extends ResourceTree {
                         "Ok",
                         new SelectionListener<ComponentEvent>() {
                             @Override
-                            public void componentSelected(ComponentEvent ce) {
+                            public void componentSelected(final ComponentEvent ce) {
                                 rsa.createFolder(
                                     item,
                                     text.getValue(),
@@ -141,12 +144,10 @@ public class EnhancedResourceTree extends ResourceTree {
                 complex.getButtonBar().add(ok);
 
                 complex.show();
-
             }
         });
         contextMenu.add(createFolder);
 
         setContextMenu(contextMenu);
     }
-
 }

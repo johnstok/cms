@@ -21,7 +21,7 @@ import com.extjs.gxt.ui.client.widget.tree.TreeItem;
 
 
 /**
- * TODO: Add Description for this type.
+ * Tree for users. Users are grouped based on their roles.
  *
  * @author Civic Computing Ltd.
  */
@@ -30,6 +30,7 @@ public class UserTree extends Tree {
     private final UserTable _ut =
         new UserTable(new GwtApplication().lookupService());
 
+    private LeftRightPane _view;
 
     /**
      * TODO: Add Description for this type.
@@ -46,14 +47,10 @@ public class UserTree extends Tree {
 
     }
 
-    LeftRightPane _view;
-
     /**
      * Constructor.
-     * @param _view
      *
-     * @param rsa
-     * @param root
+     * @param view LeftRightPane of the surrounding view.
      */
     UserTree(final LeftRightPane view) {
 

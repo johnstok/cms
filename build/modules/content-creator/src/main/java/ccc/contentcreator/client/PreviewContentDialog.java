@@ -13,9 +13,9 @@
 package ccc.contentcreator.client;
 
 import ccc.contentcreator.api.Application;
-import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.Control;
 import ccc.contentcreator.api.PanelControl;
+import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.DisposingClickListener;
 
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -42,7 +42,8 @@ public class PreviewContentDialog {
      * @param app The application for this dialog.
      * @param resourcePath The content resource to preview.
      */
-    public PreviewContentDialog(final Application app, final String resourcePath) {
+    public PreviewContentDialog(final Application app,
+                                final String resourcePath) {
 
         _app = app;
         _constants = _app.constants();
