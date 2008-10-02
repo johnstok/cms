@@ -13,12 +13,14 @@ package ccc.services;
 
 
 /**
- * TODO: Add Description for this type.
+ * Remote interface for {@link ContentManager}.
  *
  * @author Civic Computing Ltd.
  */
 public interface ContentManagerRemote
     extends
         ContentManager {
+
+    /* No methods */
 
 }
