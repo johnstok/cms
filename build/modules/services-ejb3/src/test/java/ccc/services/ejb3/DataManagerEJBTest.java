@@ -57,7 +57,7 @@ public class DataManagerEJBTest extends TestCase {
 
     /**
      * Test.
-     * @throws SQLException
+     * @throws SQLException sometimes.
      */
     public void testCreateFileData() throws SQLException {
 
@@ -203,15 +203,7 @@ public class DataManagerEJBTest extends TestCase {
         final JdbcDataSource ds = new JdbcDataSource();
         ds.setURL("jdbc:h2:mem:"+UUID.randomUUID()+";DB_CLOSE_DELAY=-1");
 
-        Connection c = ds.getConnection();
-        final Statement s1 = c.createStatement();
-        s1.execute(
-            "CREATE TABLE data("
-            + "_ID VARCHAR(255) NOT NULL, "
-            + "_VERSION INTEGER NOT NULL, "
-            + "_bytes BLOB NOT NULL)");
-        s1.close();
-        c.close();
+        createDataTable(ds);
 
         final DataManagerLocal dm =
             new DataManagerEJB(ds, dummy(EntityManager.class));
@@ -220,7 +212,7 @@ public class DataManagerEJBTest extends TestCase {
         dm.create(new Data(), dummyStream);
 
         // ASSERT
-        c = ds.getConnection();
+        Connection c = ds.getConnection();
         final Statement s2 = c.createStatement();
         ResultSet rs = s2.executeQuery("select count(*) from data");
         rs.next();
@@ -240,6 +232,35 @@ public class DataManagerEJBTest extends TestCase {
     }
 
     /**
+     * TODO: Add a description of this method.
+     *
+     * @param ds
+     * @param createDataTable
+     * @throws SQLException
+     */
+    private void createDataTable(final JdbcDataSource ds) throws SQLException {
+
+        final String sql =
+            "CREATE TABLE data("
+            + "_ID VARCHAR(255) NOT NULL, "
+            + "_VERSION INTEGER NOT NULL, "
+            + "_bytes BLOB NOT NULL)";
+
+        final Connection c = ds.getConnection();
+
+        try {
+            final PreparedStatement s = c.prepareStatement(sql);
+            try {
+                s.execute();
+            } finally {
+                s.close();
+            }
+        } finally {
+            c.close();
+        }
+    }
+
+    /**
      * Test.
      * @throws SQLException sometimes.
      */
@@ -252,15 +273,7 @@ public class DataManagerEJBTest extends TestCase {
         final JdbcDataSource ds = new JdbcDataSource();
         ds.setURL("jdbc:h2:mem:"+UUID.randomUUID()+";DB_CLOSE_DELAY=-1");
 
-        final Connection c = ds.getConnection();
-        final Statement s1 = c.createStatement();
-        s1.execute(
-            "CREATE TABLE data("
-            + "_ID VARCHAR(255) NOT NULL, "
-            + "_VERSION INTEGER NOT NULL, "
-            + "_bytes BLOB NOT NULL)");
-        s1.close();
-        c.close();
+        createDataTable(ds);
 
         final DataManagerLocal dm =
             new DataManagerEJB(ds, dummy(EntityManager.class));
