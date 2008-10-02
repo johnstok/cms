@@ -16,6 +16,8 @@ import org.apache.commons.dbutils.DbUtils;
  */
 public final class App {
 
+    private static final long MILLISECS_PER_SEC = 1000;
+
     private App() { /* NO-OP */ }
 
     /**
@@ -24,7 +26,8 @@ public final class App {
      * @param args String array of application arguments.
      */
     public static void main(final String[] args) {
-        final Long startTime = new Date().getTime();
+        final long startTime = new Date().getTime();
+
         // Establish a queries instance to communicate with the legacy DB.
         final Connection connection = getConnection();
         final Queries queries = new Queries(connection);
@@ -35,9 +38,12 @@ public final class App {
 
         migrations.migrate();
         DbUtils.closeQuietly(connection);
-        final Long elapsedTime = new Date().getTime() - startTime;
 
-        System.out.println("Migration finished in "+elapsedTime/1000+" secs");
+        final long elapsedTime = new Date().getTime() - startTime;
+        System.out.println(
+            "Migration finished in "
+            + elapsedTime/MILLISECS_PER_SEC
+            + " secs");
     }
 
     private static Connection getConnection() {
@@ -61,17 +67,16 @@ public final class App {
             final String username = "ccc_migration";
             final String password = "d3ccc_migration";
 
-            OracleDataSource ods = new OracleDataSource();
-            Properties props = new Properties();
+            final OracleDataSource ods = new OracleDataSource();
+            final Properties props = new Properties();
             props.put("user", username);
             props.put("password", password);
-            props.put("oracle.jdbc.FreeMemoryOnEnterImplicitCache", true);
+            props.put(
+                "oracle.jdbc.FreeMemoryOnEnterImplicitCache", Boolean.TRUE);
             ods.setConnectionProperties(props);
             ods.setURL(url);
             connection = ods.getConnection();
 
-
-//            connection = DriverManager.getConnection(url, username, password);
         } catch (final ClassNotFoundException e) {
             throw new MigrationException(e);
         } catch (final SQLException e) {

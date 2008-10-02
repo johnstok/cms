@@ -39,7 +39,8 @@ public class Migrations {
 
     private final Queries _queries;
     private final Registry _registry = new JNDI();
-    private static final Map<String, Template> templates =
+    /** _templates : Map. */
+    private final Map<String, Template> _templates =
         new HashMap<String, Template>();
 
     private static Logger log =
@@ -127,13 +128,13 @@ public class Migrations {
 
             if (null!=displayTemplate) {
                 Template template =
-                    (templates.containsKey(displayTemplate))
-                    ? templates.get(displayTemplate)
+                    (_templates.containsKey(displayTemplate))
+                    ? _templates.get(displayTemplate)
                         : new Template(displayTemplate, "", "");
                     template = assetManager().createOrRetrieve(template);
                     child.displayTemplateName(template);
-                    if (!templates.containsKey(displayTemplate)) {
-                        templates.put(displayTemplate, template);
+                    if (!_templates.containsKey(displayTemplate)) {
+                        _templates.put(displayTemplate, template);
                     }
             }
 
@@ -159,21 +160,22 @@ public class Migrations {
 
             if (null!=displayTemplate) {
                 Template template =
-                    (templates.containsKey(displayTemplate))
-                    ? templates.get(displayTemplate)
+                    (_templates.containsKey(displayTemplate))
+                    ? _templates.get(displayTemplate)
                         : new Template(displayTemplate, "", "");
                     template = assetManager().createOrRetrieve(template);
                     childPage.displayTemplateName(template);
-                    if (!templates.containsKey(displayTemplate)) {
-                        templates.put(displayTemplate, template);
+                    if (!_templates.containsKey(displayTemplate)) {
+                        _templates.put(displayTemplate, template);
                     }
             }
 
             final Map<String, StringBuffer> paragraphs =
                 migrateParagraphs(contentId);
-            for (final String key : paragraphs.keySet()) {
-                childPage.addParagraph(key,
-                    new Paragraph(paragraphs.get(key).toString()));
+            for (final Map.Entry<String, StringBuffer> para
+                : paragraphs.entrySet()) {
+                childPage.addParagraph(para.getKey(),
+                    new Paragraph(para.getValue().toString()));
             }
 
             contentManager().create(UUID.fromString(parentFolderId), childPage);

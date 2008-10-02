@@ -3,34 +3,45 @@ package ccc.migration;
 
 
 /**
- * TODO Add Description for this type.
+ * Migration specific runtime exception.
  *
  * @author Civic Computing Ltd
  */
 public class MigrationException extends RuntimeException {
 
+    /**
+     * Constructor.
+     */
     public MigrationException() {
-
         super();
-        // TODO Auto-generated constructor stub
     }
 
-    public MigrationException(String message, Throwable cause) {
-
+    /**
+     * Constructor.
+     *
+     * @param message
+     * @param cause
+     */
+    public MigrationException(final String message, final Throwable cause) {
         super(message, cause);
-        // TODO Auto-generated constructor stub
     }
 
-    public MigrationException(String message) {
-
+    /**
+     * Constructor.
+     *
+     * @param message
+     */
+    public MigrationException(final String message) {
         super(message);
-        // TODO Auto-generated constructor stub
     }
 
-    public MigrationException(Throwable cause) {
-
+    /**
+     * Constructor.
+     *
+     * @param cause
+     */
+    public MigrationException(final Throwable cause) {
         super(cause);
-        // TODO Auto-generated constructor stub
     }
 
 }
