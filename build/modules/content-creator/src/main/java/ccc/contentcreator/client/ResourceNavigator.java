@@ -49,7 +49,7 @@ public class ResourceNavigator extends ContentPanel {
 
         setLayout(new AccordionLayout());
         setBodyBorder(false);
-        setHeading("Resource Navigator");
+        setHeading("Navigator");
 
         final ContentPanel contentPanel = new ContentPanel();
         contentPanel.getHeader().setId("content-navigator");

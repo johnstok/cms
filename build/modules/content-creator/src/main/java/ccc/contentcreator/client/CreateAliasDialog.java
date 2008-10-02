@@ -80,7 +80,6 @@ public class CreateAliasDialog extends Window implements ApplicationDialog {
         _aliasName.setFieldLabel(_constants.name());
         _aliasName.setAllowBlank(false);
         _aliasName.setId("AliasName");
-        _aliasName.setAllowBlank(false);
         panel.add(_aliasName, new FormData("100%"));
 
         _parentFolder.setFieldLabel(_constants.folder());
@@ -119,6 +118,16 @@ public class CreateAliasDialog extends Window implements ApplicationDialog {
             new SelectionListener<ButtonEvent>() {
             @Override
             public void componentSelected(final ButtonEvent ce) {
+                if (_aliasName.getValue() == null
+                        || _aliasName.getValue().trim().equals("")) {
+                    app.alert(_constants.nameMustNotBeEmpty());
+                    return;
+                }
+                if (_parentFolder.getValue() == null
+                        || _parentFolder.getValue().trim().equals("")) {
+                    app.alert(_constants.folderMustNotBeEmpty());
+                    return;
+                }
                 app.lookupService().nameExistsInFolder(
                     _parent,
                     _aliasName.getValue(),
@@ -126,7 +135,7 @@ public class CreateAliasDialog extends Window implements ApplicationDialog {
                         public void onSuccess(final Boolean nameExists) {
 
                             if (nameExists) {
-                                app.alert("Name exists.");
+                                app.alert(_constants.nameExistsAlready());
                             } else {
                                 final DisposingCallback callback =
                                     new DisposingCallback(
