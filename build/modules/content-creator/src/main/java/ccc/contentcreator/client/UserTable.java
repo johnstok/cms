@@ -53,10 +53,10 @@ public class UserTable extends ContentPanel {
 
         final List<TableColumn> columns = new ArrayList<TableColumn>();
 
-        TableColumn col = new TableColumn("username", "Username");
+        TableColumn col = new TableColumn("username", "Username", .5f);
         columns.add(col);
 
-        col = new TableColumn("email", "e-mail");
+        col = new TableColumn("email", "e-mail", .5f);
         columns.add(col);
 
         final TableColumnModel cm = new TableColumnModel(columns);
