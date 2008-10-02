@@ -56,7 +56,7 @@ public class CreateContentTemplateDialog {
     /**
      * Constructor.
      *
-     * @param app
+     * @param app The application for this dialog.
      */
     public CreateContentTemplateDialog(final Application app) {
 
@@ -79,9 +79,9 @@ public class CreateContentTemplateDialog {
     /**
      * Constructor.
      *
-     * @param app
-     * @param item
-     * @param store
+     * @param app The application for this dialog.
+     * @param item TemplateDTO for the template.
+     * @param store ListStore model for the dialog.
      */
     public CreateContentTemplateDialog(final Application app,
                                        final TemplateDTO item,

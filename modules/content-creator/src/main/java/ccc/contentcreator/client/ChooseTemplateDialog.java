@@ -88,8 +88,8 @@ public class ChooseTemplateDialog {
 
         // populate combo box
         _templates.addItem("<none>", "<none>"); // No value.
-        for (final TemplateDTO template :
-            _options.get(0).<TemplateDTO>makeTypeSafe().getChoices()) {
+        for (final TemplateDTO template
+                :_options.get(0).<TemplateDTO>makeTypeSafe().getChoices()) {
             _templates.addItem(template.getTitle(), template.getId());
         }
 

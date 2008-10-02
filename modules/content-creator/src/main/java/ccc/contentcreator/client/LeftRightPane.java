@@ -30,8 +30,8 @@ public class LeftRightPane extends LayoutContainer {
     private final BorderLayoutData _leftData =
         new BorderLayoutData(LayoutRegion.WEST, 400);
 
-    LayoutContainer _left;
-    LayoutContainer _right;
+    // private LayoutContainer _left;
+    private LayoutContainer _right;
 
     /**
      * Constructor.
@@ -48,21 +48,23 @@ public class LeftRightPane extends LayoutContainer {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Sets specified component to the right hand pane and refreshes the layout.
      *
-     * @param pane
+     * @param pane The component to be set for the right hand pane.
      */
     public void setRightHandPane(final LayoutContainer pane) {
-        if (null!=_right) { remove(_right);};
+        if (null!=_right) {
+            remove(_right);
+        }
         _right = pane;
         add(pane, _rightData);
         this.layout();
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Sets specified component to the left hand pane.
      *
-     * @param pane
+     * @param pane The component to be set for the left hand pane.
      */
     public void setLeftHandPane(final LayoutContainer pane) {
         add(pane, _leftData);

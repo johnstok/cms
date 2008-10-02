@@ -32,7 +32,14 @@ public class ResourceNavigator extends ContentPanel {
     private final Tree _assetsTree;
     private final Tree _usersTree;
 
-    ResourceNavigator(final LeftRightPane view, final ResourceServiceAsync rsa) {
+    /**
+     * Constructor.
+     *
+     * @param view LeftRightPane of the surrounding view.
+     * @param rsa ResourceServiceAsync.
+     */
+    ResourceNavigator(final LeftRightPane view,
+                      final ResourceServiceAsync rsa) {
 
         _view = view;
 

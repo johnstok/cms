@@ -43,6 +43,8 @@ public class UserTable extends ContentPanel {
 
     /**
      * Constructor.
+     *
+     * @param rsa ResourceServiceAsync
      */
     UserTable(final ResourceServiceAsync rsa) {
         _rsa = rsa;
@@ -84,7 +86,7 @@ public class UserTable extends ContentPanel {
     /**
      * TODO: Add a description of this method.
      *
-     * @param selectedItem
+     * @param selectedItem The selected TreeItem.
      */
     public void displayUsersFor(final TreeItem selectedItem) {
 
@@ -122,7 +124,5 @@ public class UserTable extends ContentPanel {
                     }
                 });
         }
-
     }
-
 }
