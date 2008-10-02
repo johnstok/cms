@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.dbutils.DbUtils;
+import org.apache.log4j.Logger;
 
 import ccc.domain.CreatorRoles;
 import ccc.domain.User;
@@ -20,6 +21,10 @@ import ccc.domain.User;
  * @author Civic Computing Ltd
  */
 public class Queries {
+
+    private static Logger log =
+        Logger.getLogger(Queries.class);
+
     private final Connection _connection;
 
     /**
@@ -132,7 +137,7 @@ public class Queries {
                     selectRolesForUser(user, userId);
                     resultList.add(user);
                 } catch (final Exception e) {
-                    System.err.println(e.getMessage());
+                    log.error(e.getMessage());
                 }
             }
         } catch (final SQLException e) {
