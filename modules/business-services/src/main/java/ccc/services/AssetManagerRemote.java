@@ -13,12 +13,14 @@ package ccc.services;
 
 
 /**
- * TODO: Add Description for this type.
+ * Remote interface for {@link AssetManager}.
  *
  * @author Civic Computing Ltd.
  */
 public interface AssetManagerRemote
     extends
         AssetManager {
+
+    /* No methods */
 
 }

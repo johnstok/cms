@@ -13,12 +13,14 @@ package ccc.services;
 
 
 /**
- * TODO: Add Description for this type.
+ * Local interface for {@link AssetManager}.
  *
  * @author Civic Computing Ltd.
  */
 public interface AssetManagerLocal
     extends
         AssetManager {
+
+    /* No methods */
 
 }

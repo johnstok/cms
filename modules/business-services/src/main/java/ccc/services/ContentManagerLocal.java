@@ -13,12 +13,14 @@ package ccc.services;
 
 
 /**
- * TODO: Add Description for this type.
+ * Local interface for {@link ContentManager}.
  *
  * @author Civic Computing Ltd.
  */
 public interface ContentManagerLocal
     extends
         ContentManager {
+
+    /* No methods */
 
 }

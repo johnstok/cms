@@ -13,12 +13,14 @@ package ccc.services;
 
 
 /**
- * TODO: Add Description for this type.
+ * Local interface for {@link DataManager}.
  *
  * @author Civic Computing Ltd.
  */
 public interface DataManagerLocal
     extends
         DataManager {
+
+    /* No methods */
 
 }

@@ -14,11 +14,13 @@ package ccc.services;
 
 
 /**
- * TODO: Add Description for this type.
+ * Local interface for {@link UserManager}.
  *
  * @author Civic Computing Ltd.
  */
 public interface UserManagerLocal
     extends UserManager {
+
+    /* No methods */
 
 }

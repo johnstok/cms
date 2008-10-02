@@ -13,12 +13,14 @@ package ccc.services;
 
 
 /**
- * TODO: Add Description for this type.
+ * Local interface for {@link QueryManager}.
  *
  * @author Civic Computing Ltd.
  */
 public interface QueryManagerLocal
     extends
         QueryManager {
+
+    /* No methods */
 
 }

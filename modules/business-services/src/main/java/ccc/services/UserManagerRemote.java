@@ -13,10 +13,13 @@ package ccc.services;
 
 
 /**
- * TODO: Add Description for this type.
+ * Remote interface for {@link UserManager}.
  *
  * @author Civic Computing Ltd.
  */
 public interface UserManagerRemote
     extends UserManager {
+
+    /* No methods */
+
 }
