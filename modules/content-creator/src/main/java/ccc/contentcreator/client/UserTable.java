@@ -18,15 +18,12 @@ import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.dto.UserDTO;
 
-import com.extjs.gxt.ui.client.Style.SelectionMode;
-import com.extjs.gxt.ui.client.binder.TableBinder;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
+import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
+import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
-import com.extjs.gxt.ui.client.widget.table.Table;
-import com.extjs.gxt.ui.client.widget.table.TableColumn;
-import com.extjs.gxt.ui.client.widget.table.TableColumnModel;
-import com.extjs.gxt.ui.client.widget.table.TableItem;
 import com.extjs.gxt.ui.client.widget.tree.TreeItem;
 
 
@@ -51,36 +48,26 @@ public class UserTable extends ContentPanel {
         setHeading("User Details");
         setLayout(new FitLayout());
 
-        final List<TableColumn> columns = new ArrayList<TableColumn>();
+        final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
-        TableColumn col = new TableColumn("username", "Username", .5f);
-        columns.add(col);
+        final ColumnConfig usernameColumn = new ColumnConfig();
+        usernameColumn.setId("username");
+        usernameColumn.setHeader("Username");
+        usernameColumn.setWidth(400);
+        configs.add(usernameColumn);
 
-        col = new TableColumn("email", "e-mail", .5f);
-        columns.add(col);
+        final ColumnConfig emailColumn = new ColumnConfig();
+        emailColumn.setId("email");
+        emailColumn.setHeader("e-mail");
+        emailColumn.setWidth(400);
+        configs.add(emailColumn);
 
-        final TableColumnModel cm = new TableColumnModel(columns);
+        final ColumnModel cm = new ColumnModel(configs);
 
-        final Table tbl = new Table(cm);
-        tbl.setSelectionMode(SelectionMode.SINGLE);
-        tbl.setHorizontalScroll(true);
-        tbl.setBorders(false);
+        final Grid<UserDTO> grid = new Grid<UserDTO>(_detailsStore, cm);
+        grid.setLoadMask(true);
 
-        final TableBinder<UserDTO> binder =
-            new TableBinder<UserDTO>(tbl, _detailsStore) {
-
-            /** {@inheritDoc} */
-            @Override
-            protected TableItem createItem(final UserDTO model) {
-
-                TableItem ti = super.createItem(model);
-                ti.setId(model.getUsername());
-                return ti;
-            }
-        };
-        binder.init();
-
-        add(tbl);
+        add(grid);
     }
 
     /**

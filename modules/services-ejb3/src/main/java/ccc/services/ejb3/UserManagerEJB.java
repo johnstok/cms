@@ -14,7 +14,8 @@ package ccc.services.ejb3;
 import static javax.ejb.TransactionAttributeType.*;
 import static javax.persistence.PersistenceContextType.*;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.HashSet;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -70,21 +71,25 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked") // JPA API doesn't support generics.
     @Override
-    public List<User> listUsers() {
+    public Collection<User> listUsers() {
         final Query q =
             _em.createQuery(NamedQueries.ALL_USERS.queryString());
-        return q.getResultList();
+        return uniquify(q.getResultList());
     }
 
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked") // JPA API doesn't support generics.
     @Override
-    public List<User> listUsersWithRole(final CreatorRoles role) {
+    public Collection<User> listUsersWithRole(final CreatorRoles role) {
         final Query q =
             _em.createQuery(NamedQueries.USERS_WITH_ROLE.queryString());
         q.setParameter("role", role.name());
 
-        return q.getResultList();
+        return uniquify(q.getResultList());
+    }
+
+    private <T> Collection<T> uniquify(final Collection<T> collection) {
+        return new HashSet<T>(collection);
     }
 
 
@@ -96,11 +101,11 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
     static enum NamedQueries {
 
         /** ALL_USERS : NamedQueries. */
-        ALL_USERS("from ccc.domain.User"),
+        ALL_USERS("from ccc.domain.User u left join fetch u._roles"),
 
         /** USERS_WITH_ROLE : NamedQueries. */
         USERS_WITH_ROLE(
-            "from ccc.domain.User u where :role in elements(u._roles)");
+            "from ccc.domain.User u left join fetch u._roles where :role in elements(u._roles)");
 
         private final String _queryString;
 
