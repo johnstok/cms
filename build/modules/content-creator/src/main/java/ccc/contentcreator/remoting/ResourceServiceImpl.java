@@ -15,6 +15,7 @@ package ccc.contentcreator.remoting;
 import static ccc.contentcreator.remoting.DTOs.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -314,14 +315,14 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     /** {@inheritDoc} */
     public List<UserDTO> listUsers() {
         final UserManagerLocal um = _registry.get("UserManager/local");
-        final List<User> users = um.listUsers();
+        final Collection<User> users = um.listUsers();
         return DTOs.dtoFrom(users);
     }
 
     /** {@inheritDoc} */
     public List<UserDTO> listUsersWithRole(final String role) {
         final UserManagerLocal um = _registry.get("UserManager/local");
-        final List<User> users =
+        final Collection<User> users =
             um.listUsersWithRole(CreatorRoles.valueOf(role));
         return DTOs.dtoFrom(users);
     }

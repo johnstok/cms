@@ -11,7 +11,7 @@
  */
 package ccc.services;
 
-import java.util.List;
+import java.util.Collection;
 
 import ccc.domain.CreatorRoles;
 import ccc.domain.User;
@@ -35,7 +35,7 @@ interface UserManager {
      *
      * @return List of users.
      */
-    List<User> listUsers();
+    Collection<User> listUsers();
 
     /**
      * List all users with the specified role.
@@ -43,5 +43,5 @@ interface UserManager {
      * @param role The role to filter on.
      * @return The users with the specified role.
      */
-    List<User> listUsersWithRole(CreatorRoles role);
+    Collection<User> listUsersWithRole(CreatorRoles role);
 }

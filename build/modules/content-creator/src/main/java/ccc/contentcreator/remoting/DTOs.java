@@ -12,6 +12,7 @@
 package ccc.contentcreator.remoting;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -76,7 +77,7 @@ public final class DTOs {
      * @return
      */
     public static <T extends ResourceDTO, U extends Resource> List<T>
-        dtoFrom(final List<U> resources, final Class<U> resourceType) {
+        dtoFrom(final Collection<U> resources, final Class<U> resourceType) {
         final List<T> dtos = new ArrayList<T>();
         for (final U resource : resources) {
             dtos.add((T) dtoFrom(resource));
@@ -241,7 +242,7 @@ public final class DTOs {
      * @param userList
      * @return
      */
-    public static List<UserDTO> dtoFrom(final List<User> userList) {
+    public static List<UserDTO> dtoFrom(final Collection<User> userList) {
         final ArrayList<UserDTO> dtos = new ArrayList<UserDTO>();
         for (final User u : userList) {
             dtos.add(dtoFrom(u));
