@@ -68,7 +68,7 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
     }
 
     /** {@inheritDoc} */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked") // JPA API doesn't support generics.
     @Override
     public List<User> listUsers() {
         final Query q =
@@ -77,6 +77,7 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
     }
 
     /** {@inheritDoc} */
+    @SuppressWarnings("unchecked") // JPA API doesn't support generics.
     @Override
     public List<User> listUsersWithRole(final CreatorRoles role) {
         final Query q =
@@ -98,7 +99,8 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
         ALL_USERS("from ccc.domain.User"),
 
         /** USERS_WITH_ROLE : NamedQueries. */
-        USERS_WITH_ROLE("from ccc.domain.User u where :role in elements(u._roles)");
+        USERS_WITH_ROLE(
+            "from ccc.domain.User u where :role in elements(u._roles)");
 
         private final String _queryString;
 

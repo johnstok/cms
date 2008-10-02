@@ -12,8 +12,8 @@
 
 package ccc.services.ejb3;
 
-import static javax.ejb.TransactionAttributeType.REQUIRED;
-import static javax.persistence.PersistenceContextType.EXTENDED;
+import static javax.ejb.TransactionAttributeType.*;
+import static javax.persistence.PersistenceContextType.*;
 
 import java.util.Map;
 import java.util.UUID;
@@ -240,9 +240,7 @@ public final class ContentManagerEJB
         _em.persist(r);
     }
 
-    /**
-     * @see ccc.services.ContentManager#create(java.util.UUID, ccc.domain.Alias)
-     */
+    /** {@inheritDoc} */
     @Override
     public void create(final UUID folderId, final Alias alias) {
         create(folderId, (Resource) alias);
