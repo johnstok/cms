@@ -3,6 +3,7 @@ package ccc.contentcreator.client;
 
 import ccc.contentcreator.api.Application;
 
+import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.Viewport;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
@@ -25,10 +26,16 @@ public final class ContentCreator implements EntryPoint {
      */
     public void onModuleLoad() {
 
+        final LeftRightPane contentPane = new LeftRightPane();
+        contentPane.setLeftHandPane(
+            new ResourceNavigator(contentPane, _app.lookupService()));
+        contentPane.setRightHandPane(new ContentPanel());
+        // TODO: Add 'Welcome panel to right hand pane?
+
          final Viewport vp =
-             createMainWindow(
+             layoutMainWindow(
                  new MainMenu(_app),
-                 new GXTResourceExplorerPanel(_app).view());
+                 contentPane);
 
         RootPanel.get().add(vp);
     }
@@ -40,7 +47,7 @@ public final class ContentCreator implements EntryPoint {
      * @param content
      * @return
      */
-    private Viewport createMainWindow(final ToolBar menu,
+    private Viewport layoutMainWindow(final ToolBar menu,
                                       final LayoutContainer content) {
 
         final LayoutContainer vp = new LayoutContainer();
