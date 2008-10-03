@@ -11,6 +11,7 @@
  */
 package ccc.contentcreator.dto;
 
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -120,6 +121,18 @@ public class UserDTOTest extends TestCase {
 
         // ASSERT
         assertEquals(roles, userDTO.getRoles());
+    }
+
+    /**
+     * Test.
+     */
+    public void testRolesIsEmptyByDefault() {
+
+        // ACT
+        final UserDTO userDTO = new UserDTO();
+
+        // ASSERT
+        assertEquals(EnumSet.noneOf(CreatorRoles.class), userDTO.getRoles());
     }
 
 }

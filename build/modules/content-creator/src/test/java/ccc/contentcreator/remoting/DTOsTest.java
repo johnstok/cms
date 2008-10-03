@@ -12,6 +12,7 @@
 package ccc.contentcreator.remoting;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,7 +41,28 @@ public class DTOsTest extends TestCase {
     /**
      * Test.
      */
-    public void testUserFromDto() {
+    public void testUserFromNewDto() {
+
+        // ARRANGE
+        final UserDTO dto = new UserDTO();
+        dto.setUsername("dummy");
+        dto.setEmail("abc@def.com");
+
+        // ACT
+        final User actual = DTOs.userFrom(dto);
+
+        // ASSERT
+        assertNotNull(actual.id());
+        assertEquals(-1, actual.version());
+        assertEquals("dummy", actual.username());
+        assertEquals("abc@def.com", actual.email());
+        assertEquals(EnumSet.noneOf(CreatorRoles.class), actual.roles());
+    }
+
+    /**
+     * Test.
+     */
+    public void testUserFromExistingDto() {
 
         // ARRANGE
         final User expected = new User("user1");

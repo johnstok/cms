@@ -11,6 +11,7 @@
  */
 package ccc.contentcreator.dto;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
@@ -27,7 +28,10 @@ public class UserDTO extends BaseModelData implements DTO {
     /**
      * Constructor.
      */
-    public UserDTO() { super(); }
+    public UserDTO() {
+        super();
+        setRoles(new HashSet<String>());
+    }
 
     /**
      * Accessor for the id property.

@@ -289,4 +289,36 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Folder must not be empty.")
     String folderMustNotBeEmpty();
+
+    /**
+     * "Create user".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Create user")
+    String createUser();
+
+    /**
+     * "Email".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Email")
+    String email();
+
+    /**
+     * "Username".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Username")
+    String username();
+
+    /**
+     * "Users".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Users")
+    String users();
 }
