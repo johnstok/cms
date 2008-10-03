@@ -33,8 +33,18 @@ public abstract class Entity implements Serializable {
      *
      * @return This entity's id as a {@link UUID}.
      */
-    public UUID id() {
+    public final UUID id() {
         return _id;
+    }
+
+    /**
+     * Set this entity's id.
+     *
+     * @param id The new id.
+     */
+    public final void id(final UUID id) {
+        DBC.require().notNull(id);
+        _id = id;
     }
 
     /**
@@ -42,18 +52,18 @@ public abstract class Entity implements Serializable {
      *
      * @return This entity's version, as an integer.
      */
-    public int version() {
+    public final int version() {
         return _version;
     }
 
+
     /**
-     * Set this entoty's id.
+     * Mutator for the version property.
      *
-     * @param id The new id.
+     * @param version The new version to set.
      */
-    public void id(final UUID id) {
-        DBC.require().notNull(id);
-        _id = id;
+    public final void version(final int version) {
+        _version = version;
     }
 
     /**

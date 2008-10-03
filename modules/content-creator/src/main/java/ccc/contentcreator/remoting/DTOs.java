@@ -249,4 +249,22 @@ public final class DTOs {
         }
         return dtos;
     }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param userDto
+     * @return
+     */
+    public static User userFrom(final UserDTO userDto) {
+        final User u = new User(userDto.getUsername());
+        u.id(UUID.fromString(userDto.getId()));
+        u.version(userDto.getVersion());
+        u.email(userDto.getEmail());
+        for (final String role : userDto.getRoles()) {
+            u.addRole(CreatorRoles.valueOf(role));
+        }
+
+        return u;
+    }
 }

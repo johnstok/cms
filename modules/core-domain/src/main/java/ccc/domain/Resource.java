@@ -98,7 +98,7 @@ public abstract class Resource extends Entity {
      *
      * @return The name for this resource, as a {@link ResourceName}.
      */
-    public ResourceName name() {
+    public final ResourceName name() {
         return _name;
     }
 
@@ -107,7 +107,7 @@ public abstract class Resource extends Entity {
      *
      * @return The content's title, as a string.
      */
-    public String title() {
+    public final String title() {
         return _title;
     }
 
@@ -116,7 +116,7 @@ public abstract class Resource extends Entity {
      *
      * @param titleString The new title for this resource.
      */
-    public void title(final String titleString) {
+    public final void title(final String titleString) {
         require().notEmpty(titleString);
         require().maxLength(titleString, MAXIMUM_TITLE_LENGTH);
         _title = titleString;
@@ -127,7 +127,7 @@ public abstract class Resource extends Entity {
      *
      * @return The {@link Template}.
      */
-    public Template displayTemplateName() {
+    public final Template displayTemplateName() {
         return _template;
     }
 
@@ -136,7 +136,7 @@ public abstract class Resource extends Entity {
      *
      * @param template The new template.
      */
-    public void displayTemplateName(final Template template) {
+    public final void displayTemplateName(final Template template) {
         _template = template;
     }
 
@@ -145,7 +145,7 @@ public abstract class Resource extends Entity {
      *
      * @return The folder containing this resource.
      */
-    public Folder parent() {
+    public final Folder parent() {
         return _parent;
     }
 
@@ -155,7 +155,7 @@ public abstract class Resource extends Entity {
      *
      * @param parent The folder containing this resource.
      */
-    void parent(final Folder parent) {
+    final void parent(final Folder parent) {
         _parent = parent;
     }
 
@@ -166,7 +166,7 @@ public abstract class Resource extends Entity {
      * @param def The default template to use if we cannot compute one.
      * @return The template or null if none is found.
      */
-    public Template computeTemplate(final Template def) {
+    public final Template computeTemplate(final Template def) {
         return
             (null!=_template)
             ? displayTemplateName()
@@ -180,7 +180,7 @@ public abstract class Resource extends Entity {
      *
      * @return The absolute path as a {@link ResourcePath}.
      */
-    public ResourcePath absolutePath() {
+    public final ResourcePath absolutePath() {
         return
             (null==parent())
                 ? new ResourcePath(name())
@@ -192,7 +192,7 @@ public abstract class Resource extends Entity {
      *
      * @param resourceName The new resource name.
      */
-    void name(final ResourceName resourceName) {
+    final void name(final ResourceName resourceName) {
         require().notNull(resourceName);
         _name = resourceName;
     }

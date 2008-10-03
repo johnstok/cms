@@ -326,4 +326,11 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
             um.listUsersWithRole(CreatorRoles.valueOf(role));
         return DTOs.dtoFrom(users);
     }
+
+    /** {@inheritDoc} */
+    public void createUser(final UserDTO userDto) {
+        final UserManagerLocal um = _registry.get("UserManager/local");
+        final User user = DTOs.userFrom(userDto);
+        um.createUser(user);
+    }
 }

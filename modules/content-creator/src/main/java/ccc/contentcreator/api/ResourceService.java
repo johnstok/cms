@@ -180,4 +180,10 @@ public interface ResourceService extends RemoteService {
      */
     List<UserDTO> listUsersWithRole(String role);
 
+    /**
+     * Create a new user in the system.
+     *
+     * @param userDto A dto representing the new user.
+     */
+    void createUser(final UserDTO userDto);
 }
