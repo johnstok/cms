@@ -78,6 +78,21 @@ public class MainMenu
         });
         assetsMenu.add(createTemplate);
 
+        final TextToolItem users = new TextToolItem(_app.constants().users());
+        users.setId("users-menu");
+        final Menu usersMenu = new Menu();
+        users.setMenu(usersMenu);
+        final MenuItem createUser = new MenuItem();
+        createUser.setId("create-user-menu-item");
+        createUser.setText(_app.constants().createUser());
+        createUser.addSelectionListener(new SelectionListener<MenuEvent>() {
+            @Override
+            public void componentSelected(final MenuEvent ce) {
+                new CreateUserDialog().show();
+            }
+        });
+        usersMenu.add(createUser);
+
         final TextToolItem tools = new TextToolItem(_app.constants().tools());
         tools.setId("tools-menu");
         final Menu toolsMenu = new Menu();
@@ -108,6 +123,7 @@ public class MainMenu
         toolsMenu.add(updateOptions);
 
         add(assets);
+        add(users);
         add(tools);
         add(help);
     }

@@ -131,7 +131,7 @@ public class CreateAliasDialog extends Window implements ApplicationDialog {
                 app.lookupService().nameExistsInFolder(
                     _parent,
                     _aliasName.getValue(),
-                    new ErrorReportingCallback<Boolean>(app){
+                    new ErrorReportingCallback<Boolean>(){
                         public void onSuccess(final Boolean nameExists) {
 
                             if (nameExists) {

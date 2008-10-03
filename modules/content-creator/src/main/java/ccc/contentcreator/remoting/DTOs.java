@@ -258,8 +258,10 @@ public final class DTOs {
      */
     public static User userFrom(final UserDTO userDto) {
         final User u = new User(userDto.getUsername());
-        u.id(UUID.fromString(userDto.getId()));
-        u.version(userDto.getVersion());
+        if (null!=userDto.getId()) {
+            u.id(UUID.fromString(userDto.getId()));
+            u.version(userDto.getVersion());
+        }
         u.email(userDto.getEmail());
         for (final String role : userDto.getRoles()) {
             u.addRole(CreatorRoles.valueOf(role));

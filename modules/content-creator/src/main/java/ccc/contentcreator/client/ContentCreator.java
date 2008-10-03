@@ -30,7 +30,6 @@ public final class ContentCreator implements EntryPoint {
         contentPane.setLeftHandPane(
             new ResourceNavigator(contentPane, _app.lookupService()));
         contentPane.setRightHandPane(new ContentPanel());
-        // TODO: Add 'Welcome panel to right hand pane?
 
          final Viewport vp =
              layoutMainWindow(
