@@ -65,6 +65,28 @@ public final class ResourceServiceImplTest extends TestCase {
     /**
      * Test.
      */
+    public void testCreateUser() {
+
+        // ARRANGE
+        final User user = new User("user1");
+        user.email("abc@def.com");
+        user.addRole(CreatorRoles.ADMINISTRATOR);
+
+        _um.createUser(user);
+        replay(_um);
+
+        // ACT
+        _rsi.createUser(DTOs.dtoFrom(user));
+
+        // ASSERT
+        verify(_um);
+
+
+    }
+
+    /**
+     * Test.
+     */
     public void testGetAbsolutePath() {
 
         // ARRANGE

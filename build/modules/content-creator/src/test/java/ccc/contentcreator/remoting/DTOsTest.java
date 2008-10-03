@@ -40,7 +40,32 @@ public class DTOsTest extends TestCase {
     /**
      * Test.
      */
-    public void testFromTemplateDto() {
+    public void testUserFromDto() {
+
+        // ARRANGE
+        final User expected = new User("user1");
+        expected.version(1);
+        expected.email("abc@def.com");
+        expected.addRole(CreatorRoles.ADMINISTRATOR);
+
+        final UserDTO dto = DTOs.dtoFrom(expected);
+
+        // ACT
+        final User actual = DTOs.userFrom(dto);
+
+        // ASSERT
+        assertEquals(expected, actual);
+        assertEquals(expected.id(), actual.id());
+        assertEquals(expected.version(), actual.version());
+        assertEquals(expected.username(), actual.username());
+        assertEquals(expected.email(), actual.email());
+        assertEquals(expected.roles(), actual.roles());
+    }
+
+    /**
+     * Test.
+     */
+    public void testTemplateFromDto() {
 
         // ARRANGE
         final UUID id = UUID.randomUUID();

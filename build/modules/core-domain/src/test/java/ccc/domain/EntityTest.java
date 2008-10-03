@@ -26,6 +26,22 @@ public class EntityTest extends TestCase {
     /**
      * Test.
      */
+    public void testVersionMutator() {
+
+        // ARRANGE
+        final Entity e = new Foo();
+
+        // ACT
+        e.version(2);
+
+        // ASSERT
+        assertEquals(2, e.version());
+
+    }
+
+    /**
+     * Test.
+     */
     public void testEquals() {
 
         // ARRANGE
@@ -67,14 +83,12 @@ public class EntityTest extends TestCase {
      *
      * @author Civic Computing Ltd.
      */
-    static class Foo extends Entity {
-    }
+    static class Foo extends Entity { /* No methods. */ }
 
     /**
      * Bar.
      *
      * @author Civic Computing Ltd.
      */
-    static class Bar extends Entity {
-    }
+    static class Bar extends Entity { /* No methods. */ }
 }
