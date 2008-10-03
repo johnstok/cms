@@ -27,8 +27,7 @@ import com.extjs.gxt.ui.client.widget.tree.TreeItem;
  */
 public class UserTree extends Tree {
 
-    private final UserTable _ut =
-        new UserTable(new GwtApplication().lookupService());
+    private final UserTable _ut = new UserTable();
 
     private LeftRightPane _view;
 

@@ -73,7 +73,7 @@ public class MainMenu
         createTemplate.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override
             public void componentSelected(final MenuEvent ce) {
-                new CreateContentTemplateDialog(_app).center();
+                new CreateContentTemplateDialog().show();
             }
         });
         assetsMenu.add(createTemplate);
@@ -116,7 +116,7 @@ public class MainMenu
 
                      public void onSuccess(
                                 final List<OptionDTO<? extends DTO>> options) {
-                         new UpdateOptionsDialog(_app, options).center();
+                         new UpdateOptionsDialog( options).show();
                      }});
             }
         });

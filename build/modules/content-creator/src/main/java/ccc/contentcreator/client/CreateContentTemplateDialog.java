@@ -12,21 +12,18 @@
 
 package ccc.contentcreator.client;
 
-import ccc.contentcreator.api.Application;
 import ccc.contentcreator.api.DialogMode;
-import ccc.contentcreator.api.PanelControl;
 import ccc.contentcreator.api.ResourceServiceAsync;
-import ccc.contentcreator.api.StringControl;
-import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.DisposingCallback;
-import ccc.contentcreator.callbacks.DisposingClickListener;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.dto.ResourceDTO;
 import ccc.contentcreator.dto.TemplateDTO;
 
+import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
-import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.Widget;
+import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.extjs.gxt.ui.client.widget.layout.FormData;
 
 
 /**
@@ -36,18 +33,17 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * @author Civic Computing Ltd
  */
-public class CreateContentTemplateDialog {
+public class CreateContentTemplateDialog extends EditDialog {
 
-    private final ApplicationDialog     _delegate;
-    private final Application        _app;
-    private final UIConstants     _constants;
-    private final PanelControl  _gui;
-    private final ResourceServiceAsync _resourceService;
+    private final ResourceServiceAsync _resourceService =
+        Globals.resourceService();
 
-    private final StringControl _templateTitle;
-    private final StringControl _description;
-    private final StringControl _body;
-    private final FeedbackPanel _feedbackPanel;
+    private final TextField<String> _templateTitle = new TextField<String>();
+    private final TextField<String> _description = new TextField<String>();
+    private final TextField<String> _body = new TextField<String>();
+
+//    private final FeedbackPanel _feedbackPanel;
+
     private String _id;
     private DialogMode _mode;
     private ListStore<ResourceDTO> _store;
@@ -55,115 +51,91 @@ public class CreateContentTemplateDialog {
 
     /**
      * Constructor.
-     *
-     * @param app The application for this dialog.
      */
-    public CreateContentTemplateDialog(final Application app) {
+    public CreateContentTemplateDialog() {
 
         _mode = DialogMode.CREATE;
-        _app = app;
-        _constants = _app.constants();
-        _delegate = _app.dialog(_constants.createDisplayTemplate());
-        _gui = _app.verticalPanel();
-        _resourceService = _app.lookupService();
 
-        _templateTitle = _app.textBox();
-        _description = _app.textBox();
-        _body = _app.textArea();
-        _feedbackPanel = new FeedbackPanel(_app);
+        _templateTitle.setFieldLabel(_constants.title());
+        _templateTitle.setAllowBlank(false);
+        _templateTitle.setId(_constants.title());
+        _panel.add(_templateTitle, new FormData("100%"));
 
-        drawGUI();
-        _delegate.gui(_gui);
+        _description.setFieldLabel(_constants.description());
+        _description.setAllowBlank(false);
+        _description.setId(_constants.description());
+        _panel.add(_description, new FormData("100%"));
+
+        _body.setFieldLabel(_constants.body());
+        _body.setAllowBlank(false);
+        _body.setId(_constants.body());
+        _panel.add(_body, new FormData("100%"));
+
     }
 
     /**
      * Constructor.
      *
-     * @param app The application for this dialog.
      * @param item TemplateDTO for the template.
      * @param store ListStore model for the dialog.
      */
-    public CreateContentTemplateDialog(final Application app,
-                                       final TemplateDTO item,
+    public CreateContentTemplateDialog(final TemplateDTO item,
                                        final ListStore<ResourceDTO> store) {
-        this(app);
+
+        this();
+
         _mode = DialogMode.UPDATE;
-        _templateTitle.model(item.getTitle());
-        _description.model(item.getDescription());
-        _body.model(item.getBody());
+
         _id = item.getId();
         _store = store;
         _model = item;
-    }
-
-    private void drawGUI() {
-
-        _feedbackPanel.setVisible(false);
-        _gui.add(_feedbackPanel);
-
-        _gui.add(
-            new TwoColumnForm(_app, 3)
-                .add(_constants.title(), _templateTitle)
-                .add(_constants.description(), _description)
-                .add(_constants.body(), _body)
-            );
-
-        _gui.add(
-            new ButtonBar(_app)
-                .add(
-                    _constants.cancel(),
-                    new DisposingClickListener(_delegate))
-                .add(
-                    _constants.save(),
-                    new ClickListener() {
-                        public void onClick(final Widget sender) {
-                            final TemplateDTO dto = model();
-                            if (dto.isValid()) {
-                                switch (_mode) {
-                                    case CREATE:
-                                    _resourceService.createTemplate(
-                                    dto,
-                                    new DisposingCallback(_app, _delegate));
-                                    break;
-                                case UPDATE:
-                                    _resourceService.updateTemplate(
-                                        dto,
-                                        new ErrorReportingCallback<Void>(_app){
-                                            public void onSuccess(final Void arg0) {
-                                                _model.set("title", dto.getTitle());
-                                                _model.set("name", dto.getName());
-                                                _model.set("description", dto.getDescription());
-                                                _model.set("body", dto.getBody());
-                                                _store.update(_model);
-                                                _delegate.hide();
-                                            }});
-                                    break;
-                                default:
-                                    _app.alert("Error.");
-                                }
-                            } else {
-                                _feedbackPanel.displayErrors(dto.validate());
-                                _feedbackPanel.setVisible(true);
-                            }
-                        }})
-            );
     }
 
     private TemplateDTO model() { // TODO: update to handle version correctly.
         return new TemplateDTO(
             _id,
             -1,
-            _templateTitle.model(),
-            _templateTitle.model(),
-            _description.model(),
-            _body.model());
+            _templateTitle.getValue(),
+            _templateTitle.getValue(),
+            _description.getValue(),
+            _body.getValue());
     }
 
-    /**
-     * TODO: Add a description of this method.
-     *
-     */
-    public void center() {
-        _delegate.center();
+    /** {@inheritDoc} */
+    @Override
+    protected SelectionListener<ButtonEvent> saveAction() {
+        return new SelectionListener<ButtonEvent>() {
+            @Override public void componentSelected(final ButtonEvent ce) {
+                final TemplateDTO dto = model();
+                if (dto.isValid()) {
+                    switch (_mode) {
+                        case CREATE:
+                        _resourceService.createTemplate(
+                        dto,
+                        new DisposingCallback(CreateContentTemplateDialog.this));
+                        break;
+                    case UPDATE:
+                        _resourceService.updateTemplate(
+                            dto,
+                            new ErrorReportingCallback<Void>(){
+                                public void onSuccess(final Void arg0) {
+                                    _model.set("title", dto.getTitle());
+                                    _model.set("name", dto.getName());
+                                    _model.set("description", dto.getDescription());
+                                    _model.set("body", dto.getBody());
+                                    _store.update(_model);
+                                    hide();
+                                }});
+                        break;
+                    default:
+                        Globals.alert("Error.");
+                    }
+                } else {
+                    Globals.alert(dto.validate().toString()); // TODO Reinstate feedback panel
+//                    _feedbackPanel.displayErrors(dto.validate());
+//                    _feedbackPanel.setVisible(true);
+                }
+            }
+        };
     }
 }

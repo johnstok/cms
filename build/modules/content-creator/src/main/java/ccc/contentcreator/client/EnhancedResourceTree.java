@@ -131,7 +131,7 @@ public class EnhancedResourceTree extends ResourceTree {
                                 rsa.createFolder(
                                     item,
                                     text.getValue(),
-                                    new ErrorReportingCallback<FolderDTO>(_app){
+                                    new ErrorReportingCallback<FolderDTO>(){
                                         public void onSuccess(final FolderDTO result) {
                                             fireEvent(Events.SelectionChange);
                                             store().add((FolderDTO) getSelectedItem().getModel(), result, false);

@@ -36,15 +36,12 @@ public class UserTable extends ContentPanel {
 
     private final ListStore<UserDTO> _detailsStore =
         new ListStore<UserDTO>();
-    private final ResourceServiceAsync _rsa;
+    private final ResourceServiceAsync _rsa = Globals.resourceService();
 
     /**
      * Constructor.
-     *
-     * @param rsa ResourceServiceAsync
      */
-    UserTable(final ResourceServiceAsync rsa) {
-        _rsa = rsa;
+    UserTable() {
         setHeading("User Details");
         setLayout(new FitLayout());
 
@@ -81,7 +78,7 @@ public class UserTable extends ContentPanel {
 
         if ("All".equals(selectedItem.getText())) {
             _rsa.listUsers(
-                new ErrorReportingCallback<List<UserDTO>>(new GwtApplication()) {
+                new ErrorReportingCallback<List<UserDTO>>() {
                     public void onSuccess(final List<UserDTO> result) {
                         _detailsStore.add(result);
                     }
@@ -89,7 +86,7 @@ public class UserTable extends ContentPanel {
         } else if ("Content creator".equals(selectedItem.getText())){
             _rsa.listUsersWithRole(
                 "CONTENT_CREATOR",
-                new ErrorReportingCallback<List<UserDTO>>(new GwtApplication()) {
+                new ErrorReportingCallback<List<UserDTO>>() {
                     public void onSuccess(final List<UserDTO> result) {
                         _detailsStore.add(result);
                     }
@@ -97,7 +94,7 @@ public class UserTable extends ContentPanel {
         } else if ("Site Builder".equals(selectedItem.getText())) {
             _rsa.listUsersWithRole(
                 "SITE_BUILDER",
-                new ErrorReportingCallback<List<UserDTO>>(new GwtApplication()) {
+                new ErrorReportingCallback<List<UserDTO>>() {
                     public void onSuccess(final List<UserDTO> result) {
                         _detailsStore.add(result);
                     }
@@ -105,7 +102,7 @@ public class UserTable extends ContentPanel {
         } else if("Administrator".equals(selectedItem.getText())) {
             _rsa.listUsersWithRole(
                 "ADMINISTRATOR",
-                new ErrorReportingCallback<List<UserDTO>>(new GwtApplication()) {
+                new ErrorReportingCallback<List<UserDTO>>() {
                     public void onSuccess(final List<UserDTO> result) {
                         _detailsStore.add(result);
                     }

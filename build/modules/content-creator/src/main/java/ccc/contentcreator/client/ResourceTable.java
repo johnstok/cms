@@ -105,7 +105,7 @@ public class ResourceTable extends ContentPanel {
                     (ResourceDTO) tbl.getSelectedItem().getModel();
                 _app.lookupService().getAbsolutePath(
                     item,
-                    new ErrorReportingCallback<String>(_app) {
+                    new ErrorReportingCallback<String>() {
                         public void onSuccess(final String arg0) {
                             new PreviewContentDialog(_app, arg0).center();
                         }
@@ -122,7 +122,7 @@ public class ResourceTable extends ContentPanel {
                     final ResourceDTO item =
                         (ResourceDTO) tbl.getSelectedItem().getModel();
                      if ("TEMPLATE".equals(item.getType())) {
-                         new CreateContentTemplateDialog(_app, (TemplateDTO) item, _detailsStore).center();
+                         new CreateContentTemplateDialog((TemplateDTO) item, _detailsStore).center();
                      } else if ("PAGE".equals(item.getType())) {
                          new UpdateContentDialog(item.getId()).show();
                      } else {
@@ -169,8 +169,8 @@ public class ResourceTable extends ContentPanel {
                             }
 
                             public void onSuccess(
-                                       final List<OptionDTO<? extends DTO>> options) {
-                                new ChooseTemplateDialog(_app, options, item).center();
+                            final List<OptionDTO<? extends DTO>> options) {
+                                new ChooseTemplateDialog( options, item).show();
                             }});
 
                 } else {
@@ -198,7 +198,7 @@ public class ResourceTable extends ContentPanel {
         final FolderDTO f = (FolderDTO) selectedItem.getModel();
         _app.lookupService().getChildren(
             f,
-            new ErrorReportingCallback<List<ResourceDTO>>(_app) {
+            new ErrorReportingCallback<List<ResourceDTO>>() {
                 public void onSuccess(
                                   final List<ResourceDTO> result) {
                     _detailsStore.add(result);
