@@ -39,7 +39,7 @@ import com.extjs.gxt.ui.client.widget.layout.FormData;
  *
  * @author Civic Computing Ltd
  */
-public class CreateAliasDialog extends Window implements ApplicationDialog {
+public class CreateAliasDialog extends Window {
 
     private final TextField<String> _targetName = new TextField<String>();
     private final TextField<String> _aliasName = new TextField<String>();
@@ -139,7 +139,6 @@ public class CreateAliasDialog extends Window implements ApplicationDialog {
                             } else {
                                 final DisposingCallback callback =
                                     new DisposingCallback(
-                                        app,
                                         CreateAliasDialog.this);
                                 app.lookupService().createAlias(
                                     _parent,

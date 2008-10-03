@@ -162,7 +162,7 @@ public class UpdateContentDialog extends Window {
                 }));
 
         final AsyncCallback<PageDTO> callback =
-            new ErrorReportingCallback<PageDTO>(null) {
+            new ErrorReportingCallback<PageDTO>() {
 
             /** {@inheritDoc} */
             public void onSuccess(final PageDTO page) {

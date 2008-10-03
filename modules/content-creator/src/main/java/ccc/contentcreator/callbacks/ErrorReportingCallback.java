@@ -11,7 +11,6 @@
  */
 package ccc.contentcreator.callbacks;
 
-import ccc.contentcreator.api.Application;
 import ccc.contentcreator.client.Globals;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -25,21 +24,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @author Civic Computing Ltd.
  */
 public abstract class ErrorReportingCallback<T> implements AsyncCallback<T> {
-
-
-    /**
-     * Constructor.
-     *
-     * @param application The application instance for use by this callback.
-     */
-    public ErrorReportingCallback(final Application application) {
-        this();
-    }
-
-    /**
-     * Constructor.
-     */
-    public ErrorReportingCallback() { super(); }
 
     /**
      * {@inheritDoc}

@@ -14,131 +14,114 @@ package ccc.contentcreator.client;
 
 import java.util.List;
 
-import ccc.contentcreator.api.Application;
-import ccc.contentcreator.api.UIConstants;
-import ccc.contentcreator.api.ListControl;
-import ccc.contentcreator.api.PanelControl;
 import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.callbacks.DisposingCallback;
-import ccc.contentcreator.callbacks.DisposingClickListener;
 import ccc.contentcreator.dto.DTO;
 import ccc.contentcreator.dto.OptionDTO;
 import ccc.contentcreator.dto.TemplateDTO;
 
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.ChangeListener;
-import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.Widget;
+import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.widget.form.ComboBox;
+import com.extjs.gxt.ui.client.widget.layout.FormData;
 
 
 /**
  * TODO Add Description for this type.
+ * TODO: Move null handling into option class.
  *
  * @author Civic Computing Ltd
  */
-public class UpdateOptionsDialog {
+public class UpdateOptionsDialog extends EditDialog {
 
-    private final ApplicationDialog     _delegate;
-    private final Application        _app;
-    private final UIConstants     _constants;
-    private final PanelControl  _gui;
-    private final ResourceServiceAsync _resourceService;
-
-    private final ListControl _defaultTemplate;
+    private final ResourceServiceAsync _resourceService =
+        Globals.resourceService();
+    private final ComboBox<TemplateDTO> _defaultTemplate =
+        new ComboBox<TemplateDTO>();
     private final List<OptionDTO<? extends DTO>> _options;
+    private final TemplateDTO _none =
+        new TemplateDTO(null,
+                        -1,
+                        "[none]",
+                        "[none]",
+                        "[none]",
+                        "[none]");
 
     /**
      * Constructor.
-     * @param templates
+     *
+     * @param options
      */
-    public UpdateOptionsDialog(final Application app,
-                               final List<OptionDTO<? extends DTO>> options) {
+    public UpdateOptionsDialog(final List<OptionDTO<? extends DTO>> options) {
 
-        _app = app;
-        _constants = _app.constants();
-        _delegate = _app.dialog(_constants.options());
-        _gui = _app.verticalPanel();
-        _resourceService = _app.lookupService();
-
-        _defaultTemplate = _app.listBox();
         _options = options;
 
+        setHeading(_constants.options());
+
+        _defaultTemplate.setFieldLabel(_constants.defaultTemplate());
+        _defaultTemplate.setId(_constants.defaultTemplate());
+        _defaultTemplate.setDisplayField("name");
+        _defaultTemplate.setForceSelection(true);
+        _panel.add(_defaultTemplate, new FormData("100%"));
+
+        _panel.setId("UserPanel");
+        _save.setId("userSave");
+        _cancel.setId("userCancel");
+
         drawGUI();
-        _delegate.gui(_gui);
     }
 
     private void drawGUI() {
 
-        final FeedbackPanel fPanel = new FeedbackPanel(_app);
-        fPanel.setVisible(false);
-        _gui.add(fPanel);
-
-        _gui.add(
-            new TwoColumnForm(_app, 1)
-                .add(_constants.defaultTemplate(), _defaultTemplate)
-            );
-
-        // populate combo box
-        _defaultTemplate.addItem("<none>", "<none>"); // No value.
-        for (final TemplateDTO template :
-                    _options.get(0).<TemplateDTO>makeTypeSafe().getChoices()) {
-            _defaultTemplate.addItem(template.getTitle(), template.getId());
+        // Populate combo-box
+        final ListStore<TemplateDTO> store = new ListStore<TemplateDTO>();
+        for (final TemplateDTO template
+            : _options.get(0).<TemplateDTO> makeTypeSafe().getChoices()) {
+            store.add(template);
         }
+        store.add(_none);
+        _defaultTemplate.setStore(store);
 
-        // If there is a current value set it
-        final TemplateDTO currentValue = _options.get(0).<TemplateDTO>makeTypeSafe().getCurrentValue();
-        if (null != currentValue) {
-            for (int i=0; i<_defaultTemplate.getItemCount(); i++) {
-                if (_defaultTemplate.getValue(i).equals(
-                    currentValue.getId())) {
-                    _defaultTemplate.setSelectedIndex(i);
-                    break;
-                }
-            }
+
+        // Set the current value
+        final TemplateDTO currentValue =
+            _options.get(0).<TemplateDTO>makeTypeSafe().getCurrentValue();
+
+        if (null == currentValue) {
+            _defaultTemplate.setValue(_none);
+        } else {
+            _defaultTemplate.setValue(currentValue);
         }
-
-        // Add a change listener
-        _defaultTemplate.addChangeListener(new ChangeListener(){
-            public void onChange(final Widget arg0) {
-                final ListBox lb = (ListBox)arg0;
-                final int selected = lb.getSelectedIndex();
-                final String templateId = lb.getValue(selected);
-                if ("<none>".equals(templateId)) {
-                    _options.get(0).<TemplateDTO>makeTypeSafe().setCurrentValue(null);
-                } else {
-                    for (final TemplateDTO template :
-                        _options.get(0).<TemplateDTO>makeTypeSafe().getChoices()) {
-                        if (template.getId().equals(templateId)) {
-                            _options.get(0).<TemplateDTO>makeTypeSafe().setCurrentValue(template);
-                            return;
-                        }
-                    }
-                    Window.alert("No template: "+templateId);
-                }
-            }});
-
-        _gui.add(
-            new ButtonBar(_app)
-                .add(
-                    _constants.cancel(),
-                    new DisposingClickListener(_delegate))
-                .add(
-                    _constants.save(),
-                    new ClickListener() {
-                        public void onClick(final Widget sender) {
-                            _resourceService
-                                .updateOptions(_options,
-                                               new DisposingCallback(_app, _delegate));
-                        }})
-            );
     }
 
-    /**
-     * TODO: Add a description of this method.
-     *
-     */
-    public void center() {
-        _delegate.center();
+    /** {@inheritDoc} */
+    @Override
+    protected SelectionListener<ButtonEvent> saveAction() {
+        return new SelectionListener<ButtonEvent>(){
+            @Override public void componentSelected(final ButtonEvent ce) {
+
+                final TemplateDTO selected = _defaultTemplate.getValue();
+                // TODO: NULL should cause error.
+                if (_none.equals(selected)) {
+                    _options
+                        .get(0)
+                        .<TemplateDTO>makeTypeSafe()
+                        .setCurrentValue(null);
+                } else {
+                    _options
+                        .get(0)
+                        .<TemplateDTO>makeTypeSafe()
+                        .setCurrentValue(selected);
+                }
+
+                _resourceService
+                    .updateOptions(_options,
+                                   new DisposingCallback(
+                                       UpdateOptionsDialog.this
+                                   )
+                    );
+            }
+        };
     }
 }

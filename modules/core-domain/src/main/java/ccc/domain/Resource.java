@@ -94,12 +94,54 @@ public abstract class Resource extends Entity {
     }
 
     /**
+     * Determine the template for this resource. Iterates up the parent
+     * hierarchy if necessary.
+     *
+     * @param def The default template to use if we cannot compute one.
+     * @return The template or null if none is found.
+     */
+    public final Template computeTemplate(final Template def) {
+        return
+        (null!=_template)
+        ? displayTemplateName()
+            : (null!=_parent)
+            ? _parent.computeTemplate(def)
+                : def;
+    }
+
+    /**
+     * Determine the absolute path for a resource.
+     *
+     * @return The absolute path as a {@link ResourcePath}.
+     */
+    public final ResourcePath absolutePath() {
+        return
+        (null==parent())
+        ? new ResourcePath(name())
+        : parent().absolutePath().append(name());
+    }
+
+    /* ====================================================================
+     * Accessors & Mutators.
+     * ==================================================================*/
+
+    /**
      * Accessor for name.
      *
      * @return The name for this resource, as a {@link ResourceName}.
      */
-    public final ResourceName name() {
+    public ResourceName name() {
         return _name;
+    }
+
+    /**
+     * Mutator for the name field.
+     *
+     * @param resourceName The new resource name.
+     */
+    void name(final ResourceName resourceName) {
+        require().notNull(resourceName);
+        _name = resourceName;
     }
 
     /**
@@ -107,7 +149,7 @@ public abstract class Resource extends Entity {
      *
      * @return The content's title, as a string.
      */
-    public final String title() {
+    public String title() {
         return _title;
     }
 
@@ -116,7 +158,7 @@ public abstract class Resource extends Entity {
      *
      * @param titleString The new title for this resource.
      */
-    public final void title(final String titleString) {
+    public void title(final String titleString) {
         require().notEmpty(titleString);
         require().maxLength(titleString, MAXIMUM_TITLE_LENGTH);
         _title = titleString;
@@ -127,7 +169,7 @@ public abstract class Resource extends Entity {
      *
      * @return The {@link Template}.
      */
-    public final Template displayTemplateName() {
+    public Template displayTemplateName() {
         return _template;
     }
 
@@ -136,7 +178,7 @@ public abstract class Resource extends Entity {
      *
      * @param template The new template.
      */
-    public final void displayTemplateName(final Template template) {
+    public void displayTemplateName(final Template template) {
         _template = template;
     }
 
@@ -145,7 +187,7 @@ public abstract class Resource extends Entity {
      *
      * @return The folder containing this resource.
      */
-    public final Folder parent() {
+    public Folder parent() {
         return _parent;
     }
 
@@ -155,45 +197,7 @@ public abstract class Resource extends Entity {
      *
      * @param parent The folder containing this resource.
      */
-    final void parent(final Folder parent) {
+    void parent(final Folder parent) {
         _parent = parent;
-    }
-
-    /**
-     * Determine the template for this resource. Iterates up the parent
-     * hierarchy if necessary.
-     *
-     * @param def The default template to use if we cannot compute one.
-     * @return The template or null if none is found.
-     */
-    public final Template computeTemplate(final Template def) {
-        return
-            (null!=_template)
-            ? displayTemplateName()
-            : (null!=_parent)
-              ? _parent.computeTemplate(def)
-              : def;
-    }
-
-    /**
-     * Determine the absolute path for a resource.
-     *
-     * @return The absolute path as a {@link ResourcePath}.
-     */
-    public final ResourcePath absolutePath() {
-        return
-            (null==parent())
-                ? new ResourcePath(name())
-                : parent().absolutePath().append(name());
-    }
-
-    /**
-     * Mutator for the name field.
-     *
-     * @param resourceName The new resource name.
-     */
-    final void name(final ResourceName resourceName) {
-        require().notNull(resourceName);
-        _name = resourceName;
     }
 }
