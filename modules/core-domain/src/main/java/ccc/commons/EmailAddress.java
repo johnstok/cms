@@ -70,70 +70,101 @@ public class EmailAddress implements Serializable {
     private static final boolean ALLOW_QUOTED_IDENTIFIERS = true;
 
     // RFC 2822 2.2.2 Structured Header Field Bodies
-    private static final String wsp = "[ \\t]"; //space or tab
-    private static final String fwsp = wsp + "*";
+    private static final String WHITESPACE_CHARS = "[ \\t]"; //space or tab
+    private static final String WHITESPACE = WHITESPACE_CHARS + "*";
 
     //RFC 2822 3.2.1 Primitive tokens
-    private static final String dquote = "\\\"";
+    private static final String QUOTE = "\\\"";
     //ASCII Control characters excluding white space:
-    private static final String noWsCtl = "\\x01-\\x08\\x0B\\x0C\\x0E-\\x1F\\x7F";
+    private static final String NON_WHITESPACE_CONTROL =
+        "\\x01-\\x08\\x0B\\x0C\\x0E-\\x1F\\x7F";
     //all ASCII characters except CR and LF:
-    private static final String asciiText = "[\\x01-\\x09\\x0B\\x0C\\x0E-\\x7F]";
+    private static final String ASCII_TEXT =
+        "[\\x01-\\x09\\x0B\\x0C\\x0E-\\x7F]";
 
     // RFC 2822 3.2.2 Quoted characters:
     //single backslash followed by a text char
-    private static final String quotedPair = "(\\\\" + asciiText + ")";
+    private static final String QUOTED_PAIR = "(\\\\" + ASCII_TEXT + ")";
 
     //RFC 2822 3.2.4 Atom:
-    private static final String atext = "[a-zA-Z0-9\\!\\#\\$\\%\\&amp;\\'\\*\\+\\-\\/\\=\\?\\^\\_\\`\\{\\|\\}\\~]";
-    private static final String atom = fwsp + atext + "+" + fwsp;
-    private static final String dotAtomText = atext + "+" + "(" + "\\." + atext + "+)*";
-    private static final String dotAtom = fwsp + "(" + dotAtomText + ")" + fwsp;
+    private static final String ATOM_TEXT =
+        "[a-zA-Z0-9\\!\\#\\$\\%\\&amp;\\'\\*\\+\\-\\/\\=\\?\\^\\_\\`\\{\\|\\}"
+        + "\\~]";
+    private static final String ATOM =
+        WHITESPACE + ATOM_TEXT + "+" + WHITESPACE;
+    private static final String DOT_ATOM_TEXT =
+        ATOM_TEXT + "+" + "(" + "\\." + ATOM_TEXT + "+)*";
+    private static final String DOT_ATOM =
+        WHITESPACE + "(" + DOT_ATOM_TEXT + ")" + WHITESPACE;
 
-    //RFC 2822 3.2.5 Quoted strings:
-    //noWsCtl and the rest of ASCII except the doublequote and backslash characters:
-    private static final String qtext = "[" + noWsCtl + "\\x21\\x23-\\x5B\\x5D-\\x7E]";
-    private static final String qcontent = "(" + qtext + "|" + quotedPair + ")";
-    private static final String quotedString = dquote + "(" + fwsp + qcontent + ")*" + fwsp + dquote;
+    /*
+     * RFC 2822 3.2.5 Quoted strings:
+     * NON_WHITESPACE_CONTROL and the rest of ASCII except the double quote and
+     * backslash characters:
+     */
+    private static final String QUOTED_TEXT =
+        "[" + NON_WHITESPACE_CONTROL + "\\x21\\x23-\\x5B\\x5D-\\x7E]";
+    private static final String QUOTED_CONTENT =
+        "(" + QUOTED_TEXT + "|" + QUOTED_PAIR + ")";
+    private static final String QUOTED_STRING =
+        QUOTE + "(" + WHITESPACE + QUOTED_CONTENT + ")*" + WHITESPACE + QUOTE;
 
     //RFC 2822 3.2.6 Miscellaneous tokens
-    private static final String word = "((" + atom + ")|(" + quotedString + "))";
-    private static final String phrase = word + "+"; //one or more words.
+    private static final String WORD =
+        "((" + ATOM + ")|(" + QUOTED_STRING + "))";
+    private static final String PHRASE = WORD + "+"; //one or more words.
 
     //RFC 1035 tokens for domain names:
-    private static final String letter = "[a-zA-Z]";
-    private static final String letDig = "[a-zA-Z0-9]";
-    private static final String letDigHyp = "[a-zA-Z0-9-]";
-    private static final String rfcLabel = letDig + "(" + letDigHyp + "{0,61}" + letDig + ")?";
-    private static final String rfc1035DomainName = rfcLabel + "(\\." + rfcLabel + ")*\\." + letter + "{2,6}";
+    private static final String LETTER = "[a-zA-Z]";
+    private static final String LETTER_OR_DIGIT = "[a-zA-Z0-9]";
+    private static final String LETTER_DIGIT_OR_HYPHEN = "[a-zA-Z0-9-]";
+    private static final String RFC_LABEL =
+        LETTER_OR_DIGIT
+        + "("
+        + LETTER_DIGIT_OR_HYPHEN
+        + "{0,61}"
+        + LETTER_OR_DIGIT
+        + ")?";
+    private static final String RFC_1035_DOMAIN_NAME =
+        RFC_LABEL + "(\\." + RFC_LABEL + ")*\\." + LETTER + "{2,6}";
 
-    //RFC 2822 3.4 Address specification
-    /* domain text - non white space controls and the rest of ASCII chars not
+    /*
+     * RFC 2822 3.4 Address specification
+     * domain text - non white space controls and the rest of ASCII chars not
      * including [, ], or \:
      */
-    private static final String dtext = "[" + noWsCtl + "\\x21-\\x5A\\x5E-\\x7E]";
-    private static final String dcontent = dtext + "|" + quotedPair;
-    private static final String domainLiteral = "\\[" + "(" + fwsp + dcontent + "+)*" + fwsp + "\\]";
-    private static final String rfc2822Domain = "(" + dotAtom + "|" + domainLiteral + ")";
+    private static final String DOMAIN_TEXT =
+        "[" + NON_WHITESPACE_CONTROL + "\\x21-\\x5A\\x5E-\\x7E]";
+    private static final String DOMAIN_CONTENT =
+        DOMAIN_TEXT + "|" + QUOTED_PAIR;
+    private static final String DOMAIN_LITERAL =
+        "\\[" + "(" + WHITESPACE + DOMAIN_CONTENT + "+)*" + WHITESPACE + "\\]";
+    private static final String RFC_2822_DOMAIN =
+        "(" + DOT_ATOM + "|" + DOMAIN_LITERAL + ")";
 
-    private static final String domain = ALLOW_DOMAIN_LITERALS ? rfc2822Domain : rfc1035DomainName;
+    private static final String DOMAIN =
+        ALLOW_DOMAIN_LITERALS ? RFC_2822_DOMAIN : RFC_1035_DOMAIN_NAME;
 
-    private static final String localPart = "((" + dotAtom + ")|(" + quotedString + "))";
-    private static final String addrSpec = localPart + "@" + domain;
-    private static final String angleAddr = "<" + addrSpec + ">";
-    private static final String nameAddr = "(" + phrase + ")?" + fwsp + angleAddr;
-    private static final String mailbox = nameAddr + "|" + addrSpec;
+    private static final String LOCAL_PART =
+        "((" + DOT_ATOM + ")|(" + QUOTED_STRING + "))";
+    private static final String ADDRESS_SPEC = LOCAL_PART + "@" + DOMAIN;
+    private static final String ANGLE_ADDRESS = "<" + ADDRESS_SPEC + ">";
+    private static final String NAME_ADDRESS =
+        "(" + PHRASE + ")?" + WHITESPACE + ANGLE_ADDRESS;
+    private static final String MAILBOX = NAME_ADDRESS + "|" + ADDRESS_SPEC;
 
     //now compile a pattern for efficient re-use:
     //if we're allowing quoted identifiers or not:
-    private static final String patternString = ALLOW_QUOTED_IDENTIFIERS ? mailbox : addrSpec;
-    public static final Pattern VALID_PATTERN = Pattern.compile(patternString);
+    private static final String PATTERN_STRING =
+        ALLOW_QUOTED_IDENTIFIERS ? MAILBOX : ADDRESS_SPEC;
+    private static final Pattern VALID_PATTERN =
+        Pattern.compile(PATTERN_STRING);
 
     //class attributes
-    private String text;
-    private boolean bouncing = true;
-    private boolean verified = false;
-    private String label;
+    private String _text;
+    private boolean _bouncing = true;
+    private boolean _verified = false;
+    private String _label;
 
     /**
      * Constructor.
@@ -160,11 +191,16 @@ public class EmailAddress implements Serializable {
      * @return the actual email address string.
      */
     public String getText() {
-        return text;
+        return _text;
     }
 
+    /**
+     * Set the text for this email address.
+     *
+     * @param text The text representation.
+     */
     public void setText(final String text) {
-        this.text = text;
+        _text = text;
     }
 
     /**
@@ -179,11 +215,17 @@ public class EmailAddress implements Serializable {
      * bounced (undeliverable).
      */
     public boolean isBouncing() {
-        return bouncing;
+        return _bouncing;
     }
 
+    /**
+     * Mutator for the bounced property.
+     *
+     * @param bouncing True if emails to this address are bouncing, false
+     *  otherwise.
+     */
     public void setBouncing(final boolean bouncing) {
-        this.bouncing = bouncing;
+        _bouncing = bouncing;
     }
 
     /**
@@ -200,11 +242,16 @@ public class EmailAddress implements Serializable {
      * that it is their email address.
      */
     public boolean isVerified() {
-        return verified;
+        return _verified;
     }
 
+    /**
+     * Set whether the email address has been verified.
+     *
+     * @param verified True if verification was successful, false otherwise.
+     */
     public void setVerified(final boolean verified) {
-        this.verified = verified;
+        _verified = verified;
     }
 
     /**
@@ -215,11 +262,16 @@ public class EmailAddress implements Serializable {
      * etc.
      */
     public String getLabel() {
-        return label;
+        return _label;
     }
 
+    /**
+     * Set the label for this address.
+     *
+     * @param label The label as a string.
+     */
     public void setLabel(final String label) {
-        this.label = label;
+        _label = label;
     }
 
     /**

@@ -105,7 +105,6 @@ public final class Folder extends Resource {
      * @param path The path to a resource, relative to this folder.
      * @return The resource at the specified path.
      */
-    @SuppressWarnings("unchecked")
     public <T extends Resource> T navigateTo(final ResourcePath path) {
 
         Resource currentPosition = this;
