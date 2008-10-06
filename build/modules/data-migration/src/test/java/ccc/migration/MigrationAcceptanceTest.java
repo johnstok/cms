@@ -38,7 +38,7 @@ public class MigrationAcceptanceTest extends TestCase {
 
         // ARRANGE
         final ContentManagerRemote manager =
-            new JNDI().<ContentManagerRemote>get("ContentManagerEJB/remote");
+            new JNDI().<ContentManagerRemote>get("ContentManager/remote");
 
         // ACT
         final Resource resource =
@@ -58,7 +58,7 @@ public class MigrationAcceptanceTest extends TestCase {
 
         // ARRANGE
         final ContentManagerRemote manager =
-            new JNDI().<ContentManagerRemote>get("ContentManagerEJB/remote");
+            new JNDI().<ContentManagerRemote>get("ContentManager/remote");
         final String path = "/Home/ASH_Scotland_Manifesto_2007";
 
         // ACT
@@ -82,7 +82,7 @@ public class MigrationAcceptanceTest extends TestCase {
         final String path = "/Information_Service/Key_topics/Smoking_Cessation/"
             +"A_Smoking_Cessation_Policy_for_Scotland/Introduction";
         final ContentManagerRemote manager =
-            new JNDI().<ContentManagerRemote>get("ContentManagerEJB/remote");
+            new JNDI().<ContentManagerRemote>get("ContentManager/remote");
 
         // ACT
         final Page resource = manager.eagerPageLookup(new ResourcePath(path));
@@ -115,7 +115,7 @@ public class MigrationAcceptanceTest extends TestCase {
         final String path = "/Information_Service/Key_topics/Smoking_Cessation/"
             +"A_Smoking_Cessation_Policy_for_Scotland/Introduction";
         final ContentManagerRemote manager =
-            new JNDI().<ContentManagerRemote>get("ContentManagerEJB/remote");
+            new JNDI().<ContentManagerRemote>get("ContentManager/remote");
 
         // ACT
         final Page resource = manager.eagerPageLookup(new ResourcePath(path));
@@ -139,7 +139,7 @@ public class MigrationAcceptanceTest extends TestCase {
         // old ID: 3391
         final String path = "/Quit_Smoking/Quit_smoking";
         final ContentManagerRemote manager =
-            new JNDI().<ContentManagerRemote>get("ContentManagerEJB/remote");
+            new JNDI().<ContentManagerRemote>get("ContentManager/remote");
 
         // ACT
         final Page resource = manager.eagerPageLookup(new ResourcePath(path));
