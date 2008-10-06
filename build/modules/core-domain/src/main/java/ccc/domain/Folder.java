@@ -101,11 +101,10 @@ public final class Folder extends Resource {
      * Navigate from this folder to another resource described by the
      * specified path.
      *
-     * @param <T> The type of the resource at the specified path.
      * @param path The path to a resource, relative to this folder.
      * @return The resource at the specified path.
      */
-    public <T extends Resource> T navigateTo(final ResourcePath path) {
+    public Resource navigateTo(final ResourcePath path) {
 
         Resource currentPosition = this;
 
@@ -122,7 +121,7 @@ public final class Folder extends Resource {
                 currentPosition.as(Folder.class).findEntryByName(name);
 
         }
-        return (T) currentPosition; // TODO: Work out why we need a cast here...
+        return currentPosition;
     }
 
     /**

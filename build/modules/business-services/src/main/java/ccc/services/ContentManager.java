@@ -38,7 +38,7 @@ interface ContentManager {
      * @param <T> The type of the resource to look up.
      * @return The resource.
      */
-    <T extends Resource> Maybe<T> lookup(ResourcePath path);
+    Maybe<Resource> lookup(ResourcePath path);
 
     /**
      * Lookup a resource, given its id.
@@ -47,7 +47,7 @@ interface ContentManager {
      * @param <T> The type of the resource to look up.
      * @return The resource.
      */
-    <T extends Resource> T lookup(UUID id);
+    Resource lookup(UUID id);
 
     /**
      * Look up the root folder for content.

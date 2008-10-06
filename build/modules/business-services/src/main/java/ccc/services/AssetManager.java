@@ -35,7 +35,7 @@ interface AssetManager {
      * @param <T> The type of the resource to look up.
      * @return The resource.
      */
-    <T extends Resource> T lookup(ResourcePath path);
+    Resource lookup(ResourcePath path);
 
     /**
      * Creates a new template.
@@ -56,7 +56,7 @@ interface AssetManager {
      * @param <T> The type of the resource to look up.
      * @return The resource.
      */
-    <T extends Resource> T lookup(UUID id);
+    Resource lookup(UUID id);
 
     /**
      * Look up all templates available.

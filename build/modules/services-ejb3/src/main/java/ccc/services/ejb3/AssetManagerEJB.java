@@ -85,10 +85,9 @@ public final class AssetManagerEJB
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
-    public <T extends Resource> T lookup(final ResourcePath path) {
-        return (T) _qm.findAssetsRoot().get().navigateTo(path);
+    public Resource lookup(final ResourcePath path) {
+        return _qm.findAssetsRoot().get().navigateTo(path);
     }
 
     /**
@@ -122,10 +121,9 @@ public final class AssetManagerEJB
      * {@inheritDoc}
      * TODO: Remove - duplicate of same method on content manager.
      */
-    @SuppressWarnings("unchecked")
     @Override
-    public <T extends Resource> T lookup(final UUID id) {
-        return (T) _entityManager.find(Resource.class, id);
+    public Resource lookup(final UUID id) {
+        return _entityManager.find(Resource.class, id);
     }
 
     /**
@@ -159,7 +157,9 @@ public final class AssetManagerEJB
     private Folder templatesFolder() {
         final Folder assetRoot = _qm.findAssetsRoot().get();
         final Folder templates =
-            assetRoot .navigateTo(new ResourcePath("/templates"));
+            assetRoot
+                .navigateTo(new ResourcePath("/templates"))
+                .as(Folder.class);
         return templates;
     }
 
