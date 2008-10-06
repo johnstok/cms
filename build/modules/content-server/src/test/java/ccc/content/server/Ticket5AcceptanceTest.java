@@ -68,7 +68,7 @@ public final class Ticket5AcceptanceTest extends TestCase {
         final InputStream page =
             new URL(
                 "http://localhost:8080/content-server/content/"
-                + "Our_Work/Our_Work/")
+                + "Other/Search")
             .openStream();
 
         // ACT
@@ -76,7 +76,7 @@ public final class Ticket5AcceptanceTest extends TestCase {
             XHTML.evaluateXPath(page, "count(//xhtml:h2)");
 
         // ASSERT
-        assertEquals("5", optionCount);
+        assertEquals("3", optionCount);
 
     }
 
@@ -85,8 +85,9 @@ public final class Ticket5AcceptanceTest extends TestCase {
      */
     public void testTitlesAreSetCorrectly() {
         _selenium.setSpeed("1000");
-        _selenium.open("content-server/content/Our_Work/Our_Work/");
-        assertEquals("Our_Work", _selenium.getTitle());
+        _selenium.open(
+            "content-server/content/Home/ASH_Scotland_Manifesto_2007");
+        assertEquals("ASH_Scotland_Manifesto_2007", _selenium.getTitle());
     }
 
     /**
@@ -94,11 +95,11 @@ public final class Ticket5AcceptanceTest extends TestCase {
      */
     public void testEachContentParagraphIsPresent() {
         _selenium.setSpeed("1000");
-        _selenium.open("content-server/content/Our_Work/Our_Work/");
+        _selenium.open("content-server/content/Other/Search");
         _selenium.waitForPageToLoad("30000");
         assertEquals("CONTENT", _selenium.getText("//h2[1]"));
-        assertEquals("HEADER", _selenium.getText("//h2[3]"));
-        assertEquals("Relationship", _selenium.getText("//h2[5]"));
+        assertEquals("HEADER", _selenium.getText("//h2[2]"));
+        assertEquals("Relationship", _selenium.getText("//h2[3]"));
 
     }
 
