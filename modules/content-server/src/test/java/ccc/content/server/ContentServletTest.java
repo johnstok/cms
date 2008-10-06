@@ -54,8 +54,9 @@ public final class ContentServletTest extends TestCase {
 
     /**
      * Test.
-     * @throws ServletException
-     * @throws IOException
+     *
+     * @throws ServletException From servlet API.
+     * @throws IOException From servlet API.
      */
     public void testHandleResourceHandlesAlias()
         throws IOException, ServletException {

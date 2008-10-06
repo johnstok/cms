@@ -126,7 +126,12 @@ public final class ContentServlet extends CCCServlet {
     /**
      * Accepts any type of resource and routes it to the appropriate
      * type-specific write() method.
-     * @throws ServletException
+     *
+     * @param req The request.
+     * @param resp The response.
+     * @param resource The resource to handle.
+     * @throws ServletException From servlet API.
+     * @throws IOException From servlet API.
      */
     void handleResource(final HttpServletResponse resp,
                                 final HttpServletRequest req,

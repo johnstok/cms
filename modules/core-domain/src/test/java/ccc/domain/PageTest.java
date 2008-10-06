@@ -95,7 +95,7 @@ public final class PageTest extends TestCase {
     public void testConstructorRejectsEmptyNames() {
         // ACT
         try {
-            new Page((ResourceName)null);
+            new Page((ResourceName) null);
             fail("Resources should reject NULL for the name parameter.");
 
          // ASSERT

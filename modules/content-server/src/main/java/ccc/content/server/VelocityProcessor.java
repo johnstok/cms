@@ -62,9 +62,12 @@ public class VelocityProcessor {
      *
      * @param resource The resource that will be rendered.
      * @param template The template used to render the resource.
+     * @param root The root folder in which the resource is contained.
      * @return The html rendering as a string.
      */
-    public String render(final Resource resource, final Folder root, final String template) {
+    public String render(final Resource resource,
+                         final Folder root,
+                         final String template) {
 
         final StringWriter renderedOutput = new StringWriter();
 

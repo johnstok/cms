@@ -81,6 +81,7 @@ public abstract class CCCServlet extends HttpServlet {
 
     /**
      * Disable caching for the response.
+     * TODO: already expired, set to 'now' instead...
      *
      * @param response The response that should not be cached.
      */
@@ -89,7 +90,7 @@ public abstract class CCCServlet extends HttpServlet {
         response.setHeader(
             "Cache-Control",
             "private, must-revalidate, max-age=0"); // equivalent to 'no-cache'
-        response.setHeader("Expires", "0");         // TODO: already expired, set to 'now' instead...
+        response.setHeader("Expires", "0");
     }
 
     /**
@@ -104,12 +105,12 @@ public abstract class CCCServlet extends HttpServlet {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Dispatch to the 'not found' handler.
      *
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
+     * @param request The request.
+     * @param response The response.
+     * @throws ServletException From servlet API.
+     * @throws IOException From servlet API.
      */
     protected void dispatchNotFound(final HttpServletRequest request,
                                     final HttpServletResponse response)
@@ -120,13 +121,13 @@ public abstract class CCCServlet extends HttpServlet {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Dispatch to the error handler.
      *
-     * @param request
-     * @param response
-     * @param e
-     * @throws ServletException
-     * @throws IOException
+     * @param request The request.
+     * @param response The response.
+     * @param e The exception we encountered
+     * @throws ServletException From servlet API.
+     * @throws IOException From servlet API.
      */
     protected void dispatchError(final HttpServletRequest request,
                                  final HttpServletResponse response,

@@ -13,12 +13,18 @@ package ccc.domain;
 
 
 /**
- * TODO: Add Description for this type.
+ * Security roles for content creation.
  *
  * @author Civic Computing Ltd.
  */
 public enum CreatorRoles {
+
+    /** CONTENT_CREATOR : CreatorRoles. */
     CONTENT_CREATOR,
+
+    /** SITE_BUILDER : CreatorRoles. */
     SITE_BUILDER,
+
+    /** ADMINISTRATOR : CreatorRoles. */
     ADMINISTRATOR;
 }

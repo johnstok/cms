@@ -22,7 +22,7 @@ import ccc.commons.Testing;
  */
 public final class ResourceTest extends TestCase {
 
-    final Template _default = new Template();
+    private final Template _default = new Template();
 
     /**
      * Test.
