@@ -1,7 +1,7 @@
 #!/bin/bash
 
 clear
-h2_version="1.0.78"
+h2_version="1.1.100"
 echo  ----------------
 echo   H2 [V. $h2_version]
 echo  ----------------
