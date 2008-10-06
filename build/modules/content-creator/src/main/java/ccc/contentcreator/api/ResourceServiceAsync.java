@@ -134,7 +134,7 @@ public interface ResourceServiceAsync {
     void listUsers(AsyncCallback<List<UserDTO>> callback);
 
     /**
-     * @see ResourceService#listUsers(String)
+     * @see ResourceService#listUsersWithRole(String)
      */
     void listUsersWithRole(String role, AsyncCallback<List<UserDTO>> callback);
 
@@ -143,4 +143,11 @@ public interface ResourceServiceAsync {
      */
     void createUser(final UserDTO userDto,
                     AsyncCallback<Void> callback);
+
+    /**
+     * @see ResourceService#listUsersWithUsername(String)
+     */
+    void listUsersWithUsername(String username, AsyncCallback<List<UserDTO>> callback);
+
+
 }

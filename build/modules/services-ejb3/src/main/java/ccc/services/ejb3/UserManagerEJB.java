@@ -80,6 +80,21 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked") // JPA API doesn't support generics.
     @Override
+    public Collection<User> listUsersWithUsername(final String username) {
+        final Query q =
+            _em.createQuery(NamedQueries.USERS_WITH_USERNAME.queryString());
+        String searchParam = "";
+        if (username != null) {
+            searchParam = username;
+        }
+        q.setParameter("username", searchParam.toLowerCase());
+
+        return q.getResultList();
+    }
+
+    /** {@inheritDoc} */
+    @SuppressWarnings("unchecked") // JPA API doesn't support generics.
+    @Override
     public Collection<User> listUsersWithRole(final CreatorRoles role) {
         final Query q =
             _em.createQuery(NamedQueries.USERS_WITH_ROLE.queryString());
@@ -107,7 +122,11 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
         USERS_WITH_ROLE(
             "from ccc.domain.User u "
             + "left join fetch u._roles "
-            + "where :role in elements(u._roles)");
+            + "where :role in elements(u._roles)"),
+
+        /** USERS_WITH_USERNAME : NamedQueries. */
+        USERS_WITH_USERNAME(
+        "from ccc.domain.User u where lower(u._username) like :username");
 
         private final String _queryString;
 
@@ -124,5 +143,4 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
             return _queryString;
         }
     }
-
 }

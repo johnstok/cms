@@ -44,4 +44,12 @@ interface UserManager {
      * @return The users with the specified role.
      */
     Collection<User> listUsersWithRole(CreatorRoles role);
+
+    /**
+     * List all users with matching username.
+     *
+     * @param username The username to filter on.
+     * @return The users with the specified username.
+     */
+    Collection<User> listUsersWithUsername(String username);
 }

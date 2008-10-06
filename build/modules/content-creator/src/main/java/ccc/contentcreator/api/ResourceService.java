@@ -186,4 +186,13 @@ public interface ResourceService extends RemoteService {
      * @param userDto A dto representing the new user.
      */
     void createUser(final UserDTO userDto);
+
+
+    /**
+     * Query users with specified username.
+     *
+     * @param username The username as a string.
+     * @return Returns list of users.
+     */
+    List<UserDTO> listUsersWithUsername(String username);
 }

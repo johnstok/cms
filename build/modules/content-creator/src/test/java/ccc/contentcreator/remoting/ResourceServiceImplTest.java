@@ -559,6 +559,30 @@ public final class ResourceServiceImplTest extends TestCase {
         assertEquals("admin", dtoList.get(0).getUsername());
     }
 
+    /**
+     * Test.
+     */
+    public void testListUsersWithUsername() {
+
+        // ARRANGE
+        final User admin = new User("fooUser");
+        final List<User> users = new ArrayList<User>();
+        users.add(admin);
+
+        expect(_um.listUsersWithUsername("fooUser"))
+            .andReturn(users);
+        replay(_um);
+
+        // ACT
+        final List<UserDTO> dtoList =
+            _rsi.listUsersWithUsername("fooUser");
+
+        // ASSERT
+        verify(_um);
+        assertEquals(1, dtoList.size());
+        assertEquals("fooUser", dtoList.get(0).getUsername());
+    }
+
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {
