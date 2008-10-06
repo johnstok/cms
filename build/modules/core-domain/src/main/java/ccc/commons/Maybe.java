@@ -31,7 +31,7 @@ import java.io.Serializable;
  *
  * @author Civic Computing Ltd.
  */
-public class Maybe<T extends Serializable> {
+public class Maybe<T extends Serializable> implements Serializable {
 
     private final T _value;
 
