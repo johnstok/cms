@@ -20,7 +20,6 @@ import java.util.HashMap;
  * @author Civic Computing Ltd
  */
 public final class MapRegistry implements Registry {
- 
 
     /**
      * Constructor. Create a map-based registry with a single item.
