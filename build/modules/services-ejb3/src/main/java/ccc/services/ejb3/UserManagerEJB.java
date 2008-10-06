@@ -105,7 +105,9 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
 
         /** USERS_WITH_ROLE : NamedQueries. */
         USERS_WITH_ROLE(
-            "from ccc.domain.User u left join fetch u._roles where :role in elements(u._roles)");
+            "from ccc.domain.User u "
+            + "left join fetch u._roles "
+            + "where :role in elements(u._roles)");
 
         private final String _queryString;
 

@@ -29,7 +29,6 @@ import junit.framework.TestCase;
  */
 public class PasswordTest extends TestCase {
 
-
     /**
      * Test.
      */
@@ -59,7 +58,7 @@ public class PasswordTest extends TestCase {
         final byte[] hash = pw.hash(password);
 
         // ASSERT
-        assertEquals(32, hash.length);
+        assertEquals(SHA_HASH_LENGTH, hash.length);
         assertTrue(
             "Hashes should be equal.",
             Arrays.equals(hash(pw, "password"), hash));
@@ -84,4 +83,6 @@ public class PasswordTest extends TestCase {
             throw new CCCException("Failed to compute password digest.", e);
         }
     }
+
+    private static final int SHA_HASH_LENGTH = 32;
 }

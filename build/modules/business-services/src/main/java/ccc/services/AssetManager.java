@@ -32,7 +32,6 @@ interface AssetManager {
      * TODO: Remove - duplicate of {@link ContentManager#lookup(ResourcePath)}.
      *
      * @param path The absolute path to the resource.
-     * @param <T> The type of the resource to look up.
      * @return The resource.
      */
     Resource lookup(ResourcePath path);
@@ -53,7 +52,6 @@ interface AssetManager {
      * Lookup a resource, given its id.
      *
      * @param id The unique identifier for the resource to look up.
-     * @param <T> The type of the resource to look up.
      * @return The resource.
      */
     Resource lookup(UUID id);

@@ -20,6 +20,5 @@ package ccc.domain;
  * @author Civic Computing Ltd.
  */
 public class Data extends Entity {
-
-
+    /* No extensions */
 }
