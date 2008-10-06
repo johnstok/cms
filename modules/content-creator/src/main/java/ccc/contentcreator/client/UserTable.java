@@ -18,12 +18,20 @@ import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.dto.UserDTO;
 
+import com.extjs.gxt.ui.client.Events;
+import com.extjs.gxt.ui.client.event.ComponentEvent;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+import com.extjs.gxt.ui.client.widget.toolbar.AdapterToolItem;
+import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
+import com.extjs.gxt.ui.client.widget.toolbar.TextToolItem;
+import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.extjs.gxt.ui.client.widget.tree.TreeItem;
 
 
@@ -38,12 +46,39 @@ public class UserTable extends ContentPanel {
         new ListStore<UserDTO>();
     private final ResourceServiceAsync _rsa = Globals.resourceService();
 
+    private final ToolBar _toolBar = new ToolBar();
     /**
      * Constructor.
      */
     UserTable() {
         setHeading("User Details");
         setLayout(new FitLayout());
+
+        final TextField<String> searchString = new TextField<String>();
+        searchString.setToolTip("Use * for wild card searches, for example " +
+        "Joh* finds John");
+        final AdapterToolItem ti = new AdapterToolItem(searchString);
+        final TextToolItem searchButton = new TextToolItem("Search");
+
+        searchButton.addListener(Events.Select, new Listener<ComponentEvent>(){
+            public void handleEvent(final ComponentEvent be) {
+                _detailsStore.removeAll();
+                _rsa.listUsersWithUsername(
+                    searchString.getValue().replace('*', '%'),
+                    new ErrorReportingCallback<List<UserDTO>>() {
+                        public void onSuccess(final List<UserDTO> result) {
+                            _detailsStore.add(result);
+                        }
+                    });
+            }
+        }
+        );
+
+        _toolBar.add(ti);
+        _toolBar.add(new SeparatorToolItem());
+        _toolBar.add(searchButton);
+
+        setTopComponent(_toolBar);
 
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
@@ -75,6 +110,12 @@ public class UserTable extends ContentPanel {
     public void displayUsersFor(final TreeItem selectedItem) {
 
         _detailsStore.removeAll();
+
+        if ("Search".equals(selectedItem.getText())) {
+            _toolBar.show();
+        } else {
+            _toolBar.hide();
+        }
 
         if ("All".equals(selectedItem.getText())) {
             _rsa.listUsers(
