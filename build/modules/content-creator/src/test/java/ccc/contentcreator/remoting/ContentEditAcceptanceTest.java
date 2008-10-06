@@ -53,10 +53,10 @@ public final class ContentEditAcceptanceTest extends TestCase {
         selenium.setSpeed("1000");
         selenium.open("/content-creator/");
         assertEquals("ContentCreator", selenium.getTitle());
-        selenium.click("//div[@id='Other']/table/tbody/tr/td[6]/span");
-//        assertEquals("Other", selenium.getText("gwt-debug-Other"));
-        selenium.click("//div[@id='Search']/table/tbody/tr/td[1]/div/div");
-//        assertEquals("Search", selenium.getText("gwt-debug-children_grid-1-1"));
+        selenium.click("//div[@id='content']/div[1]/table/tbody/tr/td[2]/div");
+        selenium.click("//div[@id='Other']/div[1]/table/tbody/tr/td[6]/span");
+        selenium.click("//div[@id='Search']/table/tbody/tr/td[2]/div/div");
+
 //        selenium.click("//button[@type='button']");
 //
 //        assertEquals("Search", selenium.getValue("//input[@type='text']"));
@@ -86,10 +86,10 @@ public final class ContentEditAcceptanceTest extends TestCase {
         selenium.setSpeed("1000");
         selenium.open("/content-creator?locale=fi");
         assertEquals("ContentCreator", selenium.getTitle());
-        selenium.click("//div[@id='Other']/table/tbody/tr/td[6]/span");
-//      assertEquals("Other", selenium.getText("gwt-debug-Other"));
-      selenium.click("//div[@id='Search']/table/tbody/tr/td[1]/div/div");
-//        assertEquals("Search", selenium.getText("gwt-debug-children_grid-1-1"));
+        selenium.click("//div[@id='content']/div[1]/table/tbody/tr/td[2]/div");
+        selenium.click("//div[@id='Other']/div[1]/table/tbody/tr/td[6]/span");
+        selenium.click("//div[@id='Search']/table/tbody/tr/td[2]/div/div");
+
 
 //        assertEquals("Tyyppi", selenium.getText("gwt-debug-children_grid-0-0"));
 //        assertEquals("Otsikko", selenium.getText("gwt-debug-children_grid-0-1"));
