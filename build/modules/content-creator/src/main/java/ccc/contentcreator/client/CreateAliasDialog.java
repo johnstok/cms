@@ -11,8 +11,6 @@
  */
 package ccc.contentcreator.client;
 
-import ccc.contentcreator.api.Application;
-import ccc.contentcreator.api.PanelControl;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
@@ -53,13 +51,12 @@ public class CreateAliasDialog extends Window {
     /**
      * Constructor.
      *
-     * @param app The Application
      * @param item The ResourceDTO
      */
-    public CreateAliasDialog(final Application app, final ResourceDTO item) {
+    public CreateAliasDialog(final ResourceDTO item) {
         _target = item;
-        _constants = app.constants();
-        setHeading(app.constants().updateContent());
+        _constants = Globals.uiConstants();
+        setHeading(_constants.updateContent());
         setWidth(640);
         setHeight(480);
         setLayout(new FitLayout());
@@ -90,7 +87,7 @@ public class CreateAliasDialog extends Window {
             new Listener<ComponentEvent>(){
                 public void handleEvent(final ComponentEvent be) {
                     final FolderSelectionDialog folderSelect =
-                        new FolderSelectionDialog(app.lookupService());
+                        new FolderSelectionDialog(Globals.resourceService());
                     folderSelect.addListener(Events.Close,
                         new Listener<ComponentEvent>() {
                         public void handleEvent(final ComponentEvent be) {
@@ -120,27 +117,27 @@ public class CreateAliasDialog extends Window {
             public void componentSelected(final ButtonEvent ce) {
                 if (_aliasName.getValue() == null
                         || _aliasName.getValue().trim().equals("")) {
-                    app.alert(_constants.nameMustNotBeEmpty());
+                    Globals.alert(_constants.nameMustNotBeEmpty());
                     return;
                 }
                 if (_parentFolder.getValue() == null
                         || _parentFolder.getValue().trim().equals("")) {
-                    app.alert(_constants.folderMustNotBeEmpty());
+                    Globals.alert(_constants.folderMustNotBeEmpty());
                     return;
                 }
-                app.lookupService().nameExistsInFolder(
+                Globals.resourceService().nameExistsInFolder(
                     _parent,
                     _aliasName.getValue(),
                     new ErrorReportingCallback<Boolean>(){
                         public void onSuccess(final Boolean nameExists) {
 
                             if (nameExists) {
-                                app.alert(_constants.nameExistsAlready());
+                                Globals.alert(_constants.nameExistsAlready());
                             } else {
                                 final DisposingCallback callback =
                                     new DisposingCallback(
                                         CreateAliasDialog.this);
-                                app.lookupService().createAlias(
+                                Globals.resourceService().createAlias(
                                     _parent,
                                     new AliasDTO(
                                         _aliasName.getValue(),
@@ -155,13 +152,4 @@ public class CreateAliasDialog extends Window {
 
         addButton(save);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void gui(final PanelControl control) {
-        throw new UnsupportedOperationException("Method not implemented.");
-    }
-
-
 }

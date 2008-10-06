@@ -54,4 +54,17 @@ public final class Globals {
     public static void alert(final String string) {
         Window.alert(string);
     }
+
+    /**
+     * Determine the host URL for the application.
+     *
+     * @return The host url as a string.
+     */
+    public static String hostURL() {
+        return GWT.getHostPageBaseURL()
+            .substring(
+                0,
+                GWT.getHostPageBaseURL()
+                   .lastIndexOf("content-creator/")); //$NON-NLS-1$
+    }
 }

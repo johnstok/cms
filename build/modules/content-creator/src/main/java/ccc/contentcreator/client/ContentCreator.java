@@ -1,8 +1,6 @@
 
 package ccc.contentcreator.client;
 
-import ccc.contentcreator.api.Application;
-
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.Viewport;
@@ -19,8 +17,6 @@ import com.google.gwt.user.client.ui.RootPanel;
  */
 public final class ContentCreator implements EntryPoint {
 
-    private Application _app = new GwtApplication();
-
     /**
      * This is the entry point method.
      */
@@ -28,12 +24,12 @@ public final class ContentCreator implements EntryPoint {
 
         final LeftRightPane contentPane = new LeftRightPane();
         contentPane.setLeftHandPane(
-            new ResourceNavigator(contentPane, _app.lookupService()));
+            new ResourceNavigator(contentPane, Globals.resourceService()));
         contentPane.setRightHandPane(new ContentPanel());
 
          final Viewport vp =
              layoutMainWindow(
-                 new MainMenu(_app),
+                 new MainMenu(),
                  contentPane);
 
         RootPanel.get().add(vp);

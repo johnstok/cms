@@ -37,8 +37,6 @@ import com.extjs.gxt.ui.client.widget.menu.MenuItem;
  */
 public class EnhancedResourceTree extends ResourceTree {
 
-    /** _app : GwtApplication. */
-    private GwtApplication _app = new GwtApplication();
     /** _view : LeftRightPane. */
     private LeftRightPane _view;
     /** _rt : ResourceTable. */
@@ -78,7 +76,7 @@ public class EnhancedResourceTree extends ResourceTree {
         contextMenu.setId("navigator-menu");
 
         final MenuItem uploadFile = new MenuItem();
-        uploadFile.setText(_app.constants().uploadFile());
+        uploadFile.setText(Globals.uiConstants().uploadFile());
         uploadFile.addSelectionListener(new SelectionListener<MenuEvent>() {
 
             @Override
@@ -87,8 +85,7 @@ public class EnhancedResourceTree extends ResourceTree {
                 final FolderDTO item = (FolderDTO) getSelectionModel()
                                                    .getSelectedItem()
                                                    .getModel();
-                new UploadFileDialog(_app,
-                                     item.getId(),
+                new UploadFileDialog(item.getId(),
                                      item.getName(),
                                      EnhancedResourceTree.this).center();
             }
@@ -97,7 +94,7 @@ public class EnhancedResourceTree extends ResourceTree {
 
         final MenuItem createFolder = new MenuItem();
         createFolder.setId("create-folder");
-        createFolder.setText(_app.constants().createFolder());
+        createFolder.setText(Globals.uiConstants().createFolder());
         createFolder.addSelectionListener(new SelectionListener<MenuEvent>() {
 
             @Override public void componentSelected(final MenuEvent me) {

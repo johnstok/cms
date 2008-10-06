@@ -1,83 +1,79 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2008 Civic Computing Ltd
+ * Copyright (c) 2008 Civic Computing Ltd.
  * All rights reserved.
  *
  * Revision      $Rev$
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log
+ * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
 package ccc.contentcreator.client;
 
-import ccc.contentcreator.api.Application;
-import ccc.contentcreator.api.FileControl;
-import ccc.contentcreator.api.PanelControl;
-import ccc.contentcreator.api.StringControl;
 import ccc.contentcreator.api.UIConstants;
-import ccc.contentcreator.callbacks.DisposingClickListener;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.widget.tree.Tree;
 import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FormHandler;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.FormSubmitCompleteEvent;
 import com.google.gwt.user.client.ui.FormSubmitEvent;
+import com.google.gwt.user.client.ui.Hidden;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 
 /**
  * Dialog for file upload.
  *
- * @author Civic Computing Ltd
+ * @author Civic Computing Ltd.
  */
-public class UploadFileDialog {
+public class UploadFileDialog extends DialogBox {
 
-    private final ApplicationDialog     _delegate;
-    private final Application        _app;
-    private final UIConstants     _constants;
-    private final PanelControl  _gui;
+    private final UIConstants       _constants = Globals.uiConstants();
+    private final Panel      _gui = new VerticalPanel();
 
-    private final StringControl _title;
-    private final StringControl _description;
-    private final StringControl _fileName;
-    private final FileControl   _upload;
-    private final StringControl _path;
-    private final Tree _tree;
+    private final TextBox     _title;
+    private final TextBox     _description;
+    private final TextBox     _fileName;
+    private final FileUpload       _upload;
+    private final Hidden     _path;
+    private final Tree              _tree;
 
     /**
      * Constructor.
-     * @param name The name of the folder.
-     * @param absolutePath The path of the folder.
-     * @param tree The left hand tree view in the main window.
      *
+     * @param folder The folder in which this file should be saved.
+     * @param name The name of the folder.
+     * @param tree The left hand tree view in the main window.
      */
-    public UploadFileDialog(final Application app,
-                            final String absolutePath,
+    public UploadFileDialog(final String folder,
                             final String name,
                             final Tree tree) {
 
-        _app = app;
-        _constants = _app.constants();
-        _delegate = _app.dialog(_constants.uploadFileTo()+": "+name);
-        _gui = _app.verticalPanel();
+        setText(_constants.uploadFileTo()+": "+name);
+
         _tree = tree;
 
-        _title = _app.textBox();
-        _description = _app.textBox();
-        _fileName = _app.textBox();
-        _upload = _app.fileUpload();
-        _path = _app.hidden();
+        _title = new TextBox();
+        _description = new TextBox();
+        _fileName = new TextBox();
+        _upload = new FileUpload();
+        _path = new Hidden();
 
         // Create a FormPanel and point it at a service.
-        final PanelControl form =
-            _app.formPanel("upload",
-                           FormPanel.ENCODING_MULTIPART,
-                           FormPanel.METHOD_POST,
-                           new FileUploadFormHandler(),
-                           _gui);
+        final FormPanel form = new FormPanel();
+        form.setWidget(_gui);
+        form.setAction("upload");
+        form.setEncoding(FormPanel.ENCODING_MULTIPART);
+        form.setMethod(FormPanel.METHOD_POST);
+        form.addFormHandler(new FileUploadFormHandler());
 
         _fileName.setName("fileName");
         _title.setName("title");
@@ -85,30 +81,36 @@ public class UploadFileDialog {
         _upload.setName("file");
         _path.setName("path");
 
-        _path.model(absolutePath);
+        _path.setValue(folder);
 
         _gui.add(
-            new TwoColumnForm(_app, 4)
+            new TwoColumnForm(4)
                 .add(_constants.fileName(), _fileName)
                 .add(_constants.title(), _title)
                 .add(_constants.description(), _description)
                 .add(_constants.localFile(), _upload)
             );
         _gui.add(_path);
-        _gui.add(new ButtonBar(_app)
+        _gui.add(new ButtonBar()
             .add(
                 _constants.cancel(),
-                new DisposingClickListener(_delegate))
+                new ClickListener(){
+                    public void onClick(final Widget sender) {
+                        hide();
+                    }
+                }
+            )
             .add(
                 _constants.upload(),
                 new ClickListener() {
                     public void onClick(final Widget sender) {
                         form.submit();
-                        }})
+                    }
+                }
+            )
         );
 
-        form.add(_gui);
-        _delegate.gui(form);
+        add(form);
     }
 
 
@@ -121,15 +123,15 @@ public class UploadFileDialog {
 
         public void onSubmit(final FormSubmitEvent event) {
             final StringBuffer errorText = new StringBuffer();
-            if (_fileName.model().length() == 0) {
+            if (_fileName.getText().length() == 0) {
                 errorText.append(_constants.fileName());
                 errorText.append("\n");
             }
-            if (_description.model().length() == 0) {
+            if (_description.getText().length() == 0) {
                 errorText.append(_constants.description());
                 errorText.append("\n");
             }
-            if (_title.model().length() == 0) {
+            if (_title.getText().length() == 0) {
                 errorText.append(_constants.title());
                 errorText.append("\n");
             }
@@ -139,25 +141,16 @@ public class UploadFileDialog {
                 errorText.append("\n");
             }
             if (errorText.length() > 0) {
-                _app.alert("Following fields must not be empty: \n"
+                Globals.alert("Following fields must not be empty: \n"
                     +errorText.toString());
                 event.setCancelled(true);
             }
         }
 
         public void onSubmitComplete(final FormSubmitCompleteEvent event) {
-            _app.alert(event.getResults());
+            Globals.alert(event.getResults());
             _tree.fireEvent(Events.SelectionChange);
-            _delegate.hide();
+            hide();
         }
-    }
-
-
-    /**
-     * TODO: Add a description of this method.
-     *
-     */
-    public void center() {
-        _delegate.center();
     }
 }
