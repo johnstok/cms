@@ -155,7 +155,9 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
             contentManager().setDefaultTemplate(null);
         } else {
             final Template newDefault =
-                assetManager().lookup(UUID.fromString(templateDTO.getId()));
+                assetManager()
+                    .lookup(UUID.fromString(templateDTO.getId()))
+                    .as(Template.class);
             contentManager().setDefaultTemplate(newDefault);
         }
 
@@ -202,7 +204,9 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     /** {@inheritDoc} */
     public List<FolderDTO> getFolderChildren(final FolderDTO folder) {
         final Folder parent =
-            contentManager().lookup(UUID.fromString(folder.getId()));
+            contentManager()
+                .lookup(UUID.fromString(folder.getId()))
+                .as(Folder.class);
         final List<FolderDTO> children = new ArrayList<FolderDTO>();
         for (final Resource r : parent.entries()) {
             if (r.type() == ResourceType.FOLDER) {
@@ -215,7 +219,8 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     /** {@inheritDoc} */
     public List<ResourceDTO> getChildren(final FolderDTO folder) {
         final Folder parent =
-            contentManager().lookup(UUID.fromString(folder.getId()));
+            contentManager().lookup(UUID.fromString(folder.getId()))
+            .as(Folder.class);
         final List<ResourceDTO> children = new ArrayList<ResourceDTO>();
         for (final Resource r : parent.entries()) {
             children.add(DTOs.<ResourceDTO>dtoFrom(r));
@@ -225,8 +230,10 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
 
     /** {@inheritDoc} */
     public FolderDTO createFolder(final FolderDTO parent, final String name) {
-        final Folder f = contentManager().create(UUID.fromString(parent.getId()),
-                                new Folder(new ResourceName(name)));
+        final Folder f =
+            contentManager().create(
+                UUID.fromString(parent.getId()),
+                new Folder(new ResourceName(name)));
         return DTOs.dtoFrom(f);
     }
 
@@ -264,8 +271,9 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     }
 
     /** {@inheritDoc} */
-    public void updateResourceTemplate(final List<OptionDTO<? extends DTO>> options,
-                                       final ResourceDTO resourceDTO) {
+    public void updateResourceTemplate(
+                                   final List<OptionDTO<? extends DTO>> options,
+                                   final ResourceDTO resourceDTO) {
         final OptionDTO<TemplateDTO> option =
             options.get(0).makeTypeSafe();
 
@@ -276,7 +284,9 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
                     UUID.fromString(resourceDTO.getId()), null);
             } else {
                 final Template selectedTemplate =
-                    assetManager().lookup(UUID.fromString(templateDTO.getId()));
+                    assetManager()
+                        .lookup(UUID.fromString(templateDTO.getId()))
+                        .as(Template.class);
                 contentManager().updateTemplateForResource(
                     UUID.fromString(resourceDTO.getId()), selectedTemplate);
             }

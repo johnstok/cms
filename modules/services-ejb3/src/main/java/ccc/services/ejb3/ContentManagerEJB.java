@@ -89,7 +89,7 @@ public final class ContentManagerEJB
      * =================================================================*/
 
     private void create(final UUID folderId, final Resource newResource) {
-        final Folder folder = lookup(folderId);
+        final Folder folder = lookup(folderId).as(Folder.class);
         if (null==folder) {
             throw new CCCException("No folder exists with id: "+folderId);
         }
@@ -140,32 +140,29 @@ public final class ContentManagerEJB
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
-    public <T extends Resource> Maybe<T> lookup(final ResourcePath path) {
+    public Maybe<Resource> lookup(final ResourcePath path) {
         final Folder contentRoot = _qm.findContentRoot().get();
         try {
             return
-                new Maybe<T>(
-                (T) contentRoot.navigateTo(path));
+                new Maybe<Resource>(
+                contentRoot.navigateTo(path));
         } catch (final CCCException e) {
-            return new Maybe<T>();
+            return new Maybe<Resource>();
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
-    public <T extends Resource> T lookup(final UUID id) {
-        return (T) _em.find(Resource.class, id);
+    public Resource lookup(final UUID id) {
+        return _em.find(Resource.class, id);
     }
 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     public Page eagerPageLookup(final ResourcePath path) {
         final Resource resource = _qm.findContentRoot().get().navigateTo(path);
@@ -204,7 +201,7 @@ public final class ContentManagerEJB
                              final String newTitle,
                              final Map<String, String> newParagraphs) {
 
-        final Page page = lookup(id);
+        final Page page = lookup(id).as(Page.class);
         page.title(newTitle);
         page.deleteAllParagraphs();
 

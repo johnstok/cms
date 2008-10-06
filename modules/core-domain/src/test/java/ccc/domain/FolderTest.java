@@ -355,7 +355,7 @@ public final class FolderTest extends TestCase {
         final ResourcePath path = new ResourcePath("/ab/cd");
 
         // ACT
-        final Page expectedContent = content.navigateTo(path);
+        final Page expectedContent = content.navigateTo(path).as(Page.class);
 
         // ASSERT
         assertSame(cd, expectedContent);
@@ -375,7 +375,7 @@ public final class FolderTest extends TestCase {
         final ResourcePath path = new ResourcePath("/ab/cd");
 
         // ACT
-        final Folder expectedFolder = content.navigateTo(path);
+        final Folder expectedFolder = content.navigateTo(path).as(Folder.class);
 
         // ASSERT
         assertSame(cd, expectedFolder);
@@ -395,7 +395,7 @@ public final class FolderTest extends TestCase {
         final ResourcePath path = new ResourcePath("");
 
         // ACT
-        final Folder expectedFolder = content.navigateTo(path);
+        final Folder expectedFolder = content.navigateTo(path).as(Folder.class);
 
         // ASSERT
         assertSame(content, expectedFolder);

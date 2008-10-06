@@ -119,7 +119,7 @@ public final class AssetManagerEJBTest extends TestCase {
             new AssetManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
-        final Template actual = am.lookup(t.id());
+        final Template actual = am.lookup(t.id()).as(Template.class);
 
         // ASSERT
         assertEquals(t, actual);

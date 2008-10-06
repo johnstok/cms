@@ -50,7 +50,7 @@ public class EnumUserType<T extends Enum<T>> implements UserType,
     public EnumUserType() { super(); }
 
     /** {@inheritDoc} */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")  // Class class doesn't support generics
     @Override
     public void setParameterValues(final Properties parameters) {
         final String enumClassName = parameters.getProperty("type");

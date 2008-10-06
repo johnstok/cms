@@ -68,7 +68,7 @@ public final class JNDI implements Registry {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked") // JNDI doesn't support generics
     @Override
     public <T> T get(final String location) {
         try {
