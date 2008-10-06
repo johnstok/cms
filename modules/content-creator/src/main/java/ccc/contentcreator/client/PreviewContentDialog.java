@@ -12,13 +12,14 @@
 
 package ccc.contentcreator.client;
 
-import ccc.contentcreator.api.Application;
-import ccc.contentcreator.api.Control;
-import ccc.contentcreator.api.PanelControl;
 import ccc.contentcreator.api.UIConstants;
-import ccc.contentcreator.callbacks.DisposingClickListener;
 
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 
 /**
@@ -26,51 +27,45 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  *
  * @author Civic Computing Ltd
  */
-public class PreviewContentDialog {
+public class PreviewContentDialog extends DialogBox {
 
-    private final ApplicationDialog     _delegate;
-    private final Application        _app;
-    private final UIConstants     _constants;
-    private final PanelControl _gui;
+    private final UIConstants     _constants = Globals.uiConstants();
 
-    private final Control _previewFrame;
+    private final VerticalPanel _panel = new VerticalPanel();
+    private final Frame _previewFrame = new Frame();
     private final String _contentServerBaseUrl;
 
     /**
      * Constructor.
      *
-     * @param app The application for this dialog.
      * @param resourcePath The content resource to preview.
      */
-    public PreviewContentDialog(final Application app,
-                                final String resourcePath) {
+    public PreviewContentDialog(final String resourcePath) {
+        super(false, true);
 
-        _app = app;
-        _constants = _app.constants();
-        _delegate = _app.dialog(_constants.preview());
-        _contentServerBaseUrl = _app.hostURL()+"content-server";
+        setText(_constants.preview());
+        _contentServerBaseUrl = Globals.hostURL()+"content-server";
 
-        _previewFrame = _app.frame(_contentServerBaseUrl+resourcePath);
         _previewFrame.setWidth("800px");
         _previewFrame.setHeight("600px");
+        _previewFrame.setStyleName("ccc-Frame");
+        DOM.setElementPropertyInt(getElement(), "frameBorder", 0);
+        _previewFrame.setUrl(_contentServerBaseUrl+resourcePath);
 
-        _gui = _app.verticalPanel();
-        _gui.setVerticalAlignment(VerticalPanel.ALIGN_BOTTOM);
-        _gui.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
-        _gui.add(_previewFrame);
-        _gui.add(
-            new ButtonBar(_app)
+        _panel.setVerticalAlignment(VerticalPanel.ALIGN_BOTTOM);
+        _panel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
+        _panel.add(_previewFrame);
+        _panel.add(
+            new ButtonBar()
                 .add(_constants.cancel(),
-                     new DisposingClickListener(_delegate)));
+                     new ClickListener(){
+                        public void onClick(final Widget sender) {
+                            hide();
+                        }
+                    }
+                )
+            );
 
-        _delegate.gui(_gui);
-    }
-
-    /**
-     * TODO: Add a description of this method.
-     *
-     */
-    public void center() {
-        _delegate.center();
+        add(_panel);
     }
 }

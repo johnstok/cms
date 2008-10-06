@@ -11,62 +11,44 @@
  */
 package ccc.contentcreator.client;
 
-import ccc.contentcreator.api.Application;
-import ccc.contentcreator.api.CompositeControl;
-import ccc.contentcreator.api.Control;
-import ccc.contentcreator.api.GridControl;
+import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Widget;
 
 
 /**
- * TODO Add Description for this type.
+ * A panel with two columns - useful for displaying forms.
  *
  * @author Civic Computing Ltd
  */
-public class TwoColumnForm implements CompositeControl {
+public class TwoColumnForm extends Grid {
 
-    private final Application      _app;
-    private final GridControl _grid;
-    private int               _nextRow = 0;
+    private int _nextRow = 0;
 
-    public TwoColumnForm(final Application app, final int numRows) {
-        _app = app;
-        _grid = _app.grid(numRows, 2);
+    /**
+     * Constructor.
+     *
+     * @param numRows The number of rows in the table.
+     */
+    public TwoColumnForm(final int numRows) {
+        super(numRows, 2);
     }
 
     /**
-     * Add a new control.
+     * Add a new row.
      *
-     * @param label
-     * @param widget
-     * @return
+     * @param label The label for the widget.
+     * @param widget The widget itself.
+     * @return Returns 'this' for method chaining.
      */
     public TwoColumnForm add(final String label,
-                             final Control widget) {
+                             final Widget widget) {
 
-        _grid.setWidget(_nextRow, 0, _app.label(label));
-        _grid.setWidget(_nextRow, 1, widget);
+        setWidget(_nextRow, 0, new Label(label));
+        setWidget(_nextRow, 1, widget);
         _nextRow++;
 
         return this;
     }
 
-    /** {@inheritDoc} */
-    public void setHeight(final String string) {
-        _grid.setHeight(string);
-    }
-
-    /** {@inheritDoc} */
-    public void setVisible(final boolean b) {
-        _grid.setVisible(b);
-    }
-
-    /** {@inheritDoc} */
-    public void setWidth(final String string) {
-        _grid.setWidth(string);
-    }
-
-    /** {@inheritDoc} */
-    public Object rootWidget() {
-        return _grid;
-    }
 }

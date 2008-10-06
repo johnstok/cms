@@ -50,9 +50,6 @@ public class ResourceTable extends ContentPanel {
     private final ListStore<ResourceDTO> _detailsStore =
         new ListStore<ResourceDTO>();
 
-    /** _app : GwtApplication. */
-    private GwtApplication _app = new GwtApplication();
-
     /**
      * Constructor.
      */
@@ -98,16 +95,16 @@ public class ResourceTable extends ContentPanel {
 
         final MenuItem preview = new MenuItem();
         preview.setId("preview-resource");
-        preview.setText(_app.constants().preview());
+        preview.setText(Globals.uiConstants().preview());
         preview.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override public void componentSelected(final MenuEvent ce) {
                 final ResourceDTO item =
                     (ResourceDTO) tbl.getSelectedItem().getModel();
-                _app.lookupService().getAbsolutePath(
+                Globals.resourceService().getAbsolutePath(
                     item,
                     new ErrorReportingCallback<String>() {
                         public void onSuccess(final String arg0) {
-                            new PreviewContentDialog(_app, arg0).center();
+                            new PreviewContentDialog(arg0).center();
                         }
                 });
             }
@@ -116,7 +113,7 @@ public class ResourceTable extends ContentPanel {
 
         final MenuItem update = new MenuItem();
         update.setId("edit-resource");
-        update.setText(_app.constants().edit());
+        update.setText(Globals.uiConstants().edit());
         update.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override public void componentSelected(final MenuEvent ce) {
                     final ResourceDTO item =
@@ -126,7 +123,7 @@ public class ResourceTable extends ContentPanel {
                      } else if ("PAGE".equals(item.getType())) {
                          new UpdateContentDialog(item.getId()).show();
                      } else {
-                         _app.alert("No editor available for this resource.");
+                         Globals.alert("No editor available for this resource.");
                      }
                 }
             }
@@ -135,13 +132,13 @@ public class ResourceTable extends ContentPanel {
 
         final MenuItem createAlias = new MenuItem();
         createAlias.setId("create-alias");
-        createAlias.setText(_app.constants().createAlias());
+        createAlias.setText(Globals.uiConstants().createAlias());
         createAlias.addSelectionListener(new SelectionListener<MenuEvent>() {
 
             @Override public void componentSelected(final MenuEvent ce) {
                 final ResourceDTO item =
                     (ResourceDTO) tbl.getSelectedItem().getModel();
-                new CreateAliasDialog(_app, item).show();
+                new CreateAliasDialog(item).show();
             }
 
         });
@@ -149,12 +146,12 @@ public class ResourceTable extends ContentPanel {
 
         final MenuItem chooseTemplate = new MenuItem();
         chooseTemplate.setId("chooseTemplate-resource");
-        chooseTemplate.setText(_app.constants().chooseTemplate());
+        chooseTemplate.setText(Globals.uiConstants().chooseTemplate());
         chooseTemplate.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override
             public void componentSelected(final MenuEvent ce) {
                 final ResourceServiceAsync resourceService =
-                    _app.lookupService();
+                    Globals.resourceService();
 
                 final ResourceDTO item =
                     (ResourceDTO) tbl.getSelectedItem().getModel();
@@ -165,7 +162,7 @@ public class ResourceTable extends ContentPanel {
                         new AsyncCallback<List<OptionDTO<? extends DTO>>>(){
 
                             public void onFailure(final Throwable arg0) {
-                                Window.alert(_app.constants().error());
+                                Window.alert(Globals.uiConstants().error());
                             }
 
                             public void onSuccess(
@@ -174,7 +171,7 @@ public class ResourceTable extends ContentPanel {
                             }});
 
                 } else {
-                    _app.alert("Template cannot be chosen for this resource.");
+                    Globals.alert("Template cannot be chosen for this resource.");
                 }
             }
         }
@@ -196,7 +193,7 @@ public class ResourceTable extends ContentPanel {
 
         // TODO: handle getSelectedItem() being null.
         final FolderDTO f = (FolderDTO) selectedItem.getModel();
-        _app.lookupService().getChildren(
+        Globals.resourceService().getChildren(
             f,
             new ErrorReportingCallback<List<ResourceDTO>>() {
                 public void onSuccess(

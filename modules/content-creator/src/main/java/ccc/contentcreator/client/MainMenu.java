@@ -13,8 +13,8 @@ package ccc.contentcreator.client;
 
 import java.util.List;
 
-import ccc.contentcreator.api.Application;
 import ccc.contentcreator.api.ResourceServiceAsync;
+import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.dto.DTO;
 import ccc.contentcreator.dto.OptionDTO;
 
@@ -37,23 +37,21 @@ public class MainMenu
     extends
         ToolBar {
 
-    private final Application _app;
+    private final UIConstants _constants = Globals.uiConstants();
 
     /**
      * Constructor.
      *
      * @param app
      */
-    MainMenu(final Application app) {
+    MainMenu() {
 
-        _app = app;
-
-        final TextToolItem help = new TextToolItem(_app.constants().help());
+        final TextToolItem help = new TextToolItem(_constants.help());
         help.setId("help-menu");
         final Menu helpMenu = new Menu();
         help.setMenu(helpMenu);
         final MenuItem openManual = new MenuItem();
-        openManual.setText(_app.constants().manual());
+        openManual.setText(_constants.manual());
         openManual.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override
             public void componentSelected(final MenuEvent ce) {
@@ -63,13 +61,13 @@ public class MainMenu
         });
         helpMenu.add(openManual);
 
-        final TextToolItem assets = new TextToolItem(_app.constants().assets());
+        final TextToolItem assets = new TextToolItem(_constants.assets());
         assets.setId("assets-menu");
         final Menu assetsMenu = new Menu();
         assets.setMenu(assetsMenu);
         final MenuItem createTemplate = new MenuItem();
         createTemplate.setId("create-template-menu-item");
-        createTemplate.setText(_app.constants().createDisplayTemplate());
+        createTemplate.setText(_constants.createDisplayTemplate());
         createTemplate.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override
             public void componentSelected(final MenuEvent ce) {
@@ -78,13 +76,13 @@ public class MainMenu
         });
         assetsMenu.add(createTemplate);
 
-        final TextToolItem users = new TextToolItem(_app.constants().users());
+        final TextToolItem users = new TextToolItem(_constants.users());
         users.setId("users-menu");
         final Menu usersMenu = new Menu();
         users.setMenu(usersMenu);
         final MenuItem createUser = new MenuItem();
         createUser.setId("create-user-menu-item");
-        createUser.setText(_app.constants().createUser());
+        createUser.setText(_constants.createUser());
         createUser.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override
             public void componentSelected(final MenuEvent ce) {
@@ -93,25 +91,25 @@ public class MainMenu
         });
         usersMenu.add(createUser);
 
-        final TextToolItem tools = new TextToolItem(_app.constants().tools());
+        final TextToolItem tools = new TextToolItem(_constants.tools());
         tools.setId("tools-menu");
         final Menu toolsMenu = new Menu();
         tools.setMenu(toolsMenu);
 
         final MenuItem updateOptions = new MenuItem();
         updateOptions.setId("update-options-menu-item");
-        updateOptions.setText(_app.constants().options());
+        updateOptions.setText(_constants.options());
         updateOptions.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override
             public void componentSelected(final MenuEvent ce) {
                 final ResourceServiceAsync resourceService =
-                    _app.lookupService();
+                    Globals.resourceService();
 
                 resourceService.listOptions(
                  new AsyncCallback<List<OptionDTO<? extends DTO>>>(){
 
                      public void onFailure(final Throwable arg0) {
-                         Window.alert(_app.constants().error());
+                         Window.alert(_constants.error());
                      }
 
                      public void onSuccess(
