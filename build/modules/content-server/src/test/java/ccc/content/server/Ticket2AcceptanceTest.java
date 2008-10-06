@@ -35,10 +35,11 @@ public final class Ticket2AcceptanceTest extends TestCase {
     public void testTemplatesFolderAccesibleViaAssetsView() {
         _selenium.setSpeed("1000");
         _selenium.open("/content-creator/");
-        _selenium.click("//div[@id='content-navigator']/span"); // Close
-        _selenium.click("//div[@id='assets-navigator']/span");  // Open
-        _selenium.click("//div[@id='assets']/table/tbody/tr/td[6]/span");
-        _selenium.click("//div[@id='templates']/table/tbody/tr/td[1]/div/div");
+        _selenium.click("content-navigator"); // Close
+        _selenium.click("assets-navigator");  // Open
+        _selenium.click("//div[@id='assets']/div[1]/table/tbody/tr/td[2]/div");
+        _selenium.click(
+            "//div[@id='templates']/div[1]/table/tbody/tr/td[6]/span");
     }
 
     /**
@@ -48,8 +49,9 @@ public final class Ticket2AcceptanceTest extends TestCase {
         _selenium.setSpeed("1000");
         _selenium.open("/content-creator/");
         _selenium.click("assets-navigator");
-        _selenium.click("//div[@id='assets']/table/tbody/tr/td[2]/div");
-        _selenium.click("//div[@id='templates']/table/tbody/tr/td[6]/span");
+        _selenium.click("//div[@id='assets']/div[1]/table/tbody/tr/td[2]/div");
+        _selenium.click(
+            "//div[@id='templates']/div[1]/table/tbody/tr/td[6]/span");
         _selenium.click(
             "//div[@id='ash_display.jsp']/table/tbody/tr/td[1]/div/div");
         _selenium.click(
