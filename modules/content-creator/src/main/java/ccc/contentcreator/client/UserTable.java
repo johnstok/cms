@@ -23,6 +23,8 @@ import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.form.Radio;
+import com.extjs.gxt.ui.client.widget.form.RadioGroup;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
@@ -46,7 +48,12 @@ public class UserTable extends ContentPanel {
         new ListStore<UserDTO>();
     private final ResourceServiceAsync _rsa = Globals.resourceService();
 
+    private final RadioGroup _radioGroup = new RadioGroup("searchField");
     private final ToolBar _toolBar = new ToolBar();
+
+    private final Radio _usernameRadio = new Radio();
+    private final Radio _emailRadio = new Radio();
+
     /**
      * Constructor.
      */
@@ -63,17 +70,42 @@ public class UserTable extends ContentPanel {
         searchButton.addListener(Events.Select, new Listener<ComponentEvent>(){
             public void handleEvent(final ComponentEvent be) {
                 _detailsStore.removeAll();
-                _rsa.listUsersWithUsername(
-                    searchString.getValue().replace('*', '%'),
-                    new ErrorReportingCallback<List<UserDTO>>() {
-                        public void onSuccess(final List<UserDTO> result) {
-                            _detailsStore.add(result);
-                        }
-                    });
+
+                if (_radioGroup.getValue() == _usernameRadio) {
+                    _rsa.listUsersWithUsername(
+                        searchString.getValue().replace('*', '%'),
+                        new ErrorReportingCallback<List<UserDTO>>() {
+                            public void onSuccess(final List<UserDTO> result) {
+                                _detailsStore.add(result);
+                            }
+                        });
+                } else if (_radioGroup.getValue() == _emailRadio) {
+                    _rsa.listUsersWithEmail(
+                        searchString.getValue().replace('*', '%'),
+                        new ErrorReportingCallback<List<UserDTO>>() {
+                            public void onSuccess(final List<UserDTO> result) {
+                                _detailsStore.add(result);
+                            }
+                        });
+                }
             }
         }
         );
 
+
+
+        _usernameRadio.setName("Username");
+        _usernameRadio.setBoxLabel("Username");
+        _usernameRadio.setValue(true);
+
+        _emailRadio.setName("Email");
+        _emailRadio.setBoxLabel("Email");
+
+        _radioGroup.setFieldLabel("Search Field");
+        _radioGroup.add(_usernameRadio);
+        _radioGroup.add(_emailRadio);
+        _toolBar.add(new AdapterToolItem(_radioGroup));
+        _toolBar.add(new SeparatorToolItem());
         _toolBar.add(ti);
         _toolBar.add(new SeparatorToolItem());
         _toolBar.add(searchButton);

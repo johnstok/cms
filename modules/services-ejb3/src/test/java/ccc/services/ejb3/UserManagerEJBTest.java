@@ -120,4 +120,58 @@ public class UserManagerEJBTest extends TestCase {
         verify(_q, _em);
 
     }
+
+    /**
+     * Test.
+     */
+    public void testListUsersWithUsername() {
+
+        // ARRANGE
+        expect(_q.setParameter("username", "testname"))
+        .andReturn(_q);
+        expect(_q.getResultList()).andReturn(new ArrayList<User>());
+        replay(_q);
+
+        expect(
+            _em.createQuery(
+                UserManagerEJB.NamedQueries.USERS_WITH_USERNAME.queryString()))
+                .andReturn(_q);
+        replay(_em);
+
+        final UserManagerEJB um = new UserManagerEJB(_em);
+
+        // ACT
+        um.listUsersWithUsername("testname");
+
+        // ASSERT
+        verify(_q, _em);
+
+    }
+
+    /**
+     * Test.
+     */
+    public void testListUsersWithEmail() {
+
+        // ARRANGE
+        expect(_q.setParameter("email", "test@civicuk.com"))
+        .andReturn(_q);
+        expect(_q.getResultList()).andReturn(new ArrayList<User>());
+        replay(_q);
+
+        expect(
+            _em.createQuery(
+                UserManagerEJB.NamedQueries.USERS_WITH_EMAIL.queryString()))
+                .andReturn(_q);
+        replay(_em);
+
+        final UserManagerEJB um = new UserManagerEJB(_em);
+
+        // ACT
+        um.listUsersWithEmail("test@civicuk.com");
+
+        // ASSERT
+        verify(_q, _em);
+
+    }
 }
