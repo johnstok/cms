@@ -13,6 +13,7 @@ package ccc.commons;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,12 +29,11 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
+import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-
-
-
 
 /**
  * Helper methods for working with XHTML.
@@ -43,6 +43,30 @@ import org.xml.sax.SAXParseException;
 public final class XHTML {
 
     private XHTML() { /* NO-OP */ }
+
+    /**
+     * An implementation of {@link EntityResolver} that reads xhtml dtd's from
+     * the classpath.
+     *
+     * @author Civic Computing Ltd.
+     */
+    static class XhtmlEntityResolver implements EntityResolver {
+
+        /** {@inheritDoc} */
+        @Override
+        public InputSource resolveEntity(final String publicId,
+                                         final String systemId)
+                throws SAXException, IOException {
+            final InputStream stream =
+                getClass().getResourceAsStream(dtdFilename(systemId));
+            return new InputSource(new InputStreamReader(stream));
+        }
+
+        private String dtdFilename(final String systemId) {
+            final String[] pathElements = systemId.split("/");
+            return pathElements[pathElements.length - 1];
+        }
+    }
 
     /**
      * An implementation of {@link ErrorHandler} that collects errors.
@@ -75,9 +99,12 @@ public final class XHTML {
         private String constructErrorMessage(final SAXParseException e) {
             final StringBuffer fullMessage =
                 new StringBuffer()
-                .append("Line: ").append(e.getLineNumber()) //$NON-NLS-1$
-                .append(", Column: ").append(e.getColumnNumber()) //$NON-NLS-1$
-                .append(", Error: ").append(e.getMessage()); //$NON-NLS-1$
+                    .append("Line: ") //$NON-NLS-1$
+                    .append(e.getLineNumber())
+                    .append(", Column: ") //$NON-NLS-1$
+                    .append(e.getColumnNumber())
+                    .append(", Error: ") //$NON-NLS-1$
+                    .append(e.getMessage());
             return fullMessage.toString();
         }
 
@@ -134,7 +161,9 @@ public final class XHTML {
 
         try {
             final XhtmlErrorHandler errorHandler = new XhtmlErrorHandler();
-            final DocumentBuilder parser = createParser(errorHandler);
+            final XhtmlEntityResolver resolver = new XhtmlEntityResolver();
+            final DocumentBuilder parser =
+                createParser(errorHandler, resolver);
             parser.parse(page);
             return errorHandler.errors().size() == 0;
         } catch (final ParserConfigurationException e) {
@@ -159,7 +188,8 @@ public final class XHTML {
 
         try {
             final DocumentBuilder builder =
-                createParser(new XhtmlErrorHandler());
+                createParser(new XhtmlErrorHandler(),
+                             new XhtmlEntityResolver());
             final Document doc = builder.parse(page);
 
             final XPath xpath = createXPath();
@@ -186,7 +216,8 @@ public final class XHTML {
     }
 
     private static DocumentBuilder createParser(
-                                        final XhtmlErrorHandler errorHandler)
+                                        final XhtmlErrorHandler errorHandler,
+                                        final XhtmlEntityResolver entityResolver)
                                        throws ParserConfigurationException {
 
         final DocumentBuilderFactory factory =
@@ -194,6 +225,7 @@ public final class XHTML {
         factory.setNamespaceAware(true);
         factory.setValidating(true);
         final DocumentBuilder parser = factory.newDocumentBuilder();
+        parser.setEntityResolver(entityResolver);
         parser.setErrorHandler(errorHandler);
         return parser;
     }
@@ -210,7 +242,8 @@ public final class XHTML {
 
         try {
             final XhtmlErrorHandler errorHandler = new XhtmlErrorHandler();
-            final DocumentBuilder parser = createParser(errorHandler);
+            final XhtmlEntityResolver resolver = new XhtmlEntityResolver();
+            final DocumentBuilder parser = createParser(errorHandler, resolver);
             parser.parse(page);
             for (final String error : errorHandler.errors()) {
                 out.println(error);
