@@ -65,6 +65,23 @@ public final class ResourceServiceImplTest extends TestCase {
     /**
      * Test.
      */
+    public void testUsernameExists() {
+
+        // ARRANGE
+        expect(_um.usernameExists("foo")).andReturn(false);
+        replay(_um);
+
+        // ACT
+        _rsi.usernameExists("foo");
+
+        // ASSERT
+        verify(_um);
+
+    }
+
+    /**
+     * Test.
+     */
     public void testCreateUser() {
 
         // ARRANGE

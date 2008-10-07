@@ -53,6 +53,16 @@ interface UserManager {
      */
     Collection<User> listUsersWithUsername(String username);
 
+
+    /**
+     * Query whether a user exists with the specified username.
+     *
+     * @param username The username.
+     * @return True if such a user exists, false otherwise.
+     */
+    boolean usernameExists(String username);
+
+
     /**
      * List all users with matching email.
      *

@@ -11,6 +11,7 @@
  */
 package ccc.contentcreator.client;
 
+
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
@@ -33,7 +34,7 @@ import com.extjs.gxt.ui.client.widget.layout.FormData;
 
 
 /**
- * TODO Add Description for this type.
+ * Dialog for creating a new {@link Alias}.
  *
  * @author Civic Computing Ltd
  */
@@ -113,43 +114,55 @@ public class CreateAliasDialog extends Window {
         final Button save = new Button(
             _constants.save(),
             new SelectionListener<ButtonEvent>() {
-            @Override
-            public void componentSelected(final ButtonEvent ce) {
-                if (_aliasName.getValue() == null
-                        || _aliasName.getValue().trim().equals("")) {
-                    Globals.alert(_constants.nameMustNotBeEmpty());
-                    return;
+                @Override public void componentSelected(final ButtonEvent ce) {
+                    Validate.callTo(createAlias())
+                        .check(Validations.notEmpty(_aliasName))
+                        .check(Validations.notEmpty(_parentFolder))
+                        .stopIfInError()
+                        .check(uniqueResourceName(_parentFolder, _aliasName))
+                        .callMethodOr(Validations.reportErrors());
                 }
-                if (_parentFolder.getValue() == null
-                        || _parentFolder.getValue().trim().equals("")) {
-                    Globals.alert(_constants.folderMustNotBeEmpty());
-                    return;
-                }
+            }
+        );
+        save.setId("aliasSave");
+        addButton(save);
+    }
+
+    private Validator uniqueResourceName(final TriggerField<String> folder,
+                                         final TextField<String> name) {
+
+        return new Validator() {
+            public void validate(final Validate validate) {
                 Globals.resourceService().nameExistsInFolder(
                     _parent,
                     _aliasName.getValue(),
                     new ErrorReportingCallback<Boolean>(){
                         public void onSuccess(final Boolean nameExists) {
-
                             if (nameExists) {
-                                Globals.alert(_constants.nameExistsAlready());
-                            } else {
-                                final DisposingCallback callback =
-                                    new DisposingCallback(
-                                        CreateAliasDialog.this);
-                                Globals.resourceService().createAlias(
-                                    _parent,
-                                    new AliasDTO(
-                                        _aliasName.getValue(),
-                                        _aliasName.getValue(),
-                                        _target.getId()),
-                                        callback);
+                                validate.addMessage(
+                                    "A resource with name '"
+                                    + name.getValue()
+                                    + "' already exists in this folder."
+                                );
                             }
+                            validate.next();
                         }});
             }
-            });
-        save.setId("aliasSave");
 
-        addButton(save);
+        };
+    }
+
+    private Runnable createAlias() {
+        return new Runnable() {
+            public void run() {
+                Globals.resourceService().createAlias(
+                    _parent,
+                    new AliasDTO(
+                        _aliasName.getValue(),
+                        _aliasName.getValue(),
+                        _target.getId()),
+                    new DisposingCallback(CreateAliasDialog.this));
+            }
+        };
     }
 }

@@ -12,6 +12,7 @@
 package ccc.contentcreator.client;
 
 
+import static ccc.contentcreator.client.Validations.*;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.dto.UserDTO;
 
@@ -59,16 +60,57 @@ public class CreateUserDialog extends EditDialog {
     @Override protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
+                Validate.callTo(createUser())
+                    .check(notEmpty(_username))
+                    .check(notEmpty(_email))
+                    // TODO: email format
+                    .stopIfInError()
+                    .check(uniqueUsername(_username.getValue()))
+                    .callMethodOr(reportErrors());
+            }
+        };
+    }
 
+    /**
+     * Factory method for username validators.
+     *
+     * @param username The username to check.
+     * @return A new instance of the username validator.
+     */
+    private Validator uniqueUsername(final String username) {
+        return new Validator() {
+            public void validate(final Validate validate) {
+                Globals.resourceService().usernameExists(
+                    username,
+                    new ErrorReportingCallback<Boolean>(){
+                        public void onSuccess(final Boolean exists) {
+                            if (exists) {
+                                validate.addMessage( // TODO: I18n
+                                    "A user with username '"
+                                    + username
+                                    + "' already exists."
+                                );
+                            }
+                            validate.next();
+                        }
+                    }
+                );
+            }
+
+        };
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
+    private Runnable createUser() {
+        return new Runnable() {
+            public void run() {
                 final UserDTO userDto = new UserDTO();
                 userDto.setUsername(_username.getValue());
                 userDto.setEmail(_email.getValue());
-
-                /*
-                 * TODO Validation:
-                 * email - not empty, valid
-                 * username - not empty, unique
-                 */
 
                 Globals.resourceService().createUser(
                     userDto,
