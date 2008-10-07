@@ -187,7 +187,6 @@ public interface ResourceService extends RemoteService {
      */
     void createUser(final UserDTO userDto);
 
-
     /**
      * Query users with specified username.
      *
@@ -195,4 +194,12 @@ public interface ResourceService extends RemoteService {
      * @return Returns list of users.
      */
     List<UserDTO> listUsersWithUsername(String username);
+
+    /**
+     * Query users with specified email.
+     *
+     * @param username The email as a string.
+     * @return Returns list of users.
+     */
+    List<UserDTO> listUsersWithEmail(String email);
 }

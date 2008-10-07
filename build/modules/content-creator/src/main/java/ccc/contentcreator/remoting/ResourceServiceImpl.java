@@ -351,4 +351,12 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
             um.listUsersWithUsername(username);
         return DTOs.dtoFrom(users);
     }
+
+    /** {@inheritDoc} */
+    public List<UserDTO> listUsersWithEmail(final String email) {
+        final UserManagerLocal um = _registry.get("UserManager/local");
+        final Collection<User> users =
+            um.listUsersWithEmail(email);
+        return DTOs.dtoFrom(users);
+    }
 }

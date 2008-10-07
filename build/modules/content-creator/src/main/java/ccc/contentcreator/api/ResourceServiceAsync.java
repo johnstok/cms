@@ -149,5 +149,10 @@ public interface ResourceServiceAsync {
      */
     void listUsersWithUsername(String username, AsyncCallback<List<UserDTO>> callback);
 
+    /**
+     * @see ResourceService#listUsersWithEmail(String)
+     */
+    void listUsersWithEmail(String email, AsyncCallback<List<UserDTO>> callback);
+
 
 }

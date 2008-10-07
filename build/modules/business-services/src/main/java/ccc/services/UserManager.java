@@ -52,4 +52,12 @@ interface UserManager {
      * @return The users with the specified username.
      */
     Collection<User> listUsersWithUsername(String username);
+
+    /**
+     * List all users with matching email.
+     *
+     * @param email The email to filter on.
+     * @return The users with the specified email.
+     */
+    Collection<User> listUsersWithEmail(String email);
 }
