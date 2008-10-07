@@ -4,18 +4,21 @@
 	<inherits name="com.google.gwt.user.User" />
 	<inherits name="com.google.gwt.json.JSON" />
 	<inherits name="com.google.gwt.user.Debug" />
-	<inherits name="com.google.gwt.i18n.I18N"/>
-    <inherits name='com.extjs.gxt.ui.GXT'/>
+	<inherits name="com.google.gwt.i18n.I18N" />
+	<inherits name='com.extjs.gxt.ui.GXT' />
 
 	<!-- Inherit the default GWT style sheet. -->
 	<inherits name="com.google.gwt.user.theme.standard.Standard" />
+
+	<!--  Compiles only for Firefox instead of all four -->
+	<set-property name="user.agent" value="gecko" />
 
 	<!-- Supported locales. -->
 	<!--  extend-property name="locale" values="fi" /-->
 
 	<!-- Specify the app entry point class. -->
 	<entry-point class="ccc.contentcreator.client.ContentCreator" />
-	
+
 	<source path="commands" />
 	<source path="dto" />
 	<source path="client" />
