@@ -122,14 +122,8 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
         return DTOs.dtoFrom(resource);
     }
 
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param resourceId
-     * @return
-     */
-    private <T extends Resource> T lookupContent(final String resourceId) {
-        return (T) contentManager().lookup(UUID.fromString(resourceId));
+    private Resource lookupContent(final String resourceId) {
+        return contentManager().lookup(UUID.fromString(resourceId));
     }
 
     /**
@@ -318,7 +312,8 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
      */
     public boolean nameExistsInFolder(final FolderDTO folderDTO,
                                       final String name) {
-        final Folder folder = lookupContent(folderDTO.getId());
+        final Folder folder =
+            lookupContent(folderDTO.getId()).as(Folder.class);
         return folder.hasEntryWithName(new ResourceName(name));
     }
 
@@ -358,5 +353,11 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
         final Collection<User> users =
             um.listUsersWithEmail(email);
         return DTOs.dtoFrom(users);
+    }
+    
+    /** {@inheritDoc} */
+    public boolean usernameExists(final String username) {
+        final UserManagerLocal um = _registry.get("UserManager/local");
+        return um.usernameExists(username);
     }
 }

@@ -187,6 +187,7 @@ public interface ResourceService extends RemoteService {
      */
     void createUser(final UserDTO userDto);
 
+
     /**
      * Query users with specified username.
      *
@@ -194,6 +195,14 @@ public interface ResourceService extends RemoteService {
      * @return Returns list of users.
      */
     List<UserDTO> listUsersWithUsername(String username);
+
+    /**
+     * Query whether the specified username is in use.
+     *
+     * @param username The username to check
+     * @return True if the username is in use, false otherwise.
+     */
+    boolean usernameExists(String username);
 
     /**
      * Query users with specified email.

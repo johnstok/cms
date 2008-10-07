@@ -22,6 +22,7 @@ import javax.ejb.Remote;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -118,10 +119,23 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
         return uniquify(q.getResultList());
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public boolean usernameExists(final String username) {
+        final Query q =
+            _em.createQuery(NamedQueries.USERS_WITH_USERNAME.queryString());
+        q.setParameter("username", username);
+        try {
+            q.getSingleResult();
+            return true;
+        } catch (final NoResultException e) {
+            return false;
+        }
+    }
+
     private <T> Collection<T> uniquify(final Collection<T> collection) {
         return new HashSet<T>(collection);
     }
-
 
     /**
      * Available named queries.
