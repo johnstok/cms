@@ -183,5 +183,6 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
         final User current = _em.find(User.class, user.id());
         current.username(user.username());
         current.email(user.email());
+        current.roles(user.roles());
     }
 }
