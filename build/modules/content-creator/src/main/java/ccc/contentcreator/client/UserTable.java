@@ -21,6 +21,8 @@ import ccc.contentcreator.dto.UserDTO;
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.event.MenuEvent;
+import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.form.Radio;
@@ -30,6 +32,8 @@ import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+import com.extjs.gxt.ui.client.widget.menu.Menu;
+import com.extjs.gxt.ui.client.widget.menu.MenuItem;
 import com.extjs.gxt.ui.client.widget.toolbar.AdapterToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.TextToolItem;
@@ -62,8 +66,8 @@ public class UserTable extends ContentPanel {
         setLayout(new FitLayout());
 
         final TextField<String> searchString = new TextField<String>();
-        searchString.setToolTip("Use * for wild card searches, for example " +
-        "Joh* finds John");
+        searchString.setToolTip("Use * for wild card searches, for example "
+        + "Joh* finds John");
         final AdapterToolItem ti = new AdapterToolItem(searchString);
         final TextToolItem searchButton = new TextToolItem("Search");
 
@@ -91,8 +95,6 @@ public class UserTable extends ContentPanel {
             }
         }
         );
-
-
 
         _usernameRadio.setName("Username");
         _usernameRadio.setBoxLabel("Username");
@@ -131,6 +133,21 @@ public class UserTable extends ContentPanel {
         final Grid<UserDTO> grid = new Grid<UserDTO>(_detailsStore, cm);
         grid.setLoadMask(true);
 
+        final Menu contextMenu = new Menu();
+        final MenuItem editUser = new MenuItem("Edit user");
+        editUser.addSelectionListener(new SelectionListener<MenuEvent>() {
+
+            @Override
+            public void componentSelected(final MenuEvent ce) {
+                final UserDTO userDTO =
+                    grid.getSelectionModel().getSelectedItem();
+                new EditUserDialog(userDTO).show();
+            }
+
+        });
+        contextMenu.add(editUser);
+
+        grid.setContextMenu(contextMenu);
         add(grid);
     }
 

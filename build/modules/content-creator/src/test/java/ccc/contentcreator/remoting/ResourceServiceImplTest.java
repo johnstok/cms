@@ -98,7 +98,6 @@ public final class ResourceServiceImplTest extends TestCase {
         // ASSERT
         verify(_um);
 
-
     }
 
     /**
@@ -653,5 +652,25 @@ public final class ResourceServiceImplTest extends TestCase {
         _root = null;
     }
 
+    /**
+     * Test.
+     */
+    public void testUpdateUser() {
+
+        // ARRANGE
+        final User user = new User("user1");
+        user.email("abc@def.com");
+        user.addRole(CreatorRoles.ADMINISTRATOR);
+
+        _um.updateUser(user);
+        replay(_um);
+
+        // ACT
+        _rsi.updateUser(DTOs.dtoFrom(user));
+
+        // ASSERT
+        verify(_um);
+
+    }
 
 }

@@ -176,4 +176,11 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
             return _queryString;
         }
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateUser(final User user) {
+        final User current = _em.find(User.class, user.id());
+        current.email(user.email());
+    }
 }

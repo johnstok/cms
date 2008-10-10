@@ -321,4 +321,12 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Users")
     String users();
+
+    /**
+     * "Edit user".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Edit user")
+    String editUser();
 }
