@@ -207,7 +207,7 @@ public interface ResourceService extends RemoteService {
     /**
      * Query users with specified email.
      *
-     * @param username The email as a string.
+     * @param email The email as a string.
      * @return Returns list of users.
      */
     List<UserDTO> listUsersWithEmail(String email);

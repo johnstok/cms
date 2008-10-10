@@ -12,6 +12,8 @@
 package ccc.domain;
 
 import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.Set;
 
 import junit.framework.TestCase;
 
@@ -297,6 +299,39 @@ public class UserTest
 
         // ASSERT
         assertEquals("newDummy", u.username());
+    }
+
+    /**
+     * Test.
+     */
+    public void testReplaceRoles() {
+
+        // ARRANGE
+        final User u = new User("dummy");
+        u.addRole(CreatorRoles.CONTENT_CREATOR);
+        u.addRole(CreatorRoles.SITE_BUILDER);
+        u.addRole(CreatorRoles.SITE_BUILDER);
+
+        final EnumSet<CreatorRoles> expected =
+            EnumSet.of(
+                CreatorRoles.ADMINISTRATOR,
+                CreatorRoles.SITE_BUILDER);
+
+        // ACT
+        final Set<CreatorRoles> newRoles = new HashSet<CreatorRoles>();
+        newRoles.add(CreatorRoles.ADMINISTRATOR);
+        newRoles.add(CreatorRoles.SITE_BUILDER);
+        u.roles(newRoles);
+
+        // ASSERT
+        assertEquals(2, u.roles().size());
+        assertEquals(expected, u.roles());
+        assertTrue(
+            "Should be site builder",
+            u.hasRole(CreatorRoles.SITE_BUILDER));
+        assertTrue(
+            "Should be administrator",
+            u.hasRole(CreatorRoles.ADMINISTRATOR));
     }
 
 }

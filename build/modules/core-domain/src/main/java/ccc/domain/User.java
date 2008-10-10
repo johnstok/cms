@@ -129,4 +129,13 @@ public class User extends Entity {
                 ? EnumSet.noneOf(CreatorRoles.class)
                 : EnumSet.copyOf(_roles);
     }
+
+    /**
+     * Mutator in order to replace roles of the user.
+     *
+     * @param roles The set of new roles.
+     */
+    public void roles(final Set <CreatorRoles> roles) {
+        _roles = roles;
+    }
 }

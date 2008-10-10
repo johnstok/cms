@@ -13,11 +13,17 @@ package ccc.contentcreator.client;
 
 
 import static ccc.contentcreator.client.Validations.*;
+
+import java.util.HashSet;
+import java.util.Set;
+
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.dto.UserDTO;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.widget.form.CheckBox;
+import com.extjs.gxt.ui.client.widget.form.CheckBoxGroup;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.layout.FormData;
 
@@ -32,6 +38,7 @@ public class EditUserDialog extends EditDialog {
     private final TextField<String> _username = new TextField<String>();
     private final TextField<String> _email = new TextField<String>();
     private UserDTO _userDTO = new UserDTO();
+    private CheckBoxGroup _checkGroup = new CheckBoxGroup();
 
     /**
      * Constructor.
@@ -54,6 +61,35 @@ public class EditUserDialog extends EditDialog {
         _email.setValue(_userDTO.getEmail());
         _panel.add(_email, new FormData("100%"));
 
+        final Set<String> userRoles = _userDTO.getRoles();
+
+        final CheckBox check1 = new CheckBox();
+        check1.setBoxLabel("Content creator");
+        check1.setData("role", "CONTENT_CREATOR");
+        if (userRoles.contains("CONTENT_CREATOR")) {
+            check1.setValue(true);
+        }
+
+        final CheckBox check2 = new CheckBox();
+        check2.setBoxLabel("Site builder");
+        check2.setData("role", "SITE_BUILDER");
+        if (userRoles.contains("SITE_BUILDER")) {
+            check2.setValue(true);
+        }
+
+        final CheckBox check3 = new CheckBox();
+        check3.setBoxLabel("Administrator");
+        check3.setData("role", "ADMINISTRATOR");
+        if (userRoles.contains("ADMINISTRATOR")) {
+            check3.setValue(true);
+        }
+
+        _checkGroup.setFieldLabel("Role");
+        _checkGroup.add(check1);
+        _checkGroup.add(check2);
+        _checkGroup.add(check3);
+        _panel.add(_checkGroup, new FormData("100%"));
+
         _panel.setId("UserPanel");
         _save.setId("userSave");
         _cancel.setId("userCancel");
@@ -67,6 +103,7 @@ public class EditUserDialog extends EditDialog {
                     .check(notEmpty(_username))
                     .check(notEmpty(_email))
                     // TODO: email format
+                    // TODO: username format
                     .stopIfInError()
                     .check(uniqueUsername(_userDTO, _username.getValue()))
                     .callMethodOr(reportErrors());
@@ -85,6 +122,11 @@ public class EditUserDialog extends EditDialog {
             public void run() {
                 _userDTO.setUsername(_username.getValue());
                 _userDTO.setEmail(_email.getValue());
+                final Set<String> roles = new HashSet<String>();
+                for (final CheckBox box : _checkGroup.getValues()) {
+                    roles.add((String) box.getData("role"));
+                }
+                _userDTO.setRoles(roles);
 
                 Globals.resourceService().updateUser(
                     _userDTO,
@@ -106,7 +148,9 @@ public class EditUserDialog extends EditDialog {
      * @param username The username to check.
      * @return A new instance of the username validator.
      */
-    private Validator uniqueUsername(final UserDTO userDTO, final String username) {
+    private Validator uniqueUsername(
+                                     final UserDTO userDTO,
+                                     final String username) {
         return new Validator() {
             public void validate(final Validate validate) {
                 if (userDTO.getUsername().equals(username)) {
