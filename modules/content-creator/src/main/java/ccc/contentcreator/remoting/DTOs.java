@@ -77,10 +77,10 @@ public final class DTOs {
      * @return
      */
     public static <T extends ResourceDTO, U extends Resource> List<T>
-        dtoFrom(final Collection<U> resources, final Class<U> resourceType) {
+        dtoFrom(final Collection<U> resources, final Class<T> resourceType) {
         final List<T> dtos = new ArrayList<T>();
         for (final U resource : resources) {
-            dtos.add((T) dtoFrom(resource));
+            dtos.add(resourceType.cast(dtoFrom(resource)));
         }
         return dtos;
     }
