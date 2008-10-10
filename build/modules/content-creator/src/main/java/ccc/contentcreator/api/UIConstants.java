@@ -329,4 +329,36 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Edit user")
     String editUser();
+
+    /**
+     * "Content creator".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Content creator")
+    String contentCreator();
+
+    /**
+     * "Site builder".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Site builder")
+    String siteBuilder();
+
+    /**
+     * "Administrator".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Administrator")
+    String administrator();
+
+    /**
+     * "Roles".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Roles")
+    String roles();
 }

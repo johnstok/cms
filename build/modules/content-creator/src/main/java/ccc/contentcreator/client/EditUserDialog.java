@@ -39,6 +39,7 @@ public class EditUserDialog extends EditDialog {
     private final TextField<String> _email = new TextField<String>();
     private UserDTO _userDTO = new UserDTO();
     private CheckBoxGroup _checkGroup = new CheckBoxGroup();
+    private static final String ROLE = "role";
 
     /**
      * Constructor.
@@ -64,27 +65,31 @@ public class EditUserDialog extends EditDialog {
         final Set<String> userRoles = _userDTO.getRoles();
 
         final CheckBox check1 = new CheckBox();
-        check1.setBoxLabel("Content creator");
-        check1.setData("role", "CONTENT_CREATOR");
+        check1.setBoxLabel(_constants.contentCreator());
+        check1.setId(_constants.contentCreator());
+        check1.setData(ROLE , "CONTENT_CREATOR");
         if (userRoles.contains("CONTENT_CREATOR")) {
             check1.setValue(true);
         }
 
         final CheckBox check2 = new CheckBox();
-        check2.setBoxLabel("Site builder");
-        check2.setData("role", "SITE_BUILDER");
+        check2.setBoxLabel(_constants.siteBuilder());
+        check2.setId(_constants.siteBuilder());
+        check2.setData(ROLE, "SITE_BUILDER");
         if (userRoles.contains("SITE_BUILDER")) {
             check2.setValue(true);
         }
 
         final CheckBox check3 = new CheckBox();
-        check3.setBoxLabel("Administrator");
-        check3.setData("role", "ADMINISTRATOR");
+        check3.setBoxLabel(_constants.administrator());
+        check3.setId(_constants.administrator());
+        check3.setData(ROLE, "ADMINISTRATOR");
         if (userRoles.contains("ADMINISTRATOR")) {
             check3.setValue(true);
         }
 
-        _checkGroup.setFieldLabel("Role");
+        _checkGroup.setFieldLabel(_constants.roles());
+        _checkGroup.setId(_constants.roles());
         _checkGroup.add(check1);
         _checkGroup.add(check2);
         _checkGroup.add(check3);
@@ -124,7 +129,7 @@ public class EditUserDialog extends EditDialog {
                 _userDTO.setEmail(_email.getValue());
                 final Set<String> roles = new HashSet<String>();
                 for (final CheckBox box : _checkGroup.getValues()) {
-                    roles.add((String) box.getData("role"));
+                    roles.add((String) box.getData(ROLE));
                 }
                 _userDTO.setRoles(roles);
 
