@@ -10,9 +10,6 @@
 	<!-- Inherit the default GWT style sheet. -->
 	<inherits name="com.google.gwt.user.theme.standard.Standard" />
 
-	<!--  Compiles only for Firefox instead of all four -->
-	<set-property name="user.agent" value="gecko" />
-
 	<!-- Supported locales. -->
 	<!--  extend-property name="locale" values="fi" /-->
 
