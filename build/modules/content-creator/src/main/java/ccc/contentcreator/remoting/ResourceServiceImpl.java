@@ -161,7 +161,7 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
      * {@inheritDoc}
      */
     public List<TemplateDTO> listTemplates() {
-        return dtoFrom(assetManager().lookupTemplates(), Template.class);
+        return dtoFrom(assetManager().lookupTemplates(), TemplateDTO.class);
     }
 
     /**
