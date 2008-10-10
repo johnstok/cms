@@ -16,7 +16,7 @@
         </repository>
         <repository>
             <id>openqa.org</id>
-            <url>http://archiva.openqa.org/repository/releases</url>
+            <url>http://archiva.openqa.org/repository/snapshots</url>
         </repository>
     </repositories>
 
@@ -36,7 +36,7 @@
         <dependency>
             <groupId>org.openqa.selenium.client-drivers</groupId>
             <artifactId>selenium-java-client-driver</artifactId>
-            <version>1.0-beta-1</version>
+            <version>1.0-20081010.060147-81</version>
             <scope>test</scope>
         </dependency>
         <dependency>

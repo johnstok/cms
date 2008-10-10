@@ -1,0 +1,1 @@
+@mvn -Dmaven.test.failure.ignore=true clean install -P deploy,migrate,acceptance

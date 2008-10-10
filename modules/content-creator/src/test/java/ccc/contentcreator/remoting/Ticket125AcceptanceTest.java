@@ -32,7 +32,7 @@ public final class Ticket125AcceptanceTest extends TestCase {
      * {@inheritDoc}
      */
     @Override
-    public void setUp() throws Exception {
+    protected void setUp() throws Exception {
         final String url = "http://localhost:8080/";
         selenium = new DefaultSelenium("localhost", port, browser, url);
         selenium.start();
