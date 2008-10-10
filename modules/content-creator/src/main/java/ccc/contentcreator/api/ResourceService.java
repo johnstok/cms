@@ -211,4 +211,12 @@ public interface ResourceService extends RemoteService {
      * @return Returns list of users.
      */
     List<UserDTO> listUsersWithEmail(String email);
+
+
+    /**
+     * Updates the user in the system.
+     *
+     * @param userDto A dto representing the  user.
+     */
+    void updateUser(final UserDTO userDto);
 }

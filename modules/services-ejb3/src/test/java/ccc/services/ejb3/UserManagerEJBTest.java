@@ -226,4 +226,25 @@ public class UserManagerEJBTest extends TestCase {
         verify(_q, _em);
 
     }
+
+    /**
+     * Test.
+     */
+    public void testUpdateUser() {
+
+        // ARRANGE
+        final User u = new User("testUser");
+        u.email("test@civicuk.com");
+        expect(_em.find(User.class, u.id())).andReturn(u);
+        replay(_em);
+
+        final UserManagerEJB um = new UserManagerEJB(_em);
+
+        // ACT
+        um.updateUser(u);
+
+        // ASSERT
+        verify(_em);
+
+    }
 }

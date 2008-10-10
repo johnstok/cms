@@ -70,4 +70,12 @@ interface UserManager {
      * @return The users with the specified email.
      */
     Collection<User> listUsersWithEmail(String email);
+
+
+    /**
+     * Update user.
+     *
+     * @param user The user to update.
+     */
+    void updateUser(User user);
 }
