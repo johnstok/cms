@@ -64,6 +64,19 @@ public class User extends Entity {
         return _username;
     }
 
+    /**
+     * Mutator for the username.
+     *
+     * @param username The username.
+     */
+    public void username(final String username) {
+        DBC.require().notEmpty(username);
+        DBC.require().minLength(username, USERNAME_MIN_LENGTH);
+        DBC.require().toMatch(VALID_CHARACTERS, username);
+
+        _username = username;
+    }
+
     private static final int USERNAME_MIN_LENGTH = 4;
 
     /**

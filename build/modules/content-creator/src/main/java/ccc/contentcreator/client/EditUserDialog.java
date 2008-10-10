@@ -44,7 +44,6 @@ public class EditUserDialog extends EditDialog {
 
         _username.setFieldLabel(_constants.username());
         _username.setAllowBlank(false);
-        _username.setReadOnly(true);
         _username.setId(_constants.username());
         _username.setValue(_userDTO.getUsername());
         _panel.add(_username, new FormData("100%"));
@@ -54,7 +53,6 @@ public class EditUserDialog extends EditDialog {
         _email.setId(_constants.email());
         _email.setValue(_userDTO.getEmail());
         _panel.add(_email, new FormData("100%"));
-
 
         _panel.setId("UserPanel");
         _save.setId("userSave");
@@ -70,6 +68,7 @@ public class EditUserDialog extends EditDialog {
                     .check(notEmpty(_email))
                     // TODO: email format
                     .stopIfInError()
+                    .check(uniqueUsername(_userDTO, _username.getValue()))
                     .callMethodOr(reportErrors());
             }
         };
@@ -97,6 +96,41 @@ public class EditUserDialog extends EditDialog {
                     }
                 );
             }
+        };
+    }
+
+    /**
+     * Factory method for username validators.
+     *
+     * @param userDTO The original user DTO.
+     * @param username The username to check.
+     * @return A new instance of the username validator.
+     */
+    private Validator uniqueUsername(final UserDTO userDTO, final String username) {
+        return new Validator() {
+            public void validate(final Validate validate) {
+                if (userDTO.getUsername().equals(username)) {
+                    validate.next();
+                } else {
+                    Globals.resourceService().usernameExists(
+                        username,
+                        new ErrorReportingCallback<Boolean>(){
+                            public void onSuccess(final Boolean exists) {
+                                if (exists) {
+                                    validate.addMessage( // TODO: I18n
+                                        "A user with username '"
+                                        + username
+                                        + "' already exists."
+                                    );
+                                }
+                                validate.next();
+                            }
+                        }
+                    );
+                }
+
+            }
+
         };
     }
 }

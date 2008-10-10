@@ -224,4 +224,79 @@ public class UserTest
         }
     }
 
+    /**
+     * Test.
+     */
+    public void testUsernameMutatorRejectsNullUsername() {
+
+        // ARRANGE
+        final User u = new User("dummy");
+        u.email("fooEmail@test.com");
+
+        // ACT
+        try {
+            u.username(null);
+        // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals("Specified value may not be NULL.", e.getMessage());
+        }
+    }
+
+    /**
+     * Test.
+     */
+    public void testUsernameMutatorRejectsEmptyUsername() {
+
+        // ARRANGE
+        final User u = new User("dummy");
+        u.email("fooEmail@test.com");
+
+        // ACT
+        try {
+            u.username("");
+            // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Specified string must have length > 0.",
+                e.getMessage());
+        }
+    }
+
+    /**
+     * Test.
+     */
+    public void testUsernameMutatorRejectsInvalidUsername() {
+
+        // ARRANGE
+        final User u = new User("dummy");
+        u.email("fooEmail@test.com");
+
+        // ACT
+        try {
+            u.username("blaa blaa");
+            // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Specified string does not match [\\w]*",
+                e.getMessage());
+        }
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testUsernameMutator() {
+
+        // ARRANGE
+        final User u = new User("dummy");
+        u.email("fooEmail@test.com");
+
+        // ACT
+        u.username("newDummy");
+
+        // ASSERT
+        assertEquals("newDummy", u.username());
+    }
+
 }
