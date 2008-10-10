@@ -194,6 +194,33 @@
 	        <id>acceptance</id>
 	        <build>
 	            <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>start-selenium</id>
+                                <phase>pre-integration-test</phase>
+                                <configuration>
+                                    <tasks>
+                                        <echo message="Starting Selenium" />
+                                        <java
+                                            classname="org.openqa.selenium.server.SeleniumServer"
+                                            fork="true"
+                                            spawn="true">
+                                            <arg value="-port" />
+                                            <arg value="5555" />
+                                            <classpath refid="maven.test.classpath"/>
+                                        </java>
+                                    </tasks>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+            
+            
 	                <plugin>
 	                    <artifactId>maven-surefire-plugin</artifactId>
 	                    <executions>
@@ -220,13 +247,13 @@
 	                    <groupId>org.codehaus.mojo</groupId>
 	                    <artifactId>selenium-maven-plugin</artifactId>
 	                    <executions>
-	                        <execution>
+	                        <!-- execution>
 	                            <id>start-selenium</id>
 	                            <phase>pre-integration-test</phase>
 	                            <goals>
 	                                <goal>start-server</goal>
 	                            </goals>
-	                        </execution>
+	                        </execution -->
 	                        <execution>
 	                            <id>stop-selenium</id>
 	                            <phase>post-integration-test</phase>
