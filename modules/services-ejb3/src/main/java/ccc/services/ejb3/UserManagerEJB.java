@@ -181,6 +181,7 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
     @Override
     public void updateUser(final User user) {
         final User current = _em.find(User.class, user.id());
+        current.username(user.username());
         current.email(user.email());
     }
 }
