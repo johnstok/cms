@@ -35,6 +35,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
+import ccc.domain.DBC;
+
 /**
  * Helper methods for working with XHTML.
  *

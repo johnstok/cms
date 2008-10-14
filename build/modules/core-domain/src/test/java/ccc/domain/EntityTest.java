@@ -11,8 +11,6 @@
  */
 package ccc.domain;
 
-import java.util.UUID;
-
 import junit.framework.TestCase;
 
 

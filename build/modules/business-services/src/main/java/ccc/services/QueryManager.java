@@ -11,8 +11,8 @@
  */
 package ccc.services;
 
-import ccc.commons.Maybe;
 import ccc.domain.Folder;
+import ccc.domain.Maybe;
 import ccc.domain.Setting;
 import ccc.domain.Setting.Name;
 

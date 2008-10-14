@@ -18,7 +18,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import ccc.contentcreator.dto.AliasDTO;
 import ccc.contentcreator.dto.FileDTO;
@@ -36,6 +35,7 @@ import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.Template;
+import ccc.domain.UUID;
 import ccc.domain.User;
 
 
@@ -97,19 +97,19 @@ public final class DTOs {
 
         switch (resource.type()) {
             case FOLDER:
-                return (T) dtoFrom(resource.as(Folder.class));
+                return (T) dtoFrom(((Folder) resource));
 
             case PAGE:
-                return (T) dtoFrom(resource.as(Page.class));
+                return (T) dtoFrom(((Page) resource));
 
             case TEMPLATE:
-                return (T) dtoFrom(resource.as(Template.class));
+                return (T) dtoFrom(((Template) resource));
 
             case ALIAS:
-                return (T) dtoFrom(resource.as(Alias.class));
+                return (T) dtoFrom(((Alias) resource));
 
             case FILE:
-                return (T) dtoFrom(resource.as(File.class));
+                return (T) dtoFrom(((File) resource));
 
             default:
                 throw new CCCException(

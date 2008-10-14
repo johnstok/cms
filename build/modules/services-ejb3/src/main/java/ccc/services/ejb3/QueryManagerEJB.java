@@ -14,8 +14,6 @@ package ccc.services.ejb3;
 import static javax.ejb.TransactionAttributeType.*;
 import static javax.persistence.PersistenceContextType.*;
 
-import java.util.UUID;
-
 import javax.ejb.Local;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
@@ -24,11 +22,12 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import ccc.commons.DBC;
-import ccc.commons.Maybe;
+import ccc.domain.DBC;
 import ccc.domain.Folder;
+import ccc.domain.Maybe;
 import ccc.domain.ResourceName;
 import ccc.domain.Setting;
+import ccc.domain.UUID;
 import ccc.domain.Setting.Name;
 import ccc.services.QueryManagerLocal;
 

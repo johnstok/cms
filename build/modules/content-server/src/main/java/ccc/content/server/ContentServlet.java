@@ -21,12 +21,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ccc.commons.Maybe;
 import ccc.commons.Registry;
 import ccc.commons.Resources;
 import ccc.domain.Alias;
 import ccc.domain.CCCException;
 import ccc.domain.Folder;
+import ccc.domain.Maybe;
 import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
@@ -141,17 +141,17 @@ public final class ContentServlet extends CCCServlet {
         switch (resource.type()) {
 
             case ALIAS:
-                final Alias alias = resource.as(Alias.class);
+                final Alias alias = ((Alias) resource);
                 handleResource(resp, req, alias.target());
                 break;
 
             case PAGE:
-                final Page page = resource.as(Page.class);
+                final Page page = ((Page) resource);
                 write(resp, page);
                 break;
 
             case FOLDER:
-                final Folder folder = resource.as(Folder.class);
+                final Folder folder = ((Folder) resource);
 
 
                 if (folder.hasAliases()) {

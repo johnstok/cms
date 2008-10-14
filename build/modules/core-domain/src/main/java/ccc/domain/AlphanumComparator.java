@@ -26,7 +26,7 @@
  *
  */
 
-package ccc.commons;
+package ccc.domain;
 
 import java.io.Serializable;
 import java.util.Comparator;
@@ -86,7 +86,6 @@ public class AlphanumComparator implements Comparator<String>, Serializable {
     /**
      * {@inheritDoc}
      */
-    @Override
     public final int compare(final String o1, final String o2) {
         final String s1 = o1;
         final String s2 = o2;

@@ -14,7 +14,6 @@ package ccc.contentcreator.remoting;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.UUID;
 
 import junit.framework.TestCase;
 import ccc.contentcreator.dto.AliasDTO;
@@ -28,6 +27,7 @@ import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
+import ccc.domain.UUID;
 import ccc.domain.User;
 
 

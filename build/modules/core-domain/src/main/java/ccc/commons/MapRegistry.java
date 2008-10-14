@@ -13,6 +13,8 @@ package ccc.commons;
 
 import java.util.HashMap;
 
+import ccc.domain.DBC;
+
 
 /**
  * A registry implementation using an in-memory map.

@@ -13,15 +13,15 @@
 package ccc.services;
 
 import java.util.Map;
-import java.util.UUID;
 
-import ccc.commons.Maybe;
 import ccc.domain.Alias;
 import ccc.domain.Folder;
+import ccc.domain.Maybe;
 import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 import ccc.domain.Template;
+import ccc.domain.UUID;
 
 
 /**

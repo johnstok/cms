@@ -19,9 +19,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ccc.commons.DBC;
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
+import ccc.domain.DBC;
 import ccc.services.AssetManagerLocal;
 import ccc.services.ContentManagerLocal;
 import ccc.services.DataManagerLocal;

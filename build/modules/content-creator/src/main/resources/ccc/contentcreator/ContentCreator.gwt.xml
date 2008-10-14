@@ -6,6 +6,8 @@
 	<inherits name="com.google.gwt.user.Debug" />
 	<inherits name="com.google.gwt.i18n.I18N" />
 	<inherits name='com.extjs.gxt.ui.GXT' />
+    <inherits name='ccc.BusinessServices' />
+    <inherits name='ccc.Domain' />
 
 	<!-- Inherit the default GWT style sheet. -->
 	<inherits name="com.google.gwt.user.theme.standard.Standard" />
@@ -21,7 +23,7 @@
 	<source path="client" />
 	<source path="api" />
 	<source path="callbacks" />
-
+    
 	<!-- RPC servlet bindings. -->
 	<servlet path="/resource"
 		class="ccc.contentcreator.remoting.ResourceServiceImpl" />

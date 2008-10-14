@@ -9,12 +9,16 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.domain;
+package ccc.commons;
 
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+
+import ccc.domain.CCCException;
+import ccc.domain.Entity;
+import ccc.domain.User;
 
 
 /**
@@ -69,7 +73,7 @@ public class Password extends Entity {
      * @param passwordString The un-hashed password as a string.
      * @return The hashed password as a byte array.
      */
-    final byte[] hash(final String passwordString) {
+    public final byte[] hash(final String passwordString) {
         try {
             // Prepare
             final MessageDigest digest = MessageDigest.getInstance("SHA-256");

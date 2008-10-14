@@ -16,9 +16,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.UUID;
 
 import org.hibernate.usertype.UserType;
+
+import ccc.domain.UUID;
 
 
 /**

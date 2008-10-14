@@ -1,0 +1,3 @@
+<module>
+    <source path="services" excludes="*Local.java DataManager.java"/>
+</module>

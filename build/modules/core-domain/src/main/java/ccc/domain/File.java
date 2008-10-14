@@ -11,11 +11,6 @@
  */
 package ccc.domain;
 
-import javax.activation.MimeType;
-import javax.activation.MimeTypeParseException;
-
-import ccc.commons.DBC;
-
 
 /**
  * A file resource. This class encapsulates all file metadata. The raw file data
@@ -63,12 +58,7 @@ public class File extends Resource {
      * @return An instance of {@link MimeType}.
      */
     public static MimeType defaultMimeType() {
-        try {
-            return new MimeType("application", "octet-stream");
-        } catch (final MimeTypeParseException e) {
-            throw new CCCException(
-                "Failed to create mimetype: application/octet-stream", e);
-        }
+        return new MimeType("application", "octet-stream");
     }
 
 

@@ -38,11 +38,6 @@
 						<phase>compile</phase>
 						<configuration>
 							<tasks>
-								<!-- 
-									| Here we are replicating the behaviour of a GWT compile script, eg:
-									| @java -Xmx256M -cp "%~dp0\src;%~dp0\bin;C:/Documents and Settings/keith.CIVIC/Desktop/gwt-windows-1.5.0/gwt-user.jar;C:/Documents and Settings/keith.CIVIC/Desktop/gwt-windows-1.5.0/gwt-dev-windows.jar" com.google.gwt.dev.GWTCompiler -out "%~dp0\www" %* ccc.view.gwt.ContentCreator
-								-->
-
 								<property name="compile_classpath"
 									refid="maven.compile.classpath" />
 								<path id="gwt.compile.classpath">
@@ -50,6 +45,14 @@
 										location="${basedir}/src/main/resources" />
 									<pathelement
 										location="${basedir}/src/main/java" />
+                                    <pathelement
+                                        location="${basedir}/../business-services/src/main/resources" />
+                                    <pathelement
+                                        location="${basedir}/../business-services/src/main/java" />
+                                    <pathelement
+                                        location="${basedir}/../core-domain/src/main/resources" />
+                                    <pathelement
+                                        location="${basedir}/../core-domain/src/main/java" />
 									<pathelement
 										path="${compile_classpath}" />
 								</path>
@@ -60,12 +63,13 @@
 								<echo message="Running GWT compiler" />
 								<java
 									classname="com.google.gwt.dev.GWTCompiler"
-									classpath="${gwt_compile_classpath}" fork="true"
-									failonerror="true" maxmemory="256m">
+									classpath="${gwt_compile_classpath}"
+                                    fork="true"
+									failonerror="true"
+                                    maxmemory="256m">
 									<arg value="-out" />
 									<arg value="${basedir}/target/www" />
-									<arg
-										value="ccc.contentcreator.ContentCreator" />
+									<arg value="ccc.contentcreator.ContentCreator" />
 								</java>
 
 							</tasks>
@@ -74,34 +78,6 @@
 							<goal>run</goal>
 						</goals>
 					</execution>
-                    <!-- execution>
-                        <id>gwt-tests</id>
-                        <phase>test</phase>
-                        <configuration>
-                            <tasks>
-  
-                                <property name="test_classpath" refid="maven.test.classpath" />
-                                <path id="gwt.test.classpath">
-                                    <pathelement location="${basedir}/src/main/resources" />
-                                    <pathelement location="${basedir}/src/main/java" />
-                                    <pathelement location="${basedir}/src/test-gwt/java" />
-                                    <pathelement path="${test_classpath}" />
-                                </path>
-                                <property name="gwt_test_classpath" refid="gwt.test.classpath" />
-                                <echo message="gwt test classpath: ${gwt_test_classpath}"/>
-
-                                <echo message="Running GWT tests" />
-                                <java classname="junit.textui.TestRunner" classpath="${gwt_test_classpath}" fork="true" failonerror="true" maxmemory="256m">
-                                    <sysproperty key="gwt.args" value="-out target/www-test"/>
-                                    <arg value="ccc.view.contentcreator.ContentCreatorGwtTestSuite" />
-                                </java>
-
-                            </tasks>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution -->
 				</executions>
 			</plugin>
 			<plugin>

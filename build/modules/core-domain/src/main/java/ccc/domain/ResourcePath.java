@@ -16,8 +16,6 @@ import static java.util.Collections.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 /**
@@ -27,9 +25,9 @@ import java.util.regex.Pattern;
  */
 public final class ResourcePath implements Serializable {
 
-    /** PATH_PATTERN : Pattern. */
-    public static final Pattern PATH_PATTERN =
-        Pattern.compile("(/"+ResourceName.VALID_CHARACTERS+")*");
+    /** VALID_PATH : String. */
+    public static final String VALID_PATH =
+        "(/"+ResourceName.VALID_CHARACTERS+")*";
     /** TOKEN_PATTERN : String. */
     public static final String TOKEN_PATTERN =
         "/("+ResourceName.VALID_CHARACTERS+")";
@@ -46,21 +44,19 @@ public final class ResourcePath implements Serializable {
      */
     public ResourcePath(final String pathString) {
 
-        Matcher m = PATH_PATTERN.matcher(pathString);
-
-        if (!m.matches()) {
+        if (!pathString.matches(VALID_PATH)) {
             throw new RuntimeException(
                 pathString
                 +" does not match the regular expression: "
-                +PATH_PATTERN);
+                +VALID_PATH);
         }
 
         final List<ResourceName> parts = new ArrayList<ResourceName>();
 
-        m = Pattern.compile(TOKEN_PATTERN).matcher(pathString);
-        while (m.find()) {
+        final String[] stringParts = pathString.split("/");
+        for(int i=1; i<stringParts.length; i++) {
             parts.add(
-                new ResourceName(pathString.substring(m.start()+1, m.end())));
+                new ResourceName(stringParts[i]));
         }
         _elements = unmodifiableList(parts);
     }
