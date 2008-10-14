@@ -39,14 +39,18 @@ public class EditUserDialog extends EditDialog {
     private final TextField<String> _email = new TextField<String>();
     private UserDTO _userDTO = new UserDTO();
     private CheckBoxGroup _checkGroup = new CheckBoxGroup();
+    private final UserTable _userTable;
+
     private static final String ROLE = "role";
 
     /**
      * Constructor.
      *
      * @param userDTO The userDTO of the selected user.
+     * @param userTable The user table.
      */
-    public EditUserDialog(final UserDTO userDTO) {
+    public EditUserDialog(final UserDTO userDTO, final UserTable userTable) {
+        _userTable = userTable;
         _userDTO = userDTO;
         setHeading(_constants.editUser());
 
@@ -118,7 +122,7 @@ public class EditUserDialog extends EditDialog {
 
 
     /**
-     * TODO: Add a description of this method.
+     * Updates the edited user and calls user list refreshing.
      *
      * @return
      */
@@ -137,7 +141,7 @@ public class EditUserDialog extends EditDialog {
                     _userDTO,
                     new ErrorReportingCallback<Void>() {
                         public void onSuccess(final Void result) {
-                            // refresh user grid
+                            _userTable.refreshUsers();
                             hide();
                         }
                     }
