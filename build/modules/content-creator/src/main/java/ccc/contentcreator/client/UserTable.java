@@ -58,6 +58,8 @@ public class UserTable extends ContentPanel {
     private final Radio _usernameRadio = new Radio();
     private final Radio _emailRadio = new Radio();
 
+    private TreeItem _lastSelected = null;
+
     /**
      * Constructor.
      */
@@ -141,7 +143,7 @@ public class UserTable extends ContentPanel {
             public void componentSelected(final MenuEvent ce) {
                 final UserDTO userDTO =
                     grid.getSelectionModel().getSelectedItem();
-                new EditUserDialog(userDTO).show();
+                new EditUserDialog(userDTO, UserTable.this).show();
             }
 
         });
@@ -157,8 +159,9 @@ public class UserTable extends ContentPanel {
      * @param selectedItem The selected TreeItem.
      */
     public void displayUsersFor(final TreeItem selectedItem) {
-
+        _lastSelected = selectedItem;
         _detailsStore.removeAll();
+
 
         if ("Search".equals(selectedItem.getText())) {
             _toolBar.show();
@@ -197,6 +200,16 @@ public class UserTable extends ContentPanel {
                         _detailsStore.add(result);
                     }
                 });
+        }
+    }
+
+    /**
+     * Refresh user list unless the last list was created through a search.
+     *
+     */
+    public void refreshUsers() {
+        if (_lastSelected != null && !"Search".equals(_lastSelected.getText())) {
+            displayUsersFor(_lastSelected);
         }
     }
 }
