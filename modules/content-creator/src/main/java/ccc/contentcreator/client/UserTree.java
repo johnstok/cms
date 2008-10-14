@@ -56,11 +56,17 @@ public class UserTree extends Tree {
         _view = view;
 
         final TreeItem users = new TreeItem("Users");
+        users.setId("Users");
         final TreeItem all = new TreeItem("All");
+        all.setId("All");
         final TreeItem creator = new TreeItem("Content creator");
+        creator.setId("Content creator");
         final TreeItem builder = new TreeItem("Site Builder");
+        builder.setId("Site Builder");
         final TreeItem admin = new TreeItem("Administrator");
+        admin.setId("Administrator");
         final TreeItem search = new TreeItem("Search");
+        search.setId("Search");
         getRootItem().add(users);
         users.add(all);
         users.add(search);
