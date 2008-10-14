@@ -64,14 +64,18 @@ public class UserTable extends ContentPanel {
      * Constructor.
      */
     UserTable() {
+        setId("UserDetails");
         setHeading("User Details");
         setLayout(new FitLayout());
 
         final TextField<String> searchString = new TextField<String>();
         searchString.setToolTip("Use * for wild card searches, for example "
         + "Joh* finds John");
+        searchString.setId("searchString");
         final AdapterToolItem ti = new AdapterToolItem(searchString);
+
         final TextToolItem searchButton = new TextToolItem("Search");
+        searchButton.setId("searchButton");
 
         searchButton.addListener(Events.Select, new Listener<ComponentEvent>(){
             public void handleEvent(final ComponentEvent be) {
@@ -101,9 +105,11 @@ public class UserTable extends ContentPanel {
         _usernameRadio.setName("Username");
         _usernameRadio.setBoxLabel("Username");
         _usernameRadio.setValue(true);
+        _usernameRadio.setId("usernameRadio");
 
         _emailRadio.setName("Email");
         _emailRadio.setBoxLabel("Email");
+        _emailRadio.setId("emailRadio");
 
         _radioGroup.setFieldLabel("Search Field");
         _radioGroup.add(_usernameRadio);
@@ -113,6 +119,7 @@ public class UserTable extends ContentPanel {
         _toolBar.add(ti);
         _toolBar.add(new SeparatorToolItem());
         _toolBar.add(searchButton);
+        _toolBar.setId("toolbar");
 
         setTopComponent(_toolBar);
 
@@ -134,9 +141,12 @@ public class UserTable extends ContentPanel {
 
         final Grid<UserDTO> grid = new Grid<UserDTO>(_detailsStore, cm);
         grid.setLoadMask(true);
+        grid.setId("UserGrid");
 
         final Menu contextMenu = new Menu();
+        contextMenu.setId("userContextMenu");
         final MenuItem editUser = new MenuItem("Edit user");
+        editUser.setId("editUserMenu");
         editUser.addSelectionListener(new SelectionListener<MenuEvent>() {
 
             @Override
