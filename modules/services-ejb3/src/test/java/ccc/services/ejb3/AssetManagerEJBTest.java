@@ -22,8 +22,8 @@ import junit.framework.TestCase;
 
 import org.easymock.Capture;
 
-import ccc.commons.Maybe;
 import ccc.domain.Folder;
+import ccc.domain.Maybe;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
@@ -119,7 +119,7 @@ public final class AssetManagerEJBTest extends TestCase {
             new AssetManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
-        final Template actual = am.lookup(t.id()).as(Template.class);
+        final Template actual = (Template) am.lookup(t.id());
 
         // ASSERT
         assertEquals(t, actual);
@@ -185,7 +185,7 @@ public final class AssetManagerEJBTest extends TestCase {
         assertEquals(ASSETS, assetsRoot.getValue().name());
         assertEquals(
             "templates",
-            assetsRoot.getValue()
-                .entries().get(0).as(Folder.class).name().toString());
+            ((Folder) assetsRoot.getValue()
+                .entries().get(0)).name().toString());
     }
 }

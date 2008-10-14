@@ -23,7 +23,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.UUID;
 
 import javax.persistence.EntityManager;
 import javax.sql.DataSource;
@@ -37,6 +36,7 @@ import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.ResourceName;
+import ccc.domain.UUID;
 import ccc.services.DataManagerLocal;
 
 

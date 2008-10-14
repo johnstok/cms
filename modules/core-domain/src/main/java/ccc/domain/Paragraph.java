@@ -11,7 +11,7 @@
  */
 package ccc.domain;
 
-import static ccc.commons.DBC.*;
+import static ccc.domain.DBC.*;
 
 import java.io.Serializable;
 

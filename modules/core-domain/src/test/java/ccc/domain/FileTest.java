@@ -11,9 +11,6 @@
  */
 package ccc.domain;
 
-import javax.activation.MimeType;
-import javax.activation.MimeTypeParseException;
-
 import junit.framework.TestCase;
 
 
@@ -28,7 +25,7 @@ public class FileTest extends TestCase {
      * Test.
      * @throws MimeTypeParseException sometimes.
      */
-    public void testMimeTypeProperty() throws MimeTypeParseException {
+    public void testMimeTypeProperty() {
 
         // ARRANGE
         final File f =

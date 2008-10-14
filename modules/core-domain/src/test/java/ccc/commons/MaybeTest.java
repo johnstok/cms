@@ -13,6 +13,8 @@ package ccc.commons;
 
 import java.io.Serializable;
 
+import ccc.domain.Maybe;
+
 import junit.framework.TestCase;
 
 

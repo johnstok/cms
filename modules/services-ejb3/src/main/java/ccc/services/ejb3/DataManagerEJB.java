@@ -21,7 +21,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.ejb.Local;
@@ -31,12 +30,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 
-import ccc.commons.DBC;
 import ccc.commons.IO;
 import ccc.domain.CCCException;
+import ccc.domain.DBC;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.Folder;
+import ccc.domain.UUID;
 import ccc.services.DataManagerLocal;
 
 

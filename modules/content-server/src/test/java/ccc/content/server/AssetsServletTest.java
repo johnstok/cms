@@ -16,8 +16,6 @@ import static org.easymock.EasyMock.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import javax.activation.MimeType;
-import javax.activation.MimeTypeParseException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +24,7 @@ import junit.framework.TestCase;
 import ccc.commons.MapRegistry;
 import ccc.domain.Data;
 import ccc.domain.File;
+import ccc.domain.MimeType;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.services.AssetManagerLocal;
@@ -42,11 +41,9 @@ public class AssetsServletTest extends TestCase {
     /**
      * Test.
      * @throws IOException If stream manipulation fails.
-     * @throws MimeTypeParseException  If it can't create the mime type.
      */
     public void testGetForExistingFileReturnsData()
-                                            throws IOException,
-                                                   MimeTypeParseException {
+                                            throws IOException {
 
         // ARRANGE
         final ByteArrayOutputStream actual = new ByteArrayOutputStream();

@@ -17,7 +17,6 @@ import static java.util.Collections.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import ccc.commons.DBC;
 
 
 /**
@@ -118,7 +117,7 @@ public final class Folder extends Resource {
             }
 
             currentPosition =
-                currentPosition.as(Folder.class).findEntryByName(name);
+                ((Folder) currentPosition).findEntryByName(name);
 
         }
         return currentPosition;
@@ -154,7 +153,7 @@ public final class Folder extends Resource {
             if(entry.type() == ResourceType.FOLDER) {
                 ref.addMetadata(
                     "folder-count",
-                    String.valueOf(entry.as(Folder.class).folderCount()));
+                    String.valueOf(((Folder) entry).folderCount()));
             }
             resourceRefs.add(ref);
         }
@@ -230,7 +229,7 @@ public final class Folder extends Resource {
     public <T extends Resource> List<T> entries(final Class<T> resourceType) {
         final List<T> entries = new ArrayList<T>();
         for (final Resource entry : _entries) {
-            entries.add(entry.as(resourceType));
+            entries.add((T) entry);
         }
         return entries;
     }
@@ -257,7 +256,7 @@ public final class Folder extends Resource {
     public Page firstPage() {
         for (final Resource r : _entries) {
             if (r.type().equals(ResourceType.PAGE)) {
-                return r.as(Page.class);
+                return (Page) r;
             }
         }
         throw new CCCException("No pages in this folder.");
@@ -283,7 +282,7 @@ public final class Folder extends Resource {
         final List<Page> entries = new ArrayList<Page>();
         for (final Resource entry : _entries) {
             if (entry.type()==ResourceType.PAGE) {
-                entries.add(entry.as(Page.class));
+                entries.add((Page) entry);
             }
         }
         return entries;
@@ -298,7 +297,7 @@ public final class Folder extends Resource {
         final List<Folder> entries = new ArrayList<Folder>();
         for (final Resource entry : _entries) {
             if (entry.type()==ResourceType.FOLDER) {
-                entries.add(entry.as(Folder.class));
+                entries.add((Folder) entry);
             }
         }
         return entries;
@@ -326,7 +325,7 @@ public final class Folder extends Resource {
     public Alias firstAlias() {
         for (final Resource r : _entries) {
             if (r.type().equals(ResourceType.ALIAS)) {
-                return r.as(Alias.class);
+                return (Alias) r;
             }
         }
         throw new CCCException("No aliases in this folder.");

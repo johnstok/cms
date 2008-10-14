@@ -12,7 +12,7 @@
 
 package ccc.domain;
 
-import static ccc.commons.DBC.*;
+import static ccc.domain.DBC.*;
 
 /**
  * An abstract superclass that contains shared behaviour for the different types
@@ -79,19 +79,6 @@ public abstract class Resource extends Entity {
      * @return The ResourceType that describes this resource.
      */
     public abstract ResourceType type();
-
-    /**
-     * Type-safe helper method to convert an instance of {@link Resource} to a
-     * subclass.
-     *
-     * @param <T> The type that this resource should be converted to.
-     * @param resourceType The class representing the type that this resource
-     *      should be converted to.
-     * @return This resource as a Page.
-     */
-    public final <T extends Resource> T as(final Class<T> resourceType) {
-        return resourceType.cast(this);
-    }
 
     /**
      * Determine the template for this resource. Iterates up the parent

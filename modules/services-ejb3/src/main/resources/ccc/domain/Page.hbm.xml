@@ -21,7 +21,7 @@
         name="ccc.domain.Page" extends="ccc.domain.Resource">
         <key column="_id" />
 
-        <map name="_content" sort="ccc.commons.AlphanumComparator">
+        <map name="_content" sort="ccc.domain.AlphanumComparator">
             <key column="_id"  not-null="true" />
             <map-key type="string" length="256" />
             <composite-element class="ccc.domain.Paragraph">

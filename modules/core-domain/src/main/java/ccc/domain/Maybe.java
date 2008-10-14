@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.commons;
+package ccc.domain;
 
 import java.io.Serializable;
 

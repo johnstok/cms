@@ -53,7 +53,7 @@ public class AssetsServlet extends CCCServlet {
                             throws IOException {
 
         final ResourcePath path = new ResourcePath(request.getPathInfo());
-        final File f = assetManager().lookup(path).as(File.class);
+        final File f = ((File) assetManager().lookup(path));
 
         disableCachingFor(response);
 
