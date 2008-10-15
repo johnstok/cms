@@ -13,6 +13,8 @@
 package ccc.domain;
 
 import java.io.Serializable;
+import java.util.UUID;
+import java.util.regex.Pattern;
 
 
 /**
@@ -31,6 +33,7 @@ public final class ResourceName implements Serializable {
     public static final String  VALID_CHARACTERS = "[\\.\\w]+";
 
     private String _representation = escapeString(UUID.randomUUID().toString());
+    private final Pattern _validRegex = Pattern.compile(VALID_CHARACTERS);
 
     /**
      * Constructor.
@@ -55,7 +58,7 @@ public final class ResourceName implements Serializable {
             throw new RuntimeException(
                 "A resource name must be longer than zero characters.");
         }
-        if (!stringRepresentation.matches(VALID_CHARACTERS)) {
+        if (!_validRegex.matcher(stringRepresentation).matches()) {
             throw new RuntimeException(
                 stringRepresentation
                 + " does not match the java.util.regex pattern '"

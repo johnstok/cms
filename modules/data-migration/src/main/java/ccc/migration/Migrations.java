@@ -14,6 +14,7 @@ package ccc.migration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
@@ -24,7 +25,6 @@ import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
-import ccc.domain.UUID;
 import ccc.domain.User;
 import ccc.services.AssetManagerRemote;
 import ccc.services.ContentManagerRemote;

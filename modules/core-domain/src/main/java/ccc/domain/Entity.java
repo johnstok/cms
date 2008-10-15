@@ -13,6 +13,9 @@
 package ccc.domain;
 
 import java.io.Serializable;
+import java.util.UUID;
+
+import ccc.commons.DBC;
 
 
 /**

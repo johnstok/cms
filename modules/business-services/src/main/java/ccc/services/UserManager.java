@@ -21,7 +21,7 @@ import ccc.domain.User;
  *
  * @author Civic Computing Ltd.
  */
-public interface UserManager {
+interface UserManager {
 
     /**
      * Create new user.

@@ -12,11 +12,11 @@
 package ccc.services;
 
 import java.util.List;
+import java.util.UUID;
 
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 import ccc.domain.Template;
-import ccc.domain.UUID;
 
 
 /**
