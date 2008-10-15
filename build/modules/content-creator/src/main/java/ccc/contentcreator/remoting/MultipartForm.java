@@ -22,8 +22,8 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import ccc.commons.DBC;
 import ccc.domain.CCCException;
-import ccc.domain.DBC;
 
 
 /**

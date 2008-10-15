@@ -1,6 +1,6 @@
 package ccc.migration;
 
-import static ccc.domain.DBC.*;
+import static ccc.commons.DBC.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

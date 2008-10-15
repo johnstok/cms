@@ -16,6 +16,7 @@ import static javax.ejb.TransactionAttributeType.*;
 import static javax.persistence.PersistenceContextType.*;
 
 import java.util.Map;
+import java.util.UUID;
 
 import javax.ejb.EJB;
 import javax.ejb.Local;
@@ -25,10 +26,10 @@ import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import ccc.commons.Maybe;
 import ccc.domain.Alias;
 import ccc.domain.CCCException;
 import ccc.domain.Folder;
-import ccc.domain.Maybe;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.PredefinedResourceNames;
@@ -37,7 +38,6 @@ import ccc.domain.ResourcePath;
 import ccc.domain.ResourceType;
 import ccc.domain.Setting;
 import ccc.domain.Template;
-import ccc.domain.UUID;
 import ccc.services.ContentManagerLocal;
 import ccc.services.ContentManagerRemote;
 import ccc.services.QueryManagerLocal;
@@ -89,7 +89,7 @@ public final class ContentManagerEJB
      * =================================================================*/
 
     private void create(final UUID folderId, final Resource newResource) {
-        final Folder folder = (Folder) lookup(folderId);
+        final Folder folder = lookup(folderId).as(Folder.class);
         if (null==folder) {
             throw new CCCException("No folder exists with id: "+folderId);
         }
@@ -172,7 +172,7 @@ public final class ContentManagerEJB
         if (resource.type() != ResourceType.PAGE) {
             throw new CCCException("Id does not belong to a page.");
         }
-        final Page p = (Page) resource;
+        final Page p = resource.as(Page.class);
         p.paragraphs().size();
         if (p.displayTemplateName() != null) {
             p.displayTemplateName().body();
@@ -201,7 +201,7 @@ public final class ContentManagerEJB
                              final String newTitle,
                              final Map<String, String> newParagraphs) {
 
-        final Page page = (Page) lookup(id);
+        final Page page = lookup(id).as(Page.class);
         page.title(newTitle);
         page.deleteAllParagraphs();
 

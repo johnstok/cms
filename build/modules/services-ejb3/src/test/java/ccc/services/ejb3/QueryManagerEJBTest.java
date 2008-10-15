@@ -13,16 +13,17 @@ package ccc.services.ejb3;
 
 import static org.easymock.EasyMock.*;
 
+import java.util.UUID;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import junit.framework.TestCase;
+import ccc.commons.Maybe;
 import ccc.commons.Testing;
 import ccc.domain.Folder;
-import ccc.domain.Maybe;
 import ccc.domain.ResourceName;
 import ccc.domain.Setting;
-import ccc.domain.UUID;
 import ccc.domain.Setting.Name;
 import ccc.services.ejb3.QueryManagerEJB.NamedQueries;
 

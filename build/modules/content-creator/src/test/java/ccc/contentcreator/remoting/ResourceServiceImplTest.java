@@ -23,6 +23,7 @@ import org.easymock.Capture;
 import org.easymock.IAnswer;
 
 import ccc.commons.MapRegistry;
+import ccc.commons.Maybe;
 import ccc.contentcreator.api.ResourceService;
 import ccc.contentcreator.api.Root;
 import ccc.contentcreator.dto.AliasDTO;
@@ -35,7 +36,6 @@ import ccc.contentcreator.dto.UserDTO;
 import ccc.domain.Alias;
 import ccc.domain.CreatorRoles;
 import ccc.domain.Folder;
-import ccc.domain.Maybe;
 import ccc.domain.Page;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;

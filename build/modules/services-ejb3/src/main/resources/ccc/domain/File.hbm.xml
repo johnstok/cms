@@ -31,11 +31,11 @@
                 type="ccc.services.ejb3.support.UUIDUserType" />
         </component>
         
-        <component name="_mimeType" class="ccc.domain.MimeType">
-            <property name="_primary" not-null="true" column="_mime_primary_type"
-                type="string" />
-            <property name="_sub" not-null="true" column="_mime_sub_type"
-                type="string"/>
+        <component name="_mimeType" class="javax.activation.MimeType">
+            <property name="primaryType" not-null="true" column="_mime_primary_type"
+                type="string" access="property" />
+            <property name="subType" not-null="true" column="_mime_sub_type"
+                type="string" access="property" />
         </component>
 
 	</joined-subclass>

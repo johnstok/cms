@@ -18,7 +18,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import ccc.commons.DBC;
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
 import ccc.contentcreator.api.ResourceService;
@@ -33,14 +35,12 @@ import ccc.contentcreator.dto.UserDTO;
 import ccc.domain.Alias;
 import ccc.domain.CCCException;
 import ccc.domain.CreatorRoles;
-import ccc.domain.DBC;
 import ccc.domain.Folder;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.ResourceType;
 import ccc.domain.Template;
-import ccc.domain.UUID;
 import ccc.domain.User;
 import ccc.services.AssetManagerLocal;
 import ccc.services.ContentManagerLocal;
@@ -149,8 +149,9 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
             contentManager().setDefaultTemplate(null);
         } else {
             final Template newDefault =
-                ((Template) assetManager()
-                    .lookup(UUID.fromString(templateDTO.getId())));
+                assetManager()
+                    .lookup(UUID.fromString(templateDTO.getId()))
+                    .as(Template.class);
             contentManager().setDefaultTemplate(newDefault);
         }
 
@@ -197,8 +198,9 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     /** {@inheritDoc} */
     public List<FolderDTO> getFolderChildren(final FolderDTO folder) {
         final Folder parent =
-            ((Folder) contentManager()
-                .lookup(UUID.fromString(folder.getId())));
+            contentManager()
+                .lookup(UUID.fromString(folder.getId()))
+                .as(Folder.class);
         final List<FolderDTO> children = new ArrayList<FolderDTO>();
         for (final Resource r : parent.entries()) {
             if (r.type() == ResourceType.FOLDER) {
@@ -211,7 +213,8 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     /** {@inheritDoc} */
     public List<ResourceDTO> getChildren(final FolderDTO folder) {
         final Folder parent =
-            ((Folder) contentManager().lookup(UUID.fromString(folder.getId())));
+            contentManager().lookup(UUID.fromString(folder.getId()))
+            .as(Folder.class);
         final List<ResourceDTO> children = new ArrayList<ResourceDTO>();
         for (final Resource r : parent.entries()) {
             children.add(DTOs.<ResourceDTO>dtoFrom(r));
@@ -275,8 +278,9 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
                     UUID.fromString(resourceDTO.getId()), null);
             } else {
                 final Template selectedTemplate =
-                    ((Template) assetManager()
-                        .lookup(UUID.fromString(templateDTO.getId())));
+                    assetManager()
+                        .lookup(UUID.fromString(templateDTO.getId()))
+                        .as(Template.class);
                 contentManager().updateTemplateForResource(
                     UUID.fromString(resourceDTO.getId()), selectedTemplate);
             }
@@ -308,7 +312,8 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
      */
     public boolean nameExistsInFolder(final FolderDTO folderDTO,
                                       final String name) {
-        final Folder folder = ((Folder) lookupContent(folderDTO.getId()));
+        final Folder folder =
+            lookupContent(folderDTO.getId()).as(Folder.class);
         return folder.hasEntryWithName(new ResourceName(name));
     }
 

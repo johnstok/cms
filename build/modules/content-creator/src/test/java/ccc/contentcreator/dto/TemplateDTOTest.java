@@ -11,8 +11,9 @@
  */
 package ccc.contentcreator.dto;
 
+import java.util.UUID;
+
 import junit.framework.TestCase;
-import ccc.domain.UUID;
 
 
 /**

@@ -26,10 +26,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
 import ccc.commons.MapRegistry;
+import ccc.commons.Maybe;
 import ccc.commons.Resources;
 import ccc.domain.Alias;
 import ccc.domain.Folder;
-import ccc.domain.Maybe;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.Resource;

@@ -16,8 +16,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
-import ccc.commons.Password;
-
 import junit.framework.TestCase;
 
 

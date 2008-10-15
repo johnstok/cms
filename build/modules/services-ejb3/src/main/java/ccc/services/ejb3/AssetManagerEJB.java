@@ -15,6 +15,7 @@ import static javax.ejb.TransactionAttributeType.*;
 import static javax.persistence.PersistenceContextType.*;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.ejb.EJB;
 import javax.ejb.Local;
@@ -24,15 +25,14 @@ import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import ccc.commons.Maybe;
 import ccc.domain.Folder;
-import ccc.domain.Maybe;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.Setting;
 import ccc.domain.Template;
-import ccc.domain.UUID;
 import ccc.domain.Setting.Name;
 import ccc.services.AssetManagerLocal;
 import ccc.services.AssetManagerRemote;
@@ -157,9 +157,9 @@ public final class AssetManagerEJB
     private Folder templatesFolder() {
         final Folder assetRoot = _qm.findAssetsRoot().get();
         final Folder templates =
-            (Folder)
             assetRoot
-                .navigateTo(new ResourcePath("/templates"));
+                .navigateTo(new ResourcePath("/templates"))
+                .as(Folder.class);
         return templates;
     }
 

@@ -10,8 +10,9 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.domain;
+package ccc.commons;
 
+import java.util.regex.Pattern;
 
 /**
  * A helper class to support design-by-contract (DBC).
@@ -129,7 +130,7 @@ public final class DBC {
      * @param stringToTest The string to test.
      */
     public void toMatch(final String regex, final String stringToTest) {
-        if (!stringToTest.matches(regex)) {
+        if (!Pattern.matches(regex, stringToTest)) {
             throw new IllegalArgumentException(
                 "Specified string does not match "+regex);
         }

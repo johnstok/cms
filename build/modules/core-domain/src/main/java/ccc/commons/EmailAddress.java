@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ccc.domain;
+package ccc.commons;
 
 import java.io.Serializable;
+import java.util.regex.Pattern;
 
 /**
  * An email address represents the textual string of an
@@ -156,6 +157,8 @@ public class EmailAddress implements Serializable {
     //if we're allowing quoted identifiers or not:
     private static final String PATTERN_STRING =
         ALLOW_QUOTED_IDENTIFIERS ? MAILBOX : ADDRESS_SPEC;
+    private static final Pattern VALID_PATTERN =
+        Pattern.compile(PATTERN_STRING);
 
     //class attributes
     private String _text;
@@ -291,7 +294,7 @@ public class EmailAddress implements Serializable {
      * otherwise.
      */
     public static boolean isValidText(final String email) {
-        return (email != null) && email.matches(PATTERN_STRING);
+        return (email != null) && VALID_PATTERN.matcher(email).matches();
     }
 
     /** {@inheritDoc} */
