@@ -30,6 +30,7 @@ import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.services.AssetManagerLocal;
 import ccc.services.DataManagerLocal;
+import ccc.services.ServiceNames;
 
 
 /**
@@ -101,8 +102,9 @@ public class AssetsServletTest extends TestCase {
         replay(response);
 
         // ACT
-        new AssetsServlet(new MapRegistry().put("AssetManager/local", am)
-                                           .put("DataManager/local", dm))
+        new AssetsServlet(
+            new MapRegistry().put(ServiceNames.ASSET_MANAGER_LOCAL, am)
+                             .put(ServiceNames.DATA_MANAGER_LOCAL, dm))
             .doGet(request, response);
 
         // ASSERT

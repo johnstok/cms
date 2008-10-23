@@ -25,6 +25,7 @@ import ccc.commons.Registry;
 import ccc.services.AssetManagerLocal;
 import ccc.services.ContentManagerLocal;
 import ccc.services.DataManagerLocal;
+import ccc.services.ServiceNames;
 
 
 /**
@@ -58,7 +59,7 @@ public abstract class CCCServlet extends HttpServlet {
      * @return A ContentManager.
      */
     protected ContentManagerLocal contentManager() {
-        return _registry.get("ContentManager/local");
+        return _registry.get(ServiceNames.CONTENT_MANAGER_LOCAL);
     }
 
     /**
@@ -67,7 +68,7 @@ public abstract class CCCServlet extends HttpServlet {
      * @return A AssetManager.
      */
     protected AssetManagerLocal assetManager() {
-        return _registry.get("AssetManager/local");
+        return _registry.get(ServiceNames.ASSET_MANAGER_LOCAL);
     }
 
     /**
@@ -76,7 +77,7 @@ public abstract class CCCServlet extends HttpServlet {
      * @return A DataManager.
      */
     protected DataManagerLocal dataManager() {
-        return _registry.get("DataManager/local");
+        return _registry.get(ServiceNames.DATA_MANAGER_LOCAL);
     }
 
     /**

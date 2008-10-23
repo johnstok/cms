@@ -28,6 +28,7 @@ import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.AssetManagerRemote;
 import ccc.services.ContentManagerRemote;
+import ccc.services.ServiceNames;
 import ccc.services.UserManagerRemote;
 
 /**
@@ -226,7 +227,7 @@ public class Migrations {
      * @return A {@link ContentManager}.
      */
     ContentManagerRemote contentManager() {
-        return _registry.get("ContentManager/remote");
+        return _registry.get(ServiceNames.CONTENT_MANAGER_REMOTE);
     }
 
     /**
@@ -235,7 +236,7 @@ public class Migrations {
      * @return An {@link AssetManager}.
      */
     AssetManagerRemote assetManager() {
-        return _registry.get("AssetManager/remote");
+        return _registry.get(ServiceNames.ASSET_MANAGER_REMOTE);
     }
 
     /**
@@ -244,6 +245,6 @@ public class Migrations {
      * @return An {@link UserManager}.
      */
     UserManagerRemote userManager() {
-        return _registry.get("UserManager/remote");
+        return _registry.get(ServiceNames.USER_MANAGER_REMOTE);
     }
 }

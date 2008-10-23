@@ -24,7 +24,6 @@ import org.easymock.IAnswer;
 
 import ccc.commons.MapRegistry;
 import ccc.commons.Maybe;
-import ccc.contentcreator.api.ResourceService;
 import ccc.contentcreator.api.Root;
 import ccc.contentcreator.dto.AliasDTO;
 import ccc.contentcreator.dto.DTO;
@@ -45,6 +44,7 @@ import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.AssetManagerLocal;
 import ccc.services.ContentManagerLocal;
+import ccc.services.ServiceNames;
 import ccc.services.UserManagerLocal;
 
 
@@ -198,27 +198,17 @@ public final class ResourceServiceImplTest extends TestCase {
         final Folder root = new Folder(PredefinedResourceNames.CONTENT);
         root.displayTemplateName(foo);
 
-        final AssetManagerLocal am = createStrictMock(AssetManagerLocal.class);
-        expect(am.lookupTemplates())
+        expect(_am.lookupTemplates())
             .andReturn(asList(new Template[]{foo, bar}));
 
-        final ContentManagerLocal cm =
-            createStrictMock(ContentManagerLocal.class);
-        expect(cm.lookupRoot()).andReturn(root);
-        replay(am, cm);
-
-        final ResourceService rs =
-            new ResourceServiceImpl(
-                new MapRegistry()
-                    .put("AssetManager/local", am)
-                    .put("ContentManager/local", cm)
-            );
+        expect(_cm.lookupRoot()).andReturn(root);
+        replay(_am, _cm);
 
         // ACT
-        final List<OptionDTO<? extends DTO>> options = rs.listOptions();
+        final List<OptionDTO<? extends DTO>> options = _rsi.listOptions();
 
         // ASSERT
-        verify(am, cm);
+        verify(_am, _cm);
 
         final OptionDTO<TemplateDTO> templateOption =
             options.get(0).makeTypeSafe();
@@ -249,26 +239,17 @@ public final class ResourceServiceImplTest extends TestCase {
         defaultTemplate.setCurrentValue(DTOs.dtoFrom(t));
         options.add(defaultTemplate);
 
-        final ContentManagerLocal cm = createMock(ContentManagerLocal.class);
-        cm.setDefaultTemplate(t);
+        _cm.setDefaultTemplate(t);
 
-        final AssetManagerLocal am = createMock(AssetManagerLocal.class);
-        expect(am.lookup(t.id())).andReturn(t);
+        expect(_am.lookup(t.id())).andReturn(t);
 
-        replay(cm, am);
-
-        final ResourceService rsi =
-            new ResourceServiceImpl(
-                new MapRegistry()
-                    .put("ContentManager/local", cm)
-                    .put("AssetManager/local", am)
-            );
+        replay(_cm, _am);
 
         // ACT
-        rsi.updateOptions(options);
+        _rsi.updateOptions(options);
 
         // ASSERT
-        verify(cm, am);
+        verify(_cm, _am);
     }
 
     /**
@@ -279,24 +260,15 @@ public final class ResourceServiceImplTest extends TestCase {
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
 
-        final ContentManagerLocal cm =
-            createStrictMock(ContentManagerLocal.class);
-        expect(cm.lookup(new ResourcePath("")))
+        expect(_cm.lookup(new ResourcePath("")))
             .andReturn(new Maybe<Resource>(contentRoot));
-        replay(cm);
-
-        final ResourceServiceImpl resourceService =
-            new ResourceServiceImpl(
-                new MapRegistry(
-                "ContentManager/local",
-                cm
-            ));
+        replay(_cm);
 
         // ACT
-        final FolderDTO jsonRoot = resourceService.getRoot(Root.CONTENT);
+        final FolderDTO jsonRoot = _rsi.getRoot(Root.CONTENT);
 
         // ASSERT
-        verify(cm);
+        verify(_cm);
         assertEquals(
             contentRoot.id().toString(),
             jsonRoot.getId());
@@ -310,27 +282,16 @@ public final class ResourceServiceImplTest extends TestCase {
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
 
-        final ContentManagerLocal cm =
-            createStrictMock(ContentManagerLocal.class);
-        expect(cm.lookup(contentRoot.id()))
+        expect(_cm.lookup(contentRoot.id()))
             .andReturn(contentRoot);
-        replay(cm);
-
-        final ResourceServiceImpl resourceService =
-            new ResourceServiceImpl(
-                new MapRegistry(
-                "ContentManager/local",
-                cm
-            ));
+        replay(_cm);
 
         // ACT
         final FolderDTO jsonRoot =
-            (FolderDTO) resourceService.getResource(contentRoot
-                                                        .id()
-                                                        .toString());
+            (FolderDTO) _rsi.getResource(contentRoot.id().toString());
 
         // ASSERT
-        verify(cm);
+        verify(_cm);
         assertEquals(
             contentRoot.id().toString(),
             jsonRoot.getId());
@@ -342,17 +303,12 @@ public final class ResourceServiceImplTest extends TestCase {
     public void testCreateTemplate() {
 
         // ARRANGE
-        final AssetManagerLocal am = createMock(AssetManagerLocal.class);
         final Capture<Template> actual = new Capture<Template>();
-        am.createDisplayTemplate(capture(actual));
-        replay(am);
-
-        final ResourceServiceImpl resourceService =
-            new ResourceServiceImpl(
-                new MapRegistry("AssetManager/local", am));
+        _am.createDisplayTemplate(capture(actual));
+        replay(_am);
 
         // ACT
-        resourceService.createTemplate(
+        _rsi.createTemplate(
             new TemplateDTO(
                 null,
                 0,
@@ -362,7 +318,7 @@ public final class ResourceServiceImplTest extends TestCase {
                 "body"));
 
         // ASSERT
-        verify(am);
+        verify(_am);
         assertEquals("title", actual.getValue().title());
         assertEquals("description", actual.getValue().description());
         assertEquals("body", actual.getValue().body());
@@ -386,26 +342,17 @@ public final class ResourceServiceImplTest extends TestCase {
         templateDTO.setCurrentValue(DTOs.dtoFrom(t));
         options.add(templateDTO);
 
-        final ContentManagerLocal cm = createMock(ContentManagerLocal.class);
-        cm.updateTemplateForResource(testFolder.id(), t);
+        _cm.updateTemplateForResource(testFolder.id(), t);
 
-        final AssetManagerLocal am = createMock(AssetManagerLocal.class);
-        expect(am.lookup(t.id())).andReturn(t);
+        expect(_am.lookup(t.id())).andReturn(t);
 
-        replay(cm, am);
-
-        final ResourceService rsi =
-            new ResourceServiceImpl(
-                new MapRegistry()
-                    .put("ContentManager/local", cm)
-                    .put("AssetManager/local", am)
-            );
+        replay(_cm, _am);
 
         // ACT
-        rsi.updateResourceTemplate(options, DTOs.dtoFrom(testFolder));
+        _rsi.updateResourceTemplate(options, DTOs.dtoFrom(testFolder));
 
         // ASSERT
-        verify(cm, am);
+        verify(_cm, _am);
     }
 
 
@@ -427,22 +374,15 @@ public final class ResourceServiceImplTest extends TestCase {
         templateDTO.setCurrentValue(null);
         options.add(templateDTO);
 
-        final ContentManagerLocal cm = createMock(ContentManagerLocal.class);
-        cm.updateTemplateForResource(testFolder.id(), null);
+        _cm.updateTemplateForResource(testFolder.id(), null);
 
-        replay(cm);
-
-        final ResourceService rsi =
-            new ResourceServiceImpl(
-                new MapRegistry()
-                    .put("ContentManager/local", cm)
-            );
+        replay(_cm);
 
         // ACT
-        rsi.updateResourceTemplate(options, DTOs.dtoFrom(testFolder));
+        _rsi.updateResourceTemplate(options, DTOs.dtoFrom(testFolder));
 
         // ASSERT
-        verify(cm);
+        verify(_cm);
     }
 
     /**
@@ -453,21 +393,16 @@ public final class ResourceServiceImplTest extends TestCase {
         // ARRANGE
         final Folder root = new Folder(PredefinedResourceNames.CONTENT);
         final Folder target = new Folder(new ResourceName("target"));
-        final ContentManagerLocal cm = createMock(ContentManagerLocal.class);
         final Capture<Alias> actual = new Capture<Alias>();
 
-        expect(cm.lookup(target.id())).andReturn(target);
-        expect(cm.lookup(root.id())).andReturn(root);
+        expect(_cm.lookup(target.id())).andReturn(target);
+        expect(_cm.lookup(root.id())).andReturn(root);
 
-        cm.create(eq(root.id()), capture(actual));
-        replay(cm);
-
-        final ResourceServiceImpl resourceService =
-            new ResourceServiceImpl(
-                new MapRegistry("ContentManager/local", cm));
+        _cm.create(eq(root.id()), capture(actual));
+        replay(_cm);
 
         // ACT
-        resourceService.createAlias(
+        _rsi.createAlias(
            DTOs.<FolderDTO>dtoFrom(root),
             new AliasDTO(
                 null,
@@ -477,7 +412,7 @@ public final class ResourceServiceImplTest extends TestCase {
                 target.id().toString()));
 
         // ASSERT
-        verify(cm);
+        verify(_cm);
         assertEquals("name", actual.getValue().title());
         assertEquals(target.id(), actual.getValue().target().id());
     }
@@ -635,9 +570,9 @@ public final class ResourceServiceImplTest extends TestCase {
         _rsi =
             new ResourceServiceImpl(
                 new MapRegistry()
-                    .put("ContentManager/local", _cm)
-                    .put("AssetManager/local", _am)
-                    .put("UserManager/local", _um)
+                    .put(ServiceNames.CONTENT_MANAGER_LOCAL, _cm)
+                    .put(ServiceNames.ASSET_MANAGER_LOCAL, _am)
+                    .put(ServiceNames.USER_MANAGER_LOCAL, _um)
             );
         _root = new Folder(PredefinedResourceNames.CONTENT);
     }
