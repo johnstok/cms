@@ -12,12 +12,12 @@
 
 package ccc.commons;
 
-import java.util.Hashtable;
-
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
+
+import org.apache.log4j.Logger;
 
 
 /**
@@ -28,6 +28,7 @@ import javax.naming.NamingException;
 public final class JNDI implements Registry {
 
 
+    private final Logger log = Logger.getLogger(JNDI.class);
     /**
      * {@inheritDoc}
      */
@@ -51,16 +52,7 @@ public final class JNDI implements Registry {
      * @throws NamingException Thrown if creation of the JNDI context fails.
      */
     private Context jndiContext() throws NamingException {
-
-        final Hashtable<String, String> env = new Hashtable<String, String>();
-        env.put(
-            Context.INITIAL_CONTEXT_FACTORY,
-            "org.jnp.interfaces.NamingContextFactory");
-        env.put(
-            Context.PROVIDER_URL,
-            "localhost:1099");
-
-        final Context jndiContext = new InitialContext(env);
+        final Context jndiContext = new InitialContext();
         return jndiContext;
     }
 
@@ -75,6 +67,7 @@ public final class JNDI implements Registry {
             final Object o = jndiContext().lookup(location);
             return (T) o;
         } catch (final NameNotFoundException nfe) {
+            log.debug("JNDI lookup failed.", nfe);
             return null;
         } catch (final NamingException ne) {
             throw new RuntimeException(
