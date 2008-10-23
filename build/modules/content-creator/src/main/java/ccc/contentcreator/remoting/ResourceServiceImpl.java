@@ -44,6 +44,7 @@ import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.AssetManagerLocal;
 import ccc.services.ContentManagerLocal;
+import ccc.services.ServiceNames;
 import ccc.services.UserManagerLocal;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -102,7 +103,7 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
      * @return A ContentManager.
      */
     ContentManagerLocal contentManager() {
-        return _registry.get("ContentManager/local");
+        return _registry.get(ServiceNames.CONTENT_MANAGER_LOCAL);
     }
 
     /**
@@ -111,7 +112,16 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
      * @return An AssetManager.
      */
     AssetManagerLocal assetManager() {
-        return _registry.get("AssetManager/local");
+        return _registry.get(ServiceNames.ASSET_MANAGER_LOCAL);
+    }
+
+    /**
+     * Accessor for the user manager.
+     *
+     * @return A UserManager.
+     */
+    UserManagerLocal userManager() {
+        return _registry.get(ServiceNames.USER_MANAGER_LOCAL);
     }
 
     /**
@@ -319,14 +329,14 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
 
     /** {@inheritDoc} */
     public List<UserDTO> listUsers() {
-        final UserManagerLocal um = _registry.get("UserManager/local");
+        final UserManagerLocal um = userManager();
         final Collection<User> users = um.listUsers();
         return DTOs.dtoFrom(users);
     }
 
     /** {@inheritDoc} */
     public List<UserDTO> listUsersWithRole(final String role) {
-        final UserManagerLocal um = _registry.get("UserManager/local");
+        final UserManagerLocal um = userManager();
         final Collection<User> users =
             um.listUsersWithRole(CreatorRoles.valueOf(role));
         return DTOs.dtoFrom(users);
@@ -334,14 +344,14 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
 
     /** {@inheritDoc} */
     public void createUser(final UserDTO userDto) {
-        final UserManagerLocal um = _registry.get("UserManager/local");
+        final UserManagerLocal um = userManager();
         final User user = DTOs.userFrom(userDto);
         um.createUser(user);
     }
 
     /** {@inheritDoc} */
     public List<UserDTO> listUsersWithUsername(final String username) {
-        final UserManagerLocal um = _registry.get("UserManager/local");
+        final UserManagerLocal um = userManager();
         final Collection<User> users =
             um.listUsersWithUsername(username);
         return DTOs.dtoFrom(users);
@@ -349,7 +359,7 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
 
     /** {@inheritDoc} */
     public List<UserDTO> listUsersWithEmail(final String email) {
-        final UserManagerLocal um = _registry.get("UserManager/local");
+        final UserManagerLocal um = userManager();
         final Collection<User> users =
             um.listUsersWithEmail(email);
         return DTOs.dtoFrom(users);
@@ -357,13 +367,13 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
 
     /** {@inheritDoc} */
     public boolean usernameExists(final String username) {
-        final UserManagerLocal um = _registry.get("UserManager/local");
+        final UserManagerLocal um = userManager();
         return um.usernameExists(username);
     }
 
     /** {@inheritDoc} */
     public void updateUser(final UserDTO userDto) {
-        final UserManagerLocal um = _registry.get("UserManager/local");
+        final UserManagerLocal um = userManager();
         final User user = DTOs.userFrom(userDto);
         um.updateUser(user);
     }

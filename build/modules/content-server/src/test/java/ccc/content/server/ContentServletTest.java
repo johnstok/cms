@@ -37,6 +37,7 @@ import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.Template;
 import ccc.services.ContentManagerLocal;
+import ccc.services.ServiceNames;
 
 /**
  * Tests for the ContentServlet.
@@ -66,7 +67,7 @@ public final class ContentServletTest extends TestCase {
         final ContentServlet cs =
             new ContentServlet(
                 new MapRegistry(
-                    "ContentManager/local",
+                    ServiceNames.CONTENT_MANAGER_LOCAL,
                     _cm));
         final Template t = new Template("foo", "bar", "baz");
         final Page p = new Page(new ResourceName("bar"));
@@ -190,7 +191,7 @@ public final class ContentServletTest extends TestCase {
         // ACT
         new ContentServlet(
             new MapRegistry(
-                "ContentManager/local",
+                ServiceNames.CONTENT_MANAGER_LOCAL,
                 _cm)
             ).write(_response, page);
 
@@ -234,7 +235,7 @@ public final class ContentServletTest extends TestCase {
         // ACT
         new ContentServlet(
             new MapRegistry(
-                "ContentManager/local",
+                ServiceNames.CONTENT_MANAGER_LOCAL,
                 _cm)
             ).write(_response, top);
 
@@ -280,7 +281,7 @@ public final class ContentServletTest extends TestCase {
         final ContentServlet contentServlet =
             new ContentServlet(
                 new MapRegistry(
-                    "ContentManager/local",
+                    ServiceNames.CONTENT_MANAGER_LOCAL,
                     _cm));
 
         // EXPECT
@@ -330,7 +331,7 @@ public final class ContentServletTest extends TestCase {
         final ContentServlet contentServlet =
             new ContentServlet(
                 new MapRegistry(
-                    "ContentManager/local",
+                    ServiceNames.CONTENT_MANAGER_LOCAL,
                     _cm));
 
         // EXPECT
@@ -371,7 +372,7 @@ public final class ContentServletTest extends TestCase {
         final ContentServlet contentServlet =
             new ContentServlet(
                 new MapRegistry(
-                    "ContentManager/local",
+                    ServiceNames.CONTENT_MANAGER_LOCAL,
                     _cm));
 
         // EXPECT
@@ -413,7 +414,7 @@ public final class ContentServletTest extends TestCase {
         final ContentServlet contentServlet =
             new ContentServlet(
                 new MapRegistry(
-                    "ContentManager/local",
+                    ServiceNames.CONTENT_MANAGER_LOCAL,
                     _cm
                 ));
 
