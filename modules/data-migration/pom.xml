@@ -10,6 +10,7 @@
 	<name>data-migration</name>
 	<version>7.0.0-SNAPSHOT</version>
 	<url>http://maven.apache.org</url>
+    
 	<dependencies>
         <dependency>
             <groupId>log4j</groupId>
@@ -64,86 +65,5 @@
             <scope>provided</scope>
         </dependency>
 	</dependencies>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<excludes>
-                        <exclude>**/*AcceptanceTest.java</exclude>
-                        <exclude>**/*$*</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 
-	<profiles>
-		<profile>
-			<id>migrate</id>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-antrun-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>run-data-migration</id>
-								<phase>pre-integration-test</phase>
-								<configuration>
-									<tasks>
-										<echo>Running migration</echo>
-
-										<property name="test_classpath" refid="maven.test.classpath" />
-										<path id="migration.classpath">
-											<pathelement path="${test_classpath}" />
-										</path>
-										<property name="migration_classpath" refid="migration.classpath" />
-										<echo message="data migration classpath: ${migration_classpath}" />
-										
-										<java classname="ccc.migration.App" fork="true" failonerror="true" classpath="${migration_classpath}" />
-
-									</tasks>
-								</configuration>
-								<goals>
-									<goal>run</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-
-		<profile>
-			<id>migration-acceptance</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-surefire-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>acceptance</id>
-								<phase>integration-test</phase>
-								<goals>
-									<goal>test</goal>
-								</goals>
-								<configuration>
-									<excludes>
-										<exclude>none</exclude>
-									</excludes>
-									<includes>
-										<include>
-											**/*AcceptanceTest.java
-										</include>
-									</includes>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 </project>

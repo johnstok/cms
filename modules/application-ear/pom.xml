@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <parent>
+        <artifactId>build</artifactId>
+        <groupId>CCC7</groupId>
+        <version>7.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>CCC7</groupId>
+    <artifactId>application-ear</artifactId>
+    <packaging>ear</packaging>
+    <name>application-ear</name>
+    <version>7.0.0-SNAPSHOT</version>
+    <url>http://maven.apache.org</url>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-ear-plugin</artifactId>
+                <configuration>
+                    <displayName>CCC7</displayName>
+                    <version>5</version>
+                    <defaultLibBundleDir>lib</defaultLibBundleDir>
+                    <applicationXml>${basedir}/application.xml</applicationXml>
+                    <earSourceDirectory>${basedir}/includes</earSourceDirectory>
+                    <generatedDescriptorLocation>
+                        ${basedir}/target/descriptors
+                    </generatedDescriptorLocation>
+                    <modules>
+                        <webModule>
+                            <groupId>CCC7</groupId>
+                            <artifactId>content-server</artifactId>
+                            <contextRoot>/server</contextRoot>
+                        </webModule>
+                        <webModule>
+                            <groupId>CCC7</groupId>
+                            <artifactId>content-creator</artifactId>
+                            <contextRoot>/creator</contextRoot>
+                        </webModule>
+                        <webModule>
+                            <groupId>CCC7</groupId>
+                            <artifactId>rest-api</artifactId>
+                            <contextRoot>/api</contextRoot>
+                        </webModule>
+                        <ejbModule>
+                            <groupId>CCC7</groupId>
+                            <artifactId>services-ejb3</artifactId>
+                        </ejbModule>
+                        <sarModule>
+                            <groupId>CCC7</groupId>
+                            <artifactId>security-config</artifactId>
+                        </sarModule>
+                    </modules>
+                    <jboss>
+                        <version>4.2</version>
+                        <loader-repository>
+                            CCC7:archive=CCC7.ear
+                        </loader-repository>
+                        <!-- data-sources>
+                            <data-source>h2-ds.xml</data-source>
+                            </data-sources -->
+                    </jboss>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+
+        <!-- Modules -->
+        <dependency>
+            <groupId>CCC7</groupId>
+            <artifactId>content-server</artifactId>
+            <type>war</type>
+            <version>7.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>CCC7</groupId>
+            <artifactId>content-creator</artifactId>
+            <type>war</type>
+            <version>7.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>CCC7</groupId>
+            <artifactId>rest-api</artifactId>
+            <type>war</type>
+            <version>7.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>CCC7</groupId>
+            <artifactId>services-ejb3</artifactId>
+            <type>ejb</type>
+            <version>7.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>CCC7</groupId>
+            <artifactId>security-config</artifactId>
+            <type>sar</type>
+            <version>7.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <!-- Shared dependencies -->
+        <dependency>
+            <groupId>CCC7</groupId>
+            <artifactId>business-services</artifactId>
+            <version>7.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <!-- For rest-api -->
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxrs</artifactId>
+            <version>1.0-beta-8</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- For content-server -->
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>1.5</version>
+        </dependency>
+
+        <!-- For content-creator -->
+        <dependency>
+            <groupId>com.extjs</groupId>
+            <artifactId>gxt</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-servlet</artifactId>
+            <version>1.5.2</version>
+        </dependency>
+
+        <!-- For migration -->
+        <dependency>
+            <groupId>CCC7</groupId>
+            <artifactId>data-migration</artifactId>
+            <version>7.0.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Indirectly referenced; not needed in ear? -->
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+            <version>1.5.2</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <id>deploy</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>jboss-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>deploy</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>deploy</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>migrate</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>run-data-migration</id>
+                                <phase>pre-integration-test</phase>
+                                <configuration>
+                                    <tasks>
+                                        <echo>Running migration</echo>
+
+                                        <property name="test_classpath"
+                                            refid="maven.test.classpath" />
+                                        <path id="migration.classpath">
+                                            <pathelement
+                                                path="${test_classpath}" />
+                                        </path>
+                                        <property name="migration_classpath"
+                                            refid="migration.classpath" />
+                                        <echo
+                                            message="data migration classpath: ${migration_classpath}" />
+
+                                        <java classname="ccc.migration.App"
+                                            fork="true" failonerror="true"
+                                            classpath="${migration_classpath}" />
+                                    </tasks>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>acceptance</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>start-selenium</id>
+                                <phase>pre-integration-test</phase>
+                                <configuration>
+                                    <tasks>
+                                        <echo message="Starting Selenium" />
+                                        <java
+                                            classname="org.openqa.selenium.server.SeleniumServer"
+                                            fork="true" spawn="true">
+                                            <arg value="-port" />
+                                            <arg value="5555" />
+                                            <classpath
+                                                refid="maven.test.classpath" />
+                                        </java>
+                                    </tasks>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>acceptance</id>
+                                <phase>integration-test</phase>
+                                <goals>
+                                    <goal>test</goal>
+                                </goals>
+                                <configuration>
+                                    <excludes>
+                                        <exclude>none</exclude>
+                                    </excludes>
+                                    <includes>
+                                        <include>
+                                            **/*AcceptanceTest.java
+                                        </include>
+                                    </includes>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>selenium-maven-plugin</artifactId>
+                        <executions>
+                            <!-- execution>
+                                <id>start-selenium</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                <goal>start-server</goal>
+                                </goals>
+                                </execution -->
+                            <execution>
+                                <id>stop-selenium</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>stop-server</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <background>true</background>
+                            <port>5555</port>
+                            <logOutput>true</logOutput>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>jboss-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>deploy</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>deploy</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>
