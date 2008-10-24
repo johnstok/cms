@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <parent>
+        <artifactId>build</artifactId>
+        <groupId>CCC7</groupId>
+        <version>7.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>CCC7</groupId>
+    <artifactId>rest-api</artifactId>
+    <packaging>war</packaging>
+    <name>rest-api</name>
+    <version>7.0.0-SNAPSHOT</version>
+    <url>http://maven.apache.org</url>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxrs</artifactId>
+            <version>1.0-beta-8</version>
+        </dependency>
+        <dependency>
+            <groupId>CCC7</groupId>
+            <artifactId>business-services</artifactId>
+            <version>7.0.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+</project>

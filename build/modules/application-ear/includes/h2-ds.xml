@@ -1,0 +1,20 @@
+<datasources>
+
+  <!-- H2 XA support is lacking: http://groups.google.com/group/h2-database/browse_thread/thread/ebbd4359ab2a7996/933c88131c7080f7 -->
+  <!-- xa-datasource>
+    <jndi-name>ccc</jndi-name>
+    <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
+    <xa-datasource-property name="URL">jdbc:h2:mem:CCC;DB_CLOSE_DELAY=-1</xa-datasource-property>
+    <xa-datasource-property name="User">CCC</xa-datasource-property>
+    <xa-datasource-property name="Password">CCC</xa-datasource-property>
+  </xa-datasource -->
+  
+  <local-tx-datasource>
+    <jndi-name>ccc</jndi-name>
+    <driver-class>org.h2.jdbcx.JdbcDataSource</driver-class>
+    <connection-url>jdbc:h2:tcp:localhost/mem:CCC;DB_CLOSE_DELAY=-1</connection-url>
+    <user-name>CCC</user-name>
+    <password>CCC</password>
+  </local-tx-datasource>
+
+</datasources>
