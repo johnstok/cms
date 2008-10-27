@@ -19,14 +19,14 @@
     <display-name>CCC REST API</display-name>
     <context-param>
         <param-name>resteasy.scan</param-name>
-        <param-value>false</param-value>
+        <param-value>true</param-value>
     </context-param>
-    <context-param>
+    <!-- context-param>
         <param-name>resteasy.jndi.resources</param-name>
         <param-value>
             application-ear-7.0.0-SNAPSHOT/UserManager/remote,application-ear-7.0.0-SNAPSHOT/ContentManager/remote
         </param-value>
-    </context-param>
+    </context-param -->
 
 
 
