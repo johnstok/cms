@@ -361,4 +361,20 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Roles")
     String roles();
+
+    /**
+     * "Next".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Next")
+    String next();
+
+    /**
+     * "Previous".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Previous")
+    String previous();
 }
