@@ -65,6 +65,6 @@ public final class Globals {
             .substring(
                 0,
                 GWT.getHostPageBaseURL()
-                   .lastIndexOf("content-creator/")); //$NON-NLS-1$
+                   .lastIndexOf("creator/")); //$NON-NLS-1$
     }
 }
