@@ -49,7 +49,8 @@ public class ChooseTemplateDialog extends EditDialog {
                         "[none]",
                         "[none]",
                         "[none]",
-                        "[none]");
+                        "[none]",
+                        "<fields/>");
 
     /**
      * Constructor.

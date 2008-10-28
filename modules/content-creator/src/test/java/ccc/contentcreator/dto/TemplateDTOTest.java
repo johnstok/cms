@@ -32,6 +32,7 @@ public class TemplateDTOTest extends TestCase {
         final String title = "title";
         final String description = "description";
         final String body = "body";
+        final String definition = "def";
         final String id = UUID.randomUUID().toString();
 
         // ACT
@@ -42,7 +43,8 @@ public class TemplateDTOTest extends TestCase {
                 "name",
                 title,
                 description,
-                body);
+                body,
+                definition);
 
         // ASSERT
         assertEquals(title, dto.getTitle());

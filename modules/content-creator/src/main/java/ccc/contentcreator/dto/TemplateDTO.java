@@ -38,16 +38,19 @@ public class TemplateDTO extends ResourceDTO {
      * @param title The title of the resource.
      * @param description The description of the template.
      * @param body The body of the display template.
+     * @param definition The definition for the template.
      */
     public TemplateDTO(final String id,
                        final int version,
                        final String name,
                        final String title,
                        final String description,
-                       final String body) {
+                       final String body,
+                       final String definition) {
         super(id, version, "TEMPLATE", name, title);
         set("description", description);
         set("body", body);
+        set("definition", definition);
     }
 
     /**
@@ -66,6 +69,15 @@ public class TemplateDTO extends ResourceDTO {
      */
     public String getBody() {
         return get("body");
+    }
+
+    /**
+     * Accessor for the definition.
+     *
+     * @return The definition as a string.
+     */
+    public String getDefinition() {
+        return get("definition");
     }
 
     /**
@@ -92,6 +104,9 @@ public class TemplateDTO extends ResourceDTO {
         }
         if (null==getBody() || getBody().length()<1) {
             errors.add("Body may not be empty.");
+        }
+        if (null==getDefinition() || getDefinition().length()<1) {
+            errors.add("Definition may not be empty.");
         }
         return errors;
     }
