@@ -1,12 +1,12 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2008 Civic Computing Ltd
+ * Copyright (c) 2008 Civic Computing Ltd.
  * All rights reserved.
  *
  * Revision      $Rev$
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log
+ * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
 
@@ -27,8 +27,8 @@ import org.apache.log4j.Logger;
  */
 public final class JNDI implements Registry {
 
+    private final Logger _log = Logger.getLogger(JNDI.class);
 
-    private final Logger log = Logger.getLogger(JNDI.class);
     /**
      * {@inheritDoc}
      */
@@ -67,7 +67,7 @@ public final class JNDI implements Registry {
             final Object o = jndiContext().lookup(location);
             return (T) o;
         } catch (final NameNotFoundException nfe) {
-            log.debug("JNDI lookup failed.", nfe);
+            _log.debug("JNDI lookup failed.", nfe);
             return null;
         } catch (final NamingException ne) {
             throw new RuntimeException(
