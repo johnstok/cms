@@ -315,7 +315,8 @@ public final class ResourceServiceImplTest extends TestCase {
                 "name",
                 "title",
                 "description",
-                "body"));
+                "body",
+                "def"));
 
         // ASSERT
         verify(_am);

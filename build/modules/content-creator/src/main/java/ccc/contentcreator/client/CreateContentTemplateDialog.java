@@ -98,7 +98,8 @@ public class CreateContentTemplateDialog extends EditDialog {
             _templateTitle.getValue(),
             _templateTitle.getValue(),
             _description.getValue(),
-            _body.getValue());
+            _body.getValue(),
+            "<fields/>");
     }
 
     /** {@inheritDoc} */

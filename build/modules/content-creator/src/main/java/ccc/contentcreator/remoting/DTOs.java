@@ -59,7 +59,7 @@ public final class DTOs {
             templateDTO.getTitle(),
             templateDTO.getDescription(),
             templateDTO.getBody(),
-            "<fields/>");
+            templateDTO.getDefinition());
 
 
         if (null!=templateDTO.getId()) {
@@ -136,7 +136,8 @@ public final class DTOs {
                 template.name().toString(),
                 template.title(),
                 template.description(),
-                template.body());
+                template.body(),
+                template.definition());
         return dto;
     }
 

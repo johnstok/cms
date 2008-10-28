@@ -46,7 +46,8 @@ public class UpdateOptionsDialog extends EditDialog {
                         "[none]",
                         "[none]",
                         "[none]",
-                        "[none]");
+                        "[none]",
+                        "<fields/>");
 
     /**
      * Constructor.
