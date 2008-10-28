@@ -11,11 +11,14 @@
  */
 package ccc.domain;
 
+import java.util.Date;
+
 import junit.framework.TestCase;
 
 
 /**
- * TODO Add Description for this type.
+ * Tests for the {@link Paragraph} class.
+ * TODO: Test equals().
  *
  * @author Civic Computing Ltd
  */
@@ -24,37 +27,90 @@ public final class ParagraphTest extends TestCase {
     /**
      * Test.
      */
-    public void testConstructorRejectsBadData() {
+    public void testTextConstructor() {
 
         // ACT
-        new Paragraph("foo");
+        final Paragraph p = Paragraph.fromText("Hello world");
 
+        // ASSERT
+        assertEquals(Paragraph.Type.TEXT, p.type());
+        assertEquals("Hello world", p.text());
+    }
+
+    /**
+     * Test.
+     */
+    public void testBooleanConstructor() {
+
+        // ACT
+        final Paragraph p = Paragraph.fromBoolean(Boolean.TRUE);
+
+        // ASSERT
+        assertEquals(Paragraph.Type.BOOLEAN, p.type());
+        assertEquals(Boolean.TRUE, p.bool());
+    }
+
+    /**
+     * Test.
+     */
+    public void testDateConstructor() {
+
+        // ARRANGE
+        final Date now = new Date();
+
+        // ACT
+        final Paragraph p = Paragraph.fromDate(now);
+
+        // ASSERT
+        assertEquals(Paragraph.Type.DATE, p.type());
+        assertEquals(now, p.date());
+    }
+
+    /**
+     * Test.
+     */
+    public void testTextConstructorRejectsNull() {
+
+        // ACT
         try {
-            new Paragraph(null);
+            Paragraph.fromText(null);
             fail("NULL should be rejected.");
+
+        // ASSERT
         } catch (final IllegalArgumentException e) {
             assertEquals("Specified value may not be NULL.", e.getMessage());
-        }
-
-        try {
-            new Paragraph("");
-            fail("Zero length string should be rejected.");
-        } catch (final IllegalArgumentException e) {
-            assertEquals(
-                "Specified string must have length > 0.",
-                e.getMessage());
         }
     }
 
     /**
      * Test.
      */
-    public void testBodyAccessor() {
+    public void testDateConstructorRejectsNull() {
 
-        // ARRANGE
-        final Paragraph foo = new Paragraph("foo");
+        // ACT
+        try {
+            Paragraph.fromDate(null);
+            fail("NULL should be rejected.");
 
         // ASSERT
-        assertEquals("foo", foo.body());
+        } catch (final IllegalArgumentException e) {
+            assertEquals("Specified value may not be NULL.", e.getMessage());
+        }
+    }
+
+    /**
+     * Test.
+     */
+    public void testBooleanConstructorRejectsNull() {
+
+        // ACT
+        try {
+            Paragraph.fromBoolean(null);
+            fail("NULL should be rejected.");
+
+        // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals("Specified value may not be NULL.", e.getMessage());
+        }
     }
 }

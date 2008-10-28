@@ -12,12 +12,7 @@
 
 package ccc.services.ejb3;
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
+import static org.easymock.EasyMock.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -60,7 +55,7 @@ public final class ContentManagerEJBTest extends TestCase {
 
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
-        final Template defaultTemplate = new Template("foo", "bar", "baz");
+        final Template defaultTemplate = new Template("foo", "bar", "baz", "<fields/>");
 
         final QueryManagerLocal qm = createStrictMock(QueryManagerLocal.class);
         expect(qm.findContentRoot()).andReturn(new Maybe<Folder>(contentRoot));
@@ -89,7 +84,7 @@ public final class ContentManagerEJBTest extends TestCase {
         final Page bar = new Page(new ResourceName("bar"))
                                     .addParagraph(
                                         "default",
-                                        new Paragraph("<H1>Default</H!>"));
+                                        Paragraph.fromText("<H1>Default</H!>"));
         contentRoot.add(foo);
         foo.add(bar);
 
@@ -305,7 +300,7 @@ public final class ContentManagerEJBTest extends TestCase {
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
         final Folder foo = new Folder(new ResourceName("foo"));
         final Page page1 = new Page(new ResourceName("page1"));
-        page1.addParagraph("HEADER", new Paragraph("test text"));
+        page1.addParagraph("HEADER", Paragraph.fromText("test text"));
 
         final EntityManager em = createStrictMock(EntityManager.class);
         expect(em.find(Resource.class, contentRoot.id()))
@@ -334,7 +329,7 @@ public final class ContentManagerEJBTest extends TestCase {
         assertEquals("page1", page.name().toString());
 
         assertEquals(1, page.paragraphs().size());
-        assertEquals("test text", page.paragraphs().get("HEADER").body());
+        assertEquals("test text", page.paragraphs().get("HEADER").text());
     }
 
     /**
@@ -346,7 +341,7 @@ public final class ContentManagerEJBTest extends TestCase {
         final Page bar = new Page(new ResourceName("bar"))
                                     .addParagraph(
                                         "default",
-                                        new Paragraph("<H1>Default</H1>"));
+                                        Paragraph.fromText("<H1>Default</H1>"));
 
         final EntityManager em = createStrictMock(EntityManager.class);
         expect(em.find(Resource.class, bar.id())).andReturn(bar);
@@ -373,7 +368,7 @@ public final class ContentManagerEJBTest extends TestCase {
 
         // ARRANGE
         final Page page = new Page(new ResourceName("test"));
-        page.addParagraph("abc", new Paragraph("def"));
+        page.addParagraph("abc", Paragraph.fromText("def"));
 
         final EntityManager em = createStrictMock(EntityManager.class);
         expect(em.find(Resource.class, page.id())).andReturn(page);
@@ -394,7 +389,7 @@ public final class ContentManagerEJBTest extends TestCase {
         assertEquals("new title", page.title());
         assertEquals(1, page.paragraphs().size());
         assertEquals("foo", page.paragraphs().keySet().iterator().next());
-        assertEquals("bar", page.paragraphs().get("foo").body());
+        assertEquals("bar", page.paragraphs().get("foo").text());
     }
 
     /**

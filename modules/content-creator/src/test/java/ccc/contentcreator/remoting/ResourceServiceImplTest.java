@@ -193,8 +193,8 @@ public final class ResourceServiceImplTest extends TestCase {
     public void testListOptions() {
 
         // ARRANGE
-        final Template foo = new Template("foo", "foo", "foo");
-        final Template bar = new Template("bar", "bar", "bar");
+        final Template foo = new Template("foo", "foo", "foo", "<fields/>");
+        final Template bar = new Template("bar", "bar", "bar", "<fields/>");
         final Folder root = new Folder(PredefinedResourceNames.CONTENT);
         root.displayTemplateName(foo);
 
@@ -231,7 +231,7 @@ public final class ResourceServiceImplTest extends TestCase {
         // ARRANGE
         final List<OptionDTO<? extends DTO>> options =
             new ArrayList<OptionDTO<? extends DTO>>();
-        final Template t = new Template("foo", "bar", "baz");
+        final Template t = new Template("foo", "bar", "baz", "<fields/>");
         final OptionDTO<TemplateDTO> defaultTemplate =
             new OptionDTO<TemplateDTO>(null,
                                        new ArrayList<TemplateDTO>(),
@@ -334,7 +334,7 @@ public final class ResourceServiceImplTest extends TestCase {
 
         final List<OptionDTO<? extends DTO>> options =
             new ArrayList<OptionDTO<? extends DTO>>();
-        final Template t = new Template("foo", "bar", "baz");
+        final Template t = new Template("foo", "bar", "baz", "<fields/>");
         final OptionDTO<TemplateDTO> templateDTO =
             new OptionDTO<TemplateDTO>(null,
                                        new ArrayList<TemplateDTO>(),
@@ -366,7 +366,7 @@ public final class ResourceServiceImplTest extends TestCase {
 
         final List<OptionDTO<? extends DTO>> options =
             new ArrayList<OptionDTO<? extends DTO>>();
-        final Template t = new Template("foo", "bar", "baz");
+        final Template t = new Template("foo", "bar", "baz", "<fields/>");
         final OptionDTO<TemplateDTO> templateDTO =
             new OptionDTO<TemplateDTO>(DTOs.dtoFrom(t),
                                        new ArrayList<TemplateDTO>(),

@@ -58,7 +58,8 @@ public final class DTOs {
         final Template t = new Template(
             templateDTO.getTitle(),
             templateDTO.getDescription(),
-            templateDTO.getBody());
+            templateDTO.getBody(),
+            "<fields/>");
 
 
         if (null!=templateDTO.getId()) {
@@ -188,7 +189,7 @@ public final class DTOs {
             new HashMap<String, String>();
         for (final Map.Entry<String, Paragraph> para
                 : p.paragraphs().entrySet()) {
-            paragraphs.put(para.getKey(), para.getValue().body());
+            paragraphs.put(para.getKey(), para.getValue().text());
         }
         return new PageDTO(
             p.id().toString(),

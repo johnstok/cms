@@ -62,7 +62,7 @@ public final class PageTest extends TestCase {
         final Page page = new Page(new ResourceName("foo"), "Title");
 
         // ACT
-        page.addParagraph("header", new Paragraph("<H1>Header</H1>"));
+        page.addParagraph("header", Paragraph.fromText("<H1>Header</H1>"));
 
         // Assert
         assertEquals(1, page.paragraphs().size());
@@ -76,8 +76,8 @@ public final class PageTest extends TestCase {
 
         // ARRANGE
         final Page page = new Page(new ResourceName("foo"), "Title");
-        page.addParagraph("header", new Paragraph("<H1>Header</H1>"));
-        page.addParagraph("footer", new Paragraph("<H1>Footer</H1>"));
+        page.addParagraph("header", Paragraph.fromText("<H1>Header</H1>"));
+        page.addParagraph("footer", Paragraph.fromText("<H1>Footer</H1>"));
 
         // ACT
         page.deleteParagraph("header");
@@ -86,7 +86,7 @@ public final class PageTest extends TestCase {
         assertEquals(1, page.paragraphs().size());
         assertEquals(
             "<H1>Footer</H1>",
-            page.paragraphs().get("footer").body());
+            page.paragraphs().get("footer").text());
     }
 
     /**
@@ -111,8 +111,8 @@ public final class PageTest extends TestCase {
 
         // ARRANGE
         final Page page = new Page(new ResourceName("foo"), "Title");
-        page.addParagraph("header", new Paragraph("<H1>Header</H1>"));
-        page.addParagraph("footer", new Paragraph("<H1>Footer</H1>"));
+        page.addParagraph("header", Paragraph.fromText("<H1>Header</H1>"));
+        page.addParagraph("footer", Paragraph.fromText("<H1>Footer</H1>"));
 
         // ACT
         page.deleteAllParagraphs();

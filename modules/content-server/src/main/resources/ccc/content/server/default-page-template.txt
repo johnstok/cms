@@ -2,6 +2,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml"><head><title>$resource.name()</title></head><body>
 <h1>$resource.name()</h1>
 #foreach ($para in $resource.paragraphs().keySet())
-<h2>$para</h2><p>$resource.paragraphs().get($para).body()</p>
+<h2>$para</h2><p>$resource.paragraphs().get($para).text()</p>
 #end
 </body></html>

@@ -14,6 +14,7 @@ package ccc.domain;
 import static ccc.commons.DBC.*;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * A paragraph of HTML.
@@ -23,27 +24,105 @@ import java.io.Serializable;
 public final class Paragraph implements Serializable {
 
 
-    private String _body = "";
+    private String _string;
+    private Type _type;
+    private Boolean _boolean;
+    private Date _date;
 
     @SuppressWarnings("unused")
     private Paragraph() { /* NO-OP */ }
 
+
     /**
-     * Constructor.
+     * Factory method. Creates a paragraph representing text.
      *
-     * @param bodyString The HTML body for this paragraph - as a string.
+     * @param string The text for this paragraph.
+     * @return A paragraph with string content.
      */
-    public Paragraph(final String bodyString) {
-        require().notEmpty(bodyString);
-        _body = bodyString;
+    public static Paragraph fromText(final String string) {
+        require().notNull(string);
+        final Paragraph p = new Paragraph();
+        p._string = string;
+        p._type = Type.TEXT;
+        return p;
     }
 
     /**
-     * Accessor for the paragraph body.
+     * Factory method. Creates a paragraph representing a boolean.
      *
-     * @return The HTML as a string.
+     * @param b The boolean for this paragraph.
+     * @return A paragraph with boolean content.
      */
-    public String body() {
-        return _body;
+    public static Paragraph fromBoolean(final Boolean b) {
+        require().notNull(b);
+        final Paragraph p = new Paragraph();
+        p._boolean = b;
+        p._type = Type.BOOLEAN;
+        return p;
     }
+
+    /**
+     * Factory method. Creates a paragraph representing a date.
+     *
+     * @param date The date for this paragraph.
+     * @return A paragraph with date content.
+     */
+    public static Paragraph fromDate(final Date date) {
+        require().notNull(date);
+        final Paragraph p = new Paragraph();
+        p._date = date;
+        p._type = Type.DATE;
+        return p;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return The string representation of this paragraph.
+     */
+    public String text() {
+        return _string;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return The type of this paragraph.
+     */
+    public Type type() {
+        return _type;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return The boolean representation of this paragraph.
+     */
+    public Boolean bool() {
+        return _boolean;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return The date representation of this paragraph.
+     */
+    public Date date() {
+        return new Date(_date.getTime()); // Defensive copy
+    }
+
+    /**
+     * The types of paragraph available.
+     *
+     * @author Civic Computing Ltd.
+     */
+    public static enum Type {
+        /** TEXT : Type. */
+        TEXT,
+
+        /** BOOLEAN : Type. */
+        BOOLEAN,
+
+        /** DATE : Type. */
+        DATE}
 }

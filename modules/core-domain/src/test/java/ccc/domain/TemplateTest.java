@@ -29,13 +29,14 @@ public final class TemplateTest extends TestCase {
         // ARRANGE
 
         // ACT
-        final Template t = new Template("foo!", "bar", "Hello world");
+        final Template t = new Template("foo!", "bar", "Hello world", "<fields/>");
 
         // ASSERT
         assertEquals(new ResourceName("foo_"), t.name());
         assertEquals("foo!", t.title());
         assertEquals("bar", t.description());
         assertEquals("Hello world", t.body());
+        assertEquals("<fields/>", t.definition());
         assertEquals(ResourceType.TEMPLATE, t.type());
     }
 }

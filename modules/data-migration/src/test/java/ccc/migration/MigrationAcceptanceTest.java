@@ -101,7 +101,7 @@ public class MigrationAcceptanceTest extends TestCase {
         assertNotNull("Paragraph HEADER must not be null",
             paragraphs.get("HEADER"));
         assertEquals("Paragraph HEADER body ",
-            paragraphs.get("HEADER").body(),
+            paragraphs.get("HEADER").text(),
         "A Smoking Cessation Policy for Scotland");
     }
 
