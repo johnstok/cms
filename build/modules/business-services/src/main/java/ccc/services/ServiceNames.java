@@ -33,7 +33,7 @@ public final class ServiceNames {
         "application-ear-7.0.0-SNAPSHOT/DataManager/local";
 
     public static final String USER_MANAGER_LOCAL =
-        "CCC7/UserManager/local";
+        "application-ear-7.0.0-SNAPSHOT/UserManager/local";
 
     /*
      * REMOTE
