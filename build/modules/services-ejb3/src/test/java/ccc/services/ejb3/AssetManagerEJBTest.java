@@ -48,7 +48,7 @@ public final class AssetManagerEJBTest extends TestCase {
         // ARRANGE
         final Folder assetRoot = new Folder(PredefinedResourceNames.ASSETS);
         final Folder templateFolder = new Folder(new ResourceName("templates"));
-        final Template t = new Template("title", "description", "body");
+        final Template t = new Template("title", "description", "body", "<fields/>");
         assetRoot.add(templateFolder);
 
         final QueryManagerLocal qm = createStrictMock(QueryManagerLocal.class);
@@ -83,7 +83,7 @@ public final class AssetManagerEJBTest extends TestCase {
         // ARRANGE
         final Folder assetRoot = new Folder(PredefinedResourceNames.ASSETS);
         final Folder templateFolder = new Folder(new ResourceName("templates"));
-        final Template expected = new Template("title", "description", "body");
+        final Template expected = new Template("title", "description", "body", "<fields/>");
         assetRoot.add(templateFolder);
         templateFolder.add(expected);
 
@@ -111,7 +111,7 @@ public final class AssetManagerEJBTest extends TestCase {
     public void testLookupFromUuid() {
 
         // ARRANGE
-        final Template t = new Template("title", "description", "body");
+        final Template t = new Template("title", "description", "body", "<fields/>");
         final EntityManager em = createMock(EntityManager.class);
         expect(em.find(Resource.class, t.id())).andReturn(t);
         replay(em);
@@ -135,7 +135,7 @@ public final class AssetManagerEJBTest extends TestCase {
         final Folder assetRoot = new Folder(PredefinedResourceNames.ASSETS);
         final Folder templateFolder = new Folder(new ResourceName("templates"));
         assetRoot.add(templateFolder);
-        final Template t = new Template("title", "description", "body");
+        final Template t = new Template("title", "description", "body", "<fields/>");
 
         final QueryManagerLocal qm = createStrictMock(QueryManagerLocal.class);
         expect(qm.findAssetsRoot()).andReturn(new Maybe<Folder>(assetRoot));

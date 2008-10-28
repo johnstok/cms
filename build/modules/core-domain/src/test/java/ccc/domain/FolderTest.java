@@ -47,7 +47,7 @@ public final class FolderTest extends TestCase {
             final Folder f = new Folder(new ResourceName("f"));
             final Folder p = new Folder(new ResourceName("p"));
             final Folder q = new Folder(new ResourceName("q"));
-            final Template r = new Template("r", "desc", "body");
+            final Template r = new Template("r", "desc", "body", "<fields/>");
             f.add(p);
             f.add(q);
             f.add(r);
@@ -70,7 +70,7 @@ public final class FolderTest extends TestCase {
             final Folder f = new Folder(new ResourceName("f"));
             final Page p = new Page(new ResourceName("p"));
             final Page q = new Page(new ResourceName("q"));
-            final Template r = new Template("r", "desc", "body");
+            final Template r = new Template("r", "desc", "body", "<fields/>");
             f.add(p);
             f.add(q);
             f.add(r);

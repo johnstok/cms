@@ -23,6 +23,7 @@ public class Template extends Resource {
 
     private String _description;
     private String _body;
+    private String _definition;
 
     /**
      * Constructor.
@@ -36,15 +37,22 @@ public class Template extends Resource {
      *
      * @param title The title of the template.
      * @param description The description for the template.
-     * @param body The body for the template.
+     * @param body A valid velocity template for rendering a page.
+     * @param definiton An xml definition of the fields that the body requires.
      */
     public Template(final String title,
                     final String description,
-                    final String body) {
+                    final String body,
+                    final String definiton) {
 
         super(title);
+        DBC.require().notNull(description);
+        DBC.require().notNull(body);
+        DBC.require().notNull(definiton);
+
         _description = description;
         _body = body;
+        _definition = definiton;
     }
 
     /**
@@ -71,6 +79,15 @@ public class Template extends Resource {
      */
     public String body() {
         return _body;
+    }
+
+    /**
+     * Accessor for the template's definition.
+     *
+     * @return The definition as a String.
+     */
+    public String definition() {
+        return _definition;
     }
 
     /**

@@ -17,6 +17,11 @@
 -->
 
 <hibernate-mapping default-access="field">
+
+    <typedef class="ccc.services.ejb3.support.EnumUserType" name="ParargraphType">
+        <param name="type">ccc.domain.Paragraph$Type</param>
+    </typedef>
+    
     <joined-subclass
         name="ccc.domain.Page" extends="ccc.domain.Resource">
         <key column="_id" />
@@ -25,7 +30,10 @@
             <key column="_id"  not-null="true" />
             <map-key type="string" length="256" />
             <composite-element class="ccc.domain.Paragraph">
-                <property name="_body" not-null="true" type="text"></property>
+                <property name="_string" not-null="false" type="text"></property>
+                <property name="_boolean" not-null="false" type="boolean"></property>
+                <property name="_date" not-null="false" type="calendar"></property>
+                <property name="_type" not-null="true" type="ParargraphType"></property>
             </composite-element>
         </map>
     </joined-subclass>

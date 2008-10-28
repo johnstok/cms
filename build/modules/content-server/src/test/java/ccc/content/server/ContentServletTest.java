@@ -69,7 +69,7 @@ public final class ContentServletTest extends TestCase {
                 new MapRegistry(
                     ServiceNames.CONTENT_MANAGER_LOCAL,
                     _cm));
-        final Template t = new Template("foo", "bar", "baz");
+        final Template t = new Template("foo", "bar", "baz", "<fields/>");
         final Page p = new Page(new ResourceName("bar"));
         p.displayTemplateName(t);
         final Alias a = new Alias(new ResourceName("foo"), p);
@@ -98,7 +98,7 @@ public final class ContentServletTest extends TestCase {
 
         // ARRANGE
         final Page foo = new Page(new ResourceName("foo"));
-        foo.addParagraph("bar", new Paragraph("baz"));
+        foo.addParagraph("bar", Paragraph.fromText("baz"));
         final String template = "Hello $resource.id()";
 
         // ACT
@@ -122,7 +122,8 @@ public final class ContentServletTest extends TestCase {
             new Template(
                 "foo",
                 "bar",
-                body);
+                body,
+                "<fields/>");
         final Page foo = new Page(new ResourceName("foo"));
         foo.displayTemplateName(t);
 
@@ -173,11 +174,12 @@ public final class ContentServletTest extends TestCase {
             new Template(
                 "foo",
                 "bar",
-                body);
+                body,
+                "<fields/>");
         final Page page = new Page(new ResourceName("foo"));
         page.displayTemplateName(t);
-        page.addParagraph("key1", new Paragraph("para1"));
-        page.addParagraph("key2", new Paragraph("para2"));
+        page.addParagraph("key1", Paragraph.fromText("para1"));
+        page.addParagraph("key2", Paragraph.fromText("para2"));
 
         new ContentServlet().disableCachingFor(_response);
         new ContentServlet().configureCharacterEncoding(_response);
@@ -267,10 +269,10 @@ public final class ContentServletTest extends TestCase {
             Resources.readIntoString(
                 getClass().getResource("default-page-template.txt"),
                 Charset.forName("ISO-8859-1"));
-        final Template t = new Template("foo", "bar", body);
+        final Template t = new Template("foo", "bar", body, "<fields/>");
         final Page p =
             new Page(new ResourceName("name"))
-                .addParagraph("Header", new Paragraph("<br/>"));
+                .addParagraph("Header", Paragraph.fromText("<br/>"));
         p.displayTemplateName(t);
 
         expect(_cm.lookup(new ResourcePath("/foo")))

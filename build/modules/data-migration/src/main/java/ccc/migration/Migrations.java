@@ -131,7 +131,7 @@ public class Migrations {
                 Template template =
                     (_templates.containsKey(displayTemplate))
                     ? _templates.get(displayTemplate)
-                        : new Template(displayTemplate, "", "");
+                        : new Template(displayTemplate, "", "", "<fields/>");
                     template = assetManager().createOrRetrieve(template);
                     child.displayTemplateName(template);
                     if (!_templates.containsKey(displayTemplate)) {
@@ -163,7 +163,7 @@ public class Migrations {
                 Template template =
                     (_templates.containsKey(displayTemplate))
                     ? _templates.get(displayTemplate)
-                        : new Template(displayTemplate, "", "");
+                        : new Template(displayTemplate, "", "", "<fields/>");
                     template = assetManager().createOrRetrieve(template);
                     childPage.displayTemplateName(template);
                     if (!_templates.containsKey(displayTemplate)) {
@@ -176,7 +176,7 @@ public class Migrations {
             for (final Map.Entry<String, StringBuffer> para
                 : paragraphs.entrySet()) {
                 childPage.addParagraph(para.getKey(),
-                    new Paragraph(para.getValue().toString()));
+                    Paragraph.fromText(para.getValue().toString()));
             }
 
             contentManager().create(UUID.fromString(parentFolderId), childPage);

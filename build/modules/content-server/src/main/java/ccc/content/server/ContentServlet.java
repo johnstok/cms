@@ -49,7 +49,8 @@ public final class ContentServlet extends CCCServlet {
             "BUILT_IN_PAGE_TEMPLATE",
             Resources.readIntoString(
                 ContentServlet.class.getResource("default-page-template.txt"),
-                Charset.forName("UTF-8")));
+                Charset.forName("UTF-8")),
+            "<fields/>");
 
     private static final Template BUILT_IN_FOLDER_TEMPLATE =
         new Template(
@@ -57,7 +58,8 @@ public final class ContentServlet extends CCCServlet {
             "BUILT_IN_FOLDER_TEMPLATE",
             Resources.readIntoString(
                 ContentServlet.class.getResource("default-folder-template.txt"),
-                Charset.forName("UTF-8")));
+                Charset.forName("UTF-8")),
+            "<fields/>");
 
     /**
      * Constructor.
