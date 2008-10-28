@@ -71,7 +71,7 @@ public class MainMenu
         createTemplate.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override
             public void componentSelected(final MenuEvent ce) {
-                new CreateContentTemplateDialog().show();
+                new EditContentTemplateDialog().show();
             }
         });
         assetsMenu.add(createTemplate);

@@ -119,7 +119,7 @@ public class ResourceTable extends ContentPanel {
                     final ResourceDTO item =
                         (ResourceDTO) tbl.getSelectedItem().getModel();
                      if ("TEMPLATE".equals(item.getType())) {
-                         new CreateContentTemplateDialog((TemplateDTO) item, _detailsStore).show();
+                         new EditContentTemplateDialog((TemplateDTO) item, _detailsStore).show();
                      } else if ("PAGE".equals(item.getType())) {
                          new UpdateContentDialog(item.getId()).show();
                      } else {
