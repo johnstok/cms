@@ -56,6 +56,31 @@ public class Template extends Resource {
     }
 
     /**
+     * Constructor.
+     *
+     * @param name The name of the template.
+     * @param title The title of the template.
+     * @param description The description for the template.
+     * @param body A valid velocity template for rendering a page.
+     * @param definiton An xml definition of the fields that the body requires.
+     */
+    public Template(final ResourceName name,
+                    final String title,
+                    final String description,
+                    final String body,
+                    final String definiton) {
+
+        super(name, title);
+        DBC.require().notNull(description);
+        DBC.require().notNull(body);
+        DBC.require().notNull(definiton);
+
+        _description = description;
+        _body = body;
+        _definition = definiton;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

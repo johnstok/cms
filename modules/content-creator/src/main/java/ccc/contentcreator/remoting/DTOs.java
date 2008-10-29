@@ -35,6 +35,7 @@ import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.Resource;
+import ccc.domain.ResourceName;
 import ccc.domain.Template;
 import ccc.domain.User;
 
@@ -56,11 +57,11 @@ public final class DTOs {
      */
     public static Template templateFrom(final TemplateDTO templateDTO) {
         final Template t = new Template(
+            new ResourceName(templateDTO.getName()),
             templateDTO.getTitle(),
             templateDTO.getDescription(),
             templateDTO.getBody(),
             templateDTO.getDefinition());
-
 
         if (null!=templateDTO.getId()) {
             t.id(UUID.fromString(templateDTO.getId()));

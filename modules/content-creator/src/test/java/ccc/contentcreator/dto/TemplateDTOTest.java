@@ -29,6 +29,7 @@ public class TemplateDTOTest extends TestCase {
     public void testConstructor() {
 
         // ARRANGE
+        final String name = "name";
         final String title = "title";
         final String description = "description";
         final String body = "body";
@@ -40,13 +41,14 @@ public class TemplateDTOTest extends TestCase {
             new TemplateDTO(
                 id,
                 0,
-                "name",
+                name,
                 title,
                 description,
                 body,
                 definition);
 
         // ASSERT
+        assertEquals(name, dto.getName());
         assertEquals(title, dto.getTitle());
         assertEquals(description, dto.getDescription());
         assertEquals(definition, dto.getDefinition());
