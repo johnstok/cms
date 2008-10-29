@@ -9,6 +9,12 @@
     <name>build</name>
     <url>http://maven.apache.org</url>
 
+    <properties>
+        <gxt-version>1.1</gxt-version>
+        <gwt-version>1.5.2</gwt-version>
+    </properties>
+
+
     <repositories>
         <repository>
             <id>jboss</id>
