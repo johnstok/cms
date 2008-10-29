@@ -67,4 +67,9 @@ public final class Globals {
                 GWT.getHostPageBaseURL()
                    .lastIndexOf("creator/")); //$NON-NLS-1$
     }
+
+    /** DEFAULT_WIDTH : int. */
+    static final int DEFAULT_WIDTH = 640;
+    /** DEFAULT_HEIGHT : int. */
+    static final int DEFAULT_HEIGHT = 480;
 }
