@@ -81,7 +81,7 @@
         <dependency>
             <groupId>com.extjs</groupId>
             <artifactId>gxt</artifactId>
-            <version>1.1</version>
+            <version>${gxt-version}</version>
         </dependency>
         <dependency>
             <groupId>CCC7</groupId>
@@ -102,12 +102,12 @@
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-servlet</artifactId>
-            <version>1.5.2</version>
+            <version>${gwt-version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
-            <version>1.5.2</version>
+            <version>${gwt-version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -125,14 +125,14 @@
                 <dependency>
                     <groupId>com.google.gwt</groupId>
                     <artifactId>gwt-dev</artifactId>
-                    <version>1.5.2</version>
+                    <version>${gwt-version}</version>
                     <classifier>windows</classifier>
                     <scope>provided</scope>
                 </dependency>
                 <dependency>
                     <groupId>com.google.gwt</groupId>
                     <artifactId>gwt-dev</artifactId>
-                    <version>1.5.2</version>
+                    <version>${gwt-version}</version>
                     <type>zip</type>
                     <classifier>windows-libs</classifier>
                     <scope>provided</scope>
@@ -150,14 +150,14 @@
                 <dependency>
                     <groupId>com.google.gwt</groupId>
                     <artifactId>gwt-dev</artifactId>
-                    <version>1.5.2</version>
+                    <version>${gwt-version}</version>
                     <classifier>linux</classifier>
                     <scope>provided</scope>
                 </dependency>
                 <dependency>
                     <groupId>com.google.gwt</groupId>
                     <artifactId>gwt-dev</artifactId>
-                    <version>1.5.2</version>
+                    <version>${gwt-version}</version>
                     <type>zip</type>
                     <classifier>linux-libs</classifier>
                     <scope>provided</scope>
