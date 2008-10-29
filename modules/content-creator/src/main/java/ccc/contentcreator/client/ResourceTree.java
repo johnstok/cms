@@ -28,6 +28,8 @@ import com.extjs.gxt.ui.client.data.TreeLoader;
 import com.extjs.gxt.ui.client.store.TreeStore;
 import com.extjs.gxt.ui.client.widget.tree.Tree;
 import com.extjs.gxt.ui.client.widget.tree.TreeItem;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestException;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
@@ -104,4 +106,16 @@ public class ResourceTree extends Tree {
     public TreeStore<FolderDTO> store() {
         return _store;
     }
+
+    public static final void getArray(final String relativeURL,
+                                      final AsyncCallback<List<JsonModelData>> callback) {
+             try {
+                 final String url = Globals.hostURL()+relativeURL;
+                 final RequestBuilder builder =
+                     new RequestBuilder(RequestBuilder.GET, url);
+                 builder.sendRequest(null, new AsyncCallbackBridge(callback));
+             } catch (final RequestException e) {
+                 callback.onFailure(e);
+             }
+         }
 }

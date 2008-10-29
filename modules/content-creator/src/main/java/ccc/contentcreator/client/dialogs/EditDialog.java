@@ -10,13 +10,11 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.contentcreator.client;
+package ccc.contentcreator.client.dialogs;
 
-import ccc.contentcreator.api.UIConstants;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
@@ -29,15 +27,7 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
  */
 public abstract class EditDialog
     extends
-        Window {
-
-    /** DEFAULT_WIDTH : int. */
-    protected static final int DEFAULT_WIDTH = 640;
-    /** DEFAULT_HEIGHT : int. */
-    protected static final int DEFAULT_HEIGHT = 480;
-
-    /** _constants : UIConstants. */
-    protected final UIConstants _constants = Globals.uiConstants();
+        AbstractBaseDialog {
 
     /** _panel : FormPanel. */
     protected final FormPanel _panel = new FormPanel();
@@ -60,11 +50,9 @@ public abstract class EditDialog
      * Constructor.
      *
      */
-    public EditDialog() {
-        super();
+    public EditDialog(final String title) {
+        super(title);
 
-        setWidth(DEFAULT_WIDTH);
-        setHeight(DEFAULT_HEIGHT);
         setLayout(new FitLayout());
 
         _panel.setWidth("100%");

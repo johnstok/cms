@@ -14,6 +14,7 @@ package ccc.contentcreator.client;
 
 import static ccc.contentcreator.client.Validations.*;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
+import ccc.contentcreator.client.dialogs.EditDialog;
 import ccc.contentcreator.dto.UserDTO;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -32,13 +33,11 @@ public class CreateUserDialog extends EditDialog {
     private final TextField<String> _username = new TextField<String>();
     private final TextField<String> _email = new TextField<String>();
 
-
     /**
      * Constructor.
      */
     public CreateUserDialog() {
-
-        setHeading(_constants.createUser());
+        super(Globals.uiConstants().createUser());
 
         _username.setFieldLabel(_constants.username());
         _username.setAllowBlank(false);

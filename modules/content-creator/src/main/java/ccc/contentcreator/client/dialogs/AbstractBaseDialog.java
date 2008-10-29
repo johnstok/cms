@@ -9,7 +9,11 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.client;
+
+package ccc.contentcreator.client.dialogs;
+
+import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.client.Globals;
 
 import com.extjs.gxt.ui.client.widget.Window;
 
@@ -19,17 +23,23 @@ import com.extjs.gxt.ui.client.widget.Window;
  *
  * @author Civic Computing Ltd.
  */
-public class CreatePageDialog
+public class AbstractBaseDialog
     extends
         Window {
 
-    CreatePageDialog() {
+    /** _constants : UIConstants. */
+    protected final UIConstants _constants = Globals.uiConstants();
+
+    /**
+     * Constructor.
+     *
+     * @param title The title of the dialog.
+     */
+    public AbstractBaseDialog(final String title) {
         super();
+        setHeading(title);
         setWidth(Globals.DEFAULT_WIDTH);
         setHeight(Globals.DEFAULT_HEIGHT);
-
-        setHeading(Globals.uiConstants().createPage());
-
-        add(new DefinitionPanel());
     }
+
 }

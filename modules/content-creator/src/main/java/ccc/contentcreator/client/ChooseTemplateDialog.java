@@ -15,6 +15,7 @@ import java.util.List;
 
 import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.callbacks.DisposingCallback;
+import ccc.contentcreator.client.dialogs.EditDialog;
 import ccc.contentcreator.dto.DTO;
 import ccc.contentcreator.dto.OptionDTO;
 import ccc.contentcreator.dto.ResourceDTO;
@@ -60,11 +61,10 @@ public class ChooseTemplateDialog extends EditDialog {
      */
     public ChooseTemplateDialog(final List<OptionDTO<? extends DTO>> options,
                                 final ResourceDTO resource) {
+        super(Globals.uiConstants().chooseTemplate());
 
         _options = options;
         _resource = resource;
-
-        setHeading(_constants.chooseTemplate());
 
         _defaultTemplate.setFieldLabel(_constants.defaultTemplate());
         _defaultTemplate.setId(_constants.defaultTemplate());
