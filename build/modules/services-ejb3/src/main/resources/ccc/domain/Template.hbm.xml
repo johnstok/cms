@@ -24,6 +24,7 @@
         <property name="_title" not-null="true" type="string" length="256" />
         <property name="_description" not-null="true" type="string" length="1024" />
         <property name="_body" not-null="true" type="text" />
+        <property name="_definition" not-null="true" type="text" />
         
     </joined-subclass>
 </hibernate-mapping>
