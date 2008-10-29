@@ -25,7 +25,7 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class EditDialog
+public abstract class AbstractEditDialog
     extends
         AbstractBaseDialog {
 
@@ -50,7 +50,7 @@ public abstract class EditDialog
      * Constructor.
      *
      */
-    public EditDialog(final String title) {
+    public AbstractEditDialog(final String title) {
         super(title);
 
         setLayout(new FitLayout());

@@ -18,9 +18,9 @@ import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.dialogs.ChooseTemplateDialog;
 import ccc.contentcreator.client.dialogs.CreateAliasDialog;
-import ccc.contentcreator.client.dialogs.EditContentTemplateDialog;
+import ccc.contentcreator.client.dialogs.EditTemplateDialog;
 import ccc.contentcreator.client.dialogs.PreviewContentDialog;
-import ccc.contentcreator.client.dialogs.UpdateContentDialog;
+import ccc.contentcreator.client.dialogs.UpdatePageDialog;
 import ccc.contentcreator.dto.DTO;
 import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.OptionDTO;
@@ -124,9 +124,9 @@ public class ResourceTable extends ContentPanel {
                     final ResourceDTO item =
                         (ResourceDTO) tbl.getSelectedItem().getModel();
                      if ("TEMPLATE".equals(item.getType())) {
-                         new EditContentTemplateDialog((TemplateDTO) item, _detailsStore).show();
+                         new EditTemplateDialog((TemplateDTO) item, _detailsStore).show();
                      } else if ("PAGE".equals(item.getType())) {
-                         new UpdateContentDialog(item.getId()).show();
+                         new UpdatePageDialog(item.getId()).show();
                      } else {
                          Globals.alert("No editor available for this resource.");
                      }

@@ -30,7 +30,7 @@ import com.extjs.gxt.ui.client.widget.layout.FormData;
  *
  * @author Civic Computing Ltd
  */
-public class CreateUserDialog extends EditDialog {
+public class CreateUserDialog extends AbstractEditDialog {
 
     private final TextField<String> _username = new TextField<String>();
     private final TextField<String> _email = new TextField<String>();

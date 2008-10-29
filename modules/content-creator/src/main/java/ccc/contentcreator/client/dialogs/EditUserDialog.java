@@ -9,7 +9,7 @@
  * Changes: see subversion log
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.client;
+package ccc.contentcreator.client.dialogs;
 
 
 import static ccc.contentcreator.client.Validations.*;
@@ -18,7 +18,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.dialogs.EditDialog;
+import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.UserTable;
+import ccc.contentcreator.client.Validate;
+import ccc.contentcreator.client.Validator;
 import ccc.contentcreator.dto.UserDTO;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -34,7 +37,7 @@ import com.extjs.gxt.ui.client.widget.layout.FormData;
  *
  * @author Civic Computing Ltd
  */
-public class EditUserDialog extends EditDialog {
+public class EditUserDialog extends AbstractEditDialog {
 
     private final TextField<String> _username = new TextField<String>();
     private final TextField<String> _email = new TextField<String>();

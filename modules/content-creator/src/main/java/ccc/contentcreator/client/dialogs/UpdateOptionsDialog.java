@@ -34,7 +34,7 @@ import com.extjs.gxt.ui.client.widget.layout.FormData;
  *
  * @author Civic Computing Ltd
  */
-public class UpdateOptionsDialog extends EditDialog {
+public class UpdateOptionsDialog extends AbstractEditDialog {
 
     private final ResourceServiceAsync _resourceService =
         Globals.resourceService();
