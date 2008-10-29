@@ -9,10 +9,11 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.client;
+package ccc.contentcreator.client.dialogs;
 
 import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.api.Root;
+import ccc.contentcreator.client.ResourceTree;
 import ccc.contentcreator.dto.FolderDTO;
 
 import com.extjs.gxt.ui.client.Style.Scroll;

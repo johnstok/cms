@@ -9,12 +9,15 @@
  * Changes: see subversion log
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.client;
+package ccc.contentcreator.client.dialogs;
 
 
 import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.dialogs.EditDialog;
+import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.Validate;
+import ccc.contentcreator.client.Validations;
+import ccc.contentcreator.client.Validator;
 import ccc.contentcreator.dto.AliasDTO;
 import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.ResourceDTO;

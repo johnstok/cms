@@ -14,6 +14,7 @@ package ccc.contentcreator.client;
 import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.api.Root;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
+import ccc.contentcreator.client.dialogs.UploadFileDialog;
 import ccc.contentcreator.dto.FolderDTO;
 
 import com.extjs.gxt.ui.client.Events;

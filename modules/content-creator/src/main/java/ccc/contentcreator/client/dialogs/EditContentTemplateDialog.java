@@ -10,13 +10,14 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.contentcreator.client;
+package ccc.contentcreator.client.dialogs;
 
 import ccc.contentcreator.api.DialogMode;
 import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
+import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.dto.ResourceDTO;
 import ccc.contentcreator.dto.TemplateDTO;
 

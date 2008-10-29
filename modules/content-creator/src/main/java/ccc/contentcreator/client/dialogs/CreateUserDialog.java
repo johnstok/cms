@@ -9,12 +9,14 @@
  * Changes: see subversion log
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.client;
+package ccc.contentcreator.client.dialogs;
 
 
 import static ccc.contentcreator.client.Validations.*;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.dialogs.EditDialog;
+import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.Validate;
+import ccc.contentcreator.client.Validator;
 import ccc.contentcreator.dto.UserDTO;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;

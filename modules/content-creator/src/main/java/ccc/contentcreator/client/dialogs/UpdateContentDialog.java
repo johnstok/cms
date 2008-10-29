@@ -10,7 +10,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.contentcreator.client;
+package ccc.contentcreator.client.dialogs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +21,7 @@ import ccc.contentcreator.api.ResourceService;
 import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.dialogs.AbstractBaseDialog;
+import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.dto.PageDTO;
 
 import com.extjs.gxt.ui.client.Events;

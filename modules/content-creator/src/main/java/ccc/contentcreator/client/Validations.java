@@ -28,7 +28,7 @@ public class Validations {
      *
      * @return
      */
-    static ErrorReporter reportErrors() {
+    public static ErrorReporter reportErrors() {
         return new ErrorReporter() {
             public void report(final List<String> errors) {
                 Globals.alert(errors.toString());
@@ -42,7 +42,7 @@ public class Validations {
      * @param name
      * @return
      */
-    static Validator notEmpty(final TextField<String> name) {
+    public static Validator notEmpty(final TextField<String> name) {
         return new Validator() {
             public void validate(final Validate validate) {
                 if(null == name.getValue()
