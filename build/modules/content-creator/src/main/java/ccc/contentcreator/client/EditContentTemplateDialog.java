@@ -217,26 +217,27 @@ public class EditContentTemplateDialog extends Window  {
                 if (dto.isValid()) {
                     switch (_mode) {
                         case CREATE:
-                        _resourceService.createTemplate(
-                        dto,
-                        new DisposingCallback(EditContentTemplateDialog.this));
-                        break;
-                    case UPDATE:
-                        _resourceService.updateTemplate(
+                            _resourceService.createTemplate(
                             dto,
-                            new ErrorReportingCallback<Void>(){
-                                public void onSuccess(final Void arg0) {
-                                    _model.set("title", dto.getTitle());
-                                    _model.set("name", dto.getName());
-                                    _model.set("description", dto.getDescription());
-                                    _model.set("body", dto.getBody());
-                                    _model.set("definition", dto.getDefinition());
-                                    _store.update(_model);
-                                    hide();
-                                }});
-                        break;
-                    default:
-                        Globals.alert("Error.");
+                            new DisposingCallback(EditContentTemplateDialog.this));
+                            break;
+                        case UPDATE:
+                            _resourceService.updateTemplate(
+                                dto,
+                                new ErrorReportingCallback<Void>(){
+                                    public void onSuccess(final Void arg0) {
+                                        _model.set("title", dto.getTitle());
+                                        _model.set("name", dto.getName());
+                                        _model.set("description", dto.getDescription());
+                                        _model.set("body", dto.getBody());
+                                        _model.set("definition", dto.getDefinition());
+                                        _store.update(_model);
+                                        hide();
+                                    }});
+                            break;
+                        default:
+                            Globals.alert("Error.");
+                            break;
                     }
                 } else {
                     // TODO Reinstate feedback panel

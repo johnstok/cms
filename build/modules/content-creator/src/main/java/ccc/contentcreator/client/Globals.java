@@ -69,7 +69,7 @@ public final class Globals {
     }
 
     /** DEFAULT_WIDTH : int. */
-    static final int DEFAULT_WIDTH = 640;
+    public static final int DEFAULT_WIDTH = 640;
     /** DEFAULT_HEIGHT : int. */
-    static final int DEFAULT_HEIGHT = 480;
+    public static final int DEFAULT_HEIGHT = 480;
 }

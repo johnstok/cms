@@ -21,6 +21,7 @@ import ccc.contentcreator.api.ResourceService;
 import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
+import ccc.contentcreator.client.dialogs.AbstractBaseDialog;
 import ccc.contentcreator.dto.PageDTO;
 
 import com.extjs.gxt.ui.client.Events;
@@ -31,7 +32,6 @@ import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.TabItem;
 import com.extjs.gxt.ui.client.widget.TabPanel;
-import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
@@ -48,7 +48,9 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  *
  * @author Civic Computing Ltd
  */
-public class UpdateContentDialog extends Window {
+public class UpdateContentDialog
+    extends
+        AbstractBaseDialog {
 
     private final UIConstants _uiConstants = GWT.create(UIConstants.class);
     private final List<TextArea> _paras = new ArrayList<TextArea>();
@@ -65,10 +67,8 @@ public class UpdateContentDialog extends Window {
      *          will update.
      */
     public UpdateContentDialog(final String contentPath) {
+        super(Globals.uiConstants().updateContent());
 
-        setHeading(_uiConstants.updateContent());
-        setWidth(640);
-        setHeight(480);
         setLayout(new AnchorLayout());
 
         _contentPath = contentPath;
@@ -184,8 +184,8 @@ public class UpdateContentDialog extends Window {
                     paraTab.setText(para.getKey());
                     paraTab.addListener(
                         Events.Select,
-                        new Listener<ComponentEvent>( ){
-                            public void handleEvent(ComponentEvent be) {
+                        new Listener<ComponentEvent>(){
+                            public void handleEvent(final ComponentEvent be) {
                                     area.focus();
                                 }
                             });

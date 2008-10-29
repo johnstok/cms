@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
+import ccc.contentcreator.client.dialogs.EditDialog;
 import ccc.contentcreator.dto.UserDTO;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -50,9 +51,10 @@ public class EditUserDialog extends EditDialog {
      * @param userTable The user table.
      */
     public EditUserDialog(final UserDTO userDTO, final UserTable userTable) {
+        super(Globals.uiConstants().editUser());
+
         _userTable = userTable;
         _userDTO = userDTO;
-        setHeading(_constants.editUser());
 
         _username.setFieldLabel(_constants.username());
         _username.setAllowBlank(false);

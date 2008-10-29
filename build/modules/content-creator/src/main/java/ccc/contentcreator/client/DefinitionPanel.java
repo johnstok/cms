@@ -29,7 +29,7 @@ public class DefinitionPanel
     extends
         LayoutContainer {
 
-    DefinitionPanel() {
+    public DefinitionPanel() {
         setLayout(new RowLayout());
 
         final String xml =
