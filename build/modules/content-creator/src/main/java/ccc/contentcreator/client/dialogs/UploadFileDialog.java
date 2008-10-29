@@ -9,9 +9,12 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.client;
+package ccc.contentcreator.client.dialogs;
 
 import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.client.ButtonBar;
+import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.TwoColumnForm;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.widget.tree.Tree;

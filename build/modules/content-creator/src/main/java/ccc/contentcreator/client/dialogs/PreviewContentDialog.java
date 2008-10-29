@@ -10,9 +10,11 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.contentcreator.client;
+package ccc.contentcreator.client.dialogs;
 
 import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.client.ButtonBar;
+import ccc.contentcreator.client.Globals;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.ClickListener;

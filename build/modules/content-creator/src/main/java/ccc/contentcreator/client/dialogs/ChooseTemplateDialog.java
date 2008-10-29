@@ -9,16 +9,16 @@
  * Changes: see subversion log
  *-----------------------------------------------------------------------------
  */
-
-package ccc.contentcreator.client;
+package ccc.contentcreator.client.dialogs;
 
 import java.util.List;
 
 import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.callbacks.DisposingCallback;
-import ccc.contentcreator.client.dialogs.EditDialog;
+import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.dto.DTO;
 import ccc.contentcreator.dto.OptionDTO;
+import ccc.contentcreator.dto.ResourceDTO;
 import ccc.contentcreator.dto.TemplateDTO;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -29,18 +29,21 @@ import com.extjs.gxt.ui.client.widget.layout.FormData;
 
 
 /**
- * TODO Add Description for this type.
- * TODO: Move null handling into option class.
+ * Dialog for resource template chooser. Mostly copied from
+ * UpdateOptionsDialog
  *
  * @author Civic Computing Ltd
  */
-public class UpdateOptionsDialog extends EditDialog {
+public class ChooseTemplateDialog extends EditDialog {
 
     private final ResourceServiceAsync _resourceService =
         Globals.resourceService();
+
+    private final ResourceDTO                    _resource;
+    private final List<OptionDTO<? extends DTO>> _options;
+
     private final ComboBox<TemplateDTO> _defaultTemplate =
         new ComboBox<TemplateDTO>();
-    private final List<OptionDTO<? extends DTO>> _options;
     private final TemplateDTO _none =
         new TemplateDTO(null,
                         -1,
@@ -53,22 +56,21 @@ public class UpdateOptionsDialog extends EditDialog {
     /**
      * Constructor.
      *
-     * @param options
+     * @param options The list of OptionDTOs
+     * @param resource The ResourceDTO
      */
-    public UpdateOptionsDialog(final List<OptionDTO<? extends DTO>> options) {
-        super(Globals.uiConstants().options());
+    public ChooseTemplateDialog(final List<OptionDTO<? extends DTO>> options,
+                                final ResourceDTO resource) {
+        super(Globals.uiConstants().chooseTemplate());
 
         _options = options;
+        _resource = resource;
 
         _defaultTemplate.setFieldLabel(_constants.defaultTemplate());
         _defaultTemplate.setId(_constants.defaultTemplate());
         _defaultTemplate.setDisplayField("name");
         _defaultTemplate.setForceSelection(true);
         _panel.add(_defaultTemplate, new FormData("100%"));
-
-        _panel.setId("UserPanel");
-        _save.setId("userSave");
-        _cancel.setId("userCancel");
 
         drawGUI();
     }
@@ -97,13 +99,11 @@ public class UpdateOptionsDialog extends EditDialog {
     }
 
     /** {@inheritDoc} */
-    @Override
-    protected SelectionListener<ButtonEvent> saveAction() {
+    @Override protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>(){
             @Override public void componentSelected(final ButtonEvent ce) {
 
                 final TemplateDTO selected = _defaultTemplate.getValue();
-                // TODO: NULL should cause error.
                 if (_none.equals(selected)) {
                     _options
                         .get(0)
@@ -117,11 +117,10 @@ public class UpdateOptionsDialog extends EditDialog {
                 }
 
                 _resourceService
-                    .updateOptions(_options,
-                                   new DisposingCallback(
-                                       UpdateOptionsDialog.this
-                                   )
-                    );
+                    .updateResourceTemplate(
+                        _options,
+                        _resource,
+                        new DisposingCallback(ChooseTemplateDialog.this));
             }
         };
     }

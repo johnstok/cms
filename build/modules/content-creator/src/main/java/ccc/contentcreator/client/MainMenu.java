@@ -16,6 +16,9 @@ import java.util.List;
 import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.client.dialogs.CreatePageDialog;
+import ccc.contentcreator.client.dialogs.CreateUserDialog;
+import ccc.contentcreator.client.dialogs.EditContentTemplateDialog;
+import ccc.contentcreator.client.dialogs.UpdateOptionsDialog;
 import ccc.contentcreator.dto.DTO;
 import ccc.contentcreator.dto.OptionDTO;
 

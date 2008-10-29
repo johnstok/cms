@@ -16,6 +16,11 @@ import java.util.List;
 
 import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
+import ccc.contentcreator.client.dialogs.ChooseTemplateDialog;
+import ccc.contentcreator.client.dialogs.CreateAliasDialog;
+import ccc.contentcreator.client.dialogs.EditContentTemplateDialog;
+import ccc.contentcreator.client.dialogs.PreviewContentDialog;
+import ccc.contentcreator.client.dialogs.UpdateContentDialog;
 import ccc.contentcreator.dto.DTO;
 import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.OptionDTO;

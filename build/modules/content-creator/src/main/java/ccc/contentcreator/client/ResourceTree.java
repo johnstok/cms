@@ -48,7 +48,7 @@ public class ResourceTree extends Tree {
      * @param rsa ResourceServiceAsync.
      * @param root The root of the tree.
      */
-    ResourceTree(final ResourceServiceAsync rsa, final Root root) {
+    public ResourceTree(final ResourceServiceAsync rsa, final Root root) {
 
         setSelectionMode(SelectionMode.SINGLE);
         setStyleAttribute("background", "white");
