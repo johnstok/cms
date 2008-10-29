@@ -41,7 +41,7 @@ import com.extjs.gxt.ui.client.widget.layout.FormData;
  *
  * @author Civic Computing Ltd
  */
-public class EditContentTemplateDialog extends Window  {
+public class EditTemplateDialog extends Window  {
 
     private final ResourceServiceAsync _resourceService =
         Globals.resourceService();
@@ -87,7 +87,7 @@ public class EditContentTemplateDialog extends Window  {
     /**
      * Constructor.
      */
-    public EditContentTemplateDialog() {
+    public EditTemplateDialog() {
         super();
         setWidth(DEFAULT_WIDTH);
         setHeight(DEFAULT_HEIGHT);
@@ -136,7 +136,7 @@ public class EditContentTemplateDialog extends Window  {
      * @param item TemplateDTO for the template.
      * @param store ListStore model for the dialog.
      */
-    public EditContentTemplateDialog(final TemplateDTO item,
+    public EditTemplateDialog(final TemplateDTO item,
                                        final ListStore<ResourceDTO> store) {
         this();
         _mode = DialogMode.UPDATE;
@@ -220,7 +220,7 @@ public class EditContentTemplateDialog extends Window  {
                         case CREATE:
                             _resourceService.createTemplate(
                             dto,
-                            new DisposingCallback(EditContentTemplateDialog.this));
+                            new DisposingCallback(EditTemplateDialog.this));
                             break;
                         case UPDATE:
                             _resourceService.updateTemplate(

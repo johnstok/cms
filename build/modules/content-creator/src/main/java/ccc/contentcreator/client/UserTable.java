@@ -16,6 +16,7 @@ import java.util.List;
 
 import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
+import ccc.contentcreator.client.dialogs.EditUserDialog;
 import ccc.contentcreator.dto.UserDTO;
 
 import com.extjs.gxt.ui.client.Events;

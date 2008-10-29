@@ -17,7 +17,7 @@ import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.client.dialogs.CreatePageDialog;
 import ccc.contentcreator.client.dialogs.CreateUserDialog;
-import ccc.contentcreator.client.dialogs.EditContentTemplateDialog;
+import ccc.contentcreator.client.dialogs.EditTemplateDialog;
 import ccc.contentcreator.client.dialogs.UpdateOptionsDialog;
 import ccc.contentcreator.dto.DTO;
 import ccc.contentcreator.dto.OptionDTO;
@@ -75,7 +75,7 @@ public class MainMenu
         createTemplate.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override
             public void componentSelected(final MenuEvent ce) {
-                new EditContentTemplateDialog().show();
+                new EditTemplateDialog().show();
             }
         });
         assetsMenu.add(createTemplate);

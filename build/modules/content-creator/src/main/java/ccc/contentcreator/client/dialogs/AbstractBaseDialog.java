@@ -23,7 +23,7 @@ import com.extjs.gxt.ui.client.widget.Window;
  *
  * @author Civic Computing Ltd.
  */
-public class AbstractBaseDialog
+public abstract class AbstractBaseDialog
     extends
         Window {
 

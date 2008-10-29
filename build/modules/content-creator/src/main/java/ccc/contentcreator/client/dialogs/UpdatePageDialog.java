@@ -48,7 +48,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  *
  * @author Civic Computing Ltd
  */
-public class UpdateContentDialog
+public class UpdatePageDialog
     extends
         AbstractBaseDialog {
 
@@ -66,7 +66,7 @@ public class UpdateContentDialog
      * @param contentPath The absolute path to the content resource this dialog
      *          will update.
      */
-    public UpdateContentDialog(final String contentPath) {
+    public UpdatePageDialog(final String contentPath) {
         super(Globals.uiConstants().updateContent());
 
         setLayout(new AnchorLayout());
@@ -151,7 +151,7 @@ public class UpdateContentDialog
                             };
 
 //                            final AsyncCallback<Void> callback =
-//                                new DisposingCallback(_app, UpdateContentDialog.this);
+//                                new DisposingCallback(_app, UpdatePageDialog.this);
 
                         _resourceService.saveContent(
                             _contentPath,
