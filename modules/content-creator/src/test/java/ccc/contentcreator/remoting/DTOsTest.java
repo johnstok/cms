@@ -107,6 +107,7 @@ public class DTOsTest extends TestCase {
         // ASSERT
         assertEquals("title", actual.title());
         assertEquals("description", actual.description());
+        assertEquals("def", actual.definition());
         assertEquals("body", actual.body());
     }
 
