@@ -105,6 +105,7 @@ public class DTOsTest extends TestCase {
         final Template actual = DTOs.templateFrom(dto);
 
         // ASSERT
+        assertEquals("name", actual.name().toString());
         assertEquals("title", actual.title());
         assertEquals("description", actual.description());
         assertEquals("def", actual.definition());

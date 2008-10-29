@@ -39,4 +39,24 @@ public final class TemplateTest extends TestCase {
         assertEquals("<fields/>", t.definition());
         assertEquals(ResourceType.TEMPLATE, t.type());
     }
+
+    /**
+     * Test.
+     */
+    public void testConstructorWithName(){
+
+        // ARRANGE
+
+        // ACT
+        final Template t = new Template(new ResourceName("testName"), "foo!", "bar", "Hello world", "<fields/>");
+
+        // ASSERT
+        assertEquals(new ResourceName("testName"), t.name());
+        assertEquals("foo!", t.title());
+        assertEquals("bar", t.description());
+        assertEquals("Hello world", t.body());
+        assertEquals("<fields/>", t.definition());
+        assertEquals(ResourceType.TEMPLATE, t.type());
+    }
+
 }
