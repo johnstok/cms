@@ -385,4 +385,12 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Create Page")
     String createPage();
+
+    /**
+     * "Edit Template".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Edit Template")
+    String editTemplate();
 }

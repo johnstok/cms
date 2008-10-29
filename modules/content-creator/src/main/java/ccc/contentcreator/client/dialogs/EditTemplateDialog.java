@@ -24,14 +24,9 @@ import ccc.contentcreator.dto.TemplateDTO;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
-import com.extjs.gxt.ui.client.widget.ContentPanel;
-import com.extjs.gxt.ui.client.widget.Window;
-import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
-import com.extjs.gxt.ui.client.widget.layout.CardLayout;
-import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.layout.FormData;
 
 
@@ -41,7 +36,7 @@ import com.extjs.gxt.ui.client.widget.layout.FormData;
  *
  * @author Civic Computing Ltd
  */
-public class EditTemplateDialog extends Window  {
+public class EditTemplateDialog extends AbstractWizardDialog  {
 
     private final ResourceServiceAsync _resourceService =
         Globals.resourceService();
@@ -54,8 +49,6 @@ public class EditTemplateDialog extends Window  {
     /** _constants : UIConstants. */
     private final UIConstants _constants = Globals.uiConstants();
 
-    /** _layout : CardLayout. */
-    private final CardLayout _layout = new CardLayout();
 
     private final FormPanel _first = new FormPanel();
     private final FormPanel _second = new FormPanel();
@@ -67,18 +60,6 @@ public class EditTemplateDialog extends Window  {
     private final TextArea _body = new TextArea();
     private final TextArea _definition = new TextArea();
 
-    private final Button _save = new Button(
-            _constants.save(),
-            saveAction());
-
-    private final Button _next = new Button(
-        _constants.next(),
-        nextAction());
-
-    private final Button _prev = new Button(
-        _constants.previous(),
-        prevAction());
-
     private String _id;
     private DialogMode _mode;
     private ListStore<ResourceDTO> _store;
@@ -88,46 +69,21 @@ public class EditTemplateDialog extends Window  {
      * Constructor.
      */
     public EditTemplateDialog() {
-        super();
+        super(Globals.uiConstants().editTemplate());
         setWidth(DEFAULT_WIDTH);
         setHeight(DEFAULT_HEIGHT);
-
-        final ContentPanel cp = new ContentPanel();
-        cp.setLayout(_layout);
-        cp.setWidth("100%");
-        cp.setBorders(false);
-        cp.setBodyBorder(false);
-        cp.setHeaderVisible(false);
-
-        setLayout(new FitLayout());
-        add(cp);
 
         populateFirstScreen();
         populateSecondScreen();
         populateThirdScreen();
 
-        cp.add(_first);
-        cp.add(_second);
-        cp.add(_third);
-
-        addButton(new Button(
-            _constants.cancel(),
-            new SelectionListener<ButtonEvent>() {
-                @Override
-                public void componentSelected(final ButtonEvent ce) {
-                    hide();
-                }
-            }));
-
-        _prev.setVisible(false);
-        _save.setVisible(false);
-        addButton(_prev);
-        addButton(_save);
-        addButton(_next);
+        addCard(_first);
+        addCard(_second);
+        addCard(_third);
 
         _mode = DialogMode.CREATE;
 
-        _layout.setActiveItem(_first);
+        refresh();
     }
 
     /**
@@ -211,7 +167,8 @@ public class EditTemplateDialog extends Window  {
             _definition.getValue());
     }
 
-    private SelectionListener<ButtonEvent> saveAction() {
+    @Override
+    protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
                 final TemplateDTO dto = model();
@@ -250,33 +207,5 @@ public class EditTemplateDialog extends Window  {
         };
     }
 
-    private SelectionListener<ButtonEvent> nextAction() {
-        return new SelectionListener<ButtonEvent>() {
-            @Override public void componentSelected(final ButtonEvent ce) {
-                if (_layout.getActiveItem() == _first) {
-                    _prev.setVisible(true);
-                    _layout.setActiveItem(_second);
-                } else if (_layout.getActiveItem() == _second) {
-                    _next.setVisible(false);
-                    _save.setVisible(true);
-                    _layout.setActiveItem(_third);
-                }
-            }
-        };
-    }
 
-    private SelectionListener<ButtonEvent> prevAction() {
-        return new SelectionListener<ButtonEvent>() {
-            @Override public void componentSelected(final ButtonEvent ce) {
-                if (_layout.getActiveItem() == _second) {
-                    _prev.setVisible(false);
-                    _layout.setActiveItem(_first);
-                } else if (_layout.getActiveItem() == _third) {
-                    _next.setVisible(true);
-                    _save.setVisible(false);
-                    _layout.setActiveItem(_second);
-                }
-            }
-        };
-    }
 }
