@@ -75,6 +75,16 @@ public class MainMenu
             }
         });
         assetsMenu.add(createTemplate);
+        final MenuItem createPage = new MenuItem();
+        createPage.setId("create-page-menu-item");
+        createPage.setText(_constants.createPage());
+        createPage.addSelectionListener(new SelectionListener<MenuEvent>() {
+            @Override
+            public void componentSelected(final MenuEvent ce) {
+                new CreatePageDialog().show();
+            }
+        });
+        assetsMenu.add(createPage);
 
         final TextToolItem users = new TextToolItem(_constants.users());
         users.setId("users-menu");
