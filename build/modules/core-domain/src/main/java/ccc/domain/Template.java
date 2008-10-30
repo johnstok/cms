@@ -116,6 +116,17 @@ public class Template extends Resource {
     }
 
     /**
+     * Mutator for definition.
+     *
+     * @param definition The new definition.
+     */
+    public void definition(final String definition) {
+        DBC.require().notEmpty(definition);
+        _definition = definition;
+    }
+
+
+    /**
      * Mutator for description.
      *
      * @param description The new description.
