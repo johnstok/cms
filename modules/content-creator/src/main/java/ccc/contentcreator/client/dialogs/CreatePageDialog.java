@@ -24,7 +24,10 @@ import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.PageDTO;
 import ccc.contentcreator.dto.TemplateDTO;
 
+import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.GridEvent;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
@@ -63,6 +66,8 @@ public class CreatePageDialog
     private final ResourceServiceAsync _resourceService =
         Globals.resourceService();
 
+    private DefinitionPanel _dp = new DefinitionPanel();;
+
     /**
      * Constructor.
      *
@@ -92,6 +97,17 @@ public class CreatePageDialog
         _grid.setLoadMask(true);
         _grid.setId("TemplateGrid");
 
+        final Listener<GridEvent> listener =
+            new Listener<GridEvent>() {
+            public void handleEvent(final GridEvent ge) {
+                TemplateDTO template =
+                    (TemplateDTO) ge.grid.getSelectionModel().getSelectedItem();
+                    _dp.renderFields(template.getDefinition());
+                    _dp.layout();
+            }
+        };
+        _grid.addListener(Events.RowClick, listener);
+
         // add right side description
         // TODO validation
 
@@ -119,7 +135,7 @@ public class CreatePageDialog
         upperPanel.add(_title, new FormData("90%"));
 
         _second.add(upperPanel);
-        _second.add(new DefinitionPanel());
+        _second.add(_dp);
         _second.setLayout(new RowLayout());
         addCard(_second);
         refresh();

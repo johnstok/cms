@@ -169,6 +169,7 @@ public final class AssetManagerEJB
         final Template current = _entityManager.find(Template.class, t.id());
         current.title(t.title());
         current.description(t.description());
+        current.definition(t.definition());
         current.body(t.body());
     }
 
