@@ -18,6 +18,7 @@ import ccc.contentcreator.dto.AliasDTO;
 import ccc.contentcreator.dto.DTO;
 import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.OptionDTO;
+import ccc.contentcreator.dto.PageDTO;
 import ccc.contentcreator.dto.ResourceDTO;
 import ccc.contentcreator.dto.TemplateDTO;
 import ccc.contentcreator.dto.UserDTO;
@@ -164,4 +165,13 @@ public interface ResourceServiceAsync {
      */
     void updateUser(final UserDTO userDto,
                     AsyncCallback<Void> callback);
+
+    /**
+     * @see ResourceService#createPage(FolderDTO, PageDTO, TemplateDTO)
+     */
+    void createPage(FolderDTO folderDTO,
+                    PageDTO pageDTO,
+                    TemplateDTO templateDTO,
+                    AsyncCallback<Void> callback);
+
 }

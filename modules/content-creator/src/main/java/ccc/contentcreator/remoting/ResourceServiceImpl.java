@@ -29,6 +29,7 @@ import ccc.contentcreator.dto.AliasDTO;
 import ccc.contentcreator.dto.DTO;
 import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.OptionDTO;
+import ccc.contentcreator.dto.PageDTO;
 import ccc.contentcreator.dto.ResourceDTO;
 import ccc.contentcreator.dto.TemplateDTO;
 import ccc.contentcreator.dto.UserDTO;
@@ -36,6 +37,7 @@ import ccc.domain.Alias;
 import ccc.domain.CCCException;
 import ccc.domain.CreatorRoles;
 import ccc.domain.Folder;
+import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
@@ -376,5 +378,23 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
         final UserManagerLocal um = userManager();
         final User user = DTOs.userFrom(userDto);
         um.updateUser(user);
+    }
+
+    /** {@inheritDoc} */
+    public void createPage(final FolderDTO folderDto,
+                           final PageDTO pageDto,
+                           final TemplateDTO templateDto) {
+        final Page page = new Page(
+            ResourceName.escape(pageDto.getName()),
+            pageDto.getTitle());
+
+          final String parentFolderId = folderDto.getId();
+        final Template template =  assetManager().lookup(
+            UUID.fromString(templateDto.getId())).as(Template.class);
+        page.displayTemplateName(template);
+
+        // TODO store paragraphs
+
+        contentManager().create(UUID.fromString(parentFolderId), page);
     }
 }

@@ -15,7 +15,6 @@ import java.util.List;
 
 import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.api.UIConstants;
-import ccc.contentcreator.client.dialogs.CreatePageDialog;
 import ccc.contentcreator.client.dialogs.CreateUserDialog;
 import ccc.contentcreator.client.dialogs.EditTemplateDialog;
 import ccc.contentcreator.client.dialogs.UpdateOptionsDialog;
@@ -71,7 +70,7 @@ public class MainMenu
         assets.setMenu(assetsMenu);
         final MenuItem createTemplate = new MenuItem();
         createTemplate.setId("create-template-menu-item");
-        createTemplate.setText(_constants.createDisplayTemplate());
+        createTemplate.setText(_constants.createTemplate());
         createTemplate.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override
             public void componentSelected(final MenuEvent ce) {
@@ -79,16 +78,6 @@ public class MainMenu
             }
         });
         assetsMenu.add(createTemplate);
-        final MenuItem createPage = new MenuItem();
-        createPage.setId("create-page-menu-item");
-        createPage.setText(_constants.createPage());
-        createPage.addSelectionListener(new SelectionListener<MenuEvent>() {
-            @Override
-            public void componentSelected(final MenuEvent ce) {
-                new CreatePageDialog().show();
-            }
-        });
-        assetsMenu.add(createPage);
 
         final TextToolItem users = new TextToolItem(_constants.users());
         users.setId("users-menu");
@@ -128,7 +117,7 @@ public class MainMenu
 
                      public void onSuccess(
                                 final List<OptionDTO<? extends DTO>> options) {
-                         new UpdateOptionsDialog( options).show();
+                         new UpdateOptionsDialog(options).show();
                      }});
             }
         });
