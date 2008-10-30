@@ -78,4 +78,12 @@ interface UserManager {
      * @param user The user to update.
      */
     void updateUser(User user);
+
+
+    /**
+     * Determine the user calling this UserDAO.
+     *
+     * @return The user calling this DAO.
+     */
+    User loggedInUser();
 }
