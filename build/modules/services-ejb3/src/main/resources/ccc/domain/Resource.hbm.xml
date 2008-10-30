@@ -29,6 +29,8 @@
 			length="256" />
 			
 		<many-to-one name="_template" not-null="false" />
+		
+		<many-to-one name="_lockedBy" not-null="false" />
 
 		<component name="_name" class="ccc.domain.ResourceName" update="false">
 			<property name="_representation" not-null="true" column="_name"

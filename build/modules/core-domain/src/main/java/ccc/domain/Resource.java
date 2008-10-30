@@ -28,6 +28,7 @@ public abstract class Resource extends Entity {
     private ResourceName _name     = ResourceName.escape(_title);
     private Template     _template = null;
     private Folder       _parent   = null;
+    private User         _lockedBy = null;
 
     /**
      * Constructor.
@@ -199,5 +200,22 @@ public abstract class Resource extends Entity {
      */
     void parent(final Folder parent) {
         _parent = parent;
+    }
+
+    public boolean isLocked() {
+        return null!=_lockedBy;
+    }
+
+    public void lock(User u) {
+        require().notNull(u);
+        _lockedBy = u;
+    }
+
+    public User lockedBy() {
+        return _lockedBy;
+    }
+
+    public void unlock() {
+        _lockedBy=null;
     }
 }
