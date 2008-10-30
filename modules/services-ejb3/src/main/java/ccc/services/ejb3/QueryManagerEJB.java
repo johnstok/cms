@@ -14,6 +14,7 @@ package ccc.services.ejb3;
 import static javax.ejb.TransactionAttributeType.*;
 import static javax.persistence.PersistenceContextType.*;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.ejb.Local;
@@ -154,5 +155,19 @@ public final class QueryManagerEJB implements QueryManagerLocal {
         String queryString() {
             return _queryString;
         }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public <T> List<T> list(final String queryName,
+                            final Class<T> resultType,
+                            final Object... params) {
+
+        final Query q = _em.createNamedQuery(queryName);
+        for (int i=0; i<params.length; i++) {
+            q.setParameter(i, params[i]);
+        }
+        return q.getResultList();
+
     }
 }

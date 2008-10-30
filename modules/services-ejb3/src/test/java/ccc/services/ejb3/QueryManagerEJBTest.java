@@ -13,6 +13,7 @@ package ccc.services.ejb3;
 
 import static org.easymock.EasyMock.*;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
@@ -34,6 +35,31 @@ import ccc.services.ejb3.QueryManagerEJB.NamedQueries;
  * @author Civic Computing Ltd.
  */
 public class QueryManagerEJBTest extends TestCase {
+
+    /**
+     * Test.
+     */
+    public void testList() {
+
+        // ARRANGE
+        final Query q = createStrictMock(Query.class);
+        expect(q.setParameter(0, 1L)).andReturn(q);
+        expect(q.setParameter(1, 2F)).andReturn(q);
+        expect(q.getResultList()).andReturn(new ArrayList<String>());
+        replay(q);
+
+        final EntityManager em = createStrictMock(EntityManager.class);
+        expect(em.createNamedQuery("queryName")).andReturn(q);
+        replay(em);
+
+        final QueryManagerEJB qs = new QueryManagerEJB(em);
+
+        // ACT
+        qs.list("queryName", Object.class, 1L, 2F);
+
+        // ASSERT
+        verify(q, em);
+    }
 
     /**
      * Test.

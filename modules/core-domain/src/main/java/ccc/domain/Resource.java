@@ -202,20 +202,38 @@ public abstract class Resource extends Entity {
         _parent = parent;
     }
 
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
     public boolean isLocked() {
-        return null!=_lockedBy;
+        return null != _lockedBy;
     }
 
-    public void lock(User u) {
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param u
+     */
+    public void lock(final User u) {
         require().notNull(u);
         _lockedBy = u;
     }
 
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
     public User lockedBy() {
         return _lockedBy;
     }
 
+    /**
+     * TODO: Add a description of this method.
+     */
     public void unlock() {
-        _lockedBy=null;
+        _lockedBy = null;
     }
 }

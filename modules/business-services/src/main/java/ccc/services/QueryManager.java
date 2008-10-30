@@ -11,6 +11,8 @@
  */
 package ccc.services;
 
+import java.util.List;
+
 import ccc.commons.Maybe;
 import ccc.domain.Folder;
 import ccc.domain.Setting;
@@ -45,4 +47,15 @@ interface QueryManager {
      * @return The root folder, wrapped in a {@link Maybe}.
      */
     Maybe<Folder> findAssetsRoot();
+
+    /**
+     * Execute a named query that returns multiple results.
+     *
+     * @param queryName
+     * @param resultType
+     * @param params
+     * @param <T>
+     * @return
+     */
+    <T> List<T> list(String queryName, Class<T> resultType, Object... params);
 }

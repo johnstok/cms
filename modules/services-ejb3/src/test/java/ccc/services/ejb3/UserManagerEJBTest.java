@@ -14,8 +14,10 @@ package ccc.services.ejb3;
 
 import static org.easymock.EasyMock.*;
 
+import java.security.Principal;
 import java.util.ArrayList;
 
+import javax.ejb.EJBContext;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -32,21 +34,25 @@ import ccc.domain.User;
  */
 public class UserManagerEJBTest extends TestCase {
 
-    private EntityManager _em;
-    private Query _q;
+    /**
+     * Test.
+     */
+    public void testLoggedInUser() {
 
-    /** {@inheritDoc} */
-    @Override
-    protected void setUp() throws Exception {
-        _em = createStrictMock(EntityManager.class);
-        _q = createStrictMock(Query.class);
-    }
+        // ARRANGE
+        expect(_context.getCallerPrincipal()).andReturn(_p);
+        expect(_em.find(User.class, _u.id())).andReturn(_u);
+        replay(_context, _q, _em);
 
-    /** {@inheritDoc} */
-    @Override
-    protected void tearDown() throws Exception {
-        _em = null;
-        _q = null;
+        final UserManagerEJB um = new UserManagerEJB(_em, _context);
+
+        // ACT
+        final User actual = um.loggedInUser();
+
+        // ASSERT
+        verify(_q, _em, _context);
+        assertNotNull("Shouldn't be null.", actual);
+        assertEquals(_u, actual);
     }
 
     /**
@@ -65,7 +71,7 @@ public class UserManagerEJBTest extends TestCase {
             .andReturn(_q);
         replay(_em);
 
-        final UserManagerEJB um = new UserManagerEJB(_em);
+        final UserManagerEJB um = new UserManagerEJB(_em, _context);
 
         // ACT
         final boolean actual = um.usernameExists("blat");
@@ -91,7 +97,7 @@ public class UserManagerEJBTest extends TestCase {
             .andReturn(_q);
         replay(_em);
 
-        final UserManagerEJB um = new UserManagerEJB(_em);
+        final UserManagerEJB um = new UserManagerEJB(_em, _context);
 
         // ACT
         final boolean actual = um.usernameExists("blat");
@@ -111,7 +117,7 @@ public class UserManagerEJBTest extends TestCase {
         _em.persist(u);
         replay(_em);
 
-        final UserManagerEJB um = new UserManagerEJB(_em);
+        final UserManagerEJB um = new UserManagerEJB(_em, _context);
 
         // ACT
         um.createUser(u);
@@ -136,7 +142,7 @@ public class UserManagerEJBTest extends TestCase {
             .andReturn(_q);
         replay(_em);
 
-        final UserManagerEJB um = new UserManagerEJB(_em);
+        final UserManagerEJB um = new UserManagerEJB(_em, _context);
 
         // ACT
         um.listUsers();
@@ -163,7 +169,7 @@ public class UserManagerEJBTest extends TestCase {
             .andReturn(_q);
         replay(_em);
 
-        final UserManagerEJB um = new UserManagerEJB(_em);
+        final UserManagerEJB um = new UserManagerEJB(_em, _context);
 
         // ACT
         um.listUsersWithRole(CreatorRoles.ADMINISTRATOR);
@@ -190,7 +196,7 @@ public class UserManagerEJBTest extends TestCase {
                 .andReturn(_q);
         replay(_em);
 
-        final UserManagerEJB um = new UserManagerEJB(_em);
+        final UserManagerEJB um = new UserManagerEJB(_em, _context);
 
         // ACT
         um.listUsersWithUsername("testname");
@@ -217,7 +223,7 @@ public class UserManagerEJBTest extends TestCase {
                 .andReturn(_q);
         replay(_em);
 
-        final UserManagerEJB um = new UserManagerEJB(_em);
+        final UserManagerEJB um = new UserManagerEJB(_em, _context);
 
         // ACT
         um.listUsersWithEmail("test@civicuk.com");
@@ -238,7 +244,7 @@ public class UserManagerEJBTest extends TestCase {
         expect(_em.find(User.class, u.id())).andReturn(u);
         replay(_em);
 
-        final UserManagerEJB um = new UserManagerEJB(_em);
+        final UserManagerEJB um = new UserManagerEJB(_em, _context);
 
         // ACT
         um.updateUser(u);
@@ -246,5 +252,35 @@ public class UserManagerEJBTest extends TestCase {
         // ASSERT
         verify(_em);
 
+    }
+
+    private User _u;
+    private EntityManager _em;
+    private Query _q;
+    private EJBContext _context;
+    private Principal _p;
+
+    /** {@inheritDoc} */
+    @Override
+    protected void setUp() throws Exception {
+        _u = new User("testUser");
+        _p = new Principal(){
+            @Override public String getName() {
+                return _u.id().toString();
+            }
+        };
+        _em = createStrictMock(EntityManager.class);
+        _q = createStrictMock(Query.class);
+        _context = createStrictMock(EJBContext.class);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected void tearDown() throws Exception {
+        _u = null;
+        _p = null;
+        _em = null;
+        _q = null;
+        _context = null;
     }
 }

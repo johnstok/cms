@@ -16,7 +16,10 @@ import static javax.persistence.PersistenceContextType.*;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.UUID;
 
+import javax.annotation.Resource;
+import javax.ejb.EJBContext;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateful;
@@ -47,6 +50,7 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
         unitName = "ccc-persistence",
         type     = EXTENDED)
     private EntityManager _em;
+    @Resource private EJBContext _context;
 
     /**
      * Constructor.
@@ -58,9 +62,11 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
      * Constructor.
      *
      * @param em A JPA entity manager.
+     * @param context
      */
-    public UserManagerEJB(final EntityManager em) {
+    public UserManagerEJB(final EntityManager em, final EJBContext context) {
         _em = em;
+        _context = context;
     }
 
     /** {@inheritDoc} */
@@ -184,5 +190,13 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
         current.username(user.username());
         current.email(user.email());
         current.roles(user.roles());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public User loggedInUser() {
+        final String principalName = _context.getCallerPrincipal().getName();
+        final User user = _em.find(User.class, UUID.fromString(principalName));
+        return user;
     }
 }
