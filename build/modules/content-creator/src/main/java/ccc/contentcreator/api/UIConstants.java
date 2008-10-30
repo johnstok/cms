@@ -91,12 +91,12 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
     String manual();
 
     /**
-     * "Create display template".
+     * "Create template".
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Create display template")
-    String createDisplayTemplate();
+    @DefaultStringValue("Create template")
+    String createTemplate();
 
     /**
      * "Assets".

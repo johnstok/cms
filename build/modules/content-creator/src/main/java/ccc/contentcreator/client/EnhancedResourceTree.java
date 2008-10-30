@@ -11,11 +11,15 @@
  */
 package ccc.contentcreator.client;
 
+import java.util.List;
+
 import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.api.Root;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
+import ccc.contentcreator.client.dialogs.CreatePageDialog;
 import ccc.contentcreator.client.dialogs.UploadFileDialog;
 import ccc.contentcreator.dto.FolderDTO;
+import ccc.contentcreator.dto.TemplateDTO;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
@@ -29,6 +33,8 @@ import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 /**
@@ -52,8 +58,8 @@ public class EnhancedResourceTree extends ResourceTree {
      * @param view LeftRightPane of the surrounding view.
      */
     EnhancedResourceTree(final ResourceServiceAsync rsa,
-                         final Root root,
-                         final LeftRightPane view) {
+        final Root root,
+        final LeftRightPane view) {
 
         super(rsa, root);
 
@@ -62,16 +68,16 @@ public class EnhancedResourceTree extends ResourceTree {
         final Listener<TreeEvent> treeSelectionListener =
             new Listener<TreeEvent>() {
 
-                public void handleEvent(final TreeEvent te) {
-                    _rt.displayResourcesFor(te.tree.getSelectedItem());
-                    _view.setRightHandPane(_rt);
-                }
-            };
+            public void handleEvent(final TreeEvent te) {
+                _rt.displayResourcesFor(te.tree.getSelectedItem());
+                _view.setRightHandPane(_rt);
+            }
+        };
 
         addListener(
             Events.SelectionChange,
             treeSelectionListener
-            );
+        );
 
         final Menu contextMenu = new Menu();
         contextMenu.setId("navigator-menu");
@@ -84,11 +90,11 @@ public class EnhancedResourceTree extends ResourceTree {
             public void componentSelected(final MenuEvent ce) {
 
                 final FolderDTO item = (FolderDTO) getSelectionModel()
-                                                   .getSelectedItem()
-                                                   .getModel();
+                .getSelectedItem()
+                .getModel();
                 new UploadFileDialog(item.getId(),
-                                     item.getName(),
-                                     EnhancedResourceTree.this).center();
+                    item.getName(),
+                    EnhancedResourceTree.this).center();
             }
         });
         contextMenu.add(uploadFile);
@@ -101,8 +107,8 @@ public class EnhancedResourceTree extends ResourceTree {
             @Override public void componentSelected(final MenuEvent me) {
 
                 final FolderDTO item = (FolderDTO) getSelectionModel()
-                                                   .getSelectedItem()
-                                                   .getModel();
+                .getSelectedItem()
+                .getModel();
 
                 final Dialog complex = new Dialog();
                 complex.setId("create-folder-dialog");
@@ -145,6 +151,32 @@ public class EnhancedResourceTree extends ResourceTree {
             }
         });
         contextMenu.add(createFolder);
+
+        final MenuItem createPage = new MenuItem();
+        createPage.setId("create-page");
+        createPage.setText(Globals.uiConstants().createPage());
+        createPage.addSelectionListener(new SelectionListener<MenuEvent>() {
+
+            @Override public void componentSelected(final MenuEvent me) {
+
+                final FolderDTO item = (FolderDTO) getSelectionModel()
+                .getSelectedItem()
+                .getModel();
+
+                final ResourceServiceAsync resourceService =
+                    Globals.resourceService();
+                resourceService.listTemplates(
+                    new AsyncCallback<List <TemplateDTO>>(){
+
+                        public void onFailure(final Throwable arg0) {
+                            Window.alert(Globals.uiConstants().error());
+                        }
+                        public void onSuccess(final List<TemplateDTO> list) {
+                            new CreatePageDialog(list, item).show();
+                        }});
+            }
+        });
+        contextMenu.add(createPage);
 
         setContextMenu(contextMenu);
     }

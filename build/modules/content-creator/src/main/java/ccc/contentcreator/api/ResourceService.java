@@ -19,6 +19,7 @@ import ccc.contentcreator.dto.AliasDTO;
 import ccc.contentcreator.dto.DTO;
 import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.OptionDTO;
+import ccc.contentcreator.dto.PageDTO;
 import ccc.contentcreator.dto.ResourceDTO;
 import ccc.contentcreator.dto.TemplateDTO;
 import ccc.contentcreator.dto.UserDTO;
@@ -219,4 +220,15 @@ public interface ResourceService extends RemoteService {
      * @param userDto A dto representing the  user.
      */
     void updateUser(final UserDTO userDto);
+
+    /**
+     * Creates a new page.
+     *
+     * @param folderDto The parent folder.
+     * @param pageDto   The page to be created.
+     * @param templateDto The template for the page.
+     */
+    void createPage(final FolderDTO folderDto,
+                    final PageDTO pageDto,
+                    final TemplateDTO templateDto);
 }
