@@ -66,7 +66,8 @@ public class CreatePageDialog
     private final ResourceServiceAsync _resourceService =
         Globals.resourceService();
 
-    private DefinitionPanel _dp = new DefinitionPanel();;
+    private DefinitionPanel _dp = new DefinitionPanel();
+    private ContentPanel _upperPanel;
 
     /**
      * Constructor.
@@ -102,8 +103,12 @@ public class CreatePageDialog
             public void handleEvent(final GridEvent ge) {
                 TemplateDTO template =
                     (TemplateDTO) ge.grid.getSelectionModel().getSelectedItem();
-                    _dp.renderFields(template.getDefinition());
-                    _dp.layout();
+                _dp = new DefinitionPanel();
+                _dp.renderFields(template.getDefinition());
+                _second.removeAll(); // in order to avoid zombie field labels
+                _second.add(_upperPanel);
+                _second.add(_dp);
+
             }
         };
         _grid.addListener(Events.RowClick, listener);
@@ -117,24 +122,24 @@ public class CreatePageDialog
         addCard(_first);
 
 
-        final ContentPanel upperPanel = new ContentPanel();
-        upperPanel.setWidth("100%");
-        upperPanel.setBorders(false);
-        upperPanel.setBodyBorder(false);
-        upperPanel.setHeaderVisible(false);
-        upperPanel.setLayout(new FormLayout());
+        _upperPanel = new ContentPanel();
+        _upperPanel.setWidth("100%");
+        _upperPanel.setBorders(false);
+        _upperPanel.setBodyBorder(false);
+        _upperPanel.setHeaderVisible(false);
+        _upperPanel.setLayout(new FormLayout());
 
         _name.setFieldLabel(_constants.name());
         _name.setAllowBlank(false);
         _name.setId(_constants.name());
-        upperPanel.add(_name, new FormData("90%"));
+        _upperPanel.add(_name, new FormData("90%"));
 
         _title.setFieldLabel(_constants.title());
         _title.setAllowBlank(false);
         _title.setId(_constants.title());
-        upperPanel.add(_title, new FormData("90%"));
+        _upperPanel.add(_title, new FormData("90%"));
 
-        _second.add(upperPanel);
+        _second.add(_upperPanel);
         _second.add(_dp);
         _second.setLayout(new RowLayout());
         addCard(_second);
