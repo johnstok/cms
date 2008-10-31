@@ -38,6 +38,7 @@ import ccc.domain.CCCException;
 import ccc.domain.CreatorRoles;
 import ccc.domain.Folder;
 import ccc.domain.Page;
+import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
@@ -393,7 +394,11 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
             UUID.fromString(templateDto.getId())).as(Template.class);
         page.displayTemplateName(template);
 
-        // TODO store paragraphs
+        for (final String key : pageDto.getParagraphs().keySet()) {
+            final Paragraph paragraph =
+                Paragraph.fromText(pageDto.getParagraphs().get(key));
+            page.addParagraph(key, paragraph);
+        }
 
         contentManager().create(UUID.fromString(parentFolderId), page);
     }
