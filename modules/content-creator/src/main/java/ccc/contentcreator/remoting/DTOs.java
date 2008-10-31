@@ -24,6 +24,7 @@ import ccc.contentcreator.dto.AliasDTO;
 import ccc.contentcreator.dto.FileDTO;
 import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.PageDTO;
+import ccc.contentcreator.dto.ParagraphDTO;
 import ccc.contentcreator.dto.ResourceDTO;
 import ccc.contentcreator.dto.TemplateDTO;
 import ccc.contentcreator.dto.UserDTO;
@@ -187,11 +188,20 @@ public final class DTOs {
      */
     private static PageDTO dtoFrom(final Page p) {
 
-        final Map<String, String> paragraphs =
-            new HashMap<String, String>();
+        final Map<String, ParagraphDTO> paragraphs =
+            new HashMap<String, ParagraphDTO>();
         for (final Map.Entry<String, Paragraph> para
                 : p.paragraphs().entrySet()) {
-            paragraphs.put(para.getKey(), para.getValue().text());
+
+            if (para.getValue().type() == Paragraph.Type.TEXT) {
+                paragraphs.put(para.getKey(),
+                    new ParagraphDTO(Paragraph.Type.TEXT.name(),
+                        para.getValue().text()));
+            } else if (para.getValue().type() == Paragraph.Type.DATE) {
+                paragraphs.put(para.getKey(),
+                    new ParagraphDTO(Paragraph.Type.DATE.name(),
+                        para.getValue().date().toString()));
+            }
         }
         return new PageDTO(
             p.id().toString(),

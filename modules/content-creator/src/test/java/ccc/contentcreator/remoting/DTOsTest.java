@@ -12,6 +12,7 @@
 package ccc.contentcreator.remoting;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.UUID;
@@ -19,6 +20,8 @@ import java.util.UUID;
 import junit.framework.TestCase;
 import ccc.contentcreator.dto.AliasDTO;
 import ccc.contentcreator.dto.FileDTO;
+import ccc.contentcreator.dto.PageDTO;
+import ccc.contentcreator.dto.ParagraphDTO;
 import ccc.contentcreator.dto.TemplateDTO;
 import ccc.contentcreator.dto.UserDTO;
 import ccc.domain.Alias;
@@ -26,6 +29,8 @@ import ccc.domain.CreatorRoles;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.Folder;
+import ccc.domain.Page;
+import ccc.domain.Paragraph;
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
 import ccc.domain.User;
@@ -192,4 +197,30 @@ public class DTOsTest extends TestCase {
         assertEquals("username2", userDtos.get(1).getUsername());
 
     }
+
+    /**
+     * Test.
+     */
+    public void testDtoFromPage() {
+
+        // ARRANGE
+        final Page p = new Page(new ResourceName("name"));
+        p.addParagraph("foo1", Paragraph.fromText("para1"));
+        p.addParagraph("foo2", Paragraph.fromText("para2"));
+        final Date d = new Date();
+        p.addParagraph("fooDate", Paragraph.fromDate(d));
+
+        // ACT
+        final PageDTO pageDto = DTOs.dtoFrom(p);
+
+        // ASSERT
+        assertEquals(3, pageDto.getParagraphs().size());
+        final ParagraphDTO p1 = pageDto.getParagraphs().get("foo1");
+        final ParagraphDTO p2 = pageDto.getParagraphs().get("foo2");
+        final ParagraphDTO p3 = pageDto.getParagraphs().get("fooDate");
+        assertEquals("para1", p1.getValue());
+        assertEquals("para2", p2.getValue());
+        assertEquals(d.toString(), p3.getValue());
+    }
+
 }

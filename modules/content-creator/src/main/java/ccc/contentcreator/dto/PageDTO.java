@@ -38,7 +38,7 @@ public class PageDTO extends ResourceDTO {
                    final int version,
                    final String name,
                    final String title,
-                   final Map<String, String> paragraphs) {
+                   final Map<String, ParagraphDTO> paragraphs) {
         super(id, version, "PAGE", name, title);
         set("paras", paragraphs);
     }
@@ -48,7 +48,7 @@ public class PageDTO extends ResourceDTO {
      *
      * @return A map representing the page's paragraphs.
      */
-    public Map<String, String> getParagraphs() {
+    public Map<String, ParagraphDTO> getParagraphs() {
         return get("paras");
     }
 

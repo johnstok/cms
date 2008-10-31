@@ -22,6 +22,7 @@ import ccc.contentcreator.client.DefinitionPanel;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.PageDTO;
+import ccc.contentcreator.dto.ParagraphDTO;
 import ccc.contentcreator.dto.TemplateDTO;
 
 import com.extjs.gxt.ui.client.Events;
@@ -32,6 +33,7 @@ import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
@@ -154,19 +156,34 @@ public class CreatePageDialog
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
 
-                final Map<String, String> paragraphs =
-                    new HashMap<String, String>();
+                final Map<String, ParagraphDTO> paragraphs =
+                    new HashMap<String, ParagraphDTO>();
 
                 final List<Component> definitions =_dp.getItems();
                 for (final Component c : definitions) {
                     if (c.getClass().equals(TextField.class)) {
                        final TextField<String> f = (TextField<String>) c;
-                       paragraphs.put(f.getId(), f.getValue());
+                       paragraphs.put(
+                           f.getId(),
+                           new ParagraphDTO(
+                               "TEXT",
+                               f.getValue()));
+
                     } else if (c.getClass().equals(TextArea.class)) {
                         final TextArea f = (TextArea) c;
-                        paragraphs.put(f.getId(), f.getValue());
-                     }
-                    // FIXME date handling - requires PageDTO change?
+                        paragraphs.put(
+                            f.getId(),
+                            new ParagraphDTO(
+                                "TEXT",
+                                f.getValue()));
+                     } else if (c.getClass().equals(DateField.class)) {
+                         final DateField f = (DateField) c;
+                         paragraphs.put(
+                             f.getId(),
+                             new ParagraphDTO(
+                                 "DATE",
+                                 f.getValue().toString()));
+                      }
                 }
 
                 final PageDTO page = new PageDTO(
