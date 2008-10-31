@@ -36,7 +36,6 @@ public class DefinitionPanel
     }
 
     public void renderFields(final String definition) {
-        removeAll();
         String xml =
             "<fields><field name=\"foo\" type=\"text_area\"/><field name=\"foo2\" type=\"text_field\"/></fields>";
 
