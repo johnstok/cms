@@ -30,6 +30,7 @@ import ccc.contentcreator.dto.DTO;
 import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.OptionDTO;
 import ccc.contentcreator.dto.PageDTO;
+import ccc.contentcreator.dto.ParagraphDTO;
 import ccc.contentcreator.dto.ResourceDTO;
 import ccc.contentcreator.dto.TemplateDTO;
 import ccc.contentcreator.dto.UserDTO;
@@ -38,7 +39,6 @@ import ccc.domain.CCCException;
 import ccc.domain.CreatorRoles;
 import ccc.domain.Folder;
 import ccc.domain.Page;
-import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
@@ -394,10 +394,10 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
             UUID.fromString(templateDto.getId())).as(Template.class);
         page.displayTemplateName(template);
 
-        for (final String key : pageDto.getParagraphs().keySet()) {
-            final Paragraph paragraph =
-                Paragraph.fromText(pageDto.getParagraphs().get(key));
-            page.addParagraph(key, paragraph);
+        for (final Map.Entry<String, ParagraphDTO> item : pageDto.getParagraphs().entrySet()) {
+//            final Paragraph paragraph =
+//                Paragraph.fromText(pageDto.getParagraphs().get(key));
+//            page.addParagraph(key, paragraph);
         }
 
         contentManager().create(UUID.fromString(parentFolderId), page);

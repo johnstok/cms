@@ -23,6 +23,7 @@ import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.dto.PageDTO;
+import ccc.contentcreator.dto.ParagraphDTO;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -169,7 +170,7 @@ public class UpdatePageDialog
 
                 _title.setValue(page.getTitle());
 
-                for (Map.Entry<String, String> para
+                for (Map.Entry<String, ParagraphDTO> para
                             : page.getParagraphs().entrySet()) {
 
                     final TextArea area = new TextArea();
@@ -178,7 +179,7 @@ public class UpdatePageDialog
                     area.setBorders(false);
                     area.setFieldLabel(para.getKey());
                     area.setHideLabel(true);
-                    area.setValue(para.getValue());
+                    area.setValue(para.getValue().getValue());
 
                     final TabItem paraTab = new TabItem();
                     paraTab.setText(para.getKey());
