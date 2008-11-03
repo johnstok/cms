@@ -101,6 +101,8 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
         _store = store;
         _model = item;
 
+        _name.setReadOnly(true); // TODO #200
+
         _body.setValue(_model.getBody());
         _definition.setValue(_model.getDefinition());
         _description.setValue(_model.getDescription());
@@ -185,6 +187,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                                 new ErrorReportingCallback<Void>(){
                                     public void onSuccess(final Void arg0) {
                                         _model.set("title", dto.getTitle());
+                                        // TODO name update is not persisted.
                                         _model.set("name", dto.getName());
                                         _model.set("description", dto.getDescription());
                                         _model.set("body", dto.getBody());
