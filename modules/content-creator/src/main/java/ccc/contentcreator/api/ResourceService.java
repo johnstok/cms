@@ -231,4 +231,12 @@ public interface ResourceService extends RemoteService {
     void createPage(final FolderDTO folderDto,
                     final PageDTO pageDto,
                     final TemplateDTO templateDto);
+
+    /**
+     * Returns true if template name exists in the template folder.
+     *
+     * @param templateName The name to look up.
+     * @return True if name exists.
+     */
+     boolean templateNameExists(final String templateName);
 }

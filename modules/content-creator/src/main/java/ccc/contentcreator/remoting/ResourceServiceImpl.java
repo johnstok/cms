@@ -402,4 +402,15 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
 
         contentManager().create(UUID.fromString(parentFolderId), page);
     }
+
+    /** {@inheritDoc} */
+    public boolean templateNameExists(final String templateName) {
+        boolean result = false;
+        for (final TemplateDTO t : listTemplates()) {
+            if (t.getName().equals(templateName)) {
+                result = true;
+            }
+        }
+        return result;
+    }
 }

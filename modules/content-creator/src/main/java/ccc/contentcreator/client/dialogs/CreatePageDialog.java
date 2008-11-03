@@ -18,8 +18,12 @@ import java.util.Map;
 
 import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.callbacks.DisposingCallback;
+import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.DefinitionPanel;
 import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.Validate;
+import ccc.contentcreator.client.Validations;
+import ccc.contentcreator.client.Validator;
 import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.PageDTO;
 import ccc.contentcreator.dto.ParagraphDTO;
@@ -155,6 +159,43 @@ public class CreatePageDialog
     protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
+                Validate.callTo(createPage())
+                    .check(Validations.notEmpty(_name))
+                    .check(Validations.notEmpty(_title))
+                    .stopIfInError()
+                    .check(uniqueResourceName(_parent, _name))
+                    .callMethodOr(Validations.reportErrors());
+            }
+        };
+    }
+
+    private Validator uniqueResourceName(final FolderDTO folder,
+                                         final TextField<String> name) {
+
+        return new Validator() {
+            public void validate(final Validate validate) {
+                Globals.resourceService().nameExistsInFolder(
+                    folder,
+                    name.getValue(),
+                    new ErrorReportingCallback<Boolean>(){
+                        public void onSuccess(final Boolean nameExists) {
+                            if (nameExists) {
+                                validate.addMessage(
+                                    "A resource with name '"
+                                    + name.getValue()
+                                    + "' already exists in this folder."
+                                );
+                            }
+                            validate.next();
+                        }});
+            }
+
+        };
+    }
+
+    private Runnable createPage() {
+        return new Runnable() {
+            public void run() {
 
                 final Map<String, ParagraphDTO> paragraphs =
                     new HashMap<String, ParagraphDTO>();
@@ -202,4 +243,5 @@ public class CreatePageDialog
             }
         };
     }
+
 }
