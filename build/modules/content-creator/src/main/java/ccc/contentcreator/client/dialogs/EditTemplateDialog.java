@@ -18,6 +18,9 @@ import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.Validate;
+import ccc.contentcreator.client.Validations;
+import ccc.contentcreator.client.Validator;
 import ccc.contentcreator.dto.ResourceDTO;
 import ccc.contentcreator.dto.TemplateDTO;
 
@@ -169,10 +172,48 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
             _definition.getValue());
     }
 
+    /** {@inheritDoc} */
     @Override
     protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
+                Validate.callTo(createTemplates())
+                    .check(Validations.notEmpty(_definition))
+                    .check(Validations.notEmpty(_name))
+                    .check(Validations.notEmpty(_templateTitle))
+                    .check(Validations.notEmpty(_body))
+                    .stopIfInError()
+                    .check(uniqueTemplateName(_name))
+                    .callMethodOr(Validations.reportErrors());
+            }
+        };
+    }
+
+    private Validator uniqueTemplateName(final TextField<String> name) {
+
+        return new Validator() {
+            public void validate(final Validate validate) {
+                Globals.resourceService().templateNameExists(
+                    name.getValue(),
+                    new ErrorReportingCallback<Boolean>(){
+                        public void onSuccess(final Boolean nameExists) {
+                            if (nameExists) {
+                                validate.addMessage(
+                                    "A template with name '"
+                                    + name.getValue()
+                                    + "' already exists in this folder."
+                                );
+                            }
+                            validate.next();
+                        }});
+            }
+
+        };
+    }
+
+    private Runnable createTemplates() {
+        return new Runnable() {
+            public void run() {
                 final TemplateDTO dto = model();
                 if (dto.isValid()) {
                     switch (_mode) {
@@ -189,9 +230,11 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                                         _model.set("title", dto.getTitle());
                                         // TODO name update is not persisted.
                                         _model.set("name", dto.getName());
-                                        _model.set("description", dto.getDescription());
+                                        _model.set("description",
+                                            dto.getDescription());
                                         _model.set("body", dto.getBody());
-                                        _model.set("definition", dto.getDefinition());
+                                        _model.set("definition",
+                                            dto.getDefinition());
                                         _store.update(_model);
                                         hide();
                                     }});
@@ -209,6 +252,5 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
             }
         };
     }
-
 
 }

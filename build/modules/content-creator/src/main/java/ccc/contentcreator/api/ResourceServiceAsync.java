@@ -174,4 +174,9 @@ public interface ResourceServiceAsync {
                     TemplateDTO templateDTO,
                     AsyncCallback<Void> callback);
 
+    /**
+     * @see ResourceService#templateNameExists(String)
+     */
+    void templateNameExists(final String templateName,
+                            AsyncCallback<Boolean> callback);
 }
