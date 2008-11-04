@@ -13,6 +13,7 @@
         <gxt-version>1.1</gxt-version>
         <gwt-version>1.5.3</gwt-version>
         <velocity-version>1.5</velocity-version>
+        <jboss-version>4.2.2.GA</jboss-version>
     </properties>
 
 
@@ -135,6 +136,15 @@
                     <fileName>
                         ${project.build.directory}/${project.build.finalName}.${project.packaging}
                     </fileName>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jboss-packaging-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <excludeAll>true</excludeAll>
+                    </excludes>
                 </configuration>
             </plugin>
             <plugin>
