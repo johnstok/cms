@@ -12,6 +12,7 @@
 package ccc.contentcreator.client.dialogs;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,9 +38,8 @@ import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
-import com.extjs.gxt.ui.client.widget.form.DateField;
+import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
-import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
@@ -195,6 +195,7 @@ public class CreatePageDialog
 
     private Runnable createPage() {
         return new Runnable() {
+            @SuppressWarnings("unchecked")
             public void run() {
 
                 final Map<String, ParagraphDTO> paragraphs =
@@ -202,29 +203,15 @@ public class CreatePageDialog
 
                 final List<Component> definitions =_dp.getItems();
                 for (final Component c : definitions) {
-                    if (c.getClass().equals(TextField.class)) {
-                       final TextField<String> f = (TextField<String>) c;
-                       paragraphs.put(
-                           f.getId(),
-                           new ParagraphDTO(
-                               "TEXT",
-                               f.getValue()));
-
-                    } else if (c.getClass().equals(TextArea.class)) {
-                        final TextArea f = (TextArea) c;
-                        paragraphs.put(
-                            f.getId(),
-                            new ParagraphDTO(
-                                "TEXT",
-                                f.getValue()));
-                     } else if (c.getClass().equals(DateField.class)) {
-                         final DateField f = (DateField) c;
-                         paragraphs.put(
-                             f.getId(),
-                             new ParagraphDTO(
-                                 "DATE",
-                                 f.getValue().toString()));
-                      }
+                    if ("TEXT".equals(c.getData("type"))) {
+                        final Field<String> f = (Field<String>) c;
+                        paragraphs.put(c.getId(),
+                            new ParagraphDTO("TEXT", f.getValue()));
+                    } else if ("DATE".equals(c.getData("type"))) {
+                        final Field<Date> f = (Field<Date>) c;
+                        paragraphs.put(c.getId(),
+                            new ParagraphDTO("DATE", f.getValue().toString()));
+                    }
                 }
 
                 final PageDTO page = new PageDTO(
@@ -243,5 +230,4 @@ public class CreatePageDialog
             }
         };
     }
-
 }
