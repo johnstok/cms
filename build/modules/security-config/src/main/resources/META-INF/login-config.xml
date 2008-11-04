@@ -1,15 +1,21 @@
 <policy>
-    <!-- Config for certificate authentication in servlet
-    -->
-    <application-policy name = "ccc">
-       <authentication>
-          <login-module code="org.jboss.security.auth.spi.CertRolesLoginModule"
-             flag = "required">
-            <module-option name="password-stacking">useFirstPass</module-option>
-            <module-option name="securityDomain">java:/jaas/client-cert</module-option>
-            <module-option name="unauthenticatedIdentity">guest</module-option>
-            <module-option name="rolesProperties">roles.properties</module-option>
-          </login-module> 
-       </authentication>
+    <application-policy name="ccc">
+        <authentication>
+            <login-module code="ccc.security.CCCLoginModule" flag="required" />
+            <!-- 
+            <login-module code="org.jboss.security.auth.spi.DatabaseServerLoginModule"
+                             flag="required">
+                <module-option name="dsJndiName">java:/ccc</module-option>
+                <module-option name="principalsQuery">
+                    select _hash from PASSWORD where _USER=?</module-option>
+                <module-option name="rolesQuery">
+                    select ROLE, 'Roles' from USER__ROLES where ID=?</module-option>
+                <module-option name="hashAlgorithm">SHA-256</module-option>
+                <module-option name="hashEncoding">base64</module-option>
+                <module-option name="hashCharset">UTF-8</module-option>
+                <module-option name="unauthenticatedIdentity">anonymous</module-option>
+            </login-module>
+             -->
+        </authentication>
     </application-policy>
 </policy>
