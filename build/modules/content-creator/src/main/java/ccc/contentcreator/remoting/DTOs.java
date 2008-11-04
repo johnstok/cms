@@ -11,8 +11,11 @@
  */
 package ccc.contentcreator.remoting;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -281,5 +284,46 @@ public final class DTOs {
         }
 
         return u;
+    }
+
+    /**
+     * Create a {@link ParagraphDTO} for a paragraph resource.
+     *
+     * @param para The Paragraph.
+     * @return The DTO.
+     */
+    public static ParagraphDTO dtoFrom(final Paragraph para) {
+
+        ParagraphDTO pDTO = null;
+        if (para.type() == Paragraph.Type.TEXT) {
+            pDTO = new ParagraphDTO(Paragraph.Type.TEXT.name(), para.text());
+        } else if (para.type() == Paragraph.Type.DATE) {
+            pDTO = new ParagraphDTO(
+                Paragraph.Type.DATE.name(), para.date().toString());
+        }
+        return pDTO;
+    }
+
+    /**
+     * Create a {@link Paragraph} from a {@link ParagraphDTO}.
+     *
+     * @param paragraphDTO The dto from which to create the paragraph.
+     * @return A paragraph or null (in case paragraph type is invalid).
+     */
+    public static Paragraph paragraphFrom(final ParagraphDTO paragraphDTO) {
+        Paragraph p = null;
+        if (paragraphDTO.getType().equals(Paragraph.Type.TEXT.name())) {
+            p = Paragraph.fromText(paragraphDTO.getValue());
+        } else if (paragraphDTO.getType().equals(Paragraph.Type.DATE.name())) {
+
+            try {
+                final Date date = DateFormat.getInstance().parse(paragraphDTO.getValue());
+                p = Paragraph.fromDate(date);
+            } catch (final ParseException e) {
+                // TODO Auto-generated catch block
+                throw new RuntimeException(e);
+            }
+        }
+        return p;
     }
 }

@@ -223,4 +223,48 @@ public class DTOsTest extends TestCase {
         assertEquals(d.toString(), p3.getValue());
     }
 
+    /**
+     * Test.
+     */
+    public void testDtoFromParagraph() {
+
+        // ARRANGE
+        final Paragraph p1 = Paragraph.fromText("para1");
+        final Date d = new Date();
+        final Paragraph p2 = Paragraph.fromDate(d);
+
+        // ACT
+        final ParagraphDTO p1Dto = DTOs.dtoFrom(p1);
+        final ParagraphDTO p2Dto = DTOs.dtoFrom(p2);
+
+        // ASSERT
+        assertEquals("TEXT", p1Dto.getType());
+        assertEquals("para1", p1Dto.getValue());
+        assertEquals("DATE", p2Dto.getType());
+        assertEquals(d.toString(), p2Dto.getValue());
+    }
+
+    /**
+     * Test.
+     */
+    public void testParagraphFrom() {
+
+        // ARRANGE
+        final Paragraph p1 = Paragraph.fromText("para1");
+        final Date d = new Date();
+        final Paragraph p2 = Paragraph.fromDate(d);
+
+        // ACT
+        final ParagraphDTO p1Dto = DTOs.dtoFrom(p1);
+        final ParagraphDTO p2Dto = DTOs.dtoFrom(p2);
+
+        // ASSERT
+        assertEquals("TEXT", p1Dto.getType());
+        assertEquals("para1", p1Dto.getValue());
+        assertEquals("DATE", p2Dto.getType());
+        assertEquals(d.toString(), p2Dto.getValue());
+    }
+
+
+
 }

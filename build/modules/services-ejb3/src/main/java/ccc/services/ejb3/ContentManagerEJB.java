@@ -15,7 +15,6 @@ package ccc.services.ejb3;
 import static javax.ejb.TransactionAttributeType.*;
 import static javax.persistence.PersistenceContextType.*;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 
