@@ -1,0 +1,3 @@
+<jboss-web>
+    <security-domain>java:/jaas/ccc</security-domain>
+</jboss-web>

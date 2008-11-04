@@ -3,35 +3,53 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-	<display-name>Content Creator</display-name>
+    <display-name>Content Creator</display-name>
 
-	<!-- Standard Action Servlet Configuration -->
-	<servlet>
-		<servlet-name>Resource</servlet-name>
-		<servlet-class>
-			ccc.contentcreator.remoting.ResourceServiceImpl
-		</servlet-class>
-	</servlet>
+    <!-- Standard Action Servlet Configuration -->
+    <servlet>
+        <servlet-name>Resource</servlet-name>
+        <servlet-class>
+            ccc.contentcreator.remoting.ResourceServiceImpl
+        </servlet-class>
+    </servlet>
 
-	<servlet>
-		<servlet-name>FileUploadServlet</servlet-name>
-		<servlet-class>
-			ccc.contentcreator.remoting.FileUploadServlet
-		</servlet-class>
-	</servlet>
+    <servlet>
+        <servlet-name>FileUploadServlet</servlet-name>
+        <servlet-class>
+            ccc.contentcreator.remoting.FileUploadServlet
+        </servlet-class>
+    </servlet>
 
-	<!-- Standard Action Servlet Mapping -->
-	<servlet-mapping>
-		<servlet-name>Resource</servlet-name>
-		<url-pattern>/resource</url-pattern>
-	</servlet-mapping>
+    <!-- Standard Action Servlet Mapping -->
+    <servlet-mapping>
+        <servlet-name>Resource</servlet-name>
+        <url-pattern>/resource</url-pattern>
+    </servlet-mapping>
 
-	<servlet-mapping>
-		<servlet-name>FileUploadServlet</servlet-name>
-		<url-pattern>/upload</url-pattern>
-	</servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FileUploadServlet</servlet-name>
+        <url-pattern>/upload</url-pattern>
+    </servlet-mapping>
 
-	<welcome-file-list>
-		<welcome-file>ContentCreator.html</welcome-file>
-	</welcome-file-list>
+    <welcome-file-list>
+        <welcome-file>ContentCreator.html</welcome-file>
+    </welcome-file-list>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Secure Area</web-resource-name>
+            <url-pattern>/*</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+            <!-- TODO: Confirm that other methods are always denied. -->
+        </web-resource-collection>
+        <auth-constraint><role-name>ADMINISTRATOR</role-name></auth-constraint>
+    </security-constraint>
+    
+    <login-config>
+        <auth-method>BASIC</auth-method>
+        <realm-name>CCC Content Creator</realm-name>
+    </login-config>
+    
+
 </web-app>
