@@ -21,7 +21,6 @@ import java.util.Arrays;
  * Represents a user's password.
  *
  * TODO: Add an update(String newPassword) method.
- * TODO: Persistence.
  *
  * @author Civic Computing Ltd.
  */
@@ -70,11 +69,25 @@ public class Password extends Entity {
      * @return The hashed password as a byte array.
      */
     final byte[] hash(final String passwordString) {
+        return hash(passwordString, id().toString());
+    }
+
+
+    /**
+     * Hash a password.
+     *
+     * @param passwordString A string representing the password to hash.
+     * @param saltString A string representing the salt to use for hashing.
+     * @return The hashed password as a byte array.
+     */
+    public static byte[] hash(final String passwordString,
+                              final String saltString) {
+
         try {
             // Prepare
             final MessageDigest digest = MessageDigest.getInstance("SHA-256");
             final Charset utf8 = Charset.forName("UTF-8");
-            final byte[] salt = id().toString().getBytes(utf8);
+            final byte[] salt = saltString.getBytes(utf8);
             final byte[] password = passwordString.getBytes(utf8);
 
             // Compute
@@ -89,4 +102,18 @@ public class Password extends Entity {
         }
     }
 
+    /**
+     * Test whether a hash matches the specified password.
+     *
+     * @param expected The expected hash.
+     * @param password The password to test.
+     * @param salt The salt to use.
+     * @return True if the hashed password matches the expected hash; false
+     *      otherwise.
+     */
+    public static boolean matches(final byte[] expected,
+                                  final String password,
+                                  final String salt) {
+        return Arrays.equals(expected, hash(password, salt));
+    }
 }
