@@ -25,9 +25,21 @@
             <version>7.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-ejb_3.0_spec</artifactId>
-            <version>1.0</version>
+            <groupId>jboss</groupId>
+            <artifactId>jboss-ejb3x</artifactId>
+            <version>${jboss-version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>jboss</groupId>
+            <artifactId>jboss-annotations-ejb3</artifactId>
+            <version>${jboss-version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>jboss</groupId>
+            <artifactId>jboss-j2ee</artifactId>
+            <version>${jboss-version}</version>
             <scope>provided</scope>
         </dependency>
   </dependencies>
