@@ -25,6 +25,18 @@
         </plugins>
     </build>
 
-    <dependencies />
+    <dependencies>
+        <dependency>
+            <groupId>CCC7</groupId>
+            <artifactId>core-domain</artifactId>
+            <version>7.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>jboss</groupId>
+            <artifactId>jbosssx</artifactId>
+            <version>${jboss-version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 
 </project>
