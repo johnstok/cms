@@ -55,7 +55,7 @@ public class PasswordTest extends TestCase {
         final Password pw = new Password(new User("testUser"), "hash");
 
         // ACT
-        final byte[] hash = pw.hash(password);
+        final byte[] hash = Password.hash(password, pw.id().toString());
 
         // ASSERT
         assertEquals(SHA_HASH_LENGTH, hash.length);
