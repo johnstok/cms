@@ -190,22 +190,25 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
     }
 
     private Validator uniqueTemplateName(final TextField<String> name) {
-
         return new Validator() {
             public void validate(final Validate validate) {
-                Globals.resourceService().templateNameExists(
-                    name.getValue(),
-                    new ErrorReportingCallback<Boolean>(){
-                        public void onSuccess(final Boolean nameExists) {
-                            if (nameExists) {
-                                validate.addMessage(
-                                    "A template with name '"
-                                    + name.getValue()
-                                    + "' already exists in this folder."
-                                );
-                            }
-                            validate.next();
-                        }});
+                if (_mode == DialogMode.UPDATE) {
+                    validate.next();
+                } else {
+                    Globals.resourceService().templateNameExists(
+                        name.getValue(),
+                        new ErrorReportingCallback<Boolean>(){
+                            public void onSuccess(final Boolean nameExists) {
+                                if (nameExists) {
+                                    validate.addMessage(
+                                        "A template with name '"
+                                        + name.getValue()
+                                        + "' already exists in this folder."
+                                    );
+                                }
+                                validate.next();
+                            }});
+                }
             }
 
         };
