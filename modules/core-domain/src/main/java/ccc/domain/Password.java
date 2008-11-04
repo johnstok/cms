@@ -29,15 +29,18 @@ public class Password extends Entity {
     private User _user;
     private byte[] _hash;
 
+    /** Constructor: for persistence only. */
+    @SuppressWarnings("unused") protected Password() { super(); }
+
     /**
      * Constructor.
      *
      * @param user The user.
-     * @param passwordString The un-hashed password as a string.
+     * @param passwordString The unhashed password as a string.
      */
     public Password(final User user, final String passwordString) {
         _user = user;
-        _hash = hash(passwordString);
+        _hash = hash(passwordString, id().toString());
 
     }
 
@@ -54,24 +57,12 @@ public class Password extends Entity {
     /**
      * Compares hash of the passwordString to the field hash.
      *
-     * @param passwordString The un-hashed password as a string.
+     * @param passwordString The unhashed password as a string.
      * @return True if passwordString's hash matches.
      */
     public boolean matches(final String passwordString) {
-        return Arrays.equals(hash(passwordString), _hash);
+        return Arrays.equals(hash(passwordString, id().toString()), _hash);
     }
-
-
-    /**
-     * Hash and salt a password.
-     *
-     * @param passwordString The un-hashed password as a string.
-     * @return The hashed password as a byte array.
-     */
-    final byte[] hash(final String passwordString) {
-        return hash(passwordString, id().toString());
-    }
-
 
     /**
      * Hash a password.
