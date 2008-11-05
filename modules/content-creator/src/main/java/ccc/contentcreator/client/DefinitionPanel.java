@@ -75,9 +75,9 @@ public class DefinitionPanel
 
             } else if ("date".equals(type)) {
                 final DateField df = new DateField();
+                df.setFieldLabel(name);
                 df.setData("type", "DATE");
                 df.setId(name);
-                df.setFieldLabel(name);
                 add(df);
             }
         }
