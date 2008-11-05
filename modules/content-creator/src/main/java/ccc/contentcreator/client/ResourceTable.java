@@ -14,6 +14,7 @@ package ccc.contentcreator.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import ccc.contentcreator.api.ResourceMgr;
 import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.dialogs.ChooseTemplateDialog;
@@ -148,6 +149,34 @@ public class ResourceTable extends ContentPanel {
 
         });
         contextMenu.add(createAlias);
+
+        final MenuItem lockResource = new MenuItem();
+        lockResource.setId("lock-resource");
+        lockResource.setText("Lock"); // TODO: I18n
+        lockResource.addSelectionListener(new SelectionListener<MenuEvent>() {
+
+            @Override public void componentSelected(final MenuEvent ce) {
+                final ResourceDTO item =
+                    (ResourceDTO) tbl.getSelectedItem().getModel();
+                new ResourceMgr().lock(item.getId());
+            }
+
+        });
+        contextMenu.add(lockResource);
+
+        final MenuItem unlockResource = new MenuItem();
+        unlockResource.setId("unlock-resource");
+        unlockResource.setText("Unlock"); // TODO: I18n
+        unlockResource.addSelectionListener(new SelectionListener<MenuEvent>() {
+
+            @Override public void componentSelected(final MenuEvent ce) {
+                final ResourceDTO item =
+                    (ResourceDTO) tbl.getSelectedItem().getModel();
+                new ResourceMgr().unlock(item.getId());
+            }
+
+        });
+        contextMenu.add(unlockResource);
 
         final MenuItem chooseTemplate = new MenuItem();
         chooseTemplate.setId("chooseTemplate-resource");

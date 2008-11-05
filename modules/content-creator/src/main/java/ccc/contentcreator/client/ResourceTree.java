@@ -28,13 +28,12 @@ import com.extjs.gxt.ui.client.data.TreeLoader;
 import com.extjs.gxt.ui.client.store.TreeStore;
 import com.extjs.gxt.ui.client.widget.tree.Tree;
 import com.extjs.gxt.ui.client.widget.tree.TreeItem;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 /**
- * TODO: Add Description for this type.
+ * Renders a tree of folders.
+ * TODO: Rename to FolderTree.
  *
  * @author Civic Computing Ltd.
  */
@@ -72,7 +71,7 @@ public class ResourceTree extends Tree {
             new BaseTreeLoader<FolderDTO>(proxy) {
             @Override
             public boolean hasChildren(final FolderDTO parent) {
-                return parent.getFolderCount() > 0;
+                return parent.getFolderCount().intValue() > 0;
             }
         };
 
@@ -99,23 +98,11 @@ public class ResourceTree extends Tree {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor for this tree's data store.
      *
-     * @return
+     * @return The internal store.
      */
     public TreeStore<FolderDTO> store() {
         return _store;
     }
-
-    public static final void getArray(final String relativeURL,
-                                      final AsyncCallback<List<JsonModelData>> callback) {
-             try {
-                 final String url = Globals.hostURL()+relativeURL;
-                 final RequestBuilder builder =
-                     new RequestBuilder(RequestBuilder.GET, url);
-                 builder.sendRequest(null, new AsyncCallbackBridge(callback));
-             } catch (final RequestException e) {
-                 callback.onFailure(e);
-             }
-         }
 }
