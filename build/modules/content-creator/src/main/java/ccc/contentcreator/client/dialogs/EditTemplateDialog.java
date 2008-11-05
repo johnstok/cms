@@ -144,6 +144,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
         _definition.setFieldLabel("content xml");
         _definition.setAllowBlank(false);
         _definition.setId("content xml");
+        _definition.setHeight(200);
 
         _second.add(_definition, new FormData("90%"));
     }
