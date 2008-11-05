@@ -12,8 +12,10 @@
 package ccc.services;
 
 import java.util.List;
+import java.util.UUID;
 
 import ccc.commons.Maybe;
+import ccc.domain.Entity;
 import ccc.domain.Folder;
 import ccc.domain.Setting;
 import ccc.domain.Setting.Name;
@@ -58,4 +60,24 @@ interface QueryManager {
      * @return
      */
     <T> List<T> list(String queryName, Class<T> resultType, Object... params);
+
+    /**
+     * Look up an entity of the specified class.
+     *
+     * @param type The class representing the type of entity to lookup.
+     * @param id The UUID for the entity, as a string.
+     * @param <T> The type of entity to look up.
+     * @return The entity or null if it doesn't exist.
+     */
+    <T extends Entity> T find(Class<T> type, String id);
+
+    /**
+     * Look up an entity of the specified class.
+     *
+     * @param type The class representing the type of entity to lookup.
+     * @param id The UUID for the entity.
+     * @param <T> The type of entity to look up.
+     * @return The entity or null if it doesn't exist.
+     */
+    <T extends Entity> T find(Class<T> type, UUID id);
 }

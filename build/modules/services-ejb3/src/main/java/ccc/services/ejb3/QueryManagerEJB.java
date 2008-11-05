@@ -27,6 +27,7 @@ import javax.persistence.Query;
 
 import ccc.commons.DBC;
 import ccc.commons.Maybe;
+import ccc.domain.Entity;
 import ccc.domain.Folder;
 import ccc.domain.ResourceName;
 import ccc.domain.Setting;
@@ -169,5 +170,19 @@ public final class QueryManagerEJB implements QueryManagerLocal {
         }
         return q.getResultList();
 
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public <T extends Entity> T find(final Class<T> type, final String id) {
+        return find(type, UUID.fromString(id));
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public <T extends Entity> T find(final Class<T> type, final UUID id) {
+        return _em.find(type, id);
     }
 }
