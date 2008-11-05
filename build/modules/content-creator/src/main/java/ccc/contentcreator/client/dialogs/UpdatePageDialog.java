@@ -115,52 +115,7 @@ public class UpdatePageDialog
                 }
             ));
 
-        addButton(
-            new Button(
-                _uiConstants.save(),
-                new SelectionListener<ButtonEvent>() {
-                @Override
-                public void componentSelected(final ButtonEvent ce) {
-
-                        if (_title.getValue() == null
-                            || _title.getValue().trim().length() == 0) {
-//                            _title.setStyleName("gwt-TextBox-error");
-                            return;
-                        }
-
-//                        _title.setStyleName("gwt-TextBox");
-
-                        final Map<String, String> paragraphs =
-                            new HashMap<String, String>();
-                        for (final TextArea para : _paras) {
-                            String body = para.getValue();
-                            if (null == body || body.trim().length()==0) {
-                                body = "<!-- empty -->";
-                            }
-                            paragraphs.put(para.getFieldLabel(), body);
-                        }
-//
-                        final AsyncCallback<Void> callback =
-                            new AsyncCallback<Void>() {
-                                public void onFailure(final Throwable arg0) {
-                                    GWT.log("Page saving failed", arg0);
-                                }
-                                public void onSuccess(final Void arg0) {
-                                    hide();
-                                    //TODO: tree.fire_selection_event();
-                                }
-                            };
-
-//                            final AsyncCallback<Void> callback =
-//                                new DisposingCallback(_app, UpdatePageDialog.this);
-
-                        _resourceService.saveContent(
-                            _contentPath,
-                            _title.getValue(),
-                            paragraphs,
-                            callback);
-                    }
-                }));
+        addButton(createSaveButton());
 
         final AsyncCallback<PageDTO> callback =
             new ErrorReportingCallback<PageDTO>() {
@@ -196,11 +151,51 @@ public class UpdatePageDialog
 
                     _paras.add(area);
                 }
-
+            UpdatePageDialog.this.layout(); // Refresh UI when callback is done
             }
         };
-
         _resourceService.getResource(_contentPath, callback);
     }
 
+    private Button createSaveButton() {
+
+        return new Button(
+            _uiConstants.save(),
+            new SelectionListener<ButtonEvent>() {
+            @Override
+            public void componentSelected(final ButtonEvent ce) {
+
+                    if (_title.getValue() == null
+                        || _title.getValue().trim().length() == 0) {
+                        return;
+                    }
+
+                    final Map<String, String> paragraphs =
+                        new HashMap<String, String>();
+                    for (final TextArea para : _paras) {
+                        String body = para.getValue();
+                        if (null == body || body.trim().length()==0) {
+                            body = "<!-- empty -->";
+                        }
+                        paragraphs.put(para.getFieldLabel(), body);
+                    }
+                    final AsyncCallback<Void> callback =
+                        new AsyncCallback<Void>() {
+                            public void onFailure(final Throwable arg0) {
+                                GWT.log("Page saving failed", arg0);
+                            }
+                            public void onSuccess(final Void arg0) {
+                                hide();
+                                //TODO: tree.fire_selection_event();
+                            }
+                        };
+
+                    _resourceService.saveContent(
+                        _contentPath,
+                        _title.getValue(),
+                        paragraphs,
+                        callback);
+                }
+            });
+    }
 }
