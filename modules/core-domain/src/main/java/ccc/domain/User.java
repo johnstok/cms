@@ -40,7 +40,7 @@ public class User extends Entity {
      * N.B. This constructor should only be used for persistence.
      */
     @SuppressWarnings("unused")
-    private User() { super(); }
+    protected User() { super(); }
 
     /**
      * Constructor.
