@@ -48,6 +48,8 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
     protected static final int DEFAULT_WIDTH = 640;
     /** DEFAULT_HEIGHT : int. */
     protected static final int DEFAULT_HEIGHT = 480;
+    /** TEXT_AREA_HEIGHT : int. */
+    protected static final int TEXT_AREA_HEIGHT = 250;
 
     /** _constants : UIConstants. */
     private final UIConstants _constants = Globals.uiConstants();
@@ -144,7 +146,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
         _definition.setFieldLabel("content xml");
         _definition.setAllowBlank(false);
         _definition.setId("content xml");
-        _definition.setHeight(200);
+        _definition.setHeight(TEXT_AREA_HEIGHT);
 
         _second.add(_definition, new FormData("90%"));
     }
@@ -158,6 +160,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
         _body.setFieldLabel(_constants.body());
         _body.setAllowBlank(false);
         _body.setId(_constants.body());
+        _body.setHeight(TEXT_AREA_HEIGHT);
 
         _third.add(_body, new FormData("90%"));
     }
