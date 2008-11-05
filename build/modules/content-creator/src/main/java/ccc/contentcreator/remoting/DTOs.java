@@ -11,8 +11,6 @@
  */
 package ccc.contentcreator.remoting;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -316,13 +314,8 @@ public final class DTOs {
             p = Paragraph.fromText(paragraphDTO.getValue());
         } else if (paragraphDTO.getType().equals(Paragraph.Type.DATE.name())) {
 
-            try {
-                final Date date = DateFormat.getInstance().parse(paragraphDTO.getValue());
-                p = Paragraph.fromDate(date);
-            } catch (final ParseException e) {
-                // TODO Auto-generated catch block
-                throw new RuntimeException(e);
-            }
+            final Date date = new Date(new Long(paragraphDTO.getValue()));
+            p = Paragraph.fromDate(date);
         }
         return p;
     }

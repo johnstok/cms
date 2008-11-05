@@ -17,13 +17,15 @@ import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.layout.CardLayout;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 
 
 /**
- * TODO: Add Description for this type.
+ * Abstract class for wizard type card layout.
+ * Contains logic and event handling for next, previous and cancel buttons.
  *
  * @author Civic Computing Ltd.
  */
@@ -33,7 +35,8 @@ AbstractBaseDialog {
     /** _layout : CardLayout. */
     private final CardLayout _layout = new CardLayout();
 
-    private ArrayList<Component> _cards = new ArrayList<Component>();
+    private ArrayList<LayoutContainer> _cards =
+        new ArrayList<LayoutContainer>();
 
     private final Button _save = new Button(
         _constants.save(),
@@ -113,7 +116,7 @@ AbstractBaseDialog {
      *
      * @param component New component.
      */
-    public void addCard(final Component component) {
+    public void addCard(final LayoutContainer component) {
         _cards.add(component);
     }
 
@@ -137,26 +140,31 @@ AbstractBaseDialog {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
                 final int currentIndex = currentIndex(_layout.getActiveItem());
+                LayoutContainer card = null;
 
                 if (_cards.size() == 2) {
                     if (currentIndex == 0) {
                         _prev.setVisible(true);
                         _next.setVisible(false);
                         _save.setVisible(true);
-                        _layout.setActiveItem(_cards.get(1));
+                        card = _cards.get(1);
                     }
                 } else if (_cards.size() > 2) {
                     if (currentIndex == 0) {
                         _prev.setVisible(true);
-                        _layout.setActiveItem(_cards.get(currentIndex+1));
+                        card = _cards.get(currentIndex+1);
                     } else if (currentIndex > 0
                             && currentIndex < _cards.size()-2) {
-                        _layout.setActiveItem(_cards.get(currentIndex+1));
+                        card = _cards.get(currentIndex+1);
                     } else if (currentIndex == _cards.size()-2) {
                         _next.setVisible(false);
                         _save.setVisible(true);
-                        _layout.setActiveItem(_cards.get(currentIndex+1));
+                        card = _cards.get(currentIndex+1);
                     }
+                }
+                if (card != null) {
+                    _layout.setActiveItem(card);
+                    card.layout();
                 }
 
             }
@@ -167,26 +175,31 @@ AbstractBaseDialog {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
                 final int currentIndex = currentIndex(_layout.getActiveItem());
+                LayoutContainer card = null;
 
                 if (_cards.size() == 2) {
                     if (currentIndex == _cards.size()-1) {
                         _prev.setVisible(false);
                         _next.setVisible(true);
                         _save.setVisible(false);
-                        _layout.setActiveItem(_cards.get(0));
+                        card = _cards.get(0);
                     }
                 } else if (_cards.size() > 2) {
                     if (currentIndex == 1) {
                         _prev.setVisible(false);
-                        _layout.setActiveItem(_cards.get(0));
+                        card = _cards.get(0);
                     } else if (currentIndex > 1
                             && currentIndex < _cards.size()-1) {
-                        _layout.setActiveItem(_cards.get(currentIndex-1));
+                        card = _cards.get(currentIndex-1);
                     } else if (currentIndex == _cards.size()-1) {
                         _next.setVisible(true);
                         _save.setVisible(false);
-                        _layout.setActiveItem(_cards.get(currentIndex-1));
+                        card = _cards.get(currentIndex-1);
                     }
+                }
+                if (card != null) {
+                    _layout.setActiveItem(card);
+                    card.layout();
                 }
             }
         };

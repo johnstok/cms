@@ -32,7 +32,7 @@
             <composite-element class="ccc.domain.Paragraph">
                 <property name="_string" not-null="false" type="text"></property>
                 <property name="_boolean" not-null="false" type="boolean"></property>
-                <property name="_date" not-null="false" type="calendar"></property>
+                <property name="_date" not-null="false" type="timestamp"></property>
                 <property name="_type" not-null="true" type="ParargraphType"></property>
             </composite-element>
         </map>

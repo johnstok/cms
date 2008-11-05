@@ -12,7 +12,6 @@
 package ccc.contentcreator.client.dialogs;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +37,7 @@ import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.TextField;
@@ -208,9 +208,10 @@ public class CreatePageDialog
                         paragraphs.put(c.getId(),
                             new ParagraphDTO("TEXT", f.getValue()));
                     } else if ("DATE".equals(c.getData("type"))) {
-                        final Field<Date> f = (Field<Date>) c;
+                        final DateField f = (DateField) c;
                         paragraphs.put(c.getId(),
-                            new ParagraphDTO("DATE", f.getValue().toString()));
+                            new ParagraphDTO("DATE",
+                                ""+f.getValue().getTime()));
                     }
                 }
 
