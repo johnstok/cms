@@ -118,12 +118,13 @@ public class ResourceDAOTest
     public void testUnlockedResourceCanBeLocked() {
 
         // ARRANGE
+        expect(_qm.find(Resource.class, _r.id().toString())).andReturn(_r);
         expect(_users.loggedInUser()).andReturn(_regularUser);
         replay(_users, _qm);
         final ResourceDAOLocal rdao = new ResourceDAO(_users, _qm);
 
         // ACT
-        rdao.lock(_r);
+        rdao.lock(_r.id().toString());
 
         // ASSERT
         assertEquals(_regularUser, _r.lockedBy());
@@ -136,13 +137,14 @@ public class ResourceDAOTest
     public void testLockedResourceCannotBeRelockedBySomeoneElse() {
 
         // ARRANGE
+        expect(_qm.find(Resource.class, _r.id().toString())).andReturn(_r);
         replay(_users, _qm);
         final ResourceDAOLocal rdao = new ResourceDAO(_users, _qm);
         _r.lock(_anotherUser);
 
         // ACT
         try {
-            rdao.lock(_r);
+            rdao.lock(_r.id().toString());
             fail("Lock should fail.");
 
         // ASSERT

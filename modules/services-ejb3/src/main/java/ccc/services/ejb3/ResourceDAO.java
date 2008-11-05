@@ -11,7 +11,14 @@
  */
 package ccc.services.ejb3;
 
+import static javax.ejb.TransactionAttributeType.*;
+
 import java.util.List;
+
+import javax.ejb.EJB;
+import javax.ejb.Local;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
 
 import ccc.domain.CCCException;
 import ccc.domain.CreatorRoles;
@@ -27,10 +34,18 @@ import ccc.services.UserManagerLocal;
  *
  * @author Civic Computing Ltd.
  */
+@Stateless(name="ResourceDAO")
+@TransactionAttribute(REQUIRED)
+@Local(ResourceDAOLocal.class)
 public class ResourceDAO implements ResourceDAOLocal {
 
+    @EJB(name="UserManager", beanInterface=UserManagerLocal.class)
     private UserManagerLocal _users;
+    @EJB(name="QueryManager", beanInterface=QueryManagerLocal.class)
     private QueryManagerLocal _queries;
+
+    /** Constructor. */
+    @SuppressWarnings("unused") private ResourceDAO() { /* NO-OP */ }
 
     /**
      * Constructor.
@@ -46,7 +61,8 @@ public class ResourceDAO implements ResourceDAOLocal {
 
     /** {@inheritDoc} */
     @Override
-    public void lock(final Resource r) {
+    public void lock(final String resourceId) {
+        final Resource r = _queries.find(Resource.class, resourceId);
         if (r.isLocked()) {
             throw new CCCException("Resource is already locked.");
         }

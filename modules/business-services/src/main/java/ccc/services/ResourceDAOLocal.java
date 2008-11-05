@@ -13,6 +13,11 @@ package ccc.services;
 
 import java.util.List;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+
 import ccc.domain.Resource;
 
 
@@ -21,6 +26,7 @@ import ccc.domain.Resource;
  *
  * @author Civic Computing Ltd.
  */
+@Path("/resources")
 public interface ResourceDAOLocal {
 
     /**
@@ -28,9 +34,12 @@ public interface ResourceDAOLocal {
      * The resource will be locked by the currently logged in user.
      * If the resource is already locked a CCCException will be thrown.
      *
-     * @param r The resource to lock.
+     * @param resourceId The uuid of the resource to lock.
      */
-    void lock(Resource r);
+    @GET // TODO: Should be POST
+    @Path("/lock/{id}")
+    @Produces("text/plain")
+    void lock(@PathParam("id") String resourceId);
 
     /**
      * Unlock the specified Resource.
@@ -51,6 +60,9 @@ public interface ResourceDAOLocal {
      *
      * @return The list of resources.
      */
+    @GET
+    @Path("/locked")
+    @Produces("text/plain")
     List<Resource> locked();
 
 }
