@@ -14,6 +14,7 @@ package ccc.services.ejb3;
 import static javax.ejb.TransactionAttributeType.*;
 import static javax.persistence.PersistenceContextType.*;
 
+import java.security.Principal;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.UUID;
@@ -30,6 +31,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import ccc.domain.CreatorRoles;
+import ccc.domain.Password;
 import ccc.domain.User;
 import ccc.services.UserManagerLocal;
 import ccc.services.UserManagerRemote;
@@ -62,9 +64,10 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
      * Constructor.
      *
      * @param em A JPA entity manager.
-     * @param context
+     * @param context The j2ee context within which this ejb operates.
      */
-    public UserManagerEJB(final EntityManager em, final EJBContext context) {
+    public UserManagerEJB(final EntityManager em,
+                          final EJBContext context) {
         _em = em;
         _context = context;
     }
@@ -73,6 +76,8 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
     @Override
     public void createUser(final User user) {
         _em.persist(user);
+        final Password defaultPassword = new Password(user, "pw");
+        _em.persist(defaultPassword);
     }
 
     /** {@inheritDoc} */
@@ -195,7 +200,8 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
     /** {@inheritDoc} */
     @Override
     public User loggedInUser() {
-        final String principalName = _context.getCallerPrincipal().getName();
+        final Principal p = _context.getCallerPrincipal();
+        final String principalName = p.getName();
         final User user = _em.find(User.class, UUID.fromString(principalName));
         return user;
     }

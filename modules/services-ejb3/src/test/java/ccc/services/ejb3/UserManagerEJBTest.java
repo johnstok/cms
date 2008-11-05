@@ -24,6 +24,7 @@ import javax.persistence.Query;
 
 import junit.framework.TestCase;
 import ccc.domain.CreatorRoles;
+import ccc.domain.Password;
 import ccc.domain.User;
 
 
@@ -115,6 +116,7 @@ public class UserManagerEJBTest extends TestCase {
         // ARRANGE
         final User u = new User("fooDummy");
         _em.persist(u);
+        _em.persist(isA(Password.class));
         replay(_em);
 
         final UserManagerEJB um = new UserManagerEJB(_em, _context);
