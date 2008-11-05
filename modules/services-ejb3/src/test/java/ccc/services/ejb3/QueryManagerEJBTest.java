@@ -23,6 +23,8 @@ import junit.framework.TestCase;
 import ccc.commons.Maybe;
 import ccc.commons.Testing;
 import ccc.domain.Folder;
+import ccc.domain.Page;
+import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.Setting;
 import ccc.domain.Setting.Name;
@@ -35,6 +37,52 @@ import ccc.services.ejb3.QueryManagerEJB.NamedQueries;
  * @author Civic Computing Ltd.
  */
 public class QueryManagerEJBTest extends TestCase {
+
+    private Resource _r = new Page("foo");
+
+    /**
+     * Test.
+     */
+    public void testFindByUuid() {
+
+        // ARRANGE
+        final Query q = createStrictMock(Query.class);
+        replay(q);
+
+        final EntityManager em = createStrictMock(EntityManager.class);
+        expect(em.find(Resource.class, _r.id())).andReturn(_r);
+        replay(em);
+
+        final QueryManagerEJB qs = new QueryManagerEJB(em);
+
+        // ACT
+        qs.find(Resource.class, _r.id());
+
+        // ASSERT
+        verify(q, em);
+    }
+
+    /**
+     * Test.
+     */
+    public void testFindByString() {
+
+        // ARRANGE
+        final Query q = createStrictMock(Query.class);
+        replay(q);
+
+        final EntityManager em = createStrictMock(EntityManager.class);
+        expect(em.find(Resource.class, _r.id())).andReturn(_r);
+        replay(em);
+
+        final QueryManagerEJB qs = new QueryManagerEJB(em);
+
+        // ACT
+        qs.find(Resource.class, _r.id().toString());
+
+        // ASSERT
+        verify(q, em);
+    }
 
     /**
      * Test.
