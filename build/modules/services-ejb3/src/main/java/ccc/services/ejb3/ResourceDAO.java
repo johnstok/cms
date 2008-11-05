@@ -71,8 +71,9 @@ public class ResourceDAO implements ResourceDAOLocal {
 
     /** {@inheritDoc} */
     @Override
-    public void unlock(final Resource r) {
+    public void unlock(final String resourceId) {
         final User loggedInUser = _users.loggedInUser();
+        final Resource r = _queries.find(Resource.class, resourceId);
         if (canUnlock(r, loggedInUser)) {
             r.unlock();
         } else {

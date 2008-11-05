@@ -49,6 +49,7 @@ public class ResourceDAOTest
 
         // ARRANGE
         expect(_users.loggedInUser()).andReturn(_regularUser);
+        expect(_qm.find(Resource.class, _r.id().toString())).andReturn(_r);
         replay(_users, _qm);
 
         final ResourceDAOLocal rdao = new ResourceDAO(_users, _qm);
@@ -56,7 +57,7 @@ public class ResourceDAOTest
         _r.lock(_regularUser);
 
         // ACT
-        rdao.unlock(_r);
+        rdao.unlock(_r.id().toString());
 
         // ASSERT
         assertFalse("Should be unlocked.", _r.isLocked());
@@ -70,6 +71,7 @@ public class ResourceDAOTest
 
         // ARRANGE
         expect(_users.loggedInUser()).andReturn(_regularUser);
+        expect(_qm.find(Resource.class, _r.id().toString())).andReturn(_r);
         replay(_users, _qm);
 
         final ResourceDAOLocal rdao = new ResourceDAO(_users, _qm);
@@ -78,7 +80,7 @@ public class ResourceDAOTest
 
         // ACT
         try {
-            rdao.unlock(_r);
+            rdao.unlock(_r.id().toString());
             fail("Should fail.");
 
         // ASSERT
@@ -98,6 +100,7 @@ public class ResourceDAOTest
 
         // ARRANGE
         expect(_users.loggedInUser()).andReturn(_adminUser);
+        expect(_qm.find(Resource.class, _r.id().toString())).andReturn(_r);
         replay(_users, _qm);
 
         final ResourceDAOLocal rdao = new ResourceDAO(_users, _qm);
@@ -105,7 +108,7 @@ public class ResourceDAOTest
         _r.lock(_regularUser);
 
         // ACT
-        rdao.unlock(_r);
+        rdao.unlock(_r.id().toString());
 
         // ASSERT
         assertFalse("Should be unlocked.", _r.isLocked());
