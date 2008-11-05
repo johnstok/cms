@@ -43,10 +43,16 @@ public interface ResourceDAOLocal {
 
     /**
      * Unlock the specified Resource.
+     * If the logged in user does not have privileges to unlock this resource a
+     * CCCException will be thrown.
+     * Unlocking an unlocked resource has no effect.
      *
      * @param r The resource to unlock.
      */
-    void unlock(Resource r);
+    @GET // TODO: Should be POST
+    @Path("/unlock/{id}")
+    @Produces("text/plain")
+    void unlock(@PathParam("id") String resourceId);
 
     /**
      * List the resources locked by the currently logged in user.
