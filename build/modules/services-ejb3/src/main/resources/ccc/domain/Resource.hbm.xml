@@ -48,4 +48,6 @@
         />
         
 	</class>
+    
+    <query name="lockedResources">from ccc.domain.Resource r where r._lockedBy is not null</query>
 </hibernate-mapping>
