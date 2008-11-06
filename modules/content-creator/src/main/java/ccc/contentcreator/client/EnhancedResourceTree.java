@@ -172,7 +172,7 @@ public class EnhancedResourceTree extends ResourceTree {
                             Window.alert(Globals.uiConstants().error());
                         }
                         public void onSuccess(final List<TemplateDTO> list) {
-                            new CreatePageDialog(list, item).show();
+                            new CreatePageDialog(list, item, _rt).show();
                         }});
             }
         });

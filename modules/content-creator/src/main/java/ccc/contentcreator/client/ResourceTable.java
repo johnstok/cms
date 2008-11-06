@@ -65,6 +65,7 @@ public class ResourceTable extends ContentPanel {
 
     private final ListStore<ResourceDTO> _detailsStore =
         new ListStore<ResourceDTO>();
+    private TreeItem _previousItem = null;
 
     /**
      * Constructor.
@@ -310,6 +311,7 @@ public class ResourceTable extends ContentPanel {
      * @param selectedItem The item whose children we should display.
      */
     public void displayResourcesFor(final TreeItem selectedItem) {
+        _previousItem = selectedItem;
         _detailsStore.removeAll();
 
         // TODO: handle getSelectedItem() being null.
@@ -322,6 +324,16 @@ public class ResourceTable extends ContentPanel {
                     detailsStore().add(result);
                 }
         });
+    }
+
+    /**
+     * Refresh view.
+     *
+     */
+    public void refreshTable() {
+        if (_previousItem  != null) {
+            displayResourcesFor(_previousItem);
+        }
     }
 
     /**
