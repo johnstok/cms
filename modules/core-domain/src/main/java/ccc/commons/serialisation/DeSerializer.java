@@ -1,0 +1,45 @@
+/*-----------------------------------------------------------------------------
+ * Copyright (c) 2008 Civic Computing Ltd.
+ * All rights reserved.
+ *
+ * Revision      $Rev$
+ * Modified by   $Author$
+ * Modified on   $Date$
+ *
+ * Changes: see subversion log.
+ *-----------------------------------------------------------------------------
+ */
+package ccc.commons.serialisation;
+
+
+/**
+ * TODO: Add Description for this type.
+ *
+ * @author Civic Computing Ltd.
+ */
+public interface DeSerializer extends Iterable<String> {
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param string
+     * @return
+     */
+    String string(String string);
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param string
+     * @return
+     */
+    int integer(String string);
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param string
+     * @return
+     */
+    DeSerializer dict(String string);
+}
