@@ -173,7 +173,8 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
             _templateTitle.getValue(),
             _description.getValue(),
             _body.getValue(),
-            _definition.getValue());
+            _definition.getValue(),
+            "");
     }
 
     /** {@inheritDoc} */

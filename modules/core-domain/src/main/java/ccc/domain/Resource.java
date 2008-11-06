@@ -13,6 +13,7 @@
 package ccc.domain;
 
 import static ccc.commons.DBC.*;
+import ccc.commons.serialisation.Serializer;
 
 /**
  * An abstract superclass that contains shared behaviour for the different types
@@ -122,10 +123,6 @@ public abstract class Resource extends Entity {
         : parent().absolutePath().append(name());
     }
 
-    /* ====================================================================
-     * Accessors & Mutators.
-     * ==================================================================*/
-
     /**
      * Accessor for name.
      *
@@ -213,6 +210,7 @@ public abstract class Resource extends Entity {
 
     /**
      * TODO: Add a description of this method.
+     * TODO: Should check that isLocked == false
      *
      * @param u
      */
@@ -235,5 +233,21 @@ public abstract class Resource extends Entity {
      */
     public void unlock() {
         _lockedBy = null;
+    }
+
+    public boolean canUnlock(final User user) {
+        return user.equals(lockedBy())
+        || user.hasRole(CreatorRoles.ADMINISTRATOR);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void serialize(final Serializer s) {
+        super.serialize(s);
+        s.string("title", title());
+        s.string("name", name().toString());
+        s.string("locked", (isLocked()) ? lockedBy().username() : "");
+        // Template
+        // Parent
     }
 }

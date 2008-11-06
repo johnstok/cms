@@ -138,7 +138,8 @@ public class CreateAliasDialog extends AbstractEditDialog {
                     new AliasDTO(
                         _aliasName.getValue(),
                         _aliasName.getValue(),
-                        _target.getId()),
+                        _target.getId(),
+                        ""),
                     new DisposingCallback(CreateAliasDialog.this));
             }
         };

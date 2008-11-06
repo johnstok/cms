@@ -23,7 +23,7 @@ public class FolderDTO extends ResourceDTO {
 
 
     @SuppressWarnings("unused") // Required for GWT
-    private FolderDTO() { super(null, null, null); }
+    private FolderDTO() { super(null, null, null, null); }
 
     /**
      * Constructor.
@@ -38,9 +38,10 @@ public class FolderDTO extends ResourceDTO {
                      final int version,
                      final String name,
                      final String title,
-                     final int folderCount) {
+                     final int folderCount,
+                     final String locked) {
 
-        super(id, version, "FOLDER", name, title);
+        super(id, version, "FOLDER", name, title, locked);
         set("folderCount", folderCount);
     }
 

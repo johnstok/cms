@@ -220,7 +220,8 @@ public class CreatePageDialog
                     -1,
                     _name.getValue(),
                     _title.getValue(),
-                    paragraphs);
+                    paragraphs,
+                    "");
 
                 final TemplateDTO template =
                     _grid.getSelectionModel().getSelectedItem();

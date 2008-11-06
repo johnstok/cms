@@ -31,7 +31,7 @@ public class FolderDTOTest
         // ARRANGE
 
         // ACT
-        final FolderDTO f = new FolderDTO("id", 0, "name", "title", 0);
+        final FolderDTO f = new FolderDTO("id", 0, "name", "title", 0, "");
 
         // ASSERT
         assertEquals("id", f.getId());

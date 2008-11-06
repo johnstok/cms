@@ -38,13 +38,15 @@ public class ResourceDTO extends BaseModelData implements DTO {
                        final int version,
                        final String type,
                        final String name,
-                       final String title) {
+                       final String title,
+                       final String locked) {
 
         set("id", id);
         set("version", version);
         set("type", type);
         set("name", name);
         set("title", title);
+        set("locked", locked);
     }
 
     /**
@@ -58,13 +60,9 @@ public class ResourceDTO extends BaseModelData implements DTO {
      */
     public ResourceDTO(final String type,
                        final String name,
-                       final String title) {
-
-        set("id", null);
-        set("version", -1);
-        set("type", type);
-        set("name", name);
-        set("title", title);
+                       final String title,
+                       final String locked) {
+        this(null, -1, type, name, title, locked);
     }
 
     @SuppressWarnings("unused") // Required for GWT

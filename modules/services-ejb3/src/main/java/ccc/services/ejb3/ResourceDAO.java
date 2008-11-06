@@ -21,7 +21,6 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
 import ccc.domain.CCCException;
-import ccc.domain.CreatorRoles;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.services.QueryManagerLocal;
@@ -61,24 +60,27 @@ public class ResourceDAO implements ResourceDAOLocal {
 
     /** {@inheritDoc} */
     @Override
-    public void lock(final String resourceId) {
+    public Resource lock(final String resourceId) {
         final Resource r = _queries.find(Resource.class, resourceId);
         if (r.isLocked()) {
             throw new CCCException("Resource is already locked.");
         }
         r.lock(_users.loggedInUser());
+        return r;
     }
 
     /** {@inheritDoc} */
     @Override
-    public void unlock(final String resourceId) {
+    public Resource unlock(final String resourceId) {
         final User loggedInUser = _users.loggedInUser();
         final Resource r = _queries.find(Resource.class, resourceId);
-        if (canUnlock(r, loggedInUser)) {
+        // TODO: Test that r.isLocked() == true
+        if (r.canUnlock(loggedInUser)) { // TODO: Fold if/else into r.unlock()?
             r.unlock();
         } else {
             throw new CCCException("User not allowed to unlock this resource.");
         }
+        return r;
     }
 
 
@@ -95,11 +97,5 @@ public class ResourceDAO implements ResourceDAOLocal {
     @Override
     public List<Resource> locked() {
         return _queries.list("lockedResources", Resource.class);
-    }
-
-    /* TODO: Move to resource class? */
-    private boolean canUnlock(final Resource r, final User loggedInUser) {
-        return loggedInUser.equals(r.lockedBy())
-        || loggedInUser.hasRole(CreatorRoles.ADMINISTRATOR);
     }
 }

@@ -27,7 +27,8 @@ import com.google.gwt.json.client.JSONValue;
 
 
 /**
- * TODO: Add Description for this type.
+ * This class allows us to expose a GWT {@link JSONObject} as a GXT
+ * {@link ModelData} object.
  *
  * @author Civic Computing Ltd.
  */
@@ -106,12 +107,13 @@ public class JsonModelData
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Factory method to create a list of JsonModelData from a JSON array.
      *
-     * @param jsonValue
-     * @return
+     * @param jsonValue The value to decorate.
+     * @return The input wrapped in a list of JsonModelData objects.
      */
-    public static final List<JsonModelData> fromArray(final JSONValue jsonValue) {
+    public static final List<JsonModelData> fromArray(
+                                                final JSONValue jsonValue) {
         final List<JsonModelData> modelData = new ArrayList<JsonModelData>();
         final JSONArray array = jsonValue.isArray();
         for (int i=0; i<array.size(); i++) {
@@ -121,12 +123,18 @@ public class JsonModelData
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Factory method to create JsonModelData from a JSON value.
      *
-     * @param jsonValue
-     * @return
+     * @param jsonValue The value to decorate.
+     * @return The input wrapped in a JsonModelData.
      */
     public static final JsonModelData fromObject(final JSONValue jsonValue) {
         return new JsonModelData(jsonValue.isObject());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+        return _object.toString();
     }
 }

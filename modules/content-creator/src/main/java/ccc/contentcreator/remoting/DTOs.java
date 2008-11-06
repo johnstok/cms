@@ -51,6 +51,12 @@ public final class DTOs {
 
     private DTOs() { super(); }
 
+
+
+    /* =====================================================================
+     * Create domain object from DTO.
+     * ===================================================================*/
+
     /**
      * Create a {@link Template} from a {@link TemplateDTO}.
      *
@@ -75,19 +81,46 @@ public final class DTOs {
     /**
      * TODO: Add a description of this method.
      *
-     * @param <T>
-     * @param <U>
-     * @param resources
+     * @param userDto
      * @return
      */
-    public static <T extends ResourceDTO, U extends Resource> List<T>
-        dtoFrom(final Collection<U> resources, final Class<T> resourceType) {
-        final List<T> dtos = new ArrayList<T>();
-        for (final U resource : resources) {
-            dtos.add(resourceType.cast(dtoFrom(resource)));
+    public static User userFrom(final UserDTO userDto) {
+        final User u = new User(userDto.getUsername());
+        if (null!=userDto.getId()) {
+            u.id(UUID.fromString(userDto.getId()));
+            u.version(userDto.getVersion());
         }
-        return dtos;
+        u.email(userDto.getEmail());
+        for (final String role : userDto.getRoles()) {
+            u.addRole(CreatorRoles.valueOf(role));
+        }
+
+        return u;
     }
+
+    /**
+     * Create a {@link Paragraph} from a {@link ParagraphDTO}.
+     *
+     * @param paragraphDTO The dto from which to create the paragraph.
+     * @return A paragraph or null (in case paragraph type is invalid).
+     */
+    public static Paragraph paragraphFrom(final ParagraphDTO paragraphDTO) {
+        Paragraph p = null;
+        if (paragraphDTO.getType().equals(Paragraph.Type.TEXT.name())) {
+            p = Paragraph.fromText(paragraphDTO.getValue());
+        } else if (paragraphDTO.getType().equals(Paragraph.Type.DATE.name())) {
+
+            final Date date = new Date(new Long(paragraphDTO.getValue()));
+            p = Paragraph.fromDate(date);
+        }
+        return p;
+    }
+
+
+
+    /* =====================================================================
+     * Create DTO object from domain object.
+     * ===================================================================*/
 
     /**
      * Convert a resource to a dto.
@@ -140,7 +173,8 @@ public final class DTOs {
                 template.title(),
                 template.description(),
                 template.body(),
-                template.definition());
+                template.definition(),
+                (template.isLocked()) ? template.lockedBy().username() : "");
         return dto;
     }
 
@@ -157,7 +191,8 @@ public final class DTOs {
             f.version(),
             f.name().toString(),
             f.title(),
-            f.folderCount()
+            f.folderCount(),
+            (f.isLocked()) ? f.lockedBy().username() : ""
         );
     }
 
@@ -177,7 +212,8 @@ public final class DTOs {
             f.size(),
             f.mimeType().toString(),
             f.fileData().id().toString(),
-            f.description()
+            f.description(),
+            (f.isLocked()) ? f.lockedBy().username() : ""
         );
     }
 
@@ -209,7 +245,8 @@ public final class DTOs {
             p.version(),
             p.name().toString(),
             p.title(),
-            paragraphs
+            paragraphs,
+            (p.isLocked()) ? p.lockedBy().username() : ""
         );
     }
 
@@ -226,7 +263,8 @@ public final class DTOs {
             a.version(),
             a.name().toString(),
             a.title(),
-            a.target().id().toString()
+            a.target().id().toString(),
+            (a.isLocked()) ? a.lockedBy().username() : ""
         );
     }
 
@@ -251,40 +289,6 @@ public final class DTOs {
     }
 
     /**
-     * TODO: Add a description of this method.
-     *
-     * @param userList
-     * @return
-     */
-    public static List<UserDTO> dtoFrom(final Collection<User> userList) {
-        final ArrayList<UserDTO> dtos = new ArrayList<UserDTO>();
-        for (final User u : userList) {
-            dtos.add(dtoFrom(u));
-        }
-        return dtos;
-    }
-
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param userDto
-     * @return
-     */
-    public static User userFrom(final UserDTO userDto) {
-        final User u = new User(userDto.getUsername());
-        if (null!=userDto.getId()) {
-            u.id(UUID.fromString(userDto.getId()));
-            u.version(userDto.getVersion());
-        }
-        u.email(userDto.getEmail());
-        for (final String role : userDto.getRoles()) {
-            u.addRole(CreatorRoles.valueOf(role));
-        }
-
-        return u;
-    }
-
-    /**
      * Create a {@link ParagraphDTO} for a paragraph resource.
      *
      * @param para The Paragraph.
@@ -303,20 +307,33 @@ public final class DTOs {
     }
 
     /**
-     * Create a {@link Paragraph} from a {@link ParagraphDTO}.
+     * TODO: Add a description of this method.
      *
-     * @param paragraphDTO The dto from which to create the paragraph.
-     * @return A paragraph or null (in case paragraph type is invalid).
+     * @param userList
+     * @return
      */
-    public static Paragraph paragraphFrom(final ParagraphDTO paragraphDTO) {
-        Paragraph p = null;
-        if (paragraphDTO.getType().equals(Paragraph.Type.TEXT.name())) {
-            p = Paragraph.fromText(paragraphDTO.getValue());
-        } else if (paragraphDTO.getType().equals(Paragraph.Type.DATE.name())) {
-
-            final Date date = new Date(new Long(paragraphDTO.getValue()));
-            p = Paragraph.fromDate(date);
+    public static List<UserDTO> dtoFrom(final Collection<User> userList) {
+        final ArrayList<UserDTO> dtos = new ArrayList<UserDTO>();
+        for (final User u : userList) {
+            dtos.add(dtoFrom(u));
         }
-        return p;
+        return dtos;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param <T>
+     * @param <U>
+     * @param resources
+     * @return
+     */
+    public static <T extends ResourceDTO, U extends Resource> List<T>
+        dtoFrom(final Collection<U> resources, final Class<T> resourceType) {
+        final List<T> dtos = new ArrayList<T>();
+        for (final U resource : resources) {
+            dtos.add(resourceType.cast(dtoFrom(resource)));
+        }
+        return dtos;
     }
 }
