@@ -219,7 +219,8 @@ public class UserTable extends ContentPanel {
      *
      */
     public void refreshUsers() {
-        if (_lastSelected != null && !"Search".equals(_lastSelected.getText())) {
+        if (_lastSelected != null
+                && !"Search".equals(_lastSelected.getText())) {
             displayUsersFor(_lastSelected);
         }
     }

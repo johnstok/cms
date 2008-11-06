@@ -46,8 +46,8 @@ public final class Validate {
     private boolean _continue = true;
     private final List<String> _errors = new ArrayList<String>();
     private final Runnable _action;
-    private final List<Validator> validators = new ArrayList<Validator>();
-    private int nextValidation = 0;
+    private final List<Validator> _validators = new ArrayList<Validator>();
+    private int _nextValidation = 0;
     private ErrorReporter _reporter;
 
     /**
@@ -72,19 +72,21 @@ public final class Validate {
     /**
      * TODO: Add a description of this method.
      *
-     * @param validator
+     * @param validator Validator to handle.
+     * @return Validator.
      */
     public Validate check(final Validator validator) {
-        validators.add(validator);
+        _validators.add(validator);
         return this;
     }
 
     /**
      * TODO: Add a description of this method.
      *
+     * @return Validator.
      */
     public Validate stopIfInError() {
-        validators.add(new Stopper());
+        _validators.add(new Stopper());
         return this;
     }
 
@@ -101,18 +103,22 @@ public final class Validate {
     /**
      * TODO: Add a description of this method.
      *
-     * @param v
+     * @param message
      */
     public void addMessage(final String message) {
         _errors.add(message);
     }
 
 
+    /**
+     * TODO: Add a description of this method.
+     *
+     */
     public void next() {
-
-        if (_continue && nextValidation<validators.size()) { // More validations & no explicit stop
-            final Validator v = validators.get(nextValidation);
-            nextValidation++;
+        // More validations & no explicit stop
+        if (_continue && _nextValidation<_validators.size()) {
+            final Validator v = _validators.get(_nextValidation);
+            _nextValidation++;
             v.validate(this);
         } else {
             if (_errors.size() > 0) {
