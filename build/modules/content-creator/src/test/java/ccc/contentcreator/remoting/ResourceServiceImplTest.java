@@ -316,7 +316,8 @@ public final class ResourceServiceImplTest extends TestCase {
                 "title",
                 "description",
                 "body",
-                "def"));
+                "def",
+                ""));
 
         // ASSERT
         verify(_am);
@@ -410,7 +411,8 @@ public final class ResourceServiceImplTest extends TestCase {
                 0,
                 "name",
                 "title",
-                target.id().toString()));
+                target.id().toString(),
+                ""));
 
         // ASSERT
         verify(_cm);

@@ -39,7 +39,7 @@ public interface ResourceDAOLocal {
     @GET // TODO: Should be POST
     @Path("/lock/{id}")
     @Produces("text/plain")
-    void lock(@PathParam("id") String resourceId);
+    Resource lock(@PathParam("id") String resourceId);
 
     /**
      * Unlock the specified Resource.
@@ -52,7 +52,7 @@ public interface ResourceDAOLocal {
     @GET // TODO: Should be POST
     @Path("/unlock/{id}")
     @Produces("text/plain")
-    void unlock(@PathParam("id") String resourceId);
+    Resource unlock(@PathParam("id") String resourceId);
 
     /**
      * List the resources locked by the currently logged in user.

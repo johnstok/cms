@@ -38,7 +38,8 @@ public class OptionDTOTest extends TestCase {
                 "a",
                 "a",
                 "a",
-                "a");
+                "a",
+                "");
         final TemplateDTO b =
             new TemplateDTO(
                 null,
@@ -47,7 +48,8 @@ public class OptionDTOTest extends TestCase {
                 "b",
                 "b",
                 "b",
-                "b");
+                "b",
+                "");
 
 
         OptionDTO<TemplateDTO> option;
@@ -97,7 +99,8 @@ public class OptionDTOTest extends TestCase {
                 "title",
                 "description",
                 "body",
-                "def");
+                "def",
+                "");
         final OptionDTO<TemplateDTO> option =
             new OptionDTO<TemplateDTO>(null, null, OptionDTO.Type.CHOICES);
         assertEquals(false, option.hasChanged());
@@ -124,7 +127,8 @@ public class OptionDTOTest extends TestCase {
                 "title",
                 "description",
                 "body",
-                "def");
+                "def",
+                "");
         final OptionDTO<TemplateDTO> option =
             new OptionDTO<TemplateDTO>(current, null, OptionDTO.Type.CHOICES);
 
@@ -167,7 +171,8 @@ public class OptionDTOTest extends TestCase {
                 "title",
                 "description",
                 "body",
-                "def");
+                "def",
+                "");
         final TemplateDTO b =
             new TemplateDTO(
                 null,
@@ -176,7 +181,8 @@ public class OptionDTOTest extends TestCase {
                 "title",
                 "description",
                 "body",
-                "def");
+                "def",
+                "");
         final List<TemplateDTO> choices =
             Arrays.asList(new TemplateDTO[]{a, b});
 

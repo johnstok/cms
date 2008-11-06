@@ -13,7 +13,6 @@ package ccc.contentcreator.api;
 
 import java.util.List;
 
-
 import com.google.gwt.json.client.JSONValue;
 
 
@@ -55,18 +54,16 @@ public class ResourceMgr {
     /**
      * Lock a resource.
      */
-    public void lock(final String resourceId) {
+    public void lock(final String resourceId, final Action<JSONValue> action) {
         // TODO: require().notNull(resourceId);
-        REST.get("api/resources/lock/"+resourceId, new NoOpAction<JSONValue>());
+        REST.get("api/resources/lock/"+resourceId, action);
     }
 
     /**
      * Unlock a resource.
      */
-    public void unlock(final String resourceId) {
+    public void unlock(final String resourceId, final Action<JSONValue> action) {
         // TODO: require().notNull(resourceId);
-        REST.get(
-            "api/resources/unlock/"+resourceId,
-            new NoOpAction<JSONValue>());
+        REST.get("api/resources/unlock/"+resourceId, action);
     }
 }
