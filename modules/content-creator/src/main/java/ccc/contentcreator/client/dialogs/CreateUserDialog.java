@@ -86,7 +86,8 @@ public class CreateUserDialog extends AbstractEditDialog {
                     new ErrorReportingCallback<Boolean>(){
                         public void onSuccess(final Boolean exists) {
                             if (exists) {
-                                validate.addMessage( // TODO: I18n
+                                // TODO: I18n
+                                validate.addMessage(
                                     "A user with username '"
                                     + username
                                     + "' already exists."

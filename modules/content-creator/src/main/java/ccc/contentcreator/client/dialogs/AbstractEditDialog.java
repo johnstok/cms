@@ -49,6 +49,7 @@ public abstract class AbstractEditDialog
     /**
      * Constructor.
      *
+     * @param title Title for the dialog.
      */
     public AbstractEditDialog(final String title) {
         super(title);

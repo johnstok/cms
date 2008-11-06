@@ -18,7 +18,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
+import java.util.Map.Entry;
 
 import ccc.commons.DBC;
 import ccc.commons.JNDI;
@@ -395,7 +397,9 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
             UUID.fromString(templateDto.getId())).as(Template.class);
         page.displayTemplateName(template);
 
-        for (final Map.Entry<String, ParagraphDTO> item : pageDto.getParagraphs().entrySet()) {
+       final Set<Entry<String, ParagraphDTO>> entries =
+           pageDto.getParagraphs().entrySet();
+        for (final Map.Entry<String, ParagraphDTO> item : entries) {
             final Paragraph paragraph = DTOs.paragraphFrom(item.getValue());
             page.addParagraph(item.getKey(), paragraph);
         }
