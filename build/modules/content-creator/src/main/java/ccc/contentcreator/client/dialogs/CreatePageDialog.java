@@ -17,10 +17,10 @@ import java.util.List;
 import java.util.Map;
 
 import ccc.contentcreator.api.ResourceServiceAsync;
-import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.DefinitionPanel;
 import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.ResourceTable;
 import ccc.contentcreator.client.Validate;
 import ccc.contentcreator.client.Validations;
 import ccc.contentcreator.client.Validator;
@@ -30,13 +30,16 @@ import ccc.contentcreator.dto.ParagraphDTO;
 import ccc.contentcreator.dto.TemplateDTO;
 
 import com.extjs.gxt.ui.client.Events;
+import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
@@ -44,7 +47,8 @@ import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
-import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
+import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.extjs.gxt.ui.client.widget.layout.FormData;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.extjs.gxt.ui.client.widget.layout.RowLayout;
@@ -65,10 +69,11 @@ public class CreatePageDialog
     private ListStore<TemplateDTO> _templatesStore =
         new ListStore<TemplateDTO>();
     private Grid<TemplateDTO> _grid;
+    private ContentPanel _descriptionPanel = new ContentPanel(new RowLayout());
 
     private final TextField<String> _title = new TextField<String>();
     private final TextField<String> _name = new TextField<String>();
-
+    private final ResourceTable _rt;
     private final FolderDTO _parent;
 
     private final ResourceServiceAsync _resourceService =
@@ -76,16 +81,19 @@ public class CreatePageDialog
 
     private DefinitionPanel _dp = new DefinitionPanel();
     private ContentPanel _upperPanel;
+    private Text _description = new Text("");
 
     /**
      * Constructor.
      *
      * @param list List of templates.
      * @param parent The Folder in which page will created.
+     * @param rt ResourceTable to update.
      */
     public CreatePageDialog(final List<TemplateDTO> list,
-                            final FolderDTO parent) {
+                            final FolderDTO parent, final ResourceTable rt) {
         super(Globals.uiConstants().createPage());
+        _rt = rt;
         _parent = parent;
 
         setWidth(Globals.DEFAULT_WIDTH);
@@ -116,19 +124,38 @@ public class CreatePageDialog
                 _second.removeAll(); // in order to avoid zombie field labels
                 _second.add(_upperPanel);
                 _second.add(_dp);
+                _description.setText(template.getDescription());
 
             }
         };
         _grid.addListener(Events.RowClick, listener);
 
-        // add right side description
-        // TODO validation
+        // TODO add right side description
 
         _templatesStore.add(list);
-        _first.add(_grid);
-        _first.setLayout(new FitLayout());
-        addCard(_first);
 
+        final BorderLayoutData westData =
+            new BorderLayoutData(LayoutRegion.WEST, 202);
+        westData.setMargins(new Margins(5));
+
+        final BorderLayoutData centerData =
+            new BorderLayoutData(LayoutRegion.CENTER);
+        centerData.setMargins(new Margins(5));
+
+        _first.setLayout(new BorderLayout());
+        _first.add(_grid, westData);
+
+        _descriptionPanel.setHeaderVisible(true);
+        _descriptionPanel.setHeading("Description");
+        _descriptionPanel.setBorders(false);
+        _descriptionPanel.setBodyBorder(false);
+        _descriptionPanel.add(_description);
+
+        _first.add(_descriptionPanel, centerData);
+        _first.setBorders(false);
+        _first.setBodyBorder(false);
+        _first.setHeaderVisible(false);
+        addCard(_first);
 
         _upperPanel = new ContentPanel();
         _upperPanel.setWidth("100%");
@@ -150,6 +177,9 @@ public class CreatePageDialog
         _second.add(_upperPanel);
         _second.add(_dp);
         _second.setLayout(new RowLayout());
+        _second.setBorders(false);
+        _second.setBodyBorder(false);
+        _second.setHeaderVisible(false);
         addCard(_second);
         refresh();
     }
@@ -228,7 +258,13 @@ public class CreatePageDialog
 
                 _resourceService.createPage(_parent, page,
                     template,
-                    new DisposingCallback(CreatePageDialog.this));
+                    new ErrorReportingCallback<Void>() {
+                        public void onSuccess(final Void result) {
+                            _rt.refreshTable();
+                            hide();
+                        }
+                    }
+                );
             }
         };
     }
