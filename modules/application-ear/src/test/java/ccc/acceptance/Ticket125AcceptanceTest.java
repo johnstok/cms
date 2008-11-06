@@ -9,7 +9,7 @@
  * Changes: see subversion log
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.remoting;
+package ccc.acceptance;
 
 import junit.framework.TestCase;
 

@@ -10,7 +10,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.content.server;
+package ccc.acceptance;
 
 import junit.framework.TestCase;
 

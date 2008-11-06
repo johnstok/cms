@@ -10,7 +10,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.content.server;
+package ccc.acceptance;
 
 import java.io.IOException;
 import java.io.InputStream;

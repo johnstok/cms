@@ -1,5 +1,5 @@
 
-package ccc.contentcreator.remoting;
+package ccc.acceptance;
 
 import junit.framework.TestCase;
 
@@ -41,13 +41,13 @@ public class Ticket117AcceptanceTest
         selenium.click("assets-navigator");
         selenium.click("//div[@id='assets']/div[1]/table/tbody/tr/td[2]/div");
         selenium.click("//div[@id='templates']/div[1]/table/tbody/tr/td[6]/span");
-        selenium.mouseUpRightAt("//div[@id='ash_display.jsp']/table/tbody/tr/td[1]/div/div", "");
+//        selenium.mouseUpRightAt("//div[@id='ash_display.jsp']/table/tbody/tr/td[1]/div/div", "");
         selenium.click("//*[@id=\"edit-resource\"]");
         selenium.type("//input[@type='text']", "foo");
         selenium.type("//tr[2]/td[2]/input", "foo");
         selenium.type("//textarea", "foo");
         selenium.click("gwt-debug-Save");
-        selenium.mouseDownRightAt("//div[@id='ash_display.jsp']/table/tbody/tr/td[2]/div/div", "");
+//        selenium.mouseDownRightAt("//div[@id='ash_display.jsp']/table/tbody/tr/td[2]/div/div", "");
         selenium.click("edit-resource");
         assertEquals("foo", selenium.getValue("//input[@type='text']"));
         assertEquals("foo", selenium.getValue("//tr[2]/td[2]/input"));

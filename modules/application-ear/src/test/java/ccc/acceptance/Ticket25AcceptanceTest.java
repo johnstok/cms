@@ -1,5 +1,5 @@
 
-package ccc.contentcreator.remoting;
+package ccc.acceptance;
 
 import junit.framework.TestCase;
 
@@ -42,7 +42,7 @@ public class Ticket25AcceptanceTest
         selenium.click("//div[@id='Users']/div[1]/table/tbody/tr/td[2]/div");
         selenium.click("//div[@id='All']/div[1]/table/tbody/tr/td[2]/div");
         selenium.click("//div[@id='Content creator']/div[1]/table/tbody/tr/td[6]/span");
-        selenium.mouseUpRightAt("//div[@id='UserGrid']/div/div/div[2]/div/div/", "");
+//        selenium.mouseUpRightAt("//div[@id='UserGrid']/div/div/div[2]/div/div/", "");
         selenium.click("editUserMenu");
         selenium.type("Username", "admin_test");
         selenium.type("Email", "test@civiccomputing.com");
@@ -52,7 +52,7 @@ public class Ticket25AcceptanceTest
         selenium.click("//table[@id='searchButton']/tbody/tr/td[2]/em/button");
         selenium.type("searchString", "admin_test");
         selenium.click("//table[@id='searchButton']/tbody/tr/td[2]/em/button");
-        selenium.mouseUpRightAt("//div[@id='UserGrid']/div/div/div[2]/div/div/", "");
+//        selenium.mouseUpRightAt("//div[@id='UserGrid']/div/div/div[2]/div/div/", "");
         selenium.click("editUserMenu");
         assertEquals("admin_test", selenium.getValue("Username"));
         assertEquals("test@civiccomputing.com", selenium.getValue("Email"));
