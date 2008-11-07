@@ -123,7 +123,7 @@ public class UpdatePageDialog
 
     private Button createSaveButton() {
 
-        return new Button(
+        final Button saveButton = new Button(
             _uiConstants.save(),
             new SelectionListener<ButtonEvent>() {
             @Override
@@ -171,5 +171,7 @@ public class UpdatePageDialog
                         callback);
                 }
             });
+        saveButton.setId("save");
+        return saveButton;
     }
 }
