@@ -19,6 +19,7 @@ import ccc.commons.Maybe;
 import ccc.domain.Alias;
 import ccc.domain.Folder;
 import ccc.domain.Page;
+import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 import ccc.domain.Template;
@@ -85,7 +86,7 @@ interface ContentManager {
      *      paragraphs will be removed and replaced with the paragraphs
      *      specified here.
      */
-    void update(UUID id, String newTitle, Map<String, String> newParagraphs);
+    void update(UUID id, String newTitle, Map<String, Paragraph> newParagraphs);
 
     /**
      * Sets the new default template for content.

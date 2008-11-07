@@ -20,6 +20,7 @@ import ccc.contentcreator.dto.DTO;
 import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.OptionDTO;
 import ccc.contentcreator.dto.PageDTO;
+import ccc.contentcreator.dto.ParagraphDTO;
 import ccc.contentcreator.dto.ResourceDTO;
 import ccc.contentcreator.dto.TemplateDTO;
 import ccc.contentcreator.dto.UserDTO;
@@ -62,7 +63,7 @@ public interface ResourceService extends RemoteService {
      * @param title The title of the page.
      * @param paragraphs The paragraphs for the page.
      */
-    void saveContent(String id, String title, Map<String, String> paragraphs);
+    void saveContent(String id, String title, Map<String, ParagraphDTO> paragraphs);
 
     /**
      * Create a new template in CCC.
@@ -241,4 +242,12 @@ public interface ResourceService extends RemoteService {
      * @return True if name exists.
      */
      boolean templateNameExists(final String templateName);
+
+     /**
+     * Returns TemplateDTO of the template assigned for a resource.
+     *
+     * @param resourceDTO Resource used for lookup.
+     * @return TemplateDTO
+     */
+    TemplateDTO getTemplateForResource(final ResourceDTO resourceDTO);
 }

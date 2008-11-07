@@ -199,17 +199,17 @@ public final class ContentManagerEJB
     @Override
     public void update(final UUID id,
                              final String newTitle,
-                             final Map<String, String> newParagraphs) {
+                             final Map<String, Paragraph> newParagraphs) {
 
         final Page page = lookup(id).as(Page.class);
         page.title(newTitle);
         page.deleteAllParagraphs();
 
-        for (final Map.Entry<String, String> paragraph
+        for (final Map.Entry<String, Paragraph> paragraph
                 : newParagraphs.entrySet()) {
             page.addParagraph(
                 paragraph.getKey(),
-                Paragraph.fromText(paragraph.getValue()));
+                paragraph.getValue());
         }
     }
 

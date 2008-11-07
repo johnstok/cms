@@ -237,7 +237,7 @@ public final class DTOs {
             } else if (para.getValue().type() == Paragraph.Type.DATE) {
                 paragraphs.put(para.getKey(),
                     new ParagraphDTO(Paragraph.Type.DATE.name(),
-                        para.getValue().date().toString()));
+                        ""+para.getValue().date().getTime()));
             }
         }
         return new PageDTO(
@@ -301,7 +301,7 @@ public final class DTOs {
             pDTO = new ParagraphDTO(Paragraph.Type.TEXT.name(), para.text());
         } else if (para.type() == Paragraph.Type.DATE) {
             pDTO = new ParagraphDTO(
-                Paragraph.Type.DATE.name(), para.date().toString());
+                Paragraph.Type.DATE.name(), ""+para.date().getTime());
         }
         return pDTO;
     }

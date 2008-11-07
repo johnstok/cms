@@ -12,7 +12,6 @@
 
 package ccc.contentcreator.client.dialogs;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,25 +20,19 @@ import ccc.contentcreator.api.ResourceService;
 import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
+import ccc.contentcreator.client.EditPagePanel;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.dto.PageDTO;
 import ccc.contentcreator.dto.ParagraphDTO;
+import ccc.contentcreator.dto.TemplateDTO;
 
-import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
-import com.extjs.gxt.ui.client.event.ComponentEvent;
-import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.util.Margins;
-import com.extjs.gxt.ui.client.widget.TabItem;
-import com.extjs.gxt.ui.client.widget.TabPanel;
+import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.button.Button;
-import com.extjs.gxt.ui.client.widget.form.FormPanel;
-import com.extjs.gxt.ui.client.widget.form.TextArea;
-import com.extjs.gxt.ui.client.widget.form.TextField;
-import com.extjs.gxt.ui.client.widget.layout.AnchorData;
-import com.extjs.gxt.ui.client.widget.layout.AnchorLayout;
-import com.extjs.gxt.ui.client.widget.layout.FormData;
+import com.extjs.gxt.ui.client.widget.form.DateField;
+import com.extjs.gxt.ui.client.widget.form.Field;
+import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -54,12 +47,12 @@ public class UpdatePageDialog
         AbstractBaseDialog {
 
     private final UIConstants _uiConstants = GWT.create(UIConstants.class);
-    private final List<TextArea> _paras = new ArrayList<TextArea>();
     private final ResourceServiceAsync _resourceService =
         (ResourceServiceAsync) GWT.create(ResourceService.class);
 
     private final String _contentPath;
-    private final TextField<String> _title = new TextField<String>();
+    private EditPagePanel _panel = new EditPagePanel();
+    private PageDTO _page = null;
 
     /**
      * Constructor.
@@ -70,7 +63,7 @@ public class UpdatePageDialog
     public UpdatePageDialog(final String contentPath) {
         super(Globals.uiConstants().updateContent());
 
-        setLayout(new AnchorLayout());
+        setLayout(new FitLayout());
 
         _contentPath = contentPath;
         ensureDebugId("dialogBox");
@@ -84,25 +77,7 @@ public class UpdatePageDialog
      */
     private void drawGUI() {
 
-        final FormPanel panel = new FormPanel();
-        panel.setWidth("100%");
-        panel.setBorders(false);
-        panel.setBodyBorder(false);
-        panel.setHeaderVisible(false);
-        add(panel, new AnchorData("100%"));
-
-        // TODO: Move "title" to constants.
-        _title.setFieldLabel("Title");
-        _title.setAllowBlank(false);
-        panel.add(_title, new FormData("100%"));
-
-        final TabPanel tabs = new TabPanel();
-
-        tabs.setPlain(true);
-        tabs.setTabScroll(true);
-        final AnchorData ld = new AnchorData("100% -59");
-        ld.setMargins(new Margins(0, 10, 0, 10));
-        add(tabs, ld);
+        add(_panel);
 
         addButton(
             new Button(
@@ -117,41 +92,27 @@ public class UpdatePageDialog
 
         addButton(createSaveButton());
 
+        // load definition and paragraphs
+        final AsyncCallback<TemplateDTO> defCallback =
+            new ErrorReportingCallback<TemplateDTO>() {
+
+            /** {@inheritDoc} */
+            public void onSuccess(final TemplateDTO template) {
+               _panel.createFields(template.getDefinition());
+               _panel.populateFields(_page);
+               _panel.layout(); // Refresh UI when callback is done
+            }
+        };
+
+
         final AsyncCallback<PageDTO> callback =
             new ErrorReportingCallback<PageDTO>() {
 
             /** {@inheritDoc} */
             public void onSuccess(final PageDTO page) {
+                _page  = page;
+                _resourceService.getTemplateForResource(page, defCallback);
 
-                _title.setValue(page.getTitle());
-
-                for (Map.Entry<String, ParagraphDTO> para
-                            : page.getParagraphs().entrySet()) {
-
-                    final TextArea area = new TextArea();
-                    area.setWidth("100%");
-                    area.setHeight("100%");
-                    area.setBorders(false);
-                    area.setFieldLabel(para.getKey());
-                    area.setHideLabel(true);
-                    area.setValue(para.getValue().getValue());
-
-                    final TabItem paraTab = new TabItem();
-                    paraTab.setText(para.getKey());
-                    paraTab.addListener(
-                        Events.Select,
-                        new Listener<ComponentEvent>(){
-                            public void handleEvent(final ComponentEvent be) {
-                                    area.focus();
-                                }
-                            });
-                    tabs.add(paraTab);
-
-                    paraTab.add(area);
-
-                    _paras.add(area);
-                }
-            UpdatePageDialog.this.layout(); // Refresh UI when callback is done
             }
         };
         _resourceService.getResource(_contentPath, callback);
@@ -165,20 +126,29 @@ public class UpdatePageDialog
             @Override
             public void componentSelected(final ButtonEvent ce) {
 
-                    if (_title.getValue() == null
-                        || _title.getValue().trim().length() == 0) {
+                    if (_panel.title().getValue() == null
+                        || _panel.title().getValue().trim().length() == 0) {
                         return;
                     }
 
-                    final Map<String, String> paragraphs =
-                        new HashMap<String, String>();
-                    for (final TextArea para : _paras) {
-                        String body = para.getValue();
-                        if (null == body || body.trim().length()==0) {
-                            body = "<!-- empty -->";
+                    final Map<String, ParagraphDTO> paragraphs =
+                        new HashMap<String, ParagraphDTO>();
+
+                    final List<Component> definitions =_panel.definitionItems();
+                    for (final Component c : definitions) {
+                        if ("TEXT".equals(c.getData("type"))) {
+                            final Field<String> f = (Field<String>) c;
+                            final ParagraphDTO p =
+                                new ParagraphDTO("TEXT", f.getValue());
+                            paragraphs.put(c.getId(), p);
+                        } else if ("DATE".equals(c.getData("type"))) {
+                            final DateField f = (DateField) c;
+                            final ParagraphDTO p = new ParagraphDTO(
+                                "DATE", ""+f.getValue().getTime());
+                            paragraphs.put(c.getId(), p);
                         }
-                        paragraphs.put(para.getFieldLabel(), body);
                     }
+
                     final AsyncCallback<Void> callback =
                         new AsyncCallback<Void>() {
                             public void onFailure(final Throwable arg0) {
@@ -192,7 +162,7 @@ public class UpdatePageDialog
 
                     _resourceService.saveContent(
                         _contentPath,
-                        _title.getValue(),
+                        _panel.title().getValue(),
                         paragraphs,
                         callback);
                 }
