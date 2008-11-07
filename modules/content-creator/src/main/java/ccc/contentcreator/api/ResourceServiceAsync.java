@@ -32,6 +32,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public interface ResourceServiceAsync {
 
+    void logout(AsyncCallback<Void> callback);
+
     /**
      * @see ResourceService#getRoot(Root)
      */

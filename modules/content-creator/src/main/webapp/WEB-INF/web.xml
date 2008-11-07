@@ -43,13 +43,18 @@
             <http-method>POST</http-method>
             <!-- TODO: Confirm that other methods are always denied. -->
         </web-resource-collection>
-        <auth-constraint><role-name>ADMINISTRATOR</role-name></auth-constraint>
+        <auth-constraint>
+            <role-name>ADMINISTRATOR</role-name>
+        </auth-constraint>
     </security-constraint>
-    
+
     <login-config>
-        <auth-method>BASIC</auth-method>
-        <realm-name>CCC Content Creator</realm-name>
+        <auth-method>FORM</auth-method>
+        <form-login-config>
+            <form-login-page>/Login.html</form-login-page>
+            <form-error-page>/LoginError.html</form-error-page>
+        </form-login-config>
     </login-config>
-    
+
 
 </web-app>

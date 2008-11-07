@@ -65,11 +65,30 @@ public final class Globals {
             .substring(
                 0,
                 GWT.getHostPageBaseURL()
-                   .lastIndexOf("creator/")); //$NON-NLS-1$
+                   .lastIndexOf(APP_URL));
     }
+
+    /**
+     * Redirect to another url. Use with caution the application will exit and
+     * all local state will be lost.
+     *
+     * @param relativeURL The host-relative URL.
+     */
+    public static void redirectTo(final String relativeURL) {
+        redirect(hostURL()+relativeURL);
+    }
+
+    /*
+     * TODO: Find a better solution?
+     */
+    private static native void redirect(final String url)/*-{
+          $wnd.location = url;
+    }-*/;
 
     /** DEFAULT_WIDTH : int. */
     public static final int DEFAULT_WIDTH = 640;
     /** DEFAULT_HEIGHT : int. */
     public static final int DEFAULT_HEIGHT = 480;
+    /** APP_URL : String. */
+    public static final String APP_URL = "creator/";
 }

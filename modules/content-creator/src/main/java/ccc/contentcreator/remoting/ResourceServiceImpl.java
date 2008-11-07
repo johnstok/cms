@@ -417,4 +417,10 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
         }
         return result;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public void logout() {
+        getThreadLocalRequest().getSession().invalidate();
+    }
 }
