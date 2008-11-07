@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>70-success</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">70-success</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/creator/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>ContentCreator</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//table[@id='assets-menu']/tbody/tr/td[2]/em</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>create-template-menu-item</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Name</td>
+	<td>testTemplateName2</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Title</td>
+	<td>testTemplateTitle</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Description</td>
+	<td>testdesc</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//table[@id='next']/tbody/tr/td[2]/em/button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>content xml</td>
+	<td>&lt;fields&gt;&lt;field name=&quot;textfield&quot; type=&quot;text_field&quot;/&gt;&lt;field name=&quot;textarea&quot; type=&quot;text_area&quot;/&gt;&lt;field name=&quot;date&quot; type=&quot;date&quot;/&gt;&lt;/fields&gt;</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//table[@id='next']/tbody/tr/td[2]/em/button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Body</td>
+	<td>ABC</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//table[@id='save']/tbody/tr/td[2]/em/button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='content']/div[1]/table/tbody/tr/td[5]/div</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseUpRightAt</td>
+	<td>//div[@id='content']/div[1]/table/tbody/tr/td[2]/div</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>create-page</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAt</td>
+	<td>//div[@id='TemplateGrid']/div[1]/div[1]/div[2]/div/div[4]/table/tbody/tr/td/div</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>testdesc</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//table[@id='next']/tbody/tr/td[2]/em/button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>textfield:</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>textarea:</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>date:</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Name</td>
+	<td>pagename</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Title</td>
+	<td>pagetitle</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>textfield</td>
+	<td>first</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>textarea</td>
+	<td>second</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>//div[@id='date']/input</td>
+	<td>11/4/08</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//table[@id='save']/tbody/tr/td[2]/em/button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseUpRightAt</td>
+	<td>//div[@id='pagename']/table/tbody/tr/td[3]/div/div</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>edit-resource</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>Name</td>
+	<td>pagename</td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>Title</td>
+	<td>pagetitle</td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>textfield</td>
+	<td>first</td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>textarea</td>
+	<td>second</td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>//div[@id='date']/input</td>
+	<td>11/4/08</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Title</td>
+	<td>pagetitle2</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>textfield</td>
+	<td>first2</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>textarea</td>
+	<td>second2</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>//div[@id='date']/input</td>
+	<td>11/4/09</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//table[@id='save']/tbody/tr/td[2]/em/button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseUpRightAt</td>
+	<td>//div[@id='pagename']/table/tbody/tr/td[3]/div/div</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>edit-resource</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>Name</td>
+	<td>pagename2</td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>Title</td>
+	<td>pagetitle2</td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>textfield</td>
+	<td>first2</td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>textarea</td>
+	<td>second2</td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>//div[@id='date']/input</td>
+	<td>11/4/09</td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
