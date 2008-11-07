@@ -99,6 +99,18 @@ public class MainMenu
         final Menu toolsMenu = new Menu();
         tools.setMenu(toolsMenu);
 
+        createUpdateOptionsItem(toolsMenu);
+        createLogoutItem(toolsMenu);
+
+
+        add(assets);
+        add(users);
+        add(tools);
+        add(help);
+    }
+
+    private void createUpdateOptionsItem(final Menu toolsMenu) {
+
         final MenuItem updateOptions = new MenuItem();
         updateOptions.setId("update-options-menu-item");
         updateOptions.setText(_constants.options());
@@ -122,10 +134,31 @@ public class MainMenu
             }
         });
         toolsMenu.add(updateOptions);
+    }
 
-        add(assets);
-        add(users);
-        add(tools);
-        add(help);
+    private void createLogoutItem(final Menu menu) {
+
+        final MenuItem item = new MenuItem();
+        item.setId("logout-menu-item");
+        item.setText(_constants.logout());
+        item.addSelectionListener(new SelectionListener<MenuEvent>() {
+            @Override
+            public void componentSelected(final MenuEvent ce) {
+                final ResourceServiceAsync resourceService =
+                    Globals.resourceService();
+
+                resourceService.logout(
+                    new AsyncCallback<Void>(){
+
+                        public void onFailure(final Throwable arg0) {
+                            Globals.alert("Error logging out: "+arg0);
+                        }
+
+                        public void onSuccess(final Void result) {
+                            Globals.redirectTo(Globals.APP_URL);
+                        }});
+            }
+        });
+        menu.add(item);
     }
 }

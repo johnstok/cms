@@ -393,4 +393,12 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Edit Template")
     String editTemplate();
+
+    /**
+     * "Log out".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Log out")
+    String logout();
 }

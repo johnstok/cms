@@ -36,6 +36,8 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("resource")
 public interface ResourceService extends RemoteService {
 
+    void logout();
+
     /**
      * Retrieve a root folder.
      *
