@@ -221,7 +221,7 @@ public class DTOsTest extends TestCase {
         final ParagraphDTO p3 = pageDto.getParagraphs().get("fooDate");
         assertEquals("para1", p1.getValue());
         assertEquals("para2", p2.getValue());
-        assertEquals(d.toString(), p3.getValue());
+        assertEquals(""+d.getTime(), p3.getValue());
     }
 
     /**
@@ -242,7 +242,7 @@ public class DTOsTest extends TestCase {
         assertEquals("TEXT", p1Dto.getType());
         assertEquals("para1", p1Dto.getValue());
         assertEquals("DATE", p2Dto.getType());
-        assertEquals(d.toString(), p2Dto.getValue());
+        assertEquals(""+d.getTime(), p2Dto.getValue());
     }
 
     /**
@@ -263,7 +263,7 @@ public class DTOsTest extends TestCase {
         assertEquals("TEXT", p1Dto.getType());
         assertEquals("para1", p1Dto.getValue());
         assertEquals("DATE", p2Dto.getType());
-        assertEquals(d.toString(), p2Dto.getValue());
+        assertEquals(""+d.getTime(), p2Dto.getValue());
     }
 
 

@@ -19,6 +19,7 @@ import ccc.contentcreator.dto.DTO;
 import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.OptionDTO;
 import ccc.contentcreator.dto.PageDTO;
+import ccc.contentcreator.dto.ParagraphDTO;
 import ccc.contentcreator.dto.ResourceDTO;
 import ccc.contentcreator.dto.TemplateDTO;
 import ccc.contentcreator.dto.UserDTO;
@@ -50,7 +51,7 @@ public interface ResourceServiceAsync {
      */
     void saveContent(String id,
                      String title,
-                     Map<String, String> paragraphs,
+                     Map<String, ParagraphDTO> paragraphs,
                      AsyncCallback<Void> callback);
 
     /**
@@ -181,4 +182,10 @@ public interface ResourceServiceAsync {
      */
     void templateNameExists(final String templateName,
                             AsyncCallback<Boolean> callback);
+
+    /**
+     * @see ResourceService#getTemplateForResource()
+     */
+    void getTemplateForResource(ResourceDTO resourceDTO,
+                                AsyncCallback<TemplateDTO> callback);
 }

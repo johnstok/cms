@@ -378,8 +378,9 @@ public final class ContentManagerEJBTest extends TestCase {
             new ContentManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
-        final Map<String, String> paragraphs = new HashMap<String, String>();
-        paragraphs.put("foo", "bar");
+        final Map<String, Paragraph> paragraphs =
+            new HashMap<String, Paragraph>();
+        paragraphs.put("foo", Paragraph.fromText("bar"));
         resourceMgr.update(
             page.id(),
             "new title", paragraphs);

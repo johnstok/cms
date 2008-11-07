@@ -18,7 +18,7 @@ import java.util.Map;
 
 import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.DefinitionPanel;
+import ccc.contentcreator.client.EditPagePanel;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.ResourceTable;
 import ccc.contentcreator.client.Validate;
@@ -49,8 +49,6 @@ import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
-import com.extjs.gxt.ui.client.widget.layout.FormData;
-import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.extjs.gxt.ui.client.widget.layout.RowLayout;
 
 
@@ -64,23 +62,22 @@ public class CreatePageDialog
         AbstractWizardDialog {
 
     private final FormPanel _first = new FormPanel();
-    private final FormPanel _second = new FormPanel();
+    private final EditPagePanel _second = new EditPagePanel();
 
     private ListStore<TemplateDTO> _templatesStore =
         new ListStore<TemplateDTO>();
     private Grid<TemplateDTO> _grid;
     private ContentPanel _descriptionPanel = new ContentPanel(new RowLayout());
 
-    private final TextField<String> _title = new TextField<String>();
-    private final TextField<String> _name = new TextField<String>();
+
     private final ResourceTable _rt;
     private final FolderDTO _parent;
 
     private final ResourceServiceAsync _resourceService =
         Globals.resourceService();
 
-    private DefinitionPanel _dp = new DefinitionPanel();
-    private ContentPanel _upperPanel;
+
+
     private Text _description = new Text("");
 
     /**
@@ -119,18 +116,12 @@ public class CreatePageDialog
             public void handleEvent(final GridEvent ge) {
                 TemplateDTO template =
                     (TemplateDTO) ge.grid.getSelectionModel().getSelectedItem();
-                _dp = new DefinitionPanel();
-                _dp.renderFields(template.getDefinition());
-                _second.removeAll(); // in order to avoid zombie field labels
-                _second.add(_upperPanel);
-                _second.add(_dp);
+                _second.createFields(template.getDefinition());
                 _description.setText(template.getDescription());
 
             }
         };
         _grid.addListener(Events.RowClick, listener);
-
-        // TODO add right side description
 
         _templatesStore.add(list);
 
@@ -157,29 +148,6 @@ public class CreatePageDialog
         _first.setHeaderVisible(false);
         addCard(_first);
 
-        _upperPanel = new ContentPanel();
-        _upperPanel.setWidth("100%");
-        _upperPanel.setBorders(false);
-        _upperPanel.setBodyBorder(false);
-        _upperPanel.setHeaderVisible(false);
-        _upperPanel.setLayout(new FormLayout());
-
-        _name.setFieldLabel(_constants.name());
-        _name.setAllowBlank(false);
-        _name.setId(_constants.name());
-        _upperPanel.add(_name, new FormData("90%"));
-
-        _title.setFieldLabel(_constants.title());
-        _title.setAllowBlank(false);
-        _title.setId(_constants.title());
-        _upperPanel.add(_title, new FormData("90%"));
-
-        _second.add(_upperPanel);
-        _second.add(_dp);
-        _second.setLayout(new RowLayout());
-        _second.setBorders(false);
-        _second.setBodyBorder(false);
-        _second.setHeaderVisible(false);
         addCard(_second);
         refresh();
     }
@@ -190,10 +158,10 @@ public class CreatePageDialog
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
                 Validate.callTo(createPage())
-                    .check(Validations.notEmpty(_name))
-                    .check(Validations.notEmpty(_title))
+                    .check(Validations.notEmpty(_second.name()))
+                    .check(Validations.notEmpty(_second.title()))
                     .stopIfInError()
-                    .check(uniqueResourceName(_parent, _name))
+                    .check(uniqueResourceName(_parent, _second.name()))
                     .callMethodOr(Validations.reportErrors());
             }
         };
@@ -231,7 +199,7 @@ public class CreatePageDialog
                 final Map<String, ParagraphDTO> paragraphs =
                     new HashMap<String, ParagraphDTO>();
 
-                final List<Component> definitions =_dp.getItems();
+                final List<Component> definitions =_second.definitionItems();
                 for (final Component c : definitions) {
                     if ("TEXT".equals(c.getData("type"))) {
                         final Field<String> f = (Field<String>) c;
@@ -248,8 +216,8 @@ public class CreatePageDialog
                 final PageDTO page = new PageDTO(
                     null,
                     -1,
-                    _name.getValue(),
-                    _title.getValue(),
+                    _second.name().getValue(),
+                    _second.title().getValue(),
                     paragraphs,
                     "");
 

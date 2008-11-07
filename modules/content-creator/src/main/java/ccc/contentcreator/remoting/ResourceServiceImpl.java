@@ -16,6 +16,7 @@ import static ccc.contentcreator.remoting.DTOs.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -147,8 +148,16 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
      */
     public void saveContent(final String id,
                             final String title,
-                            final Map<String, String> paragraphs) {
-        contentManager().update(UUID.fromString(id), title, paragraphs);
+                            final Map<String, ParagraphDTO> paragraphs) {
+        final Map <String, Paragraph> newParagraphs =
+            new HashMap<String, Paragraph>();
+
+        for (final Entry<String, ParagraphDTO> para : paragraphs.entrySet()) {
+            newParagraphs.put(para.getKey(),
+                DTOs.paragraphFrom(para.getValue()));
+        }
+
+        contentManager().update(UUID.fromString(id), title, newParagraphs);
     }
 
     /**
@@ -419,7 +428,15 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     }
 
     /** {@inheritDoc} */
-    @Override
+    public TemplateDTO getTemplateForResource(final ResourceDTO resourceDTO) {
+        final Resource r =
+            contentManager().lookup(UUID.fromString(resourceDTO.getId()));
+
+        final Template selectedTemplate = r.displayTemplateName();
+        return DTOs.dtoFrom(selectedTemplate);
+    }
+
+    /** {@inheritDoc} */
     public void logout() {
         getThreadLocalRequest().getSession().invalidate();
     }
