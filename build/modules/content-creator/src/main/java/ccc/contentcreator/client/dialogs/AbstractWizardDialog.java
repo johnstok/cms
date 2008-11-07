@@ -50,8 +50,16 @@ AbstractBaseDialog {
         _constants.previous(),
         prevAction());
 
-    private ContentPanel _cp = new ContentPanel();
+    private final Button _cancel = new Button(
+        _constants.cancel(),
+        new SelectionListener<ButtonEvent>() {
+            @Override
+            public void componentSelected(final ButtonEvent ce) {
+                hide();
+            }
+        });
 
+    private ContentPanel _cp = new ContentPanel();
 
     /**
      * Constructor.
@@ -75,15 +83,12 @@ AbstractBaseDialog {
         _prev.setVisible(false);
         _save.setVisible(false);
 
-        addButton(new Button(
-            _constants.cancel(),
-            new SelectionListener<ButtonEvent>() {
-                @Override
-                public void componentSelected(final ButtonEvent ce) {
-                    hide();
-                }
-            }));
+        _next.setId("next");
+        _prev.setId("previous");
+        _save.setId("save");
+        _cancel.setId("cancel");
 
+        addButton(_cancel);
         addButton(_prev);
         addButton(_save);
         addButton(_next);
