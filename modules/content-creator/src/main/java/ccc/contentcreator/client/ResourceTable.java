@@ -59,7 +59,6 @@ public class ResourceTable extends ContentPanel {
 
     /** CONTEXT_MENU_WIDTH : int. */
     private static final int CONTEXT_MENU_WIDTH = 130;
-    /** PERCENT_45 : float. */ private static final float PERCENT_45 = .45f;
     /** PERCENT_10 : float. */ private static final float PERCENT_10 = .1f;
     /** PERCENT_40 : float. */ private static final float PERCENT_40 = .4f;
 
@@ -187,7 +186,8 @@ public class ResourceTable extends ContentPanel {
                          new EditTemplateDialog(
                              (TemplateDTO) item, detailsStore()).show();
                      } else if ("PAGE".equals(item.getType())) {
-                         new UpdatePageDialog(item.getId()).show();
+                         new UpdatePageDialog(item.getId(), ResourceTable.this)
+                         .show();
                      } else {
                         Globals.alert("No editor available for this resource.");
                      }

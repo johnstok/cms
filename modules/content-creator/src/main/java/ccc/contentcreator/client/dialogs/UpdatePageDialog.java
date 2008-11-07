@@ -22,6 +22,7 @@ import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.EditPagePanel;
 import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.ResourceTable;
 import ccc.contentcreator.dto.PageDTO;
 import ccc.contentcreator.dto.ParagraphDTO;
 import ccc.contentcreator.dto.TemplateDTO;
@@ -32,7 +33,7 @@ import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.Field;
-import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+import com.extjs.gxt.ui.client.widget.layout.RowLayout;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -54,15 +55,17 @@ public class UpdatePageDialog
     private EditPagePanel _panel = new EditPagePanel();
     private PageDTO _page = null;
 
+    private final ResourceTable _rt;
+
     /**
      * Constructor.
      *
      * @param contentPath The absolute path to the content resource this dialog
      *          will update.
      */
-    public UpdatePageDialog(final String contentPath) {
+    public UpdatePageDialog(final String contentPath, final ResourceTable rt) {
         super(Globals.uiConstants().updateContent());
-
+        _rt = rt;
         setLayout(new FitLayout());
 
         _contentPath = contentPath;
@@ -155,6 +158,7 @@ public class UpdatePageDialog
                                 GWT.log("Page saving failed", arg0);
                             }
                             public void onSuccess(final Void arg0) {
+                                _rt.refreshTable();
                                 hide();
                                 //TODO: tree.fire_selection_event();
                             }
