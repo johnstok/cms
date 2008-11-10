@@ -1,9 +1,9 @@
 @ echo off
 cls
-set h2_version=1.1.100
-echo  ----------------
+set h2_version=1.1.103
+echo  -----------------
 echo   H2 [V. %h2_version%]
-echo  ----------------
+echo  -----------------
 %SystemDrive%
 cd \
 cd %USERPROFILE%\.m2\repository\com\h2database\h2\%h2_version%
