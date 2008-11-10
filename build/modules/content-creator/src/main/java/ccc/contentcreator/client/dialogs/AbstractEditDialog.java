@@ -54,6 +54,9 @@ public abstract class AbstractEditDialog
     public AbstractEditDialog(final String title) {
         super(title);
 
+        _save.setId("save");
+        _cancel.setId("cancel");
+
         setLayout(new FitLayout());
 
         _panel.setWidth("100%");

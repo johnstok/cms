@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="" />
-<title>rejectSameName</title>
+<title>create_alias-reject_duplicate_name</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">rejectSameName</td></tr>
+<tr><td rowspan="1" colspan="3">create_alias-reject_duplicate_name</td></tr>
 </thead><tbody>
 <tr>
 	<td>setSpeed</td>
@@ -18,7 +18,7 @@
 </tr>
 <tr>
 	<td>open</td>
-	<td>/creator/</td>
+	<td>creator/</td>
 	<td></td>
 </tr>
 <tr>
@@ -53,7 +53,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//img[contains(@src,'http://localhost:8080/content-creator/images/default/shared/clear.gif')]</td>
+	<td>//img[contains(@src,'http://localhost:8080/creator/images/default/shared/clear.gif')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -78,13 +78,13 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//table[@id='aliasSave']/tbody/tr/td[2]/em/button</td>
+	<td>save</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertAlert</td>
-	<td>Name exists.</td>
-	<td>Name exists.</td>
+	<td>[A resource with name 'testAlias' already exists in this folder.]</td>
+	<td></td>
 </tr>
 
 </tbody></table>

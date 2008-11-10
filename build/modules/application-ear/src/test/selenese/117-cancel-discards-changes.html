@@ -4,16 +4,26 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="" />
-<title>acceptance-cancel-discards-changes</title>
+<title>update_template-cancel_discards_changes</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">acceptance-cancel-discards-changes</td></tr>
+<tr><td rowspan="1" colspan="3">update_template-cancel_discards_changes</td></tr>
 </thead><tbody>
 <tr>
+	<td>setSpeed</td>
+	<td>2000</td>
+	<td></td>
+</tr>
+<tr>
 	<td>open</td>
-	<td>/content-creator/</td>
+	<td>creator/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>ContentCreator</td>
 	<td></td>
 </tr>
 <tr>
@@ -23,17 +33,17 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//div[@id='assets']/table/tbody/tr/td[2]/div</td>
+	<td>//div[@id='assets']/div[1]/table/tbody/tr/td[2]/div</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>//div[@id='templates']/table/tbody/tr/td[6]/span</td>
+	<td>//div[@id='templates']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>mouseUpRightAt</td>
-	<td>//div[@id='ash_display_home.jsp']/table/tbody/tr/td[2]/div/div</td>
+	<td>//div[@id='ash_display_home.jsp']</td>
 	<td></td>
 </tr>
 <tr>
@@ -43,17 +53,17 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>//input[@type='text']</td>
+	<td>Title</td>
 	<td>something else</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>gwt-debug-Cancel</td>
+	<td>cancel</td>
 	<td></td>
 </tr>
 <tr>
 	<td>mouseUpRightAt</td>
-	<td>//div[@id='ash_display_home.jsp']/table/tbody/tr/td[2]/div/div</td>
+	<td>//div[@id='ash_display_home.jsp']</td>
 	<td></td>
 </tr>
 <tr>
@@ -63,7 +73,7 @@
 </tr>
 <tr>
 	<td>verifyValue</td>
-	<td>//input[@type='text']</td>
+	<td>Title</td>
 	<td>ash_display_home.jsp</td>
 </tr>
 

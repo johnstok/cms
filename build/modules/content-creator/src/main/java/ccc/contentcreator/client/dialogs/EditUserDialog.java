@@ -104,6 +104,7 @@ public class EditUserDialog extends AbstractEditDialog {
         _checkGroup.add(check3);
         _panel.add(_checkGroup, new FormData("100%"));
 
+     // TODO: Remove these set calls - set in super-class.
         _panel.setId("UserPanel");
         _save.setId("userSave");
         _cancel.setId("userCancel");

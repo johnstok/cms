@@ -4,16 +4,16 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="" />
-<title>lock_and_unlock_resource</title>
+<title>create_template-success</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">lock_and_unlock_resource</td></tr>
+<tr><td rowspan="1" colspan="3">create_template-success</td></tr>
 </thead><tbody>
 <tr>
 	<td>setSpeed</td>
-	<td>1000</td>
+	<td>2000</td>
 	<td></td>
 </tr>
 <tr>
@@ -28,37 +28,52 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//div[@id='content']/div[1]/table/tbody/tr/td[6]/span</td>
-	<td></td>
-</tr>
-<tr>
-	<td>mouseUpRightAt</td>
-	<td>//div[@id='Message_Board']/table/tbody/tr/td[2]/div/div</td>
+	<td>//table[@id='assets-menu']/tbody/tr/td[3]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>lock-resource</td>
+	<td>create-template-menu-item</td>
 	<td></td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>//div[@id='Message_Board']/table/tbody/tr/td[2]/div/div</td>
-	<td>super</td>
+	<td>type</td>
+	<td>Name</td>
+	<td>foo</td>
 </tr>
 <tr>
-	<td>mouseUpRightAt</td>
-	<td>//div[@id='Message_Board']/table/tbody/tr/td[2]/div/div</td>
-	<td></td>
+	<td>type</td>
+	<td>Title</td>
+	<td>bar</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Description</td>
+	<td>baz</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>unlock-resource</td>
+	<td>next</td>
 	<td></td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>//div[@id='Message_Board']/table/tbody/tr/td[2]/div/div</td>
+	<td>type</td>
+	<td>content xml</td>
+	<td>&lt;fields/&gt;</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>next</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Body</td>
+	<td>Testing 'update-template'.</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>save</td>
 	<td></td>
 </tr>
 

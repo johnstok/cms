@@ -62,14 +62,17 @@ public class UpdateOptionsDialog extends AbstractEditDialog {
         _options = options;
 
         _defaultTemplate.setFieldLabel(_constants.defaultTemplate());
-        _defaultTemplate.setId(_constants.defaultTemplate());
+        _defaultTemplate.setTemplate("<tpl for=\".\"><div class=x-combo-list-item id={name}>{name}</div></tpl>");
+        _defaultTemplate.setId("default-template");
         _defaultTemplate.setDisplayField("name");
         _defaultTemplate.setForceSelection(true);
+        _defaultTemplate.setAllowBlank(false);
         _panel.add(_defaultTemplate, new FormData("100%"));
 
+     // TODO: Remove these set calls - set in super-class.
         _panel.setId("UserPanel");
-        _save.setId("userSave");
-        _cancel.setId("userCancel");
+        _save.setId("save");
+        _cancel.setId("cancel");
 
         drawGUI();
     }

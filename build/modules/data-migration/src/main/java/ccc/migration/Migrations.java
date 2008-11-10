@@ -33,6 +33,7 @@ import ccc.services.UserManagerRemote;
 
 /**
  * Data migration from CCC6 to CCC7.
+ * TODO: Factor out duplicate template creation code.
  *
  * @author Civic Computing Ltd
  */
@@ -131,7 +132,7 @@ public class Migrations {
                 Template template =
                     (_templates.containsKey(displayTemplate))
                     ? _templates.get(displayTemplate)
-                        : new Template(displayTemplate, "", "", "<fields/>");
+                        : new Template(displayTemplate, "No description.", "Empty template!", "<fields/>");
                     template = assetManager().createOrRetrieve(template);
                     child.displayTemplateName(template);
                     if (!_templates.containsKey(displayTemplate)) {
@@ -163,7 +164,7 @@ public class Migrations {
                 Template template =
                     (_templates.containsKey(displayTemplate))
                     ? _templates.get(displayTemplate)
-                        : new Template(displayTemplate, "", "", "<fields/>");
+                        : new Template(displayTemplate, "No description.", "Empty template!", "<fields/>");
                     template = assetManager().createOrRetrieve(template);
                     childPage.displayTemplateName(template);
                     if (!_templates.containsKey(displayTemplate)) {
