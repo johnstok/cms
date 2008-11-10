@@ -4,16 +4,21 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="" />
-<title>reject-missing-data</title>
+<title>update_template-reject-missing-data</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">reject-missing-data</td></tr>
+<tr><td rowspan="1" colspan="3">update_template-reject-missing-data</td></tr>
 </thead><tbody>
 <tr>
+	<td>setSpeed</td>
+	<td>2000</td>
+	<td></td>
+</tr>
+<tr>
 	<td>open</td>
-	<td>/content-creator/</td>
+	<td>creator/</td>
 	<td></td>
 </tr>
 <tr>
@@ -23,12 +28,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//div[@id='assets']/table/tbody/tr/td[2]/div</td>
+	<td>//div[@id='assets']/div[1]/table/tbody/tr/td[2]/div</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>//div[@id='templates']/table/tbody/tr/td[6]/span</td>
+	<td>templates</td>
 	<td></td>
 </tr>
 <tr>
@@ -43,97 +48,47 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>//input[@type='text']</td>
+	<td>Name</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>//tr[2]/td[2]/input</td>
+	<td>Title</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>//textarea</td>
+	<td>Description</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>gwt-debug-Save</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>* Title may not be empty.</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>* Description may not be empty.</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>* Body may not be empty.</td>
+	<td>next</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>//input[@type='text']</td>
-	<td>foo</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>//tr[2]/td[2]/input</td>
-	<td>foo</td>
+	<td>content xml</td>
+	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>gwt-debug-Save</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>* Body may not be empty.</td>
+	<td>next</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>//input[@type='text']</td>
+	<td>Body</td>
 	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>//textarea</td>
-	<td>foo</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>gwt-debug-Save</td>
+	<td>save</td>
 	<td></td>
 </tr>
 <tr>
-	<td>assertTextPresent</td>
-	<td>* Title may not be empty.</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>//tr[2]/td[2]/input</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>//input[@type='text']</td>
-	<td>foo</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>gwt-debug-Save</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>* Description may not be empty.</td>
+	<td>assertAlert</td>
+	<td>[content xml cannot be empty, Name cannot be empty, Title cannot be empty, Body cannot be empty]</td>
 	<td></td>
 </tr>
 

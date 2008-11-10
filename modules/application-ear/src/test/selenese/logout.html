@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="" />
-<title>change_template-disallowed_for_templates</title>
+<title>log_out</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">change_template-disallowed_for_templates</td></tr>
+<tr><td rowspan="1" colspan="3">log_out</td></tr>
 </thead><tbody>
 <tr>
 	<td>setSpeed</td>
@@ -18,43 +18,28 @@
 </tr>
 <tr>
 	<td>open</td>
-	<td>creator/</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTitle</td>
-	<td>ContentCreator</td>
+	<td>/creator/</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>assets-navigator</td>
+	<td>//table[@id='tools-menu']/tbody/tr/td[2]/em/button</td>
 	<td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>//div[@id='assets']/div[1]/table/tbody/tr/td[2]/div</td>
+	<td>clickAndWait</td>
+	<td>logout-menu-item</td>
 	<td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>//div[@id='templates']</td>
+	<td>assertTextPresent</td>
+	<td>Username:</td>
 	<td></td>
 </tr>
 <tr>
-	<td>mouseUpRightAt</td>
-	<td>//div[@id='ash_display.jsp']/table/tbody/tr/td[2]/div/div</td>
+	<td>assertTextPresent</td>
+	<td>Password:</td>
 	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>chooseTemplate-resource</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertAlert</td>
-	<td>Template cannot be chosen for this resource.</td>
-	<td>Template cannot be chosen for this resource.</td>
 </tr>
 
 </tbody></table>

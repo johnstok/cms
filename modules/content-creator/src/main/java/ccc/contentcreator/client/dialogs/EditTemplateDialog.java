@@ -78,6 +78,10 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
         setWidth(DEFAULT_WIDTH);
         setHeight(DEFAULT_HEIGHT);
 
+        _name.setId("name");
+        _templateTitle.setId("title");
+        _description.setId("description");
+
         populateFirstScreen();
         populateSecondScreen();
         populateThirdScreen();

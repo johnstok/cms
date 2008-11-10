@@ -47,10 +47,10 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
     private final TemplateDTO _none =
         new TemplateDTO(null,
                         -1,
-                        "[none]",
-                        "[none]",
-                        "[none]",
-                        "[none]",
+                        "{none}",
+                        "{none}",
+                        "{none}",
+                        "{none}",
                         "<fields/>",
                         "");
 
@@ -68,7 +68,8 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
         _resource = resource;
 
         _defaultTemplate.setFieldLabel(_constants.defaultTemplate());
-        _defaultTemplate.setId(_constants.defaultTemplate());
+        _defaultTemplate.setTemplate("<tpl for=\".\"><div class=x-combo-list-item id={name}>{name}</div></tpl>");
+        _defaultTemplate.setId("default-template");
         _defaultTemplate.setDisplayField("name");
         _defaultTemplate.setForceSelection(true);
         _panel.add(_defaultTemplate, new FormData("100%"));

@@ -51,7 +51,7 @@ public class CreateUserDialog extends AbstractEditDialog {
         _email.setId(_constants.email());
         _panel.add(_email, new FormData("100%"));
 
-
+        // TODO: Remove these set calls - set in super-class.
         _panel.setId("UserPanel");
         _save.setId("userSave");
         _cancel.setId("userCancel");

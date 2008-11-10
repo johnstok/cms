@@ -3,17 +3,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="selenium.base" href="http://kreios:8080/" />
-<title>success</title>
+<link rel="selenium.base" href="http://localhost:8080/" />
+<title>update_template-success</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">success</td></tr>
+<tr><td rowspan="1" colspan="3">update_template-success</td></tr>
 </thead><tbody>
 <tr>
+	<td>setSpeed</td>
+	<td>2000</td>
+	<td></td>
+</tr>
+<tr>
 	<td>open</td>
-	<td>/content-creator/</td>
+	<td>creator/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>ContentCreator</td>
 	<td></td>
 </tr>
 <tr>
@@ -23,12 +33,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//div[@id='assets']/table/tbody/tr/td[2]/div</td>
+	<td>//div[@id='assets']/div[1]/table/tbody/tr/td[2]/div</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>//div[@id='templates']/table/tbody/tr/td[6]/span</td>
+	<td>//div[@id='templates']/div[1]/table/tbody/tr/td[6]/span</td>
 	<td></td>
 </tr>
 <tr>
@@ -43,22 +53,32 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>//input[@type='text']</td>
+	<td>Title</td>
 	<td>foo</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>//tr[2]/td[2]/input</td>
-	<td>foo</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>//textarea</td>
+	<td>Description</td>
 	<td>foo</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>gwt-debug-Save</td>
+	<td>next</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>next</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Body</td>
+	<td>Different template!</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>save</td>
 	<td></td>
 </tr>
 <tr>
@@ -73,18 +93,28 @@
 </tr>
 <tr>
 	<td>verifyValue</td>
-	<td>//input[@type='text']</td>
+	<td>Title</td>
 	<td>foo</td>
 </tr>
 <tr>
 	<td>verifyValue</td>
-	<td>//tr[2]/td[2]/input</td>
+	<td>Description</td>
 	<td>foo</td>
 </tr>
 <tr>
+	<td>click</td>
+	<td>next</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>next</td>
+	<td></td>
+</tr>
+<tr>
 	<td>verifyValue</td>
-	<td>//textarea</td>
-	<td>foo</td>
+	<td>Body</td>
+	<td>Different template!</td>
 </tr>
 
 </tbody></table>

@@ -54,7 +54,7 @@ public class CreateAliasDialog extends AbstractEditDialog {
      * @param item The ResourceDTO
      */
     public CreateAliasDialog(final ResourceDTO item) {
-        super(Globals.uiConstants().updateContent());
+        super(Globals.uiConstants().createAlias());
 
         _target = item;
         setLayout(new FitLayout());
