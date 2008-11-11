@@ -31,11 +31,8 @@ public abstract class Resource extends Entity {
     private Folder       _parent   = null;
     private User         _lockedBy = null;
 
-    /**
-     * Constructor.
-     */
-    @SuppressWarnings("unused")
-    protected Resource() { /* NO-OP */ }
+    /** Constructor: for persistence only. */
+    protected Resource() { super(); }
 
     /**
      * Constructor.

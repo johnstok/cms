@@ -25,12 +25,8 @@ public class Setting extends Entity {
     private Name _name;
     private String _value;
 
-    /**
-     * Constructor.
-     * N.B. This constructor should only be used for persistence.
-     */
-    @SuppressWarnings("unused")
-    private Setting() { super(); }
+    /** Constructor: for persistence only. */
+    protected Setting() { super(); }
 
     /**
      * Constructor.

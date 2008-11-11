@@ -25,11 +25,7 @@ public class Template extends Resource {
     private String _body;
     private String _definition;
 
-    /**
-     * Constructor.
-     * N.B. This constructor should only be used for persistence.
-     */
-    @SuppressWarnings("unused")
+    /** Constructor: for persistence only. */
     protected Template() { super(); }
 
     /**

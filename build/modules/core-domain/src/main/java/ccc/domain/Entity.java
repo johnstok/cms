@@ -24,6 +24,7 @@ import ccc.commons.serialisation.Serializer;
 
 /**
  * Abstract base class extended by entity classes that require persistence.
+ * TODO: Factor out 'VersionedEntity' subclass?
  *
  * @author Civic Computing Ltd
  */
@@ -31,6 +32,9 @@ public abstract class Entity implements Serializable, CanSerialize {
 
     private UUID _id      = UUID.randomUUID();
     private int  _version = -1;
+
+    /** Constructor: for persistence only. */
+    protected Entity() { super(); }
 
     /**
      * Accessor for the id field.
