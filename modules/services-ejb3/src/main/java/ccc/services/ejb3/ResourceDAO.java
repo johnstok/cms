@@ -23,6 +23,7 @@ import javax.ejb.TransactionAttribute;
 import ccc.domain.CCCException;
 import ccc.domain.Resource;
 import ccc.domain.User;
+import ccc.services.AuditLogLocal;
 import ccc.services.QueryManagerLocal;
 import ccc.services.ResourceDAOLocal;
 import ccc.services.UserManagerLocal;
@@ -42,6 +43,8 @@ public class ResourceDAO implements ResourceDAOLocal {
     private UserManagerLocal _users;
     @EJB(name="QueryManager", beanInterface=QueryManagerLocal.class)
     private QueryManagerLocal _queries;
+    @EJB(name="AuditLog", beanInterface=AuditLogLocal.class)
+    private AuditLogLocal _audit;
 
     /** Constructor. */
     @SuppressWarnings("unused") private ResourceDAO() { /* NO-OP */ }
@@ -53,9 +56,11 @@ public class ResourceDAO implements ResourceDAOLocal {
      * @param userDAO
      */
     public ResourceDAO(final UserManagerLocal userDAO,
-                       final QueryManagerLocal queryManager) {
+                       final QueryManagerLocal queryManager,
+                       final AuditLogLocal audit) {
         _users = userDAO;
         _queries = queryManager;
+        _audit = audit;
     }
 
     /** {@inheritDoc} */
@@ -66,6 +71,7 @@ public class ResourceDAO implements ResourceDAOLocal {
             throw new CCCException("Resource is already locked.");
         }
         r.lock(_users.loggedInUser());
+        _audit.recordLock(r);
         return r;
     }
 
@@ -80,6 +86,7 @@ public class ResourceDAO implements ResourceDAOLocal {
         } else {
             throw new CCCException("User not allowed to unlock this resource.");
         }
+        _audit.recordUnlock(r);
         return r;
     }
 

@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+ 
+<!-- 
+    ========================================================================
+    * Copyright (c) 2008 Civic Computing Ltd
+    * All rights reserved.
+    *
+    * Revision      $Rev$
+    * Modified by   $Author$
+    * Modified on   $Date$
+    *
+    * Changes: see SubVersion log
+    ========================================================================
+-->
+
+<hibernate-mapping default-access="field">
+
+    <typedef class="ccc.services.ejb3.support.EnumUserType" name="LogEntryAction">
+        <param name="type">ccc.domain.LogEntry$Action</param>
+    </typedef>
+    <typedef class="ccc.services.ejb3.support.EnumUserType" name="ResourceType">
+        <param name="type">ccc.domain.ResourceType</param>
+    </typedef>
+    
+    <class name="ccc.domain.LogEntry" mutable="false">
+        
+        <id name="_id" type="ccc.services.ejb3.support.UUIDUserType">
+            <generator class="assigned" />
+        </id>
+        
+        <version name="_version" unsaved-value="negative" />
+
+		<many-to-one
+            name="_actor"
+            not-null="true"/>
+        
+        <property
+            name="_action"
+            not-null="true"
+            type="LogEntryAction" />
+        <property
+            name="_happenedOn"
+            not-null="true"
+            type="timestamp" />
+        <property
+            name="_subjectType"
+            not-null="true"
+            type="ResourceType" />
+        <property
+            name="_subjectId"
+            not-null="true"
+            type="ccc.services.ejb3.support.UUIDUserType" />
+        <property
+            name="_subjectVersionAfterChange"
+            not-null="true"
+            type="int" />
+        <property
+            name="_summary"
+            not-null="true"
+            type="string"
+            length="1024"/>
+        
+    <!-- 
+    private long         _index = -1;
+    private Date         _recordedOn; 
+    
+        update="false"
+        insert="false" 
+        generated="insert"   
+     -->
+    
+    </class>
+</hibernate-mapping>

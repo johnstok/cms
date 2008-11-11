@@ -17,11 +17,13 @@ import java.util.Collections;
 import java.util.List;
 
 import junit.framework.TestCase;
+import ccc.commons.Testing;
 import ccc.domain.CCCException;
 import ccc.domain.CreatorRoles;
 import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.User;
+import ccc.services.AuditLogLocal;
 import ccc.services.QueryManagerLocal;
 import ccc.services.ResourceDAOLocal;
 import ccc.services.UserManagerLocal;
@@ -52,7 +54,7 @@ public class ResourceDAOTest
         expect(_qm.find(Resource.class, _r.id().toString())).andReturn(_r);
         replay(_users, _qm);
 
-        final ResourceDAOLocal rdao = new ResourceDAO(_users, _qm);
+        final ResourceDAOLocal rdao = new ResourceDAO(_users, _qm, _al);
 
         _r.lock(_regularUser);
 
@@ -74,7 +76,7 @@ public class ResourceDAOTest
         expect(_qm.find(Resource.class, _r.id().toString())).andReturn(_r);
         replay(_users, _qm);
 
-        final ResourceDAOLocal rdao = new ResourceDAO(_users, _qm);
+        final ResourceDAOLocal rdao = new ResourceDAO(_users, _qm, _al);
 
         _r.lock(_anotherUser);
 
@@ -103,7 +105,7 @@ public class ResourceDAOTest
         expect(_qm.find(Resource.class, _r.id().toString())).andReturn(_r);
         replay(_users, _qm);
 
-        final ResourceDAOLocal rdao = new ResourceDAO(_users, _qm);
+        final ResourceDAOLocal rdao = new ResourceDAO(_users, _qm, _al);
 
         _r.lock(_regularUser);
 
@@ -124,7 +126,7 @@ public class ResourceDAOTest
         expect(_qm.find(Resource.class, _r.id().toString())).andReturn(_r);
         expect(_users.loggedInUser()).andReturn(_regularUser);
         replay(_users, _qm);
-        final ResourceDAOLocal rdao = new ResourceDAO(_users, _qm);
+        final ResourceDAOLocal rdao = new ResourceDAO(_users, _qm, _al);
 
         // ACT
         rdao.lock(_r.id().toString());
@@ -142,7 +144,7 @@ public class ResourceDAOTest
         // ARRANGE
         expect(_qm.find(Resource.class, _r.id().toString())).andReturn(_r);
         replay(_users, _qm);
-        final ResourceDAOLocal rdao = new ResourceDAO(_users, _qm);
+        final ResourceDAOLocal rdao = new ResourceDAO(_users, _qm, _al);
         _r.lock(_anotherUser);
 
         // ACT
@@ -168,7 +170,7 @@ public class ResourceDAOTest
         expect(_qm.list("lockedResources", Resource.class)).andReturn(results);
         replay(_users, _qm);
 
-        final ResourceDAOLocal rdao = new ResourceDAO(_users, _qm);
+        final ResourceDAOLocal rdao = new ResourceDAO(_users, _qm, _al);
 
         // ACT
         final List<Resource> locked = rdao.locked();
@@ -192,7 +194,7 @@ public class ResourceDAOTest
         replay(_users, _qm);
 
         final ResourceDAOLocal rdao =
-            new ResourceDAO(_users, _qm);
+            new ResourceDAO(_users, _qm, _al);
 
         // ACT
         final List<Resource> locked = rdao.lockedByCurrentUser();
@@ -205,6 +207,7 @@ public class ResourceDAOTest
 
     private QueryManagerLocal _qm;
     private UserManagerLocal _users;
+    private AuditLogLocal _al = Testing.stub(AuditLogLocal.class);
     private Resource _r;
 
     /** {@inheritDoc} */
