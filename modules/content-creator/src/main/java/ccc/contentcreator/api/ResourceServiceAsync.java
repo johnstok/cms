@@ -143,9 +143,10 @@ public interface ResourceServiceAsync {
     void listUsersWithRole(String role, AsyncCallback<List<UserDTO>> callback);
 
     /**
-     * @see ResourceService#createUser(UserDTO)
+     * @see ResourceService#createUser(UserDTO, String)
      */
     void createUser(final UserDTO userDto,
+                    final String password,
                     AsyncCallback<Void> callback);
 
     /**

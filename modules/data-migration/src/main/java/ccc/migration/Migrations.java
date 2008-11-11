@@ -25,7 +25,6 @@ import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
-import ccc.domain.User;
 import ccc.services.AssetManagerRemote;
 import ccc.services.ContentManagerRemote;
 import ccc.services.ServiceNames;
@@ -78,9 +77,9 @@ public class Migrations {
     }
 
     private void migrateUsers(final Queries queries) {
-        final List<User> users = queries.selectUsers();
-        for (final User user : users) {
-            userManager().createUser(user);
+        final List<UserBean> mus = queries.selectUsers();
+        for (final UserBean mu : mus) {
+            userManager().createUser(mu.user(), mu.password());
         }
     }
 

@@ -89,11 +89,11 @@ public final class ResourceServiceImplTest extends TestCase {
         user.email("abc@def.com");
         user.addRole(CreatorRoles.ADMINISTRATOR);
 
-        _um.createUser(user);
+        _um.createUser(user, "foopass");
         replay(_um);
 
         // ACT
-        _rsi.createUser(DTOs.dtoFrom(user));
+        _rsi.createUser(DTOs.dtoFrom(user), "foopass");
 
         // ASSERT
         verify(_um);

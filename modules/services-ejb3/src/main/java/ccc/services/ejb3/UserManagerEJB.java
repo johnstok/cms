@@ -74,9 +74,9 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
 
     /** {@inheritDoc} */
     @Override
-    public void createUser(final User user) {
+    public void createUser(final User user, final String password) {
         _em.persist(user);
-        final Password defaultPassword = new Password(user, "pw");
+        final Password defaultPassword = new Password(user, password);
         _em.persist(defaultPassword);
     }
 

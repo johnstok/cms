@@ -122,7 +122,7 @@ public class UserManagerEJBTest extends TestCase {
         final UserManagerEJB um = new UserManagerEJB(_em, _context);
 
         // ACT
-        um.createUser(u);
+        um.createUser(u, "foopass");
 
         // ASSERT
         verify(_em);

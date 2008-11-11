@@ -63,7 +63,9 @@ public interface ResourceService extends RemoteService {
      * @param title The title of the page.
      * @param paragraphs The paragraphs for the page.
      */
-    void saveContent(String id, String title, Map<String, ParagraphDTO> paragraphs);
+    void saveContent(String id,
+                     String title,
+                     Map<String, ParagraphDTO> paragraphs);
 
     /**
      * Create a new template in CCC.
@@ -188,8 +190,9 @@ public interface ResourceService extends RemoteService {
      * Create a new user in the system.
      *
      * @param userDto A dto representing the new user.
+     * @param password The password for the new user.
      */
-    void createUser(final UserDTO userDto);
+    void createUser(final UserDTO userDto, String password);
 
 
     /**

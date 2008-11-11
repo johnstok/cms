@@ -358,10 +358,10 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     }
 
     /** {@inheritDoc} */
-    public void createUser(final UserDTO userDto) {
+    public void createUser(final UserDTO userDto, final String password) {
         final UserManagerLocal um = userManager();
         final User user = DTOs.userFrom(userDto);
-        um.createUser(user);
+        um.createUser(user, password);
     }
 
     /** {@inheritDoc} */
