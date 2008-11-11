@@ -33,11 +33,7 @@ public final class Page extends Resource {
         new TreeMap<String, Paragraph>(new AlphanumComparator());
 
 
-    /**
-     * Constructor.
-     * N.B. This constructor should only be used for persistence.
-     */
-    @SuppressWarnings("unused")
+    /** Constructor: for persistence only. */
     protected Page() { super(); }
 
     /**

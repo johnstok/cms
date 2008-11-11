@@ -29,11 +29,7 @@ public final class Folder extends Resource {
 
     private final List<Resource> _entries = new ArrayList<Resource>();
 
-    /**
-     * Constructor.
-     * N.B. This constructor should only be used for persistence.
-     */
-    @SuppressWarnings("unused")
+    /** Constructor: for persistence only. */
     protected Folder() { super(); }
 
     /**

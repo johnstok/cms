@@ -30,7 +30,7 @@ public class Password extends Entity {
     private byte[] _hash;
 
     /** Constructor: for persistence only. */
-    @SuppressWarnings("unused") protected Password() { super(); }
+    protected Password() { super(); }
 
     /**
      * Constructor.

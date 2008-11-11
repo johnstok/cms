@@ -27,11 +27,7 @@ public class Alias extends Resource {
     private Resource _target;
 
 
-    /**
-     * Constructor.
-     * N.B. This constructor should only be used for persistence.
-     */
-    @SuppressWarnings("unused")
+    /** Constructor: for persistence only. */
     protected Alias() { super(); }
 
     /**

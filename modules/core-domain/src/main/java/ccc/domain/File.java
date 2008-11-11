@@ -32,12 +32,9 @@ public class File extends Resource {
     private long _size;
     private MimeType _mimeType;
 
-    /**
-     * Constructor.
-     * N.B. This constructor should only be used for persistence.
-     */
-    @SuppressWarnings("unused")
-    private File() { super(); }
+
+    /** Constructor: for persistence only. */
+    protected File() { super(); }
 
     /**
      * Constructor. Assumes a mime type of "application/octet-stream".
