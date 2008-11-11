@@ -189,4 +189,6 @@ public interface ResourceServiceAsync {
      */
     void getTemplateForResource(ResourceDTO resourceDTO,
                                 AsyncCallback<TemplateDTO> callback);
+
+    void loggedInUser(AsyncCallback<UserDTO> callback);
 }

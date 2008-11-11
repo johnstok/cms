@@ -15,11 +15,13 @@ import java.util.List;
 
 import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.dialogs.CreateUserDialog;
 import ccc.contentcreator.client.dialogs.EditTemplateDialog;
 import ccc.contentcreator.client.dialogs.UpdateOptionsDialog;
 import ccc.contentcreator.dto.DTO;
 import ccc.contentcreator.dto.OptionDTO;
+import ccc.contentcreator.dto.UserDTO;
 
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -89,7 +91,17 @@ public class MainMenu
         createUser.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override
             public void componentSelected(final MenuEvent ce) {
-                new CreateUserDialog().show();
+                Globals.resourceService().loggedInUser(
+                    new ErrorReportingCallback<UserDTO>() {
+                    public void onSuccess(final UserDTO user) {
+                        if (user.getRoles().contains("ADMINISTRATOR")) {
+                            new CreateUserDialog().show();
+                        } else {
+                            Globals.alert(_constants.notAllowedAction());
+                        }
+                    }
+                });
+
             }
         });
         usersMenu.add(createUser);
