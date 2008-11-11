@@ -79,10 +79,10 @@ public final class DTOs {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Create a {@link User} from a {@link UserDTO}.
      *
-     * @param userDto
-     * @return
+     * @param userDto UserDTO of the user.
+     * @return User.
      */
     public static User userFrom(final UserDTO userDto) {
         final User u = new User(userDto.getUsername());

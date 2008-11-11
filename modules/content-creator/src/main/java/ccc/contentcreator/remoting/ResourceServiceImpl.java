@@ -440,4 +440,17 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     public void logout() {
         getThreadLocalRequest().getSession().invalidate();
     }
+
+    /** {@inheritDoc} */
+    public UserDTO loggedInUser() {
+        UserDTO userDTO = null;
+
+        final User user = userManager().loggedInUser();
+        if (user != null) {
+            userDTO = DTOs.dtoFrom(user);
+        }
+
+        return userDTO;
+
+    }
 }

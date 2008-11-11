@@ -253,4 +253,11 @@ public interface ResourceService extends RemoteService {
      * @return TemplateDTO
      */
     TemplateDTO getTemplateForResource(final ResourceDTO resourceDTO);
+
+    /**
+     * Returns currently logged in user.
+     *
+     * @return UserDTO
+     */
+    UserDTO loggedInUser();
 }

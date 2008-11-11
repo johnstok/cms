@@ -417,4 +417,12 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Confirm Password")
     String confirmPassword();
+
+    /**
+     * "Not allowed action".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Not allowed action")
+    String notAllowedAction();
 }

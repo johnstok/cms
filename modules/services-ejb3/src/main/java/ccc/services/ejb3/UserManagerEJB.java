@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.UUID;
 
 import javax.annotation.Resource;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBContext;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -190,6 +191,7 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
 
     /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"ADMINISTRATOR"})
     public void updateUser(final User user) {
         final User current = _em.find(User.class, user.id());
         current.username(user.username());
