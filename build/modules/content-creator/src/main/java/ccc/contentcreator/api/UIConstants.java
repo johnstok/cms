@@ -401,4 +401,20 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Log out")
     String logout();
+
+    /**
+     * "Password".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Password")
+    String password();
+
+    /**
+     * "Confirm Password".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Confirm Password")
+    String confirmPassword();
 }
