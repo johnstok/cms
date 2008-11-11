@@ -118,10 +118,10 @@ public class Queries {
      *
      * @return The list of users.
      */
-    public List<User> selectUsers() {
+    public List<UserBean> selectUsers() {
         ResultSet rs = null;
         PreparedStatement ps = null;
-        final List<User> resultList = new ArrayList<User>();
+        final List<UserBean> resultList = new ArrayList<UserBean>();
 
         try {
             ps = _connection.prepareStatement(
@@ -130,12 +130,14 @@ public class Queries {
 
             while (rs.next()) {
                 final String userName = rs.getString("user_name");
+                final String password = rs.getString("user_passwd");
                 final int userId = rs.getInt("user_id");
                 try {
                     final User user = new User(userName);
                     selectEmailForUser(user, userId);
                     selectRolesForUser(user, userId);
-                    resultList.add(user);
+                    final UserBean mu = new UserBean(user, password);
+                    resultList.add(mu);
                 } catch (final Exception e) {
                     log.error(e.getMessage());
                 }
@@ -228,6 +230,5 @@ public class Queries {
             DbUtils.closeQuietly(ps);
         }
     }
-
 
 }

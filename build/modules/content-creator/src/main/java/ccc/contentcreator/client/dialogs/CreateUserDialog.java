@@ -116,6 +116,7 @@ public class CreateUserDialog extends AbstractEditDialog {
 
                 Globals.resourceService().createUser(
                     userDto,
+                    "pw",
                     new ErrorReportingCallback<Void>() {
                         public void onSuccess(final Void result) {
                             // TODO: Refresh the main window.
