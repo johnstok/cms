@@ -35,6 +35,7 @@ public interface ResourceDAOLocal {
      * If the resource is already locked a CCCException will be thrown.
      *
      * @param resourceId The uuid of the resource to lock.
+     * @return The current version of resource.
      */
     @GET // TODO: Should be POST
     @Path("/lock/{id}")
@@ -47,7 +48,8 @@ public interface ResourceDAOLocal {
      * CCCException will be thrown.
      * Unlocking an unlocked resource has no effect.
      *
-     * @param r The resource to unlock.
+     * @param resourceId The resource to unlock.
+     * @return The current version of resource.
      */
     @GET // TODO: Should be POST
     @Path("/unlock/{id}")
