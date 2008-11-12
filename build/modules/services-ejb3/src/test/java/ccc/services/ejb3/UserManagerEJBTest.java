@@ -263,9 +263,19 @@ public class UserManagerEJBTest extends TestCase {
 
         // ARRANGE
         final User u = new User("testUser");
+        final Password pw = new Password(u, "foo");
         u.email("test@civicuk.com");
         expect(_em.find(User.class, u.id())).andReturn(u);
-        _em.persist(isA(Password.class));
+
+        expect(_q.setParameter("user", u)).andReturn(_q);
+        expect(_q.getSingleResult()).andReturn(pw);
+        replay(_q);
+
+        expect(
+            _em.createQuery(
+                UserManagerEJB.NamedQueries.PASSWORD_WITH_USER.queryString()))
+                .andReturn(_q);
+
         replay(_em);
 
         final UserManagerEJB um = new UserManagerEJB(_em, _context);
