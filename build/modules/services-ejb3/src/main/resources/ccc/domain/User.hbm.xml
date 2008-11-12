@@ -52,4 +52,10 @@
 
             
     </class>
+    
+    <query name="users">from ccc.domain.User u left join fetch u._roles</query>
+    <query name="usersWithRole">from ccc.domain.User u left join fetch u._roles where :role in elements(u._roles)</query>
+    <query name="usersWithUsername">from ccc.domain.User u where lower(u._username) like :username</query>
+    <query name="usersWithEmail">from ccc.domain.User u where lower(u._email) like :email</query>
+    <query name="passwordForUser">from ccc.domain.Password p where p._user = :user</query>
 </hibernate-mapping>
