@@ -14,6 +14,9 @@ package ccc.domain;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.commons.DBC;
+import ccc.commons.serialisation.Serializer;
+
 
 /**
  * Captures detail relevant to a single user action for persistence in the audit
@@ -38,6 +41,7 @@ public class LogEntry extends Entity {
     public static enum Action {
         RENAME,
         MOVE,
+        PUBLISH,
         UNPUBLISH,
         CREATE,
         UPDATE,
@@ -91,12 +95,12 @@ public class LogEntry extends Entity {
 
 
     /**
-     * TODO: Add a description of this method.
+     * Create a log entry for the unlocking of a resource.
      *
-     * @param p
-     * @param _actor2
-     * @param on
-     * @return
+     * @param resource The resource that was unlocked.
+     * @param actor The actor that performed the action.
+     * @param happenedOn The date that the actor performed the action.
+     * @return The log entry representing the action.
      */
     public static LogEntry forUnlock(final Resource resource,
                                      final User actor,
@@ -110,12 +114,12 @@ public class LogEntry extends Entity {
 
 
     /**
-     * TODO: Add a description of this method.
+     * Create a log entry for the locking of a resource.
      *
-     * @param p
-     * @param _actor2
-     * @param on
-     * @return
+     * @param resource The resource that was locked.
+     * @param actor The actor that performed the action.
+     * @param happenedOn The date that the actor performed the action.
+     * @return The log entry representing the action.
      */
     public static LogEntry forLock(final Resource resource,
                                    final User actor,
@@ -128,9 +132,27 @@ public class LogEntry extends Entity {
     }
 
 
+    /** {@inheritDoc} */
+    @Override public void serialize(final Serializer s) {
+        s.number(   "index",                     _index);
+        s.date(     "recordedOn",                _recordedOn);
+        s.string(   "actor",                     _actor.username());
+        s.string(   "action",                    _action.name());
+        s.date(     "happenedOn",                _happenedOn);
+        s.string(   "resourceType",              _subjectType.name());
+        s.string(   "subjectId",                 _subjectId.toString());
+        s.number(   "subjectVersionAfterChange", _subjectVersionAfterChange);
+        s.string(   "summary",                   _summary);
+    }
+
+
     private static LogEntry createEntry(final Resource p,
                                         final User actor,
                                         final Date happenedOn) {
+
+        DBC.require().notNull(p);
+        DBC.require().notNull(actor);
+        DBC.require().notNull(happenedOn);
 
         final LogEntry le = new LogEntry();
         le._subjectId = p.id();
@@ -143,9 +165,9 @@ public class LogEntry extends Entity {
 
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The uuid of the resource upon which the action was performed.
      */
     public UUID subjectId() {
         return _subjectId;
@@ -153,9 +175,9 @@ public class LogEntry extends Entity {
 
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The type of resource upon which the action was performed.
      */
     public ResourceType subjectType() {
         return _subjectType;
@@ -163,9 +185,9 @@ public class LogEntry extends Entity {
 
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The user that performed the action.
      */
     public User actor() {
         return _actor;
@@ -173,9 +195,9 @@ public class LogEntry extends Entity {
 
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The action that was performed.
      */
     public Action action() {
         return _action;
@@ -183,9 +205,9 @@ public class LogEntry extends Entity {
 
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The index of the log entry in the audit log.
      */
     public long index() {
         return _index;
@@ -193,29 +215,29 @@ public class LogEntry extends Entity {
 
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The date that the log entry was recorded to the audit log.
      */
     public Date recordedOn() {
-        return _recordedOn;
+        return (null==_recordedOn) ? null : new Date(_recordedOn.getTime());
     }
 
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The date that the user performed the action.
      */
     public Date happenedOn() {
-        return _happenedOn;
+        return new Date(_happenedOn.getTime());
     }
 
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return A summary of the action that was performed, as a string.
      */
     public String summary() {
         return _summary;
@@ -223,9 +245,9 @@ public class LogEntry extends Entity {
 
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The version of the subject after the action was completed.
      */
     public int subjectVersionAfterChange() {
         return _subjectVersionAfterChange;
