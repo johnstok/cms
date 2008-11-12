@@ -18,6 +18,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 
 
@@ -72,5 +73,15 @@ public interface ResourceDAOLocal {
     @Path("/locked")
     @Produces("text/plain")
     List<Resource> locked();
+
+    /**
+     * Retrieve the history of a resource.
+     *
+     * @return The list of resources.
+     */
+    @GET
+    @Path("/history/{id}")
+    @Produces("text/plain")
+    List<LogEntry> history(@PathParam("id") String resourceId);
 
 }

@@ -13,8 +13,6 @@ package ccc.services.ejb3;
 
 import static org.easymock.EasyMock.*;
 
-import java.util.Date;
-
 import javax.persistence.EntityManager;
 
 import junit.framework.TestCase;
@@ -29,7 +27,7 @@ import ccc.services.UserManagerLocal;
 
 
 /**
- * TODO: Add Description for this type.
+ * Tests for the {@link AuditLogLocal} class.
  *
  * @author Civic Computing Ltd.
  */
@@ -103,7 +101,6 @@ public class AuditLogEJBTest
 
 
     private final User _actor = new User("actor");
-    private final Date _happenedOn = new Date();
     private EntityManager _em;
     private UserManagerLocal _um;
 }
