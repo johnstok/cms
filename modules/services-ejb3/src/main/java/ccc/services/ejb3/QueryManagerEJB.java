@@ -69,8 +69,7 @@ public final class QueryManagerEJB implements QueryManagerLocal {
     /** {@inheritDoc} */
     public Maybe<Folder> lookupRoot(final ResourceName name) {
 
-        final Query q =
-            _em.createNamedQuery(NamedQueries.RESOURCE_BY_NAME.queryString());
+        final Query q = _em.createNamedQuery("resourcesByName");
         q.setParameter("name", name);
 
         try {
@@ -85,8 +84,7 @@ public final class QueryManagerEJB implements QueryManagerLocal {
     /** {@inheritDoc} */
     @Override
     public Maybe<Setting> findSetting(final Name name) {
-        final Query q =
-            _em.createQuery(NamedQueries.SETTING_BY_NAME.queryString());
+        final Query q = _em.createNamedQuery("settingsByName");
         q.setParameter("name", name);
 
         try {
@@ -129,35 +127,6 @@ public final class QueryManagerEJB implements QueryManagerLocal {
         return new Maybe<Folder>();
     }
 
-    /**
-     * Available named queries.
-     *
-     * @author Civic Computing Ltd.
-     */
-    static enum NamedQueries {
-
-        /** SETTING_BY_NAME : NamedQueries. */
-        SETTING_BY_NAME("from ccc.domain.Setting s where s._name=:name"),
-
-        /** RESOURCE_BY_NAME : NamedQueries. */
-        RESOURCE_BY_NAME("from ccc.domain.Resource r where r._name = :name");
-
-        private final String _queryString;
-
-        private NamedQueries(final String qString) {
-            _queryString = qString;
-        }
-
-        /**
-         * Accessor for the query string.
-         *
-         * @return The JPA query as a string.
-         */
-        String queryString() {
-            return _queryString;
-        }
-    }
-
     /** {@inheritDoc} */
     @Override
     public <T> List<T> list(final String queryName,
@@ -166,7 +135,7 @@ public final class QueryManagerEJB implements QueryManagerLocal {
 
         final Query q = _em.createNamedQuery(queryName);
         for (int i=0; i<params.length; i++) {
-            q.setParameter(i, params[i]);
+            q.setParameter((i+1), params[i]);
         }
         return q.getResultList();
 

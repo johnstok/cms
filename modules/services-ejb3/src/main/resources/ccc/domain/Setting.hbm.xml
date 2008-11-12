@@ -46,4 +46,6 @@
             unique="true" />
         
     </class>
+    
+    <query name="settingsByName">from ccc.domain.Setting s where s._name=:name</query>
 </hibernate-mapping>

@@ -28,7 +28,6 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.Setting;
 import ccc.domain.Setting.Name;
-import ccc.services.ejb3.QueryManagerEJB.NamedQueries;
 
 
 /**
@@ -91,8 +90,8 @@ public class QueryManagerEJBTest extends TestCase {
 
         // ARRANGE
         final Query q = createStrictMock(Query.class);
-        expect(q.setParameter(0, 1L)).andReturn(q);
-        expect(q.setParameter(1, 2F)).andReturn(q);
+        expect(q.setParameter(1, 1L)).andReturn(q);
+        expect(q.setParameter(2, 2F)).andReturn(q);
         expect(q.getResultList()).andReturn(new ArrayList<String>());
         replay(q);
 
@@ -124,8 +123,7 @@ public class QueryManagerEJBTest extends TestCase {
         replay(q);
 
         final EntityManager em = createStrictMock(EntityManager.class);
-        expect(em.createQuery(NamedQueries.SETTING_BY_NAME.queryString()))
-            .andReturn(q);
+        expect(em.createNamedQuery("settingsByName")).andReturn(q);
         expect(em.find(Folder.class, folderId))
             .andReturn(new Folder(new ResourceName("bar")));
         replay(em);
@@ -154,8 +152,7 @@ public class QueryManagerEJBTest extends TestCase {
         replay(q);
 
         final EntityManager em = createStrictMock(EntityManager.class);
-        expect(em.createQuery(NamedQueries.SETTING_BY_NAME.queryString()))
-            .andReturn(q);
+        expect(em.createNamedQuery("settingsByName")).andReturn(q);
         expect(em.find(Folder.class, folderId))
             .andReturn(new Folder(new ResourceName("bar")));
         replay(em);
@@ -183,7 +180,7 @@ public class QueryManagerEJBTest extends TestCase {
         replay(q);
 
         final EntityManager em = createStrictMock(EntityManager.class);
-        expect(em.createQuery(NamedQueries.SETTING_BY_NAME.queryString()))
+        expect(em.createNamedQuery("settingsByName"))
             .andReturn(q);
         replay(em);
 
