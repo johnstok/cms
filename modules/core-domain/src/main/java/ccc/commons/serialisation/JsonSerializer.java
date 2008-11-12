@@ -11,6 +11,8 @@
  */
 package ccc.commons.serialisation;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 
@@ -21,14 +23,38 @@ import java.util.Map;
  */
 public class JsonSerializer implements Serializer {
 
+    private static final SimpleDateFormat DATE_FORMATTER =
+        new SimpleDateFormat("dd.MM.yyyy HH.mm z");
     private final StringBuffer _buffer = new StringBuffer();
 
     /** {@inheritDoc} */
     @Override
     public void integer(final String string, final int version) {
+        number(string, version);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void date(final String string, final Date on) {
         string(string);
         colon();
-        integer(version);
+        if (null==on) {
+            nil();
+        } else {
+            final String formattedDate = DATE_FORMATTER.format(on);
+            string(formattedDate);
+        }
+        comma();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void number(final String string, final long value) {
+        string(string);
+        colon();
+        number(value);
         comma();
     }
 
@@ -67,9 +93,9 @@ public class JsonSerializer implements Serializer {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Create a JSON dictionary with the specified serializable class.
      *
-     * @param value
+     * @param value The class to serialize.
      */
     public JsonSerializer dict(final CanSerialize value) {
         startDict();
@@ -95,7 +121,7 @@ public class JsonSerializer implements Serializer {
         _buffer.append("{");
     }
 
-    private void integer(final int version) {
+    private void number(final long version) {
         _buffer.append(version);
     }
 
