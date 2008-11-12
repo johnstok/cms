@@ -44,6 +44,14 @@ public class Password extends Entity {
 
     }
 
+    /**
+     * Mutator for the password.
+     *
+     * @param passwordString The new password.
+     */
+    public void password(final String passwordString) {
+        _hash = hash(passwordString, id().toString());
+    }
 
     /**
      * Accessor for the user.

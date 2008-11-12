@@ -171,7 +171,11 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
 
         /** USERS_WITH_EMAIL : NamedQueries. */
         USERS_WITH_EMAIL(
-        "from ccc.domain.User u where lower(u._email) like :email");
+        "from ccc.domain.User u where lower(u._email) like :email"),
+
+        /** PASSWORD_WITH_USER : NamedQueries. */
+        PASSWORD_WITH_USER(
+        "from ccc.domain.Password p where p._user = :user");
 
         private final String _queryString;
 
@@ -190,6 +194,7 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
     }
 
     /** {@inheritDoc} */
+    @SuppressWarnings("unchecked") // JPA API doesn't support generics.
     @Override
     @RolesAllowed({"ADMINISTRATOR"})
     public void updateUser(final User user, final String password) {
@@ -198,8 +203,18 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
         current.email(user.email());
         current.roles(user.roles());
         if (password != null) {
-            final Password newPassword = new Password(user, password);
-            _em.persist(newPassword);
+            Password newPassword;
+            final Query q =
+                _em.createQuery(NamedQueries.PASSWORD_WITH_USER.queryString());
+            q.setParameter("user", user);
+            try {
+                newPassword = (Password) q.getSingleResult();
+            } catch (final NoResultException e) {
+                newPassword = null;
+            }
+            if (newPassword != null) {
+                newPassword.password(password);
+            }
         }
     }
 

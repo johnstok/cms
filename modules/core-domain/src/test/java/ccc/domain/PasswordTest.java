@@ -84,5 +84,24 @@ public class PasswordTest extends TestCase {
         }
     }
 
+    /**
+     * Test.
+     */
+    public void testChangePassword() {
+        // ARRANGE
+        final String password = "newPass";
+        final Password pw = new Password(new User("testUser"), "hash");
+
+        // ACT
+        pw.password("newPass");
+        final byte[] hash = Password.hash(password, pw.id().toString());
+
+        // ASSERT
+        assertEquals(SHA_HASH_LENGTH, hash.length);
+        assertTrue(
+            "Hashes should be equal.",
+            Arrays.equals(hash(pw, password), hash));
+    }
+
     private static final int SHA_HASH_LENGTH = 32;
 }
