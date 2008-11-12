@@ -11,6 +11,7 @@
  */
 package ccc.commons.serialisation;
 
+import java.util.Date;
 import java.util.Map;
 
 
@@ -35,6 +36,7 @@ public interface Serializer {
      * @param string
      * @param version
      */
+    @Deprecated
     void integer(String string, int version);
 
     /**
@@ -44,5 +46,21 @@ public interface Serializer {
      * @param paragraphs
      */
     void dict(String string, Map<String, ? extends CanSerialize> paragraphs);
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param string
+     * @param on
+     */
+    void date(String string, Date on);
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param string
+     * @param _index
+     */
+    void number(String string, long _index);
 
 }
