@@ -31,7 +31,7 @@ public class QueriesTest extends TestCase {
 
         // ACT
         try {
-            new Queries(null);
+            new LegacyDBQueries(null);
             fail("Queries failed to reject a NULL connection.");
         } catch (IllegalArgumentException e) {
 

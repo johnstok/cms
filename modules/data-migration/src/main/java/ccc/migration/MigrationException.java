@@ -19,8 +19,8 @@ public class MigrationException extends RuntimeException {
     /**
      * Constructor.
      *
-     * @param message
-     * @param cause
+     * @param message The message.
+     * @param cause The cause.
      */
     public MigrationException(final String message, final Throwable cause) {
         super(message, cause);
@@ -29,7 +29,7 @@ public class MigrationException extends RuntimeException {
     /**
      * Constructor.
      *
-     * @param message
+     * @param message The message.
      */
     public MigrationException(final String message) {
         super(message);
@@ -38,7 +38,7 @@ public class MigrationException extends RuntimeException {
     /**
      * Constructor.
      *
-     * @param cause
+     * @param cause The cause.
      */
     public MigrationException(final Throwable cause) {
         super(cause);

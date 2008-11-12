@@ -75,6 +75,7 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
 
     /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"ADMINISTRATOR"})
     public void createUser(final User user, final String password) {
         _em.persist(user);
         final Password defaultPassword = new Password(user, password);
