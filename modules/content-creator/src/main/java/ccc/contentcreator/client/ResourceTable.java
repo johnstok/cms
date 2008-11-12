@@ -23,6 +23,7 @@ import ccc.contentcreator.client.dialogs.ChooseTemplateDialog;
 import ccc.contentcreator.client.dialogs.CreateAliasDialog;
 import ccc.contentcreator.client.dialogs.EditTemplateDialog;
 import ccc.contentcreator.client.dialogs.PreviewContentDialog;
+import ccc.contentcreator.client.dialogs.TableDataDisplayDialog;
 import ccc.contentcreator.client.dialogs.UpdatePageDialog;
 import ccc.contentcreator.dto.DTO;
 import ccc.contentcreator.dto.FolderDTO;
@@ -117,6 +118,7 @@ public class ResourceTable extends ContentPanel {
         addCreateAlias(tbl, contextMenu);
         addLockResource(tbl, contextMenu);
         addUnlockResource(tbl, contextMenu);
+        viewHistory(tbl, contextMenu);
         addChooseTemplate(tbl, contextMenu);
 
         tbl.setContextMenu(contextMenu);
@@ -276,12 +278,7 @@ public class ResourceTable extends ContentPanel {
         contextMenu.add(lockResource);
     }
 
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param tbl
-     * @param contextMenu
-     */
+
     private void addUnlockResource(final Table tbl, final Menu contextMenu) {
 
         final MenuItem unlockResource = new MenuItem();
@@ -299,6 +296,29 @@ public class ResourceTable extends ContentPanel {
                         item.set("locked", md.get("locked"));
                         detailsStore().update(item);
                     }});
+            }
+
+        });
+        contextMenu.add(unlockResource);
+    }
+
+
+    private void viewHistory(final Table tbl, final Menu contextMenu) {
+
+        final MenuItem unlockResource = new MenuItem();
+        unlockResource.setId("view-history");
+        unlockResource.setText("View history"); // TODO: I18n
+        unlockResource.addSelectionListener(new SelectionListener<MenuEvent>() {
+
+            @Override public void componentSelected(final MenuEvent ce) {
+                final ResourceDTO item =
+                    (ResourceDTO) tbl.getSelectedItem().getModel();
+                new ResourceMgr().history(
+                    item.getId(),
+                    new Action<List<JsonModelData>>() {
+                        public void execute(final List<JsonModelData> data) {
+                            new TableDataDisplayDialog("Resource History", data).show(); //TODO: I18n
+                        }});
             }
 
         });

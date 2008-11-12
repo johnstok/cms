@@ -73,4 +73,6 @@
      -->
     
     </class>
+    
+    <query name="resourceHistory">from ccc.domain.LogEntry le where le._subjectId=?</query><!-- order by? -->
 </hibernate-mapping>

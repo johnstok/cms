@@ -66,4 +66,19 @@ public class ResourceMgr {
         // TODO: require().notNull(resourceId);
         REST.get("api/resources/unlock/"+resourceId, action);
     }
+
+    /**
+     * Retrieve a resource's history.
+     *
+     * @param action The action to perform on the result.
+     * @param resourceId The id of the resource.
+     */
+    public void history(final String resourceId,
+                       final Action<List<JsonModelData>> action) {
+        REST.get("api/resources/history/"+resourceId, new Action<JSONValue>(){
+            public void execute(final JSONValue jsonValue) {
+                action.execute(JsonModelData.fromArray(jsonValue));
+            }
+        });
+    }
 }

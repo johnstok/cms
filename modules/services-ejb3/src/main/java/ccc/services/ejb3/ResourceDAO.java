@@ -14,6 +14,7 @@ package ccc.services.ejb3;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.ejb.EJB;
 import javax.ejb.Local;
@@ -21,6 +22,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
 import ccc.domain.CCCException;
+import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.services.AuditLogLocal;
@@ -104,5 +106,14 @@ public class ResourceDAO implements ResourceDAOLocal {
     @Override
     public List<Resource> locked() {
         return _queries.list("lockedResources", Resource.class);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<LogEntry> history(final String resourceId) {
+        return
+            _queries.list("resourceHistory",
+                          LogEntry.class,
+                          UUID.fromString(resourceId));
     }
 }
