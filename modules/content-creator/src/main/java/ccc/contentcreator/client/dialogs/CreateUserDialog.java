@@ -134,14 +134,12 @@ public class CreateUserDialog extends AbstractEditDialog {
         return new Validator() {
             public void validate(final Validate validate) {
                 if (pw1 != null && pw2 != null && !pw1.equals(pw2)) {
-                    // TODO: I18n
                     validate.addMessage(
-                        "Passwords did not match."
+                        _constants.passwordsDidNotMatch()
                     );
                 }
                 validate.next();
             }
-
         };
     }
 

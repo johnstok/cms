@@ -600,11 +600,11 @@ public final class ResourceServiceImplTest extends TestCase {
         user.email("abc@def.com");
         user.addRole(CreatorRoles.ADMINISTRATOR);
 
-        _um.updateUser(user);
+        _um.updateUser(user, null);
         replay(_um);
 
         // ACT
-        _rsi.updateUser(DTOs.dtoFrom(user));
+        _rsi.updateUser(DTOs.dtoFrom(user), null);
 
         // ASSERT
         verify(_um);

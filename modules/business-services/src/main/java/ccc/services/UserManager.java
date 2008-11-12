@@ -77,8 +77,10 @@ interface UserManager {
      * Update user.
      *
      * @param user The user to update.
+     * @param password The new password for user. Null value will
+     * retain old password.
      */
-    void updateUser(User user);
+    void updateUser(User user, String password);
 
 
     /**

@@ -249,11 +249,32 @@ public class UserManagerEJBTest extends TestCase {
         final UserManagerEJB um = new UserManagerEJB(_em, _context);
 
         // ACT
-        um.updateUser(u);
+        um.updateUser(u, null);
 
         // ASSERT
         verify(_em);
 
+    }
+
+    /**
+     * Test.
+     */
+    public void testUpdateUserPassword() {
+
+        // ARRANGE
+        final User u = new User("testUser");
+        u.email("test@civicuk.com");
+        expect(_em.find(User.class, u.id())).andReturn(u);
+        _em.persist(isA(Password.class));
+        replay(_em);
+
+        final UserManagerEJB um = new UserManagerEJB(_em, _context);
+
+        // ACT
+        um.updateUser(u, "newPass");
+
+        // ASSERT
+        verify(_em);
     }
 
     private User _u;

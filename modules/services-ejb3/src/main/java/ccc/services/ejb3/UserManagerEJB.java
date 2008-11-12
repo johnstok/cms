@@ -192,11 +192,15 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({"ADMINISTRATOR"})
-    public void updateUser(final User user) {
+    public void updateUser(final User user, final String password) {
         final User current = _em.find(User.class, user.id());
         current.username(user.username());
         current.email(user.email());
         current.roles(user.roles());
+        if (password != null) {
+            final Password newPassword = new Password(user, password);
+            _em.persist(newPassword);
+        }
     }
 
     /** {@inheritDoc} */
