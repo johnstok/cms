@@ -50,4 +50,5 @@
 	</class>
     
     <query name="lockedResources">from ccc.domain.Resource r where r._lockedBy is not null</query>
+    <query name="resourcesByName">from ccc.domain.Resource r where r._name = :name</query>
 </hibernate-mapping>
