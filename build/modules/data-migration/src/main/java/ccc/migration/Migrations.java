@@ -38,7 +38,7 @@ import ccc.services.UserManagerRemote;
  */
 public class Migrations {
 
-    private final Queries _queries;
+    private final LegacyDBQueries _queries;
     private final Registry _registry = new JNDI();
     /** _templates : Map. */
     private final Map<String, Template> _templates =
@@ -53,7 +53,7 @@ public class Migrations {
      * @param manager
      * @param queries Queries
      */
-    public Migrations(final Queries queries) {
+    public Migrations(final LegacyDBQueries queries) {
         _queries = queries;
     }
 
@@ -76,7 +76,7 @@ public class Migrations {
             contentManager().lookupRoot().id().toString(), 0, _queries);
     }
 
-    private void migrateUsers(final Queries queries) {
+    private void migrateUsers(final LegacyDBQueries queries) {
         final List<UserBean> mus = queries.selectUsers();
         for (final UserBean mu : mus) {
             userManager().createUser(mu.user(), mu.password());
@@ -85,7 +85,7 @@ public class Migrations {
 
     private void migrateChildren(final String parentFolderId,
                                  final Integer parent,
-                                 final Queries queries) {
+                                 final LegacyDBQueries queries) {
 
         final List<ResourceBean> resources = queries.selectResources(parent);
 
@@ -131,7 +131,8 @@ public class Migrations {
                 Template template =
                     (_templates.containsKey(displayTemplate))
                     ? _templates.get(displayTemplate)
-                        : new Template(displayTemplate, "No description.", "Empty template!", "<fields/>");
+                        : new Template(displayTemplate,
+                            "No description.", "Empty template!", "<fields/>");
                     template = assetManager().createOrRetrieve(template);
                     child.displayTemplateName(template);
                     if (!_templates.containsKey(displayTemplate)) {
@@ -163,7 +164,8 @@ public class Migrations {
                 Template template =
                     (_templates.containsKey(displayTemplate))
                     ? _templates.get(displayTemplate)
-                        : new Template(displayTemplate, "No description.", "Empty template!", "<fields/>");
+                        : new Template(displayTemplate,
+                            "No description.", "Empty template!", "<fields/>");
                     template = assetManager().createOrRetrieve(template);
                     childPage.displayTemplateName(template);
                     if (!_templates.containsKey(displayTemplate)) {

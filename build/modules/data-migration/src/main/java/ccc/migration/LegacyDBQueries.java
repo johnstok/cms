@@ -20,10 +20,10 @@ import ccc.domain.User;
  *
  * @author Civic Computing Ltd
  */
-public class Queries {
+public class LegacyDBQueries {
 
     private static Logger log =
-        Logger.getLogger(Queries.class);
+        Logger.getLogger(LegacyDBQueries.class);
 
     private final Connection _connection;
 
@@ -32,7 +32,7 @@ public class Queries {
      *
      * @param conn Connection
      */
-    public Queries(final Connection conn) {
+    public LegacyDBQueries(final Connection conn) {
         require().notNull(conn);
         _connection = conn;
     }
@@ -230,5 +230,4 @@ public class Queries {
             DbUtils.closeQuietly(ps);
         }
     }
-
 }
