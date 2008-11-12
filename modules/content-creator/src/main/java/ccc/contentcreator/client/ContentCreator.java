@@ -22,6 +22,8 @@ public final class ContentCreator implements EntryPoint {
      */
     public void onModuleLoad() {
 
+        Globals.enableExitConfirmation();
+
         final LeftRightPane contentPane = new LeftRightPane();
         contentPane.setLeftHandPane(
             new ResourceNavigator(contentPane, Globals.resourceService()));

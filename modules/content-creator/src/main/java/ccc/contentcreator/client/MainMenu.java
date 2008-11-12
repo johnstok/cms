@@ -163,10 +163,12 @@ public class MainMenu
                     new AsyncCallback<Void>(){
 
                         public void onFailure(final Throwable arg0) {
+                            // TODO: Anything we can do here?!
                             Globals.alert("Error logging out: "+arg0);
                         }
 
                         public void onSuccess(final Void result) {
+                            Globals.disableExitConfirmation();
                             Globals.redirectTo(Globals.APP_URL);
                         }});
             }

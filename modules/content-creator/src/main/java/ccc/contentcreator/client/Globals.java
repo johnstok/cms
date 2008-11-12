@@ -17,6 +17,7 @@ import ccc.contentcreator.api.UIConstants;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.WindowCloseListener;
 
 
 /**
@@ -69,6 +70,22 @@ public final class Globals {
     }
 
     /**
+     * Configure the app to request confirmation from the user if they try to
+     * navigate away from the app.
+     */
+    public static void enableExitConfirmation() {
+        Window.addWindowCloseListener(CLOSE_LISTENER);
+    }
+
+    /**
+     * Disable app confirmation from the user if they try to navigate away from
+     * the app.
+     */
+    public static void disableExitConfirmation() {
+        Window.removeWindowCloseListener(CLOSE_LISTENER);
+    }
+
+    /**
      * Redirect to another url. Use with caution the application will exit and
      * all local state will be lost.
      *
@@ -84,6 +101,17 @@ public final class Globals {
     private static native void redirect(final String url)/*-{
           $wnd.location = url;
     }-*/;
+
+    private static final WindowCloseListener CLOSE_LISTENER =
+        new WindowCloseListener(){
+
+            public void onWindowClosed() { /* No Op */ }
+
+            public String onWindowClosing() {
+                return "This action will exit the application - "
+                       + "any unsaved work will be lost!"; // TODO: I18n
+            }
+        };
 
     /** DEFAULT_WIDTH : int. */
     public static final int DEFAULT_WIDTH = 640;
