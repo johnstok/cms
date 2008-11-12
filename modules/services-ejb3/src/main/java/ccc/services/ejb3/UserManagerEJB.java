@@ -85,8 +85,7 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
     @SuppressWarnings("unchecked") // JPA API doesn't support generics.
     @Override
     public Collection<User> listUsers() {
-        final Query q =
-            _em.createQuery(NamedQueries.ALL_USERS.queryString());
+        final Query q = _em.createNamedQuery("users");
         return uniquify(q.getResultList());
     }
 
@@ -94,8 +93,7 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
     @SuppressWarnings("unchecked") // JPA API doesn't support generics.
     @Override
     public Collection<User> listUsersWithUsername(final String username) {
-        final Query q =
-            _em.createQuery(NamedQueries.USERS_WITH_USERNAME.queryString());
+        final Query q = _em.createNamedQuery("usersWithUsername");
         String searchParam = "";
         if (username != null) {
             searchParam = username;
@@ -109,8 +107,7 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
     @SuppressWarnings("unchecked") // JPA API doesn't support generics.
     @Override
     public Collection<User> listUsersWithEmail(final String email) {
-        final Query q =
-            _em.createQuery(NamedQueries.USERS_WITH_EMAIL.queryString());
+        final Query q = _em.createNamedQuery("usersWithEmail");
         String searchParam = "";
         if (email != null) {
             searchParam = email;
@@ -124,8 +121,7 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
     @SuppressWarnings("unchecked") // JPA API doesn't support generics.
     @Override
     public Collection<User> listUsersWithRole(final CreatorRoles role) {
-        final Query q =
-            _em.createQuery(NamedQueries.USERS_WITH_ROLE.queryString());
+        final Query q = _em.createNamedQuery("usersWithRole");
         q.setParameter("role", role.name());
 
         return uniquify(q.getResultList());
@@ -134,8 +130,7 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
     /** {@inheritDoc} */
     @Override
     public boolean usernameExists(final String username) {
-        final Query q =
-            _em.createQuery(NamedQueries.USERS_WITH_USERNAME.queryString());
+        final Query q = _em.createNamedQuery("usersWithUsername");
         q.setParameter("username", username);
         try {
             q.getSingleResult();
@@ -147,50 +142,6 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
 
     private <T> Collection<T> uniquify(final Collection<T> collection) {
         return new HashSet<T>(collection);
-    }
-
-    /**
-     * Available named queries.
-     *
-     * @author Civic Computing Ltd.
-     */
-    static enum NamedQueries {
-
-        /** ALL_USERS : NamedQueries. */
-        ALL_USERS("from ccc.domain.User u left join fetch u._roles"),
-
-        /** USERS_WITH_ROLE : NamedQueries. */
-        USERS_WITH_ROLE(
-            "from ccc.domain.User u "
-            + "left join fetch u._roles "
-            + "where :role in elements(u._roles)"),
-
-        /** USERS_WITH_USERNAME : NamedQueries. */
-        USERS_WITH_USERNAME(
-        "from ccc.domain.User u where lower(u._username) like :username"),
-
-        /** USERS_WITH_EMAIL : NamedQueries. */
-        USERS_WITH_EMAIL(
-        "from ccc.domain.User u where lower(u._email) like :email"),
-
-        /** PASSWORD_WITH_USER : NamedQueries. */
-        PASSWORD_WITH_USER(
-        "from ccc.domain.Password p where p._user = :user");
-
-        private final String _queryString;
-
-        private NamedQueries(final String qString) {
-            _queryString = qString;
-        }
-
-        /**
-         * Accessor for the query string.
-         *
-         * @return The JPA query as a string.
-         */
-        String queryString() {
-            return _queryString;
-        }
     }
 
     /** {@inheritDoc} */
@@ -205,7 +156,7 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
         if (password != null) {
             Password newPassword;
             final Query q =
-                _em.createQuery(NamedQueries.PASSWORD_WITH_USER.queryString());
+                _em.createNamedQuery("passwordForUser");
             q.setParameter("user", user);
             try {
                 newPassword = (Password) q.getSingleResult();

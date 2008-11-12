@@ -66,10 +66,7 @@ public class UserManagerEJBTest extends TestCase {
         expect(_q.getSingleResult()).andReturn(new User("blat"));
         replay(_q);
 
-        expect(
-        _em.createQuery(
-            UserManagerEJB.NamedQueries.USERS_WITH_USERNAME.queryString()))
-            .andReturn(_q);
+        expect(_em.createNamedQuery("usersWithUsername")).andReturn(_q);
         replay(_em);
 
         final UserManagerEJB um = new UserManagerEJB(_em, _context);
@@ -92,10 +89,7 @@ public class UserManagerEJBTest extends TestCase {
         expect(_q.getSingleResult()).andThrow(new NoResultException());
         replay(_q);
 
-        expect(
-        _em.createQuery(
-            UserManagerEJB.NamedQueries.USERS_WITH_USERNAME.queryString()))
-            .andReturn(_q);
+        expect(_em.createNamedQuery("usersWithUsername")).andReturn(_q);
         replay(_em);
 
         final UserManagerEJB um = new UserManagerEJB(_em, _context);
@@ -138,10 +132,7 @@ public class UserManagerEJBTest extends TestCase {
         expect(_q.getResultList()).andReturn(new ArrayList<User>());
         replay(_q);
 
-        expect(
-        _em.createQuery(
-            UserManagerEJB.NamedQueries.ALL_USERS.queryString()))
-            .andReturn(_q);
+        expect(_em.createNamedQuery("users")).andReturn(_q);
         replay(_em);
 
         final UserManagerEJB um = new UserManagerEJB(_em, _context);
@@ -165,10 +156,7 @@ public class UserManagerEJBTest extends TestCase {
         expect(_q.getResultList()).andReturn(new ArrayList<User>());
         replay(_q);
 
-        expect(
-        _em.createQuery(
-            UserManagerEJB.NamedQueries.USERS_WITH_ROLE.queryString()))
-            .andReturn(_q);
+        expect(_em.createNamedQuery("usersWithRole")).andReturn(_q);
         replay(_em);
 
         final UserManagerEJB um = new UserManagerEJB(_em, _context);
@@ -192,10 +180,7 @@ public class UserManagerEJBTest extends TestCase {
         expect(_q.getResultList()).andReturn(new ArrayList<User>());
         replay(_q);
 
-        expect(
-            _em.createQuery(
-                UserManagerEJB.NamedQueries.USERS_WITH_USERNAME.queryString()))
-                .andReturn(_q);
+        expect(_em.createNamedQuery("usersWithUsername")).andReturn(_q);
         replay(_em);
 
         final UserManagerEJB um = new UserManagerEJB(_em, _context);
@@ -219,10 +204,7 @@ public class UserManagerEJBTest extends TestCase {
         expect(_q.getResultList()).andReturn(new ArrayList<User>());
         replay(_q);
 
-        expect(
-            _em.createQuery(
-                UserManagerEJB.NamedQueries.USERS_WITH_EMAIL.queryString()))
-                .andReturn(_q);
+        expect(_em.createNamedQuery("usersWithEmail")).andReturn(_q);
         replay(_em);
 
         final UserManagerEJB um = new UserManagerEJB(_em, _context);
@@ -271,11 +253,7 @@ public class UserManagerEJBTest extends TestCase {
         expect(_q.getSingleResult()).andReturn(pw);
         replay(_q);
 
-        expect(
-            _em.createQuery(
-                UserManagerEJB.NamedQueries.PASSWORD_WITH_USER.queryString()))
-                .andReturn(_q);
-
+        expect(_em.createNamedQuery("passwordForUser")).andReturn(_q);
         replay(_em);
 
         final UserManagerEJB um = new UserManagerEJB(_em, _context);
