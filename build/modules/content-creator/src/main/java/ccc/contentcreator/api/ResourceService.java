@@ -224,8 +224,10 @@ public interface ResourceService extends RemoteService {
      * Updates the user in the system.
      *
      * @param userDto A dto representing the  user.
+     * @param password The new password for user. Null value will
+     * retain old password.
      */
-    void updateUser(final UserDTO userDto);
+    void updateUser(final UserDTO userDto, String password);
 
     /**
      * Creates a new page.

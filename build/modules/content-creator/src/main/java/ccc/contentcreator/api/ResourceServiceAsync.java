@@ -168,6 +168,7 @@ public interface ResourceServiceAsync {
      * @see ResourceService#updateUser(UserDTO)
      */
     void updateUser(final UserDTO userDto,
+                    final String password,
                     AsyncCallback<Void> callback);
 
     /**
