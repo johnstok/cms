@@ -17,11 +17,36 @@
 -->
 <hibernate-mapping default-access="field">
     <database-object>
-        <create>CREATE TABLE DATA(
-    _ID VARCHAR(255) NOT NULL,
-    _VERSION INTEGER NOT NULL,
-    _BYTES BLOB NOT NULL
-)</create>
+        <create>
+        CREATE TABLE DATA(
+            _ID VARCHAR(255) NOT NULL,
+            _VERSION INTEGER NOT NULL,
+            _BYTES BLOB NOT NULL
+        )
+        </create>
         <drop>DROP TABLE data</drop>
+    </database-object>
+    <database-object>
+        <create>
+        CREATE SEQUENCE LOG_ENTRY_INDEX
+        START WITH 0
+        INCREMENT BY 1
+        CACHE 0
+        </create>
+        <drop>DROP SEQUENCE LOG_ENTRY_INDEX</drop>
+    </database-object>
+    <database-object>
+        <create>
+        ALTER TABLE LOGENTRY
+        ALTER COLUMN _INDEX SET DEFAULT nextval('LOG_ENTRY_INDEX')
+        </create>
+        <drop/>
+    </database-object>
+        <database-object>
+        <create>
+        ALTER TABLE LOGENTRY
+        ALTER COLUMN _RECORDEDON SET DEFAULT CURRENT_TIMESTAMP() 
+        </create>
+        <drop/>
     </database-object>
 </hibernate-mapping>

@@ -17,7 +17,8 @@ import junit.framework.TestCase;
 
 
 /**
- * TODO: Add Description for this type.
+ * Tests for the {@link LogEntry} class.
+ * TODO: Test that summary cannot be longer than 1024 chars.
  *
  * @author Civic Computing Ltd.
  */
@@ -69,6 +70,7 @@ public class LogEntryTest
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
         assertEquals(LogEntry.Action.MOVE, le.action());
+        assertEquals(p.toString(), le.detail());
     }
 
     /**
@@ -91,6 +93,7 @@ public class LogEntryTest
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
         assertEquals(LogEntry.Action.CREATE, le.action());
+        assertEquals(p.toString(), le.detail());
     }
 
     /**
@@ -113,6 +116,7 @@ public class LogEntryTest
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
         assertEquals(LogEntry.Action.UPDATE, le.action());
+        assertEquals(p.toString(), le.detail());
     }
 
     /**
@@ -135,6 +139,7 @@ public class LogEntryTest
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
         assertEquals(LogEntry.Action.CHANGE_TEMPLATE, le.action());
+        assertEquals(p.toString(), le.detail());
     }
 
     /**
@@ -159,6 +164,7 @@ public class LogEntryTest
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
         assertEquals(LogEntry.Action.LOCK, le.action());
+        assertEquals(p.toString(), le.detail());
     }
 
     /**
@@ -183,6 +189,7 @@ public class LogEntryTest
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
         assertEquals(LogEntry.Action.UNLOCK, le.action());
+        assertEquals(p.toString(), le.detail());
     }
 
     private final User _actor = new User("actor");

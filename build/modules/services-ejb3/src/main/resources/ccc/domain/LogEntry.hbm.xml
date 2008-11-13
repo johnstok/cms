@@ -56,16 +56,24 @@
             not-null="true"
             type="string"
             length="1024"/>
-        
-    <!-- 
-    private long         _index = -1;
-    private Date         _recordedOn; 
-    
-        update="false"
-        insert="false" 
-        generated="insert"   
-     -->
-    
+        <property
+            name="_detail"
+            not-null="true"
+            type="text"/>
+        <property
+            name="_index"
+            not-null="true"
+            type="long"
+            update="false"
+            insert="false" 
+            generated="insert"/>
+        <property
+            name="_recordedOn"
+            not-null="true"
+            type="timestamp"
+            update="false"
+            insert="false" 
+            generated="insert"/>
     </class>
     
     <query name="resourceHistory">from ccc.domain.LogEntry le where le._subjectId=?</query><!-- order by? -->
