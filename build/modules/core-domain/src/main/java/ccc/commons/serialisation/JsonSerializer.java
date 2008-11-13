@@ -11,7 +11,6 @@
  */
 package ccc.commons.serialisation;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
@@ -23,8 +22,6 @@ import java.util.Map;
  */
 public class JsonSerializer implements Serializer {
 
-    private static final SimpleDateFormat DATE_FORMATTER =
-        new SimpleDateFormat("dd.MM.yyyy HH.mm z");
     private final StringBuffer _buffer = new StringBuffer();
 
     /** {@inheritDoc} */
@@ -37,15 +34,14 @@ public class JsonSerializer implements Serializer {
     /** {@inheritDoc} */
     @Override
     public void date(final String string, final Date on) {
-        string(string);
-        colon();
         if (null==on) {
+            string(string);
+            colon();
             nil();
+            comma();
         } else {
-            final String formattedDate = DATE_FORMATTER.format(on);
-            string(formattedDate);
+            number(string, on.getTime());
         }
-        comma();
     }
 
 
@@ -70,7 +66,6 @@ public class JsonSerializer implements Serializer {
             string(string2);
         }
         comma();
-
     }
 
 
