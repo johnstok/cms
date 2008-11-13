@@ -45,8 +45,10 @@ import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
+import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
+import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.extjs.gxt.ui.client.widget.layout.RowLayout;
@@ -104,9 +106,34 @@ public class CreatePageDialog
         nameColumn.setId("name");
         nameColumn.setHeader("Name");
         nameColumn.setWidth(200);
+        nameColumn.setRenderer(new GridCellRenderer<TemplateDTO>() {
+
+            public String render(final TemplateDTO model,
+                                 final String property,
+                                 final ColumnData config,
+                                 final int rowIndex,
+                                 final int colIndex,
+                                 final ListStore<TemplateDTO> store) {
+
+                String value = "";
+
+                if (null != model) {
+                final StringBuilder html = new StringBuilder();
+                html.append("<div id='");
+                html.append(model.getName());
+                html.append("'>");
+                html.append(model.getName());
+                html.append("</div>");
+                value = html.toString();
+                }
+                return value;
+            }
+        });
+
         configs.add(nameColumn);
 
         final ColumnModel cm = new ColumnModel(configs);
+
         _grid = new Grid<TemplateDTO>(_templatesStore, cm);
         _grid.setLoadMask(true);
         _grid.setId("TemplateGrid");
@@ -122,7 +149,6 @@ public class CreatePageDialog
             }
         };
         _grid.addListener(Events.RowClick, listener);
-
         _templatesStore.add(list);
 
         final BorderLayoutData westData =
