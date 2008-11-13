@@ -21,7 +21,7 @@ import ccc.commons.serialisation.Serializer;
  *
  * @author Civic Computing Ltd
  */
-public abstract class Resource extends Entity {
+public abstract class Resource extends VersionedEntity {
 
     private static final int MAXIMUM_TITLE_LENGTH = 256;
 

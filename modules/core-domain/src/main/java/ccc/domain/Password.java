@@ -24,7 +24,7 @@ import java.util.Arrays;
  *
  * @author Civic Computing Ltd.
  */
-public class Password extends Entity {
+public class Password extends VersionedEntity {
 
     private User _user;
     private byte[] _hash;

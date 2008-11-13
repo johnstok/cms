@@ -28,13 +28,13 @@ import ccc.commons.serialisation.Serializer;
  *
  * @author Civic Computing Ltd
  */
-public abstract class Entity implements Serializable, CanSerialize {
+public abstract class VersionedEntity implements Serializable, CanSerialize {
 
     private UUID _id      = UUID.randomUUID();
     private int  _version = -1;
 
     /** Constructor: for persistence only. */
-    protected Entity() { super(); }
+    protected VersionedEntity() { super(); }
 
     /**
      * Accessor for the id field.
@@ -101,7 +101,7 @@ public abstract class Entity implements Serializable, CanSerialize {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Entity other = (Entity) obj;
+        final VersionedEntity other = (VersionedEntity) obj;
         if (_id == null) {
             if (other._id != null) {
                 return false;

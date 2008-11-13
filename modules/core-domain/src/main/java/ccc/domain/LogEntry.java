@@ -24,7 +24,7 @@ import ccc.commons.serialisation.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-public class LogEntry extends Entity {
+public class LogEntry extends VersionedEntity {
 
     private long         _index = -1;  // TODO: Only available once persisted
     private Date         _recordedOn;  // TODO: Only available once persisted

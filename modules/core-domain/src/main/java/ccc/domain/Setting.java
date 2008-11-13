@@ -19,7 +19,7 @@ import ccc.commons.DBC;
  *
  * @author Civic Computing Ltd
  */
-public class Setting extends Entity {
+public class Setting extends VersionedEntity {
 
 
     private Name _name;
