@@ -31,8 +31,6 @@
             <generator class="assigned" />
         </id>
         
-        <version name="_version" unsaved-value="negative" />
-
 		<many-to-one
             name="_actor"
             not-null="true"/>
