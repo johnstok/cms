@@ -63,7 +63,6 @@ public class AuditLogEJBTest
 
         // ARRANGE
         final Capture<LogEntry> le = new Capture<LogEntry>();
-        _em.flush();
         _em.persist(capture(le));
         replay(_em);
 
@@ -92,7 +91,6 @@ public class AuditLogEJBTest
 
         // ARRANGE
         final Capture<LogEntry> le = new Capture<LogEntry>();
-        _em.flush();
         _em.persist(capture(le));
         replay(_em);
 
@@ -120,7 +118,6 @@ public class AuditLogEJBTest
 
         // ARRANGE
         final Capture<LogEntry> le = new Capture<LogEntry>();
-        _em.flush();
         _em.persist(capture(le));
         replay(_em);
 
@@ -148,7 +145,6 @@ public class AuditLogEJBTest
 
         // ARRANGE
         final Capture<LogEntry> le = new Capture<LogEntry>();
-        _em.flush();
         _em.persist(capture(le));
         replay(_em);
 

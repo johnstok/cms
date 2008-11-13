@@ -39,7 +39,6 @@ public class LogEntryTest
         // ASSERT
         assertEquals(p.id(), le.subjectId());
         assertEquals(p.type(), le.subjectType());
-        assertEquals(-1, le.subjectVersionAfterChange());
         assertEquals("Renamed resource to 'foo'.", le.summary());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
@@ -64,7 +63,6 @@ public class LogEntryTest
         // ASSERT
         assertEquals(p.id(), le.subjectId());
         assertEquals(p.type(), le.subjectType());
-        assertEquals(-1, le.subjectVersionAfterChange());
         assertEquals("Moved resource to parent: "+f.id()+".", le.summary());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
@@ -87,7 +85,6 @@ public class LogEntryTest
         // ASSERT
         assertEquals(p.id(), le.subjectId());
         assertEquals(p.type(), le.subjectType());
-        assertEquals(-1, le.subjectVersionAfterChange());
         assertEquals("Created.", le.summary());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
@@ -110,7 +107,6 @@ public class LogEntryTest
         // ASSERT
         assertEquals(p.id(), le.subjectId());
         assertEquals(p.type(), le.subjectType());
-        assertEquals(-1, le.subjectVersionAfterChange());
         assertEquals("Updated.", le.summary());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
@@ -133,7 +129,6 @@ public class LogEntryTest
         // ASSERT
         assertEquals(p.id(), le.subjectId());
         assertEquals(p.type(), le.subjectType());
-        assertEquals(-1, le.subjectVersionAfterChange());
         assertEquals("Template changed.", le.summary());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
@@ -158,7 +153,6 @@ public class LogEntryTest
         // ASSERT
         assertEquals(p.id(), le.subjectId());
         assertEquals(p.type(), le.subjectType());
-        assertEquals(-1, le.subjectVersionAfterChange());
         assertEquals("Locked.", le.summary());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
@@ -183,7 +177,6 @@ public class LogEntryTest
         // ASSERT
         assertEquals(p.id(), le.subjectId());
         assertEquals(p.type(), le.subjectType());
-        assertEquals(-1, le.subjectVersionAfterChange());
         assertEquals("Unlocked.", le.summary());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
