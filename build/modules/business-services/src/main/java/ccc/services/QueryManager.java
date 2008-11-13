@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 import ccc.commons.Maybe;
-import ccc.domain.VersionedEntity;
+import ccc.domain.Entity;
 import ccc.domain.Folder;
 import ccc.domain.Setting;
 import ccc.domain.Setting.Name;
@@ -69,7 +69,7 @@ interface QueryManager {
      * @param <T> The type of entity to look up.
      * @return The entity or null if it doesn't exist.
      */
-    <T extends VersionedEntity> T find(Class<T> type, String id);
+    <T extends Entity> T find(Class<T> type, String id);
 
     /**
      * Look up an entity of the specified class.
@@ -79,5 +79,5 @@ interface QueryManager {
      * @param <T> The type of entity to look up.
      * @return The entity or null if it doesn't exist.
      */
-    <T extends VersionedEntity> T find(Class<T> type, UUID id);
+    <T extends Entity> T find(Class<T> type, UUID id);
 }
