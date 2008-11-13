@@ -37,6 +37,7 @@ import ccc.domain.ResourcePath;
 import ccc.domain.ResourceType;
 import ccc.domain.Setting;
 import ccc.domain.Template;
+import ccc.services.AuditLogLocal;
 import ccc.services.ContentManagerLocal;
 import ccc.services.QueryManagerLocal;
 
@@ -55,19 +56,20 @@ public final class ContentManagerEJBTest extends TestCase {
 
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
-        final Template defaultTemplate = new Template("foo", "bar", "baz", "<fields/>");
+        final Template defaultTemplate =
+            new Template("foo", "bar", "baz", "<fields/>");
 
-        final QueryManagerLocal qm = createStrictMock(QueryManagerLocal.class);
-        expect(qm.findContentRoot()).andReturn(new Maybe<Folder>(contentRoot));
-        replay(qm);
+        expect(_qm.findContentRoot()).andReturn(new Maybe<Folder>(contentRoot));
+        _al.recordChangeTemplate(contentRoot);
+        replay(_em, _qm, _al);
 
-        final ContentManagerEJB resourceMgr = new ContentManagerEJB(null, qm);
 
         // ACT
-        resourceMgr.setDefaultTemplate(defaultTemplate);
+        _am.setDefaultTemplate(defaultTemplate);
+
 
         // ASSERT
-        verify(qm);
+        verify(_em, _qm, _al);
         assertEquals(
             defaultTemplate,
             contentRoot.displayTemplateName());
@@ -88,18 +90,17 @@ public final class ContentManagerEJBTest extends TestCase {
         contentRoot.add(foo);
         foo.add(bar);
 
-        final QueryManagerLocal qm = createStrictMock(QueryManagerLocal.class);
-        expect(qm.findContentRoot()).andReturn(new Maybe<Folder>(contentRoot));
-        replay(qm);
+        expect(_qm.findContentRoot()).andReturn(new Maybe<Folder>(contentRoot));
+        replay(_em, _qm, _al);
 
-        final ContentManagerEJB resourceMgr = new ContentManagerEJB(null, qm);
 
         // ACT
         final Resource resource =
-            resourceMgr.lookup(new ResourcePath("/foo/bar")).get();
+            _am.lookup(new ResourcePath("/foo/bar")).get();
+
 
         // ASSERT
-        verify(qm);
+        verify(_em, _qm, _al);
         assertEquals(ResourceType.PAGE, resource.type());
         final Page page = resource.as(Page.class);
         assertEquals(1, page.paragraphs().size());
@@ -116,26 +117,27 @@ public final class ContentManagerEJBTest extends TestCase {
         final Folder bar = new Folder(new ResourceName("bar"));
         final Folder baz = new Folder(new ResourceName("baz"));
 
-        final EntityManager em = createStrictMock(EntityManager.class);
-        expect(em.find(Resource.class, contentRoot.id()))
+        _al.recordCreate(isA(Folder.class));
+        _al.recordCreate(isA(Folder.class));
+        _al.recordCreate(isA(Folder.class));
+        expect(_em.find(Resource.class, contentRoot.id()))
             .andReturn(contentRoot);
-        em.persist(foo);
-        expect(em.find(Resource.class, foo.id())).andReturn(foo);
-        em.persist(bar);
-        expect(em.find(Resource.class, foo.id())).andReturn(foo);
-        em.persist(baz);
-        replay(em);
+        _em.persist(foo);
+        expect(_em.find(Resource.class, foo.id())).andReturn(foo);
+        _em.persist(bar);
+        expect(_em.find(Resource.class, foo.id())).andReturn(foo);
+        _em.persist(baz);
+        replay(_em, _qm, _al);
 
-        final ContentManagerLocal resourceMgr =
-            new ContentManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
-        resourceMgr.create(contentRoot.id(), foo);
-        resourceMgr.create(foo.id(), bar);
-        resourceMgr.create(foo.id(), baz);
+        _am.create(contentRoot.id(), foo);
+        _am.create(foo.id(), bar);
+        _am.create(foo.id(), baz);
 
-        // VERIFY
-        verify(em);
+
+        // ASSERT
+        verify(_em, _qm, _al);
         assertEquals(1, contentRoot.size());
         assertEquals("foo", contentRoot.entries().get(0).name().toString());
         assertEquals(2, contentRoot.entries().get(0).as(Folder.class).size());
@@ -153,25 +155,22 @@ public final class ContentManagerEJBTest extends TestCase {
     public void testCreateRoot() {
 
         // ARRANGE
-        final QueryManagerLocal qm = createStrictMock(QueryManagerLocal.class);
-        expect(qm.findContentRoot()).andReturn(new Maybe<Folder>());
-        replay(qm);
+        _al.recordCreate(isA(Folder.class));
+        expect(_qm.findContentRoot()).andReturn(new Maybe<Folder>());
 
         final Capture<Folder> contentRoot = new Capture<Folder>();
         final Capture<Setting> rootSetting = new Capture<Setting>();
-        final EntityManager em = createMock(EntityManager.class);
-        em.persist(capture(contentRoot));
-        em.persist(capture(rootSetting));
-        replay(em);
+        _em.persist(capture(contentRoot));
+        _em.persist(capture(rootSetting));
+        replay(_em, _qm, _al);
 
-
-        final ContentManagerLocal resourceMgr = new ContentManagerEJB(em, qm);
 
         // ACT
-        resourceMgr.createRoot();
+        _am.createRoot();
 
-        // VERIFY
-        verify(qm, em);
+
+        // ASSERT
+        verify(_em, _qm, _al);
         // Multiple capture doesn't work?!
 //        assertEquals(CONTENT, contentRoot.getValue().name());
     }
@@ -184,20 +183,16 @@ public final class ContentManagerEJBTest extends TestCase {
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
 
-        final QueryManagerLocal qm = createStrictMock(QueryManagerLocal.class);
-        expect(qm.findContentRoot()).andReturn(new Maybe<Folder>(contentRoot));
-        replay(qm);
+        expect(_qm.findContentRoot()).andReturn(new Maybe<Folder>(contentRoot));
+        replay(_em, _qm, _al);
 
-        final EntityManager em = createMock(EntityManager.class);
-        replay(em);
-
-        final ContentManagerLocal resourceMgr = new ContentManagerEJB(em, qm);
 
         // ACT
-        resourceMgr.createRoot();
+        _am.createRoot();
 
-        // VERIFY
-        verify(em, qm);
+
+        // ASSERT
+        verify(_em, _qm, _al);
     }
 
     /**
@@ -211,26 +206,27 @@ public final class ContentManagerEJBTest extends TestCase {
         final Page page1 = new Page(new ResourceName("page1"));
         final Page page2 = new Page(new ResourceName("page2"));
 
-        final EntityManager em = createStrictMock(EntityManager.class);
-        expect(em.find(Resource.class, contentRoot.id()))
+        _al.recordCreate(isA(Folder.class));
+        _al.recordCreate(isA(Page.class));
+        _al.recordCreate(isA(Page.class));
+        expect(_em.find(Resource.class, contentRoot.id()))
             .andReturn(contentRoot);
-        em.persist(foo);
-        expect(em.find(Resource.class, foo.id())).andReturn(foo);
-        em.persist(page1);
-        expect(em.find(Resource.class, foo.id())).andReturn(foo);
-        em.persist(page2);
-        replay(em);
+        _em.persist(foo);
+        expect(_em.find(Resource.class, foo.id())).andReturn(foo);
+        _em.persist(page1);
+        expect(_em.find(Resource.class, foo.id())).andReturn(foo);
+        _em.persist(page2);
+        replay(_em, _qm, _al);
 
-        final ContentManagerLocal resourceMgr =
-            new ContentManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
-        resourceMgr.create(contentRoot.id(), foo);
-        resourceMgr.create(foo.id(), page1);
-        resourceMgr.create(foo.id(), page2);
+        _am.create(contentRoot.id(), foo);
+        _am.create(foo.id(), page1);
+        _am.create(foo.id(), page2);
 
-        // VERIFY
-        verify(em);
+
+        // ASSERT
+        verify(_em, _qm, _al);
         assertEquals(1, contentRoot.size());
         assertEquals("foo", contentRoot.entries().get(0).name().toString());
         assertEquals(2, contentRoot.entries().get(0).as(Folder.class).size());
@@ -254,23 +250,22 @@ public final class ContentManagerEJBTest extends TestCase {
         final Folder page1F = new Folder(new ResourceName("page1"));
         final Page page1P = new Page(new ResourceName("page1"));
 
-        final EntityManager em = createStrictMock(EntityManager.class);
-        expect(em.find(Resource.class, contentRoot.id()))
+        _al.recordCreate(isA(Folder.class));
+        _al.recordCreate(isA(Folder.class));
+        expect(_em.find(Resource.class, contentRoot.id()))
             .andReturn(contentRoot);
-        em.persist(foo);
-        expect(em.find(Resource.class, foo.id())).andReturn(foo);
-        em.persist(page1F);
-        expect(em.find(Resource.class, foo.id())).andReturn(foo);
-        replay(em);
+        _em.persist(foo);
+        expect(_em.find(Resource.class, foo.id())).andReturn(foo);
+        _em.persist(page1F);
+        expect(_em.find(Resource.class, foo.id())).andReturn(foo);
+        replay(_em, _qm, _al);
 
-        final ContentManagerLocal resourceMgr =
-            new ContentManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
-        resourceMgr.create(contentRoot.id(), foo);
-        resourceMgr.create(foo.id(), page1F);
+        _am.create(contentRoot.id(), foo);
+        _am.create(foo.id(), page1F);
         try {
-            resourceMgr.create(foo.id(), page1P);
+            _am.create(foo.id(), page1P);
             fail("Creation of page with"
                     + "same name as existing folder should fail.");
         } catch (final CCCException e) {
@@ -279,8 +274,9 @@ public final class ContentManagerEJBTest extends TestCase {
                 e.getMessage());
         }
 
-        // VERIFY
-        verify(em);
+
+        // ASSERT
+        verify(_em, _qm, _al);
         assertEquals(1, contentRoot.size());
         assertEquals(1, contentRoot.entries().size());
         assertEquals("foo", contentRoot.entries().get(0).name().toString());
@@ -302,23 +298,23 @@ public final class ContentManagerEJBTest extends TestCase {
         final Page page1 = new Page(new ResourceName("page1"));
         page1.addParagraph("HEADER", Paragraph.fromText("test text"));
 
-        final EntityManager em = createStrictMock(EntityManager.class);
-        expect(em.find(Resource.class, contentRoot.id()))
+        _al.recordCreate(isA(Folder.class));
+        _al.recordCreate(isA(Page.class));
+        expect(_em.find(Resource.class, contentRoot.id()))
             .andReturn(contentRoot);
-        em.persist(foo);
-        expect(em.find(Resource.class, foo.id())).andReturn(foo);
-        em.persist(page1);
-        replay(em);
+        _em.persist(foo);
+        expect(_em.find(Resource.class, foo.id())).andReturn(foo);
+        _em.persist(page1);
+        replay(_em, _qm, _al);
 
-        final ContentManagerLocal resourceMgr =
-            new ContentManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
-        resourceMgr.create(contentRoot.id(), foo);
-        resourceMgr.create(foo.id(), page1);
+        _am.create(contentRoot.id(), foo);
+        _am.create(foo.id(), page1);
 
-        // VERIFY
-        verify(em);
+
+        // ASSERT
+        verify(_em, _qm, _al);
         assertEquals(1, contentRoot.size());
         assertEquals(1, contentRoot.entries().size());
 
@@ -343,19 +339,17 @@ public final class ContentManagerEJBTest extends TestCase {
                                         "default",
                                         Paragraph.fromText("<H1>Default</H1>"));
 
-        final EntityManager em = createStrictMock(EntityManager.class);
-        expect(em.find(Resource.class, bar.id())).andReturn(bar);
-        replay(em);
+        expect(_em.find(Resource.class, bar.id())).andReturn(bar);
+        replay(_em, _qm, _al);
 
-        final ContentManagerEJB resourceMgr =
-            new ContentManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
         final Resource resource =
-            resourceMgr.lookup(bar.id());
+            _am.lookup(bar.id());
+
 
         // ASSERT
-        verify(em);
+        verify(_em, _qm, _al);
         assertEquals(ResourceType.PAGE, resource.type());
         final Page page = resource.as(Page.class);
         assertEquals(1, page.paragraphs().size());
@@ -370,23 +364,22 @@ public final class ContentManagerEJBTest extends TestCase {
         final Page page = new Page(new ResourceName("test"));
         page.addParagraph("abc", Paragraph.fromText("def"));
 
-        final EntityManager em = createStrictMock(EntityManager.class);
-        expect(em.find(Resource.class, page.id())).andReturn(page);
-        replay(em);
+        _al.recordUpdate(page);
+        expect(_em.find(Resource.class, page.id())).andReturn(page);
+        replay(_em, _qm, _al);
 
-        final ContentManagerEJB resourceMgr =
-            new ContentManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
         final Map<String, Paragraph> paragraphs =
             new HashMap<String, Paragraph>();
         paragraphs.put("foo", Paragraph.fromText("bar"));
-        resourceMgr.update(
+        _am.update(
             page.id(),
             "new title", paragraphs);
 
+
         // ASSERT
-        verify(em);
+        verify(_em, _qm, _al);
         assertEquals("new title", page.title());
         assertEquals(1, page.paragraphs().size());
         assertEquals("foo", page.paragraphs().keySet().iterator().next());
@@ -404,20 +397,19 @@ public final class ContentManagerEJBTest extends TestCase {
         contentRoot.add(foo);
         final Alias alias = new Alias(new ResourceName("bar"), foo);
 
-        final EntityManager em = createStrictMock(EntityManager.class);
-        expect(em.find(Resource.class, contentRoot.id()))
+        _al.recordCreate(alias);
+        expect(_em.find(Resource.class, contentRoot.id()))
             .andReturn(contentRoot);
-        em.persist(alias);
-        replay(em);
+        _em.persist(alias);
+        replay(_em, _qm, _al);
 
-        final ContentManagerLocal resourceMgr =
-            new ContentManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
-        resourceMgr.create(contentRoot.id(), alias);
+        _am.create(contentRoot.id(), alias);
 
-        // VERIFY
-        verify(em);
+
+        // ASSERT
+        verify(_em, _qm, _al);
         assertEquals(2, contentRoot.size());
         assertEquals(alias, contentRoot.entries().get(1));
     }
@@ -435,25 +427,45 @@ public final class ContentManagerEJBTest extends TestCase {
         contentRoot.add(alias);
         final Alias aliasCopy = new Alias(new ResourceName("bar"), foo);
 
-        final EntityManager em = createStrictMock(EntityManager.class);
-        expect(em.find(Resource.class, contentRoot.id()))
+        expect(_em.find(Resource.class, contentRoot.id()))
             .andReturn(contentRoot);
-        replay(em);
+        replay(_em, _qm, _al);
 
-        final ContentManagerLocal resourceMgr =
-            new ContentManagerEJB(em, new QueryManagerEJB(em));
 
         // ACT
         try {
-            resourceMgr.create(contentRoot.id(), aliasCopy);
+            _am.create(contentRoot.id(), aliasCopy);
             fail("Alias creation should fail for duplicate name");
+
 
         // ASSERT
         } catch (final CCCException e) {
             assertEquals("Folder already contains a resource with name 'bar'.",
                 e.getMessage());
         }
-        verify(em);
+        verify(_em, _qm, _al);
     }
 
+    /** {@inheritDoc} */
+    @Override
+    protected void setUp() throws Exception {
+        _em = createStrictMock(EntityManager.class);
+        _qm = createStrictMock(QueryManagerLocal.class);
+        _al = createStrictMock(AuditLogLocal.class);
+        _am = new ContentManagerEJB(_em, _qm, _al);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected void tearDown() throws Exception {
+        _em = null;
+        _qm = null;
+        _al = null;
+        _am = null;
+    }
+
+    private EntityManager _em;
+    private QueryManagerLocal _qm;
+    private AuditLogLocal _al;
+    private ContentManagerLocal _am;
 }

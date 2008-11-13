@@ -30,6 +30,7 @@ import ccc.domain.ResourceName;
 import ccc.domain.Setting;
 import ccc.domain.Template;
 import ccc.services.AssetManagerLocal;
+import ccc.services.AuditLogLocal;
 import ccc.services.QueryManagerLocal;
 
 
@@ -48,26 +49,24 @@ public final class AssetManagerEJBTest extends TestCase {
         // ARRANGE
         final Folder assetRoot = new Folder(PredefinedResourceNames.ASSETS);
         final Folder templateFolder = new Folder(new ResourceName("templates"));
-        final Template t = new Template("title", "description", "body", "<fields/>");
+        final Template t =
+            new Template("title", "description", "body", "<fields/>");
         assetRoot.add(templateFolder);
 
-        final QueryManagerLocal qm = createStrictMock(QueryManagerLocal.class);
-        expect(qm.findAssetsRoot())
+        expect(_qm.findAssetsRoot())
             .andReturn(new Maybe<Folder>(assetRoot)).times(2);
-        replay(qm);
+        _em.persist(t);
+        _al.recordCreate(t);
+        replay(_em, _qm, _al);
 
-        final EntityManager em = createStrictMock(EntityManager.class);
-        em.persist(t);
-        replay(em);
-
-        final AssetManagerLocal am = new AssetManagerEJB(em, qm);
 
         // ACT
-        final Template created = am.createOrRetrieve(t);
-        final Template retrieved = am.createOrRetrieve(t);
+        final Template created = _am.createOrRetrieve(t);
+        final Template retrieved = _am.createOrRetrieve(t);
+
 
         // ASSERT
-        verify(em, qm);
+        verify(_em, _qm, _al);
         assertSame(t, created);
         assertSame(t, retrieved);
         assertTrue(
@@ -83,24 +82,21 @@ public final class AssetManagerEJBTest extends TestCase {
         // ARRANGE
         final Folder assetRoot = new Folder(PredefinedResourceNames.ASSETS);
         final Folder templateFolder = new Folder(new ResourceName("templates"));
-        final Template expected = new Template("title", "description", "body", "<fields/>");
+        final Template expected =
+            new Template("title", "description", "body", "<fields/>");
         assetRoot.add(templateFolder);
         templateFolder.add(expected);
 
-        final QueryManagerLocal qm = createStrictMock(QueryManagerLocal.class);
-        expect(qm.findAssetsRoot()).andReturn(new Maybe<Folder>(assetRoot));
-        replay(qm);
+        expect(_qm.findAssetsRoot()).andReturn(new Maybe<Folder>(assetRoot));
+        replay(_qm, _em, _al);
 
-        final EntityManager em = createStrictMock(EntityManager.class);
-        replay(em);
-
-        final AssetManagerLocal am = new AssetManagerEJB(em, qm);
 
         // ACT
-        final List<Template> templates = am.lookupTemplates();
+        final List<Template> templates = _am.lookupTemplates();
+
 
         // ASSERT
-        verify(em, qm);
+        verify(_em, _qm, _al);
         assertEquals(1, templates.size());
         assertEquals(expected, templates.get(0));
     }
@@ -111,19 +107,20 @@ public final class AssetManagerEJBTest extends TestCase {
     public void testLookupFromUuid() {
 
         // ARRANGE
-        final Template t = new Template("title", "description", "body", "<fields/>");
-        final EntityManager em = createMock(EntityManager.class);
-        expect(em.find(Resource.class, t.id())).andReturn(t);
-        replay(em);
-        final AssetManagerLocal am =
-            new AssetManagerEJB(em, new QueryManagerEJB(em));
+        final Template t =
+            new Template("title", "description", "body", "<fields/>");
+
+        expect(_em.find(Resource.class, t.id())).andReturn(t);
+        replay(_em, _qm, _al);
+
 
         // ACT
-        final Template actual = am.lookup(t.id()).as(Template.class);
+        final Template actual = _am.lookup(t.id()).as(Template.class);
+
 
         // ASSERT
         assertEquals(t, actual);
-        verify(em);
+        verify(_em, _qm, _al);
     }
 
     /**
@@ -135,24 +132,20 @@ public final class AssetManagerEJBTest extends TestCase {
         final Folder assetRoot = new Folder(PredefinedResourceNames.ASSETS);
         final Folder templateFolder = new Folder(new ResourceName("templates"));
         assetRoot.add(templateFolder);
-        final Template t = new Template("title", "description", "body", "<fields/>");
+        final Template t =
+            new Template("title", "description", "body", "<fields/>");
 
-        final QueryManagerLocal qm = createStrictMock(QueryManagerLocal.class);
-        expect(qm.findAssetsRoot()).andReturn(new Maybe<Folder>(assetRoot));
-        replay(qm);
+        expect(_qm.findAssetsRoot()).andReturn(new Maybe<Folder>(assetRoot));
+        _em.persist(t);
+        _al.recordCreate(t);
+        replay(_em, _qm, _al);
 
-        final EntityManager em = createMock(EntityManager.class);
-        em.persist(t);
-        replay(em);
-
-        final AssetManagerLocal am =
-            new AssetManagerEJB(em, qm);
 
         // ACT
-        am.createDisplayTemplate(t);
+        _am.createDisplayTemplate(t);
 
         // ASSERT
-        verify(em, qm);
+        verify(_em, _qm, _al);
         assertEquals(1, templateFolder.size());
         assertEquals(t, templateFolder.entries().get(0));
     }
@@ -163,29 +156,53 @@ public final class AssetManagerEJBTest extends TestCase {
     public void testCreateRoot() {
 
         // ARRANGE
-        final QueryManagerLocal qm = createStrictMock(QueryManagerLocal.class);
-        expect(qm.findAssetsRoot()).andReturn(new Maybe<Folder>());
-        replay(qm);
+        expect(_qm.findAssetsRoot()).andReturn(new Maybe<Folder>());
 
         final Capture<Folder> assetsRoot = new Capture<Folder>();
-        final EntityManager em = createStrictMock(EntityManager.class);
-        em.persist(capture(assetsRoot));
-        em.persist(isA(Folder.class));
-        em.persist(isA(Setting.class));
-        replay(em);
+        _em.persist(capture(assetsRoot));
+        _em.persist(isA(Folder.class));
+        _em.persist(isA(Setting.class));
 
+        _al.recordCreate(isA(Folder.class));
+        _al.recordCreate(isA(Folder.class));
 
-        final AssetManagerLocal am = new AssetManagerEJB(em, qm);
+        replay(_em, _qm, _al);
+
 
         // ACT
-        am.createRoot();
+        _am.createRoot();
+
 
         // VERIFY
-        verify(qm, em);
+        verify(_qm, _em, _al);
         assertEquals(ASSETS, assetsRoot.getValue().name());
         assertEquals(
             "templates",
             assetsRoot.getValue()
                 .entries().get(0).as(Folder.class).name().toString());
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected void setUp() throws Exception {
+        _em = createStrictMock(EntityManager.class);
+        _qm = createStrictMock(QueryManagerLocal.class);
+        _al = createStrictMock(AuditLogLocal.class);
+        _am = new AssetManagerEJB(_em, _qm, _al);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected void tearDown() throws Exception {
+        _em = null;
+        _qm = null;
+        _al = null;
+        _am = null;
+    }
+
+    private EntityManager _em;
+    private QueryManagerLocal _qm;
+    private AuditLogLocal _al;
+    private AssetManagerLocal _am;
 }

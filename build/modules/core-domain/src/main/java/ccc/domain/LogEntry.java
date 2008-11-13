@@ -132,6 +132,64 @@ public class LogEntry extends Entity {
     }
 
 
+    /**
+     * Create a log entry for the creation of a resource.
+     *
+     * @param resource The resource that was created.
+     * @param actor The actor that performed the action.
+     * @param happenedOn The date that the actor performed the action.
+     * @return The log entry representing the action.
+     */
+    public static LogEntry forCreate(final Resource resource,
+                                     final User actor,
+                                     final Date happenedOn) {
+
+        final LogEntry le = createEntry(resource, actor, happenedOn);
+        le._action = Action.CREATE;
+        le._summary = "Created.";
+        return le;
+    }
+
+
+
+    /**
+     * Create a log entry for the update of a resource.
+     *
+     * @param resource The resource that was updated.
+     * @param actor The actor that performed the action.
+     * @param happenedOn The date that the actor performed the action.
+     * @return The log entry representing the action.
+     */
+    public static LogEntry forUpdate(final Resource resource,
+                                     final User actor,
+                                     final Date happenedOn) {
+
+        final LogEntry le = createEntry(resource, actor, happenedOn);
+        le._action = Action.UPDATE;
+        le._summary = "Updated.";
+        return le;
+    }
+
+
+    /**
+     * Create a log entry for the change of a resource's template.
+     *
+     * @param resource The resource whose template changed.
+     * @param actor The actor that performed the action.
+     * @param happenedOn The date that the actor performed the action.
+     * @return The log entry representing the action.
+     */
+    public static LogEntry forTemplateChange(final Resource resource,
+                                             final User actor,
+                                             final Date happenedOn) {
+
+        final LogEntry le = createEntry(resource, actor, happenedOn);
+        le._action = Action.CHANGE_TEMPLATE;
+        le._summary = "Template changed.";
+        return le;
+    }
+
+
     /** {@inheritDoc} */
     @Override public void serialize(final Serializer s) {
         s.number(   "index",                     _index);
