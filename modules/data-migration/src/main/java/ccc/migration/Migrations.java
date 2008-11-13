@@ -23,7 +23,6 @@ import ccc.commons.Registry;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
-import ccc.domain.ResourceName;
 import ccc.domain.Template;
 import ccc.services.AssetManagerRemote;
 import ccc.services.ContentManagerRemote;
@@ -125,7 +124,7 @@ public class Migrations {
 
         try {
             log.debug("FOLDER");
-            Folder child = new Folder(ResourceName.escape(name));
+            Folder child = new Folder(name);
 
             if (null!=displayTemplate) {
                 Template template =
@@ -158,7 +157,7 @@ public class Migrations {
 
         try {
             log.debug("PAGE");
-            final Page childPage = new Page(ResourceName.escape(name));
+            final Page childPage = new Page(name);
 
             if (null!=displayTemplate) {
                 Template template =
