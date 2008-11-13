@@ -102,16 +102,18 @@ public class EditPagePanel extends FormPanel {
         _name.setReadOnly(true);
         _title.setValue(page.getTitle());
 
-        for (final Entry<String,ParagraphDTO> para : page.getParagraphs().entrySet()) {
+        for (final Entry<String, ParagraphDTO> para : page.getParagraphs().entrySet()) {
 
             for (final Component c : _dp.getItems()) {
                 if (c.getId().equals(para.getKey())) {
+                    final String value = para.getValue().getValue();
                     if ("TEXT".equals(c.getData("type"))) {
                         final Field<String> f = (Field<String>) c;
-                        f.setValue(para.getValue().getValue());
+                        f.setValue(value);
                     } else if ("DATE".equals(c.getData("type"))) {
                         final DateField f = (DateField) c;
-                        f.setValue(new Date(new Long(para.getValue().getValue())));
+                        final Date d = new Date(new Long(value));
+                        f.setValue(d);
                     }
                 }
             }

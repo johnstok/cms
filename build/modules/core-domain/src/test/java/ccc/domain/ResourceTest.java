@@ -23,45 +23,45 @@ import ccc.commons.Testing;
 public final class ResourceTest extends TestCase {
 
     private final Template _default = new Template();
-    
+
     /**
      * Test.
      */
     public void testIsLockedReturnsFalseByDefault() {
-        
+
         // ARRANGE
-        Resource r = new DummyResource(new ResourceName("foo"));
-        
+        final Resource r = new DummyResource(new ResourceName("foo"));
+
         // ACT
-        boolean isLocked = r.isLocked();
-        
+        final boolean isLocked = r.isLocked();
+
         // ASSERT
         assertFalse("Should be unlocked.", isLocked);
     }
-    
+
     /**
      * Test.
      */
     public void testLockResource() {
-        
+
         //ARRANGE
-        User u = new User("blat");
-        Resource r = new DummyResource(new ResourceName("foo"));
-        
+        final User u = new User("blat");
+        final Resource r = new DummyResource(new ResourceName("foo"));
+
         // ACT
         r.lock(u);
-        
+
         // ASSERT
         assertTrue("Should be locked.", r.isLocked());
     }
-    
+
     /**
      * Test.
      */
     public void testLockResourceRejectsNull() {
         // ACT
         try {
-            Resource r = new DummyResource(new ResourceName("foo"));
+            final Resource r = new DummyResource(new ResourceName("foo"));
             r.lock(null);
             fail("Null should be rejected.");
 
@@ -70,36 +70,36 @@ public final class ResourceTest extends TestCase {
             assertEquals("Specified value may not be NULL.", e.getMessage());
         }
     }
-    
+
     /**
      * Test.
      */
     public void testUnlockResource() {
-        
+
         //ARRANGE
-        User u = new User("blat");
-        Resource r = new DummyResource(new ResourceName("foo"));
+        final User u = new User("blat");
+        final Resource r = new DummyResource(new ResourceName("foo"));
         r.lock(u);
-        
+
         // ACT
         r.unlock();
-        
+
         // ASSERT
         assertFalse("Should be unlocked.", r.isLocked());
     }
-    
+
     /**
      * Test.
      */
     public void testQueryForLockedByUser() {
-        
+
         //ARRANGE
-        User u = new User("blat");
-        Resource r = new DummyResource(new ResourceName("foo"));
-        
+        final User u = new User("blat");
+        final Resource r = new DummyResource(new ResourceName("foo"));
+
         // ACT
         r.lock(u);
-        
+
         // ASSERT
         assertEquals(u, r.lockedBy());
     }

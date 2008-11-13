@@ -31,7 +31,7 @@ import org.apache.commons.dbutils.DbUtils;
 public final class App {
 
     private static final long MILLISECS_PER_SEC = 1000;
-    private static LoginContext _ctx;
+    private static LoginContext ctx;
 
     private App() { /* NO-OP */ }
 
@@ -97,10 +97,10 @@ public final class App {
         });
 
         try {
-            _ctx =  new LoginContext(
+            ctx =  new LoginContext(
                 "quest",
                 new UserNamePasswordHandler(theUsername, thePassword));
-            _ctx.login();
+            ctx.login();
          } catch (final LoginException e) {
             throw new java.lang.RuntimeException(e);
          }
@@ -113,7 +113,7 @@ public final class App {
     private static void logout() {
 
         try {
-            _ctx.logout();
+            ctx.logout();
         } catch (final LoginException e) {
             throw new java.lang.RuntimeException(e);
         }
