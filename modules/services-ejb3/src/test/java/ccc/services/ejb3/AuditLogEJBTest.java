@@ -85,6 +85,90 @@ public class AuditLogEJBTest
 
     }
 
+    /**
+     * Test.
+     */
+    public void testRecordCreate() {
+
+        // ARRANGE
+        final Capture<LogEntry> le = new Capture<LogEntry>();
+        _em.flush();
+        _em.persist(capture(le));
+        replay(_em);
+
+        expect(_um.loggedInUser()).andReturn(_actor);
+        replay(_um);
+
+        final AuditLogLocal al = new AuditLogEJB(_em, _um);
+        final Page p = new Page("foo");
+
+        // ACT
+        al.recordCreate(p);
+
+        // ASSERT
+        verify(_em, _um);
+        assertEquals(LogEntry.Action.CREATE, le.getValue().action());
+        assertEquals(p.id(), le.getValue().subjectId());
+        assertEquals(_actor, le.getValue().actor());
+        assertEquals("Created.", le.getValue().summary());
+    }
+
+    /**
+     * Test.
+     */
+    public void testRecordChangeTemplate() {
+
+        // ARRANGE
+        final Capture<LogEntry> le = new Capture<LogEntry>();
+        _em.flush();
+        _em.persist(capture(le));
+        replay(_em);
+
+        expect(_um.loggedInUser()).andReturn(_actor);
+        replay(_um);
+
+        final AuditLogLocal al = new AuditLogEJB(_em, _um);
+        final Page p = new Page("foo");
+
+        // ACT
+        al.recordChangeTemplate(p);
+
+        // ASSERT
+        verify(_em, _um);
+        assertEquals(LogEntry.Action.CHANGE_TEMPLATE, le.getValue().action());
+        assertEquals(p.id(), le.getValue().subjectId());
+        assertEquals(_actor, le.getValue().actor());
+        assertEquals("Template changed.", le.getValue().summary());
+    }
+
+    /**
+     * Test.
+     */
+    public void testRecordUpdate() {
+
+        // ARRANGE
+        final Capture<LogEntry> le = new Capture<LogEntry>();
+        _em.flush();
+        _em.persist(capture(le));
+        replay(_em);
+
+        expect(_um.loggedInUser()).andReturn(_actor);
+        replay(_um);
+
+        final AuditLogLocal al = new AuditLogEJB(_em, _um);
+        final Page p = new Page("foo");
+
+        // ACT
+        al.recordUpdate(p);
+
+        // ASSERT
+        verify(_em, _um);
+        assertEquals(LogEntry.Action.UPDATE, le.getValue().action());
+        assertEquals(p.id(), le.getValue().subjectId());
+        assertEquals(_actor, le.getValue().actor());
+        assertEquals("Updated.", le.getValue().summary());
+    }
+
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {

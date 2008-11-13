@@ -36,6 +36,7 @@ import ccc.domain.Template;
 import ccc.domain.Setting.Name;
 import ccc.services.AssetManagerLocal;
 import ccc.services.AssetManagerRemote;
+import ccc.services.AuditLogLocal;
 import ccc.services.QueryManagerLocal;
 
 
@@ -63,6 +64,8 @@ public final class AssetManagerEJB
 
     @EJB(name="QueryManager", beanInterface=QueryManagerLocal.class)
     private QueryManagerLocal _qm;
+    @EJB(name="AuditLog", beanInterface=AuditLogLocal.class)
+    private AuditLogLocal _audit;
 
     /**
      * Constructor.
@@ -75,11 +78,14 @@ public final class AssetManagerEJB
      *
      * @param entityManager A JPA entity manager.
      * @param queryManager A CCC query manager.
+     * @param auditLog An audit logger.
      */
     AssetManagerEJB(final EntityManager entityManager,
-                    final QueryManagerLocal queryManager) {
+                    final QueryManagerLocal queryManager,
+                    final AuditLogLocal auditLog) {
         _entityManager = entityManager;
         _qm = queryManager;
+        _audit = auditLog;
     }
 
     /**
@@ -97,6 +103,7 @@ public final class AssetManagerEJB
     public void createDisplayTemplate(final Template template) {
         _entityManager.persist(template);
         templatesFolder().add(template);
+        _audit.recordCreate(template);
     }
 
     /**
@@ -114,6 +121,9 @@ public final class AssetManagerEJB
             _entityManager.persist(
                 new Setting(Name.ASSETS_ROOT_FOLDER_ID, root.id().toString()));
             root.add(templates);
+
+            _audit.recordCreate(root);
+            _audit.recordCreate(templates);
         }
     }
 
@@ -150,7 +160,7 @@ public final class AssetManagerEJB
 
         _entityManager.persist(template);
         templatesFolder.add(template);
-
+        _audit.recordCreate(template);
         return template;
     }
 
@@ -171,6 +181,7 @@ public final class AssetManagerEJB
         current.description(t.description());
         current.definition(t.definition());
         current.body(t.body());
+        _audit.recordUpdate(current);
     }
 
 }

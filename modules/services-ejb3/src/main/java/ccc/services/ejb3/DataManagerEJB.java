@@ -24,6 +24,7 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -37,6 +38,7 @@ import ccc.domain.CCCException;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.Folder;
+import ccc.services.AuditLogLocal;
 import ccc.services.DataManagerLocal;
 
 
@@ -59,6 +61,9 @@ public class DataManagerEJB implements DataManagerLocal {
     @PersistenceContext(unitName = "ccc-persistence")
     private EntityManager _entityManager;
 
+    @EJB(name="AuditLog", beanInterface=AuditLogLocal.class)
+    private AuditLogLocal _audit;
+
     /**
      * Constructor.
      */
@@ -70,12 +75,17 @@ public class DataManagerEJB implements DataManagerLocal {
      *
      * @param ds The JDBC datasource used to manage data.
      * @param em The entityManager used to persist domain objects.
+     * @param auditLog An audit logger.
      */
-    public DataManagerEJB(final DataSource ds, final EntityManager em) {
+    public DataManagerEJB(final DataSource ds,
+                          final EntityManager em,
+                          final AuditLogLocal auditLog) {
         DBC.require().notNull(ds);
         DBC.require().notNull(em);
+        DBC.require().notNull(auditLog);
         _datasource = ds;
         _entityManager = em;
+        _audit = auditLog;
     }
 
     /** {@inheritDoc} */
@@ -87,6 +97,7 @@ public class DataManagerEJB implements DataManagerLocal {
         final Folder folder = _entityManager.find(Folder.class, parentId);
         folder.add(file);
         create(file.fileData(), dataStream);
+        _audit.recordCreate(file);
     }
 
     /** {@inheritDoc} */

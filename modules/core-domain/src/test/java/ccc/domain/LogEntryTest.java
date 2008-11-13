@@ -76,6 +76,75 @@ public class LogEntryTest
     /**
      * Test.
      */
+    public void testCreateFactoryMethod() {
+
+        // ARRANGE
+        final Page p = new Page(new ResourceName("foo"));
+
+        // ACT
+        final LogEntry le = LogEntry.forCreate(p, _actor, _happenedOn);
+
+        // ASSERT
+        assertEquals(p.id(), le.subjectId());
+        assertEquals(p.type(), le.subjectType());
+        assertEquals(-1, le.subjectVersionAfterChange());
+        assertEquals("Created.", le.summary());
+        assertEquals(_happenedOn, le.happenedOn());
+        assertNull("Should be null", le.recordedOn());
+        assertEquals(-1, le.index());
+        assertEquals(_actor, le.actor());
+        assertEquals(LogEntry.Action.CREATE, le.action());
+    }
+
+    /**
+     * Test.
+     */
+    public void testUpdateFactoryMethod() {
+
+        // ARRANGE
+        final Page p = new Page(new ResourceName("foo"));
+
+        // ACT
+        final LogEntry le = LogEntry.forUpdate(p, _actor, _happenedOn);
+
+        // ASSERT
+        assertEquals(p.id(), le.subjectId());
+        assertEquals(p.type(), le.subjectType());
+        assertEquals(-1, le.subjectVersionAfterChange());
+        assertEquals("Updated.", le.summary());
+        assertEquals(_happenedOn, le.happenedOn());
+        assertNull("Should be null", le.recordedOn());
+        assertEquals(-1, le.index());
+        assertEquals(_actor, le.actor());
+        assertEquals(LogEntry.Action.UPDATE, le.action());
+    }
+
+    /**
+     * Test.
+     */
+    public void testChangeTemplateFactoryMethod() {
+
+        // ARRANGE
+        final Page p = new Page(new ResourceName("foo"));
+
+        // ACT
+        final LogEntry le = LogEntry.forTemplateChange(p, _actor, _happenedOn);
+
+        // ASSERT
+        assertEquals(p.id(), le.subjectId());
+        assertEquals(p.type(), le.subjectType());
+        assertEquals(-1, le.subjectVersionAfterChange());
+        assertEquals("Template changed.", le.summary());
+        assertEquals(_happenedOn, le.happenedOn());
+        assertNull("Should be null", le.recordedOn());
+        assertEquals(-1, le.index());
+        assertEquals(_actor, le.actor());
+        assertEquals(LogEntry.Action.CHANGE_TEMPLATE, le.action());
+    }
+
+    /**
+     * Test.
+     */
     public void testLockFactoryMethod() {
 
         // ARRANGE

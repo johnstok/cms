@@ -37,6 +37,7 @@ import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.ResourceName;
+import ccc.services.AuditLogLocal;
 import ccc.services.DataManagerLocal;
 
 
@@ -74,7 +75,7 @@ public class DataManagerEJBTest extends TestCase {
         ps.setBinaryStream(DataManagerEJB.STREAM_POSITION_CREATE,
                            dummyStream,
                            Integer.MAX_VALUE);
-        expect(ps.execute()).andReturn(true);
+        expect(ps.execute()).andReturn(Boolean.TRUE);
         ps.close();
         replay(ps);
 
@@ -93,7 +94,10 @@ public class DataManagerEJBTest extends TestCase {
         expect(em.find(Folder.class, assetRoot.id())).andReturn(assetRoot);
         replay(em);
 
-        final DataManagerLocal dm = new DataManagerEJB(ds, em);
+        final AuditLogLocal al = createStrictMock(AuditLogLocal.class);
+        al.recordCreate(file);
+
+        final DataManagerLocal dm = new DataManagerEJB(ds, em, al);
 
         // ACT
         dm.createFile(file, assetRoot.id(), dummyStream);
@@ -134,7 +138,9 @@ public class DataManagerEJBTest extends TestCase {
         replay(ds);
 
         final DataManagerLocal dm =
-            new DataManagerEJB(ds, dummy(EntityManager.class));
+            new DataManagerEJB(ds,
+                               dummy(EntityManager.class),
+                               dummy(AuditLogLocal.class));
 
         // ACT
         dm.create(d, dummyStream);
@@ -179,7 +185,9 @@ public class DataManagerEJBTest extends TestCase {
         replay(ds);
 
         final DataManagerLocal dm =
-            new DataManagerEJB(ds, dummy(EntityManager.class));
+            new DataManagerEJB(ds,
+                               dummy(EntityManager.class),
+                               dummy(AuditLogLocal.class));
 
         // ACT
         dm.retrieve(d, os);
@@ -206,7 +214,9 @@ public class DataManagerEJBTest extends TestCase {
         createDataTable(ds);
 
         final DataManagerLocal dm =
-            new DataManagerEJB(ds, dummy(EntityManager.class));
+            new DataManagerEJB(ds,
+                               dummy(EntityManager.class),
+                               dummy(AuditLogLocal.class));
 
         // ACT
         dm.create(new Data(), dummyStream);
@@ -231,13 +241,37 @@ public class DataManagerEJBTest extends TestCase {
         c.close();
     }
 
+
     /**
-     * TODO: Add a description of this method.
-     *
-     * @param ds
-     * @param createDataTable
-     * @throws SQLException
+     * Test.
+     * @throws SQLException sometimes.
      */
+    public void testRetrieveWithInMemoryDb() throws SQLException {
+
+        // ARRANGE
+        final Data d = new Data();
+        final InputStream dummyStream = new ByteArrayInputStream(new byte[]{1});
+        final ByteArrayOutputStream os = new ByteArrayOutputStream();
+        final JdbcDataSource ds = new JdbcDataSource();
+        ds.setURL("jdbc:h2:mem:"+UUID.randomUUID()+";DB_CLOSE_DELAY=-1");
+
+        createDataTable(ds);
+
+        final DataManagerLocal dm =
+            new DataManagerEJB(ds,
+                               dummy(EntityManager.class),
+                               dummy(AuditLogLocal.class));
+        dm.create(d, dummyStream);
+
+        // ACT
+        dm.retrieve(d, os);
+
+        // ASSERT
+        assertEquals(1, os.toByteArray().length);
+        assertEquals(1, os.toByteArray()[0]);
+    }
+
+
     private void createDataTable(final JdbcDataSource ds) throws SQLException {
 
         final String sql =
@@ -258,32 +292,5 @@ public class DataManagerEJBTest extends TestCase {
         } finally {
             c.close();
         }
-    }
-
-    /**
-     * Test.
-     * @throws SQLException sometimes.
-     */
-    public void testRetrieveWithInMemoryDb() throws SQLException {
-
-        // ARRANGE
-        final Data d = new Data();
-        final InputStream dummyStream = new ByteArrayInputStream(new byte[]{1});
-        final ByteArrayOutputStream os = new ByteArrayOutputStream();
-        final JdbcDataSource ds = new JdbcDataSource();
-        ds.setURL("jdbc:h2:mem:"+UUID.randomUUID()+";DB_CLOSE_DELAY=-1");
-
-        createDataTable(ds);
-
-        final DataManagerLocal dm =
-            new DataManagerEJB(ds, dummy(EntityManager.class));
-        dm.create(d, dummyStream);
-
-        // ACT
-        dm.retrieve(d, os);
-
-        // ASSERT
-        assertEquals(1, os.toByteArray().length);
-        assertEquals(1, os.toByteArray()[0]);
     }
 }

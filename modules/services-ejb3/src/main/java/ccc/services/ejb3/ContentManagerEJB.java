@@ -38,6 +38,7 @@ import ccc.domain.ResourcePath;
 import ccc.domain.ResourceType;
 import ccc.domain.Setting;
 import ccc.domain.Template;
+import ccc.services.AuditLogLocal;
 import ccc.services.ContentManagerLocal;
 import ccc.services.ContentManagerRemote;
 import ccc.services.QueryManagerLocal;
@@ -64,6 +65,8 @@ public final class ContentManagerEJB
 
     @EJB(name="QueryManager", beanInterface=QueryManagerLocal.class)
     private QueryManagerLocal _qm;
+    @EJB(name="AuditLog", beanInterface=AuditLogLocal.class)
+    private AuditLogLocal _audit;
 
     /**
      * Constructor.
@@ -76,11 +79,14 @@ public final class ContentManagerEJB
      *
      * @param entityManager A JPA entity manager.
      * @param queryManager A CCC QueryManager.
+     * @param auditLog  An audit logger.
      */
     ContentManagerEJB(final EntityManager entityManager,
-                      final QueryManagerLocal queryManager) {
+                      final QueryManagerLocal queryManager,
+                      final AuditLogLocal auditLog) {
         _em = entityManager;
         _qm = queryManager;
+        _audit = auditLog;
     }
 
 
@@ -95,6 +101,7 @@ public final class ContentManagerEJB
         }
         folder.add(newResource);
         _em.persist(newResource);
+        _audit.recordCreate(newResource);
     }
 
     /**
@@ -129,6 +136,7 @@ public final class ContentManagerEJB
                 new Setting(
                     Setting.Name.CONTENT_ROOT_FOLDER_ID,
                     root.id().toString()));
+            _audit.recordCreate(root);
         }
     }
 
@@ -211,6 +219,7 @@ public final class ContentManagerEJB
                 paragraph.getKey(),
                 paragraph.getValue());
         }
+        _audit.recordUpdate(page);
     }
 
 
@@ -223,7 +232,9 @@ public final class ContentManagerEJB
      */
     @Override
     public void setDefaultTemplate(final Template newDefault) {
-        lookupRoot().displayTemplateName(newDefault);
+        final Folder rootFolder = lookupRoot();
+        rootFolder.displayTemplateName(newDefault);
+        _audit.recordChangeTemplate(rootFolder);
     }
 
     /**
@@ -234,7 +245,7 @@ public final class ContentManagerEJB
                                           final Template template) {
         final Resource r = lookup(resourceId);
         r.displayTemplateName(template);
-        _em.persist(r);
+        _audit.recordChangeTemplate(r);
     }
 
     /** {@inheritDoc} */

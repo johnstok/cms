@@ -35,4 +35,26 @@ interface AuditLog {
      * @param resource The resource that was unlocked.
      */
     void recordUnlock(final Resource resource);
+
+
+    /**
+     * Record that a resource was created.
+     *
+     * @param resource The resource that was created.
+     */
+    void recordCreate(Resource resource);
+
+    /**
+     * Record that a resource was updated.
+     *
+     * @param resource The resource that was updated.
+     */
+    void recordUpdate(Resource resource);
+
+    /**
+     * Record that the template for a resource was changed.
+     *
+     * @param resource The resource that was changed.
+     */
+    void recordChangeTemplate(Resource resource);
 }

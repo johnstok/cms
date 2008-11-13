@@ -82,4 +82,36 @@ public class AuditLogEJB
             LogEntry.forUnlock(resource, _um.loggedInUser(), new Date());
         _em.persist(le);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public void recordCreate(final Resource resource) {
+        DBC.require().notNull(resource);
+        _em.flush();
+        final LogEntry le =
+            LogEntry.forCreate(resource, _um.loggedInUser(), new Date());
+        _em.persist(le);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void recordChangeTemplate(final Resource resource) {
+        DBC.require().notNull(resource);
+        _em.flush();
+        final LogEntry le =
+            LogEntry.forTemplateChange(resource,
+                                       _um.loggedInUser(),
+                                       new Date());
+        _em.persist(le);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void recordUpdate(final Resource resource) {
+        DBC.require().notNull(resource);
+        _em.flush();
+        final LogEntry le =
+            LogEntry.forUpdate(resource, _um.loggedInUser(), new Date());
+        _em.persist(le);
+    }
 }
