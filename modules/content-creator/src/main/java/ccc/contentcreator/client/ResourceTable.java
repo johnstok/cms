@@ -11,6 +11,8 @@
  */
 package ccc.contentcreator.client;
 
+import static ccc.contentcreator.client.dialogs.AbstractBaseDialog.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,11 +59,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @author Civic Computing Ltd.
  */
 public class ResourceTable extends ContentPanel {
-
-    /** CONTEXT_MENU_WIDTH : int. */
-    private static final int CONTEXT_MENU_WIDTH = 130;
-    /** PERCENT_10 : float. */ private static final float PERCENT_10 = .1f;
-    /** PERCENT_40 : float. */ private static final float PERCENT_40 = .4f;
 
     private final ListStore<ResourceDTO> _detailsStore =
         new ListStore<ResourceDTO>();

@@ -12,25 +12,24 @@
 package ccc.contentcreator.client.dialogs;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import ccc.contentcreator.api.JsonModelData;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.binder.TableBinder;
-import com.extjs.gxt.ui.client.event.ButtonEvent;
-import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
-import com.extjs.gxt.ui.client.widget.button.Button;
+import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+import com.extjs.gxt.ui.client.widget.table.CellRenderer;
 import com.extjs.gxt.ui.client.widget.table.Table;
 import com.extjs.gxt.ui.client.widget.table.TableColumn;
 import com.extjs.gxt.ui.client.widget.table.TableColumnModel;
-import com.extjs.gxt.ui.client.widget.table.TableItem;
 
 
 /**
- * TODO: Add Description for this type.
+ * Generic dialog for displaying read-only, tabular data.
  *
  * @author Civic Computing Ltd.
  */
@@ -45,7 +44,8 @@ public class TableDataDisplayDialog
     /**
      * Constructor.
      *
-     * @param title
+     * @param title The title of the dialog.
+     * @param data The data the dialog should display.
      */
     public TableDataDisplayDialog(final String title,
                                   final List<JsonModelData> data) {
@@ -57,15 +57,7 @@ public class TableDataDisplayDialog
 
         setLayout(new FitLayout());
 
-        final List<TableColumn> columns = new ArrayList<TableColumn>();
-
-        TableColumn col = new TableColumn("action", "Action", 0.1f);
-        columns.add(col);
-
-        col = new TableColumn("happenedOn", "Happened On", 0.1f);
-        columns.add(col);
-
-        final TableColumnModel cm = new TableColumnModel(columns);
+        final TableColumnModel cm = defineColumnModel();
 
         final Table tbl = new Table(cm);
         tbl.setSelectionMode(SelectionMode.SINGLE);
@@ -73,34 +65,37 @@ public class TableDataDisplayDialog
         tbl.setBorders(false);
 
         final TableBinder<JsonModelData> binder =
-            new TableBinder<JsonModelData>(tbl, _dataStore) {
-
-            /** {@inheritDoc} */
-            @Override
-            protected TableItem createItem(final JsonModelData model) {
-
-                TableItem ti = super.createItem(model);
-//                ti.setId(model.getName());
-                return ti;
-            }
-        };
+            new TableBinder<JsonModelData>(tbl, _dataStore);
         binder.init();
 
         add(tbl);
-
-//        _cancel.setId("cancel");
-//        addButton(_cancel);
     }
 
+    /*
+     * TODO: Should be abstract and overridden by subclasses OR column model
+     * passed into constructor.
+     */
+    private TableColumnModel defineColumnModel() {
 
-    /** _cancel : Button. */
-    protected final Button _cancel = new Button(
-            _constants.cancel(),
-            new SelectionListener<ButtonEvent>() {
-                @Override
-                public void componentSelected(final ButtonEvent ce) {
-                    hide();
-                }
-            }
-        );
+        final List<TableColumn> columns = new ArrayList<TableColumn>();
+
+        columns.add(new TableColumn("action", "Action", PERCENT_10));
+        columns.add(new TableColumn("actor", "User", PERCENT_10));
+        final TableColumn timeColumn =
+            new TableColumn("happenedOn", "Time", PERCENT_30);
+        timeColumn.setRenderer(new CellRenderer<Component>(){
+
+            public String render(final Component item,
+                                 final String property,
+                                 final Object value) {
+
+                final Date happenedOn = new Date(((Double) value).longValue());
+                return happenedOn.toString(); // TODO: I18n
+            }});
+        columns.add(timeColumn);
+        columns.add(new TableColumn("summary", "Summary", PERCENT_50));
+
+        final TableColumnModel cm = new TableColumnModel(columns);
+        return cm;
+    }
 }
