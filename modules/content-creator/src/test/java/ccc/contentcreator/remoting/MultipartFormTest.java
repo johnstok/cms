@@ -23,8 +23,6 @@ import junit.framework.TestCase;
 
 import org.apache.commons.fileupload.FileItem;
 
-import ccc.contentcreator.remoting.MultipartForm;
-
 
 /**
  * TODO: Add Description for this type.
@@ -42,7 +40,7 @@ public class MultipartFormTest extends TestCase {
         final FileItem foo = new TestFileItem("foo");
         final List<FileItem> items =
             Arrays.asList(
-                new FileItem[]{ foo });
+                new FileItem[]{foo });
 
         // ACT
         final MultipartForm f = new MultipartForm(items);
@@ -113,7 +111,8 @@ public class MultipartFormTest extends TestCase {
             throw new UnsupportedOperationException("Method not implemented.");
         }
 
-        public String getString(final String arg0) throws UnsupportedEncodingException {
+        public String getString(final String arg0)
+            throws UnsupportedEncodingException {
 
             throw new UnsupportedOperationException("Method not implemented.");
         }

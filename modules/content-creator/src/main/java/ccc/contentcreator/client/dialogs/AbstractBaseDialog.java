@@ -41,5 +41,4 @@ public abstract class AbstractBaseDialog
         setWidth(Globals.DEFAULT_WIDTH);
         setHeight(Globals.DEFAULT_HEIGHT);
     }
-
 }

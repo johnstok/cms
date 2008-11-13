@@ -36,7 +36,7 @@ public class FolderSelectionDialog extends Window {
     /**
      * Constructor.
      *
-     * @param rsa
+     * @param rsa ResourceServiceAsync
      */
     FolderSelectionDialog(final ResourceServiceAsync rsa) {
         setBodyBorder(false);
