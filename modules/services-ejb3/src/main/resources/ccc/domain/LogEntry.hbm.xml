@@ -52,10 +52,6 @@
             not-null="true"
             type="ccc.services.ejb3.support.UUIDUserType" />
         <property
-            name="_subjectVersionAfterChange"
-            not-null="true"
-            type="int" />
-        <property
             name="_summary"
             not-null="true"
             type="string"

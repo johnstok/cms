@@ -34,7 +34,6 @@ public class LogEntry extends Entity {
     private Date         _happenedOn;
     private ResourceType _subjectType;
     private UUID         _subjectId;
-    private int          _subjectVersionAfterChange;
     private String       _summary;
 
     /** Valid actions for a log entry. */
@@ -199,7 +198,6 @@ public class LogEntry extends Entity {
         s.date(     "happenedOn",                _happenedOn);
         s.string(   "resourceType",              _subjectType.name());
         s.string(   "subjectId",                 _subjectId.toString());
-        s.number(   "subjectVersionAfterChange", _subjectVersionAfterChange);
         s.string(   "summary",                   _summary);
     }
 
@@ -215,7 +213,6 @@ public class LogEntry extends Entity {
         final LogEntry le = new LogEntry();
         le._subjectId = p.id();
         le._subjectType = p.type();
-        le._subjectVersionAfterChange = p.version();
         le._actor = actor;
         le._happenedOn = happenedOn;
         return le;
@@ -299,15 +296,5 @@ public class LogEntry extends Entity {
      */
     public String summary() {
         return _summary;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return The version of the subject after the action was completed.
-     */
-    public int subjectVersionAfterChange() {
-        return _subjectVersionAfterChange;
     }
 }
