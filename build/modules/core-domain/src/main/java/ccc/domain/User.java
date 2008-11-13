@@ -26,7 +26,7 @@ import ccc.commons.EmailAddress;
  *
  * @author Civic Computing Ltd.
  */
-public class User extends Entity {
+public class User extends VersionedEntity {
 
     /** VALID_CHARACTERS : String. */
     public static final String  VALID_CHARACTERS = "[\\w]*";

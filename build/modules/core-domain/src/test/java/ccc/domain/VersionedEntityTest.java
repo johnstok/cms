@@ -17,11 +17,11 @@ import junit.framework.TestCase;
 
 
 /**
- * Tests for the {@link Entity} class.
+ * Tests for the {@link VersionedEntity} class.
  *
  * @author Civic Computing Ltd.
  */
-public class EntityTest extends TestCase {
+public class VersionedEntityTest extends TestCase {
 
     /**
      * Test.
@@ -29,7 +29,7 @@ public class EntityTest extends TestCase {
     public void testVersionMutator() {
 
         // ARRANGE
-        final Entity e = new Foo();
+        final VersionedEntity e = new Foo();
 
         // ACT
         e.version(2);
@@ -46,9 +46,9 @@ public class EntityTest extends TestCase {
 
         // ARRANGE
         final UUID id = UUID.randomUUID();
-        final Entity one = new Foo();
+        final VersionedEntity one = new Foo();
         one.id(id);
-        final Entity two = new Foo();
+        final VersionedEntity two = new Foo();
         two.id(id);
 
         // ASSERT
@@ -63,9 +63,9 @@ public class EntityTest extends TestCase {
 
         // ARRANGE
         final UUID id = UUID.randomUUID();
-        final Entity one = new Foo();
+        final VersionedEntity one = new Foo();
         one.id(id);
-        final Entity two = new Bar();
+        final VersionedEntity two = new Bar();
         two.id(id);
 
         // ACT
@@ -83,12 +83,12 @@ public class EntityTest extends TestCase {
      *
      * @author Civic Computing Ltd.
      */
-    static class Foo extends Entity { /* No methods. */ }
+    static class Foo extends VersionedEntity { /* No methods. */ }
 
     /**
      * Bar.
      *
      * @author Civic Computing Ltd.
      */
-    static class Bar extends Entity { /* No methods. */ }
+    static class Bar extends VersionedEntity { /* No methods. */ }
 }
