@@ -26,8 +26,8 @@ import ccc.commons.serialisation.Serializer;
  */
 public class LogEntry extends Entity {
 
-    private long         _index = -1;  // TODO: Only available once persisted
-    private Date         _recordedOn;  // TODO: Only available once persisted
+    private long         _index = -1;  // Only available once persisted
+    private Date         _recordedOn;  // Only available once persisted
 
     private User         _actor;
     private Action       _action;
@@ -35,6 +35,7 @@ public class LogEntry extends Entity {
     private ResourceType _subjectType;
     private UUID         _subjectId;
     private String       _summary;
+    private String       _detail;
 
     /** Valid actions for a log entry. */
     public static enum Action {
@@ -202,19 +203,20 @@ public class LogEntry extends Entity {
     }
 
 
-    private static LogEntry createEntry(final Resource p,
+    private static LogEntry createEntry(final Resource resource,
                                         final User actor,
                                         final Date happenedOn) {
 
-        DBC.require().notNull(p);
+        DBC.require().notNull(resource);
         DBC.require().notNull(actor);
         DBC.require().notNull(happenedOn);
 
         final LogEntry le = new LogEntry();
-        le._subjectId = p.id();
-        le._subjectType = p.type();
+        le._subjectId = resource.id();
+        le._subjectType = resource.type();
         le._actor = actor;
         le._happenedOn = happenedOn;
+        le._detail = resource.toString();
         return le;
     }
 
@@ -296,5 +298,15 @@ public class LogEntry extends Entity {
      */
     public String summary() {
         return _summary;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Details of the state of the object after the action took place.
+     */
+    public String detail() {
+        return _detail;
     }
 }
