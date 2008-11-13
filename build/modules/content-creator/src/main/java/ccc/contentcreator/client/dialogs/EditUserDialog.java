@@ -159,8 +159,8 @@ public class EditUserDialog extends AbstractEditDialog {
                 _userDTO.setRoles(roles);
 
                 String password = null;
-                if (_password1.getValue() != null
-                        && _password1.getValue().trim() != "") {
+                if (null != _password1.getValue()
+                        && _password1.getValue().trim().equals("")) {
                     password = _password1.getValue();
                 }
 
