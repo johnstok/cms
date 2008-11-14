@@ -9,16 +9,14 @@ import junit.framework.TestCase;
  */
 public class QueriesTest extends TestCase {
 
-    /**
-     * @see junit.framework.TestCase#setUp()
-     */
+    /** {@inheritDoc} */
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
     }
 
-    /**
-     * @see junit.framework.TestCase#tearDown()
-     */
+    /** {@inheritDoc} */
+    @Override
     protected void tearDown() throws Exception {
         super.tearDown();
     }
@@ -33,7 +31,7 @@ public class QueriesTest extends TestCase {
         try {
             new LegacyDBQueries(null);
             fail("Queries failed to reject a NULL connection.");
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
 
             //ASSERT
             assertEquals("Specified value may not be NULL.", e.getMessage());

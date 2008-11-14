@@ -10,10 +10,11 @@ import java.util.List;
  */
 final class CollectingConsole implements Console {
 
-    List<String> inputList = new ArrayList<String>();
+    private List<String> _inputList = new ArrayList<String>();
 
+    /** {@inheritDoc} */
     @Override
-    public void print(String input) {
-        inputList.add(input);
+    public void print(final String input) {
+        _inputList.add(input);
     }
 }

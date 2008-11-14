@@ -29,7 +29,8 @@ public final class TemplateTest extends TestCase {
         // ARRANGE
 
         // ACT
-        final Template t = new Template("foo!", "bar", "Hello world", "<fields/>");
+        final Template t =
+            new Template("foo!", "bar", "Hello world", "<fields/>");
 
         // ASSERT
         assertEquals(new ResourceName("foo_"), t.name());
@@ -48,7 +49,11 @@ public final class TemplateTest extends TestCase {
         // ARRANGE
 
         // ACT
-        final Template t = new Template(new ResourceName("testName"), "foo!", "bar", "Hello world", "<fields/>");
+        final Template t = new Template(new ResourceName("testName"),
+            "foo!",
+            "bar",
+            "Hello world",
+            "<fields/>");
 
         // ASSERT
         assertEquals(new ResourceName("testName"), t.name());

@@ -19,5 +19,10 @@ package ccc.migration;
  */
 public interface Console {
 
-    public void print(String input);
+    /**
+     * Migration testing console print.
+     *
+     * @param input String to print.
+     */
+    void print(String input);
 }
