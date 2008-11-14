@@ -307,10 +307,10 @@ public final class DTOs {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Create a list of {@link UserDTO} objects from collection of User objects.
      *
-     * @param userList
-     * @return
+     * @param userList Collection of User objects.
+     * @return List of UserDTO.
      */
     public static List<UserDTO> dtoFrom(final Collection<User> userList) {
         final ArrayList<UserDTO> dtos = new ArrayList<UserDTO>();

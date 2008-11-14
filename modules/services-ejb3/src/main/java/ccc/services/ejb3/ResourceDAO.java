@@ -54,8 +54,9 @@ public class ResourceDAO implements ResourceDAOLocal {
     /**
      * Constructor.
      *
-     * @param queryManager
-     * @param userDAO
+     * @param userDAO UserManager service.
+     * @param queryManager QueryManager service.
+     * @param audit AuditLog service.
      */
     public ResourceDAO(final UserManagerLocal userDAO,
                        final QueryManagerLocal queryManager,
