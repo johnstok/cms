@@ -274,7 +274,7 @@
                             <browser>*custom firefox -P Selenium -no-remote</browser>
                             <startURL>http://localhost:8080/</startURL>
                             <suite>src/test/selenese/acceptance-tests.html</suite>
-                            <timeoutInSeconds>120</timeoutInSeconds>
+                            <timeoutInSeconds>1800</timeoutInSeconds>
                             <background>true</background>
                             <port>5555</port>
                             <logOutput>true</logOutput>
