@@ -20,14 +20,17 @@ import ccc.contentcreator.dto.PageDTO;
 import ccc.contentcreator.dto.ParagraphDTO;
 
 import com.extjs.gxt.ui.client.widget.Component;
-import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
+import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.layout.FormData;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
-import com.extjs.gxt.ui.client.widget.layout.RowLayout;
+import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.Element;
+import com.google.gwt.xml.client.NodeList;
+import com.google.gwt.xml.client.XMLParser;
 
 
 /**
@@ -36,10 +39,8 @@ import com.extjs.gxt.ui.client.widget.layout.RowLayout;
  * @author Civic Computing Ltd.
  */
 public class EditPagePanel extends FormPanel {
-    private ContentPanel _upperPanel;
     private final TextField<String> _title = new TextField<String>();
     private final TextField<String> _name = new TextField<String>();
-    private DefinitionPanel _dp = new DefinitionPanel();
 
     /** _constants : UIConstants. */
     private final UIConstants _constants = Globals.uiConstants();
@@ -54,42 +55,20 @@ public class EditPagePanel extends FormPanel {
     }
 
     private void drawGUI() {
-        _upperPanel = new ContentPanel();
-        _upperPanel.setWidth("100%");
-        _upperPanel.setBorders(false);
-        _upperPanel.setBodyBorder(false);
-        _upperPanel.setHeaderVisible(false);
-        _upperPanel.setLayout(new FormLayout());
-
         _name.setFieldLabel(_constants.name());
         _name.setAllowBlank(false);
         _name.setId(_constants.name());
-        _upperPanel.add(_name, new FormData("95%"));
+        add(_name, new FormData("95%"));
 
         _title.setFieldLabel(_constants.title());
         _title.setAllowBlank(false);
         _title.setId(_constants.title());
-        _upperPanel.add(_title, new FormData("95%"));
+        add(_title, new FormData("95%"));
 
-        add(_upperPanel);
-        add(_dp);
-        setLayout(new RowLayout());
+        setLayout(new FormLayout());
         setBorders(false);
         setBodyBorder(false);
         setHeaderVisible(false);
-    }
-
-    /**
-     * Create fields for the page creation/editing.
-     *
-     * @param definition Definition XML.
-     */
-    public void createFields(final String definition) {
-        _dp = new DefinitionPanel();
-        _dp.renderFields(definition);
-        removeAll(); // in order to avoid zombie field labels
-        add(_upperPanel);
-        add(_dp);
     }
 
     /**
@@ -105,7 +84,7 @@ public class EditPagePanel extends FormPanel {
 
         for (final Entry<String, ParagraphDTO> para : page.getParagraphs().entrySet()) {
 
-            for (final Component c : _dp.getItems()) {
+            for (final Component c : getItems()) {
                 if (c.getId().equals(para.getKey())) {
                     final String value = para.getValue().getValue();
                     if ("TEXT".equals(c.getData("type"))) {
@@ -146,7 +125,50 @@ public class EditPagePanel extends FormPanel {
      * @return List of components in definition panel.
      */
     public List<Component> definitionItems() {
-        return _dp.getItems();
+        return getItems();
+    }
+
+    /**
+     * Adds necessary fields for the panel.
+     *
+     * @param definition XML of the definition.
+     */
+    public void createFields(final String definition) {
+        String xml ="<fields>/";
+
+        if (definition != null) {
+            xml = definition;
+        }
+
+        final Document def = XMLParser.parse(xml);
+
+        final NodeList fields = def.getElementsByTagName("field");
+        for (int i=0; i<fields.getLength(); i++) {
+            final Element field = ((Element) fields.item(i));
+            final String type = field.getAttribute("type");
+            final String name = field.getAttribute("name");
+
+            if ("text_field".equals(type)) {
+                final TextField<String> tf = new TextField<String>();
+                tf.setData("type", "TEXT");
+                tf.setId(name);
+                tf.setFieldLabel(name);
+                add(tf);
+            } else if ("text_area".equals(type)) {
+                final TextArea ta = new TextArea();
+                ta.setData("type", "TEXT");
+                ta.setId(name);
+                ta.setFieldLabel(name);
+                add(ta);
+
+            } else if ("date".equals(type)) {
+                final DateField df = new DateField();
+                df.setFieldLabel(name);
+                df.setData("type", "DATE");
+                df.setId(name);
+                add(df);
+            }
+        }
     }
 
 }

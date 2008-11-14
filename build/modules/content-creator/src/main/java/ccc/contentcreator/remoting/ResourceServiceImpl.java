@@ -432,7 +432,7 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
         final Resource r =
             contentManager().lookup(UUID.fromString(resourceDTO.getId()));
 
-        final Template selectedTemplate = r.displayTemplateName();
+        final Template selectedTemplate = r.computeTemplate(null);
         return DTOs.dtoFrom(selectedTemplate);
     }
 
