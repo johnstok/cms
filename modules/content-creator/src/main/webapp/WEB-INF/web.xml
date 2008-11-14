@@ -4,6 +4,35 @@
 
 <web-app>
     <display-name>Content Creator</display-name>
+    
+    <context-param>
+        <param-name>resteasy.scan</param-name>
+        <param-value>false</param-value>
+    </context-param>
+   <context-param>
+      <param-name>resteasy.servlet.mapping.prefix</param-name>
+      <param-value>/api</param-value>
+   </context-param>
+    
+    <context-param>
+        <param-name>resteasy.jndi.resources</param-name>
+        <param-value>
+            application-ear-7.0.0-SNAPSHOT/ResourceDAO/local
+        </param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>
+            org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap
+        </listener-class>
+    </listener>
+
+    <servlet>
+        <servlet-name>Resteasy</servlet-name>
+        <servlet-class>
+            org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher
+        </servlet-class>
+    </servlet>
 
     <!-- Standard Action Servlet Configuration -->
     <servlet>
@@ -20,7 +49,12 @@
         </servlet-class>
     </servlet>
 
-    <!-- Standard Action Servlet Mapping -->
+
+    <servlet-mapping>
+        <servlet-name>Resteasy</servlet-name>
+        <url-pattern>/api/*</url-pattern>
+    </servlet-mapping>
+    
     <servlet-mapping>
         <servlet-name>Resource</servlet-name>
         <url-pattern>/resource</url-pattern>
