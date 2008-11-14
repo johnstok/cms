@@ -62,6 +62,7 @@ public class UpdatePageDialog
      *
      * @param contentPath The absolute path to the content resource this dialog
      *          will update.
+     * @param rt ResourceTable required in order to refresh the contents.
      */
     public UpdatePageDialog(final String contentPath, final ResourceTable rt) {
         super(Globals.uiConstants().updateContent());
@@ -101,9 +102,14 @@ public class UpdatePageDialog
 
             /** {@inheritDoc} */
             public void onSuccess(final TemplateDTO template) {
-               _panel.createFields(template.getDefinition());
-               _panel.populateFields(_page);
-               _panel.layout(); // Refresh UI when callback is done
+                if (template == null) {
+                    Globals.alert(_uiConstants.noTemplateFound());
+                    hide();
+                } else {
+                    _panel.createFields(template.getDefinition());
+                    _panel.populateFields(_page);
+                    _panel.layout(); // Refresh UI when callback is done
+                }
             }
         };
 

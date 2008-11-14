@@ -441,4 +441,12 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Locked by")
     String lockedBy();
+
+    /**
+     * "Template was not found".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Template was not found")
+    String noTemplateFound();
 }
