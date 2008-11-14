@@ -64,12 +64,13 @@ public class CreateAliasDialog extends AbstractEditDialog {
         _targetName.setFieldLabel(_constants.target());
         _targetName.setValue(item.getName());
         _targetName.setReadOnly(true);
-        _panel.add(_targetName, new FormData("100%"));
+        _targetName.disable();
+        _panel.add(_targetName, new FormData("95%"));
 
         _aliasName.setFieldLabel(_constants.name());
         _aliasName.setAllowBlank(false);
         _aliasName.setId("AliasName");
-        _panel.add(_aliasName, new FormData("100%"));
+        _panel.add(_aliasName, new FormData("95%"));
 
         _parentFolder.setFieldLabel(_constants.folder());
         _parentFolder.setValue("");
@@ -88,7 +89,7 @@ public class CreateAliasDialog extends AbstractEditDialog {
                         }});
                     folderSelect.show();
                 }});
-        _panel.add(_parentFolder, new FormData("100%"));
+        _panel.add(_parentFolder, new FormData("95%"));
     }
 
     /** {@inheritDoc} */
