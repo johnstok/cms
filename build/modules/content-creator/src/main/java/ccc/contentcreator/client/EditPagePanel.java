@@ -64,12 +64,12 @@ public class EditPagePanel extends FormPanel {
         _name.setFieldLabel(_constants.name());
         _name.setAllowBlank(false);
         _name.setId(_constants.name());
-        _upperPanel.add(_name, new FormData("90%"));
+        _upperPanel.add(_name, new FormData("95%"));
 
         _title.setFieldLabel(_constants.title());
         _title.setAllowBlank(false);
         _title.setId(_constants.title());
-        _upperPanel.add(_title, new FormData("90%"));
+        _upperPanel.add(_title, new FormData("95%"));
 
         add(_upperPanel);
         add(_dp);
@@ -100,6 +100,7 @@ public class EditPagePanel extends FormPanel {
     public void populateFields(final PageDTO page) {
         _name.setValue(page.getName());
         _name.setReadOnly(true);
+        _name.disable();
         _title.setValue(page.getTitle());
 
         for (final Entry<String, ParagraphDTO> para : page.getParagraphs().entrySet()) {

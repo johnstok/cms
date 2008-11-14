@@ -110,7 +110,8 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
         _store = store;
         _model = item;
 
-        _name.setReadOnly(true); // TODO #200
+        _name.setReadOnly(true);
+        _name.disable();
 
         _body.setValue(_model.getBody());
         _definition.setValue(_model.getDefinition());
@@ -128,17 +129,17 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
         _name.setFieldLabel(_constants.name());
         _name.setAllowBlank(false);
         _name.setId(_constants.name());
-        _first.add(_name, new FormData("90%"));
+        _first.add(_name, new FormData("95%"));
 
         _templateTitle.setFieldLabel(_constants.title());
         _templateTitle.setAllowBlank(false);
         _templateTitle.setId(_constants.title());
-        _first.add(_templateTitle, new FormData("90%"));
+        _first.add(_templateTitle, new FormData("95%"));
 
         _description.setFieldLabel(_constants.description());
         _description.setAllowBlank(false);
         _description.setId(_constants.description());
-        _first.add(_description, new FormData("90%"));
+        _first.add(_description, new FormData("95%"));
     }
 
     private void populateSecondScreen() {
@@ -152,7 +153,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
         _definition.setId("content xml");
         _definition.setHeight(TEXT_AREA_HEIGHT);
 
-        _second.add(_definition, new FormData("90%"));
+        _second.add(_definition, new FormData("95%"));
     }
 
     private void populateThirdScreen() {
@@ -166,7 +167,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
         _body.setId(_constants.body());
         _body.setHeight(TEXT_AREA_HEIGHT);
 
-        _third.add(_body, new FormData("90%"));
+        _third.add(_body, new FormData("95%"));
     }
 
     private TemplateDTO model() { // TODO: update to handle version correctly.

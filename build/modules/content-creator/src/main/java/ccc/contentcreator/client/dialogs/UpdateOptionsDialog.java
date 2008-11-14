@@ -67,7 +67,7 @@ public class UpdateOptionsDialog extends AbstractEditDialog {
         _defaultTemplate.setDisplayField("name");
         _defaultTemplate.setForceSelection(true);
         _defaultTemplate.setAllowBlank(false);
-        _panel.add(_defaultTemplate, new FormData("100%"));
+        _panel.add(_defaultTemplate, new FormData("95%"));
 
      // TODO: Remove these set calls - set in super-class.
         _panel.setId("UserPanel");

@@ -66,23 +66,23 @@ public class EditUserDialog extends AbstractEditDialog {
         _username.setAllowBlank(false);
         _username.setId(_constants.username());
         _username.setValue(_userDTO.getUsername());
-        _panel.add(_username, new FormData("100%"));
+        _panel.add(_username, new FormData("95%"));
 
         _email.setFieldLabel(_constants.email());
         _email.setAllowBlank(false);
         _email.setId(_constants.email());
         _email.setValue(_userDTO.getEmail());
-        _panel.add(_email, new FormData("100%"));
+        _panel.add(_email, new FormData("95%"));
 
         _password1.setPassword(true);
         _password1.setFieldLabel(_constants.password());
         _password1.setId(_constants.password());
-        _panel.add(_password1, new FormData("90%"));
+        _panel.add(_password1, new FormData("95%"));
 
         _password2.setPassword(true);
         _password2.setFieldLabel(_constants.confirmPassword());
         _password2.setId(_constants.confirmPassword());
-        _panel.add(_password2, new FormData("90%"));
+        _panel.add(_password2, new FormData("95%"));
 
         final Set<String> userRoles = _userDTO.getRoles();
 
