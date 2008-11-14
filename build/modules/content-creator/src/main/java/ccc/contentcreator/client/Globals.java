@@ -57,7 +57,7 @@ public final class Globals {
     }
 
     /**
-     * Determine the host URL for the application.
+     * Determine the URL for the application's host.
      *
      * @return The host url as a string.
      */
@@ -67,6 +67,24 @@ public final class Globals {
                 0,
                 GWT.getHostPageBaseURL()
                    .lastIndexOf(APP_URL));
+    }
+
+    /**
+     * Determine the URL for the REST API.
+     *
+     * @return The host url as a string.
+     */
+    public static String apiURL() {
+        return GWT.getHostPageBaseURL()+API_URL;
+    }
+
+    /**
+     * Determine the URL for the application.
+     *
+     * @return The host url as a string.
+     */
+    public static String appURL() {
+        return GWT.getHostPageBaseURL();
     }
 
     /**
@@ -119,4 +137,5 @@ public final class Globals {
     public static final int DEFAULT_HEIGHT = 480;
     /** APP_URL : String. */
     public static final String APP_URL = "creator/";
+    public static final String API_URL = "api/";
 }

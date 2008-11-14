@@ -58,7 +58,7 @@ public final class REST {
                                      final Action<JSONValue> action,
                                      final Method httpMethod) {
         try {
-            final String url = Globals.hostURL() + relativeURL;
+            final String url = Globals.appURL() + relativeURL;
             final RequestBuilder builder = new RequestBuilder(httpMethod, url);
             builder.sendRequest(null, new JSONRequestCallback(action));
         } catch (final RequestException e) {
@@ -71,7 +71,7 @@ public final class REST {
                           final AsyncCallback<List<JsonModelData>> callback,
                           final Method httpMethod) {
         try {
-            final String url = Globals.hostURL() + relativeURL;
+            final String url = Globals.appURL() + relativeURL;
             final RequestBuilder builder = new RequestBuilder(httpMethod, url);
             builder.sendRequest(null, new AsyncCallbackBridge(callback));
         } catch (final RequestException e) {
