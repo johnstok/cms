@@ -20,6 +20,7 @@ import ccc.contentcreator.api.Action;
 import ccc.contentcreator.api.JsonModelData;
 import ccc.contentcreator.api.ResourceMgr;
 import ccc.contentcreator.api.ResourceServiceAsync;
+import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.dialogs.ChooseTemplateDialog;
 import ccc.contentcreator.client.dialogs.CreateAliasDialog;
@@ -54,12 +55,14 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
  * TODO: Add Description for this type.
- * TODO: I18n for column names.
+ * TODO: I18n for heading.
+ * TODO: Extend simpler LayoutPanel rather than ContentPanel.
  *
  * @author Civic Computing Ltd.
  */
 public class ResourceTable extends ContentPanel {
 
+    private final UIConstants _constants = Globals.uiConstants();
     private final ListStore<ResourceDTO> _detailsStore =
         new ListStore<ResourceDTO>();
     private TreeItem _previousItem = null;
@@ -73,17 +76,18 @@ public class ResourceTable extends ContentPanel {
         setLayout(new FitLayout());
 
         final List<TableColumn> columns = new ArrayList<TableColumn>();
+        TableColumn col;
 
-        TableColumn col = new TableColumn("type", "Type", PERCENT_10);
+        col = new TableColumn("type", _constants.type(), PERCENT_10);
         columns.add(col);
 
-        col = new TableColumn("locked", "Locked by", PERCENT_10);
+        col = new TableColumn("locked", _constants.lockedBy(), PERCENT_10);
         columns.add(col);
 
-        col = new TableColumn("name", "Name", PERCENT_40);
+        col = new TableColumn("name", _constants.name(), PERCENT_40);
         columns.add(col);
 
-        col = new TableColumn("title", "Title", PERCENT_40);
+        col = new TableColumn("title", _constants.title(), PERCENT_40);
         columns.add(col);
 
         final TableColumnModel cm = new TableColumnModel(columns);
@@ -314,7 +318,8 @@ public class ResourceTable extends ContentPanel {
                     item.getId(),
                     new Action<List<JsonModelData>>() {
                         public void execute(final List<JsonModelData> data) {
-                            new TableDataDisplayDialog("Resource History", data).show(); //TODO: I18n
+                            new TableDataDisplayDialog(
+                                "Resource History", data).show(); //TODO: I18n
                         }});
             }
 

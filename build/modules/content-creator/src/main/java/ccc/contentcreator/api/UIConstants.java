@@ -433,4 +433,12 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Passwords did not match")
     String passwordsDidNotMatch();
+
+    /**
+     * "Locked by".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Locked by")
+    String lockedBy();
 }
