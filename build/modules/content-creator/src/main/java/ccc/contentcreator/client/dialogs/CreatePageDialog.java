@@ -108,8 +108,8 @@ public class CreatePageDialog
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
         final ColumnConfig nameColumn = new ColumnConfig();
-        nameColumn.setId("name");
-        nameColumn.setHeader("Name");
+        nameColumn.setId(_uiConstants.name());
+        nameColumn.setHeader(_uiConstants.name());
         nameColumn.setWidth(200);
         nameColumn.setRenderer(createIdRenderer());
 
@@ -145,7 +145,7 @@ public class CreatePageDialog
         _first.setLayout(new BorderLayout());
 
         _rightPanel.setHeaderVisible(true);
-        _rightPanel.setHeading("Template"); // i18n
+        _rightPanel.setHeading(_uiConstants.template());
 
         _rightPanel.add(createCheckbox());
         _rightPanel.add(_grid);
@@ -153,7 +153,7 @@ public class CreatePageDialog
         _first.add(_rightPanel, westData);
 
         _descriptionPanel.setHeaderVisible(true);
-        _descriptionPanel.setHeading("Description"); // i18n
+        _descriptionPanel.setHeading(_uiConstants.description());
         _descriptionPanel.add(_description);
 
         _first.add(_descriptionPanel, centerData);
@@ -169,8 +169,8 @@ public class CreatePageDialog
     private CheckBox createCheckbox() {
 
         final CheckBox cb = new CheckBox();
-        cb.setBoxLabel("Use default template");
-        cb.setId("Use default template");
+        cb.setBoxLabel(_uiConstants.useDefaultTemplate());
+        cb.setId(_uiConstants.useDefaultTemplate());
         _resourceService.getTemplateForResource(_parent,
             new ErrorReportingCallback<TemplateDTO>() {
             public void onSuccess(final TemplateDTO result) {
@@ -189,7 +189,7 @@ public class CreatePageDialog
             }
         });
 
-        cb.addListener(Events.Change ,new Listener<FieldEvent> () {
+        cb.addListener(Events.Change, new Listener<FieldEvent>() {
             public void handleEvent(final FieldEvent be) {
                 if (cb.getValue()) {
                     _resourceService.getTemplateForResource(_parent,
@@ -220,7 +220,6 @@ public class CreatePageDialog
     private GridCellRenderer<TemplateDTO> createIdRenderer() {
 
         return new GridCellRenderer<TemplateDTO>() {
-
             public String render(final TemplateDTO model,
                                  final String property,
                                  final ColumnData config,
