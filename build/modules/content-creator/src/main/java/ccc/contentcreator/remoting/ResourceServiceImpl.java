@@ -401,10 +401,13 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
             ResourceName.escape(pageDto.getName()),
             pageDto.getTitle());
 
-          final String parentFolderId = folderDto.getId();
-        final Template template =  assetManager().lookup(
-            UUID.fromString(templateDto.getId())).as(Template.class);
-        page.displayTemplateName(template);
+        final String parentFolderId = folderDto.getId();
+
+        if (templateDto != null) {
+            final Template template =  assetManager().lookup(
+                UUID.fromString(templateDto.getId())).as(Template.class);
+            page.displayTemplateName(template);
+        }
 
        final Set<Entry<String, ParagraphDTO>> entries =
            pageDto.getParagraphs().entrySet();
