@@ -39,8 +39,8 @@ import com.google.gwt.xml.client.XMLParser;
  * @author Civic Computing Ltd.
  */
 public class EditPagePanel extends FormPanel {
-    private final TextField<String> _title = new TextField<String>();
-    private final TextField<String> _name = new TextField<String>();
+    private TextField<String> _title = new TextField<String>();
+    private TextField<String> _name = new TextField<String>();
 
     /** _constants : UIConstants. */
     private final UIConstants _constants = Globals.uiConstants();
@@ -51,24 +51,25 @@ public class EditPagePanel extends FormPanel {
      */
     public EditPagePanel() {
         super();
-        drawGUI();
+        setLayout(new FormLayout());
+        setBorders(false);
+        setBodyBorder(false);
+        setHeaderVisible(false);
+
     }
 
-    private void drawGUI() {
+    private void drawStaticFields() {
+        _name = new TextField<String>();
         _name.setFieldLabel(_constants.name());
         _name.setAllowBlank(false);
         _name.setId(_constants.name());
         add(_name, new FormData("95%"));
 
+        _title = new TextField<String>();
         _title.setFieldLabel(_constants.title());
         _title.setAllowBlank(false);
         _title.setId(_constants.title());
         add(_title, new FormData("95%"));
-
-        setLayout(new FormLayout());
-        setBorders(false);
-        setBodyBorder(false);
-        setHeaderVisible(false);
     }
 
     /**
@@ -134,13 +135,13 @@ public class EditPagePanel extends FormPanel {
      * @param definition XML of the definition.
      */
     public void createFields(final String definition) {
-        String xml ="<fields>/";
-
-        if (definition != null) {
-            xml = definition;
+        removeAll();
+        if (definition == null || definition.trim().equals("")) {
+            return;
         }
+        drawStaticFields();
 
-        final Document def = XMLParser.parse(xml);
+        final Document def = XMLParser.parse(definition);
 
         final NodeList fields = def.getElementsByTagName("field");
         for (int i=0; i<fields.getLength(); i++) {
@@ -170,5 +171,4 @@ public class EditPagePanel extends FormPanel {
             }
         }
     }
-
 }

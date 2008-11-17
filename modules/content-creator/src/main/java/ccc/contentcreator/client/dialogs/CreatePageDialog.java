@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import ccc.contentcreator.api.ResourceServiceAsync;
+import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.EditPagePanel;
 import ccc.contentcreator.client.Globals;
@@ -32,6 +33,7 @@ import ccc.contentcreator.dto.TemplateDTO;
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -40,9 +42,9 @@ import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.Text;
+import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.Field;
-import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
@@ -52,6 +54,7 @@ import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.extjs.gxt.ui.client.widget.layout.RowLayout;
+import com.google.gwt.core.client.GWT;
 
 
 /**
@@ -63,14 +66,17 @@ public class CreatePageDialog
     extends
         AbstractWizardDialog {
 
-    private final FormPanel _first = new FormPanel();
+    private final UIConstants _uiConstants = GWT.create(UIConstants.class);
+
+    private final ContentPanel _first = new ContentPanel();
     private final EditPagePanel _second = new EditPagePanel();
 
     private ListStore<TemplateDTO> _templatesStore =
         new ListStore<TemplateDTO>();
     private Grid<TemplateDTO> _grid;
-    private ContentPanel _descriptionPanel = new ContentPanel(new RowLayout());
 
+    private ContentPanel _descriptionPanel = new ContentPanel(new RowLayout());
+    private ContentPanel _rightPanel = new ContentPanel(new RowLayout());
 
     private final ResourceTable _rt;
     private final FolderDTO _parent;
@@ -97,7 +103,6 @@ public class CreatePageDialog
 
         setWidth(Globals.DEFAULT_WIDTH);
         setHeight(Globals.DEFAULT_HEIGHT);
-
         setHeading(Globals.uiConstants().createPage());
 
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
@@ -106,7 +111,115 @@ public class CreatePageDialog
         nameColumn.setId("name");
         nameColumn.setHeader("Name");
         nameColumn.setWidth(200);
-        nameColumn.setRenderer(new GridCellRenderer<TemplateDTO>() {
+        nameColumn.setRenderer(createIdRenderer());
+
+        configs.add(nameColumn);
+
+        final ColumnModel cm = new ColumnModel(configs);
+
+        _grid = new Grid<TemplateDTO>(_templatesStore, cm);
+        _grid.setLoadMask(true);
+        _grid.setId("TemplateGrid");
+
+        final Listener<GridEvent> listener =
+            new Listener<GridEvent>() {
+            public void handleEvent(final GridEvent ge) {
+                TemplateDTO template =
+                    (TemplateDTO) ge.grid.getSelectionModel().getSelectedItem();
+                _second.createFields(template.getDefinition());
+                _description.setText(template.getDescription());
+            }
+        };
+        _grid.addListener(Events.RowClick, listener);
+
+        _templatesStore.add(list);
+
+        final BorderLayoutData westData =
+            new BorderLayoutData(LayoutRegion.WEST, 205);
+        westData.setMargins(new Margins(5));
+
+        final BorderLayoutData centerData =
+            new BorderLayoutData(LayoutRegion.CENTER);
+        centerData.setMargins(new Margins(5));
+
+        _first.setLayout(new BorderLayout());
+
+        _rightPanel.setHeaderVisible(true);
+        _rightPanel.setHeading("Template"); // i18n
+
+        _rightPanel.add(createCheckbox());
+        _rightPanel.add(_grid);
+
+        _first.add(_rightPanel, westData);
+
+        _descriptionPanel.setHeaderVisible(true);
+        _descriptionPanel.setHeading("Description"); // i18n
+        _descriptionPanel.add(_description);
+
+        _first.add(_descriptionPanel, centerData);
+        _first.setBorders(false);
+        _first.setBodyBorder(false);
+        _first.setHeaderVisible(false);
+        addCard(_first);
+
+        addCard(_second);
+        refresh();
+    }
+
+    private CheckBox createCheckbox() {
+
+        final CheckBox cb = new CheckBox();
+        cb.setBoxLabel("Use default template");
+        cb.setId("Use default template");
+        _resourceService.getTemplateForResource(_parent,
+            new ErrorReportingCallback<TemplateDTO>() {
+            public void onSuccess(final TemplateDTO result) {
+                if (result == null) {
+                    cb.setValue(false);
+                    cb.disable();
+                    _grid.enable();
+                    _description.setText("");
+                } else {
+                    cb.setValue(true);
+                    _grid.disable();
+                    _grid.getSelectionModel().deselectAll();
+                    _second.createFields(result.getDefinition());
+                    _description.setText(result.getDescription());
+                }
+            }
+        });
+
+        cb.addListener(Events.Change ,new Listener<FieldEvent> () {
+            public void handleEvent(final FieldEvent be) {
+                if (cb.getValue()) {
+                    _resourceService.getTemplateForResource(_parent,
+                        new ErrorReportingCallback<TemplateDTO>() {
+                        public void onSuccess(final TemplateDTO result) {
+                            if (result == null) {
+                                cb.disable();
+                                _grid.enable();
+                                _description.setText("");
+                            } else {
+                                _grid.disable();
+                                _grid.getSelectionModel().deselectAll();
+                                _second.createFields(result.getDefinition());
+                                _description.setText(result.getDescription());
+                            }
+                        }
+                    });
+                } else {
+                    _second.removeAll();
+                    _grid.enable();
+                    _description.setText("");
+                }
+            }
+        });
+        return cb;
+    }
+
+    private GridCellRenderer<TemplateDTO> createIdRenderer() {
+
+        return new GridCellRenderer<TemplateDTO>() {
 
             public String render(final TemplateDTO model,
                                  final String property,
@@ -128,54 +241,7 @@ public class CreatePageDialog
                 }
                 return value;
             }
-        });
-
-        configs.add(nameColumn);
-
-        final ColumnModel cm = new ColumnModel(configs);
-
-        _grid = new Grid<TemplateDTO>(_templatesStore, cm);
-        _grid.setLoadMask(true);
-        _grid.setId("TemplateGrid");
-
-        final Listener<GridEvent> listener =
-            new Listener<GridEvent>() {
-            public void handleEvent(final GridEvent ge) {
-                TemplateDTO template =
-                    (TemplateDTO) ge.grid.getSelectionModel().getSelectedItem();
-                _second.createFields(template.getDefinition());
-                _description.setText(template.getDescription());
-
-            }
         };
-        _grid.addListener(Events.RowClick, listener);
-        _templatesStore.add(list);
-
-        final BorderLayoutData westData =
-            new BorderLayoutData(LayoutRegion.WEST, 202);
-        westData.setMargins(new Margins(5));
-
-        final BorderLayoutData centerData =
-            new BorderLayoutData(LayoutRegion.CENTER);
-        centerData.setMargins(new Margins(5));
-
-        _first.setLayout(new BorderLayout());
-        _first.add(_grid, westData);
-
-        _descriptionPanel.setHeaderVisible(true);
-        _descriptionPanel.setHeading("Description");
-        _descriptionPanel.setBorders(false);
-        _descriptionPanel.setBodyBorder(false);
-        _descriptionPanel.add(_description);
-
-        _first.add(_descriptionPanel, centerData);
-        _first.setBorders(false);
-        _first.setBodyBorder(false);
-        _first.setHeaderVisible(false);
-        addCard(_first);
-
-        addCard(_second);
-        refresh();
     }
 
     /** {@inheritDoc} */
