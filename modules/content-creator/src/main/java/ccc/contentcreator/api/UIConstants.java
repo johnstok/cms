@@ -449,4 +449,12 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Template was not found")
     String noTemplateFound();
+
+    /**
+     * "Use default template".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Use default template")
+    String useDefaultTemplate();
 }
