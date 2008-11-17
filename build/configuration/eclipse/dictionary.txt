@@ -121,3 +121,5 @@ min
 de
 thu
 nov
+lingual
+serializer
