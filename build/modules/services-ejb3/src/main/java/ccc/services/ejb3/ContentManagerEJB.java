@@ -265,6 +265,6 @@ public final class ContentManagerEJB
 
         oldParent.remove(resource);
         newParent.add(resource);
-        // TODO: _audit.recordSomething
+        _audit.recordMove(resource);
     }
 }

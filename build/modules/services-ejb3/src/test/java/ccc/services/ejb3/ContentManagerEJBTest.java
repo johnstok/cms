@@ -459,6 +459,7 @@ public final class ContentManagerEJBTest extends TestCase {
         expect(_em.find(Resource.class, resource.id())).andReturn(resource);
         expect(_em.find(Resource.class, newParent.id())).andReturn(newParent);
         expect(_em.find(Resource.class, oldParent.id())).andReturn(oldParent);
+        _al.recordMove(resource);
         replay(_em, _qm, _al);
 
         // ACT

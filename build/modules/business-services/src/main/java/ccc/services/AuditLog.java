@@ -57,4 +57,11 @@ interface AuditLog {
      * @param resource The resource that was changed.
      */
     void recordChangeTemplate(Resource resource);
+
+    /**
+     * Record that the resource was moved.
+     *
+     * @param resource The resource that was changed.
+     */
+    void recordMove(Resource resource);
 }
