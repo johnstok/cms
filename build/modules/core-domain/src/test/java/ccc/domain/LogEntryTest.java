@@ -64,7 +64,7 @@ public class LogEntryTest
         // ASSERT
         assertEquals(p.id(), le.subjectId());
         assertEquals(p.type(), le.subjectType());
-        assertEquals("Moved resource to parent: "+f.id()+".", le.summary());
+        assertEquals("Moved resource to parent: "+f.absolutePath()+".", le.summary());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
