@@ -93,6 +93,7 @@ public class JsonSerializer implements Serializer {
      * Create a JSON dictionary with the specified serializable class.
      *
      * @param value The class to serialize.
+     * @return Returns 'this' to allow method chaining.
      */
     public JsonSerializer dict(final CanSerialize value) {
         startDict();

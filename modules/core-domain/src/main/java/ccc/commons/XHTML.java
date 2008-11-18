@@ -216,8 +216,8 @@ public final class XHTML {
     }
 
     private static DocumentBuilder createParser(
-                                        final XhtmlErrorHandler errorHandler,
-                                        final XhtmlEntityResolver entityResolver)
+                                    final XhtmlErrorHandler errorHandler,
+                                    final XhtmlEntityResolver entityResolver)
                                        throws ParserConfigurationException {
 
         final DocumentBuilderFactory factory =

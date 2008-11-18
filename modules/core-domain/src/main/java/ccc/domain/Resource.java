@@ -197,19 +197,19 @@ public abstract class Resource extends VersionedEntity {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Query method to determine whether a resource is locked.
      *
-     * @return
+     * @return True if the resource is locked, false otherwise.
      */
     public boolean isLocked() {
         return null != _lockedBy;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Lock a resource.
      * TODO: Should check that isLocked == false
      *
-     * @param u
+     * @param u The user who is locking the resource.
      */
     public void lock(final User u) {
         require().notNull(u);
@@ -217,21 +217,28 @@ public abstract class Resource extends VersionedEntity {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Query method - determine who has locked this resource.
      *
-     * @return
+     * @return The locking user or null if the resource is not locked.
      */
     public User lockedBy() {
         return _lockedBy;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Unlock the resource.
+     * TODO: Should call canUnlock?
      */
     public void unlock() {
         _lockedBy = null;
     }
 
+    /**
+     * Determine whether a user can unlock this resource.
+     *
+     * @param user The user trying to unlock the resource.
+     * @return True if the user can unlock the resource, false otherwise.
+     */
     public boolean canUnlock(final User user) {
         return user.equals(lockedBy())
         || user.hasRole(CreatorRoles.ADMINISTRATOR);

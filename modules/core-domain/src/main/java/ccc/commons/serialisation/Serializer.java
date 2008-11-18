@@ -16,51 +16,51 @@ import java.util.Map;
 
 
 /**
- * TODO: Add Description for this type.
+ * API implemented by a serializer.
  *
  * @author Civic Computing Ltd.
  */
 public interface Serializer {
 
     /**
-     * TODO: Add a description of this method.
+     * Serialize a string.
      *
-     * @param string
-     * @param string2
+     * @param key The key used to access the value.
+     * @param value The value to store.
      */
-    void string(String string, String string2);
+    void string(String key, String value);
 
     /**
-     * TODO: Add a description of this method.
+     * Serialize an integer.
      *
-     * @param string
-     * @param version
+     * @param key The key used to access the value.
+     * @param value The value to store.
      */
     @Deprecated
-    void integer(String string, int version);
+    void integer(String key, int value);
 
     /**
-     * TODO: Add a description of this method.
+     * Serialize a map.
      *
-     * @param string
-     * @param paragraphs
+     * @param key The key used to access the value.
+     * @param value The value to store.
      */
-    void dict(String string, Map<String, ? extends CanSerialize> paragraphs);
+    void dict(String key, Map<String, ? extends CanSerialize> value);
 
     /**
-     * TODO: Add a description of this method.
+     * Serialize a date.
      *
-     * @param string
-     * @param on
+     * @param key The key used to access the value.
+     * @param value The value to store.
      */
-    void date(String string, Date on);
+    void date(String key, Date value);
 
     /**
-     * TODO: Add a description of this method.
+     * Serialize a long.
      *
-     * @param string
-     * @param _index
+     * @param key The key used to access the value.
+     * @param value The value to store.
      */
-    void number(String string, long _index);
+    void number(String key, long value);
 
 }

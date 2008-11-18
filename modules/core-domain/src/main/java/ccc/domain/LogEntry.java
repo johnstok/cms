@@ -39,14 +39,23 @@ public class LogEntry extends Entity {
 
     /** Valid actions for a log entry. */
     public static enum Action {
+        /** RENAME : Action. */
         RENAME,
+        /** MOVE : Action. */
         MOVE,
+        /** PUBLISH : Action. */
         PUBLISH,
+        /** UNPUBLISH : Action. */
         UNPUBLISH,
+        /** CREATE : Action. */
         CREATE,
+        /** UPDATE : Action. */
         UPDATE,
+        /** LOCK : Action. */
         LOCK,
+        /** UNLOCK : Action. */
         UNLOCK,
+        /** CHANGE_TEMPLATE : Action. */
         CHANGE_TEMPLATE
     }
 
@@ -192,14 +201,14 @@ public class LogEntry extends Entity {
 
     /** {@inheritDoc} */
     @Override public void serialize(final Serializer s) {
-        s.number(   "index",                     _index);
-        s.date(     "recordedOn",                _recordedOn);
-        s.string(   "actor",                     _actor.username());
-        s.string(   "action",                    _action.name());
-        s.date(     "happenedOn",                _happenedOn);
-        s.string(   "resourceType",              _subjectType.name());
-        s.string(   "subjectId",                 _subjectId.toString());
-        s.string(   "summary",                   _summary);
+        s.number("index", _index);
+        s.date("recordedOn", _recordedOn);
+        s.string("actor", _actor.username());
+        s.string("action", _action.name());
+        s.date("happenedOn", _happenedOn);
+        s.string("resourceType", _subjectType.name());
+        s.string("subjectId", _subjectId.toString());
+        s.string("summary", _summary);
     }
 
 

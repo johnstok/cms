@@ -13,33 +13,33 @@ package ccc.commons.serialisation;
 
 
 /**
- * TODO: Add Description for this type.
+ * API implemented by a deserializer.
  *
  * @author Civic Computing Ltd.
  */
 public interface DeSerializer extends Iterable<String> {
 
     /**
-     * TODO: Add a description of this method.
+     * Lookup a string value from the deserializer.
      *
-     * @param string
-     * @return
+     * @param key The key the value is stored under.
+     * @return The corresponding value.
      */
-    String string(String string);
+    String string(String key);
 
     /**
-     * TODO: Add a description of this method.
+     * Lookup an integer value from the deserializer.
      *
-     * @param string
-     * @return
+     * @param key The key the value is stored under.
+     * @return The corresponding value.
      */
-    int integer(String string);
+    int integer(String key);
 
     /**
-     * TODO: Add a description of this method.
+     * Lookup a dictionary (map) from the deserializer.
      *
-     * @param string
-     * @return
+     * @param key The key the value is stored under.
+     * @return The corresponding value.
      */
-    DeSerializer dict(String string);
+    DeSerializer dict(String key);
 }

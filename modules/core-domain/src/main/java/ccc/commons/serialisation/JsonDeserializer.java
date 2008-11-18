@@ -15,7 +15,8 @@ import ccc.domain.CCCException;
 
 
 /**
- * TODO: Add Description for this type.
+ * A deserializer for JSON strings.
+ * TODO: No tests what so ever!!!
  *
  * From http://www.stringtree.org/stringtree-json.html
  *
@@ -33,14 +34,14 @@ public class JsonDeserializer {
     private static Map<Character, Character> escapes =
         new HashMap<Character, Character>();
     static {
-        escapes.put(new Character('"'), new Character('"'));
-        escapes.put(new Character('\\'), new Character('\\'));
-        escapes.put(new Character('/'), new Character('/'));
-        escapes.put(new Character('b'), new Character('\b'));
-        escapes.put(new Character('f'), new Character('\f'));
-        escapes.put(new Character('n'), new Character('\n'));
-        escapes.put(new Character('r'), new Character('\r'));
-        escapes.put(new Character('t'), new Character('\t'));
+        escapes.put(Character.valueOf('"'), Character.valueOf('"'));
+        escapes.put(Character.valueOf('\\'), Character.valueOf('\\'));
+        escapes.put(Character.valueOf('/'), Character.valueOf('/'));
+        escapes.put(Character.valueOf('b'), Character.valueOf('\b'));
+        escapes.put(Character.valueOf('f'), Character.valueOf('\f'));
+        escapes.put(Character.valueOf('n'), Character.valueOf('\n'));
+        escapes.put(Character.valueOf('r'), Character.valueOf('\r'));
+        escapes.put(Character.valueOf('t'), Character.valueOf('\t'));
     }
 
     private CharacterIterator _it;
@@ -71,15 +72,13 @@ public class JsonDeserializer {
         case NEXT:
             _c = _it.next();
             break;
+        default:
+            throw new CCCException("Unexpected parser state: "+start);
         }
         return read();
     }
 
-    private Object read(final CharacterIterator it) {
-        return read(it, NEXT);
-    }
-
-    public Object read(final String string) {
+    private Object read(final String string) {
         return read(new StringCharacterIterator(string), FIRST);
     }
 
@@ -118,14 +117,14 @@ public class JsonDeserializer {
     }
 
     private Object object() {
-        final Map ret = new HashMap();
-        Object key = read();
+        final Map<String, Object> ret = new HashMap<String, Object>();
+        String key = (String) read();
         while (_token != OBJECT_END) {
             read(); // should be a colon
             if (_token != OBJECT_END) {
                 ret.put(key, read());
                 if (read() == COMMA) {
-                    key = read();
+                    key = (String) read();
                 }
             }
         }
@@ -134,7 +133,7 @@ public class JsonDeserializer {
     }
 
     private Object array() {
-        final List ret = new ArrayList();
+        final List<Object> ret = new ArrayList<Object>();
         Object value = read();
         while (_token != ARRAY_END) {
             ret.add(value);
@@ -146,6 +145,8 @@ public class JsonDeserializer {
     }
 
     private Object number() {
+        final int seventeen = 17;
+        final int nineteen = 19;
         int length = 0;
         boolean isFloatingPoint = false;
         _buf.setLength(0);
@@ -170,8 +171,8 @@ public class JsonDeserializer {
 
         final String s = _buf.toString();
         return isFloatingPoint
-            ? (length < 17) ? (Object) Double.valueOf(s) : new BigDecimal(s)
-            : (length < 19) ? (Object) Long.valueOf(s) : new BigInteger(s);
+        ? (length < seventeen) ? (Object) Double.valueOf(s) : new BigDecimal(s)
+        : (length < nineteen) ? (Object) Long.valueOf(s) : new BigInteger(s);
     }
 
     private int addDigits() {
@@ -190,7 +191,7 @@ public class JsonDeserializer {
                 if (_c == 'u') {
                     add(unicode());
                 } else {
-                    final Object value = escapes.get(new Character(_c));
+                    final Object value = escapes.get(Character.valueOf(_c));
                     if (value != null) {
                         add(((Character) value).charValue());
                     }
@@ -213,65 +214,80 @@ public class JsonDeserializer {
         add(_c);
     }
 
+    /*
+     * TODO: Is there a better way to do this?
+     * TODO: Does this handle escapes beyond the basic plane?
+     */
     private char unicode() {
+        final int four = 4;
+        final int ten = 10;
         int value = 0;
-        for (int i = 0; i < 4; ++i) {
+        for (int i = 0; i < four; ++i) {
             switch (next()) {
             case '0': case '1': case '2': case '3': case '4':
             case '5': case '6': case '7': case '8': case '9':
-                value = (value << 4) + _c - '0';
+                value = (value << four) + _c - '0';
                 break;
             case 'a': case 'b': case 'c': case 'd': case 'e': case 'f':
-                value = (value << 4) + (_c - 'a') + 10;
+                value = (value << four) + (_c - 'a') + ten;
                 break;
             case 'A': case 'B': case 'C': case 'D': case 'E': case 'F':
-                value = (value << 4) + (_c - 'A') + 10;
+                value = (value << four) + (_c - 'A') + ten;
                 break;
+            default:
+                throw new CCCException("Invalid unicode escape sequence!");
             }
         }
         return (char) value;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Factor method that creates a {@link DeSerializer} by parsing a JSON
+     * string.
      *
-     * @param string
-     * @return
+     * @param string The JSON string.
+     * @return The deserializer representing the string.
      */
     public DeSerializer deserialise(final String string) {
         return new MapDeSerializer(read(string));
     }
 
+    /**
+     * Implementation of {@link DeSerializer} backed by nested HashMaps.
+     *
+     * @author Civic Computing Ltd.
+     */
     private static class MapDeSerializer implements DeSerializer {
 
-        private final Map<String, Object> rawData;
+        private final Map<String, Object> _rawData;
 
+        @SuppressWarnings("unchecked")
         MapDeSerializer(final Object o) {
-            rawData = (Map<String, Object>) o;
+            _rawData = (Map<String, Object>) o;
         }
 
         @Override
         public DeSerializer dict(final String string) {
-            return new MapDeSerializer(rawData.get(string));
+            return new MapDeSerializer(_rawData.get(string));
         }
 
         @Override
         public int integer(final String string) {
-            final Long l = (Long) rawData.get(string);
+            final long l = ((Long) _rawData.get(string)).longValue();
             if (l > Integer.MAX_VALUE) {
                 throw new CCCException("Value too big.");
             }
-            return l.intValue();
+            return (int) l;
         }
 
         @Override
         public String string(final String string) {
-            return (String) rawData.get(string);
+            return (String) _rawData.get(string);
         }
 
         @Override
         public Iterator<String> iterator() {
-            return rawData.keySet().iterator();
+            return _rawData.keySet().iterator();
         }
     }
 }

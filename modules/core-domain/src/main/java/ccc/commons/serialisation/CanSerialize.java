@@ -14,12 +14,23 @@ package ccc.commons.serialisation;
 
 
 /**
- * TODO: Add Description for this type.
+ * Interface implemented by classes that support CCC serialization.
  *
  * @author Civic Computing Ltd.
  */
 public interface CanSerialize {
 
+    /**
+     * Serialize an object.
+     *
+     * @param s The serializer used to write a serialized form.
+     */
     void serialize(Serializer s);
-    public void deserialize(final DeSerializer ds);
+
+    /**
+     * Deserialize an object.
+     *
+     * @param ds The deserializer used to read a serialized form.
+     */
+    void deserialize(final DeSerializer ds);
 }
