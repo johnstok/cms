@@ -13,37 +13,39 @@ package ccc.services;
 
 
 /**
- * TODO: Add Description for this type.
+ * Constants representing the names of services in CCC.
  *
  * @author Civic Computing Ltd.
  */
 public final class ServiceNames {
 
+    private ServiceNames() { super(); }
 
-    /*
-     * LOCAL
-     */
+    /** CONTENT_MANAGER_LOCAL : String. */
     public static final String CONTENT_MANAGER_LOCAL =
         "application-ear-7.0.0-SNAPSHOT/ContentManager/local";
 
+    /** ASSET_MANAGER_LOCAL : String. */
     public static final String ASSET_MANAGER_LOCAL =
         "application-ear-7.0.0-SNAPSHOT/AssetManager/local";
 
+    /** DATA_MANAGER_LOCAL : String. */
     public static final String DATA_MANAGER_LOCAL =
         "application-ear-7.0.0-SNAPSHOT/DataManager/local";
 
+    /** USER_MANAGER_LOCAL : String. */
     public static final String USER_MANAGER_LOCAL =
         "application-ear-7.0.0-SNAPSHOT/UserManager/local";
 
-    /*
-     * REMOTE
-     */
+    /** CONTENT_MANAGER_REMOTE : String. */
     public static final String CONTENT_MANAGER_REMOTE =
         "application-ear-7.0.0-SNAPSHOT/ContentManager/remote";
 
+    /** ASSET_MANAGER_REMOTE : String. */
     public static final String ASSET_MANAGER_REMOTE =
         "application-ear-7.0.0-SNAPSHOT/AssetManager/remote";
 
+    /** USER_MANAGER_REMOTE : String. */
     public static final String USER_MANAGER_REMOTE =
         "application-ear-7.0.0-SNAPSHOT/UserManager/remote";
 }
