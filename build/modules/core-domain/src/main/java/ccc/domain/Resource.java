@@ -251,7 +251,7 @@ public abstract class Resource extends VersionedEntity {
         s.string("title", title());
         s.string("name", name().toString());
         s.string("locked", (isLocked()) ? lockedBy().username() : "");
-        // Template
-        // Parent
+        s.uuid("parent", (null==_parent) ? null : _parent.id());
+        s.uuid("template", (null==_template) ? null : _template.id());
     }
 }

@@ -106,7 +106,7 @@ public abstract class Entity implements Serializable, CanSerialize {
     /** {@inheritDoc} */
     @Override
     public void serialize(final Serializer s) {
-        s.string("id", id().toString());
+        s.uuid("id", id());
     }
 
 }
