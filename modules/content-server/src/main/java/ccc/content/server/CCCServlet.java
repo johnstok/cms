@@ -15,6 +15,7 @@ package ccc.content.server;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import ccc.commons.DBC;
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
+import ccc.domain.File;
 import ccc.services.AssetManagerLocal;
 import ccc.services.ContentManagerLocal;
 import ccc.services.DataManagerLocal;
@@ -139,6 +141,27 @@ public abstract class CCCServlet extends HttpServlet {
         request
             .getRequestDispatcher("/error")
             .forward(request, response);
+    }
+
+    protected void writeFile(final HttpServletResponse response, final File f) throws IOException {
+    
+        disableCachingFor(response);
+    
+        response.setHeader(
+            "Content-Disposition",
+            "inline; filename=\""+f.name()+"\"");
+        response.setHeader(
+            "Content-Type",
+            f.mimeType().toString());
+        response.setHeader(
+            "Content-Description",
+            f.description());
+        response.setHeader(
+            "Content-Length",
+            String.valueOf(f.size()));
+    
+        final ServletOutputStream os = response.getOutputStream();
+        dataManager().retrieve(f.fileData(), os);
     }
 
 }

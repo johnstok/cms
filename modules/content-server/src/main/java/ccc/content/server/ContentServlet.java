@@ -26,6 +26,7 @@ import ccc.commons.Registry;
 import ccc.commons.Resources;
 import ccc.domain.Alias;
 import ccc.domain.CCCException;
+import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Resource;
@@ -150,6 +151,11 @@ public final class ContentServlet extends CCCServlet {
             case PAGE:
                 final Page page = resource.as(Page.class);
                 write(resp, page);
+                break;
+
+            case FILE:
+                final File f = resource.as(File.class);
+                writeFile(resp, f);
                 break;
 
             case FOLDER:
