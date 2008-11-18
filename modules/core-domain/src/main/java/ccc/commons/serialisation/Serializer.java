@@ -13,6 +13,7 @@ package ccc.commons.serialisation;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 
 
 /**
@@ -62,5 +63,13 @@ public interface Serializer {
      * @param value The value to store.
      */
     void number(String key, long value);
+
+    /**
+     * Serialize a uuid.
+     *
+     * @param key The key used to access the value.
+     * @param value The value to store.
+     */
+    void uuid(String key, UUID value);
 
 }

@@ -14,6 +14,7 @@ package ccc.commons.serialisation;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 
 
 /**
@@ -25,6 +26,19 @@ import java.util.Map;
 public class JsonSerializer implements Serializer {
 
     private final StringBuffer _buffer = new StringBuffer();
+
+    /** {@inheritDoc} */
+    @Override
+    public void uuid(final String key, final UUID value) {
+        string(key);
+        colon();
+        if (null==value) {
+            nil();
+        } else {
+            value.toString();
+        }
+        comma();
+    }
 
     /** {@inheritDoc} */
     @Override
