@@ -123,3 +123,9 @@ thu
 nov
 lingual
 serializer
+serialize
+serialization
+serialized
+deserialize
+deserializer
+serializable
