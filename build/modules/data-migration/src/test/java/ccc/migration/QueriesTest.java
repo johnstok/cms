@@ -9,18 +9,6 @@ import junit.framework.TestCase;
  */
 public class QueriesTest extends TestCase {
 
-    /** {@inheritDoc} */
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
     /**
      * Test.
      *
