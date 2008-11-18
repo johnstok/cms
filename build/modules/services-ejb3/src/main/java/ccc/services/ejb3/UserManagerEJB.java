@@ -17,6 +17,7 @@ import static javax.persistence.PersistenceContextType.*;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.UUID;
 
 import javax.annotation.Resource;
@@ -39,7 +40,8 @@ import ccc.services.UserManagerRemote;
 
 
 /**
- * TODO: Add Description for this type.
+ * EJB implementation of the UserManager API.
+ * TODO: Confirm Locale.US is a sensible locale for lower-casing.
  *
  * @author Civic Computing Ltd.
  */
@@ -99,7 +101,7 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
         if (username != null) {
             searchParam = username;
         }
-        q.setParameter("username", searchParam.toLowerCase());
+        q.setParameter("username", searchParam.toLowerCase(Locale.US));
 
         return q.getResultList();
     }
@@ -113,7 +115,7 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
         if (email != null) {
             searchParam = email;
         }
-        q.setParameter("email", searchParam.toLowerCase());
+        q.setParameter("email", searchParam.toLowerCase(Locale.US));
 
         return q.getResultList();
     }

@@ -42,7 +42,7 @@ import ccc.services.DataManagerLocal;
 
 
 /**
- * TODO Add Description for this type.
+ * Tests for the {@link DataManagerEJB} class.
  *
  * @author Civic Computing Ltd.
  */
@@ -75,7 +75,7 @@ public class DataManagerEJBTest extends TestCase {
         ps.setBinaryStream(DataManagerEJB.STREAM_POSITION_CREATE,
                            dummyStream,
                            Integer.MAX_VALUE);
-        expect(ps.execute()).andReturn(Boolean.TRUE);
+        expect(Boolean.valueOf(ps.execute())).andReturn(Boolean.TRUE);
         ps.close();
         replay(ps);
 
