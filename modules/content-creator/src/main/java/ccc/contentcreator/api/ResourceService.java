@@ -50,10 +50,10 @@ public interface ResourceService extends RemoteService {
     /**
      * Get the resource located at the specified path.
      *
-     * @param absolutePath An absolute path to an existing resource.
+     * @param resourceId The UUID of the existing resource.
      * @return The resource as a dto.
      */
-    ResourceDTO getResource(String absolutePath);
+    ResourceDTO getResource(String resourceId);
 
     /**
      * Update the specified page on the server.
