@@ -51,7 +51,7 @@ public class UpdatePageDialog
     private final ResourceServiceAsync _resourceService =
         (ResourceServiceAsync) GWT.create(ResourceService.class);
 
-    private final String _contentPath;
+    private final String _resourceId;
     private EditPagePanel _panel = new EditPagePanel();
     private PageDTO _page = null;
 
@@ -60,16 +60,16 @@ public class UpdatePageDialog
     /**
      * Constructor.
      *
-     * @param contentPath The absolute path to the content resource this dialog
+     * @param resourceId The UUID of the content resource this dialog
      *          will update.
      * @param rt ResourceTable required in order to refresh the contents.
      */
-    public UpdatePageDialog(final String contentPath, final ResourceTable rt) {
+    public UpdatePageDialog(final String resourceId, final ResourceTable rt) {
         super(Globals.uiConstants().updateContent());
         _rt = rt;
         setLayout(new FitLayout());
 
-        _contentPath = contentPath;
+        _resourceId = resourceId;
         ensureDebugId("dialogBox");
         drawGUI();
     }
@@ -124,7 +124,7 @@ public class UpdatePageDialog
 
             }
         };
-        _resourceService.getResource(_contentPath, callback);
+        _resourceService.getResource(_resourceId, callback);
     }
 
     private Button createSaveButton() {
@@ -171,7 +171,7 @@ public class UpdatePageDialog
                         };
 
                     _resourceService.saveContent(
-                        _contentPath,
+                        _resourceId,
                         _panel.title().getValue(),
                         paragraphs,
                         callback);
