@@ -262,4 +262,12 @@ public interface ResourceService extends RemoteService {
      * @return UserDTO
      */
     UserDTO loggedInUser();
+
+    /**
+     * Changes resource's parent
+     *
+     * @param folderDTO The new parent folder.
+     * @param id The id of the resource.
+     */
+    public void move(final FolderDTO folderDTO, final String id);
 }

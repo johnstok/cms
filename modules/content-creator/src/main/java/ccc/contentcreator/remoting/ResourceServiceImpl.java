@@ -454,6 +454,10 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
         }
 
         return userDTO;
+    }
 
+    /** {@inheritDoc} */
+    public void move(final FolderDTO folderDTO, final String id) {
+        contentManager().move(UUID.fromString(id), UUID.fromString(folderDTO.getId()));
     }
 }

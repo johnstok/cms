@@ -25,6 +25,7 @@ import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.dialogs.ChooseTemplateDialog;
 import ccc.contentcreator.client.dialogs.CreateAliasDialog;
 import ccc.contentcreator.client.dialogs.EditTemplateDialog;
+import ccc.contentcreator.client.dialogs.MoveDialog;
 import ccc.contentcreator.client.dialogs.PreviewContentDialog;
 import ccc.contentcreator.client.dialogs.TableDataDisplayDialog;
 import ccc.contentcreator.client.dialogs.UpdatePageDialog;
@@ -121,6 +122,7 @@ public class ResourceTable extends ContentPanel {
         addUnlockResource(tbl, contextMenu);
         viewHistory(tbl, contextMenu);
         addChooseTemplate(tbl, contextMenu);
+        addMove(tbl, contextMenu);
 
         tbl.setContextMenu(contextMenu);
 
@@ -301,6 +303,23 @@ public class ResourceTable extends ContentPanel {
 
         });
         contextMenu.add(unlockResource);
+    }
+
+    private void addMove(final Table tbl, final Menu contextMenu) {
+
+        final MenuItem move = new MenuItem();
+        move.setId("move");
+        move.setText(Globals.uiConstants().move());
+        move.addSelectionListener(new SelectionListener<MenuEvent>() {
+
+            @Override public void componentSelected(final MenuEvent ce) {
+                final ResourceDTO item =
+                    (ResourceDTO) tbl.getSelectedItem().getModel();
+                new MoveDialog(item, ResourceTable.this).show();
+            }
+
+        });
+        contextMenu.add(move);
     }
 
 
