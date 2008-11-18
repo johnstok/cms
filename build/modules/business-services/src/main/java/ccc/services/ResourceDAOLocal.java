@@ -77,6 +77,7 @@ public interface ResourceDAOLocal {
     /**
      * Retrieve the history of a resource.
      *
+     * @param resourceId The id of the resource whose history we will look up.
      * @return The list of resources.
      */
     @GET

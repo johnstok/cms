@@ -23,6 +23,7 @@ import ccc.domain.Setting.Name;
 
 /**
  * Query methods to find and list domain objects.
+ * TODO: Should list method return collection, rather than list?
  *
  * @author Civic Computing Ltd.
  */
@@ -53,11 +54,11 @@ interface QueryManager {
     /**
      * Execute a named query that returns multiple results.
      *
-     * @param queryName
-     * @param resultType
-     * @param params
-     * @param <T>
-     * @return
+     * @param queryName The name of the query to execute.
+     * @param resultType The class of the results.
+     * @param params The query parameters, in the order the appear in the query.
+     * @param <T> The type for this method, determined from resultType.
+     * @return The results from the query as a list.
      */
     <T> List<T> list(String queryName, Class<T> resultType, Object... params);
 
