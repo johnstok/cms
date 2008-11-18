@@ -14,7 +14,6 @@ package ccc.content.server;
 
 import java.io.IOException;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -55,22 +54,6 @@ public class AssetsServlet extends CCCServlet {
         final ResourcePath path = new ResourcePath(request.getPathInfo());
         final File f = assetManager().lookup(path).as(File.class);
 
-        disableCachingFor(response);
-
-        response.setHeader(
-            "Content-Disposition",
-            "inline; filename=\""+f.name()+"\"");
-        response.setHeader(
-            "Content-Type",
-            f.mimeType().toString());
-        response.setHeader(
-            "Content-Description",
-            f.description());
-        response.setHeader(
-            "Content-Length",
-            String.valueOf(f.size()));
-
-        final ServletOutputStream os = response.getOutputStream();
-        dataManager().retrieve(f.fileData(), os);
+        writeFile(response, f);
     }
 }

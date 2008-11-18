@@ -22,6 +22,7 @@ import ccc.domain.File;
 import ccc.domain.ResourceName;
 import ccc.services.AssetManagerLocal;
 import ccc.services.DataManagerLocal;
+import ccc.services.ServiceNames;
 
 
 /**
@@ -92,7 +93,7 @@ public class FileUploadServlet extends HttpServlet {
      * @return An AssetManager.
      */
     AssetManagerLocal assetManager() {
-        return _registry.get("AssetManager/local");
+        return _registry.get(ServiceNames.ASSET_MANAGER_LOCAL);
     }
 
     /**
@@ -101,6 +102,6 @@ public class FileUploadServlet extends HttpServlet {
      * @return An AssetManager.
      */
     DataManagerLocal dataManager() {
-        return _registry.get("DataManager/local");
+        return _registry.get(ServiceNames.DATA_MANAGER_LOCAL);
     }
 }
