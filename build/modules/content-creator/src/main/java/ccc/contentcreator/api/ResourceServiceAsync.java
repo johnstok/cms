@@ -194,4 +194,9 @@ public interface ResourceServiceAsync {
                                 AsyncCallback<TemplateDTO> callback);
 
     void loggedInUser(AsyncCallback<UserDTO> callback);
+
+    /**
+     * @see ResourceService#move()
+     */
+    void move(FolderDTO folderDTO, String id, AsyncCallback callback);
 }

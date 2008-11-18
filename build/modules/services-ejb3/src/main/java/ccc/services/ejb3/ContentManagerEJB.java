@@ -253,4 +253,18 @@ public final class ContentManagerEJB
     public void create(final UUID folderId, final Alias alias) {
         create(folderId, (Resource) alias);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public void move(final UUID resourceid, final UUID newParentId) {
+        final Resource resource = lookup(resourceid);
+        final Folder newParent =
+            lookup(newParentId).as(Folder.class);
+        final Folder oldParent =
+            lookup(resource.parent().id()).as(Folder.class);
+
+        oldParent.remove(resource);
+        newParent.add(resource);
+        // TODO: _audit.recordSomething
+    }
 }

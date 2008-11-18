@@ -457,4 +457,12 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Use default template")
     String useDefaultTemplate();
+
+    /**
+     * "Move".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Move")
+    String move();
 }

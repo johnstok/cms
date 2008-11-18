@@ -446,6 +446,30 @@ public final class ContentManagerEJBTest extends TestCase {
         verify(_em, _qm, _al);
     }
 
+    /**
+     * Test.
+     */
+    public void testMove() {
+        // ARRANGE
+        final Folder oldParent = new Folder(new ResourceName("old"));
+        final Folder newParent = new Folder(new ResourceName("new"));
+        final Page resource = new Page(new ResourceName("foo"));
+        oldParent.add(resource);
+
+        expect(_em.find(Resource.class, resource.id())).andReturn(resource);
+        expect(_em.find(Resource.class, newParent.id())).andReturn(newParent);
+        expect(_em.find(Resource.class, oldParent.id())).andReturn(oldParent);
+        replay(_em, _qm, _al);
+
+        // ACT
+        _am.move(resource.id(), newParent.id());
+
+        // ASSERT
+        verify(_em, _qm, _al);
+        assertEquals(newParent, resource.parent());
+    }
+
+
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {

@@ -1,24 +1,22 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2008 Civic Computing Ltd
+ * Copyright (c) 2008 Civic Computing Ltd.
  * All rights reserved.
  *
  * Revision      $Rev$
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log
+ * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
 package ccc.contentcreator.client.dialogs;
 
-
-import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.ResourceTable;
 import ccc.contentcreator.client.Validate;
 import ccc.contentcreator.client.Validations;
 import ccc.contentcreator.client.Validator;
-import ccc.contentcreator.dto.AliasDTO;
 import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.ResourceDTO;
 
@@ -34,43 +32,43 @@ import com.extjs.gxt.ui.client.widget.layout.FormData;
 
 
 /**
- * Dialog for creating a new {@link Alias}.
+ * TODO: Add Description for this type.
  *
- * @author Civic Computing Ltd
+ * @author Civic Computing Ltd.
  */
-public class CreateAliasDialog extends AbstractEditDialog {
+public class MoveDialog extends AbstractEditDialog {
+
 
     private final TextField<String> _targetName = new TextField<String>();
-    private final TextField<String> _aliasName = new TextField<String>();
+
     private final TriggerField<String> _parentFolder =
         new TriggerField<String>();
 
     private final ResourceDTO _target;
     private FolderDTO _parent = null;
 
+    private final ResourceTable _rt;
+
     /**
      * Constructor.
      *
-     * @param item The ResourceDTO
+     * @param item The Resource item to move.
+     * @param rt ResourceTable to update.
      */
-    public CreateAliasDialog(final ResourceDTO item) {
-        super(Globals.uiConstants().createAlias());
+    public MoveDialog(final ResourceDTO item, final ResourceTable rt) {
+        super(Globals.uiConstants().move());
+        _rt = rt;
 
         _target = item;
         setLayout(new FitLayout());
 
-        _panel.setId("AliasPanel");
+        _panel.setId("MovePanel");
 
         _targetName.setFieldLabel(_constants.target());
         _targetName.setValue(item.getName());
         _targetName.setReadOnly(true);
         _targetName.disable();
         _panel.add(_targetName, new FormData("95%"));
-
-        _aliasName.setFieldLabel(_constants.name());
-        _aliasName.setAllowBlank(false);
-        _aliasName.setId("AliasName");
-        _panel.add(_aliasName, new FormData("95%"));
 
         _parentFolder.setFieldLabel(_constants.folder());
         _parentFolder.setValue("");
@@ -90,6 +88,7 @@ public class CreateAliasDialog extends AbstractEditDialog {
                     folderSelect.show();
                 }});
         _panel.add(_parentFolder, new FormData("95%"));
+
     }
 
     /** {@inheritDoc} */
@@ -97,8 +96,7 @@ public class CreateAliasDialog extends AbstractEditDialog {
     protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                Validate.callTo(createAlias())
-                    .check(Validations.notEmpty(_aliasName))
+                Validate.callTo(move())
                     .check(Validations.notEmpty(_parentFolder))
                     .stopIfInError()
                     .check(uniqueResourceName())
@@ -113,35 +111,36 @@ public class CreateAliasDialog extends AbstractEditDialog {
             public void validate(final Validate validate) {
                 Globals.resourceService().nameExistsInFolder(
                     _parent,
-                    _aliasName.getValue(),
+                    _targetName.getValue(),
                     new ErrorReportingCallback<Boolean>(){
                         public void onSuccess(final Boolean nameExists) {
                             if (nameExists) {
                                 validate.addMessage(
                                     "A resource with name '"
-                                    + _aliasName.getValue()
+                                    + _targetName.getValue()
                                     + "' already exists in this folder."
                                 );
                             }
                             validate.next();
                         }});
             }
-
         };
     }
 
-    private Runnable createAlias() {
+    private Runnable move() {
         return new Runnable() {
             public void run() {
-                Globals.resourceService().createAlias(
+                Globals.resourceService().move(
                     _parent,
-                    new AliasDTO(
-                        _aliasName.getValue(),
-                        _aliasName.getValue(),
-                        _target.getId(),
-                        ""),
-                    new DisposingCallback(CreateAliasDialog.this));
+                    _target.getId(),
+                    new ErrorReportingCallback<Void>() {
+                        public void onSuccess(final Void result) {
+                            _rt.refreshTable();
+                            hide();
+                        }
+                    });
             }
         };
     }
+
 }

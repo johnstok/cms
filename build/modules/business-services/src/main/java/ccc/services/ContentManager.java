@@ -119,4 +119,12 @@ interface ContentManager {
      * @param alias The Alias to be created.
      */
     void create(UUID folderId, Alias alias);
+
+    /**
+     * Move the resource.
+     *
+     * @param resource The resource to move.
+     * @param newParent The new parent for the resource.
+     */
+    void move(UUID resource, UUID newParent);
 }
