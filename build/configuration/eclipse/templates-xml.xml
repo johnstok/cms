@@ -14,7 +14,7 @@
     ========================================================================&#13;
 --&gt;&#13;
 &lt;/head&gt;&#13;
-&lt;body bgcolor="white"&gt;&#13;
+&lt;body&gt;&#13;
 &#13;
 ${cursor}Provide a one sentence summary...&#13;
 &#13;
