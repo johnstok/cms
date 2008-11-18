@@ -143,10 +143,21 @@ public abstract class CCCServlet extends HttpServlet {
             .forward(request, response);
     }
 
-    protected void writeFile(final HttpServletResponse response, final File f) throws IOException {
-    
+    /**
+     * Write the specified file to the response stream.
+     *
+     * @param response The response stream.
+     * @param f The file.
+     * @throws IOException Propagates IO exceptions from any of the streams in
+     * use.
+     *
+     * TODO: Should we close streams on exception???
+     */
+    protected void writeFile(final HttpServletResponse response,
+                             final File f) throws IOException {
+
         disableCachingFor(response);
-    
+
         response.setHeader(
             "Content-Disposition",
             "inline; filename=\""+f.name()+"\"");
@@ -159,7 +170,7 @@ public abstract class CCCServlet extends HttpServlet {
         response.setHeader(
             "Content-Length",
             String.valueOf(f.size()));
-    
+
         final ServletOutputStream os = response.getOutputStream();
         dataManager().retrieve(f.fileData(), os);
     }
