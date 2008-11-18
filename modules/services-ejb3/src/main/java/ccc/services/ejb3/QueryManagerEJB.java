@@ -128,6 +128,7 @@ public final class QueryManagerEJB implements QueryManagerLocal {
     }
 
     /** {@inheritDoc} */
+    @SuppressWarnings("unchecked") // JPA query API isn't type safe.
     @Override
     public <T> List<T> list(final String queryName,
                             final Class<T> resultType,

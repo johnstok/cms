@@ -89,9 +89,11 @@ public class QueryManagerEJBTest extends TestCase {
     public void testList() {
 
         // ARRANGE
+        final Long p1 = Long.valueOf(1L);
+        final Float p2 = Float.valueOf(2F);
         final Query q = createStrictMock(Query.class);
-        expect(q.setParameter(1, 1L)).andReturn(q);
-        expect(q.setParameter(2, 2F)).andReturn(q);
+        expect(q.setParameter(1, p1)).andReturn(q);
+        expect(q.setParameter(2, p2)).andReturn(q);
         expect(q.getResultList()).andReturn(new ArrayList<String>());
         replay(q);
 
@@ -102,7 +104,7 @@ public class QueryManagerEJBTest extends TestCase {
         final QueryManagerEJB qs = new QueryManagerEJB(em);
 
         // ACT
-        qs.list("queryName", Object.class, 1L, 2F);
+        qs.list("queryName", Object.class, p1, p2);
 
         // ASSERT
         verify(q, em);

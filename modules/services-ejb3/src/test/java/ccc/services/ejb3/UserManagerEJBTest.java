@@ -29,7 +29,7 @@ import ccc.domain.User;
 
 
 /**
- * TODO: Add Description for this type.
+ * Tests for the {@link UserManagerEJB} class.
  *
  * @author Civic Computing Ltd.
  */
