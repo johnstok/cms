@@ -98,7 +98,8 @@ public class LogEntry extends Entity {
 
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = Action.MOVE;
-        le._summary = "Moved resource to parent: "+resource.parent().id()+".";
+        le._summary = "Moved resource to parent: "
+            +resource.parent().absolutePath()+".";
         return le;
     }
 

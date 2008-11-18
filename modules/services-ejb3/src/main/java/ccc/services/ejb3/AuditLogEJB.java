@@ -109,4 +109,15 @@ public class AuditLogEJB
             LogEntry.forUpdate(resource, _um.loggedInUser(), new Date());
         _em.persist(le);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public void recordMove(final Resource resource) {
+        DBC.require().notNull(resource);
+        final LogEntry le =
+            LogEntry.forMove(resource, _um.loggedInUser(), new Date());
+        _em.persist(le);
+    }
+
+
 }

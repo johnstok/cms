@@ -19,6 +19,7 @@ import junit.framework.TestCase;
 
 import org.easymock.Capture;
 
+import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.User;
@@ -164,6 +165,37 @@ public class AuditLogEJBTest
         assertEquals(_actor, le.getValue().actor());
         assertEquals("Updated.", le.getValue().summary());
     }
+
+    /**
+     * Test.
+     */
+    public void testRecordMove() {
+
+        // ARRANGE
+        final Capture<LogEntry> le = new Capture<LogEntry>();
+        _em.persist(capture(le));
+        replay(_em);
+
+        expect(_um.loggedInUser()).andReturn(_actor);
+        replay(_um);
+
+        final AuditLogLocal al = new AuditLogEJB(_em, _um);
+        final Page p = new Page("foo");
+        final Folder f = new Folder("baz");
+        f.add(p);
+
+        // ACT
+        al.recordMove(p);
+
+        // ASSERT
+        verify(_em, _um);
+        assertEquals(LogEntry.Action.MOVE, le.getValue().action());
+        assertEquals(p.id(), le.getValue().subjectId());
+        assertEquals(_actor, le.getValue().actor());
+        assertEquals("Moved resource to parent: "+f.absolutePath()+".",
+            le.getValue().summary());
+    }
+
 
     /** {@inheritDoc} */
     @Override
