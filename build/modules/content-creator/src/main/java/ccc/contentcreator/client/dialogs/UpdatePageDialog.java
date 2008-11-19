@@ -16,9 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ccc.contentcreator.api.ResourceService;
-import ccc.contentcreator.api.ResourceServiceAsync;
-import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.EditPagePanel;
 import ccc.contentcreator.client.Globals;
@@ -40,6 +37,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
  * A dialog box for updating content.
+ * TODO: Extend AbstractEditDialog?
  *
  * @author Civic Computing Ltd
  */
@@ -47,15 +45,51 @@ public class UpdatePageDialog
     extends
         AbstractBaseDialog {
 
-    private final UIConstants _uiConstants = GWT.create(UIConstants.class);
-    private final ResourceServiceAsync _resourceService =
-        (ResourceServiceAsync) GWT.create(ResourceService.class);
-
     private final String _resourceId;
-    private EditPagePanel _panel = new EditPagePanel();
+    private final EditPagePanel _panel = new EditPagePanel();
     private PageDTO _page = null;
-
     private final ResourceTable _rt;
+
+    private final AsyncCallback<Void> _saveCompletedCallback =
+        new AsyncCallback<Void>() {
+            public void onFailure(final Throwable arg0) {
+                GWT.log("Page saving failed", arg0);
+            }
+            public void onSuccess(final Void arg0) {
+                rt().refreshTable();
+                hide();
+                //TODO: tree.fire_selection_event();
+            }
+        };
+
+      private final AsyncCallback<TemplateDTO> _lookupTemplateCallback =
+            new ErrorReportingCallback<TemplateDTO>() {
+
+            /** {@inheritDoc} */
+            public void onSuccess(final TemplateDTO template) {
+                if (template == null) {
+                    Globals.alert(constants().noTemplateFound());
+                    hide();
+                } else {
+                    panel().createFields(template.getDefinition());
+                    panel().populateFields(page());
+                    panel().layout(); // Refresh UI when callback is done
+                }
+            }
+        };
+
+       private final AsyncCallback<PageDTO> _lookupPageCallback =
+            new ErrorReportingCallback<PageDTO>() {
+
+            /** {@inheritDoc} */
+            public void onSuccess(final PageDTO page) {
+                page(page);
+                resourceService()
+                    .getTemplateForResource(page, lookupTemplateCallback());
+
+            }
+        };
+
 
     /**
      * Constructor.
@@ -70,22 +104,16 @@ public class UpdatePageDialog
         setLayout(new FitLayout());
 
         _resourceId = resourceId;
-        ensureDebugId("dialogBox");
         drawGUI();
     }
 
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param title
-     */
     private void drawGUI() {
 
         add(_panel);
 
         addButton(
             new Button(
-                _uiConstants.cancel(),
+                constants().cancel(),
                 new SelectionListener<ButtonEvent>() {
                     @Override
                     public void componentSelected(final ButtonEvent ce) {
@@ -96,54 +124,27 @@ public class UpdatePageDialog
 
         addButton(createSaveButton());
 
-        // load definition and paragraphs
-        final AsyncCallback<TemplateDTO> defCallback =
-            new ErrorReportingCallback<TemplateDTO>() {
-
-            /** {@inheritDoc} */
-            public void onSuccess(final TemplateDTO template) {
-                if (template == null) {
-                    Globals.alert(_uiConstants.noTemplateFound());
-                    hide();
-                } else {
-                    _panel.createFields(template.getDefinition());
-                    _panel.populateFields(_page);
-                    _panel.layout(); // Refresh UI when callback is done
-                }
-            }
-        };
-
-
-        final AsyncCallback<PageDTO> callback =
-            new ErrorReportingCallback<PageDTO>() {
-
-            /** {@inheritDoc} */
-            public void onSuccess(final PageDTO page) {
-                _page  = page;
-                _resourceService.getTemplateForResource(page, defCallback);
-
-            }
-        };
-        _resourceService.getResource(_resourceId, callback);
+        resourceService().getResource(_resourceId, _lookupPageCallback);
     }
 
     private Button createSaveButton() {
 
         final Button saveButton = new Button(
-            _uiConstants.save(),
+            constants().save(),
             new SelectionListener<ButtonEvent>() {
             @Override
             public void componentSelected(final ButtonEvent ce) {
 
-                    if (_panel.title().getValue() == null
-                        || _panel.title().getValue().trim().length() == 0) {
+                    if (panel().title().getValue() == null
+                        || panel().title().getValue().trim().length() == 0) {
                         return;
                     }
 
                     final Map<String, ParagraphDTO> paragraphs =
                         new HashMap<String, ParagraphDTO>();
 
-                    final List<Component> definitions =_panel.definitionItems();
+                    final List<Component> definitions =
+                        panel().definitionItems();
                     for (final Component c : definitions) {
                         if ("TEXT".equals(c.getData("type"))) {
                             final Field<String> f = (Field<String>) c;
@@ -158,26 +159,94 @@ public class UpdatePageDialog
                         }
                     }
 
-                    final AsyncCallback<Void> callback =
-                        new AsyncCallback<Void>() {
-                            public void onFailure(final Throwable arg0) {
-                                GWT.log("Page saving failed", arg0);
-                            }
-                            public void onSuccess(final Void arg0) {
-                                _rt.refreshTable();
-                                hide();
-                                //TODO: tree.fire_selection_event();
-                            }
-                        };
-
-                    _resourceService.saveContent(
-                        _resourceId,
-                        _panel.title().getValue(),
+                    resourceService().saveContent(
+                        resourceId(),
+                        panel().title().getValue(),
                         paragraphs,
-                        callback);
+                        saveCompletedCallback());
                 }
             });
         saveButton.setId("save");
         return saveButton;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the _resourceId.
+     */
+    protected String resourceId() {
+        return _resourceId;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the _rt.
+     */
+    public ResourceTable rt() {
+        return _rt;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the _page.
+     */
+    protected PageDTO page() {
+        return _page;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param page The _page to set.
+     */
+    protected void page(final PageDTO page) {
+        _page = page;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the _panel.
+     */
+    protected EditPagePanel panel() {
+        return _panel;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the _saveCompletedCallback.
+     */
+    protected AsyncCallback<Void> saveCompletedCallback() {
+        return _saveCompletedCallback;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the _lookupTemplateCallback.
+     */
+    protected AsyncCallback<TemplateDTO> lookupTemplateCallback() {
+        return _lookupTemplateCallback;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the _lookupPageCallback.
+     */
+    protected AsyncCallback<PageDTO> lookupPageCallback() {
+        return _lookupPageCallback;
     }
 }

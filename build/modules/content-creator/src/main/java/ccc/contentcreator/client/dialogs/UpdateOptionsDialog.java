@@ -14,7 +14,6 @@ package ccc.contentcreator.client.dialogs;
 
 import java.util.List;
 
-import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.dto.DTO;
@@ -25,7 +24,6 @@ import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
-import com.extjs.gxt.ui.client.widget.layout.FormData;
 
 
 /**
@@ -36,8 +34,6 @@ import com.extjs.gxt.ui.client.widget.layout.FormData;
  */
 public class UpdateOptionsDialog extends AbstractEditDialog {
 
-    private final ResourceServiceAsync _resourceService =
-        Globals.resourceService();
     private final ComboBox<TemplateDTO> _defaultTemplate =
         new ComboBox<TemplateDTO>();
     private final List<OptionDTO<? extends DTO>> _options;
@@ -54,25 +50,26 @@ public class UpdateOptionsDialog extends AbstractEditDialog {
     /**
      * Constructor.
      *
-     * @param options
+     * @param options A list of options to display on this panel.
      */
     public UpdateOptionsDialog(final List<OptionDTO<? extends DTO>> options) {
         super(Globals.uiConstants().options());
 
         _options = options;
 
-        _defaultTemplate.setFieldLabel(_constants.defaultTemplate());
-        _defaultTemplate.setTemplate("<tpl for=\".\"><div class=x-combo-list-item id={name}>{name}</div></tpl>");
+        // TODO: Refactor defaults for combo-box - esp' ID setting for Selenium.
+        _defaultTemplate.setFieldLabel(constants().defaultTemplate());
+        _defaultTemplate.setTemplate(
+            "<tpl for=\".\">"
+            + "<div class=x-combo-list-item id={name}>{name}</div>"
+            + "</tpl>");
         _defaultTemplate.setId("default-template");
         _defaultTemplate.setDisplayField("name");
         _defaultTemplate.setForceSelection(true);
         _defaultTemplate.setAllowBlank(false);
-        _panel.add(_defaultTemplate, new FormData("95%"));
+        addField(_defaultTemplate);
 
-     // TODO: Remove these set calls - set in super-class.
-        _panel.setId("UserPanel");
-        _save.setId("save");
-        _cancel.setId("cancel");
+        setPanelId("UserPanel");
 
         drawGUI();
     }
@@ -120,7 +117,7 @@ public class UpdateOptionsDialog extends AbstractEditDialog {
                         .setCurrentValue(selected);
                 }
 
-                _resourceService
+                resourceService()
                     .updateOptions(_options,
                                    new DisposingCallback(
                                        UpdateOptionsDialog.this

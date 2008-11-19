@@ -29,7 +29,6 @@ import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.form.CheckBoxGroup;
 import com.extjs.gxt.ui.client.widget.form.TextField;
-import com.extjs.gxt.ui.client.widget.layout.FormData;
 
 
 /**
@@ -62,65 +61,62 @@ public class EditUserDialog extends AbstractEditDialog {
         _userTable = userTable;
         _userDTO = userDTO;
 
-        _username.setFieldLabel(_constants.username());
+        _username.setFieldLabel(constants().username());
         _username.setAllowBlank(false);
-        _username.setId(_constants.username());
+        _username.setId(constants().username());
         _username.setValue(_userDTO.getUsername());
-        _panel.add(_username, new FormData("95%"));
+        addField(_username);
 
-        _email.setFieldLabel(_constants.email());
+        _email.setFieldLabel(constants().email());
         _email.setAllowBlank(false);
-        _email.setId(_constants.email());
+        _email.setId(constants().email());
         _email.setValue(_userDTO.getEmail());
-        _panel.add(_email, new FormData("95%"));
+        addField(_email);
 
         _password1.setPassword(true);
-        _password1.setFieldLabel(_constants.password());
-        _password1.setId(_constants.password());
-        _panel.add(_password1, new FormData("95%"));
+        _password1.setFieldLabel(constants().password());
+        _password1.setId(constants().password());
+        addField(_password1);
 
         _password2.setPassword(true);
-        _password2.setFieldLabel(_constants.confirmPassword());
-        _password2.setId(_constants.confirmPassword());
-        _panel.add(_password2, new FormData("95%"));
+        _password2.setFieldLabel(constants().confirmPassword());
+        _password2.setId(constants().confirmPassword());
+        addField(_password2);
 
         final Set<String> userRoles = _userDTO.getRoles();
 
         final CheckBox check1 = new CheckBox();
-        check1.setBoxLabel(_constants.contentCreator());
-        check1.setId(_constants.contentCreator());
+        check1.setBoxLabel(constants().contentCreator());
+        check1.setId(constants().contentCreator());
         check1.setData(ROLE , "CONTENT_CREATOR");
         if (userRoles.contains("CONTENT_CREATOR")) {
             check1.setValue(true);
         }
 
         final CheckBox check2 = new CheckBox();
-        check2.setBoxLabel(_constants.siteBuilder());
-        check2.setId(_constants.siteBuilder());
+        check2.setBoxLabel(constants().siteBuilder());
+        check2.setId(constants().siteBuilder());
         check2.setData(ROLE, "SITE_BUILDER");
         if (userRoles.contains("SITE_BUILDER")) {
             check2.setValue(true);
         }
 
         final CheckBox check3 = new CheckBox();
-        check3.setBoxLabel(_constants.administrator());
-        check3.setId(_constants.administrator());
+        check3.setBoxLabel(constants().administrator());
+        check3.setId(constants().administrator());
         check3.setData(ROLE, "ADMINISTRATOR");
         if (userRoles.contains("ADMINISTRATOR")) {
             check3.setValue(true);
         }
 
-        _checkGroup.setFieldLabel(_constants.roles());
-        _checkGroup.setId(_constants.roles());
+        _checkGroup.setFieldLabel(constants().roles());
+        _checkGroup.setId(constants().roles());
         _checkGroup.add(check1);
         _checkGroup.add(check2);
         _checkGroup.add(check3);
-        _panel.add(_checkGroup, new FormData("100%"));
+        addField(_checkGroup);
 
-     // TODO: Remove these set calls - set in super-class.
-        _panel.setId("UserPanel");
-        _save.setId("userSave");
-        _cancel.setId("userCancel");
+        setPanelId("UserPanel");
     }
 
     /** {@inheritDoc} */
@@ -229,7 +225,7 @@ public class EditUserDialog extends AbstractEditDialog {
             public void validate(final Validate validate) {
                 if (pw1 != null && pw2 != null && !pw1.equals(pw2)) {
                     validate.addMessage(
-                        _constants.passwordsDidNotMatch()
+                        constants().passwordsDidNotMatch()
                     );
                 }
                 validate.next();

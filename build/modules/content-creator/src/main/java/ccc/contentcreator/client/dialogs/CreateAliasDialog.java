@@ -55,24 +55,22 @@ public class CreateAliasDialog extends AbstractEditDialog {
      */
     public CreateAliasDialog(final ResourceDTO item) {
         super(Globals.uiConstants().createAlias());
+        setPanelId("AliasPanel");
 
         _target = item;
-        setLayout(new FitLayout());
 
-        _panel.setId("AliasPanel");
-
-        _targetName.setFieldLabel(_constants.target());
+        _targetName.setFieldLabel(constants().target());
         _targetName.setValue(item.getName());
         _targetName.setReadOnly(true);
         _targetName.disable();
-        _panel.add(_targetName, new FormData("95%"));
+        addField(_targetName);
 
-        _aliasName.setFieldLabel(_constants.name());
+        _aliasName.setFieldLabel(constants().name());
         _aliasName.setAllowBlank(false);
         _aliasName.setId("AliasName");
-        _panel.add(_aliasName, new FormData("95%"));
+        addField(_aliasName);
 
-        _parentFolder.setFieldLabel(_constants.folder());
+        _parentFolder.setFieldLabel(constants().folder());
         _parentFolder.setValue("");
         _parentFolder.setReadOnly(true);
         _parentFolder.addListener(
@@ -89,7 +87,7 @@ public class CreateAliasDialog extends AbstractEditDialog {
                         }});
                     folderSelect.show();
                 }});
-        _panel.add(_parentFolder, new FormData("95%"));
+        addField(_parentFolder);
     }
 
     /** {@inheritDoc} */

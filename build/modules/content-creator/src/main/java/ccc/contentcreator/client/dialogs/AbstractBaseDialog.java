@@ -12,14 +12,17 @@
 
 package ccc.contentcreator.client.dialogs;
 
+import ccc.contentcreator.api.ResourceService;
+import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.client.Globals;
 
 import com.extjs.gxt.ui.client.widget.Window;
+import com.google.gwt.core.client.GWT;
 
 
 /**
- * TODO: Add Description for this type.
+ * Base class for implementing dialogs.
  *
  * @author Civic Computing Ltd.
  */
@@ -28,7 +31,11 @@ public abstract class AbstractBaseDialog
         Window {
 
     /** _constants : UIConstants. */
-    protected final UIConstants _constants = Globals.uiConstants();
+    private final UIConstants _constants = Globals.uiConstants();
+
+    /** _resourceService : ResourceServiceAsync. */
+    private final ResourceServiceAsync _resourceService =
+        GWT.<ResourceServiceAsync>create(ResourceService.class);
 
 
     /**
@@ -56,4 +63,24 @@ public abstract class AbstractBaseDialog
     public static final float PERCENT_50 = .5f;
     /** PERCENT_70 : float. */
     public static final float PERCENT_70 = .7f;
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the _constants.
+     */
+    protected UIConstants constants() {
+        return _constants;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the _resourceService.
+     */
+    protected ResourceServiceAsync resourceService() {
+        return _resourceService;
+    }
 }
