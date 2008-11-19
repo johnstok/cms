@@ -35,7 +35,7 @@ public class JsonSerializer implements Serializer {
         if (null==value) {
             nil();
         } else {
-            value.toString();
+            string(value.toString());
         }
         comma();
     }
