@@ -48,6 +48,14 @@ public interface ResourceService extends RemoteService {
     FolderDTO getRoot(Root root);
 
     /**
+     * Retrieve a root folder.
+     *
+     * @param root The identifier for the root folder to retrieve.
+     * @return The root folder as a ResourceDTO.
+     */
+    ResourceDTO getRootAsResource(Root root);
+
+    /**
      * Get the resource located at the specified path.
      *
      * @param resourceId The UUID of the existing resource.
@@ -104,12 +112,12 @@ public interface ResourceService extends RemoteService {
     List<FolderDTO> getFolderChildren(FolderDTO folder);
 
     /**
-     * List all of the children of the specified parent folder.
+     * List all of the children of the specified parent resource.
      *
-     * @param folder The parent folder.
+     * @param resource The parent resource.
      * @return The list of children.
      */
-    List<ResourceDTO> getChildren(FolderDTO folder);
+    List<ResourceDTO> getChildren(ResourceDTO resource);
 
     /**
      * Create a folder with the specified name.
@@ -264,10 +272,18 @@ public interface ResourceService extends RemoteService {
     UserDTO loggedInUser();
 
     /**
-     * Changes resource's parent
+     * Changes resource's parent.
      *
      * @param folderDTO The new parent folder.
      * @param id The id of the resource.
      */
-    public void move(final FolderDTO folderDTO, final String id);
+    void move(final FolderDTO folderDTO, final String id);
+
+    /**
+     * Update alias' target.
+     *
+     * @param target The new target ResourceDTO
+     * @param aliasId The alias id
+     */
+    void updateAlias(ResourceDTO target, String aliasId);
 }

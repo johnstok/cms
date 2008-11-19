@@ -127,4 +127,12 @@ interface ContentManager {
      * @param newParent The new parent for the resource.
      */
     void move(UUID resource, UUID newParent);
+
+    /**
+     * Update alias' target.
+     *
+     * @param targetId The new target UUID
+     * @param aliasId The alias UUID
+     */
+    void updateAlias(UUID targetId, UUID aliasId);
 }

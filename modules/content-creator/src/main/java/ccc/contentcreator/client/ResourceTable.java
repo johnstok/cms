@@ -24,6 +24,7 @@ import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.dialogs.ChooseTemplateDialog;
 import ccc.contentcreator.client.dialogs.CreateAliasDialog;
+import ccc.contentcreator.client.dialogs.EditAliasDialog;
 import ccc.contentcreator.client.dialogs.EditTemplateDialog;
 import ccc.contentcreator.client.dialogs.MoveDialog;
 import ccc.contentcreator.client.dialogs.PreviewContentDialog;
@@ -192,6 +193,9 @@ public class ResourceTable extends ContentPanel {
                              (TemplateDTO) item, detailsStore()).show();
                      } else if ("PAGE".equals(item.getType())) {
                          new UpdatePageDialog(item.getId(), ResourceTable.this)
+                         .show();
+                     } else if ("ALIAS".equals(item.getType())) {
+                         new EditAliasDialog(item)
                          .show();
                      } else {
                         Globals.alert("No editor available for this resource.");
