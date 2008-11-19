@@ -195,7 +195,7 @@ public class ResourceTable extends ContentPanel {
                          new UpdatePageDialog(item.getId(), ResourceTable.this)
                          .show();
                      } else if ("ALIAS".equals(item.getType())) {
-                         new EditAliasDialog(item)
+                         new EditAliasDialog(item, ResourceTable.this)
                          .show();
                      } else {
                         Globals.alert("No editor available for this resource.");
