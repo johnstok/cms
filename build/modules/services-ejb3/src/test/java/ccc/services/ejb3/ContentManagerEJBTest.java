@@ -470,6 +470,29 @@ public final class ContentManagerEJBTest extends TestCase {
         assertEquals(newParent, resource.parent());
     }
 
+    /**
+     * Test.
+     */
+    public void testUpdateAlias() {
+
+        // ARRANGE
+        final Page resource = new Page(new ResourceName("foo"));
+        final Page r2 = new Page(new ResourceName("baa"));
+        final Alias alias = new Alias("alias", resource);
+
+        expect(_em.find(Resource.class, r2.id())).andReturn(r2);
+        expect(_em.find(Resource.class, alias.id())).andReturn(alias);
+        _al.recordUpdate(alias);
+        replay(_em, _qm, _al);
+
+        // ACT
+        _am.updateAlias(r2.id(), alias.id());
+
+        // ASSERT
+        verify(_em, _qm, _al);
+        assertEquals(r2, alias.target());
+    }
+
 
     /** {@inheritDoc} */
     @Override

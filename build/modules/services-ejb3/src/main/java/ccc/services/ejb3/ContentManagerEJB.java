@@ -267,4 +267,14 @@ public final class ContentManagerEJB
         newParent.add(resource);
         _audit.recordMove(resource);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateAlias(final UUID targetId, final UUID aliasId) {
+        final Resource target = lookup(targetId);
+        final Alias alias = lookup(aliasId).as(Alias.class);
+
+        alias.target(target);
+        _audit.recordUpdate(alias);
+    }
 }

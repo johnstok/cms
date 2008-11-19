@@ -42,7 +42,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  *
  * @author Civic Computing Ltd.
  */
-public class EnhancedResourceTree extends ResourceTree {
+public class EnhancedResourceTree extends FolderResourceTree {
 
     /** _view : LeftRightPane. */
     private LeftRightPane _view;

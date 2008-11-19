@@ -41,6 +41,11 @@ public interface ResourceServiceAsync {
     void getRoot(Root root, AsyncCallback<FolderDTO> callback);
 
     /**
+     * @see ResourceService#getRootAsResource(Root)
+     */
+    void getRootAsResource(Root root, AsyncCallback<ResourceDTO> callback);
+
+    /**
      * @see ResourceService#getResource(String)
      */
     void getResource(String resourceId,
@@ -83,9 +88,9 @@ public interface ResourceServiceAsync {
                            AsyncCallback<List<FolderDTO>> callback);
 
     /**
-     * @see ResourceService#getChildren(FolderDTO)
+     * @see ResourceService#getChildren(ResourceDTO)
      */
-    void getChildren(FolderDTO folder,
+    void getChildren(ResourceDTO resource,
                      AsyncCallback<List<ResourceDTO>> callback);
 
     /**
@@ -199,4 +204,11 @@ public interface ResourceServiceAsync {
      * @see ResourceService#move()
      */
     void move(FolderDTO folderDTO, String id, AsyncCallback callback);
+
+    /**
+     * @see ResourceService#updateAlias()
+     */
+    void updateAlias(ResourceDTO target,
+                     String aliasId,
+                     AsyncCallback callback);
 }

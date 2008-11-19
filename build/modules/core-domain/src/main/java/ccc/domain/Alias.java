@@ -62,9 +62,9 @@ public class Alias extends Resource {
     /**
      * Mutator for the target field.
      *
-     * @param target
+     * @param target The new target.
      */
-    private void target(final Resource target) {
+    public void target(final Resource target) {
         DBC.require().notNull(target);
         _target = target;
     }

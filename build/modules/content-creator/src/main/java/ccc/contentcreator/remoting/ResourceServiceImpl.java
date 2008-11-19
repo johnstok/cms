@@ -105,6 +105,27 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     }
 
     /**
+     * {@inheritDoc}
+     * TODO: Dodgy.
+     */
+    public ResourceDTO getRootAsResource(final Root root) {
+        switch (root) {
+            case CONTENT:
+                final Resource contentResource =
+                    contentManager().lookup(new ResourcePath("")).get();
+                return DTOs.dtoFrom(contentResource);
+
+            case ASSETS:
+                final Resource assetResource =
+                    assetManager().lookup(new ResourcePath(""));
+                return DTOs.dtoFrom(assetResource);
+
+            default:
+                throw new CCCException("Unable to look up root: "+root);
+        }
+    }
+
+    /**
      * Accessor for the content manager.
      *
      * @return A ContentManager.
@@ -236,13 +257,16 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     }
 
     /** {@inheritDoc} */
-    public List<ResourceDTO> getChildren(final FolderDTO folder) {
-        final Folder parent =
-            contentManager().lookup(UUID.fromString(folder.getId()))
-            .as(Folder.class);
+    public List<ResourceDTO> getChildren(final ResourceDTO resource) {
+
+        final Resource res =
+            contentManager().lookup(UUID.fromString(resource.getId()));
         final List<ResourceDTO> children = new ArrayList<ResourceDTO>();
-        for (final Resource r : parent.entries()) {
-            children.add(DTOs.<ResourceDTO>dtoFrom(r));
+        if (res.type() == ResourceType.FOLDER) {
+            final Folder parent = res.as(Folder.class);
+            for (final Resource r : parent.entries()) {
+                children.add(DTOs.<ResourceDTO>dtoFrom(r));
+            }
         }
         return children;
     }
@@ -458,6 +482,13 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
 
     /** {@inheritDoc} */
     public void move(final FolderDTO folderDTO, final String id) {
-        contentManager().move(UUID.fromString(id), UUID.fromString(folderDTO.getId()));
+        contentManager().move(UUID.fromString(id),
+            UUID.fromString(folderDTO.getId()));
+    }
+
+    /** {@inheritDoc} */
+    public void updateAlias(final ResourceDTO target, final String aliasId) {
+        contentManager().updateAlias(UUID.fromString(target.getId()),
+            UUID.fromString(aliasId));
     }
 }

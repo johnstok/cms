@@ -17,7 +17,7 @@ import java.util.List;
 import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.api.Root;
 import ccc.contentcreator.callbacks.OneItemListCallback;
-import ccc.contentcreator.dto.ResourceDTO;
+import ccc.contentcreator.dto.FolderDTO;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.binder.TreeBinder;
@@ -32,13 +32,13 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 /**
- * Renders a tree of resources.
+ * Renders a tree of folders.
  *
  * @author Civic Computing Ltd.
  */
-public class ResourceTree extends Tree {
+public class FolderResourceTree extends Tree {
 
-    private final TreeStore<ResourceDTO> _store;
+    private final TreeStore<FolderDTO> _store;
 
     /**
      * Constructor.
@@ -46,61 +46,50 @@ public class ResourceTree extends Tree {
      * @param rsa ResourceServiceAsync.
      * @param root The root of the tree.
      */
-    public ResourceTree(final ResourceServiceAsync rsa, final Root root) {
+    public FolderResourceTree(final ResourceServiceAsync rsa, final Root root) {
 
         setSelectionMode(SelectionMode.SINGLE);
         setStyleAttribute("background", "white");
 
 
-        final RpcProxy<ResourceDTO, List<ResourceDTO>> proxy =
-            new RpcProxy<ResourceDTO, List<ResourceDTO>>() {
+        final RpcProxy<FolderDTO, List<FolderDTO>> proxy =
+            new RpcProxy<FolderDTO, List<FolderDTO>>() {
             @Override
-            protected void load(final ResourceDTO loadConfig,
-                                final AsyncCallback<List<ResourceDTO>> callback) {
+            protected void load(final FolderDTO loadConfig,
+                                final AsyncCallback<List<FolderDTO>> callback) {
                 if (null == loadConfig) {
-                    rsa.getRootAsResource(root,
-                        new OneItemListCallback<ResourceDTO>(callback));
+                    rsa.getRoot(root,
+                        new OneItemListCallback<FolderDTO>(callback));
                 } else {
-                    rsa.getChildren(loadConfig, callback);
+                    rsa.getFolderChildren(loadConfig, callback);
                 }
             }
         };
 
-        final TreeLoader<ResourceDTO> loader =
-            new BaseTreeLoader<ResourceDTO>(proxy) {
+        final TreeLoader<FolderDTO> loader =
+            new BaseTreeLoader<FolderDTO>(proxy) {
             @Override
-            public boolean hasChildren(final ResourceDTO parent) {
-                if (parent.getType().equals("FOLDER")) {
-                    return true;
-                }
-                return false;
+            public boolean hasChildren(final FolderDTO parent) {
+                return parent.getFolderCount().intValue() > 0;
             }
         };
 
-        _store = new TreeStore<ResourceDTO>(loader);
+        _store = new TreeStore<FolderDTO>(loader);
 
 
-        final TreeBinder<ResourceDTO> binder =
-            new TreeBinder<ResourceDTO>(this, _store) {
+        final TreeBinder<FolderDTO> binder =
+            new TreeBinder<FolderDTO>(this, _store) {
             @Override
-            protected void update(final TreeItem item,
-                                  final ResourceDTO model) {
+            protected void update(final TreeItem item, final FolderDTO model) {
                 super.update(item, model);
                 item.setId(model.getName());
             }
         };
         binder.setCaching(false);
-        binder.setIconProvider(new ModelStringProvider<ResourceDTO>() {
-            public String getStringValue(final ResourceDTO model,
+        binder.setIconProvider(new ModelStringProvider<FolderDTO>() {
+            public String getStringValue(final FolderDTO model,
                                          final String property) {
-                if (model.getType().equals("FOLDER")) {
-                    return "images/gxt/icons/folder.gif";
-                } else if (model.getType().equals("PAGE")
-                        || model.getType().equals("ALIAS")) {
-                    return "images/gxt/icons/columns.gif"; // Replace with page
-                } else {
-                    return null;
-                }
+                return (null == model) ? null : "images/gxt/icons/folder.gif";
             }
         });
 
@@ -112,7 +101,7 @@ public class ResourceTree extends Tree {
      *
      * @return The internal store.
      */
-    public TreeStore<ResourceDTO> store() {
+    public TreeStore<FolderDTO> store() {
         return _store;
     }
 }

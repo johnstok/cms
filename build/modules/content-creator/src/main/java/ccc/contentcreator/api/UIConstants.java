@@ -465,4 +465,12 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Move")
     String move();
+
+    /**
+     * "Update Alias".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Create Alias")
+    String updateAlias();
 }
