@@ -13,7 +13,6 @@ package ccc.contentcreator.client.dialogs;
 
 import java.util.List;
 
-import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.dto.DTO;
@@ -25,7 +24,6 @@ import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
-import com.extjs.gxt.ui.client.widget.layout.FormData;
 
 
 /**
@@ -35,9 +33,6 @@ import com.extjs.gxt.ui.client.widget.layout.FormData;
  * @author Civic Computing Ltd
  */
 public class ChooseTemplateDialog extends AbstractEditDialog {
-
-    private final ResourceServiceAsync _resourceService =
-        Globals.resourceService();
 
     private final ResourceDTO                    _resource;
     private final List<OptionDTO<? extends DTO>> _options;
@@ -67,12 +62,12 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
         _options = options;
         _resource = resource;
 
-        _defaultTemplate.setFieldLabel(_constants.defaultTemplate());
+        _defaultTemplate.setFieldLabel(constants().defaultTemplate());
         _defaultTemplate.setTemplate("<tpl for=\".\"><div class=x-combo-list-item id={name}>{name}</div></tpl>");
         _defaultTemplate.setId("default-template");
         _defaultTemplate.setDisplayField("name");
         _defaultTemplate.setForceSelection(true);
-        _panel.add(_defaultTemplate, new FormData("100%"));
+        addField(_defaultTemplate);
 
         drawGUI();
     }
@@ -118,7 +113,7 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
                         .setCurrentValue(selected);
                 }
 
-                _resourceService
+                resourceService()
                     .updateResourceTemplate(
                         _options,
                         _resource,

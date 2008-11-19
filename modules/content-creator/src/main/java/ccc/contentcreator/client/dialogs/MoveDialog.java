@@ -28,7 +28,6 @@ import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.form.TriggerField;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
-import com.extjs.gxt.ui.client.widget.layout.FormData;
 
 
 /**
@@ -62,15 +61,15 @@ public class MoveDialog extends AbstractEditDialog {
         _target = item;
         setLayout(new FitLayout());
 
-        _panel.setId("MovePanel");
+        setPanelId("MovePanel");
 
-        _targetName.setFieldLabel(_constants.target());
+        _targetName.setFieldLabel(constants().target());
         _targetName.setValue(item.getName());
         _targetName.setReadOnly(true);
         _targetName.disable();
-        _panel.add(_targetName, new FormData("95%"));
+        addField(_targetName);
 
-        _parentFolder.setFieldLabel(_constants.folder());
+        _parentFolder.setFieldLabel(constants().folder());
         _parentFolder.setValue("");
         _parentFolder.setReadOnly(true);
         _parentFolder.addListener(
@@ -87,7 +86,7 @@ public class MoveDialog extends AbstractEditDialog {
                         }});
                     folderSelect.show();
                 }});
-        _panel.add(_parentFolder, new FormData("95%"));
+        addField(_parentFolder);
 
     }
 

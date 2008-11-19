@@ -22,7 +22,6 @@ import ccc.contentcreator.dto.UserDTO;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.TextField;
-import com.extjs.gxt.ui.client.widget.layout.FormData;
 
 
 /**
@@ -32,6 +31,7 @@ import com.extjs.gxt.ui.client.widget.layout.FormData;
  */
 public class CreateUserDialog extends AbstractEditDialog {
 
+    private static final int LABEL_WIDTH = 150;
     private final TextField<String> _username = new TextField<String>();
     private final TextField<String> _password1 = new TextField<String>();
     private final TextField<String> _password2 = new TextField<String>();
@@ -43,35 +43,32 @@ public class CreateUserDialog extends AbstractEditDialog {
     public CreateUserDialog() {
         super(Globals.uiConstants().createUser());
 
-        _panel.setLabelWidth(150); // Long labels, should fit to one line.
+        setLabelWidth(LABEL_WIDTH); // Long labels, should fit to one line.
 
-        _username.setFieldLabel(_constants.username());
+        _username.setFieldLabel(constants().username());
         _username.setAllowBlank(false);
-        _username.setId(_constants.username());
-        _panel.add(_username, new FormData("95%"));
+        _username.setId(constants().username());
+        addField(_username);
 
-        _email.setFieldLabel(_constants.email());
+        _email.setFieldLabel(constants().email());
         _email.setAllowBlank(false);
-        _email.setId(_constants.email());
-        _panel.add(_email, new FormData("95%"));
+        _email.setId(constants().email());
+        addField(_email);
 
         _password1.setPassword(true);
-        _password1.setFieldLabel(_constants.password());
+        _password1.setFieldLabel(constants().password());
         _password1.setAllowBlank(false);
-        _password1.setId(_constants.password());
-        _panel.add(_password1, new FormData("95%"));
+        _password1.setId(constants().password());
+        addField(_password1);
 
         _password2.setPassword(true);
-        _password2.setFieldLabel(_constants.confirmPassword());
+        _password2.setFieldLabel(constants().confirmPassword());
         _password2.setAllowBlank(false);
-        _password2.setId(_constants.confirmPassword());
-        _panel.add(_password2, new FormData("95%"));
+        _password2.setId(constants().confirmPassword());
+        addField(_password2);
 
 
-        // TODO: Remove these set calls - set in super-class.
-        _panel.setId("UserPanel");
-        _save.setId("userSave");
-        _cancel.setId("userCancel");
+        setPanelId("UserPanel");
     }
 
     /** {@inheritDoc} */
@@ -135,7 +132,7 @@ public class CreateUserDialog extends AbstractEditDialog {
             public void validate(final Validate validate) {
                 if (pw1 != null && pw2 != null && !pw1.equals(pw2)) {
                     validate.addMessage(
-                        _constants.passwordsDidNotMatch()
+                        constants().passwordsDidNotMatch()
                     );
                 }
                 validate.next();

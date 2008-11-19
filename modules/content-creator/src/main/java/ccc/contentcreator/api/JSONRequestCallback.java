@@ -49,7 +49,8 @@ final class JSONRequestCallback
                                    final Response response) {
         if (Response.SC_OK == response.getStatusCode()) {
             try {
-                _action.execute(JSONParser.parse(response.getText()));
+                final String responseText = response.getText();
+                _action.execute(JSONParser.parse(responseText));
             } catch (final JSONException e) {
                 throw new RuntimeException("Failed to parse response.", e);
             }

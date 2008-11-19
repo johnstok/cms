@@ -39,19 +39,19 @@ AbstractBaseDialog {
         new ArrayList<LayoutContainer>();
 
     private final Button _save = new Button(
-        _constants.save(),
+        constants().save(),
         saveAction());
 
     private final Button _next = new Button(
-        _constants.next(),
+        constants().next(),
         nextAction());
 
     private final Button _prev = new Button(
-        _constants.previous(),
+        constants().previous(),
         prevAction());
 
     private final Button _cancel = new Button(
-        _constants.cancel(),
+        constants().cancel(),
         new SelectionListener<ButtonEvent>() {
             @Override
             public void componentSelected(final ButtonEvent ce) {
