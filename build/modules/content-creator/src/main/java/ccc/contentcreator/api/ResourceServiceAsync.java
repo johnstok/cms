@@ -203,12 +203,12 @@ public interface ResourceServiceAsync {
     /**
      * @see ResourceService#move()
      */
-    void move(FolderDTO folderDTO, String id, AsyncCallback callback);
+    void move(FolderDTO folderDTO, String id, AsyncCallback<Void> callback);
 
     /**
      * @see ResourceService#updateAlias()
      */
     void updateAlias(ResourceDTO target,
                      String aliasId,
-                     AsyncCallback callback);
+                     AsyncCallback<Void> callback);
 }

@@ -12,10 +12,12 @@
 package ccc.contentcreator.client.dialogs;
 
 
-import ccc.contentcreator.callbacks.DisposingCallback;
+import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.ResourceTable;
 import ccc.contentcreator.client.Validate;
 import ccc.contentcreator.client.Validations;
+import ccc.contentcreator.dto.AliasDTO;
 import ccc.contentcreator.dto.ResourceDTO;
 
 import com.extjs.gxt.ui.client.Events;
@@ -39,16 +41,19 @@ public class EditAliasDialog extends AbstractEditDialog {
         new TriggerField<String>();
 
     private ResourceDTO _target = null;
-    private ResourceDTO _alias = null;
+    private AliasDTO _alias = null;
+    private final ResourceTable _rt;
 
     /**
      * Constructor.
      *
      * @param item The ResourceDTO
+     * @param rt The resourceTable to refresh
      */
-    public EditAliasDialog(final ResourceDTO item) {
+    public EditAliasDialog(final ResourceDTO item, final ResourceTable rt) {
         super(Globals.uiConstants().updateAlias());
-        _alias = item;
+        _rt = rt;
+        _alias = (AliasDTO) item;
         setLayout(new FitLayout());
 
         setPanelId("AliasPanel");
@@ -62,6 +67,7 @@ public class EditAliasDialog extends AbstractEditDialog {
 
         _targetName.setFieldLabel(constants().target());
         _targetName.setValue("");
+        _targetName.setId(constants().target());
         _targetName.setReadOnly(true);
         _targetName.addListener(
             Events.TriggerClick,
@@ -78,6 +84,15 @@ public class EditAliasDialog extends AbstractEditDialog {
                     resourceSelect.show();
                 }});
         addField(_targetName);
+
+        resourceService().getResource(
+            _alias.getTargetId(), new ErrorReportingCallback<ResourceDTO>() {
+
+                public void onSuccess(final ResourceDTO result) {
+                    _targetName.setValue(result.getName());
+                }
+
+            });
     }
 
     /** {@inheritDoc} */
@@ -101,7 +116,12 @@ public class EditAliasDialog extends AbstractEditDialog {
                 Globals.resourceService().updateAlias(
                     _target,
                     _alias.getId(),
-                    new DisposingCallback(EditAliasDialog.this));
+                    new ErrorReportingCallback<Void>(){
+                        public void onSuccess(final Void result) {
+                            _rt.refreshTable();
+                            hide();
+                        }
+                    });
             }
         };
     }
