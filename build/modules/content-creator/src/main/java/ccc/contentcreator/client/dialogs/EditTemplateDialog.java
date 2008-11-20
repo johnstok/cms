@@ -190,6 +190,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                 Validate.callTo(createTemplates())
                     .check(Validations.notEmpty(_definition))
                     .check(Validations.notEmpty(_name))
+                    .check(Validations.notValidResourceName(_name))
                     .check(Validations.notEmpty(_templateTitle))
                     .check(Validations.notEmpty(_body))
                     .stopIfInError()

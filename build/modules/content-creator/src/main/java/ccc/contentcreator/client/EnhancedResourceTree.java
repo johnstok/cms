@@ -15,22 +15,17 @@ import java.util.List;
 
 import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.api.Root;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
+import ccc.contentcreator.client.dialogs.CreateFolderDialog;
 import ccc.contentcreator.client.dialogs.CreatePageDialog;
 import ccc.contentcreator.client.dialogs.UploadFileDialog;
 import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.TemplateDTO;
 
 import com.extjs.gxt.ui.client.Events;
-import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.event.TreeEvent;
-import com.extjs.gxt.ui.client.widget.Dialog;
-import com.extjs.gxt.ui.client.widget.button.Button;
-import com.extjs.gxt.ui.client.widget.form.TextField;
-import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
 import com.google.gwt.user.client.Window;
@@ -105,49 +100,13 @@ public class EnhancedResourceTree extends FolderResourceTree {
         createFolder.addSelectionListener(new SelectionListener<MenuEvent>() {
 
             @Override public void componentSelected(final MenuEvent me) {
-
                 final FolderDTO item = (FolderDTO) getSelectionModel()
                 .getSelectedItem()
                 .getModel();
 
-                final Dialog complex = new Dialog();
-                complex.setId("create-folder-dialog");
-                complex.setAutoHeight(true);
-                complex.setWidth(400);
-                complex.setHeading("Create folder");
-                complex.setHideOnButtonClick(true);
-                complex.setLayout(new FormLayout());
-
-                final TextField<String> text = new TextField<String>();
-                text.setId("folder-name");
-                text.setFieldLabel("Name");
-                text.setEmptyText("The folder name");
-                text.setAllowBlank(false);
-                complex.add(text);
-
-                complex.setButtons(Dialog.CANCEL);
-                final Button ok =
-                    new Button(
-                        "Ok",
-                        new SelectionListener<ComponentEvent>() {
-                            @Override
-                            public void componentSelected(final ComponentEvent ce) {
-                                rsa.createFolder(
-                                    item,
-                                    text.getValue(),
-                                    new ErrorReportingCallback<FolderDTO>(){
-                                        public void onSuccess(final FolderDTO result) {
-                                            fireEvent(Events.SelectionChange);
-                                            store().add((FolderDTO) getSelectedItem().getModel(), result, false);
-                                        }
-                                    }
-                                );
-                            }
-                        });
-                ok.setId("create-folder-ok");
-                complex.getButtonBar().add(ok);
-
-                complex.show();
+                final CreateFolderDialog dialog =
+                    new CreateFolderDialog(item, store());
+                dialog.show();
             }
         });
         contextMenu.add(createFolder);

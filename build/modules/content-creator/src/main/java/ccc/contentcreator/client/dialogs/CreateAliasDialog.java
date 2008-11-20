@@ -13,11 +13,9 @@ package ccc.contentcreator.client.dialogs;
 
 
 import ccc.contentcreator.callbacks.DisposingCallback;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.Validate;
 import ccc.contentcreator.client.Validations;
-import ccc.contentcreator.client.Validator;
 import ccc.contentcreator.dto.AliasDTO;
 import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.ResourceDTO;
@@ -96,33 +94,11 @@ public class CreateAliasDialog extends AbstractEditDialog {
                 Validate.callTo(createAlias())
                     .check(Validations.notEmpty(_aliasName))
                     .check(Validations.notEmpty(_parentFolder))
+                    .check(Validations.notValidResourceName(_aliasName))
                     .stopIfInError()
-                    .check(uniqueResourceName())
+                    .check(Validations.uniqueResourceName(_parent, _aliasName))
                     .callMethodOr(Validations.reportErrors());
             }
-        };
-    }
-
-    private Validator uniqueResourceName() {
-
-        return new Validator() {
-            public void validate(final Validate validate) {
-                Globals.resourceService().nameExistsInFolder(
-                    _parent,
-                    _aliasName.getValue(),
-                    new ErrorReportingCallback<Boolean>(){
-                        public void onSuccess(final Boolean nameExists) {
-                            if (nameExists) {
-                                validate.addMessage(
-                                    "A resource with name '"
-                                    + _aliasName.getValue()
-                                    + "' already exists in this folder."
-                                );
-                            }
-                            validate.next();
-                        }});
-            }
-
         };
     }
 

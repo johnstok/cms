@@ -24,7 +24,6 @@ import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.ResourceTable;
 import ccc.contentcreator.client.Validate;
 import ccc.contentcreator.client.Validations;
-import ccc.contentcreator.client.Validator;
 import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.PageDTO;
 import ccc.contentcreator.dto.ParagraphDTO;
@@ -45,7 +44,6 @@ import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.Field;
-import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
@@ -250,35 +248,13 @@ public class CreatePageDialog
             @Override public void componentSelected(final ButtonEvent ce) {
                 Validate.callTo(createPage())
                     .check(Validations.notEmpty(_second.name()))
+                    .check(Validations.notValidResourceName(_second.name()))
                     .check(Validations.notEmpty(_second.title()))
                     .stopIfInError()
-                    .check(uniqueResourceName(_parent, _second.name()))
+                    .check(Validations.uniqueResourceName(
+                        _parent, _second.name()))
                     .callMethodOr(Validations.reportErrors());
             }
-        };
-    }
-
-    private Validator uniqueResourceName(final FolderDTO folder,
-                                         final TextField<String> name) {
-
-        return new Validator() {
-            public void validate(final Validate validate) {
-                Globals.resourceService().nameExistsInFolder(
-                    folder,
-                    name.getValue(),
-                    new ErrorReportingCallback<Boolean>(){
-                        public void onSuccess(final Boolean nameExists) {
-                            if (nameExists) {
-                                validate.addMessage(
-                                    "A resource with name '"
-                                    + name.getValue()
-                                    + "' already exists in this folder."
-                                );
-                            }
-                            validate.next();
-                        }});
-            }
-
         };
     }
 
