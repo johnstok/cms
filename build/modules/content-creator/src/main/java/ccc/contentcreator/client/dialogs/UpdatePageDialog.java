@@ -57,8 +57,7 @@ public class UpdatePageDialog
             }
             public void onSuccess(final Void arg0) {
                 rt().refreshTable();
-                hide();
-                //TODO: tree.fire_selection_event();
+                close();
             }
         };
 
@@ -69,7 +68,7 @@ public class UpdatePageDialog
             public void onSuccess(final TemplateDTO template) {
                 if (template == null) {
                     Globals.alert(constants().noTemplateFound());
-                    hide();
+                    close();
                 } else {
                     panel().createFields(template.getDefinition());
                     panel().populateFields(page());
@@ -117,7 +116,7 @@ public class UpdatePageDialog
                 new SelectionListener<ButtonEvent>() {
                     @Override
                     public void componentSelected(final ButtonEvent ce) {
-                        hide();
+                        close();
                     }
                 }
             ));

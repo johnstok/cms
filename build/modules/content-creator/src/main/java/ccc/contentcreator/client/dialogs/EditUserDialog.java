@@ -166,7 +166,7 @@ public class EditUserDialog extends AbstractEditDialog {
                     new ErrorReportingCallback<Void>() {
                         public void onSuccess(final Void result) {
                             _userTable.refreshUsers();
-                            hide();
+                            close();
                         }
                     }
                 );

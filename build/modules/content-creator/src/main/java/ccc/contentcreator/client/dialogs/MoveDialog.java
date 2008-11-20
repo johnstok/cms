@@ -112,7 +112,7 @@ public class MoveDialog extends AbstractEditDialog {
                     new ErrorReportingCallback<Void>() {
                         public void onSuccess(final Void result) {
                             _rt.refreshTable();
-                            hide();
+                            close();
                         }
                     });
             }
