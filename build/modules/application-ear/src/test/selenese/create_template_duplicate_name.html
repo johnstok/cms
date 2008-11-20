@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>create_template_duplicate_name</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">create_template_duplicate_name</td></tr>
+</thead><tbody>
+<tr>
+	<td>setSpeed</td>
+	<td>2000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/creator/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>ContentCreator</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//table[@id='assets-menu']/tbody/tr/td[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>create-template-menu-item</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Name</td>
+	<td>foo</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Title</td>
+	<td>bar</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Description</td>
+	<td>baz</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>next</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>content xml</td>
+	<td>&lt;fields/&gt;</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>next</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Body</td>
+	<td>Testing 'update-template'.</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertAlert</td>
+	<td>[A template with name 'foo' already exists in this folder.]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>cancel</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
