@@ -158,7 +158,7 @@ public class CreateUserDialog extends AbstractEditDialog {
                     new ErrorReportingCallback<Void>() {
                         public void onSuccess(final Void result) {
                             // TODO: Refresh the main window.
-                            hide();
+                            close();
                         }
                     }
                 );

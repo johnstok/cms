@@ -23,6 +23,6 @@ public final class DisposingCallback extends ErrorReportingCallback<Void> {
 
     /** {@inheritDoc} */
     public void onSuccess(final Void arg0) {
-        _window.hide();
+        _window.close();
     }
 }

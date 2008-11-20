@@ -250,7 +250,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                                         _model.set("definition",
                                             dto.getDefinition());
                                         _store.update(_model);
-                                        hide();
+                                        close();
                                     }});
                             break;
                         default:

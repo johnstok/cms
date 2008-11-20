@@ -55,7 +55,7 @@ AbstractBaseDialog {
         new SelectionListener<ButtonEvent>() {
             @Override
             public void componentSelected(final ButtonEvent ce) {
-                hide();
+                close();
             }
         });
 
