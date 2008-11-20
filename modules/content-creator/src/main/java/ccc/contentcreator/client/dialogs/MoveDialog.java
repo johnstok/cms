@@ -16,7 +16,6 @@ import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.ResourceTable;
 import ccc.contentcreator.client.Validate;
 import ccc.contentcreator.client.Validations;
-import ccc.contentcreator.client.Validator;
 import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.ResourceDTO;
 
@@ -98,30 +97,8 @@ public class MoveDialog extends AbstractEditDialog {
                 Validate.callTo(move())
                     .check(Validations.notEmpty(_parentFolder))
                     .stopIfInError()
-                    .check(uniqueResourceName())
+                    .check(Validations.uniqueResourceName(_parent, _targetName))
                     .callMethodOr(Validations.reportErrors());
-            }
-        };
-    }
-
-    private Validator uniqueResourceName() {
-
-        return new Validator() {
-            public void validate(final Validate validate) {
-                Globals.resourceService().nameExistsInFolder(
-                    _parent,
-                    _targetName.getValue(),
-                    new ErrorReportingCallback<Boolean>(){
-                        public void onSuccess(final Boolean nameExists) {
-                            if (nameExists) {
-                                validate.addMessage(
-                                    "A resource with name '"
-                                    + _targetName.getValue()
-                                    + "' already exists in this folder."
-                                );
-                            }
-                            validate.next();
-                        }});
             }
         };
     }
