@@ -137,5 +137,6 @@ public final class Globals {
     public static final int DEFAULT_HEIGHT = 480;
     /** APP_URL : String. */
     public static final String APP_URL = "creator/";
+    /** API_URL : String. */
     public static final String API_URL = "api/";
 }
