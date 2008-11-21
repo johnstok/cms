@@ -42,10 +42,10 @@ public class Validations {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Validates that name is not empty.
      *
-     * @param name
-     * @return
+     * @param name The string to validate.
+     * @return The Validator
      */
     public static Validator notEmpty(final TextField<String> name) {
         return new Validator() {
@@ -63,10 +63,10 @@ public class Validations {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Validates resource name. Fails if name contains spaces etc.
      *
-     * @param name
-     * @return
+     * @param name Resource name
+     * @return The Validator
      */
     public static Validator notValidResourceName(final TextField<String> name) {
         return new Validator() {
@@ -83,6 +83,13 @@ public class Validations {
     }
 
 
+    /**
+     * Checks that the folder does not contain given resource name.
+     *
+     * @param folder FolderDTO to check
+     * @param name Resource name
+     * @return The Validator
+     */
     public static Validator uniqueResourceName(final FolderDTO folder,
                                          final TextField<String> name) {
 

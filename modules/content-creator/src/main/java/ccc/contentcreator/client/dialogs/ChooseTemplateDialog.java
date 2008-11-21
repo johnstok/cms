@@ -63,7 +63,8 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
         _resource = resource;
 
         _defaultTemplate.setFieldLabel(constants().defaultTemplate());
-        _defaultTemplate.setTemplate("<tpl for=\".\"><div class=x-combo-list-item id={name}>{name}</div></tpl>");
+        _defaultTemplate.setTemplate("<tpl for=\".\">"
+            +"<div class=x-combo-list-item id={name}>{name}</div></tpl>");
         _defaultTemplate.setId("default-template");
         _defaultTemplate.setDisplayField("name");
         _defaultTemplate.setForceSelection(true);
