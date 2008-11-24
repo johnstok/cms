@@ -14,6 +14,7 @@ package ccc.domain;
 
 import static java.util.Collections.*;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -171,34 +172,32 @@ public final class Folder extends Resource {
         }
         return count;
     }
-//  /**
-//  * TODO: Add a description of this method.
-//  *
-//  * @param rootFolder
-//  */
-// private static void prettyPrint(Folder rootFolder) {
-//     int indent = 0;
-//     System.out.println(rootFolder.name());
-//     prettyPrint(rootFolder.entries(), indent+2);
-// }
-//
-// /**
-//  * TODO: Add a description of this method.
-//  *
-//  * @param entries
-//  * @param i
-//  */
-// private static void prettyPrint(List<Resource> entries, int i) {
-//     for (Resource entry : entries) {
-//         for (int a=0 ; a < i ; a++) {
-//             System.out.print(" ");
-//         }
-//         System.out.println(entry.name());
-//         if (entry.type() == ResourceType.FOLDER) {
-//             prettyPrint(entry.asFolder().entries(), i+2);
-//         }
-//     }
-// }
+
+    /**
+     * Pretty print this folder to the specified print writer.
+     *
+     * @param pw The writer to print to.
+     */
+    public void prettyPrint(final PrintWriter pw) {
+        final int indent = 0;
+        pw.println(name());
+        prettyPrint(entries(), pw, indent + 2);
+    }
+
+    private void prettyPrint(final List<Resource> entries,
+                             final PrintWriter pw,
+                             final int indent) {
+
+        for (final Resource entry : entries) {
+            for (int i = 0; i < indent; i++) { // TODO: Move to commons.
+                pw.print(" ");
+            }
+            pw.println(entry.name());
+            if (entry.type() == ResourceType.FOLDER) {
+                prettyPrint(entry.as(Folder.class).entries(), pw, indent + 2);
+            }
+        }
+    }
 
     /**
      * Query whether this folder has an entry with the specified name.

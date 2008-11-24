@@ -125,6 +125,7 @@ public final class DBC {
 
     /**
      * Assert that the specified string matches with given regular expression.
+     * TODO: Add stringToTest in exception message.
      *
      * @param regex The regular expression.
      * @param stringToTest The string to test.

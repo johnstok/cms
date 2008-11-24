@@ -14,7 +14,8 @@ package ccc.domain;
 
 import java.io.Serializable;
 import java.util.UUID;
-import java.util.regex.Pattern;
+
+import ccc.commons.DBC;
 
 
 /**
@@ -29,11 +30,16 @@ import java.util.regex.Pattern;
  */
 public final class ResourceName implements Serializable {
 
+    /** ESCAPE_CHARACTER : String. */
+    private static final String ESCAPE_CHARACTER = "_";
+
+    /** INVALID_CHARACTERS : String. */
+    private static final String INVALID_CHARACTERS = "[^\\.\\w]";
+
     /** VALID_CHARACTERS : String. */
     public static final String  VALID_CHARACTERS = "[\\.\\w]+";
 
     private String _representation = escapeString(UUID.randomUUID().toString());
-    private final Pattern _validRegex = Pattern.compile(VALID_CHARACTERS);
 
     /**
      * Constructor.
@@ -44,27 +50,14 @@ public final class ResourceName implements Serializable {
 
     /**
      * Constructor.
-     * TODO: Use DBC class.
      *
      * @param stringRepresentation
      *  The representation of this name - as a string.
      */
     public ResourceName(final String stringRepresentation) {
 
-        if (null == stringRepresentation) {
-            throw new RuntimeException("A resource name may not be NULL.");
-        }
-        if (stringRepresentation.length() < 1) {
-            throw new RuntimeException(
-                "A resource name must be longer than zero characters.");
-        }
-        if (!_validRegex.matcher(stringRepresentation).matches()) {
-            throw new RuntimeException(
-                stringRepresentation
-                + " does not match the java.util.regex pattern '"
-                + VALID_CHARACTERS + "'.");
-        }
-
+        DBC.require().notEmpty(stringRepresentation);
+        DBC.require().toMatch(VALID_CHARACTERS, stringRepresentation);
         _representation = stringRepresentation;
     }
 
@@ -122,6 +115,7 @@ public final class ResourceName implements Serializable {
     }
 
     private static String escapeString(final String invalidCharacters) {
-        return invalidCharacters.replaceAll("[^\\.\\w]", "_");
+        return invalidCharacters.replaceAll(INVALID_CHARACTERS,
+                                            ESCAPE_CHARACTER);
     }
 }

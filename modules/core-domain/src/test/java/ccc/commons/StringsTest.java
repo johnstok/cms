@@ -15,7 +15,7 @@ import junit.framework.TestCase;
 
 
 /**
- * TODO: Add Description for this type.
+ * Tests for the {@link Strings} class.
  *
  * @author Civic Computing Ltd.
  */

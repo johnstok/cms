@@ -19,7 +19,7 @@ import junit.framework.TestCase;
 
 
 /**
- * TODO Add Description for this type.
+ * Tests for the {@link IO} class.
  *
  * @author Civic Computing Ltd.
  */
