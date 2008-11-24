@@ -12,7 +12,6 @@
 
 package ccc.domain;
 
-import static ccc.domain.ResourceName.*;
 import junit.framework.TestCase;
 
 /**
@@ -63,11 +62,11 @@ public final class ResourceNameTest extends TestCase {
         try {
             new ResourceName(zeroLength);
             fail("ResourceName failed to reject a zero length string.");
-        } catch (final RuntimeException e) {
+        } catch (final IllegalArgumentException e) {
 
             // ASSERT
             assertEquals(
-                "A resource name must be longer than zero characters.",
+                "Specified string must have length > 0.",
                 e.getMessage());
         }
     }
@@ -81,10 +80,10 @@ public final class ResourceNameTest extends TestCase {
         try {
             new ResourceName(null);
             fail("ResourceName failed to reject a NULL string.");
-        } catch (final RuntimeException e) {
+        } catch (final IllegalArgumentException e) {
 
             // ASSERT
-            assertEquals("A resource name may not be NULL.", e.getMessage());
+            assertEquals("Specified value may not be NULL.", e.getMessage());
         }
     }
 
@@ -115,12 +114,11 @@ public final class ResourceNameTest extends TestCase {
         try {
             new ResourceName(whitespace);
             fail("ResourceName failed to reject whitespace.");
-        } catch (final RuntimeException e) {
+        } catch (final IllegalArgumentException e) {
 
             // ASSERT
             assertEquals(
-                "  does not match the java.util.regex pattern '"
-                    + VALID_CHARACTERS+"'.",
+                "Specified string must have length > 0.",
                 e.getMessage());
         }
     }
@@ -141,8 +139,7 @@ public final class ResourceNameTest extends TestCase {
 
             // ASSERT
             assertEquals(
-                "~ does not match the java.util.regex pattern '"
-                    + VALID_CHARACTERS+"'.",
+                "Specified string does not match [\\.\\w]+",
                 e.getMessage());
         }
     }
@@ -163,8 +160,7 @@ public final class ResourceNameTest extends TestCase {
 
             // ASSERT
             assertEquals(
-                "- does not match the java.util.regex pattern '"
-                    + VALID_CHARACTERS+"'.",
+                "Specified string does not match [\\.\\w]+",
                 e.getMessage());
         }
     }
@@ -185,8 +181,7 @@ public final class ResourceNameTest extends TestCase {
 
             // ASSERT
             assertEquals(
-                "\\ does not match the java.util.regex pattern '"
-                    + VALID_CHARACTERS+"'.",
+                "Specified string does not match [\\.\\w]+",
                 e.getMessage());
         }
     }
@@ -211,9 +206,7 @@ public final class ResourceNameTest extends TestCase {
 
                 // ASSERT
                 assertEquals(
-                    reservedChar
-                        + " does not match the java.util.regex pattern '"
-                    + VALID_CHARACTERS+"'.",
+                    "Specified string does not match [\\.\\w]+",
                     e.getMessage());
             }
         }
