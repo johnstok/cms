@@ -126,9 +126,9 @@ public class EditUserDialog extends AbstractEditDialog {
                 Validate.callTo(updateUser())
                     .check(notEmpty(_username))
                     .check(notEmpty(_email))
-                    // TODO: email format
-                    // TODO: username format
                     .stopIfInError()
+                    .check(notValidResourceName(_username))
+                    .check(notValidEmail(_email))
                     .check(matchingPasswords(
                         _password1.getValue(), _password2.getValue()))
                     .check(uniqueUsername(_userDTO, _username.getValue()))

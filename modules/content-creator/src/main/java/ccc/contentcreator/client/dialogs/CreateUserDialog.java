@@ -80,8 +80,9 @@ public class CreateUserDialog extends AbstractEditDialog {
                     .check(notEmpty(_email))
                     .check(notEmpty(_password1))
                     .check(notEmpty(_password2))
-                    // TODO: email format
                     .stopIfInError()
+                    .check(notValidResourceName(_username))
+                    .check(notValidEmail(_email))
                     .check(matchingPasswords(
                         _password1.getValue(), _password2.getValue()))
                     .check(uniqueUsername(_username.getValue()))

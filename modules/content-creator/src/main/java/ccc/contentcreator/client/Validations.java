@@ -28,6 +28,11 @@ public class Validations {
 
     private static final String  VALID_CHARACTERS = "[\\.\\w]+";
 
+    private static final String VALID_EMAIL =
+        "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*"
+        + "@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*"
+        +"[a-z0-9])?";
+
     /**
      * TODO: Add a description of this method.
      *
@@ -82,7 +87,6 @@ public class Validations {
         };
     }
 
-
     /**
      * Checks that the folder does not contain given resource name.
      *
@@ -113,4 +117,23 @@ public class Validations {
         };
     }
 
+    /**
+     * Validates email.
+     *
+     * @param email The email
+     * @return The Validator
+     */
+    public static Validator notValidEmail(final TextField<String> email) {
+        return new Validator() {
+            public void validate(final Validate validate) {
+                if(!email.getValue().matches(VALID_EMAIL)) {
+                    validate.addMessage(
+                        email.getFieldLabel()
+                        + " is not valid" // i18n
+                    );
+                }
+                validate.next();
+            }
+        };
+    }
 }
