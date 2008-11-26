@@ -46,6 +46,16 @@
             insert="false"
             update="false"
         />
+
+        <list name="_tags">
+            <key column="_id" />
+            <list-index column="_index" />
+            <element
+                column="_tag"
+                type="string"
+                not-null="true"
+                unique="false" />
+        </list>
         
 	</class>
     
