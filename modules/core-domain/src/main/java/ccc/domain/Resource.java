@@ -13,11 +13,18 @@
 package ccc.domain;
 
 import static ccc.commons.DBC.*;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import ccc.commons.DBC;
 import ccc.commons.serialisation.Serializer;
 
 /**
  * An abstract superclass that contains shared behaviour for the different types
  * of CCC resource.
+ * TODO: Should _tags be a linked hash set?
  *
  * @author Civic Computing Ltd
  */
@@ -30,6 +37,7 @@ public abstract class Resource extends VersionedEntity {
     private Template     _template = null;
     private Folder       _parent   = null;
     private User         _lockedBy = null;
+    private List<String> _tags     = new ArrayList<String>();
 
     /** Constructor: for persistence only. */
     protected Resource() { super(); }
@@ -244,6 +252,55 @@ public abstract class Resource extends VersionedEntity {
         || user.hasRole(CreatorRoles.ADMINISTRATOR);
     }
 
+    /**
+     * Set the tags for this resource.
+     *
+     * @param tagString A string of comma separated values that represents the
+     *  tags for this resource.
+     */
+    public void tags(final String tagString) {
+        DBC.require().notNull(tagString);
+
+        final String[] tagArray = tagString.split(",");
+        _tags.clear();
+        for(final String tag : tagArray) {
+            if (tag.trim().length() < 1) {
+                continue;
+            }
+            _tags.add(tag.trim());
+        }
+    }
+
+    /**
+     * Accessor for a resource's tags.
+     *
+     * @return The tags for this resource as a list.
+     */
+    public List<String> tags() {
+        return Collections.unmodifiableList(_tags);
+    }
+
+
+    /**
+     * Return this resource's tags as a comma separated list.
+     *
+     * @return A string representation of the tags.
+     */
+    public String tagString() {
+        final StringBuilder sb = new StringBuilder();
+        for (final String tag : tags()) {
+            sb.append(tag);
+            sb.append(',');
+        }
+
+        String tagString = sb.toString();
+        if (tagString.endsWith(",")) {
+            tagString = tagString.substring(0, tagString.length()-1);
+        }
+
+        return tagString;
+    }
+
     /** {@inheritDoc} */
     @Override
     public void serialize(final Serializer s) {
@@ -253,5 +310,6 @@ public abstract class Resource extends VersionedEntity {
         s.string("locked", (isLocked()) ? lockedBy().username() : "");
         s.uuid("parent", (null==_parent) ? null : _parent.id());
         s.uuid("template", (null==_template) ? null : _template.id());
+        s.array("tags", tags());
     }
 }
