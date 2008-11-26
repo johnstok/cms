@@ -51,11 +51,13 @@ public class RenameDialog extends AbstractEditDialog {
         setPanelId("RenamePanel");
 
         _oldName.setFieldLabel(constants().originalName());
+        _oldName.setId(constants().originalName());
         _oldName.setReadOnly(true);
         _oldName.disable();
         _oldName.setValue(_item.getName());
 
         _newName.setFieldLabel(constants().newName());
+        _newName.setId(constants().newName());
         _newName.setAllowBlank(false);
 
         addField(_oldName);
@@ -71,6 +73,7 @@ public class RenameDialog extends AbstractEditDialog {
                     .check(Validations.notEmpty(_newName))
                     .stopIfInError()
                     .check(Validations.notValidResourceName(_newName))
+                    .stopIfInError()
                     .check(Validations.uniqueResourceName(
                         _item.getId(),
                         _newName))
