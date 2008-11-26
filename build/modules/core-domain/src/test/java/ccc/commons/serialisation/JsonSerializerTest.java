@@ -11,6 +11,9 @@
  */
 package ccc.commons.serialisation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import junit.framework.TestCase;
 
 
@@ -22,6 +25,26 @@ import junit.framework.TestCase;
 public class JsonSerializerTest
     extends
         TestCase {
+
+    /**
+     * Test.
+     */
+    public void testSerialiseNamedArray() {
+
+        // ARRANGE
+        final List<String> strings = new ArrayList<String>(){{
+            add("foo");
+            add("bar");
+        }};
+        final JsonSerializer ser = new JsonSerializer();
+
+        // ACT
+        ser.array("name", strings);
+        final String actual = ser.toString();
+
+        // ASSERT
+        assertEquals("\"name\":[\"foo\",\"bar\"],", actual);
+    }
 
     /**
      * Test.

@@ -12,6 +12,7 @@
 package ccc.commons.serialisation;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
@@ -103,6 +104,21 @@ public class JsonSerializer implements Serializer {
         comma();
     }
 
+
+    /** {@inheritDoc} */
+    @Override
+    public void array(final String key, final List<String> value) {
+        string(key);
+        colon();
+        startArray();
+        for (final String element : value) {
+            string(element);
+            comma();
+        }
+        endArray();
+        comma();
+    }
+
     /**
      * Create a JSON dictionary with the specified serializable class.
      *
@@ -129,8 +145,19 @@ public class JsonSerializer implements Serializer {
         _buffer.append("}");
     }
 
+    private void endArray() {
+        if (_buffer.lastIndexOf(",") == (_buffer.length()-1)) {
+            _buffer.deleteCharAt(_buffer.length()-1);
+        }
+        _buffer.append("]");
+    }
+
     private void startDict() {
         _buffer.append("{");
+    }
+
+    private void startArray() {
+        _buffer.append("[");
     }
 
     private void number(final double number) {
