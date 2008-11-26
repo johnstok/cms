@@ -11,6 +11,8 @@
  */
 package ccc.domain;
 
+import java.util.List;
+
 import junit.framework.TestCase;
 import ccc.commons.Testing;
 
@@ -23,6 +25,99 @@ import ccc.commons.Testing;
 public final class ResourceTest extends TestCase {
 
     private final Template _default = new Template();
+
+    /**
+     * Test.
+     */
+    public void testSetTagsParsesCsvCorrectly() {
+
+        // ARRANGE
+        final String tagString = "foo,bar,baz";
+        final Page p = new Page("myPage");
+
+        // ACT
+        p.tags(tagString);
+
+        // ASSERT
+        final List<String> tags = p.tags();
+        assertEquals(3, tags.size());
+        assertEquals("foo", tags.get(0));
+        assertEquals("bar", tags.get(1));
+        assertEquals("baz", tags.get(2));
+    }
+
+    /**
+     * Test.
+     */
+    public void testSetTagsTrimsWhitespace() {
+
+        // ARRANGE
+        final String tagString = "foo, bar ,baz";
+        final Page p = new Page("myPage");
+
+        // ACT
+        p.tags(tagString);
+
+        // ASSERT
+        final List<String> tags = p.tags();
+        assertEquals(3, tags.size());
+        assertEquals("foo", tags.get(0));
+        assertEquals("bar", tags.get(1));
+        assertEquals("baz", tags.get(2));
+    }
+
+    /**
+     * Test.
+     */
+    public void testSetTagsToZlsClearsTheList() {
+
+        // ARRANGE
+        final String tagString = "";
+        final Page p = new Page("myPage");
+
+        // ACT
+        p.tags(tagString);
+
+        // ASSERT
+        final List<String> tags = p.tags();
+        assertEquals(0, tags.size());
+    }
+
+    /**
+     * Test.
+     */
+    public void testSetTagsIgnoresEmptyTags() {
+
+        // ARRANGE
+        final String tagString = "foo,, ,baz";
+        final Page p = new Page("myPage");
+
+        // ACT
+        p.tags(tagString);
+
+        // ASSERT
+        final List<String> tags = p.tags();
+        assertEquals(2, tags.size());
+        assertEquals("foo", tags.get(0));
+        assertEquals("baz", tags.get(1));
+    }
+
+    /**
+     * Test.
+     */
+    public void testSetTagsToNullIsRejected() {
+
+        // ACT
+        try {
+            final Page p = new Page("myPage");
+            p.tags(null);
+            fail("Null should be rejected.");
+
+        // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals("Specified value may not be NULL.", e.getMessage());
+        }
+    }
 
     /**
      * Test.
