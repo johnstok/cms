@@ -493,6 +493,25 @@ public final class ContentManagerEJBTest extends TestCase {
         assertEquals(r2, alias.target());
     }
 
+    /**
+     * Test.
+     */
+    public void testRename() {
+        // ARRANGE
+        final Page resource = new Page(new ResourceName("foo"));
+
+        expect(_em.find(Resource.class, resource.id())).andReturn(resource);
+        _al.recordRename(resource);
+        replay(_em, _qm, _al);
+
+        // ACT
+        _am.rename(resource.id(), "baz");
+
+        // ASSERT
+        verify(_em, _qm, _al);
+        assertEquals("baz", resource.name().toString());
+    }
+
 
     /** {@inheritDoc} */
     @Override

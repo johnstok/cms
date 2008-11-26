@@ -32,7 +32,7 @@
 		
 		<many-to-one name="_lockedBy" not-null="false" />
 
-		<component name="_name" class="ccc.domain.ResourceName" update="false">
+		<component name="_name" class="ccc.domain.ResourceName">
 			<property name="_representation" not-null="true" column="_name"
 				type="string" length="256" />
 		</component>

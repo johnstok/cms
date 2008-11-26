@@ -28,6 +28,7 @@ import ccc.contentcreator.client.dialogs.EditAliasDialog;
 import ccc.contentcreator.client.dialogs.EditTemplateDialog;
 import ccc.contentcreator.client.dialogs.MoveDialog;
 import ccc.contentcreator.client.dialogs.PreviewContentDialog;
+import ccc.contentcreator.client.dialogs.RenameDialog;
 import ccc.contentcreator.client.dialogs.TableDataDisplayDialog;
 import ccc.contentcreator.client.dialogs.UpdatePageDialog;
 import ccc.contentcreator.dto.DTO;
@@ -124,6 +125,7 @@ public class ResourceTable extends ContentPanel {
         viewHistory(tbl, contextMenu);
         addChooseTemplate(tbl, contextMenu);
         addMove(tbl, contextMenu);
+        addRename(tbl, contextMenu);
 
         tbl.setContextMenu(contextMenu);
 
@@ -324,6 +326,23 @@ public class ResourceTable extends ContentPanel {
 
         });
         contextMenu.add(move);
+    }
+
+    private void addRename(final Table tbl, final Menu contextMenu) {
+
+        final MenuItem rename = new MenuItem();
+        rename.setId("rename");
+        rename.setText(Globals.uiConstants().rename());
+        rename.addSelectionListener(new SelectionListener<MenuEvent>() {
+
+            @Override public void componentSelected(final MenuEvent ce) {
+                final ResourceDTO item =
+                    (ResourceDTO) tbl.getSelectedItem().getModel();
+                new RenameDialog(item, ResourceTable.this).show();
+            }
+
+        });
+        contextMenu.add(rename);
     }
 
 

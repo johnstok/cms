@@ -64,4 +64,11 @@ interface AuditLog {
      * @param resource The resource that was changed.
      */
     void recordMove(Resource resource);
+
+    /**
+     * Record that the resource was renamed.
+     *
+     * @param resource The resource that was changed.
+     */
+    void recordRename(Resource resource);
 }

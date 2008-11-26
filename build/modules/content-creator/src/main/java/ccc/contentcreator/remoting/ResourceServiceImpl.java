@@ -491,4 +491,19 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
         contentManager().updateAlias(UUID.fromString(target.getId()),
             UUID.fromString(aliasId));
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean nameExistsInParentFolder(final String id,
+                                      final String name) {
+        final Resource r =
+            lookupContent(id);
+        return r.parent().hasEntryWithName(new ResourceName(name));
+    }
+
+    /** {@inheritDoc} */
+    public void rename(final String id, final String name) {
+        contentManager().rename(UUID.fromString(id), name);
+    }
 }

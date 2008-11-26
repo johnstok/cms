@@ -34,6 +34,7 @@ import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
+import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.ResourceType;
 import ccc.domain.Setting;
@@ -276,5 +277,13 @@ public final class ContentManagerEJB
 
         alias.target(target);
         _audit.recordUpdate(alias);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void rename(final UUID resourceid, final String name) {
+        final Resource resource = lookup(resourceid);
+        resource.name(new ResourceName(name));
+        _audit.recordRename(resource);
     }
 }
