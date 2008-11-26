@@ -12,6 +12,7 @@
 package ccc.commons.serialisation;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -71,5 +72,13 @@ public interface Serializer {
      * @param value The value to store.
      */
     void uuid(String key, UUID value);
+
+    /**
+     * Serialize a list of strings.
+     *
+     * @param key The key used to access the value.
+     * @param value The value to store.
+     */
+    void array(String key, List<String> value);
 
 }
