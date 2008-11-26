@@ -196,6 +196,34 @@ public class AuditLogEJBTest
             le.getValue().summary());
     }
 
+    /**
+     * Test.
+     */
+    public void testRecordRename() {
+
+        // ARRANGE
+        final Capture<LogEntry> le = new Capture<LogEntry>();
+        _em.persist(capture(le));
+        replay(_em);
+
+        expect(_um.loggedInUser()).andReturn(_actor);
+        replay(_um);
+
+        final AuditLogLocal al = new AuditLogEJB(_em, _um);
+        final Page p = new Page("foo");
+
+        // ACT
+        al.recordRename(p);
+
+        // ASSERT
+        verify(_em, _um);
+        assertEquals(LogEntry.Action.RENAME, le.getValue().action());
+        assertEquals(p.id(), le.getValue().subjectId());
+        assertEquals(_actor, le.getValue().actor());
+        assertEquals("Renamed resource to '"+p.name().toString()+"'.",
+            le.getValue().summary());
+    }
+
 
     /** {@inheritDoc} */
     @Override

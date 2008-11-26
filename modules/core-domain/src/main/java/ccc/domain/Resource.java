@@ -134,7 +134,7 @@ public abstract class Resource extends VersionedEntity {
      *
      * @param resourceName The new resource name.
      */
-    void name(final ResourceName resourceName) {
+    public void name(final ResourceName resourceName) {
         require().notNull(resourceName);
         _name = resourceName;
     }

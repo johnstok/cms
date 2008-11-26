@@ -135,4 +135,12 @@ interface ContentManager {
      * @param aliasId The alias UUID
      */
     void updateAlias(UUID targetId, UUID aliasId);
+
+    /**
+     * Rename the resource.
+     *
+     * @param resource The resource to move.
+     * @param name The new name for the resource.
+     */
+    void rename(UUID resource, String name);
 }

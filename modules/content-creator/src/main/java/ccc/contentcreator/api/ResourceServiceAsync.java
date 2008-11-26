@@ -211,4 +211,17 @@ public interface ResourceServiceAsync {
     void updateAlias(ResourceDTO target,
                      String aliasId,
                      AsyncCallback<Void> callback);
+
+    /**
+     * @see ResourceService#nameExistsInParentFolder()
+     */
+    void nameExistsInParentFolder(String id,
+                                  String value,
+                                  AsyncCallback<Boolean> errorReportingCallback);
+
+    /**
+     * @see ResourceService#rename()
+     */
+    void rename(String id, String name, AsyncCallback<Void> callback);
+
 }

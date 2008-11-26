@@ -136,4 +136,33 @@ public class Validations {
             }
         };
     }
+
+    /**
+     * Check whether given resource's parent has a resource with given name.
+     *
+     * @param id The id of the resource which parent folder to check.
+     * @param name name Resource name
+     * @return The Validator
+     */
+    public static Validator uniqueResourceName(final String id,
+                                               final TextField<String> name) {
+        return new Validator() {
+            public void validate(final Validate validate) {
+                Globals.resourceService().nameExistsInParentFolder(
+                    id,
+                    name.getValue(),
+                    new ErrorReportingCallback<Boolean>(){
+                        public void onSuccess(final Boolean nameExists) {
+                            if (nameExists) {
+                                validate.addMessage(
+                                    "A resource with name '"
+                                    + name.getValue()
+                                    + "' already exists in the parent folder."
+                                );
+                            }
+                            validate.next();
+                        }});
+            }
+        };
+    }
 }
