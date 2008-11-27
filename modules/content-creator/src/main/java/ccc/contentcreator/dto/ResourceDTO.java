@@ -114,4 +114,13 @@ public class ResourceDTO extends BaseModelData implements DTO {
     public Object getType() {
         return get("type");
     }
+
+    /**
+     * Accessor for locked.
+     *
+     * @return The locked as a string.
+     */
+    public Object getLocked() {
+        return get("locked");
+    }
 }

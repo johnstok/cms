@@ -38,8 +38,10 @@ import ccc.contentcreator.dto.OptionDTO;
 import ccc.contentcreator.dto.ResourceDTO;
 import ccc.contentcreator.dto.TemplateDTO;
 
+import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.binder.TableBinder;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
@@ -123,21 +125,43 @@ public class ResourceTable extends ContentPanel {
         final Menu contextMenu = new Menu();
         contextMenu.setWidth(CONTEXT_MENU_WIDTH);
 
-        addPreview(tbl, contextMenu);
-        addEditResource(tbl, contextMenu);
-        addCreateAlias(tbl, contextMenu);
-        addLockResource(tbl, contextMenu);
-        addUnlockResource(tbl, contextMenu);
-        addViewHistory(tbl, contextMenu);
-        addChooseTemplate(tbl, contextMenu);
-        addMove(tbl, contextMenu);
-        addRename(tbl, contextMenu);
-        addUpdateTags(tbl, contextMenu);
-        addPublishResource(tbl, contextMenu);
+        addContextMenuLogic(tbl, contextMenu);
 
         tbl.setContextMenu(contextMenu);
-
         add(tbl);
+    }
+
+    private void addContextMenuLogic(final Table tbl, final Menu contextMenu) {
+
+        contextMenu.addListener(Events.BeforeShow, new Listener<MenuEvent>(){
+            public void handleEvent(final MenuEvent be) {
+                contextMenu.removeAll();
+                final ResourceDTO item =
+                    (ResourceDTO) tbl.getSelectedItem().getModel();
+                addCreateAlias(tbl, contextMenu);
+                if (item.getLocked() != null && !"".equals(item.getLocked())) {
+                    addUnlockResource(tbl, contextMenu);
+                } else {
+                    addLockResource(tbl, contextMenu);
+                }
+                if ("PAGE".equals(item.getType())) {
+                    addEditResource(tbl, contextMenu);
+                    addChooseTemplate(tbl, contextMenu);
+                } else if ("ALIAS".equals(item.getType())) {
+                    addEditResource(tbl, contextMenu);
+                } else if ("FOLDER".equals(item.getType())) {
+                    addChooseTemplate(tbl, contextMenu);
+                } else if ("TEMPLATE".equals(item.getType())) {
+                    addEditResource(tbl, contextMenu);
+                }
+                addPreview(tbl, contextMenu);
+                addViewHistory(tbl, contextMenu);
+                addMove(tbl, contextMenu);
+                addRename(tbl, contextMenu);
+                addUpdateTags(tbl, contextMenu);
+                addPublishResource(tbl, contextMenu);
+            }
+        });
     }
 
     /**
