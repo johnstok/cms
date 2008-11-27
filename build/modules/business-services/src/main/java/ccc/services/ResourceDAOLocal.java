@@ -100,4 +100,16 @@ public interface ResourceDAOLocal {
                 @QueryParam("id") String resourceId,
                 @QueryParam("tags") String tags);
 
+
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param resourceId The id of the resource to update.
+     * @return The current version of resource.
+     */
+    @POST
+    @Path("/publish/{id}")
+    @Produces("text/plain")
+    Resource publish(@PathParam("id") String resourceId);
 }

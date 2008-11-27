@@ -105,7 +105,9 @@ public class DTOsTest extends TestCase {
                 "description",
                 "body",
                 "def",
-                "", "foo,bar");
+                "",
+                "",
+                "foo,bar");
 
         // ACT
         final Template actual = DTOs.templateFrom(dto);

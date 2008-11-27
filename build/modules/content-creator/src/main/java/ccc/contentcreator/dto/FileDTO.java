@@ -21,7 +21,7 @@ public class FileDTO extends ResourceDTO {
 
 
     @SuppressWarnings("unused") // Required for GWT
-    private FileDTO() { super(null, null, null, null); }
+    private FileDTO() { super(null, null, null, null, null); }
 
     /**
      * Constructor.
@@ -44,9 +44,10 @@ public class FileDTO extends ResourceDTO {
                      final String data,
                      final String description,
                      final String locked,
+                     final String published,
                      final String tags) {
 
-        super(id, version, "FILE", name, title, locked, tags);
+        super(id, version, "FILE", name, title, locked, published, tags);
         set("size", size);
         set("mimeType", mimeType);
         set("data", data);

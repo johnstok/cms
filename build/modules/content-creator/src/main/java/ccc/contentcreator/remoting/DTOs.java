@@ -175,6 +175,7 @@ public final class DTOs {
                 template.body(),
                 template.definition(),
                 (template.isLocked()) ? template.lockedBy().username() : "",
+                (template.isPublished()) ? template.publishedBy().username() : "",
                 template.tagString()
             );
         return dto;
@@ -195,6 +196,7 @@ public final class DTOs {
             f.title(),
             f.folderCount(),
             (f.isLocked()) ? f.lockedBy().username() : "",
+            (f.isPublished()) ? f.publishedBy().username() : "",
             f.tagString()
         );
     }
@@ -217,6 +219,7 @@ public final class DTOs {
             f.fileData().id().toString(),
             f.description(),
             (f.isLocked()) ? f.lockedBy().username() : "",
+                (f.isPublished()) ? f.publishedBy().username() : "",
             f.tagString()
         );
     }
@@ -251,6 +254,7 @@ public final class DTOs {
             p.title(),
             paragraphs,
             (p.isLocked()) ? p.lockedBy().username() : "",
+            (p.isPublished()) ? p.publishedBy().username() : "",
             p.tagString()
         );
     }
@@ -270,6 +274,7 @@ public final class DTOs {
             a.title(),
             a.target().id().toString(),
             (a.isLocked()) ? a.lockedBy().username() : "",
+            (a.isPublished()) ? a.publishedBy().username() : "",
             a.tagString()
         );
     }

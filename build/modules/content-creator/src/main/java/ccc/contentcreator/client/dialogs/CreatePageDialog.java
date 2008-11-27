@@ -104,13 +104,11 @@ public class CreatePageDialog
         setHeading(Globals.uiConstants().createPage());
 
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
-
         final ColumnConfig nameColumn = new ColumnConfig();
         nameColumn.setId(_uiConstants.name());
         nameColumn.setHeader(_uiConstants.name());
         nameColumn.setWidth(200);
         nameColumn.setRenderer(createIdRenderer());
-
         configs.add(nameColumn);
 
         final ColumnModel cm = new ColumnModel(configs);
@@ -141,20 +139,17 @@ public class CreatePageDialog
         centerData.setMargins(new Margins(5));
 
         _first.setLayout(new BorderLayout());
-
         _rightPanel.setHeaderVisible(true);
         _rightPanel.setHeading(_uiConstants.template());
-
         _rightPanel.add(createCheckbox());
         _rightPanel.add(_grid);
-
         _first.add(_rightPanel, westData);
 
         _descriptionPanel.setHeaderVisible(true);
         _descriptionPanel.setHeading(_uiConstants.description());
         _descriptionPanel.add(_description);
-
         _first.add(_descriptionPanel, centerData);
+
         _first.setBorders(false);
         _first.setBodyBorder(false);
         _first.setHeaderVisible(false);
@@ -286,6 +281,7 @@ public class CreatePageDialog
                     _second.name().getValue(),
                     _second.title().getValue(),
                     paragraphs,
+                    "",
                     "",
                     "");
 

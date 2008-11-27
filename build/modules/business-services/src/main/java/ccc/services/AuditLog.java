@@ -71,4 +71,11 @@ interface AuditLog {
      * @param resource The resource that was changed.
      */
     void recordRename(Resource resource);
+
+    /**
+     * Record that a resource was published.
+     *
+     * @param resource The resource that was published.
+     */
+    void recordPublish(final Resource resource);
 }

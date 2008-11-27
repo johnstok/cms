@@ -180,6 +180,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
             _body.getValue(),
             _definition.getValue(),
             "",
+            "",
             "");
     }
 
