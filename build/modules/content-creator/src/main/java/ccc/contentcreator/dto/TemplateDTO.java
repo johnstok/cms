@@ -47,8 +47,9 @@ public class TemplateDTO extends ResourceDTO {
                        final String description,
                        final String body,
                        final String definition,
-                       final String locked) {
-        super(id, version, "TEMPLATE", name, title, locked);
+                       final String locked,
+                       final String tags) {
+        super(id, version, "TEMPLATE", name, title, locked, tags);
         set("description", description);
         set("body", body);
         set("definition", definition);

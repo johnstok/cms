@@ -39,8 +39,9 @@ public class PageDTO extends ResourceDTO {
                    final String name,
                    final String title,
                    final Map<String, ParagraphDTO> paragraphs,
-                   final String locked) {
-        super(id, version, "PAGE", name, title, locked);
+                   final String locked,
+                   final String tags) {
+        super(id, version, "PAGE", name, title, locked, tags);
         set("paras", paragraphs);
     }
 

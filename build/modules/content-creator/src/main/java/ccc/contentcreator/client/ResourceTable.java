@@ -31,6 +31,7 @@ import ccc.contentcreator.client.dialogs.PreviewContentDialog;
 import ccc.contentcreator.client.dialogs.RenameDialog;
 import ccc.contentcreator.client.dialogs.TableDataDisplayDialog;
 import ccc.contentcreator.client.dialogs.UpdatePageDialog;
+import ccc.contentcreator.client.dialogs.UpdateTagsDialog;
 import ccc.contentcreator.dto.DTO;
 import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.OptionDTO;
@@ -122,10 +123,11 @@ public class ResourceTable extends ContentPanel {
         addCreateAlias(tbl, contextMenu);
         addLockResource(tbl, contextMenu);
         addUnlockResource(tbl, contextMenu);
-        viewHistory(tbl, contextMenu);
+        addViewHistory(tbl, contextMenu);
         addChooseTemplate(tbl, contextMenu);
         addMove(tbl, contextMenu);
         addRename(tbl, contextMenu);
+        addUpdateTags(tbl, contextMenu);
 
         tbl.setContextMenu(contextMenu);
 
@@ -344,9 +346,23 @@ public class ResourceTable extends ContentPanel {
         });
         contextMenu.add(rename);
     }
+    
+    private void addUpdateTags(final Table tbl, final Menu contextMenu) {
 
+        final MenuItem move = new MenuItem();
+        move.setId("update-tags");
+        move.setText(Globals.uiConstants().updateTags());
+        move.addSelectionListener(new SelectionListener<MenuEvent>() {
+            @Override public void componentSelected(final MenuEvent ce) {
+                final ResourceDTO item =
+                    (ResourceDTO) tbl.getSelectedItem().getModel();
+                new UpdateTagsDialog(item, _detailsStore).show();
+            }
+        });
+        contextMenu.add(move);
+    }
 
-    private void viewHistory(final Table tbl, final Menu contextMenu) {
+    private void addViewHistory(final Table tbl, final Menu contextMenu) {
 
         final MenuItem unlockResource = new MenuItem();
         unlockResource.setId("view-history");

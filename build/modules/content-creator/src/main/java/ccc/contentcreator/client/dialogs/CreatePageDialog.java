@@ -286,6 +286,7 @@ public class CreatePageDialog
                     _second.name().getValue(),
                     _second.title().getValue(),
                     paragraphs,
+                    "",
                     "");
 
                 final TemplateDTO template =

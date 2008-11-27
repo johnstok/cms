@@ -28,7 +28,7 @@ public class AliasDTOTest extends TestCase {
 
         // ACT
         final AliasDTO aliasDTO =
-            new AliasDTO("id", 0, "name", "title", "targetId", "");
+            new AliasDTO("id", 0, "name", "title", "targetId", "", "foo,bar");
 
         // ASSERT
         assertEquals("targetId", aliasDTO.getTargetId());

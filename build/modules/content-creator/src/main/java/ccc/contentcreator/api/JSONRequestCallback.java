@@ -11,10 +11,13 @@
  */
 package ccc.contentcreator.api;
 
+import ccc.contentcreator.client.Globals;
+
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONException;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 
@@ -41,22 +44,29 @@ final class JSONRequestCallback
 
     /** {@inheritDoc} */
     public void onError(final Request request, final Throwable exception) {
-        throw new RuntimeException("Unexpected error.", exception);
+        Globals.unexpectedError(exception);
     }
 
     /** {@inheritDoc} */
     public void onResponseReceived(final Request request,
                                    final Response response) {
-        if (Response.SC_OK == response.getStatusCode()) {
+        final int responseCode = response.getStatusCode();
+        if (Response.SC_OK == responseCode) {
             try {
                 final String responseText = response.getText();
                 _action.execute(JSONParser.parse(responseText));
             } catch (final JSONException e) {
-                throw new RuntimeException("Failed to parse response.", e);
+                Globals.unexpectedError(e);
             }
-        } else {
-            throw new RuntimeException(
-                "Unexpected error: "+response.getStatusText());
+        } else if (Response.SC_NO_CONTENT == responseCode
+            || 1223 == responseCode){
+            _action.execute(new JSONObject());
+        }else {
+            Globals.unexpectedError(new RuntimeException(
+                "Unexpected error: ["
+                + responseCode
+                + "] "
+                + response.getStatusText()));
         }
     }
 }

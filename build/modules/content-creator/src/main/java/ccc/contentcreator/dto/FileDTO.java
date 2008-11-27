@@ -43,9 +43,10 @@ public class FileDTO extends ResourceDTO {
                      final String mimeType,
                      final String data,
                      final String description,
-                     final String locked) {
+                     final String locked,
+                     final String tags) {
 
-        super(id, version, "FILE", name, title, locked);
+        super(id, version, "FILE", name, title, locked, tags);
         set("size", size);
         set("mimeType", mimeType);
         set("data", data);

@@ -51,6 +51,7 @@ import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.AssetManagerLocal;
 import ccc.services.ContentManagerLocal;
+import ccc.services.ResourceDAOLocal;
 import ccc.services.ServiceNames;
 import ccc.services.UserManagerLocal;
 
@@ -505,5 +506,13 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     /** {@inheritDoc} */
     public void rename(final String id, final String name) {
         contentManager().rename(UUID.fromString(id), name);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateTags(final String id, final String tags) {
+        final ResourceDAOLocal rdao =
+            _registry.get(ServiceNames.RESOURCE_DAO_LOCAL);
+        rdao.updateTags(id, tags);
     }
 }

@@ -51,8 +51,9 @@ public class AliasDTO extends ResourceDTO {
                     final String name,
                     final String title,
                     final String targetId,
-                    final String locked) {
-        super(id, version, "ALIAS", name, title, locked);
+                    final String locked,
+                    final String tags) {
+        super(id, version, "ALIAS", name, title, locked, tags);
         set("targetId", targetId);
     }
 

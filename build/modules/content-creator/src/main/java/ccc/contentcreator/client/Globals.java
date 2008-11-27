@@ -88,6 +88,16 @@ public final class Globals {
     }
 
     /**
+     * TODO: Add a description of this method.
+     *
+     * @param exception
+     */
+    public static void unexpectedError(final Throwable exception) {
+        GWT.log("An unexpected error occured.", exception);
+        alert("An unexpected error occured.");
+    }
+
+    /**
      * Configure the app to request confirmation from the user if they try to
      * navigate away from the app.
      */
@@ -139,4 +149,5 @@ public final class Globals {
     public static final String APP_URL = "creator/";
     /** API_URL : String. */
     public static final String API_URL = "api/";
+
 }
