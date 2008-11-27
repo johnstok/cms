@@ -25,10 +25,12 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
@@ -196,6 +198,41 @@ public final class XHTML {
 
             final Object result = xpath.evaluate(xpathExpression, doc);
             return (String) result;
+
+        } catch (final ParserConfigurationException e) {
+            throw new RuntimeException(e);
+        } catch (final SAXException e) {
+            throw new RuntimeException(e);
+        } catch (final IOException e) {
+            throw new RuntimeException(e);
+        } catch (final XPathExpressionException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Apply an xPath expression to an xhtml page.
+     * TODO: Rename method.
+     *
+     * @param page The page to which we'll apply the expression.
+     * @param xpathExpression The expression to apply.
+     * @return The results of evaluating the expression, as a String. See
+     *      {@link XPath#evaluate(String, Object)} for further details.
+     */
+    public static NodeList evaluateXPath_(final InputStream page,
+                                      final String xpathExpression) {
+
+        try {
+            final DocumentBuilder builder =
+                createParser(new XhtmlErrorHandler(),
+                             new XhtmlEntityResolver());
+            final Document doc = builder.parse(page);
+
+            final XPath xpath = createXPath();
+
+            final Object result =
+                xpath.evaluate(xpathExpression, doc, XPathConstants.NODESET);
+            return (NodeList) result;
 
         } catch (final ParserConfigurationException e) {
             throw new RuntimeException(e);
