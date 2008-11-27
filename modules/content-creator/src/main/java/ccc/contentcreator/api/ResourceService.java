@@ -37,6 +37,9 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("resource")
 public interface ResourceService extends RemoteService {
 
+    /**
+     * TODO: Add a description of this method.
+     */
     void logout();
 
     /**
@@ -73,7 +76,7 @@ public interface ResourceService extends RemoteService {
      */
     void saveContent(String id,
                      String title,
-                     Map<String, ParagraphDTO> paragraphs);
+                     Map<String, ParagraphDTO> paragraphs) throws RPCException;
 
     /**
      * Create a new template in CCC.
@@ -298,7 +301,6 @@ public interface ResourceService extends RemoteService {
     boolean nameExistsInParentFolder(final String id,
                                             final String name);
 
-
     /**
      * Rename resource.
      *
@@ -306,4 +308,12 @@ public interface ResourceService extends RemoteService {
      * @param name The new name for the resource.
      */
     void rename(final String id, final String name);
+
+    /**
+     * Update the tags for a resource.
+     *
+     * @param id
+     * @param tags
+     */
+    void updateTags(String id, String tags);
 }

@@ -39,9 +39,10 @@ public class FolderDTO extends ResourceDTO {
                      final String name,
                      final String title,
                      final int folderCount,
-                     final String locked) {
+                     final String locked,
+                     final String tags) {
 
-        super(id, version, "FOLDER", name, title, locked);
+        super(id, version, "FOLDER", name, title, locked, tags);
         set("folderCount", folderCount);
     }
 

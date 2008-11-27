@@ -47,6 +47,7 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
                         "{none}",
                         "{none}",
                         "<fields/>",
+                        "",
                         "");
 
     /**

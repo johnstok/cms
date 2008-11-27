@@ -39,7 +39,8 @@ public class ResourceDTO extends BaseModelData implements DTO {
                        final String type,
                        final String name,
                        final String title,
-                       final String locked) {
+                       final String locked,
+                       final String tags) {
 
         set("id", id);
         set("version", version);
@@ -47,6 +48,7 @@ public class ResourceDTO extends BaseModelData implements DTO {
         set("name", name);
         set("title", title);
         set("locked", locked);
+        set("tags", tags);
     }
 
     /**
@@ -62,7 +64,7 @@ public class ResourceDTO extends BaseModelData implements DTO {
                        final String name,
                        final String title,
                        final String locked) {
-        this(null, -1, type, name, title, locked);
+        this(null, -1, type, name, title, locked, "");
     }
 
     @SuppressWarnings("unused") // Required for GWT

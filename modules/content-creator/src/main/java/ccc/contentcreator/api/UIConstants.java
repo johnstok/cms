@@ -497,4 +497,20 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("New name")
     String newName();
+
+    /**
+     * "Update Tags".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Update Tags")
+    String updateTags();
+
+    /**
+     * "Tags".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Tags")
+    String tags();
 }

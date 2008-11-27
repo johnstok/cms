@@ -12,15 +12,12 @@
 
 package ccc.contentcreator.api;
 
-import java.util.List;
-
 import ccc.contentcreator.client.Globals;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.RequestBuilder.Method;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 /**
@@ -51,7 +48,7 @@ public final class REST {
      */
     public static void post(final String relativeURL,
                                  final Action<JSONValue> action) {
-        invokeMethod(relativeURL, action, RequestBuilder.GET);
+        invokeMethod(relativeURL, action, RequestBuilder.POST);
     }
 
     private static void invokeMethod(final String relativeURL,
@@ -66,16 +63,16 @@ public final class REST {
         }
     }
 
-    private static void invokeCallback(
-                          final String relativeURL,
-                          final AsyncCallback<List<JsonModelData>> callback,
-                          final Method httpMethod) {
-        try {
-            final String url = Globals.appURL() + relativeURL;
-            final RequestBuilder builder = new RequestBuilder(httpMethod, url);
-            builder.sendRequest(null, new AsyncCallbackBridge(callback));
-        } catch (final RequestException e) {
-            callback.onFailure(e);
-        }
-    }
+//    private static void invokeCallback(
+//                          final String relativeURL,
+//                          final AsyncCallback<List<JsonModelData>> callback,
+//                          final Method httpMethod) {
+//        try {
+//            final String url = Globals.appURL() + relativeURL;
+//            final RequestBuilder builder = new RequestBuilder(httpMethod, url);
+//            builder.sendRequest(null, new AsyncCallbackBridge(callback));
+//        } catch (final RequestException e) {
+//            callback.onFailure(e);
+//        }
+//    }
 }

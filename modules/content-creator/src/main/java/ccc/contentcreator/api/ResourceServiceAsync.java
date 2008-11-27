@@ -224,4 +224,7 @@ public interface ResourceServiceAsync {
      */
     void rename(String id, String name, AsyncCallback<Void> callback);
 
+    void updateTags(String id,
+                    String tags,
+                    AsyncCallback<Void> asyncCallback);
 }
