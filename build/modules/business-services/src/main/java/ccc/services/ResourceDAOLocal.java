@@ -14,9 +14,11 @@ package ccc.services;
 import java.util.List;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
@@ -84,5 +86,18 @@ public interface ResourceDAOLocal {
     @Path("/history/{id}")
     @Produces("text/plain")
     List<LogEntry> history(@PathParam("id") String resourceId);
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param resourceId
+     * @param tags
+     */
+    @POST
+    @Path("/tags")
+    @Produces("text/plain")
+    void updateTags(
+                @QueryParam("id") String resourceId,
+                @QueryParam("tags") String tags);
 
 }

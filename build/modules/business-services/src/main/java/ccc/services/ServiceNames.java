@@ -48,4 +48,8 @@ public final class ServiceNames {
     /** USER_MANAGER_REMOTE : String. */
     public static final String USER_MANAGER_REMOTE =
         "application-ear-7.0.0-SNAPSHOT/UserManager/remote";
+
+    /** RESOURCE_DAO_LOCAL : String. */
+    public static final String RESOURCE_DAO_LOCAL =
+        "application-ear-7.0.0-SNAPSHOT/ResourceDAO/local";
 }

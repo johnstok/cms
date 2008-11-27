@@ -47,6 +47,26 @@ public class ResourceDAOTest
     /**
      * Test.
      */
+    public void testUpdateTags() {
+
+        // ARRANGE
+        expect(_qm.find(Resource.class, _r.id().toString())).andReturn(_r);
+        replay(_users, _qm);
+        final ResourceDAOLocal rdao = new ResourceDAO(_users, _qm, _al);
+
+        // ACT
+        rdao.updateTags(_r.id().toString(), "foo,bar");
+
+        // ASSERT
+        verify(_users, _qm);
+        assertEquals(2, _r.tags().size());
+        assertEquals("foo", _r.tags().get(0));
+        assertEquals("bar", _r.tags().get(1));
+    }
+
+    /**
+     * Test.
+     */
     public void testResourceCanBeUnlockedByLockerNonadmin() {
 
         // ARRANGE

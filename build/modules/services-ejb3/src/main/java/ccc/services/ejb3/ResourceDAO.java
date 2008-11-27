@@ -117,4 +117,11 @@ public class ResourceDAO implements ResourceDAOLocal {
                           LogEntry.class,
                           UUID.fromString(resourceId));
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateTags(final String resourceId, final String tags) {
+        final Resource r = _queries.find(Resource.class, resourceId);
+        r.tags(tags);
+    }
 }
