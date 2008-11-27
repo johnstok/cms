@@ -46,7 +46,9 @@ public class TemplateDTOTest extends TestCase {
                 description,
                 body,
                 definition,
-                "", "foo,bar");
+                "",
+                "",
+                "foo,bar");
 
         // ASSERT
         assertEquals(name, dto.getName());

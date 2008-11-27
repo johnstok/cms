@@ -32,7 +32,7 @@ public class FolderDTOTest
 
         // ACT
         final FolderDTO f =
-            new FolderDTO("id", 0, "name", "title", 0, "", "foo,bar");
+            new FolderDTO("id", 0, "name", "title", 0, "", "", "foo,bar");
 
         // ASSERT
         assertEquals("id", f.getId());

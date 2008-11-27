@@ -46,6 +46,7 @@ public class UpdateOptionsDialog extends AbstractEditDialog {
                         "[none]",
                         "<fields/>",
                         "",
+                        "",
                         "");
 
     /**

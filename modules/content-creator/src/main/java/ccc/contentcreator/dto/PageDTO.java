@@ -23,7 +23,7 @@ public class PageDTO extends ResourceDTO {
 
 
     @SuppressWarnings("unused") // Required for GWT
-    private PageDTO() { super(null, null, null, null); }
+    private PageDTO() { super(null, null, null, null, null); }
 
     /**
      * Constructor.
@@ -40,8 +40,9 @@ public class PageDTO extends ResourceDTO {
                    final String title,
                    final Map<String, ParagraphDTO> paragraphs,
                    final String locked,
+                   final String published,
                    final String tags) {
-        super(id, version, "PAGE", name, title, locked, tags);
+        super(id, version, "PAGE", name, title, locked, published, tags);
         set("paras", paragraphs);
     }
 

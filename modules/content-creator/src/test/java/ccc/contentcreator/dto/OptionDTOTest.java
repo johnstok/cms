@@ -39,7 +39,9 @@ public class OptionDTOTest extends TestCase {
                 "a",
                 "a",
                 "a",
-                "", "foo,bar");
+                "",
+                "",
+                "foo,bar");
         final TemplateDTO b =
             new TemplateDTO(
                 null,
@@ -49,7 +51,9 @@ public class OptionDTOTest extends TestCase {
                 "b",
                 "b",
                 "b",
-                "", "foo,bar");
+                "",
+                "",
+                "foo,bar");
 
 
         OptionDTO<TemplateDTO> option;
@@ -100,7 +104,9 @@ public class OptionDTOTest extends TestCase {
                 "description",
                 "body",
                 "def",
-                "", "foo,bar");
+                "",
+                "",
+                "foo,bar");
         final OptionDTO<TemplateDTO> option =
             new OptionDTO<TemplateDTO>(null, null, OptionDTO.Type.CHOICES);
         assertEquals(false, option.hasChanged());
@@ -128,7 +134,9 @@ public class OptionDTOTest extends TestCase {
                 "description",
                 "body",
                 "def",
-                "", "foo,bar");
+                "",
+                "",
+                "foo,bar");
         final OptionDTO<TemplateDTO> option =
             new OptionDTO<TemplateDTO>(current, null, OptionDTO.Type.CHOICES);
 
@@ -172,7 +180,9 @@ public class OptionDTOTest extends TestCase {
                 "description",
                 "body",
                 "def",
-                "", "foo,bar");
+                "",
+                "",
+                "foo,bar");
         final TemplateDTO b =
             new TemplateDTO(
                 null,
@@ -182,7 +192,9 @@ public class OptionDTOTest extends TestCase {
                 "description",
                 "body",
                 "def",
-                "", "foo,bar");
+                "",
+                "",
+                "foo,bar");
         final List<TemplateDTO> choices =
             Arrays.asList(new TemplateDTO[]{a, b});
 

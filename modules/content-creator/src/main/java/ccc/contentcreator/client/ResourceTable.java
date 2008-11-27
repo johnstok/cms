@@ -88,7 +88,12 @@ public class ResourceTable extends ContentPanel {
         col = new TableColumn("locked", _constants.lockedBy(), PERCENT_10);
         columns.add(col);
 
-        col = new TableColumn("name", _constants.name(), PERCENT_40);
+        col = new TableColumn("published",
+            _constants.publishedBy(),
+            PERCENT_10);
+        columns.add(col);
+
+        col = new TableColumn("name", _constants.name(), PERCENT_30);
         columns.add(col);
 
         col = new TableColumn("title", _constants.title(), PERCENT_40);
@@ -128,10 +133,39 @@ public class ResourceTable extends ContentPanel {
         addMove(tbl, contextMenu);
         addRename(tbl, contextMenu);
         addUpdateTags(tbl, contextMenu);
+        addPublishResource(tbl, contextMenu);
 
         tbl.setContextMenu(contextMenu);
 
         add(tbl);
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param tbl
+     * @param contextMenu
+     */
+    private void addPublishResource(final Table tbl, final Menu contextMenu) {
+        final MenuItem lockResource = new MenuItem();
+        lockResource.setId("publish-resource");
+        lockResource.setText(_constants.publish());
+        lockResource.addSelectionListener(new SelectionListener<MenuEvent>() {
+
+            @Override public void componentSelected(final MenuEvent ce) {
+                final ResourceDTO item =
+                    (ResourceDTO) tbl.getSelectedItem().getModel();
+                new ResourceMgr().publish(item.getId(), new Action<JSONValue>() {
+                    public void execute(final JSONValue inputData) {
+                        final JsonModelData md =
+                            JsonModelData.fromObject(inputData);
+                        item.set("published", md.get("published"));
+                        detailsStore().update(item);
+                    }});
+            }
+
+        });
+        contextMenu.add(lockResource);
     }
 
     /**
@@ -346,7 +380,7 @@ public class ResourceTable extends ContentPanel {
         });
         contextMenu.add(rename);
     }
-    
+
     private void addUpdateTags(final Table tbl, final Menu contextMenu) {
 
         final MenuItem move = new MenuItem();

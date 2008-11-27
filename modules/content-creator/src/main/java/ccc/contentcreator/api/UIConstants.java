@@ -513,4 +513,20 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Tags")
     String tags();
+
+    /**
+     * "Published by".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Published by")
+    String publishedBy();
+
+    /**
+     * "Publish".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Publish")
+    String publish();
 }

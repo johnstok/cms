@@ -507,6 +507,38 @@ public final class ResourceTest extends TestCase {
         }
     }
 
+    /**
+     * Test.
+     */
+    public void testPublish() {
+
+        //ARRANGE
+        final User u = new User("user");
+        final Page p = new Page(new ResourceName("foo"));
+
+        // ACT
+        p.publish(u);
+
+        // ASSERT
+        assertTrue("Should be locked.", p.isPublished());
+    }
+
+    /**
+     * Test.
+     */
+    public void testPublishRejectsNullUser() {
+        // ACT
+        try {
+            final Resource r = new DummyResource(new ResourceName("foo"));
+            r.publish(null);
+            fail("Null should be rejected.");
+
+        // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals("Specified value may not be NULL.", e.getMessage());
+        }
+    }
+
 
     /**
      * Dummy resource for testing only.

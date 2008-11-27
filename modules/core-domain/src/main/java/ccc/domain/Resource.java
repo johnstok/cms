@@ -32,12 +32,14 @@ public abstract class Resource extends VersionedEntity {
 
     private static final int MAXIMUM_TITLE_LENGTH = 256;
 
-    private String       _title    = id().toString();
-    private ResourceName _name     = ResourceName.escape(_title);
-    private Template     _template = null;
-    private Folder       _parent   = null;
-    private User         _lockedBy = null;
-    private List<String> _tags     = new ArrayList<String>();
+    private String       _title      = id().toString();
+    private ResourceName _name       = ResourceName.escape(_title);
+    private Template     _template   = null;
+    private Folder       _parent     = null;
+    private User         _lockedBy   = null;
+    private List<String> _tags       = new ArrayList<String>();
+
+    private User        _publishedBy = null;
 
     /** Constructor: for persistence only. */
     protected Resource() { super(); }
@@ -301,6 +303,19 @@ public abstract class Resource extends VersionedEntity {
         return tagString;
     }
 
+    public void publish(final User user) {
+        require().notNull(user);
+        _publishedBy = user;
+    }
+
+    public boolean isPublished() {
+        return _publishedBy != null;
+    }
+
+    public User publishedBy() {
+        return _publishedBy;
+    }
+
     /** {@inheritDoc} */
     @Override
     public void serialize(final Serializer s) {
@@ -308,6 +323,7 @@ public abstract class Resource extends VersionedEntity {
         s.string("title", title());
         s.string("name", name().toString());
         s.string("locked", (isLocked()) ? lockedBy().username() : "");
+        s.string("published", (isPublished()) ? publishedBy().username() : "");
         s.uuid("parent", (null==_parent) ? null : _parent.id());
         s.uuid("template", (null==_template) ? null : _template.id());
         s.array("tags", tags());

@@ -27,7 +27,7 @@ public class TemplateDTO extends ResourceDTO {
 
 
     @SuppressWarnings("unused") // Required for GWT
-    private TemplateDTO() { super(null, null, null, null); }
+    private TemplateDTO() { super(null, null, null, null, null); }
 
     /**
      * Constructor.
@@ -48,8 +48,9 @@ public class TemplateDTO extends ResourceDTO {
                        final String body,
                        final String definition,
                        final String locked,
+                       final String published,
                        final String tags) {
-        super(id, version, "TEMPLATE", name, title, locked, tags);
+        super(id, version, "TEMPLATE", name, title, locked, published, tags);
         set("description", description);
         set("body", body);
         set("definition", definition);

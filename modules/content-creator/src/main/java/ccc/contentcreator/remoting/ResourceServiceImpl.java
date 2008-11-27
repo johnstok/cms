@@ -509,7 +509,6 @@ public final class ResourceServiceImpl extends RemoteServiceServlet
     }
 
     /** {@inheritDoc} */
-    @Override
     public void updateTags(final String id, final String tags) {
         final ResourceDAOLocal rdao =
             _registry.get(ServiceNames.RESOURCE_DAO_LOCAL);

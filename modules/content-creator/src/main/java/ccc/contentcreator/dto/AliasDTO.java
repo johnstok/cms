@@ -20,7 +20,7 @@ package ccc.contentcreator.dto;
 public class AliasDTO extends ResourceDTO {
 
     @SuppressWarnings("unused") // Required for GWT
-    private AliasDTO() { super(null, null, null, null); }
+    private AliasDTO() { super(null, null, null, null, null); }
 
     /**
      * Constructor.
@@ -32,8 +32,9 @@ public class AliasDTO extends ResourceDTO {
     public AliasDTO(final String name,
                     final String title,
                     final String targetId,
-                    final String locked) {
-        super("ALIAS", name, title, locked);
+                    final String locked,
+                    final String published) {
+        super("ALIAS", name, title, locked, published);
         set("targetId", targetId);
     }
 
@@ -52,8 +53,9 @@ public class AliasDTO extends ResourceDTO {
                     final String title,
                     final String targetId,
                     final String locked,
+                    final String published,
                     final String tags) {
-        super(id, version, "ALIAS", name, title, locked, tags);
+        super(id, version, "ALIAS", name, title, locked, published, tags);
         set("targetId", targetId);
     }
 

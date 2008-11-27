@@ -200,6 +200,24 @@ public class LogEntry extends Entity {
     }
 
 
+    /**
+     * Create a log entry for the publishing of a resource.
+     *
+     * @param resource The resource that was published.
+     * @param actor The actor that performed the action.
+     * @param happenedOn The date that the actor performed the action.
+     * @return The log entry representing the action.
+     */
+    public static LogEntry forPublish(final Resource resource,
+                                   final User actor,
+                                   final Date happenedOn) {
+
+        final LogEntry le = createEntry(resource, actor, happenedOn);
+        le._action = Action.PUBLISH;
+        le._summary = "Published.";
+        return le;
+    }
+
     /** {@inheritDoc} */
     @Override public void serialize(final Serializer s) {
         s.number("index", _index);

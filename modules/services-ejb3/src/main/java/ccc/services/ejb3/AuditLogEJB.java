@@ -128,5 +128,12 @@ public class AuditLogEJB
         _em.persist(le);
     }
 
-
+    /** {@inheritDoc} */
+    @Override
+    public void recordPublish(final Resource resource) {
+        DBC.require().notNull(resource);
+        final LogEntry le =
+            LogEntry.forPublish(resource, _um.loggedInUser(), new Date());
+        _em.persist(le);
+    }
 }

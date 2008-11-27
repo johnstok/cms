@@ -81,4 +81,15 @@ public class ResourceMgr {
             }
         });
     }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param id
+     * @param action
+     */
+    public void publish(final String resourceId,
+                        final Action<JSONValue> action) {
+        REST.post("api/resources/publish/"+resourceId, action);
+    }
 }
