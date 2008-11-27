@@ -76,7 +76,7 @@ public interface ResourceService extends RemoteService {
      */
     void saveContent(String id,
                      String title,
-                     Map<String, ParagraphDTO> paragraphs) throws RPCException;
+                     Map<String, ParagraphDTO> paragraphs);
 
     /**
      * Create a new template in CCC.
