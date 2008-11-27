@@ -11,15 +11,18 @@
  */
 package ccc.migration;
 
+import java.io.ByteArrayInputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
+import org.w3c.dom.NodeList;
 
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
+import ccc.commons.XHTML;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
@@ -220,6 +223,37 @@ public class Migrations {
             }
         }
         return map;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param map
+     */
+    private void extractURLs(final Map<String, StringBuffer> map) {
+
+        for (final Map.Entry<String, StringBuffer> para : map.entrySet()) {
+            final String html =
+                "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">"
+                + "<html xmlns=\"http://www.w3.org/1999/xhtml\">"
+                + "<head><title>Title goes here</title></head>"
+                + "<body>"
+                + para.getValue()
+                + "</body>"
+                + "</html>";
+            log.debug(para.getValue());
+            try {
+                final NodeList l =
+                    XHTML.evaluateXPath_(
+                        new ByteArrayInputStream(html.getBytes()),
+                        "//xhtml:a");
+                for(int i=0; i<l.getLength(); i++) {
+                    log.error(l.item(i).getAttributes().getNamedItem("href"));
+                }
+            } catch (final RuntimeException e) {
+                log.error("Error parsing page.");
+            }
+        }
     }
 
     /**
