@@ -62,7 +62,8 @@ public class ResourceMgr {
     /**
      * Unlock a resource.
      */
-    public void unlock(final String resourceId, final Action<JSONValue> action) {
+    public void unlock(final String resourceId,
+                       final Action<JSONValue> action) {
         // TODO: require().notNull(resourceId);
         REST.get("api/resources/unlock/"+resourceId, action);
     }
@@ -83,13 +84,24 @@ public class ResourceMgr {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Publish a resource.
      *
-     * @param id
-     * @param action
+     * @param resourceId resourceId The id of the resource.
+     * @param action The action to perform on the result.
      */
     public void publish(final String resourceId,
                         final Action<JSONValue> action) {
         REST.post("api/resources/publish/"+resourceId, action);
+    }
+
+    /**
+     * Unpublish a resource.
+     *
+     * @param resourceId resourceId The id of the resource.
+     * @param action The action to perform on the result.
+     */
+    public void unpublish(final String resourceId,
+                        final Action<JSONValue> action) {
+        REST.post("api/resources/unpublish/"+resourceId, action);
     }
 }

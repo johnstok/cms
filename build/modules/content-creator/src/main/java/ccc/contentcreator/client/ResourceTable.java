@@ -139,10 +139,15 @@ public class ResourceTable extends ContentPanel {
                 final ResourceDTO item =
                     (ResourceDTO) tbl.getSelectedItem().getModel();
                 addCreateAlias(tbl, contextMenu);
-                if (item.getLocked() != null && !"".equals(item.getLocked())) {
-                    addUnlockResource(tbl, contextMenu);
-                } else {
+                if (item.getLocked() == null || "".equals(item.getLocked())) {
                     addLockResource(tbl, contextMenu);
+                } else {
+                    addUnlockResource(tbl, contextMenu);
+                }
+                if (item.getPublished() == null || "".equals(item.getPublished())) {
+                    addPublishResource(tbl, contextMenu);
+                } else {
+                    addUnpublishResource(tbl, contextMenu);
                 }
                 if ("PAGE".equals(item.getType())) {
                     addEditResource(tbl, contextMenu);
@@ -159,7 +164,6 @@ public class ResourceTable extends ContentPanel {
                 addMove(tbl, contextMenu);
                 addRename(tbl, contextMenu);
                 addUpdateTags(tbl, contextMenu);
-                addPublishResource(tbl, contextMenu);
             }
         });
     }
@@ -179,7 +183,37 @@ public class ResourceTable extends ContentPanel {
             @Override public void componentSelected(final MenuEvent ce) {
                 final ResourceDTO item =
                     (ResourceDTO) tbl.getSelectedItem().getModel();
-                new ResourceMgr().publish(item.getId(), new Action<JSONValue>() {
+                new ResourceMgr().publish(item.getId(),
+                    new Action<JSONValue>() {
+                    public void execute(final JSONValue inputData) {
+                        final JsonModelData md =
+                            JsonModelData.fromObject(inputData);
+                        item.set("published", md.get("published"));
+                        detailsStore().update(item);
+                    }});
+            }
+
+        });
+        contextMenu.add(lockResource);
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param tbl
+     * @param contextMenu
+     */
+    private void addUnpublishResource(final Table tbl, final Menu contextMenu) {
+        final MenuItem lockResource = new MenuItem();
+        lockResource.setId("unpublish-resource");
+        lockResource.setText(_constants.unpublish());
+        lockResource.addSelectionListener(new SelectionListener<MenuEvent>() {
+
+            @Override public void componentSelected(final MenuEvent ce) {
+                final ResourceDTO item =
+                    (ResourceDTO) tbl.getSelectedItem().getModel();
+                new ResourceMgr().unpublish(item.getId(),
+                    new Action<JSONValue>() {
                     public void execute(final JSONValue inputData) {
                         final JsonModelData md =
                             JsonModelData.fromObject(inputData);

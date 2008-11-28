@@ -111,7 +111,7 @@ public class ResourceDTO extends BaseModelData implements DTO {
      *
      * @return The type as a string.
      */
-    public Object getType() {
+    public String getType() {
         return get("type");
     }
 
@@ -120,7 +120,16 @@ public class ResourceDTO extends BaseModelData implements DTO {
      *
      * @return The locked as a string.
      */
-    public Object getLocked() {
+    public String getLocked() {
         return get("locked");
+    }
+
+    /**
+     * Accessor for published.
+     *
+     * @return The published as a string.
+     */
+    public String getPublished() {
+        return get("published");
     }
 }

@@ -303,17 +303,40 @@ public abstract class Resource extends VersionedEntity {
         return tagString;
     }
 
+    /**
+     * Publish the resource.
+     *
+     * @param user The user.
+     */
     public void publish(final User user) {
         require().notNull(user);
         _publishedBy = user;
     }
 
+    /**
+     * Query method to determine whether a resource is published.
+     *
+     * @return True if the resource is published, false otherwise.
+     */
     public boolean isPublished() {
         return _publishedBy != null;
     }
 
+    /**
+     * Return user who published the resource.
+     *
+     * @return The user or null if the resource is upublished.
+     */
     public User publishedBy() {
         return _publishedBy;
+    }
+
+    /**
+     * Unpublish the resource.
+     *
+     */
+    public void unpublish() {
+        _publishedBy = null;
     }
 
     /** {@inheritDoc} */

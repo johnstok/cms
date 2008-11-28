@@ -134,5 +134,12 @@ public class ResourceDAO implements ResourceDAOLocal {
         return r;
     }
 
-
+    /** {@inheritDoc} */
+    @Override
+    public Resource unpublish(final String resourceId) {
+        final Resource r = _queries.find(Resource.class, resourceId);
+        r.unpublish();
+        _audit.recordUnpublish(r);
+        return r;
+    }
 }

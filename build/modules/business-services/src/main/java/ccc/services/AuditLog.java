@@ -78,4 +78,11 @@ interface AuditLog {
      * @param resource The resource that was published.
      */
     void recordPublish(final Resource resource);
+
+    /**
+     * Record that a resource was unpublished.
+     *
+     * @param resource The resource that was unpublished.
+     */
+    void recordUnpublish(final Resource resource);
 }

@@ -199,7 +199,6 @@ public class LogEntry extends Entity {
         return le;
     }
 
-
     /**
      * Create a log entry for the publishing of a resource.
      *
@@ -215,6 +214,24 @@ public class LogEntry extends Entity {
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = Action.PUBLISH;
         le._summary = "Published.";
+        return le;
+    }
+
+    /**
+     * Create a log entry for the unpublishing of a resource.
+     *
+     * @param resource The resource that was unpublished.
+     * @param actor The actor that performed the action.
+     * @param happenedOn The date that the actor performed the action.
+     * @return The log entry representing the action.
+     */
+    public static LogEntry forUnpublish(final Resource resource,
+                                      final User actor,
+                                      final Date happenedOn) {
+
+        final LogEntry le = createEntry(resource, actor, happenedOn);
+        le._action = Action.UNPUBLISH;
+        le._summary = "Unpublished.";
         return le;
     }
 
