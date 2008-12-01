@@ -21,9 +21,9 @@ import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.Validate;
 import ccc.contentcreator.client.Validations;
 import ccc.contentcreator.client.Validator;
-import ccc.contentcreator.dto.ResourceDTO;
 import ccc.contentcreator.dto.TemplateDTO;
 
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
@@ -67,8 +67,8 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
 
     private String _id;
     private DialogMode _mode;
-    private ListStore<ResourceDTO> _store;
-    private TemplateDTO _model;
+    private ListStore<ModelData> _store;
+    private ModelData _model;
 
     /**
      * Constructor.
@@ -101,23 +101,23 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
      * @param item TemplateDTO for the template.
      * @param store ListStore model for the dialog.
      */
-    public EditTemplateDialog(final TemplateDTO item,
-                                       final ListStore<ResourceDTO> store) {
+    public EditTemplateDialog(final ModelData item,
+                              final ListStore<ModelData> store) {
         this();
         _mode = DialogMode.UPDATE;
 
-        _id = item.getId();
+        _id = item.<String>get("id");
         _store = store;
         _model = item;
 
         _name.setReadOnly(true);
         _name.disable();
 
-        _body.setValue(_model.getBody());
-        _definition.setValue(_model.getDefinition());
-        _description.setValue(_model.getDescription());
-        _templateTitle.setValue(_model.getTitle());
-        _name.setValue(_model.getName());
+        _body.setValue(_model.<String>get("body"));
+        _definition.setValue(_model.<String>get("definition"));
+        _description.setValue(_model.<String>get("description"));
+        _templateTitle.setValue(_model.<String>get("title"));
+        _name.setValue(_model.<String>get("name"));
     }
 
     private void populateFirstScreen() {

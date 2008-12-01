@@ -21,6 +21,7 @@ import ccc.contentcreator.dto.AliasDTO;
 import ccc.contentcreator.dto.ResourceDTO;
 
 import com.extjs.gxt.ui.client.Events;
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -50,7 +51,7 @@ public class EditAliasDialog extends AbstractEditDialog {
      * @param item The ResourceDTO
      * @param rt The resourceTable to refresh
      */
-    public EditAliasDialog(final ResourceDTO item, final ResourceTable rt) {
+    public EditAliasDialog(final ModelData item, final ResourceTable rt) {
         super(Globals.uiConstants().updateAlias());
         _rt = rt;
         _alias = (AliasDTO) item;
@@ -60,7 +61,7 @@ public class EditAliasDialog extends AbstractEditDialog {
 
         _aliasName.setFieldLabel(constants().name());
         _aliasName.setId("AliasName");
-        _aliasName.setValue(item.getName());
+        _aliasName.setValue(item.<String>get("name"));
         _aliasName.setReadOnly(true);
         _aliasName.disable();
         addField(_aliasName);

@@ -41,6 +41,20 @@
             ccc.contentcreator.remoting.ResourceServiceImpl
         </servlet-class>
     </servlet>
+    
+    <servlet>
+        <servlet-name>Queries</servlet-name>
+        <servlet-class>
+            ccc.contentcreator.remoting.QueriesImpl
+        </servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>Commands</servlet-name>
+        <servlet-class>
+            ccc.contentcreator.remoting.CommandsImpl
+        </servlet-class>
+    </servlet>
 
     <servlet>
         <servlet-name>FileUploadServlet</servlet-name>
@@ -58,6 +72,16 @@
     <servlet-mapping>
         <servlet-name>Resource</servlet-name>
         <url-pattern>/resource</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>Queries</servlet-name>
+        <url-pattern>/queries</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>Commands</servlet-name>
+        <url-pattern>/commands</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>

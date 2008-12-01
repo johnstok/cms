@@ -17,9 +17,9 @@ import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.dto.DTO;
 import ccc.contentcreator.dto.OptionDTO;
-import ccc.contentcreator.dto.ResourceDTO;
 import ccc.contentcreator.dto.TemplateDTO;
 
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
@@ -34,7 +34,7 @@ import com.extjs.gxt.ui.client.widget.form.ComboBox;
  */
 public class ChooseTemplateDialog extends AbstractEditDialog {
 
-    private final ResourceDTO                    _resource;
+    private final ModelData                      _resource;
     private final List<OptionDTO<? extends DTO>> _options;
 
     private final ComboBox<TemplateDTO> _defaultTemplate =
@@ -58,7 +58,7 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
      * @param resource The ResourceDTO
      */
     public ChooseTemplateDialog(final List<OptionDTO<? extends DTO>> options,
-                                final ResourceDTO resource) {
+                                final ModelData resource) {
         super(Globals.uiConstants().chooseTemplate());
 
         _options = options;
@@ -119,7 +119,7 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
                 resourceService()
                     .updateResourceTemplate(
                         _options,
-                        _resource,
+                        /* _resource, */ null, // TODO: Fix
                         new DisposingCallback(ChooseTemplateDialog.this));
             }
         };

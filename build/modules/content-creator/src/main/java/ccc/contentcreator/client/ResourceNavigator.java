@@ -11,8 +11,10 @@
  */
 package ccc.contentcreator.client;
 
+import java.util.Collection;
+
 import ccc.contentcreator.api.ResourceServiceAsync;
-import ccc.contentcreator.api.Root;
+import ccc.services.api.FolderSummary;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
@@ -28,8 +30,6 @@ import com.extjs.gxt.ui.client.widget.tree.Tree;
 public class ResourceNavigator extends ContentPanel {
 
     private final LeftRightPane _view;
-    private final Tree _contentTree;
-    private final Tree _assetsTree;
     private final Tree _usersTree;
 
     /**
@@ -39,32 +39,30 @@ public class ResourceNavigator extends ContentPanel {
      * @param rsa ResourceServiceAsync.
      */
     ResourceNavigator(final LeftRightPane view,
+                      final Collection<FolderSummary> roots,
                       final ResourceServiceAsync rsa) {
 
         _view = view;
-
-        _contentTree = new EnhancedResourceTree(rsa, Root.CONTENT, _view);
-        _assetsTree = new EnhancedResourceTree(rsa, Root.ASSETS, _view);
-        _usersTree = new UserTree(_view);
 
         setLayout(new AccordionLayout());
         setBodyBorder(false);
         setHeading("Navigator");
 
-        final ContentPanel contentPanel = new ContentPanel();
-        contentPanel.getHeader().setId("content-navigator");
-        contentPanel.setScrollMode(Scroll.AUTO);
-        contentPanel.setHeading("Content");
-        contentPanel.add(_contentTree);
-        add(contentPanel);
+        for (final FolderSummary root : roots) {
+            final EnhancedResourceTree tree =
+                new EnhancedResourceTree(rsa, root, _view);
 
-        final ContentPanel assetsPanel = new ContentPanel();
-        assetsPanel.getHeader().setId("assets-navigator");
-        assetsPanel.setScrollMode(Scroll.AUTO);
-        assetsPanel.setHeading("Assets");
-        assetsPanel.add(_assetsTree);
-        add(assetsPanel);
+            final ContentPanel contentPanel = new ContentPanel();
+            contentPanel.getHeader().setId(root._name+"-navigator");
+            contentPanel.setScrollMode(Scroll.AUTO);
+            contentPanel.setHeading(root._name);
+            contentPanel.add(tree);
+            add(contentPanel);
+        }
 
+
+
+        _usersTree = new UserTree(_view);
         final ContentPanel usersPanel = new ContentPanel();
         usersPanel.getHeader().setId("user-navigator");
         usersPanel.setScrollMode(Scroll.AUTO);

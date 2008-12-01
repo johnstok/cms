@@ -12,9 +12,9 @@
 package ccc.contentcreator.client.dialogs;
 
 import ccc.contentcreator.api.ResourceServiceAsync;
-import ccc.contentcreator.api.Root;
 import ccc.contentcreator.client.FolderResourceTree;
 import ccc.contentcreator.dto.FolderDTO;
+import ccc.services.api.FolderSummary;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
@@ -38,15 +38,15 @@ public class FolderSelectionDialog extends Window {
      *
      * @param rsa ResourceServiceAsync
      */
-    FolderSelectionDialog(final ResourceServiceAsync rsa) {
+    FolderSelectionDialog(final ResourceServiceAsync rsa,
+                          final FolderSummary root) {
         setBodyBorder(false);
-        setInsetBorder(false);
         setScrollMode(Scroll.AUTOY);
         setHeading("Select a folder"); // TODO: Move to UIConstants
         setWidth(400);
         setHeight(225);
         setLayout(new FitLayout());
-        _tree = new FolderResourceTree(rsa, Root.CONTENT);
+        _tree = new FolderResourceTree(rsa, root);
         add(_tree);
         final Button save = new Button(
             "OK", // TODO: Move to UIConstants

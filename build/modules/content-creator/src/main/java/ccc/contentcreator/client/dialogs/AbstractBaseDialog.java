@@ -12,6 +12,10 @@
 
 package ccc.contentcreator.client.dialogs;
 
+import ccc.contentcreator.api.CommandService;
+import ccc.contentcreator.api.CommandServiceAsync;
+import ccc.contentcreator.api.QueriesService;
+import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.ResourceService;
 import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.api.UIConstants;
@@ -30,12 +34,11 @@ public abstract class AbstractBaseDialog
     extends
         Window {
 
-    /** _constants : UIConstants. */
     private final UIConstants _constants = Globals.uiConstants();
 
-    /** _resourceService : ResourceServiceAsync. */
-    private final ResourceServiceAsync _resourceService =
-        GWT.<ResourceServiceAsync>create(ResourceService.class);
+    private final ResourceServiceAsync _rs = GWT.create(ResourceService.class);
+    private final QueriesServiceAsync _qs = GWT.create(QueriesService.class);
+    private final CommandServiceAsync _cs = GWT.create(CommandService.class);
 
 
     /**
@@ -78,9 +81,28 @@ public abstract class AbstractBaseDialog
     /**
      * Accessor.
      *
-     * @return Returns the _resourceService.
+     * @return Returns a resource service.
      */
+    @Deprecated
     protected ResourceServiceAsync resourceService() {
-        return _resourceService;
+        return _rs;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns a query service.
+     */
+    protected QueriesServiceAsync queries() {
+        return _qs;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns a command service.
+     */
+    protected CommandServiceAsync commands() {
+        return _cs;
     }
 }

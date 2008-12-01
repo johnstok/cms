@@ -17,9 +17,10 @@ import ccc.contentcreator.client.ResourceTable;
 import ccc.contentcreator.client.Validate;
 import ccc.contentcreator.client.Validations;
 import ccc.contentcreator.dto.FolderDTO;
-import ccc.contentcreator.dto.ResourceDTO;
+import ccc.services.api.FolderSummary;
 
 import com.extjs.gxt.ui.client.Events;
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -42,7 +43,7 @@ public class MoveDialog extends AbstractEditDialog {
     private final TriggerField<String> _parentFolder =
         new TriggerField<String>();
 
-    private final ResourceDTO _target;
+    private final ModelData _target;
     private FolderDTO _parent = null;
 
     private final ResourceTable _rt;
@@ -53,7 +54,9 @@ public class MoveDialog extends AbstractEditDialog {
      * @param item The Resource item to move.
      * @param rt ResourceTable to update.
      */
-    public MoveDialog(final ResourceDTO item, final ResourceTable rt) {
+    public MoveDialog(final ModelData item,
+                      final ResourceTable rt,
+                      final FolderSummary root) {
         super(Globals.uiConstants().move());
         _rt = rt;
 
@@ -63,7 +66,7 @@ public class MoveDialog extends AbstractEditDialog {
         setPanelId("MovePanel");
 
         _targetName.setFieldLabel(constants().target());
-        _targetName.setValue(item.getName());
+        _targetName.setValue(item.<String>get("name"));
         _targetName.setReadOnly(true);
         _targetName.disable();
         addField(_targetName);
@@ -76,7 +79,7 @@ public class MoveDialog extends AbstractEditDialog {
             new Listener<ComponentEvent>(){
                 public void handleEvent(final ComponentEvent be) {
                     final FolderSelectionDialog folderSelect =
-                        new FolderSelectionDialog(Globals.resourceService());
+                        new FolderSelectionDialog(Globals.resourceService(), root);
                     folderSelect.addListener(Events.Close,
                         new Listener<ComponentEvent>() {
                         public void handleEvent(final ComponentEvent be) {
@@ -108,7 +111,7 @@ public class MoveDialog extends AbstractEditDialog {
             public void run() {
                 Globals.resourceService().move(
                     _parent,
-                    _target.getId(),
+                    _target.<String>get("String"),
                     new ErrorReportingCallback<Void>() {
                         public void onSuccess(final Void result) {
                             _rt.refreshTable();

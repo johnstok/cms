@@ -52,12 +52,12 @@ public interface Queries {
     Collection<FolderSummary> getFolderChildren(String folderId);
 
     /**
-     * List all of the children of the specified parent resource.
+     * List all of the children of the specified folder.
      *
-     * @param resource The parent resource.
-     * @return The list of children.
+     * @param folderId The folder.
+     * @return The folder's of children.
      */
-    Collection<ResourceSummary> getChildren(String resourceId);
+    Collection<ResourceSummary> getChildren(String folderId);
 
     /**
      * Determine the absolute path to a resource.

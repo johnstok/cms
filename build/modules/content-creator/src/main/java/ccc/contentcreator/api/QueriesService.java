@@ -9,9 +9,12 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.api;
+package ccc.contentcreator.api;
 
-import java.io.Serializable;
+import ccc.services.api.Queries;
+
+import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 
 /**
@@ -19,6 +22,11 @@ import java.io.Serializable;
  *
  * @author Civic Computing Ltd.
  */
-public class UserDelta implements Serializable {
+@RemoteServiceRelativePath("queries")
+public interface QueriesService
+    extends
+        Queries, RemoteService {
+
+    /* No further methods. */
 
 }

@@ -16,8 +16,8 @@ import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.ResourceTable;
 import ccc.contentcreator.client.Validate;
 import ccc.contentcreator.client.Validations;
-import ccc.contentcreator.dto.ResourceDTO;
 
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.TextField;
@@ -31,7 +31,7 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
  */
 public class RenameDialog extends AbstractEditDialog {
 
-    private final ResourceDTO _item;
+    private final ModelData _item;
     private final TextField<String> _oldName = new TextField<String>();
     private final TextField<String> _newName = new TextField<String>();
     private ResourceTable _rt;
@@ -42,7 +42,7 @@ public class RenameDialog extends AbstractEditDialog {
      * @param item The resource to rename.
      * @param rt The ResourceTable to refresh.
      */
-    public RenameDialog(final ResourceDTO item, final ResourceTable rt) {
+    public RenameDialog(final ModelData item, final ResourceTable rt) {
         super(Globals.uiConstants().rename());
         _item = item;
         _rt = rt;
@@ -54,7 +54,7 @@ public class RenameDialog extends AbstractEditDialog {
         _oldName.setId(constants().originalName());
         _oldName.setReadOnly(true);
         _oldName.disable();
-        _oldName.setValue(_item.getName());
+        _oldName.setValue(_item.<String>get("name"));
 
         _newName.setFieldLabel(constants().newName());
         _newName.setId(constants().newName());
@@ -75,7 +75,7 @@ public class RenameDialog extends AbstractEditDialog {
                     .check(Validations.notValidResourceName(_newName))
                     .stopIfInError()
                     .check(Validations.uniqueResourceName(
-                        _item.getId(),
+                        _item.<String>get("id"),
                         _newName))
                     .callMethodOr(Validations.reportErrors());
             }
@@ -86,7 +86,7 @@ public class RenameDialog extends AbstractEditDialog {
         return new Runnable() {
             public void run() {
                 Globals.resourceService().rename(
-                    _item.getId(),
+                    _item.<String>get("id"),
                     _newName.getValue(),
                     new ErrorReportingCallback<Void>() {
                         public void onSuccess(final Void result) {

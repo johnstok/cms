@@ -14,12 +14,12 @@ package ccc.contentcreator.client;
 import java.util.List;
 
 import ccc.contentcreator.api.ResourceServiceAsync;
-import ccc.contentcreator.api.Root;
 import ccc.contentcreator.client.dialogs.CreateFolderDialog;
 import ccc.contentcreator.client.dialogs.CreatePageDialog;
 import ccc.contentcreator.client.dialogs.UploadFileDialog;
 import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.TemplateDTO;
+import ccc.services.api.FolderSummary;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -39,10 +39,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public class EnhancedResourceTree extends FolderResourceTree {
 
-    /** _view : LeftRightPane. */
-    private LeftRightPane _view;
-    /** _rt : ResourceTable. */
-    private ResourceTable _rt = new ResourceTable();
+    private final LeftRightPane _view;
+    private final ResourceTable _rt;
 
 
     /**
@@ -53,11 +51,12 @@ public class EnhancedResourceTree extends FolderResourceTree {
      * @param view LeftRightPane of the surrounding view.
      */
     EnhancedResourceTree(final ResourceServiceAsync rsa,
-        final Root root,
-        final LeftRightPane view) {
+                         final FolderSummary root,
+                         final LeftRightPane view) {
 
         super(rsa, root);
 
+        _rt = new ResourceTable(root);
         _view = view;
 
         final Listener<TreeEvent> treeSelectionListener =
