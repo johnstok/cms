@@ -12,22 +12,24 @@
 
 package ccc.contentcreator.client;
 
+import java.util.Collection;
 import java.util.List;
 
-import ccc.contentcreator.api.ResourceServiceAsync;
-import ccc.contentcreator.api.Root;
-import ccc.contentcreator.callbacks.OneItemListCallback;
-import ccc.contentcreator.dto.ResourceDTO;
+import ccc.contentcreator.api.QueriesService;
+import ccc.contentcreator.api.QueriesServiceAsync;
+import ccc.services.api.FolderSummary;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.binder.TreeBinder;
 import com.extjs.gxt.ui.client.data.BaseTreeLoader;
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.ModelStringProvider;
 import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.data.TreeLoader;
 import com.extjs.gxt.ui.client.store.TreeStore;
 import com.extjs.gxt.ui.client.widget.tree.Tree;
 import com.extjs.gxt.ui.client.widget.tree.TreeItem;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
@@ -38,7 +40,9 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public class ResourceTree extends Tree {
 
-    private final TreeStore<ResourceDTO> _store;
+    private final TreeStore<ModelData> _store;
+    private final FolderSummary _root;
+    final QueriesServiceAsync _qs = GWT.create(QueriesService.class);
 
     /**
      * Constructor.
@@ -46,57 +50,70 @@ public class ResourceTree extends Tree {
      * @param rsa ResourceServiceAsync.
      * @param root The root of the tree.
      */
-    public ResourceTree(final ResourceServiceAsync rsa, final Root root) {
+    public ResourceTree(final FolderSummary root) {
+
+        _root = root;
 
         setSelectionMode(SelectionMode.SINGLE);
         setStyleAttribute("background", "white");
 
 
-        final RpcProxy<ResourceDTO, List<ResourceDTO>> proxy =
-            new RpcProxy<ResourceDTO, List<ResourceDTO>>() {
+        final RpcProxy<ModelData, List<ModelData>> proxy =
+            new RpcProxy<ModelData, List<ModelData>>() {
             @Override
-            protected void load(final ResourceDTO loadConfig,
-                                final AsyncCallback<List<ResourceDTO>> callback) {
-                if (null == loadConfig) {
-                    rsa.getRootAsResource(root,
-                        new OneItemListCallback<ResourceDTO>(callback));
-                } else {
-                    rsa.getChildren(loadConfig, callback);
-                }
+            protected void load(final ModelData loadConfig,
+                                final AsyncCallback<List<ModelData>> callback) {
+
+                String parentId =
+                  (null==loadConfig) ? _root._id : loadConfig.<String>get("id");
+
+                _qs.getFolderChildren(
+                    parentId,
+                    new AsyncCallback<Collection<FolderSummary>>(){
+
+                    public void onFailure(final Throwable arg0) {
+                        callback.onFailure(arg0);
+                    }
+
+                    public void onSuccess(final Collection<FolderSummary> arg0) {
+                        callback.onSuccess(
+                            DataBinding.bindFolderSummary(arg0));
+                    }
+                });
             }
         };
 
-        final TreeLoader<ResourceDTO> loader =
-            new BaseTreeLoader<ResourceDTO>(proxy) {
+        final TreeLoader<ModelData> loader =
+            new BaseTreeLoader<ModelData>(proxy) {
             @Override
-            public boolean hasChildren(final ResourceDTO parent) {
-                if (parent.getType().equals("FOLDER")) {
+            public boolean hasChildren(final ModelData parent) {
+                if (parent.<String>get("type").equals("FOLDER")) {
                     return true;
                 }
                 return false;
             }
         };
 
-        _store = new TreeStore<ResourceDTO>(loader);
+        _store = new TreeStore<ModelData>(loader);
 
 
-        final TreeBinder<ResourceDTO> binder =
-            new TreeBinder<ResourceDTO>(this, _store) {
+        final TreeBinder<ModelData> binder =
+            new TreeBinder<ModelData>(this, _store) {
             @Override
             protected void update(final TreeItem item,
-                                  final ResourceDTO model) {
+                                  final ModelData model) {
                 super.update(item, model);
-                item.setId(model.getName());
+                item.setId(model.<String>get("name"));
             }
         };
         binder.setCaching(false);
-        binder.setIconProvider(new ModelStringProvider<ResourceDTO>() {
-            public String getStringValue(final ResourceDTO model,
+        binder.setIconProvider(new ModelStringProvider<ModelData>() {
+            public String getStringValue(final ModelData model,
                                          final String property) {
-                if (model.getType().equals("FOLDER")) {
+                if (model.<String>get("type").equals("FOLDER")) {
                     return "images/gxt/icons/folder.gif";
-                } else if (model.getType().equals("PAGE")
-                        || model.getType().equals("ALIAS")) {
+                } else if (model.<String>get("type").equals("PAGE")
+                        || model.<String>get("type").equals("ALIAS")) {
                     return "images/gxt/icons/columns.gif"; // Replace with page
                 } else {
                     return null;
@@ -112,7 +129,7 @@ public class ResourceTree extends Tree {
      *
      * @return The internal store.
      */
-    public TreeStore<ResourceDTO> store() {
+    public TreeStore<ModelData> store() {
         return _store;
     }
 }

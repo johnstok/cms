@@ -25,7 +25,7 @@ import ccc.services.api.ResourceSummary;
  *
  * @author Civic Computing Ltd.
  */
-public class ModelTransalation {
+public class ModelTranslation {
 
     /**
      * Map a collection of Folder to a collection of FolderSummary.

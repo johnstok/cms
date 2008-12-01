@@ -11,13 +11,10 @@
  */
 package ccc.contentcreator.client.dialogs;
 
-import ccc.contentcreator.api.ResourceServiceAsync;
-import ccc.contentcreator.api.Root;
 import ccc.contentcreator.client.ResourceTree;
-import ccc.contentcreator.dto.FolderDTO;
-import ccc.contentcreator.dto.ResourceDTO;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.Window;
@@ -39,15 +36,14 @@ public class ResourceSelectionDialog extends Window {
      *
      * @param rsa ResourceServiceAsync
      */
-    ResourceSelectionDialog(final ResourceServiceAsync rsa) {
+    ResourceSelectionDialog() {
         setBodyBorder(false);
-        setInsetBorder(false);
         setScrollMode(Scroll.AUTOY);
         setHeading("Select a folder"); // TODO: Move to UIConstants
         setWidth(400);
         setHeight(225);
         setLayout(new FitLayout());
-        _tree = new ResourceTree(rsa, Root.CONTENT);
+        _tree = new ResourceTree(null); // FIXME: Erm...
         add(_tree);
         final Button save = new Button(
             "OK", // TODO: Move to UIConstants
@@ -69,10 +65,10 @@ public class ResourceSelectionDialog extends Window {
      *
      * @return Returns the selected folder as {@link FolderDTO}
      */
-    ResourceDTO selectedResource() {
+    ModelData selectedResource() {
         return
             (null==_tree.getSelectedItem())
                 ? null
-                : (ResourceDTO) _tree.getSelectedItem().getModel();
+                : _tree.getSelectedItem().getModel();
     }
 }

@@ -14,8 +14,8 @@ package ccc.contentcreator.client;
 import java.util.List;
 
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.dto.FolderDTO;
 
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 
 
@@ -94,13 +94,13 @@ public class Validations {
      * @param name Resource name
      * @return The Validator
      */
-    public static Validator uniqueResourceName(final FolderDTO folder,
+    public static Validator uniqueResourceName(final ModelData folder,
                                          final TextField<String> name) {
 
         return new Validator() {
             public void validate(final Validate validate) {
-                Globals.resourceService().nameExistsInFolder(
-                    folder,
+                Globals.queriesService().nameExistsInFolder(
+                    folder.<String>get("id"),
                     name.getValue(),
                     new ErrorReportingCallback<Boolean>(){
                         public void onSuccess(final Boolean nameExists) {
@@ -148,7 +148,7 @@ public class Validations {
                                                final TextField<String> name) {
         return new Validator() {
             public void validate(final Validate validate) {
-                Globals.resourceService().nameExistsInParentFolder(
+                Globals.queriesService().nameExistsInParentFolder(
                     id,
                     name.getValue(),
                     new ErrorReportingCallback<Boolean>(){

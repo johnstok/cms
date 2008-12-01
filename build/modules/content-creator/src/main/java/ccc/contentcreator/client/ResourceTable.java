@@ -17,17 +17,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import ccc.contentcreator.api.Action;
-import ccc.contentcreator.api.CommandService;
-import ccc.contentcreator.api.CommandServiceAsync;
-import ccc.contentcreator.api.JsonModelData;
-import ccc.contentcreator.api.QueriesService;
-import ccc.contentcreator.api.QueriesServiceAsync;
-import ccc.contentcreator.api.ResourceMgr;
-import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.dialogs.ChooseTemplateDialog;
 import ccc.contentcreator.client.dialogs.CreateAliasDialog;
 import ccc.contentcreator.client.dialogs.EditAliasDialog;
 import ccc.contentcreator.client.dialogs.EditTemplateDialog;
@@ -37,10 +28,8 @@ import ccc.contentcreator.client.dialogs.RenameDialog;
 import ccc.contentcreator.client.dialogs.TableDataDisplayDialog;
 import ccc.contentcreator.client.dialogs.UpdatePageDialog;
 import ccc.contentcreator.client.dialogs.UpdateTagsDialog;
-import ccc.contentcreator.dto.DTO;
-import ccc.contentcreator.dto.OptionDTO;
-import ccc.contentcreator.dto.ResourceDTO;
 import ccc.services.api.FolderSummary;
+import ccc.services.api.LogEntrySummary;
 import ccc.services.api.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Events;
@@ -51,7 +40,6 @@ import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
-import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
@@ -60,9 +48,6 @@ import com.extjs.gxt.ui.client.widget.table.TableColumn;
 import com.extjs.gxt.ui.client.widget.table.TableColumnModel;
 import com.extjs.gxt.ui.client.widget.table.TableItem;
 import com.extjs.gxt.ui.client.widget.tree.TreeItem;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
@@ -73,15 +58,14 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  *
  * @author Civic Computing Ltd.
  */
-public class ResourceTable extends ContentPanel {
+public class ResourceTable extends TablePanel {
 
     private final UIConstants _constants = Globals.uiConstants();
     private final ListStore<ModelData> _detailsStore =
         new ListStore<ModelData>();
     private TreeItem _previousItem = null;
     private final FolderSummary _root;
-    private final CommandServiceAsync _cs =
-        GWT.create(CommandService.class); // TODO: refactor.
+
 
     /**
      * Constructor.
@@ -194,18 +178,24 @@ public class ResourceTable extends ContentPanel {
         lockResource.addSelectionListener(new SelectionListener<MenuEvent>() {
 
             @Override public void componentSelected(final MenuEvent ce) {
-                final ResourceDTO item =
-                    (ResourceDTO) tbl.getSelectedItem().getModel();
-                new ResourceMgr().publish(item.getId(),
-                    new Action<JSONValue>() {
-                    public void execute(final JSONValue inputData) {
-                        final JsonModelData md =
-                            JsonModelData.fromObject(inputData);
-                        item.set("published", md.get("published"));
-                        detailsStore().update(item);
-                    }});
-            }
+                final ModelData item =
+                    tbl.getSelectedItem().getModel();
 
+                _cs.publish(
+                    item.<String>get("id"),
+                    new AsyncCallback<ResourceSummary>(){
+
+                        public void onFailure(final Throwable arg0) {
+                            Globals.unexpectedError(arg0);
+                        }
+
+                        public void onSuccess(final ResourceSummary arg0) {
+                            DataBinding.merge(item, arg0);
+                            detailsStore().update(item);
+                        }
+                    }
+                );
+            }
         });
         contextMenu.add(lockResource);
     }
@@ -225,16 +215,22 @@ public class ResourceTable extends ContentPanel {
             @Override public void componentSelected(final MenuEvent ce) {
                 final ModelData item =
                     tbl.getSelectedItem().getModel();
-                new ResourceMgr().unpublish(item.<String>get("id"),
-                    new Action<JSONValue>() {
-                    public void execute(final JSONValue inputData) {
-                        final JsonModelData md =
-                            JsonModelData.fromObject(inputData);
-                        item.set("published", md.get("published"));
-                        detailsStore().update(item);
-                    }});
-            }
 
+                _cs.unpublish(
+                    item.<String>get("id"),
+                    new AsyncCallback<ResourceSummary>(){
+
+                        public void onFailure(final Throwable arg0) {
+                            Globals.unexpectedError(arg0);
+                        }
+
+                        public void onSuccess(final ResourceSummary arg0) {
+                            DataBinding.merge(item, arg0);
+                            detailsStore().update(item);
+                        }
+                    }
+                );
+            }
         });
         contextMenu.add(lockResource);
     }
@@ -253,26 +249,25 @@ public class ResourceTable extends ContentPanel {
         chooseTemplate.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override
             public void componentSelected(final MenuEvent ce) {
-                final ResourceServiceAsync resourceService =
-                    Globals.resourceService();
 
                 final ModelData item =
                     tbl.getSelectedItem().getModel();
 
                 if ("PAGE".equals(item.<String>get("type"))
                     || "FOLDER".equals(item.<String>get("type"))) {
-                    resourceService.listTemplateOptionsForResource(
-                        /* item, */ null, // TODO: Fix
-                        new AsyncCallback<List<OptionDTO<? extends DTO>>>(){
-
-                            public void onFailure(final Throwable arg0) {
-                                Window.alert(Globals.uiConstants().error());
-                            }
-
-                            public void onSuccess(
-                            final List<OptionDTO<? extends DTO>> options) {
-                                new ChooseTemplateDialog(options, item).show();
-                            }});
+                    // FIXME: Erm.
+//                    resourceService.listTemplateOptionsForResource(
+//                        /* item, */ null, // TODO: Fix
+//                        new AsyncCallback<List<OptionDTO<? extends DTO>>>(){
+//
+//                            public void onFailure(final Throwable arg0) {
+//                                Window.alert(Globals.uiConstants().error());
+//                            }
+//
+//                            public void onSuccess(
+//                            final List<OptionDTO<? extends DTO>> options) {
+//                                new ChooseTemplateDialog(options, item).show();
+//                            }});
 
                 } else {
                   Globals.alert("Template cannot be chosen for this resource.");
@@ -354,8 +349,8 @@ public class ResourceTable extends ContentPanel {
             @Override public void componentSelected(final MenuEvent ce) {
                 final ModelData item =
                     tbl.getSelectedItem().getModel();
-                Globals.resourceService().getAbsolutePath(
-                    /* item, */ null, //TODO: broken
+                qs.getAbsolutePath(
+                    item.<String>get("id"),
                     new ErrorReportingCallback<String>() {
                         public void onSuccess(final String arg0) {
                             new PreviewContentDialog(arg0).center();
@@ -407,13 +402,18 @@ public class ResourceTable extends ContentPanel {
             @Override public void componentSelected(final MenuEvent ce) {
                 final ModelData item =
                     tbl.getSelectedItem().getModel();
-                new ResourceMgr().unlock(item.<String>get("id"), new Action<JSONValue>() {
-                    public void execute(final JSONValue inputData) {
-                        final JsonModelData md =
-                            JsonModelData.fromObject(inputData);
-                        item.set("locked", md.get("locked"));
-                        detailsStore().update(item);
-                    }});
+                _cs.unlock(
+                    item.<String>get("id"),
+                    new AsyncCallback<ResourceSummary>(){
+
+                        public void onFailure(final Throwable arg0) {
+                            Globals.unexpectedError(arg0);
+                        }
+
+                        public void onSuccess(final ResourceSummary arg0) {
+                            DataBinding.merge(item, arg0);
+                            detailsStore().update(item);
+                        }});
             }
 
         });
@@ -479,16 +479,24 @@ public class ResourceTable extends ContentPanel {
             @Override public void componentSelected(final MenuEvent ce) {
                 final ModelData item =
                     tbl.getSelectedItem().getModel();
-                new ResourceMgr().history(
+                qs.history(
                     item.<String>get("id"),
-                    new Action<List<JsonModelData>>() {
-                        public void execute(final List<JsonModelData> data) {
+                    new AsyncCallback<Collection<LogEntrySummary>>(){
+
+                        public void onFailure(final Throwable arg0) {
+                            Globals.unexpectedError(arg0);
+                        }
+
+                        public void onSuccess(final Collection<LogEntrySummary> data) {
                             new TableDataDisplayDialog(
                                 "Resource History", data).show(); //TODO: I18n
-                        }});
-            }
+                        }
 
+                    }
+                );
+            }
         });
+
         contextMenu.add(unlockResource);
     }
 
@@ -503,7 +511,7 @@ public class ResourceTable extends ContentPanel {
 
         // TODO: handle getSelectedItem() being null.
         final ModelData f = selectedItem.getModel();
-        final QueriesServiceAsync qs = GWT.create(QueriesService.class); // TODO: factor out.
+
         qs.getChildren(
             f.<String>get("id"),
             new ErrorReportingCallback<Collection<ResourceSummary>>() {

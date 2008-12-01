@@ -12,20 +12,20 @@
 package ccc.contentcreator.client;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.dialogs.EditUserDialog;
-import ccc.contentcreator.dto.UserDTO;
+import ccc.services.api.UserSummary;
 
 import com.extjs.gxt.ui.client.Events;
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
-import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.form.Radio;
 import com.extjs.gxt.ui.client.widget.form.RadioGroup;
 import com.extjs.gxt.ui.client.widget.form.TextField;
@@ -47,11 +47,10 @@ import com.extjs.gxt.ui.client.widget.tree.TreeItem;
  *
  * @author Civic Computing Ltd.
  */
-public class UserTable extends ContentPanel {
+public class UserTable extends TablePanel {
 
-    private final ListStore<UserDTO> _detailsStore =
-        new ListStore<UserDTO>();
-    private final ResourceServiceAsync _rsa = Globals.resourceService();
+    private final ListStore<ModelData> _detailsStore =
+        new ListStore<ModelData>();
 
     private final RadioGroup _radioGroup = new RadioGroup("searchField");
     private final ToolBar _toolBar = new ToolBar();
@@ -83,19 +82,19 @@ public class UserTable extends ContentPanel {
                 _detailsStore.removeAll();
 
                 if (_radioGroup.getValue() == _usernameRadio) {
-                    _rsa.listUsersWithUsername(
+                    qs.listUsersWithUsername(
                         searchString.getValue().replace('*', '%'),
-                        new ErrorReportingCallback<List<UserDTO>>() {
-                            public void onSuccess(final List<UserDTO> result) {
-                                _detailsStore.add(result);
+                        new ErrorReportingCallback<Collection<UserSummary>>() {
+                            public void onSuccess(final Collection<UserSummary> result) {
+                                _detailsStore.add(DataBinding.bindUserSummary(result));
                             }
                         });
                 } else if (_radioGroup.getValue() == _emailRadio) {
-                    _rsa.listUsersWithEmail(
+                    qs.listUsersWithEmail(
                         searchString.getValue().replace('*', '%'),
-                        new ErrorReportingCallback<List<UserDTO>>() {
-                            public void onSuccess(final List<UserDTO> result) {
-                                _detailsStore.add(result);
+                        new ErrorReportingCallback<Collection<UserSummary>>() {
+                            public void onSuccess(final Collection<UserSummary> result) {
+                                _detailsStore.add(DataBinding.bindUserSummary(result));
                             }
                         });
                 }
@@ -140,7 +139,7 @@ public class UserTable extends ContentPanel {
 
         final ColumnModel cm = new ColumnModel(configs);
 
-        final Grid<UserDTO> grid = new Grid<UserDTO>(_detailsStore, cm);
+        final Grid<ModelData> grid = new Grid<ModelData>(_detailsStore, cm);
         grid.setLoadMask(true);
         grid.setId("UserGrid");
 
@@ -152,9 +151,9 @@ public class UserTable extends ContentPanel {
 
             @Override
             public void componentSelected(final MenuEvent ce) {
-                final UserDTO userDTO =
+                final ModelData userDTO =
                     grid.getSelectionModel().getSelectedItem();
-                new EditUserDialog(userDTO, UserTable.this).show();
+                new EditUserDialog(null, UserTable.this).show(); // FIXME: look up delta
             }
 
         });
@@ -181,34 +180,34 @@ public class UserTable extends ContentPanel {
         }
 
         if ("All".equals(selectedItem.getText())) {
-            _rsa.listUsers(
-                new ErrorReportingCallback<List<UserDTO>>() {
-                    public void onSuccess(final List<UserDTO> result) {
-                        _detailsStore.add(result);
+            qs.listUsers(
+                new ErrorReportingCallback<Collection<UserSummary>>() {
+                    public void onSuccess(final Collection<UserSummary> result) {
+                        _detailsStore.add(DataBinding.bindUserSummary(result));
                     }
                 });
         } else if ("Content creator".equals(selectedItem.getText())){
-            _rsa.listUsersWithRole(
+            qs.listUsersWithRole(
                 "CONTENT_CREATOR",
-                new ErrorReportingCallback<List<UserDTO>>() {
-                    public void onSuccess(final List<UserDTO> result) {
-                        _detailsStore.add(result);
+                new ErrorReportingCallback<Collection<UserSummary>>() {
+                    public void onSuccess(final Collection<UserSummary> result) {
+                        _detailsStore.add(DataBinding.bindUserSummary(result));
                     }
                 });
         } else if ("Site Builder".equals(selectedItem.getText())) {
-            _rsa.listUsersWithRole(
+            qs.listUsersWithRole(
                 "SITE_BUILDER",
-                new ErrorReportingCallback<List<UserDTO>>() {
-                    public void onSuccess(final List<UserDTO> result) {
-                        _detailsStore.add(result);
+                new ErrorReportingCallback<Collection<UserSummary>>() {
+                    public void onSuccess(final Collection<UserSummary> result) {
+                        _detailsStore.add(DataBinding.bindUserSummary(result));
                     }
                 });
         } else if("Administrator".equals(selectedItem.getText())) {
-            _rsa.listUsersWithRole(
+            qs.listUsersWithRole(
                 "ADMINISTRATOR",
-                new ErrorReportingCallback<List<UserDTO>>() {
-                    public void onSuccess(final List<UserDTO> result) {
-                        _detailsStore.add(result);
+                new ErrorReportingCallback<Collection<UserSummary>>() {
+                    public void onSuccess(final Collection<UserSummary> result) {
+                        _detailsStore.add(DataBinding.bindUserSummary(result));
                     }
                 });
         }

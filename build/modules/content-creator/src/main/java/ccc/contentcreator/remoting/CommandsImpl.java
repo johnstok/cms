@@ -18,6 +18,7 @@ import ccc.services.api.FolderSummary;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
+import ccc.services.api.TemplateSummary;
 import ccc.services.api.UserDelta;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -96,6 +97,12 @@ public class CommandsImpl
         return _delegate.lock(resourceId);
     }
 
+    /** {@inheritDoc} */
+    public void logout() {
+
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
     /**
      * @param resourceId
      * @param version
@@ -136,6 +143,12 @@ public class CommandsImpl
     public ResourceSummary unlock(final String resourceId) {
 
         return _delegate.unlock(resourceId);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override public ResourceSummary unpublish(final String resourceId) {
+        return _delegate.unpublish(resourceId);
     }
 
     /**
@@ -190,11 +203,11 @@ public class CommandsImpl
      * @param delta
      * @see ccc.services.api.Commands#updateTemplate(java.lang.String, long, ccc.services.api.TemplateDelta)
      */
-    public void updateTemplate(final String templateId,
+    public TemplateSummary updateTemplate(final String templateId,
                                final long version,
                                final TemplateDelta delta) {
 
-        _delegate.updateTemplate(templateId, version, delta);
+        return _delegate.updateTemplate(templateId, version, delta);
     }
 
     /**
@@ -207,6 +220,4 @@ public class CommandsImpl
 
         _delegate.updateUser(userId, version, delta);
     }
-
-
 }

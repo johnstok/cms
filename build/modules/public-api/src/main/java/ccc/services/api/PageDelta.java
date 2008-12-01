@@ -20,5 +20,7 @@ import java.io.Serializable;
  * @author Civic Computing Ltd.
  */
 public class PageDelta implements Serializable {
-
+    public String _name;
+    public String _title;
+    public String[][] _paragraphs;
 }

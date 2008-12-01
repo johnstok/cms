@@ -17,8 +17,7 @@ import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.ResourceTable;
 import ccc.contentcreator.client.Validate;
 import ccc.contentcreator.client.Validations;
-import ccc.contentcreator.dto.AliasDTO;
-import ccc.contentcreator.dto.ResourceDTO;
+import ccc.services.api.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -41,8 +40,8 @@ public class EditAliasDialog extends AbstractEditDialog {
     private final TriggerField<String> _targetName =
         new TriggerField<String>();
 
-    private ResourceDTO _target = null;
-    private AliasDTO _alias = null;
+    private ModelData _target = null;
+    private ModelData _alias = null;
     private final ResourceTable _rt;
 
     /**
@@ -54,7 +53,7 @@ public class EditAliasDialog extends AbstractEditDialog {
     public EditAliasDialog(final ModelData item, final ResourceTable rt) {
         super(Globals.uiConstants().updateAlias());
         _rt = rt;
-        _alias = (AliasDTO) item;
+        _alias = item;
         setLayout(new FitLayout());
 
         setPanelId("AliasPanel");
@@ -75,22 +74,22 @@ public class EditAliasDialog extends AbstractEditDialog {
             new Listener<ComponentEvent>(){
                 public void handleEvent(final ComponentEvent be) {
                     final ResourceSelectionDialog resourceSelect =
-                        new ResourceSelectionDialog(Globals.resourceService());
+                        new ResourceSelectionDialog();
                     resourceSelect.addListener(Events.Close,
                         new Listener<ComponentEvent>() {
                         public void handleEvent(final ComponentEvent be) {
                             _target = resourceSelect.selectedResource();
-                            _targetName.setValue(_target.getName());
+                            _targetName.setValue(_target.<String>get("name"));
                         }});
                     resourceSelect.show();
                 }});
         addField(_targetName);
 
-        resourceService().getResource(
-            _alias.getTargetId(), new ErrorReportingCallback<ResourceDTO>() {
-
-                public void onSuccess(final ResourceDTO result) {
-                    _targetName.setValue(result.getName());
+        queries().resource(
+            _alias.<String>get("targetId"),
+            new ErrorReportingCallback<ResourceSummary>() {
+                public void onSuccess(final ResourceSummary result) {
+                    _targetName.setValue(result._name);
                 }
 
             });
@@ -114,9 +113,10 @@ public class EditAliasDialog extends AbstractEditDialog {
     private Runnable createAlias() {
         return new Runnable() {
             public void run() {
-                Globals.resourceService().updateAlias(
-                    _target,
-                    _alias.getId(),
+                commands().updateAlias(
+                    _alias.<String>get("id"),
+                    _alias.<Long>get("version"),
+                    _alias.<String>get("targetId"),
                     new ErrorReportingCallback<Void>(){
                         public void onSuccess(final Void result) {
                             _rt.refreshTable();

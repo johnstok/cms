@@ -17,7 +17,7 @@ import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.Validate;
 import ccc.contentcreator.client.Validator;
-import ccc.contentcreator.dto.UserDTO;
+import ccc.services.api.UserDelta;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -100,7 +100,7 @@ public class CreateUserDialog extends AbstractEditDialog {
     private Validator uniqueUsername(final String username) {
         return new Validator() {
             public void validate(final Validate validate) {
-                Globals.resourceService().usernameExists(
+                Globals.queriesService().usernameExists(
                     username,
                     new ErrorReportingCallback<Boolean>(){
                         public void onSuccess(final Boolean exists) {
@@ -149,13 +149,14 @@ public class CreateUserDialog extends AbstractEditDialog {
     private Runnable createUser() {
         return new Runnable() {
             public void run() {
-                final UserDTO userDto = new UserDTO();
-                userDto.setUsername(_username.getValue());
-                userDto.setEmail(_email.getValue());
 
-                Globals.resourceService().createUser(
-                    userDto,
-                    _password1.getValue(),
+                final UserDelta delta = new UserDelta();
+                delta._username = _username.getValue();
+                delta._email = _email.getValue();
+                delta._password = _password1.getValue();
+
+                Globals.commandService().createUser(
+                    delta,
                     new ErrorReportingCallback<Void>() {
                         public void onSuccess(final Void result) {
                             // TODO: Refresh the main window.

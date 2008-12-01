@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.api;
+package ccc.contentcreator.client.dialogs;
 
 
 /**

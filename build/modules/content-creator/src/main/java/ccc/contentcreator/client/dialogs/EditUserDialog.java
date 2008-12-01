@@ -22,7 +22,7 @@ import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.UserTable;
 import ccc.contentcreator.client.Validate;
 import ccc.contentcreator.client.Validator;
-import ccc.contentcreator.dto.UserDTO;
+import ccc.services.api.UserDelta;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -43,7 +43,7 @@ public class EditUserDialog extends AbstractEditDialog {
     private final TextField<String> _password1 = new TextField<String>();
     private final TextField<String> _password2 = new TextField<String>();
 
-    private UserDTO _userDTO = new UserDTO();
+    private UserDelta _userDTO = new UserDelta();
     private CheckBoxGroup _checkGroup = new CheckBoxGroup();
     private final UserTable _userTable;
 
@@ -55,7 +55,7 @@ public class EditUserDialog extends AbstractEditDialog {
      * @param userDTO The userDTO of the selected user.
      * @param userTable The user table.
      */
-    public EditUserDialog(final UserDTO userDTO, final UserTable userTable) {
+    public EditUserDialog(final UserDelta userDTO, final UserTable userTable) {
         super(Globals.uiConstants().editUser());
 
         _userTable = userTable;
@@ -64,13 +64,13 @@ public class EditUserDialog extends AbstractEditDialog {
         _username.setFieldLabel(constants().username());
         _username.setAllowBlank(false);
         _username.setId(constants().username());
-        _username.setValue(_userDTO.getUsername());
+        _username.setValue(_userDTO._username);
         addField(_username);
 
         _email.setFieldLabel(constants().email());
         _email.setAllowBlank(false);
         _email.setId(constants().email());
-        _email.setValue(_userDTO.getEmail());
+        _email.setValue(_userDTO._email);
         addField(_email);
 
         _password1.setPassword(true);
@@ -83,7 +83,7 @@ public class EditUserDialog extends AbstractEditDialog {
         _password2.setId(constants().confirmPassword());
         addField(_password2);
 
-        final Set<String> userRoles = _userDTO.getRoles();
+        final Set<String> userRoles = _userDTO._roles;
 
         final CheckBox check1 = new CheckBox();
         check1.setBoxLabel(constants().contentCreator());
@@ -146,26 +146,28 @@ public class EditUserDialog extends AbstractEditDialog {
     private Runnable updateUser() {
         return new Runnable() {
             public void run() {
-                _userDTO.setUsername(_username.getValue());
-                _userDTO.setEmail(_email.getValue());
+                _userDTO._username = _username.getValue();
+                _userDTO._email = _email.getValue();
                 final Set<String> roles = new HashSet<String>();
                 for (final CheckBox box : _checkGroup.getValues()) {
                     roles.add((String) box.getData(ROLE));
                 }
-                _userDTO.setRoles(roles);
+                _userDTO._roles = roles;
 
                 String password = null;
                 if (null != _password1.getValue()
                         && _password1.getValue().trim().equals("")) {
                     password = _password1.getValue();
                 }
+                _userDTO._password = password;
 
-                Globals.resourceService().updateUser(
+                commands().updateUser( // FIXME: Erm...
+                    /* _userId, */ null,
+                    /* _userVersion, */ -1,
                     _userDTO,
-                    password,
                     new ErrorReportingCallback<Void>() {
                         public void onSuccess(final Void result) {
-                            _userTable.refreshUsers();
+                            _userTable.refreshUsers(); // TODO: Just update the row + datastore
                             close();
                         }
                     }
@@ -181,15 +183,14 @@ public class EditUserDialog extends AbstractEditDialog {
      * @param username The username to check.
      * @return A new instance of the username validator.
      */
-    private Validator uniqueUsername(
-                                     final UserDTO userDTO,
+    private Validator uniqueUsername(final UserDelta userDTO,
                                      final String username) {
         return new Validator() {
             public void validate(final Validate validate) {
-                if (userDTO.getUsername().equals(username)) {
+                if (userDTO._username.equals(username)) {
                     validate.next();
                 } else {
-                    Globals.resourceService().usernameExists(
+                    queries().usernameExists(
                         username,
                         new ErrorReportingCallback<Boolean>(){
                             public void onSuccess(final Boolean exists) {

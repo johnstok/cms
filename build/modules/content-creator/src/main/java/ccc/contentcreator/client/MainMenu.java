@@ -11,17 +11,11 @@
  */
 package ccc.contentcreator.client;
 
-import java.util.List;
-
-import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.dialogs.CreateUserDialog;
 import ccc.contentcreator.client.dialogs.EditTemplateDialog;
-import ccc.contentcreator.client.dialogs.UpdateOptionsDialog;
-import ccc.contentcreator.dto.DTO;
-import ccc.contentcreator.dto.OptionDTO;
-import ccc.contentcreator.dto.UserDTO;
+import ccc.services.api.UserSummary;
 
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -91,10 +85,10 @@ public class MainMenu
         createUser.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override
             public void componentSelected(final MenuEvent ce) {
-                Globals.resourceService().loggedInUser(
-                    new ErrorReportingCallback<UserDTO>() {
-                    public void onSuccess(final UserDTO user) {
-                        if (user.getRoles().contains("ADMINISTRATOR")) {
+                Globals.queriesService().loggedInUser(
+                    new ErrorReportingCallback<UserSummary>() {
+                    public void onSuccess(final UserSummary user) {
+                        if (user._roles.contains("ADMINISTRATOR")) {
                             new CreateUserDialog().show();
                         } else {
                             Globals.alert(_constants.notAllowedAction());
@@ -111,7 +105,7 @@ public class MainMenu
         final Menu toolsMenu = new Menu();
         tools.setMenu(toolsMenu);
 
-        createUpdateOptionsItem(toolsMenu);
+//        createUpdateOptionsItem(toolsMenu);
         createLogoutItem(toolsMenu);
 
 
@@ -121,32 +115,32 @@ public class MainMenu
         add(help);
     }
 
-    private void createUpdateOptionsItem(final Menu toolsMenu) {
-
-        final MenuItem updateOptions = new MenuItem();
-        updateOptions.setId("update-options-menu-item");
-        updateOptions.setText(_constants.options());
-        updateOptions.addSelectionListener(new SelectionListener<MenuEvent>() {
-            @Override
-            public void componentSelected(final MenuEvent ce) {
-                final ResourceServiceAsync resourceService =
-                    Globals.resourceService();
-
-                resourceService.listOptions(
-                 new AsyncCallback<List<OptionDTO<? extends DTO>>>(){
-
-                     public void onFailure(final Throwable arg0) {
-                         Window.alert(_constants.error());
-                     }
-
-                     public void onSuccess(
-                                final List<OptionDTO<? extends DTO>> options) {
-                         new UpdateOptionsDialog(options).show();
-                     }});
-            }
-        });
-        toolsMenu.add(updateOptions);
-    }
+//    private void createUpdateOptionsItem(final Menu toolsMenu) {
+//
+//        final MenuItem updateOptions = new MenuItem();
+//        updateOptions.setId("update-options-menu-item");
+//        updateOptions.setText(_constants.options());
+//        updateOptions.addSelectionListener(new SelectionListener<MenuEvent>() {
+//            @Override
+//            public void componentSelected(final MenuEvent ce) {
+//                final ResourceServiceAsync resourceService =
+//                    Globals.resourceService();
+//
+//                Globals.queriesService().listOptions(
+//                 new AsyncCallback<List<OptionDTO<? extends DTO>>>(){
+//
+//                     public void onFailure(final Throwable arg0) {
+//                         Window.alert(_constants.error());
+//                     }
+//
+//                     public void onSuccess(
+//                                final List<OptionDTO<? extends DTO>> options) {
+//                         new UpdateOptionsDialog(options).show();
+//                     }});
+//            }
+//        });
+//        toolsMenu.add(updateOptions);
+//    }
 
     private void createLogoutItem(final Menu menu) {
 
@@ -156,10 +150,7 @@ public class MainMenu
         item.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override
             public void componentSelected(final MenuEvent ce) {
-                final ResourceServiceAsync resourceService =
-                    Globals.resourceService();
-
-                resourceService.logout(
+                Globals.commandService().logout(
                     new AsyncCallback<Void>(){
 
                         public void onFailure(final Throwable arg0) {

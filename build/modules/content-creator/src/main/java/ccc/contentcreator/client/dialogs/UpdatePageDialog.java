@@ -12,24 +12,16 @@
 
 package ccc.contentcreator.client.dialogs;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.EditPagePanel;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.ResourceTable;
-import ccc.contentcreator.dto.PageDTO;
-import ccc.contentcreator.dto.ParagraphDTO;
-import ccc.contentcreator.dto.TemplateDTO;
+import ccc.services.api.PageDelta;
+import ccc.services.api.TemplateSummary;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.button.Button;
-import com.extjs.gxt.ui.client.widget.form.DateField;
-import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -47,7 +39,7 @@ public class UpdatePageDialog
 
     private final String _resourceId;
     private final EditPagePanel _panel = new EditPagePanel();
-    private PageDTO _page = null;
+    private PageDelta _page = null;
     private final ResourceTable _rt;
 
     private final AsyncCallback<Void> _saveCompletedCallback =
@@ -61,30 +53,30 @@ public class UpdatePageDialog
             }
         };
 
-      private final AsyncCallback<TemplateDTO> _lookupTemplateCallback =
-            new ErrorReportingCallback<TemplateDTO>() {
+      private final AsyncCallback<TemplateSummary> _lookupTemplateCallback =
+            new ErrorReportingCallback<TemplateSummary>() {
 
             /** {@inheritDoc} */
-            public void onSuccess(final TemplateDTO template) {
+            public void onSuccess(final TemplateSummary template) {
                 if (template == null) {
                     Globals.alert(constants().noTemplateFound());
                     close();
                 } else {
-                    panel().createFields(template.getDefinition());
+                    panel().createFields(template._definition);
                     panel().populateFields(page());
                     panel().layout(); // Refresh UI when callback is done
                 }
             }
         };
 
-       private final AsyncCallback<PageDTO> _lookupPageCallback =
-            new ErrorReportingCallback<PageDTO>() {
+       private final AsyncCallback<PageDelta> _lookupPageCallback =
+            new ErrorReportingCallback<PageDelta>() {
 
             /** {@inheritDoc} */
-            public void onSuccess(final PageDTO page) {
+            public void onSuccess(final PageDelta page) {
                 page(page);
-                resourceService()
-                    .getTemplateForResource(page, lookupTemplateCallback());
+                queries()
+                    .getTemplateForResource(null, lookupTemplateCallback()); // FIXME: needs pageId
 
             }
         };
@@ -123,7 +115,7 @@ public class UpdatePageDialog
 
         addButton(createSaveButton());
 
-        resourceService().getResource(_resourceId, _lookupPageCallback);
+//        queries().resource(_resourceId, _lookupPageCallback); // FIXME: Should get PageDelta?
     }
 
     private Button createSaveButton() {
@@ -139,29 +131,31 @@ public class UpdatePageDialog
                         return;
                     }
 
-                    final Map<String, ParagraphDTO> paragraphs =
-                        new HashMap<String, ParagraphDTO>();
+                    PageDelta pd = new PageDelta();
 
-                    final List<Component> definitions =
-                        panel().definitionItems();
-                    for (final Component c : definitions) {
-                        if ("TEXT".equals(c.getData("type"))) {
-                            final Field<String> f = (Field<String>) c;
-                            final ParagraphDTO p =
-                                new ParagraphDTO("TEXT", f.getValue());
-                            paragraphs.put(c.getId(), p);
-                        } else if ("DATE".equals(c.getData("type"))) {
-                            final DateField f = (DateField) c;
-                            final ParagraphDTO p = new ParagraphDTO(
-                                "DATE", ""+f.getValue().getTime());
-                            paragraphs.put(c.getId(), p);
-                        }
-                    }
+//                    final Map<String, ParagraphDTO> paragraphs =
+//                        new HashMap<String, ParagraphDTO>();
+//
+//                    final List<Component> definitions =
+//                        panel().definitionItems();
+//                    for (final Component c : definitions) {
+//                        if ("TEXT".equals(c.getData("type"))) {
+//                            final Field<String> f = (Field<String>) c;
+//                            final ParagraphDTO p =
+//                                new ParagraphDTO("TEXT", f.getValue());
+//                            paragraphs.put(c.getId(), p);
+//                        } else if ("DATE".equals(c.getData("type"))) {
+//                            final DateField f = (DateField) c;
+//                            final ParagraphDTO p = new ParagraphDTO(
+//                                "DATE", ""+f.getValue().getTime());
+//                            paragraphs.put(c.getId(), p);
+//                        }
+//                    }
 
-                    resourceService().saveContent(
+                    commands().updatePage(
                         resourceId(),
-                        panel().title().getValue(),
-                        paragraphs,
+                        -1, // FIXME: Erm...
+                        pd,
                         saveCompletedCallback());
                 }
             });
@@ -195,7 +189,7 @@ public class UpdatePageDialog
      *
      * @return Returns the _page.
      */
-    protected PageDTO page() {
+    protected PageDelta page() {
         return _page;
     }
 
@@ -205,7 +199,7 @@ public class UpdatePageDialog
      *
      * @param page The _page to set.
      */
-    protected void page(final PageDTO page) {
+    protected void page(final PageDelta page) {
         _page = page;
     }
 
@@ -235,7 +229,7 @@ public class UpdatePageDialog
      *
      * @return Returns the _lookupTemplateCallback.
      */
-    protected AsyncCallback<TemplateDTO> lookupTemplateCallback() {
+    protected AsyncCallback<TemplateSummary> lookupTemplateCallback() {
         return _lookupTemplateCallback;
     }
 
@@ -245,7 +239,7 @@ public class UpdatePageDialog
      *
      * @return Returns the _lookupPageCallback.
      */
-    protected AsyncCallback<PageDTO> lookupPageCallback() {
+    protected AsyncCallback<PageDelta> lookupPageCallback() {
         return _lookupPageCallback;
     }
 }

@@ -18,7 +18,6 @@ import java.util.List;
 
 import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
-import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.services.api.FolderSummary;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
@@ -53,7 +52,7 @@ public class FolderResourceTree extends Tree {
      * @param rsa ResourceServiceAsync.
      * @param root The root of the tree.
      */
-    public FolderResourceTree(final ResourceServiceAsync rsa, final FolderSummary root) {
+    public FolderResourceTree(final FolderSummary root) {
 
         _root = root;
 

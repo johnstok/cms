@@ -13,11 +13,9 @@ package ccc.contentcreator.client;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map.Entry;
 
 import ccc.contentcreator.api.UIConstants;
-import ccc.contentcreator.dto.PageDTO;
-import ccc.contentcreator.dto.ParagraphDTO;
+import ccc.services.api.PageDelta;
 
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.form.DateField;
@@ -38,7 +36,7 @@ import com.google.gwt.xml.client.XMLParser;
  *
  * @author Civic Computing Ltd.
  */
-public class EditPagePanel extends FormPanel {
+public class EditPagePanel extends FormPanel { // FIXME: Should extend CCC class
     private TextField<String> _title = new TextField<String>();
     private TextField<String> _name = new TextField<String>();
 
@@ -75,19 +73,19 @@ public class EditPagePanel extends FormPanel {
     /**
      * Populates fields for editing.
      *
-     * @param page PageDTO of the original page.
+     * @param resourceSummary PageDTO of the original page.
      */
-    public void populateFields(final PageDTO page) {
-        _name.setValue(page.getName());
+    public void populateFields(final PageDelta resourceSummary) {
+        _name.setValue(resourceSummary._name);
         _name.setReadOnly(true);
         _name.disable();
-        _title.setValue(page.getTitle());
+        _title.setValue(resourceSummary._title);
 
-        for (final Entry<String, ParagraphDTO> para : page.getParagraphs().entrySet()) {
+        for (final String[] para : resourceSummary._paragraphs) {
 
             for (final Component c : getItems()) {
-                if (c.getId().equals(para.getKey())) {
-                    final String value = para.getValue().getValue();
+                if (c.getId().equals(para[0])) {
+                    final String value = para[1];
                     if ("TEXT".equals(c.getData("type"))) {
                         final Field<String> f = (Field<String>) c;
                         f.setValue(value);

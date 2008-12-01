@@ -11,8 +11,10 @@
  */
 package ccc.contentcreator.client;
 
-import ccc.contentcreator.api.ResourceService;
-import ccc.contentcreator.api.ResourceServiceAsync;
+import ccc.contentcreator.api.CommandService;
+import ccc.contentcreator.api.CommandServiceAsync;
+import ccc.contentcreator.api.QueriesService;
+import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 
 import com.google.gwt.core.client.GWT;
@@ -39,12 +41,21 @@ public final class Globals {
     }
 
     /**
-     * Factory for {@link ResourceServiceAsync} objects.
+     * Factory for {@link QueriesServiceAsync} objects.
      *
-     * @return A new instance of {@link ResourceServiceAsync}.
+     * @return A new instance of {@link QueriesServiceAsync}.
      */
-    public static ResourceServiceAsync resourceService() {
-        return GWT.create(ResourceService.class);
+    public static QueriesServiceAsync queriesService() {
+        return GWT.create(QueriesService.class);
+    }
+
+    /**
+     * Factory for {@link CommandServiceAsync} objects.
+     *
+     * @return A new instance of {@link CommandServiceAsync}.
+     */
+    public static CommandServiceAsync commandService() {
+        return GWT.create(CommandService.class);
     }
 
     /**

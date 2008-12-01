@@ -15,6 +15,7 @@ import ccc.services.api.FolderSummary;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
+import ccc.services.api.TemplateSummary;
 import ccc.services.api.UserDelta;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -41,13 +42,15 @@ public interface CommandServiceAsync {
 
     void updateResourceTemplate(String resourceId, long version, String templateId, AsyncCallback<Void> callback);
 
-    void updateTemplate(String templateId, long version, TemplateDelta delta, AsyncCallback<Void> callback);
+    void updateTemplate(String templateId, long version, TemplateDelta delta, AsyncCallback<TemplateSummary> callback);
 
     void lock(String resourceId, AsyncCallback<ResourceSummary> callback);
 
     void unlock(String resourceId, AsyncCallback<ResourceSummary> callback);
 
     void publish(String resourceId, AsyncCallback<ResourceSummary> callback);
+
+    void unpublish(String resourceId, AsyncCallback<ResourceSummary> callback);
 
 
 
@@ -62,4 +65,11 @@ public interface CommandServiceAsync {
     void createPage(String parentId, PageDelta delta, String templateId, AsyncCallback<Void> callback);
 
     void createTemplate(String parentId, TemplateDelta delta, AsyncCallback<Void> callback);
+
+
+
+
+
+
+    void logout(AsyncCallback<Void> asyncCallback);
 }
