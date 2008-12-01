@@ -50,12 +50,14 @@ public class LegacyDBQueries {
         final List<ResourceBean> resultList = new ArrayList<ResourceBean>();
         try {
             ps = _connection.prepareStatement(
-                "SELECT CONTENT_ID, CONTENT_TYPE, NAME, PAGE FROM "
-                + "C3_CONTENT, C3_DISPLAY_TEMPLATES WHERE "
-                + "C3_CONTENT.PARENT_ID = ? AND VERSION_ID = 0 AND "
-                + "STATUS = 'PUBLISHED' AND "
-                + "C3_CONTENT.DISPLAY_TEMPLATE_ID = "
-                + "C3_DISPLAY_TEMPLATES.TEMPLATE_ID(+)");
+                "SELECT content_id, content_type, name, page, "
+                + "status, version_id "
+                + "FROM "
+                + "c3_content, c3_display_templates WHERE "
+                + "c3_content.parent_id = ? AND version_id = 0 AND "
+                + "(status = 'PUBLISHED' OR status = 'NEW') AND "
+                + "c3_content.display_template_id = "
+                + "c3_display_templates.template_id(+)");
             ps.setInt(1, i);
             rs = ps.executeQuery();
 
@@ -64,9 +66,16 @@ public class LegacyDBQueries {
                 final String type = rs.getString("CONTENT_TYPE");
                 final String name = rs.getString("NAME");
                 final String displayTemplate = rs.getString("PAGE");
+                final boolean published =
+                    "PUBLISHED".equals(rs.getString("STATUS"));
+                final int legacyVersion = rs.getInt("VERSION_ID");
 
-                resultList.add(new ResourceBean(
-                    contentId, type, name, displayTemplate));
+                resultList.add(new ResourceBean(contentId,
+                                                type,
+                                                name,
+                                                displayTemplate,
+                                                published,
+                                                legacyVersion));
             }
         } catch (final SQLException e) {
             throw new RuntimeException(e);
@@ -91,16 +100,16 @@ public class LegacyDBQueries {
 
         try {
             ps = _connection.prepareStatement(
-                "SELECT * FROM  C3_PARAGRAPHS "
-                + "WHERE C3_PARAGRAPHS.PAGE_ID = ? "
-                + "AND VERSION_ID = 0 ORDER BY SEQ");
+                "SELECT * FROM  c3_paragraphs "
+                + "WHERE c3_paragraphs.page_id = ? "
+                + "AND version_id = 0 ORDER BY seq");
             ps.setInt(1, pageId);
             rs = ps.executeQuery();
 
             // populate map
             while (rs.next()) {
-                final String key = rs.getString("PARA_TYPE");
-                final String text = rs.getString("TEXT");
+                final String key = rs.getString("para_type");
+                final String text = rs.getString("text");
                 resultList.add(new ParagraphBean(key, text));
             }
         } catch (final SQLException e) {
@@ -136,7 +145,7 @@ public class LegacyDBQueries {
                     final User user = new User(userName);
                     selectEmailForUser(user, userId);
                     selectRolesForUser(user, userId);
-                    final UserBean mu = new UserBean(user, password);
+                    final UserBean mu = new UserBean(user, password, userId);
                     resultList.add(mu);
                 } catch (final Exception e) {
                     log.error(e.getMessage());
@@ -229,5 +238,52 @@ public class LegacyDBQueries {
             DbUtils.closeQuietly(rs);
             DbUtils.closeQuietly(ps);
         }
+    }
+
+    /**
+     * Returns legacy user id from c3_version_audit_log.
+     *
+     * @param contentId Content id
+     * @param legacyVersion Version id
+     * @param action Action
+     * @param versionComment Version comment
+     * @return User id as an Integer, null if no user id is found.
+     */
+    public Integer selectUserFromLog(final int contentId,
+                                     final int legacyVersion,
+                                     final String action,
+                                     final String versionComment) {
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+        Integer userId = null;
+
+        try {
+            ps = _connection.prepareStatement(
+                "SELECT user_id FROM c3_version_audit_log "
+                + "WHERE content_id = ? AND "
+                + "version_id = ? AND "
+                + "action = ? AND "
+                + "version_comment = ?");
+            ps.setInt(1, contentId);
+            ps.setInt(2, legacyVersion);
+            ps.setString(3, action);
+            ps.setString(4, versionComment);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                log.debug("FOUND "+contentId +" "+legacyVersion);
+                userId = rs.getInt("user_id");
+                require().toBeFalse(rs.next());
+            } else {
+                log.error("User Id NOT FOUND with content_id: "+contentId
+                    +" version_id"+legacyVersion);
+            }
+        } catch (final SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DbUtils.closeQuietly(rs);
+            DbUtils.closeQuietly(ps);
+        }
+        return userId;
     }
 }

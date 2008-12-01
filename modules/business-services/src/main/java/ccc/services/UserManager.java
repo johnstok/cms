@@ -28,8 +28,9 @@ interface UserManager {
      *
      * @param user The user to be created.
      * @param password The password to be used for the user.
+     * @return Persisted user.
      */
-    void createUser(User user, String password);
+    User createUser(User user, String password);
 
     /**
      * List all users.

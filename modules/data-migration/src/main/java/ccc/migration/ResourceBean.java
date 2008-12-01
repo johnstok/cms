@@ -12,6 +12,8 @@ public class ResourceBean {
     private final String _type;
     private final String _name;
     private final String _displayTemplate;
+    private final boolean _published;
+    private final int _legacyVersion;
 
     /**
      * Constructor.
@@ -20,15 +22,21 @@ public class ResourceBean {
      * @param type type of resource
      * @param name name of resource
      * @param displayTemplate displayTemplate of resource
+     * @param published published true for published resource
+     * @param legacyVersion Legacy version id of the resource
      */
     public ResourceBean(final int contentId,
                         final String type,
                         final String name,
-                        final String displayTemplate) {
+                        final String displayTemplate,
+                        final boolean published,
+                        final int legacyVersion) {
         _contentId = contentId;
         _displayTemplate = displayTemplate;
         _name = name;
         _type = type;
+        _published = published;
+        _legacyVersion = legacyVersion;
     }
 
 
@@ -70,5 +78,23 @@ public class ResourceBean {
     public int contentId() {
 
         return _contentId;
+    }
+
+    /**
+     * Accessor method for boolean value of published status.
+     *
+     * @return True if resource has status PUBLISHED
+     */
+    public boolean isPublished() {
+        return _published;
+    }
+
+    /**
+     * Accessor method for legacyVersion.
+     *
+     * @return Legacy version id of the resource
+     */
+    public int legacyVersion() {
+        return _legacyVersion;
     }
 }
