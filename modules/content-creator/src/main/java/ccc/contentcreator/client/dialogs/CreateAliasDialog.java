@@ -19,8 +19,10 @@ import ccc.contentcreator.client.Validations;
 import ccc.contentcreator.dto.AliasDTO;
 import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.ResourceDTO;
+import ccc.services.api.FolderSummary;
 
 import com.extjs.gxt.ui.client.Events;
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -41,7 +43,7 @@ public class CreateAliasDialog extends AbstractEditDialog {
     private final TriggerField<String> _parentFolder =
         new TriggerField<String>();
 
-    private final ResourceDTO _target;
+    private final ModelData _target;
     private FolderDTO _parent = null;
 
     /**
@@ -49,14 +51,14 @@ public class CreateAliasDialog extends AbstractEditDialog {
      *
      * @param item The ResourceDTO
      */
-    public CreateAliasDialog(final ResourceDTO item) {
+    public CreateAliasDialog(final ModelData item, final FolderSummary root) {
         super(Globals.uiConstants().createAlias());
         setPanelId("AliasPanel");
 
         _target = item;
 
         _targetName.setFieldLabel(constants().target());
-        _targetName.setValue(item.getName());
+        _targetName.setValue(item.<String>get("name"));
         _targetName.setReadOnly(true);
         _targetName.disable();
         addField(_targetName);
@@ -74,7 +76,8 @@ public class CreateAliasDialog extends AbstractEditDialog {
             new Listener<ComponentEvent>(){
                 public void handleEvent(final ComponentEvent be) {
                     final FolderSelectionDialog folderSelect =
-                        new FolderSelectionDialog(Globals.resourceService());
+                        new FolderSelectionDialog(Globals.resourceService(),
+                                                  root);
                     folderSelect.addListener(Events.Close,
                         new Listener<ComponentEvent>() {
                         public void handleEvent(final ComponentEvent be) {
@@ -110,7 +113,7 @@ public class CreateAliasDialog extends AbstractEditDialog {
                     new AliasDTO(
                         _aliasName.getValue(),
                         _aliasName.getValue(),
-                        _target.getId(),
+                        _target.<String>get("id"),
                         "",
                         ""),
                     new DisposingCallback(CreateAliasDialog.this));

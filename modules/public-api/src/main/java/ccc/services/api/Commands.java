@@ -102,7 +102,7 @@ public interface Commands {
     /**
      * Create a folder with the specified name.
      */
-    void createFolder(String parentId, String name);
+    FolderSummary createFolder(String parentId, String name);
 
     /**
      * Create a new user in the system.

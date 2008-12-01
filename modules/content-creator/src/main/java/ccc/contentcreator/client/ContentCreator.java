@@ -1,6 +1,12 @@
 
 package ccc.contentcreator.client;
 
+import java.util.Collection;
+
+import ccc.contentcreator.api.QueriesService;
+import ccc.contentcreator.api.QueriesServiceAsync;
+import ccc.services.api.FolderSummary;
+
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.Viewport;
@@ -9,6 +15,8 @@ import com.extjs.gxt.ui.client.widget.layout.RowData;
 import com.extjs.gxt.ui.client.widget.layout.RowLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 
 
@@ -24,28 +32,41 @@ public final class ContentCreator implements EntryPoint {
 
 //        Globals.enableExitConfirmation();
 
-        final LeftRightPane contentPane = new LeftRightPane();
-        contentPane.setLeftHandPane(
-            new ResourceNavigator(contentPane, Globals.resourceService()));
-        contentPane.setRightHandPane(new ContentPanel());
+        final QueriesServiceAsync qs = GWT.create(QueriesService.class);
 
-         final Viewport vp =
-             layoutMainWindow(
-                 new MainMenu(),
-                 contentPane);
+        qs.roots(new AsyncCallback<Collection<FolderSummary>>(){
 
-        RootPanel.get().add(vp);
+            public void onFailure(final Throwable arg0) {
+                Globals.unexpectedError(arg0);
+            }
+
+            public void onSuccess(final Collection<FolderSummary> arg0) {
+                final LeftRightPane contentPane = new LeftRightPane();
+                contentPane.setLeftHandPane(
+                    new ResourceNavigator(contentPane,
+                                          arg0,
+                                          Globals.resourceService()));
+                contentPane.setRightHandPane(new ContentPanel());
+
+                final Viewport vp =
+                    layoutMainWindow(
+                        new MainMenu(),
+                        contentPane);
+
+                RootPanel.get().add(vp);
+            }});
+
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Lay out the GUI components of the main window.
      *
-     * @param menu
-     * @param content
-     * @return
+     * @param menu The tool-bar for the main menu.
+     * @param content The layout container for the content panel.
+     * @return The layout as a GXT view-port for rendering by the browser.
      */
-    private Viewport layoutMainWindow(final ToolBar menu,
-                                      final LayoutContainer content) {
+    Viewport layoutMainWindow(final ToolBar menu,
+                              final LayoutContainer content) {
 
         final LayoutContainer vp = new LayoutContainer();
          vp.setLayout(new RowLayout());

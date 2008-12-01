@@ -12,8 +12,8 @@
 package ccc.contentcreator.client.dialogs;
 
 import ccc.contentcreator.client.Globals;
-import ccc.contentcreator.dto.ResourceDTO;
 
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
@@ -31,8 +31,8 @@ public class UpdateTagsDialog
         AbstractEditDialog {
 
     private final TextField<String> _tags = new TextField<String>();
-    private final ResourceDTO _resource;
-    private final ListStore<ResourceDTO> _store;
+    private final ModelData _resource;
+    private final ListStore<ModelData> _store;
 
 
     /**
@@ -41,8 +41,8 @@ public class UpdateTagsDialog
      * @param result
      * @param store
      */
-    public UpdateTagsDialog(final ResourceDTO result,
-                            final ListStore<ResourceDTO> store) {
+    public UpdateTagsDialog(final ModelData result,
+                            final ListStore<ModelData> store) {
         super(Globals.uiConstants().updateTags());
         _resource = result;
         _store = store;
@@ -83,7 +83,7 @@ public class UpdateTagsDialog
                 final String tags =
                     (null==_tags.getValue()) ? "" : _tags.getValue();
 
-                resourceService().updateTags(_resource.getId(),
+                resourceService().updateTags(_resource.<String>get("id"),
                                              tags,
                                              new AsyncCallback<Void>(){
                     public void onFailure(final Throwable caught) {

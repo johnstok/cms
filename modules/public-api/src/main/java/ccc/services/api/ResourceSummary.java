@@ -11,12 +11,21 @@
  */
 package ccc.services.api;
 
+import java.io.Serializable;
+
 
 /**
  * TODO: Add Description for this type.
  *
  * @author Civic Computing Ltd.
  */
-public class ResourceSummary {
+public class ResourceSummary implements Serializable {
+
+    public String _id;
+    public String _name;
+    public String _publishedBy;
+    public String _title;
+    public String _lockedBy;
+    public String _type;
 
 }

@@ -14,10 +14,15 @@ package ccc.contentcreator.client;
 import static ccc.contentcreator.client.dialogs.AbstractBaseDialog.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import ccc.contentcreator.api.Action;
+import ccc.contentcreator.api.CommandService;
+import ccc.contentcreator.api.CommandServiceAsync;
 import ccc.contentcreator.api.JsonModelData;
+import ccc.contentcreator.api.QueriesService;
+import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.ResourceMgr;
 import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.api.UIConstants;
@@ -33,14 +38,15 @@ import ccc.contentcreator.client.dialogs.TableDataDisplayDialog;
 import ccc.contentcreator.client.dialogs.UpdatePageDialog;
 import ccc.contentcreator.client.dialogs.UpdateTagsDialog;
 import ccc.contentcreator.dto.DTO;
-import ccc.contentcreator.dto.FolderDTO;
 import ccc.contentcreator.dto.OptionDTO;
 import ccc.contentcreator.dto.ResourceDTO;
-import ccc.contentcreator.dto.TemplateDTO;
+import ccc.services.api.FolderSummary;
+import ccc.services.api.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.binder.TableBinder;
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -54,6 +60,7 @@ import com.extjs.gxt.ui.client.widget.table.TableColumn;
 import com.extjs.gxt.ui.client.widget.table.TableColumnModel;
 import com.extjs.gxt.ui.client.widget.table.TableItem;
 import com.extjs.gxt.ui.client.widget.tree.TreeItem;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -69,14 +76,19 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public class ResourceTable extends ContentPanel {
 
     private final UIConstants _constants = Globals.uiConstants();
-    private final ListStore<ResourceDTO> _detailsStore =
-        new ListStore<ResourceDTO>();
+    private final ListStore<ModelData> _detailsStore =
+        new ListStore<ModelData>();
     private TreeItem _previousItem = null;
+    private final FolderSummary _root;
+    private final CommandServiceAsync _cs =
+        GWT.create(CommandService.class); // TODO: refactor.
 
     /**
      * Constructor.
      */
-    ResourceTable() {
+    ResourceTable(final FolderSummary root) {
+
+        _root = root;
 
         setHeading("Resource Details");
         setLayout(new FitLayout());
@@ -108,15 +120,15 @@ public class ResourceTable extends ContentPanel {
         tbl.setHorizontalScroll(true);
         tbl.setBorders(false);
 
-        final TableBinder<ResourceDTO> binder =
-            new TableBinder<ResourceDTO>(tbl, _detailsStore) {
+        final TableBinder<ModelData> binder =
+            new TableBinder<ModelData>(tbl, _detailsStore) {
 
             /** {@inheritDoc} */
             @Override
-            protected TableItem createItem(final ResourceDTO model) {
+            protected TableItem createItem(final ModelData model) {
 
                 TableItem ti = super.createItem(model);
-                ti.setId(model.getName());
+                ti.setId(model.<String>get("name"));
                 return ti;
             }
         };
@@ -136,27 +148,28 @@ public class ResourceTable extends ContentPanel {
         contextMenu.addListener(Events.BeforeShow, new Listener<MenuEvent>(){
             public void handleEvent(final MenuEvent be) {
                 contextMenu.removeAll();
-                final ResourceDTO item =
-                    (ResourceDTO) tbl.getSelectedItem().getModel();
+                final ModelData item = tbl.getSelectedItem().getModel();
                 addCreateAlias(tbl, contextMenu);
-                if (item.getLocked() == null || "".equals(item.getLocked())) {
+                if (item.get("lockedBy") == null
+                    || "".equals(item.get("lockedBy"))) {
                     addLockResource(tbl, contextMenu);
                 } else {
                     addUnlockResource(tbl, contextMenu);
                 }
-                if (item.getPublished() == null || "".equals(item.getPublished())) {
+                if (item.<String>get("published") == null
+                    || "".equals(item.get("published"))) {
                     addPublishResource(tbl, contextMenu);
                 } else {
                     addUnpublishResource(tbl, contextMenu);
                 }
-                if ("PAGE".equals(item.getType())) {
+                if ("PAGE".equals(item.get("type"))) {
                     addEditResource(tbl, contextMenu);
                     addChooseTemplate(tbl, contextMenu);
-                } else if ("ALIAS".equals(item.getType())) {
+                } else if ("ALIAS".equals(item.get("type"))) {
                     addEditResource(tbl, contextMenu);
-                } else if ("FOLDER".equals(item.getType())) {
+                } else if ("FOLDER".equals(item.get("type"))) {
                     addChooseTemplate(tbl, contextMenu);
-                } else if ("TEMPLATE".equals(item.getType())) {
+                } else if ("TEMPLATE".equals(item.get("type"))) {
                     addEditResource(tbl, contextMenu);
                 }
                 addPreview(tbl, contextMenu);
@@ -210,9 +223,9 @@ public class ResourceTable extends ContentPanel {
         lockResource.addSelectionListener(new SelectionListener<MenuEvent>() {
 
             @Override public void componentSelected(final MenuEvent ce) {
-                final ResourceDTO item =
-                    (ResourceDTO) tbl.getSelectedItem().getModel();
-                new ResourceMgr().unpublish(item.getId(),
+                final ModelData item =
+                    tbl.getSelectedItem().getModel();
+                new ResourceMgr().unpublish(item.<String>get("id"),
                     new Action<JSONValue>() {
                     public void execute(final JSONValue inputData) {
                         final JsonModelData md =
@@ -243,12 +256,13 @@ public class ResourceTable extends ContentPanel {
                 final ResourceServiceAsync resourceService =
                     Globals.resourceService();
 
-                final ResourceDTO item =
-                    (ResourceDTO) tbl.getSelectedItem().getModel();
+                final ModelData item =
+                    tbl.getSelectedItem().getModel();
 
-                if ("PAGE".equals(item.getType())
-                    || "FOLDER".equals(item.getType())) {
-                    resourceService.listTemplateOptionsForResource(item,
+                if ("PAGE".equals(item.<String>get("type"))
+                    || "FOLDER".equals(item.<String>get("type"))) {
+                    resourceService.listTemplateOptionsForResource(
+                        /* item, */ null, // TODO: Fix
                         new AsyncCallback<List<OptionDTO<? extends DTO>>>(){
 
                             public void onFailure(final Throwable arg0) {
@@ -282,17 +296,17 @@ public class ResourceTable extends ContentPanel {
         update.setText(Globals.uiConstants().edit());
         update.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override public void componentSelected(final MenuEvent ce) {
-                    final ResourceDTO item =
-                        (ResourceDTO) tbl.getSelectedItem().getModel();
-                     if ("TEMPLATE".equals(item.getType())) {
-                         new EditTemplateDialog(
-                             (TemplateDTO) item, detailsStore()).show();
-                     } else if ("PAGE".equals(item.getType())) {
-                         new UpdatePageDialog(item.getId(), ResourceTable.this)
+                    final ModelData item = tbl.getSelectedItem().getModel();
+
+                     if ("TEMPLATE".equals(item.get("type"))) {
+                         new EditTemplateDialog(item, detailsStore()).show();
+                     } else if ("PAGE".equals(item.get("type"))) {
+                         new UpdatePageDialog(
+                             item.<String>get("id"),
+                             ResourceTable.this)
                          .show();
-                     } else if ("ALIAS".equals(item.getType())) {
-                         new EditAliasDialog(item, ResourceTable.this)
-                         .show();
+                     } else if ("ALIAS".equals(item.get("type"))) {
+                         new EditAliasDialog(item, ResourceTable.this).show();
                      } else {
                         Globals.alert("No editor available for this resource.");
                      }
@@ -316,9 +330,9 @@ public class ResourceTable extends ContentPanel {
         createAlias.addSelectionListener(new SelectionListener<MenuEvent>() {
 
             @Override public void componentSelected(final MenuEvent ce) {
-                final ResourceDTO item =
-                    (ResourceDTO) tbl.getSelectedItem().getModel();
-                new CreateAliasDialog(item).show();
+                final ModelData item =
+                    tbl.getSelectedItem().getModel();
+                new CreateAliasDialog(item, _root).show();
             }
 
         });
@@ -338,10 +352,10 @@ public class ResourceTable extends ContentPanel {
         preview.setText(Globals.uiConstants().preview());
         preview.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override public void componentSelected(final MenuEvent ce) {
-                final ResourceDTO item =
-                    (ResourceDTO) tbl.getSelectedItem().getModel();
+                final ModelData item =
+                    tbl.getSelectedItem().getModel();
                 Globals.resourceService().getAbsolutePath(
-                    item,
+                    /* item, */ null, //TODO: broken
                     new ErrorReportingCallback<String>() {
                         public void onSuccess(final String arg0) {
                             new PreviewContentDialog(arg0).center();
@@ -366,15 +380,16 @@ public class ResourceTable extends ContentPanel {
         lockResource.addSelectionListener(new SelectionListener<MenuEvent>() {
 
             @Override public void componentSelected(final MenuEvent ce) {
-                final ResourceDTO item =
-                    (ResourceDTO) tbl.getSelectedItem().getModel();
-                new ResourceMgr().lock(item.getId(), new Action<JSONValue>() {
-                    public void execute(final JSONValue inputData) {
-                        final JsonModelData md =
-                            JsonModelData.fromObject(inputData);
-                        item.set("locked", md.get("locked"));
-                        detailsStore().update(item);
-                    }});
+                final ModelData item = tbl.getSelectedItem().getModel();
+                _cs.lock(item.<String>get("id"), new AsyncCallback<ResourceSummary>() {
+                    public void onFailure(final Throwable arg0) {
+                        Globals.unexpectedError(arg0);
+                    }
+                    public void onSuccess(final ResourceSummary arg0) {
+                            item.set("locked", arg0._lockedBy);
+                            detailsStore().update(item);
+                    }
+                });
             }
 
         });
@@ -390,9 +405,9 @@ public class ResourceTable extends ContentPanel {
         unlockResource.addSelectionListener(new SelectionListener<MenuEvent>() {
 
             @Override public void componentSelected(final MenuEvent ce) {
-                final ResourceDTO item =
-                    (ResourceDTO) tbl.getSelectedItem().getModel();
-                new ResourceMgr().unlock(item.getId(), new Action<JSONValue>() {
+                final ModelData item =
+                    tbl.getSelectedItem().getModel();
+                new ResourceMgr().unlock(item.<String>get("id"), new Action<JSONValue>() {
                     public void execute(final JSONValue inputData) {
                         final JsonModelData md =
                             JsonModelData.fromObject(inputData);
@@ -413,9 +428,9 @@ public class ResourceTable extends ContentPanel {
         move.addSelectionListener(new SelectionListener<MenuEvent>() {
 
             @Override public void componentSelected(final MenuEvent ce) {
-                final ResourceDTO item =
-                    (ResourceDTO) tbl.getSelectedItem().getModel();
-                new MoveDialog(item, ResourceTable.this).show();
+                final ModelData item =
+                    tbl.getSelectedItem().getModel();
+                new MoveDialog(item, ResourceTable.this, _root).show();
             }
 
         });
@@ -430,8 +445,8 @@ public class ResourceTable extends ContentPanel {
         rename.addSelectionListener(new SelectionListener<MenuEvent>() {
 
             @Override public void componentSelected(final MenuEvent ce) {
-                final ResourceDTO item =
-                    (ResourceDTO) tbl.getSelectedItem().getModel();
+                final ModelData item =
+                    tbl.getSelectedItem().getModel();
                 new RenameDialog(item, ResourceTable.this).show();
             }
 
@@ -446,8 +461,8 @@ public class ResourceTable extends ContentPanel {
         move.setText(Globals.uiConstants().updateTags());
         move.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override public void componentSelected(final MenuEvent ce) {
-                final ResourceDTO item =
-                    (ResourceDTO) tbl.getSelectedItem().getModel();
+                final ModelData item =
+                    tbl.getSelectedItem().getModel();
                 new UpdateTagsDialog(item, _detailsStore).show();
             }
         });
@@ -462,10 +477,10 @@ public class ResourceTable extends ContentPanel {
         unlockResource.addSelectionListener(new SelectionListener<MenuEvent>() {
 
             @Override public void componentSelected(final MenuEvent ce) {
-                final ResourceDTO item =
-                    (ResourceDTO) tbl.getSelectedItem().getModel();
+                final ModelData item =
+                    tbl.getSelectedItem().getModel();
                 new ResourceMgr().history(
-                    item.getId(),
+                    item.<String>get("id"),
                     new Action<List<JsonModelData>>() {
                         public void execute(final List<JsonModelData> data) {
                             new TableDataDisplayDialog(
@@ -487,13 +502,21 @@ public class ResourceTable extends ContentPanel {
         _detailsStore.removeAll();
 
         // TODO: handle getSelectedItem() being null.
-        final FolderDTO f = (FolderDTO) selectedItem.getModel();
-        Globals.resourceService().getChildren(
-            f,
-            new ErrorReportingCallback<List<ResourceDTO>>() {
+        final ModelData f = selectedItem.getModel();
+        final QueriesServiceAsync qs = GWT.create(QueriesService.class); // TODO: factor out.
+        qs.getChildren(
+            f.<String>get("id"),
+            new ErrorReportingCallback<Collection<ResourceSummary>>() {
                 public void onSuccess(
-                                  final List<ResourceDTO> result) {
-                    detailsStore().add(result);
+                                  final Collection<ResourceSummary> result) {
+                    detailsStore().add(bind(result));
+                }
+                private List<ModelData> bind(final Collection<ResourceSummary> arg0) {
+                    final List<ModelData> boundData = new ArrayList<ModelData>();
+                    for (final ResourceSummary fs : arg0) {
+                        boundData.add(new ResourceSummaryModelData(fs));
+                    }
+                    return boundData;
                 }
         });
     }
@@ -513,7 +536,7 @@ public class ResourceTable extends ContentPanel {
      *
      * @return This table's details store.
      */
-    protected ListStore<ResourceDTO> detailsStore() {
+    protected ListStore<ModelData> detailsStore() {
         return _detailsStore;
     }
 }

@@ -11,12 +11,14 @@
  */
 package ccc.services.api;
 
+import java.io.Serializable;
+
 
 /**
  * TODO: Add Description for this type.
  *
  * @author Civic Computing Ltd.
  */
-public class TemplateSummary {
+public class TemplateSummary implements Serializable {
 
 }

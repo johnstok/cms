@@ -12,11 +12,14 @@
 package ccc.services.api;
 
 
+
 /**
  * TODO: Add Description for this type.
  *
  * @author Civic Computing Ltd.
  */
-public class FolderSummary {
+public class FolderSummary extends ResourceSummary {
+
+    public int _folderCount;
 
 }
