@@ -27,6 +27,7 @@ import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.Template;
+import ccc.domain.User;
 import ccc.services.AssetManagerRemote;
 import ccc.services.ContentManagerRemote;
 import ccc.services.ServiceNames;
@@ -45,6 +46,8 @@ public class Migrations {
     /** _templates : Map. */
     private final Map<String, Template> _templates =
         new HashMap<String, Template>();
+
+    private final Map<Integer, User> _users = new HashMap<Integer, User>();
 
     private static Logger log =
         Logger.getLogger(ccc.migration.Migrations.class);
@@ -81,7 +84,8 @@ public class Migrations {
     private void migrateUsers(final LegacyDBQueries queries) {
         final List<UserBean> mus = queries.selectUsers();
         for (final UserBean mu : mus) {
-            userManager().createUser(mu.user(), mu.password());
+            final User u = userManager().createUser(mu.user(), mu.password());
+            _users.put(mu.legacyId(), u);
         }
     }
 
@@ -103,17 +107,9 @@ public class Migrations {
             }
 
             if (r.type().equals("FOLDER")) {
-                migrateFolder(
-                    parentFolderId,
-                    r.contentId(),
-                    r.name(),
-                    r.displayTemplate());
+                migrateFolder(parentFolderId, r);
             } else if (r.type().equals("PAGE")) {
-                migratePage(
-                    parentFolderId,
-                    r.contentId(),
-                    r.name(),
-                    r.displayTemplate());
+                migratePage(parentFolderId, r);
             } else {
                 log.debug("Unkown resource type");
             }
@@ -121,32 +117,44 @@ public class Migrations {
     }
 
     private void migrateFolder(final String parentFolderId,
-                               final int contentId,
-                               final String name,
-                               final String displayTemplate) {
+                               final ResourceBean r) {
 
         try {
             log.debug("FOLDER");
-            Folder child = new Folder(name);
-
-            if (null!=displayTemplate) {
+            Folder child = new Folder(r.name());
+            final String templateName = r.displayTemplate();
+            if (null!=templateName) {
                 Template template =
-                    (_templates.containsKey(displayTemplate))
-                    ? _templates.get(displayTemplate)
-                        : new Template(displayTemplate,
+                    (_templates.containsKey(templateName))
+                    ? _templates.get(templateName)
+                        : new Template(templateName,
                             "No description.", "Empty template!", "<fields/>");
                     template = assetManager().createOrRetrieve(template);
                     child.displayTemplateName(template);
-                    if (!_templates.containsKey(displayTemplate)) {
-                        _templates.put(displayTemplate, template);
+                    if (!_templates.containsKey(templateName)) {
+                        _templates.put(templateName, template);
                     }
             }
 
+            // set publish user
+            if (r.isPublished()) {
+                final Integer legacyUserId =
+                    _queries.selectUserFromLog(r.contentId(),
+                                               r.legacyVersion(),
+                                               "CHANGE STATUS",
+                                               "Changed Status to  PUBLISHED");
+                if (legacyUserId != null) {
+                    final User user =_users.get(legacyUserId);
+                    if (user != null) {
+                        child.publish(user);
+                    }
+                }
+            }
             contentManager().create(UUID.fromString(parentFolderId), child);
 
             final String childId = child.id().toString();
             child = null;
-            migrateChildren(childId, contentId, _queries);
+            migrateChildren(childId, r.contentId(), _queries);
 
         } catch (final Exception e) {
             log.error(e.getMessage());
@@ -154,29 +162,42 @@ public class Migrations {
     }
 
     private void migratePage(final String parentFolderId,
-                             final int contentId,
-                             final String name,
-                             final String displayTemplate) {
+                             final ResourceBean r) {
 
         try {
             log.debug("PAGE");
-            final Page childPage = new Page(name);
-
-            if (null!=displayTemplate) {
+            final Page childPage = new Page(r.name());
+            final String templateName = r.displayTemplate();
+            if (null != templateName) {
                 Template template =
-                    (_templates.containsKey(displayTemplate))
-                    ? _templates.get(displayTemplate)
-                        : new Template(displayTemplate,
+                    (_templates.containsKey(templateName))
+                    ? _templates.get(templateName)
+                        : new Template(templateName,
                             "No description.", "Empty template!", "<fields/>");
                     template = assetManager().createOrRetrieve(template);
                     childPage.displayTemplateName(template);
-                    if (!_templates.containsKey(displayTemplate)) {
-                        _templates.put(displayTemplate, template);
+                    if (!_templates.containsKey(templateName)) {
+                        _templates.put(templateName, template);
                     }
             }
 
+            // set publish user
+            if (r.isPublished()) {
+                final Integer legacyUserId =
+                    _queries.selectUserFromLog(r.contentId(),
+                                               r.legacyVersion(),
+                                               "CHANGE STATUS",
+                                               "Changed Status to  PUBLISHED");
+                if (legacyUserId != null) {
+                    final User user =_users.get(legacyUserId);
+                    if (user != null) {
+                        childPage.publish(user);
+                    }
+                }
+            }
+
             final Map<String, StringBuffer> paragraphs =
-                migrateParagraphs(contentId);
+                migrateParagraphs(r.contentId());
             for (final Map.Entry<String, StringBuffer> para
                 : paragraphs.entrySet()) {
                 childPage.addParagraph(para.getKey(),

@@ -89,14 +89,22 @@ public final class ResourceServiceImplTest extends TestCase {
         user.email("abc@def.com");
         user.addRole(CreatorRoles.ADMINISTRATOR);
 
-        _um.createUser(user, "foopass");
+        final Capture<User> actual = new Capture<User>();
+
+        expect(_um.createUser(capture(actual), eq("foopass"))).andAnswer(
+            new IAnswer<User>(){
+                public User answer() throws Throwable {
+                    return actual.getValue();
+                }});
+
+
         replay(_um);
 
         // ACT
         _rsi.createUser(DTOs.dtoFrom(user), "foopass");
 
         // ASSERT
-        verify(_um);
+        replay(_cm);
 
     }
 

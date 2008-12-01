@@ -21,6 +21,7 @@ import ccc.domain.User;
 public class UserBean {
     private User _user = null;
     private String _password = null;
+    private int _legacyId = -1;
 
 
     /**
@@ -28,10 +29,14 @@ public class UserBean {
      *
      * @param user The User.
      * @param password The password for the user.
+     * @param legacyId The legacyId for the user.
      */
-    public UserBean(final User user, final String password) {
+    public UserBean(final User user,
+                    final String password,
+                    final int legacyId) {
         _user = user;
         _password = password;
+        _legacyId = legacyId;
     }
 
     /**
@@ -51,4 +56,15 @@ public class UserBean {
     public String password() {
         return _password;
     }
+
+    /**
+     * Accessor for legacy Id.
+     *
+     * @return The legacy Id.
+     */
+    public int legacyId() {
+        return _legacyId;
+    }
+
+
 }
