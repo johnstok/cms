@@ -11,17 +11,16 @@
  */
 package ccc.contentcreator.client;
 
-import java.util.List;
+import java.util.Collection;
 
-import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.client.dialogs.CreateFolderDialog;
 import ccc.contentcreator.client.dialogs.CreatePageDialog;
 import ccc.contentcreator.client.dialogs.UploadFileDialog;
-import ccc.contentcreator.dto.FolderDTO;
-import ccc.contentcreator.dto.TemplateDTO;
 import ccc.services.api.FolderSummary;
+import ccc.services.api.TemplateSummary;
 
 import com.extjs.gxt.ui.client.Events;
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -50,11 +49,10 @@ public class EnhancedResourceTree extends FolderResourceTree {
      * @param root The root of the tree.
      * @param view LeftRightPane of the surrounding view.
      */
-    EnhancedResourceTree(final ResourceServiceAsync rsa,
-                         final FolderSummary root,
+    EnhancedResourceTree(final FolderSummary root,
                          final LeftRightPane view) {
 
-        super(rsa, root);
+        super(root);
 
         _rt = new ResourceTable(root);
         _view = view;
@@ -83,11 +81,11 @@ public class EnhancedResourceTree extends FolderResourceTree {
             @Override
             public void componentSelected(final MenuEvent ce) {
 
-                final FolderDTO item = (FolderDTO) getSelectionModel()
+                final ModelData item = getSelectionModel()
                 .getSelectedItem()
                 .getModel();
-                new UploadFileDialog(item.getId(),
-                    item.getName(),
+                new UploadFileDialog(item.<String>get("id"),
+                    item.<String>get("name"),
                     EnhancedResourceTree.this).center();
             }
         });
@@ -99,7 +97,7 @@ public class EnhancedResourceTree extends FolderResourceTree {
         createFolder.addSelectionListener(new SelectionListener<MenuEvent>() {
 
             @Override public void componentSelected(final MenuEvent me) {
-                final FolderDTO item = (FolderDTO) getSelectionModel()
+                final ModelData item = getSelectionModel()
                 .getSelectedItem()
                 .getModel();
 
@@ -117,19 +115,18 @@ public class EnhancedResourceTree extends FolderResourceTree {
 
             @Override public void componentSelected(final MenuEvent me) {
 
-                final FolderDTO item = (FolderDTO) getSelectionModel()
+                final ModelData item = getSelectionModel()
                 .getSelectedItem()
                 .getModel();
 
-                final ResourceServiceAsync resourceService =
-                    Globals.resourceService();
-                resourceService.listTemplates(
-                    new AsyncCallback<List <TemplateDTO>>(){
+                Globals.queriesService().templates(
+                    new AsyncCallback<Collection<TemplateSummary>>(){
 
                         public void onFailure(final Throwable arg0) {
                             Window.alert(Globals.uiConstants().error());
                         }
-                        public void onSuccess(final List<TemplateDTO> list) {
+                        public void onSuccess(
+                                      final Collection<TemplateSummary> list) {
                             new CreatePageDialog(list, item, _rt).show();
                         }});
             }

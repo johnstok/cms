@@ -44,8 +44,7 @@ public final class ContentCreator implements EntryPoint {
                 final LeftRightPane contentPane = new LeftRightPane();
                 contentPane.setLeftHandPane(
                     new ResourceNavigator(contentPane,
-                                          arg0,
-                                          Globals.resourceService()));
+                                          arg0));
                 contentPane.setRightHandPane(new ContentPanel());
 
                 final Viewport vp =

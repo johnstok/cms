@@ -12,13 +12,16 @@
 package ccc.contentcreator.client.dialogs;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import ccc.contentcreator.api.JsonModelData;
+import ccc.contentcreator.client.DataBinding;
+import ccc.services.api.LogEntrySummary;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.binder.TableBinder;
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
@@ -37,9 +40,8 @@ public class TableDataDisplayDialog
     extends
         AbstractBaseDialog {
 
-    private final List<JsonModelData> _data;
-    private final ListStore<JsonModelData> _dataStore =
-        new ListStore<JsonModelData>();
+    private final Collection<LogEntrySummary> _data;
+    private final ListStore<ModelData> _dataStore = new ListStore<ModelData>();
 
     /**
      * Constructor.
@@ -48,12 +50,12 @@ public class TableDataDisplayDialog
      * @param data The data the dialog should display.
      */
     public TableDataDisplayDialog(final String title,
-                                  final List<JsonModelData> data) {
+                                  final Collection<LogEntrySummary> data) {
 
         super(title);
 
         _data = data;
-        _dataStore.add(_data);
+        _dataStore.add(DataBinding.bindLogEntrySummary(_data));
 
         setLayout(new FitLayout());
 
@@ -64,8 +66,8 @@ public class TableDataDisplayDialog
         tbl.setHorizontalScroll(true);
         tbl.setBorders(false);
 
-        final TableBinder<JsonModelData> binder =
-            new TableBinder<JsonModelData>(tbl, _dataStore);
+        final TableBinder<ModelData> binder =
+            new TableBinder<ModelData>(tbl, _dataStore);
         binder.init();
 
         add(tbl);

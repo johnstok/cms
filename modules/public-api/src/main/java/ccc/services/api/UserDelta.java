@@ -12,6 +12,7 @@
 package ccc.services.api;
 
 import java.io.Serializable;
+import java.util.Set;
 
 
 /**
@@ -20,5 +21,8 @@ import java.io.Serializable;
  * @author Civic Computing Ltd.
  */
 public class UserDelta implements Serializable {
-
+    public String _password;
+    public String _email;
+    public String _username;
+    public Set<String> _roles;
 }

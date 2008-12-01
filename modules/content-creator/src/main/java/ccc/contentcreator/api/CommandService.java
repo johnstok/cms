@@ -27,6 +27,6 @@ public interface CommandService
     extends
         Commands, RemoteService {
 
-    /* No further methods. */
+    void logout();
 
 }

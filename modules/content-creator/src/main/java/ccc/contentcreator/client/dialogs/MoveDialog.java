@@ -16,7 +16,6 @@ import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.ResourceTable;
 import ccc.contentcreator.client.Validate;
 import ccc.contentcreator.client.Validations;
-import ccc.contentcreator.dto.FolderDTO;
 import ccc.services.api.FolderSummary;
 
 import com.extjs.gxt.ui.client.Events;
@@ -44,7 +43,7 @@ public class MoveDialog extends AbstractEditDialog {
         new TriggerField<String>();
 
     private final ModelData _target;
-    private FolderDTO _parent = null;
+    private ModelData _parent = null;
 
     private final ResourceTable _rt;
 
@@ -79,12 +78,12 @@ public class MoveDialog extends AbstractEditDialog {
             new Listener<ComponentEvent>(){
                 public void handleEvent(final ComponentEvent be) {
                     final FolderSelectionDialog folderSelect =
-                        new FolderSelectionDialog(Globals.resourceService(), root);
+                        new FolderSelectionDialog(root);
                     folderSelect.addListener(Events.Close,
                         new Listener<ComponentEvent>() {
                         public void handleEvent(final ComponentEvent be) {
                             _parent = folderSelect.selectedFolder();
-                            _parentFolder.setValue(_parent.getName());
+                            _parentFolder.setValue(_parent.<String>get("name"));
                         }});
                     folderSelect.show();
                 }});
@@ -100,7 +99,8 @@ public class MoveDialog extends AbstractEditDialog {
                 Validate.callTo(move())
                     .check(Validations.notEmpty(_parentFolder))
                     .stopIfInError()
-                    .check(Validations.uniqueResourceName(_parent, _targetName))
+                    .check(Validations.uniqueResourceName(
+                        _parent.<String>get("id"), _targetName))
                     .callMethodOr(Validations.reportErrors());
             }
         };
@@ -109,8 +109,9 @@ public class MoveDialog extends AbstractEditDialog {
     private Runnable move() {
         return new Runnable() {
             public void run() {
-                Globals.resourceService().move(
-                    _parent,
+                commands().move(
+                    _parent.<String>get("id"),
+                    _parent.<Long>get("version"),
                     _target.<String>get("String"),
                     new ErrorReportingCallback<Void>() {
                         public void onSuccess(final Void result) {

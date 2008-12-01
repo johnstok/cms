@@ -12,25 +12,23 @@
 package ccc.contentcreator.client.dialogs;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
-import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
+import ccc.contentcreator.client.DataBinding;
 import ccc.contentcreator.client.EditPagePanel;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.ResourceTable;
 import ccc.contentcreator.client.Validate;
 import ccc.contentcreator.client.Validations;
-import ccc.contentcreator.dto.FolderDTO;
-import ccc.contentcreator.dto.PageDTO;
-import ccc.contentcreator.dto.ParagraphDTO;
-import ccc.contentcreator.dto.TemplateDTO;
+import ccc.services.api.PageDelta;
+import ccc.services.api.TemplateSummary;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.GridEvent;
@@ -42,7 +40,6 @@ import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
-import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
@@ -69,18 +66,15 @@ public class CreatePageDialog
     private final ContentPanel _first = new ContentPanel();
     private final EditPagePanel _second = new EditPagePanel();
 
-    private ListStore<TemplateDTO> _templatesStore =
-        new ListStore<TemplateDTO>();
-    private Grid<TemplateDTO> _grid;
+    private ListStore<ModelData> _templatesStore = new ListStore<ModelData>();
+    private Grid<ModelData> _grid;
 
     private ContentPanel _descriptionPanel = new ContentPanel(new RowLayout());
     private ContentPanel _rightPanel = new ContentPanel(new RowLayout());
 
     private final ResourceTable _rt;
-    private final FolderDTO _parent;
+    private final ModelData _parent;
 
-    private final ResourceServiceAsync _resourceService =
-        Globals.resourceService();
 
 
 
@@ -93,8 +87,8 @@ public class CreatePageDialog
      * @param parent The Folder in which page will created.
      * @param rt ResourceTable to update.
      */
-    public CreatePageDialog(final List<TemplateDTO> list,
-                            final FolderDTO parent, final ResourceTable rt) {
+    public CreatePageDialog(final Collection<TemplateSummary> list,
+                            final ModelData parent, final ResourceTable rt) {
         super(Globals.uiConstants().createPage());
         _rt = rt;
         _parent = parent;
@@ -113,22 +107,22 @@ public class CreatePageDialog
 
         final ColumnModel cm = new ColumnModel(configs);
 
-        _grid = new Grid<TemplateDTO>(_templatesStore, cm);
+        _grid = new Grid<ModelData>(_templatesStore, cm);
         _grid.setLoadMask(true);
         _grid.setId("TemplateGrid");
 
         final Listener<GridEvent> listener =
             new Listener<GridEvent>() {
             public void handleEvent(final GridEvent ge) {
-                TemplateDTO template =
-                    (TemplateDTO) ge.grid.getSelectionModel().getSelectedItem();
-                _second.createFields(template.getDefinition());
-                _description.setText(template.getDescription());
+                ModelData template =
+                    ge.grid.getSelectionModel().getSelectedItem();
+                _second.createFields(template.<String>get("definition"));
+                _description.setText(template.<String>get("description"));
             }
         };
         _grid.addListener(Events.RowClick, listener);
 
-        _templatesStore.add(list);
+        _templatesStore.add(DataBinding.bindTemplateSummary(list));
 
         final BorderLayoutData westData =
             new BorderLayoutData(LayoutRegion.WEST, 205);
@@ -164,9 +158,9 @@ public class CreatePageDialog
         final CheckBox cb = new CheckBox();
         cb.setBoxLabel(_uiConstants.useDefaultTemplate());
         cb.setId(_uiConstants.useDefaultTemplate());
-        _resourceService.getTemplateForResource(_parent,
-            new ErrorReportingCallback<TemplateDTO>() {
-            public void onSuccess(final TemplateDTO result) {
+        queries().getTemplateForResource(_parent.<String>get("id"),
+            new ErrorReportingCallback<TemplateSummary>() {
+            public void onSuccess(final TemplateSummary result) {
                 if (result == null) {
                     cb.setValue(false);
                     cb.disable();
@@ -176,8 +170,8 @@ public class CreatePageDialog
                     cb.setValue(true);
                     _grid.disable();
                     _grid.getSelectionModel().deselectAll();
-                    _second.createFields(result.getDefinition());
-                    _description.setText(result.getDescription());
+                    _second.createFields(result._definition);
+                    _description.setText(result._description);
                 }
             }
         });
@@ -185,9 +179,9 @@ public class CreatePageDialog
         cb.addListener(Events.Change, new Listener<FieldEvent>() {
             public void handleEvent(final FieldEvent be) {
                 if (cb.getValue()) {
-                    _resourceService.getTemplateForResource(_parent,
-                        new ErrorReportingCallback<TemplateDTO>() {
-                        public void onSuccess(final TemplateDTO result) {
+                    queries().getTemplateForResource(_parent.<String>get("id"),
+                        new ErrorReportingCallback<TemplateSummary>() {
+                        public void onSuccess(final TemplateSummary result) {
                             if (result == null) {
                                 cb.disable();
                                 _grid.enable();
@@ -195,8 +189,8 @@ public class CreatePageDialog
                             } else {
                                 _grid.disable();
                                 _grid.getSelectionModel().deselectAll();
-                                _second.createFields(result.getDefinition());
-                                _description.setText(result.getDescription());
+                                _second.createFields(result._definition);
+                                _description.setText(result._definition);
                             }
                         }
                     });
@@ -210,24 +204,24 @@ public class CreatePageDialog
         return cb;
     }
 
-    private GridCellRenderer<TemplateDTO> createIdRenderer() {
+    private GridCellRenderer<ModelData> createIdRenderer() {
 
-        return new GridCellRenderer<TemplateDTO>() {
-            public String render(final TemplateDTO model,
+        return new GridCellRenderer<ModelData>() {
+            public String render(final ModelData model,
                                  final String property,
                                  final ColumnData config,
                                  final int rowIndex,
                                  final int colIndex,
-                                 final ListStore<TemplateDTO> store) {
+                                 final ListStore<ModelData> store) {
 
                 String value = "";
 
                 if (null != model) {
                 final StringBuilder html = new StringBuilder();
                 html.append("<div id='");
-                html.append(model.getName());
+                html.append(model.<String>get("id"));
                 html.append("'>");
-                html.append(model.getName());
+                html.append(model.<String>get("name"));
                 html.append("</div>");
                 value = html.toString();
                 }
@@ -258,38 +252,36 @@ public class CreatePageDialog
             @SuppressWarnings("unchecked")
             public void run() {
 
-                final Map<String, ParagraphDTO> paragraphs =
-                    new HashMap<String, ParagraphDTO>();
-
                 final List<Component> definitions =_second.definitionItems();
-                for (final Component c : definitions) {
+                final String[][] paragraphs = new String[3][definitions.size()];
+
+                for (int i=0; i<paragraphs.length; i++) {
+                    final String[] para = paragraphs[i];
+                    final Component c = definitions.get(i);
+
                     if ("TEXT".equals(c.getData("type"))) {
                         final Field<String> f = (Field<String>) c;
-                        paragraphs.put(c.getId(),
-                            new ParagraphDTO("TEXT", f.getValue()));
+                        para[0] = c.getId();
+                        para[1] = f.getValue();
+                        para[2] = "TEXT";
                     } else if ("DATE".equals(c.getData("type"))) {
-                        final DateField f = (DateField) c;
-                        paragraphs.put(c.getId(),
-                            new ParagraphDTO("DATE",
-                                ""+f.getValue().getTime()));
+                        throw new RuntimeException(); //FIXME: Erm...
+//                        final DateField f = (DateField) c;
+//                        paragraphs.put(c.getId(),
+//                            new ParagraphDTO("DATE",
+//                                ""+f.getValue().getTime()));
                     }
                 }
 
-                final PageDTO page = new PageDTO(
-                    null,
-                    -1,
-                    _second.name().getValue(),
-                    _second.title().getValue(),
-                    paragraphs,
-                    "",
-                    "",
-                    "");
+                final PageDelta page = new PageDelta();
+                page._name = _second.name().getValue();
+                page._title = _second.title().getValue();
+                page._paragraphs = paragraphs;
 
-                final TemplateDTO template =
-                    _grid.getSelectionModel().getSelectedItem();
-
-                _resourceService.createPage(_parent, page,
-                    template,
+                commands().createPage(
+                    _parent.<String>get("id"),
+                    page,
+                    _grid.getSelectionModel().getSelectedItem().<String>get("id"),
                     new ErrorReportingCallback<Void>() {
                         public void onSuccess(final Void result) {
                             _rt.refreshTable();

@@ -40,7 +40,7 @@ import ccc.services.api.UserSummary;
 @Remote(Queries.class)
 public class QueriesEJB
     extends
-        ModelTransalation
+        ModelTranslation
     implements
         Queries {
 

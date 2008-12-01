@@ -85,8 +85,9 @@ public class RenameDialog extends AbstractEditDialog {
     private Runnable rename() {
         return new Runnable() {
             public void run() {
-                Globals.resourceService().rename(
+                commands().rename(
                     _item.<String>get("id"),
+                    _item.<Long>get("version"),
                     _newName.getValue(),
                     new ErrorReportingCallback<Void>() {
                         public void onSuccess(final Void result) {

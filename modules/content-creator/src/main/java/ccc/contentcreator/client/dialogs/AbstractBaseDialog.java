@@ -16,8 +16,6 @@ import ccc.contentcreator.api.CommandService;
 import ccc.contentcreator.api.CommandServiceAsync;
 import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
-import ccc.contentcreator.api.ResourceService;
-import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.client.Globals;
 
@@ -36,7 +34,6 @@ public abstract class AbstractBaseDialog
 
     private final UIConstants _constants = Globals.uiConstants();
 
-    private final ResourceServiceAsync _rs = GWT.create(ResourceService.class);
     private final QueriesServiceAsync _qs = GWT.create(QueriesService.class);
     private final CommandServiceAsync _cs = GWT.create(CommandService.class);
 
@@ -75,17 +72,6 @@ public abstract class AbstractBaseDialog
      */
     protected UIConstants constants() {
         return _constants;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns a resource service.
-     */
-    @Deprecated
-    protected ResourceServiceAsync resourceService() {
-        return _rs;
     }
 
     /**

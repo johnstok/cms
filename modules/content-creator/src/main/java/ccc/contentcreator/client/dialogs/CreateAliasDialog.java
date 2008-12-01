@@ -16,9 +16,6 @@ import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.Validate;
 import ccc.contentcreator.client.Validations;
-import ccc.contentcreator.dto.AliasDTO;
-import ccc.contentcreator.dto.FolderDTO;
-import ccc.contentcreator.dto.ResourceDTO;
 import ccc.services.api.FolderSummary;
 
 import com.extjs.gxt.ui.client.Events;
@@ -44,7 +41,7 @@ public class CreateAliasDialog extends AbstractEditDialog {
         new TriggerField<String>();
 
     private final ModelData _target;
-    private FolderDTO _parent = null;
+    private ModelData _parent = null;
 
     /**
      * Constructor.
@@ -76,13 +73,12 @@ public class CreateAliasDialog extends AbstractEditDialog {
             new Listener<ComponentEvent>(){
                 public void handleEvent(final ComponentEvent be) {
                     final FolderSelectionDialog folderSelect =
-                        new FolderSelectionDialog(Globals.resourceService(),
-                                                  root);
+                        new FolderSelectionDialog(root);
                     folderSelect.addListener(Events.Close,
                         new Listener<ComponentEvent>() {
                         public void handleEvent(final ComponentEvent be) {
                             _parent = folderSelect.selectedFolder();
-                            _parentFolder.setValue(_parent.getName());
+                            _parentFolder.setValue(_parent.<String>get("name"));
                         }});
                     folderSelect.show();
                 }});
@@ -108,14 +104,10 @@ public class CreateAliasDialog extends AbstractEditDialog {
     private Runnable createAlias() {
         return new Runnable() {
             public void run() {
-                Globals.resourceService().createAlias(
-                    _parent,
-                    new AliasDTO(
-                        _aliasName.getValue(),
-                        _aliasName.getValue(),
-                        _target.<String>get("id"),
-                        "",
-                        ""),
+                Globals.commandService().createAlias(
+                    _parent.<String>get("id"),
+                    _aliasName.getValue(),
+                    _target.<String>get("id"),
                     new DisposingCallback(CreateAliasDialog.this));
             }
         };

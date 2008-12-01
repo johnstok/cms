@@ -59,7 +59,9 @@ public interface Commands {
     /**
      * Update the specified template on the server.
      */
-    void updateTemplate(String templateId, long version, TemplateDelta delta);
+    TemplateSummary updateTemplate(String templateId,
+                                   long version,
+                                   TemplateDelta delta);
 
     /**
      * Lock the specified resource.
@@ -89,6 +91,8 @@ public interface Commands {
      * @return The current version of resource.
      */
     ResourceSummary publish(String resourceId);
+
+    ResourceSummary unpublish(String resourceId);
 
 
 

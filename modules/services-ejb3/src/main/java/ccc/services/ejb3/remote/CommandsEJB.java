@@ -24,6 +24,7 @@ import ccc.services.api.FolderSummary;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
+import ccc.services.api.TemplateSummary;
 import ccc.services.api.UserDelta;
 
 
@@ -37,7 +38,7 @@ import ccc.services.api.UserDelta;
 @Remote(Commands.class)
 public class CommandsEJB
     extends
-        ModelTransalation
+        ModelTranslation
     implements
         Commands {
 
@@ -125,6 +126,13 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
+    public ResourceSummary unpublish(final String resourceId) {
+
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public void updateAlias(final String aliasId,
                             final long version,
                             final String targetId) {
@@ -161,7 +169,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public void updateTemplate(final String templateId,
+    public TemplateSummary updateTemplate(final String templateId,
                                final long version,
                                final TemplateDelta delta) {
 
@@ -176,6 +184,4 @@ public class CommandsEJB
 
         throw new UnsupportedOperationException("Method not implemented.");
     }
-
-
 }

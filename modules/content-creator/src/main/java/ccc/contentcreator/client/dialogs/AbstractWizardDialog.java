@@ -29,8 +29,9 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class AbstractWizardDialog extends
-AbstractBaseDialog {
+public abstract class AbstractWizardDialog
+    extends
+        AbstractBaseDialog {
 
     /** _layout : CardLayout. */
     private final CardLayout _layout = new CardLayout();

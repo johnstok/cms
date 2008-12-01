@@ -20,5 +20,6 @@ import java.io.Serializable;
  * @author Civic Computing Ltd.
  */
 public class TemplateSummary implements Serializable {
-
+    public String _definition;
+    public String _description;
 }

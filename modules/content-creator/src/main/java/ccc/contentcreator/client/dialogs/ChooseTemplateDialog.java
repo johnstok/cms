@@ -11,19 +11,11 @@
  */
 package ccc.contentcreator.client.dialogs;
 
-import java.util.List;
-
-import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.client.Globals;
-import ccc.contentcreator.dto.DTO;
-import ccc.contentcreator.dto.OptionDTO;
-import ccc.contentcreator.dto.TemplateDTO;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.store.ListStore;
-import com.extjs.gxt.ui.client.widget.form.ComboBox;
 
 
 /**
@@ -35,21 +27,21 @@ import com.extjs.gxt.ui.client.widget.form.ComboBox;
 public class ChooseTemplateDialog extends AbstractEditDialog {
 
     private final ModelData                      _resource;
-    private final List<OptionDTO<? extends DTO>> _options;
-
-    private final ComboBox<TemplateDTO> _defaultTemplate =
-        new ComboBox<TemplateDTO>();
-    private final TemplateDTO _none =
-        new TemplateDTO(null,
-                        -1,
-                        "{none}",
-                        "{none}",
-                        "{none}",
-                        "{none}",
-                        "<fields/>",
-                        "",
-                        "",
-                        "");
+//    private final List<OptionDTO<? extends DTO>> _options;
+//
+//    private final ComboBox<TemplateDTO> _defaultTemplate =
+//        new ComboBox<TemplateDTO>();
+//    private final TemplateDTO _none =
+//        new TemplateDTO(null,
+//                        -1,
+//                        "{none}",
+//                        "{none}",
+//                        "{none}",
+//                        "{none}",
+//                        "<fields/>",
+//                        "",
+//                        "",
+//                        "");
 
     /**
      * Constructor.
@@ -57,70 +49,69 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
      * @param options The list of OptionDTOs
      * @param resource The ResourceDTO
      */
-    public ChooseTemplateDialog(final List<OptionDTO<? extends DTO>> options,
-                                final ModelData resource) {
+    public ChooseTemplateDialog(final ModelData resource) {
         super(Globals.uiConstants().chooseTemplate());
 
-        _options = options;
+//        _options = options;
         _resource = resource;
-
-        _defaultTemplate.setFieldLabel(constants().defaultTemplate());
-        _defaultTemplate.setTemplate("<tpl for=\".\">"
-            +"<div class=x-combo-list-item id={name}>{name}</div></tpl>");
-        _defaultTemplate.setId("default-template");
-        _defaultTemplate.setDisplayField("name");
-        _defaultTemplate.setForceSelection(true);
-        addField(_defaultTemplate);
-
-        drawGUI();
+//
+//        _defaultTemplate.setFieldLabel(constants().defaultTemplate());
+//        _defaultTemplate.setTemplate("<tpl for=\".\">"
+//            +"<div class=x-combo-list-item id={name}>{name}</div></tpl>");
+//        _defaultTemplate.setId("default-template");
+//        _defaultTemplate.setDisplayField("name");
+//        _defaultTemplate.setForceSelection(true);
+//        addField(_defaultTemplate);
+//
+//        drawGUI();
     }
-
-    private void drawGUI() {
-
-        // Populate combo-box
-        final ListStore<TemplateDTO> store = new ListStore<TemplateDTO>();
-        for (final TemplateDTO template
-            : _options.get(0).<TemplateDTO> makeTypeSafe().getChoices()) {
-            store.add(template);
-        }
-        store.add(_none);
-        _defaultTemplate.setStore(store);
-
-
-        // Set the current value
-        final TemplateDTO currentValue =
-            _options.get(0).<TemplateDTO>makeTypeSafe().getCurrentValue();
-
-        if (null == currentValue) {
-            _defaultTemplate.setValue(_none);
-        } else {
-            _defaultTemplate.setValue(currentValue);
-        }
-    }
+//
+//    private void drawGUI() {
+//
+//        // Populate combo-box
+//        final ListStore<TemplateDTO> store = new ListStore<TemplateDTO>();
+//        for (final TemplateDTO template
+//            : _options.get(0).<TemplateDTO> makeTypeSafe().getChoices()) {
+//            store.add(template);
+//        }
+//        store.add(_none);
+//        _defaultTemplate.setStore(store);
+//
+//
+//        // Set the current value
+//        final TemplateDTO currentValue =
+//            _options.get(0).<TemplateDTO>makeTypeSafe().getCurrentValue();
+//
+//        if (null == currentValue) {
+//            _defaultTemplate.setValue(_none);
+//        } else {
+//            _defaultTemplate.setValue(currentValue);
+//        }
+//    }
 
     /** {@inheritDoc} */
     @Override protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>(){
             @Override public void componentSelected(final ButtonEvent ce) {
 
-                final TemplateDTO selected = _defaultTemplate.getValue();
-                if (_none.equals(selected)) {
-                    _options
-                        .get(0)
-                        .<TemplateDTO>makeTypeSafe()
-                        .setCurrentValue(null);
-                } else {
-                    _options
-                        .get(0)
-                        .<TemplateDTO>makeTypeSafe()
-                        .setCurrentValue(selected);
-                }
-
-                resourceService()
-                    .updateResourceTemplate(
-                        _options,
-                        /* _resource, */ null, // TODO: Fix
-                        new DisposingCallback(ChooseTemplateDialog.this));
+//                final TemplateDTO selected = _defaultTemplate.getValue();
+//                if (_none.equals(selected)) {
+//                    _options
+//                        .get(0)
+//                        .<TemplateDTO>makeTypeSafe()
+//                        .setCurrentValue(null);
+//                } else {
+//                    _options
+//                        .get(0)
+//                        .<TemplateDTO>makeTypeSafe()
+//                        .setCurrentValue(selected);
+//                }
+//
+//                resourceService()
+//                    .updateResourceTemplate(
+//                        _options,
+//                        /* _resource, */ null, // TODO: Fix
+//                        new DisposingCallback(ChooseTemplateDialog.this));
             }
         };
     }

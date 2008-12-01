@@ -20,5 +20,8 @@ import java.io.Serializable;
  * @author Civic Computing Ltd.
  */
 public class LogEntrySummary implements Serializable {
-
+    public String _action;
+    public String _actor;
+    public String _happenedOn;
+    public String _summary;
 }

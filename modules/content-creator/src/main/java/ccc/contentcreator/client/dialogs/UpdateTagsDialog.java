@@ -83,9 +83,11 @@ public class UpdateTagsDialog
                 final String tags =
                     (null==_tags.getValue()) ? "" : _tags.getValue();
 
-                resourceService().updateTags(_resource.<String>get("id"),
-                                             tags,
-                                             new AsyncCallback<Void>(){
+                commands().updateTags(
+                    _resource.<String>get("id"),
+                    _resource.<Long>get("version"),
+                    tags,
+                    new AsyncCallback<Void>(){
                     public void onFailure(final Throwable caught) {
                         Globals.unexpectedError(caught);
                     }

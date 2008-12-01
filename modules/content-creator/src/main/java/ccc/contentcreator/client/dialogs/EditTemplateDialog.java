@@ -12,16 +12,16 @@
 
 package ccc.contentcreator.client.dialogs;
 
-import ccc.contentcreator.api.DialogMode;
-import ccc.contentcreator.api.ResourceServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
+import ccc.contentcreator.client.DataBinding;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.Validate;
 import ccc.contentcreator.client.Validations;
 import ccc.contentcreator.client.Validator;
-import ccc.contentcreator.dto.TemplateDTO;
+import ccc.services.api.TemplateDelta;
+import ccc.services.api.TemplateSummary;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -41,8 +41,6 @@ import com.extjs.gxt.ui.client.widget.layout.FormData;
  */
 public class EditTemplateDialog extends AbstractWizardDialog  {
 
-    private final ResourceServiceAsync _resourceService =
-        Globals.resourceService();
 
     /** DEFAULT_WIDTH : int. */
     protected static final int DEFAULT_WIDTH = 640;
@@ -170,18 +168,14 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
         _third.add(_body, new FormData("95%"));
     }
 
-    private TemplateDTO model() { // TODO: update to handle version correctly.
-        return new TemplateDTO(
-            _id,
-            -1,
-            _name.getValue(),
-            _templateTitle.getValue(),
-            _description.getValue(),
-            _body.getValue(),
-            _definition.getValue(),
-            "",
-            "",
-            "");
+    private TemplateDelta model() {
+        final TemplateDelta delta = new TemplateDelta();
+        delta._name = _name.getValue();
+        delta._title = _templateTitle.getValue();
+        delta._description = _description.getValue();
+        delta._body = _body.getValue();
+        delta._definition = _definition.getValue();
+        return delta;
     }
 
     /** {@inheritDoc} */
@@ -208,7 +202,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                 if (_mode == DialogMode.UPDATE) {
                     validate.next();
                 } else {
-                    Globals.resourceService().templateNameExists(
+                    queries().templateNameExists(
                         name.getValue(),
                         new ErrorReportingCallback<Boolean>(){
                             public void onSuccess(final Boolean nameExists) {
@@ -230,27 +224,23 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
     private Runnable createTemplates() {
         return new Runnable() {
             public void run() {
-                final TemplateDTO dto = model();
-                if (dto.isValid()) {
+                final TemplateDelta dto = model();
+                if (false) { // FIXME: dto.isValid()
                     switch (_mode) {
                         case CREATE:
-                            _resourceService.createTemplate(
+                            commands().createTemplate(
+                            null, // FIXME: determine parent folder.
                             dto,
                             new DisposingCallback(EditTemplateDialog.this));
                             break;
                         case UPDATE:
-                            _resourceService.updateTemplate(
+                            commands().updateTemplate(
+                                null, // FIXME
+                                -1, // FIXME
                                 dto,
-                                new ErrorReportingCallback<Void>(){
-                                    public void onSuccess(final Void arg0) {
-                                        _model.set("title", dto.getTitle());
-                                        // TODO name update is not persisted.
-                                        _model.set("name", dto.getName());
-                                        _model.set("description",
-                                            dto.getDescription());
-                                        _model.set("body", dto.getBody());
-                                        _model.set("definition",
-                                            dto.getDefinition());
+                                new ErrorReportingCallback<TemplateSummary>(){
+                                    public void onSuccess(final TemplateSummary arg0) {
+                                        DataBinding.merge(_model, arg0);
                                         _store.update(_model);
                                         close();
                                     }});
@@ -260,10 +250,9 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                             break;
                     }
                 } else {
-                    // TODO Reinstate feedback panel
-                    Globals.alert(dto.validate().toString());
-//                    _feedbackPanel.displayErrors(dto.validate());
-//                    _feedbackPanel.setVisible(true);
+                    // FIXME: Reinstate feedback panel
+                    // _feedbackPanel.displayErrors(dto.validate());
+                    // _feedbackPanel.setVisible(true);
                 }
             }
         };
