@@ -46,6 +46,8 @@
                                     <pathelement
                                         location="${basedir}/src/main/java" />
                                     <pathelement
+                                        location="${basedir}/src/gwt/java" />
+                                    <pathelement
                                         location="${basedir}/../public-api/src/main/java" />
                                     <pathelement path="${compile_classpath}" />
                                 </path>
