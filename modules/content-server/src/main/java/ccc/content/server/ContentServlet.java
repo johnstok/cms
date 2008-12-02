@@ -119,7 +119,7 @@ public final class ContentServlet extends CCCServlet {
         final ResourcePath contentPath = new ResourcePath(pathString); // 400
 
         final Maybe<Resource> resource = contentManager().lookup(contentPath);
-        if (resource.isDefined()) {
+        if (resource.isDefined() && resource.get().isPublished()) {
             handleResource(response, request, resource.get());
         } else {
             dispatchNotFound(request, response); // 404

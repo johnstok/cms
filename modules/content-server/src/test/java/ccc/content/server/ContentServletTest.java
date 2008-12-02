@@ -36,6 +36,7 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.Template;
+import ccc.domain.User;
 import ccc.services.ContentManagerLocal;
 import ccc.services.ServiceNames;
 
@@ -264,6 +265,7 @@ public final class ContentServletTest extends TestCase {
     public void testDoGetHandlesContent() throws ServletException, IOException {
 
         // ARRANGE
+        final User u = new User("user");
         final StringWriter output = new StringWriter();
         final String body =
             Resources.readIntoString(
@@ -273,6 +275,7 @@ public final class ContentServletTest extends TestCase {
         final Page p =
             new Page(new ResourceName("name"))
                 .addParagraph("Header", Paragraph.fromText("<br/>"));
+        p.publish(u);
         p.displayTemplateName(t);
 
         expect(_cm.lookup(new ResourcePath("/foo")))
@@ -319,9 +322,13 @@ public final class ContentServletTest extends TestCase {
                                                          IOException {
 
         // ARRANGE
+        final User u = new User("user");
         final Folder foo = new Folder(new ResourceName("foo"));
+        foo.publish(u);
         final Folder baz = new Folder(new ResourceName("baz"));
+        baz.publish(u);
         final Page bar = new Page(new ResourceName("bar"));
+        bar.publish(u);
         foo.add(baz);
         foo.add(bar);
 
@@ -360,9 +367,13 @@ public final class ContentServletTest extends TestCase {
         throws ServletException, IOException {
 
         // ARRANGE
+        final User u = new User("user");
         final Folder foo = new Folder(new ResourceName("foo"));
+        foo.publish(u);
         final Folder baz = new Folder(new ResourceName("baz"));
+        baz.publish(u);
         final Page bar = new Page(new ResourceName("bar"));
+        bar.publish(u);
         foo.add(baz);
         foo.add(bar);
 
@@ -467,6 +478,46 @@ public final class ContentServletTest extends TestCase {
 
         // VERIFY
         verify(_response);
+    }
+
+
+    /**
+     * Test.
+     *
+     * @throws IOException If there is an error writing to the _response.
+     * @throws ServletException If execution of the servlet fails.
+     */
+    public void testDoGetHandlesUnpublishedContent() throws ServletException,
+                                                            IOException {
+
+        // ARRANGE
+        final RequestDispatcher rd = createStrictMock(RequestDispatcher.class);
+        rd.forward(_request, _response);
+
+        final StringWriter output = new StringWriter();
+        final Page p = new Page(new ResourceName("name"));
+
+        expect(_cm.lookup(new ResourcePath("/foo")))
+            .andReturn(new Maybe<Resource>(p));
+        replay(_cm);
+
+        final ContentServlet contentServlet =
+            new ContentServlet(
+                new MapRegistry(
+                    ServiceNames.CONTENT_MANAGER_LOCAL,
+                    _cm));
+
+        // EXPECT
+        expect(_request.getPathInfo()).andReturn("/foo");
+        expect(_request.getRequestDispatcher("/notfound")).andReturn(rd);
+        replay(_request, _response, rd);
+
+        // ACT
+        contentServlet.doGet(_request, _response);
+
+        // VERIFY
+        verify(_request, _response, rd, _cm);
+        assertEquals("", output.toString());
     }
 
     /**
