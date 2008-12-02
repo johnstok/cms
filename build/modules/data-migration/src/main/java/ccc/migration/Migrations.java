@@ -26,6 +26,7 @@ import ccc.commons.XHTML;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
+import ccc.domain.Resource;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.AssetManagerRemote;
@@ -122,34 +123,8 @@ public class Migrations {
         try {
             log.debug("FOLDER");
             Folder child = new Folder(r.name());
-            final String templateName = r.displayTemplate();
-            if (null!=templateName) {
-                Template template =
-                    (_templates.containsKey(templateName))
-                    ? _templates.get(templateName)
-                        : new Template(templateName,
-                            "No description.", "Empty template!", "<fields/>");
-                    template = assetManager().createOrRetrieve(template);
-                    child.displayTemplateName(template);
-                    if (!_templates.containsKey(templateName)) {
-                        _templates.put(templateName, template);
-                    }
-            }
-
-            // set publish user
-            if (r.isPublished()) {
-                final Integer legacyUserId =
-                    _queries.selectUserFromLog(r.contentId(),
-                                               r.legacyVersion(),
-                                               "CHANGE STATUS",
-                                               "Changed Status to  PUBLISHED");
-                if (legacyUserId != null) {
-                    final User user =_users.get(legacyUserId);
-                    if (user != null) {
-                        child.publish(user);
-                    }
-                }
-            }
+            migrateTemplate(r, child);
+            migratePublish(r, child);
             contentManager().create(UUID.fromString(parentFolderId), child);
 
             final String childId = child.id().toString();
@@ -167,34 +142,8 @@ public class Migrations {
         try {
             log.debug("PAGE");
             final Page childPage = new Page(r.name());
-            final String templateName = r.displayTemplate();
-            if (null != templateName) {
-                Template template =
-                    (_templates.containsKey(templateName))
-                    ? _templates.get(templateName)
-                        : new Template(templateName,
-                            "No description.", "Empty template!", "<fields/>");
-                    template = assetManager().createOrRetrieve(template);
-                    childPage.displayTemplateName(template);
-                    if (!_templates.containsKey(templateName)) {
-                        _templates.put(templateName, template);
-                    }
-            }
-
-            // set publish user
-            if (r.isPublished()) {
-                final Integer legacyUserId =
-                    _queries.selectUserFromLog(r.contentId(),
-                                               r.legacyVersion(),
-                                               "CHANGE STATUS",
-                                               "Changed Status to  PUBLISHED");
-                if (legacyUserId != null) {
-                    final User user =_users.get(legacyUserId);
-                    if (user != null) {
-                        childPage.publish(user);
-                    }
-                }
-            }
+            migrateTemplate(r, childPage);
+            migratePublish(r, childPage);
 
             final Map<String, StringBuffer> paragraphs =
                 migrateParagraphs(r.contentId());
@@ -211,14 +160,29 @@ public class Migrations {
         }
     }
 
+    private void migrateTemplate(final ResourceBean r, final Resource child) {
+        final String templateName = r.displayTemplate();
+        if (null != templateName) {
+            Template template =
+                (_templates.containsKey(templateName))
+                ? _templates.get(templateName)
+                    : new Template(templateName,
+                        "No description.", "Empty template!", "<fields/>");
+                template = assetManager().createOrRetrieve(template);
+                child.displayTemplateName(template);
+                if (!_templates.containsKey(templateName)) {
+                    _templates.put(templateName, template);
+                }
+        }
+    }
+
     /**
      * Merges paragraphs, returns map of joined paragraph text.
      *
      * @param path
      * @param pageId
      */
-    private Map<String, StringBuffer>
-    migrateParagraphs(final int pageId) {
+    private Map<String, StringBuffer> migrateParagraphs(final int pageId) {
 
         log.debug("#### migrating paragraphs for "+pageId);
         final Map<String, StringBuffer> map =
@@ -244,6 +208,24 @@ public class Migrations {
             }
         }
         return map;
+    }
+
+
+    private void migratePublish(final ResourceBean r, final Resource child) {
+        // set publish user
+        if (r.isPublished()) {
+            final Integer legacyUserId =
+                _queries.selectUserFromLog(r.contentId(),
+                                           r.legacyVersion(),
+                                           "CHANGE STATUS",
+                                           "Changed Status to  PUBLISHED");
+            if (legacyUserId != null) {
+                final User user =_users.get(legacyUserId);
+                if (user != null) {
+                    child.publish(user);
+                }
+            }
+        }
     }
 
     /**
