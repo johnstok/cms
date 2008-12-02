@@ -10,7 +10,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.contentcreator.client.dialogs;
+package ccc.contentcreator.dialogs;
 
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;

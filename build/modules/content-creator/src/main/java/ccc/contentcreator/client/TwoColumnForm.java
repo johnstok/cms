@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * A panel with two columns - useful for displaying forms.
+ * TODO: Inline into UploadFileDialog.
  *
  * @author Civic Computing Ltd
  */

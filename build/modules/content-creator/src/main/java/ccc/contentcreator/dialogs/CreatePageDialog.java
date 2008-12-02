@@ -9,22 +9,22 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.client.dialogs;
+package ccc.contentcreator.dialogs;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.DataBinding;
 import ccc.contentcreator.client.EditPagePanel;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.ResourceTable;
-import ccc.contentcreator.client.Validate;
-import ccc.contentcreator.client.Validations;
+import ccc.contentcreator.validation.Validate;
+import ccc.contentcreator.validation.Validations;
 import ccc.services.api.PageDelta;
-import ccc.services.api.TemplateSummary;
+import ccc.services.api.TemplateDelta;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
@@ -87,7 +87,7 @@ public class CreatePageDialog
      * @param parent The Folder in which page will created.
      * @param rt ResourceTable to update.
      */
-    public CreatePageDialog(final Collection<TemplateSummary> list,
+    public CreatePageDialog(final Collection<TemplateDelta> list,
                             final ModelData parent, final ResourceTable rt) {
         super(Globals.uiConstants().createPage());
         _rt = rt;
@@ -122,7 +122,7 @@ public class CreatePageDialog
         };
         _grid.addListener(Events.RowClick, listener);
 
-        _templatesStore.add(DataBinding.bindTemplateSummary(list));
+        _templatesStore.add(DataBinding.bindTemplateDelta(list));
 
         final BorderLayoutData westData =
             new BorderLayoutData(LayoutRegion.WEST, 205);
@@ -159,8 +159,8 @@ public class CreatePageDialog
         cb.setBoxLabel(_uiConstants.useDefaultTemplate());
         cb.setId(_uiConstants.useDefaultTemplate());
         queries().getTemplateForResource(_parent.<String>get("id"),
-            new ErrorReportingCallback<TemplateSummary>() {
-            public void onSuccess(final TemplateSummary result) {
+            new ErrorReportingCallback<TemplateDelta>() {
+            public void onSuccess(final TemplateDelta result) {
                 if (result == null) {
                     cb.setValue(false);
                     cb.disable();
@@ -180,8 +180,8 @@ public class CreatePageDialog
             public void handleEvent(final FieldEvent be) {
                 if (cb.getValue()) {
                     queries().getTemplateForResource(_parent.<String>get("id"),
-                        new ErrorReportingCallback<TemplateSummary>() {
-                        public void onSuccess(final TemplateSummary result) {
+                        new ErrorReportingCallback<TemplateDelta>() {
+                        public void onSuccess(final TemplateDelta result) {
                             if (result == null) {
                                 cb.disable();
                                 _grid.enable();

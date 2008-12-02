@@ -9,7 +9,9 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.client;
+package ccc.contentcreator.validation;
+
+import java.util.List;
 
 
 /**
@@ -17,13 +19,6 @@ package ccc.contentcreator.client;
  *
  * @author Civic Computing Ltd.
  */
-public interface Validator {
-
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param validate
-     */
-    void validate(Validate validate);
-
+public interface ErrorReporter {
+    void report(List<String> errors);
 }

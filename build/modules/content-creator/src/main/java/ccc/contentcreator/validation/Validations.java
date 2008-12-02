@@ -9,11 +9,12 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.client;
+package ccc.contentcreator.validation;
 
 import java.util.List;
 
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
+import ccc.contentcreator.client.Globals;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.widget.form.TextField;

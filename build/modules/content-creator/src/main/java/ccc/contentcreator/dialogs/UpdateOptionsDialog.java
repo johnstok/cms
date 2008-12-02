@@ -9,35 +9,34 @@
  * Changes: see subversion log
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.client.dialogs;
 
+package ccc.contentcreator.dialogs;
+
+import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.client.Globals;
 
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 
 
 /**
- * Dialog for resource template chooser. Mostly copied from
- * UpdateOptionsDialog
+ * TODO Add Description for this type.
+ * TODO: Move null handling into option class.
  *
  * @author Civic Computing Ltd
  */
-public class ChooseTemplateDialog extends AbstractEditDialog {
+public class UpdateOptionsDialog extends AbstractEditDialog {
 
-    private final ModelData                      _resource;
-//    private final List<OptionDTO<? extends DTO>> _options;
-//
 //    private final ComboBox<TemplateDTO> _defaultTemplate =
 //        new ComboBox<TemplateDTO>();
+//    private final List<OptionDTO<? extends DTO>> _options;
 //    private final TemplateDTO _none =
 //        new TemplateDTO(null,
 //                        -1,
-//                        "{none}",
-//                        "{none}",
-//                        "{none}",
-//                        "{none}",
+//                        "[none]",
+//                        "[none]",
+//                        "[none]",
+//                        "[none]",
 //                        "<fields/>",
 //                        "",
 //                        "",
@@ -46,27 +45,31 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
     /**
      * Constructor.
      *
-     * @param options The list of OptionDTOs
-     * @param resource The ResourceDTO
+     * @param options A list of options to display on this panel.
      */
-    public ChooseTemplateDialog(final ModelData resource) {
-        super(Globals.uiConstants().chooseTemplate());
+    public UpdateOptionsDialog() {
+        super(Globals.uiConstants().options());
 
 //        _options = options;
-        _resource = resource;
 //
+//        // TODO: Refactor defaults for combo-box - esp' ID setting for Selenium.
 //        _defaultTemplate.setFieldLabel(constants().defaultTemplate());
-//        _defaultTemplate.setTemplate("<tpl for=\".\">"
-//            +"<div class=x-combo-list-item id={name}>{name}</div></tpl>");
+//        _defaultTemplate.setTemplate(
+//            "<tpl for=\".\">"
+//            + "<div class=x-combo-list-item id={name}>{name}</div>"
+//            + "</tpl>");
 //        _defaultTemplate.setId("default-template");
 //        _defaultTemplate.setDisplayField("name");
 //        _defaultTemplate.setForceSelection(true);
+//        _defaultTemplate.setAllowBlank(false);
 //        addField(_defaultTemplate);
-//
-//        drawGUI();
+
+        setPanelId("UserPanel");
+
+        drawGUI();
     }
-//
-//    private void drawGUI() {
+
+    private void drawGUI() {
 //
 //        // Populate combo-box
 //        final ListStore<TemplateDTO> store = new ListStore<TemplateDTO>();
@@ -87,14 +90,16 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
 //        } else {
 //            _defaultTemplate.setValue(currentValue);
 //        }
-//    }
+    }
 
     /** {@inheritDoc} */
-    @Override protected SelectionListener<ButtonEvent> saveAction() {
+    @Override
+    protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>(){
             @Override public void componentSelected(final ButtonEvent ce) {
 
 //                final TemplateDTO selected = _defaultTemplate.getValue();
+//                // TODO: NULL should cause error.
 //                if (_none.equals(selected)) {
 //                    _options
 //                        .get(0)
@@ -108,10 +113,11 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
 //                }
 //
 //                resourceService()
-//                    .updateResourceTemplate(
-//                        _options,
-//                        /* _resource, */ null, // TODO: Fix
-//                        new DisposingCallback(ChooseTemplateDialog.this));
+//                    .updateOptions(_options,
+//                                   new DisposingCallback(
+//                                       UpdateOptionsDialog.this
+//                                   )
+//                    );
             }
         };
     }

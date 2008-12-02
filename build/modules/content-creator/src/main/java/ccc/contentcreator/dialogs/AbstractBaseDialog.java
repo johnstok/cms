@@ -10,7 +10,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.contentcreator.client.dialogs;
+package ccc.contentcreator.dialogs;
 
 import ccc.contentcreator.api.CommandService;
 import ccc.contentcreator.api.CommandServiceAsync;

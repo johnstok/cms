@@ -11,24 +11,24 @@
  */
 package ccc.contentcreator.client;
 
-import static ccc.contentcreator.client.dialogs.AbstractBaseDialog.*;
+import static ccc.contentcreator.dialogs.AbstractBaseDialog.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.dialogs.CreateAliasDialog;
-import ccc.contentcreator.client.dialogs.EditAliasDialog;
-import ccc.contentcreator.client.dialogs.EditTemplateDialog;
-import ccc.contentcreator.client.dialogs.MoveDialog;
-import ccc.contentcreator.client.dialogs.PreviewContentDialog;
-import ccc.contentcreator.client.dialogs.RenameDialog;
-import ccc.contentcreator.client.dialogs.TableDataDisplayDialog;
-import ccc.contentcreator.client.dialogs.UpdatePageDialog;
-import ccc.contentcreator.client.dialogs.UpdateTagsDialog;
-import ccc.services.api.FolderSummary;
+import ccc.contentcreator.dialogs.CreateAliasDialog;
+import ccc.contentcreator.dialogs.EditAliasDialog;
+import ccc.contentcreator.dialogs.EditTemplateDialog;
+import ccc.contentcreator.dialogs.MoveDialog;
+import ccc.contentcreator.dialogs.PreviewContentDialog;
+import ccc.contentcreator.dialogs.RenameDialog;
+import ccc.contentcreator.dialogs.TableDataDisplayDialog;
+import ccc.contentcreator.dialogs.UpdatePageDialog;
+import ccc.contentcreator.dialogs.UpdateTagsDialog;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.ResourceSummary;
 
@@ -64,13 +64,13 @@ public class ResourceTable extends TablePanel {
     private final ListStore<ModelData> _detailsStore =
         new ListStore<ModelData>();
     private TreeItem _previousItem = null;
-    private final FolderSummary _root;
+    private final ResourceSummary _root;
 
 
     /**
      * Constructor.
      */
-    ResourceTable(final FolderSummary root) {
+    ResourceTable(final ResourceSummary root) {
 
         _root = root;
 
@@ -517,14 +517,7 @@ public class ResourceTable extends TablePanel {
             new ErrorReportingCallback<Collection<ResourceSummary>>() {
                 public void onSuccess(
                                   final Collection<ResourceSummary> result) {
-                    detailsStore().add(bind(result));
-                }
-                private List<ModelData> bind(final Collection<ResourceSummary> arg0) {
-                    final List<ModelData> boundData = new ArrayList<ModelData>();
-                    for (final ResourceSummary fs : arg0) {
-                        boundData.add(new ResourceSummaryModelData(fs));
-                    }
-                    return boundData;
+                    detailsStore().add(DataBinding.bindResourceSummary(result));
                 }
         });
     }

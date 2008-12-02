@@ -26,7 +26,7 @@ public interface Queries {
      *
      * @return
      */
-    Collection<FolderSummary> roots();
+    Collection<ResourceSummary> roots();
 
     /**
      * Get the resource located at the specified path.
@@ -41,7 +41,7 @@ public interface Queries {
      *
      * @return A list of templates.
      */
-    Collection<TemplateSummary> templates();
+    Collection<TemplateDelta> templates();
 
     /**
      * List all of the folders that are children of the specified parent folder.
@@ -49,7 +49,7 @@ public interface Queries {
      * @param folderId The id of the folder.
      * @return The list of child folders.
      */
-    Collection<FolderSummary> getFolderChildren(String folderId);
+    Collection<ResourceSummary> getFolderChildren(String folderId);
 
     /**
      * List all of the children of the specified folder.
@@ -130,7 +130,7 @@ public interface Queries {
      * @param resourceId Id of the resource.
      * @return TemplateDTO
      */
-    TemplateSummary getTemplateForResource(final String resourceId);
+    TemplateDelta getTemplateForResource(final String resourceId);
 
     /**
      * Returns currently logged in user.

@@ -9,14 +9,14 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.client.dialogs;
+package ccc.contentcreator.dialogs;
 
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.ResourceTable;
-import ccc.contentcreator.client.Validate;
-import ccc.contentcreator.client.Validations;
-import ccc.services.api.FolderSummary;
+import ccc.contentcreator.validation.Validate;
+import ccc.contentcreator.validation.Validations;
+import ccc.services.api.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -55,7 +55,7 @@ public class MoveDialog extends AbstractEditDialog {
      */
     public MoveDialog(final ModelData item,
                       final ResourceTable rt,
-                      final FolderSummary root) {
+                      final ResourceSummary root) {
         super(Globals.uiConstants().move());
         _rt = rt;
 

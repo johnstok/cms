@@ -59,7 +59,7 @@ public interface Commands {
     /**
      * Update the specified template on the server.
      */
-    TemplateSummary updateTemplate(String templateId,
+    ResourceSummary updateTemplate(String templateId,
                                    long version,
                                    TemplateDelta delta);
 
@@ -106,7 +106,7 @@ public interface Commands {
     /**
      * Create a folder with the specified name.
      */
-    FolderSummary createFolder(String parentId, String name);
+    ResourceSummary createFolder(String parentId, String name);
 
     /**
      * Create a new user in the system.

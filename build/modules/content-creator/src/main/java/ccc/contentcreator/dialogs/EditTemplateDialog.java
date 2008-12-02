@@ -10,18 +10,18 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.contentcreator.client.dialogs;
+package ccc.contentcreator.dialogs;
 
 import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.DataBinding;
 import ccc.contentcreator.client.Globals;
-import ccc.contentcreator.client.Validate;
-import ccc.contentcreator.client.Validations;
-import ccc.contentcreator.client.Validator;
+import ccc.contentcreator.validation.Validate;
+import ccc.contentcreator.validation.Validations;
+import ccc.contentcreator.validation.Validator;
+import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
-import ccc.services.api.TemplateSummary;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -238,8 +238,8 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                                 null, // FIXME
                                 -1, // FIXME
                                 dto,
-                                new ErrorReportingCallback<TemplateSummary>(){
-                                    public void onSuccess(final TemplateSummary arg0) {
+                                new ErrorReportingCallback<ResourceSummary>(){
+                                    public void onSuccess(final ResourceSummary arg0) {
                                         DataBinding.merge(_model, arg0);
                                         _store.update(_model);
                                         close();

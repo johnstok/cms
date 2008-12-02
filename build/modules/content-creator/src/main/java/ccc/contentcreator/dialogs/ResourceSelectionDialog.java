@@ -9,10 +9,9 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.client.dialogs;
+package ccc.contentcreator.dialogs;
 
-import ccc.contentcreator.client.FolderResourceTree;
-import ccc.services.api.FolderSummary;
+import ccc.contentcreator.client.ResourceTree;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -28,21 +27,23 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
  *
  * @author Civic Computing Ltd.
  */
-public class FolderSelectionDialog extends Window {
+public class ResourceSelectionDialog extends Window {
 
-    private final FolderResourceTree _tree;
+    private final ResourceTree _tree;
 
     /**
      * Constructor.
+     *
+     * @param rsa ResourceServiceAsync
      */
-    FolderSelectionDialog(final FolderSummary root) {
+    ResourceSelectionDialog() {
         setBodyBorder(false);
         setScrollMode(Scroll.AUTOY);
         setHeading("Select a folder"); // TODO: Move to UIConstants
         setWidth(400);
         setHeight(225);
         setLayout(new FitLayout());
-        _tree = new FolderResourceTree(root);
+        _tree = new ResourceTree(null); // FIXME: Erm...
         add(_tree);
         final Button save = new Button(
             "OK", // TODO: Move to UIConstants
@@ -64,7 +65,7 @@ public class FolderSelectionDialog extends Window {
      *
      * @return Returns the selected folder as {@link FolderDTO}
      */
-    ModelData selectedFolder() {
+    ModelData selectedResource() {
         return
             (null==_tree.getSelectedItem())
                 ? null

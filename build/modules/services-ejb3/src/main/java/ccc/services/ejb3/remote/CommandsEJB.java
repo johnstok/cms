@@ -20,11 +20,9 @@ import javax.ejb.TransactionAttribute;
 
 import ccc.services.ResourceDAOLocal;
 import ccc.services.api.Commands;
-import ccc.services.api.FolderSummary;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
-import ccc.services.api.TemplateSummary;
 import ccc.services.api.UserDelta;
 
 
@@ -56,7 +54,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public FolderSummary createFolder(final String parentId,
+    public ResourceSummary createFolder(final String parentId,
                                       final String name) {
 
         throw new UnsupportedOperationException("Method not implemented.");
@@ -169,7 +167,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public TemplateSummary updateTemplate(final String templateId,
+    public ResourceSummary updateTemplate(final String templateId,
                                final long version,
                                final TemplateDelta delta) {
 

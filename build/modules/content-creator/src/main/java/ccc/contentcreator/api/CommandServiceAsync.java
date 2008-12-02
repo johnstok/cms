@@ -11,11 +11,9 @@
  */
 package ccc.contentcreator.api;
 
-import ccc.services.api.FolderSummary;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
-import ccc.services.api.TemplateSummary;
 import ccc.services.api.UserDelta;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -42,7 +40,7 @@ public interface CommandServiceAsync {
 
     void updateResourceTemplate(String resourceId, long version, String templateId, AsyncCallback<Void> callback);
 
-    void updateTemplate(String templateId, long version, TemplateDelta delta, AsyncCallback<TemplateSummary> callback);
+    void updateTemplate(String templateId, long version, TemplateDelta delta, AsyncCallback<ResourceSummary> callback);
 
     void lock(String resourceId, AsyncCallback<ResourceSummary> callback);
 
@@ -58,7 +56,7 @@ public interface CommandServiceAsync {
 
     void createAlias(String parentId, String name, String targetId, AsyncCallback<Void> callback);
 
-    void createFolder(String parentId, String name, AsyncCallback<FolderSummary> callback);
+    void createFolder(String parentId, String name, AsyncCallback<ResourceSummary> callback);
 
     void createUser(UserDelta delta, AsyncCallback<Void> callback);
 

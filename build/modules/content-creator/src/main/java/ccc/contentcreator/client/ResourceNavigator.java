@@ -13,7 +13,7 @@ package ccc.contentcreator.client;
 
 import java.util.Collection;
 
-import ccc.services.api.FolderSummary;
+import ccc.services.api.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
@@ -38,7 +38,7 @@ public class ResourceNavigator extends ContentPanel {
      * @param rsa ResourceServiceAsync.
      */
     ResourceNavigator(final LeftRightPane view,
-                      final Collection<FolderSummary> roots) {
+                      final Collection<ResourceSummary> roots) {
 
         _view = view;
 
@@ -46,7 +46,7 @@ public class ResourceNavigator extends ContentPanel {
         setBodyBorder(false);
         setHeading("Navigator");
 
-        for (final FolderSummary root : roots) {
+        for (final ResourceSummary root : roots) {
             final EnhancedResourceTree tree =
                 new EnhancedResourceTree(root, _view);
 

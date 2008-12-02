@@ -22,11 +22,10 @@ import javax.ejb.TransactionAttribute;
 
 import ccc.domain.Folder;
 import ccc.services.QueryManagerLocal;
-import ccc.services.api.FolderSummary;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.Queries;
 import ccc.services.api.ResourceSummary;
-import ccc.services.api.TemplateSummary;
+import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserSummary;
 
 
@@ -67,14 +66,14 @@ public class QueriesEJB
 
     /** {@inheritDoc} */
     @Override
-    public Collection<FolderSummary> getFolderChildren(final String folderId) {
+    public Collection<ResourceSummary> getFolderChildren(final String folderId) {
         final Folder f = _qm.find(Folder.class, folderId);
         return mapFolders(f.folders());
     }
 
     /** {@inheritDoc} */
     @Override
-    public TemplateSummary getTemplateForResource(final String resourceId) {
+    public TemplateDelta getTemplateForResource(final String resourceId) {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
@@ -149,7 +148,7 @@ public class QueriesEJB
 
     /** {@inheritDoc} */
     @Override
-    public Collection<FolderSummary> roots() {
+    public Collection<ResourceSummary> roots() {
         return mapFolders(_qm.list("roots", Folder.class));
     }
 
@@ -161,7 +160,7 @@ public class QueriesEJB
 
     /** {@inheritDoc} */
     @Override
-    public Collection<TemplateSummary> templates() {
+    public Collection<TemplateDelta> templates() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 

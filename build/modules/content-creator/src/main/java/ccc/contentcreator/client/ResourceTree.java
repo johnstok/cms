@@ -17,7 +17,8 @@ import java.util.List;
 
 import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
-import ccc.services.api.FolderSummary;
+import ccc.contentcreator.binding.DataBinding;
+import ccc.services.api.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.binder.TreeBinder;
@@ -41,7 +42,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public class ResourceTree extends Tree {
 
     private final TreeStore<ModelData> _store;
-    private final FolderSummary _root;
+    private final ResourceSummary _root;
     final QueriesServiceAsync _qs = GWT.create(QueriesService.class);
 
     /**
@@ -50,7 +51,7 @@ public class ResourceTree extends Tree {
      * @param rsa ResourceServiceAsync.
      * @param root The root of the tree.
      */
-    public ResourceTree(final FolderSummary root) {
+    public ResourceTree(final ResourceSummary root) {
 
         _root = root;
 
@@ -69,15 +70,15 @@ public class ResourceTree extends Tree {
 
                 _qs.getFolderChildren(
                     parentId,
-                    new AsyncCallback<Collection<FolderSummary>>(){
+                    new AsyncCallback<Collection<ResourceSummary>>(){
 
                     public void onFailure(final Throwable arg0) {
                         callback.onFailure(arg0);
                     }
 
-                    public void onSuccess(final Collection<FolderSummary> arg0) {
+                    public void onSuccess(final Collection<ResourceSummary> arg0) {
                         callback.onSuccess(
-                            DataBinding.bindFolderSummary(arg0));
+                            DataBinding.bindResourceSummary(arg0));
                     }
                 });
             }

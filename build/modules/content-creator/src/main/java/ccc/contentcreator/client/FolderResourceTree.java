@@ -12,13 +12,13 @@
 
 package ccc.contentcreator.client;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
-import ccc.services.api.FolderSummary;
+import ccc.contentcreator.binding.DataBinding;
+import ccc.services.api.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.binder.TreeBinder;
@@ -42,7 +42,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public class FolderResourceTree extends Tree {
 
     private final TreeStore<ModelData> _store;
-    private final FolderSummary _root;
+    private final ResourceSummary _root;
 
     final QueriesServiceAsync qs = GWT.create(QueriesService.class);
 
@@ -52,7 +52,7 @@ public class FolderResourceTree extends Tree {
      * @param rsa ResourceServiceAsync.
      * @param root The root of the tree.
      */
-    public FolderResourceTree(final FolderSummary root) {
+    public FolderResourceTree(final ResourceSummary root) {
 
         _root = root;
 
@@ -69,22 +69,14 @@ public class FolderResourceTree extends Tree {
                     (null==loadConfig) ? _root._id : loadConfig.<String>get("id");
                 qs.getFolderChildren(
                                 parentId,
-                                new AsyncCallback<Collection<FolderSummary>>(){
+                                new AsyncCallback<Collection<ResourceSummary>>(){
 
                     public void onFailure(final Throwable arg0) {
                         callback.onFailure(arg0);
                     }
 
-                    public void onSuccess(final Collection<FolderSummary> arg0) {
-                        callback.onSuccess(bind(arg0));
-                    }
-
-                    private List<ModelData> bind(Collection<FolderSummary> arg0) {
-                        List<ModelData> boundData = new ArrayList<ModelData>();
-                        for (FolderSummary fs : arg0) {
-                            boundData.add(new FolderSummaryModelData(fs));
-                        }
-                        return boundData;
+                    public void onSuccess(final Collection<ResourceSummary> arg0) {
+                        callback.onSuccess(DataBinding.bindResourceSummary(arg0));
                     }
                 });
             }
@@ -95,8 +87,8 @@ public class FolderResourceTree extends Tree {
             new BaseTreeLoader<ModelData>(proxy) {
             @Override
             public boolean hasChildren(final ModelData parent) {
-                int childCount = parent.<Integer>get("folderCount").intValue();
-                return childCount > 0;
+                int folderCount = parent.<Integer>get("folderCount").intValue();
+                return folderCount > 0;
             }
         };
 

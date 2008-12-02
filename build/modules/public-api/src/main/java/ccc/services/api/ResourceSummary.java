@@ -27,5 +27,7 @@ public class ResourceSummary implements Serializable {
     public String _title;
     public String _lockedBy;
     public String _type;
+    public int    _childCount;
+    public int    _folderCount;
 
 }

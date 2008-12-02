@@ -17,15 +17,12 @@
 	<!-- Specify the app entry point class. -->
 	<entry-point class="ccc.contentcreator.client.ContentCreator" />
 
-	<source path="commands" />
-	<source path="dto" />
-	<source path="client" />
 	<source path="api" />
+	<source path="binding" />
 	<source path="callbacks" />
-
-	<!-- RPC servlet bindings. -->
-	<servlet path="/resource"
-		class="ccc.contentcreator.remoting.ResourceServiceImpl" />
+	<source path="client" />
+	<source path="dialogs" />
+	<source path="validation" />
 
 	<!-- Specify the application specific style sheet. -->
 	<stylesheet src="css/ext-all.css" />

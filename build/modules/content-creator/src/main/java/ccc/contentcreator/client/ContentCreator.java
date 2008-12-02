@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
-import ccc.services.api.FolderSummary;
+import ccc.services.api.ResourceSummary;
 
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
@@ -34,13 +34,13 @@ public final class ContentCreator implements EntryPoint {
 
         final QueriesServiceAsync qs = GWT.create(QueriesService.class);
 
-        qs.roots(new AsyncCallback<Collection<FolderSummary>>(){
+        qs.roots(new AsyncCallback<Collection<ResourceSummary>>(){
 
             public void onFailure(final Throwable arg0) {
                 Globals.unexpectedError(arg0);
             }
 
-            public void onSuccess(final Collection<FolderSummary> arg0) {
+            public void onSuccess(final Collection<ResourceSummary> arg0) {
                 final LeftRightPane contentPane = new LeftRightPane();
                 contentPane.setLeftHandPane(
                     new ResourceNavigator(contentPane,

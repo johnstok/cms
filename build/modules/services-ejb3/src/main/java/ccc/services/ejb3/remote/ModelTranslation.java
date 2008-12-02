@@ -16,7 +16,6 @@ import java.util.Collection;
 
 import ccc.domain.Folder;
 import ccc.domain.Resource;
-import ccc.services.api.FolderSummary;
 import ccc.services.api.ResourceSummary;
 
 
@@ -33,8 +32,8 @@ public class ModelTranslation {
      * @param folders The collection of folders to map.
      * @return The corresponding collection of FolderSummary.
      */
-    protected Collection<FolderSummary> mapFolders(final Collection<Folder> folders) {
-        final Collection<FolderSummary> mapped = new ArrayList<FolderSummary>();
+    protected Collection<ResourceSummary> mapFolders(final Collection<Folder> folders) {
+        final Collection<ResourceSummary> mapped = new ArrayList<ResourceSummary>();
         for (final Folder f : folders) {
             mapped.add(map(f));
         }
@@ -69,6 +68,8 @@ public class ModelTranslation {
         rs._lockedBy = (r.isLocked()) ? r.lockedBy().username() : null;
         rs._title = r.title();
         rs._publishedBy = (r.isPublished()) ? r.publishedBy().username() : null;
+        rs._childCount = 0;
+        rs._folderCount = 0;
         return rs;
     }
 
@@ -78,11 +79,10 @@ public class ModelTranslation {
      * @param f
      * @return
      */
-    protected FolderSummary map(final Folder f) {
-        final FolderSummary fs = new FolderSummary();
-        fs._id = f.id().toString();
-        fs._name = f.name().toString();
-        fs._folderCount = f.folders().size();
-        return fs;
+    protected ResourceSummary map(final Folder f) {
+        final ResourceSummary rs = map((Resource) f);
+        rs._childCount = f.entries().size();
+        rs._folderCount = f.folders().size();
+        return rs;
     }
 }
