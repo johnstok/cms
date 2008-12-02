@@ -9,14 +9,16 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.client.dialogs;
+package ccc.contentcreator.dialogs;
 
+import java.util.Collections;
+
+import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.FolderSummaryModelData;
 import ccc.contentcreator.client.Globals;
-import ccc.contentcreator.client.Validate;
-import ccc.contentcreator.client.Validations;
-import ccc.services.api.FolderSummary;
+import ccc.contentcreator.validation.Validate;
+import ccc.contentcreator.validation.Validations;
+import ccc.services.api.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -81,11 +83,11 @@ public class CreateFolderDialog extends AbstractEditDialog {
                 commands().createFolder(
                     _parent.<String>get("id"),
                     _text.getValue(),
-                    new ErrorReportingCallback<FolderSummary>(){
-                        public void onSuccess(final FolderSummary result) {
+                    new ErrorReportingCallback<ResourceSummary>(){
+                        public void onSuccess(final ResourceSummary result) {
                             fireEvent(Events.SelectionChange);
                             _treeStore.add(_parent,
-                                           new FolderSummaryModelData(result),
+                                           DataBinding.bindResourceSummary(Collections.singletonList(result)),
                                            false);
                             close();
                         }

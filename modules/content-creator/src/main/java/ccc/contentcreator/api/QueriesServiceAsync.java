@@ -13,10 +13,9 @@ package ccc.contentcreator.api;
 
 import java.util.Collection;
 
-import ccc.services.api.FolderSummary;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.ResourceSummary;
-import ccc.services.api.TemplateSummary;
+import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserSummary;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -29,15 +28,15 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public interface QueriesServiceAsync {
 
-    void roots(AsyncCallback<Collection<FolderSummary>> callback);
+    void roots(AsyncCallback<Collection<ResourceSummary>> callback);
 
     void resource(String resourceId,
                   AsyncCallback<ResourceSummary> callback);
 
-    void templates(AsyncCallback<Collection<TemplateSummary>> callback);
+    void templates(AsyncCallback<Collection<TemplateDelta>> callback);
 
     void getFolderChildren(String folderId,
-                           AsyncCallback<Collection<FolderSummary>> callback);
+                           AsyncCallback<Collection<ResourceSummary>> callback);
 
     void getChildren(String resourceId,
                      AsyncCallback<Collection<ResourceSummary>> callback);
@@ -67,7 +66,7 @@ public interface QueriesServiceAsync {
                             AsyncCallback<Boolean> callback);
 
     void getTemplateForResource(final String resourceId,
-                                AsyncCallback<TemplateSummary> callback);
+                                AsyncCallback<TemplateDelta> callback);
 
     void loggedInUser(AsyncCallback<UserSummary> callback);
 

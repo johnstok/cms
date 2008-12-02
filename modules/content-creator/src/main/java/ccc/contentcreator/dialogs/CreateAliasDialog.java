@@ -9,14 +9,14 @@
  * Changes: see subversion log
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.client.dialogs;
+package ccc.contentcreator.dialogs;
 
 
 import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.client.Globals;
-import ccc.contentcreator.client.Validate;
-import ccc.contentcreator.client.Validations;
-import ccc.services.api.FolderSummary;
+import ccc.contentcreator.validation.Validate;
+import ccc.contentcreator.validation.Validations;
+import ccc.services.api.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -48,7 +48,7 @@ public class CreateAliasDialog extends AbstractEditDialog {
      *
      * @param item The ResourceDTO
      */
-    public CreateAliasDialog(final ModelData item, final FolderSummary root) {
+    public CreateAliasDialog(final ModelData item, final ResourceSummary root) {
         super(Globals.uiConstants().createAlias());
         setPanelId("AliasPanel");
 

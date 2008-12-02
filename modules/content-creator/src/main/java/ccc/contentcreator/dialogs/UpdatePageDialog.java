@@ -10,20 +10,19 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.contentcreator.client.dialogs;
+package ccc.contentcreator.dialogs;
 
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.EditPagePanel;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.ResourceTable;
 import ccc.services.api.PageDelta;
-import ccc.services.api.TemplateSummary;
+import ccc.services.api.TemplateDelta;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
@@ -45,7 +44,7 @@ public class UpdatePageDialog
     private final AsyncCallback<Void> _saveCompletedCallback =
         new AsyncCallback<Void>() {
             public void onFailure(final Throwable arg0) {
-                GWT.log("Page saving failed", arg0);
+                Globals.unexpectedError(arg0);
             }
             public void onSuccess(final Void arg0) {
                 rt().refreshTable();
@@ -53,11 +52,11 @@ public class UpdatePageDialog
             }
         };
 
-      private final AsyncCallback<TemplateSummary> _lookupTemplateCallback =
-            new ErrorReportingCallback<TemplateSummary>() {
+      private final AsyncCallback<TemplateDelta> _lookupTemplateCallback =
+            new ErrorReportingCallback<TemplateDelta>() {
 
             /** {@inheritDoc} */
-            public void onSuccess(final TemplateSummary template) {
+            public void onSuccess(final TemplateDelta template) {
                 if (template == null) {
                     Globals.alert(constants().noTemplateFound());
                     close();
@@ -229,7 +228,7 @@ public class UpdatePageDialog
      *
      * @return Returns the _lookupTemplateCallback.
      */
-    protected AsyncCallback<TemplateSummary> lookupTemplateCallback() {
+    protected AsyncCallback<TemplateDelta> lookupTemplateCallback() {
         return _lookupTemplateCallback;
     }
 

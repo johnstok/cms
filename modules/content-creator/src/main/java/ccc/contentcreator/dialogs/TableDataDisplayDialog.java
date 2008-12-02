@@ -9,14 +9,14 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.client.dialogs;
+package ccc.contentcreator.dialogs;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import ccc.contentcreator.client.DataBinding;
+import ccc.contentcreator.binding.DataBinding;
 import ccc.services.api.LogEntrySummary;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;

@@ -14,11 +14,9 @@ package ccc.contentcreator.remoting;
 import ccc.commons.JNDI;
 import ccc.contentcreator.api.CommandService;
 import ccc.services.api.Commands;
-import ccc.services.api.FolderSummary;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
-import ccc.services.api.TemplateSummary;
 import ccc.services.api.UserDelta;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -52,7 +50,7 @@ public class CommandsImpl
      * @param name
      * @see ccc.services.api.Commands#createFolder(java.lang.String, java.lang.String)
      */
-    public FolderSummary createFolder(final String parentId, final String name) {
+    public ResourceSummary createFolder(final String parentId, final String name) {
 
         return _delegate.createFolder(parentId, name);
     }
@@ -203,7 +201,7 @@ public class CommandsImpl
      * @param delta
      * @see ccc.services.api.Commands#updateTemplate(java.lang.String, long, ccc.services.api.TemplateDelta)
      */
-    public TemplateSummary updateTemplate(final String templateId,
+    public ResourceSummary updateTemplate(final String templateId,
                                final long version,
                                final TemplateDelta delta) {
 

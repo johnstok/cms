@@ -9,10 +9,11 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.client;
+package ccc.contentcreator.validation;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 
 /**

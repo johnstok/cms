@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.client.dialogs;
+package ccc.contentcreator.dialogs;
 
 import ccc.contentcreator.client.Globals;
 

@@ -13,11 +13,11 @@ package ccc.contentcreator.client;
 
 import java.util.Collection;
 
-import ccc.contentcreator.client.dialogs.CreateFolderDialog;
-import ccc.contentcreator.client.dialogs.CreatePageDialog;
-import ccc.contentcreator.client.dialogs.UploadFileDialog;
-import ccc.services.api.FolderSummary;
-import ccc.services.api.TemplateSummary;
+import ccc.contentcreator.dialogs.CreateFolderDialog;
+import ccc.contentcreator.dialogs.CreatePageDialog;
+import ccc.contentcreator.dialogs.UploadFileDialog;
+import ccc.services.api.ResourceSummary;
+import ccc.services.api.TemplateDelta;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -45,11 +45,10 @@ public class EnhancedResourceTree extends FolderResourceTree {
     /**
      * Constructor.
      *
-     * @param rsa ResourceServiceAsync.
      * @param root The root of the tree.
      * @param view LeftRightPane of the surrounding view.
      */
-    EnhancedResourceTree(final FolderSummary root,
+    EnhancedResourceTree(final ResourceSummary root,
                          final LeftRightPane view) {
 
         super(root);
@@ -120,14 +119,14 @@ public class EnhancedResourceTree extends FolderResourceTree {
                 .getModel();
 
                 Globals.queriesService().templates(
-                    new AsyncCallback<Collection<TemplateSummary>>(){
+                    new AsyncCallback<Collection<TemplateDelta>>(){
 
                         public void onFailure(final Throwable arg0) {
                             Window.alert(Globals.uiConstants().error());
                         }
                         public void onSuccess(
-                                      final Collection<TemplateSummary> list) {
-                            new CreatePageDialog(list, item, _rt).show();
+                                      final Collection<TemplateDelta> list) {
+                            new CreatePageDialog(list, item, _rt).show(); // Need deltas here...
                         }});
             }
         });

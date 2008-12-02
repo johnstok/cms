@@ -9,17 +9,19 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.api;
-
+package ccc.contentcreator.dialogs;
 
 
 /**
- * TODO: Add Description for this type.
+ * Valid modes for a dialog.
  *
  * @author Civic Computing Ltd.
  */
-public class FolderSummary extends ResourceSummary {
+public enum DialogMode {
 
-    public int _folderCount;
+    /** CREATE : DialogMode. */
+    CREATE,
 
+    /** UPDATE : DialogMode. */
+    UPDATE;
 }

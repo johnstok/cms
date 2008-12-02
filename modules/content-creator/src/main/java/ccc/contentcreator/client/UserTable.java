@@ -15,8 +15,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.dialogs.EditUserDialog;
+import ccc.contentcreator.dialogs.EditUserDialog;
 import ccc.services.api.UserSummary;
 
 import com.extjs.gxt.ui.client.Events;

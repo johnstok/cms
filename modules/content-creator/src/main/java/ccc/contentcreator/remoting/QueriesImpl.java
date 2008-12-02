@@ -15,11 +15,10 @@ import java.util.Collection;
 
 import ccc.commons.JNDI;
 import ccc.contentcreator.api.QueriesService;
-import ccc.services.api.FolderSummary;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.Queries;
 import ccc.services.api.ResourceSummary;
-import ccc.services.api.TemplateSummary;
+import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserSummary;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -48,12 +47,12 @@ public class QueriesImpl
     }
 
     /** {@inheritDoc} */
-    public Collection<FolderSummary> getFolderChildren(final String folderId) {
+    public Collection<ResourceSummary> getFolderChildren(final String folderId) {
         return _delegate.getFolderChildren(folderId);
     }
 
     /** {@inheritDoc} */
-    public TemplateSummary getTemplateForResource(final String resourceId) {
+    public TemplateDelta getTemplateForResource(final String resourceId) {
         return _delegate.getTemplateForResource(resourceId);
     }
 
@@ -116,7 +115,7 @@ public class QueriesImpl
     }
 
     /** {@inheritDoc} */
-    public Collection<FolderSummary> roots() {
+    public Collection<ResourceSummary> roots() {
         return _delegate.roots();
     }
 
@@ -126,7 +125,7 @@ public class QueriesImpl
     }
 
     /** {@inheritDoc} */
-    public Collection<TemplateSummary> templates() {
+    public Collection<TemplateDelta> templates() {
         return _delegate.templates();
     }
 

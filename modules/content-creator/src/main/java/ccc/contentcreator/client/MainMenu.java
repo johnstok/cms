@@ -13,8 +13,8 @@ package ccc.contentcreator.client;
 
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.dialogs.CreateUserDialog;
-import ccc.contentcreator.client.dialogs.EditTemplateDialog;
+import ccc.contentcreator.dialogs.CreateUserDialog;
+import ccc.contentcreator.dialogs.EditTemplateDialog;
 import ccc.services.api.UserSummary;
 
 import com.extjs.gxt.ui.client.event.MenuEvent;
