@@ -42,11 +42,11 @@
                                     refid="maven.compile.classpath" />
                                 <path id="gwt.compile.classpath">
                                     <pathelement
-                                        location="${basedir}/src/main/resources" />
-                                    <pathelement
-                                        location="${basedir}/src/main/java" />
+                                        location="${basedir}/src/gwt/resources" />
                                     <pathelement
                                         location="${basedir}/src/gwt/java" />
+                                    <pathelement
+                                        location="${basedir}/src/main/java" />
                                     <pathelement
                                         location="${basedir}/../public-api/src/main/java" />
                                     <pathelement path="${compile_classpath}" />
