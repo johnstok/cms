@@ -23,7 +23,7 @@ import ccc.commons.serialisation.Serializer;
  */
 public abstract class VersionedEntity extends Entity {
 
-    private int  _version = -1;
+    private long  _version = -1;
 
     /** Constructor: for persistence only. */
     protected VersionedEntity() { super(); }
@@ -34,7 +34,7 @@ public abstract class VersionedEntity extends Entity {
      *
      * @return This entity's version, as an integer.
      */
-    public int version() {
+    public long version() {
         return _version;
     }
 
@@ -44,7 +44,7 @@ public abstract class VersionedEntity extends Entity {
      *
      * @param version The new version to set.
      */
-    public void version(final int version) {
+    public void version(final long version) {
         _version = version;
     }
 

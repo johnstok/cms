@@ -66,14 +66,10 @@ public class CommandsImpl
         _delegate.createPage(parentId, delta, templateId);
     }
 
-    /**
-     * @param parentId
-     * @param delta
-     * @see ccc.services.api.Commands#createTemplate(java.lang.String, ccc.services.api.TemplateDelta)
-     */
-    public void createTemplate(final String parentId, final TemplateDelta delta) {
-
-        _delegate.createTemplate(parentId, delta);
+    /** {@inheritDoc} */
+    public ResourceSummary createTemplate(final String parentId,
+                                          final TemplateDelta delta) {
+        return _delegate.createTemplate(parentId, delta);
     }
 
     /**
@@ -97,8 +93,7 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     public void logout() {
-
-        throw new UnsupportedOperationException("Method not implemented.");
+        getThreadLocalRequest().getSession().invalidate();
     }
 
     /**
@@ -195,17 +190,9 @@ public class CommandsImpl
         _delegate.updateTags(resourceId, version, tags);
     }
 
-    /**
-     * @param templateId
-     * @param version
-     * @param delta
-     * @see ccc.services.api.Commands#updateTemplate(java.lang.String, long, ccc.services.api.TemplateDelta)
-     */
-    public ResourceSummary updateTemplate(final String templateId,
-                               final long version,
-                               final TemplateDelta delta) {
-
-        return _delegate.updateTemplate(templateId, version, delta);
+    /** {@inheritDoc} */
+    public ResourceSummary updateTemplate(final TemplateDelta delta) {
+        return _delegate.updateTemplate(delta);
     }
 
     /**

@@ -14,14 +14,24 @@ package ccc.services.ejb3.remote;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
+import ccc.domain.CreatorRoles;
 import ccc.domain.Folder;
+import ccc.domain.Resource;
+import ccc.domain.ResourceName;
+import ccc.domain.Template;
+import ccc.services.AssetManagerLocal;
 import ccc.services.QueryManagerLocal;
+import ccc.services.ResourceDAOLocal;
+import ccc.services.UserManagerLocal;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.Queries;
 import ccc.services.api.ResourceSummary;
@@ -37,14 +47,23 @@ import ccc.services.api.UserSummary;
 @Stateless(name="PublicQueries")
 @TransactionAttribute(REQUIRED)
 @Remote(Queries.class)
-public class QueriesEJB
+public final class QueriesEJB
     extends
         ModelTranslation
     implements
         Queries {
 
+    @PersistenceContext(unitName = "ccc-persistence")
+    private EntityManager _entityManager;
+
     @EJB(name="QueryManager", beanInterface=QueryManagerLocal.class)
     private QueryManagerLocal _qm;
+    @EJB(name="UserManager", beanInterface=UserManagerLocal.class)
+    private UserManagerLocal _users;
+    @EJB(name="AssetManager", beanInterface=AssetManagerLocal.class)
+    private AssetManagerLocal _assets;
+    @EJB(name="ResourceDAO", beanInterface=ResourceDAOLocal.class)
+    private ResourceDAOLocal _resources;
 
     /**
      * Constructor.
@@ -54,7 +73,7 @@ public class QueriesEJB
     /** {@inheritDoc} */
     @Override
     public String getAbsolutePath(final String resourceId) {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return _qm.find(Resource.class, resourceId).absolutePath().toString();
     }
 
     /** {@inheritDoc} */
@@ -74,99 +93,118 @@ public class QueriesEJB
     /** {@inheritDoc} */
     @Override
     public TemplateDelta getTemplateForResource(final String resourceId) {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return delta(
+            _qm.find(Resource.class, resourceId).displayTemplateName());
     }
 
     /** {@inheritDoc} */
     @Override
     public Collection<LogEntrySummary> history(final String resourceId) {
-        throw new UnsupportedOperationException("Method not implemented.");
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<UserSummary> listUsers() {
-        throw new UnsupportedOperationException("Method not implemented.");
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<UserSummary> listUsersWithEmail(final String email) {
-        throw new UnsupportedOperationException("Method not implemented.");
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<UserSummary> listUsersWithRole(final String role) {
-        throw new UnsupportedOperationException("Method not implemented.");
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<UserSummary> listUsersWithUsername(
-                                                    final String username) {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return mapLogEntries(_resources.history(resourceId));
     }
 
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> locked() {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return mapResources(_resources.locked());
     }
 
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> lockedByCurrentUser() {
-        throw new UnsupportedOperationException("Method not implemented.");
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public UserSummary loggedInUser() {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return mapResources(_resources.lockedByCurrentUser());
     }
 
     /** {@inheritDoc} */
     @Override
     public boolean nameExistsInFolder(final String folderId,
                                       final String name) {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return
+            _qm.find(Folder.class, folderId)
+            .hasEntryWithName(new ResourceName(name));
     }
 
     /** {@inheritDoc} */
     @Override
     public boolean nameExistsInParentFolder(final String id,
                                             final String name) {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return
+            _qm.find(Folder.class, id).parent()
+            .hasEntryWithName(new ResourceName(name));
     }
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary resource(final String resourceId) {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return map(_qm.find(Resource.class, resourceId));
     }
 
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> roots() {
-        return mapFolders(_qm.list("roots", Folder.class));
+        final List<Folder> roots = _qm.list("roots", Folder.class);
+        return mapFolders(roots);
     }
 
     /** {@inheritDoc} */
     @Override
     public boolean templateNameExists(final String templateName) {
-        throw new UnsupportedOperationException("Method not implemented.");
+        final List<Template> templates =
+            _qm.list("templateByName",
+                     Template.class,
+                     new ResourceName(templateName));
+        return templates.size() > 0;
+
     }
 
     /** {@inheritDoc} */
     @Override
     public Collection<TemplateDelta> templates() {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return deltaTemplates(_assets.lookupTemplates());
+    }
+
+    /*
+     * USER METHODS
+     */
+    /** {@inheritDoc} */
+    @Override
+    public boolean usernameExists(final String username) {
+        return _users.usernameExists(username);
     }
 
     /** {@inheritDoc} */
     @Override
-    public boolean usernameExists(final String username) {
-        throw new UnsupportedOperationException("Method not implemented.");
+    public UserSummary loggedInUser() {
+        return map(_users.loggedInUser());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Collection<UserSummary> listUsers() {
+        return mapUsers(_users.listUsers());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Collection<UserSummary> listUsersWithEmail(final String email) {
+        return mapUsers(_users.listUsersWithEmail(email));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Collection<UserSummary> listUsersWithRole(final String role) {
+        return mapUsers(_users.listUsersWithRole(CreatorRoles.valueOf(role)));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Collection<UserSummary> listUsersWithUsername(
+                                                    final String username) {
+        return mapUsers(_users.listUsersWithUsername(username));
+    }
+
+    /** {@inheritDoc} */
+    @Override public TemplateDelta templateDelta(final String templateId) {
+        return delta(_qm.find(Template.class, templateId));
     }
 }

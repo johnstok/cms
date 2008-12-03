@@ -40,7 +40,7 @@ public interface CommandServiceAsync {
 
     void updateResourceTemplate(String resourceId, long version, String templateId, AsyncCallback<Void> callback);
 
-    void updateTemplate(String templateId, long version, TemplateDelta delta, AsyncCallback<ResourceSummary> callback);
+    void updateTemplate(TemplateDelta delta, AsyncCallback<ResourceSummary> callback);
 
     void lock(String resourceId, AsyncCallback<ResourceSummary> callback);
 
@@ -62,7 +62,7 @@ public interface CommandServiceAsync {
 
     void createPage(String parentId, PageDelta delta, String templateId, AsyncCallback<Void> callback);
 
-    void createTemplate(String parentId, TemplateDelta delta, AsyncCallback<Void> callback);
+    void createTemplate(String parentId, TemplateDelta delta, AsyncCallback<ResourceSummary> callback);
 
 
 

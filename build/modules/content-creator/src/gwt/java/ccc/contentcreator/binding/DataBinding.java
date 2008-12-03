@@ -48,16 +48,7 @@ public class DataBinding {
         final List<ModelData> boundData = new ArrayList<ModelData>();
         for (final ResourceSummary fs : arg0) {
             final ModelData md = new BaseModelData();
-
-            md.set("id", fs._id);
-            md.set("name", fs._name);
-            md.set("published", fs._publishedBy);
-            md.set("title", fs._title);
-            md.set("locked", fs._lockedBy);
-            md.set("type", fs._type);
-            md.set("childCount", fs._childCount);
-            md.set("folderCount", fs._folderCount);
-
+            merge(md, fs);
             boundData.add(md);
         }
         return boundData;
@@ -80,16 +71,15 @@ public class DataBinding {
      * @param _model
      * @param arg0
      */
-    public static void merge(final ModelData _model, final ResourceSummary arg0) {
-//        _model.set("title", dto.getTitle());
-//        // TODO name update is not persisted.
-//        _model.set("name", dto.getName());
-//        _model.set("description",
-//            dto.getDescription());
-//        _model.set("body", dto.getBody());
-//        _model.set("definition",
-//            dto.getDefinition());
-        throw new UnsupportedOperationException("Method not implemented.");
+    public static void merge(final ModelData md, final ResourceSummary fs) {
+        md.set("id", fs._id);
+        md.set("name", fs._name);
+        md.set("published", fs._publishedBy);
+        md.set("title", fs._title);
+        md.set("locked", fs._lockedBy);
+        md.set("type", fs._type);
+        md.set("childCount", fs._childCount);
+        md.set("folderCount", fs._folderCount);
     }
 
     /**

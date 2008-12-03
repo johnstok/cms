@@ -20,6 +20,8 @@ import java.io.Serializable;
  * @author Civic Computing Ltd.
  */
 public class TemplateDelta implements Serializable {
+    public String _id;
+    public long   _version;
     public String _name;
     public String _title;
     public String _description;

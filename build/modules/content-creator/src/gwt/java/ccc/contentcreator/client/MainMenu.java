@@ -13,8 +13,6 @@ package ccc.contentcreator.client;
 
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.dialogs.CreateUserDialog;
-import ccc.contentcreator.dialogs.EditTemplateDialog;
 import ccc.services.api.UserSummary;
 
 import com.extjs.gxt.ui.client.event.MenuEvent;
@@ -60,21 +58,6 @@ public class MainMenu
         });
         helpMenu.add(openManual);
 
-        final TextToolItem assets = new TextToolItem(_constants.assets());
-        assets.setId("assets-menu");
-        final Menu assetsMenu = new Menu();
-        assets.setMenu(assetsMenu);
-        final MenuItem createTemplate = new MenuItem();
-        createTemplate.setId("create-template-menu-item");
-        createTemplate.setText(_constants.createTemplate());
-        createTemplate.addSelectionListener(new SelectionListener<MenuEvent>() {
-            @Override
-            public void componentSelected(final MenuEvent ce) {
-                new EditTemplateDialog().show();
-            }
-        });
-        assetsMenu.add(createTemplate);
-
         final TextToolItem users = new TextToolItem(_constants.users());
         users.setId("users-menu");
         final Menu usersMenu = new Menu();
@@ -87,12 +70,12 @@ public class MainMenu
             public void componentSelected(final MenuEvent ce) {
                 Globals.queriesService().loggedInUser(
                     new ErrorReportingCallback<UserSummary>() {
-                    public void onSuccess(final UserSummary user) {
-                        if (user._roles.contains("ADMINISTRATOR")) {
-                            new CreateUserDialog().show();
-                        } else {
+                    public void onSuccess(final UserSummary user) { // FIXME: Broken.
+//                        if (user._roles.contains("ADMINISTRATOR")) {
+//                            new CreateUserDialog().show();
+//                        } else {
                             Globals.alert(_constants.notAllowedAction());
-                        }
+//                        }
                     }
                 });
 
@@ -108,8 +91,6 @@ public class MainMenu
 //        createUpdateOptionsItem(toolsMenu);
         createLogoutItem(toolsMenu);
 
-
-        add(assets);
         add(users);
         add(tools);
         add(help);

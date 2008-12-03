@@ -12,7 +12,6 @@
 package ccc.services.ejb3;
 
 import static javax.ejb.TransactionAttributeType.*;
-import static javax.persistence.PersistenceContextType.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,7 +19,7 @@ import java.util.UUID;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Remote;
-import javax.ejb.Stateful;
+import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -47,7 +46,7 @@ import ccc.services.QueryManagerLocal;
  *
  * @author Civic Computing Ltd.
  */
-@Stateful(name="AssetManager")
+@Stateless(name="AssetManager")
 @TransactionAttribute(REQUIRED)
 @Remote(AssetManagerRemote.class)
 @Local(AssetManagerLocal.class)
@@ -56,9 +55,7 @@ public final class AssetManagerEJB
         AssetManagerLocal,
         AssetManagerRemote {
 
-    @PersistenceContext(
-        unitName = "ccc-persistence",
-        type     = EXTENDED)
+    @PersistenceContext(unitName = "ccc-persistence")
     private EntityManager _entityManager;
 
 
