@@ -23,19 +23,23 @@ import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import ccc.domain.Alias;
 import ccc.domain.CreatorRoles;
 import ccc.domain.Folder;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
+import ccc.domain.User;
 import ccc.services.AssetManagerLocal;
 import ccc.services.QueryManagerLocal;
 import ccc.services.ResourceDAOLocal;
 import ccc.services.UserManagerLocal;
+import ccc.services.api.AliasDelta;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.Queries;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
+import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
 
 
@@ -206,5 +210,17 @@ public final class QueriesEJB
     /** {@inheritDoc} */
     @Override public TemplateDelta templateDelta(final String templateId) {
         return delta(_qm.find(Template.class, templateId));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public UserDelta userDelta(final String userId) {
+        return delta(_qm.find(User.class, userId));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AliasDelta aliasDelta(final String aliasId) {
+        return delta(_qm.find(Alias.class, aliasId));
     }
 }

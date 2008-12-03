@@ -13,11 +13,13 @@ package ccc.contentcreator.remoting;
 
 import ccc.commons.JNDI;
 import ccc.contentcreator.api.CommandService;
+import ccc.services.api.AliasDelta;
 import ccc.services.api.Commands;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserDelta;
+import ccc.services.api.UserSummary;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -144,15 +146,9 @@ public class CommandsImpl
         return _delegate.unpublish(resourceId);
     }
 
-    /**
-     * @param aliasId
-     * @param version
-     * @param targetId
-     * @see ccc.services.api.Commands#updateAlias(java.lang.String, long, java.lang.String)
-     */
-    public void updateAlias(final String aliasId, final long version, final String targetId) {
-
-        _delegate.updateAlias(aliasId, version, targetId);
+    /** {@inheritDoc} */
+    public void updateAlias(final AliasDelta delta) {
+        _delegate.updateAlias(delta);
     }
 
     /**
@@ -195,14 +191,8 @@ public class CommandsImpl
         return _delegate.updateTemplate(delta);
     }
 
-    /**
-     * @param userId
-     * @param version
-     * @param delta
-     * @see ccc.services.api.Commands#updateUser(java.lang.String, long, ccc.services.api.UserDelta)
-     */
-    public void updateUser(final String userId, final long version, final UserDelta delta) {
-
-        _delegate.updateUser(userId, version, delta);
+    /** {@inheritDoc} */
+    public UserSummary updateUser(final UserDelta delta) {
+        return _delegate.updateUser(delta);
     }
 }

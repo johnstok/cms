@@ -13,16 +13,21 @@ package ccc.services.ejb3.remote;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
+import ccc.domain.Alias;
+import ccc.domain.CreatorRoles;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.Template;
 import ccc.domain.User;
+import ccc.services.api.AliasDelta;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
+import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
 
 
@@ -167,7 +172,41 @@ public class ModelTranslation {
         return delta;
     }
 
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param user
+     * @return
+     */
+    protected UserDelta delta(final User user) {
+        final UserDelta delta = new UserDelta();
+        delta._id = user.id().toString();
+        delta._version = user.version();
+        delta._email = user.email();
+        delta._username = user.username();
+        delta._roles = new HashSet<String>();
+        for (final CreatorRoles role : user.roles()) {
+            delta._roles.add(role.name());
+        }
+        return delta;
+    }
 
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param alias
+     * @return
+     */
+    protected AliasDelta delta(final Alias alias) {
+        final AliasDelta delta = new AliasDelta();
+        delta._id = alias.id().toString();
+        delta._version = alias.version();
+        delta._name = alias.name().toString();
+        delta._targetId = alias.target().id().toString();
+        delta._targetName = alias.target().name().toString();
+        return delta;
+    }
 
     /**
      * TODO: Add a description of this method.

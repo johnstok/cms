@@ -37,15 +37,18 @@ import ccc.services.ContentManagerLocal;
 import ccc.services.QueryManagerLocal;
 import ccc.services.ResourceDAOLocal;
 import ccc.services.UserManagerLocal;
+import ccc.services.api.AliasDelta;
 import ccc.services.api.Commands;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserDelta;
+import ccc.services.api.UserSummary;
 
 
 /**
  * TODO: Add Description for this type.
+ * TODO: Version checking for all methods.
  *
  * @author Civic Computing Ltd.
  */
@@ -204,13 +207,11 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public void updateAlias(final String aliasId,
-                            final long version,
-                            final String targetId) {
+    public void updateAlias(final AliasDelta delta) {
 
         _content.updateAlias(
-            UUID.fromString(targetId),
-            UUID.fromString(aliasId));
+            UUID.fromString(delta._targetId),
+            UUID.fromString(delta._id));
     }
 
     /** {@inheritDoc} */
@@ -275,17 +276,18 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public void updateUser(final String userId,
-                           final long version,
-                           final UserDelta delta) {
+    public UserSummary updateUser(final UserDelta delta) {
+        // TODO: Refactor - horrible.
         final User user = new User(delta._username);
         user.email(delta._email);
         for (final String role : delta._roles) {
             user.addRole(CreatorRoles.valueOf(role));
         }
-        user.version(version);
-        user.id(UUID.fromString(userId));
+        user.version(delta._version);
+        user.id(UUID.fromString(delta._id));
 
         _users.updateUser(user, delta._password);
+
+        return map(user);
     }
 }

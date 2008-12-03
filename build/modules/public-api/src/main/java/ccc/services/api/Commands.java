@@ -44,12 +44,12 @@ public interface Commands {
     /**
      * Update an alias' target.
      */
-    void updateAlias(String aliasId, long version, String targetId);
+    void updateAlias(AliasDelta delta);
 
     /**
      * Updates the user in the system.
      */
-    void updateUser(String userId, long version, UserDelta delta);
+    UserSummary updateUser(UserDelta delta);
 
     /**
      * Update the specified resource's template on the server.

@@ -18,6 +18,7 @@ import java.util.List;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.dialogs.EditUserDialog;
+import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
 
 import com.extjs.gxt.ui.client.Events;
@@ -41,6 +42,7 @@ import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.TextToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.extjs.gxt.ui.client.widget.tree.TreeItem;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 /**
@@ -154,7 +156,15 @@ public class UserTable extends TablePanel {
             public void componentSelected(final MenuEvent ce) {
                 final ModelData userDTO =
                     grid.getSelectionModel().getSelectedItem();
-                new EditUserDialog(null, UserTable.this).show(); // FIXME: look up delta
+                final String userId = userDTO.get("id");
+                qs.userDelta(userId, new AsyncCallback<UserDelta>(){
+                    public void onFailure(final Throwable arg0) {
+                        Globals.unexpectedError(arg0);
+                    }
+                    public void onSuccess(final UserDelta arg0) {
+                        new EditUserDialog(arg0, UserTable.this).show();
+                    }
+                });
             }
 
         });

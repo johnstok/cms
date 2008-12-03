@@ -15,10 +15,12 @@ import java.util.Collection;
 
 import ccc.commons.JNDI;
 import ccc.contentcreator.api.QueriesService;
+import ccc.services.api.AliasDelta;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.Queries;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
+import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -138,5 +140,17 @@ public class QueriesImpl
     @Override
     public TemplateDelta templateDelta(final String templateId) {
         return _delegate.templateDelta(templateId);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public UserDelta userDelta(final String userId) {
+        return _delegate.userDelta(userId);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AliasDelta aliasDelta(final String aliasId) {
+        return _delegate.aliasDelta(aliasId);
     }
 }

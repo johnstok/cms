@@ -61,8 +61,25 @@ public class DataBinding {
      * @return
      */
     public static List<ModelData> bindUserSummary(final Collection<UserSummary> result) {
+        final List<ModelData> boundData = new ArrayList<ModelData>();
+        for (final UserSummary us : result) {
+            final ModelData md = new BaseModelData();
+            merge(md, us);
+            boundData.add(md);
+        }
+        return boundData;
+    }
 
-        throw new UnsupportedOperationException("Method not implemented.");
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param md
+     * @param us
+     */
+    private static void merge(final ModelData md, final UserSummary us) {
+        md.set("id", us._id);
+        md.set("email", us._email);
+        md.set("username", us._username);
     }
 
     /**

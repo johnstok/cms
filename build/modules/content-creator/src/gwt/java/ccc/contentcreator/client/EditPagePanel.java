@@ -36,7 +36,7 @@ import com.google.gwt.xml.client.XMLParser;
  *
  * @author Civic Computing Ltd.
  */
-public class EditPagePanel extends FormPanel { // FIXME: Should extend CCC class
+public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private TextField<String> _title = new TextField<String>();
     private TextField<String> _name = new TextField<String>();
 

@@ -173,4 +173,6 @@ public interface Queries {
     Collection<LogEntrySummary> history(String resourceId);
 
     TemplateDelta templateDelta(String templateId);
+    UserDelta userDelta(String userId);
+    AliasDelta aliasDelta(String aliasId);
 }

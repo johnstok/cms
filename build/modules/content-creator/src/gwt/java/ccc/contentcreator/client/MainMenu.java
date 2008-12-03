@@ -13,6 +13,7 @@ package ccc.contentcreator.client;
 
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
+import ccc.contentcreator.dialogs.CreateUserDialog;
 import ccc.services.api.UserSummary;
 
 import com.extjs.gxt.ui.client.event.MenuEvent;
@@ -70,12 +71,8 @@ public class MainMenu
             public void componentSelected(final MenuEvent ce) {
                 Globals.queriesService().loggedInUser(
                     new ErrorReportingCallback<UserSummary>() {
-                    public void onSuccess(final UserSummary user) { // FIXME: Broken.
-//                        if (user._roles.contains("ADMINISTRATOR")) {
-//                            new CreateUserDialog().show();
-//                        } else {
-                            Globals.alert(_constants.notAllowedAction());
-//                        }
+                    public void onSuccess(final UserSummary user) {
+                        new CreateUserDialog().show();
                     }
                 });
 
