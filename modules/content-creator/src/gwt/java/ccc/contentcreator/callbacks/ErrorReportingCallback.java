@@ -25,14 +25,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public abstract class ErrorReportingCallback<T> implements AsyncCallback<T> {
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public final void onFailure(final Throwable caught) {
-        // TODO: should be using a message, not a constant.
-        Globals.alert(
-            Globals.uiConstants().error()
-            + ": " //$NON-NLS-1$
-            + caught.getMessage());
+        Globals.unexpectedError(caught);
     }
 }

@@ -13,9 +13,11 @@ package ccc.contentcreator.api;
 
 import java.util.Collection;
 
+import ccc.services.api.AliasDelta;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
+import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -82,4 +84,8 @@ public interface QueriesServiceAsync {
                  AsyncCallback<Collection<LogEntrySummary>> callback);
 
     void templateDelta(String templateId, AsyncCallback<TemplateDelta> asyncCallback);
+
+    void userDelta(String userId, AsyncCallback<UserDelta> asyncCallback);
+
+    void aliasDelta(String aliasId, AsyncCallback<AliasDelta> asyncCallback);
 }

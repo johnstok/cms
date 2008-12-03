@@ -11,10 +11,12 @@
  */
 package ccc.contentcreator.api;
 
+import ccc.services.api.AliasDelta;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserDelta;
+import ccc.services.api.UserSummary;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -34,9 +36,9 @@ public interface CommandServiceAsync {
 
     void move(String resourceId, long version, String newParentId, AsyncCallback<Void> callback);
 
-    void updateAlias(String aliasId, long version, String targetId, AsyncCallback<Void> callback);
+    void updateAlias(AliasDelta delta, AsyncCallback<Void> callback);
 
-    void updateUser(String userId, long version, UserDelta delta, AsyncCallback<Void> callback);
+    void updateUser(UserDelta delta, AsyncCallback<UserSummary> callback);
 
     void updateResourceTemplate(String resourceId, long version, String templateId, AsyncCallback<Void> callback);
 

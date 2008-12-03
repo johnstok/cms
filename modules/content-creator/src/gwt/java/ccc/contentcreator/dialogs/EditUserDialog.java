@@ -23,6 +23,7 @@ import ccc.contentcreator.client.UserTable;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validator;
 import ccc.services.api.UserDelta;
+import ccc.services.api.UserSummary;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -161,13 +162,12 @@ public class EditUserDialog extends AbstractEditDialog {
                 }
                 _userDTO._password = password;
 
-                commands().updateUser( // FIXME: Erm...
-                    /* _userId, */ null,
-                    /* _userVersion, */ -1,
+                commands().updateUser(
                     _userDTO,
-                    new ErrorReportingCallback<Void>() {
-                        public void onSuccess(final Void result) {
-                            _userTable.refreshUsers(); // TODO: Just update the row + datastore
+                    new ErrorReportingCallback<UserSummary>() {
+                        public void onSuccess(final UserSummary result) {
+                            // TODO: Update the row with result
+                            _userTable.refreshUsers();
                             close();
                         }
                     }

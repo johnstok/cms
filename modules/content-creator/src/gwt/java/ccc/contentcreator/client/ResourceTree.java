@@ -88,7 +88,7 @@ public class ResourceTree extends Tree {
             new BaseTreeLoader<ModelData>(proxy) {
             @Override
             public boolean hasChildren(final ModelData parent) {
-                if (parent.<String>get("type").equals("FOLDER")) {
+                if (parent.<Integer>get("folderCount") > 0) {
                     return true;
                 }
                 return false;
@@ -107,6 +107,7 @@ public class ResourceTree extends Tree {
                 item.setId(model.<String>get("name"));
             }
         };
+        binder.setDisplayProperty("name");
         binder.setCaching(false);
         binder.setIconProvider(new ModelStringProvider<ModelData>() {
             public String getStringValue(final ModelData model,

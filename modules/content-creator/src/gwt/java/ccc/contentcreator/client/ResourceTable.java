@@ -29,6 +29,7 @@ import ccc.contentcreator.dialogs.RenameDialog;
 import ccc.contentcreator.dialogs.TableDataDisplayDialog;
 import ccc.contentcreator.dialogs.UpdatePageDialog;
 import ccc.contentcreator.dialogs.UpdateTagsDialog;
+import ccc.services.api.AliasDelta;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
@@ -295,10 +296,7 @@ public class ResourceTable extends TablePanel {
                     final ModelData item = tbl.getSelectedItem().getModel();
 
                      if ("TEMPLATE".equals(item.get("type"))) {
-                         qs.templateDelta(item.<String>get("id"), new AsyncCallback<TemplateDelta>(){
-                            public void onFailure(final Throwable arg0) {
-                                Globals.unexpectedError(arg0);
-                            }
+                         qs.templateDelta(item.<String>get("id"), new ErrorReportingCallback<TemplateDelta>(){
                             public void onSuccess(final TemplateDelta arg0) {
                                 new EditTemplateDialog(arg0, item, detailsStore()).show();
                             }});
@@ -310,7 +308,11 @@ public class ResourceTable extends TablePanel {
                          .show();
 
                      } else if ("ALIAS".equals(item.get("type"))) {
-                         new EditAliasDialog(item, ResourceTable.this).show();
+                         qs.aliasDelta(item.<String>get("id"),new ErrorReportingCallback<AliasDelta>() {
+                             public void onSuccess(final AliasDelta result) {
+                                 new EditAliasDialog(result, ResourceTable.this, _root).show();
+                             }
+                         });
 
                      } else {
                         Globals.alert("No editor available for this resource.");

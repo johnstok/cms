@@ -13,6 +13,9 @@ package ccc.contentcreator.dialogs;
 
 
 import static ccc.contentcreator.validation.Validations.*;
+
+import java.util.HashSet;
+
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.validation.Validate;
@@ -154,6 +157,7 @@ public class CreateUserDialog extends AbstractEditDialog {
                 delta._username = _username.getValue();
                 delta._email = _email.getValue();
                 delta._password = _password1.getValue();
+                delta._roles = new HashSet<String>();
 
                 Globals.commandService().createUser(
                     delta,
