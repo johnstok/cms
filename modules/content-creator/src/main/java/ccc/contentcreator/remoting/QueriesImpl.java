@@ -133,4 +133,10 @@ public class QueriesImpl
     public boolean usernameExists(final String username) {
         return _delegate.usernameExists(username);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public TemplateDelta templateDelta(final String templateId) {
+        return _delegate.templateDelta(templateId);
+    }
 }

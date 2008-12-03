@@ -12,7 +12,6 @@
 package ccc.services.ejb3;
 
 import static javax.ejb.TransactionAttributeType.*;
-import static javax.persistence.PersistenceContextType.*;
 
 import java.security.Principal;
 import java.util.Collection;
@@ -25,7 +24,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBContext;
 import javax.ejb.Local;
 import javax.ejb.Remote;
-import javax.ejb.Stateful;
+import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -45,15 +44,13 @@ import ccc.services.UserManagerRemote;
  *
  * @author Civic Computing Ltd.
  */
-@Stateful(name="UserManager")
+@Stateless(name="UserManager")
 @TransactionAttribute(REQUIRED)
 @Remote(UserManagerRemote.class)
 @Local(UserManagerLocal.class)
 public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
 
-    @PersistenceContext(
-        unitName = "ccc-persistence",
-        type     = EXTENDED)
+    @PersistenceContext(unitName = "ccc-persistence")
     private EntityManager _em;
     @Resource private EJBContext _context;
 

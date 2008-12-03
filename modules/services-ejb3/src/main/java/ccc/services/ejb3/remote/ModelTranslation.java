@@ -13,10 +13,17 @@ package ccc.services.ejb3.remote;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import ccc.domain.Folder;
+import ccc.domain.LogEntry;
 import ccc.domain.Resource;
+import ccc.domain.Template;
+import ccc.domain.User;
+import ccc.services.api.LogEntrySummary;
 import ccc.services.api.ResourceSummary;
+import ccc.services.api.TemplateDelta;
+import ccc.services.api.UserSummary;
 
 
 /**
@@ -54,6 +61,47 @@ public class ModelTranslation {
         return mapped;
     }
 
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param listUsers
+     * @return
+     */
+    protected Collection<UserSummary> mapUsers(final Collection<User> users) {
+        final Collection<UserSummary> mapped = new ArrayList<UserSummary>();
+        for (final User u : users) {
+            mapped.add(map(u));
+        }
+        return mapped;
+    }
+
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param history
+     * @return
+     */
+    protected Collection<LogEntrySummary> mapLogEntries(final List<LogEntry> logEntries) {
+        final Collection<LogEntrySummary> mapped =
+            new ArrayList<LogEntrySummary>();
+        for (final LogEntry le : logEntries) {
+            mapped.add(map(le));
+        }
+        return mapped;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param le
+     * @return
+     */
+    protected LogEntrySummary map(final LogEntry le) {
+        return new LogEntrySummary();
+    }
+
     /**
      * TODO: Add a description of this method.
      *
@@ -84,5 +132,54 @@ public class ModelTranslation {
         rs._childCount = f.entries().size();
         rs._folderCount = f.folders().size();
         return rs;
+    }
+
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param loggedInUser
+     * @return
+     */
+    protected UserSummary map(final User user) {
+        final UserSummary us = new UserSummary();
+        us._email = user.email();
+        us._id = user.id().toString();
+        us._username = user.username();
+        return us;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param template
+     * @return
+     */
+    protected TemplateDelta delta(final Template template) {
+        final TemplateDelta delta = new TemplateDelta();
+        delta._id = template.id().toString();
+        delta._version = template.version();
+        delta._body = template.body();
+        delta._definition = template.definition();
+        delta._description = template.description();
+        delta._name = template.name().toString();
+        delta._title = template.title();
+        return delta;
+    }
+
+
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param templates
+     * @return
+     */
+    protected Collection<TemplateDelta> deltaTemplates(final List<Template> templates) {
+        final Collection<TemplateDelta> mapped = new ArrayList<TemplateDelta>();
+        for (final Template t : templates) {
+            mapped.add(delta(t));
+        }
+        return mapped;
     }
 }

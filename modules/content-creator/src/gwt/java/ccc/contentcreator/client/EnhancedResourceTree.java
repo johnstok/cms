@@ -15,6 +15,7 @@ import java.util.Collection;
 
 import ccc.contentcreator.dialogs.CreateFolderDialog;
 import ccc.contentcreator.dialogs.CreatePageDialog;
+import ccc.contentcreator.dialogs.EditTemplateDialog;
 import ccc.contentcreator.dialogs.UploadFileDialog;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
@@ -96,13 +97,10 @@ public class EnhancedResourceTree extends FolderResourceTree {
         createFolder.addSelectionListener(new SelectionListener<MenuEvent>() {
 
             @Override public void componentSelected(final MenuEvent me) {
-                final ModelData item = getSelectionModel()
-                .getSelectedItem()
-                .getModel();
+                final ModelData item =
+                    getSelectionModel().getSelectedItem().getModel();
 
-                final CreateFolderDialog dialog =
-                    new CreateFolderDialog(item, store());
-                dialog.show();
+                new CreateFolderDialog(item, store()).show();
             }
         });
         contextMenu.add(createFolder);
@@ -114,9 +112,8 @@ public class EnhancedResourceTree extends FolderResourceTree {
 
             @Override public void componentSelected(final MenuEvent me) {
 
-                final ModelData item = getSelectionModel()
-                .getSelectedItem()
-                .getModel();
+                final ModelData item =
+                    getSelectionModel().getSelectedItem().getModel();
 
                 Globals.queriesService().templates(
                     new AsyncCallback<Collection<TemplateDelta>>(){
@@ -131,6 +128,23 @@ public class EnhancedResourceTree extends FolderResourceTree {
             }
         });
         contextMenu.add(createPage);
+
+
+        final MenuItem createTemplate = new MenuItem();
+        createTemplate.setId("create-template");
+        createTemplate.setText(Globals.uiConstants().createTemplate());
+        createTemplate.addSelectionListener(new SelectionListener<MenuEvent>() {
+            @Override public void componentSelected(final MenuEvent ce) {
+
+                final ModelData item =
+                    getSelectionModel().getSelectedItem().getModel();
+
+                new EditTemplateDialog(item.<String>get("id"),
+                                       _rt.detailsStore())
+                    .show();
+            }
+        });
+        contextMenu.add(createTemplate);
 
         setContextMenu(contextMenu);
     }

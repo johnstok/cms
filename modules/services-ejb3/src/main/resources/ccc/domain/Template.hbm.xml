@@ -27,4 +27,6 @@
         <property name="_definition" not-null="true" type="text" />
         
     </joined-subclass>
+    
+    <query name="templateByName">from ccc.domain.Template t where t._name = ?</query>
 </hibernate-mapping>

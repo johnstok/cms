@@ -14,7 +14,6 @@ package ccc.contentcreator.dialogs;
 
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.DataBinding;
-import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.validation.Validate;
@@ -23,6 +22,7 @@ import ccc.contentcreator.validation.Validator;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 
+import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -64,17 +64,24 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
     private final TextArea _definition = new TextArea();
 
     private String _id;
+    private String _parentFolderId;
     private DialogMode _mode;
     private ListStore<ModelData> _store;
-    private ModelData _model;
+    private TemplateDelta _model;
+    private ModelData _proxy = new BaseModelData();
+    private long _version = -1;
 
     /**
      * Constructor.
      */
-    public EditTemplateDialog() {
+    public EditTemplateDialog(final String parentFolderId,
+                              final ListStore<ModelData> store) {
         super(Globals.uiConstants().editTemplate());
         setWidth(DEFAULT_WIDTH);
         setHeight(DEFAULT_HEIGHT);
+
+        _parentFolderId = parentFolderId;
+        _store = store;
 
         _name.setId("name");
         _templateTitle.setId("title");
@@ -96,26 +103,29 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
     /**
      * Constructor.
      *
-     * @param item TemplateDTO for the template.
+     * @param model The template to update.
      * @param store ListStore model for the dialog.
      */
-    public EditTemplateDialog(final ModelData item,
+    public EditTemplateDialog(final TemplateDelta model,
+                              final ModelData proxy,
                               final ListStore<ModelData> store) {
-        this();
+        this(null, store);
         _mode = DialogMode.UPDATE;
 
-        _id = item.<String>get("id");
-        _store = store;
-        _model = item;
+        _model = model;
+        _proxy = proxy;
+
+        _id = _model._id;
+        _version = model._version;
 
         _name.setReadOnly(true);
         _name.disable();
 
-        _body.setValue(_model.<String>get("body"));
-        _definition.setValue(_model.<String>get("definition"));
-        _description.setValue(_model.<String>get("description"));
-        _templateTitle.setValue(_model.<String>get("title"));
-        _name.setValue(_model.<String>get("name"));
+        _body.setValue(_model._body);
+        _definition.setValue(_model._definition);
+        _description.setValue(_model._description);
+        _templateTitle.setValue(_model._title);
+        _name.setValue(_model._name);
     }
 
     private void populateFirstScreen() {
@@ -170,6 +180,8 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
 
     private TemplateDelta model() {
         final TemplateDelta delta = new TemplateDelta();
+        delta._id = _id;
+        delta._version = _version ;
         delta._name = _name.getValue();
         delta._title = _templateTitle.getValue();
         delta._description = _description.getValue();
@@ -224,24 +236,26 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
     private Runnable createTemplates() {
         return new Runnable() {
             public void run() {
-                final TemplateDelta dto = model();
-                if (false) { // FIXME: dto.isValid()
+                final TemplateDelta delta = model();
                     switch (_mode) {
                         case CREATE:
                             commands().createTemplate(
-                            null, // FIXME: determine parent folder.
-                            dto,
-                            new DisposingCallback(EditTemplateDialog.this));
+                            _parentFolderId,
+                            delta,
+                            new ErrorReportingCallback<ResourceSummary>(){
+                                public void onSuccess(final ResourceSummary arg0) {
+                                    DataBinding.merge(_proxy, arg0);
+                                    _store.add(_proxy);
+                                    close();
+                                }});
                             break;
                         case UPDATE:
                             commands().updateTemplate(
-                                null, // FIXME
-                                -1, // FIXME
-                                dto,
+                                delta,
                                 new ErrorReportingCallback<ResourceSummary>(){
                                     public void onSuccess(final ResourceSummary arg0) {
-                                        DataBinding.merge(_model, arg0);
-                                        _store.update(_model);
+                                        DataBinding.merge(_proxy, arg0);
+                                        _store.update(_proxy);
                                         close();
                                     }});
                             break;
@@ -249,11 +263,6 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                             Globals.alert("Error.");
                             break;
                     }
-                } else {
-                    // FIXME: Reinstate feedback panel
-                    // _feedbackPanel.displayErrors(dto.validate());
-                    // _feedbackPanel.setVisible(true);
-                }
             }
         };
     }

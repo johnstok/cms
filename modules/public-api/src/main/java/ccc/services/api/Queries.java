@@ -171,4 +171,6 @@ public interface Queries {
      * @return The list of resources.
      */
     Collection<LogEntrySummary> history(String resourceId);
+
+    TemplateDelta templateDelta(String templateId);
 }

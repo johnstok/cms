@@ -16,7 +16,7 @@
     ========================================================================
 -->
 
-<hibernate-mapping default-access="field">
+<hibernate-mapping default-access="field" default-cascade="none">
 	<class name="ccc.domain.Resource" abstract="true">
 	
 		<id name="_id" type="ccc.services.ejb3.support.UUIDUserType">

@@ -80,4 +80,6 @@ public interface QueriesServiceAsync {
 
     void history(String resourceId,
                  AsyncCallback<Collection<LogEntrySummary>> callback);
+
+    void templateDelta(String templateId, AsyncCallback<TemplateDelta> asyncCallback);
 }

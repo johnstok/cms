@@ -59,9 +59,7 @@ public interface Commands {
     /**
      * Update the specified template on the server.
      */
-    ResourceSummary updateTemplate(String templateId,
-                                   long version,
-                                   TemplateDelta delta);
+    ResourceSummary updateTemplate(TemplateDelta delta);
 
     /**
      * Lock the specified resource.
@@ -121,5 +119,5 @@ public interface Commands {
     /**
      * Create a new template in CCC.
      */
-    void createTemplate(String parentId, TemplateDelta delta);
+    ResourceSummary createTemplate(String parentId, TemplateDelta delta);
 }

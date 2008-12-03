@@ -12,7 +12,6 @@
 package ccc.services.api;
 
 import java.io.Serializable;
-import java.util.Set;
 
 
 /**
@@ -21,5 +20,7 @@ import java.util.Set;
  * @author Civic Computing Ltd.
  */
 public class UserSummary implements Serializable {
-    public Set<String> _roles;
+    public String _email;
+    public String _id;
+    public String _username;
 }
