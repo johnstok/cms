@@ -175,4 +175,6 @@ public interface Queries {
     TemplateDelta templateDelta(String templateId);
     UserDelta userDelta(String userId);
     AliasDelta aliasDelta(String aliasId);
+    PageDelta pageDelta(String pageId);
+    ResourceDelta folderDelta(String folderId);
 }

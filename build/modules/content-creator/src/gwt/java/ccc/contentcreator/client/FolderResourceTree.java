@@ -13,6 +13,7 @@
 package ccc.contentcreator.client;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import ccc.contentcreator.api.QueriesService;
@@ -65,20 +66,27 @@ public class FolderResourceTree extends Tree {
             @Override
             protected void load(final ModelData loadConfig,
                                 final AsyncCallback<List<ModelData>> callback) {
-                String parentId =
-                    (null==loadConfig) ? _root._id : loadConfig.<String>get("id");
-                qs.getFolderChildren(
-                                parentId,
-                                new AsyncCallback<Collection<ResourceSummary>>(){
 
-                    public void onFailure(final Throwable arg0) {
-                        callback.onFailure(arg0);
-                    }
 
-                    public void onSuccess(final Collection<ResourceSummary> arg0) {
-                        callback.onSuccess(DataBinding.bindResourceSummary(arg0));
-                    }
-                });
+                if (null==loadConfig) {
+                    callback.onSuccess(DataBinding.bindResourceSummary(Collections.singletonList(_root)));
+                } else {
+                    String parentId = loadConfig.<String>get("id");
+
+                    qs.getFolderChildren(
+                        parentId,
+                        new AsyncCallback<Collection<ResourceSummary>>(){
+
+                            public void onFailure(final Throwable arg0) {
+                                callback.onFailure(arg0);
+                            }
+
+                            public void onSuccess(final Collection<ResourceSummary> arg0) {
+                                callback.onSuccess(DataBinding.bindResourceSummary(arg0));
+                            }
+                        }
+                    );
+                }
             }
         };
 

@@ -216,22 +216,20 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public void updatePage(final String pageId,
-                           final long version,
-                           final PageDelta delta) { // FIXME: WRONG!!!
+    public void updatePage(final PageDelta delta) {
 
         final Page page = new Page(
             ResourceName.escape(delta._name),
             delta._title);
-        page.id(UUID.fromString(pageId));
-        page.version(version);
+        page.id(UUID.fromString(delta._id));
+        page.version(delta._version);
 
-        for (final String[] para : delta._paragraphs) { // FIXME: Wrong!
+        for (final String[] para : delta._paragraphs) {
             final Paragraph paragraph = Paragraph.fromText(para[1]);
             page.addParagraph(para[0], paragraph);
         }
 
-        _content.update(UUID.fromString(pageId), delta._title, null);
+        _content.update(UUID.fromString(delta._id), delta._title, null); // FIXME: Wrong!
 
     }
 

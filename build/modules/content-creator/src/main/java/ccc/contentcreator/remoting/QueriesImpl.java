@@ -17,7 +17,9 @@ import ccc.commons.JNDI;
 import ccc.contentcreator.api.QueriesService;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.LogEntrySummary;
+import ccc.services.api.PageDelta;
 import ccc.services.api.Queries;
+import ccc.services.api.ResourceDelta;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserDelta;
@@ -152,5 +154,17 @@ public class QueriesImpl
     @Override
     public AliasDelta aliasDelta(final String aliasId) {
         return _delegate.aliasDelta(aliasId);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PageDelta pageDelta(final String pageId) {
+        return _delegate.pageDelta(pageId);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceDelta folderDelta(final String folderId) {
+        return _delegate.folderDelta(folderId);
     }
 }

@@ -15,6 +15,8 @@ import java.util.Collection;
 
 import ccc.services.api.AliasDelta;
 import ccc.services.api.LogEntrySummary;
+import ccc.services.api.PageDelta;
+import ccc.services.api.ResourceDelta;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserDelta;
@@ -88,4 +90,8 @@ public interface QueriesServiceAsync {
     void userDelta(String userId, AsyncCallback<UserDelta> asyncCallback);
 
     void aliasDelta(String aliasId, AsyncCallback<AliasDelta> asyncCallback);
+
+    void pageDelta(String pageId, AsyncCallback<PageDelta> asyncCallback);
+
+    void folderDelta(String folderId, AsyncCallback<ResourceDelta> asyncCallback);
 }

@@ -20,11 +20,14 @@ import ccc.domain.Alias;
 import ccc.domain.CreatorRoles;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
+import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.LogEntrySummary;
+import ccc.services.api.PageDelta;
+import ccc.services.api.ResourceDelta;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserDelta;
@@ -205,6 +208,43 @@ public class ModelTranslation {
         delta._name = alias.name().toString();
         delta._targetId = alias.target().id().toString();
         delta._targetName = alias.target().name().toString();
+        return delta;
+    }
+
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param find
+     * @return
+     */
+    protected PageDelta delta(final Page page) {
+        final PageDelta delta = new PageDelta();
+        delta._id = page.id().toString();
+        delta._version = page.version();
+        delta._name = page.name().toString();
+        delta._title = page.title();
+        final Template t = page.displayTemplateName();
+        delta._templateId = (null==t) ? null : t.id().toString();
+        delta._paragraphs = new String[0][3];
+        return delta;
+    }
+
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param find
+     * @return
+     */
+    protected ResourceDelta delta(final Folder folder) {
+        final ResourceDelta delta = new ResourceDelta();
+        delta._id = folder.id().toString();
+        delta._version = folder.version();
+        delta._name = folder.name().toString();
+        delta._title = folder.title();
+        final Template t = folder.displayTemplateName();
+        delta._templateId = (null==t) ? null : t.id().toString();
         return delta;
     }
 

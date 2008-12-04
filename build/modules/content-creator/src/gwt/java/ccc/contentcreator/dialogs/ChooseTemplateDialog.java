@@ -11,11 +11,20 @@
  */
 package ccc.contentcreator.dialogs;
 
-import ccc.contentcreator.client.Globals;
+import java.util.Collection;
 
+import ccc.contentcreator.binding.DataBinding;
+import ccc.contentcreator.callbacks.DisposingCallback;
+import ccc.contentcreator.client.Globals;
+import ccc.services.api.ResourceDelta;
+import ccc.services.api.TemplateDelta;
+
+import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.widget.form.ComboBox;
 
 
 /**
@@ -26,92 +35,72 @@ import com.extjs.gxt.ui.client.event.SelectionListener;
  */
 public class ChooseTemplateDialog extends AbstractEditDialog {
 
-    private final ModelData                      _resource;
-//    private final List<OptionDTO<? extends DTO>> _options;
-//
-//    private final ComboBox<TemplateDTO> _defaultTemplate =
-//        new ComboBox<TemplateDTO>();
-//    private final TemplateDTO _none =
-//        new TemplateDTO(null,
-//                        -1,
-//                        "{none}",
-//                        "{none}",
-//                        "{none}",
-//                        "{none}",
-//                        "<fields/>",
-//                        "",
-//                        "",
-//                        "");
+    private ResourceDelta _resource;
+    private Collection<TemplateDelta> _templates;
+    private final ModelData _none = new BaseModelData();
+    private final ComboBox<ModelData> _selectedTemplate =
+        new ComboBox<ModelData>();
 
     /**
      * Constructor.
      *
-     * @param options The list of OptionDTOs
-     * @param resource The ResourceDTO
+     * @param resourceDelta
+     * @param templates
      */
-    public ChooseTemplateDialog(final ModelData resource) {
+    public ChooseTemplateDialog(final ResourceDelta resourceDelta,
+                                final Collection<TemplateDelta> templates) {
         super(Globals.uiConstants().chooseTemplate());
 
-//        _options = options;
-        _resource = resource;
-//
-//        _defaultTemplate.setFieldLabel(constants().defaultTemplate());
-//        _defaultTemplate.setTemplate("<tpl for=\".\">"
-//            +"<div class=x-combo-list-item id={name}>{name}</div></tpl>");
-//        _defaultTemplate.setId("default-template");
-//        _defaultTemplate.setDisplayField("name");
-//        _defaultTemplate.setForceSelection(true);
-//        addField(_defaultTemplate);
-//
-//        drawGUI();
+        _resource = resourceDelta;
+        _templates = templates;
+        _none.set("name", "{none}");
+
+        _selectedTemplate.setFieldLabel(constants().defaultTemplate());
+        _selectedTemplate.setTemplate("<tpl for=\".\">"
+            +"<div class=x-combo-list-item id={name}>{name}</div></tpl>");
+        _selectedTemplate.setId("default-template");
+        _selectedTemplate.setDisplayField("name");
+        _selectedTemplate.setForceSelection(true);
+        _selectedTemplate.setEditable(false);
+        addField(_selectedTemplate);
+
+        drawGUI();
     }
-//
-//    private void drawGUI() {
-//
-//        // Populate combo-box
-//        final ListStore<TemplateDTO> store = new ListStore<TemplateDTO>();
-//        for (final TemplateDTO template
-//            : _options.get(0).<TemplateDTO> makeTypeSafe().getChoices()) {
-//            store.add(template);
-//        }
-//        store.add(_none);
-//        _defaultTemplate.setStore(store);
-//
-//
-//        // Set the current value
-//        final TemplateDTO currentValue =
-//            _options.get(0).<TemplateDTO>makeTypeSafe().getCurrentValue();
-//
-//        if (null == currentValue) {
-//            _defaultTemplate.setValue(_none);
-//        } else {
-//            _defaultTemplate.setValue(currentValue);
-//        }
-//    }
+
+    private void drawGUI() {
+
+        // Populate combo-box
+        final ListStore<ModelData> store = new ListStore<ModelData>();
+        store.add(DataBinding.bindTemplateDelta(_templates));
+        store.add(_none);
+        _selectedTemplate.setStore(store);
+
+        // Set the current value
+        if (null == _resource._templateId) {
+            _selectedTemplate.setValue(_none);
+        } else {
+            for (final ModelData model : store.getModels()) {
+                if (_resource._templateId.equals(model.get("id"))) {
+                    _selectedTemplate.setValue(model);
+                }
+            }
+        }
+    }
+
 
     /** {@inheritDoc} */
     @Override protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>(){
             @Override public void componentSelected(final ButtonEvent ce) {
 
-//                final TemplateDTO selected = _defaultTemplate.getValue();
-//                if (_none.equals(selected)) {
-//                    _options
-//                        .get(0)
-//                        .<TemplateDTO>makeTypeSafe()
-//                        .setCurrentValue(null);
-//                } else {
-//                    _options
-//                        .get(0)
-//                        .<TemplateDTO>makeTypeSafe()
-//                        .setCurrentValue(selected);
-//                }
-//
-//                resourceService()
-//                    .updateResourceTemplate(
-//                        _options,
-//                        /* _resource, */ null, // TODO: Fix
-//                        new DisposingCallback(ChooseTemplateDialog.this));
+                final ModelData selected = _selectedTemplate.getValue();
+                final String templateId = selected.get("id");
+
+                commands().updateResourceTemplate(
+                    _resource._id,
+                    _resource._version,
+                    templateId,
+                    new DisposingCallback(ChooseTemplateDialog.this));
             }
         };
     }
