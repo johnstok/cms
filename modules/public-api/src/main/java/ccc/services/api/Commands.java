@@ -24,7 +24,7 @@ public interface Commands {
     /**
      * Update the specified page on the server.
      */
-    void updatePage(String pageId, long version, PageDelta delta);
+    void updatePage(PageDelta delta);
 
     /**
      * Rename resource.

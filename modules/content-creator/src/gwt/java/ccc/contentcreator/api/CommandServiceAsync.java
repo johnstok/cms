@@ -28,7 +28,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public interface CommandServiceAsync {
 
-    void updatePage(String pageId, long version, PageDelta delta, AsyncCallback<Void> callback);
+    void updatePage(PageDelta delta, AsyncCallback<Void> callback);
 
     void rename(final String resourceId, long version, final String name, AsyncCallback<Void> callback);
 

@@ -85,40 +85,12 @@ public class MainMenu
         final Menu toolsMenu = new Menu();
         tools.setMenu(toolsMenu);
 
-//        createUpdateOptionsItem(toolsMenu);
         createLogoutItem(toolsMenu);
 
         add(users);
         add(tools);
         add(help);
     }
-
-//    private void createUpdateOptionsItem(final Menu toolsMenu) {
-//
-//        final MenuItem updateOptions = new MenuItem();
-//        updateOptions.setId("update-options-menu-item");
-//        updateOptions.setText(_constants.options());
-//        updateOptions.addSelectionListener(new SelectionListener<MenuEvent>() {
-//            @Override
-//            public void componentSelected(final MenuEvent ce) {
-//                final ResourceServiceAsync resourceService =
-//                    Globals.resourceService();
-//
-//                Globals.queriesService().listOptions(
-//                 new AsyncCallback<List<OptionDTO<? extends DTO>>>(){
-//
-//                     public void onFailure(final Throwable arg0) {
-//                         Window.alert(_constants.error());
-//                     }
-//
-//                     public void onSuccess(
-//                                final List<OptionDTO<? extends DTO>> options) {
-//                         new UpdateOptionsDialog(options).show();
-//                     }});
-//            }
-//        });
-//        toolsMenu.add(updateOptions);
-//    }
 
     private void createLogoutItem(final Menu menu) {
 

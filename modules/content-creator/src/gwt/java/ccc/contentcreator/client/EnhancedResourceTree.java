@@ -13,10 +13,13 @@ package ccc.contentcreator.client;
 
 import java.util.Collection;
 
+import ccc.contentcreator.callbacks.ErrorReportingCallback;
+import ccc.contentcreator.dialogs.ChooseTemplateDialog;
 import ccc.contentcreator.dialogs.CreateFolderDialog;
 import ccc.contentcreator.dialogs.CreatePageDialog;
 import ccc.contentcreator.dialogs.EditTemplateDialog;
 import ccc.contentcreator.dialogs.UploadFileDialog;
+import ccc.services.api.ResourceDelta;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 
@@ -145,6 +148,27 @@ public class EnhancedResourceTree extends FolderResourceTree {
             }
         });
         contextMenu.add(createTemplate);
+
+        final MenuItem chooseTemplate = new MenuItem();
+        chooseTemplate.setId("choose-template");
+        chooseTemplate.setText(Globals.uiConstants().chooseTemplate());
+        chooseTemplate.addSelectionListener(new SelectionListener<MenuEvent>() {
+            @Override public void componentSelected(final MenuEvent ce) {
+                final ModelData item =
+                    getSelectionModel().getSelectedItem().getModel();
+
+                qs.folderDelta(item.<String>get("id"), new ErrorReportingCallback<ResourceDelta>(){
+                    public void onSuccess(final ResourceDelta delta) {
+                        qs.templates(new ErrorReportingCallback<Collection<TemplateDelta>>(){
+                            public void onSuccess(final Collection<TemplateDelta> templates) {
+                                new ChooseTemplateDialog(delta, templates).show();
+                            }
+                        });
+                    }
+                });
+            }
+        });
+        contextMenu.add(chooseTemplate);
 
         setContextMenu(contextMenu);
     }

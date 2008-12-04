@@ -20,6 +20,7 @@ import java.util.List;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
+import ccc.contentcreator.dialogs.ChooseTemplateDialog;
 import ccc.contentcreator.dialogs.CreateAliasDialog;
 import ccc.contentcreator.dialogs.EditAliasDialog;
 import ccc.contentcreator.dialogs.EditTemplateDialog;
@@ -31,6 +32,8 @@ import ccc.contentcreator.dialogs.UpdatePageDialog;
 import ccc.contentcreator.dialogs.UpdateTagsDialog;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.LogEntrySummary;
+import ccc.services.api.PageDelta;
+import ccc.services.api.ResourceDelta;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 
@@ -252,31 +255,30 @@ public class ResourceTable extends TablePanel {
             @Override
             public void componentSelected(final MenuEvent ce) {
 
-                final ModelData item =
-                    tbl.getSelectedItem().getModel();
+                final ModelData item = tbl.getSelectedItem().getModel();
 
-                if ("PAGE".equals(item.<String>get("type"))
-                    || "FOLDER".equals(item.<String>get("type"))) {
-                    // FIXME: Erm.
-//                    resourceService.listTemplateOptionsForResource(
-//                        /* item, */ null, // TODO: Fix
-//                        new AsyncCallback<List<OptionDTO<? extends DTO>>>(){
-//
-//                            public void onFailure(final Throwable arg0) {
-//                                Window.alert(Globals.uiConstants().error());
-//                            }
-//
-//                            public void onSuccess(
-//                            final List<OptionDTO<? extends DTO>> options) {
-//                                new ChooseTemplateDialog(options, item).show();
-//                            }});
-
+                if ("PAGE".equals(item.<String>get("type"))) {
+                    qs.pageDelta(item.<String>get("id"), new ErrorReportingCallback<PageDelta>(){
+                        public void onSuccess(final PageDelta delta) {
+                            qs.templates(new ErrorReportingCallback<Collection<TemplateDelta>>(){
+                                public void onSuccess(final Collection<TemplateDelta> templates) {
+                                    new ChooseTemplateDialog(delta, templates).show();
+                                }});
+                        }});
+                } else if ("FOLDER".equals(item.<String>get("type"))) {
+                    qs.folderDelta(item.<String>get("id"), new ErrorReportingCallback<ResourceDelta>(){
+                        public void onSuccess(final ResourceDelta delta) {
+                            qs.templates(new ErrorReportingCallback<Collection<TemplateDelta>>(){
+                                public void onSuccess(final Collection<TemplateDelta> templates) {
+                                    new ChooseTemplateDialog(delta, templates).show();
+                                }});
+                        }});
                 } else {
-                  Globals.alert("Template cannot be chosen for this resource.");
+                    Globals.alert(
+                        "Template cannot be chosen for this resource.");
                 }
             }
-        }
-        );
+        });
         contextMenu.add(chooseTemplate);
     }
 
@@ -302,10 +304,19 @@ public class ResourceTable extends TablePanel {
                             }});
 
                      } else if ("PAGE".equals(item.get("type"))) {
-                         new UpdatePageDialog(
-                             item.<String>get("id"),
-                             ResourceTable.this)
-                         .show();
+                         qs.pageDelta(item.<String>get("id"),new ErrorReportingCallback<PageDelta>() {
+                             public void onSuccess(final PageDelta page) {
+                                 qs.templateDelta(page._templateId, new ErrorReportingCallback<TemplateDelta>(){
+                                     public void onSuccess(final TemplateDelta template) {
+                                         if (template == null) {
+                                             Globals.alert(Globals.uiConstants().noTemplateFound());
+                                         } else {
+                                             new UpdatePageDialog(page, template, ResourceTable.this).show();
+                                         }
+                                     }
+                                 });
+                             }
+                         });
 
                      } else if ("ALIAS".equals(item.get("type"))) {
                          qs.aliasDelta(item.<String>get("id"),new ErrorReportingCallback<AliasDelta>() {

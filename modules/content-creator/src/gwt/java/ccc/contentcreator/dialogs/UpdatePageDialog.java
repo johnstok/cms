@@ -12,7 +12,6 @@
 
 package ccc.contentcreator.dialogs;
 
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.EditPagePanel;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.ResourceTable;
@@ -36,9 +35,10 @@ public class UpdatePageDialog
     extends
         AbstractBaseDialog {
 
-    private final String _resourceId;
     private final EditPagePanel _panel = new EditPagePanel();
-    private PageDelta _page = null;
+
+    private PageDelta _page;
+    private TemplateDelta _template;
     private final ResourceTable _rt;
 
     private final AsyncCallback<Void> _saveCompletedCallback =
@@ -52,52 +52,28 @@ public class UpdatePageDialog
             }
         };
 
-      private final AsyncCallback<TemplateDelta> _lookupTemplateCallback =
-            new ErrorReportingCallback<TemplateDelta>() {
-
-            /** {@inheritDoc} */
-            public void onSuccess(final TemplateDelta template) {
-                if (template == null) {
-                    Globals.alert(constants().noTemplateFound());
-                    close();
-                } else {
-                    panel().createFields(template._definition);
-                    panel().populateFields(page());
-                    panel().layout(); // Refresh UI when callback is done
-                }
-            }
-        };
-
-       private final AsyncCallback<PageDelta> _lookupPageCallback =
-            new ErrorReportingCallback<PageDelta>() {
-
-            /** {@inheritDoc} */
-            public void onSuccess(final PageDelta page) {
-                page(page);
-                queries()
-                    .getTemplateForResource(null, lookupTemplateCallback()); // FIXME: needs pageId
-
-            }
-        };
-
 
     /**
      * Constructor.
      *
-     * @param resourceId The UUID of the content resource this dialog
-     *          will update.
      * @param rt ResourceTable required in order to refresh the contents.
      */
-    public UpdatePageDialog(final String resourceId, final ResourceTable rt) {
+    public UpdatePageDialog(final PageDelta page, final TemplateDelta template, final ResourceTable rt) {
         super(Globals.uiConstants().updateContent());
         _rt = rt;
+        _page = page;
+        _template = template;
+
         setLayout(new FitLayout());
 
-        _resourceId = resourceId;
         drawGUI();
     }
 
     private void drawGUI() {
+
+        _panel.createFields(_template._definition);
+        _panel.populateFields(_page);
+        _panel.layout();
 
         add(_panel);
 
@@ -113,8 +89,6 @@ public class UpdatePageDialog
             ));
 
         addButton(createSaveButton());
-
-//        queries().resource(_resourceId, _lookupPageCallback); // FIXME: Should get PageDelta?
     }
 
     private Button createSaveButton() {
@@ -122,6 +96,7 @@ public class UpdatePageDialog
         final Button saveButton = new Button(
             constants().save(),
             new SelectionListener<ButtonEvent>() {
+
             @Override
             public void componentSelected(final ButtonEvent ce) {
 
@@ -129,8 +104,6 @@ public class UpdatePageDialog
                         || panel().title().getValue().trim().length() == 0) {
                         return;
                     }
-
-                    PageDelta pd = new PageDelta();
 
 //                    final Map<String, ParagraphDTO> paragraphs =
 //                        new HashMap<String, ParagraphDTO>();
@@ -152,24 +125,12 @@ public class UpdatePageDialog
 //                    }
 
                     commands().updatePage(
-                        resourceId(),
-                        -1, // FIXME: Erm...
-                        pd,
+                        _page,
                         saveCompletedCallback());
                 }
             });
         saveButton.setId("save");
         return saveButton;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the _resourceId.
-     */
-    protected String resourceId() {
-        return _resourceId;
     }
 
 
@@ -220,25 +181,5 @@ public class UpdatePageDialog
      */
     protected AsyncCallback<Void> saveCompletedCallback() {
         return _saveCompletedCallback;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the _lookupTemplateCallback.
-     */
-    protected AsyncCallback<TemplateDelta> lookupTemplateCallback() {
-        return _lookupTemplateCallback;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the _lookupPageCallback.
-     */
-    protected AsyncCallback<PageDelta> lookupPageCallback() {
-        return _lookupPageCallback;
     }
 }

@@ -31,7 +31,14 @@ import com.extjs.gxt.ui.client.data.ModelData;
  */
 public class DataBinding {
 
-    public static List<ModelData> bindLogEntrySummary(final Collection<LogEntrySummary> arg0) {
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param arg0
+     * @return
+     */
+    public static List<ModelData> bindLogEntrySummary(
+                                    final Collection<LogEntrySummary> arg0) {
         final List<ModelData> boundData = new ArrayList<ModelData>();
         for (final LogEntrySummary les : arg0) {
             final ModelData md = new BaseModelData();
@@ -44,7 +51,14 @@ public class DataBinding {
         return boundData;
     }
 
-    public static List<ModelData> bindResourceSummary(final Collection<ResourceSummary> arg0) {
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param arg0
+     * @return
+     */
+    public static List<ModelData> bindResourceSummary(
+                                    final Collection<ResourceSummary> arg0) {
         final List<ModelData> boundData = new ArrayList<ModelData>();
         for (final ResourceSummary fs : arg0) {
             final ModelData md = new BaseModelData();
@@ -60,11 +74,29 @@ public class DataBinding {
      * @param result
      * @return
      */
-    public static List<ModelData> bindUserSummary(final Collection<UserSummary> result) {
+    public static List<ModelData> bindUserSummary(
+                                        final Collection<UserSummary> result) {
         final List<ModelData> boundData = new ArrayList<ModelData>();
         for (final UserSummary us : result) {
             final ModelData md = new BaseModelData();
             merge(md, us);
+            boundData.add(md);
+        }
+        return boundData;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param list
+     * @return
+     */
+    public static List<ModelData> bindTemplateDelta(
+        final Collection<TemplateDelta> list) {
+        final List<ModelData> boundData = new ArrayList<ModelData>();
+        for (final TemplateDelta td : list) {
+            final ModelData md = new BaseModelData();
+            merge(td, md);
             boundData.add(md);
         }
         return boundData;
@@ -85,8 +117,8 @@ public class DataBinding {
     /**
      * TODO: Add a description of this method.
      *
-     * @param _model
-     * @param arg0
+     * @param md
+     * @param fs
      */
     public static void merge(final ModelData md, final ResourceSummary fs) {
         md.set("id", fs._id);
@@ -102,11 +134,16 @@ public class DataBinding {
     /**
      * TODO: Add a description of this method.
      *
-     * @param list
-     * @return
+     * @param td
+     * @param md
      */
-    public static List<ModelData> bindTemplateDelta(final Collection<TemplateDelta> list) {
-
-        throw new UnsupportedOperationException("Method not implemented.");
+    public static void merge(final TemplateDelta td, final ModelData md) {
+        md.set("id", td._id);
+        md.set("version", td._version);
+        md.set("name", td._name);
+        md.set("title", td._title);
+        md.set("description", td._description);
+        md.set("body", td._body);
+        md.set("definition", td._definition);
     }
 }

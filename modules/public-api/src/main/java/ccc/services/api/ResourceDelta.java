@@ -11,6 +11,7 @@
  */
 package ccc.services.api;
 
+import java.io.Serializable;
 
 
 /**
@@ -18,8 +19,12 @@ package ccc.services.api;
  *
  * @author Civic Computing Ltd.
  */
-public class PageDelta
-    extends
-        ResourceDelta {
-    public String[][] _paragraphs;
+public class ResourceDelta
+    implements
+        Serializable {
+    public String     _id;
+    public long       _version;
+    public String     _name;
+    public String     _title;
+    public String     _templateId;
 }

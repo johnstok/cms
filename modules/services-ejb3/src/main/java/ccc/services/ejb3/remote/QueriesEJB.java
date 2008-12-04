@@ -26,6 +26,7 @@ import javax.persistence.PersistenceContext;
 import ccc.domain.Alias;
 import ccc.domain.CreatorRoles;
 import ccc.domain.Folder;
+import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
@@ -36,7 +37,9 @@ import ccc.services.ResourceDAOLocal;
 import ccc.services.UserManagerLocal;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.LogEntrySummary;
+import ccc.services.api.PageDelta;
 import ccc.services.api.Queries;
+import ccc.services.api.ResourceDelta;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserDelta;
@@ -222,5 +225,17 @@ public final class QueriesEJB
     @Override
     public AliasDelta aliasDelta(final String aliasId) {
         return delta(_qm.find(Alias.class, aliasId));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PageDelta pageDelta(final String pageId) {
+        return delta(_qm.find(Page.class, pageId));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceDelta folderDelta(final String folderId) {
+        return delta(_qm.find(Folder.class, folderId));
     }
 }
