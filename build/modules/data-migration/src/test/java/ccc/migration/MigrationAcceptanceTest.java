@@ -126,7 +126,7 @@ public class MigrationAcceptanceTest extends TestCase {
             ResourceType.PAGE, resource.type());
 
         assertEquals("Display template should be null",
-            null, resource.displayTemplateName());
+            null, resource.template());
 
     }
 
@@ -151,6 +151,6 @@ public class MigrationAcceptanceTest extends TestCase {
 
         assertEquals("Display template should be ",
             "ash_display_sectionhome.jsp",
-            resource.displayTemplateName().title());
+            resource.template().title());
     }
 }

@@ -152,7 +152,7 @@ public class ModelTranslation {
      */
     protected UserSummary map(final User user) {
         final UserSummary us = new UserSummary();
-        us._email = user.email();
+        us._email = user.email().getText();
         us._id = user.id().toString();
         us._username = user.username();
         return us;
@@ -189,7 +189,7 @@ public class ModelTranslation {
         final UserDelta delta = new UserDelta();
         delta._id = user.id().toString();
         delta._version = user.version();
-        delta._email = user.email();
+        delta._email = user.email().getText();
         delta._username = user.username();
         delta._roles = new HashSet<String>();
         for (final CreatorRoles role : user.roles()) {
@@ -228,7 +228,7 @@ public class ModelTranslation {
         delta._version = page.version();
         delta._name = page.name().toString();
         delta._title = page.title();
-        final Template t = page.displayTemplateName();
+        final Template t = page.template();
         delta._templateId = (null==t) ? null : t.id().toString();
         delta._paragraphs = new ArrayList<ParagraphDelta>();
         return delta;
@@ -247,7 +247,7 @@ public class ModelTranslation {
         delta._version = folder.version();
         delta._name = folder.name().toString();
         delta._title = folder.title();
-        final Template t = folder.displayTemplateName();
+        final Template t = folder.template();
         delta._templateId = (null==t) ? null : t.id().toString();
         return delta;
     }

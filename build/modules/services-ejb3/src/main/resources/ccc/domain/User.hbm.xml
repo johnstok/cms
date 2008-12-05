@@ -39,11 +39,9 @@
             type="string"
             length="256" />
         
-        <property
-            name="_email"
-            not-null="true"
-            type="string"
-            length="256" />
+        <component name="_email" class="ccc.commons.EmailAddress">
+            <property name="_text" column="_email" not-null="true" type="string" length="256" />
+        </component>
             
 	    <set name="_roles">
 	        <key not-null="true"/>

@@ -16,11 +16,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
+import ccc.commons.DBC;
+
 
 /**
  * Represents a user's password.
- *
- * TODO: Add an update(String newPassword) method.
  *
  * @author Civic Computing Ltd.
  */
@@ -39,6 +39,7 @@ public class Password extends VersionedEntity {
      * @param passwordString The unhashed password as a string.
      */
     public Password(final User user, final String passwordString) {
+        DBC.require().notNull(user);
         _user = user;
         _hash = hash(passwordString, id().toString());
 

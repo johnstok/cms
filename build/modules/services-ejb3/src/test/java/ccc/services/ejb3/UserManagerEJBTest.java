@@ -23,6 +23,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import junit.framework.TestCase;
+import ccc.commons.EmailAddress;
 import ccc.domain.CreatorRoles;
 import ccc.domain.Password;
 import ccc.domain.User;
@@ -224,7 +225,7 @@ public class UserManagerEJBTest extends TestCase {
 
         // ARRANGE
         final User u = new User("testUser");
-        u.email("test@civicuk.com");
+        u.email(new EmailAddress("test@civicuk.com"));
         expect(_em.find(User.class, u.id())).andReturn(u);
         replay(_em);
 
@@ -246,7 +247,7 @@ public class UserManagerEJBTest extends TestCase {
         // ARRANGE
         final User u = new User("testUser");
         final Password pw = new Password(u, "foo");
-        u.email("test@civicuk.com");
+        u.email(new EmailAddress("test@civicuk.com"));
         expect(_em.find(User.class, u.id())).andReturn(u);
 
         expect(_q.setParameter("user", u)).andReturn(_q);

@@ -370,11 +370,11 @@ public final class ResourceTest extends TestCase {
         final Template t3 = new Template();
 
         final Folder f1 = new Folder();
-        f1.displayTemplateName(t1);
+        f1.template(t1);
         final Folder f2 = new Folder();
-        f2.displayTemplateName(t2);
+        f2.template(t2);
         final Resource r = new Page();
-        r.displayTemplateName(t3);
+        r.template(t3);
 
         f2.add(f1);
         f1.add(r);
@@ -398,7 +398,7 @@ public final class ResourceTest extends TestCase {
         final Folder f2 = new Folder();
         f2.add(f1);
         f1.add(r);
-        f2.displayTemplateName(t);
+        f2.template(t);
 
         // ACT
         final Template actual = r.computeTemplate(_default);

@@ -22,6 +22,7 @@ import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import ccc.commons.EmailAddress;
 import ccc.domain.Alias;
 import ccc.domain.CCCException;
 import ccc.domain.CreatorRoles;
@@ -122,7 +123,7 @@ public class CommandsEJB
 
         if (templateId != null) {
             final Template template =  _qm.find(Template.class, templateId);
-            page.displayTemplateName(template);
+            page.template(template);
         }
 
         for (final ParagraphDelta para : delta._paragraphs) {
@@ -162,7 +163,7 @@ public class CommandsEJB
     @Override
     public void createUser(final UserDelta delta) {
         final User user = new User(delta._username);
-        user.email(delta._email);
+        user.email(new EmailAddress(delta._email));
         for (final String role : delta._roles) {
             user.addRole(CreatorRoles.valueOf(role));
         }
@@ -291,7 +292,7 @@ public class CommandsEJB
     public UserSummary updateUser(final UserDelta delta) {
         // FIXME: Refactor - horrible.
         final User user = new User(delta._username);
-        user.email(delta._email);
+        user.email(new EmailAddress(delta._email));
         for (final String role : delta._roles) {
             user.addRole(CreatorRoles.valueOf(role));
         }

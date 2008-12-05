@@ -112,7 +112,7 @@ public abstract class Resource extends VersionedEntity {
     public final Template computeTemplate(final Template def) {
         return
         (null!=_template)
-        ? displayTemplateName()
+        ? template()
             : (null!=_parent)
             ? _parent.computeTemplate(def)
                 : def;
@@ -174,7 +174,7 @@ public abstract class Resource extends VersionedEntity {
      *
      * @return The {@link Template}.
      */
-    public Template displayTemplateName() {
+    public Template template() {
         return _template;
     }
 
@@ -183,7 +183,7 @@ public abstract class Resource extends VersionedEntity {
      *
      * @param template The new template.
      */
-    public void displayTemplateName(final Template template) {
+    public void template(final Template template) {
         _template = template;
     }
 

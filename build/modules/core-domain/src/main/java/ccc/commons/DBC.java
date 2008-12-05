@@ -125,7 +125,6 @@ public final class DBC {
 
     /**
      * Assert that the specified string matches with given regular expression.
-     * TODO: Add stringToTest in exception message.
      *
      * @param regex The regular expression.
      * @param stringToTest The string to test.
@@ -133,7 +132,7 @@ public final class DBC {
     public void toMatch(final String regex, final String stringToTest) {
         if (!Pattern.matches(regex, stringToTest)) {
             throw new IllegalArgumentException(
-                "Specified string does not match "+regex);
+                "Specified string ("+stringToTest+") does not match "+regex);
         }
     }
 }

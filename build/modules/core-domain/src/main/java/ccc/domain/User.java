@@ -22,8 +22,6 @@ import ccc.commons.EmailAddress;
 /**
  * A user of the CCC system.
  *
- * TODO: Change email field to type EmailAddress
- *
  * @author Civic Computing Ltd.
  */
 public class User extends VersionedEntity {
@@ -32,7 +30,7 @@ public class User extends VersionedEntity {
     public static final String  VALID_CHARACTERS = "[\\w]*";
 
     private String _username;
-    private String _email;
+    private EmailAddress _email;
     private Set<CreatorRoles> _roles = new HashSet<CreatorRoles>();
 
     /**
@@ -84,9 +82,9 @@ public class User extends VersionedEntity {
      *
      * @param email The email.
      */
-    public void email(final String email) {
-        DBC.require().notEmpty(email);
-        DBC.require().toBeTrue(EmailAddress.isValidText(email));
+    public void email(final EmailAddress email) {
+        DBC.require().notNull(email);
+        DBC.require().toBeTrue(email.isValid());
         _email = email;
     }
 
@@ -95,7 +93,7 @@ public class User extends VersionedEntity {
      *
      * @return The email as a string.
      */
-    public String email() {
+    public EmailAddress email() {
         return _email;
     }
 
