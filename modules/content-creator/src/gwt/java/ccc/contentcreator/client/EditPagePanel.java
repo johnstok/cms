@@ -11,11 +11,11 @@
  */
 package ccc.contentcreator.client;
 
-import java.util.Date;
 import java.util.List;
 
 import ccc.contentcreator.api.UIConstants;
 import ccc.services.api.PageDelta;
+import ccc.services.api.ParagraphDelta;
 
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.form.DateField;
@@ -81,18 +81,15 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         _name.disable();
         _title.setValue(resourceSummary._title);
 
-        for (final String[] para : resourceSummary._paragraphs) {
-
+        for (final ParagraphDelta para : resourceSummary._paragraphs) {
             for (final Component c : getItems()) {
-                if (c.getId().equals(para[0])) {
-                    final String value = para[1];
+                if (c.getId().equals(para._name)) {
                     if ("TEXT".equals(c.getData("type"))) {
                         final Field<String> f = (Field<String>) c;
-                        f.setValue(value);
+                        f.setValue(para._textValue);
                     } else if ("DATE".equals(c.getData("type"))) {
                         final DateField f = (DateField) c;
-                        final Date d = new Date(new Long(value));
-                        f.setValue(d);
+                        f.setValue(para._dateValue);
                     }
                 }
             }

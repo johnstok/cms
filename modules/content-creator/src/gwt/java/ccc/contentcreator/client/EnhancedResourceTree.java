@@ -31,8 +31,6 @@ import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.event.TreeEvent;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 /**
@@ -119,11 +117,7 @@ public class EnhancedResourceTree extends FolderResourceTree {
                     getSelectionModel().getSelectedItem().getModel();
 
                 Globals.queriesService().templates(
-                    new AsyncCallback<Collection<TemplateDelta>>(){
-
-                        public void onFailure(final Throwable arg0) {
-                            Window.alert(Globals.uiConstants().error());
-                        }
+                    new ErrorReportingCallback<Collection<TemplateDelta>>(){
                         public void onSuccess(
                                       final Collection<TemplateDelta> list) {
                             new CreatePageDialog(list, item, _rt).show(); // Need deltas here...

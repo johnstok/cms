@@ -12,15 +12,22 @@
 
 package ccc.contentcreator.dialogs;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ccc.contentcreator.client.EditPagePanel;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.ResourceTable;
 import ccc.services.api.PageDelta;
+import ccc.services.api.ParagraphDelta;
 import ccc.services.api.TemplateDelta;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.button.Button;
+import com.extjs.gxt.ui.client.widget.form.DateField;
+import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -105,24 +112,28 @@ public class UpdatePageDialog
                         return;
                     }
 
-//                    final Map<String, ParagraphDTO> paragraphs =
-//                        new HashMap<String, ParagraphDTO>();
-//
-//                    final List<Component> definitions =
-//                        panel().definitionItems();
-//                    for (final Component c : definitions) {
-//                        if ("TEXT".equals(c.getData("type"))) {
-//                            final Field<String> f = (Field<String>) c;
-//                            final ParagraphDTO p =
-//                                new ParagraphDTO("TEXT", f.getValue());
-//                            paragraphs.put(c.getId(), p);
-//                        } else if ("DATE".equals(c.getData("type"))) {
-//                            final DateField f = (DateField) c;
-//                            final ParagraphDTO p = new ParagraphDTO(
-//                                "DATE", ""+f.getValue().getTime());
-//                            paragraphs.put(c.getId(), p);
-//                        }
-//                    }
+                    final List<ParagraphDelta> paragraphs =
+                        new ArrayList<ParagraphDelta>();
+
+                    final List<Component> definitions =
+                        panel().definitionItems();
+                    for (final Component c : definitions) {
+                        if ("TEXT".equals(c.getData("type"))) {
+                            final Field<String> f = (Field<String>) c;
+                            final ParagraphDelta p = new ParagraphDelta();
+                            p._name = c.getId();
+                            p._textValue = f.getValue();
+                            p._type = "TEXT";
+                            paragraphs.add(p);
+                        } else if ("DATE".equals(c.getData("type"))) {
+                            final DateField f = (DateField) c;
+                            final ParagraphDelta p = new ParagraphDelta();
+                            p._name = c.getId();
+                            p._dateValue = f.getValue();
+                            p._type = "TEXT";
+                            paragraphs.add(p);
+                        }
+                    }
 
                     commands().updatePage(
                         _page,

@@ -11,8 +11,8 @@
  */
 package ccc.services.api;
 
-import java.util.List;
-
+import java.io.Serializable;
+import java.util.Date;
 
 
 /**
@@ -20,8 +20,11 @@ import java.util.List;
  *
  * @author Civic Computing Ltd.
  */
-public class PageDelta
-    extends
-        ResourceDelta {
-    public List<ParagraphDelta> _paragraphs;
+public class ParagraphDelta
+    implements
+        Serializable {
+    public String _name;
+    public String _type;
+    public String _textValue;
+    public Date _dateValue;
 }

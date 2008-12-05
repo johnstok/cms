@@ -24,6 +24,7 @@ import ccc.contentcreator.client.ResourceTable;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.services.api.PageDelta;
+import ccc.services.api.ParagraphDelta;
 import ccc.services.api.TemplateDelta;
 
 import com.extjs.gxt.ui.client.Events;
@@ -40,6 +41,7 @@ import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
+import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
@@ -253,23 +255,24 @@ public class CreatePageDialog
             public void run() {
 
                 final List<Component> definitions =_second.definitionItems();
-                final String[][] paragraphs = new String[3][definitions.size()];
+                final List<ParagraphDelta> paragraphs =
+                    new ArrayList<ParagraphDelta>();
 
-                for (int i=0; i<paragraphs.length; i++) {
-                    final String[] para = paragraphs[i];
-                    final Component c = definitions.get(i);
-
+                for (final Component c : definitions) {
                     if ("TEXT".equals(c.getData("type"))) {
                         final Field<String> f = (Field<String>) c;
-                        para[0] = c.getId();
-                        para[1] = f.getValue();
-                        para[2] = "TEXT";
+                        final ParagraphDelta p = new ParagraphDelta();
+                        p._name = c.getId();
+                        p._textValue = f.getValue();
+                        p._type = "TEXT";
+                        paragraphs.add(p);
                     } else if ("DATE".equals(c.getData("type"))) {
-                        throw new RuntimeException(); //FIXME: Erm...
-//                        final DateField f = (DateField) c;
-//                        paragraphs.put(c.getId(),
-//                            new ParagraphDTO("DATE",
-//                                ""+f.getValue().getTime()));
+                        final DateField f = (DateField) c;
+                        final ParagraphDelta p = new ParagraphDelta();
+                        p._name = c.getId();
+                        p._dateValue = f.getValue();
+                        p._type = "TEXT";
+                        paragraphs.add(p);
                     }
                 }
 
@@ -278,10 +281,17 @@ public class CreatePageDialog
                 page._title = _second.title().getValue();
                 page._paragraphs = paragraphs;
 
+                final String template =
+                    (null==_grid.getSelectionModel().getSelectedItem())
+                    ? null
+                    : _grid.getSelectionModel()
+                           .getSelectedItem()
+                           .<String>get("id");
+
                 commands().createPage(
                     _parent.<String>get("id"),
                     page,
-                    _grid.getSelectionModel().getSelectedItem().<String>get("id"),
+                    template,
                     new ErrorReportingCallback<Void>() {
                         public void onSuccess(final Void result) {
                             _rt.refreshTable();

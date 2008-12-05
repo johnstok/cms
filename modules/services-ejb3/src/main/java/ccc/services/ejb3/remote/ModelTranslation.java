@@ -27,6 +27,7 @@ import ccc.domain.User;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.PageDelta;
+import ccc.services.api.ParagraphDelta;
 import ccc.services.api.ResourceDelta;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
@@ -164,6 +165,9 @@ public class ModelTranslation {
      * @return
      */
     protected TemplateDelta delta(final Template template) {
+        if (null==template) {
+            return null;
+        }
         final TemplateDelta delta = new TemplateDelta();
         delta._id = template.id().toString();
         delta._version = template.version();
@@ -226,7 +230,7 @@ public class ModelTranslation {
         delta._title = page.title();
         final Template t = page.displayTemplateName();
         delta._templateId = (null==t) ? null : t.id().toString();
-        delta._paragraphs = new String[0][3];
+        delta._paragraphs = new ArrayList<ParagraphDelta>();
         return delta;
     }
 

@@ -101,7 +101,7 @@ public final class QueriesEJB
     @Override
     public TemplateDelta getTemplateForResource(final String resourceId) {
         return delta(
-            _qm.find(Resource.class, resourceId).displayTemplateName());
+            _qm.find(Resource.class, resourceId).computeTemplate(null));
     }
 
     /** {@inheritDoc} */
