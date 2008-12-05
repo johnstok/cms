@@ -120,6 +120,7 @@ public class ModelTranslation {
     protected ResourceSummary map(final Resource r) {
         final ResourceSummary rs = new ResourceSummary();
         rs._id = r.id().toString();
+        rs._version = r.version();
         rs._name = r.name().toString();
         rs._type = r.type().name();
         rs._lockedBy = (r.isLocked()) ? r.lockedBy().username() : null;
