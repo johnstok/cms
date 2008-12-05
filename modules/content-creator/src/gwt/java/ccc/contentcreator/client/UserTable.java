@@ -67,6 +67,7 @@ public class UserTable extends TablePanel {
      * Constructor.
      */
     UserTable() {
+
         setId("UserDetails");
         setHeading("User Details");
         setLayout(new FitLayout());
@@ -126,8 +127,11 @@ public class UserTable extends TablePanel {
 
         setTopComponent(_toolBar);
 
+        final Menu contextMenu = new Menu();
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
-
+        final ContextActionGridPlugin gp =
+            new ContextActionGridPlugin(contextMenu);
+        configs.add(gp);
         final ColumnConfig usernameColumn = new ColumnConfig();
         usernameColumn.setId("username");
         usernameColumn.setHeader("Username");
@@ -146,7 +150,6 @@ public class UserTable extends TablePanel {
         grid.setLoadMask(true);
         grid.setId("UserGrid");
 
-        final Menu contextMenu = new Menu();
         contextMenu.setId("userContextMenu");
         final MenuItem editUser = new MenuItem("Edit user");
         editUser.setId("editUserMenu");
@@ -171,6 +174,7 @@ public class UserTable extends TablePanel {
         contextMenu.add(editUser);
 
         grid.setContextMenu(contextMenu);
+        grid.addPlugin(gp);
         add(grid);
     }
 

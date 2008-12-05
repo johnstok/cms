@@ -41,10 +41,12 @@ import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.binder.TableBinder;
 import com.extjs.gxt.ui.client.data.ModelData;
+import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
@@ -85,7 +87,10 @@ public class ResourceTable extends TablePanel {
         final List<TableColumn> columns = new ArrayList<TableColumn>();
         TableColumn col;
 
-        col = new TableColumn("type", _constants.type(), PERCENT_10);
+        col = new TableColumn("action", "", .05f);
+        columns.add(col);
+
+        col = new TableColumn("type", _constants.type(), .05f);
         columns.add(col);
 
         col = new TableColumn("locked", _constants.lockedBy(), PERCENT_10);
@@ -108,6 +113,9 @@ public class ResourceTable extends TablePanel {
         tbl.setSelectionMode(SelectionMode.SINGLE);
         tbl.setHorizontalScroll(true);
         tbl.setBorders(false);
+        final Menu contextMenu = new Menu();
+        contextMenu.setWidth(CONTEXT_MENU_WIDTH);
+        tbl.setContextMenu(contextMenu);
 
         final TableBinder<ModelData> binder =
             new TableBinder<ModelData>(tbl, _detailsStore) {
@@ -116,19 +124,25 @@ public class ResourceTable extends TablePanel {
             @Override
             protected TableItem createItem(final ModelData model) {
 
-                TableItem ti = super.createItem(model);
+                final TableItem ti = super.createItem(model);
+                ti.setWidget(0, new Button("X", new SelectionListener<ButtonEvent>() {
+                    @Override
+                    public void componentSelected(final ButtonEvent ce) {
+                        tbl.setSelectedItem(ti);
+                        tbl.getContextMenu().showAt(ti.getAbsoluteLeft()+7,
+                            ti.getAbsoluteTop()+7);
+                    }
+                }));
                 ti.setId(model.<String>get("name"));
                 return ti;
             }
         };
         binder.init();
 
-        final Menu contextMenu = new Menu();
-        contextMenu.setWidth(CONTEXT_MENU_WIDTH);
 
         addContextMenuLogic(tbl, contextMenu);
 
-        tbl.setContextMenu(contextMenu);
+        tbl.setBulkRender(false);
         add(tbl);
     }
 
