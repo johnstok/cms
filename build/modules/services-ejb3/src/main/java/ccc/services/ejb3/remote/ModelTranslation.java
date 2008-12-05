@@ -241,13 +241,14 @@ public class ModelTranslation {
      * @param find
      * @return
      */
-    protected ResourceDelta delta(final Folder folder) {
+    protected ResourceDelta delta(final Resource resource) {
         final ResourceDelta delta = new ResourceDelta();
-        delta._id = folder.id().toString();
-        delta._version = folder.version();
-        delta._name = folder.name().toString();
-        delta._title = folder.title();
-        final Template t = folder.template();
+        delta._id = resource.id().toString();
+        delta._version = resource.version();
+        delta._name = resource.name().toString();
+        delta._title = resource.title();
+        delta._tags = resource.tagString();
+        final Template t = resource.template();
         delta._templateId = (null==t) ? null : t.id().toString();
         return delta;
     }

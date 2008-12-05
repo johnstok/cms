@@ -238,4 +238,10 @@ public final class QueriesEJB
     public ResourceDelta folderDelta(final String folderId) {
         return delta(_qm.find(Folder.class, folderId));
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceDelta resourceDelta(final String resourceId) {
+        return delta(_qm.find(Resource.class, resourceId));
+    }
 }

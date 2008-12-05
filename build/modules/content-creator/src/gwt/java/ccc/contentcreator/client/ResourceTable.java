@@ -486,7 +486,16 @@ public class ResourceTable extends TablePanel {
             @Override public void componentSelected(final MenuEvent ce) {
                 final ModelData item =
                     tbl.getSelectedItem().getModel();
-                new UpdateTagsDialog(item, _detailsStore).show();
+
+                qs.resourceDelta(item.<String>get("id"), new ErrorReportingCallback<ResourceDelta>(){
+                    public void onSuccess(final ResourceDelta delta) {
+                        if (delta == null) {
+                            Globals.alert(Globals.uiConstants().noTemplateFound());
+                        } else {
+                            new UpdateTagsDialog(delta).show();
+                        }
+                    }
+                });
             }
         });
         contextMenu.add(move);
