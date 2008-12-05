@@ -169,7 +169,7 @@ public class Migrations {
                     : new Template(templateName,
                         "No description.", "Empty template!", "<fields/>");
                 template = assetManager().createOrRetrieve(template);
-                child.displayTemplateName(template);
+                child.template(template);
                 if (!_templates.containsKey(templateName)) {
                     _templates.put(templateName, template);
                 }

@@ -72,7 +72,7 @@ public final class ContentServletTest extends TestCase {
                     _cm));
         final Template t = new Template("foo", "bar", "baz", "<fields/>");
         final Page p = new Page(new ResourceName("bar"));
-        p.displayTemplateName(t);
+        p.template(t);
         final Alias a = new Alias(new ResourceName("foo"), p);
 
         expect(_cm.lookupRoot()).andReturn(null);
@@ -126,7 +126,7 @@ public final class ContentServletTest extends TestCase {
                 body,
                 "<fields/>");
         final Page foo = new Page(new ResourceName("foo"));
-        foo.displayTemplateName(t);
+        foo.template(t);
 
         // ACT
         final String templateName =
@@ -178,7 +178,7 @@ public final class ContentServletTest extends TestCase {
                 body,
                 "<fields/>");
         final Page page = new Page(new ResourceName("foo"));
-        page.displayTemplateName(t);
+        page.template(t);
         page.addParagraph("key1", Paragraph.fromText("para1"));
         page.addParagraph("key2", Paragraph.fromText("para2"));
 
@@ -276,7 +276,7 @@ public final class ContentServletTest extends TestCase {
             new Page(new ResourceName("name"))
                 .addParagraph("Header", Paragraph.fromText("<br/>"));
         p.publish(u);
-        p.displayTemplateName(t);
+        p.template(t);
 
         expect(_cm.lookup(new ResourcePath("/foo")))
             .andReturn(new Maybe<Resource>(p));

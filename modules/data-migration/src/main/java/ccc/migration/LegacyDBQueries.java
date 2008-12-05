@@ -12,6 +12,7 @@ import java.util.List;
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.log4j.Logger;
 
+import ccc.commons.EmailAddress;
 import ccc.domain.CreatorRoles;
 import ccc.domain.User;
 
@@ -183,7 +184,7 @@ public class LegacyDBQueries {
 
             if (rs.next()) {
                 final String email = rs.getString("attribute_value");
-                user.email(email);
+                user.email(new EmailAddress(email));
                 require().toBeFalse(rs.next());
             } else {
                 throw new RuntimeException("User "+userId+" has no email.");

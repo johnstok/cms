@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import ccc.commons.DBC;
+
 
 /**
  * This class models an absolute path to a resource.
@@ -45,6 +47,7 @@ public final class ResourcePath implements Serializable {
      * @param pathString The absolute resource path, represented as a string.
      */
     public ResourcePath(final String pathString) {
+        DBC.require().notNull(pathString);
 
         Matcher m = PATH_PATTERN.matcher(pathString);
 
@@ -94,6 +97,8 @@ public final class ResourcePath implements Serializable {
      * @param name The name of the path element.
      */
     public ResourcePath(final ResourceName name) {
+        DBC.require().notNull(name);
+
         final List<ResourceName> parts = new ArrayList<ResourceName>();
         parts.add(name);
         _elements = unmodifiableList(parts);

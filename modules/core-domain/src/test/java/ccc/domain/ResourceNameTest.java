@@ -139,7 +139,7 @@ public final class ResourceNameTest extends TestCase {
 
             // ASSERT
             assertEquals(
-                "Specified string does not match [\\.\\w]+",
+                "Specified string (~) does not match [\\.\\w]+",
                 e.getMessage());
         }
     }
@@ -160,7 +160,7 @@ public final class ResourceNameTest extends TestCase {
 
             // ASSERT
             assertEquals(
-                "Specified string does not match [\\.\\w]+",
+                "Specified string (-) does not match [\\.\\w]+",
                 e.getMessage());
         }
     }
@@ -181,7 +181,7 @@ public final class ResourceNameTest extends TestCase {
 
             // ASSERT
             assertEquals(
-                "Specified string does not match [\\.\\w]+",
+                "Specified string (\\) does not match [\\.\\w]+",
                 e.getMessage());
         }
     }
@@ -206,7 +206,9 @@ public final class ResourceNameTest extends TestCase {
 
                 // ASSERT
                 assertEquals(
-                    "Specified string does not match [\\.\\w]+",
+                    "Specified string ("
+                    + reservedChar
+                    + ") does not match [\\.\\w]+",
                     e.getMessage());
             }
         }

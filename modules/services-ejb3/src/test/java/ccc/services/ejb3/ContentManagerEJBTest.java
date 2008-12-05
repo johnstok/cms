@@ -72,7 +72,7 @@ public final class ContentManagerEJBTest extends TestCase {
         verify(_em, _qm, _al);
         assertEquals(
             defaultTemplate,
-            contentRoot.displayTemplateName());
+            contentRoot.template());
     }
 
     /**

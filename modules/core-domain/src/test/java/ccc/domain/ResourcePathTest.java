@@ -19,7 +19,6 @@ import junit.framework.TestCase;
 
 /**
  * Tests for {@link ResourcePath}.
- * TODO: Check for null input to constructor.
  *
  * @author Civic Computing Ltd
  */
@@ -85,6 +84,40 @@ public final class ResourcePathTest extends TestCase {
 
         // ASSERT
         assertEquals("/foo", path.toString());
+    }
+
+    /**
+     * Test.
+     *
+     */
+    public void testStringConstructorRejectsNull() {
+
+        // ACT
+        try {
+            final ResourcePath path = new ResourcePath((String) null);
+            fail("Should reject NULL.");
+
+        // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals("Specified value may not be NULL.", e.getMessage());
+        }
+    }
+
+    /**
+     * Test.
+     *
+     */
+    public void testConstructorRejectsNull() {
+
+        // ACT
+        try {
+            final ResourcePath path = new ResourcePath((ResourceName) null);
+            fail("Should reject NULL.");
+
+            // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals("Specified value may not be NULL.", e.getMessage());
+        }
     }
 
     /**

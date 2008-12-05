@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import junit.framework.TestCase;
+import ccc.commons.EmailAddress;
 
 
 /**
@@ -133,10 +134,10 @@ public class UserTest
 
         // ARRANGE
         final User u = new User("dummy");
-        u.email("fooEmail@test.com");
+        u.email(new EmailAddress("fooEmail@test.com"));
 
         // ACT
-        final String email = u.email();
+        final String email = u.email().getText();
 
         // ASSERT
         assertEquals("fooEmail@test.com", email);
@@ -199,7 +200,7 @@ public class UserTest
 
         // ACT
         try {
-            u.email("blaablaa");
+            u.email(new EmailAddress("blaablaa"));
             fail("Invalid email should be rejected.");
 
         // ASSERT
@@ -221,7 +222,7 @@ public class UserTest
         // ASSERT
         } catch (final IllegalArgumentException e) {
             assertEquals(
-                "Specified string does not match [\\w]*",
+                "Specified string (Empty name) does not match [\\w]*",
                 e.getMessage());
         }
     }
@@ -233,7 +234,7 @@ public class UserTest
 
         // ARRANGE
         final User u = new User("dummy");
-        u.email("fooEmail@test.com");
+        u.email(new EmailAddress("fooEmail@test.com"));
 
         // ACT
         try {
@@ -251,7 +252,7 @@ public class UserTest
 
         // ARRANGE
         final User u = new User("dummy");
-        u.email("fooEmail@test.com");
+        u.email(new EmailAddress("fooEmail@test.com"));
 
         // ACT
         try {
@@ -271,7 +272,7 @@ public class UserTest
 
         // ARRANGE
         final User u = new User("dummy");
-        u.email("fooEmail@test.com");
+        u.email(new EmailAddress("fooEmail@test.com"));
 
         // ACT
         try {
@@ -279,7 +280,7 @@ public class UserTest
             // ASSERT
         } catch (final IllegalArgumentException e) {
             assertEquals(
-                "Specified string does not match [\\w]*",
+                "Specified string (blaa blaa) does not match [\\w]*",
                 e.getMessage());
         }
     }
@@ -292,7 +293,7 @@ public class UserTest
 
         // ARRANGE
         final User u = new User("dummy");
-        u.email("fooEmail@test.com");
+        u.email(new EmailAddress("fooEmail@test.com"));
 
         // ACT
         u.username("newDummy");

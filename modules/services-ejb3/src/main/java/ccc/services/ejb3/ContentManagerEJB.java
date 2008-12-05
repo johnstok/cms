@@ -180,8 +180,8 @@ public final class ContentManagerEJB
         }
         final Page p = resource.as(Page.class);
         p.paragraphs().size();
-        if (p.displayTemplateName() != null) {
-            p.displayTemplateName().body();
+        if (p.template() != null) {
+            p.template().body();
         }
         return p;
     }
@@ -231,7 +231,7 @@ public final class ContentManagerEJB
     @Override
     public void setDefaultTemplate(final Template newDefault) {
         final Folder rootFolder = lookupRoot();
-        rootFolder.displayTemplateName(newDefault);
+        rootFolder.template(newDefault);
         _audit.recordChangeTemplate(rootFolder);
     }
 
@@ -242,7 +242,7 @@ public final class ContentManagerEJB
     public void updateTemplateForResource(final UUID resourceId,
                                           final Template template) {
         final Resource r = lookup(resourceId);
-        r.displayTemplateName(template);
+        r.template(template);
         _audit.recordChangeTemplate(r);
     }
 
