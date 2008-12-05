@@ -40,6 +40,7 @@ import ccc.services.UserManagerLocal;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.Commands;
 import ccc.services.api.PageDelta;
+import ccc.services.api.ParagraphDelta;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserDelta;
@@ -99,7 +100,7 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createFolder(final String parentId,
-                                      final String name) {
+                                        final String name) {
 
         final Folder f =
             _content.create(
@@ -124,9 +125,15 @@ public class CommandsEJB
             page.displayTemplateName(template);
         }
 
-        for (final String[] para : delta._paragraphs) { // FIXME: Wrong!
-            final Paragraph paragraph = Paragraph.fromText(para[1]);
-            page.addParagraph(para[0], paragraph);
+        for (final ParagraphDelta para : delta._paragraphs) {
+            if ("TEXT".equals(para._type)) {
+                final Paragraph paragraph = Paragraph.fromText(para._textValue);
+                page.addParagraph(para._name, paragraph);
+            } else if ("DATE".equals(para._type)) {
+                final Paragraph paragraph = Paragraph.fromDate(para._dateValue);
+                page.addParagraph(para._name, paragraph);
+
+            }
         }
 
         _content.create(UUID.fromString(parentId), page);
@@ -208,7 +215,6 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     public void updateAlias(final AliasDelta delta) {
-
         _content.updateAlias(
             UUID.fromString(delta._targetId),
             UUID.fromString(delta._id));
@@ -224,12 +230,20 @@ public class CommandsEJB
         page.id(UUID.fromString(delta._id));
         page.version(delta._version);
 
-        for (final String[] para : delta._paragraphs) {
-            final Paragraph paragraph = Paragraph.fromText(para[1]);
-            page.addParagraph(para[0], paragraph);
+        // TODO: Remove duplication
+        for (final ParagraphDelta para : delta._paragraphs) {
+            if ("TEXT".equals(para._type)) {
+                final Paragraph paragraph = Paragraph.fromText(para._textValue);
+                page.addParagraph(para._name, paragraph);
+            } else if ("DATE".equals(para._type)) {
+                final Paragraph paragraph = Paragraph.fromDate(para._dateValue);
+                page.addParagraph(para._name, paragraph);
+
+            }
         }
 
-        _content.update(UUID.fromString(delta._id), delta._title, null); // FIXME: Wrong!
+        // TODO: Add version checking.
+        _content.update(page.id(), page.title(), page.paragraphs());
 
     }
 
@@ -275,7 +289,7 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     public UserSummary updateUser(final UserDelta delta) {
-        // TODO: Refactor - horrible.
+        // FIXME: Refactor - horrible.
         final User user = new User(delta._username);
         user.email(delta._email);
         for (final String role : delta._roles) {

@@ -130,6 +130,7 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
 
     /** {@inheritDoc} */
     @Override
+    // TODO: Factor 'exists' algo into QueryManager?
     public boolean usernameExists(final String username) {
         final Query q = _em.createNamedQuery("usersWithUsername");
         q.setParameter("username", username);
@@ -141,12 +142,12 @@ public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
         }
     }
 
+    // TODO: Merge into QueryManager?
     private <T> Collection<T> uniquify(final Collection<T> collection) {
         return new HashSet<T>(collection);
     }
 
     /** {@inheritDoc} */
-    @SuppressWarnings("unchecked") // JPA API doesn't support generics.
     @Override
     @RolesAllowed({"ADMINISTRATOR"})
     public void updateUser(final User user, final String password) {
