@@ -94,4 +94,6 @@ public interface QueriesServiceAsync {
     void pageDelta(String pageId, AsyncCallback<PageDelta> asyncCallback);
 
     void folderDelta(String folderId, AsyncCallback<ResourceDelta> asyncCallback);
+
+    void resourceDelta(String resourceId, AsyncCallback<ResourceDelta> asyncCallback);
 }

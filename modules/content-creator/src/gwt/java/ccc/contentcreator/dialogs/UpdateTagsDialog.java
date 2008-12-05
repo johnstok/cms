@@ -11,14 +11,13 @@
  */
 package ccc.contentcreator.dialogs;
 
+import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.client.Globals;
+import ccc.services.api.ResourceDelta;
 
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.form.TextField;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 /**
@@ -31,38 +30,25 @@ public class UpdateTagsDialog
         AbstractEditDialog {
 
     private final TextField<String> _tags = new TextField<String>();
-    private final ModelData _resource;
-    private final ListStore<ModelData> _store;
+    private final ResourceDelta _resource;
 
 
     /**
      * Constructor.
      *
      * @param result
-     * @param store
      */
-    public UpdateTagsDialog(final ModelData result,
-                            final ListStore<ModelData> store) {
+    public UpdateTagsDialog(final ResourceDelta result) {
         super(Globals.uiConstants().updateTags());
         _resource = result;
-        _store = store;
 
-        addTextField(_resource.<String>get("tags"),
+        addTextField(_resource._tags,
                      "tags",
                      true,
                      constants().tags());
     }
 
 
-
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param value
-     * @param id
-     * @param allowBlank
-     * @param label
-     */
     private void addTextField(final String value,
                               final String id,
                               final boolean allowBlank,
@@ -75,6 +61,7 @@ public class UpdateTagsDialog
         addField(_tags);
     }
 
+
     /** {@inheritDoc} */
     @Override
     protected SelectionListener<ButtonEvent> saveAction() {
@@ -84,18 +71,10 @@ public class UpdateTagsDialog
                     (null==_tags.getValue()) ? "" : _tags.getValue();
 
                 commands().updateTags(
-                    _resource.<String>get("id"),
-                    _resource.<Long>get("version"),
+                    _resource._id,
+                    _resource._version,
                     tags,
-                    new AsyncCallback<Void>(){
-                    public void onFailure(final Throwable caught) {
-                        Globals.unexpectedError(caught);
-                    }
-                    public void onSuccess(final Void result) {
-                        close();
-                        _resource.set("tags", tags);
-                        _store.update(_resource);
-                    }});
+                    new DisposingCallback(UpdateTagsDialog.this));
             }
         };
     }

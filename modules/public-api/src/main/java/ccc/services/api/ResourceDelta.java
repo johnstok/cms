@@ -22,9 +22,10 @@ import java.io.Serializable;
 public class ResourceDelta
     implements
         Serializable {
-    public String     _id;
-    public long       _version;
-    public String     _name;
-    public String     _title;
-    public String     _templateId;
+    public String _id;
+    public long   _version;
+    public String _name;
+    public String _title;
+    public String _templateId;
+    public String _tags;
 }

@@ -167,4 +167,10 @@ public class QueriesImpl
     public ResourceDelta folderDelta(final String folderId) {
         return _delegate.folderDelta(folderId);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceDelta resourceDelta(final String resourceId) {
+        return _delegate.resourceDelta(resourceId);
+    }
 }
