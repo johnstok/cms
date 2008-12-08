@@ -80,9 +80,9 @@ public class CreatePageDialog
     private final ResourceTable _rt;
     private final ModelData _parent;
 
-    final RadioGroup _rg = new RadioGroup(_uiConstants.publish());
-    final Radio _publishNo = new Radio();
-    final Radio _publishYes = new Radio();
+    private final RadioGroup _rg = new RadioGroup(_uiConstants.publish());
+    private final Radio _publishNo = new Radio();
+    private final Radio _publishYes = new Radio();
 
 
     private Text _description = new Text("");
