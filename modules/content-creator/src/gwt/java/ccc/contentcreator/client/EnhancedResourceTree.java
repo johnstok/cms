@@ -55,7 +55,7 @@ public class EnhancedResourceTree extends FolderResourceTree {
 
         super(root);
 
-        _rt = new ResourceTable(root);
+        _rt = new ResourceTable(root, this);
         _view = view;
 
         final Listener<TreeEvent> treeSelectionListener =
