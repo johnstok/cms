@@ -537,4 +537,20 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Unpublish")
     String unpublish();
+
+    /**
+     * "Yes".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Yes")
+    String yes();
+
+    /**
+     * "No".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("No")
+    String no();
 }

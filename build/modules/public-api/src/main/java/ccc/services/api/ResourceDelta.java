@@ -28,4 +28,5 @@ public class ResourceDelta
     public String _title;
     public String _templateId;
     public String _tags;
+    public boolean _published;
 }
