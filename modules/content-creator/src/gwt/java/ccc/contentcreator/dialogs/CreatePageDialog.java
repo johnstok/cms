@@ -43,6 +43,8 @@ import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.Field;
+import com.extjs.gxt.ui.client.widget.form.Radio;
+import com.extjs.gxt.ui.client.widget.form.RadioGroup;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
@@ -66,6 +68,7 @@ public class CreatePageDialog
     private final UIConstants _uiConstants = GWT.create(UIConstants.class);
 
     private final ContentPanel _first = new ContentPanel();
+    private final ContentPanel _third = new ContentPanel();
     private final EditPagePanel _second = new EditPagePanel();
 
     private ListStore<ModelData> _templatesStore = new ListStore<ModelData>();
@@ -77,7 +80,9 @@ public class CreatePageDialog
     private final ResourceTable _rt;
     private final ModelData _parent;
 
-
+    final RadioGroup _rg = new RadioGroup(_uiConstants.publish());
+    final Radio _publishNo = new Radio();
+    final Radio _publishYes = new Radio();
 
 
     private Text _description = new Text("");
@@ -152,6 +157,20 @@ public class CreatePageDialog
         addCard(_first);
 
         addCard(_second);
+
+        _third.setLayout(new BorderLayout());
+        _third.setHeaderVisible(true);
+        _third.setHeading(_uiConstants.publish());
+
+        _publishNo.setValue(true);
+        _publishNo.setBoxLabel(_uiConstants.no());
+        _publishYes.setBoxLabel(_uiConstants.yes());
+        _publishYes.setValue(false);
+        _rg.add(_publishNo);
+        _rg.add(_publishYes);
+        _third.add(_rg);
+        addCard(_third);
+
         refresh();
     }
 
@@ -280,6 +299,8 @@ public class CreatePageDialog
                 page._name = _second.name().getValue();
                 page._title = _second.title().getValue();
                 page._paragraphs = paragraphs;
+
+                page._published = _rg.getValue() == _publishYes;
 
                 final String template =
                     (null==_grid.getSelectionModel().getSelectedItem())

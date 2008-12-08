@@ -121,6 +121,10 @@ public class CommandsEJB
             ResourceName.escape(delta._name),
             delta._title);
 
+        if (delta._published) {
+            page.publish(_users.loggedInUser());
+        }
+
         if (templateId != null) {
             final Template template =  _qm.find(Template.class, templateId);
             page.template(template);
