@@ -22,6 +22,8 @@ import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.dialogs.ChooseTemplateDialog;
 import ccc.contentcreator.dialogs.CreateAliasDialog;
+import ccc.contentcreator.dialogs.CreateFolderDialog;
+import ccc.contentcreator.dialogs.CreatePageDialog;
 import ccc.contentcreator.dialogs.EditAliasDialog;
 import ccc.contentcreator.dialogs.EditTemplateDialog;
 import ccc.contentcreator.dialogs.MoveDialog;
@@ -30,6 +32,7 @@ import ccc.contentcreator.dialogs.RenameDialog;
 import ccc.contentcreator.dialogs.TableDataDisplayDialog;
 import ccc.contentcreator.dialogs.UpdatePageDialog;
 import ccc.contentcreator.dialogs.UpdateTagsDialog;
+import ccc.contentcreator.dialogs.UploadFileDialog;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.PageDelta;
@@ -42,6 +45,7 @@ import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.binder.TableBinder;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -54,6 +58,8 @@ import com.extjs.gxt.ui.client.widget.table.Table;
 import com.extjs.gxt.ui.client.widget.table.TableColumn;
 import com.extjs.gxt.ui.client.widget.table.TableColumnModel;
 import com.extjs.gxt.ui.client.widget.table.TableItem;
+import com.extjs.gxt.ui.client.widget.toolbar.TextToolItem;
+import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.extjs.gxt.ui.client.widget.tree.TreeItem;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -72,14 +78,22 @@ public class ResourceTable extends TablePanel {
         new ListStore<ModelData>();
     private TreeItem _previousItem = null;
     private final ResourceSummary _root;
+    private final ToolBar _toolBar = new ToolBar();
 
 
     /**
      * Constructor.
+     *
+     * @param root
+     * @param tree
      */
-    ResourceTable(final ResourceSummary root) {
+    ResourceTable(final ResourceSummary root, final FolderResourceTree tree) {
 
         _root = root;
+
+        actionButtons(tree);
+
+        setTopComponent(_toolBar);
 
         setHeading("Resource Details");
         setLayout(new FitLayout());
@@ -139,11 +153,79 @@ public class ResourceTable extends TablePanel {
         };
         binder.init();
 
-
         addContextMenuLogic(tbl, contextMenu);
 
         tbl.setBulkRender(false);
         add(tbl);
+    }
+
+    private void actionButtons(final FolderResourceTree tree) {
+
+        final TextToolItem uploadFile = new TextToolItem("Upload File");
+        uploadFile.setId("uploadFile");
+        _toolBar.add(uploadFile);
+        uploadFile.addListener(Events.Select, new Listener<ComponentEvent>(){
+
+            public void handleEvent(final ComponentEvent be) {
+                final ModelData item = _previousItem.getModel();
+                new UploadFileDialog(item.<String>get("id"),
+                    item.<String>get("name"),
+                    tree).center();
+            }
+        });
+
+        final TextToolItem createFolder = new TextToolItem("Create Folder");
+        _toolBar.add(createFolder);
+        createFolder.addListener(Events.Select, new Listener<ComponentEvent>(){
+
+            public void handleEvent(final ComponentEvent be) {
+                final ModelData item = _previousItem.getModel();
+                final CreateFolderDialog aa = new CreateFolderDialog(item, tree.store());
+                aa.show();
+            }
+        });
+
+        final TextToolItem createPage = new TextToolItem("Create Page");
+        createPage.addListener(Events.Select, new Listener<ComponentEvent>(){
+
+            public void handleEvent(final ComponentEvent be) {
+                final ModelData item = _previousItem.getModel();
+                Globals.queriesService().templates(
+                    new ErrorReportingCallback<Collection<TemplateDelta>>(){
+                        public void onSuccess(
+                                      final Collection<TemplateDelta> list) {
+                            new CreatePageDialog(list, item, ResourceTable.this).show(); // Need deltas here...
+                        }});
+            }
+        });
+        _toolBar.add(createPage);
+        final TextToolItem createTemplate = new TextToolItem("Create Template");
+        createTemplate.addListener(Events.Select, new Listener<ComponentEvent>(){
+            public void handleEvent(final ComponentEvent be) {
+                final ModelData item = _previousItem.getModel();
+                new EditTemplateDialog(item.<String>get("id"),
+                    ResourceTable.this.detailsStore()).show();
+            }
+        });
+        _toolBar.add(createTemplate);
+
+        final TextToolItem chooseTemplate = new TextToolItem("Choose Template");
+        chooseTemplate.addListener(Events.Select, new Listener<ComponentEvent>(){
+            public void handleEvent(final ComponentEvent be) {
+                final ModelData item = _previousItem.getModel();
+                qs.folderDelta(item.<String>get("id"), new ErrorReportingCallback<ResourceDelta>(){
+                    public void onSuccess(final ResourceDelta delta) {
+                        qs.templates(new ErrorReportingCallback<Collection<TemplateDelta>>(){
+                            public void onSuccess(final Collection<TemplateDelta> templates) {
+                                new ChooseTemplateDialog(delta, templates).show();
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
+        _toolBar.add(chooseTemplate);
     }
 
     private void addContextMenuLogic(final Table tbl, final Menu contextMenu) {
