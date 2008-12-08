@@ -15,12 +15,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map.Entry;
 
 import ccc.domain.Alias;
 import ccc.domain.CreatorRoles;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
+import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.Template;
 import ccc.domain.User;
@@ -240,6 +242,14 @@ public class ModelTranslation {
         final Template ct = page.computeTemplate(null);
         delta._computedTemplate = (null==ct) ? null : delta(ct);
         delta._paragraphs = new ArrayList<ParagraphDelta>();
+        for (final Entry<String, Paragraph> p : page.paragraphs().entrySet()) {
+            final ParagraphDelta pDelta = new ParagraphDelta();
+            pDelta._name = p.getKey();
+            pDelta._type = p.getValue().type().name();
+            pDelta._textValue = p.getValue().text();
+            pDelta._dateValue = p.getValue().date();
+            delta._paragraphs.add(pDelta);
+        }
         return delta;
     }
 

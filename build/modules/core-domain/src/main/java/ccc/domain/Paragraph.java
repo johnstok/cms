@@ -108,7 +108,7 @@ public final class Paragraph implements Serializable {
      * @return The date representation of this paragraph.
      */
     public Date date() {
-        return new Date(_date.getTime()); // Defensive copy
+        return (null==_date) ? null : new Date(_date.getTime());
     }
 
     /**

@@ -134,6 +134,7 @@ public class UpdatePageDialog
                             paragraphs.add(p);
                         }
                     }
+                    _page._paragraphs = paragraphs;
 
                     commands().updatePage(
                         _page,
