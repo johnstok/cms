@@ -114,11 +114,10 @@ public final class ContentServlet extends CCCServlet {
                     throws IOException, ServletException {
 
         final String pathString =
-            removeTrailing('/',
-                nvl(request.getPathInfo(), "/"));
+            removeTrailing('/', nvl(request.getPathInfo(), "/"));
         final ResourcePath contentPath = new ResourcePath(pathString); // 400
 
-        final Maybe<Resource> resource = contentManager().lookup(contentPath);
+        final Maybe<Resource> resource = resourceReader().lookup(contentPath);
         if (resource.isDefined() && resource.get().isPublished()) {
             handleResource(response, request, resource.get());
         } else {
@@ -287,8 +286,9 @@ public final class ContentServlet extends CCCServlet {
      * @return The html rendering as a string.
      */
     public String render(final Resource resource, final String template) {
+        final Folder root = resourceReader().lookup(new ResourcePath("")).get().as(Folder.class); // TODO: Refactor
         return new VelocityProcessor().render(resource,
-                                              contentManager().lookupRoot(),
+                                              root,
                                               template);
     }
 }
