@@ -74,10 +74,6 @@ public interface QueriesServiceAsync {
 
     void loggedInUser(AsyncCallback<UserSummary> callback);
 
-    void nameExistsInParentFolder(final String id,
-                                  final String name,
-                                  AsyncCallback<Boolean> callback);
-
     void lockedByCurrentUser(AsyncCallback<Collection<ResourceSummary>> callback);
 
     void locked(AsyncCallback<Collection<ResourceSummary>> callback);

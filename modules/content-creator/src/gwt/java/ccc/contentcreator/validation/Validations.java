@@ -149,7 +149,7 @@ public class Validations {
                                                final TextField<String> name) {
         return new Validator() {
             public void validate(final Validate validate) {
-                Globals.queriesService().nameExistsInParentFolder(
+                Globals.queriesService().nameExistsInFolder(
                     id,
                     name.getValue(),
                     new ErrorReportingCallback<Boolean>(){

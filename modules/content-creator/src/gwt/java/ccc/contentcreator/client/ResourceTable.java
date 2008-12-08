@@ -153,8 +153,8 @@ public class ResourceTable extends TablePanel {
                 contextMenu.removeAll();
                 final ModelData item = tbl.getSelectedItem().getModel();
                 addCreateAlias(tbl, contextMenu);
-                if (item.get("lockedBy") == null
-                    || "".equals(item.get("lockedBy"))) {
+                if (item.get("locked") == null
+                    || "".equals(item.get("locked"))) {
                     addLockResource(tbl, contextMenu);
                 } else {
                     addUnlockResource(tbl, contextMenu);
@@ -320,15 +320,11 @@ public class ResourceTable extends TablePanel {
                      } else if ("PAGE".equals(item.get("type"))) {
                          qs.pageDelta(item.<String>get("id"),new ErrorReportingCallback<PageDelta>() {
                              public void onSuccess(final PageDelta page) {
-                                 qs.templateDelta(page._templateId, new ErrorReportingCallback<TemplateDelta>(){
-                                     public void onSuccess(final TemplateDelta template) {
-                                         if (template == null) {
-                                             Globals.alert(Globals.uiConstants().noTemplateFound());
-                                         } else {
-                                             new UpdatePageDialog(page, template, ResourceTable.this).show();
-                                         }
-                                     }
-                                 });
+                                 if (null==page._computedTemplate) {
+                                     Globals.alert(Globals.uiConstants().noTemplateFound());
+                                 } else {
+                                     new UpdatePageDialog(page, page._computedTemplate, ResourceTable.this).show();
+                                 }
                              }
                          });
 

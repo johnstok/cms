@@ -108,12 +108,6 @@ public class QueriesImpl
     }
 
     /** {@inheritDoc} */
-    public boolean nameExistsInParentFolder(final String id,
-                                            final String name) {
-        return _delegate.nameExistsInParentFolder(id, name);
-    }
-
-    /** {@inheritDoc} */
     public ResourceSummary resource(final String resourceId) {
         return _delegate.resource(resourceId);
     }

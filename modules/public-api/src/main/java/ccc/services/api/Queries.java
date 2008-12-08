@@ -140,17 +140,6 @@ public interface Queries {
     UserSummary loggedInUser();
 
     /**
-     * Query whether given resource's parent has a resource with given name.
-     *
-     * @param id The resource id which parent folder to check.
-     * @param name The name of the resource.
-     * @return Returns true in case parent folder has a resource with given
-     * name, false otherwise.
-     */
-    boolean nameExistsInParentFolder(final String id,
-                                     final String name);
-
-    /**
      * List the resources locked by the currently logged in user.
      *
      * @return The list of resources.
