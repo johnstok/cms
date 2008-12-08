@@ -111,6 +111,7 @@ public class UpdatePageDialog
                         || panel().title().getValue().trim().length() == 0) {
                         return;
                     }
+                    _page._title = panel().title().getValue();
 
                     final List<ParagraphDelta> paragraphs =
                         new ArrayList<ParagraphDelta>();
