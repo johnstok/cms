@@ -24,4 +24,5 @@ public class PageDelta
     extends
         ResourceDelta {
     public List<ParagraphDelta> _paragraphs;
+    public TemplateDelta _computedTemplate;
 }

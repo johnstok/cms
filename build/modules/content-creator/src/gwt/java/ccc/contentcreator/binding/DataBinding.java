@@ -123,6 +123,7 @@ public class DataBinding {
     public static void merge(final ModelData md, final ResourceSummary fs) {
         md.set("id", fs._id);
         md.set("version", fs._version);
+        md.set("parentId", fs._parentId);
         md.set("name", fs._name);
         md.set("published", fs._publishedBy);
         md.set("title", fs._title);

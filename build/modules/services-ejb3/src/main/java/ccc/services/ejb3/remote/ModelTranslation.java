@@ -108,7 +108,12 @@ public class ModelTranslation {
      * @return
      */
     protected LogEntrySummary map(final LogEntry le) {
-        return new LogEntrySummary();
+        final LogEntrySummary les = new LogEntrySummary();
+        les._action = le.action().name();
+        les._actor = le.actor().username();
+        les._happenedOn = le.happenedOn().getTime();
+        les._summary = le.summary();
+        return les;
     }
 
     /**
@@ -122,6 +127,7 @@ public class ModelTranslation {
         rs._id = r.id().toString();
         rs._version = r.version();
         rs._name = r.name().toString();
+        rs._parentId = (null==r.parent()) ? null : r.parent().id().toString();
         rs._type = r.type().name();
         rs._lockedBy = (r.isLocked()) ? r.lockedBy().username() : null;
         rs._title = r.title();
@@ -231,6 +237,8 @@ public class ModelTranslation {
         delta._title = page.title();
         final Template t = page.template();
         delta._templateId = (null==t) ? null : t.id().toString();
+        final Template ct = page.computeTemplate(null);
+        delta._computedTemplate = (null==ct) ? null : delta(ct);
         delta._paragraphs = new ArrayList<ParagraphDelta>();
         return delta;
     }

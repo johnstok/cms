@@ -110,9 +110,9 @@ public class MoveDialog extends AbstractEditDialog {
         return new Runnable() {
             public void run() {
                 commands().move(
+                    _target.<String>get("id"),
+                    _target.<Long>get("version"),
                     _parent.<String>get("id"),
-                    _parent.<Long>get("version"),
-                    _target.<String>get("String"),
                     new ErrorReportingCallback<Void>() {
                         public void onSuccess(final Void result) {
                             _rt.refreshTable();

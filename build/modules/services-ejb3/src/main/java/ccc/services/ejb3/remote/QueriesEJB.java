@@ -126,17 +126,9 @@ public final class QueriesEJB
     @Override
     public boolean nameExistsInFolder(final String folderId,
                                       final String name) {
+        // TODO handle null folderId? (for root folders)
         return
             _qm.find(Folder.class, folderId)
-            .hasEntryWithName(new ResourceName(name));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public boolean nameExistsInParentFolder(final String id,
-                                            final String name) {
-        return
-            _qm.find(Folder.class, id).parent()
             .hasEntryWithName(new ResourceName(name));
     }
 

@@ -91,7 +91,7 @@ public class TableDataDisplayDialog
                                  final String property,
                                  final Object value) {
 
-                final Date happenedOn = new Date(((Double) value).longValue());
+                final Date happenedOn = new Date((Long) value);
                 return happenedOn.toString(); // TODO: I18n
             }});
         columns.add(timeColumn);
