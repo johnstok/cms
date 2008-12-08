@@ -21,6 +21,10 @@ public final class ServiceNames {
 
     private ServiceNames() { super(); }
 
+    /** STATEFUL_READER : String. */
+    public static final String STATEFUL_READER =
+        "application-ear-7.0.0-SNAPSHOT/StatefulReader/local";
+
     /** CONTENT_MANAGER_LOCAL : String. */
     public static final String CONTENT_MANAGER_LOCAL =
         "application-ear-7.0.0-SNAPSHOT/ContentManager/local";

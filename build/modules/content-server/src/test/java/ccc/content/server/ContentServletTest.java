@@ -37,8 +37,8 @@ import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.services.ContentManagerLocal;
 import ccc.services.ServiceNames;
+import ccc.services.StatefulReader;
 
 /**
  * Tests for the ContentServlet.
@@ -52,7 +52,8 @@ public final class ContentServletTest extends TestCase {
 
     private HttpServletResponse _response;
     private HttpServletRequest  _request;
-    private ContentManagerLocal _cm;
+    private StatefulReader _cm;
+    private Maybe<Resource> root = new Maybe<Resource>(new Folder("root"));
 
     /**
      * Test.
@@ -68,14 +69,14 @@ public final class ContentServletTest extends TestCase {
         final ContentServlet cs =
             new ContentServlet(
                 new MapRegistry(
-                    ServiceNames.CONTENT_MANAGER_LOCAL,
+                    ServiceNames.STATEFUL_READER,
                     _cm));
         final Template t = new Template("foo", "bar", "baz", "<fields/>");
         final Page p = new Page(new ResourceName("bar"));
         p.template(t);
         final Alias a = new Alias(new ResourceName("foo"), p);
 
-        expect(_cm.lookupRoot()).andReturn(null);
+        expect(_cm.lookup(new ResourcePath(""))).andReturn(root);
         cs.disableCachingFor(_response);
         cs.configureCharacterEncoding(_response);
         _response.setContentType("text/html");
@@ -188,13 +189,13 @@ public final class ContentServletTest extends TestCase {
         expect(_response.getWriter()).andReturn(new PrintWriter(output));
         replay(_response);
 
-        expect(_cm.lookupRoot()).andReturn(null);
+        expect(_cm.lookup(new ResourcePath(""))).andReturn(root);
         replay(_cm);
 
         // ACT
         new ContentServlet(
             new MapRegistry(
-                ServiceNames.CONTENT_MANAGER_LOCAL,
+                ServiceNames.STATEFUL_READER,
                 _cm)
             ).write(_response, page);
 
@@ -232,13 +233,13 @@ public final class ContentServletTest extends TestCase {
         expect(_response.getWriter()).andReturn(new PrintWriter(output));
         replay(_response);
 
-        expect(_cm.lookupRoot()).andReturn(null);
+        expect(_cm.lookup(new ResourcePath(""))).andReturn(root);
         replay(_cm);
 
         // ACT
         new ContentServlet(
             new MapRegistry(
-                ServiceNames.CONTENT_MANAGER_LOCAL,
+                ServiceNames.STATEFUL_READER,
                 _cm)
             ).write(_response, top);
 
@@ -280,13 +281,13 @@ public final class ContentServletTest extends TestCase {
 
         expect(_cm.lookup(new ResourcePath("/foo")))
             .andReturn(new Maybe<Resource>(p));
-        expect(_cm.lookupRoot()).andReturn(null);
+        expect(_cm.lookup(new ResourcePath(""))).andReturn(root);
         replay(_cm);
 
         final ContentServlet contentServlet =
             new ContentServlet(
                 new MapRegistry(
-                    ServiceNames.CONTENT_MANAGER_LOCAL,
+                    ServiceNames.STATEFUL_READER,
                     _cm));
 
         // EXPECT
@@ -340,7 +341,7 @@ public final class ContentServletTest extends TestCase {
         final ContentServlet contentServlet =
             new ContentServlet(
                 new MapRegistry(
-                    ServiceNames.CONTENT_MANAGER_LOCAL,
+                    ServiceNames.STATEFUL_READER,
                     _cm));
 
         // EXPECT
@@ -385,7 +386,7 @@ public final class ContentServletTest extends TestCase {
         final ContentServlet contentServlet =
             new ContentServlet(
                 new MapRegistry(
-                    ServiceNames.CONTENT_MANAGER_LOCAL,
+                    ServiceNames.STATEFUL_READER,
                     _cm));
 
         // EXPECT
@@ -427,7 +428,7 @@ public final class ContentServletTest extends TestCase {
         final ContentServlet contentServlet =
             new ContentServlet(
                 new MapRegistry(
-                    ServiceNames.CONTENT_MANAGER_LOCAL,
+                    ServiceNames.STATEFUL_READER,
                     _cm
                 ));
 
@@ -504,7 +505,7 @@ public final class ContentServletTest extends TestCase {
         final ContentServlet contentServlet =
             new ContentServlet(
                 new MapRegistry(
-                    ServiceNames.CONTENT_MANAGER_LOCAL,
+                    ServiceNames.STATEFUL_READER,
                     _cm));
 
         // EXPECT
@@ -528,7 +529,7 @@ public final class ContentServletTest extends TestCase {
         super.setUp();
         _response = createStrictMock(HttpServletResponse.class);
         _request = createStrictMock(HttpServletRequest.class);
-        _cm = createStrictMock(ContentManagerLocal.class);
+        _cm = createStrictMock(StatefulReader.class);
     }
 
     /**

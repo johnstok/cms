@@ -23,10 +23,6 @@
 		<servlet-class>ccc.content.server.ContentServlet</servlet-class>
 	</servlet>
 	<servlet>
-		<servlet-name>assets</servlet-name>
-		<servlet-class>ccc.content.server.AssetsServlet</servlet-class>
-	</servlet>
-	<servlet>
 		<servlet-name>error</servlet-name>
 		<servlet-class>ccc.content.server.ErrorServlet</servlet-class>
 	</servlet>
@@ -38,10 +34,6 @@
 	<servlet-mapping>
 		<servlet-name>content</servlet-name>
 		<url-pattern>/content/*</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>assets</servlet-name>
-		<url-pattern>/assets/*</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>error</servlet-name>

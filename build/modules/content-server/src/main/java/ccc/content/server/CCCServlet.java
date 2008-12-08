@@ -24,10 +24,9 @@ import ccc.commons.DBC;
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
 import ccc.domain.File;
-import ccc.services.AssetManagerLocal;
-import ccc.services.ContentManagerLocal;
 import ccc.services.DataManagerLocal;
 import ccc.services.ServiceNames;
+import ccc.services.StatefulReader;
 
 
 /**
@@ -60,17 +59,8 @@ public abstract class CCCServlet extends HttpServlet {
      *
      * @return A ContentManager.
      */
-    protected ContentManagerLocal contentManager() {
-        return _registry.get(ServiceNames.CONTENT_MANAGER_LOCAL);
-    }
-
-    /**
-     * Accessor for the asset manager.
-     *
-     * @return A AssetManager.
-     */
-    protected AssetManagerLocal assetManager() {
-        return _registry.get(ServiceNames.ASSET_MANAGER_LOCAL);
+    protected StatefulReader resourceReader() {
+        return _registry.get(ServiceNames.STATEFUL_READER);
     }
 
     /**
