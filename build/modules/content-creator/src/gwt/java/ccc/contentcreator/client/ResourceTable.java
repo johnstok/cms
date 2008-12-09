@@ -44,13 +44,11 @@ import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.binder.TableBinder;
 import com.extjs.gxt.ui.client.data.ModelData;
-import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
-import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
@@ -62,6 +60,9 @@ import com.extjs.gxt.ui.client.widget.toolbar.TextToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.extjs.gxt.ui.client.widget.tree.TreeItem;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Widget;
 
 
 /**
@@ -84,8 +85,8 @@ public class ResourceTable extends TablePanel {
     /**
      * Constructor.
      *
-     * @param root
-     * @param tree
+     * @param root ResourceSummary
+     * @param tree FolderResourceTree
      */
     ResourceTable(final ResourceSummary root, final FolderResourceTree tree) {
 
@@ -155,18 +156,17 @@ public class ResourceTable extends TablePanel {
                                          final ModelData model,
                                          final TableItem ti) {
 
-                Button action = new Button("X",
-                    new SelectionListener<ButtonEvent>() {
-                    @Override
-                    public void componentSelected(final ButtonEvent ce) {
+                final Image tool = new Image("images/gxt/icons/page-next.gif");
+                tool.addClickListener(new ClickListener() {
+
+                    public void onClick(final Widget sender) {
                         tbl.setSelectedItem(ti);
-                        tbl.getContextMenu().showAt(ti.getAbsoluteLeft()+7,
-                            ti.getAbsoluteTop()+7);
+                        tbl.getContextMenu().showAt(sender.getAbsoluteLeft()+7,
+                            sender.getAbsoluteTop()+7);
                     }
                 });
                 ti.setId(model.<String>get("name"));
-                action.setId(action+ti.getId());
-                ti.setWidget(0, action);
+                ti.setWidget(0, tool);
             }
         };
         binder.init();

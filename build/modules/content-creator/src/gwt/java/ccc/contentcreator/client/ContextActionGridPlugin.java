@@ -45,7 +45,7 @@ public class ContextActionGridPlugin
     public ContextActionGridPlugin(final Menu contextMenu) {
         _contextMenu = contextMenu;
         setHeader("");
-        setWidth(20);
+        setWidth(30);
         setSortable(false);
         setResizable(false);
         setFixed(true);
@@ -62,8 +62,8 @@ public class ContextActionGridPlugin
                                  final int colIndex,
                                  final ListStore store) {
                 d.cellAttr = "rowspan='2'";
-                return "<div class='x-grid3-row-expander'>&#160;</div>";
-            }
+                return "<img class='action' src='images/gxt/icons/page-next.gif'/>&#160;";
+                }
         });
     }
 
@@ -85,7 +85,7 @@ public class ContextActionGridPlugin
      * @param e GridEvent
      */
     protected void onMouseDown(final GridEvent e) {
-        if (e.getTarget().getClassName().equals("x-grid3-row-expander")) {
+        if (e.getTarget().getClassName().equals("action")) {
             e.stopEvent();
             final El row = e.getTarget(".x-grid3-row", 15);
             final int idx = row.dom.getPropertyInt("rowIndex");
