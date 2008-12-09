@@ -19,9 +19,9 @@ package ccc.domain;
  *
  * @author Civic Computing Ltd.
  */
-public class Data extends VersionedEntity {
+public class Data extends Entity {
 
     /** Constructor: for persistence only. */
-    public Data() { super(); } // TODO: Should be protected?
+    public Data() { super(); }
 
 }

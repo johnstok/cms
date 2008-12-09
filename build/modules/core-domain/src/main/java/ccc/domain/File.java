@@ -87,11 +87,10 @@ public class File extends Resource {
                 final MimeType mimeType) {
 
         super(name, title);
-        DBC.require().notNull(data);
+        data(data);
         // TODO: null tests for other param's...
 
         _description = description;
-        _data = data;
         _size = size;
         _mimeType = mimeType; // TODO: Defensive copy???
     }
@@ -139,5 +138,24 @@ public class File extends Resource {
      */
     public MimeType mimeType() {
         return _mimeType;
+    }
+
+    /**
+     * Mutator for the data field.
+     *
+     * @param newData The new data for the file.
+     */
+    public void data(final Data newData) {
+        DBC.require().notNull(newData);
+        _data = newData;
+    }
+
+    /**
+     * Accessor for the data field.
+     *
+     * @return The Data instance for this file.
+     */
+    public Data data() {
+        return _data;
     }
 }

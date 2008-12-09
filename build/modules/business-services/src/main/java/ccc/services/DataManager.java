@@ -22,7 +22,6 @@ import ccc.domain.File;
 
 /**
  * API definition for data management.
- * TODO: Should have package scope.
  *
  * @author Civic Computing Ltd.
  */
@@ -31,11 +30,12 @@ interface DataManager {
     /**
      * Create a new item of binary data.
      *
-     * @param data The identifier for the new data.
      * @param dataStream The input stream from which the bytes for the new data
      *        item should be read.
+     * @return An instance of {@link Data} that represents the contents of the
+     *      stream.
      */
-    void create(Data data, InputStream dataStream);
+    Data create(InputStream dataStream);
 
     /**
      * Retrieve an existing item of binary data and write it to an output
@@ -51,9 +51,9 @@ interface DataManager {
      * Create a file.
      *
      * @param file The File to persists.
-     * @param path The unique id of the folder acting as a parent for file.
+     * @param parentId The unique id of the folder acting as a parent for file.
      * @param dataStream The input stream from which the bytes for the new file
      *        should be read.
      */
-    void createFile(File file, final UUID path, InputStream dataStream);
+    void createFile(File file, final UUID parentId, InputStream dataStream);
 }
