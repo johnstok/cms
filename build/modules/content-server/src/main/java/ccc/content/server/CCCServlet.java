@@ -15,7 +15,6 @@ package ccc.content.server;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 import ccc.commons.DBC;
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
-import ccc.domain.File;
 import ccc.services.DataManagerLocal;
 import ccc.services.ServiceNames;
 import ccc.services.StatefulReader;
@@ -134,35 +132,55 @@ public abstract class CCCServlet extends HttpServlet {
     }
 
     /**
-     * Write the specified file to the response stream.
+     * Process a GET request.
      *
-     * @param response The response stream.
-     * @param f The file.
-     * @throws IOException Propagates IO exceptions from any of the streams in
-     * use.
+     * This method provides error handling for both committed and uncommitted
+     * responses. It delegates to
+     * {@link #doSafeGet(HttpServletRequest, HttpServletResponse)}
+     * for implementation of business logic.
      *
-     * TODO: Should we close streams on exception???
+     * {@inheritDoc}
      */
-    protected void writeFile(final HttpServletResponse response,
-                             final File f) throws IOException {
+    @Override
+    protected void doGet(final HttpServletRequest request,
+                         final HttpServletResponse response)
+        throws ServletException, IOException {
 
-        disableCachingFor(response);
+        try {
+            doSafeGet(request, response);
 
-        response.setHeader(
-            "Content-Disposition",
-            "inline; filename=\""+f.name()+"\"");
-        response.setHeader(
-            "Content-Type",
-            f.mimeType().toString());
-        response.setHeader(
-            "Content-Description",
-            f.description());
-        response.setHeader(
-            "Content-Length",
-            String.valueOf(f.size()));
+        } catch (final RuntimeException e) {
+            if(response.isCommitted()) {
+                /*
+                 * Nothing we can do to rescue the response - the HTTP response
+                 * code + headers has already been sent. Just log the error on
+                 * the server.
+                 */
+                getServletContext().log(
+                    "Error caught after response was committed.",
+                    e);
 
-        final ServletOutputStream os = response.getOutputStream();
-        dataManager().retrieve(f.fileData(), os);
+            } else {
+                getServletContext().log(
+                    "Error caught on uncommited response"
+                    + " - sending error message.",
+                    e);
+                dispatchError(request, response, e);
+            }
+        }
     }
 
+    /**
+     * Process a GET request. Runtime exceptions can safely be thrown from this
+     * method and will be handled be the
+     * {@link #doGet(HttpServletRequest, HttpServletResponse)} method.
+     *
+     * @param request The request.
+     * @param response The response.
+     * @throws IOException From servlet API.
+     * @throws ServletException  From servlet API.
+     */
+    protected abstract void doSafeGet(HttpServletRequest request,
+                                      HttpServletResponse response)
+        throws ServletException, IOException;
 }
