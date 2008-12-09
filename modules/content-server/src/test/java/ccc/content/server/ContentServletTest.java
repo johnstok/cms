@@ -100,7 +100,7 @@ public final class ContentServletTest extends TestCase {
 
         // ARRANGE
         final Page foo = new Page(new ResourceName("foo"));
-        foo.addParagraph("bar", Paragraph.fromText("baz"));
+        foo.addParagraph(Paragraph.fromText("bar", "baz"));
         final String template = "Hello $resource.id()";
 
         // ACT
@@ -180,8 +180,8 @@ public final class ContentServletTest extends TestCase {
                 "<fields/>");
         final Page page = new Page(new ResourceName("foo"));
         page.template(t);
-        page.addParagraph("key1", Paragraph.fromText("para1"));
-        page.addParagraph("key2", Paragraph.fromText("para2"));
+        page.addParagraph(Paragraph.fromText("key1", "para1"));
+        page.addParagraph(Paragraph.fromText("key2", "para2"));
 
         new ContentServlet().disableCachingFor(_response);
         new ContentServlet().configureCharacterEncoding(_response);
@@ -208,8 +208,8 @@ public final class ContentServletTest extends TestCase {
             + "<head><title>foo</title></head>"
             + "<body>\r\n"
             + "<h1>foo</h1>\r\n"
-            + "<h2>key1</h2><p>para1</p>\r\n"
             + "<h2>key2</h2><p>para2</p>\r\n"
+            + "<h2>key1</h2><p>para1</p>\r\n"
             + "</body></html>",
             output.toString());
     }
@@ -275,7 +275,7 @@ public final class ContentServletTest extends TestCase {
         final Template t = new Template("foo", "bar", body, "<fields/>");
         final Page p =
             new Page(new ResourceName("name"))
-                .addParagraph("Header", Paragraph.fromText("<br/>"));
+                .addParagraph(Paragraph.fromText("Header", "<br/>"));
         p.publish(u);
         p.template(t);
 

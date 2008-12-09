@@ -25,16 +25,17 @@
     <joined-subclass
         name="ccc.domain.Page" extends="ccc.domain.Resource">
         <key column="_id" />
-
-        <map name="_content" sort="ccc.commons.AlphanumComparator">
-            <key column="_id"  not-null="true" />
-            <map-key type="string" length="256" />
+        
+        <set name="_content">
+            <key not-null="true" />
             <composite-element class="ccc.domain.Paragraph">
-                <property name="_string" not-null="false" type="text"></property>
-                <property name="_boolean" not-null="false" type="boolean"></property>
-                <property name="_date" not-null="false" type="timestamp"></property>
-                <property name="_type" not-null="true" type="ParargraphType"></property>
+                <property name="_text" not-null="false" type="text" />
+                <property name="_name" not-null="true" type="string" length="256" />
+                <property name="_boolean" not-null="false" type="boolean" />
+                <property name="_date" not-null="false" type="timestamp" />
+                <property name="_type" not-null="true" type="ParargraphType" />
             </composite-element>
-        </map>
+        </set>
+        
     </joined-subclass>
 </hibernate-mapping>

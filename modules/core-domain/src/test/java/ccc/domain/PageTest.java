@@ -18,12 +18,46 @@ import junit.framework.TestCase;
 /**
  * Tests for the {@link Page} class.
  *
- * TODO: test that null keys are disallowed.
- * TODO: test that max key length is 256.
- *
  * @author Civic Computing Ltd
  */
 public final class PageTest extends TestCase {
+
+    /**
+     * Test.
+     */
+    public void testParagraphsCanBeRetrievedByName() {
+
+        // ARRANGE
+        final Page page = new Page(new ResourceName("foo"), "Title");
+        final Paragraph header = Paragraph.fromText("header", "Header");
+        page.addParagraph(header);
+
+        // ACT
+        final Paragraph p = page.paragraph("header");
+
+        // ASSERT
+        assertSame(header, p);
+    }
+
+    /**
+     * Test.
+     */
+    public void testParagraphsAccessorReturnsDefensiveCopy() {
+
+        // ARRANGE
+        final Page page = new Page(new ResourceName("foo"), "Title");
+        page.addParagraph(Paragraph.fromText("header", "<H1>Header</H1>"));
+
+        // ACT
+        try {
+            page.paragraphs().add(Paragraph.fromText("foo", "aaa"));
+            fail("Should be rejected.");
+
+        // ASSERT
+        } catch (final RuntimeException e) {
+            // no-op
+        }
+    }
 
     /**
      * Test.
@@ -62,7 +96,7 @@ public final class PageTest extends TestCase {
         final Page page = new Page(new ResourceName("foo"), "Title");
 
         // ACT
-        page.addParagraph("header", Paragraph.fromText("<H1>Header</H1>"));
+        page.addParagraph(Paragraph.fromText("header", "<H1>Header</H1>"));
 
         // Assert
         assertEquals(1, page.paragraphs().size());
@@ -76,8 +110,8 @@ public final class PageTest extends TestCase {
 
         // ARRANGE
         final Page page = new Page(new ResourceName("foo"), "Title");
-        page.addParagraph("header", Paragraph.fromText("<H1>Header</H1>"));
-        page.addParagraph("footer", Paragraph.fromText("<H1>Footer</H1>"));
+        page.addParagraph(Paragraph.fromText("header", "<H1>Header</H1>"));
+        page.addParagraph(Paragraph.fromText("footer", "<H1>Footer</H1>"));
 
         // ACT
         page.deleteParagraph("header");
@@ -86,7 +120,7 @@ public final class PageTest extends TestCase {
         assertEquals(1, page.paragraphs().size());
         assertEquals(
             "<H1>Footer</H1>",
-            page.paragraphs().get("footer").text());
+            page.paragraph("footer").text());
     }
 
     /**
@@ -111,8 +145,8 @@ public final class PageTest extends TestCase {
 
         // ARRANGE
         final Page page = new Page(new ResourceName("foo"), "Title");
-        page.addParagraph("header", Paragraph.fromText("<H1>Header</H1>"));
-        page.addParagraph("footer", Paragraph.fromText("<H1>Footer</H1>"));
+        page.addParagraph(Paragraph.fromText("header", "<H1>Header</H1>"));
+        page.addParagraph(Paragraph.fromText("footer", "<H1>Footer</H1>"));
 
         // ACT
         page.deleteAllParagraphs();

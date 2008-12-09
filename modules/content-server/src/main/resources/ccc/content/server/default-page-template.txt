@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><head><title>$resource.title()</title></head><body>
 <h1>$resource.title()</h1>
-#foreach ($para in $resource.paragraphs().keySet())
-<h2>$para</h2><p>$resource.paragraphs().get($para).text()</p>
+#foreach ($para in $resource.paragraphs())
+<h2>$para.name()</h2><p>$para.text()</p>
 #end
 </body></html>

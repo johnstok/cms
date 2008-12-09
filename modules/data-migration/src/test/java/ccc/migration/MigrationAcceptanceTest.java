@@ -11,12 +11,9 @@
  */
 package ccc.migration;
 
-import java.util.Map;
-
 import junit.framework.TestCase;
 import ccc.commons.JNDI;
 import ccc.domain.Page;
-import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 import ccc.domain.ResourceType;
@@ -91,18 +88,14 @@ public class MigrationAcceptanceTest extends TestCase {
         assertNotNull("Resource "+path+" must not be null", resource);
         assertEquals("Resource type must be content ",
             ResourceType.PAGE, resource.type());
-
         assertEquals("Resource title must be content ",
             resource.title(), "Introduction");
-
-        final Map<String, Paragraph> paragraphs = resource.paragraphs();
-        assertNotNull("Paragraphs must not be null", paragraphs);
-
-        assertNotNull("Paragraph HEADER must not be null",
-            paragraphs.get("HEADER"));
-        assertEquals("Paragraph HEADER body ",
-            paragraphs.get("HEADER").text(),
-        "A Smoking Cessation Policy for Scotland");
+        assertNotNull(
+            "Paragraph HEADER must not be null",
+            resource.paragraph("HEADER"));
+        assertEquals(
+            resource.paragraph("HEADER").text(),
+            "A Smoking Cessation Policy for Scotland");
     }
 
     /**

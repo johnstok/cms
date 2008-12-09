@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map.Entry;
 
 import ccc.domain.Alias;
 import ccc.domain.CreatorRoles;
@@ -242,12 +241,12 @@ public class ModelTranslation {
         final Template ct = page.computeTemplate(null);
         delta._computedTemplate = (null==ct) ? null : delta(ct);
         delta._paragraphs = new ArrayList<ParagraphDelta>();
-        for (final Entry<String, Paragraph> p : page.paragraphs().entrySet()) {
+        for (final Paragraph p : page.paragraphs()) {
             final ParagraphDelta pDelta = new ParagraphDelta();
-            pDelta._name = p.getKey();
-            pDelta._type = p.getValue().type().name();
-            pDelta._textValue = p.getValue().text();
-            pDelta._dateValue = p.getValue().date();
+            pDelta._name = p.name();
+            pDelta._type = p.type().name();
+            pDelta._textValue = p.text();
+            pDelta._dateValue = p.date();
             delta._paragraphs.add(pDelta);
         }
         return delta;

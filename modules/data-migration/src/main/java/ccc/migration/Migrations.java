@@ -149,8 +149,9 @@ public class Migrations {
                 migrateParagraphs(r.contentId());
             for (final Map.Entry<String, StringBuffer> para
                 : paragraphs.entrySet()) {
-                childPage.addParagraph(para.getKey(),
-                    Paragraph.fromText(para.getValue().toString()));
+                childPage.addParagraph(
+                    Paragraph.fromText(
+                        para.getKey(), para.getValue().toString()));
             }
 
             contentManager().create(UUID.fromString(parentFolderId), childPage);
