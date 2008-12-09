@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -104,14 +105,12 @@ public final class ContentServlet extends CCCServlet {
      * TODO: Add tests that NULL and '/' pathInfo is handled correctly.
      *
      *
-     * @param request
-     * @param response
-     * @throws IOException
-     * @throws ServletException
+     * {@inheritDoc}
      */
-    private void doSafeGet(final HttpServletRequest request,
+    @Override
+    protected void doSafeGet(final HttpServletRequest request,
                            final HttpServletResponse response)
-                    throws IOException, ServletException {
+        throws IOException, ServletException {
 
         final String pathString =
             removeTrailing('/', nvl(request.getPathInfo(), "/"));
@@ -119,7 +118,7 @@ public final class ContentServlet extends CCCServlet {
 
         final Maybe<Resource> resource = resourceReader().lookup(contentPath);
         if (resource.isDefined() && resource.get().isPublished()) {
-            handleResource(response, request, resource.get());
+            handle(response, request, resource.get());
         } else {
             dispatchNotFound(request, response); // 404
         }
@@ -127,7 +126,7 @@ public final class ContentServlet extends CCCServlet {
 
     /**
      * Accepts any type of resource and routes it to the appropriate
-     * type-specific write() method.
+     * type-specific handle() method.
      *
      * @param req The request.
      * @param resp The response.
@@ -135,47 +134,30 @@ public final class ContentServlet extends CCCServlet {
      * @throws ServletException From servlet API.
      * @throws IOException From servlet API.
      */
-    void handleResource(final HttpServletResponse resp,
-                                final HttpServletRequest req,
-                                final Resource resource)
-                         throws IOException, ServletException {
+    void handle(final HttpServletResponse resp,
+                final HttpServletRequest req,
+                final Resource resource) throws IOException, ServletException {
 
         switch (resource.type()) {
 
             case ALIAS:
                 final Alias alias = resource.as(Alias.class);
-                handleResource(resp, req, alias.target());
+                handle(resp, req, alias.target());
                 break;
 
             case PAGE:
                 final Page page = resource.as(Page.class);
-                write(resp, page);
+                handle(resp, req, page);
                 break;
 
             case FILE:
                 final File f = resource.as(File.class);
-                writeFile(resp, f);
+                handle(resp, req, f);
                 break;
 
             case FOLDER:
                 final Folder folder = resource.as(Folder.class);
-
-
-                if (folder.hasAliases()) {
-                    String currentURI = req.getRequestURI();
-                    if (!currentURI.endsWith("/")) {
-                        currentURI = currentURI+"/";
-                    }
-                    resp.sendRedirect(currentURI + folder.firstAlias().name());
-                } else if (folder.hasPages()) {
-                    String currentURI = req.getRequestURI();
-                    if (!currentURI.endsWith("/")) {
-                        currentURI = currentURI+"/";
-                    }
-                    resp.sendRedirect(currentURI + folder.firstPage().name());
-                } else {
-                    dispatchNotFound(req, resp);
-                }
+                handle(resp, req, folder);
                 break;
 
             default:
@@ -184,79 +166,86 @@ public final class ContentServlet extends CCCServlet {
     }
 
     /**
-     * Write content to the response.
+     * Render a {@link Folder} to the response.
      *
+     * @param req The request.
      * @param resp The response.
-     * @param page The content to write to the response.
-     * @throws IOException If writing to the response fails.
+     * @param folder The folder to handle.
+     * @throws IOException From servlet API.
+     * @throws ServletException From servlet API.
      */
-    void write(final HttpServletResponse resp,
-               final Page page) throws IOException {
+    void handle(final HttpServletResponse resp,
+                final HttpServletRequest req,
+                final Folder folder)
+        throws IOException, ServletException {
+
+        if (folder.hasAliases()) {
+            String currentURI = req.getRequestURI();
+            if (!currentURI.endsWith("/")) {
+                currentURI = currentURI+"/";
+            }
+            resp.sendRedirect(currentURI + folder.firstAlias().name());
+        } else if (folder.hasPages()) {
+            String currentURI = req.getRequestURI();
+            if (!currentURI.endsWith("/")) {
+                currentURI = currentURI+"/";
+            }
+            resp.sendRedirect(currentURI + folder.firstPage().name());
+        } else {
+            dispatchNotFound(req, resp);
+        }
+    }
+
+    /**
+     * Render a {@link Page} to the response.
+     *
+     * @param req The request.
+     * @param resp The response.
+     * @param page The page to handle.
+     * @throws IOException From servlet API.
+     */
+    void handle(final HttpServletResponse resp,
+                final HttpServletRequest req,
+                final Page page) throws IOException {
 
         disableCachingFor(resp);
         configureCharacterEncoding(resp);
         final String template = lookupTemplateForResource(page);
-        final String html = render(page, template);
+        final String html = renderResourceWithTemplate(page, template);
         resp.setContentType("text/html");
         resp.getWriter().write(html);
     }
 
     /**
-     * Write a folder to the response.
+     * Render a {@link File} to the response.
+     * TODO: Should we close streams on exception???
      *
+     * @param req The request.
      * @param resp The response.
-     * @param folder The content to write to the response.
-     * @throws IOException If writing to the response fails.
+     * @param f The file to handle.
+     * @throws IOException From servlet API.
      */
-    void write(final HttpServletResponse resp,
-                     final Folder folder) throws IOException {
+    void handle(final HttpServletResponse resp,
+                final HttpServletRequest req,
+                final File f) throws IOException {
 
         disableCachingFor(resp);
-        configureCharacterEncoding(resp);
-        final String template = lookupTemplateForResource(folder);
-        final String html = render(folder, template);
-        resp.setContentType("text/html");
-        resp.getWriter().write(html);
-    }
 
-    /**
-     * Process a GET request.
-     *
-     * This method provides error handling for both committed and uncommitted
-     * responses. It delegates to
-     * {@link #doSafeGet(HttpServletRequest, HttpServletResponse)}
-     * for implementation of business logic.
-     *
-     * {@inheritDoc}
-     */
-    @Override
-    protected void doGet(final HttpServletRequest request,
-                               final HttpServletResponse response)
-                        throws ServletException,
-                               IOException {
+        resp.setHeader(
+            "Content-Disposition",
+            "inline; filename=\""+f.name()+"\"");
+        resp.setHeader(
+            "Content-Type",
+            f.mimeType().toString());
+        resp.setHeader(
+            "Content-Description",
+            f.description());
+        resp.setHeader(
+            "Content-Length",
+            String.valueOf(f.size()));
 
-        try {
-            doSafeGet(request, response);
-
-        } catch (final RuntimeException e) {
-            if(response.isCommitted()) {
-                /*
-                 * Nothing we can do to rescue the response - the HTTP response
-                 * code + headers has already been sent. Just log the error on
-                 * the server.
-                 */
-                getServletContext().log(
-                    "Error caught after response was committed.",
-                    e);
-
-            } else {
-                getServletContext().log(
-                    "Error caught on uncommited response"
-                    + " - sending error message.",
-                    e);
-                dispatchError(request, response, e);
-            }
-        }
+        final ServletOutputStream os = resp.getOutputStream();
+        dataManager().retrieve(f.fileData(), os);
     }
 
     /**
@@ -285,8 +274,13 @@ public final class ContentServlet extends CCCServlet {
      * @param template The template used to render the resource.
      * @return The html rendering as a string.
      */
-    public String render(final Resource resource, final String template) {
-        final Folder root = resourceReader().lookup(new ResourcePath("")).get().as(Folder.class); // TODO: Refactor
+    String renderResourceWithTemplate(final Resource resource,
+                                      final String template) {
+        // TODO: Refactor
+        final Folder root =
+            resourceReader().lookup(new ResourcePath(""))
+                            .get().as(Folder.class);
+
         return new VelocityProcessor().render(resource,
                                               root,
                                               template);

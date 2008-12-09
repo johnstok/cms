@@ -53,7 +53,7 @@ public final class ContentServletTest extends TestCase {
     private HttpServletResponse _response;
     private HttpServletRequest  _request;
     private StatefulReader _cm;
-    private Maybe<Resource> root = new Maybe<Resource>(new Folder("root"));
+    private Maybe<Resource> _root = new Maybe<Resource>(new Folder("_root"));
 
     /**
      * Test.
@@ -76,7 +76,7 @@ public final class ContentServletTest extends TestCase {
         p.template(t);
         final Alias a = new Alias(new ResourceName("foo"), p);
 
-        expect(_cm.lookup(new ResourcePath(""))).andReturn(root);
+        expect(_cm.lookup(new ResourcePath(""))).andReturn(_root);
         cs.disableCachingFor(_response);
         cs.configureCharacterEncoding(_response);
         _response.setContentType("text/html");
@@ -85,7 +85,7 @@ public final class ContentServletTest extends TestCase {
         replay(_response, _request, _cm);
 
         // ACT
-        cs.handleResource(_response, _request, a);
+        cs.handle(_response, _request, a);
 
         // ASSERT
         verify(_response, _request, _cm);
@@ -187,9 +187,9 @@ public final class ContentServletTest extends TestCase {
         new ContentServlet().configureCharacterEncoding(_response);
         _response.setContentType("text/html");
         expect(_response.getWriter()).andReturn(new PrintWriter(output));
-        replay(_response);
+        replay(_response, _request);
 
-        expect(_cm.lookup(new ResourcePath(""))).andReturn(root);
+        expect(_cm.lookup(new ResourcePath(""))).andReturn(_root);
         replay(_cm);
 
         // ACT
@@ -197,10 +197,10 @@ public final class ContentServletTest extends TestCase {
             new MapRegistry(
                 ServiceNames.STATEFUL_READER,
                 _cm)
-            ).write(_response, page);
+            ).handle(_response, _request, page);
 
         // ASSERT
-        verify(_response, _cm);
+        verify(_response, _request, _cm);
         assertEquals(
             "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" "
             + "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n"
@@ -210,49 +210,6 @@ public final class ContentServletTest extends TestCase {
             + "<h1>foo</h1>\r\n"
             + "<h2>key2</h2><p>para2</p>\r\n"
             + "<h2>key1</h2><p>para1</p>\r\n"
-            + "</body></html>",
-            output.toString());
-    }
-
-    /**
-     * Test.
-     *
-     * @throws IOException If there is an error writing to the _response.
-     */
-    public void testFoldersRenderCorrectly() throws IOException {
-
-        // ARRANGE
-        final StringWriter output = new StringWriter();
-        final Folder top = new Folder(new ResourceName("top"));
-        top.add(new Folder(new ResourceName("child_a")));
-        top.add(new Page(new ResourceName("child_b")));
-
-        new ContentServlet().disableCachingFor(_response);
-        new ContentServlet().configureCharacterEncoding(_response);
-        _response.setContentType("text/html");
-        expect(_response.getWriter()).andReturn(new PrintWriter(output));
-        replay(_response);
-
-        expect(_cm.lookup(new ResourcePath(""))).andReturn(root);
-        replay(_cm);
-
-        // ACT
-        new ContentServlet(
-            new MapRegistry(
-                ServiceNames.STATEFUL_READER,
-                _cm)
-            ).write(_response, top);
-
-        // ASSERT
-        verify(_response, _cm);
-        assertEquals(
-            "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" "
-            + "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n"
-            + "<html xmlns=\"http://www.w3.org/1999/xhtml\">"
-            + "<head><title>Folder: top</title></head>"
-            + "<body>\r\n<h1>Folder: top</h1>\r\n"
-            + "<ul>\r\n<li><a href=\"child_a/\">child_a</a></li>\r\n"
-            + "<li><a href=\"child_b/\">child_b</a></li>\r\n</ul>\r\n"
             + "</body></html>",
             output.toString());
     }
@@ -281,7 +238,7 @@ public final class ContentServletTest extends TestCase {
 
         expect(_cm.lookup(new ResourcePath("/foo")))
             .andReturn(new Maybe<Resource>(p));
-        expect(_cm.lookup(new ResourcePath(""))).andReturn(root);
+        expect(_cm.lookup(new ResourcePath(""))).andReturn(_root);
         replay(_cm);
 
         final ContentServlet contentServlet =
