@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.themeweaver;
+package ccc.commons;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -48,7 +48,9 @@ public class VelocityProcessor {
      */
     private static final String VELOCITY_CONFIG =
         "resource.loader = classpath\n"
-        + "classpath.resource.loader.class = org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader\n"
+        + "classpath.resource.loader.class = "
+            + "org.apache.velocity.runtime.resource.loader."
+            + "ClasspathResourceLoader\n"
         + "classpath.resource.loader.description = Classpath resource loader\n"
         + "classpath.resource.loader.cache = true\n"
         + "classpath.resource.loader.modificationCheckInterval = -1\n"
@@ -60,9 +62,12 @@ public class VelocityProcessor {
      *
      * @param resource The resource that will be rendered.
      * @param template The template used to render the resource.
+     * @param root The root folder in which the resource is contained.
      * @return The html rendering as a string.
      */
-    public String render(final Resource resource, final Folder root, final String template) {
+    public String render(final Resource resource,
+                         final Folder root,
+                         final String template) {
 
         final StringWriter renderedOutput = new StringWriter();
 

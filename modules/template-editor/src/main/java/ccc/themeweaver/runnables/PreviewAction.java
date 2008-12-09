@@ -24,11 +24,11 @@ import org.xhtmlrenderer.simple.extend.XhtmlNamespaceHandler;
 import org.xhtmlrenderer.swing.BasicPanel;
 
 import ccc.commons.Resources;
+import ccc.commons.VelocityProcessor;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.ResourceName;
-import ccc.themeweaver.VelocityProcessor;
 
 
 /**

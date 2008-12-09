@@ -28,6 +28,7 @@ import junit.framework.TestCase;
 import ccc.commons.MapRegistry;
 import ccc.commons.Maybe;
 import ccc.commons.Resources;
+import ccc.commons.VelocityProcessor;
 import ccc.domain.Alias;
 import ccc.domain.Folder;
 import ccc.domain.Page;
