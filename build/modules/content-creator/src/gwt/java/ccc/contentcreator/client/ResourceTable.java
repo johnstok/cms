@@ -135,35 +135,38 @@ public class ResourceTable extends TablePanel {
             new TableBinder<ModelData>(tbl, _detailsStore) {
 
             @Override
-                protected void update(ModelData model) {
+                protected void update(final ModelData model) {
                     super.update(model);
                     final TableItem ti = (TableItem) findItem(model);
-                    ti.setWidget(0, new Button("X", new SelectionListener<ButtonEvent>() {
-                        @Override
-                        public void componentSelected(final ButtonEvent ce) {
-                            tbl.setSelectedItem(ti);
-                            tbl.getContextMenu().showAt(ti.getAbsoluteLeft()+7,
-                                ti.getAbsoluteTop()+7);
-                        }
-                    }));
-                    ti.setId(model.<String>get("name"));
+                    setActionButton(tbl, model, ti);
                 }
+
 
             /** {@inheritDoc} */
             @Override
             protected TableItem createItem(final ModelData model) {
 
                 final TableItem ti = super.createItem(model);
-                ti.setWidget(0, new Button("X", new SelectionListener<ButtonEvent>() {
+                setActionButton(tbl, model, ti);
+                return ti;
+            }
+
+            private void setActionButton(final Table tbl,
+                                         final ModelData model,
+                                         final TableItem ti) {
+
+                Button action = new Button("X",
+                    new SelectionListener<ButtonEvent>() {
                     @Override
                     public void componentSelected(final ButtonEvent ce) {
                         tbl.setSelectedItem(ti);
                         tbl.getContextMenu().showAt(ti.getAbsoluteLeft()+7,
                             ti.getAbsoluteTop()+7);
                     }
-                }));
+                });
                 ti.setId(model.<String>get("name"));
-                return ti;
+                action.setId(action+ti.getId());
+                ti.setWidget(0, action);
             }
         };
         binder.init();
