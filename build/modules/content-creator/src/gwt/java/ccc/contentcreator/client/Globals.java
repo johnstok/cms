@@ -29,6 +29,9 @@ import com.google.gwt.user.client.WindowCloseListener;
  */
 public final class Globals {
 
+    private static final boolean ENABLE_EXIT_CONFIRMATION =
+        (null == Window.Location.getParameter("dec"));
+
     private Globals() { super(); }
 
     /**
@@ -99,9 +102,9 @@ public final class Globals {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Report an unexpected exception to the user.
      *
-     * @param exception
+     * @param exception The exception to report.
      */
     public static void unexpectedError(final Throwable exception) {
         GWT.log("An unexpected error occured.", exception);
@@ -113,7 +116,9 @@ public final class Globals {
      * navigate away from the app.
      */
     public static void enableExitConfirmation() {
-        Window.addWindowCloseListener(CLOSE_LISTENER);
+        if (ENABLE_EXIT_CONFIRMATION) {
+            Window.addWindowCloseListener(CLOSE_LISTENER);
+        }
     }
 
     /**
@@ -134,12 +139,9 @@ public final class Globals {
         redirect(hostURL()+relativeURL);
     }
 
-    /*
-     * TODO: Find a better solution?
-     */
-    private static native void redirect(final String url)/*-{
-          $wnd.location = url;
-    }-*/;
+    private static void redirect(final String url) {
+        Window.Location.assign(url);
+    }
 
     private static final WindowCloseListener CLOSE_LISTENER =
         new WindowCloseListener(){
