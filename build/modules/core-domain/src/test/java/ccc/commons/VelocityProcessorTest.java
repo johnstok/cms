@@ -9,9 +9,10 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.content.server;
+package ccc.commons;
 
 import junit.framework.TestCase;
+import ccc.commons.VelocityProcessor;
 import ccc.domain.Page;
 import ccc.domain.ResourceName;
 

@@ -1,12 +1,12 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2008 Civic Computing Ltd
+ * Copyright (c) 2008 Civic Computing Ltd.
  * All rights reserved.
  *
  * Revision      $Rev$
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log
+ * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
 package ccc.content.server;
@@ -14,9 +14,9 @@ package ccc.content.server;
 
 /**
  * Constants for use with CCC Servlets.
- * TODO: should be an enum.
+ * We don't use an enum because the Servlet API requires string-based keys.
  *
- * @author Civic Computing Ltd
+ * @author Civic Computing Ltd.
  */
 final class SessionKeys {
 

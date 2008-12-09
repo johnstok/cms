@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import ccc.commons.Maybe;
 import ccc.commons.Registry;
 import ccc.commons.Resources;
+import ccc.commons.VelocityProcessor;
 import ccc.domain.Alias;
 import ccc.domain.CCCException;
 import ccc.domain.File;
@@ -40,28 +41,31 @@ import ccc.domain.Template;
  * mounted at the servlet path '/*' in the web.xml config file. Only the HTTP
  * GET method is currently supported.
  *
+ * TODO: Mime type setting
+ * TODO: Locale setting:
+ *  log [getLocale;
+ *       Accept-Language
+ *       session locale setting]
+ * TODO: Character encoding:
+ *  log: [request content-type;
+ *        response content-type;    // Done
+ *        Accept-Charset header;
+ *        Accept-encoding header]
+ *
+ * TODO: Describe the mapping algorithm.
+ * TODO: Handle bad resource paths - return 404?
+ * TODO: Handle good path, no resource - return 404?
+ * TODO: Markup escaping?
+ * TODO: Handle standard errors -> converting to HTML.
+ * TODO: Marshal CCCException to HTML.
+ * TODO: How do we handle '/'? - return content root with folder template
+ * TODO: Disable the default servlet.
+ * TODO: Should be final but need to wait for resource injection...
+ * TODO: Add tests that NULL and '/' pathInfo is handled correctly.
+ *
  * @author Civic Computing Ltd
  */
 public final class ContentServlet extends CCCServlet {
-
-
-    private static final Template BUILT_IN_PAGE_TEMPLATE =
-        new Template(
-            "BUILT_IN_PAGE_TEMPLATE",
-            "BUILT_IN_PAGE_TEMPLATE",
-            Resources.readIntoString(
-                ContentServlet.class.getResource("default-page-template.txt"),
-                Charset.forName("UTF-8")),
-            "<fields/>");
-
-    private static final Template BUILT_IN_FOLDER_TEMPLATE =
-        new Template(
-            "BUILT_IN_FOLDER_TEMPLATE",
-            "BUILT_IN_FOLDER_TEMPLATE",
-            Resources.readIntoString(
-                ContentServlet.class.getResource("default-folder-template.txt"),
-                Charset.forName("UTF-8")),
-            "<fields/>");
 
     /**
      * Constructor.
@@ -81,29 +85,6 @@ public final class ContentServlet extends CCCServlet {
      * Get the content for the specified relative URI. This method reads the
      * value from {@link HttpServletRequest#getPathInfo()} and maps that to a
      * corresponding resource in CCC.
-     *
-     * TODO: Mime type setting
-     * TODO: Locale setting:
-     *  log [getLocale;
-     *       Accept-Language
-     *       session locale setting]
-     * TODO: Character encoding:
-     *  log: [request content-type;
-     *        response content-type;    // Done
-     *        Accept-Charset header;
-     *        Accept-encoding header]
-     *
-     * TODO: Describe the mapping algorithm.
-     * TODO: Handle bad resource paths - return 404?
-     * TODO: Handle good path, no resource - return 404?
-     * TODO: Markup escaping?
-     * TODO: Handle standard errors -> converting to HTML.
-     * TODO: Marshal CCCException to HTML.
-     * TODO: How do we handle '/'? - return content root with folder template
-     * TODO: Disable the default servlet.
-     * TODO: Should be final but need to wait for resource injection...
-     * TODO: Add tests that NULL and '/' pathInfo is handled correctly.
-     *
      *
      * {@inheritDoc}
      */
@@ -285,4 +266,22 @@ public final class ContentServlet extends CCCServlet {
                                               root,
                                               template);
     }
+
+    private static final Template BUILT_IN_PAGE_TEMPLATE =
+        new Template(
+            "BUILT_IN_PAGE_TEMPLATE",
+            "BUILT_IN_PAGE_TEMPLATE",
+            Resources.readIntoString(
+                ContentServlet.class.getResource("default-page-template.txt"),
+                Charset.forName("UTF-8")),
+            "<fields/>");
+
+    private static final Template BUILT_IN_FOLDER_TEMPLATE =
+        new Template(
+            "BUILT_IN_FOLDER_TEMPLATE",
+            "BUILT_IN_FOLDER_TEMPLATE",
+            Resources.readIntoString(
+                ContentServlet.class.getResource("default-folder-template.txt"),
+                Charset.forName("UTF-8")),
+            "<fields/>");
 }
