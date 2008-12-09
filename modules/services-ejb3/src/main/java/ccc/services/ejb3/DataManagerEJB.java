@@ -96,13 +96,16 @@ public class DataManagerEJB implements DataManagerLocal {
         _entityManager.persist(file);
         final Folder folder = _entityManager.find(Folder.class, parentId);
         folder.add(file);
-        create(file.fileData(), dataStream);
+        final Data data = create(dataStream);
+        file.data(data);
         _audit.recordCreate(file);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void create(final Data data, final InputStream dataStream) {
+    public Data create(final InputStream dataStream) {
+
+        final Data data = new Data();
 
         try {
             final Connection c = _datasource.getConnection();
@@ -135,6 +138,8 @@ public class DataManagerEJB implements DataManagerLocal {
         } catch (final SQLException e) {
             throw new CCCException(e);
         }
+
+        return data;
     }
 
     /** {@inheritDoc} */

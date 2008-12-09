@@ -70,7 +70,7 @@ public class DataManagerEJBTest extends TestCase {
             new ResourceName("file"), "title", "desc", new Data(), 0);
 
         final PreparedStatement ps = createStrictMock(PreparedStatement.class);
-        ps.setString(1, file.fileData().id().toString());
+        ps.setString(eq(1), isA(String.class));
         ps.setInt(2, 0);
         ps.setBinaryStream(DataManagerEJB.STREAM_POSITION_CREATE,
                            dummyStream,
@@ -114,11 +114,10 @@ public class DataManagerEJBTest extends TestCase {
     public void testCreate() throws SQLException {
 
         // ARRANGE
-        final Data d = new Data();
         final InputStream dummyStream = new ByteArrayInputStream(new byte[]{1});
 
         final PreparedStatement ps = createStrictMock(PreparedStatement.class);
-        ps.setString(1, d.id().toString());
+        ps.setString(eq(1), isA(String.class));
         ps.setInt(2, 0);
         ps.setBinaryStream(DataManagerEJB.STREAM_POSITION_CREATE,
                            dummyStream,
@@ -143,7 +142,7 @@ public class DataManagerEJBTest extends TestCase {
                                dummy(AuditLogLocal.class));
 
         // ACT
-        dm.create(d, dummyStream);
+        dm.create(dummyStream);
 
         // ASSERT
         verify(ps, c, ds);
@@ -219,7 +218,7 @@ public class DataManagerEJBTest extends TestCase {
                                dummy(AuditLogLocal.class));
 
         // ACT
-        dm.create(new Data(), dummyStream);
+        dm.create(dummyStream);
 
         // ASSERT
         Connection c = ds.getConnection();
@@ -249,7 +248,6 @@ public class DataManagerEJBTest extends TestCase {
     public void testRetrieveWithInMemoryDb() throws SQLException {
 
         // ARRANGE
-        final Data d = new Data();
         final InputStream dummyStream = new ByteArrayInputStream(new byte[]{1});
         final ByteArrayOutputStream os = new ByteArrayOutputStream();
         final JdbcDataSource ds = new JdbcDataSource();
@@ -261,7 +259,7 @@ public class DataManagerEJBTest extends TestCase {
             new DataManagerEJB(ds,
                                dummy(EntityManager.class),
                                dummy(AuditLogLocal.class));
-        dm.create(d, dummyStream);
+        final Data d = dm.create(dummyStream);
 
         // ACT
         dm.retrieve(d, os);

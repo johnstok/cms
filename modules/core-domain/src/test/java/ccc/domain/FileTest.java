@@ -26,7 +26,30 @@ public class FileTest extends TestCase {
 
     /**
      * Test.
-     * @throws MimeTypeParseException sometimes.
+     * @throws MimeTypeParseException For invalid mime type.
+     */
+    public void testDataPropertyCanBeUpdated() throws MimeTypeParseException {
+
+        // ARRANGE
+        final Data newData = new Data();
+        final File f =
+            new File(new ResourceName("foo"),
+                "foo",
+                "desc",
+                new Data(),
+                1L,
+                new MimeType("foo/bar"));
+
+        // ACT
+        f.data(newData);
+
+        // ASSERT
+        assertEquals(newData, f.data());
+    }
+
+    /**
+     * Test.
+     * @throws MimeTypeParseException For invalid mime type.
      */
     public void testMimeTypeProperty() throws MimeTypeParseException {
 
@@ -72,7 +95,7 @@ public class FileTest extends TestCase {
      * Test.
      *
      */
-    public void testRejectNullParameters() {
+    public void testRejectMissingData() {
 
         // ARRANGE
         final Data data = null;
