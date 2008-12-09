@@ -30,7 +30,7 @@ public final class ContentCreator implements EntryPoint {
      */
     public void onModuleLoad() {
 
-//        Globals.enableExitConfirmation();
+        Globals.enableExitConfirmation();
 
         final QueriesServiceAsync qs = GWT.create(QueriesService.class);
 
