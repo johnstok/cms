@@ -70,7 +70,7 @@ public class CreateFolderDialog extends AbstractEditDialog {
                     .check(Validations.notEmpty(_text))
                     .check(Validations.notValidResourceName(_text))
                     .stopIfInError()
-//                    .check(Validations.uniqueResourceName(_parent, _text)) //TODO: Fix
+                    .check(Validations.uniqueResourceName(_parent, _text))
                     .callMethodOr(Validations.reportErrors());
             }
         };
