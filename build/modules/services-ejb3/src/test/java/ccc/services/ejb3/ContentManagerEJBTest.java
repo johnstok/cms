@@ -14,9 +14,8 @@ package ccc.services.ejb3;
 
 import static org.easymock.EasyMock.*;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.EntityManager;
 
@@ -83,10 +82,10 @@ public final class ContentManagerEJBTest extends TestCase {
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
         final Folder foo = new Folder(new ResourceName("foo"));
-        final Page bar = new Page(new ResourceName("bar"))
-                                    .addParagraph(
-                                        "default",
-                                        Paragraph.fromText("<H1>Default</H!>"));
+        final Page bar =
+            new Page(new ResourceName("bar"))
+                .addParagraph(
+                    Paragraph.fromText("default", "<H1>Default</H!>"));
         contentRoot.add(foo);
         foo.add(bar);
 
@@ -296,7 +295,7 @@ public final class ContentManagerEJBTest extends TestCase {
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
         final Folder foo = new Folder(new ResourceName("foo"));
         final Page page1 = new Page(new ResourceName("page1"));
-        page1.addParagraph("HEADER", Paragraph.fromText("test text"));
+        page1.addParagraph(Paragraph.fromText("HEADER", "test text"));
 
         _al.recordCreate(isA(Folder.class));
         _al.recordCreate(isA(Page.class));
@@ -325,7 +324,7 @@ public final class ContentManagerEJBTest extends TestCase {
         assertEquals("page1", page.name().toString());
 
         assertEquals(1, page.paragraphs().size());
-        assertEquals("test text", page.paragraphs().get("HEADER").text());
+        assertEquals("test text", page.paragraph("HEADER").text());
     }
 
     /**
@@ -334,10 +333,10 @@ public final class ContentManagerEJBTest extends TestCase {
     public void testLookupFromId() {
 
         // ARRANGE
-        final Page bar = new Page(new ResourceName("bar"))
-                                    .addParagraph(
-                                        "default",
-                                        Paragraph.fromText("<H1>Default</H1>"));
+        final Page bar =
+            new Page(new ResourceName("bar"))
+                .addParagraph(
+                    Paragraph.fromText("default", "<H1>Default</H1>"));
 
         expect(_em.find(Resource.class, bar.id())).andReturn(bar);
         replay(_em, _qm, _al);
@@ -362,7 +361,7 @@ public final class ContentManagerEJBTest extends TestCase {
 
         // ARRANGE
         final Page page = new Page(new ResourceName("test"));
-        page.addParagraph("abc", Paragraph.fromText("def"));
+        page.addParagraph(Paragraph.fromText("abc", "def"));
 
         _al.recordUpdate(page);
         expect(_em.find(Resource.class, page.id())).andReturn(page);
@@ -370,20 +369,18 @@ public final class ContentManagerEJBTest extends TestCase {
 
 
         // ACT
-        final Map<String, Paragraph> paragraphs =
-            new HashMap<String, Paragraph>();
-        paragraphs.put("foo", Paragraph.fromText("bar"));
         _am.update(
             page.id(),
-            "new title", paragraphs);
+            "new title",
+            Collections.singleton(Paragraph.fromText("foo", "bar")));
 
 
         // ASSERT
         verify(_em, _qm, _al);
         assertEquals("new title", page.title());
         assertEquals(1, page.paragraphs().size());
-        assertEquals("foo", page.paragraphs().keySet().iterator().next());
-        assertEquals("bar", page.paragraphs().get("foo").text());
+        assertEquals("foo", page.paragraphs().iterator().next().name());
+        assertEquals("bar", page.paragraph("foo").text());
     }
 
     /**

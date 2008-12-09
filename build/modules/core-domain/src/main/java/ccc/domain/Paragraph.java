@@ -24,26 +24,30 @@ import java.util.Date;
 public final class Paragraph implements Serializable {
 
 
-    private String _string;
-    private Type _type;
+    private String  _text;
+    private Type    _type;
     private Boolean _boolean;
-    private Date _date;
+    private Date    _date;
+    private String  _name;
 
-    @SuppressWarnings("unused")
-    private Paragraph() { /* NO-OP */ }
+    @SuppressWarnings("unused") private Paragraph() { super(); }
 
 
     /**
      * Factory method. Creates a paragraph representing text.
      *
-     * @param string The text for this paragraph.
+     * @param text The text for this paragraph.
+     * @param name The name of the paragraph.
      * @return A paragraph with string content.
      */
-    public static Paragraph fromText(final String string) {
-        require().notNull(string);
+    public static Paragraph fromText(final String name, final String text) {
+        require().notNull(name);
+        require().notNull(text);
+
         final Paragraph p = new Paragraph();
-        p._string = string;
+        p._text = text;
         p._type = Type.TEXT;
+        p._name = name;
         return p;
     }
 
@@ -51,13 +55,17 @@ public final class Paragraph implements Serializable {
      * Factory method. Creates a paragraph representing a boolean.
      *
      * @param b The boolean for this paragraph.
+     * @param name The name of the paragraph.
      * @return A paragraph with boolean content.
      */
-    public static Paragraph fromBoolean(final Boolean b) {
+    public static Paragraph fromBoolean(final String name, final Boolean b) {
+        require().notNull(name);
         require().notNull(b);
+
         final Paragraph p = new Paragraph();
         p._boolean = b;
         p._type = Type.BOOLEAN;
+        p._name = name;
         return p;
     }
 
@@ -65,13 +73,17 @@ public final class Paragraph implements Serializable {
      * Factory method. Creates a paragraph representing a date.
      *
      * @param date The date for this paragraph.
+     * @param name The name of the paragraph.
      * @return A paragraph with date content.
      */
-    public static Paragraph fromDate(final Date date) {
+    public static Paragraph fromDate(final String name, final Date date) {
+        require().notNull(name);
         require().notNull(date);
+
         final Paragraph p = new Paragraph();
         p._date = date;
         p._type = Type.DATE;
+        p._name = name;
         return p;
     }
 
@@ -81,7 +93,7 @@ public final class Paragraph implements Serializable {
      * @return The string representation of this paragraph.
      */
     public String text() {
-        return _string;
+        return _text;
     }
 
     /**
@@ -112,6 +124,15 @@ public final class Paragraph implements Serializable {
     }
 
     /**
+     * Accessor.
+     *
+     * @return The paragraph's name.
+     */
+    public String name() {
+        return _name;
+    }
+
+    /**
      * The types of paragraph available.
      *
      * @author Civic Computing Ltd.
@@ -125,4 +146,38 @@ public final class Paragraph implements Serializable {
 
         /** DATE : Type. */
         DATE}
+
+    /** {@inheritDoc} */
+    @Override
+    public int hashCode() {
+
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((_name == null) ? 0 : _name.hashCode());
+        return result;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean equals(final Object obj) {
+
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Paragraph other = (Paragraph) obj;
+        if (_name == null) {
+            if (other._name != null) {
+                return false;
+            }
+        } else if (!_name.equals(other._name)) {
+            return false;
+        }
+        return true;
+    }
 }

@@ -132,11 +132,13 @@ public class CommandsEJB
 
         for (final ParagraphDelta para : delta._paragraphs) {
             if ("TEXT".equals(para._type)) {
-                final Paragraph paragraph = Paragraph.fromText(para._textValue);
-                page.addParagraph(para._name, paragraph);
+                final Paragraph paragraph =
+                    Paragraph.fromText(para._name, para._textValue);
+                page.addParagraph(paragraph);
             } else if ("DATE".equals(para._type)) {
-                final Paragraph paragraph = Paragraph.fromDate(para._dateValue);
-                page.addParagraph(para._name, paragraph);
+                final Paragraph paragraph =
+                    Paragraph.fromDate(para._name, para._dateValue);
+                page.addParagraph(paragraph);
 
             }
         }
@@ -238,11 +240,13 @@ public class CommandsEJB
         // TODO: Remove duplication
         for (final ParagraphDelta para : delta._paragraphs) {
             if ("TEXT".equals(para._type)) {
-                final Paragraph paragraph = Paragraph.fromText(para._textValue);
-                page.addParagraph(para._name, paragraph);
+                final Paragraph paragraph =
+                    Paragraph.fromText(para._name, para._textValue);
+                page.addParagraph(paragraph);
             } else if ("DATE".equals(para._type)) {
-                final Paragraph paragraph = Paragraph.fromDate(para._dateValue);
-                page.addParagraph(para._name, paragraph);
+                final Paragraph paragraph =
+                    Paragraph.fromDate(para._name, para._dateValue);
+                page.addParagraph(paragraph);
 
             }
         }

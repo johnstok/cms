@@ -12,7 +12,7 @@
 
 package ccc.services;
 
-import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import ccc.commons.Maybe;
@@ -86,7 +86,7 @@ interface ContentManager {
      *      paragraphs will be removed and replaced with the paragraphs
      *      specified here.
      */
-    void update(UUID id, String newTitle, Map<String, Paragraph> newParagraphs);
+    void update(UUID id, String newTitle, Set<Paragraph> newParagraphs);
 
     /**
      * Sets the new default template for content.

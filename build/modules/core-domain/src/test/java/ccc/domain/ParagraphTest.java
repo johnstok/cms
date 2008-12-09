@@ -18,7 +18,8 @@ import junit.framework.TestCase;
 
 /**
  * Tests for the {@link Paragraph} class.
- * TODO: Test equals().
+ * TODO: test that null names are disallowed.
+ * TODO: test that max name length is 256.
  *
  * @author Civic Computing Ltd
  */
@@ -30,11 +31,12 @@ public final class ParagraphTest extends TestCase {
     public void testTextConstructor() {
 
         // ACT
-        final Paragraph p = Paragraph.fromText("Hello world");
+        final Paragraph p = Paragraph.fromText("foo", "Hello world");
 
         // ASSERT
         assertEquals(Paragraph.Type.TEXT, p.type());
         assertEquals("Hello world", p.text());
+        assertEquals("foo", p.name());
     }
 
     /**
@@ -43,11 +45,12 @@ public final class ParagraphTest extends TestCase {
     public void testBooleanConstructor() {
 
         // ACT
-        final Paragraph p = Paragraph.fromBoolean(Boolean.TRUE);
+        final Paragraph p = Paragraph.fromBoolean("foo", Boolean.TRUE);
 
         // ASSERT
         assertEquals(Paragraph.Type.BOOLEAN, p.type());
         assertEquals(Boolean.TRUE, p.bool());
+        assertEquals("foo", p.name());
     }
 
     /**
@@ -59,11 +62,12 @@ public final class ParagraphTest extends TestCase {
         final Date now = new Date();
 
         // ACT
-        final Paragraph p = Paragraph.fromDate(now);
+        final Paragraph p = Paragraph.fromDate("foo", now);
 
         // ASSERT
         assertEquals(Paragraph.Type.DATE, p.type());
         assertEquals(now, p.date());
+        assertEquals("foo", p.name());
     }
 
     /**
@@ -73,7 +77,7 @@ public final class ParagraphTest extends TestCase {
 
         // ACT
         try {
-            Paragraph.fromText(null);
+            Paragraph.fromText("foo", null);
             fail("NULL should be rejected.");
 
         // ASSERT
@@ -89,7 +93,7 @@ public final class ParagraphTest extends TestCase {
 
         // ACT
         try {
-            Paragraph.fromDate(null);
+            Paragraph.fromDate("foo", null);
             fail("NULL should be rejected.");
 
         // ASSERT
@@ -105,12 +109,27 @@ public final class ParagraphTest extends TestCase {
 
         // ACT
         try {
-            Paragraph.fromBoolean(null);
+            Paragraph.fromBoolean("foo", null);
             fail("NULL should be rejected.");
 
         // ASSERT
         } catch (final IllegalArgumentException e) {
             assertEquals("Specified value may not be NULL.", e.getMessage());
         }
+    }
+
+    /**
+     * Test.
+     */
+    public void testEqualsOnlyReliesOnName() {
+
+        // ARRANGE
+        final Paragraph t = Paragraph.fromText("foo", "Hello world");
+        final Paragraph b = Paragraph.fromBoolean("foo", Boolean.TRUE);
+
+        // ASSERT
+        assertEquals(t, b);
+        assertEquals(b, t);
+
     }
 }

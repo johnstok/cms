@@ -84,11 +84,11 @@ public class PreviewAction
         home.add(p3);
         home.add(p4);
 
-        p1.addParagraph("CONTENT", Paragraph.fromText(Resources.readIntoString(getClass().getResource("content.txt"), Charset.forName("UTF-8"))));
-        p1.addParagraph("HEADER", Paragraph.fromText("About us"));
-        p1.addParagraph("Description_Custom", Paragraph.fromText("ASH Scotland, our history, campaigns, organisation and contacts; our role in UK tobacco control; annual report, organisational chart; complaints, complain; problems"));
-        p1.addParagraph("Keywords_Custom", Paragraph.fromText("ASH UK; ASH Scotland (UK); external complaints; complain; problems, AGM, annual general meeting, annual report, accounts, charity"));
-        p1.addParagraph("STYLESHEET", Paragraph.fromText("home"));
+        p1.addParagraph(Paragraph.fromText("CONTENT", Resources.readIntoString(getClass().getResource("content.txt"), Charset.forName("UTF-8"))));
+        p1.addParagraph(Paragraph.fromText("HEADER", "About us"));
+        p1.addParagraph(Paragraph.fromText("Description_Custom", "ASH Scotland, our history, campaigns, organisation and contacts; our role in UK tobacco control; annual report, organisational chart; complaints, complain; problems"));
+        p1.addParagraph(Paragraph.fromText("Keywords_Custom", "ASH UK; ASH Scotland (UK); external complaints; complain; problems, AGM, annual general meeting, annual report, accounts, charity"));
+        p1.addParagraph(Paragraph.fromText("STYLESHEET", "home"));
     }
 
     /** {@inheritDoc} */

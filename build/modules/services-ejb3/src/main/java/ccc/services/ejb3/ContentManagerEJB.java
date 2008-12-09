@@ -14,7 +14,7 @@ package ccc.services.ejb3;
 
 import static javax.ejb.TransactionAttributeType.*;
 
-import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.ejb.EJB;
@@ -204,18 +204,15 @@ public final class ContentManagerEJB
      */
     @Override
     public void update(final UUID id,
-                             final String newTitle,
-                             final Map<String, Paragraph> newParagraphs) {
+                       final String newTitle,
+                       final Set<Paragraph> newParagraphs) {
 
         final Page page = lookup(id).as(Page.class);
         page.title(newTitle);
         page.deleteAllParagraphs();
 
-        for (final Map.Entry<String, Paragraph> paragraph
-                : newParagraphs.entrySet()) {
-            page.addParagraph(
-                paragraph.getKey(),
-                paragraph.getValue());
+        for (final Paragraph paragraph : newParagraphs) {
+            page.addParagraph(paragraph);
         }
         _audit.recordUpdate(page);
     }

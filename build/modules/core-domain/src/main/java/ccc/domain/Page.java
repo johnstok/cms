@@ -14,23 +14,20 @@ package ccc.domain;
 
 import static java.util.Collections.*;
 
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.HashSet;
+import java.util.Set;
 
-import ccc.commons.AlphanumComparator;
 import ccc.commons.DBC;
 
 
 /**
- * A content resource.
+ * A page resource.
  *
  * @author Civic Computing Ltd
  */
 public final class Page extends Resource {
 
-    private SortedMap<String, Paragraph> _content =
-        new TreeMap<String, Paragraph>(new AlphanumComparator());
+    private Set<Paragraph> _content = new HashSet<Paragraph>();
 
 
     /** Constructor: for persistence only. */
@@ -76,14 +73,12 @@ public final class Page extends Resource {
     /**
      * Add a new paragraph for this content.
      *
-     * @param key A unique string that identifies this paragraph.
      * @param paragraph The paragraph to be added.
      * @return 'this' - useful for method chaining.
      */
-    public Page addParagraph(final String key, final Paragraph paragraph) {
-        DBC.require().notEmpty(key);
+    public Page addParagraph(final Paragraph paragraph) {
         DBC.require().notNull(paragraph);
-        _content.put(key, paragraph);
+        _content.add(paragraph);
         return this;
     }
 
@@ -92,8 +87,8 @@ public final class Page extends Resource {
      *
      * @return A map from unique key to the corresponding paragraph data.
      */
-    public Map<String, Paragraph> paragraphs() {
-        return unmodifiableMap(_content);
+    public Set<Paragraph> paragraphs() {
+        return unmodifiableSet(_content);
     }
 
     /**
@@ -103,7 +98,7 @@ public final class Page extends Resource {
      */
     public void deleteParagraph(final String paragraphKey) {
         DBC.require().notEmpty(paragraphKey);
-        _content.remove(paragraphKey);
+        _content.remove(paragraph(paragraphKey));
     }
 
     /**
@@ -112,5 +107,20 @@ public final class Page extends Resource {
      */
     public void deleteAllParagraphs() {
         _content.clear();
+    }
+
+    /**
+     * Look up a paragraph on this page by name.
+     *
+     * @param name The name of the paragraph to retrieve.
+     * @return The paragraph with the specified name.
+     */
+    public Paragraph paragraph(final String name) {
+        for (final Paragraph p : _content) {
+            if (p.name().equals(name)) {
+                return p;
+            }
+        }
+        throw new CCCException("No paragraph with name: "+name);
     }
 }
