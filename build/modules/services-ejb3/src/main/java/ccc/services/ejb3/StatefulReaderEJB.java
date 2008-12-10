@@ -22,7 +22,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 
-import ccc.commons.Maybe;
 import ccc.domain.CCCException;
 import ccc.domain.Folder;
 import ccc.domain.Resource;
@@ -74,14 +73,12 @@ public final class StatefulReaderEJB
      * {@inheritDoc}
      */
     @Override
-    public Maybe<Resource> lookup(final ResourcePath path) {
-        final Folder contentRoot = _qm.findContentRoot().get();
+    public Resource lookup(final ResourcePath path) {
+        final Folder contentRoot = _qm.findContentRoot();
         try {
-            return
-                new Maybe<Resource>(
-                contentRoot.navigateTo(path));
+            return contentRoot.navigateTo(path);
         } catch (final CCCException e) {
-            return new Maybe<Resource>();
+            return null;
         }
     }
 }

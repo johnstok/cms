@@ -20,7 +20,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import junit.framework.TestCase;
-import ccc.commons.Maybe;
 import ccc.commons.Testing;
 import ccc.domain.Folder;
 import ccc.domain.Page;
@@ -189,11 +188,11 @@ public class QueryManagerEJBTest extends TestCase {
         final QueryManagerEJB qs = new QueryManagerEJB(em);
 
         // ACT
-        final Maybe<Setting> s = qs.findSetting(Name.CONTENT_ROOT_FOLDER_ID);
+        final Setting s = qs.findSetting(Name.CONTENT_ROOT_FOLDER_ID);
 
         // ASSERT
         verify(em, q);
-        assertEquals(Name.CONTENT_ROOT_FOLDER_ID, s.get().name());
+        assertEquals(Name.CONTENT_ROOT_FOLDER_ID, s.name());
     }
 
     /**

@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
 import ccc.commons.MapRegistry;
-import ccc.commons.Maybe;
 import ccc.commons.Resources;
 import ccc.commons.VelocityProcessor;
 import ccc.domain.Alias;
@@ -54,7 +53,7 @@ public final class ContentServletTest extends TestCase {
     private HttpServletResponse _response;
     private HttpServletRequest  _request;
     private StatefulReader _cm;
-    private Maybe<Resource> _root = new Maybe<Resource>(new Folder("_root"));
+    private Resource _root = new Folder("_root");
 
     /**
      * Test.
@@ -237,8 +236,7 @@ public final class ContentServletTest extends TestCase {
         p.publish(u);
         p.template(t);
 
-        expect(_cm.lookup(new ResourcePath("/foo")))
-            .andReturn(new Maybe<Resource>(p));
+        expect(_cm.lookup(new ResourcePath("/foo"))).andReturn(p);
         expect(_cm.lookup(new ResourcePath(""))).andReturn(_root);
         replay(_cm);
 
@@ -291,8 +289,7 @@ public final class ContentServletTest extends TestCase {
         foo.add(baz);
         foo.add(bar);
 
-        expect(_cm.lookup(new ResourcePath("/foo")))
-            .andReturn(new Maybe<Resource>(foo));
+        expect(_cm.lookup(new ResourcePath("/foo"))).andReturn(foo);
         replay(_cm);
 
         final StringWriter output = new StringWriter();
@@ -336,8 +333,7 @@ public final class ContentServletTest extends TestCase {
         foo.add(baz);
         foo.add(bar);
 
-        expect(_cm.lookup(new ResourcePath("/foo")))
-            .andReturn(new Maybe<Resource>(foo));
+        expect(_cm.lookup(new ResourcePath("/foo"))).andReturn(foo);
         replay(_cm);
 
         final StringWriter output = new StringWriter();
@@ -378,8 +374,7 @@ public final class ContentServletTest extends TestCase {
         final Folder baz = new Folder(new ResourceName("baz"));
         foo.add(baz);
 
-        expect(_cm.lookup(new ResourcePath("/foo")))
-            .andReturn(new Maybe<Resource>(foo));
+        expect(_cm.lookup(new ResourcePath("/foo"))).andReturn(foo);
         replay(_cm);
 
         final StringWriter output = new StringWriter();
@@ -456,8 +451,7 @@ public final class ContentServletTest extends TestCase {
         final StringWriter output = new StringWriter();
         final Page p = new Page(new ResourceName("name"));
 
-        expect(_cm.lookup(new ResourcePath("/foo")))
-            .andReturn(new Maybe<Resource>(p));
+        expect(_cm.lookup(new ResourcePath("/foo"))).andReturn(p);
         replay(_cm);
 
         final ContentServlet contentServlet =

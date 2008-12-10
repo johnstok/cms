@@ -25,7 +25,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import ccc.commons.DBC;
-import ccc.commons.Maybe;
 import ccc.domain.Entity;
 import ccc.domain.Folder;
 import ccc.domain.ResourceName;
@@ -64,7 +63,7 @@ public final class QueryManagerEJB implements QueryManagerLocal {
     }
 
     /** {@inheritDoc} */
-    public Maybe<Folder> lookupRoot(final ResourceName name) {
+    public Folder lookupRoot(final ResourceName name) {
 
         final Query q = _em.createNamedQuery("resourcesByName");
         q.setParameter("name", name);
@@ -72,56 +71,56 @@ public final class QueryManagerEJB implements QueryManagerLocal {
         try {
             final Object singleResult = q.getSingleResult();
             final Folder folder = Folder.class.cast(singleResult);
-            return new Maybe<Folder>(folder);
+            return folder;
         } catch (final NoResultException e) {
-            return new Maybe<Folder>();
+            return null;
         }
     }
 
     /** {@inheritDoc} */
     @Override
-    public Maybe<Setting> findSetting(final Name name) {
+    public Setting findSetting(final Name name) {
         final Query q = _em.createNamedQuery("settingsByName");
         q.setParameter("name", name);
 
         try {
             final Setting s = (Setting) q.getSingleResult();
-            return new Maybe<Setting>(s);
+            return s;
         } catch (final NoResultException e) {
-            return new Maybe<Setting>();
+            return null;
         }
     }
 
     /** {@inheritDoc} */
     @Override
-    public Maybe<Folder> findContentRoot() {
-        final Maybe<Setting> rootId = findSetting(Name.CONTENT_ROOT_FOLDER_ID);
+    public Folder findContentRoot() {
+        final Setting rootId = findSetting(Name.CONTENT_ROOT_FOLDER_ID);
 
-        if (rootId.isDefined()) {
+        if (rootId != null) {
             final Folder root =
                 _em.find(
                     Folder.class,
-                    UUID.fromString(rootId.get().value()));
-            return new Maybe<Folder>(root);
+                    UUID.fromString(rootId.value()));
+            return root;
         }
 
-        return new Maybe<Folder>();
+        return null;
     }
 
     /** {@inheritDoc} */
     @Override
-    public Maybe<Folder> findAssetsRoot() {
-        final Maybe<Setting> rootId = findSetting(Name.ASSETS_ROOT_FOLDER_ID);
+    public Folder findAssetsRoot() {
+        final Setting rootId = findSetting(Name.ASSETS_ROOT_FOLDER_ID);
 
-        if (rootId.isDefined()) {
+        if (rootId != null) {
             final Folder root =
                 _em.find(
                     Folder.class,
-                    UUID.fromString(rootId.get().value()));
-            return new Maybe<Folder>(root);
+                    UUID.fromString(rootId.value()));
+            return root;
         }
 
-        return new Maybe<Folder>();
+        return null;
     }
 
     /** {@inheritDoc} */
