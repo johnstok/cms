@@ -15,13 +15,17 @@ import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.ResourceTable;
 
+import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.FormEvent;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FileUploadField;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.HiddenField;
 import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.google.gwt.user.client.ui.Image;
 
 
 /**
@@ -39,7 +43,8 @@ public class UploadFileDialog extends AbstractBaseDialog {
     private final HiddenField<String> _path = new HiddenField<String>();
     private FileUploadField _file = new FileUploadField();
     private final FormPanel _form = new FormPanel();
-
+    private final Image _image =
+        new Image("images/gxt/shared/large-loading.gif");
 
     /**
      * Constructor.
@@ -84,6 +89,9 @@ public class UploadFileDialog extends AbstractBaseDialog {
         _form.add(_file);
         _form.add(_path);
 
+        _image.setVisible(false);
+        _form.add(_image);
+
         _form.addButton(new Button(
         constants().cancel(),
             new SelectionListener<ButtonEvent>() {
@@ -102,12 +110,20 @@ public class UploadFileDialog extends AbstractBaseDialog {
                     if (!_form.isValid()) {
                         return;
                     }
+                    _image.setVisible(true);
                     _form.submit();
-                    hide();
-                    rt.refreshTable();
+
                 }
             }
         ));
+
+        _form.addListener(Events.Submit, new Listener<FormEvent>() {
+            public void handleEvent(final FormEvent be) {
+                hide();
+                rt.refreshTable();
+            }
+        });
+
         add(_form);
     }
 }
