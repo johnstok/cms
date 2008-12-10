@@ -23,7 +23,10 @@
 			<generator class="assigned" />
 		</id>
 		
-		<version name="_version" unsaved-value="negative" />
+		<version
+            name="_version"
+            type="long"
+            unsaved-value="negative" />
 
 		<property name="_title" not-null="true" type="string"
 			length="256" />

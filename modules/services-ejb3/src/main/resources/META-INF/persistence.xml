@@ -21,6 +21,7 @@
 	        <property name="hibernate.cache.use_second_level_cache" value="false" />
 	        
 	        <!-- Debugging -->
+            <!-- property name="hibernate.ejb.interceptor" value="ccc.services.ejb3.support.DebugInterceptor" / -->
 	        <property name="hibernate.show_sql" value="true" />
 	        <property name="hibernate.format_sql" value="true" />
 	        <property name="hibernate.use_sql_comments" value="true" />

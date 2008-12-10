@@ -30,6 +30,7 @@
         
         <version
             name="_version"
+            type="long"
             unsaved-value="negative" />
         
         <property
