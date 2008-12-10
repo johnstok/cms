@@ -22,7 +22,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ccc.commons.Maybe;
 import ccc.commons.Registry;
 import ccc.commons.Resources;
 import ccc.commons.VelocityProcessor;
@@ -97,9 +96,9 @@ public final class ContentServlet extends CCCServlet {
             removeTrailing('/', nvl(request.getPathInfo(), "/"));
         final ResourcePath contentPath = new ResourcePath(pathString); // 400
 
-        final Maybe<Resource> resource = resourceReader().lookup(contentPath);
-        if (resource.isDefined() && resource.get().isPublished()) {
-            handle(response, request, resource.get());
+        final Resource resource = resourceReader().lookup(contentPath);
+        if (resource != null && resource.isPublished()) {
+            handle(response, request, resource);
         } else {
             dispatchNotFound(request, response); // 404
         }
@@ -260,7 +259,7 @@ public final class ContentServlet extends CCCServlet {
         // TODO: Refactor
         final Folder root =
             resourceReader().lookup(new ResourcePath(""))
-                            .get().as(Folder.class);
+                            .as(Folder.class);
 
         return new VelocityProcessor().render(resource,
                                               root,

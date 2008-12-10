@@ -26,7 +26,6 @@ import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import ccc.commons.Maybe;
 import ccc.domain.Alias;
 import ccc.domain.CCCException;
 import ccc.domain.Folder;
@@ -126,10 +125,9 @@ public final class ContentManagerEJB
      */
     @Override
     public void createRoot() {
-        final Maybe<Folder> contentRoot =
-            _qm.findContentRoot();
+        final Folder contentRoot = _qm.findContentRoot();
 
-        if (!contentRoot.isDefined()) {
+        if (contentRoot == null) {
             final Folder root = new Folder(PredefinedResourceNames.CONTENT);
             _em.persist(root);
             _em.persist(
@@ -149,14 +147,12 @@ public final class ContentManagerEJB
      * {@inheritDoc}
      */
     @Override
-    public Maybe<Resource> lookup(final ResourcePath path) {
-        final Folder contentRoot = _qm.findContentRoot().get();
+    public Resource lookup(final ResourcePath path) {
+        final Folder contentRoot = _qm.findContentRoot();
         try {
-            return
-                new Maybe<Resource>(
-                contentRoot.navigateTo(path));
+            return contentRoot.navigateTo(path);
         } catch (final CCCException e) {
-            return new Maybe<Resource>();
+            return null;
         }
     }
 
@@ -173,7 +169,7 @@ public final class ContentManagerEJB
      */
     @Override
     public Page eagerPageLookup(final ResourcePath path) {
-        final Resource resource = _qm.findContentRoot().get().navigateTo(path);
+        final Resource resource = _qm.findContentRoot().navigateTo(path);
         if (resource == null) {
             return null;
         }
@@ -193,7 +189,7 @@ public final class ContentManagerEJB
      */
     @Override
     public Folder lookupRoot() {
-        return _qm.findContentRoot().get();
+        return _qm.findContentRoot();
     }
 
 
@@ -298,9 +294,9 @@ public final class ContentManagerEJB
      */
     @Override
     public void createAssetRoot() {
-        final Maybe<Folder> assetRoot = _qm.findAssetsRoot();
+        final Folder assetRoot = _qm.findAssetsRoot();
 
-        if (!assetRoot.isDefined()) {
+        if (assetRoot == null) {
             final Folder root = new Folder(PredefinedResourceNames.ASSETS);
             final Folder templates = new Folder(new ResourceName("templates"));
             _em.persist(templates);
@@ -344,7 +340,7 @@ public final class ContentManagerEJB
     }
 
     private Folder templatesFolder() {
-        final Folder assetRoot = _qm.findAssetsRoot().get();
+        final Folder assetRoot = _qm.findAssetsRoot();
         final Folder templates =
             assetRoot
                 .navigateTo(new ResourcePath("/templates"))

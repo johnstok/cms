@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.commons.Maybe;
 import ccc.domain.Alias;
 import ccc.domain.Folder;
 import ccc.domain.Page;
@@ -39,7 +38,7 @@ interface ContentManager {
      * @param path The absolute path to the resource.
      * @return The resource.
      */
-    Maybe<Resource> lookup(ResourcePath path);
+    Resource lookup(ResourcePath path);
 
     /**
      * Lookup a resource, given its id.

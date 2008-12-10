@@ -38,8 +38,7 @@ public class MigrationAcceptanceTest extends TestCase {
             new JNDI().<ContentManagerRemote>get("ContentManager/remote");
 
         // ACT
-        final Resource resource =
-            manager.lookup(new ResourcePath("/Home")).get();
+        final Resource resource = manager.lookup(new ResourcePath("/Home"));
 
         // VERIFY
         assertNotNull("Resource /home/ must not be null", resource);
@@ -59,8 +58,7 @@ public class MigrationAcceptanceTest extends TestCase {
         final String path = "/Home/ASH_Scotland_Manifesto_2007";
 
         // ACT
-        final Resource resource =
-            manager.lookup(new ResourcePath(path)).get();
+        final Resource resource = manager.lookup(new ResourcePath(path));
 
         // VERIFY
         assertNotNull("Resource "+path+" must not be null", resource);

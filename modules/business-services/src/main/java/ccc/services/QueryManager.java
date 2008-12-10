@@ -14,7 +14,6 @@ package ccc.services;
 import java.util.List;
 import java.util.UUID;
 
-import ccc.commons.Maybe;
 import ccc.domain.Entity;
 import ccc.domain.Folder;
 import ccc.domain.Setting;
@@ -35,21 +34,21 @@ interface QueryManager {
      * @param name The name of the setting to find.
      * @return The setting with the specified name.
      */
-    Maybe<Setting> findSetting(final Name name);
+    Setting findSetting(final Name name);
 
     /**
      * Retrieve the folder that represents the root of all stored content.
      *
-     * @return The root folder, wrapped in a {@link Maybe}.
+     * @return The root folder.
      */
-    Maybe<Folder> findContentRoot();
+    Folder findContentRoot();
 
     /**
      * Retrieve the folder that represents the root of all stored content.
      *
-     * @return The root folder, wrapped in a {@link Maybe}.
+     * @return The root folder.
      */
-    Maybe<Folder> findAssetsRoot();
+    Folder findAssetsRoot();
 
     /**
      * Execute a named query that returns multiple results.

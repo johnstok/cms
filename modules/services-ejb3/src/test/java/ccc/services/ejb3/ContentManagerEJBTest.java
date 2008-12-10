@@ -24,7 +24,6 @@ import junit.framework.TestCase;
 
 import org.easymock.Capture;
 
-import ccc.commons.Maybe;
 import ccc.domain.Alias;
 import ccc.domain.CCCException;
 import ccc.domain.Folder;
@@ -59,13 +58,13 @@ public final class ContentManagerEJBTest extends TestCase {
         final Template defaultTemplate =
             new Template("foo", "bar", "baz", "<fields/>");
 
-        expect(_qm.findContentRoot()).andReturn(new Maybe<Folder>(contentRoot));
+        expect(_qm.findContentRoot()).andReturn(contentRoot);
         _al.recordChangeTemplate(contentRoot);
         replay(_em, _qm, _al);
 
 
         // ACT
-        _am.setDefaultTemplate(defaultTemplate);
+        _cm.setDefaultTemplate(defaultTemplate);
 
 
         // ASSERT
@@ -90,13 +89,13 @@ public final class ContentManagerEJBTest extends TestCase {
         contentRoot.add(foo);
         foo.add(bar);
 
-        expect(_qm.findContentRoot()).andReturn(new Maybe<Folder>(contentRoot));
+        expect(_qm.findContentRoot()).andReturn(contentRoot);
         replay(_em, _qm, _al);
 
 
         // ACT
         final Resource resource =
-            _am.lookup(new ResourcePath("/foo/bar")).get();
+            _cm.lookup(new ResourcePath("/foo/bar"));
 
 
         // ASSERT
@@ -131,9 +130,9 @@ public final class ContentManagerEJBTest extends TestCase {
 
 
         // ACT
-        _am.create(contentRoot.id(), foo);
-        _am.create(foo.id(), bar);
-        _am.create(foo.id(), baz);
+        _cm.create(contentRoot.id(), foo);
+        _cm.create(foo.id(), bar);
+        _cm.create(foo.id(), baz);
 
 
         // ASSERT
@@ -156,7 +155,7 @@ public final class ContentManagerEJBTest extends TestCase {
 
         // ARRANGE
         _al.recordCreate(isA(Folder.class));
-        expect(_qm.findContentRoot()).andReturn(new Maybe<Folder>());
+        expect(_qm.findContentRoot()).andReturn(null);
 
         final Capture<Folder> contentRoot = new Capture<Folder>();
         final Capture<Setting> rootSetting = new Capture<Setting>();
@@ -166,7 +165,7 @@ public final class ContentManagerEJBTest extends TestCase {
 
 
         // ACT
-        _am.createRoot();
+        _cm.createRoot();
 
 
         // ASSERT
@@ -183,12 +182,12 @@ public final class ContentManagerEJBTest extends TestCase {
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
 
-        expect(_qm.findContentRoot()).andReturn(new Maybe<Folder>(contentRoot));
+        expect(_qm.findContentRoot()).andReturn(contentRoot);
         replay(_em, _qm, _al);
 
 
         // ACT
-        _am.createRoot();
+        _cm.createRoot();
 
 
         // ASSERT
@@ -220,9 +219,9 @@ public final class ContentManagerEJBTest extends TestCase {
 
 
         // ACT
-        _am.create(contentRoot.id(), foo);
-        _am.create(foo.id(), page1);
-        _am.create(foo.id(), page2);
+        _cm.create(contentRoot.id(), foo);
+        _cm.create(foo.id(), page1);
+        _cm.create(foo.id(), page2);
 
 
         // ASSERT
@@ -262,10 +261,10 @@ public final class ContentManagerEJBTest extends TestCase {
 
 
         // ACT
-        _am.create(contentRoot.id(), foo);
-        _am.create(foo.id(), page1F);
+        _cm.create(contentRoot.id(), foo);
+        _cm.create(foo.id(), page1F);
         try {
-            _am.create(foo.id(), page1P);
+            _cm.create(foo.id(), page1P);
             fail("Creation of page with"
                     + "same name as existing folder should fail.");
         } catch (final CCCException e) {
@@ -309,8 +308,8 @@ public final class ContentManagerEJBTest extends TestCase {
 
 
         // ACT
-        _am.create(contentRoot.id(), foo);
-        _am.create(foo.id(), page1);
+        _cm.create(contentRoot.id(), foo);
+        _cm.create(foo.id(), page1);
 
 
         // ASSERT
@@ -345,7 +344,7 @@ public final class ContentManagerEJBTest extends TestCase {
 
         // ACT
         final Resource resource =
-            _am.lookup(bar.id());
+            _cm.lookup(bar.id());
 
 
         // ASSERT
@@ -370,7 +369,7 @@ public final class ContentManagerEJBTest extends TestCase {
 
 
         // ACT
-        _am.update(
+        _cm.update(
             page.id(),
             "new title",
             Collections.singleton(Paragraph.fromText("foo", "bar")));
@@ -403,7 +402,7 @@ public final class ContentManagerEJBTest extends TestCase {
 
 
         // ACT
-        _am.create(contentRoot.id(), alias);
+        _cm.create(contentRoot.id(), alias);
 
 
         // ASSERT
@@ -432,7 +431,7 @@ public final class ContentManagerEJBTest extends TestCase {
 
         // ACT
         try {
-            _am.create(contentRoot.id(), aliasCopy);
+            _cm.create(contentRoot.id(), aliasCopy);
             fail("Alias creation should fail for duplicate name");
 
 
@@ -461,7 +460,7 @@ public final class ContentManagerEJBTest extends TestCase {
         replay(_em, _qm, _al);
 
         // ACT
-        _am.move(resource.id(), newParent.id());
+        _cm.move(resource.id(), newParent.id());
 
         // ASSERT
         verify(_em, _qm, _al);
@@ -484,7 +483,7 @@ public final class ContentManagerEJBTest extends TestCase {
         replay(_em, _qm, _al);
 
         // ACT
-        _am.updateAlias(r2.id(), alias.id());
+        _cm.updateAlias(r2.id(), alias.id());
 
         // ASSERT
         verify(_em, _qm, _al);
@@ -503,7 +502,7 @@ public final class ContentManagerEJBTest extends TestCase {
         replay(_em, _qm, _al);
 
         // ACT
-        _am.rename(resource.id(), "baz");
+        _cm.rename(resource.id(), "baz");
 
         // ASSERT
         verify(_em, _qm, _al);
@@ -525,15 +524,15 @@ public final class ContentManagerEJBTest extends TestCase {
         assetRoot.add(templateFolder);
 
         expect(_qm.findAssetsRoot())
-            .andReturn(new Maybe<Folder>(assetRoot)).times(2);
+            .andReturn(assetRoot).times(2);
         _em.persist(t);
         _al.recordCreate(t);
         replay(_em, _qm, _al);
 
 
         // ACT
-        final Template created = _am.createOrRetrieve(t);
-        final Template retrieved = _am.createOrRetrieve(t);
+        final Template created = _cm.createOrRetrieve(t);
+        final Template retrieved = _cm.createOrRetrieve(t);
 
 
         // ASSERT
@@ -558,12 +557,12 @@ public final class ContentManagerEJBTest extends TestCase {
         assetRoot.add(templateFolder);
         templateFolder.add(expected);
 
-        expect(_qm.findAssetsRoot()).andReturn(new Maybe<Folder>(assetRoot));
+        expect(_qm.findAssetsRoot()).andReturn(assetRoot);
         replay(_qm, _em, _al);
 
 
         // ACT
-        final List<Template> templates = _am.lookupTemplates();
+        final List<Template> templates = _cm.lookupTemplates();
 
 
         // ASSERT
@@ -584,14 +583,14 @@ public final class ContentManagerEJBTest extends TestCase {
         final Template t =
             new Template("title", "description", "body", "<fields/>");
 
-        expect(_qm.findAssetsRoot()).andReturn(new Maybe<Folder>(assetRoot));
+        expect(_qm.findAssetsRoot()).andReturn(assetRoot);
         _em.persist(t);
         _al.recordCreate(t);
         replay(_em, _qm, _al);
 
 
         // ACT
-        _am.createDisplayTemplate(t);
+        _cm.createDisplayTemplate(t);
 
         // ASSERT
         verify(_em, _qm, _al);
@@ -605,13 +604,13 @@ public final class ContentManagerEJBTest extends TestCase {
     public void testCreateAssetRoot() {
 
         // ARRANGE
-        expect(_qm.findAssetsRoot()).andReturn(new Maybe<Folder>());
+        expect(_qm.findAssetsRoot()).andReturn(null);
 
         final Capture<Folder> assetsRoot = new Capture<Folder>();
         _em.persist(capture(assetsRoot));
         _em.persist(isA(Folder.class));
         _em.persist(isA(Setting.class));
-
+//
         _al.recordCreate(isA(Folder.class));
         _al.recordCreate(isA(Folder.class));
 
@@ -619,7 +618,7 @@ public final class ContentManagerEJBTest extends TestCase {
 
 
         // ACT
-        _am.createAssetRoot();
+        _cm.createAssetRoot();
 
 
         // VERIFY
@@ -630,7 +629,6 @@ public final class ContentManagerEJBTest extends TestCase {
             assetsRoot.getValue()
                 .entries().get(0).as(Folder.class).name().toString());
     }
-    //--
 
 
     /** {@inheritDoc} */
@@ -639,7 +637,7 @@ public final class ContentManagerEJBTest extends TestCase {
         _em = createStrictMock(EntityManager.class);
         _qm = createStrictMock(QueryManagerLocal.class);
         _al = createStrictMock(AuditLogLocal.class);
-        _am = new ContentManagerEJB(_em, _qm, _al);
+        _cm = new ContentManagerEJB(_em, _qm, _al);
     }
 
     /** {@inheritDoc} */
@@ -648,11 +646,11 @@ public final class ContentManagerEJBTest extends TestCase {
         _em = null;
         _qm = null;
         _al = null;
-        _am = null;
+        _cm = null;
     }
 
     private EntityManager _em;
     private QueryManagerLocal _qm;
     private AuditLogLocal _al;
-    private ContentManagerLocal _am;
+    private ContentManagerLocal _cm;
 }

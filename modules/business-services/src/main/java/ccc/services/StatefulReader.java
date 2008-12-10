@@ -11,7 +11,6 @@
  */
 package ccc.services;
 
-import ccc.commons.Maybe;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 
@@ -26,9 +25,9 @@ public interface StatefulReader {
     /**
      * TODO: Add a description of this method.
      *
-     * @param contentPath
-     * @return
+     * @param contentPath ResourcePath
+     * @return Resource
      */
-    Maybe<Resource> lookup(ResourcePath contentPath);
+    Resource lookup(ResourcePath contentPath);
 
 }
