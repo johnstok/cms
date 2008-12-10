@@ -56,6 +56,7 @@ import com.extjs.gxt.ui.client.widget.table.Table;
 import com.extjs.gxt.ui.client.widget.table.TableColumn;
 import com.extjs.gxt.ui.client.widget.table.TableColumnModel;
 import com.extjs.gxt.ui.client.widget.table.TableItem;
+import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.TextToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.extjs.gxt.ui.client.widget.tree.TreeItem;
@@ -179,9 +180,11 @@ public class ResourceTable extends TablePanel {
 
     private void actionButtons(final FolderResourceTree tree) {
 
+        _toolBar.add(new SeparatorToolItem());
         final TextToolItem uploadFile = new TextToolItem("Upload File");
         uploadFile.setId("uploadFile");
         _toolBar.add(uploadFile);
+        _toolBar.add(new SeparatorToolItem());
         uploadFile.addListener(Events.Select, new Listener<ComponentEvent>(){
 
             public void handleEvent(final ComponentEvent be) {
@@ -194,6 +197,7 @@ public class ResourceTable extends TablePanel {
 
         final TextToolItem createFolder = new TextToolItem("Create Folder");
         _toolBar.add(createFolder);
+        _toolBar.add(new SeparatorToolItem());
         createFolder.addListener(Events.Select, new Listener<ComponentEvent>(){
 
             public void handleEvent(final ComponentEvent be) {
@@ -216,6 +220,7 @@ public class ResourceTable extends TablePanel {
             }
         });
         _toolBar.add(createPage);
+        _toolBar.add(new SeparatorToolItem());
         final TextToolItem createTemplate = new TextToolItem("Create Template");
         createTemplate.addListener(Events.Select, new Listener<ComponentEvent>(){
             public void handleEvent(final ComponentEvent be) {
@@ -225,7 +230,7 @@ public class ResourceTable extends TablePanel {
             }
         });
         _toolBar.add(createTemplate);
-
+        _toolBar.add(new SeparatorToolItem());
         final TextToolItem chooseTemplate = new TextToolItem("Choose Template");
         chooseTemplate.addListener(Events.Select, new Listener<ComponentEvent>(){
             public void handleEvent(final ComponentEvent be) {
@@ -243,6 +248,7 @@ public class ResourceTable extends TablePanel {
         });
 
         _toolBar.add(chooseTemplate);
+        _toolBar.add(new SeparatorToolItem());
     }
 
     private void addContextMenuLogic(final Table tbl, final Menu contextMenu) {
