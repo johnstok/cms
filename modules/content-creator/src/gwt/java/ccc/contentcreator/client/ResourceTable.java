@@ -188,7 +188,7 @@ public class ResourceTable extends TablePanel {
                 final ModelData item = _previousItem.getModel();
                 new UploadFileDialog(item.<String>get("id"),
                     item.<String>get("name"),
-                    tree).center();
+                    ResourceTable.this).show();
             }
         });
 
@@ -198,8 +198,7 @@ public class ResourceTable extends TablePanel {
 
             public void handleEvent(final ComponentEvent be) {
                 final ModelData item = _previousItem.getModel();
-                final CreateFolderDialog aa = new CreateFolderDialog(item, tree.store());
-                aa.show();
+                new CreateFolderDialog(item, tree.store()).show();
             }
         });
 

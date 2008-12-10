@@ -86,8 +86,7 @@ public class EnhancedResourceTree extends FolderResourceTree {
                 .getSelectedItem()
                 .getModel();
                 new UploadFileDialog(item.<String>get("id"),
-                    item.<String>get("name"),
-                    EnhancedResourceTree.this).center();
+                    item.<String>get("name"), _rt).show();
             }
         });
         contextMenu.add(uploadFile);
