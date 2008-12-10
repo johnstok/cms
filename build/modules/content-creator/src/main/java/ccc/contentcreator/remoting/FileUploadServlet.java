@@ -20,7 +20,6 @@ import ccc.commons.Registry;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.ResourceName;
-import ccc.services.AssetManagerLocal;
 import ccc.services.DataManagerLocal;
 import ccc.services.ServiceNames;
 
@@ -85,15 +84,6 @@ public class FileUploadServlet extends HttpServlet {
             response.getWriter().write("File Upload failed. "+e.getMessage());
             LOG.error("File Upload failed "+e.getMessage(), e);
         }
-    }
-
-    /**
-     * Accessor for the asset manager.
-     *
-     * @return An AssetManager.
-     */
-    AssetManagerLocal assetManager() {
-        return _registry.get(ServiceNames.ASSET_MANAGER_LOCAL);
     }
 
     /**

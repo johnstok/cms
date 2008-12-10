@@ -29,7 +29,6 @@ import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.services.AssetManagerRemote;
 import ccc.services.ContentManagerRemote;
 import ccc.services.ServiceNames;
 import ccc.services.UserManagerRemote;
@@ -69,7 +68,7 @@ public class Migrations {
      */
     public void migrate() {
         // Create a root assets folder.
-        assetManager().createRoot();
+        contentManager().createAssetRoot();
 
         // Create a root content folder.
         contentManager().createRoot();
@@ -169,7 +168,7 @@ public class Migrations {
                 ? _templates.get(templateName)
                     : new Template(templateName,
                         "No description.", "Empty template!", "<fields/>");
-                template = assetManager().createOrRetrieve(template);
+                template = contentManager().createOrRetrieve(template);
                 child.template(template);
                 if (!_templates.containsKey(templateName)) {
                     _templates.put(templateName, template);
@@ -267,15 +266,6 @@ public class Migrations {
      */
     ContentManagerRemote contentManager() {
         return _registry.get(ServiceNames.CONTENT_MANAGER_REMOTE);
-    }
-
-    /**
-     * Accessor for the asset manager.
-     *
-     * @return An {@link AssetManager}.
-     */
-    AssetManagerRemote assetManager() {
-        return _registry.get(ServiceNames.ASSET_MANAGER_REMOTE);
     }
 
     /**

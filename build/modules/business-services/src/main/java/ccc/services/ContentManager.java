@@ -12,6 +12,7 @@
 
 package ccc.services;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -143,4 +144,40 @@ interface ContentManager {
      * @param name The new name for the resource.
      */
     void rename(UUID resource, String name);
+
+    /**
+     * Creates a new template.
+     *
+     * @param template The template to create
+     */
+    void createDisplayTemplate(Template template);
+
+    /**
+     * Create the root folder for assets.
+     */
+    void createAssetRoot();
+
+    /**
+     * Look up all templates available.
+     *
+     * @return A list of templates available in the CCC.
+     */
+    List<Template> lookupTemplates();
+
+    /**
+     * Create or retrieve a template. First try to look up this template, if it
+     * exists return the current template. Otherwise persist the supplied
+     * template.
+     *
+     * @param template An copy of the template stored in memory.
+     * @return The current version of the template.
+     */
+    Template createOrRetrieve(Template template);
+
+    /**
+     * Update a template.
+     *
+     * @param t The new version of the template.
+     */
+    void update(Template t);
 }

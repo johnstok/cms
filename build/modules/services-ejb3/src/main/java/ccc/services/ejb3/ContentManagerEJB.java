@@ -14,6 +14,7 @@ package ccc.services.ejb3;
 
 import static javax.ejb.TransactionAttributeType.*;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -38,6 +39,7 @@ import ccc.domain.ResourcePath;
 import ccc.domain.ResourceType;
 import ccc.domain.Setting;
 import ccc.domain.Template;
+import ccc.domain.Setting.Name;
 import ccc.services.AuditLogLocal;
 import ccc.services.ContentManagerLocal;
 import ccc.services.ContentManagerRemote;
@@ -279,5 +281,85 @@ public final class ContentManagerEJB
         final Resource resource = lookup(resourceid);
         resource.name(new ResourceName(name));
         _audit.recordRename(resource);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void createDisplayTemplate(final Template template) {
+        _em.persist(template);
+        templatesFolder().add(template);
+        _audit.recordCreate(template);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void createAssetRoot() {
+        final Maybe<Folder> assetRoot = _qm.findAssetsRoot();
+
+        if (!assetRoot.isDefined()) {
+            final Folder root = new Folder(PredefinedResourceNames.ASSETS);
+            final Folder templates = new Folder(new ResourceName("templates"));
+            _em.persist(templates);
+            _em.persist(root);
+            _em.persist(
+                new Setting(Name.ASSETS_ROOT_FOLDER_ID, root.id().toString()));
+            root.add(templates);
+
+            _audit.recordCreate(root);
+            _audit.recordCreate(templates);
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Template> lookupTemplates() {
+        return templatesFolder().entries(Template.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Template createOrRetrieve(final Template template) {
+
+        final Folder templatesFolder = templatesFolder();
+
+        for (final Template t : templatesFolder.entries(Template.class)) {
+            if (template.equals(t)) {
+                return t;
+            }
+        }
+
+        _em.persist(template);
+        templatesFolder.add(template);
+        _audit.recordCreate(template);
+        return template;
+    }
+
+    private Folder templatesFolder() {
+        final Folder assetRoot = _qm.findAssetsRoot().get();
+        final Folder templates =
+            assetRoot
+                .navigateTo(new ResourcePath("/templates"))
+                .as(Folder.class);
+        return templates;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void update(final Template t) {
+        final Template current = _em.find(Template.class, t.id());
+        current.title(t.title());
+        current.description(t.description());
+        current.definition(t.definition());
+        current.body(t.body());
+        _audit.recordUpdate(current);
     }
 }
