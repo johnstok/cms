@@ -110,45 +110,4 @@ public class UploadFileDialog extends AbstractBaseDialog {
         ));
         add(_form);
     }
-
-
-//    /**
-//     * Takes care of the validation.
-//     *
-//     * @author Civic Computing Ltd
-//     */
-//    private final class FileUploadFormHandler implements FormHandler {
-//
-//        public void onSubmit(final FormSubmitEvent event) {
-//            final StringBuffer errorText = new StringBuffer();
-//            if (_fileName.getFileName().length() == 0) {
-//                errorText.append(_constants.fileName());
-//                errorText.append("\n");
-//            }
-//            if (_description.getText().length() == 0) {
-//                errorText.append(_constants.description());
-//                errorText.append("\n");
-//            }
-//            if (_title.getText().length() == 0) {
-//                errorText.append(_constants.title());
-//                errorText.append("\n");
-//            }
-//            if (_upload.getFilename() == null
-//                    || _upload.getFilename().length() == 0) {
-//                errorText.append(_constants.file());
-//                errorText.append("\n");
-//            }
-//            if (errorText.length() > 0) {
-//                Globals.alert("Following fields must not be empty: \n"
-//                    +errorText.toString());
-//                event.setCancelled(true);
-//            }
-//        }
-//
-//        public void onSubmitComplete(final FormSubmitCompleteEvent event) {
-//            Globals.alert(event.getResults());
-//            _tree.fireEvent(Events.SelectionChange);
-//            hide();
-//        }
-//    }
 }
