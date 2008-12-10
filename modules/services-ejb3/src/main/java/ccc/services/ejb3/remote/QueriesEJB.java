@@ -31,7 +31,7 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.services.AssetManagerLocal;
+import ccc.services.ContentManagerLocal;
 import ccc.services.QueryManagerLocal;
 import ccc.services.ResourceDAOLocal;
 import ccc.services.UserManagerLocal;
@@ -65,10 +65,10 @@ public final class QueriesEJB
 
     @EJB(name="QueryManager", beanInterface=QueryManagerLocal.class)
     private QueryManagerLocal _qm;
+    @EJB(name="ContentManager", beanInterface=ContentManagerLocal.class)
+    private ContentManagerLocal _content;
     @EJB(name="UserManager", beanInterface=UserManagerLocal.class)
     private UserManagerLocal _users;
-    @EJB(name="AssetManager", beanInterface=AssetManagerLocal.class)
-    private AssetManagerLocal _assets;
     @EJB(name="ResourceDAO", beanInterface=ResourceDAOLocal.class)
     private ResourceDAOLocal _resources;
 
@@ -159,7 +159,7 @@ public final class QueriesEJB
     /** {@inheritDoc} */
     @Override
     public Collection<TemplateDelta> templates() {
-        return deltaTemplates(_assets.lookupTemplates());
+        return deltaTemplates(_content.lookupTemplates());
     }
 
     /*

@@ -33,7 +33,6 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.services.AssetManagerLocal;
 import ccc.services.ContentManagerLocal;
 import ccc.services.QueryManagerLocal;
 import ccc.services.ResourceDAOLocal;
@@ -70,8 +69,6 @@ public class CommandsEJB
     private QueryManagerLocal _qm;
     @EJB(name="UserManager", beanInterface=UserManagerLocal.class)
     private UserManagerLocal _users;
-    @EJB(name="AssetManager", beanInterface=AssetManagerLocal.class)
-    private AssetManagerLocal _assets;
     @EJB(name="ContentManager", beanInterface=ContentManagerLocal.class)
     private ContentManagerLocal _content;
     @EJB(name="ResourceDAO", beanInterface=ResourceDAOLocal.class)
@@ -159,7 +156,7 @@ public class CommandsEJB
             delta._body,
             delta._definition);
 
-        _assets.createDisplayTemplate(t);
+        _content.createDisplayTemplate(t);
 
         return map(t);
 
@@ -290,7 +287,7 @@ public class CommandsEJB
         t.version(delta._version);
         t.id(UUID.fromString(delta._id));
 
-        _assets.update(t);
+        _content.update(t);
 
         return map(t); // FIXME: Should be returned by _assets.update
     }

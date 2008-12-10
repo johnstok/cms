@@ -12,6 +12,7 @@
 
 package ccc.services.ejb3;
 
+import static ccc.domain.PredefinedResourceNames.*;
 import static org.easymock.EasyMock.*;
 
 import java.util.Collections;
@@ -508,6 +509,128 @@ public final class ContentManagerEJBTest extends TestCase {
         verify(_em, _qm, _al);
         assertEquals("baz", resource.name().toString());
     }
+
+    //--
+
+    /**
+     * Test.
+     */
+    public void testCreateOrRetrieveTemplate() {
+
+        // ARRANGE
+        final Folder assetRoot = new Folder(PredefinedResourceNames.ASSETS);
+        final Folder templateFolder = new Folder(new ResourceName("templates"));
+        final Template t =
+            new Template("title", "description", "body", "<fields/>");
+        assetRoot.add(templateFolder);
+
+        expect(_qm.findAssetsRoot())
+            .andReturn(new Maybe<Folder>(assetRoot)).times(2);
+        _em.persist(t);
+        _al.recordCreate(t);
+        replay(_em, _qm, _al);
+
+
+        // ACT
+        final Template created = _am.createOrRetrieve(t);
+        final Template retrieved = _am.createOrRetrieve(t);
+
+
+        // ASSERT
+        verify(_em, _qm, _al);
+        assertSame(t, created);
+        assertSame(t, retrieved);
+        assertTrue(
+            "Templates folder should contain template.",
+            templateFolder.entries().contains(t));
+    }
+
+    /**
+     * Test.
+     */
+    public void testLookupTemplates() {
+
+        // ARRANGE
+        final Folder assetRoot = new Folder(PredefinedResourceNames.ASSETS);
+        final Folder templateFolder = new Folder(new ResourceName("templates"));
+        final Template expected =
+            new Template("title", "description", "body", "<fields/>");
+        assetRoot.add(templateFolder);
+        templateFolder.add(expected);
+
+        expect(_qm.findAssetsRoot()).andReturn(new Maybe<Folder>(assetRoot));
+        replay(_qm, _em, _al);
+
+
+        // ACT
+        final List<Template> templates = _am.lookupTemplates();
+
+
+        // ASSERT
+        verify(_em, _qm, _al);
+        assertEquals(1, templates.size());
+        assertEquals(expected, templates.get(0));
+    }
+
+    /**
+     * Test.
+     */
+    public void testCreateDisplayTemplateCreatesADisplayTemplate() {
+
+        // ARRANGE
+        final Folder assetRoot = new Folder(PredefinedResourceNames.ASSETS);
+        final Folder templateFolder = new Folder(new ResourceName("templates"));
+        assetRoot.add(templateFolder);
+        final Template t =
+            new Template("title", "description", "body", "<fields/>");
+
+        expect(_qm.findAssetsRoot()).andReturn(new Maybe<Folder>(assetRoot));
+        _em.persist(t);
+        _al.recordCreate(t);
+        replay(_em, _qm, _al);
+
+
+        // ACT
+        _am.createDisplayTemplate(t);
+
+        // ASSERT
+        verify(_em, _qm, _al);
+        assertEquals(1, templateFolder.size());
+        assertEquals(t, templateFolder.entries().get(0));
+    }
+
+    /**
+     * Test.
+     */
+    public void testCreateAssetRoot() {
+
+        // ARRANGE
+        expect(_qm.findAssetsRoot()).andReturn(new Maybe<Folder>());
+
+        final Capture<Folder> assetsRoot = new Capture<Folder>();
+        _em.persist(capture(assetsRoot));
+        _em.persist(isA(Folder.class));
+        _em.persist(isA(Setting.class));
+
+        _al.recordCreate(isA(Folder.class));
+        _al.recordCreate(isA(Folder.class));
+
+        replay(_em, _qm, _al);
+
+
+        // ACT
+        _am.createAssetRoot();
+
+
+        // VERIFY
+        verify(_qm, _em, _al);
+        assertEquals(ASSETS, assetsRoot.getValue().name());
+        assertEquals(
+            "templates",
+            assetsRoot.getValue()
+                .entries().get(0).as(Folder.class).name().toString());
+    }
+    //--
 
 
     /** {@inheritDoc} */
