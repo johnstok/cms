@@ -25,10 +25,10 @@ import ccc.domain.CCCException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.User;
-import ccc.services.AuditLogLocal;
-import ccc.services.QueryManagerLocal;
+import ccc.services.AuditLog;
+import ccc.services.QueryManager;
 import ccc.services.ResourceDAOLocal;
-import ccc.services.UserManagerLocal;
+import ccc.services.UserManager;
 
 
 /**
@@ -41,12 +41,9 @@ import ccc.services.UserManagerLocal;
 @Local(ResourceDAOLocal.class)
 public class ResourceDAO implements ResourceDAOLocal {
 
-    @EJB(name="UserManager", beanInterface=UserManagerLocal.class)
-    private UserManagerLocal _users;
-    @EJB(name="QueryManager", beanInterface=QueryManagerLocal.class)
-    private QueryManagerLocal _queries;
-    @EJB(name="AuditLog", beanInterface=AuditLogLocal.class)
-    private AuditLogLocal _audit;
+    @EJB(name="UserManager")  private UserManager  _users;
+    @EJB(name="QueryManager") private QueryManager _queries;
+    @EJB(name="AuditLog")     private AuditLog     _audit;
 
     /** Constructor. */
     @SuppressWarnings("unused") private ResourceDAO() { /* NO-OP */ }
@@ -58,9 +55,9 @@ public class ResourceDAO implements ResourceDAOLocal {
      * @param queryManager QueryManager service.
      * @param audit AuditLog service.
      */
-    public ResourceDAO(final UserManagerLocal userDAO,
-                       final QueryManagerLocal queryManager,
-                       final AuditLogLocal audit) {
+    public ResourceDAO(final UserManager userDAO,
+                       final QueryManager queryManager,
+                       final AuditLog audit) {
         _users = userDAO;
         _queries = queryManager;
         _audit = audit;

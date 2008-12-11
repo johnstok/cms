@@ -30,7 +30,7 @@ import ccc.domain.Template;
  *
  * @author Civic Computing Ltd
  */
-interface ContentManager {
+public interface ContentManager {
 
     /**
      * Lookup a resource, given its absolute path.
@@ -54,11 +54,6 @@ interface ContentManager {
      * @return The root folder for content.
      */
     Folder lookupRoot();
-
-    /**
-     * Create the root folder for content.
-     */
-    void createRoot();
 
     /**
      * Create a folder in the specified folder.
@@ -96,15 +91,6 @@ interface ContentManager {
     void setDefaultTemplate(Template newDefault);
 
     /**
-     * For migration testing. Lookup a Page, given its path.
-     * Initialises paragraph collection and template.
-     *
-     * @param path The absolute path to the resource.
-     * @return The resource.
-     */
-    Page eagerPageLookup(ResourcePath path);
-
-    /**
      * Updates resource with given template.
      *
      * @param resourceId UUID for the resource.
@@ -115,7 +101,7 @@ interface ContentManager {
     /**
      * Create an Alias in the specified folder.
      *
-     * @param folderId The {@link UUID} for the containing folder/
+     * @param folderId The {@link UUID} for the containing folder.
      * @param alias The Alias to be created.
      */
     void create(UUID folderId, Alias alias);
@@ -147,14 +133,10 @@ interface ContentManager {
     /**
      * Creates a new template.
      *
+     * @param folderId The {@link UUID} for the containing folder.
      * @param template The template to create
      */
-    void createDisplayTemplate(Template template);
-
-    /**
-     * Create the root folder for assets.
-     */
-    void createAssetRoot();
+    void createDisplayTemplate(UUID folderId, Template template);
 
     /**
      * Look up all templates available.
@@ -162,16 +144,6 @@ interface ContentManager {
      * @return A list of templates available in the CCC.
      */
     List<Template> lookupTemplates();
-
-    /**
-     * Create or retrieve a template. First try to look up this template, if it
-     * exists return the current template. Otherwise persist the supplied
-     * template.
-     *
-     * @param template An copy of the template stored in memory.
-     * @return The current version of the template.
-     */
-    Template createOrRetrieve(Template template);
 
     /**
      * Update a template.

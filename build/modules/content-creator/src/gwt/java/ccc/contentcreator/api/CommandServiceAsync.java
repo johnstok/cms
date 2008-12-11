@@ -60,11 +60,13 @@ public interface CommandServiceAsync {
 
     void createFolder(String parentId, String name, AsyncCallback<ResourceSummary> callback);
 
-    void createUser(UserDelta delta, AsyncCallback<Void> callback);
+    void createUser(UserDelta delta, AsyncCallback<UserSummary> callback);
 
-    void createPage(String parentId, PageDelta delta, String templateId, AsyncCallback<Void> callback);
+    void createPage(String parentId, PageDelta delta, String templateId, AsyncCallback<ResourceSummary> callback);
 
     void createTemplate(String parentId, TemplateDelta delta, AsyncCallback<ResourceSummary> callback);
+
+    void createRoot(String name, AsyncCallback<ResourceSummary> callback);
 
 
 

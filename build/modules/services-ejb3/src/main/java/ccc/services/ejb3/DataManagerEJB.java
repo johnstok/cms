@@ -38,8 +38,8 @@ import ccc.domain.CCCException;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.Folder;
-import ccc.services.AuditLogLocal;
-import ccc.services.DataManagerLocal;
+import ccc.services.AuditLog;
+import ccc.services.DataManager;
 
 
 /**
@@ -52,8 +52,8 @@ import ccc.services.DataManagerLocal;
  */
 @Stateless(name="DataManager")
 @TransactionAttribute(REQUIRED)
-@Local(DataManagerLocal.class)
-public class DataManagerEJB implements DataManagerLocal {
+@Local(DataManager.class)
+public class DataManagerEJB implements DataManager {
 
     @Resource(mappedName = "java:/ccc")
     private DataSource _datasource;
@@ -61,8 +61,7 @@ public class DataManagerEJB implements DataManagerLocal {
     @PersistenceContext(unitName = "ccc-persistence")
     private EntityManager _entityManager;
 
-    @EJB(name="AuditLog", beanInterface=AuditLogLocal.class)
-    private AuditLogLocal _audit;
+    @EJB(name="AuditLog") private AuditLog _audit;
 
     /**
      * Constructor.
@@ -79,7 +78,7 @@ public class DataManagerEJB implements DataManagerLocal {
      */
     public DataManagerEJB(final DataSource ds,
                           final EntityManager em,
-                          final AuditLogLocal auditLog) {
+                          final AuditLog auditLog) {
         DBC.require().notNull(ds);
         DBC.require().notNull(em);
         DBC.require().notNull(auditLog);

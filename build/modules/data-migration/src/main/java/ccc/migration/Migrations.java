@@ -15,7 +15,6 @@ import java.io.ByteArrayInputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.NodeList;
@@ -23,15 +22,15 @@ import org.w3c.dom.NodeList;
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
 import ccc.commons.XHTML;
-import ccc.domain.Folder;
-import ccc.domain.Page;
-import ccc.domain.Paragraph;
-import ccc.domain.Resource;
-import ccc.domain.Template;
-import ccc.domain.User;
-import ccc.services.ContentManagerRemote;
-import ccc.services.ServiceNames;
-import ccc.services.UserManagerRemote;
+import ccc.services.api.Commands;
+import ccc.services.api.PageDelta;
+import ccc.services.api.ParagraphDelta;
+import ccc.services.api.Queries;
+import ccc.services.api.ResourceSummary;
+import ccc.services.api.ServiceNames;
+import ccc.services.api.TemplateDelta;
+import ccc.services.api.UserDelta;
+import ccc.services.api.UserSummary;
 
 /**
  * Data migration from CCC6 to CCC7.
@@ -44,13 +43,17 @@ public class Migrations {
     private final LegacyDBQueries _queries;
     private final Registry _registry = new JNDI();
     /** _templates : Map. */
-    private final Map<String, Template> _templates =
-        new HashMap<String, Template>();
+    private final Map<String, ResourceSummary> _templates =
+        new HashMap<String, ResourceSummary>();
 
-    private final Map<Integer, User> _users = new HashMap<Integer, User>();
+    private final Map<Integer, UserSummary> _users =
+        new HashMap<Integer, UserSummary>();
 
     private static Logger log =
         Logger.getLogger(ccc.migration.Migrations.class);
+    private ResourceSummary assetRoot;
+    private ResourceSummary templateFolder;
+    private ResourceSummary contentRoot;
 
     /**
      * Constructor.
@@ -67,25 +70,30 @@ public class Migrations {
      *
      */
     public void migrate() {
-        // Create a root assets folder.
-        contentManager().createAssetRoot();
-
-        // Create a root content folder.
-        contentManager().createRoot();
+        createDefaultFolderStructure();
 
         // Migrate users
         migrateUsers(_queries);
 
         // Walk the tree migrating each resource
-        migrateChildren(
-            contentManager().lookupRoot().id().toString(), 0, _queries);
+        migrateChildren(contentRoot._id, 0, _queries);
+    }
+
+    private void createDefaultFolderStructure() {
+        assetRoot = commands().createRoot("assets");
+        templateFolder = commands().createFolder(assetRoot._id, "templates");
+        contentRoot = commands().createRoot("content");
     }
 
     private void migrateUsers(final LegacyDBQueries queries) {
-        final List<UserBean> mus = queries.selectUsers();
-        for (final UserBean mu : mus) {
-            final User u = userManager().createUser(mu.user(), mu.password());
-            _users.put(mu.legacyId(), u);
+        final Map<Integer, UserDelta> mus = queries.selectUsers();
+        for (final Map.Entry<Integer, UserDelta> mu : mus.entrySet()) {
+            try {
+                final UserSummary u = commands().createUser(mu.getValue());
+                _users.put(mu.getKey(), u);
+            } catch (final RuntimeException e) {
+                log.warn("Failed to create user: "+e.getMessage());
+            }
         }
     }
 
@@ -121,17 +129,25 @@ public class Migrations {
 
         try {
             log.debug("FOLDER");
-            Folder child = new Folder(r.name());
-            migrateTemplate(r, child);
-            migratePublish(r, child);
-            contentManager().create(UUID.fromString(parentFolderId), child);
 
-            final String childId = child.id().toString();
-            child = null;
-            migrateChildren(childId, r.contentId(), _queries);
+            final ResourceSummary rs =
+                commands().createFolder(parentFolderId, r.name());
+
+            final String templateId = migrateTemplate(r);
+            if (null!=templateId) {
+                commands()
+                    .updateResourceTemplate(rs._id, rs._version, templateId);
+            }
+
+            final String publishedBy = migratePublish(r);
+            if (null!=publishedBy) {
+                commands().publish(rs._id); // FIXME: Publisher is wrong.
+            }
+
+            migrateChildren(rs._id, r.contentId(), _queries);
 
         } catch (final Exception e) {
-            log.error(e.getMessage());
+            log.error("Unexpected error", e);
         }
     }
 
@@ -140,40 +156,69 @@ public class Migrations {
 
         try {
             log.debug("PAGE");
-            final Page childPage = new Page(r.name());
-            migrateTemplate(r, childPage);
-            migratePublish(r, childPage);
+
+            final PageDelta delta = new PageDelta();
+
+            delta._name = r.name();
+            delta._title = r.name();
 
             final Map<String, StringBuffer> paragraphs =
                 migrateParagraphs(r.contentId());
             for (final Map.Entry<String, StringBuffer> para
                 : paragraphs.entrySet()) {
-                childPage.addParagraph(
-                    Paragraph.fromText(
-                        para.getKey(), para.getValue().toString()));
+                final ParagraphDelta pd = new ParagraphDelta();
+                pd._name = para.getKey();
+                pd._textValue = para.getValue().toString();
+                pd._type = "TEXT";
+                delta._paragraphs.add(pd);
             }
 
-            contentManager().create(UUID.fromString(parentFolderId), childPage);
+            final ResourceSummary rs =
+                commands().createPage(parentFolderId, delta, null);
+
+
+            final String templateId = migrateTemplate(r);
+            if (null!=templateId) {
+                commands()
+                    .updateResourceTemplate(rs._id, rs._version, templateId);
+            }
+
+
+            final String publishedBy = migratePublish(r);
+            if (null!=publishedBy) {
+                commands().publish(rs._id); // FIXME: Publisher is wrong.
+            }
 
         } catch (final Exception e) {
-            log.error(e.getMessage());
+            log.error("Unexpected error: "+e.getMessage());
         }
     }
 
-    private void migrateTemplate(final ResourceBean r, final Resource child) {
+    private String migrateTemplate(final ResourceBean r) {
+
         final String templateName = r.displayTemplate();
-        if (null != templateName) {
-            Template template =
-                (_templates.containsKey(templateName))
-                ? _templates.get(templateName)
-                    : new Template(templateName,
-                        "No description.", "Empty template!", "<fields/>");
-                template = contentManager().createOrRetrieve(template);
-                child.template(template);
-                if (!_templates.containsKey(templateName)) {
-                    _templates.put(templateName, template);
-                }
+
+        if (null == templateName) { // Resource has no template
+            return null;
         }
+
+        if (_templates.containsKey(templateName)) { // Template already migrated
+            return _templates.get(templateName)._id;
+        }
+
+        final TemplateDelta t = new TemplateDelta();
+        t._body = "Empty template!";
+        t._definition = "<fields/>";
+        t._description = "No description.";
+        t._name = r.displayTemplate();
+        t._title = r.displayTemplate();
+
+        final ResourceSummary ts =
+            commands().createTemplate(templateFolder._id, t);
+
+        _templates.put(templateName, ts);
+
+        return ts._id;
     }
 
     /**
@@ -211,21 +256,29 @@ public class Migrations {
     }
 
 
-    private void migratePublish(final ResourceBean r, final Resource child) {
-        // set publish user
+    private String migratePublish(final ResourceBean r) {
+
         if (r.isPublished()) {
             final Integer legacyUserId =
                 _queries.selectUserFromLog(r.contentId(),
                                            r.legacyVersion(),
                                            "CHANGE STATUS",
                                            "Changed Status to  PUBLISHED");
+
             if (legacyUserId != null) {
-                final User user =_users.get(legacyUserId);
-                if (user != null) {
-                    child.publish(user);
-                }
+                final UserSummary user =_users.get(legacyUserId);
+                return (null==user)
+                    ? null
+                    : user._id;
+            } else {
+                log.warn("Unable to determine publisher for "+r.contentId());
+                return null;
             }
+
+        } else {
+            return null;
         }
+
     }
 
     /**
@@ -237,7 +290,8 @@ public class Migrations {
 
         for (final Map.Entry<String, StringBuffer> para : map.entrySet()) {
             final String html =
-                "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">"
+                "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" "
+                + "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">"
                 + "<html xmlns=\"http://www.w3.org/1999/xhtml\">"
                 + "<head><title>Title goes here</title></head>"
                 + "<body>"
@@ -262,18 +316,18 @@ public class Migrations {
     /**
      * Accessor for the content manager.
      *
-     * @return A {@link ContentManager}.
+     * @return A {@link Commands}.
      */
-    ContentManagerRemote contentManager() {
-        return _registry.get(ServiceNames.CONTENT_MANAGER_REMOTE);
+    Commands commands() {
+        return _registry.get(ServiceNames.PUBLIC_COMMANDS);
     }
 
     /**
      * Accessor for the user manager.
      *
-     * @return An {@link UserManager}.
+     * @return An {@link Queries}.
      */
-    UserManagerRemote userManager() {
-        return _registry.get(ServiceNames.USER_MANAGER_REMOTE);
+    Queries queries() {
+        return _registry.get(ServiceNames.PUBLIC_QUERIES);
     }
 }

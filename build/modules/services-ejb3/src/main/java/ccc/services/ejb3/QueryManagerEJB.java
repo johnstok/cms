@@ -30,7 +30,7 @@ import ccc.domain.Folder;
 import ccc.domain.ResourceName;
 import ccc.domain.Setting;
 import ccc.domain.Setting.Name;
-import ccc.services.QueryManagerLocal;
+import ccc.services.QueryManager;
 
 
 /**
@@ -40,8 +40,8 @@ import ccc.services.QueryManagerLocal;
  */
 @Stateless(name="QueryManager")
 @TransactionAttribute(REQUIRED)
-@Local(QueryManagerLocal.class)
-public final class QueryManagerEJB implements QueryManagerLocal {
+@Local(QueryManager.class)
+public final class QueryManagerEJB implements QueryManager {
 
     @PersistenceContext(unitName = "ccc-persistence")
     private EntityManager _em;
@@ -94,33 +94,13 @@ public final class QueryManagerEJB implements QueryManagerLocal {
     /** {@inheritDoc} */
     @Override
     public Folder findContentRoot() {
-        final Setting rootId = findSetting(Name.CONTENT_ROOT_FOLDER_ID);
-
-        if (rootId != null) {
-            final Folder root =
-                _em.find(
-                    Folder.class,
-                    UUID.fromString(rootId.value()));
-            return root;
-        }
-
-        return null;
+        return lookupRoot(new ResourceName("content"));
     }
 
     /** {@inheritDoc} */
     @Override
     public Folder findAssetsRoot() {
-        final Setting rootId = findSetting(Name.ASSETS_ROOT_FOLDER_ID);
-
-        if (rootId != null) {
-            final Folder root =
-                _em.find(
-                    Folder.class,
-                    UUID.fromString(rootId.value()));
-            return root;
-        }
-
-        return null;
+        return lookupRoot(new ResourceName("assets"));
     }
 
     /** {@inheritDoc} */

@@ -26,7 +26,7 @@ import ccc.domain.CCCException;
 import ccc.domain.Folder;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
-import ccc.services.QueryManagerLocal;
+import ccc.services.QueryManager;
 import ccc.services.StatefulReader;
 
 
@@ -47,8 +47,7 @@ public final class StatefulReaderEJB
         type=PersistenceContextType.EXTENDED)
     private EntityManager _em;
 
-    @EJB(name="QueryManager", beanInterface=QueryManagerLocal.class)
-    private QueryManagerLocal _qm;
+    @EJB(name="QueryManager") private QueryManager _qm;
 
     /**
      * Constructor.
@@ -63,7 +62,7 @@ public final class StatefulReaderEJB
      * @param queryManager A CCC QueryManager.
      */
     StatefulReaderEJB(final EntityManager entityManager,
-                      final QueryManagerLocal queryManager) {
+                      final QueryManager queryManager) {
         _em = entityManager;
         _qm = queryManager;
     }

@@ -12,7 +12,6 @@
 
 package ccc.services.ejb3;
 
-import static ccc.domain.PredefinedResourceNames.*;
 import static org.easymock.EasyMock.*;
 
 import java.util.Collections;
@@ -21,9 +20,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import junit.framework.TestCase;
-
-import org.easymock.Capture;
-
 import ccc.domain.Alias;
 import ccc.domain.CCCException;
 import ccc.domain.Folder;
@@ -34,11 +30,10 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.ResourceType;
-import ccc.domain.Setting;
 import ccc.domain.Template;
-import ccc.services.AuditLogLocal;
-import ccc.services.ContentManagerLocal;
-import ccc.services.QueryManagerLocal;
+import ccc.services.AuditLog;
+import ccc.services.ContentManager;
+import ccc.services.QueryManager;
 
 
 /**
@@ -146,52 +141,6 @@ public final class ContentManagerEJBTest extends TestCase {
                 .entries().get(0).as(Folder.class)
                 .entries().get(1).name().toString());
 
-    }
-
-    /**
-     * Test.
-     */
-    public void testCreateRoot() {
-
-        // ARRANGE
-        _al.recordCreate(isA(Folder.class));
-        expect(_qm.findContentRoot()).andReturn(null);
-
-        final Capture<Folder> contentRoot = new Capture<Folder>();
-        final Capture<Setting> rootSetting = new Capture<Setting>();
-        _em.persist(capture(contentRoot));
-        _em.persist(capture(rootSetting));
-        replay(_em, _qm, _al);
-
-
-        // ACT
-        _cm.createRoot();
-
-
-        // ASSERT
-        verify(_em, _qm, _al);
-        // Multiple capture doesn't work?!
-//        assertEquals(CONTENT, contentRoot.getValue().name());
-    }
-
-    /**
-     * Test.
-     */
-    public void testCreateRootIsIdempotent() {
-
-        // ARRANGE
-        final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
-
-        expect(_qm.findContentRoot()).andReturn(contentRoot);
-        replay(_em, _qm, _al);
-
-
-        // ACT
-        _cm.createRoot();
-
-
-        // ASSERT
-        verify(_em, _qm, _al);
     }
 
     /**
@@ -510,54 +459,17 @@ public final class ContentManagerEJBTest extends TestCase {
     }
 
     //--
-
-    /**
-     * Test.
-     */
-    public void testCreateOrRetrieveTemplate() {
-
-        // ARRANGE
-        final Folder assetRoot = new Folder(PredefinedResourceNames.ASSETS);
-        final Folder templateFolder = new Folder(new ResourceName("templates"));
-        final Template t =
-            new Template("title", "description", "body", "<fields/>");
-        assetRoot.add(templateFolder);
-
-        expect(_qm.findAssetsRoot())
-            .andReturn(assetRoot).times(2);
-        _em.persist(t);
-        _al.recordCreate(t);
-        replay(_em, _qm, _al);
-
-
-        // ACT
-        final Template created = _cm.createOrRetrieve(t);
-        final Template retrieved = _cm.createOrRetrieve(t);
-
-
-        // ASSERT
-        verify(_em, _qm, _al);
-        assertSame(t, created);
-        assertSame(t, retrieved);
-        assertTrue(
-            "Templates folder should contain template.",
-            templateFolder.entries().contains(t));
-    }
-
     /**
      * Test.
      */
     public void testLookupTemplates() {
 
         // ARRANGE
-        final Folder assetRoot = new Folder(PredefinedResourceNames.ASSETS);
-        final Folder templateFolder = new Folder(new ResourceName("templates"));
         final Template expected =
             new Template("title", "description", "body", "<fields/>");
-        assetRoot.add(templateFolder);
-        templateFolder.add(expected);
 
-        expect(_qm.findAssetsRoot()).andReturn(assetRoot);
+        expect(_qm.list("allTemplates", Template.class))
+            .andReturn(Collections.singletonList(expected));
         replay(_qm, _em, _al);
 
 
@@ -583,60 +495,30 @@ public final class ContentManagerEJBTest extends TestCase {
         final Template t =
             new Template("title", "description", "body", "<fields/>");
 
-        expect(_qm.findAssetsRoot()).andReturn(assetRoot);
+        expect(_em.find(Resource.class, templateFolder.id()))
+            .andReturn(templateFolder);
         _em.persist(t);
         _al.recordCreate(t);
         replay(_em, _qm, _al);
 
 
         // ACT
-        _cm.createDisplayTemplate(t);
+        _cm.createDisplayTemplate(templateFolder.id(), t);
 
         // ASSERT
         verify(_em, _qm, _al);
         assertEquals(1, templateFolder.size());
         assertEquals(t, templateFolder.entries().get(0));
     }
-
-    /**
-     * Test.
-     */
-    public void testCreateAssetRoot() {
-
-        // ARRANGE
-        expect(_qm.findAssetsRoot()).andReturn(null);
-
-        final Capture<Folder> assetsRoot = new Capture<Folder>();
-        _em.persist(capture(assetsRoot));
-        _em.persist(isA(Folder.class));
-        _em.persist(isA(Setting.class));
-//
-        _al.recordCreate(isA(Folder.class));
-        _al.recordCreate(isA(Folder.class));
-
-        replay(_em, _qm, _al);
-
-
-        // ACT
-        _cm.createAssetRoot();
-
-
-        // VERIFY
-        verify(_qm, _em, _al);
-        assertEquals(ASSETS, assetsRoot.getValue().name());
-        assertEquals(
-            "templates",
-            assetsRoot.getValue()
-                .entries().get(0).as(Folder.class).name().toString());
-    }
+    //--
 
 
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {
         _em = createStrictMock(EntityManager.class);
-        _qm = createStrictMock(QueryManagerLocal.class);
-        _al = createStrictMock(AuditLogLocal.class);
+        _qm = createStrictMock(QueryManager.class);
+        _al = createStrictMock(AuditLog.class);
         _cm = new ContentManagerEJB(_em, _qm, _al);
     }
 
@@ -650,7 +532,7 @@ public final class ContentManagerEJBTest extends TestCase {
     }
 
     private EntityManager _em;
-    private QueryManagerLocal _qm;
-    private AuditLogLocal _al;
-    private ContentManagerLocal _cm;
+    private QueryManager _qm;
+    private AuditLog _al;
+    private ContentManager _cm;
 }

@@ -37,8 +37,8 @@ import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.ResourceName;
-import ccc.services.AuditLogLocal;
-import ccc.services.DataManagerLocal;
+import ccc.services.AuditLog;
+import ccc.services.DataManager;
 
 
 /**
@@ -94,10 +94,10 @@ public class DataManagerEJBTest extends TestCase {
         expect(em.find(Folder.class, assetRoot.id())).andReturn(assetRoot);
         replay(em);
 
-        final AuditLogLocal al = createStrictMock(AuditLogLocal.class);
+        final AuditLog al = createStrictMock(AuditLog.class);
         al.recordCreate(file);
 
-        final DataManagerLocal dm = new DataManagerEJB(ds, em, al);
+        final DataManager dm = new DataManagerEJB(ds, em, al);
 
         // ACT
         dm.createFile(file, assetRoot.id(), dummyStream);
@@ -136,10 +136,10 @@ public class DataManagerEJBTest extends TestCase {
         expect(ds.getConnection()).andReturn(c);
         replay(ds);
 
-        final DataManagerLocal dm =
+        final DataManager dm =
             new DataManagerEJB(ds,
                                dummy(EntityManager.class),
-                               dummy(AuditLogLocal.class));
+                               dummy(AuditLog.class));
 
         // ACT
         dm.create(dummyStream);
@@ -183,10 +183,10 @@ public class DataManagerEJBTest extends TestCase {
         expect(ds.getConnection()).andReturn(c);
         replay(ds);
 
-        final DataManagerLocal dm =
+        final DataManager dm =
             new DataManagerEJB(ds,
                                dummy(EntityManager.class),
-                               dummy(AuditLogLocal.class));
+                               dummy(AuditLog.class));
 
         // ACT
         dm.retrieve(d, os);
@@ -212,10 +212,10 @@ public class DataManagerEJBTest extends TestCase {
 
         createDataTable(ds);
 
-        final DataManagerLocal dm =
+        final DataManager dm =
             new DataManagerEJB(ds,
                                dummy(EntityManager.class),
-                               dummy(AuditLogLocal.class));
+                               dummy(AuditLog.class));
 
         // ACT
         dm.create(dummyStream);
@@ -255,10 +255,10 @@ public class DataManagerEJBTest extends TestCase {
 
         createDataTable(ds);
 
-        final DataManagerLocal dm =
+        final DataManager dm =
             new DataManagerEJB(ds,
                                dummy(EntityManager.class),
-                               dummy(AuditLogLocal.class));
+                               dummy(AuditLog.class));
         final Data d = dm.create(dummyStream);
 
         // ACT

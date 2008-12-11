@@ -19,7 +19,7 @@ import ccc.domain.Resource;
  *
  * @author Civic Computing Ltd.
  */
-interface AuditLog {
+public interface AuditLog {
 
     /**
      * Record that a resource was locked.

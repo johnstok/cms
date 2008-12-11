@@ -31,10 +31,10 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.services.ContentManagerLocal;
-import ccc.services.QueryManagerLocal;
+import ccc.services.ContentManager;
+import ccc.services.QueryManager;
 import ccc.services.ResourceDAOLocal;
-import ccc.services.UserManagerLocal;
+import ccc.services.UserManager;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.PageDelta;
@@ -63,14 +63,10 @@ public final class QueriesEJB
     @PersistenceContext(unitName = "ccc-persistence")
     private EntityManager _entityManager;
 
-    @EJB(name="QueryManager", beanInterface=QueryManagerLocal.class)
-    private QueryManagerLocal _qm;
-    @EJB(name="ContentManager", beanInterface=ContentManagerLocal.class)
-    private ContentManagerLocal _content;
-    @EJB(name="UserManager", beanInterface=UserManagerLocal.class)
-    private UserManagerLocal _users;
-    @EJB(name="ResourceDAO", beanInterface=ResourceDAOLocal.class)
-    private ResourceDAOLocal _resources;
+    @EJB(name="QueryManager")   private QueryManager     _qm;
+    @EJB(name="ContentManager") private ContentManager   _content;
+    @EJB(name="UserManager")    private UserManager      _users;
+    @EJB(name="ResourceDAO")    private ResourceDAOLocal _resources;
 
     /**
      * Constructor.

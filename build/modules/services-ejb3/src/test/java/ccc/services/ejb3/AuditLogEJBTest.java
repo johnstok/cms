@@ -23,12 +23,12 @@ import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.User;
-import ccc.services.AuditLogLocal;
-import ccc.services.UserManagerLocal;
+import ccc.services.AuditLog;
+import ccc.services.UserManager;
 
 
 /**
- * Tests for the {@link AuditLogLocal} class.
+ * Tests for the {@link AuditLog} class.
  *
  * @author Civic Computing Ltd.
  */
@@ -43,7 +43,7 @@ public class AuditLogEJBTest
 
         // ARRANGE
         replay(_em, _um);
-        final AuditLogLocal al = new AuditLogEJB(_em, _um);
+        final AuditLog al = new AuditLogEJB(_em, _um);
 
         // ACT
         try {
@@ -70,7 +70,7 @@ public class AuditLogEJBTest
         expect(_um.loggedInUser()).andReturn(_actor);
         replay(_um);
 
-        final AuditLogLocal al = new AuditLogEJB(_em, _um);
+        final AuditLog al = new AuditLogEJB(_em, _um);
         final Page p = new Page("foo");
         p.lock(_actor);
 
@@ -98,7 +98,7 @@ public class AuditLogEJBTest
         expect(_um.loggedInUser()).andReturn(_actor);
         replay(_um);
 
-        final AuditLogLocal al = new AuditLogEJB(_em, _um);
+        final AuditLog al = new AuditLogEJB(_em, _um);
         final Page p = new Page("foo");
 
         // ACT
@@ -125,7 +125,7 @@ public class AuditLogEJBTest
         expect(_um.loggedInUser()).andReturn(_actor);
         replay(_um);
 
-        final AuditLogLocal al = new AuditLogEJB(_em, _um);
+        final AuditLog al = new AuditLogEJB(_em, _um);
         final Page p = new Page("foo");
 
         // ACT
@@ -152,7 +152,7 @@ public class AuditLogEJBTest
         expect(_um.loggedInUser()).andReturn(_actor);
         replay(_um);
 
-        final AuditLogLocal al = new AuditLogEJB(_em, _um);
+        final AuditLog al = new AuditLogEJB(_em, _um);
         final Page p = new Page("foo");
 
         // ACT
@@ -179,7 +179,7 @@ public class AuditLogEJBTest
         expect(_um.loggedInUser()).andReturn(_actor);
         replay(_um);
 
-        final AuditLogLocal al = new AuditLogEJB(_em, _um);
+        final AuditLog al = new AuditLogEJB(_em, _um);
         final Page p = new Page("foo");
         final Folder f = new Folder("baz");
         f.add(p);
@@ -209,7 +209,7 @@ public class AuditLogEJBTest
         expect(_um.loggedInUser()).andReturn(_actor);
         replay(_um);
 
-        final AuditLogLocal al = new AuditLogEJB(_em, _um);
+        final AuditLog al = new AuditLogEJB(_em, _um);
         final Page p = new Page("foo");
 
         // ACT
@@ -229,7 +229,7 @@ public class AuditLogEJBTest
     @Override
     protected void setUp() throws Exception {
         _em = createStrictMock(EntityManager.class);
-        _um = createStrictMock(UserManagerLocal.class);
+        _um = createStrictMock(UserManager.class);
     }
 
     /** {@inheritDoc} */
@@ -242,5 +242,5 @@ public class AuditLogEJBTest
 
     private final User _actor = new User("actor");
     private EntityManager _em;
-    private UserManagerLocal _um;
+    private UserManager _um;
 }

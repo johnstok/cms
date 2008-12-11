@@ -59,7 +59,7 @@ public final class App {
         final Migrations migrations =
             new Migrations(legacyDBQueries);
 
-        System.out.println(migrations.userManager().loggedInUser().email());
+        System.out.println(migrations.queries().loggedInUser()._email);
 
         migrations.migrate();
         DbUtils.closeQuietly(legacyConnection);
@@ -195,8 +195,8 @@ public final class App {
          */
         UserNamePasswordHandler(final String theUsername,
             final String thePassword) {
-            this._username = theUsername;
-          this._password = thePassword;
+            _username = theUsername;
+          _password = thePassword;
         }
 
 
