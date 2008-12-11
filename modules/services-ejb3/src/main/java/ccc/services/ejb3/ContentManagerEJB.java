@@ -20,7 +20,6 @@ import java.util.UUID;
 
 import javax.ejb.EJB;
 import javax.ejb.Local;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
@@ -31,18 +30,13 @@ import ccc.domain.CCCException;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
-import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
-import ccc.domain.ResourceType;
-import ccc.domain.Setting;
 import ccc.domain.Template;
-import ccc.domain.Setting.Name;
-import ccc.services.AuditLogLocal;
-import ccc.services.ContentManagerLocal;
-import ccc.services.ContentManagerRemote;
-import ccc.services.QueryManagerLocal;
+import ccc.services.AuditLog;
+import ccc.services.ContentManager;
+import ccc.services.QueryManager;
 
 
 /**
@@ -52,20 +46,16 @@ import ccc.services.QueryManagerLocal;
  */
 @Stateless(name="ContentManager")
 @TransactionAttribute(REQUIRED)
-@Remote(ContentManagerRemote.class)
-@Local(ContentManagerLocal.class)
+@Local(ContentManager.class)
 public final class ContentManagerEJB
     implements
-        ContentManagerRemote,
-        ContentManagerLocal {
+        ContentManager {
 
     @PersistenceContext(unitName = "ccc-persistence")
     private EntityManager _em;
 
-    @EJB(name="QueryManager", beanInterface=QueryManagerLocal.class)
-    private QueryManagerLocal _qm;
-    @EJB(name="AuditLog", beanInterface=AuditLogLocal.class)
-    private AuditLogLocal _audit;
+    @EJB(name="QueryManager") private QueryManager _qm;
+    @EJB(name="AuditLog") private AuditLog _audit;
 
     /**
      * Constructor.
@@ -81,8 +71,8 @@ public final class ContentManagerEJB
      * @param auditLog  An audit logger.
      */
     ContentManagerEJB(final EntityManager entityManager,
-                      final QueryManagerLocal queryManager,
-                      final AuditLogLocal auditLog) {
+                      final QueryManager queryManager,
+                      final AuditLog auditLog) {
         _em = entityManager;
         _qm = queryManager;
         _audit = auditLog;
@@ -120,24 +110,6 @@ public final class ContentManagerEJB
         create(folderId, (Resource) newPage);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void createRoot() {
-        final Folder contentRoot = _qm.findContentRoot();
-
-        if (contentRoot == null) {
-            final Folder root = new Folder(PredefinedResourceNames.CONTENT);
-            _em.persist(root);
-            _em.persist(
-                new Setting(
-                    Setting.Name.CONTENT_ROOT_FOLDER_ID,
-                    root.id().toString()));
-            _audit.recordCreate(root);
-        }
-    }
-
 
     /* ===================================================================
      * RETRIEVE
@@ -168,26 +140,6 @@ public final class ContentManagerEJB
      * {@inheritDoc}
      */
     @Override
-    public Page eagerPageLookup(final ResourcePath path) {
-        final Resource resource = _qm.findContentRoot().navigateTo(path);
-        if (resource == null) {
-            return null;
-        }
-        if (resource.type() != ResourceType.PAGE) {
-            throw new CCCException("Id does not belong to a page.");
-        }
-        final Page p = resource.as(Page.class);
-        p.paragraphs().size();
-        if (p.template() != null) {
-            p.template().body();
-        }
-        return p;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Folder lookupRoot() {
         return _qm.findContentRoot();
     }
@@ -205,6 +157,7 @@ public final class ContentManagerEJB
                        final String newTitle,
                        final Set<Paragraph> newParagraphs) {
 
+        // FIXME Don't check version!!!
         final Page page = lookup(id).as(Page.class);
         page.title(newTitle);
         page.deleteAllParagraphs();
@@ -236,6 +189,7 @@ public final class ContentManagerEJB
     @Override
     public void updateTemplateForResource(final UUID resourceId,
                                           final Template template) {
+        // FIXME Don't check version!!!
         final Resource r = lookup(resourceId);
         r.template(template);
         _audit.recordChangeTemplate(r);
@@ -264,6 +218,7 @@ public final class ContentManagerEJB
     /** {@inheritDoc} */
     @Override
     public void updateAlias(final UUID targetId, final UUID aliasId) {
+        // FIXME Don't check version!!!
         final Resource target = lookup(targetId);
         final Alias alias = lookup(aliasId).as(Alias.class);
 
@@ -283,74 +238,23 @@ public final class ContentManagerEJB
      * {@inheritDoc}
      */
     @Override
-    public void createDisplayTemplate(final Template template) {
-        _em.persist(template);
-        templatesFolder().add(template);
-        _audit.recordCreate(template);
+    public void createDisplayTemplate(final UUID folderId,
+                                      final Template template) {
+        create(folderId, template);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void createAssetRoot() {
-        final Folder assetRoot = _qm.findAssetsRoot();
-
-        if (assetRoot == null) {
-            final Folder root = new Folder(PredefinedResourceNames.ASSETS);
-            final Folder templates = new Folder(new ResourceName("templates"));
-            _em.persist(templates);
-            _em.persist(root);
-            _em.persist(
-                new Setting(Name.ASSETS_ROOT_FOLDER_ID, root.id().toString()));
-            root.add(templates);
-
-            _audit.recordCreate(root);
-            _audit.recordCreate(templates);
-        }
-    }
-
 
     /**
      * {@inheritDoc}
      */
     @Override
     public List<Template> lookupTemplates() {
-        return templatesFolder().entries(Template.class);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Template createOrRetrieve(final Template template) {
-
-        final Folder templatesFolder = templatesFolder();
-
-        for (final Template t : templatesFolder.entries(Template.class)) {
-            if (template.equals(t)) {
-                return t;
-            }
-        }
-
-        _em.persist(template);
-        templatesFolder.add(template);
-        _audit.recordCreate(template);
-        return template;
-    }
-
-    private Folder templatesFolder() {
-        final Folder assetRoot = _qm.findAssetsRoot();
-        final Folder templates =
-            assetRoot
-                .navigateTo(new ResourcePath("/templates"))
-                .as(Folder.class);
-        return templates;
+        return _qm.list("allTemplates", Template.class);
     }
 
     /** {@inheritDoc} */
     @Override
     public void update(final Template t) {
+        // FIXME Don't check version!!!
         final Template current = _em.find(Template.class, t.id());
         current.title(t.title());
         current.description(t.description());

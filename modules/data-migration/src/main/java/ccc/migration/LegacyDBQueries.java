@@ -7,14 +7,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.log4j.Logger;
 
-import ccc.commons.EmailAddress;
-import ccc.domain.CreatorRoles;
-import ccc.domain.User;
+import ccc.services.api.UserDelta;
 
 /**
  * Queries for data migration.
@@ -128,10 +128,11 @@ public class LegacyDBQueries {
      *
      * @return The list of users.
      */
-    public List<UserBean> selectUsers() {
+    public Map<Integer, UserDelta> selectUsers() {
         ResultSet rs = null;
         PreparedStatement ps = null;
-        final List<UserBean> resultList = new ArrayList<UserBean>();
+        final Map<Integer, UserDelta> resultList =
+            new HashMap<Integer, UserDelta>();
 
         try {
             ps = _connection.prepareStatement(
@@ -143,11 +144,12 @@ public class LegacyDBQueries {
                 final String password = rs.getString("user_passwd");
                 final int userId = rs.getInt("user_id");
                 try {
-                    final User user = new User(userName);
+                    final UserDelta user = new UserDelta();
+                    user._username = userName;
+                    user._password = password;
                     selectEmailForUser(user, userId);
                     selectRolesForUser(user, userId);
-                    final UserBean mu = new UserBean(user, password, userId);
-                    resultList.add(mu);
+                    resultList.put(userId, user);
                 } catch (final Exception e) {
                     log.error(e.getMessage());
                 }
@@ -167,7 +169,7 @@ public class LegacyDBQueries {
      * @param user The user.
      * @param userId The user ID.
      */
-    public void selectEmailForUser(final User user, final int userId) {
+    public void selectEmailForUser(final UserDelta user, final int userId) {
         ResultSet rs = null;
         PreparedStatement ps = null;
 
@@ -183,8 +185,7 @@ public class LegacyDBQueries {
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                final String email = rs.getString("attribute_value");
-                user.email(new EmailAddress(email));
+                user._email = rs.getString("attribute_value");
                 require().toBeFalse(rs.next());
             } else {
                 throw new RuntimeException("User "+userId+" has no email.");
@@ -203,7 +204,7 @@ public class LegacyDBQueries {
      * @param user The user.
      * @param userId The user ID.
      */
-    public void selectRolesForUser(final User user, final int userId) {
+    public void selectRolesForUser(final UserDelta user, final int userId) {
         ResultSet rs = null;
         PreparedStatement ps = null;
 
@@ -223,14 +224,14 @@ public class LegacyDBQueries {
                 final String profile = rs.getString("profile_name");
                 if ("Writer".equalsIgnoreCase(profile)
                         || "Editor".equalsIgnoreCase(profile)) {
-                    user.addRole(CreatorRoles.CONTENT_CREATOR);
+                    user._roles.add("CONTENT_CREATOR");
                 } else if ("Total Control".equalsIgnoreCase(profile)) {
-                    user.addRole(CreatorRoles.SITE_BUILDER);
-                    user.addRole(CreatorRoles.CONTENT_CREATOR);
-                    user.addRole(CreatorRoles.ADMINISTRATOR);
+                    user._roles.add("SITE_BUILDER");
+                    user._roles.add("CONTENT_CREATOR");
+                    user._roles.add("ADMINISTRATOR");
                 } else if ("Administrator".equalsIgnoreCase(profile)) {
-                    user.addRole(CreatorRoles.ADMINISTRATOR);
-                    user.addRole(CreatorRoles.CONTENT_CREATOR);
+                    user._roles.add("ADMINISTRATOR");
+                    user._roles.add("CONTENT_CREATOR");
                 }
             }
         } catch (final SQLException e) {
@@ -274,7 +275,10 @@ public class LegacyDBQueries {
             if (rs.next()) {
                 log.debug("FOUND "+contentId +" "+legacyVersion);
                 userId = rs.getInt("user_id");
-                require().toBeFalse(rs.next());
+//                require().toBeFalse(rs.next());
+                if (rs.next()) {
+                    log.warn("More than one user found for "+contentId +" v."+legacyVersion);
+                }
             } else {
                 log.error("User Id NOT FOUND with content_id: "+contentId
                     +" version_id"+legacyVersion);

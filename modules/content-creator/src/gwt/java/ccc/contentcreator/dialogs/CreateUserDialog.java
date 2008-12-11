@@ -21,6 +21,7 @@ import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validator;
 import ccc.services.api.UserDelta;
+import ccc.services.api.UserSummary;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -161,8 +162,8 @@ public class CreateUserDialog extends AbstractEditDialog {
 
                 Globals.commandService().createUser(
                     delta,
-                    new ErrorReportingCallback<Void>() {
-                        public void onSuccess(final Void result) {
+                    new ErrorReportingCallback<UserSummary>() {
+                        public void onSuccess(final UserSummary result) {
                             // TODO: Refresh the main window.
                             close();
                         }

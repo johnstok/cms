@@ -21,6 +21,7 @@ import ccc.services.api.PageDelta;
 import ccc.services.api.Queries;
 import ccc.services.api.ResourceDelta;
 import ccc.services.api.ResourceSummary;
+import ccc.services.api.ServiceNames;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
@@ -38,7 +39,7 @@ public class QueriesImpl
     implements QueriesService {
 
     private final Queries _delegate =
-        new JNDI().get("application-ear-7.0.0-SNAPSHOT/PublicQueries/remote"); // TODO: Externalise string
+        new JNDI().get(ServiceNames.PUBLIC_QUERIES);
 
     /** {@inheritDoc} */
     public String getAbsolutePath(final String resourceId) {

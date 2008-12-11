@@ -107,14 +107,19 @@ public interface Commands {
     ResourceSummary createFolder(String parentId, String name);
 
     /**
+     * Create a root folder with the specified name.
+     */
+    ResourceSummary createRoot(String name);
+
+    /**
      * Create a new user in the system.
      */
-    void createUser(UserDelta delta);
+    UserSummary createUser(UserDelta delta);
 
     /**
      * Creates a new page.
      */
-    void createPage(String parentId, PageDelta delta, String templateId);
+    ResourceSummary createPage(String parentId, PageDelta delta, String templateId);
 
     /**
      * Create a new template in CCC.

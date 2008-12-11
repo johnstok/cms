@@ -20,7 +20,7 @@ import ccc.commons.Registry;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.ResourceName;
-import ccc.services.DataManagerLocal;
+import ccc.services.DataManager;
 import ccc.services.ServiceNames;
 
 
@@ -91,7 +91,7 @@ public class FileUploadServlet extends HttpServlet {
      *
      * @return An AssetManager.
      */
-    DataManagerLocal dataManager() {
+    DataManager dataManager() {
         return _registry.get(ServiceNames.DATA_MANAGER_LOCAL);
     }
 }

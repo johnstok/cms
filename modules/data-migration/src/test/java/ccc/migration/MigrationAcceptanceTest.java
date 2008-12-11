@@ -17,11 +17,13 @@ import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 import ccc.domain.ResourceType;
-import ccc.services.ContentManagerRemote;
+import ccc.services.ServiceNames;
+import ccc.services.StatefulReader;
 
 
 /**
  * TODO Add Description for this type.
+ * FIXME These tests are never run!!!
  *
  * @author Civic Computing Ltd
  */
@@ -34,8 +36,8 @@ public class MigrationAcceptanceTest extends TestCase {
     public void testFolderMigration() {
 
         // ARRANGE
-        final ContentManagerRemote manager =
-            new JNDI().<ContentManagerRemote>get("ContentManager/remote");
+        final StatefulReader manager =
+            new JNDI().get(ServiceNames.STATEFUL_READER);
 
         // ACT
         final Resource resource = manager.lookup(new ResourcePath("/Home"));
@@ -53,8 +55,8 @@ public class MigrationAcceptanceTest extends TestCase {
     public void testPageMigration() {
 
         // ARRANGE
-        final ContentManagerRemote manager =
-            new JNDI().<ContentManagerRemote>get("ContentManager/remote");
+        final StatefulReader manager =
+            new JNDI().get(ServiceNames.STATEFUL_READER);
         final String path = "/Home/ASH_Scotland_Manifesto_2007";
 
         // ACT
@@ -76,11 +78,12 @@ public class MigrationAcceptanceTest extends TestCase {
         // old ID: 3391
         final String path = "/Information_Service/Key_topics/Smoking_Cessation/"
             +"A_Smoking_Cessation_Policy_for_Scotland/Introduction";
-        final ContentManagerRemote manager =
-            new JNDI().<ContentManagerRemote>get("ContentManager/remote");
+        final StatefulReader manager =
+            new JNDI().get(ServiceNames.STATEFUL_READER);
 
         // ACT
-        final Page resource = manager.eagerPageLookup(new ResourcePath(path));
+        final Page resource =
+            manager.lookup(new ResourcePath(path)).as(Page.class);
 
         // VERIFY
         assertNotNull("Resource "+path+" must not be null", resource);
@@ -105,11 +108,12 @@ public class MigrationAcceptanceTest extends TestCase {
         // old ID: 3391
         final String path = "/Information_Service/Key_topics/Smoking_Cessation/"
             +"A_Smoking_Cessation_Policy_for_Scotland/Introduction";
-        final ContentManagerRemote manager =
-            new JNDI().<ContentManagerRemote>get("ContentManager/remote");
+        final StatefulReader manager =
+            new JNDI().get(ServiceNames.STATEFUL_READER);
 
         // ACT
-        final Page resource = manager.eagerPageLookup(new ResourcePath(path));
+        final Page resource =
+            manager.lookup(new ResourcePath(path)).as(Page.class);
 
         // VERIFY
         assertNotNull("Resource "+path+" must not be null", resource);
@@ -129,11 +133,12 @@ public class MigrationAcceptanceTest extends TestCase {
         // ARRANGE
         // old ID: 3391
         final String path = "/Quit_Smoking/Quit_smoking";
-        final ContentManagerRemote manager =
-            new JNDI().<ContentManagerRemote>get("ContentManager/remote");
+        final StatefulReader manager =
+            new JNDI().get(ServiceNames.STATEFUL_READER);
 
         // ACT
-        final Page resource = manager.eagerPageLookup(new ResourcePath(path));
+        final Page resource =
+            manager.lookup(new ResourcePath(path)).as(Page.class);
 
         // VERIFY
         assertNotNull("Resource "+path+" must not be null", resource);

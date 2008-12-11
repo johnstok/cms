@@ -26,7 +26,7 @@ import ccc.domain.Setting.Name;
  *
  * @author Civic Computing Ltd.
  */
-interface QueryManager {
+public interface QueryManager {
 
     /**
      * Find a setting given its name.

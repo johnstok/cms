@@ -33,10 +33,10 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.services.ContentManagerLocal;
-import ccc.services.QueryManagerLocal;
+import ccc.services.ContentManager;
+import ccc.services.QueryManager;
 import ccc.services.ResourceDAOLocal;
-import ccc.services.UserManagerLocal;
+import ccc.services.UserManager;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.Commands;
 import ccc.services.api.PageDelta;
@@ -65,12 +65,12 @@ public class CommandsEJB
     @PersistenceContext(unitName = "ccc-persistence")
     private EntityManager _entityManager;
 
-    @EJB(name="QueryManager", beanInterface=QueryManagerLocal.class)
-    private QueryManagerLocal _qm;
-    @EJB(name="UserManager", beanInterface=UserManagerLocal.class)
-    private UserManagerLocal _users;
-    @EJB(name="ContentManager", beanInterface=ContentManagerLocal.class)
-    private ContentManagerLocal _content;
+    @EJB(name="QueryManager")
+    private QueryManager _qm;
+    @EJB(name="UserManager")
+    private UserManager _users;
+    @EJB(name="ContentManager")
+    private ContentManager _content;
     @EJB(name="ResourceDAO", beanInterface=ResourceDAOLocal.class)
     private ResourceDAOLocal _resources;
 
@@ -103,14 +103,14 @@ public class CommandsEJB
         final Folder f =
             _content.create(
                 UUID.fromString(parentId),
-                new Folder(new ResourceName(name)));
+                new Folder(name));
         return map(f);
 
     }
 
     /** {@inheritDoc} */
     @Override
-    public void createPage(final String parentId,
+    public ResourceSummary createPage(final String parentId,
                            final PageDelta delta,
                            final String templateId) {
 
@@ -142,6 +142,8 @@ public class CommandsEJB
 
         _content.create(UUID.fromString(parentId), page);
 
+        return map(page);
+
     }
 
     /** {@inheritDoc} */
@@ -156,7 +158,7 @@ public class CommandsEJB
             delta._body,
             delta._definition);
 
-        _content.createDisplayTemplate(t);
+        _content.createDisplayTemplate(UUID.fromString(parentId), t);
 
         return map(t);
 
@@ -164,13 +166,14 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public void createUser(final UserDelta delta) {
+    public UserSummary createUser(final UserDelta delta) {
         final User user = new User(delta._username);
         user.email(new EmailAddress(delta._email));
         for (final String role : delta._roles) {
             user.addRole(CreatorRoles.valueOf(role));
         }
         _users.createUser(user, delta._password);
+        return map(user);
     }
 
     /** {@inheritDoc} */
@@ -307,5 +310,13 @@ public class CommandsEJB
         _users.updateUser(user, delta._password);
 
         return map(user);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceSummary createRoot(final String name) {
+        final Folder f = new Folder(name);
+        _entityManager.persist(f);
+        return map(f);
     }
 }

@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import ccc.commons.DBC;
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
-import ccc.services.DataManagerLocal;
+import ccc.services.DataManager;
 import ccc.services.ServiceNames;
 import ccc.services.StatefulReader;
 
@@ -66,7 +66,7 @@ public abstract class CCCServlet extends HttpServlet {
      *
      * @return A DataManager.
      */
-    protected DataManagerLocal dataManager() {
+    protected DataManager dataManager() {
         return _registry.get(ServiceNames.DATA_MANAGER_LOCAL);
     }
 

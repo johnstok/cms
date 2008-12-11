@@ -17,6 +17,7 @@ import ccc.services.api.AliasDelta;
 import ccc.services.api.Commands;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ResourceSummary;
+import ccc.services.api.ServiceNames;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
@@ -34,7 +35,7 @@ public class CommandsImpl
     implements CommandService {
 
     private final Commands _delegate =
-        new JNDI().get("application-ear-7.0.0-SNAPSHOT/PublicCommands/remote"); // TODO: Externalise string
+        new JNDI().get(ServiceNames.PUBLIC_COMMANDS);
 
     /** {@inheritDoc} */
     public void createAlias(final String parentId,
@@ -50,10 +51,10 @@ public class CommandsImpl
     }
 
     /** {@inheritDoc} */
-    public void createPage(final String parentId,
+    public ResourceSummary createPage(final String parentId,
                            final PageDelta delta,
                            final String templateId) {
-        _delegate.createPage(parentId, delta, templateId);
+        return _delegate.createPage(parentId, delta, templateId);
     }
 
     /** {@inheritDoc} */
@@ -62,9 +63,10 @@ public class CommandsImpl
         return _delegate.createTemplate(parentId, delta);
     }
 
-    /** {@inheritDoc} */
-    public void createUser(final UserDelta delta) {
-        _delegate.createUser(delta);
+    /** {@inheritDoc}
+     * @return */
+    public UserSummary createUser(final UserDelta delta) {
+        return _delegate.createUser(delta);
     }
 
     /** {@inheritDoc} */
@@ -139,5 +141,11 @@ public class CommandsImpl
     /** {@inheritDoc} */
     public UserSummary updateUser(final UserDelta delta) {
         return _delegate.updateUser(delta);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceSummary createRoot(final String name) {
+        return _delegate.createRoot(name);
     }
 }

@@ -11,6 +11,7 @@
  */
 package ccc.services.api;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,6 +24,6 @@ import java.util.List;
 public class PageDelta
     extends
         ResourceDelta {
-    public List<ParagraphDelta> _paragraphs;
+    public List<ParagraphDelta> _paragraphs = new ArrayList<ParagraphDelta>();
     public TemplateDelta _computedTemplate;
 }

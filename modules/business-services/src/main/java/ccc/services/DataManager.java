@@ -25,7 +25,7 @@ import ccc.domain.File;
  *
  * @author Civic Computing Ltd.
  */
-interface DataManager {
+public interface DataManager {
 
     /**
      * Create a new item of binary data.

@@ -117,16 +117,12 @@ public class QueryManagerEJBTest extends TestCase {
         // ARRANGE
         final UUID folderId = UUID.randomUUID();
         final Query q = createStrictMock(Query.class);
-        expect(q.setParameter("name", Name.ASSETS_ROOT_FOLDER_ID))
-            .andReturn(q);
-        expect(q.getSingleResult()).andReturn(
-            new Setting(Name.ASSETS_ROOT_FOLDER_ID, folderId.toString()));
+        expect(q.setParameter("name", new ResourceName("assets"))).andReturn(q);
+        expect(q.getSingleResult()).andReturn(new Folder(new ResourceName("bar")));
         replay(q);
 
         final EntityManager em = createStrictMock(EntityManager.class);
-        expect(em.createNamedQuery("settingsByName")).andReturn(q);
-        expect(em.find(Folder.class, folderId))
-            .andReturn(new Folder(new ResourceName("bar")));
+        expect(em.createNamedQuery("resourcesByName")).andReturn(q);
         replay(em);
 
         final QueryManagerEJB qs = new QueryManagerEJB(em);
@@ -146,16 +142,12 @@ public class QueryManagerEJBTest extends TestCase {
         // ARRANGE
         final UUID folderId = UUID.randomUUID();
         final Query q = createStrictMock(Query.class);
-        expect(q.setParameter("name", Name.CONTENT_ROOT_FOLDER_ID))
-            .andReturn(q);
-        expect(q.getSingleResult()).andReturn(
-            new Setting(Name.CONTENT_ROOT_FOLDER_ID, folderId.toString()));
+        expect(q.setParameter("name", new ResourceName("content"))).andReturn(q);
+        expect(q.getSingleResult()).andReturn(new Folder(new ResourceName("bar")));
         replay(q);
 
         final EntityManager em = createStrictMock(EntityManager.class);
-        expect(em.createNamedQuery("settingsByName")).andReturn(q);
-        expect(em.find(Folder.class, folderId))
-            .andReturn(new Folder(new ResourceName("bar")));
+        expect(em.createNamedQuery("resourcesByName")).andReturn(q);
         replay(em);
 
         final QueryManagerEJB qs = new QueryManagerEJB(em);

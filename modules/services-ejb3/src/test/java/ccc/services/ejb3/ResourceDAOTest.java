@@ -23,10 +23,10 @@ import ccc.domain.CreatorRoles;
 import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.User;
-import ccc.services.AuditLogLocal;
-import ccc.services.QueryManagerLocal;
+import ccc.services.AuditLog;
+import ccc.services.QueryManager;
 import ccc.services.ResourceDAOLocal;
-import ccc.services.UserManagerLocal;
+import ccc.services.UserManager;
 
 
 /**
@@ -225,16 +225,16 @@ public class ResourceDAOTest
     }
 
 
-    private QueryManagerLocal _qm;
-    private UserManagerLocal _users;
-    private AuditLogLocal _al = Testing.stub(AuditLogLocal.class);
+    private QueryManager _qm;
+    private UserManager _users;
+    private AuditLog _al = Testing.stub(AuditLog.class);
     private Resource _r;
 
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {
-        _qm = createStrictMock(QueryManagerLocal.class);
-        _users = createStrictMock(UserManagerLocal.class);
+        _qm = createStrictMock(QueryManager.class);
+        _users = createStrictMock(UserManager.class);
         _r = new Page("foo");
     }
 

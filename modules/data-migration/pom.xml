@@ -28,6 +28,11 @@
 			<version>7.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
+			<groupId>CCC7</groupId>
+			<artifactId>public-api</artifactId>
+			<version>7.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
 			<groupId>org.jboss.client</groupId>
 			<artifactId>jbossall-client</artifactId>
 			<version>4.2.2.GA</version>
@@ -61,6 +66,12 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
             <version>3.3.2.GA</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>jboss</groupId>
+            <artifactId>jboss-ejb3x</artifactId>
+            <version>${jboss-version}</version>
             <scope>runtime</scope>
         </dependency>
 	</dependencies>

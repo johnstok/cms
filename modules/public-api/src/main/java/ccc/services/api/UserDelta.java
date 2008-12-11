@@ -12,6 +12,7 @@
 package ccc.services.api;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -26,5 +27,5 @@ public class UserDelta implements Serializable {
     public String _password;
     public String _email;
     public String _username;
-    public Set<String> _roles;
+    public Set<String> _roles = new HashSet<String>();
 }

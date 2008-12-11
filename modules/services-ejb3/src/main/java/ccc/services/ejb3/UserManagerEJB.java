@@ -23,7 +23,6 @@ import javax.annotation.Resource;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBContext;
 import javax.ejb.Local;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
@@ -34,8 +33,7 @@ import javax.persistence.Query;
 import ccc.domain.CreatorRoles;
 import ccc.domain.Password;
 import ccc.domain.User;
-import ccc.services.UserManagerLocal;
-import ccc.services.UserManagerRemote;
+import ccc.services.UserManager;
 
 
 /**
@@ -46,9 +44,8 @@ import ccc.services.UserManagerRemote;
  */
 @Stateless(name="UserManager")
 @TransactionAttribute(REQUIRED)
-@Remote(UserManagerRemote.class)
-@Local(UserManagerLocal.class)
-public class UserManagerEJB implements UserManagerRemote, UserManagerLocal {
+@Local(UserManager.class)
+public class UserManagerEJB implements UserManager {
 
     @PersistenceContext(unitName = "ccc-persistence")
     private EntityManager _em;

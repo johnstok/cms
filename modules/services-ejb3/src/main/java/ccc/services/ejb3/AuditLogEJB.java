@@ -25,8 +25,8 @@ import javax.persistence.PersistenceContext;
 import ccc.commons.DBC;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
-import ccc.services.AuditLogLocal;
-import ccc.services.UserManagerLocal;
+import ccc.services.AuditLog;
+import ccc.services.UserManager;
 
 
 /**
@@ -36,15 +36,14 @@ import ccc.services.UserManagerLocal;
  */
 @Stateless(name="AuditLog")
 @TransactionAttribute(REQUIRED)
-@Local(AuditLogLocal.class)
+@Local(AuditLog.class)
 public class AuditLogEJB
     implements
-        AuditLogLocal {
+        AuditLog {
 
     @PersistenceContext(unitName="ccc-persistence")
     private EntityManager _em;
-    @EJB(name="UserManager", beanInterface=UserManagerLocal.class)
-    private UserManagerLocal _um;
+    @EJB(name="UserManager") private UserManager _um;
 
 
     /** Constructor. */
@@ -55,7 +54,7 @@ public class AuditLogEJB
      * @param em The entity manager used to perform queries.
      * @param um The user manager used to determine the logged in user.
      */
-    AuditLogEJB(final EntityManager em, final UserManagerLocal um) {
+    AuditLogEJB(final EntityManager em, final UserManager um) {
         DBC.require().notNull(em);
         DBC.require().notNull(um);
 

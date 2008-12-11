@@ -25,6 +25,7 @@ import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ParagraphDelta;
+import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 
 import com.extjs.gxt.ui.client.Events;
@@ -313,8 +314,8 @@ public class CreatePageDialog
                     _parent.<String>get("id"),
                     page,
                     template,
-                    new ErrorReportingCallback<Void>() {
-                        public void onSuccess(final Void result) {
+                    new ErrorReportingCallback<ResourceSummary>() {
+                        public void onSuccess(final ResourceSummary result) {
                             _rt.refreshTable();
                             close();
                         }
