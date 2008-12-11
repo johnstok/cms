@@ -29,4 +29,5 @@
     </joined-subclass>
     
     <query name="templateByName">from ccc.domain.Template t where t._name = ?</query>
+    <query name="allTemplates">from ccc.domain.Template</query>
 </hibernate-mapping>
