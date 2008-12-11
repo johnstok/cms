@@ -33,17 +33,6 @@ public class Alias extends Resource {
     /**
      * Constructor.
      *
-     * @param resourceName The resource name for the alias.
-     * @param target The target for the alias.
-     */
-    public Alias(final ResourceName resourceName, final Resource target) {
-        super(resourceName);
-        target(target);
-    }
-
-    /**
-     * Constructor.
-     *
      * @param title The title for the alias.
      * @param target The target for the alias.
      */

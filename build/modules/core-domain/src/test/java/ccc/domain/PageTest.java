@@ -74,22 +74,6 @@ public final class PageTest extends TestCase {
     /**
      * Test.
      */
-    public void testConstructorCanGenerateTitle() {
-
-        // ARRANGE
-        final ResourceName name = new ResourceName("foo");
-
-        // ACT
-        final Page page = new Page(name);
-
-        // ASSERT
-        assertEquals(name.toString(), page.title());
-        assertEquals(name, page.name());
-    }
-
-    /**
-     * Test.
-     */
     public void testAddNewParagraph() {
 
         // ARRANGE
@@ -126,11 +110,11 @@ public final class PageTest extends TestCase {
     /**
      * Test.
      */
-    public void testConstructorRejectsEmptyNames() {
+    public void testConstructorRejectsEmptyTitles() {
         // ACT
         try {
-            new Page((ResourceName) null);
-            fail("Resources should reject NULL for the name parameter.");
+            new Page(null);
+            fail("Resources should reject NULL for the title parameter.");
 
          // ASSERT
         } catch (final IllegalArgumentException e) {

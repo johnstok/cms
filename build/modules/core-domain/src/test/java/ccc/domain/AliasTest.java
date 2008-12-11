@@ -27,7 +27,7 @@ public class AliasTest extends TestCase {
     public void testCreateAliasWithTitle() {
 
         // ARRANGE
-        final Page p = new Page(new ResourceName("foo"));
+        final Page p = new Page("foo");
 
         // ACT
         final Alias alias = new Alias("bar", p);
@@ -56,10 +56,10 @@ public class AliasTest extends TestCase {
     public void testCreateAliasWithName() {
 
         // ARRANGE
-        final Page p = new Page(new ResourceName("foo"));
+        final Page p = new Page("foo");
 
         // ACT
-        final Alias alias = new Alias(new ResourceName("bar"), p);
+        final Alias alias = new Alias("bar", p);
 
         // ASSERT
         assertEquals(p, alias.target());
@@ -72,7 +72,7 @@ public class AliasTest extends TestCase {
 
         // ACT
         try {
-            new Alias(new ResourceName("foo"), null);
+            new Alias("foo", null);
             fail("Null should be rejected");
 
         // ASSERT

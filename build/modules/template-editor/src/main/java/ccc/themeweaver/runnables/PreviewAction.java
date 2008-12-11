@@ -44,15 +44,15 @@ public class PreviewAction
     private BasicPanel        previewPane;
     private JEditorPane       editorPane;
 
-    private final Folder      root             = new Folder(new ResourceName("foo"));
+    private final Folder      root             = new Folder("foo");
 
-    private final Folder      home             = new Folder(new ResourceName("Home"));
-    private final Folder      media            = new Folder(new ResourceName("Media"));
-    private final Folder      policy           = new Folder(new ResourceName("Policy"));
-    private final Folder      quitSmoking      = new Folder(new ResourceName("QuitSmoking"));
-    private final Folder      ourWork          = new Folder(new ResourceName("OurWork"));
-    private final Folder      information      = new Folder(new ResourceName("Information"));
-    private final Folder      training         = new Folder(new ResourceName("Training"));
+    private final Folder      home             = new Folder("Home");
+    private final Folder      media            = new Folder("Media");
+    private final Folder      policy           = new Folder("Policy");
+    private final Folder      quitSmoking      = new Folder("QuitSmoking");
+    private final Folder      ourWork          = new Folder("OurWork");
+    private final Folder      information      = new Folder("Information");
+    private final Folder      training         = new Folder("Training");
 
     private final Page        p1               = new Page(new ResourceName("p1"), "About us");
     private final Page        p2               = new Page(new ResourceName("p2"), "Support us");

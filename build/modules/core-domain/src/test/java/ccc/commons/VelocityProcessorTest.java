@@ -12,9 +12,7 @@
 package ccc.commons;
 
 import junit.framework.TestCase;
-import ccc.commons.VelocityProcessor;
 import ccc.domain.Page;
-import ccc.domain.ResourceName;
 
 
 /**
@@ -34,7 +32,7 @@ public class VelocityProcessorTest extends TestCase {
 
         // ACT
         final String actual =
-            vp.render(new Page(new ResourceName("foo")), null, "#hello()");
+            vp.render(new Page("foo"), null, "#hello()");
 
 
         // ASSERT

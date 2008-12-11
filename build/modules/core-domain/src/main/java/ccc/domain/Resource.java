@@ -46,18 +46,6 @@ public abstract class Resource extends VersionedEntity {
 
     /**
      * Constructor.
-     * Sets the resource's title to be the same as the name.
-     *
-     * @param name The name for this resource.
-     */
-    protected Resource(final ResourceName name) {
-        require().notNull(name);
-        _name = name;
-        _title = name.toString();
-    }
-
-    /**
-     * Constructor.
      *
      * @param name The name for this resource.
      * @param title The title of this resource, as a string.

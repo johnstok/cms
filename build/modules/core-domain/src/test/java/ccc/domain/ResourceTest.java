@@ -125,7 +125,7 @@ public final class ResourceTest extends TestCase {
     public void testIsLockedReturnsFalseByDefault() {
 
         // ARRANGE
-        final Resource r = new DummyResource(new ResourceName("foo"));
+        final Resource r = new DummyResource("foo");
 
         // ACT
         final boolean isLocked = r.isLocked();
@@ -141,7 +141,7 @@ public final class ResourceTest extends TestCase {
 
         //ARRANGE
         final User u = new User("blat");
-        final Resource r = new DummyResource(new ResourceName("foo"));
+        final Resource r = new DummyResource("foo");
 
         // ACT
         r.lock(u);
@@ -156,7 +156,7 @@ public final class ResourceTest extends TestCase {
     public void testLockResourceRejectsNull() {
         // ACT
         try {
-            final Resource r = new DummyResource(new ResourceName("foo"));
+            final Resource r = new DummyResource("foo");
             r.lock(null);
             fail("Null should be rejected.");
 
@@ -173,7 +173,7 @@ public final class ResourceTest extends TestCase {
 
         //ARRANGE
         final User u = new User("blat");
-        final Resource r = new DummyResource(new ResourceName("foo"));
+        final Resource r = new DummyResource("foo");
         r.lock(u);
 
         // ACT
@@ -190,7 +190,7 @@ public final class ResourceTest extends TestCase {
 
         //ARRANGE
         final User u = new User("blat");
-        final Resource r = new DummyResource(new ResourceName("foo"));
+        final Resource r = new DummyResource("foo");
 
         // ACT
         r.lock(u);
@@ -327,8 +327,8 @@ public final class ResourceTest extends TestCase {
     public void testAbsolutePath() {
 
         // ARRANGE
-        final Folder f = new Folder(new ResourceName("foo"));
-        final Page p = new Page(new ResourceName("bar"));
+        final Folder f = new Folder("foo");
+        final Page p = new Page("bar");
         f.add(p);
 
         // ACT
@@ -477,12 +477,12 @@ public final class ResourceTest extends TestCase {
     /**
      * Test.
      */
-    public void testResourceConstructorRejectsNullUrl() {
+    public void testResourceConstructorRejectsNullTitle() {
 
         // ACT
         try {
-            new DummyResource((ResourceName) null);
-            fail("Resources should reject NULL for the url parameter.");
+            new DummyResource(null);
+            fail("Resources should reject NULL for the title parameter.");
 
          // ASSERT
         } catch (final IllegalArgumentException e) {
@@ -493,12 +493,12 @@ public final class ResourceTest extends TestCase {
     /**
      * Test.
      */
-    public void testResourceConstructorRejectsEmptyStringForName() {
+    public void testResourceConstructorRejectsEmptyStringForTitle() {
 
         // ACT
         try {
-            new DummyResource(new ResourceName("foo"), "");
-            fail("Resources should reject the ZLS for the url parameter.");
+            new DummyResource("");
+            fail("Resources should reject the ZLS for the title parameter.");
 
          // ASSERT
         } catch (final IllegalArgumentException e) {
@@ -514,7 +514,7 @@ public final class ResourceTest extends TestCase {
 
         //ARRANGE
         final User u = new User("user");
-        final Page p = new Page(new ResourceName("foo"));
+        final Page p = new Page("foo");
 
         // ACT
         p.publish(u);
@@ -529,7 +529,7 @@ public final class ResourceTest extends TestCase {
     public void testPublishRejectsNullUser() {
         // ACT
         try {
-            final Resource r = new DummyResource(new ResourceName("foo"));
+            final Resource r = new DummyResource("foo");
             r.publish(null);
             fail("Null should be rejected.");
 
@@ -547,23 +547,13 @@ public final class ResourceTest extends TestCase {
      */
     private static final class DummyResource extends Resource {
 
-
-        /**
-         * Constructor.
-         *
-         * @param object
-         */
-        public DummyResource(final ResourceName url) {
-            super(url);
-        }
-
         /**
          * Constructor.
          *
          * @param string
          */
-        public DummyResource(final ResourceName url, final String name) {
-            super(url, name);
+        public DummyResource(final String title) {
+            super(title);
         }
 
         @Override

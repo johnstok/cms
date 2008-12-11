@@ -32,7 +32,7 @@ public class LogEntryTest
     public void testRenameFactoryMethod() {
 
         // ARRANGE
-        final Page p = new Page(new ResourceName("foo"));
+        final Page p = new Page("foo");
 
         // ACT
         final LogEntry le = LogEntry.forRename(p, _actor, _happenedOn);
@@ -54,8 +54,8 @@ public class LogEntryTest
     public void testMoveFactoryMethod() {
 
         // ARRANGE
-        final Folder f = new Folder(new ResourceName("bar"));
-        final Page p = new Page(new ResourceName("foo"));
+        final Folder f = new Folder("bar");
+        final Page p = new Page("foo");
         p.parent(f);
 
         // ACT
@@ -80,7 +80,7 @@ public class LogEntryTest
     public void testCreateFactoryMethod() {
 
         // ARRANGE
-        final Page p = new Page(new ResourceName("foo"));
+        final Page p = new Page("foo");
 
         // ACT
         final LogEntry le = LogEntry.forCreate(p, _actor, _happenedOn);
@@ -103,7 +103,7 @@ public class LogEntryTest
     public void testUpdateFactoryMethod() {
 
         // ARRANGE
-        final Page p = new Page(new ResourceName("foo"));
+        final Page p = new Page("foo");
 
         // ACT
         final LogEntry le = LogEntry.forUpdate(p, _actor, _happenedOn);
@@ -126,7 +126,7 @@ public class LogEntryTest
     public void testChangeTemplateFactoryMethod() {
 
         // ARRANGE
-        final Page p = new Page(new ResourceName("foo"));
+        final Page p = new Page("foo");
 
         // ACT
         final LogEntry le = LogEntry.forTemplateChange(p, _actor, _happenedOn);
@@ -149,8 +149,8 @@ public class LogEntryTest
     public void testLockFactoryMethod() {
 
         // ARRANGE
-        final Folder f = new Folder(new ResourceName("bar"));
-        final Page p = new Page(new ResourceName("foo"));
+        final Folder f = new Folder("bar");
+        final Page p = new Page("foo");
         p.parent(f);
 
         // ACT
@@ -174,8 +174,8 @@ public class LogEntryTest
     public void testUnlockFactoryMethod() {
 
         // ARRANGE
-        final Folder f = new Folder(new ResourceName("bar"));
-        final Page p = new Page(new ResourceName("foo"));
+        final Folder f = new Folder("bar");
+        final Page p = new Page("foo");
         p.parent(f);
 
         // ACT

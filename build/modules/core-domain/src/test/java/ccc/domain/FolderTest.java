@@ -44,9 +44,9 @@ public final class FolderTest extends TestCase {
     public void testFolders() {
 
             // ARRANGE
-            final Folder f = new Folder(new ResourceName("f"));
-            final Folder p = new Folder(new ResourceName("p"));
-            final Folder q = new Folder(new ResourceName("q"));
+            final Folder f = new Folder("f");
+            final Folder p = new Folder("p");
+            final Folder q = new Folder("q");
             final Template r = new Template("r", "desc", "body", "<fields/>");
             f.add(p);
             f.add(q);
@@ -67,9 +67,9 @@ public final class FolderTest extends TestCase {
     public void testPages() {
 
             // ARRANGE
-            final Folder f = new Folder(new ResourceName("f"));
-            final Page p = new Page(new ResourceName("p"));
-            final Page q = new Page(new ResourceName("q"));
+            final Folder f = new Folder("f");
+            final Page p = new Page("p");
+            final Page q = new Page("q");
             final Template r = new Template("r", "desc", "body", "<fields/>");
             f.add(p);
             f.add(q);
@@ -90,9 +90,9 @@ public final class FolderTest extends TestCase {
     public void testFirstPage() {
 
         // ARRANGE
-        final Folder pages = new Folder(new ResourceName("content"));
-        final Page ab = new Page(new ResourceName("ab"));
-        final Page cd = new Page(new ResourceName("cd"));
+        final Folder pages = new Folder("content");
+        final Page ab = new Page("ab");
+        final Page cd = new Page("cd");
         pages.add(ab);
         pages.add(cd);
 
@@ -109,10 +109,10 @@ public final class FolderTest extends TestCase {
     public void testHasPages() {
 
         // ARRANGE
-        final Folder noPages = new Folder(new ResourceName("content"));
-        final Folder pages = new Folder(new ResourceName("content"));
-        final Page ab = new Page(new ResourceName("ab"));
-        final Page cd = new Page(new ResourceName("cd"));
+        final Folder noPages = new Folder("content");
+        final Folder pages = new Folder("content");
+        final Page ab = new Page("ab");
+        final Page cd = new Page("cd");
         noPages.add(pages);
         pages.add(ab);
         pages.add(cd);
@@ -132,9 +132,9 @@ public final class FolderTest extends TestCase {
     public void testTypedEntries() {
 
         // ARRANGE
-        final Folder content = new Folder(new ResourceName("content"));
-        final Page ab = new Page(new ResourceName("ab"));
-        final Page cd = new Page(new ResourceName("cd"));
+        final Folder content = new Folder("content");
+        final Page ab = new Page("ab");
+        final Page cd = new Page("cd");
         content.add(cd);
         content.add(ab);
 
@@ -152,9 +152,9 @@ public final class FolderTest extends TestCase {
     public void testFolderCount() {
 
         // ARRANGE
-        final Folder content = new Folder(new ResourceName("content"));
-        final Folder ab = new Folder(new ResourceName("ab"));
-        final Page cd = new Page(new ResourceName("cd"));
+        final Folder content = new Folder("content");
+        final Folder ab = new Folder("ab");
+        final Page cd = new Page("cd");
         content.add(cd);
         content.add(ab);
 
@@ -171,10 +171,10 @@ public final class FolderTest extends TestCase {
     public void testEntryReferencesAccessor() {
 
         // ARRANGE
-        final Folder content = new Folder(new ResourceName("content"));
-        final Folder ab = new Folder(new ResourceName("ab"));
-        final Page cd = new Page(new ResourceName("cd"));
-        final Page ef = new Page(new ResourceName("ef"));
+        final Folder content = new Folder("content");
+        final Folder ab = new Folder("ab");
+        final Page cd = new Page("cd");
+        final Page ef = new Page("ef");
         content.add(cd);
         content.add(ab);
         ab.add(ef);
@@ -202,7 +202,7 @@ public final class FolderTest extends TestCase {
     public void testNullContentCannotBeAddedToFolders() {
 
         // ARRANGE
-        final Folder f = new Folder(new ResourceName("foo"));
+        final Folder f = new Folder("foo");
 
         // ACT
         try {
@@ -221,7 +221,7 @@ public final class FolderTest extends TestCase {
     public void testFolderTypeIsFolder() {
 
         // ACT
-        final Resource resource = new Folder(new ResourceName("foo"));
+        final Resource resource = new Folder("foo");
 
         // ASSERT
         assertEquals(ResourceType.FOLDER, resource.type());
@@ -233,7 +233,7 @@ public final class FolderTest extends TestCase {
     public void testResourceCanCastToFolder() {
 
         // ACT
-        final Resource resource = new Folder(new ResourceName("foo"));
+        final Resource resource = new Folder("foo");
 
         // ASSERT
         assertEquals(Folder.class, resource.as(Folder.class).getClass());
@@ -245,7 +245,7 @@ public final class FolderTest extends TestCase {
     public void testEmptyFolderHasSizeZero() {
 
         // ACT
-        final int size = new Folder(new ResourceName("foo")).size();
+        final int size = new Folder("foo").size();
 
         // ASSERT
         assertEquals(0, size);
@@ -257,8 +257,8 @@ public final class FolderTest extends TestCase {
     public void testAddPageToFolder() {
 
         // ARRANGE
-        final Folder folder = new Folder(new ResourceName("foo"));
-        final Page page = new Page(new ResourceName("Name"));
+        final Folder folder = new Folder("foo");
+        final Page page = new Page("Name");
 
         // ACT
         folder.add(page);
@@ -275,8 +275,8 @@ public final class FolderTest extends TestCase {
     public void testRemovePageFromFolder() {
 
         // ARRANGE
-        final Folder folder = new Folder(new ResourceName("foo"));
-        final Page page = new Page(new ResourceName("Name"));
+        final Folder folder = new Folder("foo");
+        final Page page = new Page("Name");
         folder.add(page);
 
         // ACT
@@ -294,8 +294,8 @@ public final class FolderTest extends TestCase {
     public void testAddFolderToFolder() {
 
         // ARRANGE
-        final Folder folder = new Folder(new ResourceName("foo"));
-        final Folder entry = new Folder(new ResourceName("bar"));
+        final Folder folder = new Folder("foo");
+        final Folder entry = new Folder("bar");
 
         // ACT
         folder.add(entry);
@@ -312,10 +312,10 @@ public final class FolderTest extends TestCase {
     public void testFolderEntriesCollectionIsUnmodifiable() {
 
         // ARRANGE
-        final Folder foo = new Folder(new ResourceName("foo"));
+        final Folder foo = new Folder("foo");
         // ACT
         try {
-            foo.entries().add(new Page(new ResourceName("bar")));
+            foo.entries().add(new Page("bar"));
             fail("A folder's entries collection should be unmodifiable.");
 
          // ASSERT
@@ -330,8 +330,8 @@ public final class FolderTest extends TestCase {
     public void testFindEntryByUrl() {
 
         // ARRANGE
-        final Folder foo = new Folder(new ResourceName("foo"));
-        final Folder bar = new Folder(new ResourceName("bar"));
+        final Folder foo = new Folder("foo");
+        final Folder bar = new Folder("bar");
         foo.add(bar);
 
         // ACT
@@ -347,9 +347,9 @@ public final class FolderTest extends TestCase {
     public void testNavigateToContent() {
 
         // ARRANGE
-        final Folder content = new Folder(new ResourceName("content"));
-        final Folder ab = new Folder(new ResourceName("ab"));
-        final Page cd = new Page(new ResourceName("cd"));
+        final Folder content = new Folder("content");
+        final Folder ab = new Folder("ab");
+        final Page cd = new Page("cd");
         ab.add(cd);
         content.add(ab);
         final ResourcePath path = new ResourcePath("/ab/cd");
@@ -367,9 +367,9 @@ public final class FolderTest extends TestCase {
     public void testNavigateToFolder() {
 
         // ARRANGE
-        final Folder content = new Folder(new ResourceName("content"));
-        final Folder ab = new Folder(new ResourceName("ab"));
-        final Folder cd = new Folder(new ResourceName("cd"));
+        final Folder content = new Folder("content");
+        final Folder ab = new Folder("ab");
+        final Folder cd = new Folder("cd");
         ab.add(cd);
         content.add(ab);
         final ResourcePath path = new ResourcePath("/ab/cd");
@@ -387,9 +387,9 @@ public final class FolderTest extends TestCase {
     public void testNavigateToEmptyPath() {
 
         // ARRANGE
-        final Folder content = new Folder(new ResourceName("content"));
-        final Folder ab = new Folder(new ResourceName("ab"));
-        final Folder cd = new Folder(new ResourceName("cd"));
+        final Folder content = new Folder("content");
+        final Folder ab = new Folder("ab");
+        final Folder cd = new Folder("cd");
         ab.add(cd);
         content.add(ab);
         final ResourcePath path = new ResourcePath("");
@@ -407,8 +407,8 @@ public final class FolderTest extends TestCase {
     public void testHasEntryWithName() {
 
         // ARRANGE
-        final Page p = new Page(new ResourceName("page"));
-        final Folder f = new Folder(new ResourceName("folder"));
+        final Page p = new Page("page");
+        final Folder f = new Folder("folder");
         f.add(p);
 
         // ACT
@@ -432,13 +432,13 @@ public final class FolderTest extends TestCase {
     public void testAddRejectsResourcesWithExistingNames() {
 
         // ARRANGE
-        final Page p = new Page(new ResourceName("page"));
-        final Folder f = new Folder(new ResourceName("folder"));
+        final Page p = new Page("page");
+        final Folder f = new Folder("folder");
         f.add(p);
 
         // ACT
         try {
-            f.add(new Page(new ResourceName("page")));
+            f.add(new Page("page"));
             fail("Resources with existing names should be rejected.");
 
         // ASSERT
@@ -455,10 +455,10 @@ public final class FolderTest extends TestCase {
     public void testHasAliases() {
 
         // ARRANGE
-        final Folder noAliases = new Folder(new ResourceName("content"));
-        final Folder withAliases = new Folder(new ResourceName("content"));
-        final Page ab = new Page(new ResourceName("ab"));
-        final Alias cd = new Alias(new ResourceName("cd"), ab);
+        final Folder noAliases = new Folder("content");
+        final Folder withAliases = new Folder("content");
+        final Page ab = new Page("ab");
+        final Alias cd = new Alias("cd", ab);
         noAliases.add(ab);
         withAliases.add(cd);
 
@@ -477,9 +477,9 @@ public final class FolderTest extends TestCase {
     public void testFirstAlias() {
 
         // ARRANGE
-        final Folder pages = new Folder(new ResourceName("content"));
-        final Page ab = new Page(new ResourceName("ab"));
-        final Alias cd = new Alias(new ResourceName("cd"), ab);
+        final Folder pages = new Folder("content");
+        final Page ab = new Page("ab");
+        final Alias cd = new Alias("cd", ab);
         pages.add(ab);
         pages.add(cd);
 

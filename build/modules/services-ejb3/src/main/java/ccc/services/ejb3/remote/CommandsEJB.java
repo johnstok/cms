@@ -91,7 +91,7 @@ public class CommandsEJB
         }
 
         _content.create(parent.id(),
-            new Alias(new ResourceName(name), target));
+            new Alias(name, target));
 
     }
 
