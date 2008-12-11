@@ -46,15 +46,6 @@ public final class Page extends Resource {
      * Constructor.
      *
      * @param name The name of the resource.
-     */
-    public Page(final ResourceName name) {
-        super(name);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param name The name of the resource.
      * @param title The title of the resource.
      */
     public Page(final ResourceName name, final String title) {

@@ -21,9 +21,9 @@ public final class PredefinedResourceNames {
 
     private PredefinedResourceNames() { /* NO-OP */ }
 
-    /** CONTENT : ResourceName. */
-    public static final ResourceName CONTENT = new ResourceName("content");
+    /** CONTENT : String. */
+    public static final String CONTENT = "content";
 
-    /** ASSETS : ResourceName. */
-    public static final ResourceName ASSETS  = new ResourceName("assets");
+    /** ASSETS : String. */
+    public static final String ASSETS  = "assets";
 }

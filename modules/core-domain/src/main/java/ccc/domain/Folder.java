@@ -36,15 +36,6 @@ public final class Folder extends Resource {
     /**
      * Constructor.
      *
-     * @param name The unique name for this resource.
-     */
-    public Folder(final ResourceName name) {
-        super(name);
-    }
-
-    /**
-     * Constructor.
-     *
      * @param title The title for this resource.
      */
     public Folder(final String title) {

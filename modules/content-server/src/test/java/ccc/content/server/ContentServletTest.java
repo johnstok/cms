@@ -33,7 +33,6 @@ import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.Resource;
-import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.Template;
 import ccc.domain.User;
@@ -72,9 +71,9 @@ public final class ContentServletTest extends TestCase {
                     ServiceNames.STATEFUL_READER,
                     _cm));
         final Template t = new Template("foo", "bar", "baz", "<fields/>");
-        final Page p = new Page(new ResourceName("bar"));
+        final Page p = new Page("bar");
         p.template(t);
-        final Alias a = new Alias(new ResourceName("foo"), p);
+        final Alias a = new Alias("foo", p);
 
         expect(_cm.lookup(new ResourcePath(""))).andReturn(_root);
         cs.disableCachingFor(_response);
@@ -99,7 +98,7 @@ public final class ContentServletTest extends TestCase {
     public void testRenderResource() {
 
         // ARRANGE
-        final Page foo = new Page(new ResourceName("foo"));
+        final Page foo = new Page("foo");
         foo.addParagraph(Paragraph.fromText("bar", "baz"));
         final String template = "Hello $resource.id()";
 
@@ -126,7 +125,7 @@ public final class ContentServletTest extends TestCase {
                 "bar",
                 body,
                 "<fields/>");
-        final Page foo = new Page(new ResourceName("foo"));
+        final Page foo = new Page("foo");
         foo.template(t);
 
         // ACT
@@ -145,7 +144,7 @@ public final class ContentServletTest extends TestCase {
     public void testLookupTemplateForFolder() {
 
         // ARRANGE
-        final Folder foo = new Folder(new ResourceName("foo"));
+        final Folder foo = new Folder("foo");
 
         // ACT
         final String templateName =
@@ -178,7 +177,7 @@ public final class ContentServletTest extends TestCase {
                 "bar",
                 body,
                 "<fields/>");
-        final Page page = new Page(new ResourceName("foo"));
+        final Page page = new Page("foo");
         page.template(t);
         page.addParagraph(Paragraph.fromText("key1", "para1"));
         page.addParagraph(Paragraph.fromText("key2", "para2"));
@@ -231,7 +230,7 @@ public final class ContentServletTest extends TestCase {
                 Charset.forName("ISO-8859-1"));
         final Template t = new Template("foo", "bar", body, "<fields/>");
         final Page p =
-            new Page(new ResourceName("name"))
+            new Page("name")
                 .addParagraph(Paragraph.fromText("Header", "<br/>"));
         p.publish(u);
         p.template(t);
@@ -280,11 +279,11 @@ public final class ContentServletTest extends TestCase {
 
         // ARRANGE
         final User u = new User("user");
-        final Folder foo = new Folder(new ResourceName("foo"));
+        final Folder foo = new Folder("foo");
         foo.publish(u);
-        final Folder baz = new Folder(new ResourceName("baz"));
+        final Folder baz = new Folder("baz");
         baz.publish(u);
-        final Page bar = new Page(new ResourceName("bar"));
+        final Page bar = new Page("bar");
         bar.publish(u);
         foo.add(baz);
         foo.add(bar);
@@ -324,11 +323,11 @@ public final class ContentServletTest extends TestCase {
 
         // ARRANGE
         final User u = new User("user");
-        final Folder foo = new Folder(new ResourceName("foo"));
+        final Folder foo = new Folder("foo");
         foo.publish(u);
-        final Folder baz = new Folder(new ResourceName("baz"));
+        final Folder baz = new Folder("baz");
         baz.publish(u);
-        final Page bar = new Page(new ResourceName("bar"));
+        final Page bar = new Page("bar");
         bar.publish(u);
         foo.add(baz);
         foo.add(bar);
@@ -370,8 +369,8 @@ public final class ContentServletTest extends TestCase {
         final RequestDispatcher rd = createStrictMock(RequestDispatcher.class);
         rd.forward(_request, _response);
 
-        final Folder foo = new Folder(new ResourceName("foo"));
-        final Folder baz = new Folder(new ResourceName("baz"));
+        final Folder foo = new Folder("foo");
+        final Folder baz = new Folder("baz");
         foo.add(baz);
 
         expect(_cm.lookup(new ResourcePath("/foo"))).andReturn(foo);
@@ -449,7 +448,7 @@ public final class ContentServletTest extends TestCase {
         rd.forward(_request, _response);
 
         final StringWriter output = new StringWriter();
-        final Page p = new Page(new ResourceName("name"));
+        final Page p = new Page("name");
 
         expect(_cm.lookup(new ResourcePath("/foo"))).andReturn(p);
         replay(_cm);

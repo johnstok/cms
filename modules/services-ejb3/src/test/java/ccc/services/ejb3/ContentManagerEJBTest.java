@@ -27,7 +27,6 @@ import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
-import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.ResourceType;
 import ccc.domain.Template;
@@ -76,9 +75,9 @@ public final class ContentManagerEJBTest extends TestCase {
 
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
-        final Folder foo = new Folder(new ResourceName("foo"));
+        final Folder foo = new Folder("foo");
         final Page bar =
-            new Page(new ResourceName("bar"))
+            new Page("bar")
                 .addParagraph(
                     Paragraph.fromText("default", "<H1>Default</H!>"));
         contentRoot.add(foo);
@@ -107,9 +106,9 @@ public final class ContentManagerEJBTest extends TestCase {
 
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
-        final Folder foo = new Folder(new ResourceName("foo"));
-        final Folder bar = new Folder(new ResourceName("bar"));
-        final Folder baz = new Folder(new ResourceName("baz"));
+        final Folder foo = new Folder("foo");
+        final Folder bar = new Folder("bar");
+        final Folder baz = new Folder("baz");
 
         _al.recordCreate(isA(Folder.class));
         _al.recordCreate(isA(Folder.class));
@@ -150,9 +149,9 @@ public final class ContentManagerEJBTest extends TestCase {
 
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
-        final Folder foo = new Folder(new ResourceName("foo"));
-        final Page page1 = new Page(new ResourceName("page1"));
-        final Page page2 = new Page(new ResourceName("page2"));
+        final Folder foo = new Folder("foo");
+        final Page page1 = new Page("page1");
+        final Page page2 = new Page("page2");
 
         _al.recordCreate(isA(Folder.class));
         _al.recordCreate(isA(Page.class));
@@ -194,9 +193,9 @@ public final class ContentManagerEJBTest extends TestCase {
 
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
-        final Folder foo = new Folder(new ResourceName("foo"));
-        final Folder page1F = new Folder(new ResourceName("page1"));
-        final Page page1P = new Page(new ResourceName("page1"));
+        final Folder foo = new Folder("foo");
+        final Folder page1F = new Folder("page1");
+        final Page page1P = new Page("page1");
 
         _al.recordCreate(isA(Folder.class));
         _al.recordCreate(isA(Folder.class));
@@ -242,8 +241,8 @@ public final class ContentManagerEJBTest extends TestCase {
 
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
-        final Folder foo = new Folder(new ResourceName("foo"));
-        final Page page1 = new Page(new ResourceName("page1"));
+        final Folder foo = new Folder("foo");
+        final Page page1 = new Page("page1");
         page1.addParagraph(Paragraph.fromText("HEADER", "test text"));
 
         _al.recordCreate(isA(Folder.class));
@@ -283,7 +282,7 @@ public final class ContentManagerEJBTest extends TestCase {
 
         // ARRANGE
         final Page bar =
-            new Page(new ResourceName("bar"))
+            new Page("bar")
                 .addParagraph(
                     Paragraph.fromText("default", "<H1>Default</H1>"));
 
@@ -309,7 +308,7 @@ public final class ContentManagerEJBTest extends TestCase {
     public void testSaveContent() {
 
         // ARRANGE
-        final Page page = new Page(new ResourceName("test"));
+        final Page page = new Page("test");
         page.addParagraph(Paragraph.fromText("abc", "def"));
 
         _al.recordUpdate(page);
@@ -339,9 +338,9 @@ public final class ContentManagerEJBTest extends TestCase {
 
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
-        final Folder foo = new Folder(new ResourceName("foo"));
+        final Folder foo = new Folder("foo");
         contentRoot.add(foo);
-        final Alias alias = new Alias(new ResourceName("bar"), foo);
+        final Alias alias = new Alias("bar", foo);
 
         _al.recordCreate(alias);
         expect(_em.find(Resource.class, contentRoot.id()))
@@ -367,11 +366,11 @@ public final class ContentManagerEJBTest extends TestCase {
 
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
-        final Folder foo = new Folder(new ResourceName("foo"));
+        final Folder foo = new Folder("foo");
         contentRoot.add(foo);
-        final Alias alias = new Alias(new ResourceName("bar"), foo);
+        final Alias alias = new Alias("bar", foo);
         contentRoot.add(alias);
-        final Alias aliasCopy = new Alias(new ResourceName("bar"), foo);
+        final Alias aliasCopy = new Alias("bar", foo);
 
         expect(_em.find(Resource.class, contentRoot.id()))
             .andReturn(contentRoot);
@@ -397,9 +396,9 @@ public final class ContentManagerEJBTest extends TestCase {
      */
     public void testMove() {
         // ARRANGE
-        final Folder oldParent = new Folder(new ResourceName("old"));
-        final Folder newParent = new Folder(new ResourceName("new"));
-        final Page resource = new Page(new ResourceName("foo"));
+        final Folder oldParent = new Folder("old");
+        final Folder newParent = new Folder("new");
+        final Page resource = new Page("foo");
         oldParent.add(resource);
 
         expect(_em.find(Resource.class, resource.id())).andReturn(resource);
@@ -422,8 +421,8 @@ public final class ContentManagerEJBTest extends TestCase {
     public void testUpdateAlias() {
 
         // ARRANGE
-        final Page resource = new Page(new ResourceName("foo"));
-        final Page r2 = new Page(new ResourceName("baa"));
+        final Page resource = new Page("foo");
+        final Page r2 = new Page("baa");
         final Alias alias = new Alias("alias", resource);
 
         expect(_em.find(Resource.class, r2.id())).andReturn(r2);
@@ -444,7 +443,7 @@ public final class ContentManagerEJBTest extends TestCase {
      */
     public void testRename() {
         // ARRANGE
-        final Page resource = new Page(new ResourceName("foo"));
+        final Page resource = new Page("foo");
 
         expect(_em.find(Resource.class, resource.id())).andReturn(resource);
         _al.recordRename(resource);
@@ -490,7 +489,7 @@ public final class ContentManagerEJBTest extends TestCase {
 
         // ARRANGE
         final Folder assetRoot = new Folder(PredefinedResourceNames.ASSETS);
-        final Folder templateFolder = new Folder(new ResourceName("templates"));
+        final Folder templateFolder = new Folder("templates");
         assetRoot.add(templateFolder);
         final Template t =
             new Template("title", "description", "body", "<fields/>");

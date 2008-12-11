@@ -14,7 +14,6 @@ package ccc.services.ejb3;
 import static org.easymock.EasyMock.*;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -115,10 +114,9 @@ public class QueryManagerEJBTest extends TestCase {
     public void testFindAssetsRoot() {
 
         // ARRANGE
-        final UUID folderId = UUID.randomUUID();
         final Query q = createStrictMock(Query.class);
         expect(q.setParameter("name", new ResourceName("assets"))).andReturn(q);
-        expect(q.getSingleResult()).andReturn(new Folder(new ResourceName("bar")));
+        expect(q.getSingleResult()).andReturn(new Folder("bar"));
         replay(q);
 
         final EntityManager em = createStrictMock(EntityManager.class);
@@ -140,10 +138,10 @@ public class QueryManagerEJBTest extends TestCase {
     public void testFindContentRoot() {
 
         // ARRANGE
-        final UUID folderId = UUID.randomUUID();
         final Query q = createStrictMock(Query.class);
-        expect(q.setParameter("name", new ResourceName("content"))).andReturn(q);
-        expect(q.getSingleResult()).andReturn(new Folder(new ResourceName("bar")));
+        expect(q.setParameter("name", new ResourceName("content")))
+            .andReturn(q);
+        expect(q.getSingleResult()).andReturn(new Folder("bar"));
         replay(q);
 
         final EntityManager em = createStrictMock(EntityManager.class);
