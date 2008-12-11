@@ -68,7 +68,7 @@ public class ResourceTree extends Tree {
                 String parentId =
                   (null==loadConfig) ? _root._id : loadConfig.<String>get("id");
 
-                _qs.getFolderChildren(
+                _qs.getChildren(
                     parentId,
                     new AsyncCallback<Collection<ResourceSummary>>(){
 
