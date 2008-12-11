@@ -17,6 +17,12 @@
         </web>
     </module>
     <module>
+        <web>
+            <web-uri>rest-api-7.0.0-SNAPSHOT.war</web-uri>
+            <context-root>/api</context-root>
+        </web>
+    </module>
+    <module>
         <ejb>services-ejb3-7.0.0-SNAPSHOT.jar</ejb>
     </module>
     <module>
