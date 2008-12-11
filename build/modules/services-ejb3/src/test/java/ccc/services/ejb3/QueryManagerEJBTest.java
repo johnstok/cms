@@ -164,10 +164,10 @@ public class QueryManagerEJBTest extends TestCase {
 
         // ARRANGE
         final Query q = createStrictMock(Query.class);
-        expect(q.setParameter("name", Name.CONTENT_ROOT_FOLDER_ID))
+        expect(q.setParameter("name", Name.DUMMY_SETTING))
             .andReturn(q);
         expect(q.getSingleResult()).andReturn(
-            new Setting(Name.CONTENT_ROOT_FOLDER_ID, "foo"));
+            new Setting(Name.DUMMY_SETTING, "foo"));
         replay(q);
 
         final EntityManager em = createStrictMock(EntityManager.class);
@@ -178,11 +178,11 @@ public class QueryManagerEJBTest extends TestCase {
         final QueryManagerEJB qs = new QueryManagerEJB(em);
 
         // ACT
-        final Setting s = qs.findSetting(Name.CONTENT_ROOT_FOLDER_ID);
+        final Setting s = qs.findSetting(Name.DUMMY_SETTING);
 
         // ASSERT
         verify(em, q);
-        assertEquals(Name.CONTENT_ROOT_FOLDER_ID, s.name());
+        assertEquals(Name.DUMMY_SETTING, s.name());
     }
 
     /**

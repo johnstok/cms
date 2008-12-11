@@ -74,6 +74,8 @@ public class Setting extends VersionedEntity {
      * @author Civic Computing Ltd.
      */
     public static enum Name {
-        /** CONTENT_ROOT_FOLDER_ID : Name. */
-        CONTENT_ROOT_FOLDER_ID, ASSETS_ROOT_FOLDER_ID}
+
+        /** DUMMY_SETTING : Name. */
+        DUMMY_SETTING
+    }
 }

@@ -31,7 +31,7 @@ public final class SettingTest extends TestCase {
 
         // ACT
         try {
-            new Setting(Name.CONTENT_ROOT_FOLDER_ID, null);
+            new Setting(Name.DUMMY_SETTING, null);
             fail("Empty name should be rejected.");
 
         // ASSERT
@@ -71,7 +71,7 @@ public final class SettingTest extends TestCase {
 
         // ACT
         try {
-            new Setting(Name.CONTENT_ROOT_FOLDER_ID, null);
+            new Setting(Name.DUMMY_SETTING, null);
             fail("NULL value should be rejected.");
 
         // ASSERT
@@ -88,7 +88,7 @@ public final class SettingTest extends TestCase {
     public void testAccessors() {
 
         // ARRANGE
-        final Name name = Name.CONTENT_ROOT_FOLDER_ID;
+        final Name name = Name.DUMMY_SETTING;
         final String value = "bar";
 
         // ACT
@@ -105,7 +105,7 @@ public final class SettingTest extends TestCase {
     public void testValueMutator() {
 
         // ARRANGE
-        final Name name = Name.CONTENT_ROOT_FOLDER_ID;
+        final Name name = Name.DUMMY_SETTING;
         final String value = "bar";
         final Setting s = new Setting(name, value);
 
@@ -124,7 +124,7 @@ public final class SettingTest extends TestCase {
 
         // ARRANGE
         final String value = "bar";
-        final Setting s = new Setting(Name.CONTENT_ROOT_FOLDER_ID, value);
+        final Setting s = new Setting(Name.DUMMY_SETTING, value);
 
         // ACT
         try {
