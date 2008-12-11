@@ -23,6 +23,7 @@ import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.Resource;
+import ccc.domain.ResourceType;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.api.AliasDelta;
@@ -135,6 +136,10 @@ public class ModelTranslation {
         rs._publishedBy = (r.isPublished()) ? r.publishedBy().username() : null;
         rs._childCount = 0;
         rs._folderCount = 0;
+        if (r.type() == ResourceType.FOLDER) {
+            rs._childCount = r.as(Folder.class).entries().size();
+            rs._folderCount = r.as(Folder.class).folders().size();
+        }
         return rs;
     }
 
