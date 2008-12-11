@@ -196,6 +196,7 @@ public class ResourceTable extends TablePanel {
         });
 
         final TextToolItem createFolder = new TextToolItem("Create Folder");
+        createFolder.setId("Create Folder");
         _toolBar.add(createFolder);
         _toolBar.add(new SeparatorToolItem());
         createFolder.addListener(Events.Select, new Listener<ComponentEvent>(){
@@ -207,6 +208,7 @@ public class ResourceTable extends TablePanel {
         });
 
         final TextToolItem createPage = new TextToolItem("Create Page");
+        createPage.setId("Create Page");
         createPage.addListener(Events.Select, new Listener<ComponentEvent>(){
 
             public void handleEvent(final ComponentEvent be) {
@@ -222,6 +224,7 @@ public class ResourceTable extends TablePanel {
         _toolBar.add(createPage);
         _toolBar.add(new SeparatorToolItem());
         final TextToolItem createTemplate = new TextToolItem("Create Template");
+        createTemplate.setId("Create Template");
         createTemplate.addListener(Events.Select, new Listener<ComponentEvent>(){
             public void handleEvent(final ComponentEvent be) {
                 final ModelData item = _previousItem.getModel();
@@ -232,6 +235,7 @@ public class ResourceTable extends TablePanel {
         _toolBar.add(createTemplate);
         _toolBar.add(new SeparatorToolItem());
         final TextToolItem chooseTemplate = new TextToolItem("Choose Template");
+        chooseTemplate.setId("Choose Template");
         chooseTemplate.addListener(Events.Select, new Listener<ComponentEvent>(){
             public void handleEvent(final ComponentEvent be) {
                 final ModelData item = _previousItem.getModel();
