@@ -27,6 +27,7 @@ import javax.persistence.Query;
 import ccc.commons.DBC;
 import ccc.domain.Entity;
 import ccc.domain.Folder;
+import ccc.domain.PredefinedResourceNames;
 import ccc.domain.ResourceName;
 import ccc.domain.Setting;
 import ccc.domain.Setting.Name;
@@ -94,13 +95,13 @@ public final class QueryManagerEJB implements QueryManager {
     /** {@inheritDoc} */
     @Override
     public Folder findContentRoot() {
-        return lookupRoot(new ResourceName("content"));
+        return lookupRoot(new ResourceName(PredefinedResourceNames.CONTENT));
     }
 
     /** {@inheritDoc} */
     @Override
     public Folder findAssetsRoot() {
-        return lookupRoot(new ResourceName("assets"));
+        return lookupRoot(new ResourceName(PredefinedResourceNames.ASSETS));
     }
 
     /** {@inheritDoc} */
