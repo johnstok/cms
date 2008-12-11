@@ -21,14 +21,6 @@
         <param-name>resteasy.scan</param-name>
         <param-value>true</param-value>
     </context-param>
-    <context-param>
-        <param-name>resteasy.jndi.resources</param-name>
-        <param-value>
-            application-ear-7.0.0-SNAPSHOT/ResourceDAO/local
-        </param-value>
-    </context-param>
-
-
 
     <listener>
         <listener-class>
