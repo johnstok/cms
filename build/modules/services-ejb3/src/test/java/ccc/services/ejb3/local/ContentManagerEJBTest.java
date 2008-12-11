@@ -10,7 +10,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.services.ejb3;
+package ccc.services.ejb3.local;
 
 import static org.easymock.EasyMock.*;
 

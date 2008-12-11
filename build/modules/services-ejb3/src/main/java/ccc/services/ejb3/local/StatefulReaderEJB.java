@@ -10,7 +10,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.services.ejb3;
+package ccc.services.ejb3.local;
 
 import static javax.ejb.TransactionAttributeType.*;
 
@@ -45,7 +45,8 @@ public final class StatefulReaderEJB
     @PersistenceContext(
         unitName = "ccc-persistence",
         type=PersistenceContextType.EXTENDED)
-    private EntityManager _em;
+    @SuppressWarnings("unused")
+    private EntityManager _em; // Required to insure method calls are stateful.
 
     @EJB(name="QueryManager") private QueryManager _qm;
 

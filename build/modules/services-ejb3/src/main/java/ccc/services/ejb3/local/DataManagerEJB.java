@@ -10,7 +10,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.services.ejb3;
+package ccc.services.ejb3.local;
 
 import static ccc.commons.Exceptions.*;
 import static javax.ejb.TransactionAttributeType.*;
