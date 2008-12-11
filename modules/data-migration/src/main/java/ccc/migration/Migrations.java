@@ -22,6 +22,7 @@ import org.w3c.dom.NodeList;
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
 import ccc.commons.XHTML;
+import ccc.domain.PredefinedResourceNames;
 import ccc.services.api.Commands;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ParagraphDelta;
@@ -80,9 +81,11 @@ public class Migrations {
     }
 
     private void createDefaultFolderStructure() {
-        assetRoot = commands().createRoot("assets");
-        templateFolder = commands().createFolder(assetRoot._id, "templates");
-        contentRoot = commands().createRoot("content");
+        assetRoot = commands().createRoot(PredefinedResourceNames.ASSETS);
+        templateFolder =
+            commands().createFolder(assetRoot._id,
+                                    PredefinedResourceNames.TEMPLATES);
+        contentRoot = commands().createRoot(PredefinedResourceNames.CONTENT);
     }
 
     private void migrateUsers(final LegacyDBQueries queries) {

@@ -19,11 +19,14 @@ package ccc.domain;
  */
 public final class PredefinedResourceNames {
 
-    private PredefinedResourceNames() { /* NO-OP */ }
+    private PredefinedResourceNames() { super(); }
 
     /** CONTENT : String. */
     public static final String CONTENT = "content";
 
     /** ASSETS : String. */
     public static final String ASSETS  = "assets";
+
+    /** TEMPLATES : String. */
+    public static final String TEMPLATES  = "templates";
 }
