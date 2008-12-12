@@ -162,5 +162,7 @@ public final class Globals {
     public static final String APP_URL = "creator/";
     /** API_URL : String. */
     public static final String API_URL = "api/";
+    /** MIN_USER_NAME_LENGTH : int. */
+    public static final int MIN_USER_NAME_LENGTH = 4;
 
 }

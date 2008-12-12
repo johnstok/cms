@@ -166,4 +166,28 @@ public class Validations {
             }
         };
     }
+
+
+    /**
+     * Validates that input is not too short.
+     *
+     * @param input The string to validate.
+     * @param min The minimum length of the String
+     * @return The Validator
+     */
+    public static Validator minLength(final TextField<String> input,
+                                      final int min) {
+        return new Validator() {
+            public void validate(final Validate validate) {
+                if(null == input.getValue()
+                   || input.getValue().length() < min) {
+                    validate.addMessage( // TODO: Fix
+                        input.getFieldLabel()
+                        + " is too short"
+                    );
+                }
+                validate.next();
+            }
+        };
+    }
 }
