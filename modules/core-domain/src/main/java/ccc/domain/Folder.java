@@ -129,27 +129,6 @@ public final class Folder extends Resource {
     }
 
     /**
-     * Retrieve a list of references, one for each entry in this folder.
-     *
-     * @return A list of resource references.
-     */
-    public List<ResourceRef> entryReferences() {
-
-        final List<ResourceRef> resourceRefs = new ArrayList<ResourceRef>();
-        for (final Resource entry : _entries) {
-            final ResourceRef ref =
-                new ResourceRef(entry.name(), entry.id(), entry.type());
-            if(entry.type() == ResourceType.FOLDER) {
-                ref.addMetadata(
-                    "folder-count",
-                    String.valueOf(entry.as(Folder.class).folderCount()));
-            }
-            resourceRefs.add(ref);
-        }
-        return resourceRefs;
-    }
-
-    /**
      * Query method - returns the number of folders that are children of this
      * folder.
      *
