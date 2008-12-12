@@ -17,6 +17,7 @@ package ccc.services;
  *
  * @author Civic Computing Ltd.
  */
+@Deprecated
 public final class ServiceNames {
 
     private ServiceNames() { super(); }
@@ -25,19 +26,8 @@ public final class ServiceNames {
     public static final String STATEFUL_READER =
         "application-ear-7.0.0-SNAPSHOT/StatefulReader/local";
 
-    /** CONTENT_MANAGER_LOCAL : String. */
-    public static final String CONTENT_MANAGER_LOCAL =
-        "application-ear-7.0.0-SNAPSHOT/ContentManager/local";
-
     /** DATA_MANAGER_LOCAL : String. */
     public static final String DATA_MANAGER_LOCAL =
         "application-ear-7.0.0-SNAPSHOT/DataManager/local";
 
-    /** USER_MANAGER_LOCAL : String. */
-    public static final String USER_MANAGER_LOCAL =
-        "application-ear-7.0.0-SNAPSHOT/UserManager/local";
-
-    /** RESOURCE_DAO_LOCAL : String. */
-    public static final String RESOURCE_DAO_LOCAL =
-        "application-ear-7.0.0-SNAPSHOT/ResourceDAO/local";
 }

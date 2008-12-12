@@ -63,7 +63,7 @@ public class UserManagerEJBTest extends TestCase {
     public void testUsernameExistsCanReturnTrue() {
 
         // ARRANGE
-        expect(_q.setParameter("username", "blat")).andReturn(_q);
+        expect(_q.setParameter(1, "blat")).andReturn(_q);
         expect(_q.getSingleResult()).andReturn(new User("blat"));
         replay(_q);
 
@@ -86,7 +86,7 @@ public class UserManagerEJBTest extends TestCase {
     public void testUsernameExistsCanReturnFalse() {
 
         // ARRANGE
-        expect(_q.setParameter("username", "blat")).andReturn(_q);
+        expect(_q.setParameter(1, "blat")).andReturn(_q);
         expect(_q.getSingleResult()).andThrow(new NoResultException());
         replay(_q);
 
@@ -152,7 +152,7 @@ public class UserManagerEJBTest extends TestCase {
     public void testListUsersWithRole() {
 
         // ARRANGE
-        expect(_q.setParameter("role", CreatorRoles.ADMINISTRATOR.name()))
+        expect(_q.setParameter(1, CreatorRoles.ADMINISTRATOR.name()))
             .andReturn(_q);
         expect(_q.getResultList()).andReturn(new ArrayList<User>());
         replay(_q);
@@ -176,7 +176,7 @@ public class UserManagerEJBTest extends TestCase {
     public void testListUsersWithUsername() {
 
         // ARRANGE
-        expect(_q.setParameter("username", "testname"))
+        expect(_q.setParameter(1, "testname"))
         .andReturn(_q);
         expect(_q.getResultList()).andReturn(new ArrayList<User>());
         replay(_q);
@@ -200,7 +200,7 @@ public class UserManagerEJBTest extends TestCase {
     public void testListUsersWithEmail() {
 
         // ARRANGE
-        expect(_q.setParameter("email", "test@civicuk.com"))
+        expect(_q.setParameter(1, "test@civicuk.com"))
         .andReturn(_q);
         expect(_q.getResultList()).andReturn(new ArrayList<User>());
         replay(_q);
