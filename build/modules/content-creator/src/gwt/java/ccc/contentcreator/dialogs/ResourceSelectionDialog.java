@@ -11,6 +11,7 @@
  */
 package ccc.contentcreator.dialogs;
 
+import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.ResourceTree;
 import ccc.services.api.ResourceSummary;
@@ -32,14 +33,17 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 public class ResourceSelectionDialog extends Window {
 
     private final ResourceTree _tree;
+    private final UIConstants _constants = Globals.uiConstants();
 
     /**
      * Constructor.
+     *
+     * @param targetRoot ResourceSummary root
      */
     ResourceSelectionDialog(final ResourceSummary targetRoot) {
         setBodyBorder(false);
         setScrollMode(Scroll.AUTOY);
-        setHeading("Select a folder"); // TODO: Move to UIConstants
+        setHeading(_constants.selectResource());
         setWidth(400);
         setHeight(225);
         setLayout(new FitLayout());
@@ -56,7 +60,7 @@ public class ResourceSelectionDialog extends Window {
                 }
             }
         );
-        save.setId("FolderSelectSave");
+        save.setId("ResourceSelectSave");
         addButton(save);
     }
 
