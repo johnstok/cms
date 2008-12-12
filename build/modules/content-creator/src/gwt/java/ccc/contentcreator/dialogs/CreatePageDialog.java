@@ -241,7 +241,8 @@ public class CreatePageDialog
                 if (null != model) {
                 final StringBuilder html = new StringBuilder();
                 html.append("<div id='");
-                html.append(model.<String>get("id"));
+                // do not use id for id, otherwise acceptance tests fail.
+                html.append(model.<String>get("name"));
                 html.append("'>");
                 html.append(model.<String>get("name"));
                 html.append("</div>");
@@ -291,7 +292,7 @@ public class CreatePageDialog
                         final ParagraphDelta p = new ParagraphDelta();
                         p._name = c.getId();
                         p._dateValue = f.getValue();
-                        p._type = "TEXT";
+                        p._type = "DATE";
                         paragraphs.add(p);
                     }
                 }
