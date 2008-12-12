@@ -131,7 +131,7 @@ public class UpdatePageDialog
                             final ParagraphDelta p = new ParagraphDelta();
                             p._name = c.getId();
                             p._dateValue = f.getValue();
-                            p._type = "TEXT";
+                            p._type = "DATE";
                             paragraphs.add(p);
                         }
                     }
