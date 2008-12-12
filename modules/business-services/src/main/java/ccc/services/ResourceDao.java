@@ -12,16 +12,12 @@
 package ccc.services;
 
 import java.util.List;
+import java.util.UUID;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-
+import ccc.domain.Entity;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
+import ccc.domain.Template;
 
 
 /**
@@ -29,8 +25,7 @@ import ccc.domain.Resource;
  *
  * @author Civic Computing Ltd.
  */
-@Path("/resources")
-public interface ResourceDAOLocal {
+public interface ResourceDao {
 
     /**
      * Lock the specified resource.
@@ -40,10 +35,7 @@ public interface ResourceDAOLocal {
      * @param resourceId The uuid of the resource to lock.
      * @return The current version of resource.
      */
-    @GET // TODO: Should be POST
-    @Path("/lock/{id}")
-    @Produces("text/plain")
-    Resource lock(@PathParam("id") String resourceId);
+    Resource lock(String resourceId);
 
     /**
      * Unlock the specified Resource.
@@ -54,10 +46,7 @@ public interface ResourceDAOLocal {
      * @param resourceId The resource to unlock.
      * @return The current version of resource.
      */
-    @GET // TODO: Should be POST
-    @Path("/unlock/{id}")
-    @Produces("text/plain")
-    Resource unlock(@PathParam("id") String resourceId);
+    Resource unlock(String resourceId);
 
     /**
      * List the resources locked by the currently logged in user.
@@ -71,9 +60,6 @@ public interface ResourceDAOLocal {
      *
      * @return The list of resources.
      */
-    @GET
-    @Path("/locked")
-    @Produces("text/plain")
     List<Resource> locked();
 
     /**
@@ -82,10 +68,7 @@ public interface ResourceDAOLocal {
      * @param resourceId The id of the resource whose history we will look up.
      * @return The list of resources.
      */
-    @GET
-    @Path("/history/{id}")
-    @Produces("text/plain")
-    List<LogEntry> history(@PathParam("id") String resourceId);
+    List<LogEntry> history(String resourceId);
 
     /**
      * TODO: Add a description of this method.
@@ -93,12 +76,9 @@ public interface ResourceDAOLocal {
      * @param resourceId
      * @param tags
      */
-    @POST
-    @Path("/tags")
-    @Produces("text/plain")
     void updateTags(
-                @QueryParam("id") String resourceId,
-                @QueryParam("tags") String tags);
+                String resourceId,
+                String tags);
 
     /**
      * Publishes the resource.
@@ -106,10 +86,7 @@ public interface ResourceDAOLocal {
      * @param resourceId The id of the resource to update.
      * @return The current version of resource.
      */
-    @POST
-    @Path("/publish/{id}")
-    @Produces("text/plain")
-    Resource publish(@PathParam("id") String resourceId);
+    Resource publish(String resourceId);
 
     /**
      * Unpublishes the resource.
@@ -117,8 +94,31 @@ public interface ResourceDAOLocal {
      * @param resourceId The id of the resource to update.
      * @return The current version of resource.
      */
-    @POST
-    @Path("/unpublish/{id}")
-    @Produces("text/plain")
-    Resource unpublish(@PathParam("id") String resourceId);
+    Resource unpublish(String resourceId);
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param resourceId
+     * @param template
+     */
+    void updateTemplateForResource(UUID resourceId, Template template);
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param resourceId
+     * @param newParentId
+     */
+    void move(UUID resourceId, UUID newParentId);
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param resourceId
+     * @param name
+     */
+    void rename(UUID resourceId, String name);
+
+    <T extends Entity> T find(final Class<T> type, final UUID id); // Should be T extends Resource?
 }

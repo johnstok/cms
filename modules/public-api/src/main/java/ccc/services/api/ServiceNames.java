@@ -17,6 +17,7 @@ package ccc.services.api;
  *
  * @author Civic Computing Ltd.
  */
+@Deprecated
 public final class ServiceNames {
 
     private ServiceNames() { super(); }

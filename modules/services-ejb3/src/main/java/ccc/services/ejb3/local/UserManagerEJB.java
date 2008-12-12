@@ -15,7 +15,6 @@ import static javax.ejb.TransactionAttributeType.*;
 
 import java.security.Principal;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -27,13 +26,13 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import ccc.domain.CreatorRoles;
 import ccc.domain.Password;
 import ccc.domain.User;
 import ccc.services.UserManager;
+import ccc.services.ejb3.support.BaseDao;
 
 
 /**
@@ -45,10 +44,8 @@ import ccc.services.UserManager;
 @Stateless(name="UserManager")
 @TransactionAttribute(REQUIRED)
 @Local(UserManager.class)
-public class UserManagerEJB implements UserManager {
+public class UserManagerEJB extends BaseDao implements UserManager {
 
-    @PersistenceContext(unitName = "ccc-persistence")
-    private EntityManager _em;
     @Resource private EJBContext _context;
 
     /**
@@ -80,68 +77,37 @@ public class UserManagerEJB implements UserManager {
     }
 
     /** {@inheritDoc} */
-    @SuppressWarnings("unchecked") // JPA API doesn't support generics.
     @Override
     public Collection<User> listUsers() {
-        final Query q = _em.createNamedQuery("users");
-        return uniquify(q.getResultList());
+        return uniquify(list("users", User.class));
     }
 
     /** {@inheritDoc} */
-    @SuppressWarnings("unchecked") // JPA API doesn't support generics.
     @Override
     public Collection<User> listUsersWithUsername(final String username) {
-        final Query q = _em.createNamedQuery("usersWithUsername");
-        String searchParam = "";
-        if (username != null) {
-            searchParam = username;
-        }
-        q.setParameter("username", searchParam.toLowerCase(Locale.US));
-
-        return q.getResultList();
+        final String searchParam =
+            (null==username) ? "" : username.toLowerCase(Locale.US);
+        return list("usersWithUsername", User.class, searchParam);
     }
 
     /** {@inheritDoc} */
-    @SuppressWarnings("unchecked") // JPA API doesn't support generics.
     @Override
     public Collection<User> listUsersWithEmail(final String email) {
-        final Query q = _em.createNamedQuery("usersWithEmail");
-        String searchParam = "";
-        if (email != null) {
-            searchParam = email;
-        }
-        q.setParameter("email", searchParam.toLowerCase(Locale.US));
-
-        return q.getResultList();
+        final String searchParam =
+            (null==email) ? "" : email.toLowerCase(Locale.US);
+        return list("usersWithEmail", User.class, searchParam);
     }
 
     /** {@inheritDoc} */
-    @SuppressWarnings("unchecked") // JPA API doesn't support generics.
     @Override
     public Collection<User> listUsersWithRole(final CreatorRoles role) {
-        final Query q = _em.createNamedQuery("usersWithRole");
-        q.setParameter("role", role.name());
-
-        return uniquify(q.getResultList());
+        return uniquify(list("usersWithRole", User.class, role.name()));
     }
 
     /** {@inheritDoc} */
     @Override
-    // TODO: Factor 'exists' algo into QueryManager?
     public boolean usernameExists(final String username) {
-        final Query q = _em.createNamedQuery("usersWithUsername");
-        q.setParameter("username", username);
-        try {
-            q.getSingleResult();
-            return true;
-        } catch (final NoResultException e) {
-            return false;
-        }
-    }
-
-    // TODO: Merge into QueryManager?
-    private <T> Collection<T> uniquify(final Collection<T> collection) {
-        return new HashSet<T>(collection);
+        return exists(find("usersWithUsername", User.class, username));
     }
 
     /** {@inheritDoc} */

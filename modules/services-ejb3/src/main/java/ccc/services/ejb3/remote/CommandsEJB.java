@@ -19,8 +19,6 @@ import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import ccc.commons.EmailAddress;
 import ccc.domain.Alias;
@@ -33,9 +31,11 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.services.ContentManager;
-import ccc.services.QueryManager;
-import ccc.services.ResourceDAOLocal;
+import ccc.services.AliasDao;
+import ccc.services.FolderDao;
+import ccc.services.PageDao;
+import ccc.services.ResourceDao;
+import ccc.services.TemplatesDao;
 import ccc.services.UserManager;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.Commands;
@@ -62,17 +62,12 @@ public class CommandsEJB
     implements
         Commands {
 
-    @PersistenceContext(unitName = "ccc-persistence")
-    private EntityManager _entityManager;
-
-    @EJB(name="QueryManager")
-    private QueryManager _qm;
-    @EJB(name="UserManager")
-    private UserManager _users;
-    @EJB(name="ContentManager")
-    private ContentManager _content;
-    @EJB(name="ResourceDAO", beanInterface=ResourceDAOLocal.class)
-    private ResourceDAOLocal _resources;
+    @EJB(name="TemplateDao")    private TemplatesDao     _templates;
+    @EJB(name="FolderDao")      private FolderDao       _folders;
+    @EJB(name="AliasDao")       private AliasDao         _alias;
+    @EJB(name="PageDao")        private PageDao          _page;
+    @EJB(name="UserManager")    private UserManager      _users;
+    @EJB(name="ResourceDao")    private ResourceDao _resources;
 
     /** {@inheritDoc} */
     @Override
@@ -80,17 +75,19 @@ public class CommandsEJB
                             final String name,
                             final String targetId) {
 
-        final Resource target = _qm.find(Resource.class, targetId);
+        final Resource target =
+            _resources.find(Resource.class, UUID.fromString(targetId));
         if (target == null) {
             throw new CCCException("Target does not exists.");
         }
 
-        final Resource parent = _qm.find(Resource.class, parentId);
+        final Resource parent =
+            _resources.find(Resource.class, UUID.fromString(parentId));
         if (parent == null) {
             throw new CCCException("Parent does not exists.");
         }
 
-        _content.create(parent.id(),
+        _alias.create(parent.id(),
             new Alias(name, target));
 
     }
@@ -101,7 +98,7 @@ public class CommandsEJB
                                         final String name) {
 
         final Folder f =
-            _content.create(
+            _folders.create(
                 UUID.fromString(parentId),
                 new Folder(name));
         return map(f);
@@ -123,7 +120,8 @@ public class CommandsEJB
         }
 
         if (templateId != null) {
-            final Template template =  _qm.find(Template.class, templateId);
+            final Template template =
+                _resources.find(Template.class, UUID.fromString(templateId));
             page.template(template);
         }
 
@@ -140,7 +138,7 @@ public class CommandsEJB
             }
         }
 
-        _content.create(UUID.fromString(parentId), page);
+        _page.create(UUID.fromString(parentId), page);
 
         return map(page);
 
@@ -158,7 +156,7 @@ public class CommandsEJB
             delta._body,
             delta._definition);
 
-        _content.createDisplayTemplate(UUID.fromString(parentId), t);
+        _templates.create(UUID.fromString(parentId), t);
 
         return map(t);
 
@@ -188,7 +186,7 @@ public class CommandsEJB
                      final long version,
                      final String newParentId) {
 
-        _content.move(UUID.fromString(resourceId),
+        _resources.move(UUID.fromString(resourceId),
             UUID.fromString(newParentId));
     }
 
@@ -204,7 +202,7 @@ public class CommandsEJB
                        final long version,
                        final String name) {
 
-        _content.rename(UUID.fromString(resourceId), name);
+        _resources.rename(UUID.fromString(resourceId), name);
     }
 
     /** {@inheritDoc} */
@@ -222,9 +220,10 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     public void updateAlias(final AliasDelta delta) {
-        _content.updateAlias(
+        _alias.updateAlias(
             UUID.fromString(delta._targetId),
-            UUID.fromString(delta._id));
+            UUID.fromString(delta._id),
+            delta._version);
     }
 
     /** {@inheritDoc} */
@@ -251,8 +250,10 @@ public class CommandsEJB
             }
         }
 
-        // TODO: Add version checking.
-        _content.update(page.id(), page.title(), page.paragraphs());
+        _page.update(UUID.fromString(delta._id),
+                     delta._version,
+                     delta._title,
+                     page.paragraphs());
 
     }
 
@@ -264,9 +265,9 @@ public class CommandsEJB
 
         final Template t = (null==templateId)
             ? null
-            : _qm.find(Template.class, templateId);
+            : _resources.find(Template.class, UUID.fromString(templateId));
 
-        _content.updateTemplateForResource(UUID.fromString(resourceId), t);
+        _resources.updateTemplateForResource(UUID.fromString(resourceId), t);
     }
 
     /** {@inheritDoc} */
@@ -281,18 +282,15 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     public ResourceSummary updateTemplate(final TemplateDelta delta) {
-        final Template t = new Template(
-            new ResourceName(delta._name),
-            delta._title,
-            delta._description,
-            delta._body,
-            delta._definition);
-        t.version(delta._version);
-        t.id(UUID.fromString(delta._id));
 
-        _content.update(t);
+        final Template t = _templates.update(UUID.fromString(delta._id),
+                                             delta._version,
+                                             delta._title,
+                                             delta._description,
+                                             delta._definition,
+                                             delta._body);
 
-        return map(t); // FIXME: Should be returned by _assets.update
+        return map(t);
     }
 
     /** {@inheritDoc} */
@@ -316,7 +314,7 @@ public class CommandsEJB
     @Override
     public ResourceSummary createRoot(final String name) {
         final Folder f = new Folder(name);
-        _entityManager.persist(f);
+        _folders.createRoot(f);
         return map(f);
     }
 }

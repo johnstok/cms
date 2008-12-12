@@ -14,19 +14,21 @@ package ccc.services.ejb3.local;
 
 import static javax.ejb.TransactionAttributeType.*;
 
-import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
+import javax.persistence.Query;
 
 import ccc.domain.CCCException;
 import ccc.domain.Folder;
+import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
+import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
-import ccc.services.QueryManager;
 import ccc.services.StatefulReader;
 
 
@@ -48,7 +50,6 @@ public final class StatefulReaderEJB
     @SuppressWarnings("unused")
     private EntityManager _em; // Required to insure method calls are stateful.
 
-    @EJB(name="QueryManager") private QueryManager _qm;
 
     /**
      * Constructor.
@@ -60,12 +61,9 @@ public final class StatefulReaderEJB
      * Constructor.
      *
      * @param entityManager A JPA entity manager.
-     * @param queryManager A CCC QueryManager.
      */
-    StatefulReaderEJB(final EntityManager entityManager,
-                      final QueryManager queryManager) {
+    StatefulReaderEJB(final EntityManager entityManager) {
         _em = entityManager;
-        _qm = queryManager;
     }
 
 
@@ -74,10 +72,25 @@ public final class StatefulReaderEJB
      */
     @Override
     public Resource lookup(final ResourcePath path) {
-        final Folder contentRoot = _qm.findContentRoot();
+        final Folder contentRoot = lookupRoot();
         try {
             return contentRoot.navigateTo(path);
         } catch (final CCCException e) {
+            return null;
+        }
+    }
+
+    private Folder lookupRoot() {
+        final Query q = _em.createNamedQuery("resourcesByName");
+        q.setParameter(
+            "name",
+            new ResourceName(PredefinedResourceNames.CONTENT));
+
+        try {
+            final Object singleResult = q.getSingleResult();
+            final Folder folder = Folder.class.cast(singleResult);
+            return folder;
+        } catch (final NoResultException e) {
             return null;
         }
     }
