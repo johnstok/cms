@@ -19,7 +19,7 @@ import ccc.domain.Paragraph;
 
 
 /**
- * TODO: Add Description for this type.
+ * DAO API for the {@link Page} class.
  *
  * @author Civic Computing Ltd.
  */
@@ -34,9 +34,10 @@ public interface PageDao {
     void create(UUID folderId, Page newPage);
 
     /**
-     * Recreates a page's paragraphs.
+     * Update a page.
      *
-     * @param id The unique identifier for the page.
+     * @param id The identifier for the page.
+     * @param version The expected version of the page.
      * @param newTitle The new title for the page.
      * @param newParagraphs The new paragraphs for the page. All existing
      *      paragraphs will be removed and replaced with the paragraphs
