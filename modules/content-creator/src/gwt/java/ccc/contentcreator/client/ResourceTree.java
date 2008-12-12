@@ -88,7 +88,7 @@ public class ResourceTree extends Tree {
             new BaseTreeLoader<ModelData>(proxy) {
             @Override
             public boolean hasChildren(final ModelData parent) {
-                if (parent.<Integer>get("folderCount") > 0) {
+                if (parent.<Integer>get("childCount") > 0) {
                     return true;
                 }
                 return false;

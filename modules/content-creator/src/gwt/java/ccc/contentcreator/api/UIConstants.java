@@ -553,4 +553,20 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("No")
     String no();
+
+    /**
+     * "Select a resource".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Select a resource")
+    String selectResource();
+
+    /**
+     * "Select a folder".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Select a folder")
+    String selectFolder();
 }

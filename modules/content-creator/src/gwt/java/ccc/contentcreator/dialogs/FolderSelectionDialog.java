@@ -11,7 +11,9 @@
  */
 package ccc.contentcreator.dialogs;
 
+import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.client.FolderResourceTree;
+import ccc.contentcreator.client.Globals;
 import ccc.services.api.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
@@ -31,14 +33,17 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 public class FolderSelectionDialog extends Window {
 
     private final FolderResourceTree _tree;
+    private final UIConstants _constants = Globals.uiConstants();
 
     /**
      * Constructor.
+     *
+     * @param root ResourceSummary root.
      */
     FolderSelectionDialog(final ResourceSummary root) {
         setBodyBorder(false);
         setScrollMode(Scroll.AUTOY);
-        setHeading("Select a folder"); // TODO: Move to UIConstants
+        setHeading(_constants.selectFolder());
         setWidth(400);
         setHeight(225);
         setLayout(new FitLayout());
