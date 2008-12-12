@@ -19,11 +19,11 @@ import ccc.domain.Template;
 
 
 /**
- * TODO: Add Description for this type.
+ * DAO API for the {@link Template} class.
  *
  * @author Civic Computing Ltd.
  */
-public interface TemplatesDao {
+public interface TemplateDao {
 
     /**
      * Look up all templates available.
@@ -34,14 +34,15 @@ public interface TemplatesDao {
 
 
     /**
-     * TODO: Add a description of this method.
+     * Update an existing resource.
      *
-     * @param templateId
-     * @param templateVersion
-     * @param title
-     * @param description
-     * @param definition
-     * @param body
+     * @param templateId The id of the template to update.
+     * @param templateVersion The expected version of the template.
+     * @param title The template's new title.
+     * @param description The template's new description.
+     * @param definition The template's new definition.
+     * @param body The template's new body.
+     * @return The updated template.
      */
     Template update(UUID templateId,
                     long templateVersion,
@@ -60,10 +61,11 @@ public interface TemplatesDao {
 
 
     /**
-     * TODO: Add a description of this method.
+     * Query if a template already exists with the specified name.
      *
-     * @param templateName
-     * @return
+     * @param templateName The name to check.
+     * @return True if a template exists with the specified name, false
+     *  otherwise.
      */
     boolean nameExists(ResourceName templateName);
 

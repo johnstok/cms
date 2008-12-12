@@ -17,7 +17,7 @@ import ccc.domain.Alias;
 
 
 /**
- * TODO: Add Description for this type.
+ * DAO API for the {@link Alias} class.
  *
  * @author Civic Computing Ltd.
  */
@@ -36,6 +36,7 @@ public interface AliasDao {
      *
      * @param targetId The new target UUID
      * @param aliasId The alias UUID
+     * @param aliasVersion The expected version of the alias.
      */
     void updateAlias(UUID targetId, UUID aliasId, long aliasVersion);
 

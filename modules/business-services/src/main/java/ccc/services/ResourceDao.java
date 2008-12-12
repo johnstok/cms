@@ -21,7 +21,7 @@ import ccc.domain.Template;
 
 
 /**
- * {@link Resource} specific business methods.
+ * DAO API for the {@link Resource} class.
  *
  * @author Civic Computing Ltd.
  */
@@ -71,10 +71,10 @@ public interface ResourceDao {
     List<LogEntry> history(String resourceId);
 
     /**
-     * TODO: Add a description of this method.
+     * Update the tags for a resource.
      *
-     * @param resourceId
-     * @param tags
+     * @param resourceId The resource to update.
+     * @param tags The tags to set.
      */
     void updateTags(
                 String resourceId,
@@ -89,7 +89,7 @@ public interface ResourceDao {
     Resource publish(String resourceId);
 
     /**
-     * Unpublishes the resource.
+     * Un-publishes the resource.
      *
      * @param resourceId The id of the resource to update.
      * @return The current version of resource.
@@ -97,28 +97,37 @@ public interface ResourceDao {
     Resource unpublish(String resourceId);
 
     /**
-     * TODO: Add a description of this method.
+     * Change the template for the specified resource.
      *
-     * @param resourceId
-     * @param template
+     * @param resourceId The id of the resource to change.
+     * @param template The new template to set.
      */
     void updateTemplateForResource(UUID resourceId, Template template);
 
     /**
-     * TODO: Add a description of this method.
+     * Move a resource to a new parent.
      *
-     * @param resourceId
-     * @param newParentId
+     * @param resourceId The id of the resource to move.
+     * @param newParentId The id of the new parent.
      */
     void move(UUID resourceId, UUID newParentId);
 
     /**
-     * TODO: Add a description of this method.
+     * Rename a resource.
      *
-     * @param resourceId
-     * @param name
+     * @param resourceId The id of the resource to change.
+     * @param name The new name to set.
      */
     void rename(UUID resourceId, String name);
 
-    <T extends Entity> T find(final Class<T> type, final UUID id); // Should be T extends Resource?
+    /**
+     * Find a resource using its unique id.
+     * TODO: Should be <T extends Resource>?
+     *
+     * @param <T> The of the resource to return.
+     * @param type A class representing the type of the resource to return.
+     * @param id The id of the resource to find.
+     * @return The resource for the specified id.
+     */
+    <T extends Entity> T find(final Class<T> type, final UUID id);
 }

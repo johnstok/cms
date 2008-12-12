@@ -18,7 +18,7 @@ import ccc.domain.Folder;
 
 
 /**
- * TODO: Add Description for this type.
+ * DAO API for the {@link Folder} class.
  *
  * @author Civic Computing Ltd.
  */
@@ -34,17 +34,16 @@ public interface FolderDao {
     Folder create(UUID parentId, Folder newFolder);
 
     /**
-     * TODO: Add a description of this method.
+     * List all the root folders available.
      *
-     * @return
+     * @return The collection of folders without a parent.
      */
     Collection<Folder> roots();
 
     /**
-     * TODO: Add a description of this method.
+     * Create a new root folder.
      *
-     * @param f
-     * @return
+     * @param f The folder to create.
      */
     void createRoot(Folder f);
 
