@@ -168,37 +168,6 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      */
-    public void testEntryReferencesAccessor() {
-
-        // ARRANGE
-        final Folder content = new Folder("content");
-        final Folder ab = new Folder("ab");
-        final Page cd = new Page("cd");
-        final Page ef = new Page("ef");
-        content.add(cd);
-        content.add(ab);
-        ab.add(ef);
-
-        // ACT
-        final List<ResourceRef> resourceRefs = content.entryReferences();
-
-        // ASSERT
-        assertEquals(2, resourceRefs.size());
-
-        assertEquals("cd", resourceRefs.get(0).name().toString());
-        assertEquals(cd.id(), resourceRefs.get(0).id());
-        assertEquals(
-            null,
-            resourceRefs.get(0).metadata().get("folder-count"));
-
-        assertEquals("ab", resourceRefs.get(1).name().toString());
-        assertEquals(ab.id(), resourceRefs.get(1).id());
-        assertEquals("0", resourceRefs.get(1).metadata().get("folder-count"));
-    }
-
-    /**
-     * Test.
-     */
     public void testNullContentCannotBeAddedToFolders() {
 
         // ARRANGE

@@ -94,7 +94,7 @@ public final class ResourcePathTest extends TestCase {
 
         // ACT
         try {
-            final ResourcePath path = new ResourcePath((String) null);
+            new ResourcePath((String) null);
             fail("Should reject NULL.");
 
         // ASSERT
@@ -111,7 +111,7 @@ public final class ResourcePathTest extends TestCase {
 
         // ACT
         try {
-            final ResourcePath path = new ResourcePath((ResourceName) null);
+            new ResourcePath((ResourceName) null);
             fail("Should reject NULL.");
 
             // ASSERT
