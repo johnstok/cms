@@ -64,6 +64,7 @@ public class EditUserDialog extends AbstractEditDialog {
 
         _username.setFieldLabel(constants().username());
         _username.setAllowBlank(false);
+        _username.setMinLength(Globals.MIN_USER_NAME_LENGTH);
         _username.setId(constants().username());
         _username.setValue(_userDTO._username);
         addField(_username);
@@ -128,6 +129,7 @@ public class EditUserDialog extends AbstractEditDialog {
                     .check(notEmpty(_username))
                     .check(notEmpty(_email))
                     .stopIfInError()
+                    .check(minLength(_username, Globals.MIN_USER_NAME_LENGTH))
                     .check(notValidResourceName(_username))
                     .check(notValidEmail(_email))
                     .check(matchingPasswords(
