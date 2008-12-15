@@ -62,6 +62,7 @@ public class TableDataDisplayDialog
         final TableColumnModel cm = defineColumnModel();
 
         final Table tbl = new Table(cm);
+        tbl.setId(title);
         tbl.setSelectionMode(SelectionMode.SINGLE);
         tbl.setHorizontalScroll(true);
         tbl.setBorders(false);
