@@ -24,7 +24,7 @@ import ccc.domain.Folder;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Template;
 import ccc.services.AuditLog;
-import ccc.services.TemplatesDao;
+import ccc.services.TemplateDao;
 
 
 /**
@@ -113,5 +113,5 @@ public class TemplateDaoImplTest
     private EntityManager _em;
     private Query _q;
     private AuditLog _al;
-    private TemplatesDao _cm;
+    private TemplateDao _cm;
 }

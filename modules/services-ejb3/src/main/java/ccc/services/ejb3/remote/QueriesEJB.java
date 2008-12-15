@@ -31,7 +31,7 @@ import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.FolderDao;
 import ccc.services.ResourceDao;
-import ccc.services.TemplatesDao;
+import ccc.services.TemplateDao;
 import ccc.services.UserManager;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.LogEntrySummary;
@@ -58,7 +58,7 @@ public final class QueriesEJB
     implements
         Queries {
 
-    @EJB(name="TemplateDao")    private TemplatesDao     _templates;
+    @EJB(name="TemplateDao")    private TemplateDao     _templates;
     @EJB(name="FolderDao")      private FolderDao       _folders;
     @EJB(name="UserManager")    private UserManager      _users;
     @EJB(name="ResourceDao")    private ResourceDao _resources;

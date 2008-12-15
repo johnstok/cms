@@ -25,7 +25,7 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
 import ccc.services.AuditLog;
-import ccc.services.TemplatesDao;
+import ccc.services.TemplateDao;
 import ccc.services.ejb3.support.BaseResourceDao;
 
 
@@ -36,8 +36,8 @@ import ccc.services.ejb3.support.BaseResourceDao;
  */
 @Stateless(name="TemplateDao")
 @TransactionAttribute(REQUIRED)
-@Local(TemplatesDao.class)
-public class TemplateDaoImpl extends BaseResourceDao implements TemplatesDao {
+@Local(TemplateDao.class)
+public class TemplateDaoImpl extends BaseResourceDao implements TemplateDao {
 
     /** Constructor. */
     @SuppressWarnings("unused") private TemplateDaoImpl() { super(); }
