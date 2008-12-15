@@ -35,7 +35,7 @@ import ccc.services.AliasDao;
 import ccc.services.FolderDao;
 import ccc.services.PageDao;
 import ccc.services.ResourceDao;
-import ccc.services.TemplatesDao;
+import ccc.services.TemplateDao;
 import ccc.services.UserManager;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.Commands;
@@ -62,7 +62,7 @@ public class CommandsEJB
     implements
         Commands {
 
-    @EJB(name="TemplateDao")    private TemplatesDao     _templates;
+    @EJB(name="TemplateDao")    private TemplateDao     _templates;
     @EJB(name="FolderDao")      private FolderDao       _folders;
     @EJB(name="AliasDao")       private AliasDao         _alias;
     @EJB(name="PageDao")        private PageDao          _page;
