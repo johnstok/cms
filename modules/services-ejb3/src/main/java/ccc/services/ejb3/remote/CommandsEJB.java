@@ -15,6 +15,7 @@ import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.UUID;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -56,6 +57,7 @@ import ccc.services.api.UserSummary;
 @Stateless(name="PublicCommands")
 @TransactionAttribute(REQUIRED)
 @Remote(Commands.class)
+@RolesAllowed({"ADMINISTRATOR"})
 public class CommandsEJB
     extends
         ModelTranslation
@@ -64,10 +66,10 @@ public class CommandsEJB
 
     @EJB(name="TemplateDao")    private TemplateDao     _templates;
     @EJB(name="FolderDao")      private FolderDao       _folders;
-    @EJB(name="AliasDao")       private AliasDao         _alias;
-    @EJB(name="PageDao")        private PageDao          _page;
-    @EJB(name="UserManager")    private UserManager      _users;
-    @EJB(name="ResourceDao")    private ResourceDao _resources;
+    @EJB(name="AliasDao")       private AliasDao        _alias;
+    @EJB(name="PageDao")        private PageDao         _page;
+    @EJB(name="UserManager")    private UserManager     _users;
+    @EJB(name="ResourceDao")    private ResourceDao     _resources;
 
     /** {@inheritDoc} */
     @Override
