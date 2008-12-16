@@ -13,7 +13,6 @@ package ccc.security;
 
 import static org.easymock.EasyMock.*;
 
-import java.security.Principal;
 import java.security.acl.Group;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -43,21 +42,6 @@ import ccc.domain.User;
 public class CCCLoginModuleTest
     extends
         TestCase {
-
-    /**
-     * Test.
-     */
-    public void testCreateIdentity() {
-
-        // ARRANGE
-        final UUID userId = UUID.randomUUID();
-
-        // ACT
-        final Principal p = new CCCLoginModule().createIdentity(userId);
-
-        // ASSERT
-        assertEquals(userId.toString(), p.getName());
-    }
 
     /**
      * Test.

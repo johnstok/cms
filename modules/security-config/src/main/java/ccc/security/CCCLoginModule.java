@@ -14,7 +14,6 @@ package ccc.security;
 
 import static ccc.commons.Exceptions.*;
 
-import java.security.Principal;
 import java.security.acl.Group;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -69,7 +68,6 @@ public class CCCLoginModule implements LoginModule {
     private CallbackHandler _cbHandler;
     private Object[] _user;
     private Set<String> _roles;
-    private Principal _identityPrincipal;
     private Group _roleGroup;
     private Subject _subject;
     private Group _callerPrincipal;
@@ -96,7 +94,6 @@ public class CCCLoginModule implements LoginModule {
         _subject = null;
         _roles = null;
         _user = null;
-        _identityPrincipal = null;
         _roleGroup = null;
         _callerPrincipal = null;
 
@@ -106,7 +103,6 @@ public class CCCLoginModule implements LoginModule {
     /** {@inheritDoc} */
     @Override
     public boolean commit() throws LoginException {
-        _subject.getPrincipals().add(_identityPrincipal);
         _subject.getPrincipals().add(_callerPrincipal);
         _subject.getPrincipals().add(_roleGroup);
         return true;
@@ -138,7 +134,6 @@ public class CCCLoginModule implements LoginModule {
 
                 _roles = new HashSet<String>();
                 final UUID id = UUID.randomUUID();
-                _identityPrincipal = createIdentity(id);
                 _callerPrincipal = createCallerPrincipal(id.toString());
                 _roleGroup = createRoles(_roles);
 
@@ -146,8 +141,6 @@ public class CCCLoginModule implements LoginModule {
 
                 _roles = lookupRoles((String) _user[0]);
 
-                _identityPrincipal =
-                    createIdentity(UUID.fromString((String) _user[0]));
                 _callerPrincipal = createCallerPrincipal((String) _user[0]);
                 _roleGroup = createRoles(_roles);
 
@@ -168,19 +161,8 @@ public class CCCLoginModule implements LoginModule {
     /** {@inheritDoc} */
     @Override
     public boolean logout() throws LoginException {
-        _subject.getPrincipals().remove(_identityPrincipal);
         _subject.getPrincipals().remove(_roleGroup);
         return true;
-    }
-
-    /**
-     * Create an identity from a user id.
-     *
-     * @param userId The id to use.
-     * @return The identity created.
-     */
-    public Principal createIdentity(final UUID userId) {
-        return new SimplePrincipal(userId.toString());
     }
 
     /**
