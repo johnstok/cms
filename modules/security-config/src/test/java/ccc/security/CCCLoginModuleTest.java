@@ -35,7 +35,7 @@ import ccc.domain.User;
 
 
 /**
- * TODO: Add Description for this type.
+ * Tests for the {@link CCCLoginModule} class.
  *
  * @author Civic Computing Ltd.
  */
@@ -65,7 +65,7 @@ public class CCCLoginModuleTest
      *
      * @throws SQLException Due to JDBC API.
      */
-    public void testLookupUser() throws SQLException {
+    public void testLookupUserSucceeds() throws SQLException {
 
         // ARRANGE
         final User u = new User("user");
@@ -79,6 +79,7 @@ public class CCCLoginModuleTest
         expect(_rs.getString(1)).andReturn(u.id().toString());
         expect(_rs.getBytes(2)).andReturn(new byte[]{0});
         expect(_rs.getString(3)).andReturn(UUID.randomUUID().toString());
+        expect(_rs.next()).andReturn(Boolean.FALSE);
         _rs.close();
         _s.close();
         _c.close();
@@ -95,6 +96,76 @@ public class CCCLoginModuleTest
         assertTrue(
             "Arrays should be equal.",
             Arrays.equals(new byte[]{0}, (byte[]) result[1]));
+    }
+
+    /**
+     * Test.
+     *
+     * @throws SQLException Due to JDBC API.
+     */
+    public void testLookupUserFailsForMissingUser() throws SQLException {
+
+        // ARRANGE
+        final User u = new User("user");
+
+        expect(_ds.getConnection()).andReturn(_c);
+        expect(_c.prepareStatement(CCCLoginModule.SQL_LOOKUP_USER))
+        .andReturn(_s);
+        _s.setString(1, u.username());
+        expect(_s.executeQuery()).andReturn(_rs);
+        expect(_rs.next()).andReturn(Boolean.FALSE);
+        _rs.close();
+        _s.close();
+        _c.close();
+
+        replay(_ds, _c, _s, _rs);
+
+        // ACT
+        final Object[] result = new CCCLoginModule(_r).lookupUser(u.username());
+
+        // ASSERT
+        verify(_ds, _c, _s, _rs);
+        assertNull("Should be NULL", result);
+    }
+
+    /**
+     * Test.
+     *
+     * @throws SQLException Due to JDBC API.
+     */
+    public void testLookupUserFailsForDuplicateUsers() throws SQLException {
+
+        // ARRANGE
+        final User u = new User("user");
+
+        expect(_ds.getConnection()).andReturn(_c);
+        expect(_c.prepareStatement(CCCLoginModule.SQL_LOOKUP_USER))
+        .andReturn(_s);
+        _s.setString(1, u.username());
+        expect(_s.executeQuery()).andReturn(_rs);
+        expect(_rs.next()).andReturn(Boolean.TRUE);
+        expect(_rs.getString(1)).andReturn(u.id().toString());
+        expect(_rs.getBytes(2)).andReturn(new byte[]{0});
+        expect(_rs.getString(3)).andReturn(UUID.randomUUID().toString());
+        expect(_rs.next()).andReturn(Boolean.TRUE);
+        _rs.close();
+        _s.close();
+        _c.close();
+
+        replay(_ds, _c, _s, _rs);
+
+
+        // ACT
+        try {
+            new CCCLoginModule(_r).lookupUser(u.username());
+            fail("Should throw exception.");
+
+
+        // ASSERT
+        } catch (final RuntimeException e) {
+            assertEquals("Duplicate users for username: user", e.getMessage());
+        }
+        verify(_ds, _c, _s, _rs);
     }
 
     /**
