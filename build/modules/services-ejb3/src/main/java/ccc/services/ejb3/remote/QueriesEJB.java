@@ -66,7 +66,7 @@ public final class QueriesEJB
     /**
      * Constructor.
      */
-    @SuppressWarnings("unused") private QueriesEJB() { super(); }
+    @SuppressWarnings("unused") public QueriesEJB() { super(); }
 
     /** {@inheritDoc} */
     @Override

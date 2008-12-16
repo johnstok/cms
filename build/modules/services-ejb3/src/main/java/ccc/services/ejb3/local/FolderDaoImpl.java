@@ -39,7 +39,7 @@ import ccc.services.ejb3.support.BaseResourceDao;
 public class FolderDaoImpl extends BaseResourceDao implements FolderDao {
 
     /** Constructor. */
-    @SuppressWarnings("unused") private FolderDaoImpl() { super(); }
+    @SuppressWarnings("unused") public FolderDaoImpl() { super(); }
 
     /**
      * Constructor.

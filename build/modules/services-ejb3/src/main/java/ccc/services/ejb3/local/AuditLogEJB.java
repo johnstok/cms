@@ -47,7 +47,7 @@ public class AuditLogEJB
 
 
     /** Constructor. */
-    @SuppressWarnings("unused") private AuditLogEJB() { super(); }
+    @SuppressWarnings("unused") public AuditLogEJB() { super(); }
 
     /**
      * Constructor.

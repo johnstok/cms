@@ -40,7 +40,7 @@ import ccc.services.ejb3.support.BaseResourceDao;
 public class PageDaoImpl extends BaseResourceDao implements PageDao {
 
     /** Constructor. */
-    @SuppressWarnings("unused") private PageDaoImpl() { super(); }
+    @SuppressWarnings("unused") public PageDaoImpl() { super(); }
 
     /**
      * Constructor.
