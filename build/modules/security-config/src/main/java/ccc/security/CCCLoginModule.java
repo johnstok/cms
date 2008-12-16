@@ -23,7 +23,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import javax.security.auth.Subject;
 import javax.security.auth.callback.Callback;
@@ -130,28 +129,21 @@ public class CCCLoginModule implements LoginModule {
             _cbHandler.handle(callbacks);
 
             _user = lookupUser(nc.getName());
-            if (null==_user) {
-
-                _roles = new HashSet<String>();
-                final UUID id = UUID.randomUUID();
-                _callerPrincipal = createCallerPrincipal(id.toString());
-                _roleGroup = createRoles(_roles);
-
-            } else {
-
-                _roles = lookupRoles((String) _user[0]);
-
-                _callerPrincipal = createCallerPrincipal(nc.getName());
-                _roleGroup = createRoles(_roles);
-
-                return
-                    Password.matches(
-                        (byte[]) _user[1],
-                        new String(pc.getPassword()),
-                        (String) _user[2]);
+            if (null==_user) { // Anonymous logins disallowed.
+                return false;
             }
 
-            return true;
+            _roles = lookupRoles((String) _user[0]);
+
+            _callerPrincipal = createCallerPrincipal(nc.getName());
+            _roleGroup = createRoles(_roles);
+
+            return
+                Password.matches(
+                    (byte[]) _user[1],
+                    new String(pc.getPassword()),
+                    (String) _user[2]);
+
 
         } catch (final Exception e) {
             throw new LoginException("login failed: "+e.getMessage());
@@ -199,7 +191,7 @@ public class CCCLoginModule implements LoginModule {
      * <br>[2] password salt,   as a string
      *
      * @param username The username representing the user to look up.
-     * @return The user data as an object array.
+     * @return The user data as an object array; NULL if no valid user is found.
      * @throws SQLException If an error occurs while communicating with the DB.
      */
     public Object[] lookupUser(final String username) throws SQLException {
@@ -208,7 +200,6 @@ public class CCCLoginModule implements LoginModule {
             return null;
         }
 
-        final Object[] result = new Object[3];
         final DataSource ds = _r.get("java:/ccc");
         final Connection c = ds.getConnection();
 
@@ -220,10 +211,22 @@ public class CCCLoginModule implements LoginModule {
                 final ResultSet rs = s.executeQuery();
 
                 try { // Work with the ResultSet, close on error.
-                    rs.next();
+
+                    if (!rs.next()) { // No user exists with username.
+                        return null;
+                    }
+
+                    final Object[] result = new Object[3];
                     result[0] = rs.getString(1);
                     result[1] = rs.getBytes(2);
                     result[2] = rs.getString(3);
+
+                    if (rs.next()) { // Duplicate users with username - error.
+                        throw new RuntimeException(
+                            "Duplicate users for username: "+username);
+                    }
+
+                    return result;
                 } finally {
                     try {
                         rs.close();
@@ -247,8 +250,6 @@ public class CCCLoginModule implements LoginModule {
                 swallow(e);
             }
         }
-
-        return result;
     }
 
     /**
