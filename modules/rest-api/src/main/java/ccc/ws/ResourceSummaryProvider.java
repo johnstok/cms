@@ -71,15 +71,14 @@ public class ResourceSummaryProvider implements MessageBodyWriter<Collection<Res
     boolean isCollectionOfType(final Class<?> clazz, final Type type) {
         if (type instanceof ParameterizedType) {
             final ParameterizedType pType = (ParameterizedType) type;
-            if (Collection.class.isAssignableFrom((Class) pType.getRawType())
+            if (Collection.class.isAssignableFrom((Class<?>) pType.getRawType())
                 && pType.getActualTypeArguments()[0].equals(clazz)) {
                 return true;
-            } else {
-                return false;
             }
-        } else {
             return false;
+
         }
+        return false;
     }
 
     /** {@inheritDoc} */
