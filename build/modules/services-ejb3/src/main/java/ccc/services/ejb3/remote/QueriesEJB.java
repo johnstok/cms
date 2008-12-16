@@ -16,6 +16,7 @@ import static javax.ejb.TransactionAttributeType.*;
 import java.util.Collection;
 import java.util.UUID;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -52,6 +53,7 @@ import ccc.services.api.UserSummary;
 @Stateless(name="PublicQueries")
 @TransactionAttribute(REQUIRED)
 @Remote(Queries.class)
+@RolesAllowed({"ADMINISTRATOR"})
 public final class QueriesEJB
     extends
         ModelTranslation
@@ -60,8 +62,8 @@ public final class QueriesEJB
 
     @EJB(name="TemplateDao")    private TemplateDao     _templates;
     @EJB(name="FolderDao")      private FolderDao       _folders;
-    @EJB(name="UserManager")    private UserManager      _users;
-    @EJB(name="ResourceDao")    private ResourceDao _resources;
+    @EJB(name="UserManager")    private UserManager     _users;
+    @EJB(name="ResourceDao")    private ResourceDao     _resources;
 
     /**
      * Constructor.

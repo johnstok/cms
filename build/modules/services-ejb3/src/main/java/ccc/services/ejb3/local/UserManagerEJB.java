@@ -18,7 +18,6 @@ import java.util.Collection;
 import java.util.Locale;
 
 import javax.annotation.Resource;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBContext;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
@@ -67,7 +66,6 @@ public class UserManagerEJB extends BaseDao implements UserManager {
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR"})
     public User createUser(final User user, final String password) {
         _em.persist(user);
         final Password defaultPassword = new Password(user, password);
@@ -111,7 +109,6 @@ public class UserManagerEJB extends BaseDao implements UserManager {
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR"})
     public void updateUser(final User user, final String password) {
         final User current = _em.find(User.class, user.id());
         current.username(user.username());
