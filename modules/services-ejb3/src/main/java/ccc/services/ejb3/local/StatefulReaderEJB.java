@@ -55,7 +55,7 @@ public final class StatefulReaderEJB
      * Constructor.
      */
     @SuppressWarnings("unused")
-    private StatefulReaderEJB() { /* NO-OP */ }
+    public StatefulReaderEJB() { /* NO-OP */ }
 
     /**
      * Constructor.

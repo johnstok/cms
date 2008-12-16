@@ -38,7 +38,7 @@ import ccc.services.ejb3.support.BaseResourceDao;
 public class AliasDaoImpl extends BaseResourceDao implements AliasDao {
 
     /** Constructor. */
-    @SuppressWarnings("unused") private AliasDaoImpl() { super(); }
+    @SuppressWarnings("unused") public AliasDaoImpl() { super(); }
 
     /**
      * Constructor.

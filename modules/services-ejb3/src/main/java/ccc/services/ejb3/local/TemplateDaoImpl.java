@@ -40,7 +40,7 @@ import ccc.services.ejb3.support.BaseResourceDao;
 public class TemplateDaoImpl extends BaseResourceDao implements TemplateDao {
 
     /** Constructor. */
-    @SuppressWarnings("unused") private TemplateDaoImpl() { super(); }
+    @SuppressWarnings("unused") public TemplateDaoImpl() { super(); }
 
     /**
      * Constructor.

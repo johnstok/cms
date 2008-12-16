@@ -61,7 +61,7 @@ public class DataManagerEJB implements DataManager {
     @PersistenceContext(unitName = "ccc-persistence")
     private EntityManager _entityManager;
 
-    @EJB(name="AuditLog") private AuditLog _audit;
+    @EJB(name="AuditLog") public AuditLog _audit;
 
     /**
      * Constructor.
