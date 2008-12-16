@@ -97,7 +97,9 @@ public final class ContentServlet extends CCCServlet {
         final ResourcePath contentPath = new ResourcePath(pathString); // 400
 
         final Resource resource = resourceReader().lookup(contentPath);
-        if (resource != null && resource.isPublished()) {
+        if (resource != null
+                && resource.isPublished()
+                && resource.isVisible()) {
             handle(response, request, resource);
         } else {
             dispatchNotFound(request, response); // 404

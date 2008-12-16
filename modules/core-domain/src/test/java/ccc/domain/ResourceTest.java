@@ -541,6 +541,54 @@ public final class ResourceTest extends TestCase {
 
 
     /**
+     * Test.
+     */
+    public void testIsVisibleTrue() {
+
+        //ARRANGE
+        final User u = new User("user");
+
+        final Folder f1 = new Folder("parent1");
+        f1.publish(u);
+        final Folder f2 = new Folder("parent2");
+        f2.publish(u);
+        final Folder f3 = new Folder("parent3");
+        f3.publish(u);
+        final Page p = new Page("foo");
+
+        f1.add(f2);
+        f2.add(f3);
+        f3.add(p);
+
+        // ASSERT
+        assertTrue("Should be visible.", p.isVisible());
+    }
+
+    /**
+     * Test.
+     */
+    public void testIsVisibleFalse() {
+
+        //ARRANGE
+        final User u = new User("user");
+
+        final Folder f1 = new Folder("parent1");
+        f1.publish(u);
+        final Folder f2 = new Folder("parent2");
+        final Folder f3 = new Folder("parent3");
+        f3.publish(u);
+        final Page p = new Page("foo");
+
+        f1.add(f2);
+        f2.add(f3);
+        f3.add(p);
+
+        // ASSERT
+        assertFalse("Should not be visible.", p.isVisible());
+    }
+
+
+    /**
      * Dummy resource for testing only.
      *
      * @author Civic Computing Ltd

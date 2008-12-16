@@ -327,6 +327,25 @@ public abstract class Resource extends VersionedEntity {
         _publishedBy = null;
     }
 
+    /**
+     * Query method to determine whether a resource is visible.
+     *
+     * @return True if resource's all parents are published.
+     */
+    public boolean isVisible() {
+        Folder p = parent();
+        if (p == null) {
+            return true;
+        }
+        while (p != null && p.isPublished()) {
+            if (p.parent() == null) {
+                return true;
+            }
+            p = p.parent();
+        }
+        return false;
+    }
+
     /** {@inheritDoc} */
     @Override
     public void serialize(final Serializer s) {
