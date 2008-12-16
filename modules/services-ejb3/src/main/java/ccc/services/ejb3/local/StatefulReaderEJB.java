@@ -51,11 +51,8 @@ public final class StatefulReaderEJB
     private EntityManager _em; // Required to insure method calls are stateful.
 
 
-    /**
-     * Constructor.
-     */
-    @SuppressWarnings("unused")
-    public StatefulReaderEJB() { /* NO-OP */ }
+    /** Constructor. */
+    @SuppressWarnings("unused") public StatefulReaderEJB() { super(); }
 
     /**
      * Constructor.

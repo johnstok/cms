@@ -61,13 +61,10 @@ public class DataManagerEJB implements DataManager {
     @PersistenceContext(unitName = "ccc-persistence")
     private EntityManager _entityManager;
 
-    @EJB(name="AuditLog") public AuditLog _audit;
+    @EJB(name="AuditLog") private AuditLog _audit;
 
-    /**
-     * Constructor.
-     */
-    @SuppressWarnings("unused")
-    private DataManagerEJB() { super(); }
+    /** Constructor. */
+    @SuppressWarnings("unused") public DataManagerEJB() { super(); }
 
     /**
      * Constructor.

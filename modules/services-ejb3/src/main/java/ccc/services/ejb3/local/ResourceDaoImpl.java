@@ -47,7 +47,7 @@ public class ResourceDaoImpl extends BaseResourceDao implements ResourceDao {
     @EJB(name="UserManager")  private UserManager  _users;
 
     /** Constructor. */
-    @SuppressWarnings("unused") public ResourceDaoImpl() { /* NO-OP */ }
+    @SuppressWarnings("unused") public ResourceDaoImpl() { super(); }
 
     /**
      * Constructor.

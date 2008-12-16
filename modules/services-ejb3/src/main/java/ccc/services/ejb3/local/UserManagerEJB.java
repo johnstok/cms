@@ -46,11 +46,8 @@ public class UserManagerEJB extends BaseDao implements UserManager {
 
     @Resource private EJBContext _context;
 
-    /**
-     * Constructor.
-     */
-    @SuppressWarnings("unused")
-    public UserManagerEJB() { /* NO-OP */ }
+    /** Constructor. */
+    @SuppressWarnings("unused") public UserManagerEJB() { super(); }
 
     /**
      * Constructor.
