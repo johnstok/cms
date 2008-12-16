@@ -43,7 +43,9 @@ public class UserManagerEJBTest extends TestCase {
 
         // ARRANGE
         expect(_context.getCallerPrincipal()).andReturn(_p);
-        expect(_em.find(User.class, _u.id())).andReturn(_u);
+        expect(_em.createNamedQuery("usersWithUsername")).andReturn(_q);
+        expect(_q.setParameter(1, _p.getName())).andReturn(_q);
+        expect(_q.getSingleResult()).andReturn(_u);
         replay(_context, _q, _em);
 
         final UserManagerEJB um = new UserManagerEJB(_em, _context);

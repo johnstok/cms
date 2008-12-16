@@ -16,7 +16,6 @@ import static javax.ejb.TransactionAttributeType.*;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.Locale;
-import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.annotation.security.RolesAllowed;
@@ -52,7 +51,7 @@ public class UserManagerEJB extends BaseDao implements UserManager {
      * Constructor.
      */
     @SuppressWarnings("unused")
-    private UserManagerEJB() { /* NO-OP */ }
+    public UserManagerEJB() { /* NO-OP */ }
 
     /**
      * Constructor.
@@ -139,7 +138,7 @@ public class UserManagerEJB extends BaseDao implements UserManager {
     public User loggedInUser() {
         final Principal p = _context.getCallerPrincipal();
         final String principalName = p.getName();
-        final User user = _em.find(User.class, UUID.fromString(principalName));
+        final User user = find("usersWithUsername", User.class, principalName);
         return user;
     }
 }
