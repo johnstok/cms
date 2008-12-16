@@ -141,7 +141,7 @@ public class CCCLoginModule implements LoginModule {
 
                 _roles = lookupRoles((String) _user[0]);
 
-                _callerPrincipal = createCallerPrincipal((String) _user[0]);
+                _callerPrincipal = createCallerPrincipal(nc.getName());
                 _roleGroup = createRoles(_roles);
 
                 return
