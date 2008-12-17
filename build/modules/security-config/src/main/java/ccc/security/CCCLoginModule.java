@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.security.auth.Subject;
 import javax.security.auth.callback.Callback;
@@ -129,8 +130,13 @@ public class CCCLoginModule implements LoginModule {
             _cbHandler.handle(callbacks);
 
             _user = lookupUser(nc.getName());
-            if (null==_user) { // Anonymous logins disallowed.
-                return false;
+            if (null==_user) { // TODO: Return false;
+
+                _roles = new HashSet<String>();
+                final UUID id = UUID.randomUUID();
+                _callerPrincipal = createCallerPrincipal(id.toString());
+                _roleGroup = createRoles(_roles);
+                return true;
             }
 
             _roles = lookupRoles((String) _user[0]);
