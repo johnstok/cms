@@ -11,6 +11,7 @@
  */
 package ccc.services.ejb3.support;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.ejb.EJB;
@@ -39,4 +40,24 @@ public class BaseResourceDao extends BaseDao {
         _em.persist(newResource);
         _audit.recordCreate(newResource);
     }
+
+
+    /**
+     * Create a new root folder. The name is checked against existing root
+     * folders in order to prevent conflicts.
+     *
+     * @param folder The root folder to persists.
+     */
+    public void createRoot(final Folder folder) {
+        final javax.persistence.Query q = _em.createNamedQuery("rootByName");
+        q.setParameter("name", folder.name());
+        final List<?> fo = q.getResultList();
+        if (!fo.isEmpty()) {
+            throw new CCCException("Root exists with name: "+folder.name());
+        }
+
+        _em.persist(folder);
+        _audit.recordCreate(folder);
+    }
+
 }

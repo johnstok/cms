@@ -67,11 +67,4 @@ public class FolderDaoImpl extends BaseResourceDao implements FolderDao {
         return list("roots", Folder.class);
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public void createRoot(final Folder f) {
-        // TODO: Factor into BaseResourceDao
-        _em.persist(f);
-        _audit.recordCreate(f);
-    }
 }
