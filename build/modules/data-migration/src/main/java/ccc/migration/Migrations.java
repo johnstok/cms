@@ -86,6 +86,7 @@ public class Migrations {
             commands().createFolder(assetRoot._id,
                                     PredefinedResourceNames.TEMPLATES);
         contentRoot = commands().createRoot(PredefinedResourceNames.CONTENT);
+        commands().publish(contentRoot._id);
     }
 
     private void migrateUsers(final LegacyDBQueries queries) {
