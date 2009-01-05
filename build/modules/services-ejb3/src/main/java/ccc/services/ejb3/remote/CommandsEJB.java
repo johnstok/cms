@@ -128,7 +128,7 @@ public class CommandsEJB
         }
 
         for (final ParagraphDelta para : delta._paragraphs) {
-            if ("TEXT".equals(para._type)) {
+            if ("TEXT".equals(para._type) || "HTML".equals(para._type)) {
                 final Paragraph paragraph =
                     Paragraph.fromText(para._name, para._textValue);
                 page.addParagraph(paragraph);
@@ -240,7 +240,7 @@ public class CommandsEJB
 
         // TODO: Remove duplication
         for (final ParagraphDelta para : delta._paragraphs) {
-            if ("TEXT".equals(para._type)) {
+            if ("TEXT".equals(para._type) || "HTML".equals(para._type)) {
                 final Paragraph paragraph =
                     Paragraph.fromText(para._name, para._textValue);
                 page.addParagraph(paragraph);

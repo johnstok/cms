@@ -11,9 +11,11 @@
  */
 package ccc.contentcreator.client;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.client.ui.FCKEditor;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ParagraphDelta;
 
@@ -39,6 +41,7 @@ import com.google.gwt.xml.client.XMLParser;
 public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private TextField<String> _title = new TextField<String>();
     private TextField<String> _name = new TextField<String>();
+    private List<PageElement> _pageElements = new ArrayList<PageElement>();
 
     /** _constants : UIConstants. */
     private final UIConstants _constants = Globals.uiConstants();
@@ -57,6 +60,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     }
 
     private void drawStaticFields() {
+
         _name = new TextField<String>();
         _name.setFieldLabel(_constants.name());
         _name.setAllowBlank(false);
@@ -82,19 +86,28 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         _title.setValue(resourceSummary._title);
 
         for (final ParagraphDelta para : resourceSummary._paragraphs) {
-            for (final Component c : getItems()) {
-                if (c.getId().equals(para._name)) {
-                    if ("TEXT".equals(c.getData("type"))) {
-                        final Field<String> f = (Field<String>) c;
+            for (final PageElement c : pageElements()) {
+                if (c.id().equals(para._name)) {
+                    if ("TEXT".equals(c.type())) {
+                        final Field<String> f = c.field();
                         f.setValue(para._textValue);
-                    } else if ("DATE".equals(c.getData("type"))) {
-                        final DateField f = (DateField) c;
+                    } else if ("DATE".equals(c.type())) {
+                        final DateField f = c.dateField();
                         f.setValue(para._dateValue);
+                    } else if ("HTML".equals(c.type())) {
+                        remove(c.editor());
+                        final FCKEditor fck = new FCKEditor(para._textValue,
+                                                            "",
+                                                            "550px",
+                                                            "250px");
+                        add(fck);
+                        c.editor(fck);
                     }
                 }
             }
         }
     }
+
 
     /**
      * TODO: Add a description of this method.
@@ -124,6 +137,15 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         return getItems();
     }
 
+//    /**
+//     * TODO: Add a description of this method.
+//     *
+//     * @return
+//     */
+    public List<PageElement> pageElements() {
+        return _pageElements;
+    }
+
     /**
      * Adds necessary fields for the panel.
      *
@@ -150,19 +172,40 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                 tf.setId(name);
                 tf.setFieldLabel(name);
                 add(tf);
+                final PageElement pe = new PageElement(name);
+                pe.type("TEXT");
+                pe.field(tf);
+                _pageElements.add(pe);
+
             } else if ("text_area".equals(type)) {
                 final TextArea ta = new TextArea();
                 ta.setData("type", "TEXT");
                 ta.setId(name);
                 ta.setFieldLabel(name);
                 add(ta);
+                final PageElement pe = new PageElement(name);
+                pe.type("TEXT");
+                pe.field(ta);
+                _pageElements.add(pe);
 
             } else if ("date".equals(type)) {
                 final DateField df = new DateField();
                 df.setFieldLabel(name);
                 df.setData("type", "DATE");
                 df.setId(name);
+
+                final PageElement pe = new PageElement(name);
+                pe.type("DATE");
+                pe.dateField(df);
                 add(df);
+                _pageElements.add(pe);
+            } else if ("html".equals(type)) {
+                final FCKEditor fck = new FCKEditor("", "", "550px", "250px");
+                final PageElement pe = new PageElement(name);
+                pe.type("HTML");
+                pe.editor(fck);
+                add(fck);
+                _pageElements.add(pe);
             }
         }
     }
