@@ -20,7 +20,9 @@ import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.EditPagePanel;
 import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.PageElement;
 import ccc.contentcreator.client.ResourceTable;
+import ccc.contentcreator.client.ui.FCKEditor;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.services.api.PageDelta;
@@ -38,7 +40,6 @@ import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.util.Margins;
-import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
@@ -274,25 +275,31 @@ public class CreatePageDialog
         return new Runnable() {
             @SuppressWarnings("unchecked")
             public void run() {
-
-                final List<Component> definitions =_second.definitionItems();
+                final List<PageElement> definitions =_second.pageElements();
                 final List<ParagraphDelta> paragraphs =
                     new ArrayList<ParagraphDelta>();
 
-                for (final Component c : definitions) {
-                    if ("TEXT".equals(c.getData("type"))) {
-                        final Field<String> f = (Field<String>) c;
+                for (final PageElement c : definitions) {
+                    if ("TEXT".equals(c.type())) {
+                        final Field<String> f = c.field();
                         final ParagraphDelta p = new ParagraphDelta();
-                        p._name = c.getId();
+                        p._name = c.id();
                         p._textValue = f.getValue();
                         p._type = "TEXT";
                         paragraphs.add(p);
-                    } else if ("DATE".equals(c.getData("type"))) {
-                        final DateField f = (DateField) c;
+                    } else if ("DATE".equals(c.type())) {
+                        final DateField f = c.dateField();
                         final ParagraphDelta p = new ParagraphDelta();
-                        p._name = c.getId();
+                        p._name = c.id();
                         p._dateValue = f.getValue();
                         p._type = "DATE";
+                        paragraphs.add(p);
+                    } else if ("HTML".equals(c.type())) {
+                        final FCKEditor f = c.editor();
+                        final ParagraphDelta p = new ParagraphDelta();
+                        p._name = c.id();
+                        p._textValue = f.getHTML();
+                        p._type = "HTML";
                         paragraphs.add(p);
                     }
                 }
