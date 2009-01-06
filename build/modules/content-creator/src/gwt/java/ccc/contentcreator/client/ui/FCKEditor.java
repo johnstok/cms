@@ -85,7 +85,8 @@ public class FCKEditor extends Composite implements HasHTML {
 
         //Create the IFRAME
         final Frame editorFrame = new Frame();
-        editorFrame.setUrl(getFckBaseUrl() + "editor/fckeditor.html?InstanceName=" + elementID+"&Toolbar=Basic");
+//        editorFrame.setUrl(getFckBaseUrl() + "editor/fckeditor.html?InstanceName=" + elementID+"&Toolbar=Basic");
+        editorFrame.setUrl(getFckBaseUrl() + "editor/fckeditor.html?InstanceName=" + elementID);
         editorFrame.setSize(cssWidth, cssHeight);
         DOM.setElementProperty(editorFrame.getElement(), "scrolling", "no");
         DOM.setElementProperty(editorFrame.getElement(), "id", elementID + "___Frame");
