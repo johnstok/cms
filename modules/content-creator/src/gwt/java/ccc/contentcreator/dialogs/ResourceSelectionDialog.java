@@ -40,7 +40,7 @@ public class ResourceSelectionDialog extends Window {
      *
      * @param targetRoot ResourceSummary root
      */
-    ResourceSelectionDialog(final ResourceSummary targetRoot) {
+    public ResourceSelectionDialog(final ResourceSummary targetRoot) {
         setBodyBorder(false);
         setScrollMode(Scroll.AUTOY);
         setHeading(_constants.selectResource());
@@ -69,7 +69,7 @@ public class ResourceSelectionDialog extends Window {
      *
      * @return Returns the selected folder as {@link FolderDTO}
      */
-    ModelData selectedResource() {
+    public ModelData selectedResource() {
         return
             (null==_tree.getSelectedItem())
                 ? null

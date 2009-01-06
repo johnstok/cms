@@ -5,8 +5,14 @@ import java.util.Collection;
 
 import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
+import ccc.contentcreator.callbacks.ErrorReportingCallback;
+import ccc.contentcreator.dialogs.ResourceSelectionDialog;
 import ccc.services.api.ResourceSummary;
 
+import com.extjs.gxt.ui.client.Events;
+import com.extjs.gxt.ui.client.data.ModelData;
+import com.extjs.gxt.ui.client.event.ComponentEvent;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.Viewport;
@@ -16,6 +22,7 @@ import com.extjs.gxt.ui.client.widget.layout.RowLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 
@@ -39,23 +46,86 @@ public final class ContentCreator implements EntryPoint {
             public void onFailure(final Throwable arg0) {
                 Globals.unexpectedError(arg0);
             }
-
+            // FIXME: refactor
             public void onSuccess(final Collection<ResourceSummary> arg0) {
-                final LeftRightPane contentPane = new LeftRightPane();
-                contentPane.setLeftHandPane(
-                    new ResourceNavigator(contentPane,
-                                          arg0));
-                contentPane.setRightHandPane(new ContentPanel());
+                final String browse = Window.Location.getParameter("browse");
+                if (browse != null && browse.equals("image")) {
+                    Globals.disableExitConfirmation();
+                    final Viewport viewport = new Viewport();
+                    ResourceSummary rs = null;
+                    for (final ResourceSummary rr : arg0) {
+                        if (rr._name.equals("assets") ) {
+                            rs = rr;
+                        }
+                    }
+                    final ResourceSelectionDialog resourceSelect =
+                        new ResourceSelectionDialog(rs);
 
-                final Viewport vp =
-                    layoutMainWindow(
-                        new MainMenu(),
-                        contentPane);
+                    resourceSelect.addListener(Events.Close,
+                        new Listener<ComponentEvent>() {
+                        public void handleEvent(final ComponentEvent be) {
+                            final ModelData _target = resourceSelect.selectedResource();
+                            qs.getAbsolutePath(
+                                _target.<String>get("id"),
+                                new ErrorReportingCallback<String>() {
+                                    public void onSuccess(final String arg0) {
+                                        jsniSetUrl(arg0);
+                                    }
+                            });
 
-                RootPanel.get().add(vp);
+                        }});
+                    resourceSelect.show();
+                    RootPanel.get().add(resourceSelect);
+                } else if (browse != null && browse.equals("link")) {
+                    Globals.disableExitConfirmation();
+                    final Viewport viewport = new Viewport();
+                    ResourceSummary rs = null;
+                    for (final ResourceSummary rr : arg0) {
+                        if (rr._name.equals("content") ) {
+                            rs = rr;
+                        }
+                    }
+                    final ResourceSelectionDialog resourceSelect =
+                        new ResourceSelectionDialog(rs);
+
+                    resourceSelect.addListener(Events.Close,
+                        new Listener<ComponentEvent>() {
+                        public void handleEvent(final ComponentEvent be) {
+                            final ModelData _target = resourceSelect.selectedResource();
+                            qs.getAbsolutePath(
+                                _target.<String>get("id"),
+                                new ErrorReportingCallback<String>() {
+                                    public void onSuccess(final String arg0) {
+                                        jsniSetUrl(arg0);
+                                    }
+                            });
+                        }});
+                    resourceSelect.show();
+                    RootPanel.get().add(resourceSelect);
+                } else {
+                    final LeftRightPane contentPane = new LeftRightPane();
+                    contentPane.setLeftHandPane(
+                        new ResourceNavigator(contentPane,
+                            arg0));
+                    contentPane.setRightHandPane(new ContentPanel());
+
+                    final Viewport vp =
+                        layoutMainWindow(
+                            new MainMenu(),
+                            contentPane);
+
+                    RootPanel.get().add(vp);
+                }
+
             }});
 
     }
+
+
+    private static native String jsniSetUrl(String selecteUrl) /*-{
+    $wnd.opener.SetUrl( selecteUrl ) ;
+    $wnd.close() ;
+    }-*/;
 
     /**
      * Lay out the GUI components of the main window.
