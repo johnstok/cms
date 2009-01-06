@@ -23,13 +23,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
+import javax.activation.MimeType;
 import javax.annotation.Resource;
-import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 
 import ccc.commons.DBC;
@@ -37,9 +36,9 @@ import ccc.commons.IO;
 import ccc.domain.CCCException;
 import ccc.domain.Data;
 import ccc.domain.File;
-import ccc.domain.Folder;
 import ccc.services.AuditLog;
 import ccc.services.DataManager;
+import ccc.services.ejb3.support.BaseResourceDao;
 
 
 /**
@@ -53,15 +52,10 @@ import ccc.services.DataManager;
 @Stateless(name="DataManager")
 @TransactionAttribute(REQUIRED)
 @Local(DataManager.class)
-public class DataManagerEJB implements DataManager {
+public class DataManagerEJB extends BaseResourceDao implements DataManager {
 
     @Resource(mappedName = "java:/ccc")
     private DataSource _datasource;
-
-    @PersistenceContext(unitName = "ccc-persistence")
-    private EntityManager _entityManager;
-
-    @EJB(name="AuditLog") private AuditLog _audit;
 
     /** Constructor. */
     @SuppressWarnings("unused") public DataManagerEJB() { super(); }
@@ -80,7 +74,7 @@ public class DataManagerEJB implements DataManager {
         DBC.require().notNull(em);
         DBC.require().notNull(auditLog);
         _datasource = ds;
-        _entityManager = em;
+        _em = em;
         _audit = auditLog;
     }
 
@@ -89,12 +83,29 @@ public class DataManagerEJB implements DataManager {
     public void createFile(final File file,
                            final UUID parentId,
                            final InputStream dataStream) {
-        _entityManager.persist(file);
-        final Folder folder = _entityManager.find(Folder.class, parentId);
-        folder.add(file);
         final Data data = create(dataStream);
         file.data(data);
-        _audit.recordCreate(file);
+        create(parentId, file);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateFile(final UUID fileId,
+                           final long version,
+                           final String title,
+                           final String description,
+                           final MimeType mimeType,
+                           final long size,
+                           final InputStream dataStream) {
+
+        final File f = find(File.class, fileId, version);
+        f.title(title);
+        f.description(description);
+        f.mimeType(mimeType);
+        f.size(size);
+        f.data(create(dataStream)); // TODO: Delete old data?
+        _audit.recordUpdate(f);
     }
 
     /** {@inheritDoc} */

@@ -158,4 +158,32 @@ public class File extends Resource {
     public Data data() {
         return _data;
     }
+
+    /**
+     * Mutator for the file description.
+     *
+     * @param description The new description as a string.
+     */
+    public void description(final String description) {
+        _description = description;
+    }
+
+    /**
+     * Mutator for the file's mime type.
+     * TODO: Make defensive copy?
+     *
+     * @param mimeType The new mime type.
+     */
+    public void mimeType(final MimeType mimeType) {
+        _mimeType = mimeType;
+    }
+
+    /**
+     * Mutator for the file's size.
+     *
+     * @param size The new size.
+     */
+    public void size(final long size) {
+        _size = size;
+    }
 }

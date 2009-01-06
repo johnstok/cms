@@ -30,6 +30,7 @@ import ccc.contentcreator.dialogs.MoveDialog;
 import ccc.contentcreator.dialogs.PreviewContentDialog;
 import ccc.contentcreator.dialogs.RenameDialog;
 import ccc.contentcreator.dialogs.TableDataDisplayDialog;
+import ccc.contentcreator.dialogs.UpdateFileDialog;
 import ccc.contentcreator.dialogs.UpdatePageDialog;
 import ccc.contentcreator.dialogs.UpdateTagsDialog;
 import ccc.contentcreator.dialogs.UploadFileDialog;
@@ -283,6 +284,8 @@ public class ResourceTable extends TablePanel {
                     addChooseTemplate(tbl, contextMenu);
                 } else if ("TEMPLATE".equals(item.get("type"))) {
                     addEditResource(tbl, contextMenu);
+                } else if ("FILE".equals(item.get("type"))) {
+                    addEditResource(tbl, contextMenu);
                 }
                 addPreview(tbl, contextMenu);
                 addViewHistory(tbl, contextMenu);
@@ -443,6 +446,11 @@ public class ResourceTable extends TablePanel {
                                  new EditAliasDialog(result, ResourceTable.this, _root).show();
                              }
                          });
+
+                     } else if ("FILE".equals(item.get("type"))) {
+                         final String id = item.<String>get("id");
+                         final Long version = item.<Long>get("version");
+                         new UpdateFileDialog(id, version, ResourceTable.this).show();
 
                      } else {
                         Globals.alert("No editor available for this resource.");
