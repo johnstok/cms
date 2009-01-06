@@ -167,4 +167,5 @@ public interface Queries {
     PageDelta pageDelta(String pageId);
     ResourceDelta folderDelta(String folderId);
     ResourceDelta resourceDelta(String resourceId);
+    FileDelta fileDelta(String fileId);
 }

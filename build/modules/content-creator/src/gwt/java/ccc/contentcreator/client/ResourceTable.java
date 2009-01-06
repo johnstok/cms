@@ -35,6 +35,7 @@ import ccc.contentcreator.dialogs.UpdatePageDialog;
 import ccc.contentcreator.dialogs.UpdateTagsDialog;
 import ccc.contentcreator.dialogs.UploadFileDialog;
 import ccc.services.api.AliasDelta;
+import ccc.services.api.FileDelta;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ResourceDelta;
@@ -448,9 +449,11 @@ public class ResourceTable extends TablePanel {
                          });
 
                      } else if ("FILE".equals(item.get("type"))) {
-                         final String id = item.<String>get("id");
-                         final Long version = item.<Long>get("version");
-                         new UpdateFileDialog(id, version, ResourceTable.this).show();
+                         qs.fileDelta(item.<String>get("id"),new ErrorReportingCallback<FileDelta>() {
+                             public void onSuccess(final FileDelta result) {
+                                 new UpdateFileDialog(result, ResourceTable.this).show();
+                             }
+                         });
 
                      } else {
                         Globals.alert("No editor available for this resource.");

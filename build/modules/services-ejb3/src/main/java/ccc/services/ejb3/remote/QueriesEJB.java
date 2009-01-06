@@ -24,6 +24,7 @@ import javax.ejb.TransactionAttribute;
 
 import ccc.domain.Alias;
 import ccc.domain.CreatorRoles;
+import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Resource;
@@ -35,6 +36,7 @@ import ccc.services.ResourceDao;
 import ccc.services.TemplateDao;
 import ccc.services.UserManager;
 import ccc.services.api.AliasDelta;
+import ccc.services.api.FileDelta;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.PageDelta;
 import ccc.services.api.Queries;
@@ -238,5 +240,12 @@ public final class QueriesEJB
     public ResourceDelta resourceDelta(final String resourceId) {
         return
         delta(_resources.find(Resource.class, UUID.fromString(resourceId)));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FileDelta fileDelta(final String fileId) {
+        return
+            delta(_resources.find(File.class, UUID.fromString(fileId)));
     }
 }

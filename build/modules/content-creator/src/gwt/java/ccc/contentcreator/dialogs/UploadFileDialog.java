@@ -121,6 +121,9 @@ public class UploadFileDialog extends AbstractBaseDialog {
             public void handleEvent(final FormEvent be) {
                 hide();
                 rt.refreshTable();
+                if (!be.resultHtml.equals("File was updated successfully.")) {
+                    Globals.unexpectedError(new Exception(be.resultHtml));
+                }
             }
         });
 

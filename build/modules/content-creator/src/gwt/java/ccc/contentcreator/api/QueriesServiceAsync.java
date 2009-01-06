@@ -14,6 +14,7 @@ package ccc.contentcreator.api;
 import java.util.Collection;
 
 import ccc.services.api.AliasDelta;
+import ccc.services.api.FileDelta;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ResourceDelta;
@@ -92,4 +93,6 @@ public interface QueriesServiceAsync {
     void folderDelta(String folderId, AsyncCallback<ResourceDelta> asyncCallback);
 
     void resourceDelta(String resourceId, AsyncCallback<ResourceDelta> asyncCallback);
+
+    void fileDelta(String fileId, AsyncCallback<FileDelta> asyncCallback);
 }
