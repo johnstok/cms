@@ -569,4 +569,12 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Select a folder")
     String selectFolder();
+
+    /**
+     * "Update file".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Update file")
+    String updateFile();
 }

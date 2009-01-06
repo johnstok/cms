@@ -23,6 +23,12 @@
             ccc.contentcreator.remoting.FileUploadServlet
         </servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateFileServlet</servlet-name>
+        <servlet-class>
+            ccc.contentcreator.remoting.UpdateFileServlet
+        </servlet-class>
+    </servlet>
     
     <servlet-mapping>
         <servlet-name>Queries</servlet-name>
@@ -35,6 +41,10 @@
     <servlet-mapping>
         <servlet-name>FileUploadServlet</servlet-name>
         <url-pattern>/upload</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateFileServlet</servlet-name>
+        <url-pattern>/update_file</url-pattern>
     </servlet-mapping>
 
     <welcome-file-list>

@@ -25,6 +25,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.UUID;
 
+import javax.activation.MimeType;
 import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 
@@ -48,12 +49,54 @@ import ccc.services.DataManager;
  */
 public class DataManagerEJBTest extends TestCase {
 
+    private final InputStream dummyStream = new ByteArrayInputStream(new byte[]{1});
+
+    private EntityManager em;
+    private DataSource ds;
+    private Connection c;
+    private AuditLog al;
+    private PreparedStatement ps;
+    private DataManager dm;
+
+
     {
         try {
             Class.forName("org.h2.Driver");
         } catch (final ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected void setUp() throws Exception {
+         em = createStrictMock(EntityManager.class);
+         ds = createStrictMock(DataSource.class);
+         c = createStrictMock(Connection.class);
+         al = createStrictMock(AuditLog.class);
+         ps = createStrictMock(PreparedStatement.class);
+         dm = new DataManagerEJB(ds, em, al);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected void tearDown() throws Exception {
+        em = null;
+        ds = null;
+        c = null;
+        al = null;
+        ps = null;
+        dm = null;
+    }
+
+    private void replayAll() {
+        replay(ps, c, ds, em, al);
+    }
+
+    private void verifyAll() {
+        verify(ps, c, ds, em, al);
     }
 
     /**
@@ -64,12 +107,9 @@ public class DataManagerEJBTest extends TestCase {
 
         // ARRANGE
         final Folder assetRoot = new Folder(PredefinedResourceNames.ASSETS);
-        final InputStream dummyStream = new ByteArrayInputStream(new byte[]{1});
-
         final File file = new File(
             new ResourceName("file"), "title", "desc", new Data(), 0);
 
-        final PreparedStatement ps = createStrictMock(PreparedStatement.class);
         ps.setString(eq(1), isA(String.class));
         ps.setInt(2, 0);
         ps.setBinaryStream(DataManagerEJB.STREAM_POSITION_CREATE,
@@ -77,33 +117,62 @@ public class DataManagerEJBTest extends TestCase {
                            Integer.MAX_VALUE);
         expect(Boolean.valueOf(ps.execute())).andReturn(Boolean.TRUE);
         ps.close();
-        replay(ps);
 
-        final Connection c = createStrictMock(Connection.class);
         expect(c.prepareStatement(DataManagerEJB.CREATE_STATEMENT))
             .andReturn(ps);
         c.close();
-        replay(c);
 
-        final DataSource ds = createStrictMock(DataSource.class);
         expect(ds.getConnection()).andReturn(c);
-        replay(ds);
 
-        final EntityManager em = createStrictMock(EntityManager.class);
-        em.persist(file);
         expect(em.find(Folder.class, assetRoot.id())).andReturn(assetRoot);
-        replay(em);
+        em.persist(file);
 
-        final AuditLog al = createStrictMock(AuditLog.class);
         al.recordCreate(file);
 
-        final DataManager dm = new DataManagerEJB(ds, em, al);
+        replayAll();
+
 
         // ACT
         dm.createFile(file, assetRoot.id(), dummyStream);
 
         // VERIFY
-        verify(ps, c, ds, em);
+        verifyAll();
+    }
+
+    /**
+     * Test.
+     * @throws SQLException
+     */
+    public void testUpdateFile() throws SQLException {
+
+        // ARRANGE
+        ps.setString(eq(1), isA(String.class));
+        ps.setInt(2, 0);
+        ps.setBinaryStream(DataManagerEJB.STREAM_POSITION_CREATE,
+                           dummyStream,
+                           Integer.MAX_VALUE);
+        expect(Boolean.valueOf(ps.execute())).andReturn(Boolean.TRUE);
+        ps.close();
+
+        expect(c.prepareStatement(DataManagerEJB.CREATE_STATEMENT))
+            .andReturn(ps);
+        c.close();
+
+        expect(ds.getConnection()).andReturn(c);
+
+        final File f =
+            new File(new ResourceName("foo"), "bar", "x", new Data(), 0);
+        expect(em.find(File.class, f.id())).andReturn(f);
+
+        al.recordUpdate(f);
+
+        replayAll();
+
+        // ACT
+        dm.updateFile(f.id(), -1, "x", "x", new MimeType(), 1, dummyStream);
+
+        // ASSERT
+        verifyAll();
     }
 
     /**

@@ -16,6 +16,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
 
+import javax.activation.MimeType;
+
 import ccc.domain.Data;
 import ccc.domain.File;
 
@@ -50,10 +52,30 @@ public interface DataManager {
     /**
      * Create a file.
      *
-     * @param file The File to persists.
+     * @param file The File to persist.
      * @param parentId The unique id of the folder acting as a parent for file.
      * @param dataStream The input stream from which the bytes for the new file
      *        should be read.
      */
     void createFile(File file, final UUID parentId, InputStream dataStream);
+
+    /**
+     * Update a file.
+     *
+     * @param dataStream The input stream from which the bytes for the new file
+     *        should be read.
+     * @param fileId The uuid of the file to update.
+     * @param version The version of the file to update.
+     * @param title The new title for the file.
+     * @param description The new description for the file.
+     * @param mimeType The mime type of the new file.
+     * @param size The size of the new file.
+     */
+    void updateFile(UUID fileId,
+                    long version,
+                    String title,
+                    String description,
+                    MimeType mimeType,
+                    long size,
+                    InputStream dataStream);
 }
