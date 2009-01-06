@@ -14,6 +14,7 @@ package ccc.contentcreator.dialogs;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.ResourceTable;
+import ccc.services.api.FileDelta;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -30,6 +31,7 @@ import com.google.gwt.user.client.ui.Image;
 
 /**
  * Dialog for file update.
+ * TODO: Remove code duplicated from File upload form.
  *
  * @author Civic Computing Ltd.
  */
@@ -51,8 +53,7 @@ public class UpdateFileDialog extends AbstractBaseDialog {
      *
      * @param rt The left hand tree view in the main window.
      */
-    public UpdateFileDialog(final String id,
-                            final Long version,
+    public UpdateFileDialog(final FileDelta delta,
                             final ResourceTable rt) {
         super(Globals.uiConstants().updateFile());
 
@@ -63,10 +64,12 @@ public class UpdateFileDialog extends AbstractBaseDialog {
         _form.setHeaderVisible(false);
 
         _title.setName("title");
+        _title.setValue(delta._title);
         _title.setFieldLabel(_constants.title());
         _title.setAllowBlank(false);
 
         _description.setName("description");
+        _description.setValue(delta._description);
         _description.setFieldLabel(_constants.description());
         _description.setAllowBlank(false);
 
@@ -75,10 +78,10 @@ public class UpdateFileDialog extends AbstractBaseDialog {
         _file.setAllowBlank(false);
 
         _id.setName("id");
-        _id.setValue(id);
+        _id.setValue(delta._id);
 
         _version.setName("version");
-        _version.setValue(String.valueOf(version));
+        _version.setValue(String.valueOf(delta._version));
 
         _form.add(_id);
         _form.add(_version);
@@ -118,6 +121,9 @@ public class UpdateFileDialog extends AbstractBaseDialog {
             public void handleEvent(final FormEvent be) {
                 hide();
                 rt.refreshTable();
+                if (!be.resultHtml.equals("File was updated successfully.")) {
+                    Globals.unexpectedError(new Exception(be.resultHtml));
+                }
             }
         });
 

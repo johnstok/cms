@@ -18,6 +18,7 @@ import java.util.List;
 
 import ccc.domain.Alias;
 import ccc.domain.CreatorRoles;
+import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
@@ -27,6 +28,7 @@ import ccc.domain.ResourceType;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.api.AliasDelta;
+import ccc.services.api.FileDelta;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ParagraphDelta;
@@ -225,6 +227,22 @@ public class ModelTranslation {
         delta._name = alias.name().toString();
         delta._targetId = alias.target().id().toString();
         delta._targetName = alias.target().name().toString();
+        return delta;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param file
+     * @return
+     */
+    protected FileDelta delta(final File file) {
+        final FileDelta delta = new FileDelta();
+        delta._id = file.id().toString();
+        delta._version = file.version();
+        delta._name = file.name().toString();
+        delta._title = file.title();
+        delta._description = file.description();
         return delta;
     }
 
