@@ -72,7 +72,6 @@ public class PageDaoImpl extends BaseResourceDao implements PageDao {
                        final String newTitle,
                        final Set<Paragraph> newParagraphs) {
 
-        // FIXME Don't check version!!!
         final Page page = find(Page.class, id, version);
         page.title(newTitle);
         page.deleteAllParagraphs();

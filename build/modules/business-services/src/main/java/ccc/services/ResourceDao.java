@@ -35,7 +35,7 @@ public interface ResourceDao {
      * @param resourceId The uuid of the resource to lock.
      * @return The current version of resource.
      */
-    Resource lock(String resourceId);
+    Resource lock(UUID resourceId, long version);
 
     /**
      * Unlock the specified Resource.
@@ -46,7 +46,7 @@ public interface ResourceDao {
      * @param resourceId The resource to unlock.
      * @return The current version of resource.
      */
-    Resource unlock(String resourceId);
+    Resource unlock(UUID resourceId, long version);
 
     /**
      * List the resources locked by the currently logged in user.
@@ -74,51 +74,62 @@ public interface ResourceDao {
      * Update the tags for a resource.
      *
      * @param resourceId The resource to update.
+     * @param version The version of the resource.
      * @param tags The tags to set.
      */
     void updateTags(
-                String resourceId,
+                UUID resourceId,
+                long version,
                 String tags);
 
     /**
      * Publishes the resource.
      *
      * @param resourceId The id of the resource to update.
+     * @param version The version of the resource.
      * @return The current version of resource.
      */
-    Resource publish(String resourceId);
+    Resource publish(UUID resourceId,
+                     long version);
 
     /**
      * Un-publishes the resource.
      *
      * @param resourceId The id of the resource to update.
+     * @param version The version of the resource.
      * @return The current version of resource.
      */
-    Resource unpublish(String resourceId);
+    Resource unpublish(UUID resourceId,
+                       long version);
 
     /**
      * Change the template for the specified resource.
      *
      * @param resourceId The id of the resource to change.
+     * @param version The version of the resource.
      * @param template The new template to set.
      */
-    void updateTemplateForResource(UUID resourceId, Template template);
+    void updateTemplateForResource(UUID resourceId,
+                                   long version,
+                                   Template template);
 
     /**
      * Move a resource to a new parent.
      *
      * @param resourceId The id of the resource to move.
+     * @param version The version of the resource.
      * @param newParentId The id of the new parent.
      */
-    void move(UUID resourceId, UUID newParentId);
+    void move(UUID resourceId, long version, UUID newParentId);
 
     /**
      * Rename a resource.
      *
      * @param resourceId The id of the resource to change.
+     * @param version The version of the resource.
      * @param name The new name to set.
      */
-    void rename(UUID resourceId, String name);
+    void rename(UUID resourceId, long version, String name);
 
     /**
      * Find a resource using its unique id.

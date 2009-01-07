@@ -86,7 +86,7 @@ public class Migrations {
             commands().createFolder(assetRoot._id,
                                     PredefinedResourceNames.TEMPLATES);
         contentRoot = commands().createRoot(PredefinedResourceNames.CONTENT);
-        commands().publish(contentRoot._id);
+        commands().publish(contentRoot._id, contentRoot._version);
     }
 
     private void migrateUsers(final LegacyDBQueries queries) {
@@ -145,7 +145,7 @@ public class Migrations {
 
             final String publishedBy = migratePublish(r);
             if (null!=publishedBy) {
-                commands().publish(rs._id); // FIXME: Publisher is wrong.
+                commands().publish(rs._id, rs._version); // FIXME: Publisher is wrong.
             }
 
             migrateChildren(rs._id, r.contentId(), _queries);
@@ -190,7 +190,7 @@ public class Migrations {
 
             final String publishedBy = migratePublish(r);
             if (null!=publishedBy) {
-                commands().publish(rs._id); // FIXME: Publisher is wrong.
+                commands().publish(rs._id, rs._version); // FIXME: Publisher is wrong.
             }
 
         } catch (final Exception e) {

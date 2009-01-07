@@ -69,7 +69,7 @@ public interface Commands {
      * @param resourceId The uuid of the resource to lock.
      * @return The current version of resource.
      */
-    ResourceSummary lock(String resourceId);
+    ResourceSummary lock(String resourceId, long version);
 
     /**
      * Unlock the specified Resource.
@@ -80,7 +80,7 @@ public interface Commands {
      * @param resourceId The resource to unlock.
      * @return The current version of resource.
      */
-    ResourceSummary unlock(String resourceId);
+    ResourceSummary unlock(String resourceId, long version);
 
     /**
      * TODO: Add a description of this method.
@@ -88,9 +88,9 @@ public interface Commands {
      * @param resourceId The id of the resource to update.
      * @return The current version of resource.
      */
-    ResourceSummary publish(String resourceId);
+    ResourceSummary publish(String resourceId, long version);
 
-    ResourceSummary unpublish(String resourceId);
+    ResourceSummary unpublish(String resourceId, long version);
 
 
 

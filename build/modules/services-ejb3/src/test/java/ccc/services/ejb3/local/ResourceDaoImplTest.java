@@ -59,7 +59,7 @@ public class ResourceDaoImplTest
         replayAll();
 
         // ACT
-        _rdao.updateTags(_r.id().toString(), "foo,bar");
+        _rdao.updateTags(_r.id(), _r.version(), "foo,bar");
 
         // ASSERT
         verifyAll();
@@ -82,7 +82,7 @@ public class ResourceDaoImplTest
         _r.lock(_regularUser);
 
         // ACT
-        _rdao.unlock(_r.id().toString());
+        _rdao.unlock(_r.id(), _r.version());
 
         // ASSERT
         assertFalse("Should be unlocked.", _r.isLocked());
@@ -103,7 +103,7 @@ public class ResourceDaoImplTest
 
         // ACT
         try {
-            _rdao.unlock(_r.id().toString());
+            _rdao.unlock(_r.id(), _r.version());
             fail("Should fail.");
 
         // ASSERT
@@ -130,7 +130,7 @@ public class ResourceDaoImplTest
         _r.lock(_regularUser);
 
         // ACT
-        _rdao.unlock(_r.id().toString());
+        _rdao.unlock(_r.id(), _r.version());
 
         // ASSERT
         assertFalse("Should be unlocked.", _r.isLocked());
@@ -149,7 +149,7 @@ public class ResourceDaoImplTest
         replayAll();
 
         // ACT
-        _rdao.lock(_r.id().toString());
+        _rdao.lock(_r.id(), _r.version());
 
         // ASSERT
         assertEquals(_regularUser, _r.lockedBy());
@@ -168,7 +168,7 @@ public class ResourceDaoImplTest
 
         // ACT
         try {
-            _rdao.lock(_r.id().toString());
+            _rdao.lock(_r.id(), _r.version());
             fail("Lock should fail.");
 
         // ASSERT
@@ -243,7 +243,7 @@ public class ResourceDaoImplTest
 
 
         // ACT
-        _rdao.updateTemplateForResource(root.id(), defaultTemplate);
+        _rdao.updateTemplateForResource(root.id(), -1, defaultTemplate);
 
 
         // ASSERT
@@ -269,7 +269,7 @@ public class ResourceDaoImplTest
         replayAll();
 
         // ACT
-        _rdao.move(resource.id(), newParent.id());
+        _rdao.move(resource.id(), -1, newParent.id());
 
         // ASSERT
         verifyAll();
@@ -288,7 +288,7 @@ public class ResourceDaoImplTest
         replayAll();
 
         // ACT
-        _rdao.rename(resource.id(), "baz");
+        _rdao.rename(resource.id(), -1, "baz");
 
         // ASSERT
         verifyAll();

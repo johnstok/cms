@@ -56,15 +56,15 @@ public class ResourceDaoImpl extends BaseResourceDao implements ResourceDao {
      * @param audit AuditLog service.
      */
     public ResourceDaoImpl(final UserManager userDAO,
-                       final AuditLog audit) {
+                           final AuditLog audit) {
         _users = userDAO;
         _audit = audit;
     }
 
     /** {@inheritDoc} */
     @Override
-    public Resource lock(final String resourceId) {
-        final Resource r = find(Resource.class, UUID.fromString(resourceId));
+    public Resource lock(final UUID resourceId, final long version) {
+        final Resource r = find(Resource.class, resourceId, version);
         if (r.isLocked()) {
             throw new CCCException("Resource is already locked.");
         }
@@ -75,9 +75,9 @@ public class ResourceDaoImpl extends BaseResourceDao implements ResourceDao {
 
     /** {@inheritDoc} */
     @Override
-    public Resource unlock(final String resourceId) {
+    public Resource unlock(final UUID resourceId, final long version) {
         final User loggedInUser = _users.loggedInUser();
-        final Resource r = find(Resource.class, resourceId);
+        final Resource r = find(Resource.class, resourceId, version);
         // TODO: Test that r.isLocked() == true
         if (r.canUnlock(loggedInUser)) { // TODO: Fold if/else into r.unlock()?
             r.unlock();
@@ -115,15 +115,18 @@ public class ResourceDaoImpl extends BaseResourceDao implements ResourceDao {
 
     /** {@inheritDoc} */
     @Override
-    public void updateTags(final String resourceId, final String tags) {
-        final Resource r = find(Resource.class, resourceId);
+    public void updateTags(final UUID resourceId,
+                           final long version,
+                           final String tags) {
+        final Resource r = find(Resource.class, resourceId, version);
         r.tags(tags);
     }
 
     /** {@inheritDoc} */
     @Override
-    public Resource publish(final String resourceId) {
-        final Resource r = find(Resource.class, resourceId);
+    public Resource publish(final UUID resourceId,
+                            final long version) {
+        final Resource r = find(Resource.class, resourceId, version);
         r.publish(_users.loggedInUser());
         _audit.recordPublish(r);
         return r;
@@ -131,8 +134,9 @@ public class ResourceDaoImpl extends BaseResourceDao implements ResourceDao {
 
     /** {@inheritDoc} */
     @Override
-    public Resource unpublish(final String resourceId) {
-        final Resource r = find(Resource.class, resourceId);
+    public Resource unpublish(final UUID resourceId,
+                              final long version) {
+        final Resource r = find(Resource.class, resourceId, version);
         r.unpublish();
         _audit.recordUnpublish(r);
         return r;
@@ -143,18 +147,19 @@ public class ResourceDaoImpl extends BaseResourceDao implements ResourceDao {
      */
     @Override
     public void updateTemplateForResource(final UUID resourceId,
+                                          final long version,
                                           final Template template) {
-        // FIXME Don't check version!!!
-        final Resource r = find(Resource.class, resourceId);
+        final Resource r = find(Resource.class, resourceId, version);
         r.template(template);
         _audit.recordChangeTemplate(r);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void move(final UUID resourceId, final UUID newParentId) {
-        // FIXME Don't check version!!!
-        final Resource resource = find(Resource.class, resourceId);
+    public void move(final UUID resourceId,
+                     final long version,
+                     final UUID newParentId) {
+        final Resource resource = find(Resource.class, resourceId, version);
         final Folder newParent = find(Folder.class, newParentId);
 
         resource.parent().remove(resource);
@@ -165,9 +170,8 @@ public class ResourceDaoImpl extends BaseResourceDao implements ResourceDao {
 
     /** {@inheritDoc} */
     @Override
-    public void rename(final UUID resourceId, final String name) {
-        // FIXME Don't check version!!!
-        final Resource resource = find(Resource.class, resourceId);
+    public void rename(final UUID resourceId, final long version, final String name) {
+        final Resource resource = find(Resource.class, resourceId, version);
         resource.name(new ResourceName(name));
         _audit.recordRename(resource);
     }

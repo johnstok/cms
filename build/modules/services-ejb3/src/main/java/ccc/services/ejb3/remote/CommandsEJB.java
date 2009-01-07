@@ -178,8 +178,8 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary lock(final String resourceId) {
-        return map(_resources.lock(resourceId));
+    public ResourceSummary lock(final String resourceId, final long version) {
+        return map(_resources.lock(UUID.fromString(resourceId), version));
     }
 
     /** {@inheritDoc} */
@@ -188,14 +188,14 @@ public class CommandsEJB
                      final long version,
                      final String newParentId) {
 
-        _resources.move(UUID.fromString(resourceId),
+        _resources.move(UUID.fromString(resourceId), version,
             UUID.fromString(newParentId));
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary publish(final String resourceId) {
-        return map(_resources.publish(resourceId));
+    public ResourceSummary publish(final String resourceId, final long version) {
+        return map(_resources.publish(UUID.fromString(resourceId), version));
     }
 
     /** {@inheritDoc} */
@@ -204,19 +204,19 @@ public class CommandsEJB
                        final long version,
                        final String name) {
 
-        _resources.rename(UUID.fromString(resourceId), name);
+        _resources.rename(UUID.fromString(resourceId), version, name);
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary unlock(final String resourceId) {
-        return map(_resources.unlock(resourceId));
+    public ResourceSummary unlock(final String resourceId, final long version) {
+        return map(_resources.unlock(UUID.fromString(resourceId), version));
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary unpublish(final String resourceId) {
-        return map(_resources.unpublish(resourceId));
+    public ResourceSummary unpublish(final String resourceId, final long version) {
+        return map(_resources.unpublish(UUID.fromString(resourceId), version));
     }
 
     /** {@inheritDoc} */
@@ -269,7 +269,8 @@ public class CommandsEJB
             ? null
             : _resources.find(Template.class, UUID.fromString(templateId));
 
-        _resources.updateTemplateForResource(UUID.fromString(resourceId), t);
+        _resources.updateTemplateForResource(
+            UUID.fromString(resourceId), version, t);
     }
 
     /** {@inheritDoc} */
@@ -277,7 +278,7 @@ public class CommandsEJB
     public void updateTags(final String resourceId,
                            final long version,
                            final String tags) {
-        _resources.updateTags(resourceId, tags);
+        _resources.updateTags(UUID.fromString(resourceId), version, tags);
 
     }
 

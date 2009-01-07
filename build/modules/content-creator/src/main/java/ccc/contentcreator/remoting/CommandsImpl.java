@@ -70,8 +70,8 @@ public class CommandsImpl
     }
 
     /** {@inheritDoc} */
-    public ResourceSummary lock(final String resourceId) {
-        return _delegate.lock(resourceId);
+    public ResourceSummary lock(final String resourceId, final long version) {
+        return _delegate.lock(resourceId, version);
     }
 
     /** {@inheritDoc} */
@@ -87,8 +87,9 @@ public class CommandsImpl
     }
 
     /** {@inheritDoc} */
-    public ResourceSummary publish(final String resourceId) {
-        return _delegate.publish(resourceId);
+    @Override
+    public ResourceSummary publish(final String resourceId, final long version) {
+        return _delegate.publish(resourceId, version);
     }
 
     /** {@inheritDoc} */
@@ -99,14 +100,15 @@ public class CommandsImpl
     }
 
     /** {@inheritDoc} */
-    public ResourceSummary unlock(final String resourceId) {
-        return _delegate.unlock(resourceId);
+    public ResourceSummary unlock(final String resourceId, final long version) {
+        return _delegate.unlock(resourceId, version);
     }
 
 
     /** {@inheritDoc} */
-    @Override public ResourceSummary unpublish(final String resourceId) {
-        return _delegate.unpublish(resourceId);
+    @Override public ResourceSummary unpublish(final String resourceId,
+                                               final long version) {
+        return _delegate.unpublish(resourceId, version);
     }
 
     /** {@inheritDoc} */

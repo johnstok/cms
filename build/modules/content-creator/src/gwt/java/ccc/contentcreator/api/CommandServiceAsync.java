@@ -44,13 +44,13 @@ public interface CommandServiceAsync {
 
     void updateTemplate(TemplateDelta delta, AsyncCallback<ResourceSummary> callback);
 
-    void lock(String resourceId, AsyncCallback<ResourceSummary> callback);
+    void lock(String resourceId, long version, AsyncCallback<ResourceSummary> callback);
 
-    void unlock(String resourceId, AsyncCallback<ResourceSummary> callback);
+    void unlock(String resourceId, long version, AsyncCallback<ResourceSummary> callback);
 
-    void publish(String resourceId, AsyncCallback<ResourceSummary> callback);
+    void publish(String resourceId, long version, AsyncCallback<ResourceSummary> callback);
 
-    void unpublish(String resourceId, AsyncCallback<ResourceSummary> callback);
+    void unpublish(String resourceId, long version, AsyncCallback<ResourceSummary> callback);
 
 
 
