@@ -426,6 +426,11 @@ public class ResourceTable extends TablePanel {
             @Override public void componentSelected(final MenuEvent ce) {
                     final ModelData item = tbl.getSelectedItem().getModel();
 
+                    if(null==item.get("locked")) {
+                        Globals.alert("You must lock a resource before it can be edited.");
+                        return;
+                    }
+
                      if ("TEMPLATE".equals(item.get("type"))) {
                          qs.templateDelta(item.<String>get("id"), new ErrorReportingCallback<TemplateDelta>(){
                             public void onSuccess(final TemplateDelta arg0) {
