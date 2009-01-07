@@ -315,6 +315,7 @@ public class ResourceTable extends TablePanel {
 
                 _cs.publish(
                     item.<String>get("id"),
+                    item.<Long>get("version").longValue(),
                     new AsyncCallback<ResourceSummary>(){
 
                         public void onFailure(final Throwable arg0) {
@@ -350,6 +351,7 @@ public class ResourceTable extends TablePanel {
 
                 _cs.unpublish(
                     item.<String>get("id"),
+                    item.<Long>get("version").longValue(),
                     new AsyncCallback<ResourceSummary>(){
 
                         public void onFailure(final Throwable arg0) {
@@ -529,15 +531,18 @@ public class ResourceTable extends TablePanel {
 
             @Override public void componentSelected(final MenuEvent ce) {
                 final ModelData item = tbl.getSelectedItem().getModel();
-                _cs.lock(item.<String>get("id"), new AsyncCallback<ResourceSummary>() {
-                    public void onFailure(final Throwable arg0) {
-                        Globals.unexpectedError(arg0);
-                    }
-                    public void onSuccess(final ResourceSummary arg0) {
-                            item.set("locked", arg0._lockedBy);
-                            detailsStore().update(item);
-                    }
-                });
+                _cs.lock(
+                    item.<String>get("id"),
+                    item.<Long>get("version").longValue(),
+                    new AsyncCallback<ResourceSummary>() {
+                        public void onFailure(final Throwable arg0) {
+                            Globals.unexpectedError(arg0);
+                        }
+                        public void onSuccess(final ResourceSummary arg0) {
+                                DataBinding.merge(item, arg0);
+                                detailsStore().update(item);
+                        }
+                    });
             }
 
         });
@@ -557,12 +562,11 @@ public class ResourceTable extends TablePanel {
                     tbl.getSelectedItem().getModel();
                 _cs.unlock(
                     item.<String>get("id"),
+                    item.<Long>get("version").longValue(),
                     new AsyncCallback<ResourceSummary>(){
-
                         public void onFailure(final Throwable arg0) {
                             Globals.unexpectedError(arg0);
                         }
-
                         public void onSuccess(final ResourceSummary arg0) {
                             DataBinding.merge(item, arg0);
                             detailsStore().update(item);
