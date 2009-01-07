@@ -24,7 +24,7 @@ public interface Commands {
     /**
      * Update the specified page on the server.
      */
-    void updatePage(PageDelta delta);
+    void updatePage(PageDelta delta) throws CCCRemoteException;
 
     /**
      * Rename resource.
