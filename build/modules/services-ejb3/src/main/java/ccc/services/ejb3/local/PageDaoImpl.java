@@ -16,16 +16,19 @@ import static javax.ejb.TransactionAttributeType.*;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 
+import ccc.domain.CCCException;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.services.AuditLog;
 import ccc.services.PageDao;
+import ccc.services.UserManager;
 import ccc.services.ejb3.support.BaseResourceDao;
 
 
@@ -39,6 +42,8 @@ import ccc.services.ejb3.support.BaseResourceDao;
 @Local(PageDao.class)
 public class PageDaoImpl extends BaseResourceDao implements PageDao {
 
+    @EJB(name="UserManager") protected UserManager _users;
+
     /** Constructor. */
     @SuppressWarnings("unused") public PageDaoImpl() { super(); }
 
@@ -48,9 +53,12 @@ public class PageDaoImpl extends BaseResourceDao implements PageDao {
      * @param em
      * @param al
      */
-    public PageDaoImpl(final EntityManager em, final AuditLog al) {
+    public PageDaoImpl(final EntityManager em,
+                       final AuditLog al,
+                       final UserManager um) {
         _audit = al;
         _em = em;
+        _users = um;
     }
 
 
@@ -73,12 +81,20 @@ public class PageDaoImpl extends BaseResourceDao implements PageDao {
                        final Set<Paragraph> newParagraphs) {
 
         final Page page = find(Page.class, id, version);
-        page.title(newTitle);
-        page.deleteAllParagraphs();
 
-        for (final Paragraph paragraph : newParagraphs) {
-            page.addParagraph(paragraph);
+        if (page.isLocked() && page.lockedBy().equals(_users.loggedInUser())) {
+            page.title(newTitle);
+            page.deleteAllParagraphs();
+
+            for (final Paragraph paragraph : newParagraphs) {
+                page.addParagraph(paragraph);
+            }
+            _audit.recordUpdate(page);
+
+        } else {
+            throw new CCCException(
+                "A page must be locked before an update can be performed");
+
         }
-        _audit.recordUpdate(page);
     }
 }

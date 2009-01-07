@@ -23,8 +23,10 @@ import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.PredefinedResourceNames;
+import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.PageDao;
+import ccc.services.UserManager;
 
 
 /**
@@ -43,11 +45,13 @@ public class PageDaoImplTest
 
         // ARRANGE
         final Page page = new Page("test");
+        page.lock(_user);
         page.addParagraph(Paragraph.fromText("abc", "def"));
 
         _al.recordUpdate(page);
         expect(_em.find(Page.class, page.id())).andReturn(page);
-        replay(_em, _al);
+        expect(_um.loggedInUser()).andReturn(_user);
+        replay(_em, _al, _um);
 
 
         // ACT
@@ -59,7 +63,7 @@ public class PageDaoImplTest
 
 
         // ASSERT
-        verify(_em, _al);
+        verify(_em, _al, _um);
         assertEquals("new title", page.title());
         assertEquals(1, page.paragraphs().size());
         assertEquals("foo", page.paragraphs().iterator().next().name());
@@ -130,7 +134,8 @@ public class PageDaoImplTest
     protected void setUp() throws Exception {
         _em = createStrictMock(EntityManager.class);
         _al = createStrictMock(AuditLog.class);
-        _cm = new PageDaoImpl(_em, _al);
+        _um = createStrictMock(UserManager.class);
+        _cm = new PageDaoImpl(_em, _al, _um);
     }
 
     /** {@inheritDoc} */
@@ -138,10 +143,14 @@ public class PageDaoImplTest
     protected void tearDown() throws Exception {
         _em = null;
         _al = null;
+        _um = null;
         _cm = null;
     }
 
     private EntityManager _em;
     private AuditLog _al;
+    private UserManager _um;
     private PageDao _cm;
+
+    private final User _user = new User("dummy");
 }
