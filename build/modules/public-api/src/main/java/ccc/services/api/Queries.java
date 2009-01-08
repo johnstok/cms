@@ -60,6 +60,13 @@ public interface Queries {
     Collection<ResourceSummary> getChildren(String folderId);
 
     /**
+     * List all images.
+     *
+     * @return The list of images.
+     */
+    Collection<FileSummary> getAllImages();
+
+    /**
      * Determine the absolute path to a resource.
      *
      * @param resourceId The id of the resource.

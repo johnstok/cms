@@ -21,6 +21,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.UUID;
 
 import javax.activation.MimeType;
@@ -209,4 +210,10 @@ public class DataManagerEJB extends BaseResourceDao implements DataManager {
 
     /** STREAM_POSITION_CREATE : int. */
     public static final int STREAM_POSITION_CREATE = 3;
+
+    /** {@inheritDoc} */
+    @Override
+    public List<File> findImages() {
+        return list("allImages", File.class);
+    }
 }

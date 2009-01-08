@@ -29,6 +29,7 @@ import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.FileDelta;
+import ccc.services.api.FileSummary;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ParagraphDelta;
@@ -85,6 +86,20 @@ public class ModelTranslation {
         final Collection<UserSummary> mapped = new ArrayList<UserSummary>();
         for (final User u : users) {
             mapped.add(map(u));
+        }
+        return mapped;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param listUsers
+     * @return
+     */
+    protected Collection<FileSummary> mapFiles(final Collection<File> files) {
+        final Collection<FileSummary> mapped = new ArrayList<FileSummary>();
+        for (final File f : files) {
+            mapped.add(map(f));
         }
         return mapped;
     }
@@ -171,6 +186,22 @@ public class ModelTranslation {
         us._id = user.id().toString();
         us._username = user.username();
         return us;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param loggedInUser
+     * @return
+     */
+    protected FileSummary map(final File file) {
+        final FileSummary fs = new FileSummary();
+        fs._id = file.id().toString();
+        fs._name = file.name().toString();
+        fs._title = file.title();
+        fs._mimeType = file.mimeType().toString();
+        fs._path = file.absolutePath().toString();
+        return fs;
     }
 
     /**

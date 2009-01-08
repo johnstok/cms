@@ -17,6 +17,7 @@ import ccc.commons.JNDI;
 import ccc.contentcreator.api.QueriesService;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.FileDelta;
+import ccc.services.api.FileSummary;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.PageDelta;
 import ccc.services.api.Queries;
@@ -174,5 +175,11 @@ public class QueriesImpl
     @Override
     public FileDelta fileDelta(final String fileId) {
         return _delegate.fileDelta(fileId);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Collection<FileSummary> getAllImages() {
+        return _delegate.getAllImages();
     }
 }

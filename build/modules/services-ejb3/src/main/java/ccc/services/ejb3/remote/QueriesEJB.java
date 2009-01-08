@@ -14,6 +14,7 @@ package ccc.services.ejb3.remote;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.security.RolesAllowed;
@@ -31,12 +32,14 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
 import ccc.domain.User;
+import ccc.services.DataManager;
 import ccc.services.FolderDao;
 import ccc.services.ResourceDao;
 import ccc.services.TemplateDao;
 import ccc.services.UserManager;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.FileDelta;
+import ccc.services.api.FileSummary;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.PageDelta;
 import ccc.services.api.Queries;
@@ -66,6 +69,7 @@ public final class QueriesEJB
     @EJB(name="FolderDao")      private FolderDao       _folders;
     @EJB(name="UserManager")    private UserManager     _users;
     @EJB(name="ResourceDao")    private ResourceDao     _resources;
+    @EJB(name="DataManager")    private DataManager     _datas;
 
     /**
      * Constructor.
@@ -247,5 +251,12 @@ public final class QueriesEJB
     public FileDelta fileDelta(final String fileId) {
         return
             delta(_resources.find(File.class, UUID.fromString(fileId)));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Collection<FileSummary> getAllImages() {
+        final List<File> list = _datas.findImages();
+        return mapFiles(list);
     }
 }
