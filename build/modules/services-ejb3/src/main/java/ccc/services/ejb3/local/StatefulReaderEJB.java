@@ -79,9 +79,7 @@ public final class StatefulReaderEJB
 
     private Folder lookupRoot() {
         final Query q = _em.createNamedQuery("rootByName");
-        q.setParameter(
-            "name",
-            new ResourceName(PredefinedResourceNames.CONTENT));
+        q.setParameter(1, new ResourceName(PredefinedResourceNames.CONTENT));
 
         try {
             final Object singleResult = q.getSingleResult();
