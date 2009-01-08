@@ -163,6 +163,7 @@ public class ResourceDaoImplTest
 
         // ARRANGE
         expect(_em.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_users.loggedInUser()).andReturn(_regularUser);
         replayAll();
         _r.lock(_anotherUser);
 
