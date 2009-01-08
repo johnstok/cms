@@ -94,7 +94,7 @@ public class ResourceDaoImpl implements ResourceDao {
 
     /** {@inheritDoc} */
     @Override
-    public Resource lock(final UUID resourceId, final long version) {
+    public Resource lock(final UUID resourceId) {
         final Resource r = _dao.find(Resource.class, resourceId);
         r.lock(_users.loggedInUser());
         _audit.recordLock(r);
@@ -103,7 +103,7 @@ public class ResourceDaoImpl implements ResourceDao {
 
     /** {@inheritDoc} */
     @Override
-    public Resource unlock(final UUID resourceId, final long version) {
+    public Resource unlock(final UUID resourceId) {
         final User loggedInUser = _users.loggedInUser();
         final Resource r = _dao.find(Resource.class, resourceId);
         r.unlock(loggedInUser);
@@ -138,17 +138,14 @@ public class ResourceDaoImpl implements ResourceDao {
 
     /** {@inheritDoc} */
     @Override
-    public void updateTags(final UUID resourceId,
-                           final long version,
-                           final String tags) {
+    public void updateTags(final UUID resourceId, final String tags) {
         final Resource r = findLocked(Resource.class, resourceId);
         r.tags(tags);
     }
 
     /** {@inheritDoc} */
     @Override
-    public Resource publish(final UUID resourceId,
-                            final long version) {
+    public Resource publish(final UUID resourceId) {
         final Resource r = findLocked(Resource.class, resourceId);
         r.publish(_users.loggedInUser());
         _audit.recordPublish(r);
@@ -157,8 +154,7 @@ public class ResourceDaoImpl implements ResourceDao {
 
     /** {@inheritDoc} */
     @Override
-    public Resource unpublish(final UUID resourceId,
-                              final long version) {
+    public Resource unpublish(final UUID resourceId) {
         final Resource r = findLocked(Resource.class, resourceId);
         r.unpublish();
         _audit.recordUnpublish(r);
@@ -170,7 +166,6 @@ public class ResourceDaoImpl implements ResourceDao {
      */
     @Override
     public void updateTemplateForResource(final UUID resourceId,
-                                          final long version,
                                           final Template template) {
         final Resource r = findLocked(Resource.class, resourceId);
         r.template(template);
@@ -180,7 +175,6 @@ public class ResourceDaoImpl implements ResourceDao {
     /** {@inheritDoc} */
     @Override
     public void move(final UUID resourceId,
-                     final long version,
                      final UUID newParentId) {
         // TODO: Check new parent doesn't contain resource with same name!
         final Resource resource = findLocked(Resource.class, resourceId);
@@ -195,7 +189,6 @@ public class ResourceDaoImpl implements ResourceDao {
     /** {@inheritDoc} */
     @Override
     public void rename(final UUID resourceId,
-                       final long version,
                        final String name) {
         // TODO: Check parent doesn't contain resource with new name!
         final Resource resource = findLocked(Resource.class, resourceId);

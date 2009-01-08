@@ -21,25 +21,11 @@ package ccc.services.api;
  */
 public interface Commands {
 
+
     /**
      * Update the specified page on the server.
      */
     void updatePage(PageDelta delta) throws CCCRemoteException;
-
-    /**
-     * Rename resource.
-     */
-    void rename(final String resourceId, long version, final String name);
-
-    /**
-     * Update the tags for a resource.
-     */
-    void updateTags(String resourceId, long version, String tags);
-
-    /**
-     * Changes a resource's parent.
-     */
-    void move(String resourceId, long version, String newParentId);
 
     /**
      * Update an alias' target.
@@ -52,14 +38,34 @@ public interface Commands {
     UserSummary updateUser(UserDelta delta);
 
     /**
-     * Update the specified resource's template on the server.
-     */
-    void updateResourceTemplate(String resourceId, long version, String templateId);
-
-    /**
      * Update the specified template on the server.
      */
     ResourceSummary updateTemplate(TemplateDelta delta);
+
+
+
+
+
+
+    /**
+     * Rename resource.
+     */
+    void rename(final String resourceId, final String name);
+
+    /**
+     * Update the tags for a resource.
+     */
+    void updateTags(String resourceId, String tags);
+
+    /**
+     * Changes a resource's parent.
+     */
+    void move(String resourceId, String newParentId);
+
+    /**
+     * Update the specified resource's template on the server.
+     */
+    void updateResourceTemplate(String resourceId, String templateId);
 
     /**
      * Lock the specified resource.
@@ -69,7 +75,7 @@ public interface Commands {
      * @param resourceId The uuid of the resource to lock.
      * @return The current version of resource.
      */
-    ResourceSummary lock(String resourceId, long version);
+    ResourceSummary lock(String resourceId);
 
     /**
      * Unlock the specified Resource.
@@ -80,7 +86,7 @@ public interface Commands {
      * @param resourceId The resource to unlock.
      * @return The current version of resource.
      */
-    ResourceSummary unlock(String resourceId, long version);
+    ResourceSummary unlock(String resourceId);
 
     /**
      * TODO: Add a description of this method.
@@ -88,9 +94,15 @@ public interface Commands {
      * @param resourceId The id of the resource to update.
      * @return The current version of resource.
      */
-    ResourceSummary publish(String resourceId, long version);
+    ResourceSummary publish(String resourceId);
 
-    ResourceSummary unpublish(String resourceId, long version);
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param resourceId
+     * @return
+     */
+    ResourceSummary unpublish(String resourceId);
 
 
 

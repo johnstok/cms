@@ -29,14 +29,12 @@ public interface PageDao {
      * Update a page.
      *
      * @param id The identifier for the page.
-     * @param version The expected version of the page.
      * @param newTitle The new title for the page.
      * @param newParagraphs The new paragraphs for the page. All existing
      *      paragraphs will be removed and replaced with the paragraphs
      *      specified here.
      */
     void update(UUID id,
-                final long version,
                 String newTitle,
                 Set<Paragraph> newParagraphs);
 

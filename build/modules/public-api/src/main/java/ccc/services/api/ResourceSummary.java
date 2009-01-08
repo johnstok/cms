@@ -22,7 +22,6 @@ import java.io.Serializable;
 public class ResourceSummary implements Serializable {
 
     public String _id;
-    public long   _version;
     public String _parentId;
     public String _name;
     public String _publishedBy;

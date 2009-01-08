@@ -27,40 +27,31 @@ import ccc.domain.Template;
  */
 public interface ResourceDao {
 
+    /*
+     * QUERIES
+     */
+
+    /**
+     * Find 0 or more objects using a query.
+     *
+     * @param <T> The type of the results.
+     * @param queryName The name of the query to run.
+     * @param resultType A class representing the type of the results.
+     * @param params The query parameters.
+     * @return A collection of results.
+     */
     <T> List<T> list(String queryName, Class<T> resultType, Object... params);
 
+    /**
+     * Find a single object using a query.
+     *
+     * @param <T> The type of the result.
+     * @param queryName The name of the query to run.
+     * @param resultType A class representing the type of the result.
+     * @param params The query parameters.
+     * @return The result.
+     */
     <T> T find(String queryName, Class<T> resultType, Object... params);
-
-    void create(final UUID folderId, final Resource newResource);
-
-    /**
-     * Create a new root folder. The name is checked against existing root
-     * folders in order to prevent conflicts.
-     *
-     * @param folder The root folder to persists.
-     */
-    public void createRoot(Folder folder);
-
-    /**
-     * Lock the specified resource.
-     * The resource will be locked by the currently logged in user.
-     * If the resource is already locked a CCCException will be thrown.
-     *
-     * @param resourceId The uuid of the resource to lock.
-     * @return The current version of resource.
-     */
-    Resource lock(UUID resourceId, long version);
-
-    /**
-     * Unlock the specified Resource.
-     * If the logged in user does not have privileges to unlock this resource a
-     * CCCException will be thrown.
-     * Unlocking an unlocked resource has no effect.
-     *
-     * @param resourceId The resource to unlock.
-     * @return The current version of resource.
-     */
-    Resource unlock(UUID resourceId, long version);
 
     /**
      * List the resources locked by the currently logged in user.
@@ -85,70 +76,9 @@ public interface ResourceDao {
     List<LogEntry> history(String resourceId);
 
     /**
-     * Update the tags for a resource.
-     *
-     * @param resourceId The resource to update.
-     * @param version The version of the resource.
-     * @param tags The tags to set.
-     */
-    void updateTags(
-                UUID resourceId,
-                long version,
-                String tags);
-
-    /**
-     * Publishes the resource.
-     *
-     * @param resourceId The id of the resource to update.
-     * @param version The version of the resource.
-     * @return The current version of resource.
-     */
-    Resource publish(UUID resourceId,
-                     long version);
-
-    /**
-     * Un-publishes the resource.
-     *
-     * @param resourceId The id of the resource to update.
-     * @param version The version of the resource.
-     * @return The current version of resource.
-     */
-    Resource unpublish(UUID resourceId,
-                       long version);
-
-    /**
-     * Change the template for the specified resource.
-     *
-     * @param resourceId The id of the resource to change.
-     * @param version The version of the resource.
-     * @param template The new template to set.
-     */
-    void updateTemplateForResource(UUID resourceId,
-                                   long version,
-                                   Template template);
-
-    /**
-     * Move a resource to a new parent.
-     *
-     * @param resourceId The id of the resource to move.
-     * @param version The version of the resource.
-     * @param newParentId The id of the new parent.
-     */
-    void move(UUID resourceId, long version, UUID newParentId);
-
-    /**
-     * Rename a resource.
-     *
-     * @param resourceId The id of the resource to change.
-     * @param version The version of the resource.
-     * @param name The new name to set.
-     */
-    void rename(UUID resourceId, long version, String name);
-
-    /**
      * Find a resource using its unique id.
      *
-     * @param <T> The of the resource to return.
+     * @param <T> The type of the resource to return.
      * @param type A class representing the type of the resource to return.
      * @param id The id of the resource to find.
      * @return The resource for the specified id.
@@ -156,18 +86,110 @@ public interface ResourceDao {
     <T extends Resource> T find(final Class<T> type, final UUID id);
 
     /**
-     * TODO: Add a description of this method.
+     * Find the resource with the specified UUID. This method confirms that the
+     * resource is locked by the currently 'logged in' user.
      *
-     * @param type
-     * @param id
-     * @return
+     * @param <T> The type of the resource to return.
+     * @param type A class representing the type of the resource to return.
+     * @param id The UUID of the resource.
+     * @return The resource for the specified id.
      */
     <T extends Resource> T findLocked(Class<T> type, UUID id);
 
+
+    /*
+     * COMMANDS
+     */
+
     /**
-     * TODO: Add a description of this method.
+     * Create a resource in the specified folder.
      *
-     * @param resource
+     * @param folderId The folder in which the resource will be created.
+     * @param newResource The new resource.
+     */
+    void create(final UUID folderId, final Resource newResource);
+
+    /**
+     * Create a new root folder. The name is checked against existing root
+     * folders in order to prevent conflicts.
+     *
+     * @param folder The root folder to persists.
+     */
+    void createRoot(Folder folder);
+
+    /**
+     * Lock the specified resource.
+     * The resource will be locked by the currently logged in user.
+     * If the resource is already locked a CCCException will be thrown.
+     *
+     * @param resourceId The uuid of the resource to lock.
+     * @return The current version of resource.
+     */
+    Resource lock(UUID resourceId);
+
+    /**
+     * Unlock the specified Resource.
+     * If the logged in user does not have privileges to unlock this resource a
+     * CCCException will be thrown.
+     * Unlocking an unlocked resource has no effect.
+     *
+     * @param resourceId The resource to unlock.
+     * @return The current version of resource.
+     */
+    Resource unlock(UUID resourceId);
+
+    /**
+     * Update the tags for a resource.
+     *
+     * @param resourceId The resource to update.
+     * @param tags The tags to set.
+     */
+    void updateTags(UUID resourceId, String tags);
+
+    /**
+     * Publishes the resource.
+     *
+     * @param resourceId The id of the resource to update.
+     * @return The current version of resource.
+     */
+    Resource publish(UUID resourceId);
+
+    /**
+     * Un-publishes the resource.
+     *
+     * @param resourceId The id of the resource to update.
+     * @return The current version of resource.
+     */
+    Resource unpublish(UUID resourceId);
+
+    /**
+     * Change the template for the specified resource.
+     *
+     * @param resourceId The id of the resource to change.
+     * @param template The new template to set.
+     */
+    void updateTemplateForResource(UUID resourceId, Template template);
+
+    /**
+     * Move a resource to a new parent.
+     *
+     * @param resourceId The id of the resource to move.
+     * @param newParentId The id of the new parent.
+     */
+    void move(UUID resourceId, UUID newParentId);
+
+    /**
+     * Rename a resource.
+     *
+     * @param resourceId The id of the resource to change.
+     * @param name The new name to set.
+     */
+    void rename(UUID resourceId, String name);
+
+    /**
+     * Notify the DAO that a resource has been updated (generates a log entry).
+     *
+     * @param resource The resource that was updated.
      */
     void update(Resource resource);
 }

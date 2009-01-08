@@ -58,7 +58,6 @@ public class PageDaoImpl implements PageDao {
      */
     @Override
     public void update(final UUID id,
-                       final long version,
                        final String newTitle,
                        final Set<Paragraph> newParagraphs) {
 

@@ -45,7 +45,7 @@ public class AliasDaoImplTest
         replay(_dao);
 
         // ACT
-        _cm.updateAlias(r2.id(), alias.id(), alias.version());
+        _cm.updateAlias(r2.id(), alias.id());
 
         // ASSERT
         verify(_dao);

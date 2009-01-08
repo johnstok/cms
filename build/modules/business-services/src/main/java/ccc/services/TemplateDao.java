@@ -36,7 +36,6 @@ public interface TemplateDao {
      * Update an existing resource.
      *
      * @param templateId The id of the template to update.
-     * @param templateVersion The expected version of the template.
      * @param title The template's new title.
      * @param description The template's new description.
      * @param definition The template's new definition.
@@ -44,7 +43,6 @@ public interface TemplateDao {
      * @return The updated template.
      */
     Template update(UUID templateId,
-                    long templateVersion,
                     String title,
                     String description,
                     String definition,

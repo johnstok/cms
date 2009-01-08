@@ -175,45 +175,43 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary lock(final String resourceId, final long version) {
-        return map(_resources.lock(UUID.fromString(resourceId), version));
+    public ResourceSummary lock(final String resourceId) {
+        return map(_resources.lock(UUID.fromString(resourceId)));
     }
 
     /** {@inheritDoc} */
     @Override
     public void move(final String resourceId,
-                     final long version,
                      final String newParentId) {
 
-        _resources.move(UUID.fromString(resourceId), version,
-            UUID.fromString(newParentId));
+        _resources.move(UUID.fromString(resourceId),
+                        UUID.fromString(newParentId));
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary publish(final String resourceId, final long version) {
-        return map(_resources.publish(UUID.fromString(resourceId), version));
+    public ResourceSummary publish(final String resourceId) {
+        return map(_resources.publish(UUID.fromString(resourceId)));
     }
 
     /** {@inheritDoc} */
     @Override
     public void rename(final String resourceId,
-                       final long version,
                        final String name) {
 
-        _resources.rename(UUID.fromString(resourceId), version, name);
+        _resources.rename(UUID.fromString(resourceId), name);
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary unlock(final String resourceId, final long version) {
-        return map(_resources.unlock(UUID.fromString(resourceId), version));
+    public ResourceSummary unlock(final String resourceId) {
+        return map(_resources.unlock(UUID.fromString(resourceId)));
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary unpublish(final String resourceId, final long version) {
-        return map(_resources.unpublish(UUID.fromString(resourceId), version));
+    public ResourceSummary unpublish(final String resourceId) {
+        return map(_resources.unpublish(UUID.fromString(resourceId)));
     }
 
     /** {@inheritDoc} */
@@ -221,8 +219,7 @@ public class CommandsEJB
     public void updateAlias(final AliasDelta delta) {
         _alias.updateAlias(
             UUID.fromString(delta._targetId),
-            UUID.fromString(delta._id),
-            delta._version);
+            UUID.fromString(delta._id));
     }
 
     /** {@inheritDoc} */
@@ -233,7 +230,6 @@ public class CommandsEJB
             ResourceName.escape(delta._name),
             delta._title);
         page.id(UUID.fromString(delta._id));
-        page.version(delta._version);
 
         // TODO: Remove duplication
         for (final ParagraphDelta para : delta._paragraphs) {
@@ -250,7 +246,6 @@ public class CommandsEJB
         }
 
         _page.update(UUID.fromString(delta._id),
-                     delta._version,
                      delta._title,
                      page.paragraphs());
 
@@ -259,7 +254,6 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     public void updateResourceTemplate(final String resourceId,
-                                       final long version,
                                        final String templateId) {
 
         final Template t = (null==templateId)
@@ -267,15 +261,14 @@ public class CommandsEJB
             : _resources.find(Template.class, UUID.fromString(templateId));
 
         _resources.updateTemplateForResource(
-            UUID.fromString(resourceId), version, t);
+            UUID.fromString(resourceId), t);
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateTags(final String resourceId,
-                           final long version,
                            final String tags) {
-        _resources.updateTags(UUID.fromString(resourceId), version, tags);
+        _resources.updateTags(UUID.fromString(resourceId), tags);
 
     }
 
@@ -284,7 +277,6 @@ public class CommandsEJB
     public ResourceSummary updateTemplate(final TemplateDelta delta) {
 
         final Template t = _templates.update(UUID.fromString(delta._id),
-                                             delta._version,
                                              delta._title,
                                              delta._description,
                                              delta._definition,
@@ -302,7 +294,6 @@ public class CommandsEJB
         for (final String role : delta._roles) {
             user.addRole(CreatorRoles.valueOf(role));
         }
-        user.version(delta._version);
         user.id(UUID.fromString(delta._id));
 
         _users.updateUser(user, delta._password);

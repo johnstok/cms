@@ -55,8 +55,7 @@ public class AliasDaoImpl implements AliasDao {
     /** {@inheritDoc} */
     @Override
     public void updateAlias(final UUID targetId,
-                            final UUID aliasId,
-                            final long aliasVersion) {
+                            final UUID aliasId) {
         final Resource target = _dao.find(Resource.class, targetId);
         final Alias alias = _dao.findLocked(Alias.class, aliasId);
 

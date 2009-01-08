@@ -111,7 +111,6 @@ public class MoveDialog extends AbstractEditDialog {
             public void run() {
                 commands().move(
                     _target.<String>get("id"),
-                    _target.<Long>get("version"),
                     _parent.<String>get("id"),
                     new ErrorReportingCallback<Void>() {
                         public void onSuccess(final Void result) {

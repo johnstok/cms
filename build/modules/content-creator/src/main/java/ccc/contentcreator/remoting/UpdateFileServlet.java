@@ -23,7 +23,7 @@ import ccc.services.ServiceNames;
 
 /**
  * Servlet to update the data in a file.
- * TODO: extend CCCServlet.
+ * TODO: extend CCCServlet?
  *
  * @author Civic Computing Ltd
  */
@@ -48,7 +48,6 @@ public class UpdateFileServlet extends HttpServlet {
 
             final FileItem file        = form.get("file");
             final FileItem id          = form.get("id");
-            final FileItem version     = form.get("version");
             final FileItem title       = form.get("title");
             final FileItem description = form.get("description");
 
@@ -57,7 +56,6 @@ public class UpdateFileServlet extends HttpServlet {
             try {
                 dataManager().updateFile(
                     UUID.fromString(id.getString()),
-                    new Long(version.getString()).longValue(),
                     title.getString(),
                     description.getString(),
                     new MimeType(file.getContentType()),

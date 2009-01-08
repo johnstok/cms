@@ -48,7 +48,6 @@ public class PageDaoImplTest
         // ACT
         _cm.update(
             page.id(),
-            page.version(),
             "new title",
             Collections.singleton(Paragraph.fromText("foo", "bar")));
 

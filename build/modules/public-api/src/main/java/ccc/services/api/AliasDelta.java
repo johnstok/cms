@@ -21,7 +21,6 @@ import java.io.Serializable;
  */
 public class AliasDelta implements Serializable {
     public String _id;
-    public long   _version;
     public String _name;
     public String _targetName;
     public String _targetId;
