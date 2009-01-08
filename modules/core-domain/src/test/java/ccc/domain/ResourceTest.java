@@ -25,6 +25,125 @@ import ccc.commons.Testing;
 public final class ResourceTest extends TestCase {
 
     private final Template _default = new Template();
+    private User _jill = new User("jill");
+    private User _jack = new User("jack");
+
+    /**
+     * Test.
+     */
+    public void testLockFailsWhenAlreadyLocked() {
+
+        // ARRANGE
+        final Page p = new Page("myPage");
+        p.lock(_jack);
+
+        // ACT
+        try {
+            p.lock(_jack);
+            fail();
+
+        // ASSERT
+        } catch (final CCCException e) {
+            assertEquals("Resource is already locked.", e.getMessage());
+        }
+    }
+
+    /**
+     * Test.
+     */
+    public void testUnlockFailsWhenNotLocked() {
+
+        // ARRANGE
+        final Page p = new Page("myPage");
+
+        // ACT
+        try {
+            p.unlock(_jack);
+            fail();
+
+
+        // ASSERT
+        } catch (final UnlockedException e) {
+            assertEquals(p, e.resource());
+        }
+
+
+    }
+
+    /**
+     * Test.
+     */
+    public void testUnlockFailsWhenUserCannotUnlock() {
+
+        // ARRANGE
+        final Page p = new Page("myPage");
+        p.lock(_jack);
+
+        // ACT
+        try {
+            p.unlock(_jill);
+            fail();
+
+        // ASSERT
+        } catch (final CCCException e) {
+            assertEquals(
+                "User not allowed to unlock this resource.", e.getMessage());
+        }
+
+
+    }
+
+    /**
+     * Test.
+     */
+    public void testConfirmLockDoesNothingWithCorrectUser() {
+
+        // ARRANGE
+        final Page p = new Page("myPage");
+        p.lock(_jill);
+
+        // ACT
+        p.confirmLock(_jill);
+    }
+
+    /**
+     * Test.
+     */
+    public void testConfirmLockThrowsUnlockedException() {
+
+        // ARRANGE
+        final Page p = new Page("myPage");
+
+        // ACT
+        try {
+            p.confirmLock(_jill);
+            fail("Should throw UnlockedException.");
+
+        // ASSERT
+        } catch (final UnlockedException e) {
+            assertEquals(p, e.resource());
+        }
+    }
+
+    /**
+     * Test.
+     */
+    public void testConfirmLockThrowsLockMismatchException() {
+
+        // ARRANGE
+        final Page p = new Page("myPage");
+        p.lock(_jack);
+
+        // ACT
+        try {
+            p.confirmLock(_jill);
+            fail("Should throw LockMismatchException.");
+
+        // ASSERT
+        } catch (final LockMismatchException e) {
+            assertEquals(p, e.resource());
+        }
+    }
 
     /**
      * Test.
@@ -172,12 +291,11 @@ public final class ResourceTest extends TestCase {
     public void testUnlockResource() {
 
         //ARRANGE
-        final User u = new User("blat");
         final Resource r = new DummyResource("foo");
-        r.lock(u);
+        r.lock(_jack);
 
         // ACT
-        r.unlock();
+        r.unlock(_jack);
 
         // ASSERT
         assertFalse("Should be unlocked.", r.isLocked());

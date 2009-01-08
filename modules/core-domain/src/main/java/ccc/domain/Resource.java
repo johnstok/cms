@@ -205,12 +205,14 @@ public abstract class Resource extends VersionedEntity {
 
     /**
      * Lock a resource.
-     * TODO: Should check that isLocked == false
      *
      * @param u The user who is locking the resource.
      */
     public void lock(final User u) {
         require().notNull(u);
+        if (isLocked()) {
+            throw new CCCException("Resource is already locked."); // TODO: Use better exception.
+        }
         _lockedBy = u;
     }
 
@@ -225,9 +227,19 @@ public abstract class Resource extends VersionedEntity {
 
     /**
      * Unlock the resource.
-     * TODO: Should call canUnlock?
+     *
+     * @param user The user releasing the lock.
      */
-    public void unlock() {
+    public void unlock(final User user) {
+
+        if (!isLocked()) {
+            throw new UnlockedException(this);
+        }
+
+        if (!canUnlock(user)) {
+            throw new CCCException("User not allowed to unlock this resource."); // TODO: Use better exception.
+        }
+
         _lockedBy = null;
     }
 
@@ -313,7 +325,7 @@ public abstract class Resource extends VersionedEntity {
     /**
      * Return user who published the resource.
      *
-     * @return The user or null if the resource is upublished.
+     * @return The user or null if the resource is unpublished.
      */
     public User publishedBy() {
         return _publishedBy;
@@ -351,5 +363,20 @@ public abstract class Resource extends VersionedEntity {
         s.uuid("parent", (null==_parent) ? null : _parent.id());
         s.uuid("template", (null==_template) ? null : _template.id());
         s.array("tags", tags());
+    }
+
+
+    /**
+     * Confirm this resource is locked by the specified user.
+     *
+     * @param user The user who should have the lock.
+     */
+    public void confirmLock(final User user) {
+        if (!isLocked()) {
+            throw new UnlockedException(this);
+        }
+        if (!lockedBy().equals(user)) {
+            throw new LockMismatchException(this);
+        }
     }
 }
