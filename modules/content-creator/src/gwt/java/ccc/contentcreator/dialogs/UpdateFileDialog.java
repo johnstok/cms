@@ -42,7 +42,6 @@ public class UpdateFileDialog extends AbstractBaseDialog {
     private final TextField<String> _title = new TextField<String>();
     private final TextField<String> _description = new TextField<String>();
     private final HiddenField<String> _id = new HiddenField<String>();
-    private final HiddenField<String> _version = new HiddenField<String>();
     private FileUploadField _file = new FileUploadField();
     private final FormPanel _form = new FormPanel();
     private final Image _image =
@@ -80,11 +79,7 @@ public class UpdateFileDialog extends AbstractBaseDialog {
         _id.setName("id");
         _id.setValue(delta._id);
 
-        _version.setName("version");
-        _version.setValue(String.valueOf(delta._version));
-
         _form.add(_id);
-        _form.add(_version);
         _form.add(_title);
         _form.add(_description);
         _form.add(_file);

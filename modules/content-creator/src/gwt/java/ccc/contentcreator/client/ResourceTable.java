@@ -315,7 +315,6 @@ public class ResourceTable extends TablePanel {
 
                 _cs.publish(
                     item.<String>get("id"),
-                    item.<Long>get("version").longValue(),
                     new AsyncCallback<ResourceSummary>(){
 
                         public void onFailure(final Throwable arg0) {
@@ -351,7 +350,6 @@ public class ResourceTable extends TablePanel {
 
                 _cs.unpublish(
                     item.<String>get("id"),
-                    item.<Long>get("version").longValue(),
                     new AsyncCallback<ResourceSummary>(){
 
                         public void onFailure(final Throwable arg0) {
@@ -538,7 +536,6 @@ public class ResourceTable extends TablePanel {
                 final ModelData item = tbl.getSelectedItem().getModel();
                 _cs.lock(
                     item.<String>get("id"),
-                    item.<Long>get("version").longValue(),
                     new AsyncCallback<ResourceSummary>() {
                         public void onFailure(final Throwable arg0) {
                             Globals.unexpectedError(arg0);
@@ -567,7 +564,6 @@ public class ResourceTable extends TablePanel {
                     tbl.getSelectedItem().getModel();
                 _cs.unlock(
                     item.<String>get("id"),
-                    item.<Long>get("version").longValue(),
                     new AsyncCallback<ResourceSummary>(){
                         public void onFailure(final Throwable arg0) {
                             Globals.unexpectedError(arg0);

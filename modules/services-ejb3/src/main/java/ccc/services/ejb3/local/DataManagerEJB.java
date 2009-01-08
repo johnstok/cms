@@ -87,7 +87,6 @@ public class DataManagerEJB implements DataManager {
     /** {@inheritDoc} */
     @Override
     public void updateFile(final UUID fileId,
-                           final long version,
                            final String title,
                            final String description,
                            final MimeType mimeType,

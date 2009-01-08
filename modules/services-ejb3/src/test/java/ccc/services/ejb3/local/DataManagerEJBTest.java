@@ -135,7 +135,7 @@ public class DataManagerEJBTest extends TestCase {
 
     /**
      * Test.
-     * @throws SQLException
+     * @throws SQLException From JDBC.
      */
     public void testUpdateFile() throws SQLException {
 
@@ -162,7 +162,7 @@ public class DataManagerEJBTest extends TestCase {
         replayAll();
 
         // ACT
-        dm.updateFile(f.id(), -1, "x", "x", new MimeType(), 1, dummyStream);
+        dm.updateFile(f.id(), "x", "x", new MimeType(), 1, dummyStream);
 
         // ASSERT
         verifyAll();
@@ -176,8 +176,6 @@ public class DataManagerEJBTest extends TestCase {
     public void testCreate() throws SQLException {
 
         // ARRANGE
-        final InputStream dummyStream = new ByteArrayInputStream(new byte[]{1});
-
         final PreparedStatement ps = createStrictMock(PreparedStatement.class);
         ps.setString(eq(1), isA(String.class));
         ps.setInt(2, 0);
@@ -218,7 +216,6 @@ public class DataManagerEJBTest extends TestCase {
 
         // ARRANGE
         final ByteArrayOutputStream os = new ByteArrayOutputStream();
-        final InputStream dummyStream = new ByteArrayInputStream(new byte[]{1});
         final Data d = new Data();
 
         final ResultSet rs = createStrictMock(ResultSet.class);
@@ -266,7 +263,6 @@ public class DataManagerEJBTest extends TestCase {
     public void testCreateWithInMemoryDb() throws SQLException, IOException {
 
         // ARRANGE
-        final InputStream dummyStream = new ByteArrayInputStream(new byte[]{1});
         final JdbcDataSource ds = new JdbcDataSource();
         ds.setURL("jdbc:h2:mem:"+UUID.randomUUID()+";DB_CLOSE_DELAY=-1");
 
@@ -307,7 +303,6 @@ public class DataManagerEJBTest extends TestCase {
     public void testRetrieveWithInMemoryDb() throws SQLException {
 
         // ARRANGE
-        final InputStream dummyStream = new ByteArrayInputStream(new byte[]{1});
         final ByteArrayOutputStream os = new ByteArrayOutputStream();
         final JdbcDataSource ds = new JdbcDataSource();
         ds.setURL("jdbc:h2:mem:"+UUID.randomUUID()+";DB_CLOSE_DELAY=-1");

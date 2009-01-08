@@ -69,7 +69,6 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
     private ListStore<ModelData> _store;
     private TemplateDelta _model;
     private ModelData _proxy = new BaseModelData();
-    private long _version = -1;
 
     /**
      * Constructor.
@@ -116,7 +115,6 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
         _proxy = proxy;
 
         _id = _model._id;
-        _version = model._version;
 
         _name.setReadOnly(true);
         _name.disable();
@@ -181,7 +179,6 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
     private TemplateDelta model() {
         final TemplateDelta delta = new TemplateDelta();
         delta._id = _id;
-        delta._version = _version ;
         delta._name = _name.getValue();
         delta._title = _templateTitle.getValue();
         delta._description = _description.getValue();

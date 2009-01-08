@@ -123,7 +123,6 @@ public class DataBinding {
      */
     public static void merge(final ModelData md, final ResourceSummary fs) {
         md.set("id", fs._id);
-        md.set("version", fs._version);
         md.set("parentId", fs._parentId);
         md.set("name", fs._name);
         md.set("published", fs._publishedBy);
@@ -142,7 +141,6 @@ public class DataBinding {
      */
     public static void merge(final TemplateDelta td, final ModelData md) {
         md.set("id", td._id);
-        md.set("version", td._version);
         md.set("name", td._name);
         md.set("title", td._title);
         md.set("description", td._description);

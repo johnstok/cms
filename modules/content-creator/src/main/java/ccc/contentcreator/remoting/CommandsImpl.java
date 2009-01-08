@@ -71,8 +71,8 @@ public class CommandsImpl
     }
 
     /** {@inheritDoc} */
-    public ResourceSummary lock(final String resourceId, final long version) {
-        return _delegate.lock(resourceId, version);
+    public ResourceSummary lock(final String resourceId) {
+        return _delegate.lock(resourceId);
     }
 
     /** {@inheritDoc} */
@@ -82,34 +82,31 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     public void move(final String resourceId,
-                     final long version,
                      final String newParentId) {
-        _delegate.move(resourceId, version, newParentId);
+        _delegate.move(resourceId, newParentId);
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary publish(final String resourceId, final long version) {
-        return _delegate.publish(resourceId, version);
+    public ResourceSummary publish(final String resourceId) {
+        return _delegate.publish(resourceId);
     }
 
     /** {@inheritDoc} */
     public void rename(final String resourceId,
-                       final long version,
                        final String name) {
-        _delegate.rename(resourceId, version, name);
+        _delegate.rename(resourceId, name);
     }
 
     /** {@inheritDoc} */
-    public ResourceSummary unlock(final String resourceId, final long version) {
-        return _delegate.unlock(resourceId, version);
+    public ResourceSummary unlock(final String resourceId) {
+        return _delegate.unlock(resourceId);
     }
 
 
     /** {@inheritDoc} */
-    @Override public ResourceSummary unpublish(final String resourceId,
-                                               final long version) {
-        return _delegate.unpublish(resourceId, version);
+    @Override public ResourceSummary unpublish(final String resourceId) {
+        return _delegate.unpublish(resourceId);
     }
 
     /** {@inheritDoc} */
@@ -130,16 +127,14 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     public void updateResourceTemplate(final String resourceId,
-                                       final long version,
                                        final String templateId) {
-        _delegate.updateResourceTemplate(resourceId, version, templateId);
+        _delegate.updateResourceTemplate(resourceId, templateId);
     }
 
     /** {@inheritDoc} */
     public void updateTags(final String resourceId,
-                           final long version,
                            final String tags) {
-        _delegate.updateTags(resourceId, version, tags);
+        _delegate.updateTags(resourceId, tags);
     }
 
     /** {@inheritDoc} */

@@ -144,7 +144,6 @@ public class ModelTranslation {
     protected ResourceSummary map(final Resource r) {
         final ResourceSummary rs = new ResourceSummary();
         rs._id = r.id().toString();
-        rs._version = r.version();
         rs._name = r.name().toString();
         rs._parentId = (null==r.parent()) ? null : r.parent().id().toString();
         rs._type = r.type().name();
@@ -216,7 +215,6 @@ public class ModelTranslation {
         }
         final TemplateDelta delta = new TemplateDelta();
         delta._id = template.id().toString();
-        delta._version = template.version();
         delta._body = template.body();
         delta._definition = template.definition();
         delta._description = template.description();
@@ -234,7 +232,6 @@ public class ModelTranslation {
     protected UserDelta delta(final User user) {
         final UserDelta delta = new UserDelta();
         delta._id = user.id().toString();
-        delta._version = user.version();
         delta._email = user.email().getText();
         delta._username = user.username();
         delta._roles = new HashSet<String>();
@@ -254,7 +251,6 @@ public class ModelTranslation {
     protected AliasDelta delta(final Alias alias) {
         final AliasDelta delta = new AliasDelta();
         delta._id = alias.id().toString();
-        delta._version = alias.version();
         delta._name = alias.name().toString();
         delta._targetId = alias.target().id().toString();
         delta._targetName = alias.target().name().toString();
@@ -270,7 +266,6 @@ public class ModelTranslation {
     protected FileDelta delta(final File file) {
         final FileDelta delta = new FileDelta();
         delta._id = file.id().toString();
-        delta._version = file.version();
         delta._name = file.name().toString();
         delta._title = file.title();
         delta._description = file.description();
@@ -287,7 +282,6 @@ public class ModelTranslation {
     protected PageDelta delta(final Page page) {
         final PageDelta delta = new PageDelta();
         delta._id = page.id().toString();
-        delta._version = page.version();
         delta._name = page.name().toString();
         delta._title = page.title();
         final Template t = page.template();
@@ -316,7 +310,6 @@ public class ModelTranslation {
     protected ResourceDelta delta(final Resource resource) {
         final ResourceDelta delta = new ResourceDelta();
         delta._id = resource.id().toString();
-        delta._version = resource.version();
         delta._name = resource.name().toString();
         delta._title = resource.title();
         delta._tags = resource.tagString();

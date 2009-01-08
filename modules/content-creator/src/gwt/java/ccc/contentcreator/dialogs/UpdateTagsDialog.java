@@ -72,7 +72,6 @@ public class UpdateTagsDialog
 
                 commands().updateTags(
                     _resource._id,
-                    _resource._version,
                     tags,
                     new DisposingCallback(UpdateTagsDialog.this));
             }

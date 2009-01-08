@@ -30,27 +30,27 @@ public interface CommandServiceAsync {
 
     void updatePage(PageDelta delta, AsyncCallback<Void> callback);
 
-    void rename(final String resourceId, long version, final String name, AsyncCallback<Void> callback);
+    void rename(final String resourceId, final String name, AsyncCallback<Void> callback);
 
-    void updateTags(String resourceId, long version, String tags, AsyncCallback<Void> callback);
+    void updateTags(String resourceId, String tags, AsyncCallback<Void> callback);
 
-    void move(String resourceId, long version, String newParentId, AsyncCallback<Void> callback);
+    void move(String resourceId, String newParentId, AsyncCallback<Void> callback);
 
     void updateAlias(AliasDelta delta, AsyncCallback<Void> callback);
 
     void updateUser(UserDelta delta, AsyncCallback<UserSummary> callback);
 
-    void updateResourceTemplate(String resourceId, long version, String templateId, AsyncCallback<Void> callback);
+    void updateResourceTemplate(String resourceId, String templateId, AsyncCallback<Void> callback);
 
     void updateTemplate(TemplateDelta delta, AsyncCallback<ResourceSummary> callback);
 
-    void lock(String resourceId, long version, AsyncCallback<ResourceSummary> callback);
+    void lock(String resourceId, AsyncCallback<ResourceSummary> callback);
 
-    void unlock(String resourceId, long version, AsyncCallback<ResourceSummary> callback);
+    void unlock(String resourceId, AsyncCallback<ResourceSummary> callback);
 
-    void publish(String resourceId, long version, AsyncCallback<ResourceSummary> callback);
+    void publish(String resourceId, AsyncCallback<ResourceSummary> callback);
 
-    void unpublish(String resourceId, long version, AsyncCallback<ResourceSummary> callback);
+    void unpublish(String resourceId, AsyncCallback<ResourceSummary> callback);
 
 
 

@@ -23,7 +23,6 @@ import java.util.Set;
  */
 public class UserDelta implements Serializable {
     public String _id;
-    public long   _version;
     public String _password;
     public String _email;
     public String _username;

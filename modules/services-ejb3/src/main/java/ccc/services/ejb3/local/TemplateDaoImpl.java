@@ -56,7 +56,6 @@ public class TemplateDaoImpl implements TemplateDao {
     /** {@inheritDoc} */
     @Override
     public Template update(final UUID templateId,
-                       final long templateVersion,
                        final String title,
                        final String description,
                        final String definition,

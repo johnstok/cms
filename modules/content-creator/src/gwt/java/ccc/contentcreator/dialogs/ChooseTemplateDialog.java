@@ -98,7 +98,6 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
 
                 commands().updateResourceTemplate(
                     _resource._id,
-                    _resource._version,
                     templateId,
                     new DisposingCallback(ChooseTemplateDialog.this));
             }
