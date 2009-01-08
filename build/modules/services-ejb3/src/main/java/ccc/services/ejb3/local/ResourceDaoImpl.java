@@ -21,7 +21,6 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
-import ccc.domain.CCCException;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
@@ -65,9 +64,6 @@ public class ResourceDaoImpl extends BaseResourceDao implements ResourceDao {
     @Override
     public Resource lock(final UUID resourceId, final long version) {
         final Resource r = find(Resource.class, resourceId, version);
-        if (r.isLocked()) {
-            throw new CCCException("Resource is already locked.");
-        }
         r.lock(_users.loggedInUser());
         _audit.recordLock(r);
         return r;
@@ -78,12 +74,7 @@ public class ResourceDaoImpl extends BaseResourceDao implements ResourceDao {
     public Resource unlock(final UUID resourceId, final long version) {
         final User loggedInUser = _users.loggedInUser();
         final Resource r = find(Resource.class, resourceId, version);
-        // TODO: Test that r.isLocked() == true
-        if (r.canUnlock(loggedInUser)) { // TODO: Fold if/else into r.unlock()?
-            r.unlock();
-        } else {
-            throw new CCCException("User not allowed to unlock this resource.");
-        }
+        r.unlock(loggedInUser);
         _audit.recordUnlock(r);
         return r;
     }

@@ -22,7 +22,6 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 
-import ccc.domain.CCCException;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.Resource;
@@ -81,20 +80,14 @@ public class PageDaoImpl extends BaseResourceDao implements PageDao {
                        final Set<Paragraph> newParagraphs) {
 
         final Page page = find(Page.class, id, version);
+        page.confirmLock(_users.loggedInUser());
 
-        if (page.isLocked() && page.lockedBy().equals(_users.loggedInUser())) {
-            page.title(newTitle);
-            page.deleteAllParagraphs();
+        page.title(newTitle);
+        page.deleteAllParagraphs();
 
-            for (final Paragraph paragraph : newParagraphs) {
-                page.addParagraph(paragraph);
-            }
-            _audit.recordUpdate(page);
-
-        } else {
-            throw new CCCException(
-                "A page must be locked before an update can be performed");
-
+        for (final Paragraph paragraph : newParagraphs) {
+            page.addParagraph(paragraph);
         }
+        _audit.recordUpdate(page);
     }
 }
