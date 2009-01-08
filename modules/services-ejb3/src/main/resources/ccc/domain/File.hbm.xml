@@ -39,4 +39,7 @@
         </component>
 
 	</joined-subclass>
+	
+	<query name="allImages">from ccc.domain.File f where f._mimeType.primaryType = 'image'</query>
+	
 </hibernate-mapping>

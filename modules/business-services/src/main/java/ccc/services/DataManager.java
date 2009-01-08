@@ -14,6 +14,7 @@ package ccc.services;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 import java.util.UUID;
 
 import javax.activation.MimeType;
@@ -78,4 +79,11 @@ public interface DataManager {
                     MimeType mimeType,
                     long size,
                     InputStream dataStream);
+
+    /**
+     * Returns a list of all images.
+     *
+     * @return The list of resources.
+     */
+    List<File> findImages();
 }

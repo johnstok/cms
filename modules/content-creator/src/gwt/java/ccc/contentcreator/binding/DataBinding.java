@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import ccc.services.api.FileSummary;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
@@ -147,5 +148,24 @@ public class DataBinding {
         md.set("description", td._description);
         md.set("body", td._body);
         md.set("definition", td._definition);
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param arg0
+     * @return
+     */
+    public static List<ModelData> bindFileSummary(final Collection<FileSummary> arg0) {
+
+        final List<ModelData> boundData = new ArrayList<ModelData>();
+        for (final FileSummary fs : arg0) {
+            final ModelData md = new BaseModelData();
+            merge(md, fs);
+            md.set("mimeType", fs._mimeType);
+            md.set("path", fs._path);
+            boundData.add(md);
+        }
+        return boundData;
     }
 }

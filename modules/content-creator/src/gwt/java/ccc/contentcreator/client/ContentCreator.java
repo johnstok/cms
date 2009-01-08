@@ -6,6 +6,7 @@ import java.util.Collection;
 import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
+import ccc.contentcreator.dialogs.ImageSelectionDialog;
 import ccc.contentcreator.dialogs.ResourceSelectionDialog;
 import ccc.services.api.ResourceSummary;
 
@@ -50,58 +51,9 @@ public final class ContentCreator implements EntryPoint {
             public void onSuccess(final Collection<ResourceSummary> arg0) {
                 final String browse = Window.Location.getParameter("browse");
                 if (browse != null && browse.equals("image")) {
-                    Globals.disableExitConfirmation();
-                    final Viewport viewport = new Viewport();
-                    ResourceSummary rs = null;
-                    for (final ResourceSummary rr : arg0) {
-                        if (rr._name.equals("assets") ) {
-                            rs = rr;
-                        }
-                    }
-                    final ResourceSelectionDialog resourceSelect =
-                        new ResourceSelectionDialog(rs);
-
-                    resourceSelect.addListener(Events.Close,
-                        new Listener<ComponentEvent>() {
-                        public void handleEvent(final ComponentEvent be) {
-                            final ModelData _target = resourceSelect.selectedResource();
-                            qs.getAbsolutePath(
-                                _target.<String>get("id"),
-                                new ErrorReportingCallback<String>() {
-                                    public void onSuccess(final String arg0) {
-                                        jsniSetUrl(arg0);
-                                    }
-                            });
-
-                        }});
-                    resourceSelect.show();
-                    RootPanel.get().add(resourceSelect);
+                    browseImages(arg0);
                 } else if (browse != null && browse.equals("link")) {
-                    Globals.disableExitConfirmation();
-                    final Viewport viewport = new Viewport();
-                    ResourceSummary rs = null;
-                    for (final ResourceSummary rr : arg0) {
-                        if (rr._name.equals("content") ) {
-                            rs = rr;
-                        }
-                    }
-                    final ResourceSelectionDialog resourceSelect =
-                        new ResourceSelectionDialog(rs);
-
-                    resourceSelect.addListener(Events.Close,
-                        new Listener<ComponentEvent>() {
-                        public void handleEvent(final ComponentEvent be) {
-                            final ModelData _target = resourceSelect.selectedResource();
-                            qs.getAbsolutePath(
-                                _target.<String>get("id"),
-                                new ErrorReportingCallback<String>() {
-                                    public void onSuccess(final String arg0) {
-                                        jsniSetUrl(arg0);
-                                    }
-                            });
-                        }});
-                    resourceSelect.show();
-                    RootPanel.get().add(resourceSelect);
+                    browseLinks(qs, arg0);
                 } else {
                     final LeftRightPane contentPane = new LeftRightPane();
                     contentPane.setLeftHandPane(
@@ -116,9 +68,7 @@ public final class ContentCreator implements EntryPoint {
 
                     RootPanel.get().add(vp);
                 }
-
             }});
-
     }
 
 
@@ -147,5 +97,54 @@ public final class ContentCreator implements EntryPoint {
          v.add(vp);
 
         return v;
+    }
+
+
+    private void browseLinks(final QueriesServiceAsync qs,
+                             final Collection<ResourceSummary> arg0) {
+
+        Globals.disableExitConfirmation();
+        final Viewport viewport = new Viewport();
+        ResourceSummary rs = null;
+        for (final ResourceSummary rr : arg0) {
+            if (rr._name.equals("content") ) {
+                rs = rr;
+            }
+        }
+        final ResourceSelectionDialog resourceSelect =
+            new ResourceSelectionDialog(rs);
+
+        resourceSelect.addListener(Events.Close,
+            new Listener<ComponentEvent>() {
+            public void handleEvent(final ComponentEvent be) {
+                final ModelData _target = resourceSelect.selectedResource();
+                qs.getAbsolutePath(
+                    _target.<String>get("id"),
+                    new ErrorReportingCallback<String>() {
+                        public void onSuccess(final String arg0) {
+                            jsniSetUrl("/server"+arg0);
+                        }
+                });
+            }});
+        resourceSelect.show();
+        RootPanel.get().add(resourceSelect);
+    }
+
+
+    private void browseImages(final Collection<ResourceSummary> arg0) {
+
+        Globals.disableExitConfirmation();
+        final Viewport viewport = new Viewport();
+        ResourceSummary rs = null;
+        for (final ResourceSummary rr : arg0) {
+            if (rr._name.equals("assets") ) {
+                rs = rr;
+            }
+        }
+        final ImageSelectionDialog resourceSelect =
+            new ImageSelectionDialog();
+
+        resourceSelect.show();
+        RootPanel.get().add(resourceSelect);
     }
 }
