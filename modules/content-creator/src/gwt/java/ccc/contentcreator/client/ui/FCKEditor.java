@@ -26,7 +26,7 @@ import com.google.gwt.user.client.ui.Hidden;
  * Implements the <a href="http://www.fckeditor.net">FCKEditor</a> editor
  * as a Google Web Toolkit component.
  *
- * <p>The editor version is currently FCKEditor 2.4.2</p>
+ * <p>The editor version is currently FCKEditor 2.6.3</p>
  *
  * <h3>Installation</h3>
  *
@@ -85,9 +85,10 @@ public class FCKEditor extends Composite implements HasHTML {
 
         //Create the IFRAME
         final Frame editorFrame = new Frame();
-//        editorFrame.setUrl(getFckBaseUrl() + "editor/fckeditor.html?InstanceName=" + elementID+"&Toolbar=Basic");
         editorFrame.setUrl(getFckBaseUrl() + "editor/fckeditor.html?InstanceName=" + elementID);
         editorFrame.setSize(cssWidth, cssHeight);
+        DOM.setElementProperty(editorFrame.getElement(), "width", cssWidth);
+        DOM.setElementProperty(editorFrame.getElement(), "height", cssHeight);
         DOM.setElementProperty(editorFrame.getElement(), "scrolling", "no");
         DOM.setElementProperty(editorFrame.getElement(), "id", elementID + "___Frame");
         panel.add(editorFrame);

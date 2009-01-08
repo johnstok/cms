@@ -24,6 +24,7 @@ import ccc.services.api.PageDelta;
 import ccc.services.api.ParagraphDelta;
 import ccc.services.api.TemplateDelta;
 
+import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.button.Button;
@@ -78,7 +79,7 @@ public class UpdatePageDialog
     }
 
     private void drawGUI() {
-
+        _panel.setScrollMode(Style.Scroll.ALWAYS);
         _panel.createFields(_template._definition);
         _panel.populateFields(_page);
         _panel.layout();

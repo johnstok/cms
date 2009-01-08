@@ -31,6 +31,7 @@ import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 
 import com.extjs.gxt.ui.client.Events;
+import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -158,6 +159,7 @@ public class CreatePageDialog
         _first.setHeaderVisible(false);
         addCard(_first);
 
+        _second.setScrollMode(Style.Scroll.ALWAYS);
         addCard(_second);
 
         _third.setLayout(new BorderLayout());
