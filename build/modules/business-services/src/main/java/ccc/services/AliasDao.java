@@ -24,14 +24,6 @@ import ccc.domain.Alias;
 public interface AliasDao {
 
     /**
-     * Create an Alias in the specified folder.
-     *
-     * @param folderId The {@link UUID} for the containing folder.
-     * @param alias The Alias to be created.
-     */
-    void create(UUID folderId, Alias alias);
-
-    /**
      * Update alias' target.
      *
      * @param targetId The new target UUID

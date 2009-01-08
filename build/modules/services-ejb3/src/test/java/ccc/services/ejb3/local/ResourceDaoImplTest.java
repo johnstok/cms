@@ -16,9 +16,6 @@ import static org.easymock.EasyMock.*;
 import java.util.Collections;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-
 import junit.framework.TestCase;
 import ccc.domain.CCCException;
 import ccc.domain.CreatorRoles;
@@ -32,16 +29,20 @@ import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.UserManager;
+import ccc.services.ejb3.support.Dao;
 
 
 /**
- * TODO: Add Description for this type.
+ * Tests for the {@link ResourceDaoImpl} class.
+ *
  * TODO: testQueryAllLockedResources cannot be called by non-admin?
  * TODO: Test lock(null) fails with illegal arg exception.
  * TODO: Test unlock(null) fails with illegal arg exception.
  * TODO: Test unlock() behaviour for an unlocked resource.
  * TODO: Test lock behaviour if called when by the user that already holds the
  *  lock.
+ * TODO: Test publish().
+ * TODO: Test unpublish().
  *
  * @author Civic Computing Ltd.
  */
@@ -55,7 +56,9 @@ public class ResourceDaoImplTest
     public void testUpdateTags() {
 
         // ARRANGE
-        expect(_em.find(Resource.class, _r.id())).andReturn(_r);
+        _r.lock(_regularUser);
+        expect(_users.loggedInUser()).andReturn(_regularUser);
+        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
         replayAll();
 
         // ACT
@@ -75,7 +78,7 @@ public class ResourceDaoImplTest
 
         // ARRANGE
         expect(_users.loggedInUser()).andReturn(_regularUser);
-        expect(_em.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
         _al.recordUnlock(_r);
         replayAll();
 
@@ -96,7 +99,7 @@ public class ResourceDaoImplTest
 
         // ARRANGE
         expect(_users.loggedInUser()).andReturn(_regularUser);
-        expect(_em.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
         replayAll();
 
         _r.lock(_anotherUser);
@@ -123,7 +126,7 @@ public class ResourceDaoImplTest
 
         // ARRANGE
         expect(_users.loggedInUser()).andReturn(_adminUser);
-        expect(_em.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
         _al.recordUnlock(_r);
         replayAll();
 
@@ -143,7 +146,7 @@ public class ResourceDaoImplTest
     public void testUnlockedResourceCanBeLocked() {
 
         // ARRANGE
-        expect(_em.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
         expect(_users.loggedInUser()).andReturn(_regularUser);
         _al.recordLock(_r);
         replayAll();
@@ -162,7 +165,7 @@ public class ResourceDaoImplTest
     public void testLockedResourceCannotBeRelockedBySomeoneElse() {
 
         // ARRANGE
-        expect(_em.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
         expect(_users.loggedInUser()).andReturn(_regularUser);
         replayAll();
         _r.lock(_anotherUser);
@@ -185,9 +188,8 @@ public class ResourceDaoImplTest
     public void testQueryAllLockedResources() {
 
         // ARRANGE
-        final List<Resource> results = Collections.singletonList(_r);
-
-        expectList(results, "lockedResources");
+        expect(_dao.list("lockedResources", Resource.class))
+            .andReturn(Collections.singletonList(_r));
         replayAll();
 
         // ACT
@@ -204,9 +206,9 @@ public class ResourceDaoImplTest
     public void testQueryResourcesLockedByUser() {
 
         // ARRANGE
-        final List<Resource> queryResult = Collections.singletonList(_r);
         expect(_users.loggedInUser()).andReturn(_regularUser);
-        expectList(queryResult, "resourcesLockedByUser", _regularUser);
+        expect(_dao.list("resourcesLockedByUser", Resource.class, _regularUser))
+            .andReturn(Collections.singletonList(_r));
         replayAll();
 
         // ACT
@@ -217,83 +219,72 @@ public class ResourceDaoImplTest
         assertNotNull("Shouldn't be null.", locked);
     }
 
-    private void expectList(final List<Resource> queryResult,
-                            final String queryName,
-                            final Object... queryParam) {
-
-        expect(_em.createNamedQuery(queryName)).andReturn(_q);
-        for (int i=0; i<queryParam.length; i++) {
-            expect(_q.setParameter((i+1), queryParam[i])).andReturn(_q);
-        }
-        expect(_q.getResultList()).andReturn(queryResult);
-    }
-
     /**
      * Test.
      */
     public void testSetDefaultTemplate() {
 
         // ARRANGE
-        final Folder root = new Folder(PredefinedResourceNames.CONTENT);
         final Template defaultTemplate =
             new Template("foo", "bar", "baz", "<fields/>");
+        _r.lock(_regularUser);
 
-        expect(_em.find(Resource.class, root.id())).andReturn(root);
-        _al.recordChangeTemplate(root);
+        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_users.loggedInUser()).andReturn(_regularUser);
+        _al.recordChangeTemplate(_r);
         replayAll();
 
-
         // ACT
-        _rdao.updateTemplateForResource(root.id(), -1, defaultTemplate);
-
+        _rdao.updateTemplateForResource(_r.id(), -1, defaultTemplate);
 
         // ASSERT
         verifyAll();
-        assertEquals(
-            defaultTemplate,
-            root.template());
+        assertEquals(defaultTemplate, _r.template());
     }
 
     /**
      * Test.
      */
     public void testMove() {
+
         // ARRANGE
         final Folder oldParent = new Folder("old");
         final Folder newParent = new Folder("new");
-        final Page resource = new Page("foo");
-        oldParent.add(resource);
+        oldParent.add(_r);
+        _r.lock(_regularUser);
 
-        expect(_em.find(Resource.class, resource.id())).andReturn(resource);
-        expect(_em.find(Folder.class, newParent.id())).andReturn(newParent);
-        _al.recordMove(resource);
+        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_dao.find(Folder.class, newParent.id())).andReturn(newParent);
+        expect(_users.loggedInUser()).andReturn(_regularUser);
+        _al.recordMove(_r);
         replayAll();
 
         // ACT
-        _rdao.move(resource.id(), -1, newParent.id());
+        _rdao.move(_r.id(), -1, newParent.id());
 
         // ASSERT
         verifyAll();
-        assertEquals(newParent, resource.parent());
+        assertEquals(newParent, _r.parent());
     }
 
     /**
      * Test.
      */
     public void testRename() {
-        // ARRANGE
-        final Page resource = new Page("foo");
 
-        expect(_em.find(Resource.class, resource.id())).andReturn(resource);
-        _al.recordRename(resource);
+        // ARRANGE
+        _r.lock(_regularUser);
+        expect(_users.loggedInUser()).andReturn(_regularUser);
+        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
+        _al.recordRename(_r);
         replayAll();
 
         // ACT
-        _rdao.rename(resource.id(), -1, "baz");
+        _rdao.rename(_r.id(), -1, "baz");
 
         // ASSERT
         verifyAll();
-        assertEquals("baz", resource.name().toString());
+        assertEquals("baz", _r.name().toString());
     }
 
     /**
@@ -307,7 +298,7 @@ public class ResourceDaoImplTest
                 .addParagraph(
                     Paragraph.fromText("default", "<H1>Default</H1>"));
 
-        expect(_em.find(Page.class, bar.id())).andReturn(bar);
+        expect(_dao.find(Page.class, bar.id())).andReturn(bar);
         replayAll();
 
 
@@ -323,31 +314,79 @@ public class ResourceDaoImplTest
         assertEquals(1, page.paragraphs().size());
     }
 
+    /**
+     * Test.
+     */
+    public void testCreateFailsWhenResourceExists() {
+
+        // ARRANGE
+        final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
+        final Folder fooFolder = new Folder("foo");
+        contentRoot.add(fooFolder);
+
+        expect(_dao.find(Folder.class, contentRoot.id())).andReturn(contentRoot);
+        replayAll();
+
+
+        // ACT
+        try {
+            _rdao.create(contentRoot.id(), _r);
+            fail("Creation of duplicates should fail.");
+
+        } catch (final CCCException e) {
+            assertEquals(
+                "Folder already contains a resource with name 'foo'.",
+                e.getMessage());
+        }
+
+
+        // ASSERT
+        verifyAll();
+        assertEquals(1, contentRoot.size());
+        assertSame(fooFolder, contentRoot.entries().get(0));
+    }
+
+    /**
+     * Test.
+     */
+    public void testCreate() {
+
+        // ARRANGE
+        final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
+
+        _al.recordCreate(_r);
+        expect(_dao.find(Folder.class, contentRoot.id())).andReturn(contentRoot);
+        _dao.create(_r);
+        replayAll();
+
+
+        // ACT
+        _rdao.create(contentRoot.id(), _r);
+
+
+        // ASSERT
+        verifyAll();
+        assertEquals(1, contentRoot.size());
+        assertEquals(_r, contentRoot.entries().get(0));
+    }
+
+
     private void replayAll() {
-        replay(_em, _users, _q, _al);
+        replay(_dao, _users, _al);
     }
 
     private void verifyAll() {
-        verify(_em, _users, _q, _al);
+        verify(_dao, _users, _al);
     }
-
-
-    private UserManager _users;
-    private Query _q;
-    private EntityManager _em;
-    private ResourceDaoImpl _rdao;
-    private AuditLog _al;
-    private Resource _r;
 
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {
         _users = createStrictMock(UserManager.class);
-        _em = createStrictMock(EntityManager.class);
-        _q = createStrictMock(Query.class);
+        _dao = createStrictMock(Dao.class);
         _al = createStrictMock(AuditLog.class);
-        _rdao = new ResourceDaoImpl(_users, _al);
-        _rdao._em = _em;
+
+        _rdao = new ResourceDaoImpl(_users, _al, _dao);
         _r = new Page("foo");
     }
 
@@ -355,11 +394,17 @@ public class ResourceDaoImplTest
     @Override
     protected void tearDown() throws Exception {
         _users = null;
-        _em = null;
+        _dao = null;
         _rdao = null;
         _r = null;
-        _q = null;
     }
+
+
+    private UserManager _users;
+    private Dao _dao;
+    private AuditLog _al;
+    private ResourceDaoImpl _rdao;
+    private Resource _r;
 
     private final User _regularUser = new User("regular");
     private final User _anotherUser = new User("another");

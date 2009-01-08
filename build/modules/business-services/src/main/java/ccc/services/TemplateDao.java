@@ -32,7 +32,6 @@ public interface TemplateDao {
      */
     List<Template> allTemplates();
 
-
     /**
      * Update an existing resource.
      *
@@ -50,15 +49,6 @@ public interface TemplateDao {
                     String description,
                     String definition,
                     String body);
-
-    /**
-     * Creates a new template.
-     *
-     * @param parentId The {@link UUID} for the containing folder.
-     * @param template The template to create
-     */
-    void create(UUID parentId, Template template);
-
 
     /**
      * Query if a template already exists with the specified name.

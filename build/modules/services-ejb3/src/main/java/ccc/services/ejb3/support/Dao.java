@@ -1,0 +1,44 @@
+/*-----------------------------------------------------------------------------
+ * Copyright (c) 2009 Civic Computing Ltd.
+ * All rights reserved.
+ *
+ * Revision      $Rev$
+ * Modified by   $Author$
+ * Modified on   $Date$
+ *
+ * Changes: see subversion log.
+ *-----------------------------------------------------------------------------
+ */
+
+package ccc.services.ejb3.support;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
+
+import ccc.domain.Entity;
+import ccc.domain.VersionedEntity;
+
+
+/**
+ * TODO: Add Description for this type.
+ *
+ * @author Civic Computing Ltd.
+ */
+public interface Dao {
+
+    <T extends Entity> T find(Class<T> type, UUID id);
+
+    <T extends VersionedEntity> T find(Class<T> type, UUID id, long version);
+
+    <T> List<T> list(String queryName, Class<T> resultType, Object... params);
+
+    <T> Collection<T> uniquify(String queryName, Class<T> resultType, Object... params);
+
+    <T> T find(String queryName, Class<T> resultType, Object... params);
+
+    <T> boolean exists(String queryName, Class<T> resultType, Object... params);
+
+    void create(Entity entity);
+
+}

@@ -24,7 +24,9 @@ import ccc.domain.Resource;
 
 
 /**
- * TODO: Add Description for this type.
+ * Tests for the {@link BaseDao} class.
+ *
+ * TODO: Missing tests.
  *
  * @author Civic Computing Ltd.
  */
@@ -52,34 +54,10 @@ public class BaseDaoTest
         expect(em.createNamedQuery("queryName")).andReturn(q);
         replay(em);
 
-        final BaseDao qs = new BaseDao();
-        qs._em = em;
+        final BaseDao qs = new BaseDao(em);
 
         // ACT
         qs.list("queryName", Object.class, p1, p2);
-
-        // ASSERT
-        verify(q, em);
-    }
-
-    /**
-     * Test.
-     */
-    public void testFindByString() {
-
-        // ARRANGE
-        final Query q = createStrictMock(Query.class);
-        replay(q);
-
-        final EntityManager em = createStrictMock(EntityManager.class);
-        expect(em.find(Resource.class, _r.id())).andReturn(_r);
-        replay(em);
-
-        final BaseDao qs = new BaseDao();
-        qs._em = em;
-
-        // ACT
-        qs.find(Resource.class, _r.id().toString());
 
         // ASSERT
         verify(q, em);
@@ -98,8 +76,7 @@ public class BaseDaoTest
         expect(em.find(Resource.class, _r.id())).andReturn(_r);
         replay(em);
 
-        final BaseDao qs = new BaseDao();
-        qs._em = em;
+        final BaseDao qs = new BaseDao(em);
 
         // ACT
         qs.find(Resource.class, _r.id());

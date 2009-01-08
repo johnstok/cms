@@ -14,18 +14,15 @@ package ccc.services.ejb3.local;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Collection;
-import java.util.UUID;
 
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
-import javax.persistence.EntityManager;
 
 import ccc.domain.Folder;
-import ccc.domain.Resource;
-import ccc.services.AuditLog;
 import ccc.services.FolderDao;
-import ccc.services.ejb3.support.BaseResourceDao;
+import ccc.services.ResourceDao;
 
 
 /**
@@ -36,7 +33,10 @@ import ccc.services.ejb3.support.BaseResourceDao;
 @Stateless(name="FolderDao")
 @TransactionAttribute(REQUIRED)
 @Local(FolderDao.class)
-public class FolderDaoImpl extends BaseResourceDao implements FolderDao {
+public class FolderDaoImpl implements FolderDao {
+
+    @EJB(name="ResourceDao") private ResourceDao _dao;
+
 
     /** Constructor. */
     @SuppressWarnings("unused") public FolderDaoImpl() { super(); }
@@ -44,27 +44,16 @@ public class FolderDaoImpl extends BaseResourceDao implements FolderDao {
     /**
      * Constructor.
      *
-     * @param em
-     * @param al
+     * @param dao The ResourceDao used for CRUD operations, etc.
      */
-    public FolderDaoImpl(final EntityManager em, final AuditLog al) {
-        _em = em;
-        _audit = al;
+    public FolderDaoImpl(final ResourceDao dao) {
+        _dao = dao;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Folder create(final UUID folderId, final Folder newFolder) {
-        create(folderId, (Resource) newFolder);
-        return newFolder;
-    }
 
     /** {@inheritDoc} */
     @Override
     public Collection<Folder> roots() {
-        return list("roots", Folder.class);
+        return _dao.list("roots", Folder.class);
     }
-
 }

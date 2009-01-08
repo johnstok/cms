@@ -26,10 +26,10 @@ import java.util.UUID;
 
 import javax.activation.MimeType;
 import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
-import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 
 import ccc.commons.DBC;
@@ -37,9 +37,8 @@ import ccc.commons.IO;
 import ccc.domain.CCCException;
 import ccc.domain.Data;
 import ccc.domain.File;
-import ccc.services.AuditLog;
 import ccc.services.DataManager;
-import ccc.services.ejb3.support.BaseResourceDao;
+import ccc.services.ResourceDao;
 
 
 /**
@@ -53,10 +52,10 @@ import ccc.services.ejb3.support.BaseResourceDao;
 @Stateless(name="DataManager")
 @TransactionAttribute(REQUIRED)
 @Local(DataManager.class)
-public class DataManagerEJB extends BaseResourceDao implements DataManager {
+public class DataManagerEJB implements DataManager {
 
-    @Resource(mappedName = "java:/ccc")
-    private DataSource _datasource;
+    @EJB(name="ResourceDao") private ResourceDao _dao;
+    @Resource(mappedName = "java:/ccc") private DataSource _datasource;
 
     /** Constructor. */
     @SuppressWarnings("unused") public DataManagerEJB() { super(); }
@@ -65,18 +64,13 @@ public class DataManagerEJB extends BaseResourceDao implements DataManager {
      * Constructor.
      *
      * @param ds The JDBC datasource used to manage data.
-     * @param em The entityManager used to persist domain objects.
-     * @param auditLog An audit logger.
+     * @param dao The ResourceDao used for CRUD operations, etc.
      */
-    public DataManagerEJB(final DataSource ds,
-                          final EntityManager em,
-                          final AuditLog auditLog) {
+    public DataManagerEJB(final DataSource ds, final ResourceDao dao) {
         DBC.require().notNull(ds);
-        DBC.require().notNull(em);
-        DBC.require().notNull(auditLog);
+        DBC.require().notNull(dao);
         _datasource = ds;
-        _em = em;
-        _audit = auditLog;
+        _dao = dao;
     }
 
     /** {@inheritDoc} */
@@ -86,7 +80,7 @@ public class DataManagerEJB extends BaseResourceDao implements DataManager {
                            final InputStream dataStream) {
         final Data data = create(dataStream);
         file.data(data);
-        create(parentId, file);
+        _dao.create(parentId, file);
     }
 
 
@@ -100,13 +94,13 @@ public class DataManagerEJB extends BaseResourceDao implements DataManager {
                            final long size,
                            final InputStream dataStream) {
 
-        final File f = find(File.class, fileId, version);
+        final File f = _dao.findLocked(File.class, fileId);
         f.title(title);
         f.description(description);
         f.mimeType(mimeType);
         f.size(size);
         f.data(create(dataStream)); // TODO: Delete old data?
-        _audit.recordUpdate(f);
+        _dao.update(f);
     }
 
     /** {@inheritDoc} */
