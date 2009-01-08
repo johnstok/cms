@@ -20,6 +20,7 @@ import ccc.services.api.PageDelta;
 import ccc.services.api.ParagraphDelta;
 
 import com.extjs.gxt.ui.client.widget.Component;
+import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
@@ -98,7 +99,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                         remove(c.editor());
                         final FCKEditor fck = new FCKEditor(para._textValue,
                                                             "",
-                                                            "550px",
+                                                            "595px",
                                                             "250px");
                         add(fck);
                         c.editor(fck);
@@ -137,11 +138,11 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         return getItems();
     }
 
-//    /**
-//     * TODO: Add a description of this method.
-//     *
-//     * @return
-//     */
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
     public List<PageElement> pageElements() {
         return _pageElements;
     }
@@ -200,7 +201,9 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                 add(df);
                 _pageElements.add(pe);
             } else if ("html".equals(type)) {
-                final FCKEditor fck = new FCKEditor("", "", "550px", "250px");
+                final Text fieldName = new Text(name);
+                add(fieldName);
+                final FCKEditor fck = new FCKEditor("", "", "595px", "250px");
                 final PageElement pe = new PageElement(name);
                 pe.type("HTML");
                 pe.editor(fck);
