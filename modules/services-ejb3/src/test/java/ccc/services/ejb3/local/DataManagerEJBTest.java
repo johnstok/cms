@@ -26,7 +26,6 @@ import java.sql.Statement;
 import java.util.UUID;
 
 import javax.activation.MimeType;
-import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 
 import junit.framework.TestCase;
@@ -38,8 +37,8 @@ import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.ResourceName;
-import ccc.services.AuditLog;
 import ccc.services.DataManager;
+import ccc.services.ResourceDao;
 
 
 /**
@@ -49,12 +48,12 @@ import ccc.services.DataManager;
  */
 public class DataManagerEJBTest extends TestCase {
 
-    private final InputStream dummyStream = new ByteArrayInputStream(new byte[]{1});
+    private final InputStream dummyStream =
+        new ByteArrayInputStream(new byte[]{1});
 
-    private EntityManager em;
     private DataSource ds;
     private Connection c;
-    private AuditLog al;
+    private ResourceDao al;
     private PreparedStatement ps;
     private DataManager dm;
 
@@ -72,18 +71,16 @@ public class DataManagerEJBTest extends TestCase {
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {
-         em = createStrictMock(EntityManager.class);
          ds = createStrictMock(DataSource.class);
          c = createStrictMock(Connection.class);
-         al = createStrictMock(AuditLog.class);
+         al = createStrictMock(ResourceDao.class);
          ps = createStrictMock(PreparedStatement.class);
-         dm = new DataManagerEJB(ds, em, al);
+         dm = new DataManagerEJB(ds, al);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void tearDown() throws Exception {
-        em = null;
         ds = null;
         c = null;
         al = null;
@@ -92,11 +89,11 @@ public class DataManagerEJBTest extends TestCase {
     }
 
     private void replayAll() {
-        replay(ps, c, ds, em, al);
+        replay(ps, c, ds,  al);
     }
 
     private void verifyAll() {
-        verify(ps, c, ds, em, al);
+        verify(ps, c, ds, al);
     }
 
     /**
@@ -124,10 +121,7 @@ public class DataManagerEJBTest extends TestCase {
 
         expect(ds.getConnection()).andReturn(c);
 
-        expect(em.find(Folder.class, assetRoot.id())).andReturn(assetRoot);
-        em.persist(file);
-
-        al.recordCreate(file);
+        al.create(assetRoot.id(), file);
 
         replayAll();
 
@@ -162,9 +156,8 @@ public class DataManagerEJBTest extends TestCase {
 
         final File f =
             new File(new ResourceName("foo"), "bar", "x", new Data(), 0);
-        expect(em.find(File.class, f.id())).andReturn(f);
-
-        al.recordUpdate(f);
+        expect(al.findLocked(File.class, f.id())).andReturn(f);
+        al.update(f);
 
         replayAll();
 
@@ -207,8 +200,7 @@ public class DataManagerEJBTest extends TestCase {
 
         final DataManager dm =
             new DataManagerEJB(ds,
-                               dummy(EntityManager.class),
-                               dummy(AuditLog.class));
+                               dummy(ResourceDao.class));
 
         // ACT
         dm.create(dummyStream);
@@ -254,8 +246,7 @@ public class DataManagerEJBTest extends TestCase {
 
         final DataManager dm =
             new DataManagerEJB(ds,
-                               dummy(EntityManager.class),
-                               dummy(AuditLog.class));
+                               dummy(ResourceDao.class));
 
         // ACT
         dm.retrieve(d, os);
@@ -283,8 +274,7 @@ public class DataManagerEJBTest extends TestCase {
 
         final DataManager dm =
             new DataManagerEJB(ds,
-                               dummy(EntityManager.class),
-                               dummy(AuditLog.class));
+                               dummy(ResourceDao.class));
 
         // ACT
         dm.create(dummyStream);
@@ -326,8 +316,7 @@ public class DataManagerEJBTest extends TestCase {
 
         final DataManager dm =
             new DataManagerEJB(ds,
-                               dummy(EntityManager.class),
-                               dummy(AuditLog.class));
+                               dummy(ResourceDao.class));
         final Data d = dm.create(dummyStream);
 
         // ACT

@@ -16,21 +16,20 @@ import static javax.ejb.TransactionAttributeType.*;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.Locale;
+import java.util.UUID;
 
 import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.ejb.EJBContext;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
 
 import ccc.domain.CreatorRoles;
 import ccc.domain.Password;
 import ccc.domain.User;
 import ccc.services.UserManager;
-import ccc.services.ejb3.support.BaseDao;
+import ccc.services.ejb3.support.Dao;
 
 
 /**
@@ -42,9 +41,11 @@ import ccc.services.ejb3.support.BaseDao;
 @Stateless(name="UserManager")
 @TransactionAttribute(REQUIRED)
 @Local(UserManager.class)
-public class UserManagerEJB extends BaseDao implements UserManager {
+public class UserManagerEJB implements UserManager {
 
     @Resource private EJBContext _context;
+    @EJB(name="Dao") private Dao _dao;
+
 
     /** Constructor. */
     @SuppressWarnings("unused") public UserManagerEJB() { super(); }
@@ -52,28 +53,29 @@ public class UserManagerEJB extends BaseDao implements UserManager {
     /**
      * Constructor.
      *
-     * @param em A JPA entity manager.
+     * @param dao The ResourceDao used for CRUD operations, etc.
      * @param context The j2ee context within which this ejb operates.
      */
-    public UserManagerEJB(final EntityManager em,
+    public UserManagerEJB(final Dao dao,
                           final EJBContext context) {
-        _em = em;
+        _dao = dao;
         _context = context;
     }
+
 
     /** {@inheritDoc} */
     @Override
     public User createUser(final User user, final String password) {
-        _em.persist(user);
+        _dao.create(user);
         final Password defaultPassword = new Password(user, password);
-        _em.persist(defaultPassword);
+        _dao.create(defaultPassword);
         return user;
     }
 
     /** {@inheritDoc} */
     @Override
     public Collection<User> listUsers() {
-        return uniquify(list("users", User.class));
+        return _dao.uniquify("users", User.class);
     }
 
     /** {@inheritDoc} */
@@ -81,7 +83,7 @@ public class UserManagerEJB extends BaseDao implements UserManager {
     public Collection<User> listUsersWithUsername(final String username) {
         final String searchParam =
             (null==username) ? "" : username.toLowerCase(Locale.US);
-        return list("usersWithUsername", User.class, searchParam);
+        return _dao.list("usersWithUsername", User.class, searchParam);
     }
 
     /** {@inheritDoc} */
@@ -89,40 +91,33 @@ public class UserManagerEJB extends BaseDao implements UserManager {
     public Collection<User> listUsersWithEmail(final String email) {
         final String searchParam =
             (null==email) ? "" : email.toLowerCase(Locale.US);
-        return list("usersWithEmail", User.class, searchParam);
+        return _dao.list("usersWithEmail", User.class, searchParam);
     }
 
     /** {@inheritDoc} */
     @Override
     public Collection<User> listUsersWithRole(final CreatorRoles role) {
-        return uniquify(list("usersWithRole", User.class, role.name()));
+        return _dao.uniquify("usersWithRole", User.class, role.name());
     }
 
     /** {@inheritDoc} */
     @Override
     public boolean usernameExists(final String username) {
-        return exists(find("usersWithUsername", User.class, username));
+        return _dao.exists("usersWithUsername", User.class, username);
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateUser(final User user, final String password) {
-        final User current = _em.find(User.class, user.id());
+        final User current = _dao.find(User.class, user.id());
         current.username(user.username());
         current.email(user.email());
         current.roles(user.roles());
         if (password != null) {
-            Password newPassword;
-            final Query q =
-                _em.createNamedQuery("passwordForUser");
-            q.setParameter("user", user);
-            try {
-                newPassword = (Password) q.getSingleResult();
-            } catch (final NoResultException e) {
-                newPassword = null;
-            }
-            if (newPassword != null) {
-                newPassword.password(password);
+            final Password p =
+                _dao.find("passwordForUser", Password.class, user);
+            if (p != null) {
+                p.password(password);
             }
         }
     }
@@ -132,7 +127,14 @@ public class UserManagerEJB extends BaseDao implements UserManager {
     public User loggedInUser() {
         final Principal p = _context.getCallerPrincipal();
         final String principalName = p.getName();
-        final User user = find("usersWithUsername", User.class, principalName);
+        final User user =
+            _dao.find("usersWithUsername", User.class, principalName);
         return user;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public User find(final UUID userId) {
+        return _dao.find(User.class, userId);
     }
 }

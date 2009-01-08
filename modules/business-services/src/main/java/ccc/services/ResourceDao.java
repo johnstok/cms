@@ -14,7 +14,7 @@ package ccc.services;
 import java.util.List;
 import java.util.UUID;
 
-import ccc.domain.Entity;
+import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.Template;
@@ -26,6 +26,20 @@ import ccc.domain.Template;
  * @author Civic Computing Ltd.
  */
 public interface ResourceDao {
+
+    <T> List<T> list(String queryName, Class<T> resultType, Object... params);
+
+    <T> T find(String queryName, Class<T> resultType, Object... params);
+
+    void create(final UUID folderId, final Resource newResource);
+
+    /**
+     * Create a new root folder. The name is checked against existing root
+     * folders in order to prevent conflicts.
+     *
+     * @param folder The root folder to persists.
+     */
+    public void createRoot(Folder folder);
 
     /**
      * Lock the specified resource.
@@ -133,12 +147,27 @@ public interface ResourceDao {
 
     /**
      * Find a resource using its unique id.
-     * TODO: Should be <T extends Resource>?
      *
      * @param <T> The of the resource to return.
      * @param type A class representing the type of the resource to return.
      * @param id The id of the resource to find.
      * @return The resource for the specified id.
      */
-    <T extends Entity> T find(final Class<T> type, final UUID id);
+    <T extends Resource> T find(final Class<T> type, final UUID id);
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param type
+     * @param id
+     * @return
+     */
+    <T extends Resource> T findLocked(Class<T> type, UUID id);
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param resource
+     */
+    void update(Resource resource);
 }

@@ -89,7 +89,7 @@ public class CommandsEJB
             throw new CCCException("Parent does not exists.");
         }
 
-        _alias.create(parent.id(),
+        _resources.create(parent.id(),
             new Alias(name, target));
 
     }
@@ -98,11 +98,8 @@ public class CommandsEJB
     @Override
     public ResourceSummary createFolder(final String parentId,
                                         final String name) {
-
-        final Folder f =
-            _folders.create(
-                UUID.fromString(parentId),
-                new Folder(name));
+        final Folder f = new Folder(name);
+        _resources.create(UUID.fromString(parentId), f);
         return map(f);
 
     }
@@ -140,7 +137,7 @@ public class CommandsEJB
             }
         }
 
-        _page.create(UUID.fromString(parentId), page);
+        _resources.create(UUID.fromString(parentId), page);
 
         return map(page);
 
@@ -158,7 +155,7 @@ public class CommandsEJB
             delta._body,
             delta._definition);
 
-        _templates.create(UUID.fromString(parentId), t);
+        _resources.create(UUID.fromString(parentId), t);
 
         return map(t);
 
@@ -317,7 +314,7 @@ public class CommandsEJB
     @Override
     public ResourceSummary createRoot(final String name) {
         final Folder f = new Folder(name);
-        _folders.createRoot(f);
+        _resources.createRoot(f);
         return map(f);
     }
 }

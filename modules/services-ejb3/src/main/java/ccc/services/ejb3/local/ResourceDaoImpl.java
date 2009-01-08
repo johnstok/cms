@@ -21,6 +21,7 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
+import ccc.domain.CCCException;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
@@ -30,20 +31,23 @@ import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.ResourceDao;
 import ccc.services.UserManager;
-import ccc.services.ejb3.support.BaseResourceDao;
+import ccc.services.ejb3.support.Dao;
 
 
 /**
- * TODO: Add Description for this type.
+ * EJB Implementation of the {@link ResourceDao} interface.
  *
  * @author Civic Computing Ltd.
  */
 @Stateless(name="ResourceDao")
 @TransactionAttribute(REQUIRED)
 @Local(ResourceDao.class)
-public class ResourceDaoImpl extends BaseResourceDao implements ResourceDao {
+public class ResourceDaoImpl implements ResourceDao {
 
     @EJB(name="UserManager")  private UserManager  _users;
+    @EJB(name="AuditLog") private AuditLog _audit;
+    @EJB(name="Dao") private Dao _dao;
+
 
     /** Constructor. */
     @SuppressWarnings("unused") public ResourceDaoImpl() { super(); }
@@ -55,15 +59,43 @@ public class ResourceDaoImpl extends BaseResourceDao implements ResourceDao {
      * @param audit AuditLog service.
      */
     public ResourceDaoImpl(final UserManager userDAO,
-                           final AuditLog audit) {
+                           final AuditLog audit,
+                           final Dao dao) {
         _users = userDAO;
         _audit = audit;
+        _dao = dao;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void create(final UUID folderId, final Resource newResource) {
+        final Folder folder = _dao.find(Folder.class, folderId);
+        if (null==folder) {
+            throw new CCCException("No folder exists with id: "+folderId);
+        }
+        folder.add(newResource);
+        _dao.create(newResource);
+        _audit.recordCreate(newResource);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void createRoot(final Folder folder) {
+        final Resource possibleRoot =
+            _dao.find("rootByName", Resource.class, folder.name());
+        if (null!=possibleRoot) {
+            throw new CCCException("Root exists with name: "+folder.name());
+        }
+        _dao.create(folder);
+        _audit.recordCreate(folder);
     }
 
     /** {@inheritDoc} */
     @Override
     public Resource lock(final UUID resourceId, final long version) {
-        final Resource r = find(Resource.class, resourceId, version);
+        final Resource r = _dao.find(Resource.class, resourceId);
         r.lock(_users.loggedInUser());
         _audit.recordLock(r);
         return r;
@@ -73,7 +105,7 @@ public class ResourceDaoImpl extends BaseResourceDao implements ResourceDao {
     @Override
     public Resource unlock(final UUID resourceId, final long version) {
         final User loggedInUser = _users.loggedInUser();
-        final Resource r = find(Resource.class, resourceId, version);
+        final Resource r = _dao.find(Resource.class, resourceId);
         r.unlock(loggedInUser);
         _audit.recordUnlock(r);
         return r;
@@ -84,24 +116,24 @@ public class ResourceDaoImpl extends BaseResourceDao implements ResourceDao {
     @Override
     public List<Resource> lockedByCurrentUser() {
         return
-            list("resourcesLockedByUser",
-                 Resource.class,
-                 _users.loggedInUser());
+            _dao.list("resourcesLockedByUser",
+                      Resource.class,
+                      _users.loggedInUser());
     }
 
     /** {@inheritDoc} */
     @Override
     public List<Resource> locked() {
-        return list("lockedResources", Resource.class);
+        return _dao.list("lockedResources", Resource.class);
     }
 
     /** {@inheritDoc} */
     @Override
     public List<LogEntry> history(final String resourceId) {
         return
-            list("resourceHistory",
-                 LogEntry.class,
-                 UUID.fromString(resourceId));
+            _dao.list("resourceHistory",
+                      LogEntry.class,
+                      UUID.fromString(resourceId));
     }
 
     /** {@inheritDoc} */
@@ -109,7 +141,7 @@ public class ResourceDaoImpl extends BaseResourceDao implements ResourceDao {
     public void updateTags(final UUID resourceId,
                            final long version,
                            final String tags) {
-        final Resource r = find(Resource.class, resourceId, version);
+        final Resource r = findLocked(Resource.class, resourceId);
         r.tags(tags);
     }
 
@@ -117,7 +149,7 @@ public class ResourceDaoImpl extends BaseResourceDao implements ResourceDao {
     @Override
     public Resource publish(final UUID resourceId,
                             final long version) {
-        final Resource r = find(Resource.class, resourceId, version);
+        final Resource r = findLocked(Resource.class, resourceId);
         r.publish(_users.loggedInUser());
         _audit.recordPublish(r);
         return r;
@@ -127,7 +159,7 @@ public class ResourceDaoImpl extends BaseResourceDao implements ResourceDao {
     @Override
     public Resource unpublish(final UUID resourceId,
                               final long version) {
-        final Resource r = find(Resource.class, resourceId, version);
+        final Resource r = findLocked(Resource.class, resourceId);
         r.unpublish();
         _audit.recordUnpublish(r);
         return r;
@@ -140,7 +172,7 @@ public class ResourceDaoImpl extends BaseResourceDao implements ResourceDao {
     public void updateTemplateForResource(final UUID resourceId,
                                           final long version,
                                           final Template template) {
-        final Resource r = find(Resource.class, resourceId, version);
+        final Resource r = findLocked(Resource.class, resourceId);
         r.template(template);
         _audit.recordChangeTemplate(r);
     }
@@ -150,7 +182,8 @@ public class ResourceDaoImpl extends BaseResourceDao implements ResourceDao {
     public void move(final UUID resourceId,
                      final long version,
                      final UUID newParentId) {
-        final Resource resource = find(Resource.class, resourceId, version);
+        // TODO: Check new parent doesn't contain resource with same name!
+        final Resource resource = findLocked(Resource.class, resourceId);
         final Folder newParent = find(Folder.class, newParentId);
 
         resource.parent().remove(resource);
@@ -161,9 +194,49 @@ public class ResourceDaoImpl extends BaseResourceDao implements ResourceDao {
 
     /** {@inheritDoc} */
     @Override
-    public void rename(final UUID resourceId, final long version, final String name) {
-        final Resource resource = find(Resource.class, resourceId, version);
+    public void rename(final UUID resourceId,
+                       final long version,
+                       final String name) {
+        // TODO: Check parent doesn't contain resource with new name!
+        final Resource resource = findLocked(Resource.class, resourceId);
         resource.name(new ResourceName(name));
         _audit.recordRename(resource);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public <T extends Resource> T find(final Class<T> type, final UUID id) {
+        return _dao.find(type, id);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public <T extends Resource> T findLocked(final Class<T> type,
+                                             final UUID id) {
+        final T r = _dao.find(type, id);
+        r.confirmLock(_users.loggedInUser());
+        return r;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void update(final Resource resource) {
+        _audit.recordUpdate(resource);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public <T> List<T> list(final String queryName,
+                            final Class<T> resultType,
+                            final Object... params) {
+        return _dao.list(queryName, resultType, params);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public <T> T find(final String queryName,
+                      final Class<T> resultType,
+                      final Object... params) {
+        return _dao.find(queryName, resultType, params);
     }
 }

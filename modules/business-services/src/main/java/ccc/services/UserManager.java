@@ -12,6 +12,7 @@
 package ccc.services;
 
 import java.util.Collection;
+import java.util.UUID;
 
 import ccc.domain.CreatorRoles;
 import ccc.domain.User;
@@ -90,4 +91,12 @@ public interface UserManager {
      * @return The user calling this DAO.
      */
     User loggedInUser();
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param userId
+     * @return
+     */
+    User find(UUID userId);
 }

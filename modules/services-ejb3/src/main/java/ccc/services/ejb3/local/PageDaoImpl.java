@@ -20,28 +20,25 @@ import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
-import javax.persistence.EntityManager;
 
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
-import ccc.domain.Resource;
-import ccc.services.AuditLog;
 import ccc.services.PageDao;
-import ccc.services.UserManager;
-import ccc.services.ejb3.support.BaseResourceDao;
+import ccc.services.ResourceDao;
 
 
 /**
- * TODO: Add Description for this type.
+ * DAO with methods specific to a page.
  *
  * @author Civic Computing Ltd.
  */
 @Stateless(name="PageDao")
 @TransactionAttribute(REQUIRED)
 @Local(PageDao.class)
-public class PageDaoImpl extends BaseResourceDao implements PageDao {
+public class PageDaoImpl implements PageDao {
 
-    @EJB(name="UserManager") protected UserManager _users;
+    @EJB(name="ResourceDao") private ResourceDao _dao;
+
 
     /** Constructor. */
     @SuppressWarnings("unused") public PageDaoImpl() { super(); }
@@ -49,24 +46,10 @@ public class PageDaoImpl extends BaseResourceDao implements PageDao {
     /**
      * Constructor.
      *
-     * @param em
-     * @param al
+     * @param dao The ResourceDao used for CRUD operations, etc.
      */
-    public PageDaoImpl(final EntityManager em,
-                       final AuditLog al,
-                       final UserManager um) {
-        _audit = al;
-        _em = em;
-        _users = um;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void create(final UUID folderId, final Page newPage) {
-        create(folderId, (Resource) newPage);
+    public PageDaoImpl(final ResourceDao dao) {
+        _dao = dao;
     }
 
 
@@ -79,8 +62,7 @@ public class PageDaoImpl extends BaseResourceDao implements PageDao {
                        final String newTitle,
                        final Set<Paragraph> newParagraphs) {
 
-        final Page page = find(Page.class, id, version);
-        page.confirmLock(_users.loggedInUser());
+        final Page page = _dao.findLocked(Page.class, id);
 
         page.title(newTitle);
         page.deleteAllParagraphs();
@@ -88,6 +70,6 @@ public class PageDaoImpl extends BaseResourceDao implements PageDao {
         for (final Paragraph paragraph : newParagraphs) {
             page.addParagraph(paragraph);
         }
-        _audit.recordUpdate(page);
+        _dao.update(page);
     }
 }

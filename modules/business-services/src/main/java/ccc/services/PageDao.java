@@ -26,14 +26,6 @@ import ccc.domain.Paragraph;
 public interface PageDao {
 
     /**
-     * Create a page in the specified folder.
-     *
-     * @param folderId The {@link UUID} for the containing folder/
-     * @param newPage The page to be created.
-     */
-    void create(UUID folderId, Page newPage);
-
-    /**
      * Update a page.
      *
      * @param id The identifier for the page.

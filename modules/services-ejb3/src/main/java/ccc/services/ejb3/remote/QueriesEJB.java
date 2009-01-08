@@ -31,7 +31,6 @@ import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
-import ccc.domain.User;
 import ccc.services.DataManager;
 import ccc.services.FolderDao;
 import ccc.services.ResourceDao;
@@ -215,7 +214,7 @@ public final class QueriesEJB
     @Override
     public UserDelta userDelta(final String userId) {
         return
-            delta(_resources.find(User.class, UUID.fromString(userId)));
+            delta(_users.find(UUID.fromString(userId)));
     }
 
     /** {@inheritDoc} */

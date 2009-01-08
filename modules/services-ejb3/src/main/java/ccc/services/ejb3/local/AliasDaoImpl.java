@@ -15,27 +15,29 @@ import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.UUID;
 
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
-import javax.persistence.EntityManager;
 
 import ccc.domain.Alias;
 import ccc.domain.Resource;
 import ccc.services.AliasDao;
-import ccc.services.AuditLog;
-import ccc.services.ejb3.support.BaseResourceDao;
+import ccc.services.ResourceDao;
 
 
 /**
- * TODO: Add Description for this type.
+ * DAO with methods specific to a template.
  *
  * @author Civic Computing Ltd.
  */
 @Stateless(name="AliasDao")
 @TransactionAttribute(REQUIRED)
 @Local(AliasDao.class)
-public class AliasDaoImpl extends BaseResourceDao implements AliasDao {
+public class AliasDaoImpl implements AliasDao {
+
+    @EJB(name="ResourceDao") private ResourceDao _dao;
+
 
     /** Constructor. */
     @SuppressWarnings("unused") public AliasDaoImpl() { super(); }
@@ -43,29 +45,23 @@ public class AliasDaoImpl extends BaseResourceDao implements AliasDao {
     /**
      * Constructor.
      *
-     * @param em
-     * @param al
+     * @param dao The ResourceDao used for CRUD operations, etc.
      */
-    public AliasDaoImpl(final EntityManager em, final AuditLog al) {
-        _em = em;
-        _audit =al;
+    public AliasDaoImpl(final ResourceDao dao) {
+        _dao = dao;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void create(final UUID folderId, final Alias alias) {
-        create(folderId, (Resource) alias);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void updateAlias(final UUID targetId, final UUID aliasId, final long aliasVersion) {
-        final Resource target = find(Resource.class, targetId);
-        final Alias alias = find(Alias.class, aliasId, aliasVersion);
+    public void updateAlias(final UUID targetId,
+                            final UUID aliasId,
+                            final long aliasVersion) {
+        final Resource target = _dao.find(Resource.class, targetId);
+        final Alias alias = _dao.findLocked(Alias.class, aliasId);
 
         alias.target(target);
-        _audit.recordUpdate(alias);
+
+        _dao.update(alias);
     }
 }

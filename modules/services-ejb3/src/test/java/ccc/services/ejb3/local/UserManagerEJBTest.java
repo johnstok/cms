@@ -18,15 +18,13 @@ import java.security.Principal;
 import java.util.ArrayList;
 
 import javax.ejb.EJBContext;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
 
 import junit.framework.TestCase;
 import ccc.commons.EmailAddress;
 import ccc.domain.CreatorRoles;
 import ccc.domain.Password;
 import ccc.domain.User;
+import ccc.services.ejb3.support.Dao;
 
 
 /**
@@ -43,18 +41,15 @@ public class UserManagerEJBTest extends TestCase {
 
         // ARRANGE
         expect(_context.getCallerPrincipal()).andReturn(_p);
-        expect(_em.createNamedQuery("usersWithUsername")).andReturn(_q);
-        expect(_q.setParameter(1, _p.getName())).andReturn(_q);
-        expect(_q.getSingleResult()).andReturn(_u);
-        replay(_context, _q, _em);
-
-        final UserManagerEJB um = new UserManagerEJB(_em, _context);
+        expect(_em.find("usersWithUsername", User.class, _p.getName()))
+            .andReturn(_u);
+        replay(_context, _em);
 
         // ACT
-        final User actual = um.loggedInUser();
+        final User actual = _um.loggedInUser();
 
         // ASSERT
-        verify(_q, _em, _context);
+        verify(_context, _em);
         assertNotNull("Shouldn't be null.", actual);
         assertEquals(_u, actual);
     }
@@ -65,21 +60,16 @@ public class UserManagerEJBTest extends TestCase {
     public void testUsernameExistsCanReturnTrue() {
 
         // ARRANGE
-        expect(_q.setParameter(1, "blat")).andReturn(_q);
-        expect(_q.getSingleResult()).andReturn(new User("blat"));
-        replay(_q);
-
-        expect(_em.createNamedQuery("usersWithUsername")).andReturn(_q);
-        replay(_em);
-
-        final UserManagerEJB um = new UserManagerEJB(_em, _context);
+        expect(_em.exists("usersWithUsername", User.class, "blat"))
+            .andReturn(Boolean.TRUE);
+        replay(_context, _em);
 
         // ACT
-        final boolean actual = um.usernameExists("blat");
+        final boolean actual = _um.usernameExists("blat");
 
         // ASSERT
         assertEquals(true, actual);
-        verify(_q, _em);
+        verify(_context, _em);
     }
 
     /**
@@ -88,21 +78,17 @@ public class UserManagerEJBTest extends TestCase {
     public void testUsernameExistsCanReturnFalse() {
 
         // ARRANGE
-        expect(_q.setParameter(1, "blat")).andReturn(_q);
-        expect(_q.getSingleResult()).andThrow(new NoResultException());
-        replay(_q);
+        expect(_em.exists("usersWithUsername", User.class, "blat"))
+            .andReturn(Boolean.FALSE);
+        replay(_context, _em);
 
-        expect(_em.createNamedQuery("usersWithUsername")).andReturn(_q);
-        replay(_em);
-
-        final UserManagerEJB um = new UserManagerEJB(_em, _context);
 
         // ACT
-        final boolean actual = um.usernameExists("blat");
+        final boolean actual = _um.usernameExists("blat");
 
         // ASSERT
         assertEquals(false, actual);
-        verify(_q, _em);
+        verify(_context, _em);
     }
 
     /**
@@ -111,18 +97,15 @@ public class UserManagerEJBTest extends TestCase {
     public void testCreateUser() {
 
         // ARRANGE
-        final User u = new User("fooDummy");
-        _em.persist(u);
-        _em.persist(isA(Password.class));
-        replay(_em);
-
-        final UserManagerEJB um = new UserManagerEJB(_em, _context);
+        _em.create(_u);
+        _em.create(isA(Password.class));
+        replay(_context, _em);
 
         // ACT
-        um.createUser(u, "foopass");
+        _um.createUser(_u, "foopass");
 
         // ASSERT
-        verify(_em);
+        verify(_context, _em);
 
     }
 
@@ -132,19 +115,16 @@ public class UserManagerEJBTest extends TestCase {
     public void testListUsers() {
 
         // ARRANGE
-        expect(_q.getResultList()).andReturn(new ArrayList<User>());
-        replay(_q);
+        expect(_em.uniquify("users", User.class))
+            .andReturn(new ArrayList<User>());
+        replay(_context, _em);
 
-        expect(_em.createNamedQuery("users")).andReturn(_q);
-        replay(_em);
-
-        final UserManagerEJB um = new UserManagerEJB(_em, _context);
 
         // ACT
-        um.listUsers();
+        _um.listUsers();
 
         // ASSERT
-        verify(_q, _em);
+        verify(_context, _em);
 
     }
 
@@ -154,21 +134,17 @@ public class UserManagerEJBTest extends TestCase {
     public void testListUsersWithRole() {
 
         // ARRANGE
-        expect(_q.setParameter(1, CreatorRoles.ADMINISTRATOR.name()))
-            .andReturn(_q);
-        expect(_q.getResultList()).andReturn(new ArrayList<User>());
-        replay(_q);
-
-        expect(_em.createNamedQuery("usersWithRole")).andReturn(_q);
-        replay(_em);
-
-        final UserManagerEJB um = new UserManagerEJB(_em, _context);
+        expect(_em.uniquify("usersWithRole",
+                            User.class,
+                            CreatorRoles.ADMINISTRATOR.name()))
+            .andReturn(new ArrayList<User>());
+        replay(_context, _em);
 
         // ACT
-        um.listUsersWithRole(CreatorRoles.ADMINISTRATOR);
+        _um.listUsersWithRole(CreatorRoles.ADMINISTRATOR);
 
         // ASSERT
-        verify(_q, _em);
+        verify(_context, _em);
 
     }
 
@@ -178,21 +154,15 @@ public class UserManagerEJBTest extends TestCase {
     public void testListUsersWithUsername() {
 
         // ARRANGE
-        expect(_q.setParameter(1, "testname"))
-        .andReturn(_q);
-        expect(_q.getResultList()).andReturn(new ArrayList<User>());
-        replay(_q);
-
-        expect(_em.createNamedQuery("usersWithUsername")).andReturn(_q);
-        replay(_em);
-
-        final UserManagerEJB um = new UserManagerEJB(_em, _context);
+        expect(_em.list("usersWithUsername", User.class, "testname"))
+            .andReturn(new ArrayList<User>());
+        replay(_context, _em);
 
         // ACT
-        um.listUsersWithUsername("testname");
+        _um.listUsersWithUsername("testname");
 
         // ASSERT
-        verify(_q, _em);
+        verify(_context, _em);
 
     }
 
@@ -202,21 +172,15 @@ public class UserManagerEJBTest extends TestCase {
     public void testListUsersWithEmail() {
 
         // ARRANGE
-        expect(_q.setParameter(1, "test@civicuk.com"))
-        .andReturn(_q);
-        expect(_q.getResultList()).andReturn(new ArrayList<User>());
-        replay(_q);
-
-        expect(_em.createNamedQuery("usersWithEmail")).andReturn(_q);
-        replay(_em);
-
-        final UserManagerEJB um = new UserManagerEJB(_em, _context);
+        expect(_em.list("usersWithEmail", User.class, "test@civicuk.com"))
+            .andReturn(new ArrayList<User>());
+        replay(_context, _em);
 
         // ACT
-        um.listUsersWithEmail("test@civicuk.com");
+        _um.listUsersWithEmail("test@civicuk.com");
 
         // ASSERT
-        verify(_q, _em);
+        verify(_context, _em);
 
     }
 
@@ -226,18 +190,14 @@ public class UserManagerEJBTest extends TestCase {
     public void testUpdateUser() {
 
         // ARRANGE
-        final User u = new User("testUser");
-        u.email(new EmailAddress("test@civicuk.com"));
-        expect(_em.find(User.class, u.id())).andReturn(u);
-        replay(_em);
-
-        final UserManagerEJB um = new UserManagerEJB(_em, _context);
+        expect(_em.find(User.class, _u.id())).andReturn(_u);
+        replay(_context, _em);
 
         // ACT
-        um.updateUser(u, null);
+        _um.updateUser(_u, null);
 
         // ASSERT
-        verify(_em);
+        verify(_context, _em);
 
     }
 
@@ -247,45 +207,38 @@ public class UserManagerEJBTest extends TestCase {
     public void testUpdateUserPassword() {
 
         // ARRANGE
-        final User u = new User("testUser");
-        final Password pw = new Password(u, "foo");
-        u.email(new EmailAddress("test@civicuk.com"));
-        expect(_em.find(User.class, u.id())).andReturn(u);
+        final Password pw = new Password(_u, "foo");
 
-        expect(_q.setParameter("user", u)).andReturn(_q);
-        expect(_q.getSingleResult()).andReturn(pw);
-        replay(_q);
-
-        expect(_em.createNamedQuery("passwordForUser")).andReturn(_q);
-        replay(_em);
-
-        final UserManagerEJB um = new UserManagerEJB(_em, _context);
+        expect(_em.find(User.class, _u.id())).andReturn(_u);
+        expect(_em.find("passwordForUser", Password.class, _u)).andReturn(pw);
+        replay(_context, _em);
 
         // ACT
-        um.updateUser(u, "newPass");
+        _um.updateUser(_u, "newPass");
 
         // ASSERT
-        verify(_em);
+        verify(_context, _em);
     }
 
     private User _u;
-    private EntityManager _em;
-    private Query _q;
+    private Dao _em;
     private EJBContext _context;
     private Principal _p;
+    private UserManagerEJB _um;
 
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {
         _u = new User("testUser");
+        _u.email(new EmailAddress("test@civicuk.com"));
         _p = new Principal(){
             @Override public String getName() {
                 return _u.id().toString();
             }
         };
-        _em = createStrictMock(EntityManager.class);
-        _q = createStrictMock(Query.class);
+        _em = createStrictMock(Dao.class);
         _context = createStrictMock(EJBContext.class);
+        _um = new UserManagerEJB(_em, _context);
     }
 
     /** {@inheritDoc} */
@@ -294,7 +247,7 @@ public class UserManagerEJBTest extends TestCase {
         _u = null;
         _p = null;
         _em = null;
-        _q = null;
         _context = null;
+        _um = null;
     }
 }
