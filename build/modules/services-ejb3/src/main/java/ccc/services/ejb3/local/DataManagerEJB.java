@@ -105,6 +105,12 @@ public class DataManagerEJB implements DataManager {
 
     /** {@inheritDoc} */
     @Override
+    public List<File> findImages() {
+        return _dao.list("allImages", File.class);
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public Data create(final InputStream dataStream) {
 
         final Data data = new Data();
@@ -204,10 +210,4 @@ public class DataManagerEJB implements DataManager {
 
     /** STREAM_POSITION_CREATE : int. */
     public static final int STREAM_POSITION_CREATE = 3;
-
-    /** {@inheritDoc} */
-    @Override
-    public List<File> findImages() {
-        return list("allImages", File.class);
-    }
 }
