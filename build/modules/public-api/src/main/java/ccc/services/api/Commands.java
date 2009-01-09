@@ -104,6 +104,14 @@ public interface Commands {
      */
     ResourceSummary unpublish(String resourceId);
 
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param resourceId
+     * @param include
+     */
+    void includeInMainMenu(String resourceId, boolean include);
+
 
 
 

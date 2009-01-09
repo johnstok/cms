@@ -577,4 +577,28 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Update file")
     String updateFile();
+
+    /**
+     * "Add to main menu".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Add to main menu")
+    String addToMainMenu();
+
+    /**
+     * "Remove from main menu".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Remove from main menu")
+    String removeFromMainMenu();
+
+    /**
+     * "Main menu".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Main menu")
+    String mainMenu();
 }

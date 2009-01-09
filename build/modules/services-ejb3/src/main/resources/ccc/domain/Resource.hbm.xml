@@ -28,8 +28,9 @@
             type="long"
             unsaved-value="negative" />
 
-		<property name="_title" not-null="true" type="string"
-			length="256" />
+		<property name="_title" not-null="true" type="string" length="256" />
+        
+		<property name="_includeInMainMenu" not-null="true" />
 			
 		<many-to-one name="_template" not-null="false" />
 		

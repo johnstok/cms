@@ -22,7 +22,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 /**
- * TODO: Add Description for this type.
+ * Async version of the {@link CommandService} interface.
  *
  * @author Civic Computing Ltd.
  */
@@ -51,6 +51,8 @@ public interface CommandServiceAsync {
     void publish(String resourceId, AsyncCallback<ResourceSummary> callback);
 
     void unpublish(String resourceId, AsyncCallback<ResourceSummary> callback);
+
+    void includeInMainMenu(String resourceId, boolean include, AsyncCallback<Void> callback);
 
 
 

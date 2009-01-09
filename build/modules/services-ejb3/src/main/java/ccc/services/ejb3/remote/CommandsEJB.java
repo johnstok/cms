@@ -308,4 +308,12 @@ public class CommandsEJB
         _resources.createRoot(f);
         return map(f);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public void includeInMainMenu(final String resourceId,
+                                  final boolean include) {
+        _resources.includeInMainMenu(UUID.fromString(resourceId),
+                                     include);
+    }
 }

@@ -114,6 +114,9 @@ public class ResourceTable extends TablePanel {
         col = new TableColumn("locked", _constants.lockedBy(), PERCENT_10);
         columns.add(col);
 
+        col = new TableColumn("mmInclude", _constants.mainMenu(), PERCENT_10);
+        columns.add(col);
+
         col = new TableColumn("published",
             _constants.publishedBy(),
             PERCENT_10);
@@ -122,7 +125,7 @@ public class ResourceTable extends TablePanel {
         col = new TableColumn("name", _constants.name(), PERCENT_30);
         columns.add(col);
 
-        col = new TableColumn("title", _constants.title(), PERCENT_40);
+        col = new TableColumn("title", _constants.title(), PERCENT_30);
         columns.add(col);
 
         final TableColumnModel cm = new TableColumnModel(columns);
@@ -293,6 +296,12 @@ public class ResourceTable extends TablePanel {
                     addRename(tbl, contextMenu);
                     addUpdateTags(tbl, contextMenu);
                     addCreateAlias(tbl, contextMenu);
+
+                    if (item.<Boolean>get("mmInclude")) {
+                        addRemoveFromMainMenu(tbl, contextMenu);
+                    } else {
+                        addIncludeInMainMenu(tbl, contextMenu);
+                    }
                 }
             }
         });
@@ -331,6 +340,66 @@ public class ResourceTable extends TablePanel {
             }
         });
         contextMenu.add(lockResource);
+    }
+
+    private void addIncludeInMainMenu(final Table tbl, final Menu contextMenu) {
+        final MenuItem menuItem = new MenuItem();
+        menuItem.setId("mmInclude-resource");
+        menuItem.setText(_constants.addToMainMenu());
+        menuItem.addSelectionListener(new SelectionListener<MenuEvent>() {
+
+            @Override public void componentSelected(final MenuEvent ce) {
+                final ModelData item =
+                    tbl.getSelectedItem().getModel();
+
+                _cs.includeInMainMenu(
+                    item.<String>get("id"),
+                    true,
+                    new AsyncCallback<Void>(){
+
+                        public void onFailure(final Throwable arg0) {
+                            Globals.unexpectedError(arg0);
+                        }
+
+                        public void onSuccess(final Void arg0) {
+                            item.set("mmInclude", true);
+                            detailsStore().update(item);
+                        }
+                    }
+                );
+            }
+        });
+        contextMenu.add(menuItem);
+    }
+
+    private void addRemoveFromMainMenu(final Table tbl, final Menu contextMenu) {
+        final MenuItem menuItem = new MenuItem();
+        menuItem.setId("mmRemove-resource");
+        menuItem.setText(_constants.removeFromMainMenu());
+        menuItem.addSelectionListener(new SelectionListener<MenuEvent>() {
+
+            @Override public void componentSelected(final MenuEvent ce) {
+                final ModelData item =
+                    tbl.getSelectedItem().getModel();
+
+                _cs.includeInMainMenu(
+                    item.<String>get("id"),
+                    false,
+                    new AsyncCallback<Void>(){
+
+                        public void onFailure(final Throwable arg0) {
+                            Globals.unexpectedError(arg0);
+                        }
+
+                        public void onSuccess(final Void arg0) {
+                            item.set("mmInclude", false);
+                            detailsStore().update(item);
+                        }
+                    }
+                );
+            }
+        });
+        contextMenu.add(menuItem);
     }
 
     /**

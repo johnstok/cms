@@ -192,4 +192,12 @@ public interface ResourceDao {
      * @param resource The resource that was updated.
      */
     void update(Resource resource);
+
+    /**
+     * Specify whether this resource should be included in the main menu.
+     *
+     * @param id The id of the resource to change.
+     * @param b True if the resource should be included; false otherwise.
+     */
+    void includeInMainMenu(final UUID id, final boolean b);
 }

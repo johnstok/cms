@@ -32,14 +32,14 @@ public abstract class Resource extends VersionedEntity {
 
     private static final int MAXIMUM_TITLE_LENGTH = 256;
 
-    private String       _title      = id().toString();
-    private ResourceName _name       = ResourceName.escape(_title);
-    private Template     _template   = null;
-    private Folder       _parent     = null;
-    private User         _lockedBy   = null;
-    private List<String> _tags       = new ArrayList<String>();
-
-    private User        _publishedBy = null;
+    private String       _title             = id().toString();
+    private ResourceName _name              = ResourceName.escape(_title);
+    private Template     _template          = null;
+    private Folder       _parent            = null;
+    private User         _lockedBy          = null;
+    private List<String> _tags              = new ArrayList<String>();
+    private User         _publishedBy       = null;
+    private boolean      _includeInMainMenu = false;
 
     /** Constructor: for persistence only. */
     protected Resource() { super(); }
@@ -378,5 +378,23 @@ public abstract class Resource extends VersionedEntity {
         if (!lockedBy().equals(user)) {
             throw new LockMismatchException(this);
         }
+    }
+
+    /**
+     * Accessor for 'include in main menu' property.
+     *
+     * @return True if the resource should be included, false otherwise.
+     */
+    public boolean includeInMainMenu() {
+        return _includeInMainMenu;
+    }
+
+    /**
+     * Mutator for 'include in main menu' property.
+     *
+     * @param shouldInclude Should the resource be included?
+     */
+    public void includeInMainMenu(final boolean shouldInclude) {
+            _includeInMainMenu = shouldInclude;
     }
 }

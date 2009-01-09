@@ -152,4 +152,11 @@ public class CommandsImpl
     public ResourceSummary createRoot(final String name) {
         return _delegate.createRoot(name);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public void includeInMainMenu(final String resourceId,
+                                  final boolean include) {
+        _delegate.includeInMainMenu(resourceId, include);
+    }
 }
