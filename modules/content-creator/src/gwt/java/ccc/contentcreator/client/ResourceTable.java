@@ -263,36 +263,37 @@ public class ResourceTable extends TablePanel {
             public void handleEvent(final MenuEvent be) {
                 contextMenu.removeAll();
                 final ModelData item = tbl.getSelectedItem().getModel();
-                addCreateAlias(tbl, contextMenu);
+
+                addPreview(tbl, contextMenu);
+                addViewHistory(tbl, contextMenu);
                 if (item.get("locked") == null
                     || "".equals(item.get("locked"))) {
                     addLockResource(tbl, contextMenu);
                 } else {
                     addUnlockResource(tbl, contextMenu);
+                    if (item.<String>get("published") == null
+                        || "".equals(item.get("published"))) {
+                        addPublishResource(tbl, contextMenu);
+                    } else {
+                        addUnpublishResource(tbl, contextMenu);
+                    }
+                    if ("PAGE".equals(item.get("type"))) {
+                        addEditResource(tbl, contextMenu);
+                        addChooseTemplate(tbl, contextMenu);
+                    } else if ("ALIAS".equals(item.get("type"))) {
+                        addEditResource(tbl, contextMenu);
+                    } else if ("FOLDER".equals(item.get("type"))) {
+                        addChooseTemplate(tbl, contextMenu);
+                    } else if ("TEMPLATE".equals(item.get("type"))) {
+                        addEditResource(tbl, contextMenu);
+                    } else if ("FILE".equals(item.get("type"))) {
+                        addEditResource(tbl, contextMenu);
+                    }
+                    addMove(tbl, contextMenu);
+                    addRename(tbl, contextMenu);
+                    addUpdateTags(tbl, contextMenu);
+                    addCreateAlias(tbl, contextMenu);
                 }
-                if (item.<String>get("published") == null
-                    || "".equals(item.get("published"))) {
-                    addPublishResource(tbl, contextMenu);
-                } else {
-                    addUnpublishResource(tbl, contextMenu);
-                }
-                if ("PAGE".equals(item.get("type"))) {
-                    addEditResource(tbl, contextMenu);
-                    addChooseTemplate(tbl, contextMenu);
-                } else if ("ALIAS".equals(item.get("type"))) {
-                    addEditResource(tbl, contextMenu);
-                } else if ("FOLDER".equals(item.get("type"))) {
-                    addChooseTemplate(tbl, contextMenu);
-                } else if ("TEMPLATE".equals(item.get("type"))) {
-                    addEditResource(tbl, contextMenu);
-                } else if ("FILE".equals(item.get("type"))) {
-                    addEditResource(tbl, contextMenu);
-                }
-                addPreview(tbl, contextMenu);
-                addViewHistory(tbl, contextMenu);
-                addMove(tbl, contextMenu);
-                addRename(tbl, contextMenu);
-                addUpdateTags(tbl, contextMenu);
             }
         });
     }
@@ -423,11 +424,6 @@ public class ResourceTable extends TablePanel {
         update.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override public void componentSelected(final MenuEvent ce) {
                     final ModelData item = tbl.getSelectedItem().getModel();
-
-                    if(null==item.get("locked")) {
-                        Globals.alert("You must lock a resource before it can be edited.");
-                        return;
-                    }
 
                      if ("TEMPLATE".equals(item.get("type"))) {
                          qs.templateDelta(item.<String>get("id"), new ErrorReportingCallback<TemplateDelta>(){
