@@ -53,6 +53,26 @@ public class ResourceDaoImplTest
     /**
      * Test.
      */
+    public void testIncludeInMainMenu() {
+
+        // ARRANGE
+        _r.lock(_regularUser);
+        expect(_users.loggedInUser()).andReturn(_regularUser);
+        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
+        replayAll();
+
+        // ACT
+        _rdao.includeInMainMenu(_r.id(), true);
+
+        // ASSERT
+        verifyAll();
+        assertEquals(true, _r.includeInMainMenu());
+
+    }
+
+    /**
+     * Test.
+     */
     public void testUpdateTags() {
 
         // ARRANGE

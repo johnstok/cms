@@ -232,4 +232,11 @@ public class ResourceDaoImpl implements ResourceDao {
                       final Object... params) {
         return _dao.find(queryName, resultType, params);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public void includeInMainMenu(final UUID id, final boolean b) {
+        final Resource r = findLocked(Resource.class, id);
+        r.includeInMainMenu(b);
+    }
 }

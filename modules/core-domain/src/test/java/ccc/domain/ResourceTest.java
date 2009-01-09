@@ -31,6 +31,23 @@ public final class ResourceTest extends TestCase {
     /**
      * Test.
      */
+    public void testIncludeInMainMenu() {
+
+        // ARRANGE
+        final Resource p = new Page("myPage");
+
+        // ACT
+        assertEquals(false, p.includeInMainMenu());
+        p.includeInMainMenu(true);
+
+        // ASSERT
+        assertEquals(true, p.includeInMainMenu());
+
+    }
+
+    /**
+     * Test.
+     */
     public void testLockFailsWhenAlreadyLocked() {
 
         // ARRANGE

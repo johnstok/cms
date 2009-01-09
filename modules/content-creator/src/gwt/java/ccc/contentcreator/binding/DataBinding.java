@@ -131,6 +131,7 @@ public class DataBinding {
         md.set("type", fs._type);
         md.set("childCount", fs._childCount);
         md.set("folderCount", fs._folderCount);
+        md.set("mmInclude", fs._includeInMainMenu);
     }
 
     /**
