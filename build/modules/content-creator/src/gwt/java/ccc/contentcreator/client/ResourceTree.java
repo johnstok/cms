@@ -43,12 +43,11 @@ public class ResourceTree extends Tree {
 
     private final TreeStore<ModelData> _store;
     private final ResourceSummary _root;
-    final QueriesServiceAsync _qs = GWT.create(QueriesService.class);
+    private final QueriesServiceAsync _qs = GWT.create(QueriesService.class);
 
     /**
      * Constructor.
      *
-     * @param rsa ResourceServiceAsync.
      * @param root The root of the tree.
      */
     public ResourceTree(final ResourceSummary root) {
@@ -76,7 +75,8 @@ public class ResourceTree extends Tree {
                         callback.onFailure(arg0);
                     }
 
-                    public void onSuccess(final Collection<ResourceSummary> arg0) {
+                    public void onSuccess(
+                                      final Collection<ResourceSummary> arg0) {
                         callback.onSuccess(
                             DataBinding.bindResourceSummary(arg0));
                     }

@@ -37,7 +37,7 @@ public final class ContentCreator implements EntryPoint {
      * This is the entry point method.
      */
     public void onModuleLoad() {
-
+        Globals.installUnexpectedExceptionHandler();
         Globals.enableExitConfirmation();
 
         final QueriesServiceAsync qs = GWT.create(QueriesService.class);

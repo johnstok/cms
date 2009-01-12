@@ -18,6 +18,7 @@ import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.WindowCloseListener;
 
@@ -33,6 +34,20 @@ public final class Globals {
         (null == Window.Location.getParameter("dec"));
 
     private Globals() { super(); }
+
+    /**
+     * Install an exception handler for exceptions that would otherwise escape
+     * to the browser.
+     */
+    public static void installUnexpectedExceptionHandler() {
+        GWT.setUncaughtExceptionHandler(
+            new UncaughtExceptionHandler(){
+                public void onUncaughtException(final Throwable e) {
+                    Globals.unexpectedError(e);
+                }
+            }
+        );
+    }
 
     /**
      * Factory for {@link UIConstants} objects.
@@ -104,11 +119,17 @@ public final class Globals {
     /**
      * Report an unexpected exception to the user.
      *
-     * @param exception The exception to report.
+     * @param e The exception to report.
      */
-    public static void unexpectedError(final Throwable exception) {
-        GWT.log("An unexpected error occured.", exception);
-        alert("An unexpected error occured.");
+    public static void unexpectedError(final Throwable e) {
+        if (e.getMessage().startsWith("<!-- LOGIN_REQUIRED -->")){
+            alert("Your session has timed out - please restart the application.");
+        } else if (e.getCause().getMessage().startsWith("<!-- LOGIN_REQUIRED -->")) {
+            alert("Your session has timed out - please restart the application.");
+        } else {
+            GWT.log("An unexpected error occured.", e);
+            alert("An unexpected error occured.");
+        }
     }
 
     /**
