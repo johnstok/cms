@@ -250,7 +250,7 @@ public class ResourceDaoImplTest
         _r.lock(_regularUser);
 
         expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
-        expect(_users.loggedInUser()).andReturn(_regularUser);
+//        expect(_users.loggedInUser()).andReturn(_regularUser);
         _al.recordChangeTemplate(_r);
         replayAll();
 
