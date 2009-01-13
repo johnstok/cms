@@ -25,7 +25,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public abstract class ErrorReportingCallback<T> implements AsyncCallback<T> {
 
-    private final Exception _e = new Exception();
+    private final Exception _e = new Exception("Async call failed.");
 
     /** {@inheritDoc} */
     public final void onFailure(final Throwable caught) {
