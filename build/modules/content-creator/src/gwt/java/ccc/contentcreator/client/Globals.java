@@ -122,10 +122,12 @@ public final class Globals {
      * @param e The exception to report.
      */
     public static void unexpectedError(final Throwable e) {
-        if (e.getMessage().startsWith("<!-- LOGIN_REQUIRED -->")){
-            alert("Your session has timed out - please restart the application.");
-        } else if (e.getCause().getMessage().startsWith("<!-- LOGIN_REQUIRED -->")) {
-            alert("Your session has timed out - please restart the application.");
+        final String errorMesssage = e.getMessage();
+        final String causeMessage = e.getCause().getMessage();
+        if (errorMesssage.startsWith("<!-- LOGIN_REQUIRED -->")){
+            alert("Your session timed out - please restart the application.");
+        } else if (causeMessage.startsWith("<!-- LOGIN_REQUIRED -->")) {
+            alert("Your session timed out - please restart the application.");
         } else {
             GWT.log("An unexpected error occured.", e);
             alert("An unexpected error occured.");
