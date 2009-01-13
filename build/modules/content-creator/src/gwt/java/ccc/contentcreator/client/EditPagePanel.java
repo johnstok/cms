@@ -57,7 +57,6 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         setBorders(false);
         setBodyBorder(false);
         setHeaderVisible(false);
-
     }
 
     private void drawStaticFields() {
@@ -166,16 +165,21 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
             final Element field = ((Element) fields.item(i));
             final String type = field.getAttribute("type");
             final String name = field.getAttribute("name");
+            final String regexp = field.getAttribute("regexp");
 
             if ("text_field".equals(type)) {
                 final TextField<String> tf = new TextField<String>();
                 tf.setData("type", "TEXT");
                 tf.setId(name);
                 tf.setFieldLabel(name);
+                if (regexp != null) {
+                    tf.setRegex(regexp);
+                }
                 add(tf);
                 final PageElement pe = new PageElement(name);
                 pe.type("TEXT");
                 pe.field(tf);
+
                 _pageElements.add(pe);
 
             } else if ("text_area".equals(type)) {
@@ -183,6 +187,9 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                 ta.setData("type", "TEXT");
                 ta.setId(name);
                 ta.setFieldLabel(name);
+                if (regexp != null) {
+                    ta.setRegex(regexp);
+                }
                 add(ta);
                 final PageElement pe = new PageElement(name);
                 pe.type("TEXT");
