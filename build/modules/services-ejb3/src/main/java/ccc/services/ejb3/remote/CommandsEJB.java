@@ -13,6 +13,7 @@ package ccc.services.ejb3.remote;
 
 import static javax.ejb.TransactionAttributeType.*;
 
+import java.io.StringReader;
 import java.util.UUID;
 
 import javax.annotation.security.RolesAllowed;
@@ -20,6 +21,14 @@ import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 import ccc.commons.EmailAddress;
 import ccc.domain.Alias;
@@ -110,6 +119,7 @@ public class CommandsEJB
                            final PageDelta delta,
                            final String templateId) {
 
+
         final Page page = new Page(
             ResourceName.escape(delta._name),
             delta._title);
@@ -122,6 +132,7 @@ public class CommandsEJB
             final Template template =
                 _resources.find(Template.class, UUID.fromString(templateId));
             page.template(template);
+            validateFields(delta, template);
         }
 
         for (final ParagraphDelta para : delta._paragraphs) {
@@ -133,14 +144,49 @@ public class CommandsEJB
                 final Paragraph paragraph =
                     Paragraph.fromDate(para._name, para._dateValue);
                 page.addParagraph(paragraph);
-
             }
         }
 
         _resources.create(UUID.fromString(parentId), page);
 
         return map(page);
+    }
 
+    private void validateFields(final PageDelta delta, final Template t) {
+
+        Document document;
+        String errors = "";
+
+        final DocumentBuilderFactory factory =
+            DocumentBuilderFactory.newInstance();
+        try {
+            final DocumentBuilder builder = factory.newDocumentBuilder();
+            final InputSource s =
+                new InputSource(new StringReader(t.definition()));
+            document = builder.parse(s);
+            final NodeList nl = document.getElementsByTagName("field");
+            for (int n = 0;  n < nl.getLength(); n++) {
+                final NamedNodeMap nnm = nl.item(n).getAttributes();
+                final Node regexp = nnm.getNamedItem("regexp");
+                final Node name = nnm.getNamedItem("name");
+                if (regexp != null && name != null) {
+                    for (final ParagraphDelta para : delta._paragraphs) {
+                        if (name.getNodeValue().equals(para._name)
+                            && !para._textValue.matches(regexp.getNodeValue())
+                            && ("TEXT".equals(para._type)
+                            || "HTML".equals(para._type))) {
+                            errors = errors + "problem with field "+para._name+"\n";
+                        }
+                    }
+                }
+            }
+
+        } catch (final Exception e) {
+            throw new CCCException("Error with XML parsing ", e);
+        }
+        if (!errors.isEmpty()) {
+            throw new CCCException(errors);
+        }
     }
 
     /** {@inheritDoc} */
@@ -230,6 +276,14 @@ public class CommandsEJB
             ResourceName.escape(delta._name),
             delta._title);
         page.id(UUID.fromString(delta._id));
+
+        final String templateId = delta._computedTemplate._id;
+        if (templateId != null) {
+            final Template template =
+                _resources.find(Template.class, UUID.fromString(templateId));
+            page.template(template);
+            validateFields(delta, template);
+        }
 
         // TODO: Remove duplication
         for (final ParagraphDelta para : delta._paragraphs) {
