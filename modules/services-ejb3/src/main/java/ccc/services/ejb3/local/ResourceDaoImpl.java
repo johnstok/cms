@@ -167,7 +167,7 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public void updateTemplateForResource(final UUID resourceId,
                                           final Template template) {
-        final Resource r = findLocked(Resource.class, resourceId);
+        final Resource r = find(Resource.class, resourceId);
         r.template(template);
         _audit.recordChangeTemplate(r);
     }
