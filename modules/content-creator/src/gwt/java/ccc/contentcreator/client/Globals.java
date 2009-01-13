@@ -123,7 +123,8 @@ public final class Globals {
      */
     public static void unexpectedError(final Throwable e) {
         final String errorMesssage = e.getMessage();
-        final String causeMessage = e.getCause().getMessage();
+        final String causeMessage =
+            (null==e.getCause()) ? "" : e.getCause().getMessage();
         if (errorMesssage.startsWith("<!-- LOGIN_REQUIRED -->")){
             alert("Your session timed out - please restart the application.");
         } else if (causeMessage.startsWith("<!-- LOGIN_REQUIRED -->")) {
