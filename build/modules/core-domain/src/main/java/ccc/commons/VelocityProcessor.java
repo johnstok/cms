@@ -14,6 +14,7 @@ package ccc.commons;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Properties;
 
 import org.apache.velocity.VelocityContext;
@@ -24,7 +25,6 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeConstants;
 
 import ccc.domain.CCCException;
-import ccc.domain.Folder;
 import ccc.domain.Resource;
 
 
@@ -40,7 +40,6 @@ public class VelocityProcessor {
      * TODO: handling missing expressions...
      * resource.manager.logwhenfound = true
      * input.encoding = UTF-8
-     * velocimacro.library = ccc.vm
      * velocimacro.arguments.strict = true
      * velocimacro.permissions.allow.inline.to.replace.global = false
      * velocimacro.permissions.allow.inline = true
@@ -59,17 +58,36 @@ public class VelocityProcessor {
 
     /**
      * Render a resource with the specified template.
+     * <br/><br/>
+     * The rendered output will be stored in memory as a String. Therefore,
+     * caution should be taken that this method is not used to generate large
+     * output, otherwise an {@link OutOfMemoryError} could be thrown.
      *
      * @param resource The resource that will be rendered.
      * @param template The template used to render the resource.
-     * @param root The root folder in which the resource is contained.
      * @return The html rendering as a string.
      */
     public String render(final Resource resource,
-                         final Folder root,
                          final String template) {
-
         final StringWriter renderedOutput = new StringWriter();
+        render(resource, template, renderedOutput);
+        return renderedOutput.toString();
+    }
+
+
+    /**
+     * Render a resource with the specified template.
+     * <br/><br/>
+     * The rendered output will be written to the specified writer.
+     *
+     * @param resource The resource that will be rendered.
+     * @param template The template used to render the resource.
+     * @param output A valid {@link Writer}. The writer will be flushed when
+     *  output is complete. The writer will not be closed.
+     */
+    public void render(final Resource resource,
+                       final String template,
+                       final Writer output) {
 
         final Properties velocityProperties = new Properties();
         try {
@@ -89,9 +107,10 @@ public class VelocityProcessor {
             ve.init();
             final VelocityContext context = new VelocityContext();
             context.put("resource", resource);
-            context.put("root", root);
 
-            ve.evaluate(context, renderedOutput, "??", template); // What is ??
+            ve.evaluate(context, output, "VelocityProcessor", template);
+
+            output.flush();
 
         } catch (final ParseErrorException e) {
             throw new CCCException(e);
@@ -104,7 +123,5 @@ public class VelocityProcessor {
         } catch (final Exception e) {
             throw new CCCException(e);
         }
-
-        return renderedOutput.toString();
     }
 }
