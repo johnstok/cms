@@ -32,6 +32,20 @@ public class AliasDaoImplTest
     /**
      * Test.
      */
+    public void testNoArgsConstructor() {
+
+        // ARRANGE
+
+        // ACT
+        new AliasDaoImpl();
+
+        // ASSERT
+
+    }
+
+    /**
+     * Test.
+     */
     public void testUpdateAlias() {
 
         // ARRANGE
