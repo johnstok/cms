@@ -14,30 +14,23 @@ package ccc.content.server;
 
 import static org.easymock.EasyMock.*;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.nio.charset.Charset;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
 import ccc.commons.MapRegistry;
-import ccc.commons.Resources;
 import ccc.commons.VelocityProcessor;
-import ccc.domain.Alias;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
-import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
-import ccc.domain.Template;
-import ccc.domain.User;
-import ccc.services.ServiceNames;
-import ccc.services.StatefulReader;
 
 /**
  * Tests for the ContentServlet.
@@ -49,46 +42,130 @@ import ccc.services.StatefulReader;
  */
 public final class ContentServletTest extends TestCase {
 
-    private HttpServletResponse _response;
-    private HttpServletRequest  _request;
-    private StatefulReader _cm;
-    private Resource _root = new Folder("_root");
+    /**
+     * Test.
+     * @throws IOException
+     */
+    public void testHandleResponseSetsConstentDescription() throws IOException {
+
+        // ARRANGE
+        final Response r = new Response();
+        r.setDescription("desc");
+
+        _response.setHeader("Content-Description", "desc");
+        replayAll();
+
+        // ACT
+        _cs.handle(_response, _request, r);
+
+        // ASSERT
+        verifyAll();
+    }
 
     /**
      * Test.
-     *
-     * @throws ServletException From servlet API.
-     * @throws IOException From servlet API.
+     * TODO: Set 'Expires' to 'now' instead?
+     * @throws IOException
      */
-    public void testHandleResourceHandlesAlias()
-        throws IOException, ServletException {
+    public void testHandleResponseSetsExpiryOfZero() throws IOException {
 
         // ARRANGE
-        final StringWriter output = new StringWriter();
-        final ContentServlet cs =
-            new ContentServlet(
-                new MapRegistry(
-                    ServiceNames.STATEFUL_READER,
-                    _cm));
-        final Template t = new Template("foo", "bar", "baz", "<fields/>");
-        final Page p = new Page("bar");
-        p.template(t);
-        final Alias a = new Alias("foo", p);
+        final Response r = new Response();
+        r.setExpiry(Long.valueOf(0));
 
-        expect(_cm.lookup(new ResourcePath(""))).andReturn(_root);
-        cs.disableCachingFor(_response);
-        cs.configureCharacterEncoding(_response);
-        _response.setContentType("text/html");
-        expect(_response.getWriter()).andReturn(new PrintWriter(output));
-
-        replay(_response, _request, _cm);
+        _response.setHeader("Pragma", "no-cache");
+        _response.setHeader(
+            "Cache-Control",
+            "private, must-revalidate, max-age=0");
+        _response.setHeader("Expires", "0");
+        replayAll();
 
         // ACT
-        cs.handle(_response, _request, a);
+        _cs.handle(_response, _request, r);
 
         // ASSERT
-        verify(_response, _request, _cm);
+        verifyAll();
+    }
 
+    /**
+     * Test.
+     * @throws IOException
+     */
+    public void testHandleResponseSetsConstentDisposition() throws IOException {
+
+        // ARRANGE
+        final Response r = new Response();
+        r.setDisposition("disp");
+
+        _response.setHeader("Content-Disposition", "disp");
+        replayAll();
+
+        // ACT
+        _cs.handle(_response, _request, r);
+
+        // ASSERT
+        verifyAll();
+    }
+
+    /**
+     * Test.
+     * @throws IOException
+     */
+    public void testHandleResponseSetsConstentType() throws IOException {
+
+        // ARRANGE
+        final Response r = new Response();
+        r.setMimeType("text", "html");
+
+        _response.setContentType("text/html");
+        replayAll();
+
+        // ACT
+        _cs.handle(_response, _request, r);
+
+        // ASSERT
+        verifyAll();
+    }
+
+    /**
+     * Test.
+     * @throws IOException
+     */
+    public void testHandleResponseSetsCharacterEncoding() throws IOException {
+
+        // ARRANGE
+        final Response r = new Response();
+        r.setCharSet("UTF-8");
+
+        _response.setCharacterEncoding("UTF-8");
+        replayAll();
+
+        // ACT
+        _cs.handle(_response, _request, r);
+
+        // ASSERT
+        verifyAll();
+    }
+
+    /**
+     * Test.
+     * TODO: Tests for length of 0 & negative numbers?
+     * @throws IOException
+     */
+    public void testHandleResponseSetsConstentLength() throws IOException {
+
+        // ARRANGE
+        final Response r = new Response();
+        r.setLength(Long.valueOf(1));
+
+        _response.setHeader("Content-Length", "1");
+        replayAll();
+
+        // ACT
+        _cs.handle(_response, _request, r);
+
+        // ASSERT
+        verifyAll();
     }
 
     /**
@@ -103,7 +180,7 @@ public final class ContentServletTest extends TestCase {
         final String template = "Hello $resource.id()";
 
         // ACT
-        final String html = new VelocityProcessor().render(foo, null, template);
+        final String html = new VelocityProcessor().render(foo, template);
 
         // ASSERT
         assertEquals("Hello "+foo.id(), html);
@@ -111,249 +188,62 @@ public final class ContentServletTest extends TestCase {
 
     /**
      * Test.
+     *
+     * @throws IOException If there is an error writing to the _response.
      */
-    public void testLookupTemplateForContent() {
+    public void testHandleResponseWritesTheBody() throws IOException {
 
         // ARRANGE
-        final String body =
-            Resources.readIntoString(
-                getClass().getResource("default-page-template.txt"),
-                Charset.forName("ISO-8859-1"));
-        final Template t =
-            new Template(
-                "foo",
-                "bar",
-                body,
-                "<fields/>");
-        final Page foo = new Page("foo");
-        foo.template(t);
+        final ByteArrayServletOutputStream os =
+            new ByteArrayServletOutputStream();
+
+        final Response r = new Response();
+        final Body b = createStrictMock(Body.class);
+        r.setBody(b);
+
+        expect(_response.getOutputStream()).andReturn(os);
+        b.write(os);
+        replayAll();
 
         // ACT
-        final String templateName =
-            new ContentServlet().lookupTemplateForResource(foo);
+        _cs.handle(_response, _request, r);
 
         // ASSERT
-        assertEquals(
-            t.body(),
-            templateName);
+        verifyAll();
     }
 
     /**
      * Test.
      */
-    public void testLookupTemplateForFolder() {
+    public void testDetermineResourcePathRemovesTrailingSlash() {
 
         // ARRANGE
-        final Folder foo = new Folder("foo");
-
-        // ACT
-        final String templateName =
-            new ContentServlet().lookupTemplateForResource(foo);
-
-        // ASSERT
-        assertEquals(
-            Resources.readIntoString(
-                getClass().getResource("default-folder-template.txt"),
-                Charset.forName("ISO-8859-1")),
-            templateName);
-    }
-
-    /**
-     * Test.
-     *
-     * @throws IOException If there is an error writing to the _response.
-     */
-    public void testContentRenderCorrectly() throws IOException {
-
-        // ARRANGE
-        final StringWriter output = new StringWriter();
-        final String body =
-            Resources.readIntoString(
-                getClass().getResource("default-page-template.txt"),
-                Charset.forName("ISO-8859-1"));
-        final Template t =
-            new Template(
-                "foo",
-                "bar",
-                body,
-                "<fields/>");
-        final Page page = new Page("foo");
-        page.template(t);
-        page.addParagraph(Paragraph.fromText("key1", "para1"));
-        page.addParagraph(Paragraph.fromText("key2", "para2"));
-
-        new ContentServlet().disableCachingFor(_response);
-        new ContentServlet().configureCharacterEncoding(_response);
-        _response.setContentType("text/html");
-        expect(_response.getWriter()).andReturn(new PrintWriter(output));
-        replay(_response, _request);
-
-        expect(_cm.lookup(new ResourcePath(""))).andReturn(_root);
-        replay(_cm);
-
-        // ACT
-        new ContentServlet(
-            new MapRegistry(
-                ServiceNames.STATEFUL_READER,
-                _cm)
-            ).handle(_response, _request, page);
-
-        // ASSERT
-        verify(_response, _request, _cm);
-        assertEquals(
-            "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" "
-            + "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n"
-            + "<html xmlns=\"http://www.w3.org/1999/xhtml\">"
-            + "<head><title>foo</title></head>"
-            + "<body>\r\n"
-            + "<h1>foo</h1>\r\n"
-            + "<h2>key2</h2><p>para2</p>\r\n"
-            + "<h2>key1</h2><p>para1</p>\r\n"
-            + "</body></html>",
-            output.toString());
-    }
-
-    /**
-     * Test.
-     *
-     * @throws IOException If there is an error writing to the _response.
-     * @throws ServletException If execution of the servlet fails.
-     */
-    public void testDoGetHandlesContent() throws ServletException, IOException {
-
-        // ARRANGE
-        final User u = new User("user");
-        final StringWriter output = new StringWriter();
-        final String body =
-            Resources.readIntoString(
-                getClass().getResource("default-page-template.txt"),
-                Charset.forName("ISO-8859-1"));
-        final Template t = new Template("foo", "bar", body, "<fields/>");
-        final Page p =
-            new Page("name")
-                .addParagraph(Paragraph.fromText("Header", "<br/>"));
-        p.publish(u);
-        p.template(t);
-
-        expect(_cm.lookup(new ResourcePath("/foo"))).andReturn(p);
-        expect(_cm.lookup(new ResourcePath(""))).andReturn(_root);
-        replay(_cm);
-
-        final ContentServlet contentServlet =
-            new ContentServlet(
-                new MapRegistry(
-                    ServiceNames.STATEFUL_READER,
-                    _cm));
-
-        // EXPECT
-        new ContentServlet().disableCachingFor(_response);
-        new ContentServlet().configureCharacterEncoding(_response);
-        _response.setContentType("text/html");
-        expect(_request.getPathInfo()).andReturn("/foo");
-        expect(_response.getWriter()).andReturn(new PrintWriter(output));
-        replay(_request, _response);
-
-        // ACT
-        contentServlet.doGet(_request, _response);
-
-        // VERIFY
-        verify(_request, _response, _cm);
-        assertEquals(
-            "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" "
-            + "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n"
-            + "<html xmlns=\"http://www.w3.org/1999/xhtml\">"
-            + "<head><title>name</title></head>"
-            + "<body>\r\n<h1>name</h1>\r\n<h2>Header</h2><p><br/></p>\r\n"
-            + "</body></html>",
-            output.toString());
-    }
-
-    /**
-     * Test.
-     *
-     * @throws IOException If there is an error writing to the _response.
-     * @throws ServletException If execution of the servlet fails.
-     */
-    public void testDoGetHandlesFolderWithPages() throws ServletException,
-                                                         IOException {
-
-        // ARRANGE
-        final User u = new User("user");
-        final Folder foo = new Folder("foo");
-        foo.publish(u);
-        final Folder baz = new Folder("baz");
-        baz.publish(u);
-        final Page bar = new Page("bar");
-        bar.publish(u);
-        foo.add(baz);
-        foo.add(bar);
-
-        expect(_cm.lookup(new ResourcePath("/foo"))).andReturn(foo);
-        replay(_cm);
-
-        final StringWriter output = new StringWriter();
-        final ContentServlet contentServlet =
-            new ContentServlet(
-                new MapRegistry(
-                    ServiceNames.STATEFUL_READER,
-                    _cm));
-
-        // EXPECT
-        _response.sendRedirect("/content/foo/bar");
-        expect(_request.getPathInfo()).andReturn("/foo");
-        expect(_request.getRequestURI()).andReturn("/content/foo");
-        replay(_request, _response);
-
-        // ACT
-        contentServlet.doGet(_request, _response);
-
-        // VERIFY
-        verify(_request, _response, _cm);
-        assertEquals("", output.toString());
-    }
-
-    /**
-     * Test.
-     *
-     * @throws IOException If there is an error writing to the _response.
-     * @throws ServletException If execution of the servlet fails.
-     */
-    public void testDoGetHandlesFolderWithPagesTrailingSlash()
-        throws ServletException, IOException {
-
-        // ARRANGE
-        final User u = new User("user");
-        final Folder foo = new Folder("foo");
-        foo.publish(u);
-        final Folder baz = new Folder("baz");
-        baz.publish(u);
-        final Page bar = new Page("bar");
-        bar.publish(u);
-        foo.add(baz);
-        foo.add(bar);
-
-        expect(_cm.lookup(new ResourcePath("/foo"))).andReturn(foo);
-        replay(_cm);
-
-        final StringWriter output = new StringWriter();
-        final ContentServlet contentServlet =
-            new ContentServlet(
-                new MapRegistry(
-                    ServiceNames.STATEFUL_READER,
-                    _cm));
-
-        // EXPECT
-        _response.sendRedirect("/content/foo/bar");
         expect(_request.getPathInfo()).andReturn("/foo/");
-        expect(_request.getRequestURI()).andReturn("/content/foo/");
-        replay(_request, _response);
+        replayAll();
 
         // ACT
-        contentServlet.doGet(_request, _response);
+        final ResourcePath path = _cs.determineResourcePath(_request);
 
         // VERIFY
-        verify(_request, _response, _cm);
-        assertEquals("", output.toString());
+        verifyAll();
+        assertEquals(new ResourcePath("/foo"), path);
+    }
+
+    /**
+     * Test.
+     */
+    public void testDetermineResourcePathHandlesNull() {
+
+        // ARRANGE
+        expect(_request.getPathInfo()).andReturn(null);
+        replayAll();
+
+        // ACT
+        final ResourcePath path = _cs.determineResourcePath(_request);
+
+        // VERIFY
+        verifyAll();
+        assertEquals(new ResourcePath(""), path);
     }
 
     /**
@@ -362,39 +252,53 @@ public final class ContentServletTest extends TestCase {
      * @throws IOException If there is an error writing to the _response.
      * @throws ServletException If execution of the servlet fails.
      */
-    public void testDoGetHandlesFolderWithoutPages() throws ServletException,
-                                                            IOException {
+    public void testDoSafeGetHandlesNotFound() throws ServletException,
+                                                      IOException {
 
         // ARRANGE
         final RequestDispatcher rd = createStrictMock(RequestDispatcher.class);
-        rd.forward(_request, _response);
-
         final Folder foo = new Folder("foo");
         final Folder baz = new Folder("baz");
         foo.add(baz);
 
-        expect(_cm.lookup(new ResourcePath("/foo"))).andReturn(foo);
-        replay(_cm);
-
-        final StringWriter output = new StringWriter();
-        final ContentServlet contentServlet =
-            new ContentServlet(
-                new MapRegistry(
-                    ServiceNames.STATEFUL_READER,
-                    _cm
-                ));
-
-        // EXPECT
         expect(_request.getPathInfo()).andReturn("/foo");
+        expect(_renderer.render(isA(ResourcePath.class)))
+            .andThrow(new NotFoundException());
         expect(_request.getRequestDispatcher("/notfound")).andReturn(rd);
-        replay(_request, _response, rd);
+        rd.forward(_request, _response);
+        replayAll();
 
         // ACT
-        contentServlet.doGet(_request, _response);
+        _cs.doSafeGet(_request, _response, _renderer);
 
-        // VERIFY
-        verify(_request, _response, rd, _cm);
-        assertEquals("", output.toString());
+        // ASSERT
+        verifyAll();
+    }
+
+    /**
+     * Test.
+     *
+     * @throws IOException If there is an error writing to the _response.
+     * @throws ServletException If execution of the servlet fails.
+     */
+    public void testDoSafeGetHandlesRedirect() throws ServletException,
+                                                      IOException {
+
+        // ARRANGE
+        final Page bar = new Page("bar");
+
+        expect(_request.getPathInfo()).andReturn("/foo");
+        expect(_renderer.render(isA(ResourcePath.class)))
+            .andThrow(new RedirectRequiredException(bar));
+        expect(_request.getContextPath()).andReturn("/context");
+        _response.sendRedirect("/context"+bar.absolutePath().toString());
+        replayAll();
+
+        // ACT
+        _cs.doSafeGet(_request, _response, _renderer);
+
+        // ASSERT
+        verifyAll();
     }
 
     /**
@@ -411,66 +315,14 @@ public final class ContentServletTest extends TestCase {
         replay(_response);
 
         // ACT
-        new ContentServlet().disableCachingFor(_response);
-
-        // VERIFY
-        verify(_response);
-    }
-
-    /**
-     * Test.
-     */
-    public void testCharacterEncodingIsSetToUtf8() {
-
-        // ARRANGE
-        _response.setCharacterEncoding("UTF-8");
-        replay(_response);
-
-        // ACT
-        new ContentServlet().configureCharacterEncoding(_response);
+        _cs.disableCachingFor(_response);
 
         // VERIFY
         verify(_response);
     }
 
 
-    /**
-     * Test.
-     *
-     * @throws IOException If there is an error writing to the _response.
-     * @throws ServletException If execution of the servlet fails.
-     */
-    public void testDoGetHandlesUnpublishedContent() throws ServletException,
-                                                            IOException {
 
-        // ARRANGE
-        final RequestDispatcher rd = createStrictMock(RequestDispatcher.class);
-        rd.forward(_request, _response);
-
-        final StringWriter output = new StringWriter();
-        final Page p = new Page("name");
-
-        expect(_cm.lookup(new ResourcePath("/foo"))).andReturn(p);
-        replay(_cm);
-
-        final ContentServlet contentServlet =
-            new ContentServlet(
-                new MapRegistry(
-                    ServiceNames.STATEFUL_READER,
-                    _cm));
-
-        // EXPECT
-        expect(_request.getPathInfo()).andReturn("/foo");
-        expect(_request.getRequestDispatcher("/notfound")).andReturn(rd);
-        replay(_request, _response, rd);
-
-        // ACT
-        contentServlet.doGet(_request, _response);
-
-        // VERIFY
-        verify(_request, _response, rd, _cm);
-        assertEquals("", output.toString());
-    }
 
     /**
      * {@inheritDoc}
@@ -480,7 +332,8 @@ public final class ContentServletTest extends TestCase {
         super.setUp();
         _response = createStrictMock(HttpServletResponse.class);
         _request = createStrictMock(HttpServletRequest.class);
-        _cm = createStrictMock(StatefulReader.class);
+        _renderer = createStrictMock(ResourceRenderer.class);
+        _cs = new ContentServlet(new MapRegistry());
     }
 
     /**
@@ -491,6 +344,42 @@ public final class ContentServletTest extends TestCase {
         super.tearDown();
         _response = null;
         _request = null;
-        _cm = null;
+        _renderer = null;
+        _cs = null;
     }
+
+    private void verifyAll() {
+        verify(_response, _request, _renderer);
+    }
+
+    private void replayAll() {
+        replay(_response, _request, _renderer);
+    }
+
+    /**
+     * TODO: Add Description for this type.
+     *
+     * @author Civic Computing Ltd.
+     */
+    private static final class ByteArrayServletOutputStream
+        extends
+            ServletOutputStream {
+
+        private final ByteArrayOutputStream _baos =
+            new ByteArrayOutputStream();
+
+        @Override public void write(final int b) throws IOException {
+            _baos.write(b);
+        }
+
+        /** {@inheritDoc} */
+        @Override public String toString() {
+            return new String(_baos.toByteArray(), Charset.forName("UTF-8"));
+        }
+    }
+
+    private HttpServletResponse _response;
+    private HttpServletRequest  _request;
+    private ResourceRenderer _renderer;
+    private ContentServlet _cs;
 }

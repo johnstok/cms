@@ -72,7 +72,6 @@ public abstract class CCCServlet extends HttpServlet {
 
     /**
      * Disable caching for the response.
-     * TODO: already expired, set to 'now' instead...
      *
      * @param response The response that should not be cached.
      */
@@ -82,17 +81,6 @@ public abstract class CCCServlet extends HttpServlet {
             "Cache-Control",
             "private, must-revalidate, max-age=0"); // equivalent to 'no-cache'
         response.setHeader("Expires", "0");
-    }
-
-    /**
-     * Set the character encoding for a response.
-     *
-     * @param response The response for which we'll set the char encoding.
-     *
-     */
-    protected void configureCharacterEncoding(
-                                          final HttpServletResponse response) {
-        response.setCharacterEncoding("UTF-8");
     }
 
     /**
@@ -147,7 +135,7 @@ public abstract class CCCServlet extends HttpServlet {
         throws ServletException, IOException {
 
         try {
-            doSafeGet(request, response);
+            doSafeGet(request, response, createRenderer());
 
         } catch (final RuntimeException e) {
             if(response.isCommitted()) {
@@ -170,6 +158,12 @@ public abstract class CCCServlet extends HttpServlet {
         }
     }
 
+    protected ResourceRenderer createRenderer() {
+        return new DefaultResourceRenderer(dataManager(),
+                                           resourceReader(),
+                                           true);
+    }
+
     /**
      * Process a GET request. Runtime exceptions can safely be thrown from this
      * method and will be handled be the
@@ -181,6 +175,7 @@ public abstract class CCCServlet extends HttpServlet {
      * @throws ServletException  From servlet API.
      */
     protected abstract void doSafeGet(HttpServletRequest request,
-                                      HttpServletResponse response)
+                                      HttpServletResponse response,
+                                      final ResourceRenderer renderer)
         throws ServletException, IOException;
 }

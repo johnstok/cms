@@ -397,4 +397,16 @@ public abstract class Resource extends VersionedEntity {
     public void includeInMainMenu(final boolean shouldInclude) {
             _includeInMainMenu = shouldInclude;
     }
+
+    /**
+     * Accessor for the root parent of this resource.
+     *
+     * @return The root parent of this resource.
+     */
+    public Resource root() {
+        if (null == _parent) {
+            return this;
+        }
+        return _parent.root();
+    }
 }

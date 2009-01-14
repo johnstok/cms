@@ -15,24 +15,13 @@ package ccc.content.server;
 import static ccc.commons.Strings.*;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ccc.commons.Registry;
-import ccc.commons.Resources;
-import ccc.commons.VelocityProcessor;
-import ccc.domain.Alias;
-import ccc.domain.CCCException;
-import ccc.domain.File;
-import ccc.domain.Folder;
-import ccc.domain.Page;
-import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
-import ccc.domain.Template;
 
 
 /**
@@ -51,20 +40,17 @@ import ccc.domain.Template;
  *        Accept-Charset header;
  *        Accept-encoding header]
  *
- * TODO: Describe the mapping algorithm.
  * TODO: Handle bad resource paths - return 404?
  * TODO: Handle good path, no resource - return 404?
  * TODO: Markup escaping?
  * TODO: Handle standard errors -> converting to HTML.
  * TODO: Marshal CCCException to HTML.
  * TODO: How do we handle '/'? - return content root with folder template
- * TODO: Disable the default servlet.
  * TODO: Should be final but need to wait for resource injection...
- * TODO: Add tests that NULL and '/' pathInfo is handled correctly.
  *
  * @author Civic Computing Ltd
  */
-public final class ContentServlet extends CCCServlet {
+public class ContentServlet extends CCCServlet {
 
     /**
      * Constructor.
@@ -89,198 +75,85 @@ public final class ContentServlet extends CCCServlet {
      */
     @Override
     protected void doSafeGet(final HttpServletRequest request,
-                           final HttpServletResponse response)
+                             final HttpServletResponse response,
+                             final ResourceRenderer renderer)
         throws IOException, ServletException {
-
-        final String pathString =
-            removeTrailing('/', nvl(request.getPathInfo(), "/"));
-        final ResourcePath contentPath = new ResourcePath(pathString); // 400
-
-        final Resource resource = resourceReader().lookup(contentPath);
-        if (resource != null && resource.isVisible()) {
-            handle(response, request, resource);
-        } else {
-            dispatchNotFound(request, response); // 404
+        try {
+            final ResourcePath contentPath = determineResourcePath(request);
+            final Response r = renderer.render(contentPath);
+            handle(response, request, r);
+        } catch (final NotFoundException e) {
+            dispatchNotFound(request, response);
+        } catch (final RedirectRequiredException e) {
+            final String context = request.getContextPath();
+            final String relUri = e.getResource().absolutePath().toString();
+            response.sendRedirect(context+relUri);
         }
     }
 
     /**
-     * Accepts any type of resource and routes it to the appropriate
-     * type-specific handle() method.
+     * TODO: Add a description of this method.
      *
-     * @param req The request.
-     * @param resp The response.
-     * @param resource The resource to handle.
-     * @throws ServletException From servlet API.
-     * @throws IOException From servlet API.
+     * @param request
+     * @return
      */
-    void handle(final HttpServletResponse resp,
-                final HttpServletRequest req,
-                final Resource resource) throws IOException, ServletException {
+    protected ResourcePath determineResourcePath(final HttpServletRequest request) {
+        String pathString = request.getPathInfo();
+        pathString = nvl(pathString, "/");
+        pathString = removeTrailing('/', pathString);
 
-        switch (resource.type()) {
-
-            case ALIAS:
-                final Alias alias = resource.as(Alias.class);
-                handle(resp, req, alias.target());
-                break;
-
-            case PAGE:
-                final Page page = resource.as(Page.class);
-                handle(resp, req, page);
-                break;
-
-            case FILE:
-                final File f = resource.as(File.class);
-                handle(resp, req, f);
-                break;
-
-            case FOLDER:
-                final Folder folder = resource.as(Folder.class);
-                handle(resp, req, folder);
-                break;
-
-            default:
-                throw new CCCException("Unsupported resource type!");
-        }
+        final ResourcePath contentPath = new ResourcePath(pathString);
+        return contentPath;
     }
 
     /**
-     * Render a {@link Folder} to the response.
+     * Translates a domain response into HTTP response for the servlet API.
      *
-     * @param req The request.
-     * @param resp The response.
-     * @param folder The folder to handle.
-     * @throws IOException From servlet API.
-     * @throws ServletException From servlet API.
+     * @param httpResponse
+     * @param httpRequest
+     * @param response
+     * @throws IOException
      */
-    void handle(final HttpServletResponse resp,
-                final HttpServletRequest req,
-                final Folder folder)
-        throws IOException, ServletException {
+    public void handle(final HttpServletResponse httpResponse,
+                       final HttpServletRequest httpRequest,
+                       final Response response) throws IOException {
 
-        if (folder.hasAliases()) {
-            String currentURI = req.getRequestURI();
-            if (!currentURI.endsWith("/")) {
-                currentURI = currentURI+"/";
+        if (null!=response.getDescription()) {
+            httpResponse.setHeader(
+                "Content-Description",
+                response.getDescription());
+        }
+
+        if (null!=response.getDisposition()) {
+            httpResponse.setHeader(
+                "Content-Disposition",
+                response.getDisposition());
+        }
+
+        if (null!=response.getLength()) {
+            httpResponse.setHeader(
+                "Content-Length",
+                String.valueOf(response.getLength().longValue()));
+        }
+
+        if (null!=response.getMimeType()) {
+            httpResponse.setContentType(response.getMimeType());
+        }
+
+        if (null!=response.getCharSet()) {
+            httpResponse.setCharacterEncoding(response.getCharSet());
+        }
+
+        if (null!=response.getExpiry()) {
+            if (response.getExpiry().longValue() < 1) {
+                disableCachingFor(httpResponse);
+            } else {
+                throw new RuntimeException();
             }
-            resp.sendRedirect(currentURI + folder.firstAlias().name());
-        } else if (folder.hasPages()) {
-            String currentURI = req.getRequestURI();
-            if (!currentURI.endsWith("/")) {
-                currentURI = currentURI+"/";
-            }
-            resp.sendRedirect(currentURI + folder.firstPage().name());
-        } else {
-            dispatchNotFound(req, resp);
+        }
+
+        if (null!=response.getBody()) {
+            response.getBody().write(httpResponse.getOutputStream());
         }
     }
-
-    /**
-     * Render a {@link Page} to the response.
-     *
-     * @param req The request.
-     * @param resp The response.
-     * @param page The page to handle.
-     * @throws IOException From servlet API.
-     */
-    void handle(final HttpServletResponse resp,
-                final HttpServletRequest req,
-                final Page page) throws IOException {
-
-        disableCachingFor(resp);
-        configureCharacterEncoding(resp);
-        final String template = lookupTemplateForResource(page);
-        final String html = renderResourceWithTemplate(page, template);
-        resp.setContentType("text/html");
-        resp.getWriter().write(html);
-    }
-
-    /**
-     * Render a {@link File} to the response.
-     * TODO: Should we close streams on exception???
-     *
-     * @param req The request.
-     * @param resp The response.
-     * @param f The file to handle.
-     * @throws IOException From servlet API.
-     */
-    void handle(final HttpServletResponse resp,
-                final HttpServletRequest req,
-                final File f) throws IOException {
-
-        disableCachingFor(resp);
-
-        resp.setHeader(
-            "Content-Disposition",
-            "inline; filename=\""+f.name()+"\"");
-        resp.setHeader(
-            "Content-Type",
-            f.mimeType().toString());
-        resp.setHeader(
-            "Content-Description",
-            f.description());
-        resp.setHeader(
-            "Content-Length",
-            String.valueOf(f.size()));
-
-        final ServletOutputStream os = resp.getOutputStream();
-        dataManager().retrieve(f.fileData(), os);
-    }
-
-    /**
-     * Locate an appropriate template for rendering a resource as XHTML.
-     *
-     * @param resource The resource that will be transformed by the template.
-     * @return The name of the resource as a string.
-     */
-    String lookupTemplateForResource(final Resource resource) {
-
-        switch (resource.type()) {
-            case PAGE:
-                return resource.computeTemplate(BUILT_IN_PAGE_TEMPLATE).body();
-            case FOLDER:
-                return BUILT_IN_FOLDER_TEMPLATE.body();
-            default:
-                throw new CCCException(
-                    "Unsupported resource type: "+resource.type());
-        }
-    }
-
-    /**
-     * Render a resource with the specified template.
-     *
-     * @param resource The resource that will be rendered.
-     * @param template The template used to render the resource.
-     * @return The html rendering as a string.
-     */
-    String renderResourceWithTemplate(final Resource resource,
-                                      final String template) {
-        // TODO: Refactor
-        final Folder root =
-            resourceReader().lookup(new ResourcePath(""))
-                            .as(Folder.class);
-
-        return new VelocityProcessor().render(resource,
-                                              root,
-                                              template);
-    }
-
-    private static final Template BUILT_IN_PAGE_TEMPLATE =
-        new Template(
-            "BUILT_IN_PAGE_TEMPLATE",
-            "BUILT_IN_PAGE_TEMPLATE",
-            Resources.readIntoString(
-                ContentServlet.class.getResource("default-page-template.txt"),
-                Charset.forName("UTF-8")),
-            "<fields/>");
-
-    private static final Template BUILT_IN_FOLDER_TEMPLATE =
-        new Template(
-            "BUILT_IN_FOLDER_TEMPLATE",
-            "BUILT_IN_FOLDER_TEMPLATE",
-            Resources.readIntoString(
-                ContentServlet.class.getResource("default-folder-template.txt"),
-                Charset.forName("UTF-8")),
-            "<fields/>");
 }

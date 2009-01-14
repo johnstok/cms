@@ -28,6 +28,39 @@ public final class ResourceTest extends TestCase {
     private User _jill = new User("jill");
     private User _jack = new User("jack");
 
+
+    /**
+     * Test.
+     */
+    public void testRootAccessorReturnParent() {
+
+        // ARRANGE
+        final Folder root = new Folder("root");
+        final Resource child = new Page("child");
+        root.add(child);
+
+        // ACT
+        final Resource actual = child.root();
+
+        // ASSERT
+        assertEquals(root, actual);
+    }
+
+    /**
+     * Test.
+     */
+    public void testRootAccessorReturnsThisForNullParent() {
+
+        // ARRANGE
+        final Resource root = new Page("root");
+
+        // ACT
+        final Resource actual = root.root();
+
+        // ASSERT
+        assertEquals(root, actual);
+    }
+
     /**
      * Test.
      */
