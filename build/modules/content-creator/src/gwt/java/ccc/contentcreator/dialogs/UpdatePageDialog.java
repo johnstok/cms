@@ -20,6 +20,8 @@ import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.PageElement;
 import ccc.contentcreator.client.ResourceTable;
 import ccc.contentcreator.client.ui.FCKEditor;
+import ccc.contentcreator.validation.Validate;
+import ccc.contentcreator.validation.Validations;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ParagraphDelta;
 import ccc.services.api.TemplateDelta;
@@ -65,9 +67,13 @@ public class UpdatePageDialog
     /**
      * Constructor.
      *
+     * @param page PageDelta of the page to be updated.
+     * @param template TemplateDelta of the template assigned to the page.
      * @param rt ResourceTable required in order to refresh the contents.
      */
-    public UpdatePageDialog(final PageDelta page, final TemplateDelta template, final ResourceTable rt) {
+    public UpdatePageDialog(final PageDelta page,
+                            final TemplateDelta template,
+                            final ResourceTable rt) {
         super(Globals.uiConstants().updateContent());
         _rt = rt;
         _page = page;
@@ -104,57 +110,65 @@ public class UpdatePageDialog
 
         final Button saveButton = new Button(
             constants().save(),
-            new SelectionListener<ButtonEvent>() {
-
-            @Override
-            public void componentSelected(final ButtonEvent ce) {
-
-                    if (panel().title().getValue() == null
-                        || panel().title().getValue().trim().length() == 0) {
-                        return;
-                    }
-                    _page._title = panel().title().getValue();
-
-                    final List<ParagraphDelta> paragraphs =
-                        new ArrayList<ParagraphDelta>();
-
-                    final List<PageElement> definitions =
-                        panel().pageElements();
-                    for (final PageElement c : definitions) {
-                        if ("TEXT".equals(c.type())) {
-                            final Field<String> f = c.field();
-                            final ParagraphDelta p = new ParagraphDelta();
-                            p._name = c.id();
-                            p._textValue = f.getValue();
-                            p._type = "TEXT";
-                            paragraphs.add(p);
-                        } else if ("DATE".equals(c.type())) {
-                            final DateField f = c.dateField();
-                            final ParagraphDelta p = new ParagraphDelta();
-                            p._name = c.id();
-                            p._dateValue = f.getValue();
-                            p._type = "DATE";
-                            paragraphs.add(p);
-                        } else if ("HTML".equals(c.type())) {
-                            final FCKEditor f = c.editor();
-                            final ParagraphDelta p = new ParagraphDelta();
-                            p._name = c.id();
-                            p._textValue = f.getHTML();
-                            p._type = "HTML";
-                            paragraphs.add(p);
-                        }
-                    }
-                    _page._paragraphs = paragraphs;
-
-                    commands().updatePage(
-                        _page,
-                        saveCompletedCallback());
-                }
-            });
+            saveAction());
         saveButton.setId("save");
         return saveButton;
     }
 
+    private SelectionListener<ButtonEvent> saveAction() {
+        return new SelectionListener<ButtonEvent>() {
+            @Override public void componentSelected(final ButtonEvent ce) {
+                final List<ParagraphDelta> paragraphs =
+                    new ArrayList<ParagraphDelta>();
+
+                final List<PageElement> definitions =
+                    panel().pageElements();
+                for (final PageElement c : definitions) {
+                    if ("TEXT".equals(c.type())) {
+                        final Field<String> f = c.field();
+                        final ParagraphDelta p = new ParagraphDelta();
+                        p._name = c.id();
+                        p._textValue = f.getValue();
+                        p._type = "TEXT";
+                        paragraphs.add(p);
+                    } else if ("DATE".equals(c.type())) {
+                        final DateField f = c.dateField();
+                        final ParagraphDelta p = new ParagraphDelta();
+                        p._name = c.id();
+                        p._dateValue = f.getValue();
+                        p._type = "DATE";
+                        paragraphs.add(p);
+                    } else if ("HTML".equals(c.type())) {
+                        final FCKEditor f = c.editor();
+                        final ParagraphDelta p = new ParagraphDelta();
+                        p._name = c.id();
+                        p._textValue = f.getHTML();
+                        p._type = "HTML";
+                        paragraphs.add(p);
+                    }
+                }
+                _page._paragraphs = paragraphs;
+
+
+                Validate.callTo(updatePage(paragraphs))
+                    .check(Validations.notEmpty(panel().title()))
+                    .stopIfInError()
+                    .check(Validations.validateFields(paragraphs,
+                        _panel.definition()))
+                    .callMethodOr(Validations.reportErrors());
+            }
+        };
+    }
+
+    private Runnable updatePage(final List<ParagraphDelta> paragraphs) {
+        return new Runnable() {
+            @SuppressWarnings("unchecked")
+            public void run() {
+                _page._title = panel().title().getValue();
+                commands().updatePage(_page, saveCompletedCallback());
+            }
+        };
+    }
 
     /**
      * Accessor.

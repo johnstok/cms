@@ -43,6 +43,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private TextField<String> _title = new TextField<String>();
     private TextField<String> _name = new TextField<String>();
     private List<PageElement> _pageElements = new ArrayList<PageElement>();
+    private String _definition;
 
     /** _constants : UIConstants. */
     private final UIConstants _constants = Globals.uiConstants();
@@ -147,11 +148,21 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     }
 
     /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
+    public String definition() {
+        return _definition;
+    }
+
+    /**
      * Adds necessary fields for the panel.
      *
      * @param definition XML of the definition.
      */
     public void createFields(final String definition) {
+        _definition = definition;
         removeAll();
         if (definition == null || definition.trim().equals("")) {
             return;

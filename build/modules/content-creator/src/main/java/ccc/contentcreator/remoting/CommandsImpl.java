@@ -11,12 +11,15 @@
  */
 package ccc.contentcreator.remoting;
 
+import java.util.List;
+
 import ccc.commons.JNDI;
 import ccc.contentcreator.api.CommandService;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.CCCRemoteException;
 import ccc.services.api.Commands;
 import ccc.services.api.PageDelta;
+import ccc.services.api.ParagraphDelta;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.ServiceNames;
 import ccc.services.api.TemplateDelta;
@@ -158,5 +161,11 @@ public class CommandsImpl
     public void includeInMainMenu(final String resourceId,
                                   final boolean include) {
         _delegate.includeInMainMenu(resourceId, include);
+    }
+
+    /** {@inheritDoc} */
+    public List<String> validateFields(final List<ParagraphDelta> delta,
+                                 final String definition) {
+        return _delegate.validateFields(delta, definition);
     }
 }

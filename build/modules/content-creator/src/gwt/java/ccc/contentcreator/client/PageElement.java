@@ -19,7 +19,7 @@ import com.extjs.gxt.ui.client.widget.form.Field;
 
 
 /**
- * TODO: Add Description for this type.
+ * Class for an element of the page.
  *
  * @author Civic Computing Ltd.
  */
@@ -76,7 +76,6 @@ public class PageElement {
         _dateField = field;
     }
 
-
     public Field<String> field() {
         return _field;
     }
@@ -84,7 +83,5 @@ public class PageElement {
     public void field(final Field<String>field) {
         _field = field;
     }
-
-
 
 }

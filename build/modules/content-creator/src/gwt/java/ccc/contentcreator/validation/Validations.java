@@ -13,11 +13,14 @@ package ccc.contentcreator.validation;
 
 import java.util.List;
 
+import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
+import ccc.services.api.ParagraphDelta;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.google.gwt.core.client.GWT;
 
 
 /**
@@ -26,6 +29,9 @@ import com.extjs.gxt.ui.client.widget.form.TextField;
  * @author Civic Computing Ltd.
  */
 public class Validations {
+
+    private final static UIConstants _uiConstants =
+        GWT.create(UIConstants.class);
 
     private static final String  VALID_CHARACTERS = "[\\.\\w]+";
 
@@ -58,9 +64,9 @@ public class Validations {
             public void validate(final Validate validate) {
                 if(null == name.getValue()
                    || name.getValue().trim().equals("")) {
-                    validate.addMessage( // TODO: Fix
+                    validate.addMessage(
                         name.getFieldLabel()
-                        + " cannot be empty"
+                        + " "+_uiConstants.cannotBeEmpty()
                     );
                 }
                 validate.next();
@@ -80,7 +86,7 @@ public class Validations {
                 if(!name.getValue().matches(VALID_CHARACTERS)) {
                     validate.addMessage(
                         name.getFieldLabel()
-                        + " is not valid" // i18n
+                        + " "+_uiConstants.isNotValid()
                     );
                 }
                 validate.next();
@@ -109,7 +115,7 @@ public class Validations {
                                 validate.addMessage(
                                     "A resource with name '"
                                     + name.getValue()
-                                    + "' already exists in this folder."
+                                    + _uiConstants.alreadyExistsInThisFolder()
                                 );
                             }
                             validate.next();
@@ -130,7 +136,7 @@ public class Validations {
                 if(!email.getValue().matches(VALID_EMAIL)) {
                     validate.addMessage(
                         email.getFieldLabel()
-                        + " is not valid" // i18n
+                        + " "+_uiConstants.isNotValid()
                     );
                 }
                 validate.next();
@@ -156,9 +162,9 @@ public class Validations {
                         public void onSuccess(final Boolean nameExists) {
                             if (nameExists) {
                                 validate.addMessage(
-                                    "A resource with name '"
+                                    _uiConstants.resourceWithName()
                                     + name.getValue()
-                                    + "' already exists in the parent folder."
+                                    + _uiConstants.alreadyExistsInTheParentFolder()
                                 );
                             }
                             validate.next();
@@ -181,12 +187,46 @@ public class Validations {
             public void validate(final Validate validate) {
                 if(null == input.getValue()
                    || input.getValue().length() < min) {
-                    validate.addMessage( // TODO: Fix
+                    validate.addMessage(
                         input.getFieldLabel()
-                        + " is too short"
+                        + " "+_uiConstants.isTooShort()
                     );
                 }
                 validate.next();
+            }
+        };
+    }
+
+    /**
+     * Validates page fields against template regular expressions.
+     *
+     * @param delta ParagraphDelta of the paragraph fields to validate.
+     * @param definition Template definition.
+     * @return The Validator
+     */
+    public static Validator validateFields(final List<ParagraphDelta> delta,
+                                           final String definition) {
+        return new Validator() {
+            public void validate(final Validate validate) {
+                Globals.commandService().validateFields(
+                    delta,
+                    definition,
+                    new ErrorReportingCallback<List <String>>(){
+                        public void onSuccess(final List<String> errors) {
+                            if (!errors.isEmpty()) {
+                                final StringBuffer sb = new StringBuffer();
+                                for (final String error : errors) {
+                                    sb.append(error);
+                                    sb.append(" ");
+                                }
+
+                                validate.addMessage(
+                                    _uiConstants.validationFailed()
+                                    +sb.toString()
+                                );
+                            }
+                            validate.next();
+                        }});
             }
         };
     }
