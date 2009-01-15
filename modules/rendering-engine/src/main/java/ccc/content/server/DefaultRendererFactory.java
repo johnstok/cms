@@ -20,12 +20,16 @@ import ccc.services.StatefulReader;
 
 /**
  * Default implementation of the {@link RendererFactory} interface.
+ * <br><br>
+ * Properties:
+ * <br>* respectVisibility - true by default.
  *
  * @author Civic Computing Ltd.
  */
 public class DefaultRendererFactory implements RendererFactory {
 
     private final Registry _registry;
+    private boolean _respectVisiblity = true;
 
     /**
      * Constructor.
@@ -42,7 +46,7 @@ public class DefaultRendererFactory implements RendererFactory {
     public ResourceRenderer newInstance() {
         return new DefaultResourceRenderer(dataManager(),
                                            resourceReader(),
-                                           true);
+                                           _respectVisiblity);
     }
 
     private StatefulReader resourceReader() {
@@ -51,5 +55,21 @@ public class DefaultRendererFactory implements RendererFactory {
 
     private DataManager dataManager() {
         return _registry.get(ServiceNames.DATA_MANAGER_LOCAL);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void setRespectVisibility(final String newValue) {
+        if ("false".equals(newValue)) {
+            _respectVisiblity = false;
+        } else {
+            _respectVisiblity = true;
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean getRespectVisibility() {
+        return _respectVisiblity;
     }
 }

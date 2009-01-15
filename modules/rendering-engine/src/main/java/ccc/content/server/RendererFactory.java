@@ -25,4 +25,20 @@ public interface RendererFactory {
      * @return A {@link ResourceRenderer}.
      */
     ResourceRenderer newInstance();
+
+    /**
+     * Accessor for the 'respect visibility' property.
+     *
+     * @return A boolean.
+     */
+    public boolean getRespectVisibility();
+
+    /**
+     * Mutator for the 'respect visibility' property.
+     *
+     * @param newValue A string representing a boolean value. The string 'false'
+     *  will be interpreted as false; all other values (including null) will be
+     *  interpreted as true.
+     */
+    public void setRespectVisibility(final String newValue);
 }

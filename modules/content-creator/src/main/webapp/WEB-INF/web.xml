@@ -29,6 +29,22 @@
             ccc.contentcreator.remoting.UpdateFileServlet
         </servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>content</servlet-name>
+        <servlet-class>ccc.content.server.ContentServlet</servlet-class>
+        <init-param>
+            <param-name>respect_visibility</param-name>
+            <param-value>false</param-value>
+        </init-param>
+    </servlet>
+    <servlet>
+        <servlet-name>error</servlet-name>
+        <servlet-class>ccc.content.server.ErrorServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>notfound</servlet-name>
+        <servlet-class>ccc.content.server.NotFoundServlet</servlet-class>
+    </servlet>
     
     <servlet-mapping>
         <servlet-name>Queries</servlet-name>
@@ -46,6 +62,22 @@
         <servlet-name>UpdateFileServlet</servlet-name>
         <url-pattern>/update_file</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>content</servlet-name>
+        <url-pattern>/content/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>error</servlet-name>
+        <url-pattern>/error</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>notfound</servlet-name>
+        <url-pattern>/notfound</url-pattern>
+    </servlet-mapping>
+    
+    <!-- session-config>
+        <session-timeout>1</session-timeout>
+    </session-config -->
 
     <welcome-file-list>
         <welcome-file>ContentCreator.html</welcome-file>

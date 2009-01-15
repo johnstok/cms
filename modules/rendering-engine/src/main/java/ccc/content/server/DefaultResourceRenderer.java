@@ -44,7 +44,7 @@ public class DefaultResourceRenderer
      *
      * @param dm The data manager for this resource renderer.
      * @param reader
-     * @param b
+     * @param respectVisiblity
      */
     public DefaultResourceRenderer(final DataManager dm,
                                    final StatefulReader reader,

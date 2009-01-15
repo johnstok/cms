@@ -31,6 +31,7 @@ import ccc.domain.ResourcePath;
 
 /**
  * Tests for the ContentServlet.
+ * TODO: Test init() method.
  *
  * @author Civic Computing Ltd
  */
