@@ -46,7 +46,7 @@ public class PreviewContentDialog extends DialogBox {
         super(false, true);
 
         setText(_constants.preview());
-        _contentServerBaseUrl = Globals.hostURL()+"server";
+        _contentServerBaseUrl = Globals.appURL();
 
         _previewFrame.setWidth("800px");
         _previewFrame.setHeight("600px");

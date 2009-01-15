@@ -32,6 +32,95 @@ public class DefaultRendererFactoryTest
     /**
      * Test.
      */
+    public void testRespectVisiblityIsTrueByDefault() {
+
+        // ARRANGE
+
+        // ACT
+
+        // ASSERT
+        assertTrue("Should be true.", _factory.getRespectVisibility());
+    }
+
+    /**
+     * Test.
+     */
+    public void testRespectVisiblityCanBeSetToFalse() {
+
+        // ARRANGE
+        final String respectVisibility = "false";
+
+        // ACT
+        _factory.setRespectVisibility(respectVisibility);
+
+        // ASSERT
+        assertFalse("Should be false.", _factory.getRespectVisibility());
+    }
+
+    /**
+     * Test.
+     */
+    public void testTrueStringSetsRespectVisibilityToTrue() {
+
+        // ARRANGE
+        _factory.setRespectVisibility("false");
+        final String respectVisibility = "true";
+
+        // ACT
+        _factory.setRespectVisibility(respectVisibility);
+
+        // ASSERT
+        assertTrue("Should be true.", _factory.getRespectVisibility());
+    }
+
+    /**
+     * Test.
+     */
+    public void testInvalidStringsSetRespectVisibilityToTrue() {
+
+        // ARRANGE
+        final String respectVisibility = "foo";
+
+        // ACT
+        _factory.setRespectVisibility(respectVisibility);
+
+        // ASSERT
+        assertTrue("Should be true.", _factory.getRespectVisibility());
+    }
+
+    /**
+     * Test.
+     */
+    public void testEmptyStringsSetRespectVisibilityToTrue() {
+
+        // ARRANGE
+        final String respectVisibility = "";
+
+        // ACT
+        _factory.setRespectVisibility(respectVisibility);
+
+        // ASSERT
+        assertTrue("Should be true.", _factory.getRespectVisibility());
+    }
+
+    /**
+     * Test.
+     */
+    public void testNullStringsSetRespectVisibilityToTrue() {
+
+        // ARRANGE
+        final String respectVisibility = null;
+
+        // ACT
+        _factory.setRespectVisibility(respectVisibility);
+
+        // ASSERT
+        assertTrue("Should be true.", _factory.getRespectVisibility());
+    }
+
+    /**
+     * Test.
+     */
     public void testNewInstance() {
 
         // ARRANGE

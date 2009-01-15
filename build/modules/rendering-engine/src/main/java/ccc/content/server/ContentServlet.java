@@ -16,6 +16,7 @@ import static ccc.commons.Strings.*;
 
 import java.io.IOException;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -66,6 +67,13 @@ public final class ContentServlet extends CCCServlet {
         _factory = new DefaultRendererFactory(new JNDI());
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public void init() throws ServletException {
+        final ServletConfig cf = getServletConfig();
+        _factory.setRespectVisibility(
+            cf.getInitParameter("respect_visibility"));
+    }
 
     /**
      * Get the content for the specified relative URI. This method reads the
