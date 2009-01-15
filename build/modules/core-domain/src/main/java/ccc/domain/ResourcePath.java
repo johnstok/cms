@@ -52,7 +52,7 @@ public final class ResourcePath implements Serializable {
         Matcher m = PATH_PATTERN.matcher(pathString);
 
         if (!m.matches()) {
-            throw new RuntimeException(
+            throw new CCCException(
                 pathString
                 +" does not match the regular expression: "
                 +PATH_PATTERN);

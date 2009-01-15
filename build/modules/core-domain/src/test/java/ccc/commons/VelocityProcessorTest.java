@@ -14,6 +14,8 @@ package ccc.commons;
 import java.io.StringWriter;
 
 import junit.framework.TestCase;
+import ccc.domain.Page;
+import ccc.domain.Paragraph;
 
 
 /**
@@ -67,6 +69,23 @@ public class VelocityProcessorTest extends TestCase {
 
         // ASSERT
         assertEquals("foo", output);
+    }
+
+    /**
+     * Test.
+     */
+    public void testRenderResource() {
+
+        // ARRANGE
+        final Page foo = new Page("foo");
+        foo.addParagraph(Paragraph.fromText("bar", "baz"));
+        final String template = "Hello $resource.id()";
+
+        // ACT
+        final String html = _vp.render(foo, template);
+
+        // ASSERT
+        assertEquals("Hello "+foo.id(), html);
     }
 
 

@@ -19,68 +19,29 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ccc.commons.DBC;
-import ccc.commons.JNDI;
-import ccc.commons.Registry;
-import ccc.services.DataManager;
-import ccc.services.ServiceNames;
-import ccc.services.StatefulReader;
-
 
 /**
  * Shared behaviour for CCC servlets.
- * TODO: Consider adding a UUID to each request?
  *
  * @author Civic Computing Ltd.
  */
 public abstract class CCCServlet extends HttpServlet {
-
-    private Registry _registry = new JNDI();
-
-    /**
-     * Constructor.
-     *
-     * @param registry The registry for this servlet.
-     */
-    public CCCServlet(final Registry registry) {
-        DBC.require().notNull(registry);
-        _registry = registry;
-    }
-
-    /**
-     * Constructor.
-     */
-    public CCCServlet() { super(); }
-
-    /**
-     * Accessor for the content manager.
-     *
-     * @return A ContentManager.
-     */
-    protected StatefulReader resourceReader() {
-        return _registry.get(ServiceNames.STATEFUL_READER);
-    }
-
-    /**
-     * Accessor for the data manager.
-     *
-     * @return A DataManager.
-     */
-    protected DataManager dataManager() {
-        return _registry.get(ServiceNames.DATA_MANAGER_LOCAL);
-    }
 
     /**
      * Disable caching for the response.
      *
      * @param response The response that should not be cached.
      */
-    protected void disableCachingFor(final HttpServletResponse response) {
-        response.setHeader("Pragma", "no-cache");   // non-spec, but supported
-        response.setHeader(
+    protected void disableCaching(final HttpServletResponse response) {
+        response.setHeader(// non-spec, but supported by some browsers
+            "Pragma",
+            "no-cache");
+        response.setHeader(// equivalent to 'no-cache'
             "Cache-Control",
-            "private, must-revalidate, max-age=0"); // equivalent to 'no-cache'
-        response.setHeader("Expires", "0");
+            "private, must-revalidate, max-age=0");
+        response.setHeader(// TODO: Replace with epoch?
+            "Expires",
+            "0");
     }
 
     /**
@@ -94,9 +55,7 @@ public abstract class CCCServlet extends HttpServlet {
     protected void dispatchNotFound(final HttpServletRequest request,
                                     final HttpServletResponse response)
                                           throws ServletException, IOException {
-        request
-            .getRequestDispatcher("/notfound")
-            .forward(request, response);
+        request.getRequestDispatcher("/notfound").forward(request, response);
     }
 
     /**
@@ -110,35 +69,22 @@ public abstract class CCCServlet extends HttpServlet {
      */
     protected void dispatchError(final HttpServletRequest request,
                                  final HttpServletResponse response,
-                                 final RuntimeException e)
+                                 final Exception e)
                                           throws ServletException, IOException {
 
         request.setAttribute(SessionKeys.EXCEPTION_KEY, e);
-        request
-            .getRequestDispatcher("/error")
-            .forward(request, response);
+        request.getRequestDispatcher("/error").forward(request, response);
     }
 
-    /**
-     * Process a GET request.
-     *
-     * This method provides error handling for both committed and uncommitted
-     * responses. It delegates to
-     * {@link #doSafeGet(HttpServletRequest, HttpServletResponse)}
-     * for implementation of business logic.
-     *
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
-    protected void doGet(final HttpServletRequest request,
-                         final HttpServletResponse response)
-        throws ServletException, IOException {
-
+    protected void service(final HttpServletRequest req,
+                           final HttpServletResponse resp)
+                                          throws ServletException, IOException {
         try {
-            doSafeGet(request, response, createRenderer());
-
+            super.service(req, resp);
         } catch (final RuntimeException e) {
-            if(response.isCommitted()) {
+            if(resp.isCommitted()) {
                 /*
                  * Nothing we can do to rescue the response - the HTTP response
                  * code + headers has already been sent. Just log the error on
@@ -153,29 +99,8 @@ public abstract class CCCServlet extends HttpServlet {
                     "Error caught on uncommited response"
                     + " - sending error message.",
                     e);
-                dispatchError(request, response, e);
+                dispatchError(req, resp, e);
             }
         }
     }
-
-    protected ResourceRenderer createRenderer() {
-        return new DefaultResourceRenderer(dataManager(),
-                                           resourceReader(),
-                                           true);
-    }
-
-    /**
-     * Process a GET request. Runtime exceptions can safely be thrown from this
-     * method and will be handled be the
-     * {@link #doGet(HttpServletRequest, HttpServletResponse)} method.
-     *
-     * @param request The request.
-     * @param response The response.
-     * @throws IOException From servlet API.
-     * @throws ServletException  From servlet API.
-     */
-    protected abstract void doSafeGet(HttpServletRequest request,
-                                      HttpServletResponse response,
-                                      final ResourceRenderer renderer)
-        throws ServletException, IOException;
 }
