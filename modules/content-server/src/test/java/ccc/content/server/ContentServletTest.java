@@ -25,18 +25,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
-import ccc.commons.MapRegistry;
-import ccc.commons.VelocityProcessor;
 import ccc.domain.Folder;
 import ccc.domain.Page;
-import ccc.domain.Paragraph;
 import ccc.domain.ResourcePath;
 
 /**
  * Tests for the ContentServlet.
- * TODO: test redirect
- * TODO: test pathInfo = null
- * TODO: test pathInfo = '/'
  *
  * @author Civic Computing Ltd
  */
@@ -44,7 +38,30 @@ public final class ContentServletTest extends TestCase {
 
     /**
      * Test.
-     * @throws IOException
+     */
+    public void testDetermineResourcePathHandlesInvalidPath() {
+
+        // ARRANGE
+        final String invalidPath = "$%^$%/^%$^";
+        expect(_request.getPathInfo()).andReturn(invalidPath);
+        replayAll();
+
+        // ACT
+        try {
+            _cs.determineResourcePath(_request);
+            fail("Should throw exception.");
+
+        // ASSERT
+        } catch (final NotFoundException e) {
+            assertNull(e.getMessage());
+        }
+        verifyAll();
+
+    }
+
+    /**
+     * Test.
+     * @throws IOException From servlet API.
      */
     public void testHandleResponseSetsConstentDescription() throws IOException {
 
@@ -64,8 +81,7 @@ public final class ContentServletTest extends TestCase {
 
     /**
      * Test.
-     * TODO: Set 'Expires' to 'now' instead?
-     * @throws IOException
+     * @throws IOException From servlet API.
      */
     public void testHandleResponseSetsExpiryOfZero() throws IOException {
 
@@ -89,7 +105,7 @@ public final class ContentServletTest extends TestCase {
 
     /**
      * Test.
-     * @throws IOException
+     * @throws IOException From servlet API.
      */
     public void testHandleResponseSetsConstentDisposition() throws IOException {
 
@@ -109,7 +125,7 @@ public final class ContentServletTest extends TestCase {
 
     /**
      * Test.
-     * @throws IOException
+     * @throws IOException From servlet API.
      */
     public void testHandleResponseSetsConstentType() throws IOException {
 
@@ -129,7 +145,7 @@ public final class ContentServletTest extends TestCase {
 
     /**
      * Test.
-     * @throws IOException
+     * @throws IOException From servlet API.
      */
     public void testHandleResponseSetsCharacterEncoding() throws IOException {
 
@@ -150,7 +166,7 @@ public final class ContentServletTest extends TestCase {
     /**
      * Test.
      * TODO: Tests for length of 0 & negative numbers?
-     * @throws IOException
+     * @throws IOException From servlet API.
      */
     public void testHandleResponseSetsConstentLength() throws IOException {
 
@@ -166,24 +182,6 @@ public final class ContentServletTest extends TestCase {
 
         // ASSERT
         verifyAll();
-    }
-
-    /**
-     * Test.
-     * TODO: move to core-domain.
-     */
-    public void testRenderResource() {
-
-        // ARRANGE
-        final Page foo = new Page("foo");
-        foo.addParagraph(Paragraph.fromText("bar", "baz"));
-        final String template = "Hello $resource.id()";
-
-        // ACT
-        final String html = new VelocityProcessor().render(foo, template);
-
-        // ASSERT
-        assertEquals("Hello "+foo.id(), html);
     }
 
     /**
@@ -232,6 +230,23 @@ public final class ContentServletTest extends TestCase {
     /**
      * Test.
      */
+    public void testDetermineResourcePathHandlesSingleForwardSlash() {
+
+        // ARRANGE
+        expect(_request.getPathInfo()).andReturn("/");
+        replayAll();
+
+        // ACT
+        final ResourcePath path = _cs.determineResourcePath(_request);
+
+        // VERIFY
+        verifyAll();
+        assertEquals(new ResourcePath(""), path);
+    }
+
+    /**
+     * Test.
+     */
     public void testDetermineResourcePathHandlesNull() {
 
         // ARRANGE
@@ -252,7 +267,7 @@ public final class ContentServletTest extends TestCase {
      * @throws IOException If there is an error writing to the _response.
      * @throws ServletException If execution of the servlet fails.
      */
-    public void testDoSafeGetHandlesNotFound() throws ServletException,
+    public void testDoGetHandlesNotFound() throws ServletException,
                                                       IOException {
 
         // ARRANGE
@@ -262,6 +277,7 @@ public final class ContentServletTest extends TestCase {
         foo.add(baz);
 
         expect(_request.getPathInfo()).andReturn("/foo");
+        expect(_factory.newInstance()).andReturn(_renderer);
         expect(_renderer.render(isA(ResourcePath.class)))
             .andThrow(new NotFoundException());
         expect(_request.getRequestDispatcher("/notfound")).andReturn(rd);
@@ -269,7 +285,7 @@ public final class ContentServletTest extends TestCase {
         replayAll();
 
         // ACT
-        _cs.doSafeGet(_request, _response, _renderer);
+        _cs.doGet(_request, _response); // How to inject renderer???
 
         // ASSERT
         verifyAll();
@@ -281,13 +297,14 @@ public final class ContentServletTest extends TestCase {
      * @throws IOException If there is an error writing to the _response.
      * @throws ServletException If execution of the servlet fails.
      */
-    public void testDoSafeGetHandlesRedirect() throws ServletException,
+    public void testDoGetHandlesRedirect() throws ServletException,
                                                       IOException {
 
         // ARRANGE
         final Page bar = new Page("bar");
 
         expect(_request.getPathInfo()).andReturn("/foo");
+        expect(_factory.newInstance()).andReturn(_renderer);
         expect(_renderer.render(isA(ResourcePath.class)))
             .andThrow(new RedirectRequiredException(bar));
         expect(_request.getContextPath()).andReturn("/context");
@@ -295,7 +312,7 @@ public final class ContentServletTest extends TestCase {
         replayAll();
 
         // ACT
-        _cs.doSafeGet(_request, _response, _renderer);
+        _cs.doGet(_request, _response);
 
         // ASSERT
         verifyAll();
@@ -315,7 +332,7 @@ public final class ContentServletTest extends TestCase {
         replay(_response);
 
         // ACT
-        _cs.disableCachingFor(_response);
+        _cs.disableCaching(_response);
 
         // VERIFY
         verify(_response);
@@ -333,7 +350,8 @@ public final class ContentServletTest extends TestCase {
         _response = createStrictMock(HttpServletResponse.class);
         _request = createStrictMock(HttpServletRequest.class);
         _renderer = createStrictMock(ResourceRenderer.class);
-        _cs = new ContentServlet(new MapRegistry());
+        _factory = createStrictMock(RendererFactory.class);
+        _cs = new ContentServlet(_factory);
     }
 
     /**
@@ -345,29 +363,31 @@ public final class ContentServletTest extends TestCase {
         _response = null;
         _request = null;
         _renderer = null;
+        _factory = null;
         _cs = null;
     }
 
     private void verifyAll() {
-        verify(_response, _request, _renderer);
+        verify(_response, _request, _renderer, _factory);
     }
 
     private void replayAll() {
-        replay(_response, _request, _renderer);
+        replay(_response, _request, _renderer, _factory);
     }
 
     /**
-     * TODO: Add Description for this type.
+     * Helper class for testing.
      *
      * @author Civic Computing Ltd.
      */
-    private static final class ByteArrayServletOutputStream
+    static final class ByteArrayServletOutputStream
         extends
             ServletOutputStream {
 
         private final ByteArrayOutputStream _baos =
             new ByteArrayOutputStream();
 
+        /** {@inheritDoc} */
         @Override public void write(final int b) throws IOException {
             _baos.write(b);
         }
@@ -381,5 +401,6 @@ public final class ContentServletTest extends TestCase {
     private HttpServletResponse _response;
     private HttpServletRequest  _request;
     private ResourceRenderer _renderer;
+    private RendererFactory _factory;
     private ContentServlet _cs;
 }

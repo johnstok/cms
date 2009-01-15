@@ -20,7 +20,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ccc.commons.Registry;
+import ccc.commons.DBC;
+import ccc.commons.JNDI;
+import ccc.domain.CCCException;
 import ccc.domain.ResourcePath;
 
 
@@ -29,7 +31,6 @@ import ccc.domain.ResourcePath;
  * mounted at the servlet path '/*' in the web.xml config file. Only the HTTP
  * GET method is currently supported.
  *
- * TODO: Mime type setting
  * TODO: Locale setting:
  *  log [getLocale;
  *       Accept-Language
@@ -39,32 +40,32 @@ import ccc.domain.ResourcePath;
  *        response content-type;    // Done
  *        Accept-Charset header;
  *        Accept-encoding header]
- *
- * TODO: Handle bad resource paths - return 404?
- * TODO: Handle good path, no resource - return 404?
  * TODO: Markup escaping?
- * TODO: Handle standard errors -> converting to HTML.
- * TODO: Marshal CCCException to HTML.
- * TODO: How do we handle '/'? - return content root with folder template
- * TODO: Should be final but need to wait for resource injection...
  *
  * @author Civic Computing Ltd
  */
-public class ContentServlet extends CCCServlet {
+public final class ContentServlet extends CCCServlet {
+
+    private final RendererFactory _factory;
+
 
     /**
      * Constructor.
      *
-     * @param registry The registry for this servlet.
+     * @param factory The renderer factory for this servlet.
      */
-    public ContentServlet(final Registry registry) {
-        super(registry);
+    public ContentServlet(final RendererFactory factory) {
+        DBC.require().notNull(factory);
+        _factory = factory;
     }
 
     /**
      * Constructor.
      */
-    public ContentServlet() { super(); }
+    public ContentServlet() {
+        _factory = new DefaultRendererFactory(new JNDI());
+    }
+
 
     /**
      * Get the content for the specified relative URI. This method reads the
@@ -74,16 +75,17 @@ public class ContentServlet extends CCCServlet {
      * {@inheritDoc}
      */
     @Override
-    protected void doSafeGet(final HttpServletRequest request,
-                             final HttpServletResponse response,
-                             final ResourceRenderer renderer)
-        throws IOException, ServletException {
+    protected void doGet(final HttpServletRequest request,
+                         final HttpServletResponse response)
+                                          throws IOException, ServletException {
         try {
             final ResourcePath contentPath = determineResourcePath(request);
-            final Response r = renderer.render(contentPath);
+            final Response r = _factory.newInstance().render(contentPath);
             handle(response, request, r);
+
         } catch (final NotFoundException e) {
             dispatchNotFound(request, response);
+
         } catch (final RedirectRequiredException e) {
             final String context = request.getContextPath();
             final String relUri = e.getResource().absolutePath().toString();
@@ -92,18 +94,24 @@ public class ContentServlet extends CCCServlet {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Determine the ResourcePath from a request's pathInfo.
+     * TODO: Change param to type String.
      *
-     * @param request
-     * @return
+     * @param request The HTTP request.
+     * @return The corresponding resource path.
      */
-    protected ResourcePath determineResourcePath(final HttpServletRequest request) {
+    protected ResourcePath determineResourcePath(
+                                             final HttpServletRequest request) {
         String pathString = request.getPathInfo();
         pathString = nvl(pathString, "/");
         pathString = removeTrailing('/', pathString);
 
-        final ResourcePath contentPath = new ResourcePath(pathString);
-        return contentPath;
+        try {
+            final ResourcePath contentPath = new ResourcePath(pathString);
+            return contentPath;
+        } catch (final CCCException e) {
+            throw new NotFoundException();
+        }
     }
 
     /**
@@ -114,9 +122,9 @@ public class ContentServlet extends CCCServlet {
      * @param response
      * @throws IOException
      */
-    public void handle(final HttpServletResponse httpResponse,
-                       final HttpServletRequest httpRequest,
-                       final Response response) throws IOException {
+    protected void handle(final HttpServletResponse httpResponse,
+                          final HttpServletRequest httpRequest,
+                          final Response response) throws IOException {
 
         if (null!=response.getDescription()) {
             httpResponse.setHeader(
@@ -146,7 +154,7 @@ public class ContentServlet extends CCCServlet {
 
         if (null!=response.getExpiry()) {
             if (response.getExpiry().longValue() < 1) {
-                disableCachingFor(httpResponse);
+                disableCaching(httpResponse);
             } else {
                 throw new RuntimeException();
             }
