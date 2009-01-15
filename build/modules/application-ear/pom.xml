@@ -376,7 +376,7 @@
                         <configuration>
                             <browser>*opera</browser>
                             <startURL>http://localhost:8080/</startURL>
-                            <suite>src/test/selenese/acceptance-tests.html</suite>
+                            <suite>src/test/selenese/acceptance-opera-tests.html</suite>
                             <timeoutInSeconds>1800</timeoutInSeconds>
                             <background>true</background>
                             <port>5555</port>
