@@ -66,6 +66,7 @@
         <module>modules/core-domain</module>
         <module>modules/public-api</module>
         <module>modules/business-services</module>
+        <module>modules/rendering-engine</module>
         <module>modules/services-ejb3</module>
         <module>modules/data-migration</module>
         <module>modules/content-creator</module>
