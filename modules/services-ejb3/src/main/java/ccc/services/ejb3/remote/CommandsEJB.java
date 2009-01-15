@@ -14,6 +14,8 @@ package ccc.services.ejb3.remote;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.security.RolesAllowed;
@@ -132,7 +134,17 @@ public class CommandsEJB
             final Template template =
                 _resources.find(Template.class, UUID.fromString(templateId));
             page.template(template);
-            validateFields(delta, template);
+            final List<String> errors = validateFields(delta._paragraphs,
+                                                 template.definition());
+            if (!errors.isEmpty()) {
+                final StringBuffer sb = new StringBuffer();
+                for (final String error : errors) {
+                    sb.append(error);
+                    sb.append(" ");
+                }
+                throw new CCCException(
+                    "Field validation failed: "+sb.toString());
+            }
         }
 
         for (final ParagraphDelta para : delta._paragraphs) {
@@ -152,17 +164,18 @@ public class CommandsEJB
         return map(page);
     }
 
-    private void validateFields(final PageDelta delta, final Template t) {
-
+    /** {@inheritDoc} */
+    public List<String> validateFields(final List<ParagraphDelta> delta,
+                                 final String t) {
         Document document;
-        String errors = "";
+        final List<String> errors = new ArrayList<String>();
 
         final DocumentBuilderFactory factory =
             DocumentBuilderFactory.newInstance();
         try {
             final DocumentBuilder builder = factory.newDocumentBuilder();
             final InputSource s =
-                new InputSource(new StringReader(t.definition()));
+                new InputSource(new StringReader(t));
             document = builder.parse(s);
             final NodeList nl = document.getElementsByTagName("field");
             for (int n = 0;  n < nl.getLength(); n++) {
@@ -170,12 +183,12 @@ public class CommandsEJB
                 final Node regexp = nnm.getNamedItem("regexp");
                 final Node name = nnm.getNamedItem("name");
                 if (regexp != null && name != null) {
-                    for (final ParagraphDelta para : delta._paragraphs) {
+                    for (final ParagraphDelta para : delta) {
                         if (name.getNodeValue().equals(para._name)
                             && !para._textValue.matches(regexp.getNodeValue())
                             && ("TEXT".equals(para._type)
                             || "HTML".equals(para._type))) {
-                            errors = errors + "problem with field "+para._name+"\n";
+                            errors.add(para._name);
                         }
                     }
                 }
@@ -184,9 +197,7 @@ public class CommandsEJB
         } catch (final Exception e) {
             throw new CCCException("Error with XML parsing ", e);
         }
-        if (!errors.isEmpty()) {
-            throw new CCCException(errors);
-        }
+        return errors;
     }
 
     /** {@inheritDoc} */
@@ -282,7 +293,17 @@ public class CommandsEJB
             final Template template =
                 _resources.find(Template.class, UUID.fromString(templateId));
             page.template(template);
-            validateFields(delta, template);
+            final List<String> errors = validateFields(delta._paragraphs,
+                                                 template.definition());
+            if (!errors.isEmpty()) {
+                final StringBuffer sb = new StringBuffer();
+                for (final String error : errors) {
+                    sb.append(error);
+                    sb.append(" ");
+                }
+                throw new CCCException(
+                    "Field validation failed: "+sb.toString());
+            }
         }
 
         // TODO: Remove duplication

@@ -11,6 +11,9 @@
  */
 package ccc.services.api;
 
+import java.util.List;
+
+
 
 
 
@@ -41,11 +44,6 @@ public interface Commands {
      * Update the specified template on the server.
      */
     ResourceSummary updateTemplate(TemplateDelta delta);
-
-
-
-
-
 
     /**
      * Rename resource.
@@ -145,4 +143,7 @@ public interface Commands {
      * Create a new template in CCC.
      */
     ResourceSummary createTemplate(String parentId, TemplateDelta delta);
+
+    public List<String> validateFields(final List<ParagraphDelta> delta,
+                                 final String definition);
 }

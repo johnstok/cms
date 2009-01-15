@@ -11,8 +11,11 @@
  */
 package ccc.contentcreator.api;
 
+import java.util.List;
+
 import ccc.services.api.AliasDelta;
 import ccc.services.api.PageDelta;
+import ccc.services.api.ParagraphDelta;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserDelta;
@@ -54,6 +57,7 @@ public interface CommandServiceAsync {
 
     void includeInMainMenu(String resourceId, boolean include, AsyncCallback<Void> callback);
 
+    void validateFields(List<ParagraphDelta> delta, String definition, AsyncCallback<List <String>> callback);
 
 
 

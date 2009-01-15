@@ -261,22 +261,6 @@ public class CreatePageDialog
     protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                Validate.callTo(createPage())
-                    .check(Validations.notEmpty(_second.name()))
-                    .check(Validations.notValidResourceName(_second.name()))
-                    .check(Validations.notEmpty(_second.title()))
-                    .stopIfInError()
-                    .check(Validations.uniqueResourceName(
-                        _parent, _second.name()))
-                    .callMethodOr(Validations.reportErrors());
-            }
-        };
-    }
-
-    private Runnable createPage() {
-        return new Runnable() {
-            @SuppressWarnings("unchecked")
-            public void run() {
                 final List<PageElement> definitions =_second.pageElements();
                 final List<ParagraphDelta> paragraphs =
                     new ArrayList<ParagraphDelta>();
@@ -306,6 +290,25 @@ public class CreatePageDialog
                     }
                 }
 
+
+                Validate.callTo(createPage(paragraphs))
+                    .check(Validations.notEmpty(_second.name()))
+                    .check(Validations.notValidResourceName(_second.name()))
+                    .check(Validations.notEmpty(_second.title()))
+                    .stopIfInError()
+                    .check(Validations.uniqueResourceName(
+                        _parent, _second.name()))
+                    .check(Validations.validateFields(paragraphs,
+                        _second.definition()))
+                    .callMethodOr(Validations.reportErrors());
+            }
+        };
+    }
+
+    private Runnable createPage(final List<ParagraphDelta> paragraphs) {
+        return new Runnable() {
+            @SuppressWarnings("unchecked")
+            public void run() {
                 final PageDelta page = new PageDelta();
                 page._name = _second.name().getValue();
                 page._title = _second.title().getValue();

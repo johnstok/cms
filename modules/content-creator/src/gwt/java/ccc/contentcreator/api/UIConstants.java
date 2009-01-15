@@ -601,4 +601,60 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Main menu")
     String mainMenu();
+
+    /**
+     * "Validation failed for: ".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Validation failed for: ")
+    String validationFailed();
+
+    /**
+     * "cannot be empty".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("cannot be empty")
+    String cannotBeEmpty();
+
+    /**
+     * "is not valid".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("is not valid")
+    String isNotValid();
+
+    /**
+     * "A resource with name '".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("A resource with name '")
+    String resourceWithName();
+
+    /**
+     * "' already exists in the parent folder.".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("' already exists in the parent folder.")
+    String alreadyExistsInTheParentFolder();
+
+    /**
+     * "' already exists in this folder.".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("' already exists in this folder.")
+    String alreadyExistsInThisFolder();
+
+    /**
+     * "is too short".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("is too short")
+    String isTooShort();
 }
