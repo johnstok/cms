@@ -12,7 +12,7 @@
 	<inherits name="com.google.gwt.user.theme.standard.Standard" />
 
 	<!-- Supported locales. -->
-	<!-- extend-property name="locale" values="fi" / -->
+	<extend-property name="locale" values="fi" />
 
 	<!-- Specify the app entry point class. -->
 	<entry-point class="ccc.contentcreator.client.ContentCreator" />
