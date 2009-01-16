@@ -104,10 +104,9 @@ public final class ContentCreator implements EntryPoint {
                              final Collection<ResourceSummary> arg0) {
 
         Globals.disableExitConfirmation();
-        final Viewport viewport = new Viewport();
         ResourceSummary rs = null;
         for (final ResourceSummary rr : arg0) {
-            if (rr._name.equals("content") ) {
+            if (rr._name.equals("content")) {
                 rs = rr;
             }
         }
@@ -117,9 +116,9 @@ public final class ContentCreator implements EntryPoint {
         resourceSelect.addListener(Events.Close,
             new Listener<ComponentEvent>() {
             public void handleEvent(final ComponentEvent be) {
-                final ModelData _target = resourceSelect.selectedResource();
+                final ModelData target = resourceSelect.selectedResource();
                 qs.getAbsolutePath(
-                    _target.<String>get("id"),
+                    target.<String>get("id"),
                     new ErrorReportingCallback<String>() {
                         public void onSuccess(final String arg0) {
                             jsniSetUrl("/server"+arg0);
@@ -134,13 +133,6 @@ public final class ContentCreator implements EntryPoint {
     private void browseImages(final Collection<ResourceSummary> arg0) {
 
         Globals.disableExitConfirmation();
-        final Viewport viewport = new Viewport();
-        ResourceSummary rs = null;
-        for (final ResourceSummary rr : arg0) {
-            if (rr._name.equals("assets") ) {
-                rs = rr;
-            }
-        }
         final ImageSelectionDialog resourceSelect =
             new ImageSelectionDialog();
 

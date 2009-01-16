@@ -50,7 +50,7 @@ public class FolderSelectionDialog extends Window {
         _tree = new FolderResourceTree(root);
         add(_tree);
         final Button save = new Button(
-            "OK", // TODO: Move to UIConstants
+            _constants.ok(),
             new SelectionListener<ComponentEvent>() {
                 @Override
                 public void componentSelected(final ComponentEvent ce) {
