@@ -46,6 +46,7 @@ public class CreateAliasDialog extends AbstractEditDialog {
     /**
      * Constructor.
      *
+     * @param root Resource root for folder selection
      * @param item The ResourceDTO
      */
     public CreateAliasDialog(final ModelData item, final ResourceSummary root) {

@@ -72,6 +72,9 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
 
     /**
      * Constructor.
+     *
+     * @param parentFolderId The id of the parent folder.
+     * @param store ListStore model for the dialog.
      */
     public EditTemplateDialog(final String parentFolderId,
                               final ListStore<ModelData> store) {
@@ -103,6 +106,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
      * Constructor.
      *
      * @param model The template to update.
+     * @param proxy
      * @param store ListStore model for the dialog.
      */
     public EditTemplateDialog(final TemplateDelta model,

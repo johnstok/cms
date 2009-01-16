@@ -35,7 +35,7 @@ public class ResourceNavigator extends ContentPanel {
      * Constructor.
      *
      * @param view LeftRightPane of the surrounding view.
-     * @param rsa ResourceServiceAsync.
+     * @param roots Collection of the resource roots.
      */
     ResourceNavigator(final LeftRightPane view,
                       final Collection<ResourceSummary> roots) {

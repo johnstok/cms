@@ -119,7 +119,8 @@ public class EnhancedResourceTree extends FolderResourceTree {
                     new ErrorReportingCallback<Collection<TemplateDelta>>(){
                         public void onSuccess(
                                       final Collection<TemplateDelta> list) {
-                            new CreatePageDialog(list, item, _rt).show(); // Need deltas here...
+                            // TODO: Need deltas here...
+                            new CreatePageDialog(list, item, _rt).show();
                         }});
             }
         });

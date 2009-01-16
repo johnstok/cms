@@ -372,7 +372,7 @@ public class ResourceTable extends TablePanel {
         contextMenu.add(menuItem);
     }
 
-    private void addRemoveFromMainMenu(final Table tbl, final Menu contextMenu) {
+    private void addRemoveFromMainMenu(final Table tbl, final Menu context) {
         final MenuItem menuItem = new MenuItem();
         menuItem.setId("mmRemove-resource");
         menuItem.setText(_constants.removeFromMainMenu());
@@ -399,7 +399,7 @@ public class ResourceTable extends TablePanel {
                 );
             }
         });
-        contextMenu.add(menuItem);
+        context.add(menuItem);
     }
 
     /**

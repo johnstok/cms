@@ -139,18 +139,18 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor for the page elements.
      *
-     * @return
+     * @return Elements of the page
      */
     public List<PageElement> pageElements() {
         return _pageElements;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor for the definition of page's template.
      *
-     * @return
+     * @return The definition
      */
     public String definition() {
         return _definition;
