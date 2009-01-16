@@ -50,6 +50,7 @@ public class UpdateFileDialog extends AbstractBaseDialog {
     /**
      * Constructor.
      *
+     * @param delta FileDelta of the file to be updated.
      * @param rt The left hand tree view in the main window.
      */
     public UpdateFileDialog(final FileDelta delta,

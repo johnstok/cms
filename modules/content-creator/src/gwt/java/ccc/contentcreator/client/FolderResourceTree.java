@@ -50,7 +50,6 @@ public class FolderResourceTree extends Tree {
     /**
      * Constructor.
      *
-     * @param rsa ResourceServiceAsync.
      * @param root The root of the tree.
      */
     public FolderResourceTree(final ResourceSummary root) {

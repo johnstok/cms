@@ -44,8 +44,8 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
     /**
      * Constructor.
      *
-     * @param resourceDelta
-     * @param templates
+     * @param resourceDelta A resource to which template would be assigned.
+     * @param templates Collection of templates.
      */
     public ChooseTemplateDialog(final ResourceDelta resourceDelta,
                                 final Collection<TemplateDelta> templates) {

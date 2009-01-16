@@ -49,9 +49,9 @@ public class EditAliasDialog extends AbstractEditDialog {
     /**
      * Constructor.
      *
+     * @param delta The alias to edit
      * @param rt The resourceTable to refresh
-     * @param targetRoot
-     * @param targetName
+     * @param targetRoot The root of the target resource
      */
     public EditAliasDialog(final AliasDelta delta,
                            final ResourceTable rt,

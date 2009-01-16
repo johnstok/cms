@@ -52,6 +52,7 @@ public class MoveDialog extends AbstractEditDialog {
      *
      * @param item The Resource item to move.
      * @param rt ResourceTable to update.
+     * @param root Resource root for the selection dialog.
      */
     public MoveDialog(final ModelData item,
                       final ResourceTable rt,

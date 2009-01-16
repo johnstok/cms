@@ -36,11 +36,11 @@ public class UpdateTagsDialog
     /**
      * Constructor.
      *
-     * @param result
+     * @param resource The resource which tags to update.
      */
-    public UpdateTagsDialog(final ResourceDelta result) {
+    public UpdateTagsDialog(final ResourceDelta resource) {
         super(Globals.uiConstants().updateTags());
-        _resource = result;
+        _resource = resource;
 
         addTextField(_resource._tags,
                      "tags",
