@@ -48,8 +48,8 @@ public class PreviewContentDialog extends DialogBox {
         setText(_constants.preview());
         _contentServerBaseUrl = Globals.appURL();
 
-        _previewFrame.setWidth("800px");
-        _previewFrame.setHeight("600px");
+        _previewFrame.setWidth("640px");
+        _previewFrame.setHeight("480px");
         _previewFrame.setStyleName("ccc-Frame");
         DOM.setElementPropertyInt(getElement(), "frameBorder", 0);
         _previewFrame.setUrl(_contentServerBaseUrl+resourcePath);
