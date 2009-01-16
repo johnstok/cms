@@ -33,7 +33,9 @@ public class ButtonBar extends HorizontalPanel {
     public ButtonBar add(final String buttonTitle,
                          final ClickListener clickListener) {
 
-        add(new Button(buttonTitle, clickListener));
+        final Button button = new Button(buttonTitle, clickListener);
+        button.ensureDebugId(buttonTitle);
+        add(button);
         return this;
     }
 }
