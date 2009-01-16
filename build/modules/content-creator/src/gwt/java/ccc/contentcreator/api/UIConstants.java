@@ -657,4 +657,12 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("is too short")
     String isTooShort();
+
+    /**
+     * "OK".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("OK")
+    String ok();
 }

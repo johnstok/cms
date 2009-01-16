@@ -44,12 +44,19 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @author Civic Computing Ltd.
  */
 public class ImageSelectionDialog extends LayoutContainer {
-    final QueriesServiceAsync _qs = GWT.create(QueriesService.class);
-    final ListView<ModelData> view = null;
+    /** _qs : QueriesServiceAsync. */
+    private final QueriesServiceAsync _qs = GWT.create(QueriesService.class);
+
+
+    /**
+     * Constructor.
+     *
+     */
     public ImageSelectionDialog() {
         setLayout(new FlowLayout(10));
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void onRender(final Element parent, final int index) {
         super.onRender(parent, index);
@@ -66,7 +73,6 @@ public class ImageSelectionDialog extends LayoutContainer {
                         public void onFailure(final Throwable arg0) {
                             callback.onFailure(arg0);
                         }
-
                         public void onSuccess(final Collection<FileSummary> arg0) {
                             callback.onSuccess(
                                 DataBinding.bindFileSummary(arg0));
@@ -94,7 +100,7 @@ public class ImageSelectionDialog extends LayoutContainer {
 
         final ListView<ModelData> view = new ListView<ModelData>() {
             @Override
-            protected ModelData prepareData(ModelData model) {
+            protected ModelData prepareData(final ModelData model) {
                 String s = model.get("title");
                 model.set("shortName", Util.ellipse(s, 15));
                 return model;

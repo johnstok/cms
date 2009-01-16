@@ -35,11 +35,11 @@ public class PageElement {
     /**
      * Constructor.
      *
-     * @param _id
+     * @param id
      */
-    public PageElement(final String _id) {
+    public PageElement(final String id) {
         super();
-        this._id = _id;
+        this._id = id;
     }
 
 
