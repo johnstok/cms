@@ -576,7 +576,7 @@ public class ResourceTable extends TablePanel {
                     item.<String>get("id"),
                     new ErrorReportingCallback<String>() {
                         public void onSuccess(final String arg0) {
-                            new PreviewContentDialog(arg0).center();
+                            new PreviewContentDialog(arg0).show();
                         }
                 });
             }

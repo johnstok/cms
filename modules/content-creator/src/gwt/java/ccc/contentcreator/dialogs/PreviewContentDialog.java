@@ -12,16 +12,16 @@
 
 package ccc.contentcreator.dialogs;
 
-import ccc.contentcreator.api.UIConstants;
-import ccc.contentcreator.client.ButtonBar;
 import ccc.contentcreator.client.Globals;
 
+import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
+import com.extjs.gxt.ui.client.Style.VerticalAlignment;
+import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.widget.VerticalPanel;
+import com.extjs.gxt.ui.client.widget.button.Button;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Frame;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
 
 
 /**
@@ -29,9 +29,7 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * @author Civic Computing Ltd
  */
-public class PreviewContentDialog extends DialogBox {
-
-    private final UIConstants     _constants = Globals.uiConstants();
+public class PreviewContentDialog extends AbstractBaseDialog {
 
     private final VerticalPanel _panel = new VerticalPanel();
     private final Frame _previewFrame = new Frame();
@@ -43,9 +41,7 @@ public class PreviewContentDialog extends DialogBox {
      * @param resourcePath The content resource to preview.
      */
     public PreviewContentDialog(final String resourcePath) {
-        super(false, true);
-
-        setText(_constants.preview());
+        super(Globals.uiConstants().preview());
         _contentServerBaseUrl = Globals.appURL();
 
         _previewFrame.setWidth("640px");
@@ -54,20 +50,23 @@ public class PreviewContentDialog extends DialogBox {
         DOM.setElementPropertyInt(getElement(), "frameBorder", 0);
         _previewFrame.setUrl(_contentServerBaseUrl+resourcePath);
 
-        _panel.setVerticalAlignment(VerticalPanel.ALIGN_BOTTOM);
-        _panel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
+        _panel.setVerticalAlign(VerticalAlignment.BOTTOM);
+        _panel.setHorizontalAlign(HorizontalAlignment.RIGHT);
         _panel.add(_previewFrame);
-        _panel.add(
-            new ButtonBar()
-                .add(_constants.cancel(),
-                     new ClickListener(){
-                        public void onClick(final Widget sender) {
-                            hide();
-                        }
-                    }
-                )
-            );
 
+        _cancel.setId("cancel");
+        addButton(_cancel);
         add(_panel);
     }
+
+    /** _cancel : Button. */
+    private final Button _cancel = new Button(
+        constants().cancel(),
+            new SelectionListener<ButtonEvent>() {
+                @Override
+                public void componentSelected(final ButtonEvent ce) {
+                    close();
+                }
+            }
+        );
 }
