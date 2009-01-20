@@ -31,7 +31,7 @@ public abstract class AbstractEditDialog
         AbstractBaseDialog {
 
     /** _panel : FormPanel. */
-    private final FormPanel _panel = new FormPanel();
+    protected final FormPanel _panel = new FormPanel();
 
     /** _save : Button. */
     private final Button _save = new Button(
