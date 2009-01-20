@@ -15,12 +15,10 @@ import java.util.ArrayList;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.widget.CardPanel;
 import com.extjs.gxt.ui.client.widget.Component;
-import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.button.Button;
-import com.extjs.gxt.ui.client.widget.layout.CardLayout;
-import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 
 
 /**
@@ -32,9 +30,6 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 public abstract class AbstractWizardDialog
     extends
         AbstractBaseDialog {
-
-    /** _layout : CardLayout. */
-    private final CardLayout _layout = new CardLayout();
 
     private ArrayList<LayoutContainer> _cards =
         new ArrayList<LayoutContainer>();
@@ -60,7 +55,7 @@ public abstract class AbstractWizardDialog
             }
         });
 
-    private ContentPanel _cp = new ContentPanel();
+    private CardPanel _cp = new CardPanel();
 
     /**
      * Constructor.
@@ -71,13 +66,9 @@ public abstract class AbstractWizardDialog
 
         super(title);
 
-        _cp.setLayout(_layout);
         _cp.setWidth("100%");
         _cp.setBorders(false);
-        _cp.setBodyBorder(false);
-        _cp.setHeaderVisible(false);
 
-        setLayout(new FitLayout());
         add(_cp);
 
         _next.setVisible(false);
@@ -107,7 +98,7 @@ public abstract class AbstractWizardDialog
         }
 
         if (!_cards.isEmpty()) {
-            _layout.setActiveItem(_cards.get(0));
+            _cp.setActiveItem(_cards.get(0));
         }
         if (_cards.size() == 1) {
             _save.setVisible(true);
@@ -145,7 +136,7 @@ public abstract class AbstractWizardDialog
     private SelectionListener<ButtonEvent> nextAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                final int currentIndex = currentIndex(_layout.getActiveItem());
+                final int currentIndex = currentIndex(_cp.getActiveItem());
                 LayoutContainer card = null;
 
                 if (_cards.size() == 2) {
@@ -169,7 +160,7 @@ public abstract class AbstractWizardDialog
                     }
                 }
                 if (card != null) {
-                    _layout.setActiveItem(card);
+                    _cp.setActiveItem(card);
                     card.layout();
                 }
 
@@ -180,7 +171,7 @@ public abstract class AbstractWizardDialog
     private SelectionListener<ButtonEvent> prevAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                final int currentIndex = currentIndex(_layout.getActiveItem());
+                final int currentIndex = currentIndex(_cp.getActiveItem());
                 LayoutContainer card = null;
 
                 if (_cards.size() == 2) {
@@ -204,7 +195,7 @@ public abstract class AbstractWizardDialog
                     }
                 }
                 if (card != null) {
-                    _layout.setActiveItem(card);
+                    _cp.setActiveItem(card);
                     card.layout();
                 }
             }

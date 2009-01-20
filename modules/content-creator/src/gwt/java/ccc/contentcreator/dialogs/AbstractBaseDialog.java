@@ -20,6 +20,7 @@ import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.client.Globals;
 
 import com.extjs.gxt.ui.client.widget.Window;
+import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.core.client.GWT;
 
 
@@ -48,6 +49,9 @@ public abstract class AbstractBaseDialog
         setHeading(title);
         setWidth(Globals.DEFAULT_WIDTH);
         setHeight(Globals.DEFAULT_HEIGHT);
+        setLayout(new FitLayout());
+        setBodyStyle("backgroundColor: white;");
+        setMaximizable(true);
     }
 
 

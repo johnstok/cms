@@ -17,7 +17,6 @@ import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
-import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.layout.FormData;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -61,8 +60,6 @@ public abstract class AbstractEditDialog
 
         _save.setId("save");
         _cancel.setId("cancel");
-
-        setLayout(new FitLayout());
 
         _panel.setWidth("100%");
         _panel.setBorders(false);
