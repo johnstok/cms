@@ -21,7 +21,6 @@ import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.TextField;
-import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 
 
 /**
@@ -47,7 +46,6 @@ public class RenameDialog extends AbstractEditDialog {
         _item = item;
         _rt = rt;
 
-        setLayout(new FitLayout());
         setPanelId("RenamePanel");
 
         _oldName.setFieldLabel(constants().originalName());
