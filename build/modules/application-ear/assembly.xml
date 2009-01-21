@@ -1,22 +1,11 @@
 <assembly>
-	<id>binary-release</id>
+	<id>jboss</id>
 	<formats>
-		<format>tar.gz</format>
 		<format>zip</format>
-		<format>dir</format>
 	</formats>
-	<moduleSets>
-		<moduleSet>
-			<binaries>
-				<includeDependencies>false</includeDependencies>
-				<outputDirectory>modules</outputDirectory>
-				<unpack>false</unpack>
-			</binaries>
-		</moduleSet>
-	</moduleSets>
 	<fileSets>
 		<fileSet>
-			<directory>deploy</directory>
+			<directory>..\..\deploy</directory>
 			<lineEnding>keep</lineEnding>
 			<outputDirectory>containers</outputDirectory>
 			<excludes>
@@ -26,10 +15,11 @@
 				<exclude>jboss-4.2.2.GA\server\default\work\**</exclude>
 				<exclude>jboss-4.2.2.GA\server\default\tmp\**</exclude>
 				<exclude>jboss-4.2.2.GA\server\default\data\**</exclude>
+				<exclude>jboss-5.0.0.GA-jdk6\**</exclude>
 			</excludes>
 		</fileSet>
 		<fileSet>
-			<directory>dbms</directory>
+			<directory>..\..\dbms</directory>
 			<lineEnding>keep</lineEnding>
 			<outputDirectory>db-config</outputDirectory>
 		</fileSet>
