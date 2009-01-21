@@ -14,6 +14,7 @@ import java.util.Map;
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.log4j.Logger;
 
+import ccc.services.api.FileDelta;
 import ccc.services.api.UserDelta;
 
 /**
@@ -27,6 +28,11 @@ public class LegacyDBQueries {
         Logger.getLogger(LegacyDBQueries.class);
 
     private final Connection _connection;
+
+    /** FILE : String. */
+    public static final String FILE = "FILE";
+    /** IMAGE : String. */
+    public static final String IMAGE = "IMAGE";
 
     /**
      * Constructor.
@@ -290,5 +296,41 @@ public class LegacyDBQueries {
             DbUtils.closeQuietly(ps);
         }
         return userId;
+    }
+
+    /**
+     * Returns files of the legacy database.
+     *
+     * @return The list of files as FileDeltas.
+     */
+    public List<FileDelta> selectFiles(final String type) {
+        final List<FileDelta> results = new ArrayList<FileDelta>();
+
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+
+        try {
+            ps = _connection.prepareStatement(
+                "SELECT object_name, object_title, classification "
+                + "FROM c3_file_objects "
+                + "WHERE application_name='CCC' AND object_type= ?");
+            ps.setString(1, type);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                final FileDelta file = new FileDelta();
+                file._name = rs.getString("object_name");
+                file._title = rs.getString("object_title");
+                file._description = rs.getString("classification");
+                results.add(file);
+            }
+
+        } catch (final SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DbUtils.closeQuietly(rs);
+            DbUtils.closeQuietly(ps);
+        }
+        return results;
     }
 }
