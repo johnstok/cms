@@ -115,7 +115,7 @@ public class UserManagerEJB implements UserManager {
         current.roles(user.roles());
         if (password != null) {
             final Password p =
-                _dao.find("passwordForUser", Password.class, user);
+                _dao.find("passwordForUser", Password.class, user.id());
             if (p != null) {
                 p.password(password);
             }

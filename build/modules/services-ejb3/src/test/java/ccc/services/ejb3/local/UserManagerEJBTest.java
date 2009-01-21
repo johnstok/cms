@@ -210,7 +210,8 @@ public class UserManagerEJBTest extends TestCase {
         final Password pw = new Password(_u, "foo");
 
         expect(_em.find(User.class, _u.id())).andReturn(_u);
-        expect(_em.find("passwordForUser", Password.class, _u)).andReturn(pw);
+        expect(_em.find("passwordForUser", Password.class, _u.id()))
+            .andReturn(pw);
         replay(_context, _em);
 
         // ACT

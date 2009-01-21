@@ -56,5 +56,5 @@
     <query name="usersWithRole">from ccc.domain.User u left join fetch u._roles where ? in elements(u._roles)</query>
     <query name="usersWithUsername">from ccc.domain.User u where lower(u._username) like ?</query>
     <query name="usersWithEmail">from ccc.domain.User u where lower(u._email) like ?</query>
-    <query name="passwordForUser">from ccc.domain.Password p where p._user = ?</query>
+    <query name="passwordForUser">from ccc.domain.Password p where p._user._id = ?</query>
 </hibernate-mapping>
