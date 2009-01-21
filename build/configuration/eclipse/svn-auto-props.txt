@@ -1,4 +1,9 @@
 [auto-props]
-*.xml = svn:keywords=Date Author Revision,svn:eol-style=LF
-*.java = svn:keywords=Date Author Revision,svn:eol-style=LF
-*.properties = svn:keywords=Date Author Revision,svn:eol-style=LF
+*.xml = svn:keywords=Date Author Revision;svn:eol-style=LF
+*.java = svn:keywords=Date Author Revision;svn:eol-style=LF
+*.properties = svn:keywords=Date Author Revision;svn:eol-style=LF
+*.html = svn:keywords=Date Author Revision;svn:eol-style=LF
+*.conf = svn:keywords=Date Author Revision;svn:eol-style=LF
+*.txt = svn:keywords=Date Author Revision;svn:eol-style=LF
+*.bat = svn:keywords=Date Author Revision;svn:eol-style=LF;svn:executable
+*.sh = svn:keywords=Date Author Revision;svn:eol-style=LF;svn:executable
