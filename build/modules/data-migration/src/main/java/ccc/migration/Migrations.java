@@ -12,10 +12,20 @@
 package ccc.migration;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.multipart.FilePart;
+import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
+import org.apache.commons.httpclient.methods.multipart.Part;
+import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.log4j.Logger;
 import org.w3c.dom.NodeList;
 
@@ -23,7 +33,9 @@ import ccc.commons.JNDI;
 import ccc.commons.Registry;
 import ccc.commons.XHTML;
 import ccc.domain.PredefinedResourceNames;
+import ccc.domain.ResourceName;
 import ccc.services.api.Commands;
+import ccc.services.api.FileDelta;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ParagraphDelta;
 import ccc.services.api.Queries;
@@ -52,9 +64,10 @@ public class Migrations {
 
     private static Logger log =
         Logger.getLogger(ccc.migration.Migrations.class);
-    private ResourceSummary assetRoot;
-    private ResourceSummary templateFolder;
-    private ResourceSummary contentRoot;
+    private ResourceSummary _assetRoot;
+    private ResourceSummary _templateFolder;
+    private ResourceSummary _contentRoot;
+    private String _targetURL = "http://localhost:8080/creator/upload";
 
     /**
      * Constructor.
@@ -74,25 +87,148 @@ public class Migrations {
         createDefaultFolderStructure();
 
         // Migrate users
-        migrateUsers(_queries);
+        migrateUsers();
 
         // Walk the tree migrating each resource
-        migrateChildren(contentRoot._id, 0, _queries);
+        migrateChildren(_contentRoot._id, 0);
+
+        // Migrate files
+        migrateFilesAndImages();
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     */
+    private void migrateFilesAndImages() {
+        final ResourceSummary filesResource =
+            commands().createFolder(_contentRoot._id, "files");
+        final ResourceSummary imagesResource =
+            commands().createFolder(_contentRoot._id, "images");
+
+        final HttpClient client = new HttpClient();
+
+        authenticate(client);
+
+        final List<FileDelta> files =_queries.selectFiles(LegacyDBQueries.FILE);
+        for (final FileDelta legacyFile : files) {
+            uploadFile(filesResource, client, legacyFile, "files/");
+        }
+
+        final List<FileDelta> images =
+            _queries.selectFiles(LegacyDBQueries.IMAGE);
+        for (final FileDelta legacyFile : images) {
+            uploadFile(imagesResource, client, legacyFile, "images/");
+        }
+    }
+
+    /**
+     * Authenticate using login form.
+     *
+     * @param client
+     */
+    private void authenticate(final HttpClient client) {
+
+        final GetMethod get = new GetMethod("http://localhost:8080/creator");
+        try {
+            client.executeMethod(get);
+        } catch (final Exception e) {
+            log.error("initial get method failed ", e);
+        }
+        get.releaseConnection();
+
+        final PostMethod authpost =
+            new PostMethod("http://localhost:8080/creator/j_security_check");
+        final NameValuePair userid   = new NameValuePair("j_username", "super");
+        final NameValuePair password =
+            new NameValuePair("j_password", "sup3r2008");
+        authpost.setRequestBody(
+          new NameValuePair[] {userid, password});
+
+        try {
+            client.executeMethod(authpost);
+        } catch (final Exception e) {
+            log.error("Authentication failed ", e);
+        }
+        authpost.releaseConnection();
+
+        try {
+            final int status = client.executeMethod(get);
+            if (status != HttpStatus.SC_OK) {
+                log.error("Page get request did not return 200");
+            }
+        } catch (final Exception e) {
+            log.error("Authentication failed ", e);
+        }
+
+        get.releaseConnection();
+    }
+
+    private void uploadFile(final ResourceSummary filesResource,
+                            final HttpClient client,
+                            final FileDelta legacyFile,
+                            final String directory) {
+
+        final File file = new File(directory+legacyFile._name);
+        if (!file.exists()) {
+            log.debug("File not found: "+legacyFile._name);
+        } else {
+            try {
+            final PostMethod filePost = new PostMethod(_targetURL);
+            log.debug("Migrating file: "+legacyFile._name);
+            final String name =
+                ResourceName.escape(legacyFile._name).toString();
+
+            String title = legacyFile._title;
+            if (title == null) {
+                title = legacyFile._name;
+            }
+
+            final Part[] parts = {
+                    new StringPart("fileName", name),
+                    new StringPart("title", legacyFile._title),
+                    new StringPart("description", legacyFile._description),
+                    new StringPart("path", filesResource._id),
+
+                    new FilePart("file", file.getName(), file)
+                };
+                filePost.setRequestEntity(
+                    new MultipartRequestEntity(parts, filePost.getParams())
+                    );
+
+                client.getHttpConnectionManager().
+                    getParams().setConnectionTimeout(5000);
+                final int status = client.executeMethod(filePost);
+                if (status == HttpStatus.SC_OK) {
+                    log.debug(
+                        "Upload complete, response="
+                        + filePost.getResponseBodyAsString()
+                    );
+                } else {
+                    log.error(
+                        "Upload failed, response="
+                        + HttpStatus.getStatusText(status)
+                    );
+                }
+            } catch (final Exception e) {
+                log.error("File migration failed ", e);
+            }
+        }
     }
 
     private void createDefaultFolderStructure() {
-        assetRoot = commands().createRoot(PredefinedResourceNames.ASSETS);
-        templateFolder =
-            commands().createFolder(assetRoot._id,
+        _assetRoot = commands().createRoot(PredefinedResourceNames.ASSETS);
+        _templateFolder =
+            commands().createFolder(_assetRoot._id,
                                     PredefinedResourceNames.TEMPLATES);
-        contentRoot = commands().createRoot(PredefinedResourceNames.CONTENT);
-        commands().lock(contentRoot._id);
-        commands().publish(contentRoot._id);
-        commands().unlock(contentRoot._id);
+        _contentRoot = commands().createRoot(PredefinedResourceNames.CONTENT);
+        commands().lock(_contentRoot._id);
+        commands().publish(_contentRoot._id);
+        commands().unlock(_contentRoot._id);
     }
 
-    private void migrateUsers(final LegacyDBQueries queries) {
-        final Map<Integer, UserDelta> mus = queries.selectUsers();
+    private void migrateUsers() {
+        final Map<Integer, UserDelta> mus = _queries.selectUsers();
         for (final Map.Entry<Integer, UserDelta> mu : mus.entrySet()) {
             try {
                 final UserSummary u = commands().createUser(mu.getValue());
@@ -104,10 +240,9 @@ public class Migrations {
     }
 
     private void migrateChildren(final String parentFolderId,
-                                 final Integer parent,
-                                 final LegacyDBQueries queries) {
+                                 final Integer parent) {
 
-        final List<ResourceBean> resources = queries.selectResources(parent);
+        final List<ResourceBean> resources = _queries.selectResources(parent);
 
         for (final ResourceBean r : resources) {
 
@@ -153,7 +288,7 @@ public class Migrations {
                 commands().unlock(rs._id);
             }
 
-            migrateChildren(rs._id, r.contentId(), _queries);
+            migrateChildren(rs._id, r.contentId());
 
         } catch (final Exception e) {
             log.error("Unexpected error", e);
@@ -226,7 +361,7 @@ public class Migrations {
         t._title = r.displayTemplate();
 
         final ResourceSummary ts =
-            commands().createTemplate(templateFolder._id, t);
+            commands().createTemplate(_templateFolder._id, t);
 
         _templates.put(templateName, ts);
 
