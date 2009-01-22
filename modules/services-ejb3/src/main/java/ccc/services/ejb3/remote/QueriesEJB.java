@@ -23,6 +23,8 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
+import org.jboss.annotation.security.SecurityDomain;
+
 import ccc.domain.Alias;
 import ccc.domain.CreatorRoles;
 import ccc.domain.File;
@@ -50,7 +52,7 @@ import ccc.services.api.UserSummary;
 
 
 /**
- * TODO: Add Description for this type.
+ * EJB implementation of the {@link Queries} interface.
  *
  * @author Civic Computing Ltd.
  */
@@ -58,6 +60,7 @@ import ccc.services.api.UserSummary;
 @TransactionAttribute(REQUIRED)
 @Remote(Queries.class)
 @RolesAllowed({"ADMINISTRATOR"})
+@SecurityDomain("java:/jaas/ccc")
 public final class QueriesEJB
     extends
         ModelTranslation
