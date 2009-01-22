@@ -665,4 +665,12 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("OK")
     String ok();
+
+    /**
+     * "Login".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Login")
+    String login();
 }

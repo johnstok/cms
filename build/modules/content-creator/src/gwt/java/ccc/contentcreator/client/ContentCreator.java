@@ -7,6 +7,7 @@ import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.dialogs.ImageSelectionDialog;
+import ccc.contentcreator.dialogs.LoginDialog;
 import ccc.contentcreator.dialogs.ResourceSelectionDialog;
 import ccc.services.api.ResourceSummary;
 
@@ -38,6 +39,20 @@ public final class ContentCreator implements EntryPoint {
      */
     public void onModuleLoad() {
         Globals.installUnexpectedExceptionHandler();
+        Globals.securityService().isLoggedIn(
+            new ErrorReportingCallback<Boolean>(){
+                public void onSuccess(final Boolean isLoggedIn) {
+                    if (isLoggedIn) {
+                        drawMainWindow();
+                    } else {
+                        new LoginDialog().show();
+                    }
+                }
+            }
+        );
+    }
+
+    public void drawMainWindow() {
         Globals.enableExitConfirmation();
 
         final QueriesServiceAsync qs = GWT.create(QueriesService.class);
@@ -62,13 +77,12 @@ public final class ContentCreator implements EntryPoint {
                     contentPane.setRightHandPane(new ContentPanel());
 
                     final Viewport vp =
-                        layoutMainWindow(
-                            new MainMenu(),
-                            contentPane);
+                        layoutMainWindow(new MainMenu(), contentPane);
 
                     RootPanel.get().add(vp);
                 }
-            }});
+            }
+        });
     }
 
 
@@ -84,7 +98,7 @@ public final class ContentCreator implements EntryPoint {
      * @param content The layout container for the content panel.
      * @return The layout as a GXT view-port for rendering by the browser.
      */
-    Viewport layoutMainWindow(final ToolBar menu,
+    private Viewport layoutMainWindow(final ToolBar menu,
                               final LayoutContainer content) {
 
         final LayoutContainer vp = new LayoutContainer();

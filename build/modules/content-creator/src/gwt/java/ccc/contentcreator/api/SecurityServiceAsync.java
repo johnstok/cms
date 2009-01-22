@@ -11,23 +11,19 @@
  */
 package ccc.contentcreator.api;
 
-import ccc.services.api.Commands;
-
-import com.google.gwt.user.client.rpc.RemoteService;
-import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 /**
- * Command API. Methods implemented by this API will change data in the
- * underlying system.
+ * Async version of the {@link SecurityService} interface.
  *
  * @author Civic Computing Ltd.
  */
-@RemoteServiceRelativePath("commands")
-public interface CommandService
-    extends
-        Commands, RemoteService {
+public interface SecurityServiceAsync {
 
-    /* No further methods */
+    void logout(AsyncCallback<Void> asyncCallback);
 
+    void login(String username, String password, AsyncCallback<Boolean> asyncCallback);
+
+    void isLoggedIn(AsyncCallback<Boolean> asyncCallback);
 }

@@ -34,12 +34,12 @@ public abstract class AbstractEditDialog
     protected final FormPanel _panel = new FormPanel();
 
     /** _save : Button. */
-    private final Button _save = new Button(
+    protected final Button _save = new Button(
             constants().save(),
             saveAction());
 
     /** _cancel : Button. */
-    private final Button _cancel = new Button(
+    protected final Button _cancel = new Button(
         constants().cancel(),
             new SelectionListener<ButtonEvent>() {
                 @Override

@@ -18,6 +18,12 @@
         </servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>Security</servlet-name>
+        <servlet-class>
+            ccc.contentcreator.remoting.SecurityImpl
+        </servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>FileUploadServlet</servlet-name>
         <servlet-class>
             ccc.contentcreator.remoting.FileUploadServlet
@@ -55,6 +61,10 @@
         <url-pattern>/commands</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>Security</servlet-name>
+        <url-pattern>/security</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>FileUploadServlet</servlet-name>
         <url-pattern>/upload</url-pattern>
     </servlet-mapping>
@@ -86,10 +96,13 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Secure Area</web-resource-name>
-            <url-pattern>/*</url-pattern>
-            <http-method>GET</http-method>
-            <http-method>POST</http-method>
-            <!-- TODO: Confirm that other methods are always denied. -->
+            <url-pattern>/queries</url-pattern>
+            <url-pattern>/commands</url-pattern>
+            <url-pattern>/upload</url-pattern>
+            <url-pattern>/update_file</url-pattern>
+            <url-pattern>/content/*</url-pattern>
+            <url-pattern>/error</url-pattern>
+            <url-pattern>/notfound</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>ADMINISTRATOR</role-name>
@@ -103,6 +116,5 @@
             <form-error-page>/LoginError.html</form-error-page>
         </form-login-config>
     </login-config>
-
 
 </web-app>

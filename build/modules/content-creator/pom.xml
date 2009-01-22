@@ -120,6 +120,12 @@
             <version>${gwt-version}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>jboss</groupId>
+            <artifactId>jbossweb-service</artifactId>
+            <version>${jboss-version}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
 
