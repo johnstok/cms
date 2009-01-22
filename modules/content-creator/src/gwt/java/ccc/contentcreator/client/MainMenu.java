@@ -100,7 +100,7 @@ public class MainMenu
         item.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override
             public void componentSelected(final MenuEvent ce) {
-                Globals.commandService().logout(
+                Globals.securityService().logout(
                     new AsyncCallback<Void>(){
 
                         public void onFailure(final Throwable arg0) {

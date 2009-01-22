@@ -15,6 +15,8 @@ import ccc.contentcreator.api.CommandService;
 import ccc.contentcreator.api.CommandServiceAsync;
 import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
+import ccc.contentcreator.api.SecurityService;
+import ccc.contentcreator.api.SecurityServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 
 import com.google.gwt.core.client.GWT;
@@ -74,6 +76,15 @@ public final class Globals {
      */
     public static CommandServiceAsync commandService() {
         return GWT.create(CommandService.class);
+    }
+
+    /**
+     * Factory for {@link SecurityServiceAsync} objects.
+     *
+     * @return A new instance of {@link SecurityServiceAsync}.
+     */
+    public static SecurityServiceAsync securityService() {
+        return GWT.create(SecurityService.class);
     }
 
     /**
@@ -162,6 +173,13 @@ public final class Globals {
     public static void redirectTo(final String relativeURL) {
         redirect(hostURL()+relativeURL);
     }
+    
+    /**
+     * Refresh the application.
+     */
+    public static void refresh() {
+        Window.Location.assign(GWT.getHostPageBaseURL());
+    }
 
     private static void redirect(final String url) {
         Window.Location.assign(url);
@@ -188,5 +206,4 @@ public final class Globals {
     public static final String API_URL = "api/";
     /** MIN_USER_NAME_LENGTH : int. */
     public static final int MIN_USER_NAME_LENGTH = 4;
-
 }

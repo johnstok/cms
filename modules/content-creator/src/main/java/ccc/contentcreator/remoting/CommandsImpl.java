@@ -42,6 +42,7 @@ public class CommandsImpl
         new JNDI().get(ServiceNames.PUBLIC_COMMANDS);
 
     /** {@inheritDoc} */
+    @Override
     public void createAlias(final String parentId,
                             final String name,
                             final String targetId) {
@@ -49,12 +50,14 @@ public class CommandsImpl
     }
 
     /** {@inheritDoc} */
+    @Override
     public ResourceSummary createFolder(final String parentId,
                                         final String name) {
         return _delegate.createFolder(parentId, name);
     }
 
     /** {@inheritDoc} */
+    @Override
     public ResourceSummary createPage(final String parentId,
                            final PageDelta delta,
                            final String templateId) {
@@ -62,28 +65,26 @@ public class CommandsImpl
     }
 
     /** {@inheritDoc} */
+    @Override
     public ResourceSummary createTemplate(final String parentId,
                                           final TemplateDelta delta) {
         return _delegate.createTemplate(parentId, delta);
     }
 
-    /** {@inheritDoc}
-     * @return */
+    /** {@inheritDoc} */
+    @Override
     public UserSummary createUser(final UserDelta delta) {
         return _delegate.createUser(delta);
     }
 
     /** {@inheritDoc} */
+    @Override
     public ResourceSummary lock(final String resourceId) {
         return _delegate.lock(resourceId);
     }
 
     /** {@inheritDoc} */
-    public void logout() {
-        getThreadLocalRequest().getSession().invalidate();
-    }
-
-    /** {@inheritDoc} */
+    @Override
     public void move(final String resourceId,
                      final String newParentId) {
         _delegate.move(resourceId, newParentId);
@@ -96,28 +97,33 @@ public class CommandsImpl
     }
 
     /** {@inheritDoc} */
+    @Override
     public void rename(final String resourceId,
                        final String name) {
         _delegate.rename(resourceId, name);
     }
 
     /** {@inheritDoc} */
+    @Override
     public ResourceSummary unlock(final String resourceId) {
         return _delegate.unlock(resourceId);
     }
 
 
     /** {@inheritDoc} */
-    @Override public ResourceSummary unpublish(final String resourceId) {
+    @Override
+    public ResourceSummary unpublish(final String resourceId) {
         return _delegate.unpublish(resourceId);
     }
 
     /** {@inheritDoc} */
+    @Override
     public void updateAlias(final AliasDelta delta) {
         _delegate.updateAlias(delta);
     }
 
     /** {@inheritDoc} */
+    @Override
     public void updatePage(final PageDelta delta) {
         try {
             _delegate.updatePage(delta);
@@ -129,23 +135,27 @@ public class CommandsImpl
     }
 
     /** {@inheritDoc} */
+    @Override
     public void updateResourceTemplate(final String resourceId,
                                        final String templateId) {
         _delegate.updateResourceTemplate(resourceId, templateId);
     }
 
     /** {@inheritDoc} */
+    @Override
     public void updateTags(final String resourceId,
                            final String tags) {
         _delegate.updateTags(resourceId, tags);
     }
 
     /** {@inheritDoc} */
+    @Override
     public ResourceSummary updateTemplate(final TemplateDelta delta) {
         return _delegate.updateTemplate(delta);
     }
 
     /** {@inheritDoc} */
+    @Override
     public UserSummary updateUser(final UserDelta delta) {
         return _delegate.updateUser(delta);
     }
@@ -164,6 +174,7 @@ public class CommandsImpl
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<String> validateFields(final List<ParagraphDelta> delta,
                                  final String definition) {
         return _delegate.validateFields(delta, definition);
