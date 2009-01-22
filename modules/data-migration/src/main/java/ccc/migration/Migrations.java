@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.activation.MimetypesFileTypeMap;
+
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.NameValuePair;
@@ -139,11 +141,12 @@ public class Migrations {
 
         final PostMethod authpost =
             new PostMethod("http://localhost:8080/creator/j_security_check");
-        final NameValuePair userid   = new NameValuePair("j_username", "super");
+        final NameValuePair userid   =
+            new NameValuePair("j_username", "migration");
         final NameValuePair password =
-            new NameValuePair("j_password", "sup3r2008");
+            new NameValuePair("j_password", "migration");
         authpost.setRequestBody(
-          new NameValuePair[] {userid, password});
+            new NameValuePair[] {userid, password});
 
         try {
             client.executeMethod(authpost);
@@ -174,30 +177,36 @@ public class Migrations {
             log.debug("File not found: "+legacyFile._name);
         } else {
             try {
-            final PostMethod filePost = new PostMethod(_targetURL);
-            log.debug("Migrating file: "+legacyFile._name);
-            final String name =
-                ResourceName.escape(legacyFile._name).toString();
+                final PostMethod filePost = new PostMethod(_targetURL);
+                log.debug("Migrating file: "+legacyFile._name);
+                final String name =
+                    ResourceName.escape(legacyFile._name).toString();
 
-            String title = legacyFile._title;
-            if (title == null) {
-                title = legacyFile._name;
-            }
+                String title = legacyFile._title;
+                if (title == null) {
+                    title = legacyFile._name;
+                }
+                final String description =
+                    legacyFile._description == null ? "" :legacyFile._description;
 
-            final Part[] parts = {
-                    new StringPart("fileName", name),
-                    new StringPart("title", legacyFile._title),
-                    new StringPart("description", legacyFile._description),
-                    new StringPart("path", filesResource._id),
-
-                    new FilePart("file", file.getName(), file)
+                final FilePart fp = new FilePart("file", file.getName(), file);
+                fp.setContentType(
+                    new MimetypesFileTypeMap().getContentType(file));
+                final Part[] parts = {
+                        new StringPart("fileName", name),
+                        new StringPart("title", legacyFile._title),
+                        new StringPart("description", description),
+                        new StringPart("path", filesResource._id),
+                        fp
                 };
                 filePost.setRequestEntity(
                     new MultipartRequestEntity(parts, filePost.getParams())
-                    );
+                );
 
                 client.getHttpConnectionManager().
                     getParams().setConnectionTimeout(5000);
+
+
                 final int status = client.executeMethod(filePost);
                 if (status == HttpStatus.SC_OK) {
                     log.debug(
@@ -220,7 +229,7 @@ public class Migrations {
         _assetRoot = commands().createRoot(PredefinedResourceNames.ASSETS);
         _templateFolder =
             commands().createFolder(_assetRoot._id,
-                                    PredefinedResourceNames.TEMPLATES);
+                PredefinedResourceNames.TEMPLATES);
         _contentRoot = commands().createRoot(PredefinedResourceNames.CONTENT);
         commands().lock(_contentRoot._id);
         commands().publish(_contentRoot._id);
@@ -309,7 +318,7 @@ public class Migrations {
             final Map<String, StringBuffer> paragraphs =
                 migrateParagraphs(r.contentId());
             for (final Map.Entry<String, StringBuffer> para
-                : paragraphs.entrySet()) {
+                    : paragraphs.entrySet()) {
                 final ParagraphDelta pd = new ParagraphDelta();
                 pd._name = para.getKey();
                 pd._textValue = para.getValue().toString();
@@ -408,14 +417,14 @@ public class Migrations {
         if (r.isPublished()) {
             final Integer legacyUserId =
                 _queries.selectUserFromLog(r.contentId(),
-                                           r.legacyVersion(),
-                                           "CHANGE STATUS",
-                                           "Changed Status to  PUBLISHED");
+                    r.legacyVersion(),
+                    "CHANGE STATUS",
+                "Changed Status to  PUBLISHED");
 
             if (legacyUserId != null) {
                 final UserSummary user =_users.get(legacyUserId);
                 return (null==user)
-                    ? null
+                ? null
                     : user._id;
             } else {
                 log.warn("Unable to determine publisher for "+r.contentId());
@@ -450,7 +459,7 @@ public class Migrations {
                 final NodeList l =
                     XHTML.evaluateXPath_(
                         new ByteArrayInputStream(html.getBytes()),
-                        "//xhtml:a");
+                    "//xhtml:a");
                 for(int i=0; i<l.getLength(); i++) {
                     log.error(l.item(i).getAttributes().getNamedItem("href"));
                 }
