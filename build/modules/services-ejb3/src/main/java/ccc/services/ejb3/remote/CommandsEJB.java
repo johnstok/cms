@@ -26,6 +26,7 @@ import javax.ejb.TransactionAttribute;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.jboss.annotation.security.SecurityDomain;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -60,8 +61,7 @@ import ccc.services.api.UserSummary;
 
 
 /**
- * TODO: Add Description for this type.
- * TODO: Version checking for all methods.
+ * EJB implementation of the {@link Commands} interface.
  *
  * @author Civic Computing Ltd.
  */
@@ -69,6 +69,7 @@ import ccc.services.api.UserSummary;
 @TransactionAttribute(REQUIRED)
 @Remote(Commands.class)
 @RolesAllowed({"ADMINISTRATOR"})
+@SecurityDomain("java:/jaas/ccc")
 public class CommandsEJB
     extends
         ModelTranslation
