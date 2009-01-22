@@ -152,6 +152,7 @@ public class ModelTranslation {
         rs._publishedBy = (r.isPublished()) ? r.publishedBy().username() : null;
         rs._childCount = 0;
         rs._folderCount = 0;
+        rs._includeInMainMenu = r.includeInMainMenu();
         if (r.type() == ResourceType.FOLDER) {
             rs._childCount = r.as(Folder.class).entries().size();
             rs._folderCount = r.as(Folder.class).folders().size();
