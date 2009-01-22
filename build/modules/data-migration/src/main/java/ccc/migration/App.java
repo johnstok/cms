@@ -1,6 +1,8 @@
 package ccc.migration;
 
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -32,6 +34,9 @@ public final class App {
 
     private static final long MILLISECS_PER_SEC = 1000;
     private static LoginContext ctx;
+    /** properties : Properties. */
+    private static Properties props = new Properties();
+
 
     private App() { /* NO-OP */ }
 
@@ -41,6 +46,17 @@ public final class App {
      * @param args String array of application arguments.
      */
     public static void main(final String[] args) {
+        try {
+            final InputStream in =
+                Thread.currentThread().
+                getContextClassLoader().
+                getResourceAsStream("migration.properties");
+            props.load(in);
+            in.close();
+        } catch (final IOException e) {
+            System.out.println("Properties reading failed");
+        }
+
         final long startTime = new Date().getTime();
 
         // Establish a queries instance to communicate with the legacy DB.
@@ -52,12 +68,11 @@ public final class App {
 
         authenticate("migration", "migration");
 
-
         final LegacyDBQueries legacyDBQueries =
             new LegacyDBQueries(legacyConnection);
-        // Migrations migrations = consoleMigrations();
+
         final Migrations migrations =
-            new Migrations(legacyDBQueries);
+            new Migrations(legacyDBQueries, props);
 
         System.out.println(migrations.queries().loggedInUser()._email);
 
@@ -119,36 +134,35 @@ public final class App {
         }
     }
 
-
-
     private static Connection getLegacyConnection() {
         Connection connection = null;
 
-        // TODO 24 Jul 2008 petteri: Read from properties
         try {
             // Load the JDBC driver
             final String driverName = "oracle.jdbc.driver.OracleDriver";
             Class.forName(driverName);
 
             // Create a connection to the database
-            final String serverName = "poseidon";
-            final String portNumber = "1521";
-            final String sid = "DEV";
+            final String serverName =
+                props.getProperty("sourceDbServerName");
+            final String portNumber =
+                props.getProperty("sourceDbPortNumber");
+            final String sid = props.getProperty("sourceDbSID");
             final String url =
                 "jdbc:oracle:thin:@"
                 + serverName + ":"
                 + portNumber + ":"
                 + sid;
-            final String username = "ccc_migration";
-            final String password = "d3ccc_migration";
+            final String username = props.getProperty("sourceDbUsername");
+            final String password = props.getProperty("sourceDbPassword");
 
             final OracleDataSource ods = new OracleDataSource();
-            final Properties props = new Properties();
-            props.put("user", username);
-            props.put("password", password);
-            props.put(
+            final Properties connectionProps = new Properties();
+            connectionProps.put("user", username);
+            connectionProps.put("password", password);
+            connectionProps.put(
                 "oracle.jdbc.FreeMemoryOnEnterImplicitCache", Boolean.TRUE);
-            ods.setConnectionProperties(props);
+            ods.setConnectionProperties(connectionProps);
             ods.setURL(url);
             connection = ods.getConnection();
 
@@ -174,7 +188,6 @@ public final class App {
             throw new MigrationException(e);
         }
         return connection;
-
     }
 
 

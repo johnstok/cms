@@ -16,6 +16,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.activation.MimetypesFileTypeMap;
 
@@ -69,16 +70,17 @@ public class Migrations {
     private ResourceSummary _assetRoot;
     private ResourceSummary _templateFolder;
     private ResourceSummary _contentRoot;
-    private String _targetURL = "http://localhost:8080/creator/upload";
+    private Properties _props;
 
     /**
      * Constructor.
      *
-     * @param manager
      * @param queries Queries
+     * @param props Properties of the migration
      */
-    public Migrations(final LegacyDBQueries queries) {
+    public Migrations(final LegacyDBQueries queries, final Properties props) {
         _queries = queries;
+        _props = props;
     }
 
     /**
@@ -110,17 +112,22 @@ public class Migrations {
 
         final HttpClient client = new HttpClient();
 
-        authenticate(client);
+        authenticateForUpload(
+            client, _props.getProperty("targetApplicationURL"));
 
         final List<FileDelta> files =_queries.selectFiles(LegacyDBQueries.FILE);
         for (final FileDelta legacyFile : files) {
-            uploadFile(filesResource, client, legacyFile, "files/");
+            uploadFile(filesResource,
+                client, legacyFile,
+                _props.getProperty("filesSourcePath"));
         }
 
         final List<FileDelta> images =
             _queries.selectFiles(LegacyDBQueries.IMAGE);
         for (final FileDelta legacyFile : images) {
-            uploadFile(imagesResource, client, legacyFile, "images/");
+            uploadFile(imagesResource,
+                client, legacyFile,
+                _props.getProperty("imagesSourcePath"));
         }
     }
 
@@ -129,9 +136,11 @@ public class Migrations {
      *
      * @param client
      */
-    private void authenticate(final HttpClient client) {
+    public void authenticateForUpload(final HttpClient client,
+                                      final String appURL) {
 
-        final GetMethod get = new GetMethod("http://localhost:8080/creator");
+        final GetMethod get =
+            new GetMethod(appURL+"/upload");
         try {
             client.executeMethod(get);
         } catch (final Exception e) {
@@ -139,8 +148,7 @@ public class Migrations {
         }
         get.releaseConnection();
 
-        final PostMethod authpost =
-            new PostMethod("http://localhost:8080/creator/j_security_check");
+        final PostMethod authpost = new PostMethod(appURL+"/j_security_check");
         final NameValuePair userid   =
             new NameValuePair("j_username", "migration");
         final NameValuePair password =
@@ -149,22 +157,13 @@ public class Migrations {
             new NameValuePair[] {userid, password});
 
         try {
-            client.executeMethod(authpost);
+            final int status = client.executeMethod(authpost);
+            log.info(status);
+            log.info(authpost.getResponseBodyAsString());
         } catch (final Exception e) {
             log.error("Authentication failed ", e);
         }
         authpost.releaseConnection();
-
-        try {
-            final int status = client.executeMethod(get);
-            if (status != HttpStatus.SC_OK) {
-                log.error("Page get request did not return 200");
-            }
-        } catch (final Exception e) {
-            log.error("Authentication failed ", e);
-        }
-
-        get.releaseConnection();
     }
 
     private void uploadFile(final ResourceSummary filesResource,
@@ -177,7 +176,8 @@ public class Migrations {
             log.debug("File not found: "+legacyFile._name);
         } else {
             try {
-                final PostMethod filePost = new PostMethod(_targetURL);
+                final PostMethod filePost =
+                    new PostMethod(_props.getProperty("targetUploadURL"));
                 log.debug("Migrating file: "+legacyFile._name);
                 final String name =
                     ResourceName.escape(legacyFile._name).toString();
