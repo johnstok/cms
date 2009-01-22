@@ -186,7 +186,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                 if (regexp != null) {
                     tf.setRegex(regexp);
                 }
-                add(tf);
+                add(tf, new FormData("95%"));
                 final PageElement pe = new PageElement(name);
                 pe.type("TEXT");
                 pe.field(tf);
@@ -201,7 +201,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                 if (regexp != null) {
                     ta.setRegex(regexp);
                 }
-                add(ta);
+                add(ta, new FormData("95%"));
                 final PageElement pe = new PageElement(name);
                 pe.type("TEXT");
                 pe.field(ta);
@@ -216,7 +216,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                 final PageElement pe = new PageElement(name);
                 pe.type("DATE");
                 pe.dateField(df);
-                add(df);
+                add(df, new FormData("95%"));
                 _pageElements.add(pe);
             } else if ("html".equals(type)) {
                 final Text fieldName = new Text(name);
