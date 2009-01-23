@@ -13,6 +13,7 @@ package ccc.migration;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,6 +106,13 @@ public class Migrations {
      *
      */
     private void migrateFilesAndImages() {
+        final InputStream mimes =
+            Thread.currentThread().
+            getContextClassLoader().
+            getResourceAsStream("ccc7mime.types");
+
+        final MimetypesFileTypeMap mimemap = new MimetypesFileTypeMap(mimes);
+
         final ResourceSummary filesResource =
             commands().createFolder(_contentRoot._id, "files");
         final ResourceSummary imagesResource =
@@ -119,7 +127,7 @@ public class Migrations {
         for (final FileDelta legacyFile : files) {
             uploadFile(filesResource,
                 client, legacyFile,
-                _props.getProperty("filesSourcePath"));
+                _props.getProperty("filesSourcePath"), mimemap);
         }
 
         final List<FileDelta> images =
@@ -127,7 +135,7 @@ public class Migrations {
         for (final FileDelta legacyFile : images) {
             uploadFile(imagesResource,
                 client, legacyFile,
-                _props.getProperty("imagesSourcePath"));
+                _props.getProperty("imagesSourcePath"), mimemap);
         }
     }
 
@@ -159,17 +167,25 @@ public class Migrations {
         try {
             final int status = client.executeMethod(authpost);
             log.info(status);
-            log.info(authpost.getResponseBodyAsString());
         } catch (final Exception e) {
             log.error("Authentication failed ", e);
         }
         authpost.releaseConnection();
+
+        // in order to prevent 'not a multipart post error' for the first upload
+        try {
+            client.executeMethod(get);
+        } catch (final Exception e) {
+            log.error("get method failed ", e);
+        }
+        get.releaseConnection();
     }
 
     private void uploadFile(final ResourceSummary filesResource,
                             final HttpClient client,
                             final FileDelta legacyFile,
-                            final String directory) {
+                            final String directory,
+                            final MimetypesFileTypeMap mimemap) {
 
         final File file = new File(directory+legacyFile._name);
         if (!file.exists()) {
@@ -190,8 +206,7 @@ public class Migrations {
                     legacyFile._description == null ? "" :legacyFile._description;
 
                 final FilePart fp = new FilePart("file", file.getName(), file);
-                fp.setContentType(
-                    new MimetypesFileTypeMap().getContentType(file));
+                fp.setContentType(mimemap.getContentType(file));
                 final Part[] parts = {
                         new StringPart("fileName", name),
                         new StringPart("title", legacyFile._title),
