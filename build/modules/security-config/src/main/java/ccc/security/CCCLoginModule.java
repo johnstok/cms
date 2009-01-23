@@ -12,15 +12,8 @@
 
 package ccc.security;
 
-import static ccc.commons.Exceptions.*;
-
 import java.security.acl.Group;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -31,13 +24,10 @@ import javax.security.auth.callback.NameCallback;
 import javax.security.auth.callback.PasswordCallback;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
-import javax.sql.DataSource;
 
 import org.jboss.security.SimpleGroup;
 import org.jboss.security.SimplePrincipal;
 
-import ccc.commons.JNDI;
-import ccc.commons.Registry;
 import ccc.domain.Password;
 
 
@@ -49,41 +39,30 @@ import ccc.domain.Password;
  */
 public class CCCLoginModule implements LoginModule {
 
-    /** SQL_LOOKUP_USER : String. */
-    public static final String SQL_LOOKUP_USER =
-        "SELECT USER._ID, PASSWORD._HASH, PASSWORD._ID "
-        + "FROM PASSWORD, USER "
-        + "WHERE PASSWORD._USER=USER._ID "
-        + "AND USER._USERNAME=?";
-
-    /** SQL_LOOKUP_ROLES : String. */
-    public static final String SQL_LOOKUP_ROLES =
-        "SELECT ROLE "
-        + "FROM USER__ROLES "
-        + "where ID=?";
-
-    private Registry _r = new JNDI();
-
     private CallbackHandler _cbHandler;
     private Object[] _user;
     private Set<String> _roles;
     private Group _roleGroup;
     private Subject _subject;
     private Group _callerPrincipal;
+    private Database _db;
+
+    /**
+     * Constructor.
+     */
+    public CCCLoginModule() {
+        this(new JdbcDatabase());
+    }
+
 
     /**
      * Constructor.
      *
-     * @param r The registry to use for resource lookup.
+     * @param db The database to search for users.
      */
-    public CCCLoginModule(final Registry r) {
-        _r = r;
+    public CCCLoginModule(final Database db) {
+        _db = db;
     }
-
-    /**
-     * Constructor.
-     */
-    public CCCLoginModule() { /* No-op */ }
 
 
     /** {@inheritDoc} */
@@ -126,13 +105,13 @@ public class CCCLoginModule implements LoginModule {
             final Callback[] callbacks = {nc, pc};
             _cbHandler.handle(callbacks);
 
-            _user = lookupUser(nc.getName());
+            _user = _db.lookupUser(nc.getName());
 
             if (null==_user) { // Anonymous logins disallowed
                 return false;
             }
 
-            _roles = lookupRoles((String) _user[0]);
+            _roles = _db.lookupRoles((String) _user[0]);
 
             _callerPrincipal = createCallerPrincipal(nc.getName());
             _roleGroup = createRoles(_roles);
@@ -153,6 +132,7 @@ public class CCCLoginModule implements LoginModule {
     @Override
     public boolean logout() throws LoginException {
         _subject.getPrincipals().remove(_roleGroup);
+        _subject.getPrincipals().remove(_callerPrincipal);
         return true;
     }
 
@@ -183,122 +163,77 @@ public class CCCLoginModule implements LoginModule {
     }
 
     /**
-     * Lookup details of a user from the DB. Details are returned in object
-     * array with the following structure:
-     * <br>[0] user id,         as a string
-     * <br>[1] hashed password, as a byte array
-     * <br>[2] password salt,   as a string
+     * Accessor.
      *
-     * @param username The username representing the user to look up.
-     * @return The user data as an object array; NULL if no valid user is found.
-     * @throws SQLException If an error occurs while communicating with the DB.
+     * @return Returns the _cbHandler.
      */
-    public Object[] lookupUser(final String username) throws SQLException {
-
-        if (null==username) {
-            return null;
-        }
-
-        final DataSource ds = _r.get("java:/ccc");
-        final Connection c = ds.getConnection();
-
-        try { // Work with the Connection, close on error.
-            final PreparedStatement s = c.prepareStatement(SQL_LOOKUP_USER);
-
-            try { // Work with the Statement, close on error.
-                s.setString(1, username);
-                final ResultSet rs = s.executeQuery();
-
-                try { // Work with the ResultSet, close on error.
-
-                    if (!rs.next()) { // No user exists with username.
-                        return null;
-                    }
-
-                    final Object[] result = new Object[3];
-                    result[0] = rs.getString(1);
-                    result[1] = rs.getBytes(2);
-                    result[2] = rs.getString(3);
-
-                    if (rs.next()) { // Duplicate users with username - error.
-                        throw new RuntimeException(
-                            "Duplicate users for username: "+username);
-                    }
-
-                    return result;
-                } finally {
-                    try {
-                        rs.close();
-                    } catch (final SQLException e) {
-                        swallow(e);
-                    }
-                }
-
-            } finally {
-                try {
-                    s.close();
-                } catch (final SQLException e) {
-                    swallow(e);
-                }
-            }
-
-        } finally {
-            try {
-                c.close();
-            } catch (final SQLException e) {
-                swallow(e);
-            }
-        }
+    CallbackHandler getCbHandler() {
+        return _cbHandler;
     }
+
+
 
     /**
-     * Look up a user's roles from the DB..
+     * Accessor.
      *
-     * @param userId The user id whose roles we will retrieve.
-     * @return A set of roles, represented as strings.
-     * @throws SQLException If an error occurs while communicating with the DB.
+     * @return Returns the _user.
      */
-    public Set<String> lookupRoles(final String userId) throws SQLException {
-        final Set<String> result = new HashSet<String>();
-        final DataSource ds = _r.get("java:/ccc");
-        final Connection c = ds.getConnection();
-
-        try { // Work with the Connection, close on error.
-            final PreparedStatement s = c.prepareStatement(SQL_LOOKUP_ROLES);
-
-            try { // Work with the Statement, close on error.
-                s.setString(1, userId);
-                final ResultSet rs = s.executeQuery();
-
-                try { // Work with the ResultSet, close on error.
-                    while (rs.next()) {
-                        result.add(rs.getString(1));
-                    }
-                } finally {
-                    try {
-                        rs.close();
-                    } catch (final SQLException e) {
-                        swallow(e);
-                    }
-                }
-
-            } finally {
-                try {
-                    s.close();
-                } catch (final SQLException e) {
-                    swallow(e);
-                }
-            }
-
-        } finally {
-            try {
-                c.close();
-            } catch (final SQLException e) {
-                swallow(e);
-            }
-        }
-
-        return result;
+    Object[] getUser() {
+        return _user;
     }
 
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the _roles.
+     */
+    Set<String> getRoles() {
+        return _roles;
+    }
+
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the _roleGroup.
+     */
+    Group getRoleGroup() {
+        return _roleGroup;
+    }
+
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the _subject.
+     */
+    Subject getSubject() {
+        return _subject;
+    }
+
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the _callerPrincipal.
+     */
+    Group getCallerPrincipal() {
+        return _callerPrincipal;
+    }
+
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the _db.
+     */
+    Database getDb() {
+        return _db;
+    }
 }
