@@ -13,25 +13,24 @@ package ccc.security;
 
 import static org.easymock.EasyMock.*;
 
+import java.security.Principal;
 import java.security.acl.Group;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
-import javax.sql.DataSource;
+import javax.security.auth.callback.Callback;
+import javax.security.auth.callback.CallbackHandler;
+import javax.security.auth.callback.NameCallback;
+import javax.security.auth.callback.PasswordCallback;
+import javax.security.auth.login.LoginException;
 
 import junit.framework.TestCase;
-import ccc.commons.MapRegistry;
-import ccc.commons.Registry;
-import ccc.domain.CreatorRoles;
-import ccc.domain.User;
+import ccc.domain.Password;
 
 
 /**
@@ -45,193 +44,147 @@ public class CCCLoginModuleTest
 
     /**
      * Test.
+     * @throws LoginException
+     * @throws SQLException
+     */
+    public void testLogin() throws LoginException, SQLException {
+
+        // ARRANGE
+        final UUID pw = UUID.randomUUID();
+        final UUID u = UUID.randomUUID();
+        expect(_db.lookupUser("foo")).andReturn(
+            new Object[]{
+                u.toString(),
+                Password.hash("a", pw.toString()),
+                pw.toString()
+            });
+        expect(_db.lookupRoles(u.toString())).andReturn(new HashSet<String>());
+        replay(_db);
+
+        _lm.initialize(
+            null,
+            new CallbackHandler(){
+                @Override public void handle(final Callback[] callbacks) {
+                    ((NameCallback) callbacks[0]).setName("foo");
+                    ((PasswordCallback) callbacks[1])
+                        .setPassword("a".toCharArray());
+                }},
+            new HashMap<String, Object>(),
+            new HashMap<String, Object>());
+
+        // ACT
+        final boolean success = _lm.login();
+
+        // ASSERT
+        verify(_db);
+        assertTrue("Login should be accepted.", success);
+        assertNotNull(_lm.getCallerPrincipal());
+        assertNotNull(_lm.getRoleGroup());
+    }
+
+    /**
+     * Test.
+     */
+    public void testCreateCallerPrincipal() {
+
+        // ARRANGE
+
+        // ACT
+        final Principal p = _lm.createCallerPrincipal("foo");
+
+        // ASSERT
+        assertTrue(p instanceof Group);
+        final List<Principal> callers =
+            (List<Principal>) Collections.list(((Group) p).members());
+        assertEquals(1, callers.size());
+        assertEquals("foo", callers.get(0).getName());
+
+    }
+
+    /**
+     * Test.
+     * @throws LoginException If abort fails.
+     */
+    public void testAbort() throws LoginException {
+
+        // ARRANGE
+
+        // ACT
+        final boolean success = _lm.abort();
+
+        // ASSERT
+        assertTrue("Should be true.", success);
+        assertNull(_lm.getCbHandler());
+        assertNull(_lm.getSubject());
+        assertNull(_lm.getRoles());
+        assertNull(_lm.getUser());
+        assertNull(_lm.getRoleGroup());
+        assertNull(_lm.getCallerPrincipal());
+        assertNotNull(_lm.getDb());
+    }
+
+    /**
+     * Test.
+     * @throws LoginException If login fails.
+     * @throws SQLException From the database.
+     */
+    public void testLoginRejectsAnonymousUsers()
+                                           throws LoginException, SQLException {
+
+        // ARRANGE
+        expect(_db.lookupUser("foo")).andReturn(null);
+        replay(_db);
+
+        _lm.initialize(
+            null,
+            new CallbackHandler(){
+                @Override public void handle(final Callback[] callbacks) {
+                    ((NameCallback) callbacks[0]).setName("foo");
+                    ((PasswordCallback) callbacks[1])
+                        .setPassword("a".toCharArray());
+                }},
+            new HashMap<String, Object>(),
+            new HashMap<String, Object>());
+
+        // ACT
+        final boolean success = _lm.login();
+
+        // ASSERT
+        verify(_db);
+        assertFalse("Login should be rejected.", success);
+    }
+
+    /**
+     * Test.
      */
     public void testCreateRoles() {
 
         // ARRANGE
+        replay(_db);
         final List<String> roles =
             Arrays.asList(new String[]{"foo", "bar", "baz"});
 
         // ACT
-        final Group roleGroup = new CCCLoginModule().createRoles(roles);
+        final Group roleGroup = _lm.createRoles(roles);
 
         // ASSERT
+        verify(_db);
         assertEquals("Roles", roleGroup.getName());
         assertEquals(3, Collections.list(roleGroup.members()).size());
     }
 
-    /**
-     * Test.
-     *
-     * @throws SQLException Due to JDBC API.
-     */
-    public void testLookupUserSucceeds() throws SQLException {
-
-        // ARRANGE
-        final User u = new User("user");
-
-        expect(_ds.getConnection()).andReturn(_c);
-        expect(_c.prepareStatement(CCCLoginModule.SQL_LOOKUP_USER))
-            .andReturn(_s);
-        _s.setString(1, u.username());
-        expect(_s.executeQuery()).andReturn(_rs);
-        expect(_rs.next()).andReturn(Boolean.TRUE);
-        expect(_rs.getString(1)).andReturn(u.id().toString());
-        expect(_rs.getBytes(2)).andReturn(new byte[]{0});
-        expect(_rs.getString(3)).andReturn(UUID.randomUUID().toString());
-        expect(_rs.next()).andReturn(Boolean.FALSE);
-        _rs.close();
-        _s.close();
-        _c.close();
-
-        replay(_ds, _c, _s, _rs);
-
-        // ACT
-        final Object[] result = new CCCLoginModule(_r).lookupUser(u.username());
-
-        // ASSERT
-        verify(_ds, _c, _s, _rs);
-        assertEquals(3, result.length);
-        assertEquals(u.id().toString(), result[0]);
-        assertTrue(
-            "Arrays should be equal.",
-            Arrays.equals(new byte[]{0}, (byte[]) result[1]));
-    }
-
-    /**
-     * Test.
-     *
-     * @throws SQLException Due to JDBC API.
-     */
-    public void testLookupUserFailsForMissingUser() throws SQLException {
-
-        // ARRANGE
-        final User u = new User("user");
-
-        expect(_ds.getConnection()).andReturn(_c);
-        expect(_c.prepareStatement(CCCLoginModule.SQL_LOOKUP_USER))
-        .andReturn(_s);
-        _s.setString(1, u.username());
-        expect(_s.executeQuery()).andReturn(_rs);
-        expect(_rs.next()).andReturn(Boolean.FALSE);
-        _rs.close();
-        _s.close();
-        _c.close();
-
-        replay(_ds, _c, _s, _rs);
-
-        // ACT
-        final Object[] result = new CCCLoginModule(_r).lookupUser(u.username());
-
-        // ASSERT
-        verify(_ds, _c, _s, _rs);
-        assertNull("Should be NULL", result);
-    }
-
-    /**
-     * Test.
-     *
-     * @throws SQLException Due to JDBC API.
-     */
-    public void testLookupUserFailsForDuplicateUsers() throws SQLException {
-
-        // ARRANGE
-        final User u = new User("user");
-
-        expect(_ds.getConnection()).andReturn(_c);
-        expect(_c.prepareStatement(CCCLoginModule.SQL_LOOKUP_USER))
-        .andReturn(_s);
-        _s.setString(1, u.username());
-        expect(_s.executeQuery()).andReturn(_rs);
-        expect(_rs.next()).andReturn(Boolean.TRUE);
-        expect(_rs.getString(1)).andReturn(u.id().toString());
-        expect(_rs.getBytes(2)).andReturn(new byte[]{0});
-        expect(_rs.getString(3)).andReturn(UUID.randomUUID().toString());
-        expect(_rs.next()).andReturn(Boolean.TRUE);
-        _rs.close();
-        _s.close();
-        _c.close();
-
-        replay(_ds, _c, _s, _rs);
-
-
-        // ACT
-        try {
-            new CCCLoginModule(_r).lookupUser(u.username());
-            fail("Should throw exception.");
-
-
-        // ASSERT
-        } catch (final RuntimeException e) {
-            assertEquals("Duplicate users for username: user", e.getMessage());
-        }
-        verify(_ds, _c, _s, _rs);
-    }
-
-    /**
-     * Test.
-     *
-     * @throws SQLException Due to JDBC API.
-     */
-    public void testLookupRoles() throws SQLException {
-
-        // ARRANGE
-        final User u = new User("user");
-        u.addRole(CreatorRoles.ADMINISTRATOR);
-        u.addRole(CreatorRoles.CONTENT_CREATOR);
-
-        expect(_ds.getConnection()).andReturn(_c);
-        expect(_c.prepareStatement(CCCLoginModule.SQL_LOOKUP_ROLES))
-            .andReturn(_s);
-        _s.setString(1, u.id().toString());
-        expect(_s.executeQuery()).andReturn(_rs);
-        expect(_rs.next()).andReturn(Boolean.TRUE);
-        expect(_rs.getString(1)).andReturn(CreatorRoles.ADMINISTRATOR.name());
-        expect(_rs.next()).andReturn(Boolean.TRUE);
-        expect(_rs.getString(1)).andReturn(CreatorRoles.CONTENT_CREATOR.name());
-        expect(_rs.next()).andReturn(Boolean.FALSE);
-        _rs.close();
-        _s.close();
-        _c.close();
-
-        replay(_ds, _c, _s, _rs);
-
-        // ACT
-        final Set<String> result =
-            new CCCLoginModule(_r).lookupRoles(u.id().toString());
-
-        // ASSERT
-        verify(_ds, _c, _s, _rs);
-        assertEquals(
-            new HashSet<String>(){{
-                add(CreatorRoles.ADMINISTRATOR.name());
-                add(CreatorRoles.CONTENT_CREATOR.name());
-            }},
-            result);
-    }
-
-    private Registry _r;
-    private     DataSource _ds;
-    private Connection _c;
-    private PreparedStatement _s;
-    private ResultSet _rs;
+    private Database _db;
+    private CCCLoginModule _lm;
 
     /** {@inheritDoc} */
     @Override protected void setUp() throws Exception {
-        _r = new MapRegistry();
-        _ds = createStrictMock(DataSource.class);
-        _c = createStrictMock(Connection.class);
-        _s = createStrictMock(PreparedStatement.class);
-        _rs = createStrictMock(ResultSet.class);
-        _r.put("java:/ccc", _ds);
+        _db = createStrictMock(Database.class);
+        _lm = new CCCLoginModule(_db);
     }
 
     /** {@inheritDoc} */
     @Override protected void tearDown() throws Exception {
-        _r = null;
-        _ds = null;
-        _c = null;
-        _s = null;
-        _rs = null;
+        _db = null;
+        _lm = null;
     }
 }
