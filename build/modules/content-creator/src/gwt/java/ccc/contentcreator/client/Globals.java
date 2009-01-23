@@ -173,12 +173,12 @@ public final class Globals {
     public static void redirectTo(final String relativeURL) {
         redirect(hostURL()+relativeURL);
     }
-    
+
     /**
      * Refresh the application.
      */
     public static void refresh() {
-        Window.Location.assign(GWT.getHostPageBaseURL());
+        Window.Location.reload();
     }
 
     private static void redirect(final String url) {

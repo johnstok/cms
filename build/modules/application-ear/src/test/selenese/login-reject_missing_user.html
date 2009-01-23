@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="" />
-<title>log_in</title>
+<title>login-reject_missing_user</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">log_in</td></tr>
+<tr><td rowspan="1" colspan="3">login-reject_missing_user</td></tr>
 </thead><tbody>
 <tr>
 	<td>setSpeed</td>
@@ -24,12 +24,12 @@
 <tr>
 	<td>type</td>
 	<td>Username</td>
-	<td>super</td>
+	<td>aaaaaamissinguseraaaaa</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>Password</td>
-	<td>sup3r2008</td>
+	<td>any_password</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -37,8 +37,8 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertTitle</td>
-	<td>ContentCreator</td>
+	<td>assertTextPresent</td>
+	<td>Login failed.</td>
 	<td></td>
 </tr>
 
