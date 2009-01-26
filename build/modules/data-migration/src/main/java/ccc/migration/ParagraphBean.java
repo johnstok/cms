@@ -16,7 +16,7 @@ public class ParagraphBean {
      * @param key Key of the paragraph
      * @param text Text of the paragraph
      */
-    ParagraphBean(final String key, final String text) {
+    public ParagraphBean(final String key, final String text) {
         _key = key;
         _text = text;
     }

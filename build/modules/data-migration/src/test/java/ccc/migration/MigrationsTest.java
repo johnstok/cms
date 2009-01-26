@@ -17,13 +17,16 @@ import org.apache.commons.httpclient.HttpClient;
 
 
 /**
- * TODO: Add Description for this type.
+ * Tests for the {@link Migrations} class.
  *
  * @author Civic Computing Ltd.
  */
 public class MigrationsTest extends TestCase {
 
-    public void testHttpAuth() throws Exception {
+    /**
+     * Test.
+     */
+    public void testHttpAuth() {
 
         // ARRANGE
         final HttpClient client = new HttpClient();

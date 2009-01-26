@@ -123,7 +123,7 @@ public class Migrations {
         authenticateForUpload(
             client, _props.getProperty("targetApplicationURL"));
 
-        final List<FileDelta> files =_queries.selectFiles(LegacyDBQueries.FILE);
+        final List<FileDelta> files =_queries.selectFiles();
         for (final FileDelta legacyFile : files) {
             uploadFile(filesResource,
                 client, legacyFile,
@@ -131,7 +131,7 @@ public class Migrations {
         }
 
         final List<FileDelta> images =
-            _queries.selectFiles(LegacyDBQueries.IMAGE);
+            _queries.selectImages();
         for (final FileDelta legacyFile : images) {
             uploadFile(imagesResource,
                 client, legacyFile,
