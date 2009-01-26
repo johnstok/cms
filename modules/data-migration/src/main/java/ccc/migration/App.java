@@ -21,6 +21,7 @@ import javax.security.auth.login.Configuration;
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.login.AppConfigurationEntry.LoginModuleControlFlag;
+import javax.sql.DataSource;
 
 import oracle.jdbc.pool.OracleDataSource;
 
@@ -34,7 +35,6 @@ public final class App {
 
     private static final long MILLISECS_PER_SEC = 1000;
     private static LoginContext ctx;
-    /** properties : Properties. */
     private static Properties props = new Properties();
 
 
@@ -60,7 +60,7 @@ public final class App {
         final long startTime = new Date().getTime();
 
         // Establish a queries instance to communicate with the legacy DB.
-        final Connection legacyConnection = getLegacyConnection();
+        final DataSource legacyConnection = getLegacyConnection();
         final Connection newConnection = getConnection();
 
         final NewDBQueries queries = new NewDBQueries(newConnection);
@@ -69,7 +69,7 @@ public final class App {
         authenticate("migration", "migration");
 
         final LegacyDBQueries legacyDBQueries =
-            new LegacyDBQueries(legacyConnection);
+            new LegacyDBQueries(new DbUtilsDB(legacyConnection));
 
         final Migrations migrations =
             new Migrations(legacyDBQueries, props);
@@ -77,7 +77,6 @@ public final class App {
         System.out.println(migrations.queries().loggedInUser()._email);
 
         migrations.migrate();
-        DbUtils.closeQuietly(legacyConnection);
 
         logout();
         queries.changeMigrationUserPw(muid);
@@ -134,9 +133,7 @@ public final class App {
         }
     }
 
-    private static Connection getLegacyConnection() {
-        Connection connection = null;
-
+    private static DataSource getLegacyConnection() {
         try {
             // Load the JDBC driver
             final String driverName = "oracle.jdbc.driver.OracleDriver";
@@ -164,14 +161,12 @@ public final class App {
                 "oracle.jdbc.FreeMemoryOnEnterImplicitCache", Boolean.TRUE);
             ods.setConnectionProperties(connectionProps);
             ods.setURL(url);
-            connection = ods.getConnection();
-
+            return ods;
         } catch (final ClassNotFoundException e) {
             throw new MigrationException(e);
         } catch (final SQLException e) {
             throw new MigrationException(e);
         }
-        return connection;
     }
 
     private static Connection getConnection() {
