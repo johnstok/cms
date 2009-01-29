@@ -97,6 +97,15 @@ public interface Commands {
     /**
      * TODO: Add a description of this method.
      *
+     * @param resourceId The id of the resource to update.
+     * @param resourceId The id of the publishing user.
+     * @return The current version of resource.
+     */
+    ResourceSummary publish(String resourceId, String userId);
+
+    /**
+     * TODO: Add a description of this method.
+     *
      * @param resourceId
      * @return
      */

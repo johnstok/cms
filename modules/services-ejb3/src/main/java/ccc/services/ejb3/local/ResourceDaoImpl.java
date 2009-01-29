@@ -151,6 +151,15 @@ public class ResourceDaoImpl implements ResourceDao {
         _audit.recordPublish(r);
         return r;
     }
+    
+    /** {@inheritDoc} */
+    @Override
+    public Resource publish(final UUID resourceId, final UUID userId) {
+        final Resource r = findLocked(Resource.class, resourceId);
+        r.publish(_users.find(userId));
+        _audit.recordPublish(r);
+        return r;
+    }
 
     /** {@inheritDoc} */
     @Override

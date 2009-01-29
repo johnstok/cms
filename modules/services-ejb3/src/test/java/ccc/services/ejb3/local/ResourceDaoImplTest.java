@@ -41,8 +41,6 @@ import ccc.services.ejb3.support.Dao;
  * TODO: Test unlock() behaviour for an unlocked resource.
  * TODO: Test lock behaviour if called when by the user that already holds the
  *  lock.
- * TODO: Test publish().
- * TODO: Test unpublish().
  *
  * @author Civic Computing Ltd.
  */
@@ -390,6 +388,71 @@ public class ResourceDaoImplTest
         assertEquals(_r, contentRoot.entries().get(0));
     }
 
+    /**
+     * Test.
+     */
+    public void testPublish() {
+
+        // ARRANGE
+        _r.lock(_regularUser);
+
+        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_users.loggedInUser()).andReturn(_regularUser);
+        expect(_users.loggedInUser()).andReturn(_regularUser);
+        _al.recordPublish(_r);
+        replayAll();
+
+        // ACT
+        _rdao.publish(_r.id());
+
+        // ASSERT
+        verifyAll();
+        assertEquals(_regularUser, _r.publishedBy());
+    }
+
+    /**
+     * Test.
+     */
+    public void testPublishWithUser() {
+
+        // ARRANGE
+        _r.lock(_regularUser);
+
+        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_users.loggedInUser()).andReturn(_regularUser);
+        expect(_users.find(_regularUser.id())).andReturn(_regularUser);
+        _al.recordPublish(_r);
+        replayAll();
+
+        // ACT
+        _rdao.publish(_r.id(), _regularUser.id());
+
+        // ASSERT
+        verifyAll();
+        assertEquals(_regularUser, _r.publishedBy());
+    }
+
+    /**
+     * Test.
+     */
+    public void testUnpublishWithUser() {
+
+        // ARRANGE
+        _r.lock(_regularUser);
+        _r.publish(_regularUser);
+
+        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_users.loggedInUser()).andReturn(_regularUser);
+        _al.recordUnpublish(_r);
+        replayAll();
+
+        // ACT
+        _rdao.unpublish(_r.id());
+
+        // ASSERT
+        verifyAll();
+        assertEquals(null, _r.publishedBy());
+    }
 
     private void replayAll() {
         replay(_dao, _users, _al);
