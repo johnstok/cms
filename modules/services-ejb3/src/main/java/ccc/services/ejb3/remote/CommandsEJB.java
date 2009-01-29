@@ -289,23 +289,25 @@ public class CommandsEJB
             delta._title);
         page.id(UUID.fromString(delta._id));
 
-        final String templateId = delta._computedTemplate._id;
-        if (templateId != null) {
-            final Template template =
-                _resources.find(Template.class, UUID.fromString(templateId));
-            page.template(template);
-            final List<String> errors = validateFields(delta._paragraphs,
-                                                 template.definition());
-            if (!errors.isEmpty()) {
-                final StringBuffer sb = new StringBuffer();
-                for (final String error : errors) {
-                    sb.append(error);
-                    sb.append(" ");
-                }
-                throw new CCCException(
-                    "Field validation failed: "+sb.toString());
-            }
-        }
+        //FIXME: This code doesn't handle _computedTemplate being null
+        //FIXME: This should be in the PageDAO
+//        final String templateId = delta._computedTemplate._id;
+//        if (templateId != null) {
+//            final Template template =
+//                _resources.find(Template.class, UUID.fromString(templateId));
+//            page.template(template);
+//            final List<String> errors = validateFields(delta._paragraphs,
+//                                                 template.definition());
+//            if (!errors.isEmpty()) {
+//                final StringBuffer sb = new StringBuffer();
+//                for (final String error : errors) {
+//                    sb.append(error);
+//                    sb.append(" ");
+//                }
+//                throw new CCCException(
+//                    "Field validation failed: "+sb.toString());
+//            }
+//        }
 
         // TODO: Remove duplication
         for (final ParagraphDelta para : delta._paragraphs) {
