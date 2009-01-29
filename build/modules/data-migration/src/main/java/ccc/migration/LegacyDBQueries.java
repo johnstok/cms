@@ -7,6 +7,7 @@ import java.util.Map;
 
 import ccc.migration.ccc6.handlers.FileSelector;
 import ccc.migration.ccc6.handlers.ParagraphSelector;
+import ccc.migration.ccc6.handlers.ParagraphVersionsSelector;
 import ccc.migration.ccc6.handlers.ResourceSelector;
 import ccc.migration.ccc6.handlers.UserEmailSelector;
 import ccc.migration.ccc6.handlers.UserRolesSelector;
@@ -53,8 +54,20 @@ public class LegacyDBQueries {
      * @param pageId pageId
      * @return list of paragraphs found with query
      */
-    public List<ParagraphBean> selectParagraphs(final int pageId) {
+    public List<ParagraphBean> selectParagraphs(final int pageId,
+                                                final int version) {
         final ParagraphSelector rsh = new ParagraphSelector();
+        return _db.select(rsh, pageId, version);
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param pageId
+     * @return
+     */
+    public List<Integer> selectParagraphVersions(final int pageId) {
+        final ParagraphVersionsSelector rsh = new ParagraphVersionsSelector();
         return _db.select(rsh, pageId);
     }
 
@@ -104,7 +117,7 @@ public class LegacyDBQueries {
                                      final int legacyVersion,
                                      final String action,
                                      final String comment) {
-        final UserSelector rsh = new UserSelector(legacyVersion, contentId);
+        final UserSelector rsh = new UserSelector();
         return _db.select(rsh, contentId, legacyVersion, action, comment);
     }
 

@@ -56,6 +56,8 @@ import ccc.services.api.UserSummary;
  * @author Civic Computing Ltd
  */
 public class Migrations {
+    private static final boolean DEBUG = false;
+    private static Logger log = Logger.getLogger(Migrations.class);
 
     private final LegacyDBQueries _queries;
     private final Registry _registry = new JNDI();
@@ -66,8 +68,6 @@ public class Migrations {
     private final Map<Integer, UserSummary> _users =
         new HashMap<Integer, UserSummary>();
 
-    private static Logger log =
-        Logger.getLogger(ccc.migration.Migrations.class);
     private ResourceSummary _assetRoot;
     private ResourceSummary _templateFolder;
     private ResourceSummary _contentRoot;
@@ -90,14 +90,8 @@ public class Migrations {
      */
     public void migrate() {
         createDefaultFolderStructure();
-
-        // Migrate users
         migrateUsers();
-
-        // Walk the tree migrating each resource
-        migrateChildren(_contentRoot._id, 0);
-
-        // Migrate files
+        migrateResources(_contentRoot._id, 0);
         migrateFilesAndImages();
     }
 
@@ -114,9 +108,9 @@ public class Migrations {
         final MimetypesFileTypeMap mimemap = new MimetypesFileTypeMap(mimes);
 
         final ResourceSummary filesResource =
-            commands().createFolder(_contentRoot._id, "files");
+            commands().createFolder(_contentRoot._id, "files");  // FIXME: Specify actor & date
         final ResourceSummary imagesResource =
-            commands().createFolder(_contentRoot._id, "images");
+            commands().createFolder(_contentRoot._id, "images");  // FIXME: Specify actor & date
 
         final HttpClient client = new HttpClient();
 
@@ -166,7 +160,7 @@ public class Migrations {
 
         try {
             final int status = client.executeMethod(authpost);
-            log.info(status);
+            log.debug(status);
         } catch (final Exception e) {
             log.error("Authentication failed ", e);
         }
@@ -241,14 +235,15 @@ public class Migrations {
     }
 
     private void createDefaultFolderStructure() {
-        _assetRoot = commands().createRoot(PredefinedResourceNames.ASSETS);
+        _assetRoot = commands().createRoot(PredefinedResourceNames.ASSETS);  // FIXME: Specify actor & date
         _templateFolder =
             commands().createFolder(_assetRoot._id,
-                PredefinedResourceNames.TEMPLATES);
-        _contentRoot = commands().createRoot(PredefinedResourceNames.CONTENT);
-        commands().lock(_contentRoot._id);
-        commands().publish(_contentRoot._id);
-        commands().unlock(_contentRoot._id);
+                PredefinedResourceNames.TEMPLATES);  // FIXME: Specify actor & date
+        _contentRoot = commands().createRoot(PredefinedResourceNames.CONTENT);  // FIXME: Specify actor & date
+        commands().lock(_contentRoot._id);  // FIXME: Specify actor & date
+        commands().publish(_contentRoot._id);  // FIXME: Specify actor & date
+        commands().unlock(_contentRoot._id);  // FIXME: Specify actor & date
+        log.info("Created default folder structure.");
     }
 
     private void migrateUsers() {
@@ -261,9 +256,10 @@ public class Migrations {
                 log.warn("Failed to create user: "+e.getMessage());
             }
         }
+        log.info("Migrated users.");
     }
 
-    private void migrateChildren(final String parentFolderId,
+    private void migrateResources(final String parentFolderId,
                                  final Integer parent) {
 
         final List<ResourceBean> resources = _queries.selectResources(parent);
@@ -293,26 +289,14 @@ public class Migrations {
                                final ResourceBean r) {
 
         try {
-            log.debug("FOLDER");
-
             final ResourceSummary rs =
-                commands().createFolder(parentFolderId, r.name());
+                commands().createFolder(parentFolderId, r.name());   // FIXME: Specify actor & date
 
-            final String templateId = migrateTemplate(r);
-            if (null!=templateId) {
-                commands().lock(rs._id);
-                commands().updateResourceTemplate(rs._id, templateId);
-                commands().unlock(rs._id);
-            }
+            migrateTemplate(r, rs);
 
-            final String publishedBy = migratePublish(r);
-            if (null!=publishedBy) {
-                commands().lock(rs._id);
-                commands().publish(rs._id); // FIXME: Publisher is wrong.
-                commands().unlock(rs._id);
-            }
+            publish(r, rs);
 
-            migrateChildren(rs._id, r.contentId());
+            migrateResources(rs._id, r.contentId());
 
         } catch (final Exception e) {
             log.error("Unexpected error", e);
@@ -323,140 +307,192 @@ public class Migrations {
                              final ResourceBean r) {
 
         try {
-            log.debug("PAGE");
+            // Query the versions of a page
+            final List<Integer> paragraphVersions = determinePageVersions(r);
 
-            final PageDelta delta = new PageDelta();
-
-            delta._name = r.name();
-            delta._title = r.name();
-
-            final Map<String, StringBuffer> paragraphs =
-                migrateParagraphs(r.contentId());
-            for (final Map.Entry<String, StringBuffer> para
-                    : paragraphs.entrySet()) {
-                final ParagraphDelta pd = new ParagraphDelta();
-                pd._name = para.getKey();
-                pd._textValue = para.getValue().toString();
-                pd._type = "TEXT";
-                delta._paragraphs.add(pd);
-            }
-
+            // Create the page
             final ResourceSummary rs =
-                commands().createPage(parentFolderId, delta, null);
+                createPage(parentFolderId, r, paragraphVersions);
 
+            // Apply all updates
+//            for (final Integer version : paragraphVersions) {
+//                updatePage(r, rs, version);
+//            }
 
-            final String templateId = migrateTemplate(r);
-            if (null!=templateId) {
-                commands().lock(rs._id);
-                commands().updateResourceTemplate(rs._id, templateId);
-                commands().unlock(rs._id);
-            }
+            // Set the template
+            migrateTemplate(r, rs);
 
-
-            final String publishedBy = migratePublish(r);
-            if (null!=publishedBy) {
-                commands().lock(rs._id);
-                commands().publish(rs._id); // FIXME: Publisher is wrong.
-                commands().unlock(rs._id);
-            }
+            // Publish, if necessary
+            publish(r, rs);
 
         } catch (final Exception e) {
-            log.error("Unexpected error: "+e.getMessage());
+            log.error("Unexpected error.", e);
         }
     }
 
-    private String migrateTemplate(final ResourceBean r) {
+    private List<Integer> determinePageVersions(final ResourceBean r) {
+
+        final List<Integer> paragraphVersions =
+            _queries.selectParagraphVersions(r.contentId());
+        log.debug("Page versions available: "+paragraphVersions);
+
+        if (-1 == paragraphVersions.get(0)) { // Discard working version
+            paragraphVersions.remove(0);
+            log.debug("Ignoring working copy for page: "+r.contentId());
+        }
+
+        if (0 != paragraphVersions.get(0)) { // Do version 0 last
+            throw new MigrationException(
+                "No 'current version' for page "+r.contentId());
+        } else {
+            paragraphVersions.remove(0);
+            paragraphVersions.add(0);
+        }
+        log.info(
+            "Migrating page "+r.contentId()
+            +", "+paragraphVersions.size()+" versions.");
+        return paragraphVersions;
+    }
+
+    private void updatePage(final ResourceBean r,
+                            final ResourceSummary rs,
+                            final Integer version) {
+
+        commands().lock(rs._id);// FIXME: Specify actor & date
+//        final String userId =
+//            determineActor(r.contentId(), version, "%", "MADE LIVE");
+        final PageDelta d = migratePageVersion(r, rs._id, version);
+        commands().updatePage(d); // FIXME: Specify actor & date
+        commands().unlock(rs._id);  // FIXME: Specify actor & date
+        log.debug("Updated page: "+r.contentId());
+    }
+
+    private ResourceSummary createPage(final String parentFolderId,
+                                       final ResourceBean r,
+                                       final List<Integer> paragraphVersions) {
+
+        final PageDelta delta =
+            migratePageVersion(r, null, paragraphVersions.remove(0));
+        final ResourceSummary rs =
+            commands().createPage(parentFolderId, delta, null);  // FIXME: Specify actor & date
+        log.debug("Created page: "+r.contentId());
+        return rs;
+    }
+
+    private void publish(final ResourceBean r, final ResourceSummary rs) {
+        if (r.isPublished()) {
+            final String actor =
+                determineActor(r.contentId(),
+                               r.legacyVersion(),
+                               "Changed Status to  PUBLISHED",
+                               "CHANGE STATUS");
+            commands().lock(rs._id);  // FIXME: Specify actor & date
+            commands().publish(rs._id); // FIXME: Specify actor & date
+            commands().unlock(rs._id);  // FIXME: Specify actor & date
+        }
+    }
+
+    private PageDelta migratePageVersion(final ResourceBean r,
+                                         final String id,
+                                         final int version) {
+
+        final PageDelta delta = new PageDelta();
+
+        delta._name = r.name();
+        delta._title = r.name();
+        delta._id = id;
+
+        delta._paragraphs.clear();
+        final Map<String, StringBuffer> paragraphs =
+            migrateParagraphs(r.contentId(), version);
+        for (final Map.Entry<String, StringBuffer> para
+                : paragraphs.entrySet()) {
+            final ParagraphDelta pd = new ParagraphDelta();
+            pd._name = para.getKey();
+            pd._textValue = para.getValue().toString();
+            pd._type = "TEXT";
+            delta._paragraphs.add(pd);
+        }
+        return delta;
+    }
+
+    private void migrateTemplate(final ResourceBean r,
+                                 final ResourceSummary rs) {
 
         final String templateName = r.displayTemplate();
 
         if (null == templateName) { // Resource has no template
-            return null;
+            return;
         }
 
-        if (_templates.containsKey(templateName)) { // Template already migrated
-            return _templates.get(templateName)._id;
+        if (!_templates.containsKey(templateName)) { // Not yet migrated
+            final TemplateDelta t = new TemplateDelta();
+            t._body = "Empty template!";
+            t._definition = "<fields/>";
+            t._description = "No description.";
+            t._name = r.displayTemplate();
+            t._title = r.displayTemplate();
+
+            final ResourceSummary ts =
+                commands().createTemplate(_templateFolder._id, t);  // FIXME: Specify actor & date
+
+            _templates.put(templateName, ts);
         }
 
-        final TemplateDelta t = new TemplateDelta();
-        t._body = "Empty template!";
-        t._definition = "<fields/>";
-        t._description = "No description.";
-        t._name = r.displayTemplate();
-        t._title = r.displayTemplate();
-
-        final ResourceSummary ts =
-            commands().createTemplate(_templateFolder._id, t);
-
-        _templates.put(templateName, ts);
-
-        return ts._id;
+        final String templateId = _templates.get(templateName)._id;
+        commands().lock(rs._id);  // FIXME: Specify actor & date
+        commands().updateResourceTemplate(rs._id, templateId);   // FIXME: Specify actor & date
+        commands().unlock(rs._id);  // FIXME: Specify actor & date
     }
 
-    /**
-     * Merges paragraphs, returns map of joined paragraph text.
-     *
-     * @param path
-     * @param pageId
-     */
-    private Map<String, StringBuffer> migrateParagraphs(final int pageId) {
+    private Map<String, StringBuffer> migrateParagraphs(final int pageId,
+                                                        final int version) {
+        log.debug("Assembling paragraphs for "+pageId+" v."+version);
 
-        log.debug("#### migrating paragraphs for "+pageId);
         final Map<String, StringBuffer> map =
             new HashMap<String, StringBuffer>();
-
         final List<ParagraphBean> paragraphs =
-            _queries.selectParagraphs(pageId);
-        // populate map
+            _queries.selectParagraphs(pageId, version);
+
         for (final ParagraphBean p : paragraphs) {
-            // ignore empty/null texts
-            if (p.text() == null || p.text().trim().equals("")) {
-                continue;
-            }
-            if (map.containsKey(p.key())) {
-                // merge
+            if (p.text() == null) { // ignore empty/null texts
+                log.debug("Ignoring empty part for paragraph "+p.key());
+
+            } else if (map.containsKey(p.key())) { // merge
                 final StringBuffer sb = map.get(p.key());
                 map.put(p.key(), sb.append(p.text()));
-                log.debug("#### merged texts for Paragraph "+p.key());
-            } else {
-                // new item
+                log.debug("Appended to paragraph "+p.key());
+
+            } else { // new item
                 map.put(p.key(), new StringBuffer(p.text()));
-                log.debug("#### Created Paragraph "+p.key());
+                log.debug("Created paragraph "+p.key());
             }
         }
+        log.debug("Assembly done.");
         return map;
     }
 
+    private String determineActor(final int id,
+                                  final int version,
+                                  final String comment,
+                                  final String action) {
 
-    private String migratePublish(final ResourceBean r) {
+        final Integer userId =
+            _queries.selectUserFromLog(id, version, action, comment);
 
-        if (r.isPublished()) {
-            final Integer legacyUserId =
-                _queries.selectUserFromLog(r.contentId(),
-                    r.legacyVersion(),
-                    "CHANGE STATUS",
-                "Changed Status to  PUBLISHED");
+        log.debug("Actor for "+action+" on "+id+" v."+version+" is "+userId);
 
-            if (legacyUserId != null) {
-                final UserSummary user =_users.get(legacyUserId);
-                return (null==user)
-                ? null
-                    : user._id;
-            } else {
-                log.warn("Unable to determine publisher for "+r.contentId());
-                return null;
-            }
+        final UserSummary user =_users.get(userId);
 
-        } else {
+        if (null==user) {
+            log.warn("Unable to determine user for action "+action);
+            // TODO: select 'unknown' user.
             return null;
         }
 
+        return user._id;
     }
 
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param map
-     */
     private void extractURLs(final Map<String, StringBuffer> map) {
 
         for (final Map.Entry<String, StringBuffer> para : map.entrySet()) {

@@ -14,6 +14,11 @@ package ccc.domain;
 import java.util.List;
 
 import junit.framework.TestCase;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import ccc.commons.Testing;
 
 
@@ -28,6 +33,25 @@ public final class ResourceTest extends TestCase {
     private User _jill = new User("jill");
     private User _jack = new User("jack");
 
+    /**
+     * Test.
+     * @throws JSONException
+     */
+    public void testCreateSnapshot() throws JSONException {
+
+        // ARRANGE
+        final String expected =
+            new JSONObject().put("title", "Foo")
+                            .put("paragraphs", new JSONArray())
+                            .toString();
+        final Resource r = new Page("Foo");
+
+        // ACT
+        final Snapshot s = r.createSnapshot();
+
+        // ASSERT
+        assertEquals(expected, s.getDetail());
+    }
 
     /**
      * Test.

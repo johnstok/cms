@@ -25,6 +25,41 @@ public final class PageTest extends TestCase {
     /**
      * Test.
      */
+    public void testTakeSnapshot() {
+
+        // ARRANGE
+        final Page page = new Page(new ResourceName("foo"), "Title");
+        final Paragraph header = Paragraph.fromText("header", "Header");
+        page.addParagraph(header);
+
+        // ACT
+        final Snapshot s = page.createSnapshot();
+
+        // ASSERT
+        assertEquals(
+            "{\"title\":\"Title\","
+            + "\"paragraphs\":[{\"text\":\"Header\",\"name\":\"header\"}]}",
+            s.getDetail());
+    }
+
+    /**
+     * Test.
+     */
+    public void testTakeSnapshotWithNoParagraphs() {
+
+        // ARRANGE
+        final Page page = new Page(new ResourceName("foo"), "Title");
+
+        // ACT
+        final Snapshot s = page.createSnapshot();
+
+        // ASSERT
+        assertEquals("{\"title\":\"Title\",\"paragraphs\":[]}", s.getDetail());
+    }
+
+    /**
+     * Test.
+     */
     public void testParagraphsCanBeRetrievedByName() {
 
         // ARRANGE

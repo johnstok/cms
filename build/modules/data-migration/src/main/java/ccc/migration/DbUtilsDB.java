@@ -13,11 +13,15 @@ package ccc.migration;
 
 import static ccc.commons.DBC.*;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.DbUtils;
+import org.apache.log4j.Logger;
 
 import ccc.migration.ccc6.handlers.SqlQuery;
 
@@ -30,8 +34,10 @@ import ccc.migration.ccc6.handlers.SqlQuery;
 public class DbUtilsDB
     implements
         DB {
+    private static Logger log = Logger.getLogger(DbUtilsDB.class);
 
-    private final QueryRunner _queryRunner;
+    private final DataSource _ds;
+    private final Connection _c;
 
     /**
      * Constructor.
@@ -40,7 +46,22 @@ public class DbUtilsDB
      */
     public DbUtilsDB(final DataSource ds) {
         require().notNull(ds);
-        _queryRunner = new QueryRunner(ds);
+        _ds = ds;
+        try {
+            _c = _ds.getConnection();
+            Runtime.getRuntime().addShutdownHook(
+                new Thread(){
+                    /** {@inheritDoc} */
+                    @Override public void run() {
+                        DbUtils.closeQuietly(_c);
+                        log.info("Legacy connection closed.");
+                    }
+
+                }
+            );
+        } catch (final SQLException e) {
+            throw new MigrationException(e);
+        }
     }
 
     /** {@inheritDoc} */
@@ -48,11 +69,44 @@ public class DbUtilsDB
     @SuppressWarnings("unchecked")
     public <T> T select(final SqlQuery<T> q,
                           final Object... param) {
+
         try {
-            final Object result = _queryRunner.query(q.getSql(), param, q);
-            return (T) result;
-        } catch (final SQLException e1) {
-            throw new MigrationException(e1);
+            final PreparedStatement s = _c.prepareStatement(q.getSql());
+            try {
+                int index = 1;
+                for (final Object o : param) {
+                    s.setObject(index, o);
+                    index++;
+                }
+
+                log.debug("Running query.");
+                boolean resultsReturned = s.execute();
+                log.debug("Running finished.");
+
+                if (!resultsReturned) {
+                    throw new MigrationException("Query returned no results.");
+                }
+
+                final ResultSet rs = s.getResultSet();
+
+                try {
+                    final Object result = q.handle(rs);
+                    return (T) result;
+
+                } catch (final SQLException e) {
+                    throw new MigrationException(e);
+                } finally {
+                    DbUtils.closeQuietly(rs);
+                }
+
+            } catch (final SQLException e) {
+                throw new MigrationException(e);
+            } finally {
+                DbUtils.closeQuietly(s);
+            }
+
+        } catch (final SQLException e) {
+            throw new MigrationException(e);
         }
     }
 }

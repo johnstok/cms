@@ -36,13 +36,12 @@ public class NewDBQueries {
      *
      * @return UUID of the created user.
      */
-    public UUID insertMigrationUser() {
+    public UUID insertMigrationUser(final String username,
+                                    final String email,
+                                    final String password) {
         final UUID uid = UUID.randomUUID();
-        final String email = "migration@civicuk.com";
-        final String username = "migration";
-
         final UUID pwId = UUID.randomUUID();
-        final byte[] hash = Password.hash("migration", pwId.toString());
+        final byte[] hash = Password.hash(password, pwId.toString());
 
         PreparedStatement ps = null;
 

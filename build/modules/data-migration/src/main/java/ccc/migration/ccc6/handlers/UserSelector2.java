@@ -19,11 +19,9 @@ public final class UserSelector2
     implements
         SqlQuery<Map<Integer, UserDelta>> {
 
-    private static Logger log =
-        Logger.getLogger(UserSelector2.class);
+    private static Logger log = Logger.getLogger(UserSelector2.class);
 
-    /** legacyDBQueries : UserSelector2. */
-    private final LegacyDBQueries legacyDBQueries;
+    private final LegacyDBQueries _legacyDBQueries;
 
     /**
      * Constructor.
@@ -31,7 +29,7 @@ public final class UserSelector2
      * @param legacyDBQueries
      */
     public UserSelector2(final LegacyDBQueries legacyDBQueries) {
-        this.legacyDBQueries = legacyDBQueries;
+        _legacyDBQueries = legacyDBQueries;
     }
 
     /** {@inheritDoc} */
@@ -47,8 +45,8 @@ public final class UserSelector2
                 final UserDelta user = new UserDelta();
                 user._username = userName;
                 user._password = password;
-                legacyDBQueries.selectEmailForUser(user, userId);
-                legacyDBQueries.selectRolesForUser(user, userId);
+                _legacyDBQueries.selectEmailForUser(user, userId);
+                _legacyDBQueries.selectRolesForUser(user, userId);
                 resultList.put(userId, user);
             } catch (final Exception e) {
                 log.error(e.getMessage());

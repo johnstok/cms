@@ -33,6 +33,6 @@ public final class ParagraphSelector
         return
             "SELECT * FROM  c3_paragraphs "
             + "WHERE c3_paragraphs.page_id = ? "
-            + "AND version_id = 0 ORDER BY seq";
+            + "AND version_id = ? ORDER BY seq";
     }
 }

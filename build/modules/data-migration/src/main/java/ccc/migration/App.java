@@ -3,19 +3,11 @@ package ccc.migration;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Properties;
-import java.util.UUID;
 
-import javax.security.auth.callback.Callback;
-import javax.security.auth.callback.CallbackHandler;
-import javax.security.auth.callback.NameCallback;
-import javax.security.auth.callback.PasswordCallback;
-import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.auth.login.AppConfigurationEntry;
 import javax.security.auth.login.Configuration;
 import javax.security.auth.login.LoginContext;
@@ -25,20 +17,24 @@ import javax.sql.DataSource;
 
 import oracle.jdbc.pool.OracleDataSource;
 
-import org.apache.commons.dbutils.DbUtils;
+import org.apache.log4j.Logger;
 
 /**
  * Entry class for the migration application.
  *
  */
 public final class App {
-
     private static final long MILLISECS_PER_SEC = 1000;
+    private static final long START_TIME = new Date().getTime();
+    private static final Logger LOG = Logger.getLogger(App.class);
+
     private static LoginContext ctx;
     private static Properties props = new Properties();
+    private static LegacyDBQueries legacyDBQueries;
 
 
     private App() { /* NO-OP */ }
+
 
     /**
      * Entry point for this application.
@@ -46,6 +42,42 @@ public final class App {
      * @param args String array of application arguments.
      */
     public static void main(final String[] args) {
+        LOG.info("Starting.");
+
+        CreateUser.main(new String[]{}); // Create the migration user.
+
+        loadSettings();
+
+        login("migration", "migration");
+
+        connectToLegacySystem();
+
+        performMigration();
+
+        logout();
+
+        reportFinish(START_TIME);
+    }
+
+    private static void connectToLegacySystem() {
+        final DataSource legacyConnection = getLegacyConnection();
+        legacyDBQueries = new LegacyDBQueries(new DbUtilsDB(legacyConnection));
+        LOG.info("Connected to legacy DB.");
+    }
+
+    private static void performMigration() {
+        final Migrations migrations = new Migrations(legacyDBQueries, props);
+        migrations.migrate();
+    }
+
+    private static void reportFinish(final long startTime) {
+        final long elapsedTime = new Date().getTime() - startTime;
+        LOG.info(
+            "Migration finished in "
+            + elapsedTime/MILLISECS_PER_SEC + " secs.");
+    }
+
+    private static void loadSettings() {
         try {
             final InputStream in =
                 Thread.currentThread().
@@ -56,44 +88,10 @@ public final class App {
         } catch (final IOException e) {
             System.out.println("Properties reading failed");
         }
-
-        final long startTime = new Date().getTime();
-
-        // Establish a queries instance to communicate with the legacy DB.
-        final DataSource legacyConnection = getLegacyConnection();
-        final Connection newConnection = getConnection();
-
-        final NewDBQueries queries = new NewDBQueries(newConnection);
-        final UUID muid = queries.insertMigrationUser();
-
-        authenticate("migration", "migration");
-
-        final LegacyDBQueries legacyDBQueries =
-            new LegacyDBQueries(new DbUtilsDB(legacyConnection));
-
-        final Migrations migrations =
-            new Migrations(legacyDBQueries, props);
-
-        System.out.println(migrations.queries().loggedInUser()._email);
-
-        migrations.migrate();
-
-        logout();
-        queries.changeMigrationUserPw(muid);
-        DbUtils.closeQuietly(newConnection);
-
-        final long elapsedTime = new Date().getTime() - startTime;
-        System.out.println(
-            "Migration finished in "
-            + elapsedTime/MILLISECS_PER_SEC
-            + " secs");
+        LOG.info("Loaded settings.");
     }
 
-    /**
-     * TODO: Add a description of this method.
-     *
-     */
-    private static void authenticate(final String theUsername,
+    private static void login(final String theUsername,
                                      final String thePassword) {
 
         Configuration.setConfiguration(new Configuration() {
@@ -112,25 +110,22 @@ public final class App {
 
         try {
             ctx =  new LoginContext(
-                "quest",
+                "ccc",
                 new UserNamePasswordHandler(theUsername, thePassword));
             ctx.login();
          } catch (final LoginException e) {
             throw new java.lang.RuntimeException(e);
          }
+         LOG.info("Logged in.");
     }
 
-    /**
-     * TODO: Add a description of this method.
-     *
-     */
     private static void logout() {
-
         try {
             ctx.logout();
         } catch (final LoginException e) {
             throw new java.lang.RuntimeException(e);
         }
+        LOG.info("Logged out.");
     }
 
     private static DataSource getLegacyConnection() {
@@ -168,63 +163,4 @@ public final class App {
             throw new MigrationException(e);
         }
     }
-
-    private static Connection getConnection() {
-        Connection connection = null;
-        try {
-            Class.forName("org.h2.Driver");
-            connection =
-                DriverManager.getConnection("jdbc:h2:tcp:localhost/mem:CCC",
-                    "CCC", "CCC");
-            connection.setAutoCommit(false);
-        } catch (final ClassNotFoundException e) {
-            throw new MigrationException(e);
-        } catch (final SQLException e) {
-            throw new MigrationException(e);
-        }
-        return connection;
-    }
-
-
-    /**
-     * Basic {@link CallbackHandler} implementation
-     * that supports a username and a password.
-     */
-    private static class UserNamePasswordHandler implements CallbackHandler {
-
-       private final String _username;
-       private final String _password;
-
-        /**
-         * Constructor.
-         *
-         * @param theUsername
-         * @param thePassword
-         */
-        UserNamePasswordHandler(final String theUsername,
-            final String thePassword) {
-            _username = theUsername;
-          _password = thePassword;
-        }
-
-
-       /**
-        * @see javax.security.auth.callback.CallbackHandler
-        * #handle(javax.security.auth.callback.Callback[])
-        */
-       public void handle(final Callback[] callbacks)
-       throws UnsupportedCallbackException {
-            for(final Callback theCallback : callbacks){
-                if (theCallback instanceof NameCallback) {
-                    ((NameCallback) theCallback).setName(_username);
-                } else if (theCallback instanceof PasswordCallback) {
-                    ((PasswordCallback) theCallback).setPassword(
-                        _password.toCharArray());
-                }else {
-                    throw new UnsupportedCallbackException(theCallback);
-                }
-            }
-        }
-    }
-
 }
