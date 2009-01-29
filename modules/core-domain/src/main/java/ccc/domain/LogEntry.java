@@ -218,7 +218,7 @@ public class LogEntry extends Entity {
     }
 
     /**
-     * Create a log entry for the unpublishing of a resource.
+     * Create a log entry for the un-publishing of a resource.
      *
      * @param resource The resource that was unpublished.
      * @param actor The actor that performed the action.
@@ -261,7 +261,7 @@ public class LogEntry extends Entity {
         le._subjectType = resource.type();
         le._actor = actor;
         le._happenedOn = happenedOn;
-        le._detail = resource.toString();
+        le._detail = resource.createSnapshot().getDetail();
         return le;
     }
 

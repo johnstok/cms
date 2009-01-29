@@ -14,6 +14,8 @@ package ccc.domain;
 
 import static java.util.Collections.*;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -114,4 +116,21 @@ public final class Page extends Resource {
         }
         throw new CCCException("No paragraph with name: "+name);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public Snapshot createSnapshot() {
+        final Snapshot s = super.createSnapshot();
+        final Collection<Snapshot> paras = new ArrayList<Snapshot>();
+        for (final Paragraph p : _content) {
+            final Snapshot para = new Snapshot();
+            para.add("text", p.text());
+            para.add("name", p.name());
+            paras.add(para);
+        }
+        s.add("paragraphs", paras);
+        return s;
+    }
+
+
 }

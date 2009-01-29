@@ -32,14 +32,14 @@ public abstract class Resource extends VersionedEntity {
 
     private static final int MAXIMUM_TITLE_LENGTH = 256;
 
-    private String       _title             = id().toString();
-    private ResourceName _name              = ResourceName.escape(_title);
-    private Template     _template          = null;
-    private Folder       _parent            = null;
-    private User         _lockedBy          = null;
-    private List<String> _tags              = new ArrayList<String>();
-    private User         _publishedBy       = null;
-    private boolean      _includeInMainMenu = false;
+    private String         _title             = id().toString();
+    private ResourceName   _name              = ResourceName.escape(_title);
+    private Template       _template          = null;
+    private Folder         _parent            = null;
+    private User           _lockedBy          = null;
+    private List<String>   _tags              = new ArrayList<String>();
+    private User           _publishedBy       = null;
+    private boolean        _includeInMainMenu = false;
 
     /** Constructor: for persistence only. */
     protected Resource() { super(); }
@@ -100,9 +100,9 @@ public abstract class Resource extends VersionedEntity {
     public final Template computeTemplate(final Template def) {
         return
         (null!=_template)
-        ? template()
+            ? template()
             : (null!=_parent)
-            ? _parent.computeTemplate(def)
+                ? _parent.computeTemplate(def)
                 : def;
     }
 
@@ -333,7 +333,6 @@ public abstract class Resource extends VersionedEntity {
 
     /**
      * Unpublish the resource.
-     *
      */
     public void unpublish() {
         _publishedBy = null;
@@ -408,5 +407,15 @@ public abstract class Resource extends VersionedEntity {
             return this;
         }
         return _parent.root();
+    }
+
+    /**
+     * Create a snapshot of the current state of the resource.
+     * @return A new snapshot.
+     */
+    public Snapshot createSnapshot() {
+        final Snapshot s = new Snapshot();
+        s.add("title", _title);
+        return s;
     }
 }
