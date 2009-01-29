@@ -70,6 +70,9 @@ public final class StatefulReaderEJB
     @Override
     public Resource lookup(final ResourcePath path) {
         final Folder contentRoot = lookupRoot();
+        if (null==contentRoot) {
+            return null;
+        }
         try {
             return contentRoot.navigateTo(path);
         } catch (final CCCException e) {
