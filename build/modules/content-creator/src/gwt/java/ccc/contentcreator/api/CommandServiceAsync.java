@@ -53,6 +53,8 @@ public interface CommandServiceAsync {
 
     void publish(String resourceId, AsyncCallback<ResourceSummary> callback);
 
+    void publish(String resourceId, String userId, AsyncCallback<ResourceSummary> callback);
+
     void unpublish(String resourceId, AsyncCallback<ResourceSummary> callback);
 
     void includeInMainMenu(String resourceId, boolean include, AsyncCallback<Void> callback);

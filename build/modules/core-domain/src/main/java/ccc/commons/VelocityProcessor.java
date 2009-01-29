@@ -15,7 +15,9 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Date;
 import java.util.Properties;
+import java.util.Random;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -108,6 +110,9 @@ public class VelocityProcessor {
             final VelocityContext context = new VelocityContext();
             context.put("resource", resource);
 
+            // TODO petteri: replace random with Velocity Tools or similar
+            final Random random = new Random(new Date().getTime());
+            context.put("random", random);
             ve.evaluate(context, output, "VelocityProcessor", template);
 
             output.flush();

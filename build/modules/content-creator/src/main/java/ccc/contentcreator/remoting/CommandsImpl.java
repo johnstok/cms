@@ -98,6 +98,13 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
+    public ResourceSummary publish(final String resourceId,
+                                   final String userId) {
+        return _delegate.publish(resourceId, userId);
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public void rename(final String resourceId,
                        final String name) {
         _delegate.rename(resourceId, name);

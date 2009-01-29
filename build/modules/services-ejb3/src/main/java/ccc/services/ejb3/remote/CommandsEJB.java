@@ -254,6 +254,15 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
+    public ResourceSummary publish(final String resourceId,
+                                   final String userId) {
+        return map(_resources.publish(
+            UUID.fromString(resourceId),
+            UUID.fromString(userId)));
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public void rename(final String resourceId,
                        final String name) {
 

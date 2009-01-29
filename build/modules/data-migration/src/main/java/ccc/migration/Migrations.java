@@ -387,7 +387,11 @@ public class Migrations {
                                "Changed Status to  PUBLISHED",
                                "CHANGE STATUS");
             commands().lock(rs._id);  // FIXME: Specify actor & date
-            commands().publish(rs._id); // FIXME: Specify actor & date
+            if (null != actor) {
+                commands().publish(rs._id, actor);
+            } else {
+                commands().publish(rs._id); // FIXME: Specify actor & date
+            }
             commands().unlock(rs._id);  // FIXME: Specify actor & date
         }
     }
