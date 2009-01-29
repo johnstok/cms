@@ -36,7 +36,28 @@ import ccc.services.StatefulReader;
  */
 public final class StatefulReaderEJBTest extends TestCase {
 
+    /**
+     * Test.
+     */
+    public void testLookupReturnsNullIFRootIsMissing() {
 
+        // ARRANGE
+        expect(_em.createNamedQuery("rootByName")).andReturn(_q);
+        expect(
+            _q.setParameter(1,
+                            new ResourceName(PredefinedResourceNames.CONTENT)))
+            .andReturn(_q);
+        expect(_q.getSingleResult()).andReturn(null);
+        replayAll();
+
+        // ACT
+        final Resource resource =
+            _reader.lookup(new ResourcePath("/foo/bar"));
+
+        // ASSERT
+        verifyAll();
+        assertNull("Should be null.", resource);
+    }
 
     /**
      * Test.
@@ -59,16 +80,15 @@ public final class StatefulReaderEJBTest extends TestCase {
                             new ResourceName(PredefinedResourceNames.CONTENT)))
             .andReturn(_q);
         expect(_q.getSingleResult()).andReturn(contentRoot);
-        replay(_em, _q);
+        replayAll();
 
 
         // ACT
         final Resource resource =
-            _cm.lookup(new ResourcePath("/foo/bar"));
+            _reader.lookup(new ResourcePath("/foo/bar"));
 
 
-        // ASSERT
-        verify(_em, _q);
+        verifyAll();
         assertEquals(ResourceType.PAGE, resource.type());
         final Page page = resource.as(Page.class);
         assertEquals(1, page.paragraphs().size());
@@ -80,7 +100,7 @@ public final class StatefulReaderEJBTest extends TestCase {
     protected void setUp() throws Exception {
         _em = createStrictMock(EntityManager.class);
         _q = createStrictMock(Query.class);
-        _cm = new StatefulReaderEJB(_em);
+        _reader = new StatefulReaderEJB(_em);
     }
 
     /** {@inheritDoc} */
@@ -88,10 +108,18 @@ public final class StatefulReaderEJBTest extends TestCase {
     protected void tearDown() throws Exception {
         _em = null;
         _q = null;
-        _cm = null;
+        _reader = null;
+    }
+
+    private void verifyAll() {
+        verify(_em, _q);
+    }
+
+    private void replayAll() {
+        replay(_em, _q);
     }
 
     private EntityManager _em;
     private Query _q;
-    private StatefulReader _cm;
+    private StatefulReader _reader;
 }
