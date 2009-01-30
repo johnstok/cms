@@ -95,9 +95,8 @@ public final class ContentServlet extends CCCServlet {
             dispatchNotFound(request, response);
 
         } catch (final RedirectRequiredException e) {
-            final String context = request.getContextPath();
             final String relUri = e.getResource().absolutePath().toString();
-            response.sendRedirect(context+relUri);
+            dispatchRedirect(request, response, relUri);
         }
     }
 
