@@ -93,14 +93,14 @@ public class PageDaoImpl implements PageDao {
 
     /** {@inheritDoc} */
     @Override
-    public void create(final UUID fromString, final Page page) {
+    public void create(final UUID id, final Page page) {
         final Template template = page.computeTemplate(null);
 
         if (template != null) {
             validateFieldsForPage(page.paragraphs(), template.definition());
 
         }
-        _dao.create(fromString, page);
+        _dao.create(id, page);
     }
 
     private void validateFieldsForPage(final Set<Paragraph> delta,
@@ -119,7 +119,8 @@ public class PageDaoImpl implements PageDao {
 
     /** {@inheritDoc} */
     @Override
-    public List<String> validateFields(final Set<Paragraph> delta, final String t) {
+    public List<String> validateFields(final Set<Paragraph> delta,
+                                       final String t) {
 
         Document document;
         final List<String> errors = new ArrayList<String>();
