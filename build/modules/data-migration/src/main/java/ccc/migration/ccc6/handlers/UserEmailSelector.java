@@ -5,6 +5,7 @@ import static ccc.commons.DBC.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import ccc.migration.MigrationException;
 import ccc.services.api.UserDelta;
 
 /**
@@ -39,7 +40,7 @@ public final class UserEmailSelector
             user._email = rs.getString("attribute_value");
             require().toBeFalse(rs.next());
         } else {
-            throw new RuntimeException("User "+userId+" has no email.");
+            throw new MigrationException("User "+userId+" has no email.");
         }
         return null;
     }

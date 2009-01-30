@@ -13,7 +13,7 @@ import ccc.migration.MigrationException;
  *
  * @author Civic Computing Ltd.
  */
-public final class UserSelector
+public final class LogEntryUserSelector
     implements
         SqlQuery<Integer> {
 
@@ -21,9 +21,9 @@ public final class UserSelector
     @Override
     public Integer handle(final ResultSet rs) throws SQLException {
         if (rs.next()) {
-            final Integer userId = rs.getInt("user_id");
-             DBC.ensure().toBeFalse(rs.next());
-             return userId;
+            final Integer userId = Integer.valueOf(rs.getInt("user_id"));
+            DBC.ensure().toBeFalse(rs.next());
+            return userId;
         }
         throw new MigrationException("User missing.");
     }

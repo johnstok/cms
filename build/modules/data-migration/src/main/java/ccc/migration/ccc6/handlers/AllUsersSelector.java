@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import ccc.migration.LegacyDBQueries;
+import ccc.migration.MigrationException;
 import ccc.services.api.UserDelta;
 
 /**
@@ -15,11 +16,11 @@ import ccc.services.api.UserDelta;
  *
  * @author Civic Computing Ltd.
  */
-public final class UserSelector2
+public final class AllUsersSelector
     implements
         SqlQuery<Map<Integer, UserDelta>> {
 
-    private static Logger log = Logger.getLogger(UserSelector2.class);
+    private static Logger log = Logger.getLogger(AllUsersSelector.class);
 
     private final LegacyDBQueries _legacyDBQueries;
 
@@ -28,7 +29,7 @@ public final class UserSelector2
      *
      * @param legacyDBQueries
      */
-    public UserSelector2(final LegacyDBQueries legacyDBQueries) {
+    public AllUsersSelector(final LegacyDBQueries legacyDBQueries) {
         _legacyDBQueries = legacyDBQueries;
     }
 
@@ -47,9 +48,9 @@ public final class UserSelector2
                 user._password = password;
                 _legacyDBQueries.selectEmailForUser(user, userId);
                 _legacyDBQueries.selectRolesForUser(user, userId);
-                resultList.put(userId, user);
-            } catch (final Exception e) {
-                log.error(e.getMessage());
+                resultList.put(Integer.valueOf(userId), user);
+            } catch (final MigrationException e) {
+                log.warn("Error selecting user: "+e.getMessage());
             }
         }
         return resultList;

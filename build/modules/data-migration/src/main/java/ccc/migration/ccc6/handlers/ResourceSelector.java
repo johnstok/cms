@@ -45,13 +45,11 @@ public final class ResourceSelector
     @Override
     public String getSql() {
         return
-            "SELECT content_id, content_type, name, page, "
-            + "status, version_id "
-            + "FROM "
-            + "c3_content, c3_display_templates WHERE "
-            + "c3_content.parent_id = ? AND version_id = 0 AND "
-            + "(status = 'PUBLISHED' OR status = 'NEW') AND "
-            + "c3_content.display_template_id = "
-            + "c3_display_templates.template_id(+)";
+            "SELECT content_id, content_type, name, page, status, version_id "
+            + "FROM c3_content, c3_display_templates "
+            + "WHERE c3_content.parent_id = ? "
+            + "AND version_id = 0 "
+            + "AND (status = 'PUBLISHED' OR status = 'NEW') "
+            + "AND c3_content.display_template_id = c3_display_templates.template_id(+)";
     }
 }

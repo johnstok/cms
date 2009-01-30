@@ -21,28 +21,47 @@ import org.apache.log4j.Logger;
 
 
 /**
- * TODO: Add Description for this type.
+ * Command line interface for user management.
  *
  * @author Civic Computing Ltd.
  */
-public class CreateUser {
-    private static final Logger log = Logger.getLogger(App.class);
+public final class Users {
+    private static Logger log = Logger.getLogger(Users.class);
+
+    private Users() { super(); }
 
     /**
-     * TODO: Add a description of this method.
+     * App entry point.
+     * Requires three arguments: username, email, password - in that order.
      *
-     * @param args
+     * @param args Command line arguments.
      */
     public static void main(final String[] args) {
+        create(args[0], args[1], args[2]);
+    }
+
+    /**
+     * Create a user.
+     *
+     * @param username username.
+     * @param email email address.
+     * @param password password.
+     * @return The UUID of the new user.
+     */
+    static UUID create(final String username,
+                       final String email,
+                       final String password) {
+
         final Connection newConnection = getConnection();
-        final NewDBQueries queries = new NewDBQueries(newConnection);
-        final String username = "migration";
-        final String email = "migration@civicuk.com";
-        final String password = "migration";
-        final UUID muid =
-            queries.insertMigrationUser(username, email, password);
-        DbUtils.closeQuietly(newConnection);
-        log.info("Created user: "+username);
+        try {
+            final NewDBQueries queries = new NewDBQueries(newConnection);
+            final UUID userId =
+                queries.insertMigrationUser(username, email, password);
+            log.info("Created user: "+username);
+            return userId;
+        } finally {
+            DbUtils.closeQuietly(newConnection);
+        }
     }
 
     private static Connection getConnection() {
