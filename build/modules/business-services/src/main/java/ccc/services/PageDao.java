@@ -39,14 +39,21 @@ public interface PageDao {
                 String newTitle,
                 Set<Paragraph> newParagraphs);
 
+    /**
+     * Validate fields.
+     *
+     * @param delta Paragraphs of the page.
+     * @param t Template definition.
+     * @return List of error strings.
+     */
     List<String> validateFields(final Set<Paragraph> delta, final String t);
 
     /**
      * Create a page.
      *
-     * @param fromString
-     * @param page
+     * @param id The identifier for the page.
+     * @param page Page create.
      */
-    void create(UUID fromString, Page page);
+    void create(UUID id, Page page);
 
 }
