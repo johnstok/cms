@@ -45,7 +45,7 @@ public abstract class CCCServlet extends HttpServlet {
     }
 
     /**
-     * Dispatch to the 'not found' handler.
+     * Dispatch to the 'not found' URI.
      *
      * @param request The request.
      * @param response The response.
@@ -74,6 +74,46 @@ public abstract class CCCServlet extends HttpServlet {
 
         request.setAttribute(SessionKeys.EXCEPTION_KEY, e);
         request.getRequestDispatcher("/error").forward(request, response);
+    }
+
+    /**
+     * Send a redirect to the client.
+     *
+     * @param request The incoming request.
+     * @param response The outgoing response.
+     * @param relUri The relative URI to redirect to.
+     * @throws IOException Servlet API can throw an {@link IOException}.
+     */
+    protected void dispatchRedirect(final HttpServletRequest request,
+                                  final HttpServletResponse response,
+                                  final String relUri) throws IOException {
+
+        final String context = request.getContextPath();
+        response.sendRedirect(context+relUri);
+    }
+
+    /**
+     * Retrieves the exception that this servlet should report.
+     * Guarantees to return an exception and never NULL.
+     * TODO: Should return Throwable?
+     *
+     * @param request The request that the exception will be retrieved from.
+     * @return The exception that should be reported.
+     */
+    Exception getException(final HttpServletRequest request) {
+        final Object o = request.getAttribute(SessionKeys.EXCEPTION_KEY);
+        if (null==o) {
+            return new RuntimeException(
+                "No exception was found at the expected location: "
+                +SessionKeys.EXCEPTION_KEY);
+        } else if (!(o instanceof Exception)) {
+            return new RuntimeException(
+                "Object at location: "
+                +SessionKeys.EXCEPTION_KEY
+                +" was not an exception.");
+        } else {
+            return Exception.class.cast(o);
+        }
     }
 
     /** {@inheritDoc} */
