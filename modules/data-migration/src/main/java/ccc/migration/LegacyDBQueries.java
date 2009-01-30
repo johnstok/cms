@@ -11,8 +11,8 @@ import ccc.migration.ccc6.handlers.ParagraphVersionsSelector;
 import ccc.migration.ccc6.handlers.ResourceSelector;
 import ccc.migration.ccc6.handlers.UserEmailSelector;
 import ccc.migration.ccc6.handlers.UserRolesSelector;
-import ccc.migration.ccc6.handlers.UserSelector;
-import ccc.migration.ccc6.handlers.UserSelector2;
+import ccc.migration.ccc6.handlers.LogEntryUserSelector;
+import ccc.migration.ccc6.handlers.AllUsersSelector;
 import ccc.services.api.FileDelta;
 import ccc.services.api.UserDelta;
 
@@ -78,7 +78,7 @@ public class LegacyDBQueries {
      * @return The list of users.
      */
     public Map<Integer, UserDelta> selectUsers() {
-        final UserSelector2 rsh = new UserSelector2(this);
+        final AllUsersSelector rsh = new AllUsersSelector(this);
         return _db.select(rsh);
     }
 
@@ -117,7 +117,7 @@ public class LegacyDBQueries {
                                      final int legacyVersion,
                                      final String action,
                                      final String comment) {
-        final UserSelector rsh = new UserSelector();
+        final LogEntryUserSelector rsh = new LogEntryUserSelector();
         return _db.select(rsh, contentId, legacyVersion, action, comment);
     }
 

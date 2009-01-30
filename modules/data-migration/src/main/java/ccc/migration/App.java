@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Properties;
+import java.util.UUID;
 
 import javax.security.auth.login.AppConfigurationEntry;
 import javax.security.auth.login.Configuration;
@@ -18,6 +19,10 @@ import javax.sql.DataSource;
 import oracle.jdbc.pool.OracleDataSource;
 
 import org.apache.log4j.Logger;
+
+import ccc.commons.JNDI;
+import ccc.services.api.Commands;
+import ccc.services.api.ServiceNames;
 
 /**
  * Entry class for the migration application.
@@ -31,6 +36,7 @@ public final class App {
     private static LoginContext ctx;
     private static Properties props = new Properties();
     private static LegacyDBQueries legacyDBQueries;
+    private static UUID unknownUser;
 
 
     private App() { /* NO-OP */ }
@@ -44,7 +50,7 @@ public final class App {
     public static void main(final String[] args) {
         LOG.info("Starting.");
 
-        CreateUser.main(new String[]{}); // Create the migration user.
+        Users.create("migration", "migration@civicuk.com", "migration");
 
         loadSettings();
 
@@ -66,7 +72,11 @@ public final class App {
     }
 
     private static void performMigration() {
-        final Migrations migrations = new Migrations(legacyDBQueries, props);
+        final Migrations migrations =
+            new Migrations(
+                legacyDBQueries,
+                props,
+                new JNDI().<Commands>get(ServiceNames.PUBLIC_COMMANDS));
         migrations.migrate();
     }
 
