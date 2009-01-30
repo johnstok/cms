@@ -29,7 +29,8 @@ import ccc.services.StatefulReader;
 public class DefaultRendererFactory implements RendererFactory {
 
     private final Registry _registry;
-    private boolean _respectVisiblity = true;
+    private boolean        _respectVisiblity = true;
+    private String         _rootName = null;
 
     /**
      * Constructor.
@@ -46,7 +47,8 @@ public class DefaultRendererFactory implements RendererFactory {
     public ResourceRenderer newInstance() {
         return new DefaultResourceRenderer(dataManager(),
                                            resourceReader(),
-                                           _respectVisiblity);
+                                           _respectVisiblity,
+                                           _rootName);
     }
 
     private StatefulReader resourceReader() {
@@ -71,5 +73,11 @@ public class DefaultRendererFactory implements RendererFactory {
     @Override
     public boolean getRespectVisibility() {
         return _respectVisiblity;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void setRootName(final String rootName) {
+        _rootName = rootName;
     }
 }

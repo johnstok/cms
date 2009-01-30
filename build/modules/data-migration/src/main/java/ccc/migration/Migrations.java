@@ -100,6 +100,9 @@ public class Migrations {
         _commands.lock(_contentRoot._id);
         _commands.publish(_contentRoot._id);
         _commands.unlock(_contentRoot._id);
+        _commands.lock(_assetRoot._id);
+        _commands.publish(_assetRoot._id);
+        _commands.unlock(_assetRoot._id);
 
         log.info("Created default folder structure.");
     }

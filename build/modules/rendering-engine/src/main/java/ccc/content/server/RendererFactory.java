@@ -31,7 +31,7 @@ public interface RendererFactory {
      *
      * @return A boolean.
      */
-    public boolean getRespectVisibility();
+    boolean getRespectVisibility();
 
     /**
      * Mutator for the 'respect visibility' property.
@@ -40,5 +40,12 @@ public interface RendererFactory {
      *  will be interpreted as false; all other values (including null) will be
      *  interpreted as true.
      */
-    public void setRespectVisibility(final String newValue);
+    void setRespectVisibility(final String newValue);
+
+    /**
+     * Mutator for the 'root name' property.
+     *
+     * @param rootName The name of the root folder to look up resources from.
+     */
+    void setRootName(String rootName);
 }

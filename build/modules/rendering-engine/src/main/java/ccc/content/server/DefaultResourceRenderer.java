@@ -37,29 +37,36 @@ public class DefaultResourceRenderer
     private final DataManager _dm;
     private final StatefulReader _reader;
     private final boolean _respectVisibility;
+    private final String _rootName;
 
 
     /**
      * Constructor.
      *
      * @param dm The data manager for this resource renderer.
-     * @param reader
-     * @param respectVisiblity
+     * @param reader The reader to use for looking up resources.
+     * @param respectVisiblity Should we check a resource's visibility?
+     * @param rootName The name of the root folder to look up resources from.
      */
     public DefaultResourceRenderer(final DataManager dm,
                                    final StatefulReader reader,
-                                   final boolean respectVisiblity) {
+                                   final boolean respectVisiblity,
+                                   final String rootName) {
         DBC.require().notNull(dm);
         DBC.require().notNull(reader);
+        DBC.require().notNull(rootName);
+
         _dm = dm;
         _reader = reader;
         _respectVisibility = respectVisiblity;
+        _rootName = rootName;
     }
 
     /** {@inheritDoc} */
     @Override
     public Response render(final ResourcePath resourcePath) {
-        final Resource resource = _reader.lookup(resourcePath);
+        final Resource resource =
+            _reader.lookup(_rootName, resourcePath);
         return render(resource);
     }
 

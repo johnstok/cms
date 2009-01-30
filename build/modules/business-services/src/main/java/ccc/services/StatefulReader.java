@@ -16,18 +16,21 @@ import ccc.domain.ResourcePath;
 
 
 /**
- * TODO: Add Description for this type.
+ * Reader API to lookup resources and navigate their associations, out with a
+ * transaction.
  *
  * @author Civic Computing Ltd.
  */
 public interface StatefulReader {
 
     /**
-     * TODO: Add a description of this method.
+     * Look up a resource.
      *
-     * @param contentPath ResourcePath
-     * @return Resource
+     * @param contentPath ResourcePath The path to the resource.
+     * @param rootName The name of the root folder in which the resource exists.
+     * @return Resource The resource at the specified path, or NULL if it
+     *  doesn't exist.
      */
-    Resource lookup(ResourcePath contentPath);
+    Resource lookup(String rootName, ResourcePath contentPath);
 
 }

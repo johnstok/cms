@@ -25,7 +25,6 @@ import javax.persistence.Query;
 
 import ccc.domain.CCCException;
 import ccc.domain.Folder;
-import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
@@ -68,21 +67,21 @@ public final class StatefulReaderEJB
      * {@inheritDoc}
      */
     @Override
-    public Resource lookup(final ResourcePath path) {
-        final Folder contentRoot = lookupRoot();
-        if (null==contentRoot) {
+    public Resource lookup(final String rootName, final ResourcePath path) {
+        final Folder root = lookupRoot(rootName);
+        if (null==root) {
             return null;
         }
         try {
-            return contentRoot.navigateTo(path);
+            return root.navigateTo(path);
         } catch (final CCCException e) {
             return null;
         }
     }
 
-    private Folder lookupRoot() {
+    private Folder lookupRoot(final String rootName) {
         final Query q = _em.createNamedQuery("rootByName");
-        q.setParameter(1, new ResourceName(PredefinedResourceNames.CONTENT));
+        q.setParameter(1, new ResourceName(rootName));
 
         try {
             final Object singleResult = q.getSingleResult();
