@@ -1,2 +1,62 @@
 #macro( hello )hello!#end
 #macro( echo $msg)$msg#end
+
+
+
+#macro( optional $name $startText $endText)
+   #foreach( $para in $resource.paragraphs() )
+      #if ($para.name() == $name)      
+         $startText
+         $para.text()
+         $endText
+      #end
+   #end
+#end
+
+
+
+#macro ( menutag) 
+	#set ($a = 0)
+	#set ($current = $resource)
+	
+	#foreach ($element in $path)
+		#if ($a > 1) 
+		   <!-- $element -->
+		   #set ($swallow = $levels.add($current))
+		   #set ($current = $current.parent())
+		#end
+	#set ($a = $a +1)
+	#end
+
+	<ul id="subnav">
+	<!-- Levels to display $levels.size() -->
+	#set ($b = $levels.size() +-1)
+	<!-- Starting level $b -->
+	#menulevel($b)
+	</ul>
+	#end
+
+#macro ( menulevel $depth) 
+<!-- this level $depth -->
+	#foreach( $entry in $levels.get($depth).parent().entries() )
+	   #if ($entry.name() == $resource.name())
+	      <li class="hot">
+	         <a href="/server$entry.absolutePath()">$entry.title()</a>
+	      </li>
+	   #elseif ($entry.name() == $levels.get($depth).name()) 
+	      <li class="open">
+	         <a href="/server$entry.absolutePath()">$entry.title()</a>
+	      #if ($depth != 0)
+	      <ul>
+			#set($newdepth = $depth - 1)
+			#menulevel($newdepth )
+	      </ul>
+	      #end
+	      </li>
+	   #else
+	      <li class="leaf">
+	         <a href="/server$entry.absolutePath()">$entry.title()</a>
+	      </li>
+	   #end
+	#end
+#end
