@@ -13,9 +13,9 @@ package ccc.services.ejb3.remote;
 
 import static javax.ejb.TransactionAttributeType.*;
 
-import java.io.StringReader;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.security.RolesAllowed;
@@ -23,15 +23,8 @@ import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.jboss.annotation.security.SecurityDomain;
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 
 import ccc.commons.EmailAddress;
 import ccc.domain.Alias;
@@ -135,17 +128,6 @@ public class CommandsEJB
             final Template template =
                 _resources.find(Template.class, UUID.fromString(templateId));
             page.template(template);
-            final List<String> errors = validateFields(delta._paragraphs,
-                                                 template.definition());
-            if (!errors.isEmpty()) {
-                final StringBuffer sb = new StringBuffer();
-                for (final String error : errors) {
-                    sb.append(error);
-                    sb.append(" ");
-                }
-                throw new CCCException(
-                    "Field validation failed: "+sb.toString());
-            }
         }
 
         for (final ParagraphDelta para : delta._paragraphs) {
@@ -160,46 +142,11 @@ public class CommandsEJB
             }
         }
 
-        _resources.create(UUID.fromString(parentId), page);
+        _page.create(UUID.fromString(parentId), page);
 
         return map(page);
     }
 
-    /** {@inheritDoc} */
-    public List<String> validateFields(final List<ParagraphDelta> delta,
-                                 final String t) {
-        Document document;
-        final List<String> errors = new ArrayList<String>();
-
-        final DocumentBuilderFactory factory =
-            DocumentBuilderFactory.newInstance();
-        try {
-            final DocumentBuilder builder = factory.newDocumentBuilder();
-            final InputSource s =
-                new InputSource(new StringReader(t));
-            document = builder.parse(s);
-            final NodeList nl = document.getElementsByTagName("field");
-            for (int n = 0;  n < nl.getLength(); n++) {
-                final NamedNodeMap nnm = nl.item(n).getAttributes();
-                final Node regexp = nnm.getNamedItem("regexp");
-                final Node name = nnm.getNamedItem("name");
-                if (regexp != null && name != null) {
-                    for (final ParagraphDelta para : delta) {
-                        if (name.getNodeValue().equals(para._name)
-                            && !para._textValue.matches(regexp.getNodeValue())
-                            && ("TEXT".equals(para._type)
-                            || "HTML".equals(para._type))) {
-                            errors.add(para._name);
-                        }
-                    }
-                }
-            }
-
-        } catch (final Exception e) {
-            throw new CCCException("Error with XML parsing ", e);
-        }
-        return errors;
-    }
 
     /** {@inheritDoc} */
     @Override
@@ -298,26 +245,6 @@ public class CommandsEJB
             delta._title);
         page.id(UUID.fromString(delta._id));
 
-        //FIXME: This code doesn't handle _computedTemplate being null
-        //FIXME: This should be in the PageDAO
-//        final String templateId = delta._computedTemplate._id;
-//        if (templateId != null) {
-//            final Template template =
-//                _resources.find(Template.class, UUID.fromString(templateId));
-//            page.template(template);
-//            final List<String> errors = validateFields(delta._paragraphs,
-//                                                 template.definition());
-//            if (!errors.isEmpty()) {
-//                final StringBuffer sb = new StringBuffer();
-//                for (final String error : errors) {
-//                    sb.append(error);
-//                    sb.append(" ");
-//                }
-//                throw new CCCException(
-//                    "Field validation failed: "+sb.toString());
-//            }
-//        }
-
         // TODO: Remove duplication
         for (final ParagraphDelta para : delta._paragraphs) {
             if ("TEXT".equals(para._type) || "HTML".equals(para._type)) {
@@ -402,5 +329,26 @@ public class CommandsEJB
                                   final boolean include) {
         _resources.includeInMainMenu(UUID.fromString(resourceId),
                                      include);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<String> validateFields(final List<ParagraphDelta> delta,
+                                       final String definition) {
+        final Set<Paragraph> pList = new HashSet<Paragraph>();
+
+        for (final ParagraphDelta para : delta) {
+            if ("TEXT".equals(para._type) || "HTML".equals(para._type)) {
+                final Paragraph paragraph =
+                    Paragraph.fromText(para._name, para._textValue);
+                pList.add(paragraph);
+            } else if ("DATE".equals(para._type)) {
+                final Paragraph paragraph =
+                    Paragraph.fromDate(para._name, para._dateValue);
+                pList.add(paragraph);
+            }
+        }
+
+        return _page.validateFields(pList, definition);
     }
 }

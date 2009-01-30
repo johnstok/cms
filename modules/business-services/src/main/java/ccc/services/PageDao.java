@@ -11,6 +11,7 @@
  */
 package ccc.services;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -37,5 +38,15 @@ public interface PageDao {
     void update(UUID id,
                 String newTitle,
                 Set<Paragraph> newParagraphs);
+
+    List<String> validateFields(final Set<Paragraph> delta, final String t);
+
+    /**
+     * Create a page.
+     *
+     * @param fromString
+     * @param page
+     */
+    void create(UUID fromString, Page page);
 
 }
