@@ -52,7 +52,9 @@ public final class StatefulReaderEJBTest extends TestCase {
 
         // ACT
         final Resource resource =
-            _reader.lookup(new ResourcePath("/foo/bar"));
+            _reader.lookup(
+                PredefinedResourceNames.CONTENT,
+                new ResourcePath("/foo/bar"));
 
         // ASSERT
         verifyAll();
@@ -85,7 +87,9 @@ public final class StatefulReaderEJBTest extends TestCase {
 
         // ACT
         final Resource resource =
-            _reader.lookup(new ResourcePath("/foo/bar"));
+            _reader.lookup(
+                PredefinedResourceNames.CONTENT,
+                new ResourcePath("/foo/bar"));
 
 
         verifyAll();

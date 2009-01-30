@@ -124,6 +124,7 @@ public class DefaultRendererFactoryTest
     public void testNewInstance() {
 
         // ARRANGE
+        _factory.setRootName("foo");
         expect(_registry.get(ServiceNames.DATA_MANAGER_LOCAL))
             .andReturn(Testing.dummy(DataManager.class));
         expect(_registry.get(ServiceNames.STATEFUL_READER))

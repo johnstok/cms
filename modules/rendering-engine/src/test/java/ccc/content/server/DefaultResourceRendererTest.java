@@ -43,43 +43,6 @@ public class DefaultResourceRendererTest
     extends
         TestCase {
 
-//    /**
-//     * Test.
-//     *
-//     * @throws IOException If there is an error writing to the _response.
-//     * @throws ServletException If execution of the servlet fails.
-//     */
-//    public void testDoGetHandlesUnpublishedContent() throws ServletException,
-//                                                            IOException {
-//
-//        // ARRANGE
-//        final RequestDispatcher rd = createStrictMock(RequestDispatcher.class);
-//        rd.forward(_request, _response);
-//
-//        final StringWriter output = new StringWriter();
-//        final Page p = new Page("name");
-//
-//        expect(_cm.lookup(new ResourcePath("/foo"))).andReturn(p);
-//        replay(_cm);
-//
-//        final ContentServlet contentServlet =
-//            new ContentServlet(
-//                new MapRegistry(
-//                    ServiceNames.STATEFUL_READER,
-//                    _cm));
-//
-//        // EXPECT
-//        expect(_request.getPathInfo()).andReturn("/foo");
-//        expect(_request.getRequestDispatcher("/notfound")).andReturn(rd);
-//        replay(_request, _response, rd);
-//
-//        // ACT
-//        contentServlet.doGet(_request, _response);
-//
-//        // VERIFY
-//        verify(_request, _response, rd, _cm);
-//        assertEquals("", output.toString());
-//    }
 
     /**
      * Test.
@@ -107,7 +70,7 @@ public class DefaultResourceRendererTest
 
         // ARRANGE
         final Page p = new Page("page");
-        expect(_reader.lookup(p.absolutePath())).andReturn(p);
+        expect(_reader.lookup("foo", p.absolutePath())).andReturn(p);
         replayAll();
 
         // ACT
@@ -306,7 +269,7 @@ public class DefaultResourceRendererTest
 
         // ARRANGE
         final ResourceRenderer rr =
-            new DefaultResourceRenderer(_dm, _reader, true);
+            new DefaultResourceRenderer(_dm, _reader, true, "foo");
         final Page p = new Page("private page");
 
         // ACT
@@ -335,7 +298,7 @@ public class DefaultResourceRendererTest
     @Override
     protected void setUp() throws Exception {
         _reader = createStrictMock(StatefulReader.class);
-        _renderer = new DefaultResourceRenderer(_dm, _reader, false);
+        _renderer = new DefaultResourceRenderer(_dm, _reader, false, "foo");
 
     }
 

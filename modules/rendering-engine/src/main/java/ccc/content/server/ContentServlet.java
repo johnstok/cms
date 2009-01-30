@@ -73,6 +73,8 @@ public final class ContentServlet extends CCCServlet {
         final ServletConfig cf = getServletConfig();
         _factory.setRespectVisibility(
             cf.getInitParameter("respect_visibility"));
+        _factory.setRootName(
+            cf.getInitParameter("root_name"));
     }
 
     /**

@@ -93,10 +93,10 @@ public interface UserManager {
     User loggedInUser();
 
     /**
-     * TODO: Add a description of this method.
+     * Look up a user from their Id.
      *
-     * @param userId
-     * @return
+     * @param userId The UUID for the user.
+     * @return The user corresponding to 'userId'.
      */
     User find(UUID userId);
 }
