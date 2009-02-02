@@ -29,7 +29,7 @@
 <script type="text/javascript" language="JavaScript" src="FS_Functions.js"></script>
 
 </head>
-<body id="$resoure.computeStyleSheet()">
+<body id="$resource.computeStyleSheet()">
 <ccctl:WebSideStory/>
 <a name="top"></a>
 	<ul class="skiplinks">
