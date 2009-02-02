@@ -162,7 +162,7 @@ public class ResourceTable extends TablePanel {
                                          final ModelData model,
                                          final TableItem ti) {
 
-                final Image tool = new Image("images/gxt/icons/page-next.gif");
+                final Image tool = new Image("images/icons/cog_go.png");
                 tool.addClickListener(new ClickListener() {
 
                     public void onClick(final Widget sender) {

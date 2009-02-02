@@ -114,9 +114,14 @@ public class ResourceTree extends Tree {
                                          final String property) {
                 if (model.<String>get("type").equals("FOLDER")) {
                     return "images/gxt/icons/folder.gif";
-                } else if (model.<String>get("type").equals("PAGE")
-                        || model.<String>get("type").equals("ALIAS")) {
-                    return "images/gxt/icons/columns.gif"; // Replace with page
+                } else if (model.<String>get("type").equals("PAGE")) {
+                    return "images/icons/page.png";
+                } else if (model.<String>get("type").equals("TEMPLATE")) {
+                    return "images/icons/page_code.png";
+                } else if (model.<String>get("type").equals("ALIAS")) {
+                    return "images/icons/link.png";
+                } else if (model.<String>get("type").equals("FILE")) {
+                    return "images/icons/image.png";
                 } else {
                     return null;
                 }
