@@ -802,6 +802,25 @@ public final class ResourceTest extends TestCase {
         assertEquals("example", r.styleSheet());
     }
 
+    /**
+     * Test.
+     */
+    public void testComputeStyleSheet() {
+
+        // ARRANGE
+        final Resource r = new Page();
+        final Folder f1 = new Folder();
+        final Folder f2 = new Folder();
+        f2.add(f1);
+        f1.add(r);
+        f2.styleSheet("example");
+
+        // ACT
+        final String actual = r.computeStyleSheet();
+
+        // ASSERT
+        assertEquals("example", actual);
+    }
 
     /**
      * Dummy resource for testing only.
