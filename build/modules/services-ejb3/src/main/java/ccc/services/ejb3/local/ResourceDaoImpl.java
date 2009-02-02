@@ -151,7 +151,7 @@ public class ResourceDaoImpl implements ResourceDao {
         _audit.recordPublish(r);
         return r;
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public Resource publish(final UUID resourceId, final UUID userId) {
@@ -247,5 +247,12 @@ public class ResourceDaoImpl implements ResourceDao {
     public void includeInMainMenu(final UUID id, final boolean b) {
         final Resource r = findLocked(Resource.class, id);
         r.includeInMainMenu(b);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateStyleSheet(final UUID id, final String styleSheet) {
+        final Resource r = findLocked(Resource.class, id);
+        r.styleSheet(styleSheet);
     }
 }

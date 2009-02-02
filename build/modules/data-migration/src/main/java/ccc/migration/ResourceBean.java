@@ -97,4 +97,5 @@ public class ResourceBean {
     public int legacyVersion() {
         return _legacyVersion;
     }
+
 }

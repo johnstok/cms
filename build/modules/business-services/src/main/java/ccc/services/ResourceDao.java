@@ -209,4 +209,13 @@ public interface ResourceDao {
      * @param b True if the resource should be included; false otherwise.
      */
     void includeInMainMenu(final UUID id, final boolean b);
+
+    /**
+     * Update the style sheet for a resource.
+     *
+     * @param resourceId The resource to update.
+     * @param styleSheet The style sheet to set.
+     */
+    void updateStyleSheet(UUID resourceId, String styleSheet);
+
 }

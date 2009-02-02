@@ -31,4 +31,5 @@ public class ResourceSummary implements Serializable {
     public int    _childCount;
     public int    _folderCount;
     public boolean _includeInMainMenu;
+    public String _stylesheet;
 }

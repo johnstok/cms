@@ -5,14 +5,15 @@ import static ccc.commons.DBC.*;
 import java.util.List;
 import java.util.Map;
 
+import ccc.migration.ccc6.handlers.AllUsersSelector;
 import ccc.migration.ccc6.handlers.FileSelector;
+import ccc.migration.ccc6.handlers.LogEntryUserSelector;
 import ccc.migration.ccc6.handlers.ParagraphSelector;
 import ccc.migration.ccc6.handlers.ParagraphVersionsSelector;
 import ccc.migration.ccc6.handlers.ResourceSelector;
+import ccc.migration.ccc6.handlers.StyleSheetSelector;
 import ccc.migration.ccc6.handlers.UserEmailSelector;
 import ccc.migration.ccc6.handlers.UserRolesSelector;
-import ccc.migration.ccc6.handlers.LogEntryUserSelector;
-import ccc.migration.ccc6.handlers.AllUsersSelector;
 import ccc.services.api.FileDelta;
 import ccc.services.api.UserDelta;
 
@@ -140,4 +141,16 @@ public class LegacyDBQueries {
         final FileSelector query = new FileSelector();
         return _db.select(query, "IMAGE");
     }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param contentId
+     * @return
+     */
+    public String selectStyleSheet(final int contentId) {
+        final StyleSheetSelector query = new StyleSheetSelector();
+        return _db.select(query, contentId, contentId);
+    }
+
 }

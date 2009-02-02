@@ -171,7 +171,7 @@ public class Migrations {
             setTemplateForResource(r, rs);
 
             publish(r, rs);
-
+            styleSheet(r, rs);
             migrateResources(rs._id, r.contentId());
 
         } catch (final Exception e) {
@@ -204,6 +204,7 @@ public class Migrations {
             // Publish, if necessary
             publish(r, rs);
 
+            styleSheet(r, rs);
             log.info("Migrated page "+r.contentId());
 
         } catch (final Exception e) {
@@ -289,6 +290,16 @@ public class Migrations {
         }
     }
 
+
+    private void styleSheet(final ResourceBean r, final ResourceSummary rs) {
+        final String styleSheet = _queries.selectStyleSheet(r.contentId());
+        if (styleSheet != null) {
+            _commands.lock(rs._id);
+            _commands.updateStyleSheet(rs._id, styleSheet);
+            _commands.unlock(rs._id);
+
+        }
+    }
 
     private PageDelta assemblePage(final ResourceBean r,
                                          final String id,

@@ -155,4 +155,12 @@ public interface Commands {
 
     public List<String> validateFields(final List<ParagraphDelta> delta,
                                  final String definition);
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param _id
+     * @param styleSheet
+     */
+    void updateStyleSheet(String _id, String styleSheet);
 }

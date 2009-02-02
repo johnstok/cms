@@ -351,4 +351,10 @@ public class CommandsEJB
 
         return _page.validateFields(pList, definition);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateStyleSheet(final String resourceId, final String styleSheet) {
+        _resources.updateStyleSheet(UUID.fromString(resourceId), styleSheet);
+    }
 }
