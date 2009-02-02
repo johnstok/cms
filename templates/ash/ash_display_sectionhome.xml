@@ -1,0 +1,9 @@
+<fields>
+	<field name="Description_Custom" type="text_area"/>
+	<field name="Keywords_Custom" type="text_area"/>
+	<!-- field name="STYLESHEET" type="text_area"/ -->
+	<field name="HEADER" type="text_area"/>
+	<field name="SUMMARY" type="text_area"/>
+	<field name="PanelOne_Custom" type="text_area"/>
+	<field name="CONTENT" type="text_area"/>
+</field>
