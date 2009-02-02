@@ -438,4 +438,21 @@ public abstract class Resource extends VersionedEntity {
     public String styleSheet() {
         return _styleSheet;
     }
+
+    /**
+     * Determine the style sheet for this resource. Iterates up the parent
+     * hierarchy if necessary.
+     *
+     * @return The style sheet or null if none is found.
+     */
+    public final String computeStyleSheet() {
+        if (_styleSheet != null) {
+            return _styleSheet;
+        } else if (_parent != null) {
+            return _parent.computeStyleSheet();
+        } else {
+            return null;
+        }
+    }
+
 }
