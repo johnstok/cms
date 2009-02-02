@@ -40,6 +40,7 @@ public abstract class Resource extends VersionedEntity {
     private List<String>   _tags              = new ArrayList<String>();
     private User           _publishedBy       = null;
     private boolean        _includeInMainMenu = false;
+    private String         _styleSheet        = null;
 
     /** Constructor: for persistence only. */
     protected Resource() { super(); }
@@ -362,6 +363,7 @@ public abstract class Resource extends VersionedEntity {
         s.uuid("parent", (null==_parent) ? null : _parent.id());
         s.uuid("template", (null==_template) ? null : _template.id());
         s.array("tags", tags());
+        s.string("styleSheet", _styleSheet);
     }
 
 
@@ -417,5 +419,23 @@ public abstract class Resource extends VersionedEntity {
         final Snapshot s = new Snapshot();
         s.add("title", _title);
         return s;
+    }
+
+    /**
+     * Mutator for the style sheet of this resource.
+     *
+     * @param styleSheet A style sheet.
+     */
+    public void styleSheet(final String styleSheet) {
+        _styleSheet = styleSheet;
+    }
+
+    /**
+     * Accessor for the style sheet of this resource.
+     *
+     * @return The style sheet of this resource.
+     */
+    public String styleSheet() {
+        return _styleSheet;
     }
 }

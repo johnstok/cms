@@ -75,4 +75,6 @@ public interface CommandServiceAsync {
     void createTemplate(String parentId, TemplateDelta delta, AsyncCallback<ResourceSummary> callback);
 
     void createRoot(String name, AsyncCallback<ResourceSummary> callback);
+
+    void updateStyleSheet(String resourceId, String styleSheet, AsyncCallback<ResourceSummary> callback);
 }

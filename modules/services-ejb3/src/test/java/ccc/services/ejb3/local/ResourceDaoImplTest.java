@@ -454,6 +454,27 @@ public class ResourceDaoImplTest
         assertEquals(null, _r.publishedBy());
     }
 
+
+    /**
+     * Test.
+     */
+    public void testUpdateStyleSheet() {
+
+        // ARRANGE
+        _r.lock(_regularUser);
+        expect(_users.loggedInUser()).andReturn(_regularUser);
+        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
+        replayAll();
+
+        // ACT
+        _rdao.updateStyleSheet(_r.id(), "example");
+
+        // ASSERT
+        verifyAll();
+        assertEquals("example", _r.styleSheet());
+    }
+
+
     private void replayAll() {
         replay(_dao, _users, _al);
     }

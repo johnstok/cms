@@ -186,4 +186,10 @@ public class CommandsImpl
                                  final String definition) {
         return _delegate.validateFields(delta, definition);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateStyleSheet(final String _id, final String styleSheet) {
+        _delegate.updateStyleSheet(_id, styleSheet);
+    }
 }

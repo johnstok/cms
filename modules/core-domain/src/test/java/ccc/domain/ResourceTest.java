@@ -787,6 +787,21 @@ public final class ResourceTest extends TestCase {
         assertFalse("Should not be visible.", p.isVisible());
     }
 
+    /**
+     * Test.
+     */
+    public void testStyleSheet() {
+
+        //ARRANGE
+        final Resource r = new DummyResource("foo");
+
+        // ACT
+        r.styleSheet("example");
+
+        // ASSERT
+        assertEquals("example", r.styleSheet());
+    }
+
 
     /**
      * Dummy resource for testing only.
