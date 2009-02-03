@@ -50,7 +50,7 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
     public ChooseTemplateDialog(final ResourceDelta resourceDelta,
                                 final Collection<TemplateDelta> templates) {
         super(Globals.uiConstants().chooseTemplate());
-
+        setHeight(Globals.DEFAULT_MIN_HEIGHT);
         _resource = resourceDelta;
         _templates = templates;
         _none.set("name", "{none}");

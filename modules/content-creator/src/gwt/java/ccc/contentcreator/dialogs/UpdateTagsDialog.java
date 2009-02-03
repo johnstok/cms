@@ -40,6 +40,7 @@ public class UpdateTagsDialog
      */
     public UpdateTagsDialog(final ResourceDelta resource) {
         super(Globals.uiConstants().updateTags());
+        setHeight(Globals.DEFAULT_MIN_HEIGHT);
         _resource = resource;
 
         addTextField(_resource._tags,

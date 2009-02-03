@@ -43,6 +43,7 @@ public class RenameDialog extends AbstractEditDialog {
      */
     public RenameDialog(final ModelData item, final ResourceTable rt) {
         super(Globals.uiConstants().rename());
+        setHeight(Globals.DEFAULT_MIN_HEIGHT);
         _item = item;
         _rt = rt;
 
