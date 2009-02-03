@@ -107,13 +107,13 @@ public class ResourceTable extends TablePanel {
         final List<TableColumn> columns = new ArrayList<TableColumn>();
         TableColumn col;
 
-        col = new TableColumn("action", "", .05f);
+        col = new TableColumn("action", "", .04f);
         columns.add(col);
 
-        col = new TableColumn("type", _constants.type(), .05f);
+        col = new TableColumn("type", _constants.type(), .08f);
         columns.add(col);
 
-        col = new TableColumn("locked", _constants.lockedBy(), PERCENT_10);
+        col = new TableColumn("locked", _constants.lockedBy(), .08f);
         columns.add(col);
 
         col = new TableColumn("mmInclude", _constants.mainMenu(), PERCENT_10);
