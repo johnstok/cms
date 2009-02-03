@@ -316,7 +316,6 @@ public class ModelTranslation {
         delta._tags = resource.tagString();
         final Template t = resource.template();
         delta._templateId = (null==t) ? null : t.id().toString();
-        delta._styleSheet = resource.styleSheet();
         return delta;
     }
 

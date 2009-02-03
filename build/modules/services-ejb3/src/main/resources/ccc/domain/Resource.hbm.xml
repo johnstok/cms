@@ -32,8 +32,6 @@
         
 		<property name="_includeInMainMenu" not-null="true" />
 
-		<property name="_styleSheet" type="string" not-null="false" />
-			
 		<many-to-one name="_template" not-null="false" />
 		
 		<many-to-one name="_lockedBy" not-null="false" />
@@ -45,8 +43,6 @@
 				type="string" length="256" />
 		</component>
 
-        <!-- Add a read only property to access the parent_id column -->
-        
         <many-to-one
             name="_parent"
             not-null="false"
@@ -64,6 +60,12 @@
                 not-null="true"
                 unique="false" />
         </list>
+        
+        <map name="_metadata">
+            <key column="_id" />
+            <map-key type="string" column="_key" length="100" />
+            <element type="string" column="_value" length="1000" not-null="true"/>
+        </map>
         
 	</class>
     

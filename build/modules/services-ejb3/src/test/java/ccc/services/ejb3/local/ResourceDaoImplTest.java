@@ -471,7 +471,7 @@ public class ResourceDaoImplTest
 
         // ASSERT
         verifyAll();
-        assertEquals("example", _r.styleSheet());
+        assertEquals("example", _r.getMetadatum("bodyId"));
     }
 
 
