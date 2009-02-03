@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -35,7 +36,7 @@ import ccc.services.api.UserSummary;
  * @author Civic Computing Ltd
  */
 public class Migrations {
-    private static boolean DEBUG = true;
+    private static final boolean DEBUG = true;
     private static Logger log = Logger.getLogger(Migrations.class);
 
     private final Map<String, ResourceSummary> _templates =
@@ -49,6 +50,7 @@ public class Migrations {
     private ResourceSummary _templateFolder;
     private ResourceSummary _filesFolder;
     private ResourceSummary _imagesFolder;
+    private Set<Integer>    _menuItems;
 
     private final LegacyDBQueries _queries;
     private final Properties _props;
@@ -81,6 +83,7 @@ public class Migrations {
      */
     public void migrate() {
         createDefaultFolderStructure();
+        loadSupportingData();
         migrateUsers();
         migrateResources(_contentRoot._id, 0);
         migrateFilesAndImages();
@@ -105,6 +108,11 @@ public class Migrations {
         _commands.unlock(_assetRoot._id);
 
         log.info("Created default folder structure.");
+    }
+
+
+    private void loadSupportingData() {
+        _menuItems = _queries.selectMenuItems();
     }
 
 
@@ -171,7 +179,11 @@ public class Migrations {
             setTemplateForResource(r, rs);
 
             publish(r, rs);
+
+            showInMainMenu(r, rs);
+
             styleSheet(r, rs);
+
             migrateResources(rs._id, r.contentId());
 
         } catch (final Exception e) {
@@ -204,7 +216,10 @@ public class Migrations {
             // Publish, if necessary
             publish(r, rs);
 
+            showInMainMenu(r, rs);
+
             styleSheet(r, rs);
+
             log.info("Migrated page "+r.contentId());
 
         } catch (final Exception e) {
@@ -214,10 +229,20 @@ public class Migrations {
     }
 
 
+    private void showInMainMenu(final ResourceBean r,
+                                final ResourceSummary rs) {
+        if (_menuItems.contains(Integer.valueOf(r.contentId()))) {
+            _commands.lock(rs._id);
+            _commands.includeInMainMenu(rs._id, true);
+            _commands.unlock(rs._id);
+        }
+    }
+
+
     private List<Integer> determinePageVersions(final ResourceBean r) {
 
         if (DEBUG) {
-            return new ArrayList<Integer>(){{add(Integer.valueOf(0));}};
+            return new ArrayList<Integer>(){{ add(Integer.valueOf(0)); }};
         }
 
         final List<Integer> paragraphVersions =

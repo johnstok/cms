@@ -25,7 +25,7 @@ import ccc.migration.ResourceBean;
 
 
 /**
- * TODO: Add Description for this type.
+ * Tests for the {@link ResourceSelector} class.
  *
  * @author Civic Computing Ltd.
  */
@@ -35,8 +35,8 @@ public class ResourceSelectorTest
 
     /**
      * Test.
-     * @throws IOException
-     * @throws SQLException
+     * @throws IOException If reading CSV fails.
+     * @throws SQLException From JDBC API.
      */
     public void testHandle() throws SQLException, IOException {
 
@@ -45,12 +45,13 @@ public class ResourceSelectorTest
         final ResultSet rs =
             csv.read(
                 new StringReader(",,,,PUBLISHED,"),
-                new String[]{"CONTENT_ID", "CONTENT_TYPE", "NAME", "PAGE", "STATUS", "VERSION_ID"});
+                new String[]{"CONTENT_ID",
+                    "CONTENT_TYPE", "NAME", "PAGE", "STATUS", "VERSION_ID"});
 
         // ACT
         final List<ResourceBean> result = new ResourceSelector().handle(rs);
 
-        // ASSERT]
+        // ASSERT
         assertEquals(1, result.size());
         assertTrue(result.get(0).isPublished());
     }
