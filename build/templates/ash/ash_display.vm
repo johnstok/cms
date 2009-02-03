@@ -2,6 +2,14 @@
 #set($swallow = "a")
 #set($path = $resource.absolutePath().elements())
 
+#macro(getStyle)
+	#if(!$resource.computeStyleSheet())
+		default
+	#else 
+		$resource.computeStyleSheet()
+	#end
+#end
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html dir="ltr" xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -29,7 +37,7 @@
 <script type="text/javascript" language="JavaScript" src="FS_Functions.js"></script>
 
 </head>
-<body id="$resource.computeStyleSheet()">
+<body id="#getStyle">
 <ccctl:WebSideStory/>
 <a name="top"></a>
 	<ul class="skiplinks">
@@ -47,7 +55,7 @@
 <div id="headerbg" class="clearDiv">
         <div id="header">
                 <div id="logoflt">
-                        <div id="logo"><a accesskey="1" href="CCC_FirstPage.jsp"
+                        <div id="logo"><a accesskey="1" href="/server/content/Home/Homepage"
  title="ash scotland - Action on Smoking and Health - return to homepage">ash sc
 otland - Action on Smoking and Health<span></span></a></div>
                 </div>
