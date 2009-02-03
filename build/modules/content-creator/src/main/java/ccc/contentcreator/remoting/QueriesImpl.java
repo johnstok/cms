@@ -12,6 +12,7 @@
 package ccc.contentcreator.remoting;
 
 import java.util.Collection;
+import java.util.Map;
 
 import ccc.commons.JNDI;
 import ccc.contentcreator.api.QueriesService;
@@ -181,5 +182,11 @@ public class QueriesImpl
     @Override
     public Collection<FileSummary> getAllImages() {
         return _delegate.getAllImages();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Map<String, String> metadata(final String resourceId) {
+        return _delegate.metadata(resourceId);
     }
 }
