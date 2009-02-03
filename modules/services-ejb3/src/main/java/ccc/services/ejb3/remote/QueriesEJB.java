@@ -15,6 +15,7 @@ import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.security.RolesAllowed;
@@ -260,5 +261,13 @@ public final class QueriesEJB
     public Collection<FileSummary> getAllImages() {
         final List<File> list = _datas.findImages();
         return mapFiles(list);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Map<String, String> metadata(final String resourceId) {
+        final Resource r =
+            _resources.find(Resource.class, UUID.fromString(resourceId));
+        return r.metadata();
     }
 }

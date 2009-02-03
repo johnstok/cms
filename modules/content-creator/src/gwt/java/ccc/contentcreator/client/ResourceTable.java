@@ -16,6 +16,7 @@ import static ccc.contentcreator.dialogs.AbstractBaseDialog.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.DataBinding;
@@ -26,10 +27,11 @@ import ccc.contentcreator.dialogs.CreateFolderDialog;
 import ccc.contentcreator.dialogs.CreatePageDialog;
 import ccc.contentcreator.dialogs.EditAliasDialog;
 import ccc.contentcreator.dialogs.EditTemplateDialog;
+import ccc.contentcreator.dialogs.HistoryDialog;
+import ccc.contentcreator.dialogs.MetadataDialog;
 import ccc.contentcreator.dialogs.MoveDialog;
 import ccc.contentcreator.dialogs.PreviewContentDialog;
 import ccc.contentcreator.dialogs.RenameDialog;
-import ccc.contentcreator.dialogs.TableDataDisplayDialog;
 import ccc.contentcreator.dialogs.UpdateFileDialog;
 import ccc.contentcreator.dialogs.UpdatePageDialog;
 import ccc.contentcreator.dialogs.UpdateTagsDialog;
@@ -269,6 +271,7 @@ public class ResourceTable extends TablePanel {
 
                 addPreview(tbl, contextMenu);
                 addViewHistory(tbl, contextMenu);
+                addViewMetadata(tbl, contextMenu);
                 if (item.get("locked") == null
                     || "".equals(item.get("locked"))) {
                     addLockResource(tbl, contextMenu);
@@ -720,8 +723,7 @@ public class ResourceTable extends TablePanel {
                         }
 
                         public void onSuccess(final Collection<LogEntrySummary> data) {
-                            new TableDataDisplayDialog(
-                                "Resource History", data).show(); //TODO: I18n
+                            new HistoryDialog("Resource History", data).show(); //TODO: I18n
                         }
 
                     }
@@ -730,6 +732,36 @@ public class ResourceTable extends TablePanel {
         });
 
         contextMenu.add(unlockResource);
+    }
+
+    private void addViewMetadata(final Table tbl, final Menu contextMenu) {
+
+        final MenuItem menuItem = new MenuItem();
+        menuItem.setId("view-metadata");
+        menuItem.setText("View metadata"); // TODO: I18n
+        menuItem.addSelectionListener(new SelectionListener<MenuEvent>() {
+
+            @Override public void componentSelected(final MenuEvent ce) {
+                final ModelData item =
+                    tbl.getSelectedItem().getModel();
+                qs.metadata(
+                    item.<String>get("id"),
+                    new AsyncCallback<Map<String, String>>(){
+
+                        public void onFailure(final Throwable arg0) {
+                            Globals.unexpectedError(arg0);
+                        }
+
+                        public void onSuccess(final Map<String, String> data) {
+                            new MetadataDialog("Metadata", data.entrySet()).show(); //TODO: I18n
+                        }
+
+                    }
+                );
+            }
+        });
+
+        contextMenu.add(menuItem);
     }
 
     /**

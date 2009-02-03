@@ -12,6 +12,7 @@
 package ccc.contentcreator.api;
 
 import java.util.Collection;
+import java.util.Map;
 
 import ccc.services.api.AliasDelta;
 import ccc.services.api.FileDelta;
@@ -98,4 +99,7 @@ public interface QueriesServiceAsync {
     void fileDelta(String fileId, AsyncCallback<FileDelta> asyncCallback);
 
     void getAllImages(AsyncCallback<Collection<FileSummary>> callback);
+
+    void metadata(String resourceId,
+                  AsyncCallback<Map<String, String>> asyncCallback);
 }

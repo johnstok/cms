@@ -463,4 +463,13 @@ public abstract class Resource extends VersionedEntity {
         _metadata.remove(key);
     }
 
+    /**
+     * Accessor for all metadata.
+     *
+     * @return The metadata as a hash map.
+     */
+    public Map<String, String> metadata() {
+        return new HashMap<String, String>(_metadata);
+    }
+
 }

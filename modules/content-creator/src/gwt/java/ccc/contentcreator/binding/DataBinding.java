@@ -14,6 +14,8 @@ package ccc.contentcreator.binding;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import ccc.services.api.FileSummary;
 import ccc.services.api.LogEntrySummary;
@@ -163,6 +165,25 @@ public class DataBinding {
             merge(md, fs);
             md.set("mimeType", fs._mimeType);
             md.set("path", fs._path);
+            boundData.add(md);
+        }
+        return boundData;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param data
+     * @return
+     */
+    public static List<ModelData> bindMetadata(
+        final Collection<Entry<String, String>> data) {
+
+        final List<ModelData> boundData = new ArrayList<ModelData>();
+        for (final Map.Entry<String, String> datum : data) {
+            final ModelData md = new BaseModelData();
+            md.set("key", datum.getKey());
+            md.set("value", datum.getValue());
             boundData.add(md);
         }
         return boundData;

@@ -12,19 +12,20 @@
 package ccc.services.api;
 
 import java.util.Collection;
+import java.util.Map;
 
 
 /**
- * TODO: Add Description for this type.
+ * Query methods available for CCC.
  *
  * @author Civic Computing Ltd.
  */
 public interface Queries {
 
     /**
-     * TODO: Add a description of this method.
+     * List the root folders available.
      *
-     * @return
+     * @return A collection of resource summaries - one for each root folder.
      */
     Collection<ResourceSummary> roots();
 
@@ -167,6 +168,14 @@ public interface Queries {
      * @return The list of resources.
      */
     Collection<LogEntrySummary> history(String resourceId);
+
+    /**
+     * Retrieve the metadata for a resource.
+     *
+     * @param resourceId The id of the resource.
+     * @return The metadata in a hashmap.
+     */
+    Map<String, String> metadata(String resourceId);
 
     TemplateDelta templateDelta(String templateId);
     UserDelta userDelta(String userId);
