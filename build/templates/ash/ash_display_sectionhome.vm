@@ -1,3 +1,7 @@
+#set($levels = [])
+#set($swallow = "a")
+#set($path = $resource.absolutePath().elements())
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html dir="ltr" xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -24,7 +28,7 @@
 <script type="text/javascript" language="JavaScript" src="FS_Functions.js"></script>
 <ccctl:displayPageElement element="JSCRIPT" />
 </head>
-<body id="$resource.computeStyleSheet()">
+<body id="$resource.getMetadatum("bodyId")">
 
 <ccctl:WebSideStory/>
 <a name="top"></a>
@@ -113,13 +117,7 @@ key="3">Site Map</a></p>
 				<div id="leftnav" class="clearDiv">
 <!-- new tag -->
 <ccctl:MenuTag mode="submenu" menuID="subnav" />
-<ul id="subnav">
-#foreach( $page in $resource.parent().entries() )
-	<li id="lf3381"  class="leaf">
-<a id="m221" href="$page.name()">$page.title()</a>
-	</li>
-#end
-</ul>
+#menutag
 				</div>
 			</div>	
 <hr class="skiplinks" />		

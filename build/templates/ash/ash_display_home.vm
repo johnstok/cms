@@ -1,3 +1,7 @@
+#set($levels = [])
+#set($swallow = "a")
+#set($path = $resource.absolutePath().elements())
+
 #set( $randomStyles = ["one", "two", "three", "four", "five", "six", "seven", "eight"] )
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -118,13 +122,7 @@ key="3">Site Map</a></p>
 				<div id="leftnav">
 <!-- new tag -->
 <ccctl:MenuTag mode="submenu" menuID="subnav" />
-<ul id="subnav">
-#foreach( $page in $resource.parent().pages() )
-	<li id="lf3381"  class="leaf">
-<a id="m221" href="$page.name()">$page.title()</a>
-	</li>
-#end
-</ul>
+#menutag
 				</div>
 				<div id="quote"><h1>$resource.paragraph("HEADER").text()</h1></div>
 			</div>
