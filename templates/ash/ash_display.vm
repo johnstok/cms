@@ -3,10 +3,10 @@
 #set($path = $resource.absolutePath().elements())
 
 #macro(getStyle)
-	#if(!$resource.computeStyleSheet())
+	#if(!$resource.getMetadatum("bodyId"))
 		default
 	#else 
-		$resource.computeStyleSheet()
+		$resource.getMetadatum("bodyId")
 	#end
 #end
 
