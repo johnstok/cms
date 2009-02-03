@@ -35,6 +35,126 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
+     */
+    public void testMetadataCanBeCleared() {
+
+        // ARRANGE
+        final Resource r = new Page();
+        r.addMetadatum("foo", "bar");
+
+        // ACT
+        r.clearMetadatum("foo");
+
+        // ASSERT
+        assertNull(r.getMetadatum("foo"));
+    }
+
+    /**
+     * Test.
+     */
+    public void testClearingMetadataDoesNotAffectParents() {
+
+        // ARRANGE
+        final Folder f = new Folder();
+        f.addMetadatum("foo", "bar");
+        final Resource r = new Page();
+        f.add(r);
+
+        // ACT
+        r.clearMetadatum("foo");
+
+        // ASSERT
+        assertEquals("bar", r.getMetadatum("foo"));
+    }
+
+    /**
+     * Test.
+     */
+    public void testNullIsAnInvalidMetadatum() {
+
+        // ARRANGE
+        final Resource r = new Page();
+
+        // ACT
+        try {
+            r.addMetadatum("foo", null);
+            fail();
+
+        } catch (final IllegalArgumentException e) {
+            assertEquals("Specified value may not be NULL.", e.getMessage());
+        }
+
+        // ASSERT
+
+    }
+
+    /**
+     * Test.
+     */
+    public void testGettingMissingMetadataReturnsNull() {
+
+        // ARRANGE
+
+        // ACT
+        final Resource r = new Page();
+
+        // ASSERT
+        assertNull(r.getMetadatum("foo"));
+    }
+
+    /**
+     * Test.
+     */
+    public void testAddMetadata() {
+
+        // ARRANGE
+        final Resource r = new Page();
+
+        // ACT
+        r.addMetadatum("foo", "bar");
+
+        // ASSERT
+        assertEquals("bar", r.getMetadatum("foo"));
+    }
+
+    /**
+     * Test.
+     */
+    public void testMetadataIsInheritedFromParents() {
+
+        // ARRANGE
+        final Folder f = new Folder();
+        final Page p = new Page();
+        f.add(p);
+
+        // ACT
+        f.addMetadatum("foo", "bar");
+
+        // ASSERT
+        assertEquals("bar", p.getMetadatum("foo"));
+    }
+
+    /**
+     * Test.
+     */
+    public void testLocalMetadataIsChosenOverParentMetadata() {
+
+        // ARRANGE
+        final Folder f = new Folder();
+        f.addMetadatum("foo", "bar");
+        final Page p = new Page();
+        f.add(p);
+
+        // ACT
+        p.addMetadatum("foo", "baz");
+
+        // ASSERT
+        assertEquals("baz", p.getMetadatum("foo"));
+        assertEquals("bar", f.getMetadatum("foo"));
+    }
+
+    /**
+     * Test.
      * @throws JSONException
      */
     public void testCreateSnapshot() throws JSONException {
@@ -785,41 +905,6 @@ public final class ResourceTest extends TestCase {
 
         // ASSERT
         assertFalse("Should not be visible.", p.isVisible());
-    }
-
-    /**
-     * Test.
-     */
-    public void testStyleSheet() {
-
-        //ARRANGE
-        final Resource r = new DummyResource("foo");
-
-        // ACT
-        r.styleSheet("example");
-
-        // ASSERT
-        assertEquals("example", r.styleSheet());
-    }
-
-    /**
-     * Test.
-     */
-    public void testComputeStyleSheet() {
-
-        // ARRANGE
-        final Resource r = new Page();
-        final Folder f1 = new Folder();
-        final Folder f2 = new Folder();
-        f2.add(f1);
-        f1.add(r);
-        f2.styleSheet("example");
-
-        // ACT
-        final String actual = r.computeStyleSheet();
-
-        // ASSERT
-        assertEquals("example", actual);
     }
 
     /**

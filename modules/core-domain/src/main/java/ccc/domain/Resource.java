@@ -16,7 +16,9 @@ import static ccc.commons.DBC.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ccc.commons.DBC;
 import ccc.commons.serialisation.Serializer;
@@ -40,7 +42,8 @@ public abstract class Resource extends VersionedEntity {
     private List<String>   _tags              = new ArrayList<String>();
     private User           _publishedBy       = null;
     private boolean        _includeInMainMenu = false;
-    private String         _styleSheet        = null;
+
+    private Map<String, String> _metadata = new HashMap<String, String>();
 
     /** Constructor: for persistence only. */
     protected Resource() { super(); }
@@ -363,7 +366,6 @@ public abstract class Resource extends VersionedEntity {
         s.uuid("parent", (null==_parent) ? null : _parent.id());
         s.uuid("template", (null==_template) ? null : _template.id());
         s.array("tags", tags());
-        s.string("styleSheet", _styleSheet);
     }
 
 
@@ -422,37 +424,43 @@ public abstract class Resource extends VersionedEntity {
     }
 
     /**
-     * Mutator for the style sheet of this resource.
+     * Add new metadata for this resource.
      *
-     * @param styleSheet A style sheet.
+     * @param key The key by which the datum will be accessed.
+     * @param value The value of the datum. May not be NULL.
      */
-    public void styleSheet(final String styleSheet) {
-        _styleSheet = styleSheet;
+    public void addMetadatum(final String key, final String value) {
+        DBC.require().notEmpty(value);
+        DBC.require().maxLength(value, 1000);
+        DBC.require().notEmpty(key);
+        DBC.require().maxLength(key, 100);
+        _metadata.put(key, value);
     }
 
     /**
-     * Accessor for the style sheet of this resource.
+     * Retrieve metadata for this resource. If this resource does not contain
+     * an entry for the specified key parent resources will be recursively
+     * checked.
      *
-     * @return The style sheet of this resource.
+     * @param key The key with which the datum was stored.
+     * @return The value of the datum. NULL if the datum doesn't exist.
      */
-    public String styleSheet() {
-        return _styleSheet;
-    }
-
-    /**
-     * Determine the style sheet for this resource. Iterates up the parent
-     * hierarchy if necessary.
-     *
-     * @return The style sheet or null if none is found.
-     */
-    public final String computeStyleSheet() {
-        if (_styleSheet != null) {
-            return _styleSheet;
-        } else if (_parent != null) {
-            return _parent.computeStyleSheet();
-        } else {
-            return null;
+    public String getMetadatum(final String key) {
+        String datum = _metadata.get(key);
+        if (null==datum && null!=_parent) {
+            datum = _parent.getMetadatum(key);
         }
+        return datum;
+    }
+
+    /**
+     * Remove the metadatum with the specified key.
+     *
+     * @param key The key with which the datum was stored.
+     */
+    public void clearMetadatum(final String key) {
+        DBC.require().notEmpty(key);
+        _metadata.remove(key);
     }
 
 }

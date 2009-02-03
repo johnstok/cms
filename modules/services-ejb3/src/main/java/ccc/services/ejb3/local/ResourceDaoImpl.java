@@ -253,6 +253,6 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public void updateStyleSheet(final UUID id, final String styleSheet) {
         final Resource r = findLocked(Resource.class, id);
-        r.styleSheet(styleSheet);
+        r.addMetadatum("bodyId", styleSheet);
     }
 }
