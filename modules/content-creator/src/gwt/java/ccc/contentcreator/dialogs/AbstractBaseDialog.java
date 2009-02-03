@@ -19,7 +19,10 @@ import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.client.Globals;
 
+import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.Window;
+import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.core.client.GWT;
 
@@ -38,6 +41,7 @@ public abstract class AbstractBaseDialog
     private final QueriesServiceAsync _qs = GWT.create(QueriesService.class);
     private final CommandServiceAsync _cs = GWT.create(CommandService.class);
 
+    protected final Button _cancel = cancelButton();
 
     /**
      * Constructor.
@@ -94,5 +98,23 @@ public abstract class AbstractBaseDialog
      */
     protected CommandServiceAsync commands() {
         return _cs;
+    }
+
+    /**
+     * Creates a cancel button which closes the window on click.
+     *
+     * @return Cancel button.
+     */
+    private  Button cancelButton(){
+        final Button cancel = new Button(
+        constants().cancel(),
+        new SelectionListener<ButtonEvent>() {
+            @Override
+            public void componentSelected(final ButtonEvent ce) {
+                close();
+            }
+        });
+        cancel.setId("cancel");
+        return cancel;
     }
 }

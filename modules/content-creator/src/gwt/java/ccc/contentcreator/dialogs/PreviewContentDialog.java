@@ -14,9 +14,6 @@ package ccc.contentcreator.dialogs;
 
 import ccc.contentcreator.client.Globals;
 
-import com.extjs.gxt.ui.client.event.ButtonEvent;
-import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.widget.button.Button;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Frame;
 
@@ -43,19 +40,7 @@ public class PreviewContentDialog extends AbstractBaseDialog {
         DOM.setElementPropertyInt(_previewFrame.getElement(), "frameBorder", 0);
         _previewFrame.setUrl(_contentServerBaseUrl+resourcePath);
 
-        _cancel.setId("cancel");
         addButton(_cancel);
         add(_previewFrame);
     }
-
-    /** _cancel : Button. */
-    private final Button _cancel = new Button(
-        constants().cancel(),
-            new SelectionListener<ButtonEvent>() {
-                @Override
-                public void componentSelected(final ButtonEvent ce) {
-                    close();
-                }
-            }
-        );
 }

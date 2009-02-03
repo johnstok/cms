@@ -38,18 +38,6 @@ public abstract class AbstractEditDialog
             constants().save(),
             saveAction());
 
-    /** _cancel : Button. */
-    protected final Button _cancel = new Button(
-        constants().cancel(),
-            new SelectionListener<ButtonEvent>() {
-                @Override
-                public void componentSelected(final ButtonEvent ce) {
-                    close();
-                }
-            }
-        );
-
-
     /**
      * Constructor.
      *
@@ -59,7 +47,6 @@ public abstract class AbstractEditDialog
         super(title);
 
         _save.setId("save");
-        _cancel.setId("cancel");
 
         _panel.setWidth("100%");
         _panel.setBorders(false);

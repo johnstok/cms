@@ -92,17 +92,7 @@ public class UpdatePageDialog
 
         add(_panel);
 
-        addButton(
-            new Button(
-                constants().cancel(),
-                new SelectionListener<ButtonEvent>() {
-                    @Override
-                    public void componentSelected(final ButtonEvent ce) {
-                        close();
-                    }
-                }
-            ));
-
+        addButton(_cancel);
         addButton(createSaveButton());
     }
 

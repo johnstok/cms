@@ -46,15 +46,6 @@ public abstract class AbstractWizardDialog
         constants().previous(),
         prevAction());
 
-    private final Button _cancel = new Button(
-        constants().cancel(),
-        new SelectionListener<ButtonEvent>() {
-            @Override
-            public void componentSelected(final ButtonEvent ce) {
-                close();
-            }
-        });
-
     private CardPanel _cp = new CardPanel();
 
     /**
@@ -78,7 +69,6 @@ public abstract class AbstractWizardDialog
         _next.setId("next");
         _prev.setId("previous");
         _save.setId("save");
-        _cancel.setId("cancel");
 
         addButton(_cancel);
         addButton(_prev);

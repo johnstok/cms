@@ -46,8 +46,6 @@ import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.Field;
-import com.extjs.gxt.ui.client.widget.form.Radio;
-import com.extjs.gxt.ui.client.widget.form.RadioGroup;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
@@ -55,6 +53,7 @@ import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
+import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.extjs.gxt.ui.client.widget.layout.RowLayout;
 import com.google.gwt.core.client.GWT;
 
@@ -71,8 +70,8 @@ public class CreatePageDialog
     private final UIConstants _uiConstants = GWT.create(UIConstants.class);
 
     private final ContentPanel _first = new ContentPanel();
-    private final ContentPanel _third = new ContentPanel();
     private final EditPagePanel _second = new EditPagePanel();
+    private final ContentPanel _third = new ContentPanel();
 
     private ListStore<ModelData> _templatesStore = new ListStore<ModelData>();
     private Grid<ModelData> _grid;
@@ -83,9 +82,10 @@ public class CreatePageDialog
     private final ResourceTable _rt;
     private final ModelData _parent;
 
-    private final RadioGroup _rg = new RadioGroup(_uiConstants.publish());
-    private final Radio _publishNo = new Radio();
-    private final Radio _publishYes = new Radio();
+//    private final RadioGroup _rg = new RadioGroup(_uiConstants.publish());
+//    private final Radio _publishNo = new Radio();
+//    private final Radio _publishYes = new Radio();
+    private final CheckBox _publish = new CheckBox();
 
 
     private Text _description = new Text("");
@@ -162,17 +162,16 @@ public class CreatePageDialog
         _second.setScrollMode(Style.Scroll.ALWAYS);
         addCard(_second);
 
-        _third.setLayout(new BorderLayout());
-        _third.setHeaderVisible(true);
-        _third.setHeading(_uiConstants.publish());
+        _third.setBorders(false);
+        _third.setBodyBorder(false);
+        _third.setLayout(new FormLayout());
+        _third.setHeaderVisible(false);
 
-        _publishNo.setValue(true);
-        _publishNo.setBoxLabel(_uiConstants.no());
-        _publishYes.setBoxLabel(_uiConstants.yes());
-        _publishYes.setValue(false);
-        _rg.add(_publishNo);
-        _rg.add(_publishYes);
-        _third.add(_rg);
+        _publish.setId(_uiConstants.publish());
+        _publish.setValue(false);
+        _publish.setBoxLabel(_uiConstants.yes());
+        _publish.setFieldLabel(_uiConstants.publish());
+        _third.add(_publish);
         addCard(_third);
 
         refresh();
@@ -314,7 +313,7 @@ public class CreatePageDialog
                 page._title = _second.title().getValue();
                 page._paragraphs = paragraphs;
 
-                page._published = _rg.getValue() == _publishYes;
+                page._published = _publish.getValue();
 
                 final String template =
                     (null==_grid.getSelectionModel().getSelectedItem())
