@@ -55,7 +55,7 @@ public class UploadFileDialog extends AbstractEditDialog {
                             final String name,
                             final ResourceTable rt) {
         super(Globals.uiConstants().uploadFileTo()+": "+name);
-
+        setHeight(Globals.DEFAULT_UPLOAD_HEIGHT);
         // Create a FormPanel and point it at a service.
         _panel.setAction("upload");
         _panel.setEncoding(FormPanel.Encoding.MULTIPART);
@@ -77,6 +77,7 @@ public class UploadFileDialog extends AbstractEditDialog {
         addField(_description);
 
         _file.setName("file");
+        _file.setWidth("100%");
         _file.setFieldLabel(_constants.localFile());
         _file.setAllowBlank(false);
         addField(_file);
