@@ -58,6 +58,7 @@ public class MoveDialog extends AbstractEditDialog {
                       final ResourceTable rt,
                       final ResourceSummary root) {
         super(Globals.uiConstants().move());
+        setHeight(Globals.DEFAULT_MIN_HEIGHT);
         _rt = rt;
 
         _target = item;

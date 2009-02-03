@@ -202,6 +202,8 @@ public final class Globals {
     public static final int DEFAULT_HEIGHT = 480;
     /** DEFAULT_UPLOAD_HEIGHT : int. */
     public static final int DEFAULT_UPLOAD_HEIGHT = 200;
+    /** DEFAULT_MIN_HEIGHT : int. */
+    public static final int DEFAULT_MIN_HEIGHT = 150;
     /** APP_URL : String. */
     public static final String APP_URL = "creator/";
     /** API_URL : String. */

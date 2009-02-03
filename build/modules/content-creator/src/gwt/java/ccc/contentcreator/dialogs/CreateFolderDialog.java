@@ -49,6 +49,7 @@ public class CreateFolderDialog extends AbstractEditDialog {
     public CreateFolderDialog(final ModelData parent,
                               final TreeStore<ModelData> treeStore) {
         super(Globals.uiConstants().createFolder());
+        setHeight(Globals.DEFAULT_MIN_HEIGHT);
         _parent = parent;
         _treeStore = treeStore;
         setLayout(new FitLayout());
