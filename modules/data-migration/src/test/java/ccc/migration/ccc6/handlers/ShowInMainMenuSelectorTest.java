@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.Set;
 
 import junit.framework.TestCase;
 
@@ -23,11 +23,11 @@ import org.h2.tools.Csv;
 
 
 /**
- * Tests for the {@link ParagraphVersionsSelector} class.
+ * Tests for the {@link ShowInMainMenuSelector} class.
  *
  * @author Civic Computing Ltd.
  */
-public class ParagraphVersionsSelectorTest
+public class ShowInMainMenuSelectorTest
     extends
         TestCase {
 
@@ -42,15 +42,14 @@ public class ParagraphVersionsSelectorTest
         final Csv csv = Csv.getInstance();
         final ResultSet rs =
             csv.read(
-                new StringReader("0\n1\n2"),
-                new String[]{"VERSION_ID"});
+                new StringReader("1\n2"),
+                new String[]{"CONTENT_ID"});
 
         // ACT
-        final List<Integer> result = new ParagraphVersionsSelector().handle(rs);
+        final Set<Integer> result = new ShowInMainMenuSelector().handle(rs);
 
         // ASSERT
-        assertEquals(3, result.size());
-        assertEquals(Integer.valueOf(0), result.get(0));
-        assertEquals(Integer.valueOf(2), result.get(2));
+        assertEquals(2, result.size());
+        assertTrue(result.contains(Integer.valueOf(1)));
     }
 }

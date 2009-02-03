@@ -4,6 +4,7 @@ import static ccc.commons.DBC.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ccc.migration.ccc6.handlers.AllUsersSelector;
 import ccc.migration.ccc6.handlers.FileSelector;
@@ -11,6 +12,7 @@ import ccc.migration.ccc6.handlers.LogEntryUserSelector;
 import ccc.migration.ccc6.handlers.ParagraphSelector;
 import ccc.migration.ccc6.handlers.ParagraphVersionsSelector;
 import ccc.migration.ccc6.handlers.ResourceSelector;
+import ccc.migration.ccc6.handlers.ShowInMainMenuSelector;
 import ccc.migration.ccc6.handlers.StyleSheetSelector;
 import ccc.migration.ccc6.handlers.UserEmailSelector;
 import ccc.migration.ccc6.handlers.UserRolesSelector;
@@ -151,6 +153,16 @@ public class LegacyDBQueries {
     public String selectStyleSheet(final int contentId) {
         final StyleSheetSelector query = new StyleSheetSelector();
         return _db.select(query, contentId, contentId);
+    }
+
+    /**
+     * Retrieve a list of all legacy pages that are shown in a menu.
+     *
+     * @return The list of page IDs as a set.
+     */
+    public Set<Integer> selectMenuItems() {
+        final ShowInMainMenuSelector query = new ShowInMainMenuSelector();
+        return _db.select(query);
     }
 
 }
