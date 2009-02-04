@@ -97,7 +97,7 @@ public class ResourceTable extends TablePanel {
 
         _root = root;
 
-        actionButtons(tree);
+        createToolbar(tree);
 
         setTopComponent(_toolBar);
 
@@ -179,13 +179,13 @@ public class ResourceTable extends TablePanel {
         };
         binder.init();
 
-        addContextMenuLogic(tbl, contextMenu);
+        createContextMenu(tbl, contextMenu);
 
         tbl.setBulkRender(false);
         add(tbl);
     }
 
-    private void actionButtons(final FolderResourceTree tree) {
+    private void createToolbar(final FolderResourceTree tree) {
 
         _toolBar.add(new SeparatorToolItem());
         final TextToolItem uploadFile = new TextToolItem("Upload File");
@@ -262,7 +262,7 @@ public class ResourceTable extends TablePanel {
         _toolBar.add(new SeparatorToolItem());
     }
 
-    private void addContextMenuLogic(final Table tbl, final Menu contextMenu) {
+    private void createContextMenu(final Table tbl, final Menu contextMenu) {
 
         contextMenu.addListener(Events.BeforeShow, new Listener<MenuEvent>(){
             public void handleEvent(final MenuEvent be) {
@@ -271,7 +271,6 @@ public class ResourceTable extends TablePanel {
 
                 addPreview(tbl, contextMenu);
                 addViewHistory(tbl, contextMenu);
-                addViewMetadata(tbl, contextMenu);
                 if (item.get("locked") == null
                     || "".equals(item.get("locked"))) {
                     addLockResource(tbl, contextMenu);
@@ -298,6 +297,7 @@ public class ResourceTable extends TablePanel {
                     addMove(tbl, contextMenu);
                     addRename(tbl, contextMenu);
                     addUpdateTags(tbl, contextMenu);
+                    addUpdateMetadata(tbl, contextMenu);
                     addCreateAlias(tbl, contextMenu);
 
                     if (item.<Boolean>get("mmInclude")) {
@@ -723,7 +723,7 @@ public class ResourceTable extends TablePanel {
                         }
 
                         public void onSuccess(final Collection<LogEntrySummary> data) {
-                            new HistoryDialog("Resource History", data).show(); //TODO: I18n
+                            new HistoryDialog(data).show();
                         }
 
                     }
@@ -734,11 +734,11 @@ public class ResourceTable extends TablePanel {
         contextMenu.add(unlockResource);
     }
 
-    private void addViewMetadata(final Table tbl, final Menu contextMenu) {
+    private void addUpdateMetadata(final Table tbl, final Menu contextMenu) {
 
         final MenuItem menuItem = new MenuItem();
-        menuItem.setId("view-metadata");
-        menuItem.setText("View metadata"); // TODO: I18n
+        menuItem.setId("update-metadata");
+        menuItem.setText(Globals.uiConstants().updateMetadata());
         menuItem.addSelectionListener(new SelectionListener<MenuEvent>() {
 
             @Override public void componentSelected(final MenuEvent ce) {

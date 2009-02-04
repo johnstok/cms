@@ -20,10 +20,11 @@ import ccc.services.api.LogEntrySummary;
 
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
+import com.google.gwt.i18n.client.DateTimeFormat;
 
 
 /**
- * TODO: Add Description for this type.
+ * Read only view of a resoure's history.
  *
  * @author Civic Computing Ltd.
  */
@@ -34,13 +35,14 @@ public class HistoryDialog
     /**
      * Constructor.
      *
-     * @param title
-     * @param data
+     * @param data The history to display, as a collection of
+     *  {@link LogEntrySummary}.
      */
-    public HistoryDialog(final String title,
-                         final Collection<LogEntrySummary> data) {
-        super(title, data);
+    public HistoryDialog(final Collection<LogEntrySummary> data) {
+        super("Resource History", data); // TODO: I18n
+
         _dataStore.add(DataBinding.bindLogEntrySummary(_data));
+        _grid.setAutoExpandColumn("summary");
     }
 
 
@@ -48,42 +50,20 @@ public class HistoryDialog
     @Override
     protected ColumnModel defineColumnModel() {
 
-//        #     column = new ColumnConfig();
-//        #     column.setId("available");
-//        #     column.setHeader("Available");
-//        #     column.setWidth(95);
-//        #     column.setEditor(new CellEditor(dateField));
-//        #     column.setDateTimeFormat(DateTimeFormat.getMediumDateFormat());
-//        #     configs.add(column);
-
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
-        final ColumnConfig actionColumn = new ColumnConfig();
-        actionColumn.setId("action");
-        actionColumn.setHeader("Action");
-        actionColumn.setWidth(100);
+        final ColumnConfig actionColumn =
+            new ColumnConfig("action", "Action", 70);
         configs.add(actionColumn);
 
-        final ColumnConfig userColumn = new ColumnConfig();
-        userColumn.setId("actor");
-        userColumn.setHeader("User");
+        final ColumnConfig userColumn =
+            new ColumnConfig("actor", "User", 100);
         configs.add(userColumn);
 
-//        column.setDateTimeFormat(DateTimeFormat.getShortDateFormat());
-
-//        final TableColumn timeColumn =
-//            new TableColumn("happenedOn", "Time", PERCENT_30);
-//        timeColumn.setRenderer(new CellRenderer<Component>(){
-//
-//            public String render(final Component item,
-//                                 final String property,
-//                                 final Object value) {
-//
-//                final Date happenedOn =
-//                    new Date(((Long) value).longValue());
-//                return happenedOn.toString(); // TODO: I18n
-//            }});
-//        columns.add(timeColumn);
+        final ColumnConfig timeColumn =
+            new ColumnConfig("happenedOn", "Time", 150);
+        timeColumn.setDateTimeFormat(DateTimeFormat.getMediumDateTimeFormat());
+        configs.add(timeColumn);
 
         final ColumnConfig summaryColumn = new ColumnConfig();
         summaryColumn.setId("summary");

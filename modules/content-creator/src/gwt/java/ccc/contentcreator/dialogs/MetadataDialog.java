@@ -31,12 +31,13 @@ import com.extjs.gxt.ui.client.widget.grid.CellEditor;
 import com.extjs.gxt.ui.client.widget.grid.CheckBoxSelectionModel;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
+import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.TextToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 
 
 /**
- * TODO: Add Description for this type.
+ * Editable view of a resource's metadata.
  *
  * @author Civic Computing Ltd.
  */
@@ -51,7 +52,7 @@ public class MetadataDialog
         constants().save(),
         new SelectionListener<ButtonEvent>(){
             @Override public void componentSelected(final ButtonEvent ce) {
-                commands().updateProperties(
+                commands().updateMetadata(
                     _resourceId,
                     currentMetadata(),
                     new DisposingCallback(MetadataDialog.this));
@@ -62,8 +63,8 @@ public class MetadataDialog
     /**
      * Constructor.
      *
-     * @param resourceId
-     * @param data
+     * @param resourceId The id of the resource.
+     * @param data The metadata.
      */
     public MetadataDialog(final String resourceId,
                           final Collection<Map.Entry<String, String>> data) {
@@ -115,6 +116,8 @@ public class MetadataDialog
 
         final ToolBar toolBar = new ToolBar();
 
+        toolBar.add(new SeparatorToolItem());
+
         final TextToolItem add = new TextToolItem("New");
         add.addSelectionListener(new SelectionListener<ToolBarEvent>() {
             @Override public void componentSelected(final ToolBarEvent ce) {
@@ -128,6 +131,8 @@ public class MetadataDialog
         });
         toolBar.add(add);
 
+        toolBar.add(new SeparatorToolItem());
+
         final TextToolItem remove = new TextToolItem("Remove");
         remove.addSelectionListener(new SelectionListener<ToolBarEvent>() {
             @Override public void componentSelected(final ToolBarEvent ce) {
@@ -139,6 +144,8 @@ public class MetadataDialog
             }
         });
         toolBar.add(remove);
+
+        toolBar.add(new SeparatorToolItem());
 
         setTopComponent(toolBar);
     }

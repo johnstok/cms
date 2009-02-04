@@ -355,8 +355,8 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public void updateProperties(final String resourceId,
-                                 final Map<String, String> properties) {
-        _resources.updateProperties(UUID.fromString(resourceId), properties);
+    public void updateMetadata(final String resourceId,
+                               final Map<String, String> metadata) {
+        _resources.updateMetadata(UUID.fromString(resourceId), metadata);
     }
 }

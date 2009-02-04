@@ -121,12 +121,12 @@ public interface Commands {
     void includeInMainMenu(String resourceId, boolean include);
 
     /**
-     * Update meta properties of the resource.
+     * Update metadata of the resource.
      *
      * @param resourceId The id of the resource to update.
-     * @param properties The properties to update.
+     * @param metadata The metadata to update.
      */
-    void updateProperties(String resourceId, Map<String, String> properties);
+    void updateMetadata(String resourceId, Map<String, String> metadata);
 
 
 

@@ -212,11 +212,11 @@ public interface ResourceDao {
     void includeInMainMenu(final UUID id, final boolean b);
 
     /**
-     * Update meta properties of the resource.
+     * Update metadata of the resource.
      *
      * @param resourceId The resource to update.
-     * @param properties The new properties to set.
+     * @param metadata The new metadata to set.
      */
-    void updateProperties(UUID resourceId, Map<String, String> properties);
+    void updateMetadata(UUID resourceId, Map<String, String> metadata);
 
 }
