@@ -14,6 +14,7 @@ package ccc.services.ejb3.local;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.ejb.EJB;
@@ -251,8 +252,10 @@ public class ResourceDaoImpl implements ResourceDao {
 
     /** {@inheritDoc} */
     @Override
-    public void updateStyleSheet(final UUID id, final String styleSheet) {
+    public void updateProperties(final UUID id, final Map<String, String> properties) {
         final Resource r = findLocked(Resource.class, id);
-        r.addMetadatum("bodyId", styleSheet);
+        for (final String key : properties.keySet()) {
+            r.addMetadatum(key, properties.get(key));
+        }
     }
 }

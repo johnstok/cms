@@ -181,9 +181,11 @@ public class Migrations {
             publish(r, rs);
 
             showInMainMenu(r, rs);
-
-            styleSheet(r, rs);
-
+            final Map<String, String> properties =
+                new HashMap<String, String>();
+            setStyleSheet(r, properties);
+            // TODO: set legacy ID
+            setProperties(rs, properties);
             migrateResources(rs._id, r.contentId());
 
         } catch (final Exception e) {
@@ -218,8 +220,11 @@ public class Migrations {
 
             showInMainMenu(r, rs);
 
-            styleSheet(r, rs);
-
+            final Map<String, String> properties =
+                new HashMap<String, String>();
+            setStyleSheet(r, properties);
+            // TODO: set legacy ID
+            setProperties(rs, properties);
             log.info("Migrated page "+r.contentId());
 
         } catch (final Exception e) {
@@ -315,14 +320,18 @@ public class Migrations {
         }
     }
 
+    private void setProperties(final ResourceSummary rs,
+                               final Map<String, String> properties) {
+        _commands.lock(rs._id);
+        _commands.updateProperties(rs._id, properties);
+        _commands.unlock(rs._id);
+    }
 
-    private void styleSheet(final ResourceBean r, final ResourceSummary rs) {
+    private void setStyleSheet(final ResourceBean r,
+                               final Map<String, String> properties) {
         final String styleSheet = _queries.selectStyleSheet(r.contentId());
         if (styleSheet != null) {
-            _commands.lock(rs._id);
-            _commands.updateStyleSheet(rs._id, styleSheet);
-            _commands.unlock(rs._id);
-
+            properties.put("bodyId", styleSheet);
         }
     }
 

@@ -15,6 +15,7 @@ import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -354,7 +355,8 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public void updateStyleSheet(final String resourceId, final String styleSheet) {
-        _resources.updateStyleSheet(UUID.fromString(resourceId), styleSheet);
+    public void updateProperties(final String resourceId,
+                                 final Map<String, String> properties) {
+        _resources.updateProperties(UUID.fromString(resourceId), properties);
     }
 }

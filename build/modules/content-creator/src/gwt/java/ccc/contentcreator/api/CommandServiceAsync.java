@@ -12,6 +12,7 @@
 package ccc.contentcreator.api;
 
 import java.util.List;
+import java.util.Map;
 
 import ccc.services.api.AliasDelta;
 import ccc.services.api.PageDelta;
@@ -61,6 +62,7 @@ public interface CommandServiceAsync {
 
     void validateFields(List<ParagraphDelta> delta, String definition, AsyncCallback<List <String>> callback);
 
+    void updateProperties(String resourceId, Map<String,String> properties, AsyncCallback<Void> callback);
 
 
 
@@ -76,5 +78,4 @@ public interface CommandServiceAsync {
 
     void createRoot(String name, AsyncCallback<ResourceSummary> callback);
 
-    void updateStyleSheet(String resourceId, String styleSheet, AsyncCallback<ResourceSummary> callback);
 }

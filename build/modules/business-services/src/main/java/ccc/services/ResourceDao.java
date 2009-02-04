@@ -12,6 +12,7 @@
 package ccc.services;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import ccc.domain.Folder;
@@ -211,11 +212,11 @@ public interface ResourceDao {
     void includeInMainMenu(final UUID id, final boolean b);
 
     /**
-     * Update the style sheet for a resource.
+     * Update meta properties of the resource.
      *
      * @param resourceId The resource to update.
-     * @param styleSheet The style sheet to set.
+     * @param properties The new properties to set.
      */
-    void updateStyleSheet(UUID resourceId, String styleSheet);
+    void updateProperties(UUID resourceId, Map<String, String> properties);
 
 }
