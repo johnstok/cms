@@ -14,12 +14,11 @@ package ccc.contentcreator.dialogs;
 import java.util.Collection;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
-import com.extjs.gxt.ui.client.binder.TableBinder;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
+import com.extjs.gxt.ui.client.widget.grid.EditorGrid;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
-import com.extjs.gxt.ui.client.widget.table.Table;
-import com.extjs.gxt.ui.client.widget.table.TableColumnModel;
 
 
 /**
@@ -33,6 +32,7 @@ public abstract class TableDataDisplayDialog<T>
 
     protected final Collection<T> _data;
     protected final ListStore<ModelData> _dataStore = new ListStore<ModelData>();
+    protected final EditorGrid<ModelData> _grid;
 
     /**
      * Constructor.
@@ -49,20 +49,15 @@ public abstract class TableDataDisplayDialog<T>
 
         setLayout(new FitLayout());
 
-        final TableColumnModel cm = defineColumnModel();
+        final ColumnModel cm = defineColumnModel();
 
-        final Table tbl = new Table(cm);
-        tbl.setId(title);
-        tbl.setSelectionMode(SelectionMode.SINGLE);
-        tbl.setHorizontalScroll(true);
-        tbl.setBorders(false);
+        _grid = new EditorGrid<ModelData>(_dataStore, cm);
+        _grid.setId(title);
+        _grid.setBorders(false);
+        _grid.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-        final TableBinder<ModelData> binder =
-            new TableBinder<ModelData>(tbl, _dataStore);
-        binder.init();
-
-        add(tbl);
+        add(_grid);
     }
 
-    protected abstract TableColumnModel defineColumnModel();
+    protected abstract ColumnModel defineColumnModel();
 }

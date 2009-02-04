@@ -753,7 +753,9 @@ public class ResourceTable extends TablePanel {
                         }
 
                         public void onSuccess(final Map<String, String> data) {
-                            new MetadataDialog("Metadata", data.entrySet()).show(); //TODO: I18n
+                            new MetadataDialog(item.<String>get("id"),
+                                               data.entrySet())
+                            .show();
                         }
 
                     }
