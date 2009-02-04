@@ -90,7 +90,9 @@ public class UserTable extends TablePanel {
                         searchString.getValue().replace('*', '%'),
                         new ErrorReportingCallback<Collection<UserSummary>>() {
                             public void onSuccess(final Collection<UserSummary> result) {
-                                _detailsStore.add(DataBinding.bindUserSummary(result));
+                                if (result != null && result.size() > 0) {
+                                    _detailsStore.add(DataBinding.bindUserSummary(result));
+                                }
                             }
                         });
                 } else if (_radioGroup.getValue() == _emailRadio) {
@@ -98,7 +100,9 @@ public class UserTable extends TablePanel {
                         searchString.getValue().replace('*', '%'),
                         new ErrorReportingCallback<Collection<UserSummary>>() {
                             public void onSuccess(final Collection<UserSummary> result) {
-                                _detailsStore.add(DataBinding.bindUserSummary(result));
+                                if (result != null && result.size() > 0) {
+                                    _detailsStore.add(DataBinding.bindUserSummary(result));
+                                }
                             }
                         });
                 }
