@@ -13,6 +13,7 @@ package ccc.contentcreator.binding;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -47,7 +48,7 @@ public class DataBinding {
             final ModelData md = new BaseModelData();
             md.set("action", les._action);
             md.set("actor", les._actor);
-            md.set("happenedOn", les._happenedOn);
+            md.set("happenedOn", new Date(les._happenedOn));
             md.set("summary", les._summary);
             boundData.add(md);
         }

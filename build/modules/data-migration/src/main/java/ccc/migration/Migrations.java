@@ -181,11 +181,12 @@ public class Migrations {
             publish(r, rs);
 
             showInMainMenu(r, rs);
-            final Map<String, String> properties =
+
+            final Map<String, String> metadata =
                 new HashMap<String, String>();
-            setStyleSheet(r, properties);
-            properties.put("legacyId", ""+r.contentId());
-            setProperties(rs, properties);
+            setStyleSheet(r, metadata);
+            metadata.put("legacyId", ""+r.contentId());
+            setMetadata(rs, metadata);
 
             migrateResources(rs._id, r.contentId());
 
@@ -221,11 +222,11 @@ public class Migrations {
 
             showInMainMenu(r, rs);
 
-            final Map<String, String> properties =
+            final Map<String, String> metadata =
                 new HashMap<String, String>();
-            setStyleSheet(r, properties);
-            properties.put("legacyId", ""+r.contentId());
-            setProperties(rs, properties);
+            setStyleSheet(r, metadata);
+            metadata.put("legacyId", ""+r.contentId());
+            setMetadata(rs, metadata);
 
             log.info("Migrated page "+r.contentId());
 
@@ -322,10 +323,10 @@ public class Migrations {
         }
     }
 
-    private void setProperties(final ResourceSummary rs,
-                               final Map<String, String> properties) {
+    private void setMetadata(final ResourceSummary rs,
+                             final Map<String, String> metadata) {
         _commands.lock(rs._id);
-        _commands.updateProperties(rs._id, properties);
+        _commands.updateMetadata(rs._id, metadata);
         _commands.unlock(rs._id);
     }
 

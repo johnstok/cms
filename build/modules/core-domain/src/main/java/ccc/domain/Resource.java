@@ -472,4 +472,11 @@ public abstract class Resource extends VersionedEntity {
         return new HashMap<String, String>(_metadata);
     }
 
+    /**
+     * Remove all metadata for this resource.
+     */
+    public void clearMetadata() {
+        _metadata.clear();
+    }
+
 }

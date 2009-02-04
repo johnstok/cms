@@ -190,8 +190,8 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateProperties(final String resourceId,
-                                 final Map<String, String> properties) {
-        _delegate.updateProperties(resourceId, properties);
+    public void updateMetadata(final String resourceId,
+                                 final Map<String, String> metadata) {
+        _delegate.updateMetadata(resourceId, metadata);
     }
 }

@@ -673,4 +673,12 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Login")
     String login();
+
+    /**
+     * "Update metadata".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Update metadata")
+    String updateMetadata();
 }

@@ -471,7 +471,7 @@ public class ResourceDaoImplTest
         // ACT
         final Map<String, String> props = new HashMap<String, String>();
         props.put("bodyId", "example");
-        _rdao.updateProperties(_r.id(), props);
+        _rdao.updateMetadata(_r.id(), props);
 
         // ASSERT
         verifyAll();
