@@ -1,7 +1,11 @@
 #macro( hello )hello!#end
 #macro( echo $msg)$msg#end
 
-
+#macro(includeTemplate $path)
+	#set ($pathObject = $helper.path($path))
+	#set ($template = $reader.lookup("assets", $pathObject ))
+	#evaluate($template.body())
+#end
 
 #macro( optional $name $startText $endText)
    #foreach( $para in $resource.paragraphs() )

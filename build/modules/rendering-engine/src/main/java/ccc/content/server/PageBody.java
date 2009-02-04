@@ -22,6 +22,7 @@ import ccc.commons.Resources;
 import ccc.commons.VelocityProcessor;
 import ccc.domain.Page;
 import ccc.domain.Template;
+import ccc.services.StatefulReader;
 
 
 /**
@@ -36,6 +37,7 @@ public class PageBody
 
     private final Page    _page;
     private final Charset _charset;
+    private final StatefulReader _reader;
 
     /**
      * Constructor.
@@ -43,13 +45,15 @@ public class PageBody
      * @param p The page to render.
      * @param charset The character set used when writing the page to an
      *  {@link OutputStream}.
+     * @param reader
      */
-    public PageBody(final Page p, final Charset charset) {
+    public PageBody(final Page p, final Charset charset, final StatefulReader reader) {
         DBC.require().notNull(p);
         DBC.require().notNull(charset);
 
         _page = p;
         _charset = charset;
+        _reader = reader;
     }
 
     /** {@inheritDoc} */
@@ -63,7 +67,7 @@ public class PageBody
     public void write(final OutputStream os) throws IOException {
         final String t = _page.computeTemplate(BUILT_IN_PAGE_TEMPLATE).body();
         final Writer w = new OutputStreamWriter(os, _charset);
-        new VelocityProcessor().render(_page,  t, w);
+        new VelocityProcessor().render(_page,  t, w, _reader);
     }
 
     private static final Template BUILT_IN_PAGE_TEMPLATE =

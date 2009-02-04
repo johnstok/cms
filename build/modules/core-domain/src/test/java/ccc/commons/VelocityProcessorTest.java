@@ -35,7 +35,7 @@ public class VelocityProcessorTest extends TestCase {
 
         // ACT
         final String actual =
-            vp.render(null, "#hello()");
+            vp.render(null, "#hello()", null);
 
 
         // ASSERT
@@ -51,7 +51,7 @@ public class VelocityProcessorTest extends TestCase {
         final StringWriter output = new StringWriter();
 
         // ACT
-        _vp.render(null, "foo", output);
+        _vp.render(null, "foo", output, null);
 
         // ASSERT
         assertEquals("foo", output.toString());
@@ -65,7 +65,7 @@ public class VelocityProcessorTest extends TestCase {
         // ARRANGE
 
         // ACT
-        final String output = _vp.render(null, "foo");
+        final String output = _vp.render(null, "foo", null);
 
         // ASSERT
         assertEquals("foo", output);
@@ -82,7 +82,7 @@ public class VelocityProcessorTest extends TestCase {
         final String template = "Hello $resource.id()";
 
         // ACT
-        final String html = _vp.render(foo, template);
+        final String html = _vp.render(foo, template, null);
 
         // ASSERT
         assertEquals("Hello "+foo.id(), html);
