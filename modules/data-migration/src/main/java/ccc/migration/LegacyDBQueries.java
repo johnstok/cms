@@ -145,10 +145,10 @@ public class LegacyDBQueries {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Returns style sheet assigned to the resource.
      *
-     * @param contentId
-     * @return
+     * @param contentId Content id
+     * @return The style sheet value stored in C3_SCRIPTS table
      */
     public String selectStyleSheet(final int contentId) {
         final StyleSheetSelector query = new StyleSheetSelector();
