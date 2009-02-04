@@ -12,6 +12,7 @@
 package ccc.contentcreator.remoting;
 
 import java.util.List;
+import java.util.Map;
 
 import ccc.commons.JNDI;
 import ccc.contentcreator.api.CommandService;
@@ -189,7 +190,8 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateStyleSheet(final String _id, final String styleSheet) {
-        _delegate.updateStyleSheet(_id, styleSheet);
+    public void updateProperties(final String resourceId,
+                                 final Map<String, String> properties) {
+        _delegate.updateProperties(resourceId, properties);
     }
 }

@@ -12,6 +12,7 @@
 package ccc.services.api;
 
 import java.util.List;
+import java.util.Map;
 
 
 
@@ -106,7 +107,7 @@ public interface Commands {
     /**
      * TODO: Add a description of this method.
      *
-     * @param resourceId
+     * @param resourceId The id of the resource to update.
      * @return
      */
     ResourceSummary unpublish(String resourceId);
@@ -114,10 +115,18 @@ public interface Commands {
     /**
      * TODO: Add a description of this method.
      *
-     * @param resourceId
+     * @param resourceId The id of the resource to update.
      * @param include
      */
     void includeInMainMenu(String resourceId, boolean include);
+
+    /**
+     * Update meta properties of the resource.
+     *
+     * @param resourceId The id of the resource to update.
+     * @param properties The properties to update.
+     */
+    void updateProperties(String resourceId, Map<String, String> properties);
 
 
 
@@ -155,12 +164,4 @@ public interface Commands {
 
     public List<String> validateFields(final List<ParagraphDelta> delta,
                                  final String definition);
-
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param _id
-     * @param styleSheet
-     */
-    void updateStyleSheet(String _id, String styleSheet);
 }
