@@ -15,9 +15,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.Date;
 import java.util.Properties;
-import java.util.Random;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -67,12 +65,14 @@ public class VelocityProcessor {
      *
      * @param resource The resource that will be rendered.
      * @param template The template used to render the resource.
+     * @param reader StatefulReader.
      * @return The html rendering as a string.
      */
     public String render(final Resource resource,
-                         final String template) {
+                         final String template,
+                         final Object reader) {
         final StringWriter renderedOutput = new StringWriter();
-        render(resource, template, renderedOutput);
+        render(resource, template, renderedOutput, reader);
         return renderedOutput.toString();
     }
 
@@ -86,10 +86,12 @@ public class VelocityProcessor {
      * @param template The template used to render the resource.
      * @param output A valid {@link Writer}. The writer will be flushed when
      *  output is complete. The writer will not be closed.
+     * @param reader StatefulReader.
      */
     public void render(final Resource resource,
                        final String template,
-                       final Writer output) {
+                       final Writer output,
+                       final Object reader) {
 
         final Properties velocityProperties = new Properties();
         try {
@@ -110,9 +112,9 @@ public class VelocityProcessor {
             final VelocityContext context = new VelocityContext();
             context.put("resource", resource);
 
-            // TODO petteri: replace random with Velocity Tools or similar
-            final Random random = new Random(new Date().getTime());
-            context.put("random", random);
+            final VelocityHelper helper = new VelocityHelper();
+            context.put("reader", reader);
+            context.put("helper", helper);
             ve.evaluate(context, output, "VelocityProcessor", template);
 
             output.flush();
