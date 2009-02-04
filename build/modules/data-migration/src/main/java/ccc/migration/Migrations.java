@@ -184,8 +184,9 @@ public class Migrations {
             final Map<String, String> properties =
                 new HashMap<String, String>();
             setStyleSheet(r, properties);
-            // TODO: set legacy ID
+            properties.put("legacyId", ""+r.contentId());
             setProperties(rs, properties);
+
             migrateResources(rs._id, r.contentId());
 
         } catch (final Exception e) {
@@ -223,8 +224,9 @@ public class Migrations {
             final Map<String, String> properties =
                 new HashMap<String, String>();
             setStyleSheet(r, properties);
-            // TODO: set legacy ID
+            properties.put("legacyId", ""+r.contentId());
             setProperties(rs, properties);
+
             log.info("Migrated page "+r.contentId());
 
         } catch (final Exception e) {

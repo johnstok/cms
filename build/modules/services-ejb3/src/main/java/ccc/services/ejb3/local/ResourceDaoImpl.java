@@ -252,7 +252,9 @@ public class ResourceDaoImpl implements ResourceDao {
 
     /** {@inheritDoc} */
     @Override
-    public void updateProperties(final UUID id, final Map<String, String> properties) {
+    public void updateProperties(final UUID id,
+                                 final Map<String,
+                                 String> properties) {
         final Resource r = findLocked(Resource.class, id);
         for (final String key : properties.keySet()) {
             r.addMetadatum(key, properties.get(key));
