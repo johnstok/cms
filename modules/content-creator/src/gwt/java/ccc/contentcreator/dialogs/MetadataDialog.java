@@ -19,6 +19,7 @@ import java.util.Map;
 
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.callbacks.DisposingCallback;
+import ccc.contentcreator.client.Globals;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -52,10 +53,15 @@ public class MetadataDialog
         constants().save(),
         new SelectionListener<ButtonEvent>(){
             @Override public void componentSelected(final ButtonEvent ce) {
-                commands().updateMetadata(
-                    _resourceId,
-                    currentMetadata(),
-                    new DisposingCallback(MetadataDialog.this));
+                Map<String, String> metadata = currentMetadata();
+                if (isValid(metadata)) {
+                    commands().updateMetadata(
+                        _resourceId,
+                        metadata,
+                        new DisposingCallback(MetadataDialog.this));
+                } else {
+                    Globals.alert("No empty keys or values are allowed.");
+                }
             }
         });
 
@@ -158,5 +164,19 @@ public class MetadataDialog
         }
 
         return metadata;
+    }
+
+    private boolean isValid(final Map<String, String> metadata) {
+        for (final Map.Entry<String, String> datum : metadata.entrySet()) {
+            if (null==datum.getKey()
+                || datum.getKey().trim().length() < 1) {
+                return false;
+            }
+            if (null==datum.getValue()
+                || datum.getValue().trim().length() < 1) {
+                return false;
+            }
+        }
+        return true;
     }
 }
