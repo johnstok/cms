@@ -36,7 +36,7 @@ public class FolderDaoImplTest
         // ARRANGE
         final Folder f = new Folder("foo");
 
-        expect(_dao.findLocked(Folder.class, f.id())).andReturn(f);
+        expect(_dao.find(Folder.class, f.id())).andReturn(f);
         replay(_dao);
 
         // ACT

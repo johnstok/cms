@@ -63,7 +63,7 @@ public class FolderDaoImpl implements FolderDao {
     @Override
     public void updateSortOrder(final UUID folderId,
                                 final ResourceOrder order) {
-        final Folder f = _dao.findLocked(Folder.class, folderId);
+        final Folder f = _dao.find(Folder.class, folderId);
         f.sortOrder(order);
     }
 }
