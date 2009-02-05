@@ -28,6 +28,23 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      */
+    public void testChangeSortOrder() {
+
+        // ARRANGE
+        final Folder f = new Folder();
+        assertEquals(ResourceOrder.MANUAL, f.sortOrder());
+
+        // ACT
+        f.sortOrder(ResourceOrder.NAME_ALPHANUM_ASC);
+
+        // ASSERT
+        assertEquals(ResourceOrder.NAME_ALPHANUM_ASC, f.sortOrder());
+
+    }
+
+    /**
+     * Test.
+     */
     public void testCreateFolderWithTitle() {
 
         // ACT
@@ -282,15 +299,12 @@ public final class FolderTest extends TestCase {
 
         // ARRANGE
         final Folder foo = new Folder("foo");
+
         // ACT
-        try {
-            foo.entries().add(new Page("bar"));
-            fail("A folder's entries collection should be unmodifiable.");
+        foo.entries().add(new Page("bar"));
 
          // ASSERT
-        } catch (final UnsupportedOperationException e) {
-            assertNull(e.getMessage());
-        }
+        assertEquals(0, foo.entries().size());
     }
 
     /**

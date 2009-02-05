@@ -17,10 +17,19 @@
 -->
 
 <hibernate-mapping default-access="field">
+    <typedef class="ccc.services.ejb3.support.EnumUserType" name="SortOrder">
+        <param name="type">ccc.domain.ResourceOrder</param>
+    </typedef>
+    
     <joined-subclass
         name="ccc.domain.Folder"  extends="ccc.domain.Resource">
         
         <key column="_id" />
+        
+        <property
+            name="_order"
+            not-null="true"
+            type="SortOrder" />
         
         <list name="_entries">
             <key column="parent_id" />

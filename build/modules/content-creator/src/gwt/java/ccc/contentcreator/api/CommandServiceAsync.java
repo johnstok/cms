@@ -64,6 +64,8 @@ public interface CommandServiceAsync {
 
     void updateMetadata(String resourceId, Map<String,String> metadata, AsyncCallback<Void> callback);
 
+    void updateFolderSortOrder(String folderId, String sortOrder, AsyncCallback<Void> callback);
+
 
 
     void createAlias(String parentId, String name, String targetId, AsyncCallback<Void> callback);

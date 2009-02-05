@@ -36,6 +36,7 @@ import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
+import ccc.domain.ResourceOrder;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.AliasDao;
@@ -358,5 +359,13 @@ public class CommandsEJB
     public void updateMetadata(final String resourceId,
                                final Map<String, String> metadata) {
         _resources.updateMetadata(UUID.fromString(resourceId), metadata);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateFolderSortOrder(final String folderId,
+                                      final String sortOrder) {
+        _folders.updateSortOrder(UUID.fromString(folderId),
+                                 ResourceOrder.valueOf(sortOrder));
     }
 }
