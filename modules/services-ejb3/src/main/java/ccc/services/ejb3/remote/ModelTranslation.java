@@ -170,6 +170,7 @@ public class ModelTranslation {
         final ResourceSummary rs = map((Resource) f);
         rs._childCount = f.entries().size();
         rs._folderCount = f.folders().size();
+        rs._sortOrder = f.sortOrder().name();
         return rs;
     }
 
