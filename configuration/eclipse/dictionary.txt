@@ -138,3 +138,6 @@ un
 unpublish
 credentials
 async
+metadatum
+editable
+toolbar
