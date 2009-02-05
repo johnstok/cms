@@ -1,6 +1,10 @@
 #macro( hello )hello!#end
 #macro( echo $msg)$msg#end
 
+#macro(currentYear)
+	$helper.calendar().get(1)
+#end
+
 #macro(includeTemplate $path)
 	#set ($pathObject = $helper.path($path))
 	#set ($template = $reader.lookup("assets", $pathObject ))
@@ -16,7 +20,6 @@
       #end
    #end
 #end
-
 
 
 #macro ( menutag) 

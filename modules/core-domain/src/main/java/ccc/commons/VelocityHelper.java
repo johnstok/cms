@@ -11,6 +11,7 @@
  */
 package ccc.commons;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
@@ -41,5 +42,15 @@ public class VelocityHelper {
      */
     public ResourcePath path(final String path) {
         return new ResourcePath(path);
+    }
+
+    /**
+     * Returns instance of Calendar.
+     *
+     * @return Instance of Calendar.
+     */
+    public Calendar calendar() {
+       final Calendar cal = Calendar.getInstance();
+       return cal;
     }
 }

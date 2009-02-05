@@ -14,7 +14,7 @@
 ##<%} else {%>
 <li><a href="<ccctl:CurrentContentUrl/>?pStyle=rich">High Graphics</a></li>
 ##<%}%>
-                        <li class="nobord">&copy; ASH Scotland <%=String.valueOf(java.util.Calendar.getInstance().get(java.util.Calendar.YEAR))%></li>
+                        <li class="nobord">&copy; ASH Scotland #currentYear</li>
                 </ul>
                 <p>ASH Scotland is a registered Scottish charity (SC 010412) and a company limited by guarantee<br />(Scottish company no 141711). The registered office is 8 Frederick Street, Edinburgh EH2 2HB</p>
         </div>
