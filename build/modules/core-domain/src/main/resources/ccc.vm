@@ -2,7 +2,7 @@
 #macro( echo $msg)$msg#end
 
 #macro(currentYear)
-	$helper.calendar().get(1)
+	$helper.currentYear()
 #end
 
 #macro(includeTemplate $path)

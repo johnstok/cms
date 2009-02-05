@@ -45,12 +45,12 @@ public class VelocityHelper {
     }
 
     /**
-     * Returns instance of Calendar.
+     * Returns current year.
      *
-     * @return Instance of Calendar.
+     * @return Current year as a String.
      */
-    public Calendar calendar() {
+    public String currentYear() {
        final Calendar cal = Calendar.getInstance();
-       return cal;
+       return ""+cal.get(Calendar.YEAR);
     }
 }
