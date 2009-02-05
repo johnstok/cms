@@ -100,6 +100,60 @@ public class FileUploader {
     }
 
     void uploadFile(final ResourceSummary filesResource,
+                    final FileDelta legacyFile,
+                    final File file) {
+        try {
+            final PostMethod filePost =
+                new PostMethod(_targetUploadURL);
+            log.debug("Migrating file: "+legacyFile._name);
+            final String name =
+                ResourceName.escape(legacyFile._name).toString();
+
+            String title = legacyFile._title;
+            if (title == null) {
+                title = legacyFile._name;
+            }
+            final String description =
+                (legacyFile._description == null)
+                    ? ""
+                    :legacyFile._description;
+
+            final FilePart fp = new FilePart("file", file.getName(), file);
+            fp.setContentType(_mimemap.getContentType(file));
+            final Part[] parts = {
+                    new StringPart("fileName", name),
+                    new StringPart("title", title),
+                    new StringPart("description", description),
+                    new StringPart("path", filesResource._id),
+                    fp
+            };
+            filePost.setRequestEntity(
+                new MultipartRequestEntity(parts, filePost.getParams())
+            );
+
+            _client.getHttpConnectionManager().
+                getParams().setConnectionTimeout(5000);
+
+
+            final int status = _client.executeMethod(filePost);
+            if (status == HttpStatus.SC_OK) {
+                log.debug(
+                    "Upload complete, response="
+                    + filePost.getResponseBodyAsString()
+                );
+            } else {
+                log.error(
+                    "Upload failed, response="
+                    + HttpStatus.getStatusText(status)
+                );
+            }
+        } catch (final Exception e) {
+            log.error("File migration failed ", e);
+        }
+    }
+
+
+    void uploadFile(final ResourceSummary filesResource,
                             final FileDelta legacyFile,
                             final String directory) {
 
@@ -107,54 +161,7 @@ public class FileUploader {
         if (!file.exists()) {
             log.debug("File not found: "+legacyFile._name);
         } else {
-            try {
-                final PostMethod filePost =
-                    new PostMethod(_targetUploadURL);
-                log.debug("Migrating file: "+legacyFile._name);
-                final String name =
-                    ResourceName.escape(legacyFile._name).toString();
-
-                String title = legacyFile._title;
-                if (title == null) {
-                    title = legacyFile._name;
-                }
-                final String description =
-                    (legacyFile._description == null)
-                        ? ""
-                        :legacyFile._description;
-
-                final FilePart fp = new FilePart("file", file.getName(), file);
-                fp.setContentType(_mimemap.getContentType(file));
-                final Part[] parts = {
-                        new StringPart("fileName", name),
-                        new StringPart("title", legacyFile._title),
-                        new StringPart("description", description),
-                        new StringPart("path", filesResource._id),
-                        fp
-                };
-                filePost.setRequestEntity(
-                    new MultipartRequestEntity(parts, filePost.getParams())
-                );
-
-                _client.getHttpConnectionManager().
-                    getParams().setConnectionTimeout(5000);
-
-
-                final int status = _client.executeMethod(filePost);
-                if (status == HttpStatus.SC_OK) {
-                    log.debug(
-                        "Upload complete, response="
-                        + filePost.getResponseBodyAsString()
-                    );
-                } else {
-                    log.error(
-                        "Upload failed, response="
-                        + HttpStatus.getStatusText(status)
-                    );
-                }
-            } catch (final Exception e) {
-                log.error("File migration failed ", e);
-            }
+            uploadFile(filesResource, legacyFile, file);
         }
     }
 

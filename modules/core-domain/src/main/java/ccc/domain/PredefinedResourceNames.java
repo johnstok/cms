@@ -29,4 +29,13 @@ public final class PredefinedResourceNames {
 
     /** TEMPLATES : String. */
     public static final String TEMPLATES  = "templates";
+
+    /** FILES : String. */
+    public static final String FILES  = "files";
+
+    /** IMAGES : String. */
+    public static final String IMAGES  = "images";
+
+    /** CSS : String. */
+    public static final String CSS  = "css";
 }

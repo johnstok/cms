@@ -11,6 +11,7 @@
  */
 package ccc.migration;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,7 +50,9 @@ public class Migrations {
     private ResourceSummary _contentRoot;
     private ResourceSummary _templateFolder;
     private ResourceSummary _filesFolder;
-    private ResourceSummary _imagesFolder;
+    private ResourceSummary _contentImagesFolder;
+    private ResourceSummary _assetsImagesFolder;
+    private ResourceSummary _cssFolder;
     private Set<Integer>    _menuItems;
 
     private final LegacyDBQueries _queries;
@@ -86,7 +89,9 @@ public class Migrations {
         loadSupportingData();
         migrateUsers();
         migrateResources(_contentRoot._id, 0);
-        migrateFilesAndImages();
+//        migrateManagedFilesAndImages();
+        migrateImages();
+        migrateCss();
     }
 
 
@@ -96,8 +101,15 @@ public class Migrations {
 
         _templateFolder =_commands.createFolder(_assetRoot._id,
             PredefinedResourceNames.TEMPLATES);
-        _filesFolder = _commands.createFolder(_contentRoot._id, "Files");
-        _imagesFolder = _commands.createFolder(_contentRoot._id, "Images");
+        _filesFolder = _commands.createFolder(_contentRoot._id,
+            PredefinedResourceNames.FILES);
+        _contentImagesFolder = _commands.createFolder(_contentRoot._id,
+            PredefinedResourceNames.IMAGES);
+
+        _cssFolder = _commands.createFolder(_assetRoot._id,
+            PredefinedResourceNames.CSS);
+        _assetsImagesFolder = _commands.createFolder(_assetRoot._id,
+            PredefinedResourceNames.IMAGES);
 
         // TODO: Remove. Should set 'publish' root via UI
         _commands.lock(_contentRoot._id);
@@ -153,7 +165,7 @@ public class Migrations {
     }
 
 
-    private void migrateFilesAndImages() {
+    private void migrateManagedFilesAndImages() {
         final List<FileDelta> files =_queries.selectFiles();
         for (final FileDelta legacyFile : files) {
             _fu.uploadFile(_filesFolder, legacyFile,
@@ -162,11 +174,64 @@ public class Migrations {
 
         final List<FileDelta> images = _queries.selectImages();
         for (final FileDelta legacyFile : images) {
-            _fu.uploadFile(_imagesFolder, legacyFile,
+            _fu.uploadFile(_contentImagesFolder, legacyFile,
                 _props.getProperty("imagesSourcePath"));
         }
     }
 
+    private void migrateImages() {
+        final String imagePath = _props.getProperty("imagesSourcePath");
+        final File imageDir = new File(imagePath);
+        if (!imageDir.exists()) {
+            log.debug("File not found: "+imagePath);
+        } else if (!imageDir.isDirectory()) {
+            log.warn(imagePath+" is not a directory");
+        } else {
+            final File[] images = imageDir.listFiles();
+            for (final File file : images) {
+                boolean managedImage = false;
+                final List<FileDelta> managedImages = _queries.selectImages();
+                for (final FileDelta legacyFile : managedImages) {
+                    if (file.getName().equals(legacyFile._name)) {
+                        managedImage = true;
+                    }
+                }
+
+                if (!managedImage && file.isFile()
+                        && !(file.getName().startsWith("ccc")
+                        || file.getName().startsWith(".")
+                        || file.getName().startsWith("um")))  {
+
+                    final FileDelta legacyFile = new FileDelta();
+                    legacyFile._name = file.getName();
+                    legacyFile._description = "migrated file";
+                    _fu.uploadFile(_assetsImagesFolder, legacyFile, file);
+                }
+            }
+        }
+        log.info("Migrated non-managed images.");
+    }
+
+    private void migrateCss() {
+        final String cssPath = _props.getProperty("cssSourcePath");
+        final File cssDir = new File(cssPath);
+        if (!cssDir.exists()) {
+            log.debug("File not found: "+cssPath);
+        } else if (!cssDir.isDirectory()) {
+            log.warn(cssPath+" is not a directory");
+        } else {
+            final File[] images = cssDir.listFiles();
+            for (final File file : images) {
+                if (file.isFile() && file.getName().endsWith(".css"))  {
+                    final FileDelta legacyFile = new FileDelta();
+                    legacyFile._name = file.getName();
+                    legacyFile._description = "migrated file";
+                    _fu.uploadFile(_cssFolder, legacyFile, file);
+                }
+            }
+        }
+        log.info("Migrated non-managed css files.");
+    }
 
     private void migrateFolder(final String parentFolderId,
                                final ResourceBean r) {
