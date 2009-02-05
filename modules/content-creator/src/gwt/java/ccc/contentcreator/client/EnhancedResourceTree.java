@@ -100,7 +100,7 @@ public class EnhancedResourceTree extends FolderResourceTree {
                 final ModelData item =
                     getSelectionModel().getSelectedItem().getModel();
 
-                new CreateFolderDialog(item, store()).show();
+                new CreateFolderDialog(item).show();
             }
         });
         contextMenu.add(createFolder);

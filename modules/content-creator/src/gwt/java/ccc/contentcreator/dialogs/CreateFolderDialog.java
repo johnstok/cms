@@ -11,9 +11,6 @@
  */
 package ccc.contentcreator.dialogs;
 
-import java.util.Collections;
-
-import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.validation.Validate;
@@ -24,7 +21,6 @@ import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.store.TreeStore;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 
@@ -37,21 +33,17 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 public class CreateFolderDialog extends AbstractEditDialog {
 
     private final ModelData _parent;
-    private TreeStore<ModelData> _treeStore;
     private final TextField<String> _text = new TextField<String>();
 
     /**
      * Constructor.
      *
      * @param parent parent folder in the GUI.
-     * @param treeStore TreeStore to update.
      */
-    public CreateFolderDialog(final ModelData parent,
-                              final TreeStore<ModelData> treeStore) {
+    public CreateFolderDialog(final ModelData parent) {
         super(Globals.uiConstants().createFolder());
         setHeight(Globals.DEFAULT_MIN_HEIGHT);
         _parent = parent;
-        _treeStore = treeStore;
         setLayout(new FitLayout());
         setPanelId("create-folder-dialog");
 
@@ -87,9 +79,10 @@ public class CreateFolderDialog extends AbstractEditDialog {
                     new ErrorReportingCallback<ResourceSummary>(){
                         public void onSuccess(final ResourceSummary result) {
                             fireEvent(Events.SelectionChange);
-                            _treeStore.add(_parent,
-                                           DataBinding.bindResourceSummary(Collections.singletonList(result)),
-                                           false);
+//                            _treeStore.add(_parent,
+//                                           DataBinding.bindResourceSummary(Collections.singletonList(result)),
+//                                           false);
+                            // TODO: Sync GUI.
                             close();
                         }
                     }
