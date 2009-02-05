@@ -12,8 +12,6 @@
 
 package ccc.domain;
 
-import static java.util.Collections.*;
-
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +26,8 @@ import ccc.commons.DBC;
  */
 public final class Folder extends Resource {
 
-    private final List<Resource> _entries = new ArrayList<Resource>();
+    private List<Resource> _entries = new ArrayList<Resource>();
+    private ResourceOrder  _order = ResourceOrder.MANUAL;
 
     /** Constructor: for persistence only. */
     protected Folder() { super(); }
@@ -82,7 +81,9 @@ public final class Folder extends Resource {
      * @return A list of all the resources in this folder.
      */
     public List<Resource> entries() {
-        return unmodifiableList(_entries);
+        final List<Resource> entries = new ArrayList<Resource>(_entries);
+        _order.sort(entries);
+        return entries;
     }
 
     /**
@@ -176,7 +177,7 @@ public final class Folder extends Resource {
      * @return True if an entry exists, false otherwise.
      */
     public boolean hasEntryWithName(final ResourceName resourceName) {
-        for (final Resource entry : entries()) {
+        for (final Resource entry : _entries) {
             if (entry.name().equals(resourceName)) {
                 return true;
             }
@@ -194,7 +195,7 @@ public final class Folder extends Resource {
      */
     public <T extends Resource> List<T> entries(final Class<T> resourceType) {
         final List<T> entries = new ArrayList<T>();
-        for (final Resource entry : _entries) {
+        for (final Resource entry : entries()) {
             entries.add(entry.as(resourceType));
         }
         return entries;
@@ -295,5 +296,24 @@ public final class Folder extends Resource {
             }
         }
         throw new CCCException("No aliases in this folder.");
+    }
+
+    /**
+     * Accessor for the sort order property.
+     *
+     * @return The folder sort order.
+     */
+    public ResourceOrder sortOrder() {
+        return _order;
+    }
+
+    /**
+     * Mutator for the sort order property.
+     *
+     * @param order The new sort order.
+     */
+    public void sortOrder(final ResourceOrder order) {
+        DBC.require().notNull(order);
+        _order = order;
     }
 }

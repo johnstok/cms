@@ -12,8 +12,10 @@
 package ccc.services;
 
 import java.util.Collection;
+import java.util.UUID;
 
 import ccc.domain.Folder;
+import ccc.domain.ResourceOrder;
 
 
 /**
@@ -30,4 +32,11 @@ public interface FolderDao {
      */
     Collection<Folder> roots();
 
+    /**
+     * Change the sort order for a folder.
+     *
+     * @param folderId The id of the folder.
+     * @param order The new sort order.
+     */
+    void updateSortOrder(UUID folderId, ResourceOrder order);
 }

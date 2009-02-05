@@ -47,12 +47,14 @@ import ccc.services.api.TemplateDelta;
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.binder.TableBinder;
+import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
@@ -60,6 +62,8 @@ import com.extjs.gxt.ui.client.widget.table.Table;
 import com.extjs.gxt.ui.client.widget.table.TableColumn;
 import com.extjs.gxt.ui.client.widget.table.TableColumnModel;
 import com.extjs.gxt.ui.client.widget.table.TableItem;
+import com.extjs.gxt.ui.client.widget.toolbar.AdapterToolItem;
+import com.extjs.gxt.ui.client.widget.toolbar.LabelToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.TextToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
@@ -143,18 +147,15 @@ public class ResourceTable extends TablePanel {
         final TableBinder<ModelData> binder =
             new TableBinder<ModelData>(tbl, _detailsStore) {
 
-            @Override
-                protected void update(final ModelData model) {
-                    super.update(model);
-                    final TableItem ti = (TableItem) findItem(model);
-                    setActionButton(tbl, model, ti);
-                }
-
+            /** {@inheritDoc} */
+            @Override protected void update(final ModelData model) {
+                super.update(model);
+                final TableItem ti = (TableItem) findItem(model);
+                setActionButton(tbl, model, ti);
+            }
 
             /** {@inheritDoc} */
-            @Override
-            protected TableItem createItem(final ModelData model) {
-
+            @Override protected TableItem createItem(final ModelData model) {
                 final TableItem ti = super.createItem(model);
                 setActionButton(tbl, model, ti);
                 return ti;
@@ -188,10 +189,9 @@ public class ResourceTable extends TablePanel {
     private void createToolbar(final FolderResourceTree tree) {
 
         _toolBar.add(new SeparatorToolItem());
-        final TextToolItem uploadFile = new TextToolItem("Upload File");
+        final TextToolItem uploadFile = new TextToolItem("Upload File"); // TODO: I18n
         uploadFile.setId("uploadFile");
         _toolBar.add(uploadFile);
-        _toolBar.add(new SeparatorToolItem());
         uploadFile.addListener(Events.Select, new Listener<ComponentEvent>(){
 
             public void handleEvent(final ComponentEvent be) {
@@ -202,10 +202,10 @@ public class ResourceTable extends TablePanel {
             }
         });
 
-        final TextToolItem createFolder = new TextToolItem("Create Folder");
+        _toolBar.add(new SeparatorToolItem());
+        final TextToolItem createFolder = new TextToolItem("Create Folder"); // TODO: I18n
         createFolder.setId("Create Folder");
         _toolBar.add(createFolder);
-        _toolBar.add(new SeparatorToolItem());
         createFolder.addListener(Events.Select, new Listener<ComponentEvent>(){
 
             public void handleEvent(final ComponentEvent be) {
@@ -214,7 +214,8 @@ public class ResourceTable extends TablePanel {
             }
         });
 
-        final TextToolItem createPage = new TextToolItem("Create Page");
+        _toolBar.add(new SeparatorToolItem());
+        final TextToolItem createPage = new TextToolItem("Create Page"); // TODO: I18n
         createPage.setId("Create Page");
         createPage.addListener(Events.Select, new Listener<ComponentEvent>(){
 
@@ -229,8 +230,9 @@ public class ResourceTable extends TablePanel {
             }
         });
         _toolBar.add(createPage);
+
         _toolBar.add(new SeparatorToolItem());
-        final TextToolItem createTemplate = new TextToolItem("Create Template");
+        final TextToolItem createTemplate = new TextToolItem("Create Template"); // TODO: I18n
         createTemplate.setId("Create Template");
         createTemplate.addListener(Events.Select, new Listener<ComponentEvent>(){
             public void handleEvent(final ComponentEvent be) {
@@ -240,8 +242,9 @@ public class ResourceTable extends TablePanel {
             }
         });
         _toolBar.add(createTemplate);
+
         _toolBar.add(new SeparatorToolItem());
-        final TextToolItem chooseTemplate = new TextToolItem("Choose Template");
+        final TextToolItem chooseTemplate = new TextToolItem("Choose Template"); // TODO: I18n
         chooseTemplate.setId("Choose Template");
         chooseTemplate.addListener(Events.Select, new Listener<ComponentEvent>(){
             public void handleEvent(final ComponentEvent be) {
@@ -257,8 +260,40 @@ public class ResourceTable extends TablePanel {
                 });
             }
         });
-
         _toolBar.add(chooseTemplate);
+
+        _toolBar.add(new SeparatorToolItem());
+        _toolBar.add(new LabelToolItem("Sort order")); // TODO: I18n
+        final ComboBox<ModelData> sortCombo = new ComboBox<ModelData>();
+        sortCombo.setWidth(200);
+        sortCombo.setDisplayField("name");
+        sortCombo.setEditable(false);
+        sortCombo.setAutoWidth(false);
+
+        final ListStore<ModelData> sortStore = new ListStore<ModelData>();
+        final ModelData name_alphanum_asc = new BaseModelData();
+        name_alphanum_asc.set("name", "Name - alphanumeric, ascending");
+        name_alphanum_asc.set("value", "NAME_ALPHANUM_ASC");
+        sortStore.add(name_alphanum_asc);
+        final ModelData manual = new BaseModelData();
+        manual.set("name", "Manual");
+        manual.set("value", "MANUAL");
+        sortStore.add(manual);
+
+        sortCombo.setStore(sortStore);
+        sortCombo.addListener(Events.Select, new Listener<ComponentEvent>(){
+            public void handleEvent(final ComponentEvent be) {
+                Globals.commandService().updateFolderSortOrder(
+                    _previousItem.getModel().<String>get("id"),
+                    sortCombo.getValue().<String>get("value"),
+                    new ErrorReportingCallback<Void>(){
+                        public void onSuccess(final Void result) {
+                            refreshTable();
+                        }});
+            }
+        });
+        _toolBar.add(new AdapterToolItem(sortCombo));
+
         _toolBar.add(new SeparatorToolItem());
     }
 

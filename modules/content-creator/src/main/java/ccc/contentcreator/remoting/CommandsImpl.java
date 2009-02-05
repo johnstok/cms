@@ -194,4 +194,11 @@ public class CommandsImpl
                                  final Map<String, String> metadata) {
         _delegate.updateMetadata(resourceId, metadata);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateFolderSortOrder(final String folderId,
+                                      final String sortOrder) {
+        _delegate.updateFolderSortOrder(folderId, sortOrder);
+    }
 }

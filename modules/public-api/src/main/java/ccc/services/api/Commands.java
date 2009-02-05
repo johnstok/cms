@@ -128,6 +128,23 @@ public interface Commands {
      */
     void updateMetadata(String resourceId, Map<String, String> metadata);
 
+    /**
+     * Update the sort order for the specified folder.
+     *
+     * @param folderId The id of the folder to update.
+     * @param sortOrder The new sort order.
+     */
+    void updateFolderSortOrder(String folderId, String sortOrder);
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param delta
+     * @param definition
+     * @return
+     */
+    public List<String> validateFields(final List<ParagraphDelta> delta,
+                                       final String definition);
 
 
 
@@ -161,7 +178,4 @@ public interface Commands {
      * Create a new template in CCC.
      */
     ResourceSummary createTemplate(String parentId, TemplateDelta delta);
-
-    public List<String> validateFields(final List<ParagraphDelta> delta,
-                                 final String definition);
 }
