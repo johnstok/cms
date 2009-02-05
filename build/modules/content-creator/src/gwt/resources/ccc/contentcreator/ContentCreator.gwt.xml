@@ -17,6 +17,7 @@
 	<!-- Specify the app entry point class. -->
 	<entry-point class="ccc.contentcreator.client.ContentCreator" />
 
+	<source path="actions" />
 	<source path="api" />
 	<source path="binding" />
 	<source path="callbacks" />

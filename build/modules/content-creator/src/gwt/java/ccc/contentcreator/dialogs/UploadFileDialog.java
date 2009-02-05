@@ -13,7 +13,7 @@ package ccc.contentcreator.dialogs;
 
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.client.Globals;
-import ccc.contentcreator.client.ResourceTable;
+import ccc.contentcreator.client.SingleSelectionModel;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -49,11 +49,11 @@ public class UploadFileDialog extends AbstractEditDialog {
      *
      * @param folder The folder in which this file should be saved.
      * @param name The name of the folder.
-     * @param rt The left hand tree view in the main window.
+     * @param ssm
      */
     public UploadFileDialog(final String folder,
                             final String name,
-                            final ResourceTable rt) {
+                            final SingleSelectionModel ssm) {
         super(Globals.uiConstants().uploadFileTo()+": "+name);
         setHeight(Globals.DEFAULT_UPLOAD_HEIGHT);
         // Create a FormPanel and point it at a service.
@@ -93,7 +93,7 @@ public class UploadFileDialog extends AbstractEditDialog {
         _panel.addListener(Events.Submit, new Listener<FormEvent>() {
             public void handleEvent(final FormEvent be) {
                 hide();
-                rt.refreshTable();
+                ssm.refresh();
                 if (!be.resultHtml.equals("File was uploaded successfully.")) {
                     Globals.unexpectedError(new Exception(be.resultHtml));
                 }
