@@ -117,18 +117,31 @@ public class VelocityProcessor {
             context.put("helper", helper);
             ve.evaluate(context, output, "VelocityProcessor", template);
 
-            output.flush();
-
         } catch (final ParseErrorException e) {
-            throw new CCCException(e);
+            handleException(output, e);
         } catch (final MethodInvocationException e) {
-            throw new CCCException(e);
+            handleException(output, e);
         } catch (final ResourceNotFoundException e) {
-            throw new CCCException(e);
+            handleException(output, e);
         } catch (final IOException e) {
-            throw new CCCException(e);
+            handleException(output, e);
         } catch (final Exception e) {
+            handleException(output, e);
+        } finally {
+            try {
+                output.flush();
+            } catch (final IOException e) {
+                throw new CCCException(e);
+            }
+        }
+    }
+
+    private void handleException(final Writer output, final Exception e) {
+        try {
+            output.write(e.getMessage());
+        } catch (final IOException e1) {
             throw new CCCException(e);
         }
+        throw new CCCException(e.getMessage(), e);
     }
 }
