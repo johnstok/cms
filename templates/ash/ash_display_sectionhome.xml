@@ -6,4 +6,4 @@
 	<field name="SUMMARY" type="text_area"/>
 	<field name="PanelOne_Custom" type="text_area"/>
 	<field name="CONTENT" type="text_area"/>
-</field>
+</fields>
