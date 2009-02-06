@@ -13,6 +13,7 @@ package ccc.migration;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,7 @@ import ccc.services.api.Commands;
 import ccc.services.api.FileDelta;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ParagraphDelta;
+import ccc.services.api.Queries;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserDelta;
@@ -55,22 +57,26 @@ public class Migrations {
     private ResourceSummary _cssFolder;
     private Set<Integer>    _menuItems;
 
-    private final LegacyDBQueries _queries;
+    private final LegacyDBQueries _legacyQueries;
     private final Properties _props;
     private final Commands _commands;
+    private final Queries _queries;
     private final FileUploader _fu;
 
 
     /**
      * Constructor.
      *
-     * @param queries Queries
+     * @param legacyQueries Queries
      * @param props Properties of the migration
      * @param commands The available commands for CCC7.
+     * @param queries The available queries for CCC7.
      */
-    public Migrations(final LegacyDBQueries queries,
+    public Migrations(final LegacyDBQueries legacyQueries,
                       final Properties props,
-                      final Commands commands) {
+                      final Commands commands,
+                      final Queries queries) {
+        _legacyQueries = legacyQueries;
         _queries = queries;
         _props = props;
         _commands = commands;
@@ -89,9 +95,11 @@ public class Migrations {
         loadSupportingData();
         migrateUsers();
         migrateResources(_contentRoot._id, 0);
-//        migrateManagedFilesAndImages();
+        migrateManagedFilesAndImages();
         migrateImages();
         migrateCss();
+        publishRecursive(_cssFolder);
+        publishRecursive(_assetsImagesFolder);
     }
 
 
@@ -123,13 +131,28 @@ public class Migrations {
     }
 
 
+    // TODO: Move under command-resourceDao?
+    private void publishRecursive(final ResourceSummary resource) {
+        _commands.lock(resource._id);
+        _commands.publish(resource._id);
+        if ("FOLDER".equals(resource._type)) {
+            final Collection<ResourceSummary> children =
+                _queries.getChildren(resource._id);
+            for (final ResourceSummary child : children) {
+                publishRecursive(child);
+            }
+        }
+        _commands.unlock(resource._id);
+    }
+
+
     private void loadSupportingData() {
-        _menuItems = _queries.selectMenuItems();
+        _menuItems = _legacyQueries.selectMenuItems();
     }
 
 
     private void migrateUsers() {
-        final Map<Integer, UserDelta> mus = _queries.selectUsers();
+        final Map<Integer, UserDelta> mus = _legacyQueries.selectUsers();
         for (final Map.Entry<Integer, UserDelta> mu : mus.entrySet()) {
             try {
                 final UserSummary u = _commands.createUser(mu.getValue());
@@ -145,7 +168,7 @@ public class Migrations {
     private void migrateResources(final String parentFolderId,
                                   final int parent) {
 
-        final List<ResourceBean> resources = _queries.selectResources(parent);
+        final List<ResourceBean> resources = _legacyQueries.selectResources(parent);
 
         for (final ResourceBean r : resources) {
             if (r.name() == null || r.name().trim().equals("")) {
@@ -166,13 +189,13 @@ public class Migrations {
 
 
     private void migrateManagedFilesAndImages() {
-        final List<FileDelta> files =_queries.selectFiles();
+        final List<FileDelta> files =_legacyQueries.selectFiles();
         for (final FileDelta legacyFile : files) {
             _fu.uploadFile(_filesFolder, legacyFile,
                 _props.getProperty("filesSourcePath"));
         }
 
-        final List<FileDelta> images = _queries.selectImages();
+        final List<FileDelta> images = _legacyQueries.selectImages();
         for (final FileDelta legacyFile : images) {
             _fu.uploadFile(_contentImagesFolder, legacyFile,
                 _props.getProperty("imagesSourcePath"));
@@ -190,7 +213,7 @@ public class Migrations {
             final File[] images = imageDir.listFiles();
             for (final File file : images) {
                 boolean managedImage = false;
-                final List<FileDelta> managedImages = _queries.selectImages();
+                final List<FileDelta> managedImages = _legacyQueries.selectImages();
                 for (final FileDelta legacyFile : managedImages) {
                     if (file.getName().equals(legacyFile._name)) {
                         managedImage = true;
@@ -319,7 +342,7 @@ public class Migrations {
         }
 
         final List<Integer> paragraphVersions =
-            _queries.selectParagraphVersions(r.contentId());
+            _legacyQueries.selectParagraphVersions(r.contentId());
         log.debug("Page versions available: "+paragraphVersions);
 
         if (-1 == paragraphVersions.get(0)) { // Discard working version
@@ -397,7 +420,7 @@ public class Migrations {
 
     private void setStyleSheet(final ResourceBean r,
                                final Map<String, String> properties) {
-        final String styleSheet = _queries.selectStyleSheet(r.contentId());
+        final String styleSheet = _legacyQueries.selectStyleSheet(r.contentId());
         if (styleSheet != null) {
             properties.put("bodyId", styleSheet);
         }
@@ -471,7 +494,7 @@ public class Migrations {
         final Map<String, StringBuffer> map =
             new HashMap<String, StringBuffer>();
         final List<ParagraphBean> paragraphs =
-            _queries.selectParagraphs(pageId, version);
+            _legacyQueries.selectParagraphs(pageId, version);
 
         for (final ParagraphBean p : paragraphs) {
             if (p.text() == null) { // ignore empty/null texts
@@ -498,7 +521,7 @@ public class Migrations {
                                   final String action) {
 
         final Integer userId =
-            _queries.selectUserFromLog(id, version, action, comment);
+            _legacyQueries.selectUserFromLog(id, version, action, comment);
 
         log.debug("Actor for "+action+" on "+id+" v."+version+" is "+userId);
 

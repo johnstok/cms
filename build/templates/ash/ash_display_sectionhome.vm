@@ -7,12 +7,11 @@
 <head>
 
 <title>ASH Scotland - Action on Smoking and Health - $resource.title()</title>
-<link href="http://www.ashscotland.org.uk/css/basic.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="/server/assets/css/basic.css" rel="stylesheet" type="text/css" media="screen" />
 ##<% if(szStyle.equalsIgnoreCase("Rich")){ %>
 <style type="text/css" media="screen">
 <!--
-##@import url(css/advanced.css);
-@import url(http://www.ashscotland.org.uk/css/advanced.css); ## should be relative
+@import url(/server/assets/css/advanced.css);
 -->
 </style>
 <!--[if IE 7]>
