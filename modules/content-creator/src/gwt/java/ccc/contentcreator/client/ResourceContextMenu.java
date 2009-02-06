@@ -49,7 +49,6 @@ import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
 
 
@@ -60,7 +59,7 @@ import com.extjs.gxt.ui.client.widget.menu.MenuItem;
  */
 public class ResourceContextMenu
     extends
-        Menu {
+        AbstractContextMenu {
 
     private final UIConstants _constants = Globals.uiConstants();
     private final CommandServiceAsync _cs = Globals.commandService();
@@ -80,6 +79,8 @@ public class ResourceContextMenu
      * @param tbl The table this menu will work for.
      */
     ResourceContextMenu(final ResourceTable tbl) {
+        super(tbl);
+
         _table = tbl;
 
         _publishAction = new PublishAction(_table);
@@ -88,80 +89,77 @@ public class ResourceContextMenu
 
         setWidth(CONTEXT_MENU_WIDTH);
 
-        addListener(Events.BeforeShow, new Listener<MenuEvent>(){
-            public void handleEvent(final MenuEvent be) {
-                removeAll();
-                final ModelData item = _table._tbl.getSelectedItem().getModel();
+        addListener(Events.BeforeShow,
+            new Listener<MenuEvent>(){
+                public void handleEvent(final MenuEvent be) {
+                    removeAll();
+                    final ModelData item =
+                        _table._tbl.getSelectedItem().getModel();
 
-                addPreview();
-                addViewHistory();
-                if (item.get("locked") == null
-                    || "".equals(item.get("locked"))) {
-                    addLockResource();
-                } else {
-                    addUnlockResource();
-                    if (item.<String>get("published") == null
-                        || "".equals(item.get("published"))) {
-                        addPublishResource();
+                    addPreview();
+                    addViewHistory();
+                    if (item.get("locked") == null
+                        || "".equals(item.get("locked"))) {
+                        addLockResource();
                     } else {
-                        addUnpublishResource();
-                    }
-                    if ("PAGE".equals(item.get("type"))) {
-                        addEditResource();
-                        addChooseTemplate();
-                    } else if ("ALIAS".equals(item.get("type"))) {
-                        addEditResource();
-                    } else if ("FOLDER".equals(item.get("type"))) {
-                        addChooseTemplate();
-                    } else if ("TEMPLATE".equals(item.get("type"))) {
-                        addEditResource();
-                    } else if ("FILE".equals(item.get("type"))) {
-                        addEditResource();
-                    }
-                    addMove();
-                    addRename();
-                    addUpdateTags();
-                    addUpdateMetadata();
-                    addCreateAlias();
+                        addUnlockResource();
+                        if (item.<String>get("published") == null
+                            || "".equals(item.get("published"))) {
+                            addPublishResource();
+                        } else {
+                            addUnpublishResource();
+                        }
+                        if ("PAGE".equals(item.get("type"))) {
+                            addEditResource();
+                            addChooseTemplate();
+                        } else if ("ALIAS".equals(item.get("type"))) {
+                            addEditResource();
+                        } else if ("FOLDER".equals(item.get("type"))) {
+                            addChooseTemplate();
+                        } else if ("TEMPLATE".equals(item.get("type"))) {
+                            addEditResource();
+                        } else if ("FILE".equals(item.get("type"))) {
+                            addEditResource();
+                        }
+                        addMove();
+                        addRename();
+                        addUpdateTags();
+                        addUpdateMetadata();
+                        addCreateAlias();
 
-                    if (item.<Boolean>get("mmInclude")) {
-                        addRemoveFromMainMenu();
-                    } else {
-                        addIncludeInMainMenu();
+                        if (item.<Boolean>get("mmInclude")) {
+                            addRemoveFromMainMenu();
+                        } else {
+                            addIncludeInMainMenu();
+                        }
                     }
                 }
             }
-        });
+        );
     }
 
 
     private void addPublishResource() {
-        final MenuItem item =
-            createMenuItem(
-                "publish-resource",
-                _constants.publish(),
-                _publishAction);
-        add(item);
+        addMenuItem(
+            "publish-resource",
+            _constants.publish(),
+            _publishAction);
     }
 
 
     private void addIncludeInMainMenu() {
-        final MenuItem item =
-            createMenuItem(
-                "mmInclude-resource",
-                _constants.addToMainMenu(),
-                _includeMainMenu);
-        add(item);
+        addMenuItem(
+            "mmInclude-resource",
+            _constants.addToMainMenu(),
+            _includeMainMenu);
     }
 
 
     private void addRemoveFromMainMenu() {
-        final MenuItem item =
-            createMenuItem(
-                "mmRemove-resource",
-                _constants.removeFromMainMenu(),
-                _removeMainMenu);
-        add(item);
+        addMenuItem(
+            "mmRemove-resource",
+            _constants.removeFromMainMenu(),
+            _removeMainMenu);
     }
 
 
@@ -257,7 +255,7 @@ public class ResourceContextMenu
                                     new EditTemplateDialog(
                                         td,
                                         item,
-                                        _table.detailsStore())
+                                        _table)
                                     .show();
                                 }
                             }
@@ -496,16 +494,5 @@ public class ResourceContextMenu
             }
         });
         add(menuItem);
-    }
-
-
-    private MenuItem createMenuItem(final String id,
-                                    final String text,
-                                    final Action action) {
-        final MenuItem item = new MenuItem();
-        item.setId(id);
-        item.setText(text);
-        item.addSelectionListener(new SelectionListenerAction(action));
-        return item;
     }
 }

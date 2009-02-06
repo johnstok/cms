@@ -16,6 +16,7 @@ import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.contentcreator.validation.Validator;
@@ -26,7 +27,6 @@ import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
@@ -35,7 +35,6 @@ import com.extjs.gxt.ui.client.widget.layout.FormData;
 
 /**
  * TODO Add Description for this type.
- * TODO Properly refresh object cache so GUI reflects changes.
  *
  * @author Civic Computing Ltd
  */
@@ -66,7 +65,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
     private String _id;
     private String _parentFolderId;
     private DialogMode _mode;
-    private ListStore<ModelData> _store;
+    private SingleSelectionModel _ssm;
     private TemplateDelta _model;
     private ModelData _proxy = new BaseModelData();
 
@@ -74,16 +73,16 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
      * Constructor.
      *
      * @param parentFolderId The id of the parent folder.
-     * @param store ListStore model for the dialog.
+     * @param ssm
      */
     public EditTemplateDialog(final String parentFolderId,
-                              final ListStore<ModelData> store) {
+                              final SingleSelectionModel ssm) {
         super(Globals.uiConstants().editTemplate());
         setWidth(DEFAULT_WIDTH);
         setHeight(DEFAULT_HEIGHT);
 
         _parentFolderId = parentFolderId;
-        _store = store;
+        _ssm = ssm;
 
         _name.setId("name");
         _templateTitle.setId("title");
@@ -107,12 +106,12 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
      *
      * @param model The template to update.
      * @param proxy
-     * @param store ListStore model for the dialog.
+     * @param ssm
      */
     public EditTemplateDialog(final TemplateDelta model,
                               final ModelData proxy,
-                              final ListStore<ModelData> store) {
-        this(null, store);
+                              final SingleSelectionModel ssm) {
+        this(null, ssm);
         _mode = DialogMode.UPDATE;
 
         _model = model;
@@ -246,7 +245,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                             new ErrorReportingCallback<ResourceSummary>(){
                                 public void onSuccess(final ResourceSummary arg0) {
                                     DataBinding.merge(_proxy, arg0);
-                                    _store.add(_proxy);
+                                    _ssm.add(_proxy);
                                     close();
                                 }});
                             break;
@@ -256,7 +255,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                                 new ErrorReportingCallback<ResourceSummary>(){
                                     public void onSuccess(final ResourceSummary arg0) {
                                         DataBinding.merge(_proxy, arg0);
-                                        _store.update(_proxy);
+                                        _ssm.notifyUpdate(_proxy);
                                         close();
                                     }});
                             break;

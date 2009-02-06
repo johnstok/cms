@@ -24,4 +24,5 @@ public interface SingleSelectionModel {
     ModelData getSelectedFolder();
     void notifyUpdate(ModelData model);
     void refresh();
+    void add(ModelData model);
 }

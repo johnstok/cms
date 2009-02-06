@@ -244,4 +244,9 @@ public class ResourceTable
     public void refresh() {
         refreshTable();
     }
+
+    /** {@inheritDoc} */
+    public void add(final ModelData model) {
+        detailsStore().add(model);
+    }
 }

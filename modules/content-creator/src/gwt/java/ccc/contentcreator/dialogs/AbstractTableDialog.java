@@ -26,7 +26,7 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class TableDataDisplayDialog<T>
+public abstract class AbstractTableDialog<T>
     extends
         AbstractBaseDialog {
 
@@ -40,7 +40,7 @@ public abstract class TableDataDisplayDialog<T>
      * @param title The title of the dialog.
      * @param data The data the dialog should display.
      */
-    public TableDataDisplayDialog(final String title,
+    public AbstractTableDialog(final String title,
                                   final Collection<T> data) {
 
         super(title);
