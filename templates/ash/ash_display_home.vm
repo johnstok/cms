@@ -14,12 +14,11 @@
 <meta name="verify-v1" content="ulRA8cYZ4XmttYDSSaAakgIfTCGTokyl4qPANinByx4=" />
 ##<%-- * END * --%>
 
-<link href="http://www.ashscotland.org.uk/css/basic.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="/server/assets/css/basic.css" rel="stylesheet" type="text/css" media="screen" />
 
 <style type="text/css" media="screen">
 <!--
-##@import url(css/advanced.css);
-@import url(http://www.ashscotland.org.uk/css/advanced.css); ## should be relative
+@import url(/server/assets/css/advanced.css); 
 -->
 </style>
 <!--[if IE 7]>

@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 
 import ccc.commons.JNDI;
 import ccc.services.api.Commands;
+import ccc.services.api.Queries;
 import ccc.services.api.ServiceNames;
 
 /**
@@ -76,7 +77,8 @@ public final class App {
             new Migrations(
                 legacyDBQueries,
                 props,
-                new JNDI().<Commands>get(ServiceNames.PUBLIC_COMMANDS));
+                new JNDI().<Commands>get(ServiceNames.PUBLIC_COMMANDS),
+                new JNDI().<Queries>get(ServiceNames.PUBLIC_QUERIES));
         migrations.migrate();
     }
 
