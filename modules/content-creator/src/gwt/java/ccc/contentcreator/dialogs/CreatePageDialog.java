@@ -82,9 +82,6 @@ public class CreatePageDialog
     private final SingleSelectionModel _ssm;
     private final ModelData _parent;
 
-//    private final RadioGroup _rg = new RadioGroup(_uiConstants.publish());
-//    private final Radio _publishNo = new Radio();
-//    private final Radio _publishYes = new Radio();
     private final CheckBox _publish = new CheckBox();
 
 
