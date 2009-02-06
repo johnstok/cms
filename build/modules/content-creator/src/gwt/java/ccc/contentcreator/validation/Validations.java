@@ -21,6 +21,8 @@ import ccc.services.api.ParagraphDelta;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.xml.client.XMLParser;
+import com.google.gwt.xml.client.impl.DOMParseException;
 
 
 /**
@@ -68,6 +70,25 @@ public class Validations {
                         name.getFieldLabel()
                         + " "+_uiConstants.cannotBeEmpty()
                     );
+                }
+                validate.next();
+            }
+        };
+    }
+
+    /**
+     * Validates that xml is valid.
+     *
+     * @param definition The string to validate.
+     * @return The Validator
+     */
+    public static Validator notValidXML(final TextField<String> definition) {
+        return new Validator() {
+            public void validate(final Validate validate) {
+                try {
+                    XMLParser.parse(definition.getValue());
+                } catch (final DOMParseException e) {
+                    validate.addMessage("XML "+_uiConstants.isNotValid());
                 }
                 validate.next();
             }
