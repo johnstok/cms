@@ -44,7 +44,7 @@ import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
  */
 public class MetadataDialog
     extends
-        TableDataDisplayDialog<Map.Entry<String, String>> {
+        AbstractTableDialog<Map.Entry<String, String>> {
 
     private CheckBoxSelectionModel<ModelData> _sm;
     private String _resourceId;

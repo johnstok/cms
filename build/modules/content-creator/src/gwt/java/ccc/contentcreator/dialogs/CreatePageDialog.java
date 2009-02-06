@@ -21,7 +21,7 @@ import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.EditPagePanel;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.PageElement;
-import ccc.contentcreator.client.ResourceTable;
+import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.client.ui.FCKEditor;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
@@ -79,7 +79,7 @@ public class CreatePageDialog
     private ContentPanel _descriptionPanel = new ContentPanel(new RowLayout());
     private ContentPanel _rightPanel = new ContentPanel(new RowLayout());
 
-    private final ResourceTable _rt;
+    private final SingleSelectionModel _ssm;
     private final ModelData _parent;
 
 //    private final RadioGroup _rg = new RadioGroup(_uiConstants.publish());
@@ -95,12 +95,13 @@ public class CreatePageDialog
      *
      * @param list List of templates.
      * @param parent The Folder in which page will created.
-     * @param rt ResourceTable to update.
+     * @param ssm SingleSelectionModel to update.
      */
     public CreatePageDialog(final Collection<TemplateDelta> list,
-                            final ModelData parent, final ResourceTable rt) {
+                            final ModelData parent,
+                            final SingleSelectionModel ssm) {
         super(Globals.uiConstants().createPage());
-        _rt = rt;
+        _ssm = ssm;
         _parent = parent;
 
         setWidth(Globals.DEFAULT_WIDTH);
@@ -328,7 +329,7 @@ public class CreatePageDialog
                     template,
                     new ErrorReportingCallback<ResourceSummary>() {
                         public void onSuccess(final ResourceSummary result) {
-                            _rt.refreshTable();
+                            _ssm.refresh();
                             close();
                         }
                     }

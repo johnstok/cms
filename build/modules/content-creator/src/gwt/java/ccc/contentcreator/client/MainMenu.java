@@ -11,29 +11,20 @@
  */
 package ccc.contentcreator.client;
 
+import ccc.contentcreator.actions.CreateUserAction;
+import ccc.contentcreator.actions.LogoutAction;
+import ccc.contentcreator.actions.OpenHelpAction;
 import ccc.contentcreator.api.UIConstants;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.dialogs.CreateUserDialog;
-import ccc.services.api.UserSummary;
-
-import com.extjs.gxt.ui.client.event.MenuEvent;
-import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.widget.menu.Menu;
-import com.extjs.gxt.ui.client.widget.menu.MenuItem;
-import com.extjs.gxt.ui.client.widget.toolbar.TextToolItem;
-import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 /**
- * TODO: Add Description for this type.
+ * Design for the main menu toolbar.
  *
  * @author Civic Computing Ltd.
  */
 public class MainMenu
     extends
-        ToolBar {
+        AbstractToolBar {
 
     private final UIConstants _constants = Globals.uiConstants();
 
@@ -44,76 +35,31 @@ public class MainMenu
      */
     MainMenu() {
 
-        final TextToolItem help = new TextToolItem(_constants.help());
-        help.setId("help-menu");
-        final Menu helpMenu = new Menu();
-        help.setMenu(helpMenu);
-        final MenuItem openManual = new MenuItem();
-        openManual.setText(_constants.manual());
-        openManual.addSelectionListener(new SelectionListener<MenuEvent>() {
-            @Override
-            public void componentSelected(final MenuEvent ce) {
-                Window.open("manual/ContentCreatorManual.html",
-                  "_blank", "resizable=yes,scrollbars=yes,status=no");
-            }
-        });
-        helpMenu.add(openManual);
+        addMenu(
+            "help-menu",
+            _constants.help(),
+            createMenuItem(
+                "open-manual",
+                _constants.manual(),
+                new OpenHelpAction())
+        );
 
-        final TextToolItem users = new TextToolItem(_constants.users());
-        users.setId("users-menu");
-        final Menu usersMenu = new Menu();
-        users.setMenu(usersMenu);
-        final MenuItem createUser = new MenuItem();
-        createUser.setId("create-user-menu-item");
-        createUser.setText(_constants.createUser());
-        createUser.addSelectionListener(new SelectionListener<MenuEvent>() {
-            @Override
-            public void componentSelected(final MenuEvent ce) {
-                Globals.queriesService().loggedInUser(
-                    new ErrorReportingCallback<UserSummary>() {
-                    public void onSuccess(final UserSummary user) {
-                        new CreateUserDialog().show();
-                    }
-                });
+        addMenu(
+            "users-menu",
+            _constants.users(),
+            createMenuItem(
+                "create-user-menu-item",
+                _constants.createUser(),
+                new CreateUserAction())
+        );
 
-            }
-        });
-        usersMenu.add(createUser);
-
-        final TextToolItem tools = new TextToolItem(_constants.tools());
-        tools.setId("tools-menu");
-        final Menu toolsMenu = new Menu();
-        tools.setMenu(toolsMenu);
-
-        createLogoutItem(toolsMenu);
-
-        add(users);
-        add(tools);
-        add(help);
-    }
-
-    private void createLogoutItem(final Menu menu) {
-
-        final MenuItem item = new MenuItem();
-        item.setId("logout-menu-item");
-        item.setText(_constants.logout());
-        item.addSelectionListener(new SelectionListener<MenuEvent>() {
-            @Override
-            public void componentSelected(final MenuEvent ce) {
-                Globals.securityService().logout(
-                    new AsyncCallback<Void>(){
-
-                        public void onFailure(final Throwable arg0) {
-                            // TODO: Anything we can do here?!
-                            Globals.alert("Error logging out: "+arg0);
-                        }
-
-                        public void onSuccess(final Void result) {
-                            Globals.disableExitConfirmation();
-                            Globals.redirectTo(Globals.APP_URL);
-                        }});
-            }
-        });
-        menu.add(item);
+        addMenu(
+            "tools-menu",
+            _constants.tools(),
+            createMenuItem(
+                "logout-menu-item",
+                _constants.logout(),
+                new LogoutAction())
+        );
     }
 }
