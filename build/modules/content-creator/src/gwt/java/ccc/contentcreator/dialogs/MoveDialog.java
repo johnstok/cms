@@ -13,7 +13,7 @@ package ccc.contentcreator.dialogs;
 
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
-import ccc.contentcreator.client.ResourceTable;
+import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.services.api.ResourceSummary;
@@ -30,7 +30,7 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 
 
 /**
- * TODO: Add Description for this type.
+ * Dialog used to move a resource.
  *
  * @author Civic Computing Ltd.
  */
@@ -45,21 +45,21 @@ public class MoveDialog extends AbstractEditDialog {
     private final ModelData _target;
     private ModelData _parent = null;
 
-    private final ResourceTable _rt;
+    private final SingleSelectionModel _ssm;
 
     /**
      * Constructor.
      *
      * @param item The Resource item to move.
-     * @param rt ResourceTable to update.
+     * @param ssm
      * @param root Resource root for the selection dialog.
      */
     public MoveDialog(final ModelData item,
-                      final ResourceTable rt,
+                      final SingleSelectionModel ssm,
                       final ResourceSummary root) {
         super(Globals.uiConstants().move());
         setHeight(Globals.DEFAULT_MIN_HEIGHT);
-        _rt = rt;
+        _ssm = ssm;
 
         _target = item;
         setLayout(new FitLayout());
@@ -116,7 +116,7 @@ public class MoveDialog extends AbstractEditDialog {
                     _parent.<String>get("id"),
                     new ErrorReportingCallback<Void>() {
                         public void onSuccess(final Void result) {
-                            _rt.refreshTable();
+                            _ssm.refresh();
                             close();
                         }
                     });

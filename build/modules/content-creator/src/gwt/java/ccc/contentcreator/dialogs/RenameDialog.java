@@ -13,7 +13,7 @@ package ccc.contentcreator.dialogs;
 
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
-import ccc.contentcreator.client.ResourceTable;
+import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 
@@ -24,7 +24,7 @@ import com.extjs.gxt.ui.client.widget.form.TextField;
 
 
 /**
- * TODO: Add Description for this type.
+ * Dialog for renaming a resource.
  *
  * @author Civic Computing Ltd.
  */
@@ -33,19 +33,19 @@ public class RenameDialog extends AbstractEditDialog {
     private final ModelData _item;
     private final TextField<String> _oldName = new TextField<String>();
     private final TextField<String> _newName = new TextField<String>();
-    private ResourceTable _rt;
+    private SingleSelectionModel _ssm;
 
     /**
      * Constructor.
      *
      * @param item The resource to rename.
-     * @param rt The ResourceTable to refresh.
+     * @param ssm
      */
-    public RenameDialog(final ModelData item, final ResourceTable rt) {
+    public RenameDialog(final ModelData item, final SingleSelectionModel ssm) {
         super(Globals.uiConstants().rename());
         setHeight(Globals.DEFAULT_MIN_HEIGHT);
         _item = item;
-        _rt = rt;
+        _ssm = ssm;
 
         setPanelId("RenamePanel");
 
@@ -89,7 +89,7 @@ public class RenameDialog extends AbstractEditDialog {
                     _newName.getValue(),
                     new ErrorReportingCallback<Void>() {
                         public void onSuccess(final Void result) {
-                            _rt.refreshTable(); // TODO: update model data
+                            _ssm.refresh();
                             close();
                         }
                     });

@@ -14,34 +14,32 @@ package ccc.contentcreator.client;
 import static ccc.contentcreator.dialogs.AbstractBaseDialog.*;
 
 import java.util.Collection;
-import java.util.Map;
 
+import ccc.contentcreator.actions.CreateAliasAction;
 import ccc.contentcreator.actions.IncludeInMainMenuAction;
+import ccc.contentcreator.actions.LockAction;
+import ccc.contentcreator.actions.MoveAction;
+import ccc.contentcreator.actions.PreviewAction;
 import ccc.contentcreator.actions.PublishAction;
 import ccc.contentcreator.actions.RemoveFromMainMenuAction;
-import ccc.contentcreator.api.CommandServiceAsync;
+import ccc.contentcreator.actions.RenameAction;
+import ccc.contentcreator.actions.UnlockAction;
+import ccc.contentcreator.actions.UnpublishAction;
+import ccc.contentcreator.actions.UpdateMetadataAction;
+import ccc.contentcreator.actions.UpdateTagsAction;
+import ccc.contentcreator.actions.ViewHistoryAction;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.UIConstants;
-import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.dialogs.ChooseTemplateDialog;
-import ccc.contentcreator.dialogs.CreateAliasDialog;
 import ccc.contentcreator.dialogs.EditAliasDialog;
 import ccc.contentcreator.dialogs.EditTemplateDialog;
-import ccc.contentcreator.dialogs.HistoryDialog;
-import ccc.contentcreator.dialogs.MetadataDialog;
-import ccc.contentcreator.dialogs.MoveDialog;
-import ccc.contentcreator.dialogs.PreviewContentDialog;
-import ccc.contentcreator.dialogs.RenameDialog;
 import ccc.contentcreator.dialogs.UpdateFileDialog;
 import ccc.contentcreator.dialogs.UpdatePageDialog;
-import ccc.contentcreator.dialogs.UpdateTagsDialog;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.FileDelta;
-import ccc.services.api.LogEntrySummary;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ResourceDelta;
-import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 
 import com.extjs.gxt.ui.client.Events;
@@ -62,7 +60,6 @@ public class ResourceContextMenu
         AbstractContextMenu {
 
     private final UIConstants _constants = Globals.uiConstants();
-    private final CommandServiceAsync _cs = Globals.commandService();
     private final QueriesServiceAsync _qs = Globals.queriesService();
 
     private final ResourceTable _table;
@@ -71,6 +68,16 @@ public class ResourceContextMenu
     private final Action _publishAction;
     private final Action _includeMainMenu;
     private final Action _removeMainMenu;
+    private final Action _unpublishAction;
+    private final Action _createAliasAction;
+    private final Action _updateMetadataAction;
+    private final Action _viewHistory;
+    private final Action _updateTagsAction;
+    private final Action _renameAction;
+    private final Action _moveAction;
+    private final Action _unlockAction;
+    private final Action _lockAction;
+    private final Action _previewAction;
 
 
     /**
@@ -86,6 +93,16 @@ public class ResourceContextMenu
         _publishAction = new PublishAction(_table);
         _includeMainMenu = new IncludeInMainMenuAction(_table);
         _removeMainMenu = new RemoveFromMainMenuAction(_table);
+        _unpublishAction = new UnpublishAction(_table);
+        _createAliasAction = new CreateAliasAction(_table, _table._root);
+        _updateMetadataAction = new UpdateMetadataAction(_table);
+        _viewHistory = new ViewHistoryAction(_table);
+        _updateTagsAction = new UpdateTagsAction(_table);
+        _renameAction = new RenameAction(_table);
+        _moveAction = new MoveAction(_table, _table._root);
+        _unlockAction = new UnlockAction(_table);
+        _lockAction = new LockAction(_table);
+        _previewAction = new PreviewAction(_table);
 
         setWidth(CONTEXT_MENU_WIDTH);
 
@@ -164,25 +181,10 @@ public class ResourceContextMenu
 
 
     private void addUnpublishResource() {
-        final MenuItem lockResource = new MenuItem();
-        lockResource.setId("unpublish-resource");
-        lockResource.setText(_constants.unpublish());
-        lockResource.addSelectionListener(new SelectionListener<MenuEvent>() {
-            @Override public void componentSelected(final MenuEvent ce) {
-                final ModelData item =
-                    _table._tbl.getSelectedItem().getModel();
-                _cs.unpublish(
-                    item.<String>get("id"),
-                    new ErrorReportingCallback<ResourceSummary>(){
-                        public void onSuccess(final ResourceSummary arg0) {
-                            DataBinding.merge(item, arg0);
-                            _table.detailsStore().update(item);
-                        }
-                    }
-                );
-            }
-        });
-        add(lockResource);
+        addMenuItem(
+            "unpublish-resource",
+            _constants.unpublish(),
+            _unpublishAction);
     }
 
 
@@ -311,188 +313,73 @@ public class ResourceContextMenu
 
 
     private void addCreateAlias() {
-        final MenuItem createAlias = new MenuItem();
-        createAlias.setId("create-alias");
-        createAlias.setText(_constants.createAlias());
-        createAlias.addSelectionListener(new SelectionListener<MenuEvent>() {
-            @Override public void componentSelected(final MenuEvent ce) {
-                final ModelData item =
-                    _table._tbl.getSelectedItem().getModel();
-                new CreateAliasDialog(item, _table._root).show();
-            }
-        });
-        add(createAlias);
+        addMenuItem(
+            "create-alias",
+            _constants.createAlias(),
+            _createAliasAction);
     }
 
 
     private void addPreview() {
-        final MenuItem preview = new MenuItem();
-        preview.setId("preview-resource");
-        preview.setText(_constants.preview());
-        preview.addSelectionListener(new SelectionListener<MenuEvent>() {
-            @Override public void componentSelected(final MenuEvent ce) {
-                final ModelData item =
-                    _table._tbl.getSelectedItem().getModel();
-                _qs.getAbsolutePath(
-                    item.<String>get("id"),
-                    new ErrorReportingCallback<String>() {
-                        public void onSuccess(final String arg0) {
-                            new PreviewContentDialog(arg0).show();
-                        }
-                    }
-                );
-            }
-        });
-        add(preview);
+        addMenuItem(
+            "preview-resource",
+            _constants.preview(),
+            _previewAction);
     }
 
 
     private void addLockResource() {
-        final MenuItem lockResource = new MenuItem();
-        lockResource.setId("lock-resource");
-        lockResource.setText("Lock"); // TODO: I18n
-        lockResource.addSelectionListener(new SelectionListener<MenuEvent>() {
-            @Override public void componentSelected(final MenuEvent ce) {
-                final ModelData item = _table._tbl.getSelectedItem().getModel();
-                _cs.lock(
-                    item.<String>get("id"),
-                    new ErrorReportingCallback<ResourceSummary>(){
-                        public void onSuccess(final ResourceSummary arg0) {
-                            DataBinding.merge(item, arg0);
-                            _table.detailsStore().update(item);
-                        }
-                    }
-                );
-            }
-        });
-        add(lockResource);
+        addMenuItem(
+            "lock-resource",
+            "Lock", // TODO: I18n
+            _lockAction);
     }
 
 
     private void addUnlockResource() {
-        final MenuItem unlockResource = new MenuItem();
-        unlockResource.setId("unlock-resource");
-        unlockResource.setText("Unlock"); // TODO: I18n
-        unlockResource.addSelectionListener(new SelectionListener<MenuEvent>() {
-            @Override public void componentSelected(final MenuEvent ce) {
-                final ModelData item =
-                    _table._tbl.getSelectedItem().getModel();
-                _cs.unlock(
-                    item.<String>get("id"),
-                    new ErrorReportingCallback<ResourceSummary>(){
-                        public void onSuccess(final ResourceSummary arg0) {
-                            DataBinding.merge(item, arg0);
-                            _table.detailsStore().update(item);
-                        }
-                    }
-                );
-            }
-        });
-        add(unlockResource);
+        addMenuItem(
+            "unlock-resource",
+            "Unlock", // TODO: I18n
+            _unlockAction);
     }
 
 
     private void addMove() {
-        final MenuItem move = new MenuItem();
-        move.setId("move");
-        move.setText(_constants.move());
-        move.addSelectionListener(new SelectionListener<MenuEvent>() {
-            @Override public void componentSelected(final MenuEvent ce) {
-                final ModelData item =
-                    _table._tbl.getSelectedItem().getModel();
-                new MoveDialog(item, _table, _table._root).show();
-            }
-        });
-        add(move);
+        addMenuItem(
+            "move",
+            _constants.move(),
+            _moveAction);
     }
 
 
     private void addRename() {
-        final MenuItem rename = new MenuItem();
-        rename.setId("rename");
-        rename.setText(_constants.rename());
-        rename.addSelectionListener(new SelectionListener<MenuEvent>() {
-            @Override public void componentSelected(final MenuEvent ce) {
-                final ModelData item =
-                    _table._tbl.getSelectedItem().getModel();
-                new RenameDialog(item, _table).show();
-            }
-        });
-        add(rename);
+        addMenuItem(
+            "rename",
+            _constants.rename(),
+            _renameAction);
     }
 
 
     private void addUpdateTags() {
-        final MenuItem move = new MenuItem();
-        move.setId("update-tags");
-        move.setText(_constants.updateTags());
-        move.addSelectionListener(new SelectionListener<MenuEvent>() {
-            @Override public void componentSelected(final MenuEvent ce) {
-                final ModelData item =
-                    _table._tbl.getSelectedItem().getModel();
-                _qs.resourceDelta(
-                    item.<String>get("id"),
-                    new ErrorReportingCallback<ResourceDelta>(){
-                        public void onSuccess(final ResourceDelta delta) {
-                            if (delta == null) {
-                                Globals.alert(
-                                    _constants.noTemplateFound());
-                            } else {
-                                new UpdateTagsDialog(delta).show();
-                            }
-                        }
-                    }
-                );
-            }
-        });
-        add(move);
+        addMenuItem(
+            "update-tags",
+            _constants.updateTags(),
+            _updateTagsAction);
     }
 
 
     private void addViewHistory() {
-        final MenuItem unlockResource = new MenuItem();
-        unlockResource.setId("view-history");
-        unlockResource.setText("View history"); // TODO: I18n
-        unlockResource.addSelectionListener(new SelectionListener<MenuEvent>() {
-            @Override public void componentSelected(final MenuEvent ce) {
-                final ModelData item =
-                    _table._tbl.getSelectedItem().getModel();
-                _qs.history(
-                    item.<String>get("id"),
-                    new ErrorReportingCallback<Collection<LogEntrySummary>>(){
-                        public void onSuccess(
-                                      final Collection<LogEntrySummary> data) {
-                            new HistoryDialog(data).show();
-                        }
-
-                    }
-                );
-            }
-        });
-        add(unlockResource);
+        addMenuItem(
+            "view-history",
+            "View history", // TODO: I18n
+            _viewHistory);
     }
 
 
     private void addUpdateMetadata() {
-        final MenuItem menuItem = new MenuItem();
-        menuItem.setId("update-metadata");
-        menuItem.setText(_constants.updateMetadata());
-        menuItem.addSelectionListener(new SelectionListener<MenuEvent>() {
-            @Override public void componentSelected(final MenuEvent ce) {
-                final ModelData item =
-                    _table._tbl.getSelectedItem().getModel();
-                _qs.metadata(
-                    item.<String>get("id"),
-                    new ErrorReportingCallback<Map<String, String>>(){
-                        public void onSuccess(final Map<String, String> data) {
-                            new MetadataDialog(item.<String>get("id"),
-                                               data.entrySet())
-                            .show();
-                        }
-                    }
-                );
-            }
-        });
-        add(menuItem);
+        addMenuItem(
+            "update-metadata",
+            _constants.updateMetadata(),
+            _updateMetadataAction);
     }
 }

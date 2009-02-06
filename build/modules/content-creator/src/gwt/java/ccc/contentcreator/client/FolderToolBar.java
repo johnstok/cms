@@ -11,6 +11,7 @@
  */
 package ccc.contentcreator.client;
 
+import ccc.contentcreator.actions.ChooseTemplateAction;
 import ccc.contentcreator.actions.CreateFileAction;
 import ccc.contentcreator.actions.CreateFolderAction;
 import ccc.contentcreator.actions.CreatePageAction;
@@ -50,7 +51,7 @@ public class FolderToolBar
         addSeparator();
         addButton("Create Template", "Create Template", new CreateTemplateAction(ssm)); // TODO: I18n
         addSeparator();
-        addButton("Choose Template", "Choose Template", new CreateTemplateAction(ssm)); // TODO: I18n
+        addButton("Choose Template", "Choose Template", new ChooseTemplateAction(ssm)); // TODO: I18n
         addSeparator();
         addLabel("Sort order"); // TODO: I18n
         addSortOrderCombo(ssm);
