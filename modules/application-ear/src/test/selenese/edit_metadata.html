@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>view_metadata</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">view_metadata</td></tr>
+</thead><tbody>
+<tr>
+	<td>setSpeed</td>
+	<td>2000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/creator/?dec=</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>content-navigator</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='content']/div[1]/table/tbody/tr/td[2]/div</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseDown</td>
+	<td>//div[@id='Home']/div[1]/table/tbody/tr/td[5]/div</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='Vacancies']/table/tbody/tr/td[1]/div/div/img</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>lock-resource</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='Vacancies']/table/tbody/tr/td[1]/div/div/img</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>update-metadata</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>4154</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>legacyId</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertXpathCount</td>
+	<td>//div[@id='metadata-grid']/div[1]/div[1]/div[2]/div[1]/div/table/tbody/tr</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>new-metadatum</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertXpathCount</td>
+	<td>//div[@id='metadata-grid']/div[1]/div[1]/div[2]/div[1]/div/table/tbody/tr</td>
+	<td>2</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='metadata-grid']/div[1]/div[1]/div[2]/div[1]/div[1]/table/tbody/tr/td[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>key-editor</td>
+	<td>abc</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='metadata-grid']/div[1]/div[1]/div[2]/div[1]/div[1]/table/tbody/tr/td[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>value-editor</td>
+	<td>123</td>
+</tr>
+<tr>
+	<td>keyPress</td>
+	<td>value-editor</td>
+	<td>\13</td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>123</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>abc</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAt</td>
+	<td>//div[@id='metadata-grid']/div[1]/div[1]/div[2]/div[1]/div[2]/table/tbody/tr/td[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//table[@id='remove-metadatum']/tbody/tr/td[2]/em/button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertXpathCount</td>
+	<td>//div[@id='metadata-grid']/div[1]/div[1]/div[2]/div[1]/div/table/tbody/tr</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='Vacancies']/table/tbody/tr/td[1]/div/div/img</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>update-metadata</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertXpathCount</td>
+	<td>//div[@id='metadata-grid']/div[1]/div[1]/div[2]/div[1]/div/table/tbody/tr</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>123</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>abc</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
