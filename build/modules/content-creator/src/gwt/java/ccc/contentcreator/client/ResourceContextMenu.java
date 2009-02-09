@@ -32,7 +32,7 @@ import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.dialogs.ChooseTemplateDialog;
-import ccc.contentcreator.dialogs.EditAliasDialog;
+import ccc.contentcreator.dialogs.UpdateAliasDialog;
 import ccc.contentcreator.dialogs.EditTemplateDialog;
 import ccc.contentcreator.dialogs.UpdateFileDialog;
 import ccc.contentcreator.dialogs.UpdatePageDialog;
@@ -285,7 +285,7 @@ public class ResourceContextMenu
                             item.<String>get("id"),
                             new ErrorReportingCallback<AliasDelta>() {
                                 public void onSuccess(final AliasDelta result) {
-                                    new EditAliasDialog(
+                                    new UpdateAliasDialog(
                                         result,
                                         _table,
                                         _table._root)

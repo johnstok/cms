@@ -35,7 +35,7 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
  *
  * @author Civic Computing Ltd
  */
-public class EditAliasDialog extends AbstractEditDialog {
+public class UpdateAliasDialog extends AbstractEditDialog {
 
     private final TextField<String> _aliasName = new TextField<String>();
     private final TriggerField<String> _targetName =
@@ -53,7 +53,7 @@ public class EditAliasDialog extends AbstractEditDialog {
      * @param rt The resourceTable to refresh
      * @param targetRoot The root of the target resource
      */
-    public EditAliasDialog(final AliasDelta delta,
+    public UpdateAliasDialog(final AliasDelta delta,
                            final ResourceTable rt,
                            final ResourceSummary targetRoot) {
         super(Globals.uiConstants().updateAlias());
