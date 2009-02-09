@@ -67,6 +67,7 @@ public class CreateAliasDialog extends AbstractEditDialog {
         addField(_aliasName);
 
         _parentFolder.setFieldLabel(constants().folder());
+        _parentFolder.setId("parent-folder");
         _parentFolder.setValue("");
         _parentFolder.setReadOnly(true);
         _parentFolder.addListener(
