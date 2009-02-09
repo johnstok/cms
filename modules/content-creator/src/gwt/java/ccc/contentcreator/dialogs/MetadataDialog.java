@@ -78,7 +78,10 @@ public class MetadataDialog
 
         _resourceId = resourceId;
 
+        _save.setId("save");
+
         _dataStore.add(DataBinding.bindMetadata(_data));
+        _grid.setId("metadata-grid");
         _grid.setAutoExpandColumn("value");
         _grid.setSelectionModel(_sm);
         _grid.addPlugin(_sm);
@@ -100,6 +103,7 @@ public class MetadataDialog
 
         final ColumnConfig keyColumn = new ColumnConfig("key", "Key", 100);
         final TextField<String> keyField = new TextField<String>();
+        keyField.setId("key-editor");
         keyField.setAllowBlank(false);
         keyField.setAutoValidate(true);
         keyColumn.setEditor(new CellEditor(keyField));
@@ -109,6 +113,7 @@ public class MetadataDialog
         valueColumn.setId("value");
         valueColumn.setHeader("Value");
         final TextField<String> valueField = new TextField<String>();
+        valueField.setId("value-editor");
         valueField.setAllowBlank(false);
         valueField.setAutoValidate(true);
         valueColumn.setEditor(new CellEditor(valueField));
@@ -125,6 +130,7 @@ public class MetadataDialog
         toolBar.add(new SeparatorToolItem());
 
         final TextToolItem add = new TextToolItem("New");
+        add.setId("new-metadatum");
         add.addSelectionListener(new SelectionListener<ToolBarEvent>() {
             @Override public void componentSelected(final ToolBarEvent ce) {
                 final ModelData datum = new BaseModelData();
@@ -140,6 +146,7 @@ public class MetadataDialog
         toolBar.add(new SeparatorToolItem());
 
         final TextToolItem remove = new TextToolItem("Remove");
+        remove.setId("remove-metadatum");
         remove.addSelectionListener(new SelectionListener<ToolBarEvent>() {
             @Override public void componentSelected(final ToolBarEvent ce) {
                 _grid.stopEditing();
