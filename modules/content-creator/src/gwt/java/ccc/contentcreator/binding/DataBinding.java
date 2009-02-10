@@ -135,6 +135,7 @@ public class DataBinding {
         md.set("childCount", fs._childCount);
         md.set("folderCount", fs._folderCount);
         md.set("mmInclude", fs._includeInMainMenu);
+        md.set("sortOrder", fs._sortOrder);
     }
 
     /**
