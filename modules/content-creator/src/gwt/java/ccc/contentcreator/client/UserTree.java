@@ -60,13 +60,21 @@ public class UserTree extends Tree {
         final TreeItem all = new TreeItem("All");
         all.setId("All");
         final TreeItem creator = new TreeItem("Content creator");
+        creator.setIconStyle("images/icons/user.png");
         creator.setId("Content creator");
+
         final TreeItem builder = new TreeItem("Site Builder");
+        builder.setIconStyle("images/icons/user.png");
         builder.setId("Site Builder");
+
         final TreeItem admin = new TreeItem("Administrator");
         admin.setId("Administrator");
+        admin.setIconStyle("images/icons/user_gray.png");
+
         final TreeItem search = new TreeItem("Search");
         search.setId("Search");
+        search.setIconStyle("images/icons/magnifier.png");
+
         getRootItem().add(users);
         users.add(all);
         users.add(search);
