@@ -156,6 +156,7 @@ public class ModelTranslation {
         if (r.type() == ResourceType.FOLDER) {
             rs._childCount = r.as(Folder.class).entries().size();
             rs._folderCount = r.as(Folder.class).folders().size();
+            rs._sortOrder = r.as(Folder.class).sortOrder().name();
         }
         return rs;
     }

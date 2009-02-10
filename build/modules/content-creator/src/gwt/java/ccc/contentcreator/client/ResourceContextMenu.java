@@ -26,14 +26,15 @@ import ccc.contentcreator.actions.RenameAction;
 import ccc.contentcreator.actions.UnlockAction;
 import ccc.contentcreator.actions.UnpublishAction;
 import ccc.contentcreator.actions.UpdateMetadataAction;
+import ccc.contentcreator.actions.UpdateSortOrderAction;
 import ccc.contentcreator.actions.UpdateTagsAction;
 import ccc.contentcreator.actions.ViewHistoryAction;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.dialogs.ChooseTemplateDialog;
-import ccc.contentcreator.dialogs.UpdateAliasDialog;
 import ccc.contentcreator.dialogs.EditTemplateDialog;
+import ccc.contentcreator.dialogs.UpdateAliasDialog;
 import ccc.contentcreator.dialogs.UpdateFileDialog;
 import ccc.contentcreator.dialogs.UpdatePageDialog;
 import ccc.services.api.AliasDelta;
@@ -78,6 +79,7 @@ public class ResourceContextMenu
     private final Action _unlockAction;
     private final Action _lockAction;
     private final Action _previewAction;
+    private final Action _updateSortAction;
 
 
     /**
@@ -103,6 +105,7 @@ public class ResourceContextMenu
         _unlockAction = new UnlockAction(_table);
         _lockAction = new LockAction(_table);
         _previewAction = new PreviewAction(_table);
+        _updateSortAction = new UpdateSortOrderAction(_table);
 
         setWidth(CONTEXT_MENU_WIDTH);
 
@@ -133,6 +136,7 @@ public class ResourceContextMenu
                             addEditResource();
                         } else if ("FOLDER".equals(item.get("type"))) {
                             addChooseTemplate();
+                            addFolderSortOrder();
                         } else if ("TEMPLATE".equals(item.get("type"))) {
                             addEditResource();
                         } else if ("FILE".equals(item.get("type"))) {
@@ -153,6 +157,15 @@ public class ResourceContextMenu
                 }
             }
         );
+    }
+
+
+
+    private void addFolderSortOrder() {
+        addMenuItem(
+            "sort-folder",
+            _constants.changeSortOrder(),
+            _updateSortAction);
     }
 
 

@@ -681,4 +681,20 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Update metadata")
     String updateMetadata();
+
+    /**
+     * "Folder sort order".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Folder sort order")
+    String folderSortOrder();
+
+    /**
+     * "Change sort order".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Change sort order")
+    String changeSortOrder();
 }
