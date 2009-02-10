@@ -71,8 +71,6 @@ public class ResourceTable
         setHeading("Resource Details"); // TODO: I18n.
         setLayout(new FitLayout());
 
-//        _tbl.setHorizontalScroll(true);
-
         final Menu contextMenu = new ResourceContextMenu(this);
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
         final ContextActionGridPlugin gp =
@@ -83,35 +81,11 @@ public class ResourceTable
 
         final ColumnModel cm = new ColumnModel(configs);
         _grid = new Grid<ModelData>(_detailsStore, cm);
-        _grid.setId("ResourceGrid");
-
-        _grid.setLoadMask(true);
-        _grid.setBorders(false);
-        final GridViewConfig vc = new GridViewConfig() {
-            /** {@inheritDoc} */
-            @Override
-            public String getRowStyle(ModelData model,
-                                      int rowIndex,
-                                      ListStore ds) {
-
-                return model.<String>get("name")+"_row";
-            }
-        };
-        final GridView view = _grid.getView();
-        view.setViewConfig(vc);
-        _grid.setView(view);
-
-
-        final GridSelectionModel<ModelData> gsm =
-            new GridSelectionModel<ModelData>();
-        gsm.setSelectionMode(SelectionMode.SINGLE);
-        _grid.setSelectionModel(gsm);
-        _grid.setAutoExpandColumn("title");
+        setUpGrid();
         _grid.setContextMenu(contextMenu);
         _grid.addPlugin(gp);
         add(_grid);
     }
-
 
     /**
      * Updated this table to render the children of the specified TreeItem.
@@ -122,23 +96,24 @@ public class ResourceTable
         _parentFolder = selectedItem;
         _detailsStore.removeAll();
 
-        // TODO: handle getSelectedItem() being null.
-        final ModelData f = selectedItem.getModel();
+        if (selectedItem != null) {
+            final ModelData f = selectedItem.getModel();
 
-        qs.getChildren(
-            f.<String>get("id"),
-            new ErrorReportingCallback<Collection<ResourceSummary>>() {
-                public void onSuccess(
-                                  final Collection<ResourceSummary> result) {
-                    final List<ModelData> models =
-                        DataBinding.bindResourceSummary(result);
-                    if (models.isEmpty()) {
-                        detailsStore().removeAll();
-                    } else {
-                        detailsStore().add(models);
+            qs.getChildren(
+                f.<String>get("id"),
+                new ErrorReportingCallback<Collection<ResourceSummary>>() {
+                    public void onSuccess(
+                                     final Collection<ResourceSummary> result) {
+                        final List<ModelData> models =
+                            DataBinding.bindResourceSummary(result);
+                        if (models.isEmpty()) {
+                            detailsStore().removeAll();
+                        } else {
+                            detailsStore().add(models);
+                        }
                     }
-                }
-        });
+                });
+        }
     }
 
 
@@ -188,8 +163,41 @@ public class ResourceTable
     }
 
 
+    private void setUpGrid() {
+        _grid.setId("ResourceGrid");
+
+        _grid.setLoadMask(true);
+        _grid.setBorders(false);
+
+        // Assign a CSS style for each row with GridViewConfig
+        final GridViewConfig vc = new GridViewConfig() {
+            /** {@inheritDoc} */
+            @Override
+            public String getRowStyle(final ModelData model,
+                                      final int rowIndex,
+                                      final ListStore ds) {
+
+                return model.<String>get("name")+"_row";
+            }
+        };
+        final GridView view = _grid.getView();
+        view.setViewConfig(vc);
+        _grid.setView(view);
+
+        final GridSelectionModel<ModelData> gsm =
+            new GridSelectionModel<ModelData>();
+        gsm.setSelectionMode(SelectionMode.SINGLE);
+        _grid.setSelectionModel(gsm);
+        _grid.setAutoExpandColumn("title");
+    }
+
+
+
     /** {@inheritDoc} */
     public ModelData getSelectedModel() {
+        if (_grid.getSelectionModel() == null) {
+            return null;
+        }
         return _grid.getSelectionModel().getSelectedItem();
     }
 

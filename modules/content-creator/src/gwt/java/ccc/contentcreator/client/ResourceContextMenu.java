@@ -113,8 +113,12 @@ public class ResourceContextMenu
             new Listener<MenuEvent>(){
                 public void handleEvent(final MenuEvent be) {
                     removeAll();
-                    final ModelData item =
-                        _table._grid.getSelectionModel().getSelectedItem();
+                    final ModelData item = _table.getSelectedModel();
+                    if (item == null) {
+                        // do not display context menu if no item is selected.
+                        be.doit = false;
+                        return;
+                    }
 
                     addPreview();
                     addViewHistory();
@@ -207,8 +211,7 @@ public class ResourceContextMenu
         chooseTemplate.setText(_constants.chooseTemplate());
         chooseTemplate.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override public void componentSelected(final MenuEvent ce) {
-                final ModelData item =
-                    _table._grid.getSelectionModel().getSelectedItem();
+                final ModelData item = _table.getSelectedModel();
                 if ("PAGE".equals(item.<String>get("type"))) {
                     _qs.pageDelta(
                         item.<String>get("id"),
@@ -261,8 +264,7 @@ public class ResourceContextMenu
         update.setText(_constants.edit());
         update.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override public void componentSelected(final MenuEvent ce) {
-                    final ModelData item =
-                        _table._grid.getSelectionModel().getSelectedItem();
+                    final ModelData item = _table.getSelectedModel();
                     if ("TEMPLATE".equals(item.get("type"))) {
                         _qs.templateDelta(
                             item.<String>get("id"),
