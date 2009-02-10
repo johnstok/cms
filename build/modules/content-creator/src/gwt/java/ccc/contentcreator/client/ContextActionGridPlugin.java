@@ -62,7 +62,12 @@ public class ContextActionGridPlugin
                                  final int colIndex,
                                  final ListStore store) {
                 d.cellAttr = "rowspan='2'";
-                return "<img class='action' src='images/icons/cog_go.png'/>&#160;";
+                final StringBuilder html = new StringBuilder();
+                html.append("<img class='action' id='");
+                html.append(model.<String>get("name"));
+                html.append("_cog");
+                html.append("' src='images/icons/cog_go.png'/>&#160;");
+                return html.toString();
                 }
         });
     }

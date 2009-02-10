@@ -11,8 +11,6 @@
  */
 package ccc.contentcreator.client;
 
-import static ccc.contentcreator.dialogs.AbstractBaseDialog.*;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -23,25 +21,22 @@ import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.services.api.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
-import com.extjs.gxt.ui.client.binder.TableBinder;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
+import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
+import com.extjs.gxt.ui.client.widget.grid.Grid;
+import com.extjs.gxt.ui.client.widget.grid.GridSelectionModel;
+import com.extjs.gxt.ui.client.widget.grid.GridView;
+import com.extjs.gxt.ui.client.widget.grid.GridViewConfig;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
-import com.extjs.gxt.ui.client.widget.table.Table;
-import com.extjs.gxt.ui.client.widget.table.TableColumn;
-import com.extjs.gxt.ui.client.widget.table.TableColumnModel;
-import com.extjs.gxt.ui.client.widget.table.TableItem;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.extjs.gxt.ui.client.widget.tree.TreeItem;
-import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Widget;
 
 
 /**
  * TODO: Add Description for this type.
- * TODO: Extend simpler LayoutPanel rather than ContentPanel.
  *
  * @author Civic Computing Ltd.
  */
@@ -55,11 +50,11 @@ public class ResourceTable
     private final ListStore<ModelData> _detailsStore =
         new ListStore<ModelData>();
     private TreeItem _parentFolder = null;
-    final ResourceSummary _root;
     private final ToolBar _toolBar = new FolderToolBar(this);
-    final FolderResourceTree _tree;
-    final Table _tbl;
 
+    final ResourceSummary _root;
+    final FolderResourceTree _tree;
+    final Grid<ModelData> _grid;
 
     /**
      * Constructor.
@@ -76,21 +71,45 @@ public class ResourceTable
         setHeading("Resource Details"); // TODO: I18n.
         setLayout(new FitLayout());
 
-
-        _tbl = new Table(createColumnModel());
-        _tbl.setSelectionMode(SelectionMode.SINGLE);
-        _tbl.setHorizontalScroll(true);
-        _tbl.setBorders(false);
-        _tbl.setBulkRender(false);
+//        _tbl.setHorizontalScroll(true);
 
         final Menu contextMenu = new ResourceContextMenu(this);
-        _tbl.setContextMenu(contextMenu);
+        final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
+        final ContextActionGridPlugin gp =
+            new ContextActionGridPlugin(contextMenu);
+        configs.add(gp);
 
-        final TableBinder<ModelData> binder =
-            new ResourceTableBinder(_tbl, _detailsStore);
-        binder.init();
+        createColumnConfigs(configs);
 
-        add(_tbl);
+        final ColumnModel cm = new ColumnModel(configs);
+        _grid = new Grid<ModelData>(_detailsStore, cm);
+        _grid.setId("ResourceGrid");
+
+        _grid.setLoadMask(true);
+        _grid.setBorders(false);
+        final GridViewConfig vc = new GridViewConfig() {
+            /** {@inheritDoc} */
+            @Override
+            public String getRowStyle(ModelData model,
+                                      int rowIndex,
+                                      ListStore ds) {
+
+                return model.<String>get("name")+"_row";
+            }
+        };
+        final GridView view = _grid.getView();
+        view.setViewConfig(vc);
+        _grid.setView(view);
+
+
+        final GridSelectionModel<ModelData> gsm =
+            new GridSelectionModel<ModelData>();
+        gsm.setSelectionMode(SelectionMode.SINGLE);
+        _grid.setSelectionModel(gsm);
+        _grid.setAutoExpandColumn("title");
+        _grid.setContextMenu(contextMenu);
+        _grid.addPlugin(gp);
+        add(_grid);
     }
 
 
@@ -111,7 +130,13 @@ public class ResourceTable
             new ErrorReportingCallback<Collection<ResourceSummary>>() {
                 public void onSuccess(
                                   final Collection<ResourceSummary> result) {
-                    detailsStore().add(DataBinding.bindResourceSummary(result));
+                    final List<ModelData> models =
+                        DataBinding.bindResourceSummary(result);
+                    if (models.isEmpty()) {
+                        detailsStore().removeAll();
+                    } else {
+                        detailsStore().add(models);
+                    }
                 }
         });
     }
@@ -136,97 +161,36 @@ public class ResourceTable
         return _detailsStore;
     }
 
+    private void createColumnConfigs(final List<ColumnConfig> configs) {
+        final ColumnConfig typeColumn =
+            new ColumnConfig("type", _constants.type(), 70);
+        configs.add(typeColumn);
 
-    private TableColumnModel createColumnModel() {
+        final ColumnConfig lockedColumn =
+            new ColumnConfig("locked", _constants.lockedBy(), 80);
+        configs.add(lockedColumn);
 
-        final List<TableColumn> columns = new ArrayList<TableColumn>();
-        TableColumn col;
+        final ColumnConfig mmIncludeColumn =
+            new ColumnConfig("mmInclude", _constants.mainMenu(), 70);
+        configs.add(mmIncludeColumn);
 
-        col = new TableColumn("action", "", .04f);
-        columns.add(col);
+        final ColumnConfig publishedByColumn =
+            new ColumnConfig("published", _constants.publishedBy(), 80);
+        configs.add(publishedByColumn);
 
-        col = new TableColumn("type", _constants.type(), .08f);
-        columns.add(col);
+        final ColumnConfig nameColumn =
+            new ColumnConfig("name", _constants.name(), 250);
+        configs.add(nameColumn);
 
-        col = new TableColumn("locked", _constants.lockedBy(), .08f);
-        columns.add(col);
-
-        col = new TableColumn("mmInclude", _constants.mainMenu(), PERCENT_10);
-        columns.add(col);
-
-        col = new TableColumn("published",
-            _constants.publishedBy(),
-            PERCENT_10);
-        columns.add(col);
-
-        col = new TableColumn("name", _constants.name(), PERCENT_30);
-        columns.add(col);
-
-        col = new TableColumn("title", _constants.title(), PERCENT_30);
-        columns.add(col);
-
-        final TableColumnModel cm = new TableColumnModel(columns);
-        return cm;
+        final ColumnConfig titleColumn =
+            new ColumnConfig("title", _constants.title(), 250);
+        configs.add(titleColumn);
     }
 
-
-    /**
-     * TODO: Add Description for this type.
-     *
-     * @author Civic Computing Ltd.
-     */
-    private final class ResourceTableBinder
-        extends
-            TableBinder<ModelData> {
-
-        /**
-         * Constructor.
-         *
-         * @param table
-         * @param store
-         */
-        ResourceTableBinder(final Table table,
-                                    final ListStore<ModelData> store) {
-            super(table, store);
-        }
-
-        /** {@inheritDoc} */
-        @Override protected void update(final ModelData model) {
-            super.update(model);
-            final TableItem ti = (TableItem) findItem(model);
-            setActionButton(_tbl, model, ti);
-        }
-
-        /** {@inheritDoc} */
-        @Override protected TableItem createItem(final ModelData model) {
-            final TableItem ti = super.createItem(model);
-            setActionButton(_tbl, model, ti);
-            return ti;
-        }
-
-        private void setActionButton(final Table tbl,
-                                     final ModelData model,
-                                     final TableItem ti) {
-
-            final Image tool = new Image("images/icons/cog_go.png");
-            tool.addClickListener(new ClickListener() {
-
-                public void onClick(final Widget sender) {
-                    tbl.setSelectedItem(ti);
-                    tbl.getContextMenu().showAt(sender.getAbsoluteLeft()+7,
-                        sender.getAbsoluteTop()+7);
-                }
-            });
-            ti.setId(model.<String>get("name"));
-            ti.setWidget(0, tool);
-        }
-    }
-
-    // --
 
     /** {@inheritDoc} */
     public ModelData getSelectedModel() {
-        return _tbl.getSelectedItem().getModel();
+        return _grid.getSelectionModel().getSelectedItem();
     }
 
 
