@@ -26,6 +26,11 @@
     #if(!$startLevel)
 		#set ($startLevel = 1) 
 	#end
+    #if(!$endLevel)
+    	#set ($countedSize = $levels.size())
+    	#set ($countedSize = $countedSize - 1)
+		#set ($endLevel = $countedSize) 
+	#end
 
 	<ul id="$menuID">
 	<!-- Levels to display $levels.size() -->
@@ -45,7 +50,7 @@
 		   #elseif ($entry.name() == $levels.get($depth).name()) 
 		      <li class="open">
 		         <a href="/server$entry.absolutePath()">$entry.title()</a>
-		      #if ($depth != 0)
+		      #if ($depth != $endLevel)
 		      <ul>
 				#set($newdepth = $depth + 1)
 				#menulevel($newdepth )
@@ -60,3 +65,4 @@
 		#end
 	#end
 #end
+
