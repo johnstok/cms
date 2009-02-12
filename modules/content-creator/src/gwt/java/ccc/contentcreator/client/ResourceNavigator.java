@@ -11,14 +11,18 @@
  */
 package ccc.contentcreator.client;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import ccc.services.api.ResourceSummary;
 
+import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style.Scroll;
+import com.extjs.gxt.ui.client.event.ComponentEvent;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.layout.AccordionLayout;
-import com.extjs.gxt.ui.client.widget.tree.Tree;
 
 
 /**
@@ -29,7 +33,9 @@ import com.extjs.gxt.ui.client.widget.tree.Tree;
 public class ResourceNavigator extends ContentPanel {
 
     private final LeftRightPane _view;
-    private final Tree _usersTree;
+    private final UserTree _usersTree;
+    private final List<EnhancedResourceTree> _rootTrees =
+        new ArrayList<EnhancedResourceTree>();
 
     /**
      * Constructor.
@@ -39,6 +45,7 @@ public class ResourceNavigator extends ContentPanel {
      */
     ResourceNavigator(final LeftRightPane view,
                       final Collection<ResourceSummary> roots) {
+        setId("resource-navigator");
 
         _view = view;
 
@@ -49,6 +56,7 @@ public class ResourceNavigator extends ContentPanel {
         for (final ResourceSummary root : roots) {
             final EnhancedResourceTree tree =
                 new EnhancedResourceTree(root, _view);
+            _rootTrees.add(tree);
 
             final ContentPanel contentPanel = new ContentPanel();
             contentPanel.getHeader().setId(root._name+"-navigator");
@@ -56,6 +64,14 @@ public class ResourceNavigator extends ContentPanel {
             contentPanel.setHeading(root._name);
             contentPanel.add(tree);
             add(contentPanel);
+            contentPanel.addListener(
+                Events.Expand,
+                new Listener<ComponentEvent>(){
+                    public void handleEvent(final ComponentEvent bce) {
+                        tree.showTable();
+                    }
+                }
+            );
         }
 
 
@@ -67,6 +83,15 @@ public class ResourceNavigator extends ContentPanel {
         usersPanel.setHeading("Users");
         usersPanel.add(_usersTree);
         add(usersPanel);
+        usersPanel.addListener(
+            Events.Expand,
+            new Listener<ComponentEvent>(){
+                public void handleEvent(final ComponentEvent bce) {
+                    _usersTree.showTable();
+                }
+            }
+        );
 
+        _rootTrees.get(0).showTable();
     }
 }

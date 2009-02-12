@@ -29,6 +29,7 @@ import com.extjs.gxt.ui.client.data.ModelStringProvider;
 import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.data.TreeLoader;
 import com.extjs.gxt.ui.client.store.TreeStore;
+import com.extjs.gxt.ui.client.store.TreeStoreEvent;
 import com.extjs.gxt.ui.client.widget.tree.Tree;
 import com.extjs.gxt.ui.client.widget.tree.TreeItem;
 import com.google.gwt.core.client.GWT;
@@ -42,10 +43,86 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public class FolderResourceTree extends Tree {
 
-    private final TreeStore<ModelData> _store;
+    /**
+     * TODO: Add Description for this type.
+     *
+     * @author Civic Computing Ltd.
+     */
+    static final class FolderBinder
+        extends
+            TreeBinder<ModelData> {
+
+        /**
+         * Constructor.
+         *
+         * @param tree
+         * @param store
+         */
+        FolderBinder(final Tree tree, final TreeStore store) {
+            super(tree, store);
+        }
+
+
+
+        /** {@inheritDoc} */
+        @Override
+        protected void createAll() {
+            for (final ModelData root : store.getRootItems()) {
+                final String path = "/" + root.get("name");
+                root.set("absolutePath", path);
+            }
+            super.createAll();
+        }
+
+
+
+        /** {@inheritDoc} */
+        @Override
+        protected void renderChildren(final ModelData parent,
+                                      final List<ModelData> children) {
+            final String parentPath = parent.get("absolutePath");
+
+            for (final ModelData child : children) {
+                final String path = parentPath + "/" + child.get("name");
+                child.set("absolutePath", path);
+            }
+
+            super.renderChildren(parent, children);
+        }
+
+
+        /** {@inheritDoc} */
+        @Override
+        protected TreeItem createItem(final ModelData model) {
+            final TreeItem item = super.createItem(model);
+
+            item.setId(model.<String>get("absolutePath"));
+
+            if (!"FOLDER".equals(model.get("type"))) {
+                item.setVisible(false);
+            }
+
+            return item;
+        }
+
+        protected void loadChildren(final TreeItem item) {
+            loader.loadChildren(item.getModel());
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        protected void onRenderChildren(final TreeStoreEvent te) {
+            if (loader.hasChildren(te.parent)) {
+                super.onRenderChildren(te);
+            }
+        }
+    }
+
+    protected final TreeStore<ModelData> _store;
     private final ResourceSummary _root;
 
     final QueriesServiceAsync qs = GWT.create(QueriesService.class);
+    protected final FolderBinder _binder;
 
     /**
      * Constructor.
@@ -72,7 +149,7 @@ public class FolderResourceTree extends Tree {
                 } else {
                     String parentId = loadConfig.<String>get("id");
 
-                    qs.getFolderChildren(
+                    qs.getChildren(
                         parentId,
                         new AsyncCallback<Collection<ResourceSummary>>(){
 
@@ -101,21 +178,25 @@ public class FolderResourceTree extends Tree {
 
         _store = new TreeStore<ModelData>(loader);
 
-
-        final TreeBinder<ModelData> binder =
-            new TreeBinder<ModelData>(this, _store) {
-            @Override
-            protected void update(final TreeItem item, final ModelData model) {
-                super.update(item, model);
-                item.setId(model.<String>get("name"));
-            }
-        };
-        binder.setCaching(false);
-        binder.setDisplayProperty("name");
-        binder.setIconProvider(new ModelStringProvider<ModelData>() {
+        _binder = new FolderBinder(this, _store);
+        _binder.setCaching(false);
+        _binder.setDisplayProperty("name");
+        _binder.setIconProvider(new ModelStringProvider<ModelData>() {
             public String getStringValue(final ModelData model,
                                          final String property) {
-                return (null == model) ? null : "images/gxt/icons/folder.gif";
+                if (model.<String>get("type").equals("FOLDER")) {
+                    return "images/gxt/icons/folder.gif";
+                } else if (model.<String>get("type").equals("PAGE")) {
+                    return "images/icons/page.png";
+                } else if (model.<String>get("type").equals("TEMPLATE")) {
+                    return "images/icons/page_code.png";
+                } else if (model.<String>get("type").equals("ALIAS")) {
+                    return "images/icons/link.png";
+                } else if (model.<String>get("type").equals("FILE")) {
+                    return "images/icons/image.png";
+                } else {
+                    return null;
+                }
             }
         });
 
