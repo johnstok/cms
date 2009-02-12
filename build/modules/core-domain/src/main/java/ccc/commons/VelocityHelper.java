@@ -11,10 +11,14 @@
  */
 package ccc.commons;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
+import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 
 
@@ -53,4 +57,28 @@ public class VelocityHelper {
        final Calendar cal = Calendar.getInstance();
        return ""+cal.get(Calendar.YEAR);
     }
+
+    /**
+     * Creates a list of resources from root till given resource.
+     *
+     * @param resource The resource.
+     * @return A list of resources.
+     */
+    public List<Resource> selectPathElements(final Resource resource) {
+
+        final List<Resource> elements = new ArrayList<Resource>();
+
+        Resource current = resource;
+
+        elements.add(current);
+        while (current.parent() != null) {
+            current = current.parent();
+            elements.add(current);
+        }
+        Collections.reverse(elements);
+        return elements;
+    }
+
+
+
 }

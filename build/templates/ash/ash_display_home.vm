@@ -1,7 +1,3 @@
-#set($levels = [])
-#set($swallow = "a")
-#set($path = $resource.absolutePath().elements())
-
 #set( $randomStyles = ["one", "two", "three", "four", "five", "six", "seven", "eight"] )
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -57,7 +53,9 @@
 				<div id="leftnav">
 <!-- new tag -->
 <ccctl:MenuTag mode="submenu" menuID="subnav" />
-#menutag
+#set($menuID="subnav")
+#set($startLevel=2)
+#menuTag
 				</div>
 				<div id="quote"><h1>$resource.paragraph("HEADER").text()</h1></div>
 			</div>
