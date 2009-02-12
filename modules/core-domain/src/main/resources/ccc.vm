@@ -21,27 +21,18 @@
    #end
 #end
 
-
-#macro ( menutag) 
-	#set ($a = 0)
-	#set ($current = $resource)
-	
-	#foreach ($element in $path)
-		#if ($a > 1) 
-		   <!-- $element -->
-		   #set ($swallow = $levels.add($current))
-		   #set ($current = $current.parent())
-		#end
-	#set ($a = $a +1)
+#macro (menuTag)
+	#set ($levels = $helper.selectPathElements($resource))
+    #if(!$startLevel)
+		#set ($startLevel = 1) 
 	#end
 
-	<ul id="subnav">
+	<ul id="$menuID">
 	<!-- Levels to display $levels.size() -->
-	#set ($b = $levels.size() +-1)
-	<!-- Starting level $b -->
-	#menulevel($b)
+	#menulevel($startLevel)
 	</ul>
-	#end
+#end
+
 
 #macro ( menulevel $depth) 
 <!-- this level $depth -->
@@ -56,7 +47,7 @@
 		         <a href="/server$entry.absolutePath()">$entry.title()</a>
 		      #if ($depth != 0)
 		      <ul>
-				#set($newdepth = $depth - 1)
+				#set($newdepth = $depth + 1)
 				#menulevel($newdepth )
 		      </ul>
 		      #end
