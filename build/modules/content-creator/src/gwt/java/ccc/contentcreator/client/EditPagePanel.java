@@ -86,8 +86,8 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         _name.disable();
         _title.setValue(resourceSummary._title);
 
-        for (final ParagraphDelta para : resourceSummary._paragraphs) {
-            for (final PageElement c : pageElements()) {
+        for (final PageElement c : pageElements()) {
+            for (final ParagraphDelta para : resourceSummary._paragraphs) {
                 if (c.id().equals(para._name)) {
                     if ("TEXT".equals(c.type())) {
                         final Field<String> f = c.field();
@@ -97,10 +97,12 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                         f.setValue(para._dateValue);
                     } else if ("HTML".equals(c.type())) {
                         remove(c.editor());
+                        remove(c.editorLabel());
                         final FCKEditor fck = new FCKEditor(para._textValue,
                                                             "",
                                                             "595px",
                                                             "250px");
+                        add(c.editorLabel());
                         add(fck);
                         c.editor(fck);
                     }
@@ -224,6 +226,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                 final FCKEditor fck = new FCKEditor("", "", "595px", "250px");
                 final PageElement pe = new PageElement(name);
                 pe.type("HTML");
+                pe.editorLabel(fieldName);
                 pe.editor(fck);
                 add(fck);
                 _pageElements.add(pe);
