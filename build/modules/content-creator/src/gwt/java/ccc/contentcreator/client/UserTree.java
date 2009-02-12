@@ -41,7 +41,6 @@ public class UserTree extends Tree {
         /** {@inheritDoc} */
         public void handleEvent(final TreeEvent te) {
             _ut.displayUsersFor(te.tree.getSelectedItem());
-            _view.setRightHandPane(_ut);
         }
 
     }
@@ -89,5 +88,12 @@ public class UserTree extends Tree {
         addListener(
             Events.SelectionChange,
             new UserSelectedListener());
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     */
+    public void showTable() {
+        _view.setRightHandPane(_ut);
     }
 }

@@ -71,10 +71,10 @@ public final class ContentCreator implements EntryPoint {
                     browseLinks(qs, arg0);
                 } else {
                     final LeftRightPane contentPane = new LeftRightPane();
+                    contentPane.setRightHandPane(new ContentPanel());
                     contentPane.setLeftHandPane(
                         new ResourceNavigator(contentPane,
                             arg0));
-                    contentPane.setRightHandPane(new ContentPanel());
 
                     final Viewport vp =
                         layoutMainWindow(new MainMenu(), contentPane);

@@ -12,12 +12,9 @@
 package ccc.contentcreator.client;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import ccc.contentcreator.api.UIConstants;
-import ccc.contentcreator.binding.DataBinding;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.services.api.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
@@ -32,7 +29,6 @@ import com.extjs.gxt.ui.client.widget.grid.GridViewConfig;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
-import com.extjs.gxt.ui.client.widget.tree.TreeItem;
 
 
 /**
@@ -49,12 +45,11 @@ public class ResourceTable
     private final UIConstants _constants = Globals.uiConstants();
     private final ListStore<ModelData> _detailsStore =
         new ListStore<ModelData>();
-    private TreeItem _parentFolder = null;
     private final ToolBar _toolBar = new FolderToolBar(this);
 
     final ResourceSummary _root;
-    final FolderResourceTree _tree;
-    final Grid<ModelData> _grid;
+    private final FolderResourceTree _tree;
+    private final Grid<ModelData> _grid;
 
     /**
      * Constructor.
@@ -92,27 +87,10 @@ public class ResourceTable
      *
      * @param selectedItem The item whose children we should display.
      */
-    public void displayResourcesFor(final TreeItem selectedItem) {
-        _parentFolder = selectedItem;
-        _detailsStore.removeAll();
-
-        if (selectedItem != null) {
-            final ModelData f = selectedItem.getModel();
-
-            qs.getChildren(
-                f.<String>get("id"),
-                new ErrorReportingCallback<Collection<ResourceSummary>>() {
-                    public void onSuccess(
-                                     final Collection<ResourceSummary> result) {
-                        final List<ModelData> models =
-                            DataBinding.bindResourceSummary(result);
-                        if (models.isEmpty()) {
-                            detailsStore().removeAll();
-                        } else {
-                            detailsStore().add(models);
-                        }
-                    }
-                });
+    public void displayResourcesFor(final List<ModelData> data) {
+        detailsStore().removeAll();
+        if (data.size() > 0) { // Grid throws exception with empty list.
+            detailsStore().add(data);
         }
     }
 
@@ -121,9 +99,9 @@ public class ResourceTable
      * Refresh view.
      */
     public void refreshTable() {
-        if (_parentFolder  != null) {
-            displayResourcesFor(_parentFolder);
-        }
+//        if (_parentFolder  != null) {
+//            displayResourcesFor(_parentFolder);
+//        }
     }
 
 
@@ -209,7 +187,7 @@ public class ResourceTable
 
     /** {@inheritDoc} */
     public ModelData getSelectedFolder() {
-        return _parentFolder.getModel();
+        return _tree.getSelectedItem().getModel();
     }
 
     /** {@inheritDoc} */
