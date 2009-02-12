@@ -14,6 +14,7 @@ package ccc.contentcreator.client;
 
 import ccc.contentcreator.client.ui.FCKEditor;
 
+import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.Field;
 
@@ -29,6 +30,7 @@ public class PageElement {
     private String _type;
 
     private FCKEditor _editor;
+    private Text _editorLabel;
     private DateField _dateField;
     private Field<String> _field;
 
@@ -130,6 +132,24 @@ public class PageElement {
      */
     public void field(final Field<String>field) {
         _field = field;
+    }
+
+    /**
+     * Accessor for the editorLabel.
+     *
+     * @return The label.
+     */
+    public Text editorLabel() {
+        return _editorLabel;
+    }
+
+    /**
+     * Mutator for the editorLabel.
+     *
+     * @param editorLabel The value of the field.
+     */
+    public void editorLabel(final Text editorLabel) {
+        _editorLabel = editorLabel;
     }
 
 }
