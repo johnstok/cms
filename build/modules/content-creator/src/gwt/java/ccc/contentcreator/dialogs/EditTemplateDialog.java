@@ -247,7 +247,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                             new ErrorReportingCallback<ResourceSummary>(){
                                 public void onSuccess(final ResourceSummary arg0) {
                                     DataBinding.merge(_proxy, arg0);
-                                    _ssm.add(_proxy);
+                                    _ssm.create(_proxy, _ssm.treeSelection());
                                     close();
                                 }});
                             break;
@@ -257,7 +257,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                                 new ErrorReportingCallback<ResourceSummary>(){
                                     public void onSuccess(final ResourceSummary arg0) {
                                         DataBinding.merge(_proxy, arg0);
-                                        _ssm.notifyUpdate(_proxy);
+                                        _ssm.update(_proxy);
                                         close();
                                     }});
                             break;

@@ -33,7 +33,7 @@ public final class PreviewAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ModelData item = _selectionModel.getSelectedModel();
+        final ModelData item = _selectionModel.tableSelection();
         _queries.getAbsolutePath(
             item.<String>get("id"),
             new ErrorReportingCallback<String>() {

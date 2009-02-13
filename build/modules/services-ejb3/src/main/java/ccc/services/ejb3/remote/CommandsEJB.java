@@ -80,7 +80,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public void createAlias(final String parentId,
+    public ResourceSummary createAlias(final String parentId,
                             final String name,
                             final String targetId) {
 
@@ -96,9 +96,10 @@ public class CommandsEJB
             throw new CCCException("Parent does not exists.");
         }
 
-        _resources.create(parent.id(),
-            new Alias(name, target));
+        final Alias a = new Alias(name, target);
+        _resources.create(parent.id(), a);
 
+        return map(a);
     }
 
     /** {@inheritDoc} */

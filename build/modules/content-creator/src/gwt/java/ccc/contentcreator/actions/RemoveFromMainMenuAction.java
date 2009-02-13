@@ -44,14 +44,14 @@ public class RemoveFromMainMenuAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ModelData item = _selectionModel.getSelectedModel();
+        final ModelData item = _selectionModel.tableSelection();
         _commands.includeInMainMenu(
             item.<String>get("id"),
             false,
             new ErrorReportingCallback<Void>(){
                 public void onSuccess(final Void arg0) {
                     item.set("mmInclude", Boolean.FALSE);
-                    _selectionModel.notifyUpdate(item);
+                    _selectionModel.update(item);
                 }
             }
         );

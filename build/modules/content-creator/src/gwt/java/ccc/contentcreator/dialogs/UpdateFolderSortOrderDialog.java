@@ -105,7 +105,7 @@ public class UpdateFolderSortOrderDialog
     protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                final ModelData md = _selectionModel.getSelectedModel();
+                final ModelData md = _selectionModel.tableSelection();
                 final String order = _sortOrder.getValue().<String>get("value");
                 _commands.updateFolderSortOrder(
                     md.<String>get("id"),

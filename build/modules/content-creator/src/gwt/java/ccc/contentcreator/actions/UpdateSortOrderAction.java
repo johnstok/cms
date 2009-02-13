@@ -28,7 +28,7 @@ public class UpdateSortOrderAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ModelData selectedModel = _selectionModel.getSelectedModel();
+        final ModelData selectedModel = _selectionModel.tableSelection();
         new UpdateFolderSortOrderDialog(
             _selectionModel,
             selectedModel.<String>get("sortOrder"))

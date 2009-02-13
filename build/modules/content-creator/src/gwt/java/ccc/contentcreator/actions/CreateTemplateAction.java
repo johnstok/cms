@@ -28,7 +28,7 @@ public final class CreateTemplateAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ModelData item = _selectionModel.getSelectedFolder();
+        final ModelData item = _selectionModel.treeSelection();
         new EditTemplateDialog(
             item.<String>get("id"),
             _selectionModel)

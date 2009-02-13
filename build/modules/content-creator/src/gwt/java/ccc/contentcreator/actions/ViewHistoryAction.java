@@ -36,7 +36,7 @@ public final class ViewHistoryAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ModelData item = _selectionModel.getSelectedModel();
+        final ModelData item = _selectionModel.tableSelection();
         _queries.history(
             item.<String>get("id"),
             new ErrorReportingCallback<Collection<LogEntrySummary>>(){

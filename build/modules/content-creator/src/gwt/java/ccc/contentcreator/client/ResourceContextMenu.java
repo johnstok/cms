@@ -96,12 +96,12 @@ public class ResourceContextMenu
         _includeMainMenu = new IncludeInMainMenuAction(_table);
         _removeMainMenu = new RemoveFromMainMenuAction(_table);
         _unpublishAction = new UnpublishAction(_table);
-        _createAliasAction = new CreateAliasAction(_table, _table._root);
+        _createAliasAction = new CreateAliasAction(_table, _table.root());
         _updateMetadataAction = new UpdateMetadataAction(_table);
         _viewHistory = new ViewHistoryAction(_table);
         _updateTagsAction = new UpdateTagsAction(_table);
         _renameAction = new RenameAction(_table);
-        _moveAction = new MoveAction(_table, _table._root);
+        _moveAction = new MoveAction(_table, _table.root());
         _unlockAction = new UnlockAction(_table);
         _lockAction = new LockAction(_table);
         _previewAction = new PreviewAction(_table);
@@ -113,7 +113,7 @@ public class ResourceContextMenu
             new Listener<MenuEvent>(){
                 public void handleEvent(final MenuEvent be) {
                     removeAll();
-                    final ModelData item = _table.getSelectedModel();
+                    final ModelData item = _table.tableSelection();
                     if (item == null) {
                         // do not display context menu if no item is selected.
                         be.doit = false;
@@ -211,7 +211,7 @@ public class ResourceContextMenu
         chooseTemplate.setText(_constants.chooseTemplate());
         chooseTemplate.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override public void componentSelected(final MenuEvent ce) {
-                final ModelData item = _table.getSelectedModel();
+                final ModelData item = _table.tableSelection();
                 if ("PAGE".equals(item.<String>get("type"))) {
                     _qs.pageDelta(
                         item.<String>get("id"),
@@ -264,7 +264,7 @@ public class ResourceContextMenu
         update.setText(_constants.edit());
         update.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override public void componentSelected(final MenuEvent ce) {
-                    final ModelData item = _table.getSelectedModel();
+                    final ModelData item = _table.tableSelection();
                     if ("TEMPLATE".equals(item.get("type"))) {
                         _qs.templateDelta(
                             item.<String>get("id"),
@@ -304,7 +304,7 @@ public class ResourceContextMenu
                                     new UpdateAliasDialog(
                                         result,
                                         _table,
-                                        _table._root)
+                                        _table.root())
                                     .show();
                                 }
                             }

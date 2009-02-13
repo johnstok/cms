@@ -152,7 +152,7 @@ public interface Commands {
     /**
      * Create a new alias in CCC.
      */
-    void createAlias(String parentId, String name, String targetId);
+    ResourceSummary createAlias(String parentId, String name, String targetId);
 
     /**
      * Create a folder with the specified name.

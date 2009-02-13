@@ -697,4 +697,12 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Change sort order")
     String changeSortOrder();
+
+    /**
+     * "Resource Details".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Resource Details")
+    String resourceDetails();
 }

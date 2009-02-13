@@ -88,7 +88,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
         _panel.addListener(Events.Submit, new Listener<FormEvent>() {
             public void handleEvent(final FormEvent be) {
                 hide();
-                rt.refreshTable();
+                rt.update(null); // FIXME
                 if (!be.resultHtml.equals("File was updated successfully.")) {
                     Globals.unexpectedError(new Exception(be.resultHtml));
                 }

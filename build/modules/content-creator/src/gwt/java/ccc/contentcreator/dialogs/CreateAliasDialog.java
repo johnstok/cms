@@ -12,8 +12,11 @@
 package ccc.contentcreator.dialogs;
 
 
+import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.callbacks.DisposingCallback;
+import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.services.api.ResourceSummary;
@@ -40,23 +43,23 @@ public class CreateAliasDialog extends AbstractEditDialog {
     private final TriggerField<String> _parentFolder =
         new TriggerField<String>();
 
-    private final ModelData _target;
+    private final SingleSelectionModel _ssm;
     private ModelData _parent = null;
 
     /**
      * Constructor.
      *
      * @param root Resource root for folder selection
-     * @param item The ResourceDTO
+     * @param ssm
      */
-    public CreateAliasDialog(final ModelData item, final ResourceSummary root) {
+    public CreateAliasDialog(final SingleSelectionModel ssm, final ResourceSummary root) {
         super(Globals.uiConstants().createAlias());
         setPanelId("AliasPanel");
 
-        _target = item;
+        _ssm = ssm;
 
         _targetName.setFieldLabel(constants().target());
-        _targetName.setValue(item.<String>get("name"));
+        _targetName.setValue(_ssm.tableSelection().<String>get("name"));
         _targetName.setReadOnly(true);
         _targetName.disable();
         addField(_targetName);
@@ -109,8 +112,15 @@ public class CreateAliasDialog extends AbstractEditDialog {
                 Globals.commandService().createAlias(
                     _parent.<String>get("id"),
                     _aliasName.getValue(),
-                    _target.<String>get("id"),
-                    new DisposingCallback(CreateAliasDialog.this));
+                    _ssm.tableSelection().<String>get("id"),
+                    new ErrorReportingCallback<ResourceSummary>(){
+                        public void onSuccess(final ResourceSummary result) {
+                            final ModelData newAlias =
+                                DataBinding.bindResourceSummary(result);
+                            _ssm.create(newAlias, _parent);
+                            close();
+                        }
+                    });
             }
         };
     }

@@ -11,13 +11,15 @@
  */
 package ccc.contentcreator.dialogs;
 
+import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.services.api.ResourceSummary;
 
-import com.extjs.gxt.ui.client.Events;
+import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -34,14 +36,19 @@ public class CreateFolderDialog extends AbstractEditDialog {
 
     private final ModelData _parent;
     private final TextField<String> _text = new TextField<String>();
+    final private SingleSelectionModel _ssm;
 
     /**
      * Constructor.
      *
      * @param parent parent folder in the GUI.
      */
-    public CreateFolderDialog(final ModelData parent) {
+    public CreateFolderDialog(final ModelData parent,
+                              final SingleSelectionModel ssm) {
         super(Globals.uiConstants().createFolder());
+
+        _ssm = ssm;
+
         setHeight(Globals.DEFAULT_MIN_HEIGHT);
         _parent = parent;
         setLayout(new FitLayout());
@@ -78,11 +85,9 @@ public class CreateFolderDialog extends AbstractEditDialog {
                     _text.getValue(),
                     new ErrorReportingCallback<ResourceSummary>(){
                         public void onSuccess(final ResourceSummary result) {
-                            fireEvent(Events.SelectionChange);
-//                            _treeStore.add(_parent,
-//                                           DataBinding.bindResourceSummary(Collections.singletonList(result)),
-//                                           false);
-                            // TODO: Sync GUI.
+                            final ModelData newFolder = new BaseModelData();
+                            DataBinding.merge(newFolder, result);
+                            _ssm.create(newFolder, _parent);
                             close();
                         }
                     }

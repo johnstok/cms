@@ -44,10 +44,10 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
-    public void createAlias(final String parentId,
+    public ResourceSummary createAlias(final String parentId,
                             final String name,
                             final String targetId) {
-        _delegate.createAlias(parentId, name, targetId);
+        return _delegate.createAlias(parentId, name, targetId);
     }
 
     /** {@inheritDoc} */

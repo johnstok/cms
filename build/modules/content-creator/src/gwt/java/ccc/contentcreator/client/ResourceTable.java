@@ -47,9 +47,10 @@ public class ResourceTable
         new ListStore<ModelData>();
     private final ToolBar _toolBar = new FolderToolBar(this);
 
-    final ResourceSummary _root;
+    private final ResourceSummary _root;
     private final FolderResourceTree _tree;
     private final Grid<ModelData> _grid;
+
 
     /**
      * Constructor.
@@ -63,7 +64,7 @@ public class ResourceTable
         _tree = tree;
 
         setTopComponent(_toolBar);
-        setHeading("Resource Details"); // TODO: I18n.
+        setHeading(_constants.resourceDetails());
         setLayout(new FitLayout());
 
         final Menu contextMenu = new ResourceContextMenu(this);
@@ -82,37 +83,29 @@ public class ResourceTable
         add(_grid);
     }
 
+
+    /**
+     * Accessor for this table's root.
+     *
+     * @return The resource summary for the root.
+     */
+    public ResourceSummary root() {
+        return _root;
+    }
+
+
     /**
      * Updated this table to render the children of the specified TreeItem.
      *
-     * @param selectedItem The item whose children we should display.
+     * @param data A list of records to display in the table.
      */
     public void displayResourcesFor(final List<ModelData> data) {
-        detailsStore().removeAll();
+        _detailsStore.removeAll();
         if (data.size() > 0) { // Grid throws exception with empty list.
-            detailsStore().add(data);
+            _detailsStore.add(data);
         }
     }
 
-
-    /**
-     * Refresh view.
-     */
-    public void refreshTable() {
-//        if (_parentFolder  != null) {
-//            displayResourcesFor(_parentFolder);
-//        }
-    }
-
-
-    /**
-     * Accessor for the details store.
-     *
-     * @return This table's details store.
-     */
-    protected ListStore<ModelData> detailsStore() {
-        return _detailsStore;
-    }
 
     private void createColumnConfigs(final List<ColumnConfig> configs) {
         final ColumnConfig typeColumn =
@@ -150,7 +143,7 @@ public class ResourceTable
         // Assign a CSS style for each row with GridViewConfig
         final GridViewConfig vc = new GridViewConfig() {
             /** {@inheritDoc} */
-            @Override
+            @Override @SuppressWarnings("unchecked")
             public String getRowStyle(final ModelData model,
                                       final int rowIndex,
                                       final ListStore ds) {
@@ -172,7 +165,7 @@ public class ResourceTable
 
 
     /** {@inheritDoc} */
-    public ModelData getSelectedModel() {
+    public ModelData tableSelection() {
         if (_grid.getSelectionModel() == null) {
             return null;
         }
@@ -181,22 +174,42 @@ public class ResourceTable
 
 
     /** {@inheritDoc} */
-    public void notifyUpdate(final ModelData model) {
-        detailsStore().update(model);
-    }
-
-    /** {@inheritDoc} */
-    public ModelData getSelectedFolder() {
+    public ModelData treeSelection() {
         return _tree.getSelectedItem().getModel();
     }
 
-    /** {@inheritDoc} */
-    public void refresh() {
-        refreshTable();
-    }
 
     /** {@inheritDoc} */
-    public void add(final ModelData model) {
-        detailsStore().add(model);
+    public void update(final ModelData model) {
+        _detailsStore.update(model);
+        _tree._store.update(model);
+    }
+
+
+    /** {@inheritDoc} */
+    public void create(final ModelData model, final ModelData newParent) {
+        final ModelData np = _tree._store.findModel("id", newParent.get("id"));
+
+        if (newParent.equals(treeSelection())) {
+            _detailsStore.add(model);
+        }
+
+        if (null!=np) { // May not exist in other store
+            _tree._store.add(np, model, false);
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    public void move(final ModelData model,
+                     final ModelData newParent,
+                     final ModelData oldParent) {
+        _detailsStore.remove(model);
+        _tree._store.remove(oldParent, model);
+
+        final ModelData np = _tree._store.findModel("id", newParent.get("id"));
+        if (null!=np) { // May not exist in other store
+            _tree._store.add(np, model, false);
+        }
     }
 }

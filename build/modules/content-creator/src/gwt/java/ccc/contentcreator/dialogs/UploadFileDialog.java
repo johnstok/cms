@@ -93,7 +93,7 @@ public class UploadFileDialog extends AbstractEditDialog {
         _panel.addListener(Events.Submit, new Listener<FormEvent>() {
             public void handleEvent(final FormEvent be) {
                 hide();
-                ssm.refresh();
+                ssm.create(null, null); // FIXME
                 if (!be.resultHtml.equals("File was uploaded successfully.")) {
                     Globals.unexpectedError(new Exception(be.resultHtml));
                 }

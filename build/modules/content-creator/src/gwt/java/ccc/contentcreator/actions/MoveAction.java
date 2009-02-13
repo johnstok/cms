@@ -33,7 +33,7 @@ public final class MoveAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ModelData item = _selectionModel.getSelectedModel();
+        final ModelData item = _selectionModel.tableSelection();
         new MoveDialog(item, _selectionModel, _root).show();
     }
 }

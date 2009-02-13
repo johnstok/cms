@@ -28,7 +28,7 @@ public final class RenameAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ModelData item = _selectionModel.getSelectedModel();
+        final ModelData item = _selectionModel.tableSelection();
         new RenameDialog(item, _selectionModel).show();
     }
 }

@@ -5,8 +5,6 @@ import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.CreateAliasDialog;
 import ccc.services.api.ResourceSummary;
 
-import com.extjs.gxt.ui.client.data.ModelData;
-
 /**
  * TODO: Add Description for this type.
  *
@@ -33,8 +31,6 @@ public final class CreateAliasAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ModelData item =
-            _selectionModel.getSelectedModel();
-        new CreateAliasDialog(item, _root).show();
+        new CreateAliasDialog(_selectionModel, _root).show();
     }
 }
