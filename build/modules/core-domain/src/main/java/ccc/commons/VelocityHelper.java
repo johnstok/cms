@@ -15,11 +15,17 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
+import ccc.domain.Folder;
+import ccc.domain.Page;
+import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
+import ccc.domain.ResourceType;
 
 
 /**
@@ -79,6 +85,41 @@ public class VelocityHelper {
         return elements;
     }
 
+    /**
+     * Helper method for content index displaying.
+     *
+     * @param folder The folder the get pages from.
+     * @param displayLimit Number of pages to display. -1 for no limit.
+     * @param contentElements A list of paragraph names to load.
+     * @return A list of maps containing paragraph name and text for each page.
+     */
+    public List<Map<String, String>> selectPagesForContentIndex(
+        final Resource folder,
+        final int displayLimit,
+        final List<String> contentElements) {
+        final List<Map<String, String>> elements =
+            new ArrayList<Map<String, String>>();
 
+        if (folder.type() !=  ResourceType.FOLDER) {
+            return null;
+        }
+
+        final Folder f  = folder.as(Folder.class);
+
+        int c = 0;
+        for (final Page page : f.pages()) {
+            if (displayLimit == -1 || c < displayLimit) {
+                final Map<String, String> map = new HashMap<String, String>();
+                for (final Paragraph para : page.paragraphs()) {
+                    if (contentElements.contains(para.name())) {
+                        map.put(para.name(), para.text());
+                    }
+                }
+                elements.add(map);
+                c++;
+            }
+        }
+        return elements;
+    }
 
 }
