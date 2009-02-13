@@ -36,7 +36,7 @@ public final class UpdateTagsAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ModelData item = _selectionModel.getSelectedModel();
+        final ModelData item = _selectionModel.tableSelection();
         _queries.resourceDelta(
             item.<String>get("id"),
             new ErrorReportingCallback<ResourceDelta>(){

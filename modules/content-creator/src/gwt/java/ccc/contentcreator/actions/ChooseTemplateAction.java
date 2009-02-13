@@ -37,7 +37,7 @@ public final class ChooseTemplateAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ModelData item = _selectionModel.getSelectedFolder();
+        final ModelData item = _selectionModel.treeSelection();
         _queries.folderDelta(
             item.<String>get("id"),
             new ErrorReportingCallback<ResourceDelta>(){

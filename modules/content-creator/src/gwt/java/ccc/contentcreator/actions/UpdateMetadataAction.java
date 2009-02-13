@@ -35,7 +35,7 @@ public final class UpdateMetadataAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ModelData item = _selectionModel.getSelectedModel();
+        final ModelData item = _selectionModel.tableSelection();
         _queries.metadata(
             item.<String>get("id"),
             new ErrorReportingCallback<Map<String, String>>(){

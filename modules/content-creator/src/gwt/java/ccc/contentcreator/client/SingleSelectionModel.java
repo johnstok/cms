@@ -20,9 +20,9 @@ import com.extjs.gxt.ui.client.data.ModelData;
  * @author Civic Computing Ltd.
  */
 public interface SingleSelectionModel {
-    ModelData getSelectedModel();
-    ModelData getSelectedFolder();
-    void notifyUpdate(ModelData model);
-    void refresh();
-    void add(ModelData model);
+    ModelData tableSelection();
+    ModelData treeSelection();
+    void update(ModelData model);
+    void move(ModelData model, ModelData newParent, final ModelData oldParent);
+    void create(ModelData model, ModelData newParent);
 }

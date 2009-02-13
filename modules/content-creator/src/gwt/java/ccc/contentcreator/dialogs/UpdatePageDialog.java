@@ -27,6 +27,7 @@ import ccc.services.api.ParagraphDelta;
 import ccc.services.api.TemplateDelta;
 
 import com.extjs.gxt.ui.client.Style;
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.button.Button;
@@ -58,7 +59,9 @@ public class UpdatePageDialog
                 Globals.unexpectedError(arg0);
             }
             public void onSuccess(final Void arg0) {
-                rt().refreshTable();
+                ModelData md = rt().tableSelection();
+                md.set("title", _page._title);
+                rt().update(md);
                 close();
             }
         };

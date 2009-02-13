@@ -28,7 +28,7 @@ public final class CreateFolderAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ModelData item = _selectionModel.getSelectedFolder();
-        new CreateFolderDialog(item).show();
+        final ModelData item = _selectionModel.treeSelection();
+        new CreateFolderDialog(item, _selectionModel).show();
     }
 }

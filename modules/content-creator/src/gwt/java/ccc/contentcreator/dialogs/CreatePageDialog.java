@@ -326,7 +326,9 @@ public class CreatePageDialog
                     template,
                     new ErrorReportingCallback<ResourceSummary>() {
                         public void onSuccess(final ResourceSummary result) {
-                            _ssm.refresh();
+                            _ssm.create(
+                                DataBinding.bindResourceSummary(result),
+                                _parent);
                             close();
                         }
                     }

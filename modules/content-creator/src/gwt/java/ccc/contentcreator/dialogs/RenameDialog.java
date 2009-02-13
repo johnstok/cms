@@ -89,7 +89,8 @@ public class RenameDialog extends AbstractEditDialog {
                     _newName.getValue(),
                     new ErrorReportingCallback<Void>() {
                         public void onSuccess(final Void result) {
-                            _ssm.refresh();
+                            _item.<String>set("name", _newName.getValue());
+                            _ssm.update(_item);
                             close();
                         }
                     });

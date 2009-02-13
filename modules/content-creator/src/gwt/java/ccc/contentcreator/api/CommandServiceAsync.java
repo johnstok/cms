@@ -68,7 +68,7 @@ public interface CommandServiceAsync {
 
 
 
-    void createAlias(String parentId, String name, String targetId, AsyncCallback<Void> callback);
+    void createAlias(String parentId, String name, String targetId, AsyncCallback<ResourceSummary> callback);
 
     void createFolder(String parentId, String name, AsyncCallback<ResourceSummary> callback);
 

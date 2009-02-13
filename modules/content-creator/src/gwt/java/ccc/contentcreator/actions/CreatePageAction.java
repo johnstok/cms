@@ -36,7 +36,7 @@ public final class CreatePageAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ModelData item = _selectionModel.getSelectedFolder();
+        final ModelData item = _selectionModel.treeSelection();
         _queries.templates(
             new ErrorReportingCallback<Collection<TemplateDelta>>(){
                 public void onSuccess(

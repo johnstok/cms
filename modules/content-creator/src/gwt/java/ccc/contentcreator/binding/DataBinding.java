@@ -65,11 +65,16 @@ public class DataBinding {
                                     final Collection<ResourceSummary> arg0) {
         final List<ModelData> boundData = new ArrayList<ModelData>();
         for (final ResourceSummary fs : arg0) {
-            final ModelData md = new BaseModelData();
-            merge(md, fs);
+            final ModelData md = bindResourceSummary(fs);
             boundData.add(md);
         }
         return boundData;
+    }
+
+    public static ModelData bindResourceSummary(final ResourceSummary fs) {
+        final ModelData md = new BaseModelData();
+        merge(md, fs);
+        return md;
     }
 
     /**

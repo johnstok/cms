@@ -12,6 +12,7 @@
 package ccc.contentcreator.dialogs;
 
 
+import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.ResourceTable;
@@ -114,12 +115,8 @@ public class UpdateAliasDialog extends AbstractEditDialog {
             public void run() {
                 commands().updateAlias(
                     _alias,
-                    new ErrorReportingCallback<Void>(){
-                        public void onSuccess(final Void result) {
-                            _rt.refreshTable();
-                            close();
-                        }
-                    });
+                    new DisposingCallback(UpdateAliasDialog.this)
+                );
             }
         };
     }

@@ -46,13 +46,13 @@ public class UnlockAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ModelData item = _selectionModel.getSelectedModel();
+        final ModelData item = _selectionModel.tableSelection();
         _commands.unlock(
             item.<String>get("id"),
             new ErrorReportingCallback<ResourceSummary>(){
                 public void onSuccess(final ResourceSummary arg0) {
                     DataBinding.merge(item, arg0);
-                    _selectionModel.notifyUpdate(item);
+                    _selectionModel.update(item);
                 }
             }
         );
