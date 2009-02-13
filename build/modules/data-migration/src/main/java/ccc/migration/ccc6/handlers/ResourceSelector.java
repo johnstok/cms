@@ -50,6 +50,7 @@ public final class ResourceSelector
             + "WHERE c3_content.parent_id = ? "
             + "AND version_id = 0 "
             + "AND (status = 'PUBLISHED' OR status = 'NEW') "
-            + "AND c3_content.display_template_id = c3_display_templates.template_id(+)";
+            + "AND c3_content.display_template_id = c3_display_templates.template_id(+) "
+            + "ORDER BY SORT_ORDER";
     }
 }
