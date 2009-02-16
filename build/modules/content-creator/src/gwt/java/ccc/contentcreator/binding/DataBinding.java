@@ -35,6 +35,51 @@ import com.extjs.gxt.ui.client.data.ModelData;
  */
 public class DataBinding {
 
+    /** SUMMARY : String. */
+    public static final String SUMMARY = "summary";
+    /** HAPPENED_ON : String. */
+    public static final String HAPPENED_ON = "happenedOn";
+    /** ACTOR : String. */
+    public static final String ACTOR = "actor";
+    /** ACTION : String. */
+    public static final String ACTION = "action";
+    /** PATH : String. */
+    public static final String PATH = "path";
+    /** MIME_TYPE : String. */
+    public static final String MIME_TYPE = "mimeType";
+    /** DEFINITION : String. */
+    public static final String DEFINITION = "definition";
+    /** BODY : String. */
+    public static final String BODY = "body";
+    /** DESCRIPTION : String. */
+    public static final String DESCRIPTION = "description";
+    /** USERNAME : String. */
+    public static final String USERNAME = "username";
+    /** EMAIL : String. */
+    public static final String EMAIL = "email";
+    /** SORT_ORDER : String. */
+    public static final String SORT_ORDER = "sortOrder";
+    /** CHILD_COUNT : String. */
+    public static final String CHILD_COUNT = "childCount";
+    /** TYPE : String. */
+    public static final String TYPE = "type";
+    /** LOCKED : String. */
+    public static final String LOCKED = "locked";
+    /** TITLE : String. */
+    public static final String TITLE = "title";
+    /** PUBLISHED : String. */
+    public static final String PUBLISHED = "published";
+    /** NAME : String. */
+    public static final String NAME = "name";
+    /** PARENT_ID : String. */
+    public static final String PARENT_ID = "parentId";
+    /** ID : String. */
+    public static final String ID = "id";
+    /** FOLDER_COUNT : String. */
+    public static final String FOLDER_COUNT = "folderCount";
+    /** MM_INCLUDE : String. */
+    public static final String MM_INCLUDE = "mmInclude";
+
     /**
      * TODO: Add a description of this method.
      *
@@ -46,10 +91,10 @@ public class DataBinding {
         final List<ModelData> boundData = new ArrayList<ModelData>();
         for (final LogEntrySummary les : arg0) {
             final ModelData md = new BaseModelData();
-            md.set("action", les._action);
-            md.set("actor", les._actor);
-            md.set("happenedOn", new Date(les._happenedOn));
-            md.set("summary", les._summary);
+            md.set(ACTION, les._action);
+            md.set(ACTOR, les._actor);
+            md.set(HAPPENED_ON, new Date(les._happenedOn));
+            md.set(SUMMARY, les._summary);
             boundData.add(md);
         }
         return boundData;
@@ -118,9 +163,9 @@ public class DataBinding {
      * @param us
      */
     private static void merge(final ModelData md, final UserSummary us) {
-        md.set("id", us._id);
-        md.set("email", us._email);
-        md.set("username", us._username);
+        md.set(ID, us._id);
+        md.set(EMAIL, us._email);
+        md.set(USERNAME, us._username);
     }
 
     /**
@@ -130,17 +175,17 @@ public class DataBinding {
      * @param fs
      */
     public static void merge(final ModelData md, final ResourceSummary fs) {
-        md.set("id", fs._id);
-        md.set("parentId", fs._parentId);
-        md.set("name", fs._name);
-        md.set("published", fs._publishedBy);
-        md.set("title", fs._title);
-        md.set("locked", fs._lockedBy);
-        md.set("type", fs._type);
-        md.set("childCount", fs._childCount);
-        md.set("folderCount", fs._folderCount);
-        md.set("mmInclude", fs._includeInMainMenu);
-        md.set("sortOrder", fs._sortOrder);
+        md.set(ID, fs._id);
+        md.set(PARENT_ID, fs._parentId);
+        md.set(NAME, fs._name);
+        md.set(PUBLISHED, fs._publishedBy);
+        md.set(TITLE, fs._title);
+        md.set(LOCKED, fs._lockedBy);
+        md.set(TYPE, fs._type);
+        md.set(CHILD_COUNT, fs._childCount);
+        md.set(FOLDER_COUNT, fs._folderCount);
+        md.set(MM_INCLUDE, fs._includeInMainMenu);
+        md.set(SORT_ORDER, fs._sortOrder);
     }
 
     /**
@@ -150,12 +195,12 @@ public class DataBinding {
      * @param md
      */
     public static void merge(final TemplateDelta td, final ModelData md) {
-        md.set("id", td._id);
-        md.set("name", td._name);
-        md.set("title", td._title);
-        md.set("description", td._description);
-        md.set("body", td._body);
-        md.set("definition", td._definition);
+        md.set(ID, td._id);
+        md.set(NAME, td._name);
+        md.set(TITLE, td._title);
+        md.set(DESCRIPTION, td._description);
+        md.set(BODY, td._body);
+        md.set(DEFINITION, td._definition);
     }
 
     /**
@@ -170,8 +215,8 @@ public class DataBinding {
         for (final FileSummary fs : arg0) {
             final ModelData md = new BaseModelData();
             merge(md, fs);
-            md.set("mimeType", fs._mimeType);
-            md.set("path", fs._path);
+            md.set(MIME_TYPE, fs._mimeType);
+            md.set(PATH, fs._path);
             boundData.add(md);
         }
         return boundData;

@@ -17,6 +17,7 @@ import ccc.contentcreator.client.ResourceTable;
 import ccc.services.api.FileDelta;
 
 import com.extjs.gxt.ui.client.Events;
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.FormEvent;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -85,15 +86,22 @@ public class UpdateFileDialog extends AbstractEditDialog {
         _image.setVisible(false);
         _panel.add(_image);
 
-        _panel.addListener(Events.Submit, new Listener<FormEvent>() {
-            public void handleEvent(final FormEvent be) {
-                hide();
-                rt.update(null); // FIXME
-                if (!be.resultHtml.equals("File was updated successfully.")) {
-                    Globals.unexpectedError(new Exception(be.resultHtml));
+        _panel.addListener(
+            Events.Submit,
+            new Listener<FormEvent>() {
+                public void handleEvent(final FormEvent be) {
+                    hide();
+                    if (!be.resultHtml.equals("File was updated successfully.")) {
+                        Globals.unexpectedError(new Exception(be.resultHtml));
+                    } else {
+                        final ModelData md = rt.tableSelection();
+                        md.set("title", _title.getValue());
+                        md.set("description", _description.getValue());
+                        rt.update(md);
+                    }
                 }
             }
-        });
+        );
     }
 
     /** {@inheritDoc} */

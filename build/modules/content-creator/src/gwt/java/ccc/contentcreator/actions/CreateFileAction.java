@@ -29,10 +29,7 @@ public final class CreateFileAction
     /** {@inheritDoc} */
     public void execute() {
         final ModelData item = _selectionModel.treeSelection();
-        new UploadFileDialog(
-            item.<String>get("id"),
-            item.<String>get("name"),
-            _selectionModel)
+        new UploadFileDialog(item, _selectionModel)
         .show();
     }
 }
