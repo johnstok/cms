@@ -91,7 +91,6 @@ public class Migrations {
      * Migrate to CCC7.
      */
     public void migrate() {
-        createDefaultFolderStructure();
         loadSupportingData();
         migrateUsers();
         migrateResources(_contentRoot._id, 0);
@@ -103,7 +102,7 @@ public class Migrations {
     }
 
 
-    private void createDefaultFolderStructure() {
+    public void createDefaultFolderStructure() {
         _assetRoot = _commands.createRoot(PredefinedResourceNames.ASSETS);
         _contentRoot = _commands.createRoot(PredefinedResourceNames.CONTENT);
 
