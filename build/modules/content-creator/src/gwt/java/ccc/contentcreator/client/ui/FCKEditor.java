@@ -14,133 +14,129 @@
 
 package ccc.contentcreator.client.ui;
 
+import com.extjs.gxt.ui.client.Events;
+import com.extjs.gxt.ui.client.event.BoxComponentEvent;
+import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.widget.LayoutContainer;
+import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Frame;
-import com.google.gwt.user.client.ui.HasHTML;
 import com.google.gwt.user.client.ui.Hidden;
 
 /**
  * Implements the <a href="http://www.fckeditor.net">FCKEditor</a> editor
- * as a Google Web Toolkit component.
+ * as a GXT component.
  *
  * <p>The editor version is currently FCKEditor 2.6.3</p>
  *
  * <h3>Installation</h3>
- *
  * <p>This component contains the source and "compiled" code for the fckEditor
  * DHTML text  editor. To use this component, insert the following code into
  * the  HTML  &lt;head&gt;  area  of  the  page  containing  the GWT components:
- *
  * <pre>
- *     &lt;script language="javascript" type="text/javascript" src="js/htmlarea/fckeditor/fckeditor.js"&gt;&lt;/script&gt;
+ * &lt;script
+ *     language="javascript"
+ *     type="text/javascript"
+ *     src="js/htmlarea/fckeditor/fckeditor.js" /&gt;
  * </pre>
- *
- * You should ensure that this code appears before the gwt.js script declaration.</p>
+ * You should ensure that this code appears before the gwt.js script
+ * declaration.</p>
  *
  * <h3>Warning!</h3>
- *
  * <p>It also seems that the FCKEditor is not quite as nice as some of the other
  * editors about informing callers when it's fully loaded. As a result, trying
  * to set the text in the editor prematurely may not work correctly. Instead,
  * you should setup the initial text in the constructor.</p>
  *
  * <h3>Example</h3>
- *
  * <pre>
- * FCKEditor fckEditorEditArea = new FCKEditor("&lt;p&gt;Some &lt;b&gt;initial &lt;i&gt;content&lt;/i&gt;&lt;/b&gt; for the editor!&lt;/p&gt;", "", "800px", "500px");
- * panel.add(fckEditorEditArea);
+ * FCKEditor fckEditorEditArea =
+ *     new FCKEditor("&lt;p&gt;Content!&lt;/p&gt;", "500px");
+ * add(fckEditorEditArea);
  * </pre>
- *
- * @author sstorey
  */
-public class FCKEditor extends Composite implements HasHTML {
+public class FCKEditor extends LayoutContainer {
 
-    private String elementID;
-    private FlowPanel panel;
+    private final String _elementID;
 
-    public FCKEditor(final String html, final String config, final String cssWidth, final String cssHeight) {
+    /**
+     * Constructor.
+     *
+     * @param html The html to be edited.
+     * @param cssHeight The height of the editor in pixels.
+     */
+    public FCKEditor(final String html,
+                     final String cssHeight) {
+
         //Work out an ID
-        elementID = "net-sf-jwc-gwt-fckeditor-client-ui-FCKEditor"+System.identityHashCode(this);
-
-        //Create the FlowPanel which will contain the hidden input field, and
-        //iframe for the editor
-        panel = new FlowPanel();
+        _elementID =
+            "net-sf-jwc-gwt-fckeditor-client-ui-FCKEditor"
+            + System.identityHashCode(this);
 
         //Create the hidden input box
         final Hidden inputBox = new Hidden();
-        inputBox.setID(elementID);
+        inputBox.setID(_elementID);
         inputBox.setVisible(false);
         inputBox.setValue(html == null || html.equals("") ? " " : html);
-        panel.add(inputBox);
 
         //Create the configuration input box
         final Hidden configBox = new Hidden();
-        configBox.setID(elementID + "___Config");
+        configBox.setID(_elementID + "___Config");
         configBox.setVisible(false);
         configBox.setValue("");
-        panel.add(configBox);
 
         //Create the IFRAME
         final Frame editorFrame = new Frame();
-        editorFrame.setUrl(getFckBaseUrl() + "editor/fckeditor.html?InstanceName=" + elementID);
-        editorFrame.setSize(cssWidth, cssHeight);
-        DOM.setElementProperty(editorFrame.getElement(), "width", cssWidth);
+        editorFrame.setUrl(
+            getFckBaseUrl()
+            + "editor/fckeditor.html?InstanceName="
+            + _elementID);
+        editorFrame.setHeight(cssHeight);
         DOM.setElementProperty(editorFrame.getElement(), "height", cssHeight);
         DOM.setElementProperty(editorFrame.getElement(), "scrolling", "no");
-        DOM.setElementProperty(editorFrame.getElement(), "id", elementID + "___Frame");
-        panel.add(editorFrame);
+        DOM.setElementProperty(
+            editorFrame.getElement(), "id", _elementID + "___Frame");
+        DOM.setElementPropertyInt(editorFrame.getElement(), "frameBorder", 0);
 
-        initWidget(panel);
+        // Build the panel
+        setLayout(new FitLayout());
+        add(configBox);
+        add(inputBox);
+        add(editorFrame);
+
+        // Add a resize handler to adjust width.
+        addListener(
+            Events.Resize,
+            new Listener<BoxComponentEvent>() {
+                public void handleEvent(final BoxComponentEvent be) {
+                    final String frameWidth = String.valueOf(be.width);
+                    editorFrame.setWidth(frameWidth);
+                    DOM.setElementProperty(
+                        editorFrame.getElement(), "width", frameWidth);
+                }
+            }
+        );
     }
 
+
     /**
-     * Returns the HTML currently contained in the editor
+     * Returns the HTML currently contained in the editor.
      *
      * @return the HTML currently contained in the editor
      */
     public String getHTML() {
-        return jsniGetText(elementID);
+        return jsniGetText(_elementID);
     }
 
-    /**
-     * Returns <code>null</code> as this editor doesn't support straight text editing.
-     *
-     * @return <code>null</code> as this editor doesn't support straight text editing.
-     */
-    public String getText() {
-        return null;
-    }
 
-    /**
-     * Sets the HTML currently contained in the editor
-     *
-     * @param html the HTML currently contained in the editor
-     */
-    public void setHTML(final String html) {
-        jsniSetText(elementID, html);
-    }
-
-    /**
-     * Does nothing as straight text editing is not supported by this editor
-     *
-     * @param text ignored
-     */
-    public void setText(final String text) {
-        //Do nothing
-    }
-
-    // -- PRIVATE METHODS
 
     private String getFckBaseUrl() {
         return GWT.getModuleBaseURL()+"js/fckeditor/";
     }
 
-    // -- NATIVE METHODS
 
-    private static native String jsniGetText(String elementID) /*-{
+    private static native String jsniGetText(final String elementID) /*-{
         if ($wnd.FCKeditorAPI) {
             var instance = $wnd.FCKeditorAPI.GetInstance(elementID);
             if (instance != null) {
@@ -152,21 +148,6 @@ public class FCKEditor extends Composite implements HasHTML {
         } else {
             //We're not bound yet in some way
             return null;
-        }
-    }-*/;
-
-    private static native void jsniSetText(String elementID, String html) /*-{
-        if ($wnd.FCKeditorAPI) {
-            var instance = $wnd.FCKeditorAPI.GetInstance(elementID);
-            if (instance != null) {
-                return instance.SetHTML(html);
-            } else {
-                //The instance isn't bound yet
-                return;
-            }
-        } else {
-            //We're not bound yet in some way
-            return;
         }
     }-*/;
 }

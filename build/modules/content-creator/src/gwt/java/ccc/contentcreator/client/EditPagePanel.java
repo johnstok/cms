@@ -98,12 +98,10 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                     } else if ("HTML".equals(c.type())) {
                         remove(c.editor());
                         remove(c.editorLabel());
-                        final FCKEditor fck = new FCKEditor(para._textValue,
-                                                            "",
-                                                            "595px",
-                                                            "250px");
+                        final FCKEditor fck =
+                            new FCKEditor(para._textValue, "250px");
                         add(c.editorLabel());
-                        add(fck);
+                        add(fck, new FormData("95%"));
                         c.editor(fck);
                     }
                 }
@@ -223,12 +221,12 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
             } else if ("html".equals(type)) {
                 final Text fieldName = new Text(name);
                 add(fieldName);
-                final FCKEditor fck = new FCKEditor("", "", "595px", "250px");
+                final FCKEditor fck = new FCKEditor("", "250px");
                 final PageElement pe = new PageElement(name);
                 pe.type("HTML");
                 pe.editorLabel(fieldName);
                 pe.editor(fck);
-                add(fck);
+                add(fck, new FormData("95%"));
                 _pageElements.add(pe);
             }
         }
