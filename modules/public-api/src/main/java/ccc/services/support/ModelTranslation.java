@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.ejb3.remote;
+package ccc.services.support;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -141,7 +141,7 @@ public class ModelTranslation {
      * @param r
      * @return
      */
-    protected ResourceSummary map(final Resource r) {
+    public ResourceSummary map(final Resource r) {
         final ResourceSummary rs = new ResourceSummary();
         rs._id = r.id().toString();
         rs._name = r.name().toString();

@@ -14,14 +14,19 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
+import ccc.domain.CCCException;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.ResourceName;
 import ccc.services.DataManager;
 import ccc.services.ServiceNames;
+import ccc.services.api.ResourceSummary;
+import ccc.services.support.ModelTranslation;
 
 
 /**
@@ -78,7 +83,8 @@ public class FileUploadServlet extends HttpServlet {
                 }
             }
 
-            response.getWriter().write("File was uploaded successfully.");
+            final ResourceSummary rs = new ModelTranslation().map(f);
+            response.getWriter().write(toJSON(rs).toString());
 
         } catch (final MimeTypeParseException e) {
             response.getWriter().write("File Upload failed. "+e.getMessage());
@@ -93,5 +99,31 @@ public class FileUploadServlet extends HttpServlet {
      */
     DataManager dataManager() {
         return _registry.get(ServiceNames.DATA_MANAGER_LOCAL);
+    }
+
+    /**
+     * Convert a {@link ResourceSummary} to JSON.
+     *
+     * @param rs The {@link ResourceSummary} to convert.
+     * @return A JSON object.
+     */
+    public JSONObject toJSON(final ResourceSummary rs) {
+        try {
+            final JSONObject o = new JSONObject();
+            o.put("id", rs._id);
+            o.put("name", rs._name);
+            o.put("parentId", rs._parentId);
+            o.put("type", rs._type);
+            o.put("lockedBy", rs._lockedBy);
+            o.put("title", rs._title);
+            o.put("publishedBy", rs._publishedBy);
+            o.put("childCount", rs._childCount);
+            o.put("folderCount", rs._folderCount);
+            o.put("includeInMainMenu", rs._includeInMainMenu);
+            o.put("sortOrder", rs._sortOrder);
+            return o;
+        } catch (final JSONException e) {
+            throw new CCCException(e);
+        }
     }
 }
