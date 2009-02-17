@@ -41,7 +41,8 @@ public class FolderSelectionDialog extends Window {
      * @param root ResourceSummary root.
      */
     FolderSelectionDialog(final ResourceSummary root) {
-        setBodyBorder(false);
+        setModal(true);
+        setBodyStyle("backgroundColor: white;");
         setScrollMode(Scroll.AUTOY);
         setHeading(_constants.selectFolder());
         setWidth(400);
