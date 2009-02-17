@@ -41,7 +41,8 @@ public class ResourceSelectionDialog extends Window {
      * @param targetRoot ResourceSummary root
      */
     public ResourceSelectionDialog(final ResourceSummary targetRoot) {
-        setBodyBorder(false);
+        setModal(true);
+        setBodyStyle("backgroundColor: white;");
         setScrollMode(Scroll.AUTOY);
         setHeading(_constants.selectResource());
         setWidth(400);
