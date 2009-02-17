@@ -26,7 +26,7 @@ import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.ModelReader;
 import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.event.SelectionEvent;
+import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.util.Util;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
@@ -112,13 +112,13 @@ public class ImageSelectionDialog extends LayoutContainer {
         view.setStore(store);
         view.setItemSelector("div.thumb-wrap");
         view.getSelectionModel().addListener(Events.SelectionChange,
-            new Listener<SelectionEvent<ModelData>>() {
+            new Listener<SelectionChangedEvent<ModelData>>() {
 
-            public void handleEvent(final SelectionEvent<ModelData> be) {
-                if (be.selection.size() == 1) {
+            public void handleEvent(final SelectionChangedEvent<ModelData> be) {
+                if (null!=be.getSelectedItem()) {
                     jsniSetUrl(
-                        "/server"+(String) be.selection.get(0).get("path"),
-                        (String) be.selection.get(0).get("title"));
+                        "/server"+(String) be.getSelectedItem().get("path"),
+                        (String) be.getSelectedItem().get("title"));
                 }
             }
 
