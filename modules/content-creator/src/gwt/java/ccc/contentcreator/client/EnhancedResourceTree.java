@@ -76,6 +76,12 @@ public class EnhancedResourceTree extends FolderResourceTree {
             new Listener<TreeEvent>() {
                 public void handleEvent(final TreeEvent te) {
                     TreeItem ti = getSelectedItem();
+
+                    // #327. in case root folder is collapsed.
+                    if (ti == null) {
+                        _rt.displayResourcesFor(null);
+                        return;
+                    }
                     ModelData selectedModel = ti.getModel();
 
                     List<ModelData> children = _store.getChildren(selectedModel);

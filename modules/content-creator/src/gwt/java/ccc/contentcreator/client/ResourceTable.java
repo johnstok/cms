@@ -101,7 +101,8 @@ public class ResourceTable
      */
     public void displayResourcesFor(final List<ModelData> data) {
         _detailsStore.removeAll();
-        if (data.size() > 0) { // Grid throws exception with empty list.
+        // Grid throws exception with empty list.
+        if (data != null && data.size() > 0) {
             _detailsStore.add(data);
         }
     }
