@@ -212,7 +212,7 @@ public class CreatePageDialog
                                 _grid.disable();
                                 _grid.getSelectionModel().deselectAll();
                                 _second.createFields(result._definition);
-                                _description.setText(result._definition);
+                                _description.setText(result._description);
                             }
                         }
                     });
