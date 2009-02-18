@@ -12,6 +12,10 @@
 
 package ccc.domain;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+
 import junit.framework.TestCase;
 
 
@@ -21,6 +25,84 @@ import junit.framework.TestCase;
  * @author Civic Computing Ltd
  */
 public final class PageTest extends TestCase {
+
+
+    /**
+     * Test.
+     */
+    public void testApplySnapshot() {
+
+        // ARRANGE
+        final Page page = new Page(new ResourceName("foo"), "Title");
+        page.addParagraph(Paragraph.fromText("header", "Header"));
+        final Snapshot s = page.createSnapshot();
+
+        // ACT
+        final Collection<Snapshot> paras = new ArrayList<Snapshot>(){{
+            add(Paragraph.fromBoolean("A boolean", true).createSnapshot());
+            add(Paragraph.fromDate("A date", new Date()).createSnapshot());
+        }};
+
+        s.set("paragraphs", paras);
+        s.set("title", "new title");
+        page.applySnapshot(s);
+
+        // ASSERT
+        assertEquals("new title", page.title());
+        assertEquals(2, page.paragraphs().size());
+        assertEquals(Boolean.TRUE, page.paragraph("A boolean").bool());
+        assertTrue(
+            page.paragraph("A date").date().compareTo((new Date())) >= 0);
+    }
+
+    /**
+     * Test.
+     */
+    public void testUpdateWorkingCopy() {
+
+        // ARRANGE
+        final Page page = new Page("foo");
+        page.createWorkingCopy();
+
+        // ACT
+        page.workingCopy(new Snapshot());
+
+        // ASSERT
+        assertEquals("foo", page.title()); // The page hasn't changed.
+        assertNull(page.workingCopy().getString("title"));
+    }
+
+    /**
+     * Test.
+     */
+    public void testClearWorkingCopy() {
+
+        // ARRANGE
+        final Page page = new Page("foo");
+        page.createWorkingCopy();
+
+        // ACT
+        page.clearWorkingCopy();
+
+        // ASSERT
+        assertNull(page.workingCopy());
+    }
+
+    /**
+     * Test.
+     */
+    public void testCreateWorkingCopy() {
+
+        // ARRANGE
+        final Page page = new Page("foo");
+
+        // ACT
+        page.createWorkingCopy();
+
+        // ASSERT
+        assertNotNull(page.workingCopy());
+        assertEquals("foo", page.workingCopy().getString("title"));
+    }
 
     /**
      * Test.
@@ -38,7 +120,10 @@ public final class PageTest extends TestCase {
         // ASSERT
         assertEquals(
             "{\"title\":\"Title\","
-            + "\"paragraphs\":[{\"text\":\"Header\",\"name\":\"header\"}]}",
+            + "\"paragraphs\":[{"
+            + "\"text\":\"Header\","
+            + "\"name\":\"header\","
+            + "\"type\":\"TEXT\"}]}",
             s.getDetail());
     }
 

@@ -23,7 +23,6 @@ import java.util.Date;
  */
 public final class Paragraph implements Serializable {
 
-
     private String  _text;
     private Type    _type;
     private Boolean _boolean;
@@ -33,6 +32,30 @@ public final class Paragraph implements Serializable {
     @SuppressWarnings("unused") private Paragraph() { super(); }
 
 
+    private void name(final String name) {
+        require().notEmpty(name);
+        require().maxLength(name, 256);
+        _name = name;
+    }
+
+    private void text(final String text) {
+        require().notNull(text);
+        _text = text;
+        _type = Type.TEXT;
+    }
+
+    private void bool(final Boolean b) {
+        require().notNull(b);
+        _boolean = b;
+        _type = Type.BOOLEAN;
+    }
+
+    private void date(final Date date) {
+        require().notNull(date);
+        _date = date;
+        _type = Type.DATE;
+    }
+
     /**
      * Factory method. Creates a paragraph representing text.
      *
@@ -41,13 +64,11 @@ public final class Paragraph implements Serializable {
      * @return A paragraph with string content.
      */
     public static Paragraph fromText(final String name, final String text) {
-        require().notNull(name);
-        require().notNull(text);
-
         final Paragraph p = new Paragraph();
-        p._text = text;
-        p._type = Type.TEXT;
-        p._name = name;
+
+        p.name(name);
+        p.text(text);
+
         return p;
     }
 
@@ -59,13 +80,11 @@ public final class Paragraph implements Serializable {
      * @return A paragraph with boolean content.
      */
     public static Paragraph fromBoolean(final String name, final Boolean b) {
-        require().notNull(name);
-        require().notNull(b);
-
         final Paragraph p = new Paragraph();
-        p._boolean = b;
-        p._type = Type.BOOLEAN;
-        p._name = name;
+
+        p.name(name);
+        p.bool(b);
+
         return p;
     }
 
@@ -77,13 +96,11 @@ public final class Paragraph implements Serializable {
      * @return A paragraph with date content.
      */
     public static Paragraph fromDate(final String name, final Date date) {
-        require().notNull(name);
-        require().notNull(date);
-
         final Paragraph p = new Paragraph();
-        p._date = date;
-        p._type = Type.DATE;
-        p._name = name;
+
+        p.name(name);
+        p.date(date);
+
         return p;
     }
 
@@ -179,5 +196,54 @@ public final class Paragraph implements Serializable {
             return false;
         }
         return true;
+    }
+
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
+    public Snapshot createSnapshot() {
+        final Snapshot para = new Snapshot();
+        para.set("name", name());
+        para.set("type", _type.name());
+        para.set("text", text());
+        para.set("bool", bool());
+        para.set("date", date());
+        return para;
+    }
+
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param snapshot
+     * @return A valid paragraph.
+     */
+    public static Paragraph fromSnapshot(final Snapshot snapshot) {
+        require().notNull(snapshot);
+
+        final Paragraph p = new Paragraph();
+        p._name = snapshot.getString("name");
+        p._type = Type.valueOf(snapshot.getString("type"));
+        switch (p._type) {
+            case BOOLEAN:
+                p._boolean = snapshot.getBool("bool");
+                break;
+
+            case DATE:
+                p._date = snapshot.getDate("date");
+                break;
+
+            case TEXT:
+                p._text = snapshot.getString("text");
+                break;
+
+            default:
+                throw new CCCException("Paragraph type unsupported.");
+        }
+
+        return p;
     }
 }

@@ -30,6 +30,7 @@ import ccc.commons.DBC;
 public final class Page extends Resource {
 
     private Set<Paragraph> _content = new HashSet<Paragraph>();
+    private Snapshot _workingCopy;
 
 
     /** Constructor: for persistence only. */
@@ -123,14 +124,60 @@ public final class Page extends Resource {
         final Snapshot s = super.createSnapshot();
         final Collection<Snapshot> paras = new ArrayList<Snapshot>();
         for (final Paragraph p : _content) {
-            final Snapshot para = new Snapshot();
-            para.add("text", p.text());
-            para.add("name", p.name());
-            paras.add(para);
+            paras.add(p.createSnapshot());
         }
-        s.add("paragraphs", paras);
+        s.set("paragraphs", paras);
         return s;
     }
 
+    /**
+     * Apply a snapshot to this object. The title and paragraph fields will be
+     * updated. Any other entries in the snapshot will be ignored.
+     *
+     * @param s The snapshot to apply.
+     */
+    public void applySnapshot(final Snapshot s) {
+        title(s.getString("title"));
+        deleteAllParagraphs();
+        for(final Snapshot p : s.getSnapshots("paragraphs")) {
+            addParagraph(Paragraph.fromSnapshot(p));
+        }
+    }
 
+    /**
+     * Create a new snapshot of this object and set it as the current working
+     * copy.
+     */
+    public void createWorkingCopy() {
+        DBC.require().toBeNull(_workingCopy);
+        _workingCopy = createSnapshot();
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return The current working copy for this page, or null if there is no
+     *      working copy.
+     */
+    public Snapshot workingCopy() {
+        return _workingCopy;
+    }
+
+    /**
+     * Clear the current working copy.
+     */
+    public void clearWorkingCopy() {
+        DBC.require().notNull(_workingCopy);
+        _workingCopy = null;
+    }
+
+    /**
+     * Mutator.
+     *
+     * @param snapshot The new working copy for this page.
+     */
+    public void workingCopy(final Snapshot snapshot) {
+        DBC.require().notNull(_workingCopy);
+        _workingCopy = snapshot;
+    }
 }
