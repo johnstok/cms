@@ -269,6 +269,7 @@ public class CreatePageDialog
                         p._name = c.id();
                         p._textValue = f.getValue();
                         p._type = "TEXT";
+                        p._rawValue = f.getRawValue();
                         paragraphs.add(p);
                     } else if ("DATE".equals(c.type())) {
                         final DateField f = c.dateField();
@@ -295,6 +296,8 @@ public class CreatePageDialog
                     .stopIfInError()
                     .check(Validations.uniqueResourceName(
                         _parent, _second.name()))
+                    .check(Validations.validateDatefields(paragraphs))
+                    .stopIfInError()
                     .check(Validations.validateFields(paragraphs,
                         _second.definition()))
                     .callMethodOr(Validations.reportErrors());

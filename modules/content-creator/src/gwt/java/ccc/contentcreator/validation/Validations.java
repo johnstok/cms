@@ -219,6 +219,32 @@ public class Validations {
     }
 
     /**
+     * Validates date fields.
+     *
+     * @param delta The list of fields to validate.
+     * @return The Validator
+     */
+    public static Validator validateDatefields(
+                                final List<ParagraphDelta> delta) {
+        return new Validator() {
+            public void validate(final Validate validate) {
+                for (final ParagraphDelta pg : delta) {
+                    if ("DATE".equals(pg._type)
+                            && pg._dateValue == null
+                            && pg._rawValue != null
+                            && !pg._rawValue.isEmpty()) {
+                        validate.addMessage(
+                            pg._name
+                            + " "+_uiConstants.isNotValidDate()
+                        );
+                    }
+                }
+                validate.next();
+            }
+        };
+    }
+
+    /**
      * Validates page fields against template regular expressions.
      *
      * @param delta ParagraphDelta of the paragraph fields to validate.

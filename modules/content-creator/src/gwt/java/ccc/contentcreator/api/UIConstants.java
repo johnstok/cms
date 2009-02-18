@@ -705,4 +705,12 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Resource Details")
     String resourceDetails();
+
+    /**
+     * "is not valid date".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("is not valid date")
+    String isNotValidDate();
 }

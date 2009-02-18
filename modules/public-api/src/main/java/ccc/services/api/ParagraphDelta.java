@@ -25,6 +25,7 @@ public class ParagraphDelta
         Serializable {
     public String _name;
     public String _type;
+    public String _rawValue;
     public String _textValue;
     public Date _dateValue;
 }
