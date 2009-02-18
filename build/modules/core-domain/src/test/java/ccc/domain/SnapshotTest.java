@@ -36,7 +36,7 @@ public class SnapshotTest
         final Collection<Snapshot> children = new ArrayList<Snapshot>();
 
         // ACT
-        s.add("children", children);
+        s.set("children", children);
 
         // ASSERT
         assertEquals("{\"children\":[]}", s.getDetail());
@@ -54,7 +54,7 @@ public class SnapshotTest
         children.add(new Snapshot());
 
         // ACT
-        s.add("children", children);
+        s.set("children", children);
 
         // ASSERT
         assertEquals("{\"children\":[{},{}]}", s.getDetail());
@@ -69,7 +69,7 @@ public class SnapshotTest
         final Snapshot s = new Snapshot();
 
         // ACT
-        s.add("key", "value");
+        s.set("key", "value");
 
         // ASSERT
         assertEquals("{\"key\":\"value\"}", s.getDetail());

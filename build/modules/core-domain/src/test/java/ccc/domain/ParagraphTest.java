@@ -14,16 +14,95 @@ package ccc.domain;
 import java.util.Date;
 
 import junit.framework.TestCase;
+import ccc.commons.Testing;
 
 
 /**
  * Tests for the {@link Paragraph} class.
- * TODO: test that null names are disallowed.
- * TODO: test that max name length is 256.
  *
  * @author Civic Computing Ltd
  */
 public final class ParagraphTest extends TestCase {
+
+    /**
+     * Test.
+     */
+    public void testCreateSnapshot() {
+
+        // ARRANGE
+        final Paragraph p = Paragraph.fromText("foo", "bar");
+
+        // ACT
+        final Snapshot s = p.createSnapshot();
+
+        // ASSERT
+        assertEquals("foo", s.getString("name"));
+        assertEquals("TEXT", s.getString("type"));
+        assertEquals("bar", s.getString("text"));
+    }
+
+    /**
+     * Test.
+     */
+    public void testFromSnapshot() {
+
+        // ARRANGE
+        final Snapshot s = new Snapshot();
+        s.set("name", "bar");
+        s.set("type", "TEXT");
+        s.set("text", "foo");
+        s.set("bool", true);
+        s.set("date", new Date());
+
+        // ACT
+        final Paragraph p = Paragraph.fromSnapshot(s);
+
+        // ASSERT
+        assertEquals("bar", p.name());
+        assertEquals(Paragraph.Type.TEXT, p.type());
+        assertEquals("foo", p.text());
+        assertNull(p.date());
+        assertNull(p.bool());
+    }
+
+    /**
+     * Test.
+     */
+    public void testMaxNameLengthIs256() {
+
+        // ARRANGE
+
+        // ACT
+        try {
+            Paragraph.fromText(Testing.dummyString('a', 257), "foo");
+            fail();
+
+        // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Specified string exceeds max length of 256.", e.getMessage());
+        }
+    }
+
+    /**
+     * Test.
+     */
+    public void testNameCannotBeEmpty() {
+
+        // ARRANGE
+
+        // ACT
+        try {
+            Paragraph.fromText(" ", "foo");
+            fail();
+
+        // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Specified string must have length > 0.", e.getMessage());
+        }
+
+    }
 
     /**
      * Test.

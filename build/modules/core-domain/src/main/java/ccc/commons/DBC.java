@@ -135,4 +135,16 @@ public final class DBC {
                 "Specified string ("+stringToTest+") does not match "+regex);
         }
     }
+
+    /**
+     * Assert that the specified object is null.
+     *
+     * @param object The object to test.
+     */
+    public void toBeNull(final Object object) {
+        if (null!=object) {
+            throw new IllegalArgumentException(
+                "Specified value must be NULL."); //$NON-NLS-1$
+        }
+    }
 }

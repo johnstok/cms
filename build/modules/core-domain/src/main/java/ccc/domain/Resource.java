@@ -419,7 +419,7 @@ public abstract class Resource extends VersionedEntity {
      */
     public Snapshot createSnapshot() {
         final Snapshot s = new Snapshot();
-        s.add("title", _title);
+        s.set("title", _title);
         return s;
     }
 

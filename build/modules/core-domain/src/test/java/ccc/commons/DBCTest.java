@@ -26,6 +26,26 @@ public final class DBCTest extends TestCase {
     /**
      * Test.
      */
+    public void testToBeNull() {
+
+        // ARRANGE
+
+        // ACT
+        require().toBeNull(null);
+        try {
+            require().toBeNull(new Object());
+            fail();
+
+        // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals("Specified value must be NULL.", e.getMessage());
+        }
+
+    }
+
+    /**
+     * Test.
+     */
     public void testMinLength() {
 
         // ACT
