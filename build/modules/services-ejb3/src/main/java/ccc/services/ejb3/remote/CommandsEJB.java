@@ -119,7 +119,6 @@ public class CommandsEJB
                            final PageDelta delta,
                            final String templateId) {
 
-
         final Page page = new Page(
             ResourceName.escape(delta._name),
             delta._title);
@@ -134,23 +133,12 @@ public class CommandsEJB
             page.template(template);
         }
 
-        for (final ParagraphDelta para : delta._paragraphs) {
-            if ("TEXT".equals(para._type) || "HTML".equals(para._type)) {
-                final Paragraph paragraph =
-                    Paragraph.fromText(para._name, para._textValue);
-                page.addParagraph(paragraph);
-            } else if ("DATE".equals(para._type)) {
-                final Paragraph paragraph =
-                    Paragraph.fromDate(para._name, para._dateValue);
-                page.addParagraph(paragraph);
-            }
-        }
+        assignParagraphs(delta._paragraphs, page);
 
         _page.create(UUID.fromString(parentId), page);
 
         return map(page);
     }
-
 
     /** {@inheritDoc} */
     @Override
@@ -249,19 +237,7 @@ public class CommandsEJB
             delta._title);
         page.id(UUID.fromString(delta._id));
 
-        // TODO: Remove duplication
-        for (final ParagraphDelta para : delta._paragraphs) {
-            if ("TEXT".equals(para._type) || "HTML".equals(para._type)) {
-                final Paragraph paragraph =
-                    Paragraph.fromText(para._name, para._textValue);
-                page.addParagraph(paragraph);
-            } else if ("DATE".equals(para._type)) {
-                final Paragraph paragraph =
-                    Paragraph.fromDate(para._name, para._dateValue);
-                page.addParagraph(paragraph);
-
-            }
-        }
+        assignParagraphs(delta._paragraphs, page);
 
         _page.update(UUID.fromString(delta._id),
                      delta._title,
@@ -346,7 +322,7 @@ public class CommandsEJB
                 final Paragraph paragraph =
                     Paragraph.fromText(para._name, para._textValue);
                 pList.add(paragraph);
-            } else if ("DATE".equals(para._type)) {
+            } else if ("DATE".equals(para._type) && para._dateValue != null) {
                 final Paragraph paragraph =
                     Paragraph.fromDate(para._name, para._dateValue);
                 pList.add(paragraph);
@@ -369,5 +345,22 @@ public class CommandsEJB
                                       final String sortOrder) {
         _folders.updateSortOrder(UUID.fromString(folderId),
                                  ResourceOrder.valueOf(sortOrder));
+    }
+
+
+    private void assignParagraphs(final List<ParagraphDelta> paragraphs,
+                                  final Page page) {
+
+        for (final ParagraphDelta para : paragraphs) {
+            if ("TEXT".equals(para._type) || "HTML".equals(para._type)) {
+                final Paragraph paragraph =
+                    Paragraph.fromText(para._name, para._textValue);
+                page.addParagraph(paragraph);
+            } else if ("DATE".equals(para._type) && para._dateValue != null) {
+                final Paragraph paragraph =
+                    Paragraph.fromDate(para._name, para._dateValue);
+                page.addParagraph(paragraph);
+            }
+        }
     }
 }

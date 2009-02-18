@@ -129,6 +129,7 @@ public class UpdatePageDialog
                         final ParagraphDelta p = new ParagraphDelta();
                         p._name = c.id();
                         p._dateValue = f.getValue();
+                        p._rawValue = f.getRawValue();
                         p._type = "DATE";
                         paragraphs.add(p);
                     } else if ("HTML".equals(c.type())) {
@@ -145,6 +146,8 @@ public class UpdatePageDialog
 
                 Validate.callTo(updatePage(paragraphs))
                     .check(Validations.notEmpty(panel().title()))
+                    .stopIfInError()
+                    .check(Validations.validateDatefields(paragraphs))
                     .stopIfInError()
                     .check(Validations.validateFields(paragraphs,
                         _panel.definition()))
