@@ -201,7 +201,7 @@ public final class Globals {
     /** DEFAULT_HEIGHT : int. */
     public static final int DEFAULT_HEIGHT = 480;
     /** DEFAULT_UPLOAD_HEIGHT : int. */
-    public static final int DEFAULT_UPLOAD_HEIGHT = 200;
+    public static final int DEFAULT_UPLOAD_HEIGHT = 250;
     /** DEFAULT_MIN_HEIGHT : int. */
     public static final int DEFAULT_MIN_HEIGHT = 150;
     /** APP_URL : String. */
