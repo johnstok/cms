@@ -35,6 +35,7 @@ import org.xml.sax.InputSource;
 import ccc.domain.CCCException;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
+import ccc.domain.Snapshot;
 import ccc.domain.Template;
 import ccc.services.PageDao;
 import ccc.services.ResourceDao;
@@ -78,6 +79,11 @@ public class PageDaoImpl implements PageDao {
 
         page.title(newTitle);
         page.deleteAllParagraphs();
+
+        // TODO: check domain model
+        if (page.workingCopy() != null) {
+            page.clearWorkingCopy();
+        }
 
         for (final Paragraph paragraph : newParagraphs) {
             page.addParagraph(paragraph);
@@ -155,10 +161,33 @@ public class PageDaoImpl implements PageDao {
 
     }
 
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateWorkingCopy(final UUID id,
+                                  final String newTitle,
+                                  final Set<Paragraph> newParagraphs) {
+        final Page page = _dao.findLocked(Page.class, id);
+        // TODO: check domain model
+        if (page.workingCopy() == null) {
+            page.createWorkingCopy();
+        }
+
+        final Page temp = new Page(newTitle);
+        for (final Paragraph paragraph : newParagraphs) {
+            temp.addParagraph(paragraph);
+        }
+        final Snapshot workingCopy = temp.createSnapshot();
+        page.workingCopy(workingCopy);
+//        _dao.update(page); Not necessary?
+    }
+
+
     /** {@inheritDoc} */
     @Override
     public void clearWorkingCopy(final UUID id) {
         final Page page = _dao.findLocked(Page.class, id);
         page.clearWorkingCopy();
     }
+
 }

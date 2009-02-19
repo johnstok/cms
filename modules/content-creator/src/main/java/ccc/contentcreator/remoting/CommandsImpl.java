@@ -204,6 +204,13 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
+    public void updateWorkingCopy(final PageDelta delta) {
+        _delegate.updateWorkingCopy(delta);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
     public void clearWorkingCopy(final String pageId) {
         _delegate.clearWorkingCopy(pageId);
     }

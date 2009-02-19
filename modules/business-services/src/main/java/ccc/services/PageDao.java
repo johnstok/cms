@@ -27,7 +27,7 @@ import ccc.domain.Paragraph;
 public interface PageDao {
 
     /**
-     * Update a page.
+     * Update the live version of the page. Discards working copy.
      *
      * @param id The identifier for the page.
      * @param newTitle The new title for the page.
@@ -38,6 +38,17 @@ public interface PageDao {
     void update(UUID id,
                 String newTitle,
                 Set<Paragraph> newParagraphs);
+
+    /**
+     * Updates the working copy. Creates working copy in case page does
+     * not have it.
+     *
+     * @param id he identifier for the page.
+     * @param newTitle The new title for the page.
+     * @param newParagraphs The new paragraphs for the page.
+     */
+    void updateWorkingCopy(UUID id, String newTitle,
+                           Set<Paragraph> newParagraphs);
 
     /**
      * Validate fields.

@@ -117,6 +117,10 @@ public class ResourceTable
             new ColumnConfig("locked", _constants.lockedBy(), 80);
         configs.add(lockedColumn);
 
+        final ColumnConfig workingCopyColumn =
+            new ColumnConfig("workingCopy",  _constants.workingCopy(), 75);
+        configs.add(workingCopyColumn);
+
         final ColumnConfig mmIncludeColumn =
             new ColumnConfig("mmInclude", _constants.mainMenu(), 70);
         configs.add(mmIncludeColumn);

@@ -31,6 +31,9 @@ public interface Commands {
      */
     void updatePage(PageDelta delta) throws CCCRemoteException;
 
+    // TODO javadoc
+    void updateWorkingCopy(PageDelta delta) throws CCCRemoteException;
+
     /**
      * Update an alias' target.
      */
@@ -185,4 +188,12 @@ public interface Commands {
      * Create a new template in CCC.
      */
     ResourceSummary createTemplate(String parentId, TemplateDelta delta);
+
+    /**
+     * Creates a new snapshot for the page.
+     */
+//    ResourceSummary createSnaphot(String parentId, PageDelta delta, String templateId);
+
+
 }
+

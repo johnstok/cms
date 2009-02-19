@@ -78,6 +78,31 @@ public class PageDaoImplTest
         assertEquals(1, page.paragraphs().size());
         assertEquals("foo", page.paragraphs().iterator().next().name());
         assertEquals("bar", page.paragraph("foo").text());
+        assertNull("Page must not have working copy", page.workingCopy());
+    }
+
+    /**
+     * Test.
+     */
+    public void testUpdateWorkingCopy() {
+
+        // ARRANGE
+        final Page page = new Page("test");
+        page.addParagraph(Paragraph.fromText("abc", "def"));
+
+        expect(_dao.findLocked(Page.class, page.id())).andReturn(page);
+        replay(_dao);
+
+        // ACT
+        _cm.updateWorkingCopy(page.id(),
+            "working title",
+            Collections.singleton(Paragraph.fromText("foo", "bar")));
+
+        // ASSERT
+        verify(_dao);
+        assertNotNull("Page must have a working copy", page.workingCopy());
+        assertEquals("working title", page.workingCopy().getString("title"));
+
     }
 
 
