@@ -15,7 +15,7 @@ import ccc.commons.DBC;
 
 
 /**
- * TODO: Add Description for this type.
+ * A CCC response.
  *
  * @author Civic Computing Ltd.
  */
@@ -30,118 +30,118 @@ public class Response {
     private Body    _body;
 
     /**
-     * TODO: Add a description of this method.
+     * Mutator.
      *
-     * @param string
+     * @param description The new description.
      */
-    public void setDescription(final String string) {
-        _description = string;
+    public void setDescription(final String description) {
+        _description = description;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The body's description.
      */
     public String getDescription() {
         return _description;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Mutator.
      *
-     * @param l
+     * @param length The size of the response's body, in bytes.
      */
-    public void setLength(final Long l) {
-        _length = l;
+    public void setLength(final Long length) {
+        _length = length;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The size of the response's body, in bytes.
      */
     public Long getLength() {
         return _length;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Mutator.
      *
-     * @param string
+     * @param charset The new character set.
      */
-    public void setCharSet(final String string) {
-        _charset = string;
+    public void setCharSet(final String charset) {
+        _charset = charset;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The character set for this response.
      */
     public String getCharSet() {
         return _charset;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Mutator.
      *
-     * @param string
-     * @param string2
+     * @param primary The primary part of the mime type.
+     * @param secondary The secondary part of the mime type.
      */
-    public void setMimeType(final String string, final String string2) {
-        _mimeType = string+"/"+string2;
+    public void setMimeType(final String primary, final String secondary) {
+        _mimeType = primary+"/"+secondary;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The response's mime type, as a string.
      */
     public String getMimeType() {
         return _mimeType;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Mutator.
      *
-     * @param valueOf
+     * @param expiry The response's expiry.
      */
-    public void setExpiry(final Long valueOf) {
-        _expiry = valueOf;
+    public void setExpiry(final Long expiry) {
+        _expiry = expiry;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The response's expiry.
      */
     public Long getExpiry() {
         return _expiry;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Mutator.
      *
-     * @param string
+     * @param disposition The new disposition for this response.
      */
-    public void setDisposition(final String string) {
-        _disposition = string;
+    public void setDisposition(final String disposition) {
+        _disposition = disposition;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The response's disposition.
      */
     public String getDisposition() {
         return _disposition;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Mutator.
      *
-     * @param body
+     * @param body The new body for this response.
      */
     public void setBody(final Body body) {
         DBC.require().notNull(body);
@@ -149,9 +149,9 @@ public class Response {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The response's body.
      */
     public Body getBody() {
         return _body;

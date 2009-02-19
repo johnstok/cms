@@ -15,26 +15,30 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import ccc.domain.Resource;
+import ccc.services.StatefulReader;
 
 
 /**
- * TODO: Add Description for this type.
+ * A response body.
  *
  * @author Civic Computing Ltd.
  */
 public interface Body {
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The resource this body will wraps.
      */
     Resource getResource();
 
     /**
-     * TODO: Add a description of this method.
+     * Write the body to an {@link OutputStream}.
      *
-     * @param os
+     * @param os The stream to which the body will be written.
+     * @param reader A stateful reader, used during writer to look up other
+     *      resources.
+     * @throws IOException - if writing to the output stream fails.
      */
-    void write(OutputStream os) throws IOException;
+    void write(OutputStream os, StatefulReader reader) throws IOException;
 }

@@ -13,7 +13,7 @@ package ccc.content.server;
 
 
 /**
- * TODO: Add Description for this type.
+ * An exception to represent a missing resource.
  *
  * @author Civic Computing Ltd.
  */
@@ -21,4 +21,8 @@ public class NotFoundException
     extends
         RuntimeException {
 
+    /**
+     * Constructor.
+     */
+    NotFoundException() { super("Resource not found"); }
 }

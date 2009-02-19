@@ -12,6 +12,7 @@
 
 package ccc.content.server;
 
+import static ccc.commons.Exceptions.*;
 import static org.easymock.EasyMock.*;
 
 import java.io.ByteArrayOutputStream;
@@ -55,7 +56,7 @@ public final class ContentServletTest extends TestCase {
 
         // ASSERT
         } catch (final NotFoundException e) {
-            assertNull(e.getMessage());
+            swallow(e);
         }
         verifyAll();
 
@@ -202,7 +203,8 @@ public final class ContentServletTest extends TestCase {
         r.setBody(b);
 
         expect(_response.getOutputStream()).andReturn(os);
-        b.write(os);
+        expect(_factory.getReader()).andReturn(null);
+        b.write(os, null);
         replayAll();
 
         // ACT

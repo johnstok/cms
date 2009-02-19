@@ -52,17 +52,14 @@ public class DefaultObjectFactory implements ObjectFactory {
     /** {@inheritDoc} */
     @Override
     public Locator createLocator() {
-        return new DefaultLocator(resourceReader(), _rootName);
+        return new DefaultLocator(getReader(), _rootName);
     }
 
 
-    private StatefulReader resourceReader() {
+    /** {@inheritDoc} */
+    @Override
+    public StatefulReader getReader() {
         return _registry.get(ServiceNames.STATEFUL_READER);
-    }
-
-
-    private DataManager dataManager() {
-        return _registry.get(ServiceNames.DATA_MANAGER_LOCAL);
     }
 
 
@@ -88,5 +85,10 @@ public class DefaultObjectFactory implements ObjectFactory {
     @Override
     public void setRootName(final String rootName) {
         _rootName = rootName;
+    }
+
+
+    private DataManager dataManager() {
+        return _registry.get(ServiceNames.DATA_MANAGER_LOCAL);
     }
 }
