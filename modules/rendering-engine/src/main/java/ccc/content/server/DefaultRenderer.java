@@ -130,7 +130,7 @@ public class DefaultRenderer
         r.setExpiry(Long.valueOf(0));
         r.setCharSet("UTF-8");
         r.setMimeType("text", "html");
-        r.setBody(new PageBody(page, Charset.forName("UTF-8"), null)); // FIXME
+        r.setBody(new PageBody(page, Charset.forName("UTF-8")));
 
         return r;
     }

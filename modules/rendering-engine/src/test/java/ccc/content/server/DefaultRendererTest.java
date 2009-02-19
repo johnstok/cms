@@ -11,6 +11,8 @@
  */
 package ccc.content.server;
 
+import static ccc.commons.Exceptions.*;
+
 import java.util.Collections;
 
 import javax.activation.MimeType;
@@ -59,7 +61,7 @@ public class DefaultRendererTest
                 Paragraph.fromText("some", "other value").createSnapshot()));
 
         // ACT
-        final Response r = rr.renderWorkingCopy(p);
+        rr.renderWorkingCopy(p);
 
         // ASSERT
         assertEquals(1, p.paragraphs().size());
@@ -81,7 +83,7 @@ public class DefaultRendererTest
                 Paragraph.fromText("some", "other value").createSnapshot()));
 
         // ACT
-        final Response r = _renderer.renderWorkingCopy(p);
+        _renderer.renderWorkingCopy(p);
 
         // ASSERT
         assertEquals(1, p.paragraphs().size());
@@ -104,7 +106,7 @@ public class DefaultRendererTest
 
         // ASSERT
         } catch (final NotFoundException e) {
-            assertNull(e.getMessage());
+            swallow(e);
         }
     }
 
@@ -122,7 +124,7 @@ public class DefaultRendererTest
 
         // ASSERT
         } catch (final NotFoundException e) {
-            assertNull(e.getMessage());
+            swallow(e);
         }
     }
 
@@ -138,9 +140,9 @@ public class DefaultRendererTest
         try {
             _renderer.render((Resource) null);
 
-            // ASSERT
+        // ASSERT
         } catch (final NotFoundException e) {
-            assertNull(e.getMessage());
+            swallow(e);
         }
     }
 
@@ -209,7 +211,7 @@ public class DefaultRendererTest
 
         // ASSERT
         } catch (final NotFoundException e) {
-            assertNull(e.getMessage());
+            swallow(e);
         }
     }
 
@@ -298,7 +300,7 @@ public class DefaultRendererTest
 
         // ASSERT
         } catch (final NotFoundException e) {
-            assertNull(e.getMessage());
+            swallow(e);
         }
     }
 

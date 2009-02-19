@@ -18,10 +18,11 @@ import ccc.commons.DBC;
 import ccc.domain.File;
 import ccc.domain.Resource;
 import ccc.services.DataManager;
+import ccc.services.StatefulReader;
 
 
 /**
- * TODO: Add Description for this type.
+ * Implementation of the {@link Body} interface that wraps a {@link File}.
  *
  * @author Civic Computing Ltd.
  */
@@ -35,8 +36,9 @@ public class FileBody
     /**
      * Constructor.
      *
-     * @param f
-     * @param dataManager
+     * @param f The file this body represents.
+     * @param dataManager The data manager used to retrieve the file's contents
+     *      from the data store.
      */
     public FileBody(final File f, final DataManager dataManager) {
         DBC.require().notNull(f);
@@ -54,7 +56,8 @@ public class FileBody
 
     /** {@inheritDoc} */
     @Override
-    public void write(final OutputStream os) throws IOException {
+    public void write(final OutputStream os,
+                      final StatefulReader reader) throws IOException {
         _dataManager.retrieve(_file.data(), os);
     }
 

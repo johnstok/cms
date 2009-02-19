@@ -11,13 +11,17 @@
  */
 package ccc.content.server;
 
+import java.io.Serializable;
+
+import ccc.services.StatefulReader;
+
 
 /**
  * Factory for {@link Renderer} objects.
  *
  * @author Civic Computing Ltd.
  */
-public interface ObjectFactory {
+public interface ObjectFactory extends Serializable {
 
     /**
      * Create a new {@link Renderer} object.
@@ -55,4 +59,11 @@ public interface ObjectFactory {
      * @param rootName The name of the root folder to look up resources from.
      */
     void setRootName(String rootName);
+
+    /**
+     * Accessor.
+     *
+     * @return The factory's stateful reader.
+     */
+    StatefulReader getReader();
 }

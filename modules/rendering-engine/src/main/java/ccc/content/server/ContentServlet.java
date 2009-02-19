@@ -134,10 +134,10 @@ public final class ContentServlet extends CCCServlet {
     /**
      * Translates a domain response into HTTP response for the servlet API.
      *
-     * @param httpResponse
-     * @param httpRequest
-     * @param response
-     * @throws IOException
+     * @param httpResponse The servlet response.
+     * @param httpRequest The servlet request.
+     * @param response The CCC response.
+     * @throws IOException - if writing to the servlet response fails.
      */
     protected void handle(final HttpServletResponse httpResponse,
                           final HttpServletRequest httpRequest,
@@ -178,7 +178,8 @@ public final class ContentServlet extends CCCServlet {
         }
 
         if (null!=response.getBody()) {
-            response.getBody().write(httpResponse.getOutputStream());
+            response.getBody()
+                .write(httpResponse.getOutputStream(), _factory.getReader());
         }
     }
 }
