@@ -37,7 +37,8 @@ public class ClearWorkingCopyAction
             page.<String>get("id"),
             new ErrorReportingCallback<Void>(){
                 public void onSuccess(final Void arg0) {
-                    // FIXME item.set("hasWorkingCopy", false);
+                    _selectionModel.tableSelection().set(
+                        "workingCopy", Boolean.FALSE);
                     _selectionModel.update(page);
                 }
             }

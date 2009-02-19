@@ -61,7 +61,7 @@ public class UpdatePageDialog
             public void onSuccess(final Void arg0) {
                 ModelData md = rt().tableSelection();
                 md.set("title", _page._title);
-                md.set("workingCopy", "false");
+                md.set("workingCopy", Boolean.FALSE);
                 rt().update(md);
                 close();
             }
@@ -74,7 +74,7 @@ public class UpdatePageDialog
             }
             public void onSuccess(final Void arg0) {
                 ModelData md = rt().tableSelection();
-                md.set("workingCopy", "true");
+                md.set("workingCopy", Boolean.TRUE);
                 rt().update(md);
                 close();
             }

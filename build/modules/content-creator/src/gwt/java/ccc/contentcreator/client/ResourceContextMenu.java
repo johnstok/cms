@@ -15,6 +15,7 @@ import static ccc.contentcreator.dialogs.AbstractBaseDialog.*;
 
 import java.util.Collection;
 
+import ccc.contentcreator.actions.ClearWorkingCopyAction;
 import ccc.contentcreator.actions.CreateAliasAction;
 import ccc.contentcreator.actions.IncludeInMainMenuAction;
 import ccc.contentcreator.actions.LockAction;
@@ -49,6 +50,7 @@ import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
+import com.extjs.gxt.ui.client.widget.menu.SeparatorMenuItem;
 
 
 /**
@@ -80,6 +82,7 @@ public class ResourceContextMenu
     private final Action _lockAction;
     private final Action _previewAction;
     private final Action _updateSortAction;
+    private final Action _clearWorkingCopyAction;
 
 
     /**
@@ -106,6 +109,7 @@ public class ResourceContextMenu
         _lockAction = new LockAction(_table);
         _previewAction = new PreviewAction(_table);
         _updateSortAction = new UpdateSortOrderAction(_table);
+        _clearWorkingCopyAction = new ClearWorkingCopyAction(_table);
 
         setWidth(CONTEXT_MENU_WIDTH);
 
@@ -156,6 +160,10 @@ public class ResourceContextMenu
                             addRemoveFromMainMenu();
                         } else {
                             addIncludeInMainMenu();
+                        }
+                        if (item.<Boolean>get("workingCopy")) {
+                            add(new SeparatorMenuItem());
+                            addDeleteWorkingCopy();
                         }
                     }
                 }
@@ -397,5 +405,12 @@ public class ResourceContextMenu
             "update-metadata",
             _constants.updateMetadata(),
             _updateMetadataAction);
+    }
+
+    private void addDeleteWorkingCopy() {
+        addMenuItem(
+            "delete-workingCopy",  // TODO: I18n
+            "Delete working copy",
+            _clearWorkingCopyAction);
     }
 }
