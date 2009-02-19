@@ -34,6 +34,8 @@ public interface CommandServiceAsync {
 
     void updatePage(PageDelta delta, AsyncCallback<Void> callback);
 
+    void updateWorkingCopy(PageDelta delta, AsyncCallback<Void> callback);
+
     void rename(final String resourceId, final String name, AsyncCallback<Void> callback);
 
     void updateTags(String resourceId, String tags, AsyncCallback<Void> callback);

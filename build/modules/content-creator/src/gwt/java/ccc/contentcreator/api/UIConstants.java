@@ -713,4 +713,12 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("is not valid date")
     String isNotValidDate();
+
+    /**
+     * "Working copy"
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Working copy")
+    String workingCopy();
 }

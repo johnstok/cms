@@ -247,6 +247,26 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
+    public void updateWorkingCopy(final PageDelta delta) {
+
+        final Page page = new Page(
+            ResourceName.escape(delta._name),
+            delta._title);
+        page.id(UUID.fromString(delta._id));
+
+        assignParagraphs(delta._paragraphs, page);
+
+        _page.updateWorkingCopy(UUID.fromString(delta._id),
+                     delta._title,
+                     page.paragraphs());
+
+    }
+
+
+
+
+    /** {@inheritDoc} */
+    @Override
     public void updateResourceTemplate(final String resourceId,
                                        final String templateId) {
 

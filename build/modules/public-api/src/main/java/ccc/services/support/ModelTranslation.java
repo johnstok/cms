@@ -158,6 +158,9 @@ public class ModelTranslation {
             rs._folderCount = r.as(Folder.class).folders().size();
             rs._sortOrder = r.as(Folder.class).sortOrder().name();
         }
+        if (r.type() == ResourceType.PAGE) {
+            rs._hasWorkingCopy = (r.as(Page.class).workingCopy() != null);
+        }
         return rs;
     }
 

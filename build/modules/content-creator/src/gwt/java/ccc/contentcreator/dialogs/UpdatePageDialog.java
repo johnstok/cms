@@ -53,7 +53,7 @@ public class UpdatePageDialog
     private TemplateDelta _template;
     private final ResourceTable _rt;
 
-    private final AsyncCallback<Void> _saveCompletedCallback =
+    private final AsyncCallback<Void> _applyNowCompletedCallback =
         new AsyncCallback<Void>() {
             public void onFailure(final Throwable arg0) {
                 Globals.unexpectedError(arg0);
@@ -61,6 +61,20 @@ public class UpdatePageDialog
             public void onSuccess(final Void arg0) {
                 ModelData md = rt().tableSelection();
                 md.set("title", _page._title);
+                md.set("workingCopy", "false");
+                rt().update(md);
+                close();
+            }
+        };
+
+        private final AsyncCallback<Void> _saveDraftCompletedCallback =
+            new AsyncCallback<Void>() {
+            public void onFailure(final Throwable arg0) {
+                Globals.unexpectedError(arg0);
+            }
+            public void onSuccess(final Void arg0) {
+                ModelData md = rt().tableSelection();
+                md.set("workingCopy", "true");
                 rt().update(md);
                 close();
             }
@@ -96,53 +110,32 @@ public class UpdatePageDialog
         add(_panel);
 
         addButton(_cancel);
-        addButton(createSaveButton());
+        addButton(createSaveDraftButton());
+        addButton(createApplyNowButton());
     }
 
-    private Button createSaveButton() {
+    private Button createApplyNowButton() {
 
-        final Button saveButton = new Button(
-            constants().save(),
-            saveAction());
-        saveButton.setId("save");
-        return saveButton;
+        final Button applyNowButton = new Button(
+            "Apply now",
+            applyNowAction());
+        applyNowButton.setId("applyNow");
+        return applyNowButton;
     }
 
-    private SelectionListener<ButtonEvent> saveAction() {
+    private Button createSaveDraftButton() {
+
+        final Button saveDraftButton = new Button(
+            "Save draft",
+            saveDraftAction());
+        saveDraftButton.setId("saveDraft");
+        return saveDraftButton;
+    }
+
+    private SelectionListener<ButtonEvent> applyNowAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                final List<ParagraphDelta> paragraphs =
-                    new ArrayList<ParagraphDelta>();
-
-                final List<PageElement> definitions =
-                    panel().pageElements();
-                for (final PageElement c : definitions) {
-                    if ("TEXT".equals(c.type())) {
-                        final Field<String> f = c.field();
-                        final ParagraphDelta p = new ParagraphDelta();
-                        p._name = c.id();
-                        p._textValue = f.getValue();
-                        p._type = "TEXT";
-                        paragraphs.add(p);
-                    } else if ("DATE".equals(c.type())) {
-                        final DateField f = c.dateField();
-                        final ParagraphDelta p = new ParagraphDelta();
-                        p._name = c.id();
-                        p._dateValue = f.getValue();
-                        p._rawValue = f.getRawValue();
-                        p._type = "DATE";
-                        paragraphs.add(p);
-                    } else if ("HTML".equals(c.type())) {
-                        final FCKEditor f = c.editor();
-                        final ParagraphDelta p = new ParagraphDelta();
-                        p._name = c.id();
-                        p._textValue = f.getHTML();
-                        p._type = "HTML";
-                        paragraphs.add(p);
-                    }
-                }
-                _page._paragraphs = paragraphs;
-
+                final List<ParagraphDelta> paragraphs = assignParagraphs();
 
                 Validate.callTo(updatePage(paragraphs))
                     .check(Validations.notEmpty(panel().title()))
@@ -156,12 +149,40 @@ public class UpdatePageDialog
         };
     }
 
+    private SelectionListener<ButtonEvent> saveDraftAction() {
+        return new SelectionListener<ButtonEvent>() {
+            @Override public void componentSelected(final ButtonEvent ce) {
+                final List<ParagraphDelta> paragraphs = assignParagraphs();
+
+                Validate.callTo(saveDraft(paragraphs))
+                .check(Validations.notEmpty(panel().title()))
+                .stopIfInError()
+                .check(Validations.validateDatefields(paragraphs))
+                .stopIfInError()
+                .check(Validations.validateFields(paragraphs,
+                    _panel.definition()))
+                    .callMethodOr(Validations.reportErrors());
+            }
+        };
+    }
+
     private Runnable updatePage(final List<ParagraphDelta> paragraphs) {
         return new Runnable() {
             @SuppressWarnings("unchecked")
             public void run() {
                 _page._title = panel().title().getValue();
-                commands().updatePage(_page, saveCompletedCallback());
+                commands().updatePage(_page, applyNowCompletedCallback());
+            }
+        };
+    }
+
+    private Runnable saveDraft(final List<ParagraphDelta> paragraphs) {
+        return new Runnable() {
+            @SuppressWarnings("unchecked")
+            public void run() {
+                _page._title = panel().title().getValue();
+                commands().updateWorkingCopy(_page,
+                                             saveDraftCompletedCallback());
             }
         };
     }
@@ -205,13 +226,57 @@ public class UpdatePageDialog
         return _panel;
     }
 
+    /**
+     * Accessor.
+     *
+     * @return Returns the _applyNowCompletedCallback.
+     */
+    protected AsyncCallback<Void> applyNowCompletedCallback() {
+        return _applyNowCompletedCallback;
+    }
 
     /**
      * Accessor.
      *
-     * @return Returns the _saveCompletedCallback.
+     * @return Returns the _saveDraftCompletedCallback.
      */
-    protected AsyncCallback<Void> saveCompletedCallback() {
-        return _saveCompletedCallback;
+    protected AsyncCallback<Void> saveDraftCompletedCallback() {
+        return _saveDraftCompletedCallback;
+    }
+
+    private List<ParagraphDelta> assignParagraphs() {
+
+        final List<ParagraphDelta> paragraphs =
+            new ArrayList<ParagraphDelta>();
+
+        final List<PageElement> definitions =
+            panel().pageElements();
+        for (final PageElement c : definitions) {
+            if ("TEXT".equals(c.type())) {
+                final Field<String> f = c.field();
+                final ParagraphDelta p = new ParagraphDelta();
+                p._name = c.id();
+                p._textValue = f.getValue();
+                p._type = "TEXT";
+                paragraphs.add(p);
+            } else if ("DATE".equals(c.type())) {
+                final DateField f = c.dateField();
+                final ParagraphDelta p = new ParagraphDelta();
+                p._name = c.id();
+                p._dateValue = f.getValue();
+                p._rawValue = f.getRawValue();
+                p._type = "DATE";
+                paragraphs.add(p);
+            } else if ("HTML".equals(c.type())) {
+                final FCKEditor f = c.editor();
+                final ParagraphDelta p = new ParagraphDelta();
+                p._name = c.id();
+                p._textValue = f.getHTML();
+                p._type = "HTML";
+                paragraphs.add(p);
+            }
+        }
+        _page._paragraphs = paragraphs;
+        return paragraphs;
     }
 }

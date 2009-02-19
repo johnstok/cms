@@ -79,6 +79,8 @@ public class DataBinding {
     public static final String FOLDER_COUNT = "folderCount";
     /** MM_INCLUDE : String. */
     public static final String MM_INCLUDE = "mmInclude";
+    /** WORKING_COPY : String. */
+    public static final String WORKING_COPY = "workingCopy";
 
     /**
      * TODO: Add a description of this method.
@@ -186,6 +188,7 @@ public class DataBinding {
         md.set(FOLDER_COUNT, fs._folderCount);
         md.set(MM_INCLUDE, fs._includeInMainMenu);
         md.set(SORT_ORDER, fs._sortOrder);
+        md.set(WORKING_COPY, fs._hasWorkingCopy);
     }
 
     /**

@@ -26,6 +26,11 @@
         name="ccc.domain.Page" extends="ccc.domain.Resource">
         <key column="_id" />
         
+        <component name="_workingCopy" class="ccc.domain.Snapshot">
+			<property name="detail" access="property" not-null="false" column="_workingCopy"
+				type="text"  />
+		</component>
+		
         <set name="_content">
             <key not-null="true" />
             <composite-element class="ccc.domain.Paragraph">
