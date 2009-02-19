@@ -279,7 +279,7 @@ public class ResourceContextMenu
                             }
                         );
                     } else if ("PAGE".equals(item.get("type"))) {
-                        _qs.pageDelta(
+                        _qs.workingCopyDelta(
                             item.<String>get("id"),
                             new ErrorReportingCallback<PageDelta>() {
                                 public void onSuccess(final PageDelta page) {

@@ -102,4 +102,6 @@ public interface QueriesServiceAsync {
 
     void metadata(String resourceId,
                   AsyncCallback<Map<String, String>> asyncCallback);
+
+    void workingCopyDelta(String pageId, AsyncCallback<PageDelta> asyncCallback);
 }

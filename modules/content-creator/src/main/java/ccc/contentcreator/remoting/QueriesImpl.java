@@ -189,4 +189,10 @@ public class QueriesImpl
     public Map<String, String> metadata(final String resourceId) {
         return _delegate.metadata(resourceId);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public PageDelta workingCopyDelta(final String pageId) {
+        return _delegate.workingCopyDelta(pageId);
+    }
 }

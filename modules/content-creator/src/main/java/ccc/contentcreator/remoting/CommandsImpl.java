@@ -17,7 +17,6 @@ import java.util.Map;
 import ccc.commons.JNDI;
 import ccc.contentcreator.api.CommandService;
 import ccc.services.api.AliasDelta;
-import ccc.services.api.CCCRemoteException;
 import ccc.services.api.Commands;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ParagraphDelta;
@@ -133,13 +132,7 @@ public class CommandsImpl
     /** {@inheritDoc} */
     @Override
     public void updatePage(final PageDelta delta) {
-        try {
-            _delegate.updatePage(delta);
-        } catch (final RuntimeException e) {
-            final CCCRemoteException re = new CCCRemoteException();
-            re._errorCode = 0;
-            throw re;
-        }
+        _delegate.updatePage(delta);
     }
 
     /** {@inheritDoc} */
