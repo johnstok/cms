@@ -17,7 +17,6 @@ import ccc.commons.Registry;
 import ccc.commons.Testing;
 import ccc.services.DataManager;
 import ccc.services.ServiceNames;
-import ccc.services.StatefulReader;
 
 
 /**
@@ -25,7 +24,7 @@ import ccc.services.StatefulReader;
  *
  * @author Civic Computing Ltd.
  */
-public class DefaultRendererFactoryTest
+public class DefaultObjectFactoryTest
     extends
         TestCase {
 
@@ -127,12 +126,10 @@ public class DefaultRendererFactoryTest
         _factory.setRootName("foo");
         expect(_registry.get(ServiceNames.DATA_MANAGER_LOCAL))
             .andReturn(Testing.dummy(DataManager.class));
-        expect(_registry.get(ServiceNames.STATEFUL_READER))
-            .andReturn(Testing.dummy(StatefulReader.class));
         replay(_registry);
 
         // ACT
-        _factory.newInstance();
+        _factory.createRenderer();
 
         // ASSERT
         verify(_registry);
@@ -144,7 +141,7 @@ public class DefaultRendererFactoryTest
     @Override
     protected void setUp() throws Exception {
         _registry = createStrictMock(Registry.class);
-        _factory = new DefaultRendererFactory(_registry);
+        _factory = new DefaultObjectFactory(_registry);
     }
 
     /** {@inheritDoc} */
@@ -154,6 +151,6 @@ public class DefaultRendererFactoryTest
         _registry = null;
     }
 
-    private DefaultRendererFactory _factory;
+    private DefaultObjectFactory _factory;
     private Registry _registry;
 }

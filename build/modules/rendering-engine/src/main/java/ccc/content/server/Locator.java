@@ -18,33 +18,25 @@ import ccc.domain.ResourcePath;
 
 
 /**
- * Rendering API for CCC resources.
+ * Locate a resource in CCC.
  *
  * @author Civic Computing Ltd.
  */
-public interface ResourceRenderer {
+public interface Locator {
 
     /**
-     * Lookup a resource by path and generate an appropriate response.
+     * Lookup a resource by path.
      *
      * @param resourcePath The absolute path to the resource.
-     * @return The corresponding response.
+     * @return The corresponding resource.
      */
-    Response render(ResourcePath resourcePath);
+    Resource locate(ResourcePath resourcePath);
 
     /**
-     * Lookup a resource by UUID and generate an appropriate response.
+     * Lookup a resource by UUID.
      *
      * @param resourceId The UUID for the resource.
-     * @return The corresponding response.
+     * @return The corresponding resource.
      */
-    Response render(UUID resourceId);
-
-    /**
-     * Generate an appropriate response for the specified resource.
-     *
-     * @param resource The resource to render.
-     * @return The corresponding response.
-     */
-    Response render(Resource resource);
+    Resource locate(UUID resourceId);
 }

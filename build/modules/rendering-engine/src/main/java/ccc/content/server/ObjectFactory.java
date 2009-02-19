@@ -13,18 +13,25 @@ package ccc.content.server;
 
 
 /**
- * Factory for {@link ResourceRenderer} objects.
+ * Factory for {@link Renderer} objects.
  *
  * @author Civic Computing Ltd.
  */
-public interface RendererFactory {
+public interface ObjectFactory {
 
     /**
-     * Create a new {@link ResourceRenderer} object.
+     * Create a new {@link Renderer} object.
      *
-     * @return A {@link ResourceRenderer}.
+     * @return A {@link Renderer}.
      */
-    ResourceRenderer newInstance();
+    Renderer createRenderer();
+
+    /**
+     * Create a new {@link Locator} object.
+     *
+     * @return A {@link Locator}.
+     */
+    Locator createLocator();
 
     /**
      * Accessor for the 'respect visibility' property.
