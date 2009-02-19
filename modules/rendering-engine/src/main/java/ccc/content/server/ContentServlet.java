@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import ccc.commons.DBC;
 import ccc.commons.JNDI;
 import ccc.domain.CCCException;
+import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 
 
@@ -47,7 +48,7 @@ import ccc.domain.ResourcePath;
  */
 public final class ContentServlet extends CCCServlet {
 
-    private final RendererFactory _factory;
+    private final ObjectFactory _factory;
 
 
     /**
@@ -55,7 +56,7 @@ public final class ContentServlet extends CCCServlet {
      *
      * @param factory The renderer factory for this servlet.
      */
-    public ContentServlet(final RendererFactory factory) {
+    public ContentServlet(final ObjectFactory factory) {
         DBC.require().notNull(factory);
         _factory = factory;
     }
@@ -64,7 +65,7 @@ public final class ContentServlet extends CCCServlet {
      * Constructor.
      */
     public ContentServlet() {
-        _factory = new DefaultRendererFactory(new JNDI());
+        _factory = new DefaultObjectFactory(new JNDI());
     }
 
     /** {@inheritDoc} */
@@ -90,7 +91,14 @@ public final class ContentServlet extends CCCServlet {
                                           throws IOException, ServletException {
         try {
             final ResourcePath contentPath = determineResourcePath(request);
-            final Response r = _factory.newInstance().render(contentPath);
+            final Resource rs = _factory.createLocator().locate(contentPath);
+
+            final Response r;
+            if (request.getParameterMap().keySet().contains("wc")) {
+                r = _factory.createRenderer().renderWorkingCopy(rs);
+            } else {
+                r = _factory.createRenderer().render(rs);
+            }
             handle(response, request, r);
 
         } catch (final NotFoundException e) {

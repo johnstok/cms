@@ -11,9 +11,7 @@
  */
 package ccc.content.server;
 
-import static org.easymock.EasyMock.*;
-
-import java.util.UUID;
+import java.util.Collections;
 
 import javax.activation.MimeType;
 import javax.activation.MimeTypeParseException;
@@ -25,23 +23,43 @@ import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.Page;
+import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
-import ccc.domain.ResourcePath;
 import ccc.domain.Template;
 import ccc.services.DataManager;
-import ccc.services.StatefulReader;
 
 
 /**
- * Tests for the {@link DefaultResourceRenderer} class.
- * TODO: respect isVisible.
+ * Tests for the {@link DefaultRenderer} class.
  *
  * @author Civic Computing Ltd.
  */
-public class DefaultResourceRendererTest
+public class DefaultRendererTest
     extends
         TestCase {
+
+    /**
+     * Test.
+     */
+    public void testRenderWorkingCopy() {
+
+        // ARRANGE
+        final Page p = new Page("foo");
+        p.addParagraph(Paragraph.fromText("bar", "baz"));
+        p.createWorkingCopy();
+        p.workingCopy().set(
+            "paragraphs",
+            Collections.singletonList(
+                Paragraph.fromText("some", "other value").createSnapshot()));
+
+        // ACT
+        final Response r = _renderer.renderWorkingCopy(p);
+
+        // ASSERT
+        assertEquals(1, p.paragraphs().size());
+        assertEquals("other value", p.paragraph("some").text());
+    }
 
 
     /**
@@ -63,34 +81,17 @@ public class DefaultResourceRendererTest
         }
     }
 
-    /**
-     * Test.
-     */
-    public void testRenderResourcePathHandlesPage() {
-
-        // ARRANGE
-        final Page p = new Page("page");
-        expect(_reader.lookup("foo", p.absolutePath())).andReturn(p);
-        replayAll();
-
-        // ACT
-        final Response r = _renderer.render(p.absolutePath());
-
-        // ASSERT
-        verifyAll();
-        assertNotNull(r);
-    }
 
     /**
      * Test.
      */
-    public void testRenderResourcePathHandlesNullInput() {
+    public void testRenderResourceHandlesNullInput() {
 
         // ARRANGE
 
         // ACT
         try {
-            _renderer.render((ResourcePath) null);
+            _renderer.render(null);
 
         // ASSERT
         } catch (final NotFoundException e) {
@@ -98,22 +99,6 @@ public class DefaultResourceRendererTest
         }
     }
 
-    /**
-     * Test.
-     */
-    public void testRenderResourceIdHandlesNullInput() {
-
-        // ARRANGE
-
-        // ACT
-        try {
-            _renderer.render((UUID) null);
-
-        // ASSERT
-        } catch (final NotFoundException e) {
-            assertNull(e.getMessage());
-        }
-    }
 
     /**
      * Test.
@@ -131,6 +116,7 @@ public class DefaultResourceRendererTest
             assertNull(e.getMessage());
         }
     }
+
 
     /**
      * Test.
@@ -150,6 +136,7 @@ public class DefaultResourceRendererTest
         assertNotNull(r.getBody());
         assertEquals(PageBody.class, r.getBody().getClass());
     }
+
 
     /**
      * Test.
@@ -179,6 +166,7 @@ public class DefaultResourceRendererTest
         assertEquals(FileBody.class, r.getBody().getClass());
     }
 
+
     /**
      * Test.
      */
@@ -197,6 +185,7 @@ public class DefaultResourceRendererTest
             assertNull(e.getMessage());
         }
     }
+
 
     /**
      * Test.
@@ -218,6 +207,7 @@ public class DefaultResourceRendererTest
             assertEquals(p, e.getResource());
         }
     }
+
 
     /**
      * Test.
@@ -242,6 +232,7 @@ public class DefaultResourceRendererTest
         }
     }
 
+
     /**
      * Test.
      */
@@ -262,14 +253,15 @@ public class DefaultResourceRendererTest
         }
     }
 
+
     /**
      * Test.
      */
     public void testRenderRespectsIsVisible() {
 
         // ARRANGE
-        final ResourceRenderer rr =
-            new DefaultResourceRenderer(_dm, _reader, true, "foo");
+        final Renderer rr =
+            new DefaultRenderer(_dm, true);
         final Page p = new Page("private page");
 
         // ACT
@@ -284,33 +276,21 @@ public class DefaultResourceRendererTest
     }
 
 
-
-
-    private void verifyAll() {
-        verify(_reader);
-    }
-
-    private void replayAll() {
-        replay(_reader);
-    }
-
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {
-        _reader = createStrictMock(StatefulReader.class);
-        _renderer = new DefaultResourceRenderer(_dm, _reader, false, "foo");
+        _renderer = new DefaultRenderer(_dm, false);
 
     }
+
 
     /** {@inheritDoc} */
     @Override
     protected void tearDown() throws Exception {
         _renderer = null;
-        _reader = null;
     }
 
 
-    private DefaultResourceRenderer _renderer;
-    private StatefulReader _reader;
+    private DefaultRenderer _renderer;
     private final DataManager _dm = Testing.dummy(DataManager.class);
 }

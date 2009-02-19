@@ -19,14 +19,14 @@ import ccc.services.StatefulReader;
 
 
 /**
- * Default implementation of the {@link RendererFactory} interface.
+ * Default implementation of the {@link ObjectFactory} interface.
  * <br><br>
  * Properties:
  * <br>* respectVisibility - true by default.
  *
  * @author Civic Computing Ltd.
  */
-public class DefaultRendererFactory implements RendererFactory {
+public class DefaultObjectFactory implements ObjectFactory {
 
     private final Registry _registry;
     private boolean        _respectVisiblity = true;
@@ -37,27 +37,34 @@ public class DefaultRendererFactory implements RendererFactory {
      *
      * @param registry The registry used to look up business services.
      */
-    public DefaultRendererFactory(final Registry registry) {
+    public DefaultObjectFactory(final Registry registry) {
         DBC.require().notNull(registry);
         _registry = registry;
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceRenderer newInstance() {
-        return new DefaultResourceRenderer(dataManager(),
-                                           resourceReader(),
-                                           _respectVisiblity,
-                                           _rootName);
+    public Renderer createRenderer() {
+        return new DefaultRenderer(dataManager(), _respectVisiblity);
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Locator createLocator() {
+        return new DefaultLocator(resourceReader(), _rootName);
+    }
+
 
     private StatefulReader resourceReader() {
         return _registry.get(ServiceNames.STATEFUL_READER);
     }
 
+
     private DataManager dataManager() {
         return _registry.get(ServiceNames.DATA_MANAGER_LOCAL);
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -69,11 +76,13 @@ public class DefaultRendererFactory implements RendererFactory {
         }
     }
 
+
     /** {@inheritDoc} */
     @Override
     public boolean getRespectVisibility() {
         return _respectVisiblity;
     }
+
 
     /** {@inheritDoc} */
     @Override

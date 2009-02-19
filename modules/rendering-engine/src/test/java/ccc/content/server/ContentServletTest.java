@@ -17,6 +17,7 @@ import static org.easymock.EasyMock.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.HashMap;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -278,8 +279,8 @@ public final class ContentServletTest extends TestCase {
         foo.add(baz);
 
         expect(_request.getPathInfo()).andReturn("/foo");
-        expect(_factory.newInstance()).andReturn(_renderer);
-        expect(_renderer.render(isA(ResourcePath.class)))
+        expect(_factory.createLocator()).andReturn(_locator);
+        expect(_locator.locate(isA(ResourcePath.class)))
             .andThrow(new NotFoundException());
         expect(_request.getRequestDispatcher("/notfound")).andReturn(rd);
         rd.forward(_request, _response);
@@ -305,8 +306,13 @@ public final class ContentServletTest extends TestCase {
         final Page bar = new Page("bar");
 
         expect(_request.getPathInfo()).andReturn("/foo");
-        expect(_factory.newInstance()).andReturn(_renderer);
-        expect(_renderer.render(isA(ResourcePath.class)))
+        expect(_request.getParameterMap())
+            .andReturn(new HashMap<String, String>());
+        expect(_factory.createLocator()).andReturn(_locator);
+        expect(_factory.createRenderer()).andReturn(_renderer);
+        expect(_locator.locate(isA(ResourcePath.class)))
+            .andReturn(bar);
+        expect(_renderer.render(bar))
             .andThrow(new RedirectRequiredException(bar));
         expect(_request.getContextPath()).andReturn("/context");
         _response.sendRedirect("/context"+bar.absolutePath().toString());
@@ -350,8 +356,9 @@ public final class ContentServletTest extends TestCase {
         super.setUp();
         _response = createStrictMock(HttpServletResponse.class);
         _request = createStrictMock(HttpServletRequest.class);
-        _renderer = createStrictMock(ResourceRenderer.class);
-        _factory = createStrictMock(RendererFactory.class);
+        _renderer = createStrictMock(Renderer.class);
+        _locator = createStrictMock(Locator.class);
+        _factory = createStrictMock(ObjectFactory.class);
         _cs = new ContentServlet(_factory);
     }
 
@@ -364,16 +371,17 @@ public final class ContentServletTest extends TestCase {
         _response = null;
         _request = null;
         _renderer = null;
+        _locator = null;
         _factory = null;
         _cs = null;
     }
 
     private void verifyAll() {
-        verify(_response, _request, _renderer, _factory);
+        verify(_response, _request, _renderer, _locator, _factory);
     }
 
     private void replayAll() {
-        replay(_response, _request, _renderer, _factory);
+        replay(_response, _request, _renderer, _locator, _factory);
     }
 
     /**
@@ -401,7 +409,8 @@ public final class ContentServletTest extends TestCase {
 
     private HttpServletResponse _response;
     private HttpServletRequest  _request;
-    private ResourceRenderer _renderer;
-    private RendererFactory _factory;
+    private Renderer _renderer;
+    private Locator _locator;
+    private ObjectFactory _factory;
     private ContentServlet _cs;
 }
