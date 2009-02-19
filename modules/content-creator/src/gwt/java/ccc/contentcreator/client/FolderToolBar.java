@@ -16,6 +16,7 @@ import ccc.contentcreator.actions.CreateFileAction;
 import ccc.contentcreator.actions.CreateFolderAction;
 import ccc.contentcreator.actions.CreatePageAction;
 import ccc.contentcreator.actions.CreateTemplateAction;
+import ccc.contentcreator.api.UIConstants;
 
 
 /**
@@ -27,6 +28,8 @@ public class FolderToolBar
     extends
         AbstractToolBar {
 
+    private final UIConstants _constants = Globals.uiConstants();
+
     /**
      * Constructor.
      *
@@ -36,28 +39,28 @@ public class FolderToolBar
         addSeparator();
         addButton(
             "uploadFile",
-            "Upload File",
-            new CreateFileAction(ssm)); // TODO: I18n
+            _constants.uploadFile(),
+            new CreateFileAction(ssm));
         addSeparator();
         addButton(
             "Create Folder",
-            "Create Folder",
-            new CreateFolderAction(ssm)); // TODO: I18n
+            _constants.createFolder(),
+            new CreateFolderAction(ssm));
         addSeparator();
         addButton(
             "Create Page",
-            "Create Page",
-            new CreatePageAction(ssm)); // TODO: I18n
+            _constants.createPage(),
+            new CreatePageAction(ssm));
         addSeparator();
         addButton(
             "Create Template",
-            "Create Template",
-            new CreateTemplateAction(ssm)); // TODO: I18n
+            _constants.createTemplate(),
+            new CreateTemplateAction(ssm));
         addSeparator();
         addButton(
             "Choose Template",
-            "Choose Template",
-            new ChooseTemplateAction(ssm)); // TODO: I18n
+            _constants.chooseTemplate(),
+            new ChooseTemplateAction(ssm));
         addSeparator();
     }
 }
