@@ -32,13 +32,19 @@ public class PreviewContentDialog extends AbstractBaseDialog {
      * Constructor.
      *
      * @param resourcePath The content resource to preview.
+     * @param showWorkingCopy Should the working copy of the specified resource
+     *      be shown.
      */
-    public PreviewContentDialog(final String resourcePath) {
+    public PreviewContentDialog(final String resourcePath,
+                                final boolean showWorkingCopy) {
         super(Globals.uiConstants().preview());
 
         _previewFrame.setStyleName("ccc-Frame");
         DOM.setElementPropertyInt(_previewFrame.getElement(), "frameBorder", 0);
-        _previewFrame.setUrl(_contentServerBaseUrl+resourcePath);
+        _previewFrame.setUrl(
+            _contentServerBaseUrl
+            + resourcePath
+            + ((showWorkingCopy) ? "?wc" : ""));
 
         addButton(_cancel);
         add(_previewFrame);

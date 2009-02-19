@@ -10,7 +10,7 @@ import ccc.contentcreator.dialogs.PreviewContentDialog;
 import com.extjs.gxt.ui.client.data.ModelData;
 
 /**
- * TODO: Add Description for this type.
+ * Open a dialog to preview the selected resource.
  *
  * @author Civic Computing Ltd.
  */
@@ -21,14 +21,17 @@ public final class PreviewAction
     private final QueriesServiceAsync _queries = Globals.queriesService();
 
     private final SingleSelectionModel _selectionModel;
+    private final boolean _useWorkingCopy;
 
     /**
      * Constructor.
      *
      * @param selectionModel
      */
-    public PreviewAction(final SingleSelectionModel selectionModel) {
+    public PreviewAction(final SingleSelectionModel selectionModel,
+                         final boolean useWorkingCopy) {
         _selectionModel = selectionModel;
+        _useWorkingCopy = useWorkingCopy;
     }
 
     /** {@inheritDoc} */
@@ -38,7 +41,7 @@ public final class PreviewAction
             item.<String>get("id"),
             new ErrorReportingCallback<String>() {
                 public void onSuccess(final String path) {
-                    new PreviewContentDialog(path).show();
+                    new PreviewContentDialog(path, _useWorkingCopy).show();
                 }
             }
         );
