@@ -27,6 +27,7 @@ import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
+import ccc.domain.User;
 import ccc.services.DataManager;
 
 
@@ -38,6 +39,32 @@ import ccc.services.DataManager;
 public class DefaultRendererTest
     extends
         TestCase {
+
+    /**
+     * Test.
+     */
+    public void testRenderWorkingCopyChecksRespectVisibility() {
+
+        // ARRANGE
+        final Renderer rr =
+            new DefaultRenderer(_dm, true);
+
+        final Page p = new Page("foo");
+        p.publish(new User("aaaa"));
+        p.addParagraph(Paragraph.fromText("bar", "baz"));
+        p.createWorkingCopy();
+        p.workingCopy().set(
+            "paragraphs",
+            Collections.singletonList(
+                Paragraph.fromText("some", "other value").createSnapshot()));
+
+        // ACT
+        final Response r = rr.renderWorkingCopy(p);
+
+        // ASSERT
+        assertEquals(1, p.paragraphs().size());
+        assertEquals("baz", p.paragraph("bar").text());
+    }
 
     /**
      * Test.

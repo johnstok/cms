@@ -41,6 +41,7 @@ public class DefaultObjectFactoryTest
         assertTrue("Should be true.", _factory.getRespectVisibility());
     }
 
+
     /**
      * Test.
      */
@@ -55,6 +56,7 @@ public class DefaultObjectFactoryTest
         // ASSERT
         assertFalse("Should be false.", _factory.getRespectVisibility());
     }
+
 
     /**
      * Test.
@@ -72,6 +74,7 @@ public class DefaultObjectFactoryTest
         assertTrue("Should be true.", _factory.getRespectVisibility());
     }
 
+
     /**
      * Test.
      */
@@ -86,6 +89,7 @@ public class DefaultObjectFactoryTest
         // ASSERT
         assertTrue("Should be true.", _factory.getRespectVisibility());
     }
+
 
     /**
      * Test.
@@ -102,6 +106,7 @@ public class DefaultObjectFactoryTest
         assertTrue("Should be true.", _factory.getRespectVisibility());
     }
 
+
     /**
      * Test.
      */
@@ -116,6 +121,7 @@ public class DefaultObjectFactoryTest
         // ASSERT
         assertTrue("Should be true.", _factory.getRespectVisibility());
     }
+
 
     /**
      * Test.
@@ -134,7 +140,6 @@ public class DefaultObjectFactoryTest
         // ASSERT
         verify(_registry);
     }
-
 
 
     /** {@inheritDoc} */
