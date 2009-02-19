@@ -363,4 +363,10 @@ public class CommandsEJB
             }
         }
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public void clearWorkingCopy(final String pageId) {
+        _page.clearWorkingCopy(UUID.fromString(pageId));
+    }
 }

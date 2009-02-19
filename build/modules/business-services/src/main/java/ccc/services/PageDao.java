@@ -56,4 +56,10 @@ public interface PageDao {
      */
     void create(UUID id, Page page);
 
+    /**
+     * Delete a page's working copy.
+     *
+     * @param id The page's id.
+     */
+    void clearWorkingCopy(UUID id);
 }

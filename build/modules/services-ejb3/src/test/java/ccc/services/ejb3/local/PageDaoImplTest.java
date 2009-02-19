@@ -34,6 +34,26 @@ public class PageDaoImplTest
     /**
      * Test.
      */
+    public void testClearWorkingCopy() {
+
+        // ARRANGE
+        final Page p = new Page("foo");
+        p.createWorkingCopy();
+
+        expect(_dao.findLocked(Page.class, p.id())).andReturn(p);
+        replay(_dao);
+
+        // ACT
+        _cm.clearWorkingCopy(p.id());
+
+        // ASSERT
+        verify(_dao);
+        assertNull(p.workingCopy());
+    }
+
+    /**
+     * Test.
+     */
     public void testUpdatePage() {
 
         // ARRANGE

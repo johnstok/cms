@@ -66,6 +66,8 @@ public interface CommandServiceAsync {
 
     void updateFolderSortOrder(String folderId, String sortOrder, AsyncCallback<Void> callback);
 
+    public void clearWorkingCopy(String pageId, AsyncCallback<Void> callback);
+
 
 
     void createAlias(String parentId, String name, String targetId, AsyncCallback<ResourceSummary> callback);

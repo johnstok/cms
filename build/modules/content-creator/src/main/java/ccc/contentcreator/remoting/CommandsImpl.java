@@ -201,4 +201,10 @@ public class CommandsImpl
                                       final String sortOrder) {
         _delegate.updateFolderSortOrder(folderId, sortOrder);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public void clearWorkingCopy(final String pageId) {
+        _delegate.clearWorkingCopy(pageId);
+    }
 }

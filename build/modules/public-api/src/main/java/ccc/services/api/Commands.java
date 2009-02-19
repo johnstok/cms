@@ -146,6 +146,13 @@ public interface Commands {
     public List<String> validateFields(final List<ParagraphDelta> delta,
                                        final String definition);
 
+    /**
+     * Delete the working copy for a page.
+     *
+     * @param pageId The id of the page with a working copy.
+     */
+    public void clearWorkingCopy(String pageId);
+
 
 
 
