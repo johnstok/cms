@@ -85,10 +85,12 @@ public class DefaultRenderer
     /** {@inheritDoc} */
     @Override
     public Response renderWorkingCopy(final Resource resource) {
-        if (resource instanceof Page) {
-            final Page p = (Page) resource;
-            if (null!=p.workingCopy()) {
-                p.applySnapshot(p.workingCopy());
+        if (!_respectVisibility) {
+            if (resource instanceof Page) {
+                final Page p = (Page) resource;
+                if (null!=p.workingCopy()) {
+                    p.applySnapshot(p.workingCopy());
+                }
             }
         }
         return render(resource);
