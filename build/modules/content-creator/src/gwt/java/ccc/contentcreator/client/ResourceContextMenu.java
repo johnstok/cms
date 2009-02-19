@@ -83,6 +83,7 @@ public class ResourceContextMenu
     private final Action _previewAction;
     private final Action _updateSortAction;
     private final Action _clearWorkingCopyAction;
+    private final Action _previewWorkingCopyAction;
 
 
     /**
@@ -107,9 +108,10 @@ public class ResourceContextMenu
         _moveAction = new MoveAction(_table, _table.root());
         _unlockAction = new UnlockAction(_table);
         _lockAction = new LockAction(_table);
-        _previewAction = new PreviewAction(_table);
+        _previewAction = new PreviewAction(_table, false);
         _updateSortAction = new UpdateSortOrderAction(_table);
         _clearWorkingCopyAction = new ClearWorkingCopyAction(_table);
+        _previewWorkingCopyAction = new PreviewAction(_table, true);
 
         setWidth(CONTEXT_MENU_WIDTH);
 
@@ -164,6 +166,7 @@ public class ResourceContextMenu
                         if (item.<Boolean>get("workingCopy")) {
                             add(new SeparatorMenuItem());
                             addDeleteWorkingCopy();
+                            addPreviewWorkingCopy();
                         }
                     }
                 }
@@ -412,5 +415,12 @@ public class ResourceContextMenu
             "delete-workingCopy",  // TODO: I18n
             "Delete working copy",
             _clearWorkingCopyAction);
+    }
+
+    private void addPreviewWorkingCopy() {
+        addMenuItem(
+            "preview-workingCopy",  // TODO: I18n
+            "Preview working copy",
+            _previewWorkingCopyAction);
     }
 }
