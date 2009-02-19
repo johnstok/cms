@@ -715,10 +715,82 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
     String isNotValidDate();
 
     /**
-     * "Working copy"
+     * "Working copy".
      *
      * @return The constant, in the appropriate locale.
      */
     @DefaultStringValue("Working copy")
     String workingCopy();
+
+    /**
+     * "Major edit".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Major edit")
+    String majorEdit();
+
+    /**
+     * "Comment".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Comment")
+    String comment();
+
+    /**
+     * "Page edit comment".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Page edit comment")
+    String pageEditComment();
+
+    /**
+     * "View history".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("View history")
+    String viewHistory();
+
+    /**
+     * "Delete working copy".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Delete working copy")
+    String deleteWorkingCopy();
+
+    /**
+     * "Preview working copy".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Preview working copy")
+    String previewWorkingCopy();
+
+    /**
+     * "Unlock".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Unlock")
+    String unlock();
+
+    /**
+     * "Lock".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Lock")
+    String lock();
+
+    /**
+     * "Template cannot be chosen for this resource.".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Template cannot be chosen for this resource.")
+    String templateCannotBeChosen();
 }

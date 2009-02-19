@@ -260,8 +260,7 @@ public class ResourceContextMenu
                         }
                     );
                 } else {
-                    Globals.alert(// TODO: I18n
-                        "Template cannot be chosen for this resource.");
+                    Globals.alert(_constants.templateCannotBeChosen());
                 }
             }
         });
@@ -358,7 +357,7 @@ public class ResourceContextMenu
     private void addLockResource() {
         addMenuItem(
             "lock-resource",
-            "Lock", // TODO: I18n
+            _constants.lock(),
             _lockAction);
     }
 
@@ -366,7 +365,7 @@ public class ResourceContextMenu
     private void addUnlockResource() {
         addMenuItem(
             "unlock-resource",
-            "Unlock", // TODO: I18n
+            _constants.unlock(),
             _unlockAction);
     }
 
@@ -398,7 +397,7 @@ public class ResourceContextMenu
     private void addViewHistory() {
         addMenuItem(
             "view-history",
-            "View history", // TODO: I18n
+            _constants.viewHistory(),
             _viewHistory);
     }
 
@@ -412,15 +411,15 @@ public class ResourceContextMenu
 
     private void addDeleteWorkingCopy() {
         addMenuItem(
-            "delete-workingCopy",  // TODO: I18n
-            "Delete working copy",
+            "delete-workingCopy",
+            _constants.deleteWorkingCopy(),
             _clearWorkingCopyAction);
     }
 
     private void addPreviewWorkingCopy() {
         addMenuItem(
-            "preview-workingCopy",  // TODO: I18n
-            "Preview working copy",
+            "preview-workingCopy",
+            _constants.previewWorkingCopy(),
             _previewWorkingCopyAction);
     }
 }
