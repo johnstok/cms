@@ -154,4 +154,11 @@ public class PageDaoImpl implements PageDao {
         return errors;
 
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public void clearWorkingCopy(final UUID id) {
+        final Page page = _dao.findLocked(Page.class, id);
+        page.clearWorkingCopy();
+    }
 }
