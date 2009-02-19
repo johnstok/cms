@@ -271,4 +271,11 @@ public final class QueriesEJB
             _resources.find(Resource.class, UUID.fromString(resourceId));
         return r.metadata();
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public PageDelta workingCopyDelta(final String pageId) {
+        final Page p = _resources.find(Page.class, UUID.fromString(pageId));
+        return workingCopyDelta(p);
+    }
 }

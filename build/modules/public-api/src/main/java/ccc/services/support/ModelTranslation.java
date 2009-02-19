@@ -337,4 +337,19 @@ public class ModelTranslation {
         }
         return mapped;
     }
+
+    /**
+     * Merge page and its working copy to a page delta.
+     *
+     * @param page The page to process.
+     * @return Merged page delta.
+     */
+    protected PageDelta workingCopyDelta(final Page page) {
+        if (page.workingCopy() == null) {
+            page.createWorkingCopy();
+        }
+        page.applySnapshot(page.workingCopy());
+
+        return delta(page);
+    }
 }

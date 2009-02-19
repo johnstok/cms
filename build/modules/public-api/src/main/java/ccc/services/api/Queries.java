@@ -184,4 +184,13 @@ public interface Queries {
     ResourceDelta folderDelta(String folderId);
     ResourceDelta resourceDelta(String resourceId);
     FileDelta fileDelta(String fileId);
+
+
+    /**
+     * Merge page and its working copy to a page delta.
+     *
+     * @param pageId The id of the resource.
+     * @return Page delta of the merge of page and working copy.
+     */
+    PageDelta workingCopyDelta(String pageId);
 }
