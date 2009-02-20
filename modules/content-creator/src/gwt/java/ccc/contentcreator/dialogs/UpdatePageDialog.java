@@ -53,19 +53,6 @@ public class UpdatePageDialog
     private TemplateDelta _template;
     private final ResourceTable _rt;
 
-    private final AsyncCallback<Void> _applyNowCompletedCallback =
-        new AsyncCallback<Void>() {
-            public void onFailure(final Throwable arg0) {
-                Globals.unexpectedError(arg0);
-            }
-            public void onSuccess(final Void arg0) {
-                ModelData md = rt().tableSelection();
-                md.set("title", _page._title);
-                md.set("workingCopy", Boolean.FALSE);
-                rt().update(md);
-                close();
-            }
-        };
 
         private final AsyncCallback<Void> _saveDraftCompletedCallback =
             new AsyncCallback<Void>() {
@@ -171,7 +158,9 @@ public class UpdatePageDialog
             @SuppressWarnings("unchecked")
             public void run() {
                 _page._title = panel().title().getValue();
-                commands().updatePage(_page, applyNowCompletedCallback());
+                final PageCommentDialog commentDialog =
+                    new PageCommentDialog(_page, UpdatePageDialog.this);
+                commentDialog.show();
             }
         };
     }
@@ -226,14 +215,6 @@ public class UpdatePageDialog
         return _panel;
     }
 
-    /**
-     * Accessor.
-     *
-     * @return Returns the _applyNowCompletedCallback.
-     */
-    protected AsyncCallback<Void> applyNowCompletedCallback() {
-        return _applyNowCompletedCallback;
-    }
 
     /**
      * Accessor.

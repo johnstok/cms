@@ -263,8 +263,6 @@ public class CommandsEJB
     }
 
 
-
-
     /** {@inheritDoc} */
     @Override
     public void updateResourceTemplate(final String resourceId,
