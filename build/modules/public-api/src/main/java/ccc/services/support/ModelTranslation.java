@@ -25,6 +25,7 @@ import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.ResourceType;
+import ccc.domain.Snapshot;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.api.AliasDelta;
@@ -345,11 +346,22 @@ public class ModelTranslation {
      * @return Merged page delta.
      */
     protected PageDelta workingCopyDelta(final Page page) {
-        if (page.workingCopy() == null) {
-            page.createWorkingCopy();
-        }
-        page.applySnapshot(page.workingCopy());
+        final PageDelta delta = delta(page);
 
-        return delta(page);
+        if (page.workingCopy() != null) {
+            final Snapshot ss = page.workingCopy();
+            delta._title = ss.getString("title");
+            delta._paragraphs.clear();
+            for(final Snapshot s : ss.getSnapshots("paragraphs")) {
+                final Paragraph p = Paragraph.fromSnapshot(s);
+                final ParagraphDelta pDelta = new ParagraphDelta();
+                pDelta ._name = p.name();
+                pDelta._type = p.type().name();
+                pDelta._textValue = p.text();
+                pDelta._dateValue = p.date();
+                delta._paragraphs.add(pDelta);
+            }
+        }
+        return delta;
     }
 }
