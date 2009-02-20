@@ -32,7 +32,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public interface CommandServiceAsync {
 
-    void updatePage(PageDelta delta, AsyncCallback<Void> callback);
+    void updatePage(PageDelta delta, String comment, boolean isMajorEdit, AsyncCallback<Void> callback);
 
     void updateWorkingCopy(PageDelta delta, AsyncCallback<Void> callback);
 

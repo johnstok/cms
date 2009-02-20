@@ -200,6 +200,15 @@ public interface ResourceDao {
      * Notify the DAO that a resource has been updated (generates a log entry).
      *
      * @param resource The resource that was updated.
+     * @param comment The comment for the edit.
+     * @param isMajorEdit The major edit boolean.
+     */
+    void update(Resource resource, String comment, boolean isMajorEdit);
+
+    /**
+     * Notify the DAO that a resource has been updated (generates a log entry).
+     *
+     * @param resource The resource that was updated.
      */
     void update(Resource resource);
 

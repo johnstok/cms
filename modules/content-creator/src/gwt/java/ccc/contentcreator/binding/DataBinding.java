@@ -36,7 +36,7 @@ import com.extjs.gxt.ui.client.data.ModelData;
 public class DataBinding {
 
     /** SUMMARY : String. */
-    public static final String SUMMARY = "summary";
+    public static final String COMMENT = "comment";
     /** HAPPENED_ON : String. */
     public static final String HAPPENED_ON = "happenedOn";
     /** ACTOR : String. */
@@ -96,7 +96,7 @@ public class DataBinding {
             md.set(ACTION, les._action);
             md.set(ACTOR, les._actor);
             md.set(HAPPENED_ON, new Date(les._happenedOn));
-            md.set(SUMMARY, les._summary);
+            md.set(COMMENT, les._comment);
             boundData.add(md);
         }
         return boundData;

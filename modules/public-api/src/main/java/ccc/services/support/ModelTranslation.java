@@ -132,7 +132,7 @@ public class ModelTranslation {
         les._action = le.action().name();
         les._actor = le.actor().username();
         les._happenedOn = le.happenedOn().getTime();
-        les._summary = le.summary();
+        les._comment = le.comment();
         return les;
     }
 

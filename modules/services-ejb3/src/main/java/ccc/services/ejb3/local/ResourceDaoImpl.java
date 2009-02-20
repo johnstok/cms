@@ -223,6 +223,14 @@ public class ResourceDaoImpl implements ResourceDao {
 
     /** {@inheritDoc} */
     @Override
+    public void update(final Resource resource,
+                       final String comment,
+                       final boolean isMajorEdit) {
+        _audit.recordUpdate(resource, comment, isMajorEdit);
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public void update(final Resource resource) {
         _audit.recordUpdate(resource);
     }

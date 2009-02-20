@@ -40,7 +40,7 @@ public class LogEntryTest
         // ASSERT
         assertEquals(p.id(), le.subjectId());
         assertEquals(p.type(), le.subjectType());
-        assertEquals("Renamed resource to 'foo'.", le.summary());
+        assertEquals("Renamed resource to 'foo'.", le.comment());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
@@ -65,7 +65,7 @@ public class LogEntryTest
         assertEquals(p.id(), le.subjectId());
         assertEquals(p.type(), le.subjectType());
         assertEquals("Moved resource to parent: "
-            +f.absolutePath()+".", le.summary());
+            +f.absolutePath()+".", le.comment());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
@@ -88,7 +88,7 @@ public class LogEntryTest
         // ASSERT
         assertEquals(p.id(), le.subjectId());
         assertEquals(p.type(), le.subjectType());
-        assertEquals("Created.", le.summary());
+        assertEquals("Created.", le.comment());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
@@ -106,12 +106,13 @@ public class LogEntryTest
         final Page p = new Page("foo");
 
         // ACT
-        final LogEntry le = LogEntry.forUpdate(p, _actor, _happenedOn);
+        final LogEntry le =
+            LogEntry.forUpdate(p, _actor, _happenedOn, "Updated.", true);
 
         // ASSERT
         assertEquals(p.id(), le.subjectId());
         assertEquals(p.type(), le.subjectType());
-        assertEquals("Updated.", le.summary());
+        assertEquals("Updated.", le.comment());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
@@ -134,7 +135,7 @@ public class LogEntryTest
         // ASSERT
         assertEquals(p.id(), le.subjectId());
         assertEquals(p.type(), le.subjectType());
-        assertEquals("Template changed.", le.summary());
+        assertEquals("Template changed.", le.comment());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
@@ -159,7 +160,7 @@ public class LogEntryTest
         // ASSERT
         assertEquals(p.id(), le.subjectId());
         assertEquals(p.type(), le.subjectType());
-        assertEquals("Locked.", le.summary());
+        assertEquals("Locked.", le.comment());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
@@ -184,7 +185,7 @@ public class LogEntryTest
         // ASSERT
         assertEquals(p.id(), le.subjectId());
         assertEquals(p.type(), le.subjectType());
-        assertEquals("Unlocked.", le.summary());
+        assertEquals("Unlocked.", le.comment());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());

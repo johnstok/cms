@@ -52,7 +52,7 @@
             not-null="true"
             type="ccc.services.ejb3.support.UUIDUserType" />
         <property
-            name="_summary"
+            name="_comment"
             not-null="true"
             type="string"
             length="1024"/>
@@ -74,6 +74,10 @@
             update="false"
             insert="false" 
             generated="insert"/>
+        <property
+            name="_isMajorEdit"
+            not-null="false"
+            type="boolean"/>
     </class>
     
     <query name="resourceHistory">from ccc.domain.LogEntry le where le._subjectId=?</query><!-- order by? -->

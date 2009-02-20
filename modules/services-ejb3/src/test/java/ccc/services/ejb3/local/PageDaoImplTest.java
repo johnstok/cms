@@ -61,7 +61,7 @@ public class PageDaoImplTest
         page.addParagraph(Paragraph.fromText("abc", "def"));
 
         expect(_dao.findLocked(Page.class, page.id())).andReturn(page);
-        _dao.update(page);
+        _dao.update(page, "comment text", false);
         replay(_dao);
 
 
@@ -69,7 +69,8 @@ public class PageDaoImplTest
         _cm.update(
             page.id(),
             "new title",
-            Collections.singleton(Paragraph.fromText("foo", "bar")));
+            Collections.singleton(Paragraph.fromText("foo", "bar")),
+            "comment text", false);
 
 
         // ASSERT

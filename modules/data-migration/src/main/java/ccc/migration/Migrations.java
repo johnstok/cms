@@ -372,7 +372,7 @@ public class Migrations {
         final PageDelta d = assemblePage(r, rs._id, version);
 //        final String userId =
 //            determineActor(r.contentId(), version, "%", "MADE LIVE");
-        _commands.updatePage(d); // FIXME: Specify actor & date
+        _commands.updatePage(d, "Updated.", true); // FIXME: Specify actor & date
         _commands.unlock(rs._id);  // FIXME: Specify actor & date
         log.debug("Updated page: "+r.contentId());
     }

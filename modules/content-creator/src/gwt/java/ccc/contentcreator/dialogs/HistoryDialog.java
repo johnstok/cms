@@ -42,7 +42,7 @@ public class HistoryDialog
         super("Resource History", data); // TODO: I18n
 
         _dataStore.add(DataBinding.bindLogEntrySummary(_data));
-        _grid.setAutoExpandColumn("summary");
+        _grid.setAutoExpandColumn("comment");
     }
 
 
@@ -53,22 +53,27 @@ public class HistoryDialog
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
         final ColumnConfig actionColumn =
-            new ColumnConfig("action", "Action", 70);
+            new ColumnConfig("action", "Action", 70); // TODO i18n
         configs.add(actionColumn);
 
         final ColumnConfig userColumn =
-            new ColumnConfig("actor", "User", 100);
+            new ColumnConfig("actor", "User", 100); // TODO i18n
         configs.add(userColumn);
 
         final ColumnConfig timeColumn =
-            new ColumnConfig("happenedOn", "Time", 150);
+            new ColumnConfig("happenedOn", "Time", 150); // TODO i18n
         timeColumn.setDateTimeFormat(DateTimeFormat.getMediumDateTimeFormat());
         configs.add(timeColumn);
 
-        final ColumnConfig summaryColumn = new ColumnConfig();
-        summaryColumn.setId("summary");
-        summaryColumn.setHeader("Summary");
-        configs.add(summaryColumn);
+        final ColumnConfig commentColumn = new ColumnConfig();
+        commentColumn.setId("comment");
+        commentColumn.setHeader("Comment"); // TODO i18n
+        configs.add(commentColumn);
+
+        final ColumnConfig majorEditColumn = new ColumnConfig();
+        majorEditColumn.setId("isMajorEdit");
+        majorEditColumn.setHeader("Major edit"); // TODO i18n
+        configs.add(majorEditColumn);
 
         final ColumnModel cm = new ColumnModel(configs);
         return cm;

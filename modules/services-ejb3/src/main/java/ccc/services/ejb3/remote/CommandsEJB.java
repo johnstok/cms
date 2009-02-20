@@ -230,7 +230,9 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public void updatePage(final PageDelta delta) {
+    public void updatePage(final PageDelta delta,
+                           final String comment,
+                           final boolean isMajorEdit) {
 
         final Page page = new Page(
             ResourceName.escape(delta._name),
@@ -241,7 +243,7 @@ public class CommandsEJB
 
         _page.update(UUID.fromString(delta._id),
                      delta._title,
-                     page.paragraphs());
+                     page.paragraphs(), comment, isMajorEdit);
 
     }
 
