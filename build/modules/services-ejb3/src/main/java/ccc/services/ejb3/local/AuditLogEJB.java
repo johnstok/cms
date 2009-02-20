@@ -102,10 +102,27 @@ public class AuditLogEJB
 
     /** {@inheritDoc} */
     @Override
+    public void recordUpdate(final Resource resource,
+                             final String comment,
+                             final boolean isMajorEdit) {
+        DBC.require().notNull(resource);
+        final LogEntry le = LogEntry.forUpdate(
+            resource,
+            _um.loggedInUser(),
+            new Date(),
+            comment,
+            isMajorEdit);
+        _em.persist(le);
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public void recordUpdate(final Resource resource) {
         DBC.require().notNull(resource);
-        final LogEntry le =
-            LogEntry.forUpdate(resource, _um.loggedInUser(), new Date());
+        final LogEntry le = LogEntry.forUpdate(
+            resource,
+            _um.loggedInUser(),
+            new Date());
         _em.persist(le);
     }
 

@@ -109,7 +109,7 @@ public class AuditLogEJBTest
         assertEquals(LogEntry.Action.CREATE, le.getValue().action());
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
-        assertEquals("Created.", le.getValue().summary());
+        assertEquals("Created.", le.getValue().comment());
     }
 
     /**
@@ -136,7 +136,7 @@ public class AuditLogEJBTest
         assertEquals(LogEntry.Action.CHANGE_TEMPLATE, le.getValue().action());
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
-        assertEquals("Template changed.", le.getValue().summary());
+        assertEquals("Template changed.", le.getValue().comment());
     }
 
     /**
@@ -156,14 +156,14 @@ public class AuditLogEJBTest
         final Page p = new Page("foo");
 
         // ACT
-        al.recordUpdate(p);
+        al.recordUpdate(p, "Updated.", true);
 
         // ASSERT
         verify(_em, _um);
         assertEquals(LogEntry.Action.UPDATE, le.getValue().action());
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
-        assertEquals("Updated.", le.getValue().summary());
+        assertEquals("Updated.", le.getValue().comment());
     }
 
     /**
@@ -193,7 +193,7 @@ public class AuditLogEJBTest
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
         assertEquals("Moved resource to parent: "+f.absolutePath()+".",
-            le.getValue().summary());
+            le.getValue().comment());
     }
 
     /**
@@ -221,7 +221,7 @@ public class AuditLogEJBTest
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
         assertEquals("Renamed resource to '"+p.name().toString()+"'.",
-            le.getValue().summary());
+            le.getValue().comment());
     }
 
 

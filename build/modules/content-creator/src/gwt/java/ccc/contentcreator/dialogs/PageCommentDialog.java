@@ -32,6 +32,8 @@ public class PageCommentDialog extends AbstractEditDialog {
     private final UIConstants _constants = Globals.uiConstants();
     private PageDelta _page;
     private UpdatePageDialog _updatePageDialog;
+    private CheckBox _majorEdit = new CheckBox();
+    private TextArea _comment = new TextArea();
 
     private final AsyncCallback<Void> _applyNowCompletedCallback =
         new AsyncCallback<Void>() {
@@ -51,8 +53,8 @@ public class PageCommentDialog extends AbstractEditDialog {
 
     /**
      * Constructor.
-     * @param updatePageDialog
-     * @param _page
+     * @param page The page being edited.
+     * @param updatePageDialog The parent dialog.
      *
      */
     public PageCommentDialog(final PageDelta page,
@@ -62,20 +64,18 @@ public class PageCommentDialog extends AbstractEditDialog {
         _updatePageDialog = updatePageDialog;
         setModal(true);
         setBodyStyle("backgroundColor: white;");
-        setHeading("FIXME");
+        setHeading(_constants.editComment());
         setWidth(400);
         setHeight(300);
 
-        final CheckBox majorEdit = new CheckBox();
-        majorEdit.setId("majorEdit");
-        majorEdit.setValue(false);
-        majorEdit.setBoxLabel(_constants.yes());
-        majorEdit.setFieldLabel(_constants.majorEdit());
-        addField(majorEdit);
+        _majorEdit.setId("majorEdit");
+        _majorEdit.setValue(false);
+        _majorEdit.setBoxLabel(_constants.yes());
+        _majorEdit.setFieldLabel(_constants.majorEdit());
+        addField(_majorEdit);
 
-        final TextArea comment = new TextArea();
-        comment.setFieldLabel(_constants.comment());
-        addField(comment);
+        _comment.setFieldLabel(_constants.comment());
+        addField(_comment);
     }
 
     /** {@inheritDoc} */
@@ -84,7 +84,11 @@ public class PageCommentDialog extends AbstractEditDialog {
         return new SelectionListener<ButtonEvent>() {
             @Override
             public void componentSelected(final ButtonEvent ce) {
-              commands().updatePage(_page, applyNowCompletedCallback());
+              commands().updatePage(
+                  _page,
+                  _comment.getValue(),
+                  _majorEdit.getValue(),
+                  applyNowCompletedCallback());
                     close();
             }
         };

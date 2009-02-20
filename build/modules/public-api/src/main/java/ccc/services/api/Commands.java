@@ -29,10 +29,13 @@ public interface Commands {
     /**
      * Update the specified page on the server.
      */
-    void updatePage(PageDelta delta) throws CCCRemoteException;
+    void updatePage(PageDelta delta, String comment, boolean isMajorEdit)
+        throws CCCRemoteException;
 
-    // TODO javadoc
-    void updateWorkingCopy(PageDelta delta) throws CCCRemoteException;
+    /**
+     * Update the working copy of the specified page.
+     */
+    void updateWorkingCopy(PageDelta delta);
 
     /**
      * Update an alias' target.

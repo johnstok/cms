@@ -34,10 +34,14 @@ public interface PageDao {
      * @param newParagraphs The new paragraphs for the page. All existing
      *      paragraphs will be removed and replaced with the paragraphs
      *      specified here.
+     * @param comment The comment for the page edit.
+     * @param isMajorEdit A boolean for major edit.
      */
     void update(UUID id,
                 String newTitle,
-                Set<Paragraph> newParagraphs);
+                Set<Paragraph> newParagraphs,
+                final String comment,
+                final boolean isMajorEdit);
 
     /**
      * Updates the working copy. Creates working copy in case page does

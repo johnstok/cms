@@ -793,4 +793,12 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Template cannot be chosen for this resource.")
     String templateCannotBeChosen();
+
+    /**
+     * "Edit comment".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Edit comment")
+    String editComment();
 }

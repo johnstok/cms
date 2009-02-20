@@ -49,6 +49,13 @@ public interface AuditLog {
      *
      * @param resource The resource that was updated.
      */
+    void recordUpdate(Resource resource, final String comment, final boolean isMajorEdit);
+
+    /**
+     * Record that a resource was updated.
+     *
+     * @param resource The resource that was updated.
+     */
     void recordUpdate(Resource resource);
 
     /**

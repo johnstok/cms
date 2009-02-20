@@ -73,7 +73,9 @@ public class PageDaoImpl implements PageDao {
     @Override
     public void update(final UUID id,
                        final String newTitle,
-                       final Set<Paragraph> newParagraphs) {
+                       final Set<Paragraph> newParagraphs,
+                       final String comment,
+                       final boolean isMajorEdit) {
 
         final Page page = _dao.findLocked(Page.class, id);
 
@@ -94,7 +96,7 @@ public class PageDaoImpl implements PageDao {
         if (template != null) {
             validateFieldsForPage(newParagraphs, template.definition());
         }
-        _dao.update(page);
+        _dao.update(page, comment, isMajorEdit);
     }
 
     /** {@inheritDoc} */

@@ -34,8 +34,9 @@ public class LogEntry extends Entity {
     private Date         _happenedOn;
     private ResourceType _subjectType;
     private UUID         _subjectId;
-    private String       _summary;
+    private String       _comment;
     private String       _detail;
+    private boolean      _isMajorEdit;
 
     /** Valid actions for a log entry. */
     public static enum Action {
@@ -78,7 +79,7 @@ public class LogEntry extends Entity {
 
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = Action.RENAME;
-        le._summary = "Renamed resource to '"+resource.name()+"'.";
+        le._comment = "Renamed resource to '"+resource.name()+"'.";
         return le;
     }
 
@@ -98,7 +99,7 @@ public class LogEntry extends Entity {
 
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = Action.MOVE;
-        le._summary = "Moved resource to parent: "
+        le._comment = "Moved resource to parent: "
             +resource.parent().absolutePath()+".";
         return le;
     }
@@ -118,7 +119,7 @@ public class LogEntry extends Entity {
 
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = Action.UNLOCK;
-        le._summary = "Unlocked.";
+        le._comment = "Unlocked.";
         return le;
     }
 
@@ -137,7 +138,7 @@ public class LogEntry extends Entity {
 
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = Action.LOCK;
-        le._summary = "Locked.";
+        le._comment = "Locked.";
         return le;
     }
 
@@ -156,11 +157,34 @@ public class LogEntry extends Entity {
 
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = Action.CREATE;
-        le._summary = "Created.";
+        le._comment = "Created.";
         return le;
     }
 
 
+
+    /**
+     * Create a log entry for the update of a resource.
+     *
+     * @param resource The resource that was updated.
+     * @param actor The actor that performed the action.
+     * @param happenedOn The date that the actor performed the action.
+     * @param comment The comment from the user.
+     * @param isMajorEdit A boolean for major edit.
+     * @return The log entry representing the action.
+     */
+    public static LogEntry forUpdate(final Resource resource,
+                                     final User actor,
+                                     final Date happenedOn,
+                                     final String comment,
+                                     final boolean isMajorEdit) {
+
+        final LogEntry le = createEntry(resource, actor, happenedOn);
+        le._action = Action.UPDATE;
+        le._comment = comment;
+        le._isMajorEdit = isMajorEdit;
+        return le;
+    }
 
     /**
      * Create a log entry for the update of a resource.
@@ -176,7 +200,7 @@ public class LogEntry extends Entity {
 
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = Action.UPDATE;
-        le._summary = "Updated.";
+        le._comment = "Updated.";
         return le;
     }
 
@@ -195,7 +219,7 @@ public class LogEntry extends Entity {
 
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = Action.CHANGE_TEMPLATE;
-        le._summary = "Template changed.";
+        le._comment = "Template changed.";
         return le;
     }
 
@@ -213,7 +237,7 @@ public class LogEntry extends Entity {
 
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = Action.PUBLISH;
-        le._summary = "Published.";
+        le._comment = "Published.";
         return le;
     }
 
@@ -231,7 +255,7 @@ public class LogEntry extends Entity {
 
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = Action.UNPUBLISH;
-        le._summary = "Unpublished.";
+        le._comment = "Unpublished.";
         return le;
     }
 
@@ -244,7 +268,8 @@ public class LogEntry extends Entity {
         s.date("happenedOn", _happenedOn);
         s.string("resourceType", _subjectType.name());
         s.string("subjectId", _subjectId.toString());
-        s.string("summary", _summary);
+        s.string("comment", _comment);
+        s.string("isMajorEdit", (_isMajorEdit ? "true" : "false")); // TODO check this
     }
 
 
@@ -339,10 +364,10 @@ public class LogEntry extends Entity {
     /**
      * Accessor.
      *
-     * @return A summary of the action that was performed, as a string.
+     * @return A comment of the action that was performed, as a string.
      */
-    public String summary() {
-        return _summary;
+    public String comment() {
+        return _comment;
     }
 
 
@@ -353,5 +378,14 @@ public class LogEntry extends Entity {
      */
     public String detail() {
         return _detail;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return Is major edit?
+     */
+    public boolean isMajorEdit() {
+        return _isMajorEdit;
     }
 }

@@ -131,8 +131,10 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updatePage(final PageDelta delta) {
-        _delegate.updatePage(delta);
+    public void updatePage(final PageDelta delta,
+                           final String comment,
+                           final boolean isMajorEdit) {
+        _delegate.updatePage(delta, comment, isMajorEdit);
     }
 
     /** {@inheritDoc} */
