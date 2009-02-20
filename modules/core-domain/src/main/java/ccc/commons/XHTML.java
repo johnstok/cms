@@ -219,8 +219,9 @@ public final class XHTML {
      * @return The results of evaluating the expression, as a String. See
      *      {@link XPath#evaluate(String, Object)} for further details.
      */
-    public static NodeList evaluateXPath_(final InputStream page,
-                                      final String xpathExpression) {
+    public static NodeList evaluateXPathToNodeList(
+                                                 final InputStream page,
+                                                 final String xpathExpression) {
 
         try {
             final DocumentBuilder builder =

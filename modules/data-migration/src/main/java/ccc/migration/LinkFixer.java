@@ -43,7 +43,7 @@ public class LinkFixer {
             log.debug(para.getValue());
             try {
                 final NodeList l =
-                    XHTML.evaluateXPath_(
+                    XHTML.evaluateXPathToNodeList(
                         new ByteArrayInputStream(html.getBytes()),
                     "//xhtml:a");
                 for(int i=0; i<l.getLength(); i++) {
