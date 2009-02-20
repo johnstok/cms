@@ -48,7 +48,6 @@ public class Snapshot {
 
     /**
      * Constructor.
-     *
      */
     public Snapshot() {
         _detail = new JSONObject();
@@ -66,20 +65,20 @@ public class Snapshot {
     }
 
     /**
-     * Accessor.
+     * Get the internal state of the snapshot.
      *
-     * @return The snapshot's detail, as a string.
+     * @return The snapshot's state, as JSON a string.
      */
     public String getDetail() {
         return _detail.toString();
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Set the internal state of the snapshot from a JSON string.
      *
-     * @param detail
+     * @param detail The JSON string.
      */
-    void setDetail(final String detail) {
+    void setDetail(final String detail) { // FIXME: Should be private.
         DBC.require().notNull(detail);
         try {
             _detail = new JSONObject(detail);
@@ -89,10 +88,10 @@ public class Snapshot {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Mutator.
      *
-     * @param key
-     * @param value
+     * @param key The key.
+     * @param value The value, as a string.
      */
     public void set(final String key, final String value) {
         try {
@@ -103,10 +102,10 @@ public class Snapshot {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Mutator.
      *
-     * @param key
-     * @param snapshots
+     * @param key The key.
+     * @param snapshots The value, as a collection of snapshots.
      */
     public void set(final String key, final Collection<Snapshot> snapshots) {
         try {
@@ -120,10 +119,10 @@ public class Snapshot {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Mutator.
      *
-     * @param key
-     * @param bool
+     * @param key The key.
+     * @param bool The value, as a boolean.
      */
     public void set(final String key, final Boolean bool) {
         try {
@@ -134,24 +133,25 @@ public class Snapshot {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Mutator.
      *
-     * @param key
-     * @param date
+     * @param key The key.
+     * @param date The value, as a date.
      */
     public void set(final String key, final Date date) {
         try {
-            _detail.put(key, (null==date) ? null : date.getTime());
+            _detail.put(
+                key, (null==date) ? null : Long.valueOf(date.getTime()));
         } catch (final JSONException e) {
             throw new InvalidSnapshotException(e);
         }
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @param key
-     * @return
+     * @param key The key for the value.
+     * @return The value, as a string.
      */
     public String getString(final String key) {
         try {
@@ -162,10 +162,10 @@ public class Snapshot {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @param string
-     * @return
+     * @param key The key for the value.
+     * @return The value, as a collection of snapshots.
      */
     public Collection<Snapshot> getSnapshots(final String key) {
         try {
@@ -183,10 +183,10 @@ public class Snapshot {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @param key
-     * @return
+     * @param key The key for the value.
+     * @return The value, as a Date.
      */
     public Date getDate(final String key) {
         try {
@@ -197,14 +197,14 @@ public class Snapshot {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @param key
-     * @return
+     * @param key The key for the value.
+     * @return The value, as a boolean.
      */
     public Boolean getBool(final String key) {
         try {
-            return _detail.getBoolean(key);
+            return Boolean.valueOf(_detail.getBoolean(key));
         } catch (final JSONException e) {
             throw new InvalidSnapshotException(e);
         }
