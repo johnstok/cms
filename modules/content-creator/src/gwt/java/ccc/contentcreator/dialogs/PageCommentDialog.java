@@ -75,6 +75,7 @@ public class PageCommentDialog extends AbstractEditDialog {
         addField(_majorEdit);
 
         _comment.setFieldLabel(_constants.comment());
+        _comment.setId("comment");
         addField(_comment);
     }
 
