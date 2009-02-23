@@ -16,6 +16,7 @@ import java.util.Collection;
 import java.util.List;
 
 import ccc.contentcreator.binding.DataBinding;
+import ccc.contentcreator.client.Globals;
 import ccc.services.api.LogEntrySummary;
 
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
@@ -39,7 +40,7 @@ public class HistoryDialog
      *  {@link LogEntrySummary}.
      */
     public HistoryDialog(final Collection<LogEntrySummary> data) {
-        super("Resource History", data); // TODO: I18n
+        super(Globals.uiConstants().resourceHistory(), data);
 
         _dataStore.add(DataBinding.bindLogEntrySummary(_data));
         _grid.setAutoExpandColumn("comment");
@@ -53,27 +54,26 @@ public class HistoryDialog
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
         final ColumnConfig actionColumn =
-            new ColumnConfig("action", "Action", 70); // TODO i18n
+            new ColumnConfig("action", _constants.action(), 70);
         configs.add(actionColumn);
 
         final ColumnConfig userColumn =
-            new ColumnConfig("actor", "User", 100); // TODO i18n
+            new ColumnConfig("actor", _constants.user(), 100);
         configs.add(userColumn);
 
         final ColumnConfig timeColumn =
-            new ColumnConfig("happenedOn", "Time", 150); // TODO i18n
+            new ColumnConfig("happenedOn", _constants.time(), 150);
         timeColumn.setDateTimeFormat(DateTimeFormat.getMediumDateTimeFormat());
         configs.add(timeColumn);
 
+        final ColumnConfig majorEditColumn =
+            new ColumnConfig("isMajorEdit", _constants.majorEdit(), 70);
+        configs.add(majorEditColumn);
+
         final ColumnConfig commentColumn = new ColumnConfig();
         commentColumn.setId("comment");
-        commentColumn.setHeader("Comment"); // TODO i18n
+        commentColumn.setHeader(_constants.comment());
         configs.add(commentColumn);
-
-        final ColumnConfig majorEditColumn = new ColumnConfig();
-        majorEditColumn.setId("isMajorEdit");
-        majorEditColumn.setHeader("Major edit"); // TODO i18n
-        configs.add(majorEditColumn);
 
         final ColumnModel cm = new ColumnModel(configs);
         return cm;

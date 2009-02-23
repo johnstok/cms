@@ -36,7 +36,7 @@ public abstract class AbstractBaseDialog
     extends
         Window {
 
-    private final UIConstants _constants = Globals.uiConstants();
+    protected final UIConstants _constants = Globals.uiConstants();
 
     private final QueriesServiceAsync _qs = GWT.create(QueriesService.class);
     private final CommandServiceAsync _cs = GWT.create(CommandService.class);

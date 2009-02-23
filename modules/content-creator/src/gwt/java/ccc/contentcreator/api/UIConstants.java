@@ -801,4 +801,36 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Edit comment")
     String editComment();
+
+    /**
+     * "User".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("User")
+    String user();
+
+    /**
+     * "Time".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Time")
+    String time();
+
+    /**
+     * "Action".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Action")
+    String action();
+
+    /**
+     * "Resource history".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Resource history")
+    String resourceHistory();
 }
