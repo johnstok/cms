@@ -24,4 +24,5 @@ public class LogEntrySummary implements Serializable {
     public String _actor;
     public long _happenedOn;
     public String _comment;
+    public String _isMajorEdit;
 }

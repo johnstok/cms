@@ -81,6 +81,8 @@ public class DataBinding {
     public static final String MM_INCLUDE = "mmInclude";
     /** WORKING_COPY : String. */
     public static final String WORKING_COPY = "workingCopy";
+    /** IS_MAJOR_EDIT : String. */
+    public static final String IS_MAJOR_EDIT = "isMajorEdit";
 
     /**
      * TODO: Add a description of this method.
@@ -97,6 +99,7 @@ public class DataBinding {
             md.set(ACTOR, les._actor);
             md.set(HAPPENED_ON, new Date(les._happenedOn));
             md.set(COMMENT, les._comment);
+            md.set(IS_MAJOR_EDIT, les._isMajorEdit);
             boundData.add(md);
         }
         return boundData;

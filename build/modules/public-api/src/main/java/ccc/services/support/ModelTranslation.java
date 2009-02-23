@@ -133,6 +133,7 @@ public class ModelTranslation {
         les._actor = le.actor().username();
         les._happenedOn = le.happenedOn().getTime();
         les._comment = le.comment();
+        les._isMajorEdit = (le.isMajorEdit() ? "yes" : "no"); // TODO i18n
         return les;
     }
 
