@@ -181,7 +181,7 @@ public class LogEntry extends Entity {
 
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = Action.UPDATE;
-        le._comment = comment;
+        le._comment = (comment == null ? "Updated." : comment);
         le._isMajorEdit = isMajorEdit;
         return le;
     }
