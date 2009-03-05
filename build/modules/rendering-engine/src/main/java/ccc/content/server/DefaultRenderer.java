@@ -13,6 +13,7 @@
 package ccc.content.server;
 
 import java.nio.charset.Charset;
+import java.util.Map;
 
 import ccc.commons.DBC;
 import ccc.domain.Alias;
@@ -20,7 +21,9 @@ import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Resource;
+import ccc.domain.Search;
 import ccc.services.DataManager;
+import ccc.services.ISearch;
 
 /**
  * Default implementation of the {@link Renderer} interface.
@@ -32,6 +35,7 @@ public class DefaultRenderer
         Renderer {
 
     private final DataManager _dm;
+    private final ISearch _search;
     private final boolean _respectVisibility;
 
     /**
@@ -41,17 +45,21 @@ public class DefaultRenderer
      * @param respectVisiblity Should we check a resource's visibility?
      */
     public DefaultRenderer(final DataManager dm,
+                           final ISearch searchEngine,
                            final boolean respectVisiblity) {
         DBC.require().notNull(dm);
+        DBC.require().notNull(searchEngine);
 
         _dm = dm;
+        _search = searchEngine;
         _respectVisibility = respectVisiblity;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Response render(final Resource resource) {
+    public Response render(final Resource resource,
+                           final Map<String, String[]> parameters) {
         if (resource == null) {
             throw new NotFoundException();
         } else if (_respectVisibility && !resource.isVisible()) {
@@ -76,6 +84,10 @@ public class DefaultRenderer
                 final Folder folder = resource.as(Folder.class);
                 return renderFolder(folder);
 
+            case SEARCH:
+                final Search search = resource.as(Search.class);
+                return renderSearch(search, parameters);
+
             default:
                 throw new NotFoundException();
         }
@@ -84,7 +96,8 @@ public class DefaultRenderer
 
     /** {@inheritDoc} */
     @Override
-    public Response renderWorkingCopy(final Resource resource) {
+    public Response renderWorkingCopy(final Resource resource,
+                                      final Map<String, String[]> parameters) {
         if (!_respectVisibility) {
             if (resource instanceof Page) {
                 final Page p = (Page) resource;
@@ -93,7 +106,7 @@ public class DefaultRenderer
                 }
             }
         }
-        return render(resource);
+        return render(resource, parameters);
     }
 
 
@@ -131,6 +144,23 @@ public class DefaultRenderer
         r.setCharSet("UTF-8");
         r.setMimeType("text", "html");
         r.setBody(new PageBody(page, Charset.forName("UTF-8")));
+
+        return r;
+    }
+
+
+    private Response renderSearch(final Search search,
+                                  final Map<String, String[]> parameters) {
+        final Response r = new Response();
+        r.setExpiry(Long.valueOf(0));
+        r.setCharSet("UTF-8");
+        r.setMimeType("text", "html");
+        r.setBody(
+            new SearchBody(
+                search,
+                Charset.forName("UTF-8"),
+                _search,
+                parameters.get("q")[0]));
 
         return r;
     }

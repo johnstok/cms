@@ -314,7 +314,7 @@ public final class ContentServletTest extends TestCase {
         expect(_factory.createRenderer()).andReturn(_renderer);
         expect(_locator.locate(isA(ResourcePath.class)))
             .andReturn(bar);
-        expect(_renderer.render(bar))
+        expect(_renderer.render(bar, new HashMap<String, String[]>()))
             .andThrow(new RedirectRequiredException(bar));
         expect(_request.getContextPath()).andReturn("/context");
         _response.sendRedirect("/context"+bar.absolutePath().toString());

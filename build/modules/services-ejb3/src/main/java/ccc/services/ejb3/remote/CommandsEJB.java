@@ -37,6 +37,7 @@ import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourceOrder;
+import ccc.domain.Search;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.AliasDao;
@@ -388,5 +389,14 @@ public class CommandsEJB
     @Override
     public void clearWorkingCopy(final String pageId) {
         _page.clearWorkingCopy(UUID.fromString(pageId));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceSummary createSearch(final String parentId,
+                                        final String title) {
+        final Search s = new Search(title);
+        _resources.create(UUID.fromString(parentId), s);
+        return map(s);
     }
 }

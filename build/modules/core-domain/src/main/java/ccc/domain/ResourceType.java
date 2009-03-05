@@ -32,5 +32,8 @@ public enum ResourceType {
     FILE,
 
     /** ALIAS : ResourceType. */
-    ALIAS;
+    ALIAS,
+
+    /** SEARCH : ResourceType. */
+    SEARCH;
 }

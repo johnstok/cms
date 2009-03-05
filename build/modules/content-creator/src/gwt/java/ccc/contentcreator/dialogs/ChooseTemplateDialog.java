@@ -16,7 +16,6 @@ import java.util.Collection;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.client.Globals;
-import ccc.services.api.ResourceDelta;
 import ccc.services.api.TemplateDelta;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
@@ -35,8 +34,10 @@ import com.extjs.gxt.ui.client.widget.form.ComboBox;
  */
 public class ChooseTemplateDialog extends AbstractEditDialog {
 
-    private ResourceDelta _resource;
-    private Collection<TemplateDelta> _templates;
+    private final String _templateId;
+    private final String _resourceId;
+    private final Collection<TemplateDelta> _templates;
+
     private final ModelData _none = new BaseModelData();
     private final ComboBox<ModelData> _selectedTemplate =
         new ComboBox<ModelData>();
@@ -44,14 +45,17 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
     /**
      * Constructor.
      *
-     * @param resourceDelta A resource to which template would be assigned.
-     * @param templates Collection of templates.
+     * @param templateId The currently selected template.
+     * @param templates The available templates.
      */
-    public ChooseTemplateDialog(final ResourceDelta resourceDelta,
+    public ChooseTemplateDialog(final String resourceId,
+                                final String templateId,
                                 final Collection<TemplateDelta> templates) {
         super(Globals.uiConstants().chooseTemplate());
         setHeight(Globals.DEFAULT_MIN_HEIGHT);
-        _resource = resourceDelta;
+
+        _resourceId = resourceId;
+        _templateId = templateId;
         _templates = templates;
         _none.set("name", "{none}");
 
@@ -76,11 +80,11 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
         _selectedTemplate.setStore(store);
 
         // Set the current value
-        if (null == _resource._templateId) {
+        if (null == _templateId) {
             _selectedTemplate.setValue(_none);
         } else {
             for (final ModelData model : store.getModels()) {
-                if (_resource._templateId.equals(model.get("id"))) {
+                if (_templateId.equals(model.get("id"))) {
                     _selectedTemplate.setValue(model);
                 }
             }
@@ -97,7 +101,7 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
                 final String templateId = selected.get("id");
 
                 commands().updateResourceTemplate(
-                    _resource._id,
+                    _resourceId,
                     templateId,
                     new DisposingCallback(ChooseTemplateDialog.this));
             }

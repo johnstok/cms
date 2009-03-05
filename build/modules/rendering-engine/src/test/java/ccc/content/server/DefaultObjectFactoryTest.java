@@ -16,6 +16,7 @@ import junit.framework.TestCase;
 import ccc.commons.Registry;
 import ccc.commons.Testing;
 import ccc.services.DataManager;
+import ccc.services.ISearch;
 import ccc.services.ServiceNames;
 
 
@@ -132,6 +133,8 @@ public class DefaultObjectFactoryTest
         _factory.setRootName("foo");
         expect(_registry.get(ServiceNames.DATA_MANAGER_LOCAL))
             .andReturn(Testing.dummy(DataManager.class));
+        expect(_registry.get(ServiceNames.SEARCH_ENGINE_LOCAL))
+        .andReturn(Testing.dummy(ISearch.class));
         replay(_registry);
 
         // ACT

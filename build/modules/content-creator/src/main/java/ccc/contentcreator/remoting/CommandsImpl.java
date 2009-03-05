@@ -209,4 +209,11 @@ public class CommandsImpl
     public void clearWorkingCopy(final String pageId) {
         _delegate.clearWorkingCopy(pageId);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceSummary createSearch(final String parentId,
+                                        final String title) {
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
 }

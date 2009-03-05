@@ -15,6 +15,7 @@ package ccc.content.server;
 import static ccc.commons.Strings.*;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -93,11 +94,12 @@ public final class ContentServlet extends CCCServlet {
             final ResourcePath contentPath = determineResourcePath(request);
             final Resource rs = _factory.createLocator().locate(contentPath);
 
+            final Map<String, String[]> parameters = request.getParameterMap();
             final Response r;
-            if (request.getParameterMap().keySet().contains("wc")) {
-                r = _factory.createRenderer().renderWorkingCopy(rs);
+            if (parameters.keySet().contains("wc")) {
+                r = _factory.createRenderer().renderWorkingCopy(rs, parameters);
             } else {
-                r = _factory.createRenderer().render(rs);
+                r = _factory.createRenderer().render(rs, parameters);
             }
             handle(response, request, r);
 

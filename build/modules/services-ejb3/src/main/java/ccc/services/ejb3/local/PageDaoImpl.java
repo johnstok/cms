@@ -37,6 +37,7 @@ import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.Snapshot;
 import ccc.domain.Template;
+import ccc.services.ISearch;
 import ccc.services.PageDao;
 import ccc.services.ResourceDao;
 
@@ -52,6 +53,7 @@ import ccc.services.ResourceDao;
 public class PageDaoImpl implements PageDao {
 
     @EJB(name="ResourceDao") private ResourceDao _dao;
+    @EJB(name="Search")      private ISearch    _search;
 
 
     /** Constructor. */
@@ -109,6 +111,7 @@ public class PageDaoImpl implements PageDao {
 
         }
         _dao.create(id, page);
+        _search.index(page);
     }
 
     private void validateFieldsForPage(final Set<Paragraph> delta,

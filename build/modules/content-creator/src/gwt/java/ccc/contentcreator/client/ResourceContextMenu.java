@@ -151,6 +151,8 @@ public class ResourceContextMenu
                             addEditResource();
                         } else if ("FILE".equals(item.get("type"))) {
                             addEditResource();
+                        } else if ("SEARCH".equals(item.get("type"))) {
+                            addChooseTemplate();
                         }
                         addMove();
                         addRename();
@@ -232,7 +234,8 @@ public class ResourceContextMenu
                                     new ErrorReportingCallback<Collection<TemplateDelta>>() {
                                         public void onSuccess(final Collection<TemplateDelta> templates) {
                                             new ChooseTemplateDialog(
-                                                delta,
+                                                delta._id,
+                                                delta._templateId,
                                                 templates)
                                             .show();
                                         }
@@ -250,7 +253,27 @@ public class ResourceContextMenu
                                     new ErrorReportingCallback<Collection<TemplateDelta>>(){
                                         public void onSuccess(final Collection<TemplateDelta> templates) {
                                             new ChooseTemplateDialog(
-                                                delta,
+                                                delta._id,
+                                                delta._templateId,
+                                                templates)
+                                            .show();
+                                        }
+                                    }
+                                );
+                            }
+                        }
+                    );
+                } else if ("SEARCH".equals(item.<String>get("type"))) {
+                    _qs.resourceDelta(
+                        item.<String>get("id"),
+                        new ErrorReportingCallback<ResourceDelta>(){
+                            public void onSuccess(final ResourceDelta delta) {
+                                _qs.templates(
+                                    new ErrorReportingCallback<Collection<TemplateDelta>>(){
+                                        public void onSuccess(final Collection<TemplateDelta> templates) {
+                                            new ChooseTemplateDialog(
+                                                delta._id,
+                                                delta._templateId,
                                                 templates)
                                             .show();
                                         }

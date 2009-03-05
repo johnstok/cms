@@ -193,9 +193,9 @@ public interface Commands {
     ResourceSummary createTemplate(String parentId, TemplateDelta delta);
 
     /**
-     * Creates a new snapshot for the page.
+     * Creates a new search.
      */
-//    ResourceSummary createSnaphot(String parentId, PageDelta delta, String templateId);
+    ResourceSummary createSearch(String parentId, String title);
 
 
 }

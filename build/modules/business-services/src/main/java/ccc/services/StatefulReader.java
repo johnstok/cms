@@ -11,6 +11,8 @@
  */
 package ccc.services;
 
+import java.util.UUID;
+
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 
@@ -33,4 +35,12 @@ public interface StatefulReader {
      */
     Resource lookup(String rootName, ResourcePath contentPath);
 
+    /**
+     * Look up a resource.
+     *
+     * @param resourceId The unique identifier for the resource.
+     * @return Resource The resource with the specified id, or NULL if it
+     *  doesn't exist.
+     */
+    Resource lookup(UUID resourceId);
 }
