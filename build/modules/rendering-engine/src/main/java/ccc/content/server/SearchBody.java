@@ -91,6 +91,6 @@ public class SearchBody
         new Template(
             "BUILT_IN_SEARCH_TEMPLATE",
             "BUILT_IN_SEARCH_TEMPLATE",
-            "$resource.iterator().next()",
+            "Hits: $resource.size()",
             "<fields/>");
 }

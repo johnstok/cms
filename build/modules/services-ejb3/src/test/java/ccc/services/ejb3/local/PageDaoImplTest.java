@@ -18,18 +18,21 @@ import java.util.Collections;
 import junit.framework.TestCase;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
+import ccc.services.ISearch;
 import ccc.services.PageDao;
 import ccc.services.ResourceDao;
 
 
 /**
  * Tests for the {@link PageDaoImpl} class.
+ * TODO: Test create() method.
  *
  * @author Civic Computing Ltd.
  */
 public class PageDaoImplTest
     extends
         TestCase {
+
 
     /**
      * Test.
@@ -41,15 +44,16 @@ public class PageDaoImplTest
         p.createWorkingCopy();
 
         expect(_dao.findLocked(Page.class, p.id())).andReturn(p);
-        replay(_dao);
+        replayAll();
 
         // ACT
         _cm.clearWorkingCopy(p.id());
 
         // ASSERT
-        verify(_dao);
+        verifyAll();
         assertNull(p.workingCopy());
     }
+
 
     /**
      * Test.
@@ -62,7 +66,8 @@ public class PageDaoImplTest
 
         expect(_dao.findLocked(Page.class, page.id())).andReturn(page);
         _dao.update(page, "comment text", false);
-        replay(_dao);
+        _se.update(page);
+        replayAll();
 
 
         // ACT
@@ -74,13 +79,14 @@ public class PageDaoImplTest
 
 
         // ASSERT
-        verify(_dao);
+        verifyAll();
         assertEquals("new title", page.title());
         assertEquals(1, page.paragraphs().size());
         assertEquals("foo", page.paragraphs().iterator().next().name());
         assertEquals("bar", page.paragraph("foo").text());
         assertNull("Page must not have working copy", page.workingCopy());
     }
+
 
     /**
      * Test.
@@ -92,7 +98,7 @@ public class PageDaoImplTest
         page.addParagraph(Paragraph.fromText("abc", "def"));
 
         expect(_dao.findLocked(Page.class, page.id())).andReturn(page);
-        replay(_dao);
+        replayAll();
 
         // ACT
         _cm.updateWorkingCopy(page.id(),
@@ -100,27 +106,38 @@ public class PageDaoImplTest
             Collections.singleton(Paragraph.fromText("foo", "bar")));
 
         // ASSERT
-        verify(_dao);
+        verifyAll();
         assertNotNull("Page must have a working copy", page.workingCopy());
         assertEquals("working title", page.workingCopy().getString("title"));
 
     }
 
 
+    private void verifyAll() {
+        verify(_dao, _se);
+    }
+
+    private void replayAll() {
+        replay(_dao, _se);
+    }
+
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {
         _dao = createStrictMock(ResourceDao.class);
-        _cm = new PageDaoImpl(_dao);
+        _se = createStrictMock(ISearch.class);
+        _cm = new PageDaoImpl(_dao, _se);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void tearDown() throws Exception {
         _dao = null;
+        _se = null;
         _cm = null;
     }
 
     private ResourceDao _dao;
     private PageDao _cm;
+    private ISearch _se;
 }

@@ -63,9 +63,11 @@ public class PageDaoImpl implements PageDao {
      * Constructor.
      *
      * @param dao The ResourceDao used for CRUD operations, etc.
+     * @param se The search engine to use.
      */
-    public PageDaoImpl(final ResourceDao dao) {
+    public PageDaoImpl(final ResourceDao dao, final ISearch se) {
         _dao = dao;
+        _search = se;
     }
 
 
@@ -99,6 +101,7 @@ public class PageDaoImpl implements PageDao {
             validateFieldsForPage(newParagraphs, template.definition());
         }
         _dao.update(page, comment, isMajorEdit);
+        _search.update(page);
     }
 
     /** {@inheritDoc} */
@@ -111,7 +114,7 @@ public class PageDaoImpl implements PageDao {
 
         }
         _dao.create(id, page);
-        _search.index(page);
+        _search.add(page);
     }
 
     private void validateFieldsForPage(final Set<Paragraph> delta,
