@@ -30,4 +30,8 @@ public final class ServiceNames {
     public static final String DATA_MANAGER_LOCAL =
         "application-ear-7.0.0-SNAPSHOT/DataManager/local";
 
+    /** SEARCH_ENGINE_LOCAL : String. */
+    public static final String SEARCH_ENGINE_LOCAL =
+        "application-ear-7.0.0-SNAPSHOT/Search/local";
+
 }

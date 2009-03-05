@@ -36,6 +36,7 @@ import ccc.domain.ResourceName;
 import ccc.domain.Template;
 import ccc.services.DataManager;
 import ccc.services.FolderDao;
+import ccc.services.ISearch;
 import ccc.services.ResourceDao;
 import ccc.services.TemplateDao;
 import ccc.services.UserManager;
@@ -74,6 +75,7 @@ public final class QueriesEJB
     @EJB(name="UserManager")    private UserManager     _users;
     @EJB(name="ResourceDao")    private ResourceDao     _resources;
     @EJB(name="DataManager")    private DataManager     _datas;
+    @EJB(name="Search")         private ISearch         _search;
 
     /**
      * Constructor.

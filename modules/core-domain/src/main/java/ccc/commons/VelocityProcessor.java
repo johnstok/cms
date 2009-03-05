@@ -88,7 +88,7 @@ public class VelocityProcessor {
      *  output is complete. The writer will not be closed.
      * @param reader StatefulReader.
      */
-    public void render(final Resource resource,
+    public void render(final Object resource,
                        final String template,
                        final Writer output,
                        final Object reader) {

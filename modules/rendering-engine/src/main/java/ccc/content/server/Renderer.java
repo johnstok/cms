@@ -11,6 +11,8 @@
  */
 package ccc.content.server;
 
+import java.util.Map;
+
 import ccc.domain.Resource;
 
 
@@ -28,7 +30,8 @@ public interface Renderer {
      * @param resource The resource to render.
      * @return The corresponding response.
      */
-    Response render(Resource resource);
+    Response render(Resource resource,
+                    Map<String, String[]> parameters);
 
 
     /**
@@ -40,5 +43,6 @@ public interface Renderer {
      * @param resource The resource to render.
      * @return The response, ready to be written.
      */
-    Response renderWorkingCopy(final Resource resource);
+    Response renderWorkingCopy(Resource resource,
+                               Map<String, String[]> parameters);
 }

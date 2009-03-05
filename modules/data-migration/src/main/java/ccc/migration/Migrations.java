@@ -108,15 +108,16 @@ public class Migrations {
 
         _templateFolder =_commands.createFolder(_assetRoot._id,
             PredefinedResourceNames.TEMPLATES);
-        _filesFolder = _commands.createFolder(_contentRoot._id,
-            PredefinedResourceNames.FILES);
-        _contentImagesFolder = _commands.createFolder(_contentRoot._id,
-            PredefinedResourceNames.IMAGES);
-
         _cssFolder = _commands.createFolder(_assetRoot._id,
             PredefinedResourceNames.CSS);
         _assetsImagesFolder = _commands.createFolder(_assetRoot._id,
             PredefinedResourceNames.IMAGES);
+
+        _filesFolder = _commands.createFolder(_contentRoot._id,
+            PredefinedResourceNames.FILES);
+        _contentImagesFolder = _commands.createFolder(_contentRoot._id,
+            PredefinedResourceNames.IMAGES);
+        _commands.createSearch(_filesFolder._id, "SiteSearch");
 
         // TODO: Remove. Should set 'publish' root via UI
         _commands.lock(_contentRoot._id);

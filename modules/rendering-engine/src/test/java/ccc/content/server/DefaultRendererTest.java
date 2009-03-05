@@ -14,6 +14,8 @@ package ccc.content.server;
 import static ccc.commons.Exceptions.*;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.activation.MimeType;
 import javax.activation.MimeTypeParseException;
@@ -31,6 +33,7 @@ import ccc.domain.ResourceName;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.DataManager;
+import ccc.services.ISearch;
 
 
 /**
@@ -49,7 +52,7 @@ public class DefaultRendererTest
 
         // ARRANGE
         final Renderer rr =
-            new DefaultRenderer(_dm, true);
+            new DefaultRenderer(_dm, _se, true);
 
         final Page p = new Page("foo");
         p.publish(new User("aaaa"));
@@ -61,7 +64,7 @@ public class DefaultRendererTest
                 Paragraph.fromText("some", "other value").createSnapshot()));
 
         // ACT
-        rr.renderWorkingCopy(p);
+        rr.renderWorkingCopy(p, noParams);
 
         // ASSERT
         assertEquals(1, p.paragraphs().size());
@@ -83,7 +86,7 @@ public class DefaultRendererTest
                 Paragraph.fromText("some", "other value").createSnapshot()));
 
         // ACT
-        _renderer.renderWorkingCopy(p);
+        _renderer.renderWorkingCopy(p, noParams);
 
         // ASSERT
         assertEquals(1, p.paragraphs().size());
@@ -101,7 +104,7 @@ public class DefaultRendererTest
 
         // ACT
         try {
-            _renderer.render(t);
+            _renderer.render(t, noParams);
             fail();
 
         // ASSERT
@@ -120,7 +123,7 @@ public class DefaultRendererTest
 
         // ACT
         try {
-            _renderer.render(null);
+            _renderer.render(null, noParams);
 
         // ASSERT
         } catch (final NotFoundException e) {
@@ -138,7 +141,7 @@ public class DefaultRendererTest
 
         // ACT
         try {
-            _renderer.render((Resource) null);
+            _renderer.render((Resource) null, noParams);
 
         // ASSERT
         } catch (final NotFoundException e) {
@@ -156,7 +159,7 @@ public class DefaultRendererTest
         final Page p = new Page("foo");
 
         // ACT
-        final Response r = _renderer.render(p);
+        final Response r = _renderer.render(p, noParams);
 
         // ASSERT
         assertEquals(Long.valueOf(0), r.getExpiry());
@@ -183,7 +186,7 @@ public class DefaultRendererTest
                 new MimeType("text", "html"));
 
         // ACT
-        final Response r = _renderer.render(f);
+        final Response r = _renderer.render(f, noParams);
 
         // ASSERT
         assertEquals("meh", r.getDescription());
@@ -206,7 +209,7 @@ public class DefaultRendererTest
 
         // ACT
         try {
-            _renderer.render(f);
+            _renderer.render(f, noParams);
             fail("Should throw exception");
 
         // ASSERT
@@ -228,7 +231,7 @@ public class DefaultRendererTest
 
         // ACT
         try {
-            _renderer.render(f);
+            _renderer.render(f, noParams);
             fail("Should throw exception");
 
         // ASSERT
@@ -252,7 +255,7 @@ public class DefaultRendererTest
 
         // ACT
         try {
-            _renderer.render(f);
+            _renderer.render(f, noParams);
             fail("Should throw exception");
 
         // ASSERT
@@ -273,7 +276,7 @@ public class DefaultRendererTest
 
         // ACT
         try {
-            _renderer.render(a);
+            _renderer.render(a, noParams);
             fail("Should throw exception");
 
         // ASSERT
@@ -290,12 +293,12 @@ public class DefaultRendererTest
 
         // ARRANGE
         final Renderer rr =
-            new DefaultRenderer(_dm, true);
+            new DefaultRenderer(_dm, _se, true);
         final Page p = new Page("private page");
 
         // ACT
         try {
-            rr.render(p);
+            rr.render(p, noParams);
             fail("Should throw exception");
 
         // ASSERT
@@ -308,7 +311,7 @@ public class DefaultRendererTest
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {
-        _renderer = new DefaultRenderer(_dm, false);
+        _renderer = new DefaultRenderer(_dm, _se, false);
 
     }
 
@@ -322,4 +325,7 @@ public class DefaultRendererTest
 
     private DefaultRenderer _renderer;
     private final DataManager _dm = Testing.dummy(DataManager.class);
+    private final ISearch _se = Testing.dummy(ISearch.class);
+    private final Map<String, String[]> noParams =
+        new HashMap<String, String[]>();
 }

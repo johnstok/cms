@@ -84,4 +84,5 @@ public interface CommandServiceAsync {
 
     void createRoot(String name, AsyncCallback<ResourceSummary> callback);
 
+    void createSearch(String parentId, String title, AsyncCallback<ResourceSummary> callback);
 }

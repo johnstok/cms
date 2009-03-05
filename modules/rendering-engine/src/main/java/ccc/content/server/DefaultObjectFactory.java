@@ -14,6 +14,7 @@ package ccc.content.server;
 import ccc.commons.DBC;
 import ccc.commons.Registry;
 import ccc.services.DataManager;
+import ccc.services.ISearch;
 import ccc.services.ServiceNames;
 import ccc.services.StatefulReader;
 
@@ -45,7 +46,8 @@ public class DefaultObjectFactory implements ObjectFactory {
     /** {@inheritDoc} */
     @Override
     public Renderer createRenderer() {
-        return new DefaultRenderer(dataManager(), _respectVisiblity);
+        return new DefaultRenderer(
+            dataManager(), searchEngine(), _respectVisiblity);
     }
 
 
@@ -90,5 +92,10 @@ public class DefaultObjectFactory implements ObjectFactory {
 
     private DataManager dataManager() {
         return _registry.get(ServiceNames.DATA_MANAGER_LOCAL);
+    }
+
+
+    private ISearch searchEngine() {
+        return _registry.get(ServiceNames.SEARCH_ENGINE_LOCAL);
     }
 }
