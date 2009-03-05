@@ -9,12 +9,9 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services;
+package ccc.services.ejb3.local;
 
-import java.util.Set;
-import java.util.UUID;
-
-import ccc.domain.Page;
+import org.apache.lucene.document.Document;
 
 
 /**
@@ -22,12 +19,14 @@ import ccc.domain.Page;
  *
  * @author Civic Computing Ltd.
  */
-public interface ISearch {
+public interface SimpleLucene {
 
-    public Set<UUID> find(final String searchTerms);
+    void add(final Document document);
 
-    public void add(Page page);
+    void remove(final String searchTerms, final String field);
 
-    public void update(Page page);
-
+    void find(final String searchTerms,
+              final String field,
+              final int maxHits,
+              final SearchHandler sh);
 }
