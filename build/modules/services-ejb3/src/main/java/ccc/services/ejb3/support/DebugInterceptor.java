@@ -18,7 +18,11 @@ import org.hibernate.type.Type;
 
 
 /**
- * TODO: Add Description for this type.
+ * A hibernate interceptor for debugging.
+ *
+ * This interceptor delegates to the standard interceptor for all calls. It
+ * simply allows breakpoints to easily be added for hibernate events, rather
+ * then accessing the hibernate source.
  *
  * @author Civic Computing Ltd.
  */
