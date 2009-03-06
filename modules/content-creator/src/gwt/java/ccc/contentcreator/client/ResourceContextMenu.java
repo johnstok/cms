@@ -12,9 +12,7 @@
 package ccc.contentcreator.client;
 
 import static ccc.contentcreator.dialogs.AbstractBaseDialog.*;
-
-import java.util.Collection;
-
+import ccc.contentcreator.actions.ChooseTemplateAction;
 import ccc.contentcreator.actions.ClearWorkingCopyAction;
 import ccc.contentcreator.actions.CreateAliasAction;
 import ccc.contentcreator.actions.IncludeInMainMenuAction;
@@ -33,7 +31,6 @@ import ccc.contentcreator.actions.ViewHistoryAction;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.dialogs.ChooseTemplateDialog;
 import ccc.contentcreator.dialogs.EditTemplateDialog;
 import ccc.contentcreator.dialogs.UpdateAliasDialog;
 import ccc.contentcreator.dialogs.UpdateFileDialog;
@@ -41,7 +38,6 @@ import ccc.contentcreator.dialogs.UpdatePageDialog;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.FileDelta;
 import ccc.services.api.PageDelta;
-import ccc.services.api.ResourceDelta;
 import ccc.services.api.TemplateDelta;
 
 import com.extjs.gxt.ui.client.Events;
@@ -84,6 +80,7 @@ public class ResourceContextMenu
     private final Action _updateSortAction;
     private final Action _clearWorkingCopyAction;
     private final Action _previewWorkingCopyAction;
+    private final Action _chooseTemplateAction;
 
 
     /**
@@ -112,6 +109,7 @@ public class ResourceContextMenu
         _updateSortAction = new UpdateSortOrderAction(_table);
         _clearWorkingCopyAction = new ClearWorkingCopyAction(_table);
         _previewWorkingCopyAction = new PreviewAction(_table, true);
+        _chooseTemplateAction = new ChooseTemplateAction(_table);
 
         setWidth(CONTEXT_MENU_WIDTH);
 
@@ -219,75 +217,10 @@ public class ResourceContextMenu
 
 
     private void addChooseTemplate() {
-        final MenuItem chooseTemplate = new MenuItem();
-        chooseTemplate.setId("chooseTemplate-resource");
-        chooseTemplate.setText(_constants.chooseTemplate());
-        chooseTemplate.addSelectionListener(new SelectionListener<MenuEvent>() {
-            @Override public void componentSelected(final MenuEvent ce) {
-                final ModelData item = _table.tableSelection();
-                if ("PAGE".equals(item.<String>get("type"))) {
-                    _qs.pageDelta(
-                        item.<String>get("id"),
-                        new ErrorReportingCallback<PageDelta>(){
-                            public void onSuccess(final PageDelta delta) {
-                                _qs.templates(
-                                    new ErrorReportingCallback<Collection<TemplateDelta>>() {
-                                        public void onSuccess(final Collection<TemplateDelta> templates) {
-                                            new ChooseTemplateDialog(
-                                                delta._id,
-                                                delta._templateId,
-                                                templates)
-                                            .show();
-                                        }
-                                    }
-                                );
-                            }
-                        }
-                    );
-                } else if ("FOLDER".equals(item.<String>get("type"))) {
-                    _qs.folderDelta(
-                        item.<String>get("id"),
-                        new ErrorReportingCallback<ResourceDelta>(){
-                            public void onSuccess(final ResourceDelta delta) {
-                                _qs.templates(
-                                    new ErrorReportingCallback<Collection<TemplateDelta>>(){
-                                        public void onSuccess(final Collection<TemplateDelta> templates) {
-                                            new ChooseTemplateDialog(
-                                                delta._id,
-                                                delta._templateId,
-                                                templates)
-                                            .show();
-                                        }
-                                    }
-                                );
-                            }
-                        }
-                    );
-                } else if ("SEARCH".equals(item.<String>get("type"))) {
-                    _qs.resourceDelta(
-                        item.<String>get("id"),
-                        new ErrorReportingCallback<ResourceDelta>(){
-                            public void onSuccess(final ResourceDelta delta) {
-                                _qs.templates(
-                                    new ErrorReportingCallback<Collection<TemplateDelta>>(){
-                                        public void onSuccess(final Collection<TemplateDelta> templates) {
-                                            new ChooseTemplateDialog(
-                                                delta._id,
-                                                delta._templateId,
-                                                templates)
-                                            .show();
-                                        }
-                                    }
-                                );
-                            }
-                        }
-                    );
-                } else {
-                    Globals.alert(_constants.templateCannotBeChosen());
-                }
-            }
-        });
-        add(chooseTemplate);
+        addMenuItem(
+            "chooseTemplate-resource",
+            _constants.chooseTemplate(),
+            _chooseTemplateAction);
     }
 
 
