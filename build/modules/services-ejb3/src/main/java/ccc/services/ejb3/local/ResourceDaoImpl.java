@@ -13,6 +13,7 @@ package ccc.services.ejb3.local;
 
 import static javax.ejb.TransactionAttributeType.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -171,6 +172,18 @@ public class ResourceDaoImpl implements ResourceDao {
         return r;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public Resource unpublish(final UUID resourceId,
+                              final UUID actor,
+                              final Date happendedOn) {
+        final Resource r =
+            findLocked(Resource.class, resourceId, _users.find(actor));
+        r.unpublish();
+        _audit.recordUnpublish(r); // FIXME: Should pass actor and happenedOn
+        return r;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -216,8 +229,14 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public <T extends Resource> T findLocked(final Class<T> type,
                                              final UUID id) {
+        return findLocked(type, id, _users.loggedInUser());
+    }
+
+    private <T extends Resource> T findLocked(final Class<T> type,
+                                              final UUID id,
+                                              final User lockedBy) {
         final T r = _dao.find(type, id);
-        r.confirmLock(_users.loggedInUser());
+        r.confirmLock(lockedBy);
         return r;
     }
 

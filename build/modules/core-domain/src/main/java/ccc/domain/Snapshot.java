@@ -11,9 +11,14 @@
  */
 package ccc.domain;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.UUID;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,9 +33,9 @@ import ccc.commons.DBC;
  *
  * @author Civic Computing Ltd.
  */
-public class Snapshot {
+public class Snapshot implements Serializable {
 
-    private JSONObject _detail;
+    private transient JSONObject _detail;
 
     /**
      * Constructor.
@@ -209,4 +214,25 @@ public class Snapshot {
             throw new InvalidSnapshotException(e);
         }
     }
+
+    /**
+     * Accessor.
+     *
+     * @param key The key for the value.
+     * @return The value, as a UUID.
+     */
+    public UUID getUuid(final String key) {
+        return UUID.fromString(getString(key));
+    }
+
+    private void readObject(final ObjectInputStream aInputStream) throws IOException, ClassNotFoundException  {
+        aInputStream.defaultReadObject();
+        setDetail(aInputStream.readUTF());
+    }
+
+    private void writeObject(final ObjectOutputStream aOutputStream) throws IOException {
+        aOutputStream.defaultWriteObject();
+        aOutputStream.writeUTF(getDetail());
+    }
+
 }

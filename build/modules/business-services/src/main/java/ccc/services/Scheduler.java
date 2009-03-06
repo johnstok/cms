@@ -9,7 +9,9 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.api;
+package ccc.services;
+
+import ccc.actions.Action;
 
 
 
@@ -21,4 +23,6 @@ package ccc.services.api;
 public interface Scheduler {
     void start();
     void stop();
+//    boolean isRunning();
+    void schedule(Action action);
 }
