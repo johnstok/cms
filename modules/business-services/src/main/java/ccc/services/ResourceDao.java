@@ -11,6 +11,7 @@
  */
 package ccc.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -171,6 +172,16 @@ public interface ResourceDao {
      * @return The current version of resource.
      */
     Resource unpublish(UUID resourceId);
+
+    /**
+     * Un-publishes the resource.
+     *
+     * @param resourceId The id of the resource to update.
+     * @param actor The user that unpublished the resource.
+     * @param happendedOn The date that the resource was unpublished.
+     * @return The current version of resource.
+     */
+    Resource unpublish(UUID resourceId, UUID actor, Date happendedOn);
 
     /**
      * Change the template for the specified resource.

@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+ 
+<!-- 
+    ========================================================================
+    * Copyright (c) 2008 Civic Computing Ltd
+    * All rights reserved.
+    *
+    * Revision      $Rev$
+    * Modified by   $Author$
+    * Modified on   $Date$
+    *
+    * Changes: see SubVersion log
+    ========================================================================
+-->
+
+<hibernate-mapping default-access="field">
+
+    <typedef class="ccc.services.ejb3.support.EnumUserType" name="ActionType">
+        <param name="type">ccc.actions.Action$Type</param>
+    </typedef>
+    
+    <class name="ccc.actions.Action">
+        
+        <id name="_id" type="ccc.services.ejb3.support.UUIDUserType">
+            <generator class="assigned" />
+        </id>
+        
+        <property name="_type" not-null="true" type="ActionType" />
+        <property name="_executeAfter" not-null="true" type="timestamp" />
+        <property
+            name="_actor"
+            not-null="true"
+            type="ccc.services.ejb3.support.UUIDUserType" />
+        
+        <component name="_parameters" class="ccc.domain.Snapshot">
+			<property
+                name="detail"
+                access="property"
+                not-null="true"
+                column="_parameters"
+				type="text"  />
+		</component>
+    </class>
+    
+    <query name="latest_action">from ccc.actions.Action a order by a._executeAfter asc</query>
+</hibernate-mapping>

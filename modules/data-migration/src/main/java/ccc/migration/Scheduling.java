@@ -3,6 +3,7 @@ package ccc.migration;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.UUID;
 
 import javax.security.auth.login.AppConfigurationEntry;
 import javax.security.auth.login.Configuration;
@@ -12,8 +13,11 @@ import javax.security.auth.login.AppConfigurationEntry.LoginModuleControlFlag;
 
 import org.apache.log4j.Logger;
 
+import ccc.actions.Action;
 import ccc.commons.JNDI;
-import ccc.services.api.Scheduler;
+import ccc.domain.Snapshot;
+import ccc.services.Scheduler;
+import ccc.services.api.Queries;
 import ccc.services.api.ServiceNames;
 
 /**
@@ -40,9 +44,17 @@ public final class Scheduling {
 
         login("super", "sup3r2008");
 
+        final Queries q =
+            new JNDI().<Queries>get(ServiceNames.PUBLIC_QUERIES);
         final Scheduler s =
             new JNDI().<Scheduler>get(ServiceNames.PUBLIC_SCHEDULER);
-        s.stop();
+//        s.start();
+
+        final UUID user = UUID.fromString(q.listUsers().iterator().next()._id);
+        final Snapshot sn = new Snapshot();
+        sn.set("resource", q.roots().iterator().next()._id);
+        final Action a  = new Action(Action.Type.UNPUBLISH, new Date(), user, sn);
+        s.schedule(a);
 
         logout();
 
@@ -52,7 +64,7 @@ public final class Scheduling {
     private static void reportFinish(final long startTime) {
         final long elapsedTime = new Date().getTime() - startTime;
         LOG.info(
-            "Migration finished in "
+            "Finished in "
             + elapsedTime/MILLISECS_PER_SEC + " secs.");
     }
 
