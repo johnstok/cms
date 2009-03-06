@@ -34,7 +34,6 @@ import ccc.services.ejb3.support.Dao;
 
 /**
  * EJB implementation of the UserManager API.
- * TODO: Confirm Locale.US is a sensible locale for lower-casing.
  *
  * @author Civic Computing Ltd.
  */
