@@ -29,4 +29,8 @@ public final class ServiceNames {
     /** PUBLIC_COMMANDS : String. */
     public static final String PUBLIC_COMMANDS =
         "application-ear-7.0.0-SNAPSHOT/PublicCommands/remote";
+
+    /** PUBLIC_COMMANDS : String. */
+    public static final String PUBLIC_SCHEDULER =
+        "application-ear-7.0.0-SNAPSHOT/Scheduler/remote";
 }
