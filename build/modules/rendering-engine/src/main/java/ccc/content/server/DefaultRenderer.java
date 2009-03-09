@@ -22,6 +22,7 @@ import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.Resource;
+import ccc.domain.ResourceType;
 import ccc.domain.Search;
 import ccc.domain.Snapshot;
 import ccc.services.DataManager;
@@ -176,10 +177,11 @@ public class DefaultRenderer
 
 
     private Response renderFolder(final Folder folder) {
-        if (folder.hasAliases()) {
-            throw new RedirectRequiredException(folder.firstAlias());
-        } else if (folder.hasPages()) {
-            throw new RedirectRequiredException(folder.firstPage());
+        for (final Resource r : folder.entries()) {
+            if (ResourceType.PAGE.equals(r.type())
+                && r.isPublished()) {
+                throw new RedirectRequiredException(r);
+            }
         }
         throw new NotFoundException();
     }

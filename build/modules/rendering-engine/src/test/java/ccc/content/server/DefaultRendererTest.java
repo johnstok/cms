@@ -30,6 +30,7 @@ import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
+import ccc.domain.ResourceOrder;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.DataManager;
@@ -223,36 +224,15 @@ public class DefaultRendererTest
     /**
      * Test.
      */
-    public void testRenderFolderWithPagesThrowsRedirectException() {
+    public void testRenderFolderRedirectsToFirstPage() {
 
         // ARRANGE
         final Folder f = new Folder("folder");
-        final Page p = new Page("page");
-        f.add(p);
-
-        // ACT
-        try {
-            _renderer.render(f, noParams);
-            fail("Should throw exception");
-
-        // ASSERT
-        } catch (final RedirectRequiredException e) {
-            assertEquals(p, e.getResource());
-        }
-    }
-
-
-    /**
-     * Test.
-     */
-    public void testRenderFolderWithAliasesThrowsRedirectException() {
-
-        // ARRANGE
-        final Folder f = new Folder("folder");
-        final Page p = new Page("page");
-        final Alias a = new Alias("alias", p);
-        f.add(p);
-        f.add(a);
+        f.sortOrder(ResourceOrder.NAME_ALPHANUM_ASC);
+        final Page a = new Page("aaa");
+        final Page z = new Page("zzz");
+        z.publish(_user); f.add(z);
+        a.publish(_user); f.add(a);
 
         // ACT
         try {
@@ -262,6 +242,61 @@ public class DefaultRendererTest
         // ASSERT
         } catch (final RedirectRequiredException e) {
             assertEquals(a, e.getResource());
+        }
+    }
+
+    /**
+     * Test.
+     */
+    public void testRenderFolderIgnoresNonVisiblePages() {
+
+        // ARRANGE
+        final Folder f = new Folder("folder");
+        final Page a = new Page("aaa");
+        final Page z = new Page("zzz");
+        z.publish(_user);
+        f.add(a);
+        f.add(z);
+
+        // ACT
+        try {
+            _renderer.render(f, noParams);
+            fail("Should throw exception");
+
+        // ASSERT
+        } catch (final RedirectRequiredException e) {
+            assertEquals(z, e.getResource());
+        }
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testRenderFolderIgnoresNonPageResources() {
+
+        // ARRANGE
+        final Folder root = new Folder("root");
+
+        final Template a = new Template("a", "", "", "");
+        final Folder b = new Folder("b");
+        final File c = new File(new ResourceName("c"), "c", "c", new Data(), 0);
+        final Alias d = new Alias("d", a);
+        final Page e = new Page("page");
+        a.publish(_user); root.add(a);
+        b.publish(_user); root.add(b);
+        c.publish(_user); root.add(c);
+        d.publish(_user); root.add(d);
+        e.publish(_user); root.add(e);
+
+        // ACT
+        try {
+            _renderer.render(root, noParams);
+            fail("Should throw exception");
+
+        // ASSERT
+        } catch (final RedirectRequiredException rre) {
+            assertEquals(e, rre.getResource());
         }
     }
 
@@ -328,6 +363,7 @@ public class DefaultRendererTest
     private final DataManager _dm = Testing.dummy(DataManager.class);
     private final ISearch _se = Testing.dummy(ISearch.class);
     private final StatefulReader _sr = Testing.dummy(StatefulReader.class);
+    private final User _user = new User("fooo");
     private final Map<String, String[]> noParams =
         new HashMap<String, String[]>();
 }
