@@ -78,7 +78,10 @@ public class ResourceDaoImpl implements ResourceDao {
         }
         folder.add(newResource);
         _dao.create(newResource);
-        _audit.recordCreate(newResource, _users.loggedInUser(), new Date());
+        _audit.recordCreate(
+            newResource,
+            _users.loggedInUser(),
+            newResource.dateCreated());
     }
 
 
@@ -91,7 +94,10 @@ public class ResourceDaoImpl implements ResourceDao {
             throw new CCCException("Root exists with name: "+folder.name());
         }
         _dao.create(folder);
-        _audit.recordCreate(folder, _users.loggedInUser(), new Date());
+        _audit.recordCreate(
+            folder,
+            _users.loggedInUser(),
+            folder.dateCreated());
     }
 
 
@@ -158,7 +164,8 @@ public class ResourceDaoImpl implements ResourceDao {
         final User u = _users.loggedInUser();
         final Resource r = findLocked(Resource.class, resourceId, u);
         r.publish(u);
-        _audit.recordPublish(r, u, new Date());
+        r.dateChanged(new Date());
+        _audit.recordPublish(r, u, r.dateChanged());
         return r;
     }
 
@@ -168,6 +175,7 @@ public class ResourceDaoImpl implements ResourceDao {
         final User publishedBy = _users.find(userId);
         final Resource r = find(Resource.class, resourceId); // FIXME: Should use findLocked.
         r.publish(publishedBy);
+        r.dateChanged(publishedOn);
         _audit.recordPublish(r, publishedBy, publishedOn);
         return r;
     }
@@ -268,15 +276,24 @@ public class ResourceDaoImpl implements ResourceDao {
     public void update(final Resource resource,
                        final String comment,
                        final boolean isMajorEdit) {
+        resource.dateChanged(new Date());
         _audit.recordUpdate(
-            resource, _users.loggedInUser(), new Date(), comment, isMajorEdit);
+            resource,
+            _users.loggedInUser(),
+            resource.dateChanged(),
+            comment,
+            isMajorEdit);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void update(final Resource resource) {
-        _audit.recordUpdate(resource, _users.loggedInUser(), new Date());
+        resource.dateChanged(new Date());
+        _audit.recordUpdate(
+            resource,
+            _users.loggedInUser(),
+            resource.dateChanged());
     }
 
 
