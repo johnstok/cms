@@ -81,4 +81,5 @@
     </class>
     
     <query name="resourceHistory">from ccc.domain.LogEntry le where le._subjectId=?</query><!-- order by? -->
+    <query name="logEntryById">from ccc.domain.LogEntry le where le._index=?</query>
 </hibernate-mapping>

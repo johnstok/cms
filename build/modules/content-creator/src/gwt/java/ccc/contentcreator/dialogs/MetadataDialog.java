@@ -32,6 +32,7 @@ import com.extjs.gxt.ui.client.widget.grid.CellEditor;
 import com.extjs.gxt.ui.client.widget.grid.CheckBoxSelectionModel;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
+import com.extjs.gxt.ui.client.widget.grid.EditorGrid;
 import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.TextToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
@@ -74,7 +75,7 @@ public class MetadataDialog
      */
     public MetadataDialog(final String resourceId,
                           final Collection<Map.Entry<String, String>> data) {
-        super("Metadata", data); // I18n
+        super("Metadata", data, true); // I18n
 
         _resourceId = resourceId;
 
@@ -136,9 +137,9 @@ public class MetadataDialog
                 final ModelData datum = new BaseModelData();
                 datum.set("key", "");
                 datum.set("value", "");
-                _grid.stopEditing();
+                ((EditorGrid<ModelData>)_grid).stopEditing();
                 _dataStore.insert(datum, 0);
-                _grid.startEditing(0, 0);
+                ((EditorGrid<ModelData>)_grid).startEditing(0, 0);
             }
         });
         toolBar.add(add);
@@ -149,7 +150,7 @@ public class MetadataDialog
         remove.setId("remove-metadatum");
         remove.addSelectionListener(new SelectionListener<ToolBarEvent>() {
             @Override public void componentSelected(final ToolBarEvent ce) {
-                _grid.stopEditing();
+                ((EditorGrid<ModelData>)_grid).stopEditing();
                 for (final ModelData item
                         : _grid.getSelectionModel().getSelectedItems()) {
                     _dataStore.remove(item);

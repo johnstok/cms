@@ -34,6 +34,7 @@ import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.DataManager;
 import ccc.services.ISearch;
+import ccc.services.StatefulReader;
 
 
 /**
@@ -52,7 +53,7 @@ public class DefaultRendererTest
 
         // ARRANGE
         final Renderer rr =
-            new DefaultRenderer(_dm, _se, true);
+            new DefaultRenderer(_dm, _se, _sr, true);
 
         final Page p = new Page("foo");
         p.publish(new User("aaaa"));
@@ -293,7 +294,7 @@ public class DefaultRendererTest
 
         // ARRANGE
         final Renderer rr =
-            new DefaultRenderer(_dm, _se, true);
+            new DefaultRenderer(_dm, _se, _sr, true);
         final Page p = new Page("private page");
 
         // ACT
@@ -311,7 +312,7 @@ public class DefaultRendererTest
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {
-        _renderer = new DefaultRenderer(_dm, _se, false);
+        _renderer = new DefaultRenderer(_dm, _se, _sr, false);
 
     }
 
@@ -326,6 +327,7 @@ public class DefaultRendererTest
     private DefaultRenderer _renderer;
     private final DataManager _dm = Testing.dummy(DataManager.class);
     private final ISearch _se = Testing.dummy(ISearch.class);
+    private final StatefulReader _sr = Testing.dummy(StatefulReader.class);
     private final Map<String, String[]> noParams =
         new HashMap<String, String[]>();
 }

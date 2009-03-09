@@ -18,6 +18,7 @@ import ccc.commons.Testing;
 import ccc.services.DataManager;
 import ccc.services.ISearch;
 import ccc.services.ServiceNames;
+import ccc.services.StatefulReader;
 
 
 /**
@@ -134,7 +135,9 @@ public class DefaultObjectFactoryTest
         expect(_registry.get(ServiceNames.DATA_MANAGER_LOCAL))
             .andReturn(Testing.dummy(DataManager.class));
         expect(_registry.get(ServiceNames.SEARCH_ENGINE_LOCAL))
-        .andReturn(Testing.dummy(ISearch.class));
+            .andReturn(Testing.dummy(ISearch.class));
+        expect(_registry.get(ServiceNames.STATEFUL_READER))
+        .andReturn(Testing.dummy(StatefulReader.class));
         replay(_registry);
 
         // ACT

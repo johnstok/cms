@@ -45,4 +45,18 @@ public interface Renderer {
      */
     Response renderWorkingCopy(Resource resource,
                                Map<String, String[]> parameters);
+
+
+    /**
+     * Renders a historical version of a resource.
+     * Retrieves the snapshot for the historical version, applies it to the
+     * latest version and then passes the resource {@link #render(Resource)}.
+     * We can apply the historical snapshot because this method executes outside
+     * of a transaction.
+     *
+     * @param resource The resource to render.
+     * @return The response, ready to be written.
+     */
+    Response renderHistoricalVersion(Resource resource,
+                                     Map<String, String[]> parameters);
 }

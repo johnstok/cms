@@ -18,6 +18,7 @@ import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.EditorGrid;
+import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 
 
@@ -32,7 +33,7 @@ public abstract class AbstractTableDialog<T>
 
     protected final Collection<T> _data;
     protected final ListStore<ModelData> _dataStore = new ListStore<ModelData>();
-    protected final EditorGrid<ModelData> _grid;
+    protected final Grid<ModelData> _grid;
 
     /**
      * Constructor.
@@ -41,7 +42,8 @@ public abstract class AbstractTableDialog<T>
      * @param data The data the dialog should display.
      */
     public AbstractTableDialog(final String title,
-                                  final Collection<T> data) {
+                               final Collection<T> data,
+                               final boolean editable) {
 
         super(title);
 
@@ -51,7 +53,11 @@ public abstract class AbstractTableDialog<T>
 
         final ColumnModel cm = defineColumnModel();
 
-        _grid = new EditorGrid<ModelData>(_dataStore, cm);
+        if (editable) {
+            _grid = new EditorGrid<ModelData>(_dataStore, cm);
+        } else {
+            _grid = new Grid<ModelData>(_dataStore, cm);
+        }
         _grid.setId(title);
         _grid.setBorders(false);
         _grid.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);

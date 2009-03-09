@@ -98,6 +98,8 @@ public final class ContentServlet extends CCCServlet {
             final Response r;
             if (parameters.keySet().contains("wc")) {
                 r = _factory.createRenderer().renderWorkingCopy(rs, parameters);
+            } else if (parameters.keySet().contains("v")) {
+                r = _factory.createRenderer().renderHistoricalVersion(rs, parameters);
             } else {
                 r = _factory.createRenderer().render(rs, parameters);
             }

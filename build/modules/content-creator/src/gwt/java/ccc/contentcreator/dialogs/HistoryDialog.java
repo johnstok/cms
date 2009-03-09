@@ -17,10 +17,13 @@ import java.util.List;
 
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.HistoryToolBar;
 import ccc.services.api.LogEntrySummary;
 
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
+import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.i18n.client.DateTimeFormat;
 
 
@@ -33,6 +36,8 @@ public class HistoryDialog
     extends
         AbstractTableDialog<LogEntrySummary> {
 
+    private final ToolBar _toolBar = new HistoryToolBar(this);
+
     /**
      * Constructor.
      *
@@ -40,8 +45,9 @@ public class HistoryDialog
      *  {@link LogEntrySummary}.
      */
     public HistoryDialog(final Collection<LogEntrySummary> data) {
-        super(Globals.uiConstants().resourceHistory(), data);
+        super(Globals.uiConstants().resourceHistory(), data, false);
 
+        setTopComponent(_toolBar);
         _dataStore.add(DataBinding.bindLogEntrySummary(_data));
         _grid.setAutoExpandColumn("comment");
     }
@@ -77,5 +83,16 @@ public class HistoryDialog
 
         final ColumnModel cm = new ColumnModel(configs);
         return cm;
+    }
+
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
+    public ModelData selectedItem() {
+        final ModelData selected = _grid.getSelectionModel().getSelectedItem();
+        return selected;
     }
 }

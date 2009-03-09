@@ -19,11 +19,14 @@ import ccc.commons.DBC;
 import ccc.domain.Alias;
 import ccc.domain.File;
 import ccc.domain.Folder;
+import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.Search;
+import ccc.domain.Snapshot;
 import ccc.services.DataManager;
 import ccc.services.ISearch;
+import ccc.services.StatefulReader;
 
 /**
  * Default implementation of the {@link Renderer} interface.
@@ -37,6 +40,7 @@ public class DefaultRenderer
     private final DataManager _dm;
     private final ISearch _search;
     private final boolean _respectVisibility;
+    private final StatefulReader _reader;
 
     /**
      * Constructor.
@@ -46,12 +50,15 @@ public class DefaultRenderer
      */
     public DefaultRenderer(final DataManager dm,
                            final ISearch searchEngine,
+                           final StatefulReader reader,
                            final boolean respectVisiblity) {
         DBC.require().notNull(dm);
         DBC.require().notNull(searchEngine);
+        DBC.require().notNull(reader);
 
         _dm = dm;
         _search = searchEngine;
+        _reader = reader;
         _respectVisibility = respectVisiblity;
     }
 
@@ -103,6 +110,46 @@ public class DefaultRenderer
                 final Page p = (Page) resource;
                 if (null!=p.workingCopy()) {
                     p.applySnapshot(p.workingCopy());
+                }
+            }
+        }
+        return render(resource, parameters);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Response renderHistoricalVersion(final Resource resource,
+                                            final Map<String, String[]> parameters) {
+        if (!_respectVisibility) {
+            if (resource instanceof Page) {
+                final Page p = (Page) resource;
+
+                if (!parameters.containsKey("v")) {
+                    throw new NotFoundException();
+                }
+                final String[] vStrings = parameters.get("v");
+                if (null==vStrings) {
+                    throw new NotFoundException();
+                } else if (1 != vStrings.length){
+                    throw new NotFoundException();
+                } else {
+                    try {
+                        final long v = new Long(vStrings[0]).intValue();
+                        if (v<0) {
+                            throw new NotFoundException();
+                        }
+                        final LogEntry le = _reader.lookup(v);
+                        if (null==le) {
+                            throw new NotFoundException();
+                        } else if (resource.id().equals(le.subjectId())) {
+                            p.applySnapshot(new Snapshot(le.detail()));
+                        } else {
+                            throw new NotFoundException();
+                        }
+                    } catch (final NumberFormatException e) {
+                        throw new NotFoundException();
+                    }
                 }
             }
         }

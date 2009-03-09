@@ -27,6 +27,7 @@ import javax.persistence.Query;
 
 import ccc.domain.CCCException;
 import ccc.domain.Folder;
+import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
@@ -98,5 +99,20 @@ public final class StatefulReaderEJB
     @Override
     public Resource lookup(final UUID resourceId) {
         return _em.find(Resource.class, resourceId);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LogEntry lookup(final long index) {
+        final Query q = _em.createNamedQuery("logEntryById");
+        q.setParameter(1, index);
+
+        try {
+            final Object singleResult = q.getSingleResult();
+            final LogEntry le = LogEntry.class.cast(singleResult);
+            return le;
+        } catch (final NoResultException e) {
+            return null;
+        }
     }
 }
