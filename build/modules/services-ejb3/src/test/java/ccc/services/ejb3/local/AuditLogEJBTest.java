@@ -13,6 +13,8 @@ package ccc.services.ejb3.local;
 
 import static org.easymock.EasyMock.*;
 
+import java.util.Date;
+
 import javax.persistence.EntityManager;
 
 import junit.framework.TestCase;
@@ -24,7 +26,6 @@ import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.User;
 import ccc.services.AuditLog;
-import ccc.services.UserManager;
 
 
 /**
@@ -42,19 +43,19 @@ public class AuditLogEJBTest
     public void testRecordLockRejectsNull() {
 
         // ARRANGE
-        replay(_em, _um);
-        final AuditLog al = new AuditLogEJB(_em, _um);
+        replay(_em);
+        final AuditLog al = new AuditLogEJB(_em);
 
         // ACT
         try {
-            al.recordLock(null);
+            al.recordLock(null, _actor, _happenedOn);
             fail("NULL should be rejected.");
 
         // ASSERT
         } catch (final IllegalArgumentException e) {
             assertEquals("Specified value may not be NULL.", e.getMessage());
         }
-        verify(_em, _um);
+        verify(_em);
     }
 
     /**
@@ -67,18 +68,15 @@ public class AuditLogEJBTest
         _em.persist(capture(le));
         replay(_em);
 
-        expect(_um.loggedInUser()).andReturn(_actor);
-        replay(_um);
-
-        final AuditLog al = new AuditLogEJB(_em, _um);
+        final AuditLog al = new AuditLogEJB(_em);
         final Page p = new Page("foo");
         p.lock(_actor);
 
         // ACT
-        al.recordLock(p);
+        al.recordLock(p, _actor, _happenedOn);
 
         // ASSERT
-        verify(_em, _um);
+        verify(_em);
         assertEquals(LogEntry.Action.LOCK, le.getValue().action());
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
@@ -95,17 +93,14 @@ public class AuditLogEJBTest
         _em.persist(capture(le));
         replay(_em);
 
-        expect(_um.loggedInUser()).andReturn(_actor);
-        replay(_um);
-
-        final AuditLog al = new AuditLogEJB(_em, _um);
+        final AuditLog al = new AuditLogEJB(_em);
         final Page p = new Page("foo");
 
         // ACT
-        al.recordCreate(p);
+        al.recordCreate(p, _actor, _happenedOn);
 
         // ASSERT
-        verify(_em, _um);
+        verify(_em);
         assertEquals(LogEntry.Action.CREATE, le.getValue().action());
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
@@ -122,17 +117,14 @@ public class AuditLogEJBTest
         _em.persist(capture(le));
         replay(_em);
 
-        expect(_um.loggedInUser()).andReturn(_actor);
-        replay(_um);
-
-        final AuditLog al = new AuditLogEJB(_em, _um);
+        final AuditLog al = new AuditLogEJB(_em);
         final Page p = new Page("foo");
 
         // ACT
-        al.recordChangeTemplate(p);
+        al.recordChangeTemplate(p, _actor, _happenedOn);
 
         // ASSERT
-        verify(_em, _um);
+        verify(_em);
         assertEquals(LogEntry.Action.CHANGE_TEMPLATE, le.getValue().action());
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
@@ -149,17 +141,14 @@ public class AuditLogEJBTest
         _em.persist(capture(le));
         replay(_em);
 
-        expect(_um.loggedInUser()).andReturn(_actor);
-        replay(_um);
-
-        final AuditLog al = new AuditLogEJB(_em, _um);
+        final AuditLog al = new AuditLogEJB(_em);
         final Page p = new Page("foo");
 
         // ACT
-        al.recordUpdate(p, "Updated.", true);
+        al.recordUpdate(p, _actor, _happenedOn, "Updated.", true);
 
         // ASSERT
-        verify(_em, _um);
+        verify(_em);
         assertEquals(LogEntry.Action.UPDATE, le.getValue().action());
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
@@ -176,19 +165,16 @@ public class AuditLogEJBTest
         _em.persist(capture(le));
         replay(_em);
 
-        expect(_um.loggedInUser()).andReturn(_actor);
-        replay(_um);
-
-        final AuditLog al = new AuditLogEJB(_em, _um);
+        final AuditLog al = new AuditLogEJB(_em);
         final Page p = new Page("foo");
         final Folder f = new Folder("baz");
         f.add(p);
 
         // ACT
-        al.recordMove(p);
+        al.recordMove(p, _actor, _happenedOn);
 
         // ASSERT
-        verify(_em, _um);
+        verify(_em);
         assertEquals(LogEntry.Action.MOVE, le.getValue().action());
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
@@ -206,17 +192,14 @@ public class AuditLogEJBTest
         _em.persist(capture(le));
         replay(_em);
 
-        expect(_um.loggedInUser()).andReturn(_actor);
-        replay(_um);
-
-        final AuditLog al = new AuditLogEJB(_em, _um);
+        final AuditLog al = new AuditLogEJB(_em);
         final Page p = new Page("foo");
 
         // ACT
-        al.recordRename(p);
+        al.recordRename(p, _actor, _happenedOn);
 
         // ASSERT
-        verify(_em, _um);
+        verify(_em);
         assertEquals(LogEntry.Action.RENAME, le.getValue().action());
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
@@ -229,18 +212,16 @@ public class AuditLogEJBTest
     @Override
     protected void setUp() throws Exception {
         _em = createStrictMock(EntityManager.class);
-        _um = createStrictMock(UserManager.class);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void tearDown() throws Exception {
         _em = null;
-        _um = null;
     }
 
 
     private final User _actor = new User("actor");
+    private final Date _happenedOn = new Date();
     private EntityManager _em;
-    private UserManager _um;
 }

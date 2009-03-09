@@ -11,6 +11,7 @@
  */
 package ccc.contentcreator.remoting;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -99,8 +100,9 @@ public class CommandsImpl
     /** {@inheritDoc} */
     @Override
     public ResourceSummary publish(final String resourceId,
-                                   final String userId) {
-        return _delegate.publish(resourceId, userId);
+                                   final String userId,
+                                   final Date publishOn) {
+        return _delegate.publish(resourceId, userId, publishOn);
     }
 
     /** {@inheritDoc} */
@@ -215,5 +217,12 @@ public class CommandsImpl
     public ResourceSummary createSearch(final String parentId,
                                         final String title) {
         throw new UnsupportedOperationException("Method not implemented.");
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void publish(final String resourceId,
+                                   final Date publishDate) {
+        _delegate.publish(resourceId, publishDate);
     }
 }

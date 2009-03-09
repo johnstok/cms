@@ -11,6 +11,7 @@
  */
 package ccc.contentcreator.api;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -56,7 +57,9 @@ public interface CommandServiceAsync {
 
     void publish(String resourceId, AsyncCallback<ResourceSummary> callback);
 
-    void publish(String resourceId, String userId, AsyncCallback<ResourceSummary> callback);
+    void publish(String resourceId, Date publishDate, AsyncCallback<Void> callback);
+
+    void publish(String resourceId, String userId, Date publishDate, AsyncCallback<ResourceSummary> callback);
 
     void unpublish(String resourceId, AsyncCallback<ResourceSummary> callback);
 

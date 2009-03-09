@@ -13,6 +13,7 @@ package ccc.services.ejb3.remote;
 
 import static javax.ejb.TransactionAttributeType.*;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ import javax.ejb.TransactionAttribute;
 
 import org.jboss.annotation.security.SecurityDomain;
 
+import ccc.actions.Action;
 import ccc.commons.EmailAddress;
 import ccc.domain.Alias;
 import ccc.domain.CCCException;
@@ -38,12 +40,14 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourceOrder;
 import ccc.domain.Search;
+import ccc.domain.Snapshot;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.AliasDao;
 import ccc.services.FolderDao;
 import ccc.services.PageDao;
 import ccc.services.ResourceDao;
+import ccc.services.Scheduler;
 import ccc.services.TemplateDao;
 import ccc.services.UserManager;
 import ccc.services.api.AliasDelta;
@@ -79,6 +83,7 @@ public class CommandsEJB
     @EJB(name="PageDao")        private PageDao         _page;
     @EJB(name="UserManager")    private UserManager     _users;
     @EJB(name="ResourceDao")    private ResourceDao     _resources;
+    @EJB(name="Scheduler")      private Scheduler       _scheduler;
 
     /** {@inheritDoc} */
     @Override
@@ -195,10 +200,12 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     public ResourceSummary publish(final String resourceId,
-                                   final String userId) {
+                                   final String userId,
+                                   final Date date) {
         return map(_resources.publish(
             UUID.fromString(resourceId),
-            UUID.fromString(userId)));
+            UUID.fromString(userId),
+            date));
     }
 
     /** {@inheritDoc} */
@@ -398,5 +405,19 @@ public class CommandsEJB
         final Search s = new Search(title);
         _resources.create(UUID.fromString(parentId), s);
         return map(s);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void publish(final String resourceId, final Date publishDate) {
+        final Snapshot sn = new Snapshot();
+        sn.set("resource", resourceId);
+        final Action a =
+            new Action(
+                Action.Type.PUBLISH,
+                publishDate,
+                _users.loggedInUser().id(),
+                sn);
+        _scheduler.schedule(a);
     }
 }

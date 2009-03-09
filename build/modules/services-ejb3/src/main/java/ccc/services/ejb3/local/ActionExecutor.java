@@ -49,11 +49,23 @@ public class ActionExecutor implements IActionExecutor {
                 executeUnpublish(action);
                 break;
 
+            case PUBLISH:
+                executePublish(action);
+                break;
+
             default:
                 throw new UnsupportedOperationException(
                     "Unsupported action type: "+action.type());
 
         }
+    }
+
+
+    private void executePublish(final Action action) {
+        _resources.publish(
+            action.parameters().getUuid("resource"),
+            action.actor(),
+            new Date());  // TODO: Should we use action._executeAfter?
     }
 
 

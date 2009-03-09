@@ -161,9 +161,10 @@ public interface ResourceDao {
      *
      * @param resourceId The id of the resource to update.
      * @param userId The id of the publishing user.
+     * @param publishedOn The date the resource was published.
      * @return The current version of resource.
      */
-    Resource publish(UUID resourceId, UUID userId);
+    Resource publish(UUID resourceId, UUID userId, Date publishedOn);
 
     /**
      * Un-publishes the resource.
