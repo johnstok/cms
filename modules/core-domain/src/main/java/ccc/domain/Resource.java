@@ -16,6 +16,7 @@ import static ccc.commons.DBC.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +43,8 @@ public abstract class Resource extends VersionedEntity {
     private List<String>   _tags              = new ArrayList<String>();
     private User           _publishedBy       = null;
     private boolean        _includeInMainMenu = false;
+    private Date           _dateCreated       = new Date();
+    private Date           _dateChanged       = _dateCreated;
 
     private Map<String, String> _metadata = new HashMap<String, String>();
 
@@ -477,6 +480,34 @@ public abstract class Resource extends VersionedEntity {
      */
     public void clearMetadata() {
         _metadata.clear();
+    }
+
+    /**
+     * Accessor for the date the resource was created.
+     *
+     * @return The date of creation.
+     */
+    public Date dateCreated() {
+        return _dateCreated;
+    }
+
+    /**
+     * Accessor for the date the resource last changed.
+     *
+     * @return The date the resource last changed.
+     */
+    public Date dateChanged() {
+        return _dateChanged;
+    }
+
+    /**
+     * Mutator for the date the resource last changed.
+     *
+     * @param changedOn The date the resource changed.
+     */
+    public void dateChanged(final Date changedOn) {
+        DBC.require().notNull(changedOn);
+        _dateChanged = changedOn;
     }
 
 }

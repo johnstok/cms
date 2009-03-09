@@ -11,6 +11,7 @@
  */
 package ccc.domain;
 
+import java.util.Date;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -32,6 +33,55 @@ public final class ResourceTest extends TestCase {
     private final Template _default = new Template();
     private User _jill = new User("jill");
     private User _jack = new User("jack");
+
+
+    /**
+     * Test.
+     */
+    public void testCreatedOnIsSetDuringConstruction() {
+
+        // ARRANGE
+        final Date before = new Date();
+
+        // ACT
+        final Resource r = new Page();
+        final Date after = new Date();
+
+        // ASSERT
+        assertTrue(before.getTime()<=r.dateCreated().getTime());
+        assertTrue(after.getTime()>=r.dateCreated().getTime());
+    }
+
+    /**
+     * Test.
+     */
+    public void testAtConstructionDateChangedIsSetToDateCreated() {
+
+        // ARRANGE
+
+        // ACT
+        final Resource r = new Page();
+
+        // ASSERT
+        assertEquals(r.dateCreated(), r.dateChanged());
+    }
+
+    /**
+     * Test.
+     * @throws InterruptedException If interrupted from sleep.
+     */
+    public void testDateChangedCanBeSet() throws InterruptedException {
+
+        // ARRANGE
+        final Resource r = new Page();
+        Thread.sleep(100); // Wait
+
+        // ACT
+        r.dateChanged(new Date());
+
+        // ASSERT
+        assertTrue(r.dateChanged().after(r.dateCreated()));
+    }
 
     /**
      * Test.
