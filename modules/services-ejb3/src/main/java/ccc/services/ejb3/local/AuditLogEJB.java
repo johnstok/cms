@@ -15,7 +15,6 @@ import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Date;
 
-import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -25,8 +24,8 @@ import javax.persistence.PersistenceContext;
 import ccc.commons.DBC;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
+import ccc.domain.User;
 import ccc.services.AuditLog;
-import ccc.services.UserManager;
 
 
 /**
@@ -43,7 +42,6 @@ public class AuditLogEJB
 
     @PersistenceContext(unitName="ccc-persistence")
     private EntityManager _em;
-    @EJB(name="UserManager") private UserManager _um;
 
 
     /** Constructor. */
@@ -52,64 +50,68 @@ public class AuditLogEJB
     /**
      * Constructor.
      * @param em The entity manager used to perform queries.
-     * @param um The user manager used to determine the logged in user.
      */
-    AuditLogEJB(final EntityManager em, final UserManager um) {
+    AuditLogEJB(final EntityManager em) {
         DBC.require().notNull(em);
-        DBC.require().notNull(um);
-
         _em = em;
-        _um = um;
     }
 
     /** {@inheritDoc} */
     @Override
-    public void recordLock(final Resource resource) {
+    public void recordLock(final Resource resource,
+                           final User actor,
+                           final Date happenedOn) {
         DBC.require().notNull(resource);
         final LogEntry le =
-            LogEntry.forLock(resource, _um.loggedInUser(), new Date());
+            LogEntry.forLock(resource, actor, happenedOn);
         _em.persist(le);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void recordUnlock(final Resource resource) {
+    public void recordUnlock(final Resource resource,
+                             final User actor,
+                             final Date happenedOn) {
         DBC.require().notNull(resource);
         final LogEntry le =
-            LogEntry.forUnlock(resource, _um.loggedInUser(), new Date());
+            LogEntry.forUnlock(resource, actor, happenedOn);
         _em.persist(le);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void recordCreate(final Resource resource) {
+    public void recordCreate(final Resource resource,
+                             final User actor,
+                             final Date happenedOn) {
         DBC.require().notNull(resource);
         final LogEntry le =
-            LogEntry.forCreate(resource, _um.loggedInUser(), new Date());
+            LogEntry.forCreate(resource, actor, happenedOn);
         _em.persist(le);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void recordChangeTemplate(final Resource resource) {
+    public void recordChangeTemplate(final Resource resource,
+                                     final User actor,
+                                     final Date happenedOn) {
         DBC.require().notNull(resource);
         final LogEntry le =
-            LogEntry.forTemplateChange(resource,
-                                       _um.loggedInUser(),
-                                       new Date());
+            LogEntry.forTemplateChange(resource, actor, happenedOn);
         _em.persist(le);
     }
 
     /** {@inheritDoc} */
     @Override
     public void recordUpdate(final Resource resource,
+                             final User actor,
+                             final Date happenedOn,
                              final String comment,
                              final boolean isMajorEdit) {
         DBC.require().notNull(resource);
         final LogEntry le = LogEntry.forUpdate(
             resource,
-            _um.loggedInUser(),
-            new Date(),
+            actor,
+            happenedOn,
             comment,
             isMajorEdit);
         _em.persist(le);
@@ -117,48 +119,55 @@ public class AuditLogEJB
 
     /** {@inheritDoc} */
     @Override
-    public void recordUpdate(final Resource resource) {
+    public void recordUpdate(final Resource resource,
+                             final User actor,
+                             final Date happenedOn) {
         DBC.require().notNull(resource);
-        final LogEntry le = LogEntry.forUpdate(
-            resource,
-            _um.loggedInUser(),
-            new Date());
+        final LogEntry le = LogEntry.forUpdate(resource, actor, happenedOn);
         _em.persist(le);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void recordMove(final Resource resource) {
+    public void recordMove(final Resource resource,
+                           final User actor,
+                           final Date happenedOn) {
         DBC.require().notNull(resource);
         final LogEntry le =
-            LogEntry.forMove(resource, _um.loggedInUser(), new Date());
+            LogEntry.forMove(resource, actor, happenedOn);
         _em.persist(le);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void recordRename(final Resource resource) {
+    public void recordRename(final Resource resource,
+                             final User actor,
+                             final Date happenedOn) {
         DBC.require().notNull(resource);
         final LogEntry le =
-            LogEntry.forRename(resource, _um.loggedInUser(), new Date());
+            LogEntry.forRename(resource, actor, happenedOn);
         _em.persist(le);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void recordPublish(final Resource resource) {
+    public void recordPublish(final Resource resource,
+                              final User actor,
+                              final Date happenedOn) {
         DBC.require().notNull(resource);
         final LogEntry le =
-            LogEntry.forPublish(resource, _um.loggedInUser(), new Date());
+            LogEntry.forPublish(resource, actor, happenedOn);
         _em.persist(le);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void recordUnpublish(final Resource resource) {
+    public void recordUnpublish(final Resource resource,
+                                final User actor,
+                                final Date happenedOn) {
         DBC.require().notNull(resource);
         final LogEntry le =
-            LogEntry.forUnpublish(resource, _um.loggedInUser(), new Date());
+            LogEntry.forUnpublish(resource, actor, happenedOn);
         _em.persist(le);
     }
 }

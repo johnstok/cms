@@ -78,7 +78,7 @@ public class ResourceDaoImpl implements ResourceDao {
         }
         folder.add(newResource);
         _dao.create(newResource);
-        _audit.recordCreate(newResource);
+        _audit.recordCreate(newResource, _users.loggedInUser(), new Date());
     }
 
 
@@ -91,17 +91,20 @@ public class ResourceDaoImpl implements ResourceDao {
             throw new CCCException("Root exists with name: "+folder.name());
         }
         _dao.create(folder);
-        _audit.recordCreate(folder);
+        _audit.recordCreate(folder, _users.loggedInUser(), new Date());
     }
+
 
     /** {@inheritDoc} */
     @Override
     public Resource lock(final UUID resourceId) {
         final Resource r = _dao.find(Resource.class, resourceId);
-        r.lock(_users.loggedInUser());
-        _audit.recordLock(r);
+        final User u = _users.loggedInUser();
+        r.lock(u);
+        _audit.recordLock(r, u, new Date());
         return r;
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -109,7 +112,7 @@ public class ResourceDaoImpl implements ResourceDao {
         final User loggedInUser = _users.loggedInUser();
         final Resource r = _dao.find(Resource.class, resourceId);
         r.unlock(loggedInUser);
-        _audit.recordUnlock(r);
+        _audit.recordUnlock(r, loggedInUser, new Date());
         return r;
     }
 
@@ -123,11 +126,13 @@ public class ResourceDaoImpl implements ResourceDao {
                       _users.loggedInUser());
     }
 
+
     /** {@inheritDoc} */
     @Override
     public List<Resource> locked() {
         return _dao.list("lockedResources", Resource.class);
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -138,6 +143,7 @@ public class ResourceDaoImpl implements ResourceDao {
                       UUID.fromString(resourceId));
     }
 
+
     /** {@inheritDoc} */
     @Override
     public void updateTags(final UUID resourceId, final String tags) {
@@ -145,44 +151,52 @@ public class ResourceDaoImpl implements ResourceDao {
         r.tags(tags);
     }
 
+
     /** {@inheritDoc} */
     @Override
     public Resource publish(final UUID resourceId) {
-        final Resource r = findLocked(Resource.class, resourceId);
-        r.publish(_users.loggedInUser());
-        _audit.recordPublish(r);
+        final User u = _users.loggedInUser();
+        final Resource r = findLocked(Resource.class, resourceId, u);
+        r.publish(u);
+        _audit.recordPublish(r, u, new Date());
         return r;
     }
 
     /** {@inheritDoc} */
     @Override
-    public Resource publish(final UUID resourceId, final UUID userId) {
-        final Resource r = findLocked(Resource.class, resourceId);
-        r.publish(_users.find(userId));
-        _audit.recordPublish(r);
+    public Resource publish(final UUID resourceId, final UUID userId, final Date publishedOn) {
+        final User publishedBy = _users.find(userId);
+        final Resource r = find(Resource.class, resourceId); // FIXME: Should use findLocked.
+        r.publish(publishedBy);
+        _audit.recordPublish(r, publishedBy, publishedOn);
         return r;
     }
+
 
     /** {@inheritDoc} */
     @Override
     public Resource unpublish(final UUID resourceId) {
-        final Resource r = findLocked(Resource.class, resourceId);
+        final User u = _users.loggedInUser();
+        final Resource r = findLocked(Resource.class, resourceId, u);
         r.unpublish();
-        _audit.recordUnpublish(r);
+        _audit.recordUnpublish(r, u, new Date());
         return r;
     }
+
 
     /** {@inheritDoc} */
     @Override
     public Resource unpublish(final UUID resourceId,
                               final UUID actor,
                               final Date happendedOn) {
+        final User u = _users.find(actor);
         final Resource r =
-            findLocked(Resource.class, resourceId, _users.find(actor));
+            findLocked(Resource.class, resourceId, u);
         r.unpublish();
-        _audit.recordUnpublish(r); // FIXME: Should pass actor and happenedOn
+        _audit.recordUnpublish(r, u, happendedOn);
         return r;
     }
+
 
     /**
      * {@inheritDoc}
@@ -192,32 +206,38 @@ public class ResourceDaoImpl implements ResourceDao {
                                           final Template template) {
         final Resource r = find(Resource.class, resourceId);
         r.template(template);
-        _audit.recordChangeTemplate(r);
+        _audit.recordChangeTemplate(r, _users.loggedInUser(), new Date());
     }
+
 
     /** {@inheritDoc} */
     @Override
     public void move(final UUID resourceId,
                      final UUID newParentId) {
         // TODO: Check new parent doesn't contain resource with same name!
-        final Resource resource = findLocked(Resource.class, resourceId);
+
+        final User u = _users.loggedInUser();
+        final Resource resource = findLocked(Resource.class, resourceId, u);
         final Folder newParent = find(Folder.class, newParentId);
 
         resource.parent().remove(resource);
         newParent.add(resource);
 
-        _audit.recordMove(resource);
+        _audit.recordMove(resource, u, new Date());
     }
+
 
     /** {@inheritDoc} */
     @Override
     public void rename(final UUID resourceId,
                        final String name) {
         // TODO: Check parent doesn't contain resource with new name!
-        final Resource resource = findLocked(Resource.class, resourceId);
+        final User u = _users.loggedInUser();
+        final Resource resource = findLocked(Resource.class, resourceId, u);
         resource.name(new ResourceName(name));
-        _audit.recordRename(resource);
+        _audit.recordRename(resource, u, new Date());
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -225,12 +245,14 @@ public class ResourceDaoImpl implements ResourceDao {
         return _dao.find(type, id);
     }
 
+
     /** {@inheritDoc} */
     @Override
     public <T extends Resource> T findLocked(final Class<T> type,
                                              final UUID id) {
         return findLocked(type, id, _users.loggedInUser());
     }
+
 
     private <T extends Resource> T findLocked(final Class<T> type,
                                               final UUID id,
@@ -240,19 +262,23 @@ public class ResourceDaoImpl implements ResourceDao {
         return r;
     }
 
+
     /** {@inheritDoc} */
     @Override
     public void update(final Resource resource,
                        final String comment,
                        final boolean isMajorEdit) {
-        _audit.recordUpdate(resource, comment, isMajorEdit);
+        _audit.recordUpdate(
+            resource, _users.loggedInUser(), new Date(), comment, isMajorEdit);
     }
+
 
     /** {@inheritDoc} */
     @Override
     public void update(final Resource resource) {
-        _audit.recordUpdate(resource);
+        _audit.recordUpdate(resource, _users.loggedInUser(), new Date());
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -262,6 +288,7 @@ public class ResourceDaoImpl implements ResourceDao {
         return _dao.list(queryName, resultType, params);
     }
 
+
     /** {@inheritDoc} */
     @Override
     public <T> T find(final String queryName,
@@ -270,12 +297,14 @@ public class ResourceDaoImpl implements ResourceDao {
         return _dao.find(queryName, resultType, params);
     }
 
+
     /** {@inheritDoc} */
     @Override
     public void includeInMainMenu(final UUID id, final boolean b) {
         final Resource r = findLocked(Resource.class, id);
         r.includeInMainMenu(b);
     }
+
 
     /** {@inheritDoc} */
     @Override

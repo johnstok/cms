@@ -14,6 +14,7 @@ package ccc.migration;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -403,7 +404,7 @@ public class Migrations {
                                "CHANGE STATUS");
             _commands.lock(rs._id);  // FIXME: Specify actor & date
             if (null != userId) {
-                _commands.publish(rs._id, userId);
+                _commands.publish(rs._id, userId, new Date()); // FIXME: Specify date
             } else {
                 _commands.publish(rs._id); // FIXME: Specify actor & date
             }

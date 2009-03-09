@@ -11,6 +11,7 @@
  */
 package ccc.services.api;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -105,10 +106,18 @@ public interface Commands {
      * TODO: Add a description of this method.
      *
      * @param resourceId The id of the resource to update.
+     * @return The current version of resource.
+     */
+    void publish(String resourceId, Date publishDate);
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param resourceId The id of the resource to update.
      * @param resourceId The id of the publishing user.
      * @return The current version of resource.
      */
-    ResourceSummary publish(String resourceId, String userId);
+    ResourceSummary publish(String resourceId, String userId, Date publishDate);
 
     /**
      * TODO: Add a description of this method.
