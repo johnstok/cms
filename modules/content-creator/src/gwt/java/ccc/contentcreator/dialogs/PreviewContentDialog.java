@@ -26,7 +26,17 @@ import com.google.gwt.user.client.ui.Frame;
 public class PreviewContentDialog extends AbstractBaseDialog {
 
     private final Frame _previewFrame = new Frame();
-    private final String _contentServerBaseUrl = Globals.appURL();
+
+    private PreviewContentDialog(final String url) {
+        super(Globals.uiConstants().preview());
+
+        _previewFrame.setStyleName("ccc-Frame");
+        DOM.setElementPropertyInt(_previewFrame.getElement(), "frameBorder", 0);
+        _previewFrame.setUrl(url);
+
+        addButton(_cancel);
+        add(_previewFrame);
+    }
 
     /**
      * Constructor.
@@ -37,16 +47,23 @@ public class PreviewContentDialog extends AbstractBaseDialog {
      */
     public PreviewContentDialog(final String resourcePath,
                                 final boolean showWorkingCopy) {
-        super(Globals.uiConstants().preview());
-
-        _previewFrame.setStyleName("ccc-Frame");
-        DOM.setElementPropertyInt(_previewFrame.getElement(), "frameBorder", 0);
-        _previewFrame.setUrl(
-            _contentServerBaseUrl
+        this(
+            Globals.appURL()
             + resourcePath
             + ((showWorkingCopy) ? "?wc" : ""));
+    }
 
-        addButton(_cancel);
-        add(_previewFrame);
+    /**
+     * Constructor.
+     *
+     * @param resourcePath The content resource to preview.
+     * @param version The version of the resource to preview.
+     */
+    public PreviewContentDialog(final String resourcePath, final Long version) {
+        this(
+            Globals.appURL()
+            + resourcePath
+            + "?v="
+            + version);
     }
 }

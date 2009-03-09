@@ -47,7 +47,7 @@ public class DefaultObjectFactory implements ObjectFactory {
     @Override
     public Renderer createRenderer() {
         return new DefaultRenderer(
-            dataManager(), searchEngine(), _respectVisiblity);
+            dataManager(), searchEngine(), getReader(), _respectVisiblity);
     }
 
 

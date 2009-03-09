@@ -13,6 +13,7 @@ package ccc.services;
 
 import java.util.UUID;
 
+import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 
@@ -43,4 +44,13 @@ public interface StatefulReader {
      *  doesn't exist.
      */
     Resource lookup(UUID resourceId);
+
+
+    /**
+     * Lookup a log entry.
+     *
+     * @param index The unique index of the log entry.
+     * @return The log entry with the specified index.
+     */
+    LogEntry lookup(long index);
 }

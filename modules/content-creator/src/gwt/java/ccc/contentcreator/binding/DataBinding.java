@@ -83,6 +83,7 @@ public class DataBinding {
     public static final String WORKING_COPY = "workingCopy";
     /** IS_MAJOR_EDIT : String. */
     public static final String IS_MAJOR_EDIT = "isMajorEdit";
+    private static final String INDEX = "index";
 
     /**
      * TODO: Add a description of this method.
@@ -100,6 +101,8 @@ public class DataBinding {
             md.set(HAPPENED_ON, new Date(les._happenedOn));
             md.set(COMMENT, les._comment);
             md.set(IS_MAJOR_EDIT, les._isMajorEdit);
+            md.set(INDEX, les._index);
+            md.set(ID, les._subject);
             boundData.add(md);
         }
         return boundData;

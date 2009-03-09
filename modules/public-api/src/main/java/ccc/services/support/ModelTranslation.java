@@ -134,6 +134,8 @@ public class ModelTranslation {
         les._happenedOn = le.happenedOn().getTime();
         les._comment = le.comment();
         les._isMajorEdit = (le.isMajorEdit() ? "yes" : "no"); // TODO i18n
+        les._index = le.index();
+        les._subject = le.subjectId().toString();
         return les;
     }
 
