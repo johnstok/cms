@@ -363,7 +363,8 @@ public class CommandsEJB
         final Set<Paragraph> pList = new HashSet<Paragraph>();
 
         for (final ParagraphDelta para : delta) {
-            if ("TEXT".equals(para._type) || "HTML".equals(para._type)) {
+            if (("TEXT".equals(para._type) || "HTML".equals(para._type))
+                    && para._textValue != null) {
                 final Paragraph paragraph =
                     Paragraph.fromText(para._name, para._textValue);
                 pList.add(paragraph);
@@ -397,7 +398,8 @@ public class CommandsEJB
                                   final Page page) {
 
         for (final ParagraphDelta para : paragraphs) {
-            if ("TEXT".equals(para._type) || "HTML".equals(para._type)) {
+            if (("TEXT".equals(para._type) || "HTML".equals(para._type))
+                    && para._textValue != null) {
                 final Paragraph paragraph =
                     Paragraph.fromText(para._name, para._textValue);
                 page.addParagraph(paragraph);
