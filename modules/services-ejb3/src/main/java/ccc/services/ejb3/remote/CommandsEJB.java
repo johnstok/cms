@@ -34,6 +34,7 @@ import ccc.domain.Alias;
 import ccc.domain.CCCException;
 import ccc.domain.CreatorRoles;
 import ccc.domain.Folder;
+import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.Resource;
@@ -44,6 +45,7 @@ import ccc.domain.Snapshot;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.AliasDao;
+import ccc.services.AuditLog;
 import ccc.services.FolderDao;
 import ccc.services.PageDao;
 import ccc.services.ResourceDao;
@@ -84,6 +86,7 @@ public class CommandsEJB
     @EJB(name="UserManager")    private UserManager     _users;
     @EJB(name="ResourceDao")    private ResourceDao     _resources;
     @EJB(name="Scheduler")      private Scheduler       _scheduler;
+    @EJB(name="AuditLog")       private AuditLog        _audit;
 
     /** {@inheritDoc} */
     @Override
@@ -272,6 +275,20 @@ public class CommandsEJB
 
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public void createWorkingCopy(final String resourceId, final long index) {
+        final UUID pageUuid = UUID.fromString(resourceId);
+        final LogEntry le = _audit.findEntryForIndex(index);
+
+        if (pageUuid.equals(le.subjectId())) {
+            _page.updateWorkingCopy(
+                UUID.fromString(resourceId),
+                new Snapshot(le.detail()));
+        } else {
+            throw new CCCException("Log entry describes another resource.");
+        }
+    }
 
     /** {@inheritDoc} */
     @Override

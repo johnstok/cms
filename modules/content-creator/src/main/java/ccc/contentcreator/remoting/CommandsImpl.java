@@ -225,4 +225,10 @@ public class CommandsImpl
                                    final Date publishDate) {
         _delegate.publish(resourceId, publishDate);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public void createWorkingCopy(final String resourceId, final long index) {
+        _delegate.createWorkingCopy(resourceId, index);
+    }
 }

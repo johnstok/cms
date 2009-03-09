@@ -11,6 +11,7 @@
  */
 package ccc.contentcreator.client;
 
+import ccc.contentcreator.actions.CreateWorkingCopyFromHistoricalVersionAction;
 import ccc.contentcreator.actions.PreviewHistoricalAction;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.dialogs.HistoryDialog;
@@ -42,6 +43,13 @@ public class HistoryToolBar
             _constants.preview(),
             new PreviewHistoricalAction(_historyDialog));
         addSeparator();
+        if (_historyDialog.hasLock()) {
+            addButton(
+                "create-historical-wc",
+                _constants.revert(),
+                new CreateWorkingCopyFromHistoricalVersionAction(_historyDialog));
+            addSeparator();
+        }
     }
 
 }

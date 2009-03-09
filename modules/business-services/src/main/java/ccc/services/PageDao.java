@@ -17,6 +17,7 @@ import java.util.UUID;
 
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
+import ccc.domain.Snapshot;
 
 
 /**
@@ -47,12 +48,22 @@ public interface PageDao {
      * Updates the working copy. Creates working copy in case page does
      * not have it.
      *
-     * @param id he identifier for the page.
+     * @param id The identifier for the page.
      * @param newTitle The new title for the page.
      * @param newParagraphs The new paragraphs for the page.
      */
-    void updateWorkingCopy(UUID id, String newTitle,
+    @Deprecated
+    void updateWorkingCopy(UUID id,
+                           String newTitle,
                            Set<Paragraph> newParagraphs);
+
+    /**
+     * Updates the working copy.
+     *
+     * @param id The identifier for the page.
+     * @param workingCopy The snapshot to use as a working copy.
+     */
+    void updateWorkingCopy(UUID id, Snapshot workingCopy);
 
     /**
      * Validate fields.
