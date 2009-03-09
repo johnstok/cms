@@ -206,6 +206,13 @@ public interface Commands {
      */
     ResourceSummary createSearch(String parentId, String title);
 
-
+    /**
+     * Create a working copy for the specified resource, using the specified log
+     * entry.
+     *
+     * @param resourceId The id of the resource.
+     * @param index The index number of the log entry.
+     */
+    void createWorkingCopy(String resourceId, long index);
 }
 

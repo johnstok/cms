@@ -13,6 +13,7 @@ package ccc.services;
 
 import java.util.Date;
 
+import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.User;
 
@@ -95,4 +96,13 @@ public interface AuditLog {
      * @param resource The resource that was unpublished.
      */
     void recordUnpublish(final Resource resource, User actor, Date happenedOn);
+
+
+    /**
+     * Find a log entry, given its index number.
+     *
+     * @param index The index number.
+     * @return The log entry with the corresponding index number.
+     */
+    LogEntry findEntryForIndex(long index);
 }

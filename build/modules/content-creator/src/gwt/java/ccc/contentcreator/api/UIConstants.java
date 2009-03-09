@@ -841,4 +841,12 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Publish on")
     String publishOn();
+
+    /**
+     * "Revert".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Revert")
+    String revert();
 }

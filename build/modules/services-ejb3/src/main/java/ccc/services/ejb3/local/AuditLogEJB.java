@@ -19,7 +19,9 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import ccc.commons.DBC;
 import ccc.domain.LogEntry;
@@ -169,5 +171,20 @@ public class AuditLogEJB
         final LogEntry le =
             LogEntry.forUnpublish(resource, actor, happenedOn);
         _em.persist(le);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LogEntry findEntryForIndex(final long index) {
+        final Query q = _em.createNamedQuery("logEntryById");
+        q.setParameter(1, index);
+
+        try {
+            final Object singleResult = q.getSingleResult();
+            final LogEntry le = LogEntry.class.cast(singleResult);
+            return le;
+        } catch (final NoResultException e) {
+            return null;
+        }
     }
 }

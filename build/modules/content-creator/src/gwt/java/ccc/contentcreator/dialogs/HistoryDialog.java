@@ -18,6 +18,7 @@ import java.util.List;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.HistoryToolBar;
+import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.services.api.LogEntrySummary;
 
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -36,17 +37,22 @@ public class HistoryDialog
     extends
         AbstractTableDialog<LogEntrySummary> {
 
-    private final ToolBar _toolBar = new HistoryToolBar(this);
+    private final ToolBar _toolBar;
+    private final SingleSelectionModel _ssm;
 
     /**
      * Constructor.
      *
      * @param data The history to display, as a collection of
      *  {@link LogEntrySummary}.
+     * @param ssm
      */
-    public HistoryDialog(final Collection<LogEntrySummary> data) {
+    public HistoryDialog(final Collection<LogEntrySummary> data,
+                         final SingleSelectionModel ssm) {
         super(Globals.uiConstants().resourceHistory(), data, false);
 
+        _ssm = ssm;
+        _toolBar = new HistoryToolBar(this);
         setTopComponent(_toolBar);
         _dataStore.add(DataBinding.bindLogEntrySummary(_data));
         _grid.setAutoExpandColumn("comment");
@@ -94,5 +100,27 @@ public class HistoryDialog
     public ModelData selectedItem() {
         final ModelData selected = _grid.getSelectionModel().getSelectedItem();
         return selected;
+    }
+
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param selectedId
+     */
+    public void workingCopyCreated() {
+        final ModelData selectedInMainWindow = _ssm.tableSelection();
+        selectedInMainWindow.set(DataBinding.WORKING_COPY, Boolean.TRUE);
+        _ssm.update(selectedInMainWindow);
+    }
+
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
+    public boolean hasLock() {
+        return null!=_ssm.tableSelection().get(DataBinding.LOCKED);
     }
 }

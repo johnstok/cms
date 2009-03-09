@@ -104,6 +104,7 @@ public final class StatefulReaderEJB
     /** {@inheritDoc} */
     @Override
     public LogEntry lookup(final long index) {
+        // FIXME: Duplicate of AuditLog.findEntryForIndex().
         final Query q = _em.createNamedQuery("logEntryById");
         q.setParameter(1, index);
 

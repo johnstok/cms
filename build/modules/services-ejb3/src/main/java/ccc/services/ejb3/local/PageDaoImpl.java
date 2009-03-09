@@ -175,20 +175,25 @@ public class PageDaoImpl implements PageDao {
     public void updateWorkingCopy(final UUID id,
                                   final String newTitle,
                                   final Set<Paragraph> newParagraphs) {
-        final Page page = _dao.findLocked(Page.class, id);
-        // TODO: check domain model
-        if (page.workingCopy() == null) {
-            page.createWorkingCopy();
-        }
-
         final Page temp = new Page(newTitle);
         for (final Paragraph paragraph : newParagraphs) {
             temp.addParagraph(paragraph);
         }
         final Snapshot workingCopy = temp.createSnapshot();
-        page.workingCopy(workingCopy);
-//        _dao.update(page); Not necessary?
+        updateWorkingCopy(id, workingCopy);
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateWorkingCopy(final UUID id, final Snapshot workingCopy) {
+        final Page page = _dao.findLocked(Page.class, id);
+        if (null==page.workingCopy()) { // FIXME: This is just dumb.
+            page.createWorkingCopy();
+        }
+        page.workingCopy(workingCopy);
+    }
+
 
 
     /** {@inheritDoc} */
@@ -197,5 +202,4 @@ public class PageDaoImpl implements PageDao {
         final Page page = _dao.findLocked(Page.class, id);
         page.clearWorkingCopy();
     }
-
 }
