@@ -111,7 +111,7 @@ public class ResourceContextMenu
         _updateSortAction = new UpdateSortOrderAction(_table);
         _clearWorkingCopyAction = new ClearWorkingCopyAction(_table);
         _previewWorkingCopyAction = new PreviewAction(_table, true);
-        _chooseTemplateAction = new ChooseTemplateAction(_table);
+        _chooseTemplateAction = new ChooseTemplateAction(_table, false);
         _publishOnAction = new PublishOnAction(_table);
 
         setWidth(CONTEXT_MENU_WIDTH);

@@ -55,6 +55,6 @@ public class FolderContextMenu
         addMenuItem(
             "choose-template",
             Globals.uiConstants().chooseTemplate(),
-            new ChooseTemplateAction(ssm));
+            new ChooseTemplateAction(ssm, true));
     }
 }
