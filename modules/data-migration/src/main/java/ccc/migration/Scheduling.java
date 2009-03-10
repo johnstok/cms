@@ -3,7 +3,6 @@ package ccc.migration;
 
 import java.util.Collections;
 import java.util.Date;
-import java.util.UUID;
 
 import javax.security.auth.login.AppConfigurationEntry;
 import javax.security.auth.login.Configuration;
@@ -13,9 +12,7 @@ import javax.security.auth.login.AppConfigurationEntry.LoginModuleControlFlag;
 
 import org.apache.log4j.Logger;
 
-import ccc.actions.Action;
 import ccc.commons.JNDI;
-import ccc.domain.Snapshot;
 import ccc.services.Scheduler;
 import ccc.services.api.Queries;
 import ccc.services.api.ServiceNames;
@@ -48,13 +45,7 @@ public final class Scheduling {
             new JNDI().<Queries>get(ServiceNames.PUBLIC_QUERIES);
         final Scheduler s =
             new JNDI().<Scheduler>get(ServiceNames.PUBLIC_SCHEDULER);
-//        s.start();
-
-        final UUID user = UUID.fromString(q.listUsers().iterator().next()._id);
-        final Snapshot sn = new Snapshot();
-        sn.set("resource", q.roots().iterator().next()._id);
-        final Action a  = new Action(Action.Type.UNPUBLISH, new Date(), user, sn);
-        s.schedule(a);
+        s.stop();
 
         logout();
 
