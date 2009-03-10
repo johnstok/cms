@@ -61,11 +61,11 @@
     </servlet>
     <servlet>
         <servlet-name>error</servlet-name>
-        <servlet-class>ccc.content.server.ErrorServlet</servlet-class>
+        <jsp-file>/error.jsp</jsp-file>
     </servlet>
     <servlet>
         <servlet-name>notfound</servlet-name>
-        <servlet-class>ccc.content.server.NotFoundServlet</servlet-class>
+        <jsp-file>/notfound.jsp</jsp-file>
     </servlet>
     
     <servlet-mapping>
@@ -112,6 +112,15 @@
     <welcome-file-list>
         <welcome-file>ContentCreator.html</welcome-file>
     </welcome-file-list>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/notfound</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error</location>
+    </error-page>
 
     <security-constraint>
         <web-resource-collection>
