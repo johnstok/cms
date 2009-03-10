@@ -60,7 +60,7 @@ public class FolderToolBar
         addButton(
             "Choose Template",
             _constants.chooseTemplate(),
-            new ChooseTemplateAction(ssm));
+            new ChooseTemplateAction(ssm, true));
         addSeparator();
     }
 }
