@@ -39,6 +39,7 @@ import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.services.DataManager;
 import ccc.services.ResourceDao;
+import ccc.services.ejb3.support.QueryNames;
 
 
 /**
@@ -49,12 +50,12 @@ import ccc.services.ResourceDao;
  *
  * @author Civic Computing Ltd.
  */
-@Stateless(name="DataManager")
+@Stateless(name=DataManager.NAME)
 @TransactionAttribute(REQUIRED)
 @Local(DataManager.class)
 public class DataManagerEJB implements DataManager {
 
-    @EJB(name="ResourceDao") private ResourceDao _dao;
+    @EJB(name=ResourceDao.NAME) private ResourceDao _dao;
     @Resource(mappedName = "java:/ccc") private DataSource _datasource;
 
     /** Constructor. */
@@ -105,7 +106,7 @@ public class DataManagerEJB implements DataManager {
     /** {@inheritDoc} */
     @Override
     public List<File> findImages() {
-        return _dao.list("allImages", File.class);
+        return _dao.list(QueryNames.ALL_IMAGES, File.class);
     }
 
     /** {@inheritDoc} */

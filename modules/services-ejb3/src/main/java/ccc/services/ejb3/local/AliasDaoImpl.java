@@ -31,12 +31,12 @@ import ccc.services.ResourceDao;
  *
  * @author Civic Computing Ltd.
  */
-@Stateless(name="AliasDao")
+@Stateless(name=AliasDao.NAME)
 @TransactionAttribute(REQUIRED)
 @Local(AliasDao.class)
 public class AliasDaoImpl implements AliasDao {
 
-    @EJB(name="ResourceDao") private ResourceDao _dao;
+    @EJB(name=ResourceDao.NAME) private ResourceDao _dao;
 
 
     /** Constructor. */

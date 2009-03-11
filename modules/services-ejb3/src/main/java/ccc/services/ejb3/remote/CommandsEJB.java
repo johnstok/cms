@@ -68,7 +68,7 @@ import ccc.services.support.ModelTranslation;
  *
  * @author Civic Computing Ltd.
  */
-@Stateless(name="PublicCommands")
+@Stateless(name=Commands.NAME)
 @TransactionAttribute(REQUIRED)
 @Remote(Commands.class)
 @RolesAllowed({"ADMINISTRATOR"})
@@ -79,14 +79,14 @@ public class CommandsEJB
     implements
         Commands {
 
-    @EJB(name="TemplateDao")    private TemplateDao     _templates;
-    @EJB(name="FolderDao")      private FolderDao       _folders;
-    @EJB(name="AliasDao")       private AliasDao        _alias;
-    @EJB(name="PageDao")        private PageDao         _page;
-    @EJB(name="UserManager")    private UserManager     _users;
-    @EJB(name="ResourceDao")    private ResourceDao     _resources;
-    @EJB(name=ActionDao.NAME)   private ActionDao       _scheduler;
-    @EJB(name="AuditLog")       private AuditLog        _audit;
+    @EJB(name=TemplateDao.NAME)    private TemplateDao     _templates;
+    @EJB(name=FolderDao.NAME)      private FolderDao       _folders;
+    @EJB(name=AliasDao.NAME)       private AliasDao        _alias;
+    @EJB(name=PageDao.NAME)        private PageDao         _page;
+    @EJB(name=UserManager.NAME)    private UserManager     _users;
+    @EJB(name=ResourceDao.NAME)    private ResourceDao     _resources;
+    @EJB(name=ActionDao.NAME)      private ActionDao       _scheduler;
+    @EJB(name=AuditLog.NAME)       private AuditLog        _audit;
 
     /** {@inheritDoc} */
     @Override

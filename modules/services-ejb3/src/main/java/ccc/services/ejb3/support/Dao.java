@@ -21,12 +21,23 @@ import ccc.domain.VersionedEntity;
 
 
 /**
- * TODO: Add Description for this type.
+ * Core DAO API.
  *
  * @author Civic Computing Ltd.
  */
 public interface Dao {
 
+    /** NAME : String. */
+    String NAME = "Dao";
+
+    /**
+     * Find the object with the specified type and id.
+     *
+     * @param <T> The type of the object.
+     * @param type A class instance representing the object's type.
+     * @param id The id of the object.
+     * @return The object with the specified id.
+     */
     <T extends Entity> T find(Class<T> type, UUID id);
 
     <T extends VersionedEntity> T find(Class<T> type, UUID id, long version);

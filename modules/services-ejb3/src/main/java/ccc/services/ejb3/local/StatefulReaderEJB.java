@@ -32,6 +32,7 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.services.StatefulReader;
+import ccc.services.ejb3.support.QueryNames;
 
 
 /**
@@ -39,7 +40,7 @@ import ccc.services.StatefulReader;
  *
  * @author Civic Computing Ltd
  */
-@Stateful(name="StatefulReader")
+@Stateful(name=StatefulReader.NAME)
 @TransactionAttribute(REQUIRED)
 @Local(StatefulReader.class)
 public final class StatefulReaderEJB
@@ -83,7 +84,7 @@ public final class StatefulReaderEJB
     }
 
     private Folder lookupRoot(final String rootName) {
-        final Query q = _em.createNamedQuery("rootByName");
+        final Query q = _em.createNamedQuery(QueryNames.ROOT_BY_NAME);
         q.setParameter(1, new ResourceName(rootName));
 
         try {
@@ -105,7 +106,7 @@ public final class StatefulReaderEJB
     @Override
     public LogEntry lookup(final long index) {
         // FIXME: Duplicate of AuditLog.findEntryForIndex().
-        final Query q = _em.createNamedQuery("logEntryById");
+        final Query q = _em.createNamedQuery(QueryNames.LOG_ENTRY_BY_ID);
         q.setParameter(1, index);
 
         try {

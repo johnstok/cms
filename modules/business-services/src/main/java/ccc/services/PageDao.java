@@ -27,6 +27,9 @@ import ccc.domain.Snapshot;
  */
 public interface PageDao {
 
+    /** NAME : String. */
+    String NAME = "PageDao";
+
     /**
      * Update the live version of the page. Discards working copy.
      *

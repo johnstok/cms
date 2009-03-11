@@ -29,6 +29,10 @@ import ccc.domain.Template;
  */
 public interface ResourceDao {
 
+    /** NAME : String. */
+    String NAME = "ResourceDao";
+
+
     /*
      * QUERIES
      */

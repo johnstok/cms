@@ -60,7 +60,7 @@ import ccc.services.support.ModelTranslation;
  *
  * @author Civic Computing Ltd.
  */
-@Stateless(name="PublicQueries")
+@Stateless(name=Queries.NAME)
 @TransactionAttribute(REQUIRED)
 @Remote(Queries.class)
 @RolesAllowed({"ADMINISTRATOR"})
@@ -71,12 +71,12 @@ public final class QueriesEJB
     implements
         Queries {
 
-    @EJB(name="TemplateDao")    private TemplateDao     _templates;
-    @EJB(name="FolderDao")      private FolderDao       _folders;
-    @EJB(name="UserManager")    private UserManager     _users;
-    @EJB(name="ResourceDao")    private ResourceDao     _resources;
-    @EJB(name="DataManager")    private DataManager     _datas;
-    @EJB(name=ActionDao.NAME)   private ActionDao       _actions;
+    @EJB(name=TemplateDao.NAME)    private TemplateDao     _templates;
+    @EJB(name=FolderDao.NAME)      private FolderDao       _folders;
+    @EJB(name=UserManager.NAME)    private UserManager     _users;
+    @EJB(name=ResourceDao.NAME)    private ResourceDao     _resources;
+    @EJB(name=DataManager.NAME)    private DataManager     _datas;
+    @EJB(name=ActionDao.NAME)      private ActionDao       _actions;
 
     /**
      * Constructor.

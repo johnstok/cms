@@ -22,6 +22,9 @@ import java.util.Map;
  */
 public interface Queries {
 
+    /** NAME : String. */
+    String NAME = "PublicQueries";
+
     /**
      * List the root folders available.
      *

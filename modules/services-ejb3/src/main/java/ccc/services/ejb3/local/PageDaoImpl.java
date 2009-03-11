@@ -47,13 +47,13 @@ import ccc.services.ResourceDao;
  *
  * @author Civic Computing Ltd.
  */
-@Stateless(name="PageDao")
+@Stateless(name=PageDao.NAME)
 @TransactionAttribute(REQUIRED)
 @Local(PageDao.class)
 public class PageDaoImpl implements PageDao {
 
-    @EJB(name="ResourceDao") private ResourceDao _dao;
-    @EJB(name="Search")      private ISearch    _search;
+    @EJB(name=ResourceDao.NAME) private ResourceDao _dao;
+    @EJB(name=ISearch.NAME)      private ISearch    _search;
 
 
     /** Constructor. */

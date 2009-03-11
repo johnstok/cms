@@ -41,14 +41,14 @@ import ccc.services.ejb3.support.Dao;
  *
  * @author Civic Computing Ltd.
  */
-@Stateless(name="ResourceDao")
+@Stateless(name=ResourceDao.NAME)
 @TransactionAttribute(REQUIRED)
 @Local(ResourceDao.class)
 public class ResourceDaoImpl implements ResourceDao {
 
-    @EJB(name="UserManager")  private UserManager  _users;
-    @EJB(name="AuditLog") private AuditLog _audit;
-    @EJB(name="Dao") private Dao _dao;
+    @EJB(name=UserManager.NAME)  private UserManager  _users;
+    @EJB(name=AuditLog.NAME)     private AuditLog     _audit;
+    @EJB(name=Dao.NAME)          private Dao          _dao;
 
 
     /** Constructor. */
@@ -59,6 +59,7 @@ public class ResourceDaoImpl implements ResourceDao {
      *
      * @param userDAO UserManager service.
      * @param audit AuditLog service.
+     * @param dao The DAO used for persistence.
      */
     public ResourceDaoImpl(final UserManager userDAO,
                            final AuditLog audit,
@@ -171,7 +172,9 @@ public class ResourceDaoImpl implements ResourceDao {
 
     /** {@inheritDoc} */
     @Override
-    public Resource publish(final UUID resourceId, final UUID userId, final Date publishedOn) {
+    public Resource publish(final UUID resourceId,
+                            final UUID userId,
+                            final Date publishedOn) {
         final User publishedBy = _users.find(userId);
         final Resource r = find(Resource.class, resourceId); // FIXME: Should use findLocked.
         r.publish(publishedBy);

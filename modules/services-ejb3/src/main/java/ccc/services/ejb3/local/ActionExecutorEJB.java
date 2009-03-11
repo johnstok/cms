@@ -30,12 +30,12 @@ import ccc.services.ResourceDao;
  *
  * @author Civic Computing Ltd.
  */
-@Stateless(name="ActionExecutor")
+@Stateless(name=ActionExecutor.NAME)
 @TransactionAttribute(REQUIRED)
 @Local(ActionExecutor.class)
 public class ActionExecutorEJB implements ActionExecutor {
 
-    @EJB(name="ResourceDao") private ResourceDao _resources;
+    @EJB(name=ResourceDao.NAME) private ResourceDao _resources;
 
     /** Constructor. */
     @SuppressWarnings("unused") public ActionExecutorEJB() { super(); }
