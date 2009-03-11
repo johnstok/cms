@@ -19,6 +19,6 @@ import ccc.actions.Action;
  *
  * @author Civic Computing Ltd.
  */
-public interface IActionExecutor {
+public interface ActionExecutor {
     void executeAction(final Action action);
 }
