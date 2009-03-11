@@ -42,7 +42,7 @@ import ccc.services.ISearch;
 @Stateless(name="Search")
 @TransactionAttribute(REQUIRED)
 @Local(ISearch.class)
-public class Search  implements ISearch {
+public class SearchEJB  implements ISearch {
 
     /**
      * TODO: Add Description for this type.
@@ -73,12 +73,12 @@ public class Search  implements ISearch {
     }
 
 
-    private static final Logger LOG = Logger.getLogger(Search.class.getName());
+    private static final Logger LOG = Logger.getLogger(SearchEJB.class.getName());
 
     private SimpleLucene _lucene;
 
     /** Constructor. */
-    @SuppressWarnings("unused") public Search() {
+    @SuppressWarnings("unused") public SearchEJB() {
         _lucene = new SimpleLuceneFS();
     }
 
