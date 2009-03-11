@@ -25,6 +25,10 @@ import ccc.domain.User;
  */
 public interface AuditLog {
 
+    /** NAME : String. */
+    String NAME = "AuditLog";
+
+
     /**
      * Record that a resource was locked.
      *

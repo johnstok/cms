@@ -32,12 +32,12 @@ import ccc.services.TemplateDao;
  *
  * @author Civic Computing Ltd.
  */
-@Stateless(name="TemplateDao")
+@Stateless(name=TemplateDao.NAME)
 @TransactionAttribute(REQUIRED)
 @Local(TemplateDao.class)
 public class TemplateDaoImpl implements TemplateDao {
 
-    @EJB(name="ResourceDao") private ResourceDao _dao;
+    @EJB(name=ResourceDao.NAME) private ResourceDao _dao;
 
 
     /** Constructor. */

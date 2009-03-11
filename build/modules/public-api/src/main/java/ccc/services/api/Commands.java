@@ -26,6 +26,9 @@ import java.util.Map;
  */
 public interface Commands {
 
+    /** NAME : String. */
+    String NAME = "PublicCommands";
+
 
     /**
      * Update the specified page on the server.

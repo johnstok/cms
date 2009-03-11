@@ -15,10 +15,20 @@ import ccc.actions.Action;
 
 
 /**
- * TODO: Add Description for this type.
+ * API for executing CCC actions.
  *
  * @author Civic Computing Ltd.
  */
 public interface ActionExecutor {
+
+    /** NAME : String. */
+    String NAME = "ActionExecutor";
+
+
+    /**
+     * Execute the specified action.
+     *
+     * @param action The action to execute.
+     */
     void executeAction(final Action action);
 }

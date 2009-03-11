@@ -37,13 +37,13 @@ import ccc.services.ejb3.support.Dao;
  *
  * @author Civic Computing Ltd.
  */
-@Stateless(name="UserManager")
+@Stateless(name=UserManager.NAME)
 @TransactionAttribute(REQUIRED)
 @Local(UserManager.class)
 public class UserManagerEJB implements UserManager {
 
     @Resource private EJBContext _context;
-    @EJB(name="Dao") private Dao _dao;
+    @EJB(name=Dao.NAME) private Dao _dao;
 
 
     /** Constructor. */

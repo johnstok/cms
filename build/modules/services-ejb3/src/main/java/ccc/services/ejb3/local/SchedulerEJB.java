@@ -34,6 +34,7 @@ import ccc.actions.Action;
 import ccc.services.ActionExecutor;
 import ccc.services.Scheduler;
 import ccc.services.ejb3.support.Dao;
+import ccc.services.ejb3.support.QueryNames;
 
 
 /**
@@ -53,8 +54,8 @@ public class SchedulerEJB implements Scheduler, ActionDao {
         Logger.getLogger(SchedulerEJB.class.getName());
 
     @Resource private EJBContext _context;
-    @EJB(name="ActionExecutor") private ActionExecutor _executor;
-    @EJB(name="Dao") private Dao _dao;
+    @EJB(name=ActionExecutor.NAME) private ActionExecutor _executor;
+    @EJB(name=Dao.NAME) private Dao _dao;
 
     /** Constructor. */
     @SuppressWarnings("unused") public SchedulerEJB() { super(); }
@@ -124,14 +125,14 @@ public class SchedulerEJB implements Scheduler, ActionDao {
     /** {@inheritDoc} */
     @Override
     public Collection<Action> pending() {
-        return _dao.list("pending", Action.class);
+        return _dao.list(QueryNames.PENDING, Action.class);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<Action> executed() {
-        return _dao.list("executed", Action.class);
+        return _dao.list(QueryNames.EXECUTED, Action.class);
     }
 
 

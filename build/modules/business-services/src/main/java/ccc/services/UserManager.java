@@ -24,6 +24,9 @@ import ccc.domain.User;
  */
 public interface UserManager {
 
+    /** NAME : String. */
+    String NAME = "UserManager";
+
     /**
      * Create new user.
      *

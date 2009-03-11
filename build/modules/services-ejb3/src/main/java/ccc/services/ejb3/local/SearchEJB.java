@@ -39,7 +39,7 @@ import ccc.services.ISearch;
  *
  * @author Civic Computing Ltd.
  */
-@Stateless(name="Search")
+@Stateless(name=ISearch.NAME)
 @TransactionAttribute(REQUIRED)
 @Local(ISearch.class)
 public class SearchEJB  implements ISearch {
@@ -73,7 +73,8 @@ public class SearchEJB  implements ISearch {
     }
 
 
-    private static final Logger LOG = Logger.getLogger(SearchEJB.class.getName());
+    private static final Logger LOG =
+        Logger.getLogger(SearchEJB.class.getName());
 
     private SimpleLucene _lucene;
 

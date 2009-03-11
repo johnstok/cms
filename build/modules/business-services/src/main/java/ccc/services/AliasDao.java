@@ -20,6 +20,9 @@ import java.util.UUID;
  */
 public interface AliasDao {
 
+    /** NAME : String. */
+    String NAME = "AliasDao";
+
     /**
      * Update alias' target.
      *

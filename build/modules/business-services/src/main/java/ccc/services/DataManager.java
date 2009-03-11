@@ -30,6 +30,9 @@ import ccc.domain.File;
  */
 public interface DataManager {
 
+    /** NAME : String. */
+    String NAME = "DataManager";
+
     /**
      * Create a new item of binary data.
      *

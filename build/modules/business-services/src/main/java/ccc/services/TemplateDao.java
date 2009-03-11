@@ -25,6 +25,9 @@ import ccc.domain.Template;
  */
 public interface TemplateDao {
 
+    /** NAME : String. */
+    String NAME = "TemplateDao";
+
     /**
      * Look up all templates available.
      *

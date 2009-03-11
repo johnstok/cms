@@ -28,16 +28,16 @@ import ccc.services.ResourceDao;
 
 
 /**
- * TODO: Add Description for this type.
+ * EJB implementation of the {@link FolderDao} interface.
  *
  * @author Civic Computing Ltd.
  */
-@Stateless(name="FolderDao")
+@Stateless(name=FolderDao.NAME)
 @TransactionAttribute(REQUIRED)
 @Local(FolderDao.class)
 public class FolderDaoImpl implements FolderDao {
 
-    @EJB(name="ResourceDao") private ResourceDao _dao;
+    @EJB(name=ResourceDao.NAME) private ResourceDao _dao;
 
 
     /** Constructor. */

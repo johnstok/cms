@@ -28,6 +28,7 @@ import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.services.AuditLog;
+import ccc.services.ejb3.support.QueryNames;
 
 
 /**
@@ -35,7 +36,7 @@ import ccc.services.AuditLog;
  *
  * @author Civic Computing Ltd.
  */
-@Stateless(name="AuditLog")
+@Stateless(name=AuditLog.NAME)
 @TransactionAttribute(REQUIRED)
 @Local(AuditLog.class)
 public class AuditLogEJB
@@ -176,8 +177,8 @@ public class AuditLogEJB
     /** {@inheritDoc} */
     @Override
     public LogEntry findEntryForIndex(final long index) {
-        final Query q = _em.createNamedQuery("logEntryById");
-        q.setParameter(1, index);
+        final Query q = _em.createNamedQuery(QueryNames.LOG_ENTRY_BY_ID);
+        q.setParameter(1, new Long(index));
 
         try {
             final Object singleResult = q.getSingleResult();

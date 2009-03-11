@@ -26,6 +26,9 @@ import ccc.domain.ResourcePath;
  */
 public interface StatefulReader {
 
+    /** NAME : String. */
+    String NAME = "StatefulReader";
+
     /**
      * Look up a resource.
      *

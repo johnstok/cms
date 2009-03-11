@@ -18,16 +18,35 @@ import ccc.domain.Page;
 
 
 /**
- * TODO: Add Description for this type.
+ * The search API.
  *
  * @author Civic Computing Ltd.
  */
 public interface ISearch {
 
-    public Set<UUID> find(final String searchTerms);
+    /** NAME : String. */
+    String NAME = "Search";
 
-    public void add(Page page);
+    /**
+     * Find the entities that match the specified search terms..
+     *
+     * @param searchTerms The terms to match.
+     * @return The id's of entities that match the terms.
+     */
+    Set<UUID> find(final String searchTerms);
 
-    public void update(Page page);
+    /**
+     * Add a page to the search index.
+     *
+     * @param page The page to index.
+     */
+    void add(Page page);
+
+    /**
+     * Update a page that is already indexed.
+     *
+     * @param page The page to index.
+     */
+    void update(Page page);
 
 }

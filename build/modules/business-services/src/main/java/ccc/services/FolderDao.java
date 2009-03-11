@@ -25,6 +25,9 @@ import ccc.domain.ResourceOrder;
  */
 public interface FolderDao {
 
+    /** NAME : String. */
+    String NAME = "FolderDao";
+
     /**
      * List all the root folders available.
      *
