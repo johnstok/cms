@@ -25,14 +25,14 @@ import ccc.services.ResourceDao;
 
 
 /**
- * EJB implementation of the {@link IActionExecutor} interface.
+ * EJB implementation of the {@link ActionExecutor} interface.
  *
  * @author Civic Computing Ltd.
  */
 @Stateless(name="ActionExecutor")
 @TransactionAttribute(REQUIRED)
-@Local(IActionExecutor.class)
-public class ActionExecutorEJB implements IActionExecutor {
+@Local(ActionExecutor.class)
+public class ActionExecutorEJB implements ActionExecutor {
 
     @EJB(name="ResourceDao") private ResourceDao _resources;
 

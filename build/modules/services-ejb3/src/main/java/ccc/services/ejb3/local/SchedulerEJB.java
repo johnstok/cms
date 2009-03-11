@@ -50,7 +50,7 @@ public class SchedulerEJB implements Scheduler {
         Logger.getLogger(SchedulerEJB.class.getName());
 
     @Resource private EJBContext _context;
-    @EJB(name="ActionExecutor") private IActionExecutor _executor;
+    @EJB(name="ActionExecutor") private ActionExecutor _executor;
     @EJB(name="Dao") private Dao _dao;
 
     /** Constructor. */
