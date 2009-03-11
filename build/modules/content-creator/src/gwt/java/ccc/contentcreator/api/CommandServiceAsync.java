@@ -75,6 +75,8 @@ public interface CommandServiceAsync {
 
     void createWorkingCopy(String resourceId, long index, AsyncCallback<Void> callback);
 
+    void cancelAction(String actionId, AsyncCallback<Void> callback);
+
 
     void createAlias(String parentId, String name, String targetId, AsyncCallback<ResourceSummary> callback);
 
@@ -89,5 +91,4 @@ public interface CommandServiceAsync {
     void createRoot(String name, AsyncCallback<ResourceSummary> callback);
 
     void createSearch(String parentId, String title, AsyncCallback<ResourceSummary> callback);
-
 }

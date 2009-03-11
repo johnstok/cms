@@ -231,4 +231,10 @@ public class CommandsImpl
     public void createWorkingCopy(final String resourceId, final long index) {
         _delegate.createWorkingCopy(resourceId, index);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public void cancelAction(final String actionId) {
+        _delegate.cancelAction(actionId);
+    }
 }

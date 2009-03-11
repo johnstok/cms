@@ -39,6 +39,26 @@ public final class Exceptions {
     }
 
     /**
+     * Returns the root cause of this exception.
+     * If the incoming Throwable instance is not null, there is always
+     * at least one root, the argument itself.
+     *
+     * @param t The exception to be investigated.
+     * @return Root cause of the exception.
+     */
+    public static Throwable rootCause(final Throwable t) {
+        Throwable result = t;
+        if (result != null) {
+            for (Throwable cause = result.getCause();
+                 cause != null;
+                 cause = result.getCause()) {
+                result = cause;
+            }
+        }
+        return result;
+    }
+
+    /**
      * Handle an exception that we can do nothing sensible with.
      *
      * @param t The exception to ignore.

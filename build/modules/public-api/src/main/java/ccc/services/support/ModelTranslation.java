@@ -16,6 +16,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import ccc.actions.Action;
 import ccc.domain.Alias;
 import ccc.domain.CreatorRoles;
 import ccc.domain.File;
@@ -28,6 +29,7 @@ import ccc.domain.ResourceType;
 import ccc.domain.Snapshot;
 import ccc.domain.Template;
 import ccc.domain.User;
+import ccc.services.api.ActionSummary;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.FileDelta;
 import ccc.services.api.FileSummary;
@@ -366,5 +368,37 @@ public class ModelTranslation {
             }
         }
         return delta;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param pending
+     * @return
+     */
+    protected Collection<ActionSummary> map(final Collection<Action> pending) {
+        final Collection<ActionSummary> summaries = new ArrayList<ActionSummary>();
+        for (final Action a : pending) {
+            summaries.add(map(a));
+        }
+        return summaries;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param a
+     * @return
+     */
+    private ActionSummary map(final Action a) {
+        final ActionSummary summary = new ActionSummary();
+        summary._id = a.id().toString();
+        summary._type = a.type().toString();
+        summary._actor = a.actor().username();
+        summary._subjectType = a.subject().type().toString();
+        summary._subjectPath = a.subject().absolutePath().toString();
+        summary._executeAfter = a.executeAfter();
+        summary._status = a.status().toString();
+        return summary;
     }
 }
