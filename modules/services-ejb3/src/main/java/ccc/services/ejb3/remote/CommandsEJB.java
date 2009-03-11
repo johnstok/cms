@@ -49,7 +49,6 @@ import ccc.services.AuditLog;
 import ccc.services.FolderDao;
 import ccc.services.PageDao;
 import ccc.services.ResourceDao;
-import ccc.services.Scheduler;
 import ccc.services.TemplateDao;
 import ccc.services.UserManager;
 import ccc.services.api.AliasDelta;
@@ -60,6 +59,7 @@ import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
+import ccc.services.ejb3.local.ActionDao;
 import ccc.services.support.ModelTranslation;
 
 
@@ -85,7 +85,7 @@ public class CommandsEJB
     @EJB(name="PageDao")        private PageDao         _page;
     @EJB(name="UserManager")    private UserManager     _users;
     @EJB(name="ResourceDao")    private ResourceDao     _resources;
-    @EJB(name="Scheduler")      private Scheduler       _scheduler;
+    @EJB(name=ActionDao.NAME)   private ActionDao       _scheduler;
     @EJB(name="AuditLog")       private AuditLog        _audit;
 
     /** {@inheritDoc} */

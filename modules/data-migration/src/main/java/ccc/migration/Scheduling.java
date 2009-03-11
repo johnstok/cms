@@ -33,6 +33,7 @@ public final class Scheduling {
 
     /**
      * Entry point for this application.
+     * TODO: Supply app_name, username, password from the console.
      *
      * @param args String array of application arguments.
      */
@@ -45,7 +46,18 @@ public final class Scheduling {
             new JNDI().<Queries>get(ServiceNames.PUBLIC_QUERIES);
         final Scheduler s =
             new JNDI().<Scheduler>get(ServiceNames.PUBLIC_SCHEDULER);
-        s.stop();
+
+        if (1 != args.length) {
+            System.err.println("Wrong number of arguments.");
+        } else {
+            if ("start".equals(args[0])) {
+                s.start();
+            } else if ("stop".equals(args[0])) {
+                s.stop();
+            } else {
+                System.err.println("Invalid command.");
+            }
+        }
 
         logout();
 

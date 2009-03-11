@@ -37,7 +37,6 @@ import ccc.domain.Template;
 import ccc.services.DataManager;
 import ccc.services.FolderDao;
 import ccc.services.ResourceDao;
-import ccc.services.Scheduler;
 import ccc.services.TemplateDao;
 import ccc.services.UserManager;
 import ccc.services.api.ActionSummary;
@@ -52,6 +51,7 @@ import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
+import ccc.services.ejb3.local.ActionDao;
 import ccc.services.support.ModelTranslation;
 
 
@@ -76,7 +76,7 @@ public final class QueriesEJB
     @EJB(name="UserManager")    private UserManager     _users;
     @EJB(name="ResourceDao")    private ResourceDao     _resources;
     @EJB(name="DataManager")    private DataManager     _datas;
-    @EJB(name="Scheduler")      private Scheduler       _scheduler;
+    @EJB(name=ActionDao.NAME)   private ActionDao       _actions;
 
     /**
      * Constructor.
@@ -285,12 +285,12 @@ public final class QueriesEJB
     /** {@inheritDoc} */
     @Override
     public Collection<ActionSummary> listPendingActions() {
-        return map(_scheduler.pending());
+        return map(_actions.pending());
     }
 
     /** {@inheritDoc} */
     @Override
     public Collection<ActionSummary> listCompletedActions() {
-        return map(_scheduler.executed());
+        return map(_actions.executed());
     }
 }
