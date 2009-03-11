@@ -22,6 +22,7 @@ import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.EJBContext;
 import javax.ejb.Local;
+import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.Timeout;
 import javax.ejb.Timer;
@@ -40,10 +41,11 @@ import ccc.services.ejb3.support.Dao;
  *
  * @author Civic Computing Ltd.
  */
-@Stateless(name="Scheduler")
+@Stateless(name=ActionDao.NAME)
 @TransactionAttribute(REQUIRED)
-@Local(Scheduler.class)
-public class SchedulerEJB implements Scheduler {
+@Local(ActionDao.class)
+@Remote(Scheduler.class)
+public class SchedulerEJB implements Scheduler, ActionDao {
     private static final int TIMEOUT_DELAY_SECS = 60*1000;
     private static final int INITIAL_DELAY_SECS = 30*1000;
     private static final String TIMER_NAME = "action_scheduler";
