@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.ejb3.remote;
+package ccc.services.ejb3.local;
 
 import static javax.ejb.TransactionAttributeType.*;
 
@@ -31,7 +31,6 @@ import org.apache.log4j.Logger;
 
 import ccc.actions.Action;
 import ccc.services.Scheduler;
-import ccc.services.ejb3.local.IActionExecutor;
 import ccc.services.ejb3.support.Dao;
 
 

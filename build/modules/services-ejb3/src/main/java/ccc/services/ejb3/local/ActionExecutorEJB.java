@@ -32,12 +32,12 @@ import ccc.services.ResourceDao;
 @Stateless(name="ActionExecutor")
 @TransactionAttribute(REQUIRED)
 @Local(IActionExecutor.class)
-public class ActionExecutor implements IActionExecutor {
+public class ActionExecutorEJB implements IActionExecutor {
 
     @EJB(name="ResourceDao") private ResourceDao _resources;
 
     /** Constructor. */
-    @SuppressWarnings("unused") public ActionExecutor() { super(); }
+    @SuppressWarnings("unused") public ActionExecutorEJB() { super(); }
 
 
     /**
@@ -45,7 +45,7 @@ public class ActionExecutor implements IActionExecutor {
      *
      * @param rdao The resource DAO for this executor.
      */
-    public ActionExecutor(final ResourceDao rdao) {
+    public ActionExecutorEJB(final ResourceDao rdao) {
         _resources = rdao;
     }
 

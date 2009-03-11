@@ -28,7 +28,7 @@ import ccc.services.ResourceDao;
  *
  * @author Civic Computing Ltd.
  */
-public class ActionExecutorTest
+public class ActionExecutorEJBTest
     extends
         TestCase {
 
@@ -60,7 +60,7 @@ public class ActionExecutorTest
     @Override
     protected void setUp() throws Exception {
         _rdao = createStrictMock(ResourceDao.class);
-        _ea = new ActionExecutor(_rdao);
+        _ea = new ActionExecutorEJB(_rdao);
     }
     /** {@inheritDoc} */
     @Override
@@ -69,6 +69,6 @@ public class ActionExecutorTest
         _ea = null;
     }
 
-    private ActionExecutor _ea;
+    private ActionExecutorEJB _ea;
     private ResourceDao _rdao;
 }
