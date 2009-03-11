@@ -25,7 +25,7 @@ import ccc.services.ResourceDao;
 
 
 /**
- * TODO: Add Description for this type.
+ * EJB implementation of the {@link IActionExecutor} interface.
  *
  * @author Civic Computing Ltd.
  */
@@ -40,39 +40,54 @@ public class ActionExecutor implements IActionExecutor {
     @SuppressWarnings("unused") public ActionExecutor() { super(); }
 
 
+    /**
+     * Constructor.
+     *
+     * @param rdao The resource DAO for this executor.
+     */
+    public ActionExecutor(final ResourceDao rdao) {
+        _resources = rdao;
+    }
+
+
     /** {@inheritDoc} */
     @Override
     public void executeAction(final Action action) {
-        switch (action.type()) {
+        try{
+            switch (action.type()) {
 
-            case UNPUBLISH:
-                executeUnpublish(action);
-                break;
+                case UNPUBLISH:
+                    executeUnpublish(action);
+                    break;
 
-            case PUBLISH:
-                executePublish(action);
-                break;
+                case PUBLISH:
+                    executePublish(action);
+                    break;
 
-            default:
-                throw new UnsupportedOperationException(
-                    "Unsupported action type: "+action.type());
+                default:
+                    throw new UnsupportedOperationException(
+                        "Unsupported action type: "+action.type());
 
+            }
+            action.complete();
+        } catch (final RuntimeException e) {
+            action.fail(e);
         }
     }
 
 
     private void executePublish(final Action action) {
         _resources.publish(
-            action.parameters().getUuid("resource"),
-            action.actor(),
+            action.subject().id(),
+            action.actor().id(),
             new Date());  // TODO: Should we use action._executeAfter?
     }
 
 
     private void executeUnpublish(final Action action) {
         _resources.unpublish(
-            action.parameters().getUuid("resource"),
-            action.actor(),
+            action.subject().id(),
+            action.actor().id(),
             new Date()); // TODO: Should we use action._executeAfter?
     }
 }

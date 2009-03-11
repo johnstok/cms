@@ -21,6 +21,9 @@
     <typedef class="ccc.services.ejb3.support.EnumUserType" name="ActionType">
         <param name="type">ccc.actions.Action$Type</param>
     </typedef>
+    <typedef class="ccc.services.ejb3.support.EnumUserType" name="StatusType">
+        <param name="type">ccc.actions.Action$Status</param>
+    </typedef>
     
     <class name="ccc.actions.Action">
         
@@ -28,12 +31,12 @@
             <generator class="assigned" />
         </id>
         
-        <property name="_type" not-null="true" type="ActionType" />
         <property name="_executeAfter" not-null="true" type="timestamp" />
-        <property
-            name="_actor"
-            not-null="true"
-            type="ccc.services.ejb3.support.UUIDUserType" />
+        <property name="_type" not-null="true" type="ActionType" />
+        <property name="_status" not-null="true" type="StatusType" />
+        
+        <many-to-one name="_actor" not-null="false" />
+        <many-to-one name="_subject" not-null="false" />
         
         <component name="_parameters" class="ccc.domain.Snapshot">
 			<property
@@ -43,7 +46,19 @@
                 column="_parameters"
 				type="text"  />
 		</component>
+        
+        <component name="_failure" class="ccc.domain.Snapshot">
+            <property
+                name="detail"
+                access="property"
+                not-null="false"
+                column="_failure"
+                type="text"  />
+        </component>
+        
     </class>
     
-    <query name="latest_action">from ccc.actions.Action a order by a._executeAfter asc</query>
+    <query name="latest_action">FROM ccc.actions.Action a WHERE a._status='Scheduled' AND a._executeAfter &lt; ? ORDER BY a._executeAfter asc</query>
+    <query name="executed">FROM ccc.actions.Action a WHERE a._status!='Scheduled'</query>
+    <query name="pending">FROM ccc.actions.Action a WHERE a._status='Scheduled'</query>
 </hibernate-mapping>

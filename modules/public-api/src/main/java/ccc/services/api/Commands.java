@@ -214,5 +214,7 @@ public interface Commands {
      * @param index The index number of the log entry.
      */
     void createWorkingCopy(String resourceId, long index);
+
+    void cancelAction(String actionId);
 }
 

@@ -36,10 +36,11 @@ import ccc.domain.ResourceName;
 import ccc.domain.Template;
 import ccc.services.DataManager;
 import ccc.services.FolderDao;
-import ccc.services.ISearch;
 import ccc.services.ResourceDao;
+import ccc.services.Scheduler;
 import ccc.services.TemplateDao;
 import ccc.services.UserManager;
+import ccc.services.api.ActionSummary;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.FileDelta;
 import ccc.services.api.FileSummary;
@@ -75,7 +76,7 @@ public final class QueriesEJB
     @EJB(name="UserManager")    private UserManager     _users;
     @EJB(name="ResourceDao")    private ResourceDao     _resources;
     @EJB(name="DataManager")    private DataManager     _datas;
-    @EJB(name="Search")         private ISearch         _search;
+    @EJB(name="Scheduler")      private Scheduler       _scheduler;
 
     /**
      * Constructor.
@@ -279,5 +280,17 @@ public final class QueriesEJB
     public PageDelta workingCopyDelta(final String pageId) {
         final Page p = _resources.find(Page.class, UUID.fromString(pageId));
         return workingCopyDelta(p);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Collection<ActionSummary> listPendingActions() {
+        return map(_scheduler.pending());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Collection<ActionSummary> listCompletedActions() {
+        return map(_scheduler.executed());
     }
 }

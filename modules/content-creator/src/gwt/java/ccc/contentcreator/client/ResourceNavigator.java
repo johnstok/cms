@@ -26,7 +26,7 @@ import com.extjs.gxt.ui.client.widget.layout.AccordionLayout;
 
 
 /**
- * TODO: Add Description for this type.
+ * Accordion control for selecting a resource root.
  *
  * @author Civic Computing Ltd.
  */
@@ -34,6 +34,7 @@ public class ResourceNavigator extends ContentPanel {
 
     private final LeftRightPane _view;
     private final UserTree _usersTree;
+    private final ActionTree _actionTree;
     private final List<EnhancedResourceTree> _rootTrees =
         new ArrayList<EnhancedResourceTree>();
 
@@ -88,6 +89,22 @@ public class ResourceNavigator extends ContentPanel {
             new Listener<ComponentEvent>(){
                 public void handleEvent(final ComponentEvent bce) {
                     _usersTree.showTable();
+                }
+            }
+        );
+
+        _actionTree = new ActionTree(_view);
+        final ContentPanel actionPanel = new ContentPanel();
+        actionPanel.getHeader().setId("action-navigator");
+        actionPanel.setScrollMode(Scroll.AUTO);
+        actionPanel.setHeading("Actions");
+        actionPanel.add(_actionTree);
+        add(actionPanel);
+        actionPanel.addListener(
+            Events.Expand,
+            new Listener<ComponentEvent>(){
+                public void handleEvent(final ComponentEvent bce) {
+                    _actionTree.showTable();
                 }
             }
         );

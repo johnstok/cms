@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import ccc.services.api.ActionSummary;
 import ccc.services.api.FileSummary;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.ResourceSummary;
@@ -245,6 +246,28 @@ public class DataBinding {
             final ModelData md = new BaseModelData();
             md.set("key", datum.getKey());
             md.set("value", datum.getValue());
+            boundData.add(md);
+        }
+        return boundData;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param result
+     * @return
+     */
+    public static List<ModelData> bindActionSummary(final Collection<ActionSummary> result) {
+        final List<ModelData> boundData = new ArrayList<ModelData>();
+        for (final ActionSummary as : result) {
+            final ModelData md = new BaseModelData();
+            md.set(ID, as._id);
+            md.set(TYPE, as._type);
+            md.set(ACTOR, as._actor);
+            md.set("executeAfter", as._executeAfter);
+            md.set(PATH, as._subjectPath);
+            md.set("subjectType", as._subjectType);
+            md.set("status", as._status);
             boundData.add(md);
         }
         return boundData;

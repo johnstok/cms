@@ -16,6 +16,7 @@ import java.util.Map;
 
 import ccc.commons.JNDI;
 import ccc.contentcreator.api.QueriesService;
+import ccc.services.api.ActionSummary;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.FileDelta;
 import ccc.services.api.FileSummary;
@@ -194,5 +195,17 @@ public class QueriesImpl
     @Override
     public PageDelta workingCopyDelta(final String pageId) {
         return _delegate.workingCopyDelta(pageId);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Collection<ActionSummary> listPendingActions() {
+        return _delegate.listPendingActions();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Collection<ActionSummary> listCompletedActions() {
+        return _delegate.listCompletedActions();
     }
 }

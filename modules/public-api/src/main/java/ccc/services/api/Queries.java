@@ -177,15 +177,6 @@ public interface Queries {
      */
     Map<String, String> metadata(String resourceId);
 
-    TemplateDelta templateDelta(String templateId);
-    UserDelta userDelta(String userId);
-    AliasDelta aliasDelta(String aliasId);
-    PageDelta pageDelta(String pageId);
-    ResourceDelta folderDelta(String folderId);
-    ResourceDelta resourceDelta(String resourceId);
-    FileDelta fileDelta(String fileId);
-
-
     /**
      * Merge page and its working copy to a page delta.
      *
@@ -193,4 +184,26 @@ public interface Queries {
      * @return Page delta of the merge of page and working copy.
      */
     PageDelta workingCopyDelta(String pageId);
+
+    /**
+     * List all CCC actions that haven't yet been executed.
+     *
+     * @return A collection of action summaries, one per outstanding action.
+     */
+    Collection<ActionSummary> listPendingActions();
+
+    /**
+     * List all CCC actions that have been executed.
+     *
+     * @return A collection of action summaries, one per completed action.
+     */
+    Collection<ActionSummary> listCompletedActions();
+
+    TemplateDelta templateDelta(String templateId);
+    UserDelta userDelta(String userId);
+    AliasDelta aliasDelta(String aliasId);
+    PageDelta pageDelta(String pageId);
+    ResourceDelta folderDelta(String folderId);
+    ResourceDelta resourceDelta(String resourceId);
+    FileDelta fileDelta(String fileId);
 }

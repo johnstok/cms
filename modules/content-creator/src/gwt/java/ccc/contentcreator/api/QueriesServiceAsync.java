@@ -14,6 +14,7 @@ package ccc.contentcreator.api;
 import java.util.Collection;
 import java.util.Map;
 
+import ccc.services.api.ActionSummary;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.FileDelta;
 import ccc.services.api.FileSummary;
@@ -104,4 +105,8 @@ public interface QueriesServiceAsync {
                   AsyncCallback<Map<String, String>> asyncCallback);
 
     void workingCopyDelta(String pageId, AsyncCallback<PageDelta> asyncCallback);
+
+    void listPendingActions(AsyncCallback<Collection<ActionSummary>> asyncCallback);
+
+    void listCompletedActions(AsyncCallback<Collection<ActionSummary>> asyncCallback);
 }
