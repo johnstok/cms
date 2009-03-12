@@ -13,7 +13,9 @@ package ccc.services.ejb3.local;
 
 import static javax.ejb.TransactionAttributeType.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import javax.ejb.EJB;
@@ -22,6 +24,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
 import ccc.domain.Folder;
+import ccc.domain.Resource;
 import ccc.domain.ResourceOrder;
 import ccc.services.FolderDao;
 import ccc.services.ResourceDao;
@@ -65,5 +68,21 @@ public class FolderDaoImpl implements FolderDao {
                                 final ResourceOrder order) {
         final Folder f = _dao.find(Folder.class, folderId);
         f.sortOrder(order);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void reorder(final UUID folderId, final List<UUID> order) {
+        final Folder f = _dao.find(Folder.class, folderId);
+        final List<Resource> newOrder = new ArrayList<Resource>();
+        final List<Resource> currentOrder = f.entries();
+        for (final UUID resourceId : order) {
+            for (final Resource r : currentOrder) {
+                if (r.id() == resourceId) {
+                    newOrder.add(r);
+                }
+            }
+        }
+        f.reorder(newOrder);
     }
 }
