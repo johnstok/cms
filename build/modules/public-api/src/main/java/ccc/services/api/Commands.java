@@ -219,5 +219,13 @@ public interface Commands {
     void createWorkingCopy(String resourceId, long index);
 
     void cancelAction(String actionId);
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param folderId
+     * @param order
+     */
+    void reorder(String folderId, List<String> order);
 }
 

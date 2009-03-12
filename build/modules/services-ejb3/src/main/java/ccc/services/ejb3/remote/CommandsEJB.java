@@ -13,6 +13,7 @@ package ccc.services.ejb3.remote;
 
 import static javax.ejb.TransactionAttributeType.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -444,4 +445,17 @@ public class CommandsEJB
     public void cancelAction(final String actionId) {
         _scheduler.cancel(UUID.fromString(actionId));
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public void reorder(final String folderId, final List<String> order) {
+        final List<UUID> newOrder = new ArrayList<UUID>();
+        for (final String entry : order) {
+            newOrder.add(UUID.fromString(entry));
+        }
+        _folders.reorder(UUID.fromString(folderId), newOrder);
+    }
+
 }
+
+

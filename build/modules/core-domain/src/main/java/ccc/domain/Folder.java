@@ -76,6 +76,18 @@ public final class Folder extends Resource {
     }
 
     /**
+     * TODO: Add a description of this method.
+     *
+     * @param resources
+     */
+    public void reorder(final List<Resource> resources) {
+        DBC.require().notNull(resources);
+        DBC.require().toBeTrue(_entries.size() == resources.size());
+
+        _entries = resources;
+    }
+
+    /**
      * Accessor for entries.
      *
      * @return A list of all the resources in this folder.

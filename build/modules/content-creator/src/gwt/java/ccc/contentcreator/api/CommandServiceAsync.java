@@ -91,4 +91,7 @@ public interface CommandServiceAsync {
     void createRoot(String name, AsyncCallback<ResourceSummary> callback);
 
     void createSearch(String parentId, String title, AsyncCallback<ResourceSummary> callback);
+
+    void reorder(String folderId, List<String> order, AsyncCallback<Void> callback);
+
 }

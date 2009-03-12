@@ -237,4 +237,10 @@ public class CommandsImpl
     public void cancelAction(final String actionId) {
         _delegate.cancelAction(actionId);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public void reorder(final String folderId, final List<String> order) {
+        _delegate.reorder(folderId, order);
+    }
 }
