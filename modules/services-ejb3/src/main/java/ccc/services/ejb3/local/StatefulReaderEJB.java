@@ -107,7 +107,7 @@ public final class StatefulReaderEJB
     public LogEntry lookup(final long index) {
         // FIXME: Duplicate of AuditLog.findEntryForIndex().
         final Query q = _em.createNamedQuery(QueryNames.LOG_ENTRY_BY_ID);
-        q.setParameter(1, index);
+        q.setParameter(1, new Long(index));
 
         try {
             final Object singleResult = q.getSingleResult();
