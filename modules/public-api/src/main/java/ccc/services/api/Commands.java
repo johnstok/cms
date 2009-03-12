@@ -109,14 +109,6 @@ public interface Commands {
      * TODO: Add a description of this method.
      *
      * @param resourceId The id of the resource to update.
-     * @return The current version of resource.
-     */
-    void publish(String resourceId, Date publishDate);
-
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param resourceId The id of the resource to update.
      * @param resourceId The id of the publishing user.
      * @return The current version of resource.
      */
@@ -219,6 +211,9 @@ public interface Commands {
     void createWorkingCopy(String resourceId, long index);
 
     void cancelAction(String actionId);
+
+    void createAction(String resourceId, String action, Date executeAfter);
+
 
     /**
      * TODO: Add a description of this method.

@@ -101,10 +101,6 @@ public class CreatePageDialog
         _ssm = ssm;
         _parent = parent;
 
-        setWidth(Globals.DEFAULT_WIDTH);
-        setHeight(Globals.DEFAULT_HEIGHT);
-        setHeading(Globals.uiConstants().createPage());
-
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
         final ColumnConfig nameColumn = new ColumnConfig();
         nameColumn.setId(_uiConstants.name());
@@ -134,7 +130,7 @@ public class CreatePageDialog
 
         final BorderLayoutData westData =
             new BorderLayoutData(LayoutRegion.WEST, 205);
-        westData.setMargins(new Margins(5));
+        westData.setMargins(new Margins(5, 0, 5, 5));
 
         final BorderLayoutData centerData =
             new BorderLayoutData(LayoutRegion.CENTER);

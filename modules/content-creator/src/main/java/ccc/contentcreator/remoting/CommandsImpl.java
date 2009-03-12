@@ -221,13 +221,6 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
-    public void publish(final String resourceId,
-                                   final Date publishDate) {
-        _delegate.publish(resourceId, publishDate);
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void createWorkingCopy(final String resourceId, final long index) {
         _delegate.createWorkingCopy(resourceId, index);
     }
@@ -238,6 +231,14 @@ public class CommandsImpl
         _delegate.cancelAction(actionId);
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public void createAction(final String resourceId,
+                             final String action,
+                             final Date executeAfter) {
+        _delegate.createAction(resourceId, action, executeAfter);
+    }
+    
     /** {@inheritDoc} */
     @Override
     public void reorder(final String folderId, final List<String> order) {

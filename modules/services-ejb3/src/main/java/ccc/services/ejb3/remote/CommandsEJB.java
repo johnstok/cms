@@ -429,21 +429,23 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public void publish(final String resourceId, final Date publishDate) {
-        final Action a =
-            new Action(
-                Action.Type.PUBLISH,
-                publishDate,
-                _users.loggedInUser(),
-                _resources.find(Resource.class, UUID.fromString(resourceId)),
-                new Snapshot());
-        _scheduler.schedule(a);
+    public void cancelAction(final String actionId) {
+        _scheduler.cancel(UUID.fromString(actionId));
     }
 
     /** {@inheritDoc} */
     @Override
-    public void cancelAction(final String actionId) {
-        _scheduler.cancel(UUID.fromString(actionId));
+    public void createAction(final String resourceId,
+                             final String action,
+                             final Date executeAfter) {
+      final Action a =
+      new Action(
+          Action.Type.valueOf(action),
+          executeAfter,
+          _users.loggedInUser(),
+          _resources.find(Resource.class, UUID.fromString(resourceId)),
+          new Snapshot());
+      _scheduler.schedule(a);
     }
 
     /** {@inheritDoc} */
