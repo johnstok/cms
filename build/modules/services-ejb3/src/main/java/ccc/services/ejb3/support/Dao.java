@@ -44,7 +44,8 @@ public interface Dao {
 
     <T> List<T> list(String queryName, Class<T> resultType, Object... params);
 
-    <T> Collection<T> uniquify(String queryName, Class<T> resultType, Object... params);
+    <T> Collection<T> uniquify(
+        String queryName, Class<T> resultType, Object... params);
 
     <T> T find(String queryName, Class<T> resultType, Object... params);
 

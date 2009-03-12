@@ -345,7 +345,8 @@ public class ResourceDaoImplTest
         final Folder fooFolder = new Folder("foo");
         contentRoot.add(fooFolder);
 
-        expect(_dao.find(Folder.class, contentRoot.id())).andReturn(contentRoot);
+        expect(_dao.find(Folder.class, contentRoot.id()))
+            .andReturn(contentRoot);
         replayAll();
 
 

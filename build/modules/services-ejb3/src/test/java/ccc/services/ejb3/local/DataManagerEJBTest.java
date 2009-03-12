@@ -48,14 +48,14 @@ import ccc.services.ResourceDao;
  */
 public class DataManagerEJBTest extends TestCase {
 
-    private final InputStream dummyStream =
+    private final InputStream _dummyStream =
         new ByteArrayInputStream(new byte[]{1});
 
-    private DataSource ds;
-    private Connection c;
-    private ResourceDao al;
-    private PreparedStatement ps;
-    private DataManager dm;
+    private DataSource _ds;
+    private Connection _c;
+    private ResourceDao _al;
+    private PreparedStatement _ps;
+    private DataManager _dm;
 
 
     {
@@ -71,29 +71,29 @@ public class DataManagerEJBTest extends TestCase {
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {
-         ds = createStrictMock(DataSource.class);
-         c = createStrictMock(Connection.class);
-         al = createStrictMock(ResourceDao.class);
-         ps = createStrictMock(PreparedStatement.class);
-         dm = new DataManagerEJB(ds, al);
+         _ds = createStrictMock(DataSource.class);
+         _c = createStrictMock(Connection.class);
+         _al = createStrictMock(ResourceDao.class);
+         _ps = createStrictMock(PreparedStatement.class);
+         _dm = new DataManagerEJB(_ds, _al);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void tearDown() throws Exception {
-        ds = null;
-        c = null;
-        al = null;
-        ps = null;
-        dm = null;
+        _ds = null;
+        _c = null;
+        _al = null;
+        _ps = null;
+        _dm = null;
     }
 
     private void replayAll() {
-        replay(ps, c, ds,  al);
+        replay(_ps, _c, _ds,  _al);
     }
 
     private void verifyAll() {
-        verify(ps, c, ds, al);
+        verify(_ps, _c, _ds, _al);
     }
 
     /**
@@ -107,27 +107,27 @@ public class DataManagerEJBTest extends TestCase {
         final File file = new File(
             new ResourceName("file"), "title", "desc", new Data(), 0);
 
-        ps.setString(eq(1), isA(String.class));
-        ps.setInt(2, 0);
-        ps.setBinaryStream(DataManagerEJB.STREAM_POSITION_CREATE,
-                           dummyStream,
+        _ps.setString(eq(1), isA(String.class));
+        _ps.setInt(2, 0);
+        _ps.setBinaryStream(DataManagerEJB.STREAM_POSITION_CREATE,
+                           _dummyStream,
                            Integer.MAX_VALUE);
-        expect(Boolean.valueOf(ps.execute())).andReturn(Boolean.TRUE);
-        ps.close();
+        expect(Boolean.valueOf(_ps.execute())).andReturn(Boolean.TRUE);
+        _ps.close();
 
-        expect(c.prepareStatement(DataManagerEJB.CREATE_STATEMENT))
-            .andReturn(ps);
-        c.close();
+        expect(_c.prepareStatement(DataManagerEJB.CREATE_STATEMENT))
+            .andReturn(_ps);
+        _c.close();
 
-        expect(ds.getConnection()).andReturn(c);
+        expect(_ds.getConnection()).andReturn(_c);
 
-        al.create(assetRoot.id(), file);
+        _al.create(assetRoot.id(), file);
 
         replayAll();
 
 
         // ACT
-        dm.createFile(file, assetRoot.id(), dummyStream);
+        _dm.createFile(file, assetRoot.id(), _dummyStream);
 
         // VERIFY
         verifyAll();
@@ -140,29 +140,29 @@ public class DataManagerEJBTest extends TestCase {
     public void testUpdateFile() throws SQLException {
 
         // ARRANGE
-        ps.setString(eq(1), isA(String.class));
-        ps.setInt(2, 0);
-        ps.setBinaryStream(DataManagerEJB.STREAM_POSITION_CREATE,
-                           dummyStream,
+        _ps.setString(eq(1), isA(String.class));
+        _ps.setInt(2, 0);
+        _ps.setBinaryStream(DataManagerEJB.STREAM_POSITION_CREATE,
+                           _dummyStream,
                            Integer.MAX_VALUE);
-        expect(Boolean.valueOf(ps.execute())).andReturn(Boolean.TRUE);
-        ps.close();
+        expect(Boolean.valueOf(_ps.execute())).andReturn(Boolean.TRUE);
+        _ps.close();
 
-        expect(c.prepareStatement(DataManagerEJB.CREATE_STATEMENT))
-            .andReturn(ps);
-        c.close();
+        expect(_c.prepareStatement(DataManagerEJB.CREATE_STATEMENT))
+            .andReturn(_ps);
+        _c.close();
 
-        expect(ds.getConnection()).andReturn(c);
+        expect(_ds.getConnection()).andReturn(_c);
 
         final File f =
             new File(new ResourceName("foo"), "bar", "x", new Data(), 0);
-        expect(al.findLocked(File.class, f.id())).andReturn(f);
-        al.update(f);
+        expect(_al.findLocked(File.class, f.id())).andReturn(f);
+        _al.update(f);
 
         replayAll();
 
         // ACT
-        dm.updateFile(f.id(), "x", "x", new MimeType(), 1, dummyStream);
+        _dm.updateFile(f.id(), "x", "x", new MimeType(), 1, _dummyStream);
 
         // ASSERT
         verifyAll();
@@ -180,7 +180,7 @@ public class DataManagerEJBTest extends TestCase {
         ps.setString(eq(1), isA(String.class));
         ps.setInt(2, 0);
         ps.setBinaryStream(DataManagerEJB.STREAM_POSITION_CREATE,
-                           dummyStream,
+                           _dummyStream,
                            Integer.MAX_VALUE);
         expect(ps.execute()).andReturn(true);
         ps.close();
@@ -201,7 +201,7 @@ public class DataManagerEJBTest extends TestCase {
                                dummy(ResourceDao.class));
 
         // ACT
-        dm.create(dummyStream);
+        dm.create(_dummyStream);
 
         // ASSERT
         verify(ps, c, ds);
@@ -220,7 +220,7 @@ public class DataManagerEJBTest extends TestCase {
 
         final ResultSet rs = createStrictMock(ResultSet.class);
         expect(rs.next()).andReturn(true);
-        expect(rs.getBinaryStream(1)).andReturn(dummyStream);
+        expect(rs.getBinaryStream(1)).andReturn(_dummyStream);
         expect(rs.next()).andReturn(false);
         rs.close();
         replay(rs);
@@ -273,7 +273,7 @@ public class DataManagerEJBTest extends TestCase {
                                dummy(ResourceDao.class));
 
         // ACT
-        dm.create(dummyStream);
+        dm.create(_dummyStream);
 
         // ASSERT
         Connection c = ds.getConnection();
@@ -312,7 +312,7 @@ public class DataManagerEJBTest extends TestCase {
         final DataManager dm =
             new DataManagerEJB(ds,
                                dummy(ResourceDao.class));
-        final Data d = dm.create(dummyStream);
+        final Data d = dm.create(_dummyStream);
 
         // ACT
         dm.retrieve(d, os);

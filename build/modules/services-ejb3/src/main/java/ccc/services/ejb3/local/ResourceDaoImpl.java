@@ -176,7 +176,8 @@ public class ResourceDaoImpl implements ResourceDao {
                             final UUID userId,
                             final Date publishedOn) {
         final User publishedBy = _users.find(userId);
-        final Resource r = find(Resource.class, resourceId); // FIXME: Should use findLocked.
+        final Resource r =
+            find(Resource.class, resourceId); // FIXME: Should use findLocked.
         r.publish(publishedBy);
         r.dateChanged(publishedOn);
         _audit.recordPublish(r, publishedBy, publishedOn);
