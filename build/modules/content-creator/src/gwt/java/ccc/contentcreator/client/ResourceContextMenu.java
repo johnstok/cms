@@ -14,13 +14,13 @@ package ccc.contentcreator.client;
 import static ccc.contentcreator.dialogs.AbstractBaseDialog.*;
 import ccc.contentcreator.actions.ChooseTemplateAction;
 import ccc.contentcreator.actions.ClearWorkingCopyAction;
+import ccc.contentcreator.actions.CreateActionAction;
 import ccc.contentcreator.actions.CreateAliasAction;
 import ccc.contentcreator.actions.IncludeInMainMenuAction;
 import ccc.contentcreator.actions.LockAction;
 import ccc.contentcreator.actions.MoveAction;
 import ccc.contentcreator.actions.PreviewAction;
 import ccc.contentcreator.actions.PublishAction;
-import ccc.contentcreator.actions.PublishOnAction;
 import ccc.contentcreator.actions.RemoveFromMainMenuAction;
 import ccc.contentcreator.actions.RenameAction;
 import ccc.contentcreator.actions.UnlockAction;
@@ -82,7 +82,7 @@ public class ResourceContextMenu
     private final Action _clearWorkingCopyAction;
     private final Action _previewWorkingCopyAction;
     private final Action _chooseTemplateAction;
-    private final Action _publishOnAction;
+    private final Action _createActionAction;
 
 
     /**
@@ -112,7 +112,7 @@ public class ResourceContextMenu
         _clearWorkingCopyAction = new ClearWorkingCopyAction(_table);
         _previewWorkingCopyAction = new PreviewAction(_table, true);
         _chooseTemplateAction = new ChooseTemplateAction(_table, false);
-        _publishOnAction = new PublishOnAction(_table);
+        _createActionAction = new CreateActionAction(_table);
 
         setWidth(CONTEXT_MENU_WIDTH);
 
@@ -137,7 +137,6 @@ public class ResourceContextMenu
                         if (item.<String>get("published") == null
                             || "".equals(item.get("published"))) {
                             addPublishResource();
-                            addPublishResourceOn();
                         } else {
                             addUnpublishResource();
                         }
@@ -161,6 +160,7 @@ public class ResourceContextMenu
                         addUpdateTags();
                         addUpdateMetadata();
                         addCreateAlias();
+                        addCreateAction();
 
                         if (item.<Boolean>get("mmInclude")) {
                             addRemoveFromMainMenu();
@@ -179,6 +179,13 @@ public class ResourceContextMenu
     }
 
 
+    private void addCreateAction() {
+        addMenuItem(
+            "create-action",
+            _constants.createAction(),
+            _createActionAction);
+    }
+
 
     private void addFolderSortOrder() {
         addMenuItem(
@@ -193,13 +200,6 @@ public class ResourceContextMenu
             "publish-resource",
             _constants.publish(),
             _publishAction);
-    }
-
-    private void addPublishResourceOn() {
-        addMenuItem(
-            "publish-on",
-            _constants.publishOn(),
-            _publishOnAction);
     }
 
 

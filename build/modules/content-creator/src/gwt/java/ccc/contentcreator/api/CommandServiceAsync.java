@@ -57,8 +57,6 @@ public interface CommandServiceAsync {
 
     void publish(String resourceId, AsyncCallback<ResourceSummary> callback);
 
-    void publish(String resourceId, Date publishDate, AsyncCallback<Void> callback);
-
     void publish(String resourceId, String userId, Date publishDate, AsyncCallback<ResourceSummary> callback);
 
     void unpublish(String resourceId, AsyncCallback<ResourceSummary> callback);
@@ -76,6 +74,8 @@ public interface CommandServiceAsync {
     void createWorkingCopy(String resourceId, long index, AsyncCallback<Void> callback);
 
     void cancelAction(String actionId, AsyncCallback<Void> callback);
+
+    void createAction(String resourceId, String action, Date executeAfter, AsyncCallback<Void> callback);
 
 
     void createAlias(String parentId, String name, String targetId, AsyncCallback<ResourceSummary> callback);

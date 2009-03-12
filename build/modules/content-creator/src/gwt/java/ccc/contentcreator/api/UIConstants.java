@@ -849,4 +849,12 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Revert")
     String revert();
+
+    /**
+     * "Create action".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Create action")
+    String createAction();
 }
