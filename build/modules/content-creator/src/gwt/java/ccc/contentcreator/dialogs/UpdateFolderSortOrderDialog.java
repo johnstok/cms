@@ -23,7 +23,7 @@ import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.services.api.ResourceSummary;
 
-import com.extjs.gxt.ui.client.Style.SelectionMode;
+import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.dnd.GridDragSource;
@@ -31,13 +31,14 @@ import com.extjs.gxt.ui.client.dnd.GridDropTarget;
 import com.extjs.gxt.ui.client.dnd.DND.Feedback;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.DNDEvent;
+import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
+import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
-import com.extjs.gxt.ui.client.widget.grid.GridSelectionModel;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
@@ -58,7 +59,8 @@ AbstractEditDialog {
     private final ListStore<ModelData> _sortStore = new ListStore<ModelData>();
 
     private final Grid<ModelData> _grid;
-    private final ListStore<ModelData> _detailsStore =
+    final ColumnModel _cm;
+    private ListStore<ModelData> _detailsStore =
         new ListStore<ModelData>();
 
     private GridDropTarget _target;
@@ -88,18 +90,37 @@ AbstractEditDialog {
 
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
         createColumnConfigs(configs);
-        final ColumnModel cm = new ColumnModel(configs);
-        _grid = new Grid<ModelData>(_detailsStore, cm);
+        _cm = new ColumnModel(configs);
+        _grid = new Grid<ModelData>(_detailsStore, _cm);
         _grid.setHeight(300);
         _grid.setBorders(true);
-        final GridSelectionModel<ModelData> gsm  = _grid.getSelectionModel();
-        gsm.setSelectionMode(SelectionMode.SINGLE);
-        _grid.setSelectionModel(gsm);
         addField(_grid);
 
         final GridDragSource gds = new GridDragSource(_grid);
         configureDropTarget();
 
+        _sortOrder.addSelectionChangedListener(
+            new SelectionChangedListener<ModelData>() {
+                @Override
+                public void selectionChanged(final SelectionChangedEvent<ModelData> se) {
+                    final ModelData md = se.getSelectedItem();
+                    if (md != null) {
+                        loadDetailStore();
+                        final String order = md.<String>get("value");
+                        if ("MANUAL".equals(order)) {
+                            _grid.enable();
+                        } else {
+                            _grid.disable();
+                            _detailsStore.sort("name", SortDir.ASC);
+                        }
+                        configureDropTarget();
+                    }
+                }
+            });
+    }
+
+    private void loadDetailStore() {
+        _detailsStore =  new ListStore<ModelData>();
         final String id = _selectionModel.tableSelection().get("id");
         _queries.getChildren(id,
             new AsyncCallback<Collection<ResourceSummary>>(){
@@ -107,7 +128,9 @@ AbstractEditDialog {
                 _grid.disable();
             }
             public void onSuccess(final Collection<ResourceSummary> arg0) {
+                _detailsStore.removeAll();
                 _detailsStore.add(DataBinding.bindResourceSummary(arg0));
+                _grid.reconfigure(_detailsStore, _cm);
             }
         });
     }
@@ -193,13 +216,13 @@ AbstractEditDialog {
                         public void onSuccess(final Void result) {
                             // TODO cleanup
                             if (order.equals("MANUAL")) {
-                                final List<String> order = new ArrayList<String>();
+                                final List<String> orderList = new ArrayList<String>();
                                 final List<ModelData> models = _grid.getStore().getModels();
                                 for(final ModelData m : models) {
-                                    order.add(m.<String>get("id"));
+                                    orderList.add(m.<String>get("id"));
                                 }
                                 _commands.reorder(md.<String>get("id"),
-                                    order,
+                                    orderList,
                                     new ErrorReportingCallback<Void>(){
                                     public void onSuccess(final Void result) {
                                         close();
