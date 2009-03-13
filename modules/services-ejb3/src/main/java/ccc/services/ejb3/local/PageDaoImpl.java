@@ -15,6 +15,7 @@ import static javax.ejb.TransactionAttributeType.*;
 
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -37,9 +38,11 @@ import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.Snapshot;
 import ccc.domain.Template;
+import ccc.domain.User;
 import ccc.services.ISearch;
 import ccc.services.PageDao;
 import ccc.services.ResourceDao;
+import ccc.services.UserManager;
 
 
 /**
@@ -52,8 +55,9 @@ import ccc.services.ResourceDao;
 @Local(PageDao.class)
 public class PageDaoImpl implements PageDao {
 
-    @EJB(name=ResourceDao.NAME) private ResourceDao _dao;
-    @EJB(name=ISearch.NAME)      private ISearch    _search;
+    @EJB(name=ResourceDao.NAME)  private ResourceDao  _dao;
+    @EJB(name=ISearch.NAME)      private ISearch      _search;
+    @EJB(name=UserManager.NAME)  private UserManager  _users;
 
 
     /** Constructor. */
@@ -64,10 +68,12 @@ public class PageDaoImpl implements PageDao {
      *
      * @param dao The ResourceDao used for CRUD operations, etc.
      * @param se The search engine to use.
+     * @param _um
      */
-    public PageDaoImpl(final ResourceDao dao, final ISearch se) {
+    public PageDaoImpl(final ResourceDao dao, final ISearch se, final UserManager um) {
         _dao = dao;
         _search = se;
+        _users = um;
     }
 
 
@@ -86,21 +92,30 @@ public class PageDaoImpl implements PageDao {
         page.title(newTitle);
         page.deleteAllParagraphs();
 
+        for (final Paragraph paragraph : newParagraphs) {
+            page.addParagraph(paragraph);
+        }
+
+        update(comment, isMajorEdit, page, _users.loggedInUser(), new Date());
+    }
+
+    private void update(final String comment,
+                        final boolean isMajorEdit,
+                        final Page page,
+                        final User actor,
+                        final Date happenedOn) {
+
         // TODO: check domain model
         if (page.workingCopy() != null) {
             page.clearWorkingCopy();
         }
 
-        for (final Paragraph paragraph : newParagraphs) {
-            page.addParagraph(paragraph);
-        }
-
         final Template template = page.computeTemplate(null);
 
         if (template != null) {
-            validateFieldsForPage(newParagraphs, template.definition());
+            validateFieldsForPage(page.paragraphs(), template.definition());
         }
-        _dao.update(page, comment, isMajorEdit);
+        _dao.update(page, comment, isMajorEdit, actor, happenedOn);
         _search.update(page);
     }
 
@@ -201,5 +216,17 @@ public class PageDaoImpl implements PageDao {
     public void clearWorkingCopy(final UUID id) {
         final Page page = _dao.findLocked(Page.class, id);
         page.clearWorkingCopy();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void applyWorkingCopy(final UUID id,
+                                 final String comment,
+                                 final boolean isMajorEdit,
+                                 final User actor,
+                                 final Date happenedOn) {
+        final Page page = _dao.findLocked(Page.class, id, actor);
+        page.applySnapshot(page.workingCopy());
+        update(comment, isMajorEdit, page, actor, happenedOn);
     }
 }

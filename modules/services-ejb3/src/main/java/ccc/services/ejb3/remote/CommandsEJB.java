@@ -437,14 +437,15 @@ public class CommandsEJB
     @Override
     public void createAction(final String resourceId,
                              final String action,
-                             final Date executeAfter) {
+                             final Date executeAfter,
+                             final String parameters) {
       final Action a =
       new Action(
           Action.Type.valueOf(action),
           executeAfter,
           _users.loggedInUser(),
           _resources.find(Resource.class, UUID.fromString(resourceId)),
-          new Snapshot());
+          new Snapshot(parameters));
       _scheduler.schedule(a);
     }
 

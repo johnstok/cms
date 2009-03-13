@@ -857,4 +857,12 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Create action")
     String createAction();
+
+    /**
+     * "Update".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Update")
+    String update();
 }

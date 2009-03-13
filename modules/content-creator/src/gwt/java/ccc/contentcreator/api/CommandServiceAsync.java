@@ -75,7 +75,7 @@ public interface CommandServiceAsync {
 
     void cancelAction(String actionId, AsyncCallback<Void> callback);
 
-    void createAction(String resourceId, String action, Date executeAfter, AsyncCallback<Void> callback);
+    void createAction(String resourceId, String action, Date executeAfter, String parameters, AsyncCallback<Void> callback);
 
 
     void createAlias(String parentId, String name, String targetId, AsyncCallback<ResourceSummary> callback);

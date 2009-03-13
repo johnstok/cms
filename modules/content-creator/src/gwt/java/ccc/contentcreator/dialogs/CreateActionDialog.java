@@ -78,6 +78,7 @@ public class CreateActionDialog
                     _resourceId,
                     _createAction.actionType(),
                     _dtPicker.getDate(),
+                    _createAction.actionParameters().toString(),
                     new ErrorReportingCallback<Void>(){
                         public void onSuccess(final Void arg0) {
                             close();

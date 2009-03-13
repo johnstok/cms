@@ -12,6 +12,8 @@
 
 package ccc.contentcreator.client;
 
+import ccc.contentcreator.api.UIConstants;
+
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
@@ -21,11 +23,18 @@ import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.DataList;
 import com.extjs.gxt.ui.client.widget.DataListItem;
 import com.extjs.gxt.ui.client.widget.DataListSelectionModel;
+import com.extjs.gxt.ui.client.widget.Html;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
+import com.extjs.gxt.ui.client.widget.form.CheckBox;
+import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
+import com.extjs.gxt.ui.client.widget.layout.FormData;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
-import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.json.client.JSONBoolean;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 
 
 /**
@@ -36,8 +45,11 @@ import com.google.gwt.user.client.ui.Label;
 public class CreateActionPanel
     extends
         LayoutContainer {
+    private final UIConstants _uiConstants = GWT.create(UIConstants.class);
 
-    final DataList list = new DataList();
+    private final DataList _list = new DataList();
+    private final LayoutContainer _parameters = new LayoutContainer();
+    private ParameterPanel _pPanel;
 
     /**
      * Constructor.
@@ -45,36 +57,69 @@ public class CreateActionPanel
     public CreateActionPanel() {
         setLayout(new BorderLayout());
 
-        final LayoutContainer _parameters = new LayoutContainer();
         _parameters.setId("action-parameters");
         _parameters.setLayout(new FormLayout());
         _parameters.setBorders(true);
         _parameters.setStyleAttribute("backgroundColor", "white");
 
-        list.setBorders(true);
-        list.setFlatStyle(true);
-        list.setSelectionMode(SelectionMode.SINGLE);
-        final DataListSelectionModel sm = list.getSelectionModel();
-        list.setSelectionModel(sm);
-        list.addListener(
+        _list.setBorders(true);
+        _list.setFlatStyle(true);
+        _list.setSelectionMode(SelectionMode.SINGLE);
+        final DataListSelectionModel sm = _list.getSelectionModel();
+        _list.setSelectionModel(sm);
+        _list.addListener(
             Events.SelectionChange,
             new Listener<ComponentEvent>() {
                 public void handleEvent(final ComponentEvent ce) {
                     final DataList l = (DataList) ce.component;
                     _parameters.removeAll();
-                    _parameters.add(new Label(l.getSelectedItem().getText()));
+
+                    switch (l.getSelectedItem().<Action>getData("action-id")) {
+                        case PUBLISH:
+                            _pPanel = new EmptyPanel(
+                                _uiConstants.publish(),
+                                "Publishes the selected resource."); // FIXME: I18n
+                            break;
+
+                        case UNPUBLISH:
+                            _pPanel =
+                                new EmptyPanel(
+                                    _uiConstants.unpublish(),
+                                    "Unpublishes the selected resource."); // FIXME: I18n
+                            break;
+
+                        case UPDATE:
+                            _pPanel = new UpdatePanel();
+                            break;
+
+                        default:
+                            Globals.alert("Unsupported action!");
+                            return;
+                    }
+
+                    _pPanel.populateForm(_parameters);
                     _parameters.layout();
                 }
             }
         );
-        list.add(new DataListItem("Publish")); // FIXME: I18n
-        list.add(new DataListItem("Unpublish")); // FIXME: I18n
+        final DataListItem publish = new DataListItem(_uiConstants.publish());
+        publish.setData("action-id", Action.PUBLISH);
+        _list.add(publish);
+
+        final DataListItem unpublish =
+            new DataListItem(_uiConstants.unpublish());
+        unpublish.setData("action-id", Action.UNPUBLISH);
+        _list.add(unpublish);
+
+        final DataListItem update = new DataListItem(_uiConstants.update());
+        update.setData("action-id", Action.UPDATE);
+        _list.add(update);
 
 
         final BorderLayoutData westData =
             new BorderLayoutData(LayoutRegion.WEST, 205);
         westData.setMargins(new Margins(5, 0, 5, 5));
-        add(list, westData);
+        add(_list, westData);
 
         final BorderLayoutData centerData =
             new BorderLayoutData(LayoutRegion.CENTER);
@@ -83,15 +128,89 @@ public class CreateActionPanel
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The type of action to execute, as a string.
      */
     public String actionType() {
-        final DataListItem item = list.getSelectedItem();
+        final DataListItem item = _list.getSelectedItem();
         if (null==item) {
             return null;
         }
         return item.getText().toUpperCase();
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return The parameters for the selected action, as a JSON object.
+     */
+    public JSONObject actionParameters() {
+        return (null==_pPanel) ? null : _pPanel.parameters();
+    }
+
+    private static interface ParameterPanel {
+        JSONObject parameters();
+        void populateForm(final LayoutContainer form);
+    }
+
+    private static class EmptyPanel implements ParameterPanel {
+
+        private final Html _title = new Html();
+
+        EmptyPanel(final String title, final String description) {
+            _title.setHtml("<b>"+title+"</b><br><br><i>"+description+"</i><br><br><hr><br>No parameters required.");
+        }
+
+        /** {@inheritDoc} */
+        public JSONObject parameters() {
+            return new JSONObject();
+        }
+
+        /** {@inheritDoc} */
+        public void populateForm(final LayoutContainer form) {
+            form.add(_title);
+        }
+
+    }
+
+    private static class UpdatePanel implements ParameterPanel {
+
+        private final Html _title = new Html();
+        private final CheckBox _majorEdit = new CheckBox();
+        private final TextArea _comment = new TextArea();
+
+        /** {@inheritDoc} */
+        public JSONObject parameters() {
+
+            final JSONObject json = new JSONObject();
+            json.put(
+                "majorEdit",
+                JSONBoolean.getInstance(_majorEdit.getValue().booleanValue()));
+            json.put(
+                "comment",
+                new JSONString(_comment.getValue()));
+            return json;
+        }
+
+        /** {@inheritDoc} */
+        public void populateForm(final LayoutContainer form) {
+            final UIConstants uiConstants = GWT.create(UIConstants.class);
+
+            _title.setHtml("<b>"+uiConstants.update()+"</b><br><br><i>Applies the selected resource's working copy.</i><br><br><hr>"); // FIXME: I18n
+            form.add(_title);
+
+            _majorEdit.setFieldLabel(uiConstants.majorEdit());
+            form.add(_majorEdit);
+
+            _comment.setFieldLabel(uiConstants.comment());
+            _comment.setHeight(250);
+            form.add(_comment, new FormData("95%"));
+        }
+
+    }
+
+    private enum Action {
+        UPDATE, PUBLISH, UNPUBLISH;
     }
 }

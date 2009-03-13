@@ -20,6 +20,7 @@ import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.Template;
+import ccc.domain.User;
 
 
 /**
@@ -90,6 +91,19 @@ public interface ResourceDao {
      * @return The resource for the specified id.
      */
     <T extends Resource> T find(final Class<T> type, final UUID id);
+
+    /**
+     * Find the resource with the specified UUID. This method confirms that the
+     * resource is locked by the currently 'logged in' user.
+     *
+     * @param <T> The type of the resource to return.
+     * @param type A class representing the type of the resource to return.
+     * @param id The UUID of the resource.
+     * @return The resource for the specified id.
+     */
+    <T extends Resource> T findLocked(Class<T> type,
+                                      UUID id,
+                                      final User lockedBy);
 
     /**
      * Find the resource with the specified UUID. This method confirms that the
@@ -219,7 +233,11 @@ public interface ResourceDao {
      * @param comment The comment for the edit.
      * @param isMajorEdit The major edit boolean.
      */
-    void update(Resource resource, String comment, boolean isMajorEdit);
+    void update(Resource resource,
+                String comment,
+                boolean isMajorEdit,
+                User actor,
+                Date happenedOn);
 
     /**
      * Notify the DAO that a resource has been updated (generates a log entry).

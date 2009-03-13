@@ -40,6 +40,8 @@ public class Action extends Entity {
      * @author Civic Computing Ltd.
      */
     public static enum Type {
+        /** UPDATE : Type. */
+        UPDATE,
         /** PUBLISH : Type. */
         PUBLISH,
         /** UNPUBLISH : Type. */

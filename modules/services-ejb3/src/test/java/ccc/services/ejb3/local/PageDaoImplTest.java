@@ -14,13 +14,16 @@ package ccc.services.ejb3.local;
 import static org.easymock.EasyMock.*;
 
 import java.util.Collections;
+import java.util.Date;
 
 import junit.framework.TestCase;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
+import ccc.domain.User;
 import ccc.services.ISearch;
 import ccc.services.PageDao;
 import ccc.services.ResourceDao;
+import ccc.services.UserManager;
 
 
 /**
@@ -62,10 +65,12 @@ public class PageDaoImplTest
 
         // ARRANGE
         final Page page = new Page("test");
+        final User u = new User("user");
         page.addParagraph(Paragraph.fromText("abc", "def"));
 
         expect(_dao.findLocked(Page.class, page.id())).andReturn(page);
-        _dao.update(page, "comment text", false);
+        _dao.update(eq(page), eq("comment text"), eq(false), eq(u), isA(Date.class));
+        expect(_um.loggedInUser()).andReturn(u);
         _se.update(page);
         replayAll();
 
@@ -114,11 +119,11 @@ public class PageDaoImplTest
 
 
     private void verifyAll() {
-        verify(_dao, _se);
+        verify(_dao, _se, _um);
     }
 
     private void replayAll() {
-        replay(_dao, _se);
+        replay(_dao, _se, _um);
     }
 
     /** {@inheritDoc} */
@@ -126,7 +131,8 @@ public class PageDaoImplTest
     protected void setUp() throws Exception {
         _dao = createStrictMock(ResourceDao.class);
         _se = createStrictMock(ISearch.class);
-        _cm = new PageDaoImpl(_dao, _se);
+        _um = createStrictMock(UserManager.class);
+        _cm = new PageDaoImpl(_dao, _se, _um);
     }
 
     /** {@inheritDoc} */
@@ -135,9 +141,11 @@ public class PageDaoImplTest
         _dao = null;
         _se = null;
         _cm = null;
+        _um = null;
     }
 
     private ResourceDao _dao;
     private PageDao _cm;
     private ISearch _se;
+    private UserManager _um;
 }

@@ -235,10 +235,11 @@ public class CommandsImpl
     @Override
     public void createAction(final String resourceId,
                              final String action,
-                             final Date executeAfter) {
-        _delegate.createAction(resourceId, action, executeAfter);
+                             final Date executeAfter,
+                             final String parameters) {
+        _delegate.createAction(resourceId, action, executeAfter, parameters);
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public void reorder(final String folderId, final List<String> order) {
