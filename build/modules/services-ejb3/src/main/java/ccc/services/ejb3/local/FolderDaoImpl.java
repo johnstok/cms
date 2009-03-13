@@ -78,7 +78,7 @@ public class FolderDaoImpl implements FolderDao {
         final List<Resource> currentOrder = f.entries();
         for (final UUID resourceId : order) {
             for (final Resource r : currentOrder) {
-                if (r.id() == resourceId) {
+                if (r.id().equals(resourceId)) {
                     newOrder.add(r);
                 }
             }
