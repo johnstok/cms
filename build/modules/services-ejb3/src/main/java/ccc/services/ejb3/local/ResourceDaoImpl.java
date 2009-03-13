@@ -266,7 +266,9 @@ public class ResourceDaoImpl implements ResourceDao {
     }
 
 
-    private <T extends Resource> T findLocked(final Class<T> type,
+    /** {@inheritDoc} */
+    @Override
+    public <T extends Resource> T findLocked(final Class<T> type,
                                               final UUID id,
                                               final User lockedBy) {
         final T r = _dao.find(type, id);
@@ -279,11 +281,13 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public void update(final Resource resource,
                        final String comment,
-                       final boolean isMajorEdit) {
-        resource.dateChanged(new Date());
+                       final boolean isMajorEdit,
+                       final User actor,
+                       final Date happenedOn) {
+        resource.dateChanged(happenedOn);
         _audit.recordUpdate(
             resource,
-            _users.loggedInUser(),
+            actor,
             resource.dateChanged(),
             comment,
             isMajorEdit);

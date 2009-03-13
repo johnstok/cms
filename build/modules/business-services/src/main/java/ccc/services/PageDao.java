@@ -11,6 +11,7 @@
  */
 package ccc.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -18,6 +19,7 @@ import java.util.UUID;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.Snapshot;
+import ccc.domain.User;
 
 
 /**
@@ -91,4 +93,13 @@ public interface PageDao {
      * @param id The page's id.
      */
     void clearWorkingCopy(UUID id);
+
+    /**
+     * Applies the current working copy to update a page.
+     *
+     * @param id The page's id.
+     * @param comment The comment for the page edit.
+     * @param isMajorEdit A boolean for major edit.
+     */
+    void applyWorkingCopy(UUID id, String comment, boolean isMajorEdit, User actor, Date happenedOn);
 }

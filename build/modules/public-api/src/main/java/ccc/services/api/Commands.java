@@ -212,7 +212,7 @@ public interface Commands {
 
     void cancelAction(String actionId);
 
-    void createAction(String resourceId, String action, Date executeAfter);
+    void createAction(String resourceId, String action, Date executeAfter, String parameters);
 
 
     /**

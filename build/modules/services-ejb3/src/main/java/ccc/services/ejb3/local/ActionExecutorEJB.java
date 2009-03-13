@@ -20,8 +20,14 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
+import org.apache.log4j.Logger;
+
 import ccc.actions.Action;
+import ccc.domain.CCCException;
+import ccc.domain.Resource;
+import ccc.domain.ResourceType;
 import ccc.services.ActionExecutor;
+import ccc.services.PageDao;
 import ccc.services.ResourceDao;
 
 
@@ -34,8 +40,11 @@ import ccc.services.ResourceDao;
 @TransactionAttribute(REQUIRED)
 @Local(ActionExecutor.class)
 public class ActionExecutorEJB implements ActionExecutor {
+    private static final Logger LOG =
+        Logger.getLogger(ActionExecutorEJB.class.getName());
 
     @EJB(name=ResourceDao.NAME) private ResourceDao _resources;
+    @EJB(name=PageDao.NAME)     private PageDao     _page;
 
     /** Constructor. */
     @SuppressWarnings("unused") public ActionExecutorEJB() { super(); }
@@ -65,6 +74,10 @@ public class ActionExecutorEJB implements ActionExecutor {
                     executePublish(action);
                     break;
 
+                case UPDATE:
+                    executeUpdate(action);
+                    break;
+
                 default:
                     throw new UnsupportedOperationException(
                         "Unsupported action type: "+action.type());
@@ -72,7 +85,24 @@ public class ActionExecutorEJB implements ActionExecutor {
             }
             action.complete();
         } catch (final RuntimeException e) {
+            LOG.warn("Failing action.", e);
             action.fail(e);
+        }
+    }
+
+
+    private void executeUpdate(final Action action) {
+        final Resource r = action.subject();
+        if (ResourceType.PAGE.equals(r.type())) {
+            _page.applyWorkingCopy(
+                r.id(),
+                action.parameters().getString("comment"),
+                action.parameters().getBool("majorEdit"),
+                action.actor(),
+                new Date());  // TODO: Should we use action._executeAfter?
+        } else {
+            throw new CCCException(
+                "Only pages can be updated via the scheduler.");
         }
     }
 
