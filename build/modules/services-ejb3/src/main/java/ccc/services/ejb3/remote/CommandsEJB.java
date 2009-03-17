@@ -33,7 +33,6 @@ import ccc.actions.Action;
 import ccc.commons.EmailAddress;
 import ccc.domain.Alias;
 import ccc.domain.CCCException;
-import ccc.domain.CreatorRoles;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
@@ -174,7 +173,7 @@ public class CommandsEJB
         final User user = new User(delta._username);
         user.email(new EmailAddress(delta._email));
         for (final String role : delta._roles) {
-            user.addRole(CreatorRoles.valueOf(role));
+            user.addRole(role);
         }
         _users.createUser(user, delta._password);
         return map(user);
@@ -332,7 +331,7 @@ public class CommandsEJB
         final User user = new User(delta._username);
         user.email(new EmailAddress(delta._email));
         for (final String role : delta._roles) {
-            user.addRole(CreatorRoles.valueOf(role));
+            user.addRole(role);
         }
         user.id(UUID.fromString(delta._id));
 

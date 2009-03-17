@@ -27,7 +27,6 @@ import javax.ejb.TransactionAttribute;
 import org.jboss.annotation.security.SecurityDomain;
 
 import ccc.domain.Alias;
-import ccc.domain.CreatorRoles;
 import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.Page;
@@ -202,7 +201,7 @@ public final class QueriesEJB
     /** {@inheritDoc} */
     @Override
     public Collection<UserSummary> listUsersWithRole(final String role) {
-        return mapUsers(_users.listUsersWithRole(CreatorRoles.valueOf(role)));
+        return mapUsers(_users.listUsersWithRole(role));
     }
 
     /** {@inheritDoc} */

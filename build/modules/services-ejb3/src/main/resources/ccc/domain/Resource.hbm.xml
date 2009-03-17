@@ -61,6 +61,14 @@
                 not-null="true"
                 unique="false" />
         </list>
+
+        <set name="_roles">
+            <key not-null="true" column="_id" />
+            <element
+                column="_role"
+                type="string"
+                not-null="true"/>
+        </set>
         
         <map name="_metadata">
             <key column="_id" />

@@ -11,6 +11,8 @@
  */
 package ccc.domain;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -34,6 +36,101 @@ public final class ResourceTest extends TestCase {
     private User _jill = new User("jill");
     private User _jack = new User("jack");
 
+
+    /**
+     * Test.
+     */
+    public void testResourceResourceAccessibilityRespectsParentalRoles() {
+
+        // ARRANGE
+        final Folder f = new Folder();
+        f.roles(Arrays.asList("bar"));
+        final Resource r = new Page();
+        r.roles(Arrays.asList("foo"));
+        f.add(r);
+
+        final User tom = new User("paul");
+        tom.addRole("foo");
+
+        // ACT
+        final boolean isAccessible = r.isAccessibleTo(tom);
+
+        // ASSERT
+        assertFalse(isAccessible);
+    }
+
+    /**
+     * Test.
+     */
+    public void testResourceIsAccessibleToUser() {
+
+        // ARRANGE
+        final Resource r = new Page();
+        r.roles(Arrays.asList("foo"));
+        final User tom = new User("paul");
+        tom.addRole("foo");
+
+        // ACT
+        final boolean isAccessible = r.isAccessibleTo(tom);
+
+        // ASSERT
+        assertTrue(isAccessible);
+    }
+
+    /**
+     * Test.
+     */
+    public void testResourceIsNotAccessibleToUser() {
+
+        // ARRANGE
+        final Resource r = new Page();
+        r.roles(Arrays.asList("foo"));
+
+        // ACT
+        final boolean isAccessible = r.isAccessibleTo(_jack);
+
+        // ASSERT
+        assertFalse(isAccessible);
+    }
+
+    /**
+     * Test.
+     */
+    public void testComputeRoles() {
+
+        // ARRANGE
+        final Folder f = new Folder();
+        f.roles(Arrays.asList("foo"));
+        final Page r = new Page();
+        r.roles(Arrays.asList("bar"));
+        f.add(r);
+
+
+        // ACT
+        final Collection<String> roles = r.computeRoles();
+
+        // ASSERT
+        assertEquals(2, roles.size());
+        assertTrue(roles.contains("foo"));
+        assertTrue(roles.contains("bar"));
+    }
+
+    /**
+     * Test.
+     */
+    public void testRolesProperty() {
+
+        // ARRANGE
+        final Resource r = new Page();
+
+        // ACT
+        r.roles(Arrays.asList("foo", "bar"));
+
+        // ASSERT
+        assertEquals(2, r.roles().size());
+        assertTrue(r.roles().contains("foo"));
+        assertTrue(r.roles().contains("bar"));
+    }
 
     /**
      * Test.

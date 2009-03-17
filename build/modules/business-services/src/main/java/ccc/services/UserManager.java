@@ -14,7 +14,6 @@ package ccc.services;
 import java.util.Collection;
 import java.util.UUID;
 
-import ccc.domain.CreatorRoles;
 import ccc.domain.User;
 
 /**
@@ -49,7 +48,7 @@ public interface UserManager {
      * @param role The role to filter on.
      * @return The users with the specified role.
      */
-    Collection<User> listUsersWithRole(CreatorRoles role);
+    Collection<User> listUsersWithRole(String role);
 
     /**
      * List all users with matching username.

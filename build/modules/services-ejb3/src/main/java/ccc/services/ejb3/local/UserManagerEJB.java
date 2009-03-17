@@ -25,7 +25,6 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
-import ccc.domain.CreatorRoles;
 import ccc.domain.Password;
 import ccc.domain.User;
 import ccc.services.UserManager;
@@ -95,8 +94,8 @@ public class UserManagerEJB implements UserManager {
 
     /** {@inheritDoc} */
     @Override
-    public Collection<User> listUsersWithRole(final CreatorRoles role) {
-        return _dao.uniquify("usersWithRole", User.class, role.name());
+    public Collection<User> listUsersWithRole(final String role) {
+        return _dao.uniquify("usersWithRole", User.class, role);
     }
 
     /** {@inheritDoc} */

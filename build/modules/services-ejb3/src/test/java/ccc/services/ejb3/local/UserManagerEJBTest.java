@@ -136,7 +136,7 @@ public class UserManagerEJBTest extends TestCase {
         // ARRANGE
         expect(_em.uniquify("usersWithRole",
                             User.class,
-                            CreatorRoles.ADMINISTRATOR.name()))
+                            CreatorRoles.ADMINISTRATOR))
             .andReturn(new ArrayList<User>());
         replay(_context, _em);
 

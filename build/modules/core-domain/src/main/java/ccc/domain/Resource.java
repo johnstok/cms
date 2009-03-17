@@ -15,11 +15,14 @@ package ccc.domain;
 import static ccc.commons.DBC.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ccc.commons.DBC;
 import ccc.commons.serialisation.Serializer;
@@ -41,6 +44,7 @@ public abstract class Resource extends VersionedEntity {
     private Folder         _parent            = null;
     private User           _lockedBy          = null;
     private List<String>   _tags              = new ArrayList<String>();
+    private Set<String>    _roles             = new HashSet<String>();
     private User           _publishedBy       = null;
     private boolean        _includeInMainMenu = false;
     private Date           _dateCreated       = new Date();
@@ -510,4 +514,58 @@ public abstract class Resource extends VersionedEntity {
         _dateChanged = changedOn;
     }
 
+    /**
+     * Mutator.
+     *
+     * @param roles The roles this collection should have.
+     */
+    public void roles(final Collection<String> roles) {
+        _roles.clear();
+        _roles.addAll(roles);
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return This resource's roles.
+     */
+    public Collection<String> roles() {
+        return Collections.unmodifiableCollection(_roles);
+    }
+
+
+    /**
+     * Compute the complete set of roles for this resource.
+     * This method recursively queries all parents to determine the complete
+     * set of roles this resource requires.
+     *
+     * @return The roles as a collection.
+     */
+    public Collection<String> computeRoles() {
+        // TODO: Can we make this more efficient?
+        if (null==_parent) {
+            return roles();
+        }
+        final Collection<String> roles = new ArrayList<String>();
+        roles.addAll(_parent.computeRoles());
+        roles.addAll(roles());
+        return roles;
+    }
+
+    /**
+     * Determine if this resource is accessible by the specified user.
+     * A user must have all of a resource's roles for the resource to be
+     * accessible.
+     *
+     * @param user The user trying to access the resource.
+     * @return True if the user may access the resource, false otherwise.
+     */
+    public boolean isAccessibleTo(final User user) {
+        for (final String role : computeRoles()) {
+            if (!user.hasRole(role)) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

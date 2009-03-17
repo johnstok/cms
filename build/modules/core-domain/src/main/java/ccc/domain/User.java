@@ -11,7 +11,7 @@
  */
 package ccc.domain;
 
-import java.util.EnumSet;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,7 +31,7 @@ public class User extends VersionedEntity {
 
     private String _username;
     private EmailAddress _email;
-    private Set<CreatorRoles> _roles = new HashSet<CreatorRoles>();
+    private Set<String> _roles = new HashSet<String>();
 
     /**
      * Constructor.
@@ -102,7 +102,7 @@ public class User extends VersionedEntity {
      *
      * @param newRole The role to assign.
      */
-    public void addRole(final CreatorRoles newRole) {
+    public void addRole(final String newRole) {
         _roles.add(newRole);
     }
 
@@ -112,7 +112,7 @@ public class User extends VersionedEntity {
      * @param role The role to be checked.
      * @return True if the user has the role.
      */
-    public boolean hasRole(final CreatorRoles role) {
+    public boolean hasRole(final String role) {
         return _roles.contains(role);
     }
 
@@ -121,11 +121,8 @@ public class User extends VersionedEntity {
      *
      * @return Roles of the user.
      */
-    public EnumSet<CreatorRoles> roles() {
-        return
-            (0==_roles.size())
-                ? EnumSet.noneOf(CreatorRoles.class)
-                : EnumSet.copyOf(_roles);
+    public Set<String> roles() {
+        return Collections.unmodifiableSet(_roles);
     }
 
     /**
@@ -133,7 +130,7 @@ public class User extends VersionedEntity {
      *
      * @param roles The set of new roles.
      */
-    public void roles(final Set <CreatorRoles> roles) {
+    public void roles(final Set<String> roles) {
         _roles = roles;
     }
 }

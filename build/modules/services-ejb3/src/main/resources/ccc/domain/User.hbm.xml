@@ -17,10 +17,6 @@
 -->
 
 <hibernate-mapping default-access="field">
-
-	<typedef class="ccc.services.ejb3.support.EnumUserType" name="CreatorRole">
-	    <param name="type">ccc.domain.CreatorRoles</param>
-	</typedef>
 	
     <class name="ccc.domain.User">
     
@@ -44,10 +40,13 @@
             <property name="_text" column="_email" not-null="true" type="string" length="256" />
         </component>
             
-	    <set name="_roles">
-	        <key not-null="true"/>
-	        <element column="role" type="CreatorRole"/>
-	    </set>
+        <set name="_roles">
+            <key not-null="true" column="id" />
+            <element
+                column="role"
+                type="string"
+                not-null="true"/>
+        </set>
 
             
     </class>

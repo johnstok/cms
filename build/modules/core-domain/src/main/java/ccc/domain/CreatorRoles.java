@@ -17,14 +17,16 @@ package ccc.domain;
  *
  * @author Civic Computing Ltd.
  */
-public enum CreatorRoles {
+public final class CreatorRoles {
 
-    /** CONTENT_CREATOR : CreatorRoles. */
-    CONTENT_CREATOR,
+    private CreatorRoles() { super(); }
 
-    /** SITE_BUILDER : CreatorRoles. */
-    SITE_BUILDER,
+    /** CONTENT_CREATOR : String. */
+    public static final String CONTENT_CREATOR = "content_creator";
 
-    /** ADMINISTRATOR : CreatorRoles. */
-    ADMINISTRATOR;
+    /** SITE_BUILDER : String. */
+    public static final String SITE_BUILDER = "site_builder";
+
+    /** ADMINISTRATOR : String. */
+    public static final String ADMINISTRATOR = "administrator";
 }
