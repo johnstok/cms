@@ -11,6 +11,7 @@
  */
 package ccc.contentcreator.remoting;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -244,5 +245,12 @@ public class CommandsImpl
     @Override
     public void reorder(final String folderId, final List<String> order) {
         _delegate.reorder(folderId, order);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void changeRoles(final String resourceId,
+                            final Collection<String> roles) {
+        _delegate.changeRoles(resourceId, roles);
     }
 }

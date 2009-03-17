@@ -292,4 +292,12 @@ public final class QueriesEJB
     public Collection<ActionSummary> listCompletedActions() {
         return map(_actions.executed());
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public Collection<String> roles(final String resourceId) {
+        final Resource r =
+            _resources.find(Resource.class, UUID.fromString(resourceId));
+        return r.roles();
+    }
 }

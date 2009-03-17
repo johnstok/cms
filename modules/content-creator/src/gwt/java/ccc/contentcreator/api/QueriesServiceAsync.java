@@ -109,4 +109,6 @@ public interface QueriesServiceAsync {
     void listPendingActions(AsyncCallback<Collection<ActionSummary>> asyncCallback);
 
     void listCompletedActions(AsyncCallback<Collection<ActionSummary>> asyncCallback);
+
+    void roles(final String resourceId, AsyncCallback<Collection<String>> asyncCallback);
 }

@@ -11,6 +11,7 @@
  */
 package ccc.contentcreator.api;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -94,4 +95,5 @@ public interface CommandServiceAsync {
 
     void reorder(String folderId, List<String> order, AsyncCallback<Void> callback);
 
+    void changeRoles(final String resourceId, final Collection<String> roles, AsyncCallback<Void> callback);
 }

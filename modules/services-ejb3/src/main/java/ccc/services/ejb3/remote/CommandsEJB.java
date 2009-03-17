@@ -14,6 +14,7 @@ package ccc.services.ejb3.remote;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -456,6 +457,13 @@ public class CommandsEJB
             newOrder.add(UUID.fromString(entry));
         }
         _folders.reorder(UUID.fromString(folderId), newOrder);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void changeRoles(final String resourceId,
+                            final Collection<String> roles) {
+        _resources.changeRoles(UUID.fromString(resourceId), roles);
     }
 
 }
