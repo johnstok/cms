@@ -41,6 +41,41 @@ public enum ResourceOrder {
             Collections.sort(
                 resources, new AlphaNumericAscendingNameComparator());
         }
+    },
+
+    /** NAME_ALPHANUM_ASC : ResourceOrder. */
+    DATE_CREATED_ASC {
+        /** {@inheritDoc} */
+        @Override public void sort(final List<Resource> resources) {
+            Collections.sort(
+                resources, new DateCreatedAscendingComparator());
+        }
+    },
+    /** NAME_ALPHANUM_ASC : ResourceOrder. */
+    DATE_CREATED_DESC {
+        /** {@inheritDoc} */
+        @Override public void sort(final List<Resource> resources) {
+            Collections.sort(
+                resources, new DateCreatedAscendingComparator());
+            Collections.reverse(resources);
+        }
+    },
+    /** NAME_ALPHANUM_ASC : ResourceOrder. */
+    DATE_CHANGED_ASC {
+        /** {@inheritDoc} */
+        @Override public void sort(final List<Resource> resources) {
+            Collections.sort(
+                resources, new DateChangedAscendingComparator());
+        }
+    },
+    /** NAME_ALPHANUM_ASC : ResourceOrder. */
+    DATE_CHANGED_DESC {
+        /** {@inheritDoc} */
+        @Override public void sort(final List<Resource> resources) {
+            Collections.sort(
+                resources, new DateChangedAscendingComparator());
+            Collections.reverse(resources);
+        }
     };
 
     /**
@@ -67,5 +102,41 @@ public enum ResourceOrder {
             return o1.name().toString().compareTo(o2.name().toString());
         }
 
+    }
+
+    /**
+     * Sort Resources in Ascending based on date created.
+     *
+     * @author Civic Computing Ltd.
+     */
+    static final class DateCreatedAscendingComparator
+    implements
+    Serializable, Comparator<Resource> {
+
+        /** {@inheritDoc} */
+        @Override
+        public int compare(final Resource o1, final Resource o2) {
+            DBC.require().notNull(o1);
+            DBC.require().notNull(o2);
+            return o1.dateCreated().compareTo(o2.dateCreated());
+        }
+    }
+
+    /**
+     * Sort Resources in Ascending based on date changed.
+     *
+     * @author Civic Computing Ltd.
+     */
+    static final class DateChangedAscendingComparator
+    implements
+    Serializable, Comparator<Resource> {
+
+        /** {@inheritDoc} */
+        @Override
+        public int compare(final Resource o1, final Resource o2) {
+            DBC.require().notNull(o1);
+            DBC.require().notNull(o2);
+            return o1.dateChanged().compareTo(o2.dateChanged());
+        }
     }
 }

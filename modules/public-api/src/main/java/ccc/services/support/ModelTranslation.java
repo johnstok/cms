@@ -159,6 +159,8 @@ public class ModelTranslation {
         rs._childCount = 0;
         rs._folderCount = 0;
         rs._includeInMainMenu = r.includeInMainMenu();
+        rs._dateChanged = r.dateChanged();
+        rs._dateCreated = r.dateCreated();
         if (r.type() == ResourceType.FOLDER) {
             rs._childCount = r.as(Folder.class).entries().size();
             rs._folderCount = r.as(Folder.class).folders().size();

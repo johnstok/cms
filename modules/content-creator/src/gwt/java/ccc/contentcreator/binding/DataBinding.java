@@ -84,6 +84,11 @@ public class DataBinding {
     public static final String WORKING_COPY = "workingCopy";
     /** IS_MAJOR_EDIT : String. */
     public static final String IS_MAJOR_EDIT = "isMajorEdit";
+    /** DATE_CHANGED : String. */
+    public static final String DATE_CHANGED = "dateChanged";
+    /** DATE_CREATED : String. */
+    public static final String DATE_CREATED = "dateCreated";
+
     private static final String INDEX = "index";
 
     /**
@@ -196,6 +201,8 @@ public class DataBinding {
         md.set(MM_INCLUDE, fs._includeInMainMenu);
         md.set(SORT_ORDER, fs._sortOrder);
         md.set(WORKING_COPY, fs._hasWorkingCopy);
+        md.set(DATE_CHANGED, fs._dateChanged);
+        md.set(DATE_CREATED, fs._dateCreated);
     }
 
     /**
