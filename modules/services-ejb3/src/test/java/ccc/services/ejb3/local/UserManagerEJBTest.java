@@ -37,6 +37,24 @@ public class UserManagerEJBTest extends TestCase {
     /**
      * Test.
      */
+    public void testLoggedInUserHandlesAnonymousUsers() {
+
+        // ARRANGE
+        expect(_context.getCallerPrincipal())
+            .andThrow(new IllegalStateException());
+        replay(_context, _em);
+
+        // ACT
+        final User actual = _um.loggedInUser();
+
+        // ASSERT
+        verify(_context, _em);
+        assertNull(actual);
+    }
+
+    /**
+     * Test.
+     */
     public void testLoggedInUser() {
 
         // ARRANGE

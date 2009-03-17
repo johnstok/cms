@@ -123,11 +123,15 @@ public class UserManagerEJB implements UserManager {
     /** {@inheritDoc} */
     @Override
     public User loggedInUser() {
-        final Principal p = _context.getCallerPrincipal();
-        final String principalName = p.getName();
-        final User user =
-            _dao.find("usersWithUsername", User.class, principalName);
-        return user;
+        try {
+            final Principal p = _context.getCallerPrincipal();
+            final String principalName = p.getName();
+            final User user =
+                _dao.find("usersWithUsername", User.class, principalName);
+            return user;
+        } catch (final IllegalStateException e) {
+            return null;
+        }
     }
 
     /** {@inheritDoc} */
