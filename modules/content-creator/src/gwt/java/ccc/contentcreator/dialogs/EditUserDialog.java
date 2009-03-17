@@ -27,8 +27,7 @@ import ccc.services.api.UserSummary;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.widget.form.CheckBox;
-import com.extjs.gxt.ui.client.widget.form.CheckBoxGroup;
+import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 
 
@@ -43,9 +42,9 @@ public class EditUserDialog extends AbstractEditDialog {
     private final TextField<String> _email = new TextField<String>();
     private final TextField<String> _password1 = new TextField<String>();
     private final TextField<String> _password2 = new TextField<String>();
+    private final TextArea          _roles = new TextArea();
 
     private UserDelta _userDTO = new UserDelta();
-    private CheckBoxGroup _checkGroup = new CheckBoxGroup();
     private final UserTable _userTable;
 
     private static final String ROLE = "role";
@@ -85,38 +84,17 @@ public class EditUserDialog extends AbstractEditDialog {
         _password2.setId(constants().confirmPassword());
         addField(_password2);
 
-        final Set<String> userRoles = _userDTO._roles;
-
-        final CheckBox check1 = new CheckBox();
-        check1.setBoxLabel(constants().contentCreator());
-        check1.setId(constants().contentCreator());
-        check1.setData(ROLE , "CONTENT_CREATOR");
-        if (userRoles.contains("CONTENT_CREATOR")) {
-            check1.setValue(true);
+        _roles.setFieldLabel(_constants.roles());
+        _roles.setId("resource-roles");
+        _roles.setHeight(200);
+        final StringBuilder rolesString = new StringBuilder();
+        for (final String role : _userDTO._roles) {
+            rolesString.append(role);
+            rolesString.append('\n');
         }
+        _roles.setValue(rolesString.toString());
+        addField(_roles);
 
-        final CheckBox check2 = new CheckBox();
-        check2.setBoxLabel(constants().siteBuilder());
-        check2.setId(constants().siteBuilder());
-        check2.setData(ROLE, "SITE_BUILDER");
-        if (userRoles.contains("SITE_BUILDER")) {
-            check2.setValue(true);
-        }
-
-        final CheckBox check3 = new CheckBox();
-        check3.setBoxLabel(constants().administrator());
-        check3.setId(constants().administrator());
-        check3.setData(ROLE, "ADMINISTRATOR");
-        if (userRoles.contains("ADMINISTRATOR")) {
-            check3.setValue(true);
-        }
-
-        _checkGroup.setFieldLabel(constants().roles());
-        _checkGroup.setId(constants().roles());
-        _checkGroup.add(check1);
-        _checkGroup.add(check2);
-        _checkGroup.add(check3);
-        addField(_checkGroup);
 
         setPanelId("UserPanel");
     }
@@ -151,11 +129,17 @@ public class EditUserDialog extends AbstractEditDialog {
             public void run() {
                 _userDTO._username = _username.getValue();
                 _userDTO._email = _email.getValue();
-                final Set<String> roles = new HashSet<String>();
-                for (final CheckBox box : _checkGroup.getValues()) {
-                    roles.add((String) box.getData(ROLE));
+
+                final Set<String> validRoles = new HashSet<String>();
+                final String[] roles =
+                    _roles.getValue().split("\n"); // FIXME: what about \r?
+                for (final String role : roles) {
+                    final String cleanRole = role.trim();
+                    if (cleanRole.length() > 0) {
+                        validRoles.add(cleanRole);
+                    }
                 }
-                _userDTO._roles = roles;
+                _userDTO._roles = validRoles;
 
                 String password = null;
                 final String pw1 = _password1.getValue();

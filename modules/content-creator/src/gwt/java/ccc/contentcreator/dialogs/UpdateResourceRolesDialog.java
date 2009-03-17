@@ -11,7 +11,7 @@
  */
 package ccc.contentcreator.dialogs;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import ccc.contentcreator.callbacks.DisposingCallback;
@@ -31,7 +31,7 @@ public class UpdateResourceRolesDialog
         AbstractEditDialog {
 
     private final String _resourceId;
-    private TextArea _roles = new TextArea();
+    private final TextArea _roles = new TextArea();
 
     /**
      * Constructor.
@@ -44,8 +44,13 @@ public class UpdateResourceRolesDialog
         super("Update roles"); // FIXME: I18n
         _resourceId = resourceId;
 
+        setWidth(400);
+        setHeight(300);
+//        _panel.setLabelAlign(LabelAlign.TOP);
+
         _roles.setFieldLabel(_constants.roles());
         _roles.setId("resource-roles");
+        _roles.setHeight(200);
         final StringBuilder rolesString = new StringBuilder();
         for (final String role : currentRoles) {
             rolesString.append(role);
@@ -61,12 +66,18 @@ public class UpdateResourceRolesDialog
         return new SelectionListener<ButtonEvent>() {
             @Override
             public void componentSelected(final ButtonEvent ce) {
+                final Collection<String> validRoles = new ArrayList<String>();
                 final String[] roles =
-                    _roles.getValue().split("\n"); // FIXME: what \r?
-                // TODO: Trim whitespace / remove empty lines.
+                    _roles.getValue().split("\n"); // FIXME: what about \r?
+                for (final String role : roles) {
+                    final String cleanRole = role.trim();
+                    if (cleanRole.length() > 0) {
+                        validRoles.add(cleanRole);
+                    }
+                }
                 commands().changeRoles(
                     _resourceId,
-                    Arrays.asList(roles),
+                    validRoles,
                     new DisposingCallback(UpdateResourceRolesDialog.this)
                 );
             }
