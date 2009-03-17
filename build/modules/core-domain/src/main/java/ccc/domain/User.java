@@ -11,7 +11,6 @@
  */
 package ccc.domain;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -122,7 +121,7 @@ public class User extends VersionedEntity {
      * @return Roles of the user.
      */
     public Set<String> roles() {
-        return Collections.unmodifiableSet(_roles);
+        return new HashSet<String>(_roles);
     }
 
     /**
