@@ -12,6 +12,7 @@
 package ccc.services.api;
 
 import java.io.Serializable;
+import java.util.Date;
 
 
 /**
@@ -33,4 +34,7 @@ public class ResourceSummary implements Serializable {
     public boolean _includeInMainMenu;
     public String _sortOrder;
     public boolean _hasWorkingCopy;
+
+    public Date _dateCreated;
+    public Date _dateChanged;
 }

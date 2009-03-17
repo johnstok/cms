@@ -39,6 +39,7 @@ import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
@@ -58,6 +59,13 @@ AbstractEditDialog {
     private final SingleSelectionModel _selectionModel;
     private final ListStore<ModelData> _sortStore = new ListStore<ModelData>();
 
+    private final String MANUAL = "MANUAL";
+    private final String DATE_CREATED_DESC = "DATE_CREATED_DESC";
+    private final String DATE_CREATED_ASC = "DATE_CREATED_ASC";
+    private final String DATE_CHANGED_DESC = "DATE_CHANGED_DESC";
+    private final String DATE_CHANGED_ASC = "DATE_CHANGED_ASC";
+    private final String NAME_ALPHANUM_ASC = "NAME_ALPHANUM_ASC";
+
     private final Grid<ModelData> _grid;
     final ColumnModel _cm;
     private ListStore<ModelData> _detailsStore =
@@ -76,7 +84,6 @@ AbstractEditDialog {
                                        final String currentSortOrder) {
         super(Globals.uiConstants().folderSortOrder());
         setHeight(Globals.DEFAULT_HEIGHT);
-
         _selectionModel = ssm;
 
         populateSortOptions();
@@ -93,6 +100,7 @@ AbstractEditDialog {
         _cm = new ColumnModel(configs);
         _grid = new Grid<ModelData>(_detailsStore, _cm);
         _grid.setHeight(300);
+        _grid.setWidth(610);
         _grid.setBorders(true);
         addField(_grid);
 
@@ -107,11 +115,21 @@ AbstractEditDialog {
                     if (md != null) {
                         loadDetailStore();
                         final String order = md.<String>get("value");
-                        if ("MANUAL".equals(order)) {
+                        if (MANUAL.equals(order)) {
                             _grid.enable();
-                        } else {
+                        } else  {
                             _grid.disable();
-                            _detailsStore.sort("name", SortDir.ASC);
+                            if (NAME_ALPHANUM_ASC.equals(order)) {
+                                _detailsStore.sort("name", SortDir.ASC);
+                            } else if (DATE_CHANGED_ASC.equals(order)) {
+                                _detailsStore.sort("dateChanged", SortDir.ASC);
+                            } else if (DATE_CHANGED_DESC.equals(order)) {
+                                _detailsStore.sort("dateChanged", SortDir.DESC);
+                            } else if (DATE_CREATED_ASC.equals(order)) {
+                                _detailsStore.sort("dateCreated", SortDir.ASC);
+                            } else if (DATE_CREATED_DESC.equals(order)) {
+                                _detailsStore.sort("dateCreated", SortDir.DESC);
+                            }
                         }
                         configureDropTarget();
                     }
@@ -177,14 +195,32 @@ AbstractEditDialog {
 
 
     private void populateSortOptions() {
-        final ModelData nameAlphanumAsc = new BaseModelData();
-        nameAlphanumAsc.set("name", "Name - alphanumeric, ascending"); // TODO: I18n
-        nameAlphanumAsc.set("value", "NAME_ALPHANUM_ASC");
-        _sortStore.add(nameAlphanumAsc);
         final ModelData manual = new BaseModelData();
         manual.set("name", "Manual"); // TODO: I18n
-        manual.set("value", "MANUAL");
+        manual.set("value", MANUAL);
         _sortStore.add(manual);
+        final ModelData nameAlphanumAsc = new BaseModelData();
+        nameAlphanumAsc.set("name", "Name - alphanumeric, ascending"); // TODO: I18n
+        nameAlphanumAsc.set("value", NAME_ALPHANUM_ASC);
+        _sortStore.add(nameAlphanumAsc);
+
+        final ModelData dateChangedAsc = new BaseModelData();
+        dateChangedAsc.set("name", "Date changed, ascending"); // TODO: I18n
+        dateChangedAsc.set("value", DATE_CHANGED_ASC);
+        _sortStore.add(dateChangedAsc);
+        final ModelData dateChangedDesc = new BaseModelData();
+        dateChangedDesc.set("name", "Date changed, descending"); // TODO: I18n
+        dateChangedDesc.set("value", DATE_CHANGED_DESC);
+        _sortStore.add(dateChangedDesc);
+
+        final ModelData dateCreatedAsc = new BaseModelData();
+        dateCreatedAsc.set("name", "Date created, ascending"); // TODO: I18n
+        dateCreatedAsc.set("value", DATE_CREATED_ASC);
+        _sortStore.add(dateCreatedAsc);
+        final ModelData dateCreatedDesc = new BaseModelData();
+        dateCreatedDesc.set("name", "Date created, descending"); // TODO: I18n
+        dateCreatedDesc.set("value", DATE_CREATED_DESC);
+        _sortStore.add(dateCreatedDesc);
     }
 
     private void configureComboBox(final String value,
@@ -215,7 +251,7 @@ AbstractEditDialog {
                     new ErrorReportingCallback<Void>(){
                         public void onSuccess(final Void result) {
                             // TODO cleanup
-                            if (order.equals("MANUAL")) {
+                            if (order.equals(MANUAL)) {
                                 final List<String> orderList = new ArrayList<String>();
                                 final List<ModelData> models = _grid.getStore().getModels();
                                 for(final ModelData m : models) {
@@ -241,6 +277,9 @@ AbstractEditDialog {
     }
 
     private void createColumnConfigs(final List<ColumnConfig> configs) {
+        final DateTimeFormat dateTimeFormat =
+            DateTimeFormat.getFormat("dd.MM.yyyy");
+
         final ColumnConfig typeColumn =
             new ColumnConfig("type", _constants.type(), 70);
         typeColumn.setSortable(false);
@@ -248,15 +287,30 @@ AbstractEditDialog {
         configs.add(typeColumn);
 
         final ColumnConfig nameColumn =
-            new ColumnConfig("name", _constants.name(), 250);
+            new ColumnConfig("name", _constants.name(), 170);
         nameColumn.setSortable(false);
         nameColumn.setMenuDisabled(true);
         configs.add(nameColumn);
 
         final ColumnConfig titleColumn =
-            new ColumnConfig("title", _constants.title(), 250);
+            new ColumnConfig("title", _constants.title(), 170);
         titleColumn.setSortable(false);
         titleColumn.setMenuDisabled(true);
         configs.add(titleColumn);
+
+        final ColumnConfig createdColumn =
+            new ColumnConfig("dateCreated", _constants.created(), 70);
+        createdColumn.setSortable(false);
+        createdColumn.setMenuDisabled(true);
+        createdColumn.setDateTimeFormat(dateTimeFormat);
+        configs.add(createdColumn);
+
+        final ColumnConfig changedColumn =
+            new ColumnConfig("dateChanged", _constants.changed(), 70);
+        changedColumn.setSortable(false);
+        changedColumn.setMenuDisabled(true);
+        changedColumn.setDateTimeFormat(dateTimeFormat);
+        configs.add(changedColumn);
+
     }
 }

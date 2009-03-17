@@ -64,4 +64,41 @@ public class ResourceOrderTest
         // ASSERT
         assertEquals("z", resources.get(0).name().toString());
     }
+
+    /**
+     * Test.
+     */
+    public void testDateChangedAscOrdering() {
+
+        // ARRANGE
+        final List<Resource> resources = new ArrayList<Resource>() {{
+            add(new Page("z"));
+            add(new Page("a"));
+        }};
+
+        // ACT
+        ResourceOrder.DATE_CHANGED_ASC.sort(resources);
+
+        // ASSERT
+        assertEquals("z", resources.get(0).name().toString());
+
+    }
+    /**
+     * Test.
+     */
+    public void testDateChangedDescOrdering() {
+
+        // ARRANGE
+        final List<Resource> resources = new ArrayList<Resource>() {{
+            add(new Page("z"));
+            add(new Page("a"));
+        }};
+
+        // ACT
+        ResourceOrder.DATE_CHANGED_DESC.sort(resources);
+
+        // ASSERT
+        assertEquals("a", resources.get(0).name().toString());
+
+    }
 }
