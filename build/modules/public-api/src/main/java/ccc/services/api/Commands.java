@@ -11,6 +11,7 @@
  */
 package ccc.services.api;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -214,7 +215,6 @@ public interface Commands {
 
     void createAction(String resourceId, String action, Date executeAfter, String parameters);
 
-
     /**
      * TODO: Add a description of this method.
      *
@@ -222,5 +222,7 @@ public interface Commands {
      * @param order
      */
     void reorder(String folderId, List<String> order);
+
+    void changeRoles(String resourceId, Collection<String> roles);
 }
 

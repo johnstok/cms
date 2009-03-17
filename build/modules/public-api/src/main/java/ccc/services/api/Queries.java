@@ -202,6 +202,8 @@ public interface Queries {
      */
     Collection<ActionSummary> listCompletedActions();
 
+    Collection<String> roles(String resourceId);
+
     TemplateDelta templateDelta(String templateId);
     UserDelta userDelta(String userId);
     AliasDelta aliasDelta(String aliasId);

@@ -11,6 +11,7 @@
  */
 package ccc.services;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -261,5 +262,13 @@ public interface ResourceDao {
      * @param metadata The new metadata to set.
      */
     void updateMetadata(UUID resourceId, Map<String, String> metadata);
+
+    /**
+     * Update the security roles for the specified resource.
+     *
+     * @param resourceId The resource to update.
+     * @param roles The new roles.
+     */
+    void changeRoles(UUID resourceId, Collection<String> roles);
 
 }

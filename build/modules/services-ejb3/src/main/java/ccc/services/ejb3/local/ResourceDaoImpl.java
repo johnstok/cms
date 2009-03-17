@@ -13,6 +13,7 @@ package ccc.services.ejb3.local;
 
 import static javax.ejb.TransactionAttributeType.*;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -341,5 +342,12 @@ public class ResourceDaoImpl implements ResourceDao {
         for (final String key : metadata.keySet()) {
             r.addMetadatum(key, metadata.get(key));
         }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void changeRoles(final UUID id, final Collection<String> roles) {
+        final Resource r = findLocked(Resource.class, id);
+        r.roles(roles);
     }
 }

@@ -530,7 +530,7 @@ public abstract class Resource extends VersionedEntity {
      * @return This resource's roles.
      */
     public Collection<String> roles() {
-        return Collections.unmodifiableCollection(_roles);
+        return new HashSet<String>(_roles);
     }
 
 

@@ -208,4 +208,10 @@ public class QueriesImpl
     public Collection<ActionSummary> listCompletedActions() {
         return _delegate.listCompletedActions();
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public Collection<String> roles(final String resourceId) {
+        return _delegate.roles(resourceId);
+    }
 }

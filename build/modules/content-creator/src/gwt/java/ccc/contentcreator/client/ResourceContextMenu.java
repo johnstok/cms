@@ -26,6 +26,7 @@ import ccc.contentcreator.actions.RenameAction;
 import ccc.contentcreator.actions.UnlockAction;
 import ccc.contentcreator.actions.UnpublishAction;
 import ccc.contentcreator.actions.UpdateMetadataAction;
+import ccc.contentcreator.actions.UpdateResourceRolesAction;
 import ccc.contentcreator.actions.UpdateSortOrderAction;
 import ccc.contentcreator.actions.UpdateTagsAction;
 import ccc.contentcreator.actions.ViewHistoryAction;
@@ -83,6 +84,7 @@ public class ResourceContextMenu
     private final Action _previewWorkingCopyAction;
     private final Action _chooseTemplateAction;
     private final Action _createActionAction;
+    private final Action _updateRolesAction;
 
 
     /**
@@ -113,6 +115,7 @@ public class ResourceContextMenu
         _previewWorkingCopyAction = new PreviewAction(_table, true);
         _chooseTemplateAction = new ChooseTemplateAction(_table, false);
         _createActionAction = new CreateActionAction(_table);
+        _updateRolesAction = new UpdateResourceRolesAction(_table);
 
         setWidth(CONTEXT_MENU_WIDTH);
 
@@ -157,6 +160,7 @@ public class ResourceContextMenu
                         }
                         addMove();
                         addRename();
+                        addUpdateRolesAction();
                         addUpdateTags();
                         addUpdateMetadata();
                         addCreateAlias();
@@ -176,6 +180,14 @@ public class ResourceContextMenu
                 }
             }
         );
+    }
+
+
+    private void addUpdateRolesAction() {
+        addMenuItem(
+            "update-resource-roles",
+            "Update roles", // FIXME: I18n
+            _updateRolesAction);
     }
 
 
