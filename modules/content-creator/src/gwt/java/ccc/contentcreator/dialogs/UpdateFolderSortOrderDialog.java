@@ -59,15 +59,15 @@ AbstractEditDialog {
     private final SingleSelectionModel _selectionModel;
     private final ListStore<ModelData> _sortStore = new ListStore<ModelData>();
 
-    private final String MANUAL = "MANUAL";
-    private final String DATE_CREATED_DESC = "DATE_CREATED_DESC";
-    private final String DATE_CREATED_ASC = "DATE_CREATED_ASC";
-    private final String DATE_CHANGED_DESC = "DATE_CHANGED_DESC";
-    private final String DATE_CHANGED_ASC = "DATE_CHANGED_ASC";
-    private final String NAME_ALPHANUM_ASC = "NAME_ALPHANUM_ASC";
+    private static final String MANUAL = "MANUAL";
+    private static final String DATE_CREATED_DESC = "DATE_CREATED_DESC";
+    private static final String DATE_CREATED_ASC = "DATE_CREATED_ASC";
+    private static final String DATE_CHANGED_DESC = "DATE_CHANGED_DESC";
+    private static final String DATE_CHANGED_ASC = "DATE_CHANGED_ASC";
+    private static final String NAME_ALPHANUM_ASC = "NAME_ALPHANUM_ASC";
 
     private final Grid<ModelData> _grid;
-    final ColumnModel _cm;
+    private final ColumnModel _cm;
     private ListStore<ModelData> _detailsStore =
         new ListStore<ModelData>();
 
@@ -104,7 +104,7 @@ AbstractEditDialog {
         _grid.setBorders(true);
         addField(_grid);
 
-        final GridDragSource gds = new GridDragSource(_grid);
+        new GridDragSource(_grid);
         configureDropTarget();
 
         _sortOrder.addSelectionChangedListener(
@@ -196,29 +196,38 @@ AbstractEditDialog {
 
     private void populateSortOptions() {
         final ModelData manual = new BaseModelData();
-        manual.set("name", "Manual"); // TODO: I18n
+        manual.set("name", _constants.manual());
         manual.set("value", MANUAL);
         _sortStore.add(manual);
         final ModelData nameAlphanumAsc = new BaseModelData();
-        nameAlphanumAsc.set("name", "Name - alphanumeric, ascending"); // TODO: I18n
+        nameAlphanumAsc.set("name",
+            _constants.name()
+            +" - "
+            +_constants.alphanumeric()
+            +", "
+            +_constants.ascending());
         nameAlphanumAsc.set("value", NAME_ALPHANUM_ASC);
         _sortStore.add(nameAlphanumAsc);
 
         final ModelData dateChangedAsc = new BaseModelData();
-        dateChangedAsc.set("name", "Date changed, ascending"); // TODO: I18n
+        dateChangedAsc.set(
+            "name", _constants.dateChanged()+", "+_constants.ascending());
         dateChangedAsc.set("value", DATE_CHANGED_ASC);
         _sortStore.add(dateChangedAsc);
         final ModelData dateChangedDesc = new BaseModelData();
-        dateChangedDesc.set("name", "Date changed, descending"); // TODO: I18n
+        dateChangedDesc.set(
+            "name", _constants.dateChanged()+", "+_constants.descending());
         dateChangedDesc.set("value", DATE_CHANGED_DESC);
         _sortStore.add(dateChangedDesc);
 
         final ModelData dateCreatedAsc = new BaseModelData();
-        dateCreatedAsc.set("name", "Date created, ascending"); // TODO: I18n
+        dateCreatedAsc.set(
+            "name", _constants.dateCreated()+", "+_constants.ascending());
         dateCreatedAsc.set("value", DATE_CREATED_ASC);
         _sortStore.add(dateCreatedAsc);
         final ModelData dateCreatedDesc = new BaseModelData();
-        dateCreatedDesc.set("name", "Date created, descending"); // TODO: I18n
+        dateCreatedDesc.set(
+            "name", _constants.dateCreated()+", "+_constants.descending());
         dateCreatedDesc.set("value", DATE_CREATED_DESC);
         _sortStore.add(dateCreatedDesc);
     }
