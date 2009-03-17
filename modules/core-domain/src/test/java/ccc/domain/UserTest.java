@@ -11,7 +11,6 @@
  */
 package ccc.domain;
 
-import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,7 +36,7 @@ public class UserTest
         final User u = new User("dummy");
 
         // ACT
-        final EnumSet<CreatorRoles> roles = u.roles();
+        final Set<String> roles = u.roles();
 
         // ASSERT
         assertEquals(0, roles.size());
@@ -150,10 +149,11 @@ public class UserTest
 
         // ARRANGE
         final User u = new User("dummy");
-        final EnumSet<CreatorRoles> expected =
-            EnumSet.of(
-                CreatorRoles.CONTENT_CREATOR,
-                CreatorRoles.SITE_BUILDER);
+        final Set<String> expected =
+            new HashSet<String>() {{
+                add(CreatorRoles.CONTENT_CREATOR);
+                add(CreatorRoles.SITE_BUILDER);
+            }};
 
         // ACT
         u.addRole(CreatorRoles.CONTENT_CREATOR);
@@ -313,13 +313,14 @@ public class UserTest
         u.addRole(CreatorRoles.SITE_BUILDER);
         u.addRole(CreatorRoles.SITE_BUILDER);
 
-        final EnumSet<CreatorRoles> expected =
-            EnumSet.of(
-                CreatorRoles.ADMINISTRATOR,
-                CreatorRoles.SITE_BUILDER);
+        final Set<String> expected =
+            new HashSet<String>() {{
+                add(CreatorRoles.ADMINISTRATOR);
+                add(CreatorRoles.SITE_BUILDER);
+            }};
 
         // ACT
-        final Set<CreatorRoles> newRoles = new HashSet<CreatorRoles>();
+        final Set<String> newRoles = new HashSet<String>();
         newRoles.add(CreatorRoles.ADMINISTRATOR);
         newRoles.add(CreatorRoles.SITE_BUILDER);
         u.roles(newRoles);

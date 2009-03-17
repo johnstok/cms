@@ -13,12 +13,10 @@ package ccc.services.support;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
 import ccc.actions.Action;
 import ccc.domain.Alias;
-import ccc.domain.CreatorRoles;
 import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
@@ -248,10 +246,7 @@ public class ModelTranslation {
         delta._id = user.id().toString();
         delta._email = user.email().getText();
         delta._username = user.username();
-        delta._roles = new HashSet<String>();
-        for (final CreatorRoles role : user.roles()) {
-            delta._roles.add(role.name());
-        }
+        delta._roles = user.roles();
         return delta;
     }
 

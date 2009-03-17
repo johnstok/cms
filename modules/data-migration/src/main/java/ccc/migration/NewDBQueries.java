@@ -48,7 +48,7 @@ public class NewDBQueries {
         try {
             // insert user
             ps = _connection.prepareStatement(
-                "INSERT INTO USER ( _ID, _EMAIL , _USERNAME , _VERSION ) "
+                "INSERT INTO USER (_ID, _EMAIL , _USERNAME , _VERSION) "
                 + "VALUES (?,?,?,0);");
             ps.setString(1, uid.toString());
             ps.setString(2, email);
@@ -57,7 +57,7 @@ public class NewDBQueries {
 
             // insert role
             ps = _connection.prepareStatement(
-                "INSERT INTO USER__ROLES ( ID, ROLE) "
+                "INSERT INTO USER__ROLES (ID, ROLE) "
             + "VALUES (?, 'ADMINISTRATOR');");
             ps.setString(1, uid.toString());
             ps.executeUpdate();

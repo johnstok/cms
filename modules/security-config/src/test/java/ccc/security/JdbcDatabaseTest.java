@@ -180,9 +180,9 @@ public class JdbcDatabaseTest
         _s.setString(1, u.id().toString());
         expect(_s.executeQuery()).andReturn(_rs);
         expect(_rs.next()).andReturn(Boolean.TRUE);
-        expect(_rs.getString(1)).andReturn(CreatorRoles.ADMINISTRATOR.name());
+        expect(_rs.getString(1)).andReturn(CreatorRoles.ADMINISTRATOR);
         expect(_rs.next()).andReturn(Boolean.TRUE);
-        expect(_rs.getString(1)).andReturn(CreatorRoles.CONTENT_CREATOR.name());
+        expect(_rs.getString(1)).andReturn(CreatorRoles.CONTENT_CREATOR);
         expect(_rs.next()).andReturn(Boolean.FALSE);
         _rs.close();
         _s.close();
@@ -198,8 +198,8 @@ public class JdbcDatabaseTest
         verifyAll();
         assertEquals(
             new HashSet<String>(){{
-                add(CreatorRoles.ADMINISTRATOR.name());
-                add(CreatorRoles.CONTENT_CREATOR.name());
+                add(CreatorRoles.ADMINISTRATOR);
+                add(CreatorRoles.CONTENT_CREATOR);
             }},
             result);
     }

@@ -25,6 +25,7 @@ import javax.security.auth.callback.PasswordCallback;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
+import org.apache.log4j.Logger;
 import org.jboss.security.SimpleGroup;
 import org.jboss.security.SimplePrincipal;
 
@@ -38,6 +39,7 @@ import ccc.domain.Password;
  * @author Civic Computing Ltd.
  */
 public class CCCLoginModule implements LoginModule {
+    private static final Logger LOG = Logger.getLogger(CCCLoginModule.class);
 
     private CallbackHandler _cbHandler;
     private Object[] _user;
@@ -108,19 +110,25 @@ public class CCCLoginModule implements LoginModule {
             _user = _db.lookupUser(nc.getName());
 
             if (null==_user) { // Anonymous logins disallowed
+                LOG.debug("No user in db with username: "+nc.getName());
                 return false;
             }
+            LOG.debug("Found user in db with username: "+nc.getName());
 
             _roles = _db.lookupRoles((String) _user[0]);
+            LOG.debug("User "+nc.getName()+" has roles: "+_roles);
 
             _callerPrincipal = createCallerPrincipal(nc.getName());
             _roleGroup = createRoles(_roles);
 
-            return
+            final boolean passwordOk =
                 Password.matches(
                     (byte[]) _user[1],
                     new String(pc.getPassword()),
                     (String) _user[2]);
+            LOG.debug("User "+nc.getName()+" password ok? "+passwordOk);
+
+            return passwordOk;
 
 
         } catch (final Exception e) {
@@ -172,7 +180,6 @@ public class CCCLoginModule implements LoginModule {
     }
 
 
-
     /**
      * Accessor.
      *
@@ -181,7 +188,6 @@ public class CCCLoginModule implements LoginModule {
     Object[] getUser() {
         return _user;
     }
-
 
 
     /**
@@ -194,7 +200,6 @@ public class CCCLoginModule implements LoginModule {
     }
 
 
-
     /**
      * Accessor.
      *
@@ -203,7 +208,6 @@ public class CCCLoginModule implements LoginModule {
     Group getRoleGroup() {
         return _roleGroup;
     }
-
 
 
     /**
@@ -216,7 +220,6 @@ public class CCCLoginModule implements LoginModule {
     }
 
 
-
     /**
      * Accessor.
      *
@@ -225,7 +228,6 @@ public class CCCLoginModule implements LoginModule {
     Group getCallerPrincipal() {
         return _callerPrincipal;
     }
-
 
 
     /**
