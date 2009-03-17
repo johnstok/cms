@@ -26,7 +26,9 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.ResourceType;
+import ccc.domain.User;
 import ccc.services.StatefulReader;
+import ccc.services.UserManager;
 
 
 /**
@@ -76,6 +78,7 @@ public final class StatefulReaderEJBTest extends TestCase {
         contentRoot.add(foo);
         foo.add(bar);
 
+        expect(_um.loggedInUser()).andReturn(_jack);
         expect(_em.createNamedQuery("rootByName")).andReturn(_q);
         expect(
             _q.setParameter(1,
@@ -104,7 +107,8 @@ public final class StatefulReaderEJBTest extends TestCase {
     protected void setUp() throws Exception {
         _em = createStrictMock(EntityManager.class);
         _q = createStrictMock(Query.class);
-        _reader = new StatefulReaderEJB(_em);
+        _um = createStrictMock(UserManager.class);
+        _reader = new StatefulReaderEJB(_em, _um);
     }
 
     /** {@inheritDoc} */
@@ -112,18 +116,21 @@ public final class StatefulReaderEJBTest extends TestCase {
     protected void tearDown() throws Exception {
         _em = null;
         _q = null;
+        _um = null;
         _reader = null;
     }
 
     private void verifyAll() {
-        verify(_em, _q);
+        verify(_em, _q, _um);
     }
 
     private void replayAll() {
-        replay(_em, _q);
+        replay(_em, _q, _um);
     }
 
     private EntityManager _em;
+    private UserManager _um;
     private Query _q;
     private StatefulReader _reader;
+    private User _jack = new User("jack");
 }

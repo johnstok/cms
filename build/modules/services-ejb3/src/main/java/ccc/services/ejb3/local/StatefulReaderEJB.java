@@ -16,6 +16,7 @@ import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.UUID;
 
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
@@ -31,7 +32,9 @@ import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
+import ccc.domain.User;
 import ccc.services.StatefulReader;
+import ccc.services.UserManager;
 import ccc.services.ejb3.support.QueryNames;
 
 
@@ -52,7 +55,7 @@ public final class StatefulReaderEJB
         type=PersistenceContextType.EXTENDED)
     @SuppressWarnings("unused")
     private EntityManager _em; // Required to insure method calls are stateful.
-
+    @EJB(name=UserManager.NAME)  private UserManager  _users;
 
     /** Constructor. */
     @SuppressWarnings("unused") public StatefulReaderEJB() { super(); }
@@ -61,9 +64,11 @@ public final class StatefulReaderEJB
      * Constructor.
      *
      * @param entityManager A JPA entity manager.
+     * @param um The user manager used to assert security privileges.
      */
-    StatefulReaderEJB(final EntityManager entityManager) {
+    StatefulReaderEJB(final EntityManager entityManager, final UserManager um) {
         _em = entityManager;
+        _users = um;
     }
 
 
@@ -77,30 +82,19 @@ public final class StatefulReaderEJB
             return null;
         }
         try {
-            return root.navigateTo(path);
+            return applySecurity(root.navigateTo(path));
         } catch (final CCCException e) {
             return null;
         }
     }
 
-    private Folder lookupRoot(final String rootName) {
-        final Query q = _em.createNamedQuery(QueryNames.ROOT_BY_NAME);
-        q.setParameter(1, new ResourceName(rootName));
-
-        try {
-            final Object singleResult = q.getSingleResult();
-            final Folder folder = Folder.class.cast(singleResult);
-            return folder;
-        } catch (final NoResultException e) {
-            return null;
-        }
-    }
 
     /** {@inheritDoc} */
     @Override
     public Resource lookup(final UUID resourceId) {
-        return _em.find(Resource.class, resourceId);
+        return applySecurity(_em.find(Resource.class, resourceId));
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -112,7 +106,39 @@ public final class StatefulReaderEJB
         try {
             final Object singleResult = q.getSingleResult();
             final LogEntry le = LogEntry.class.cast(singleResult);
+            if (null==lookup(le.subjectId())) { // TODO: Inefficient.
+                return null;
+            }
             return le;
+        } catch (final NoResultException e) {
+            return null;
+        }
+    }
+
+
+    private Resource applySecurity(final Resource r) {
+        if (null==r) {
+            return null;
+        }
+        User u = _users.loggedInUser();
+        if (null==u) {
+            u = new User("anonymous");
+        }
+        if (r.isAccessibleTo(u)) {
+            return r;
+        }
+        return null;
+    }
+
+
+    private Folder lookupRoot(final String rootName) {
+        final Query q = _em.createNamedQuery(QueryNames.ROOT_BY_NAME);
+        q.setParameter(1, new ResourceName(rootName));
+
+        try {
+            final Object singleResult = q.getSingleResult();
+            final Folder folder = Folder.class.cast(singleResult);
+            return folder;
         } catch (final NoResultException e) {
             return null;
         }
