@@ -12,6 +12,8 @@
 package ccc.commons;
 
 import java.io.StringWriter;
+import java.util.Collections;
+import java.util.HashMap;
 
 import junit.framework.TestCase;
 import ccc.domain.CCCException;
@@ -36,7 +38,7 @@ public class VelocityProcessorTest extends TestCase {
 
         // ACT
         final String actual =
-            vp.render(null, "#hello()", null);
+            vp.render("#hello()", new HashMap<String, Object>());
 
 
         // ASSERT
@@ -52,7 +54,7 @@ public class VelocityProcessorTest extends TestCase {
         final StringWriter output = new StringWriter();
 
         // ACT
-        _vp.render(null, "foo", output, null);
+        _vp.render("foo", output, new HashMap<String, Object>());
 
         // ASSERT
         assertEquals("foo", output.toString());
@@ -66,7 +68,7 @@ public class VelocityProcessorTest extends TestCase {
         // ARRANGE
 
         // ACT
-        final String output = _vp.render(null, "foo", null);
+        final String output = _vp.render("foo", new HashMap<String, Object>());
 
         // ASSERT
         assertEquals("foo", output);
@@ -83,7 +85,10 @@ public class VelocityProcessorTest extends TestCase {
         final String template = "Hello $resource.id()";
 
         // ACT
-        final String html = _vp.render(foo, template, null);
+        final String html =
+            _vp.render(
+                template,
+                Collections.<String, Object>singletonMap("resource", foo));
 
         // ASSERT
         assertEquals("Hello "+foo.id(), html);
@@ -102,7 +107,10 @@ public class VelocityProcessorTest extends TestCase {
         final StringWriter renderedOutput = new StringWriter();
         // ACT
         try {
-            _vp.render(foo, template, renderedOutput, null);
+            _vp.render(
+                template,
+                renderedOutput,
+                Collections.<String, Object>singletonMap("resource", foo));
             fail("should throw CCCException");
         } catch (final CCCException e) {
             assertTrue(e.getMessage().startsWith(
@@ -130,7 +138,10 @@ public class VelocityProcessorTest extends TestCase {
         final StringWriter renderedOutput = new StringWriter();
         // ACT
         try {
-            _vp.render(foo, template, renderedOutput, null);
+            _vp.render(
+                template,
+                renderedOutput,
+                Collections.<String, Object>singletonMap("resource", foo));
             fail("should throw CCCException");
         } catch (final CCCException e) {
             assertEquals(expectedMessage, e.getMessage());
@@ -157,7 +168,10 @@ public class VelocityProcessorTest extends TestCase {
         final StringWriter renderedOutput = new StringWriter();
         // ACT
         try {
-            _vp.render(foo, template, renderedOutput, null);
+            _vp.render(
+                template,
+                renderedOutput,
+                Collections.<String, Object>singletonMap("resource", foo));
             fail("should throw CCCException");
         } catch (final CCCException e) {
             assertEquals(expectedMessage, e.getMessage());

@@ -16,6 +16,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -80,11 +82,13 @@ public class SearchBody
                       final StatefulReader reader) throws IOException {
 
         final Set<UUID> hits = _searchEngine.find(_terms);
-        LOG.info("Result: "+hits.size());
 
         final String t = _search.computeTemplate(BUILT_IN_PAGE_TEMPLATE).body();
         final Writer w = new OutputStreamWriter(os, _charset);
-        new VelocityProcessor().render(hits,  t, w, reader);
+        final Map<String, Object> values = new HashMap<String, Object>();
+        values.put("reader", reader);
+        values.put("hits", hits);
+        new VelocityProcessor().render(t, w, values);
     }
 
     private static final Template BUILT_IN_PAGE_TEMPLATE =

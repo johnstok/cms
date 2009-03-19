@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.velocity.VelocityContext;
@@ -25,7 +26,6 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeConstants;
 
 import ccc.domain.CCCException;
-import ccc.domain.Resource;
 
 
 /**
@@ -63,16 +63,13 @@ public class VelocityProcessor {
      * caution should be taken that this method is not used to generate large
      * output, otherwise an {@link OutOfMemoryError} could be thrown.
      *
-     * @param resource The resource that will be rendered.
      * @param template The template used to render the resource.
-     * @param reader StatefulReader.
      * @return The html rendering as a string.
      */
-    public String render(final Resource resource,
-                         final String template,
-                         final Object reader) {
+    public String render(final String template,
+                         final Map<String, Object> contextValues) {
         final StringWriter renderedOutput = new StringWriter();
-        render(resource, template, renderedOutput, reader);
+        render(template, renderedOutput, contextValues);
         return renderedOutput.toString();
     }
 
@@ -82,16 +79,13 @@ public class VelocityProcessor {
      * <br/><br/>
      * The rendered output will be written to the specified writer.
      *
-     * @param resource The resource that will be rendered.
      * @param template The template used to render the resource.
      * @param output A valid {@link Writer}. The writer will be flushed when
      *  output is complete. The writer will not be closed.
-     * @param reader StatefulReader.
      */
-    public void render(final Object resource,
-                       final String template,
+    public void render(final String template,
                        final Writer output,
-                       final Object reader) {
+                       final Map<String, Object> contextValues) {
 
         final Properties velocityProperties = new Properties();
         try {
@@ -110,11 +104,13 @@ public class VelocityProcessor {
             final VelocityEngine ve = new VelocityEngine(velocityProperties);
             ve.init();
             final VelocityContext context = new VelocityContext();
-            context.put("resource", resource);
-
             final VelocityHelper helper = new VelocityHelper();
-            context.put("reader", reader);
             context.put("helper", helper);
+
+            for (final Map.Entry<String, Object> contextValue : contextValues.entrySet()) {
+                context.put(contextValue.getKey(), contextValue.getValue());
+            }
+
             ve.evaluate(context, output, "VelocityProcessor", template);
 
         } catch (final ParseErrorException e) {
