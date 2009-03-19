@@ -82,7 +82,7 @@ public final class StatefulReaderEJB
             return null;
         }
         try {
-            return applySecurity(root.navigateTo(path));
+            return root.navigateTo(path);
         } catch (final CCCException e) {
             return null;
         }
@@ -92,7 +92,7 @@ public final class StatefulReaderEJB
     /** {@inheritDoc} */
     @Override
     public Resource lookup(final UUID resourceId) {
-        return applySecurity(_em.find(Resource.class, resourceId));
+        return _em.find(Resource.class, resourceId);
     }
 
 
@@ -106,9 +106,6 @@ public final class StatefulReaderEJB
         try {
             final Object singleResult = q.getSingleResult();
             final LogEntry le = LogEntry.class.cast(singleResult);
-            if (null==lookup(le.subjectId())) { // TODO: Inefficient.
-                return null;
-            }
             return le;
         } catch (final NoResultException e) {
             return null;
@@ -116,25 +113,16 @@ public final class StatefulReaderEJB
     }
 
 
-    private Resource applySecurity(final Resource r) {
-        if (null==r) {
-            return null;
-        }
-        User u = _users.loggedInUser();
-        if (null==u) {
-            u = new User("anonymous");
-        }
-        if (r.isAccessibleTo(u)) {
-            return r;
-        }
-        return null;
+    /** {@inheritDoc} */
+    @Override
+    public User loggedInUser() {
+        return _users.loggedInUser();
     }
 
 
     private Folder lookupRoot(final String rootName) {
         final Query q = _em.createNamedQuery(QueryNames.ROOT_BY_NAME);
         q.setParameter(1, new ResourceName(rootName));
-
         try {
             final Object singleResult = q.getSingleResult();
             final Folder folder = Folder.class.cast(singleResult);

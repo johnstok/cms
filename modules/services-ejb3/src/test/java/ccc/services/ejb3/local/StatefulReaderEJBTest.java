@@ -78,7 +78,6 @@ public final class StatefulReaderEJBTest extends TestCase {
         contentRoot.add(foo);
         foo.add(bar);
 
-        expect(_um.loggedInUser()).andReturn(_jack);
         expect(_em.createNamedQuery("rootByName")).andReturn(_q);
         expect(
             _q.setParameter(1,

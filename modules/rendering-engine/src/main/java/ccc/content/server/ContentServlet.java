@@ -111,6 +111,9 @@ public final class ContentServlet extends CCCServlet {
         } catch (final RedirectRequiredException e) {
             final String relUri = e.getResource().absolutePath().toString();
             dispatchRedirect(request, response, relUri);
+        } catch (final AuthenticationRequiredException e) {
+            final String relUri = "/content/login?tg="+e.getResource().absolutePath().toString();
+            dispatchRedirect(request, response, relUri);
         }
     }
 

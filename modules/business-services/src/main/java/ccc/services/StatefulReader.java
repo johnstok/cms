@@ -16,6 +16,7 @@ import java.util.UUID;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
+import ccc.domain.User;
 
 
 /**
@@ -56,4 +57,11 @@ public interface StatefulReader {
      * @return The log entry with the specified index.
      */
     LogEntry lookup(long index);
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
+    User loggedInUser();
 }

@@ -14,6 +14,7 @@ package ccc.content.server;
 import static org.easymock.EasyMock.*;
 import junit.framework.TestCase;
 import ccc.domain.Page;
+import ccc.domain.User;
 import ccc.services.StatefulReader;
 
 
@@ -35,6 +36,7 @@ public class DefaultLocatorTest
         final Page p = new Page("wow");
         expect(_reader.lookup("foo_root", p.absolutePath()))
             .andReturn(p);
+        expect(_reader.loggedInUser()).andReturn(new User("user"));
         replay(_reader);
 
         // ACT
