@@ -82,7 +82,7 @@ public class DefaultRenderer
 
             case PAGE:
                 final Page page = resource.as(Page.class);
-                return renderPage(page);
+                return renderPage(page, parameters);
 
             case FILE:
                 final File f = resource.as(File.class);
@@ -187,12 +187,13 @@ public class DefaultRenderer
     }
 
 
-    private Response renderPage(final Page page) {
+    private Response renderPage(final Page page,
+                                final Map<String, String[]> parameters) {
         final Response r = new Response();
         r.setExpiry(Long.valueOf(0));
         r.setCharSet("UTF-8");
         r.setMimeType("text", "html");
-        r.setBody(new PageBody(page, Charset.forName("UTF-8")));
+        r.setBody(new PageBody(page, Charset.forName("UTF-8"), parameters));
 
         return r;
     }

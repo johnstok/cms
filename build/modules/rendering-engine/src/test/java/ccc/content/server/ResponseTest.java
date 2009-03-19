@@ -122,7 +122,7 @@ public class ResponseTest
     public void testBodyProperty() {
 
         // ARRANGE
-        final Body expected = new PageBody(_p, UTF8);
+        final Body expected = new PageBody(_p, UTF8, null);
         _r.setBody(expected);
 
         // ACT
