@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>login_content_server-success</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">login_content_server-success</td></tr>
+</thead><tbody>
+<tr>
+	<td>setSpeed</td>
+	<td>2000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/creator/?dec=</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseDown</td>
+	<td>/assets</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>Create Template</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Name</td>
+	<td>login</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Title</td>
+	<td>login</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Description</td>
+	<td>login</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>next</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>content xml</td>
+	<td>&lt;fields/&gt;</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>next</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Body</td>
+	<td>&lt;form name=&quot;login&quot; action=&quot;/server/login&quot; method=&quot;post&quot;&gt;<br />Username: &lt;input type=&quot;text&quot; name=&quot;un&quot;&gt;<br />Password: &lt;input type=&quot;password&quot; name=&quot;pw&quot;&gt;<br />&lt;input type=&quot;hidden&quot; name=&quot;tg&quot; value=&quot;$!parameters.get(&quot;tg&quot;).get(0)&quot;&gt;<br />&lt;input type=&quot;submit&quot; value=&quot;Submit&quot;&gt;<br />&lt;/form&gt;</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>content-navigator</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseDown</td>
+	<td>/content</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>Create Page</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='Use default template']/label</td>
+	<td></td>
+</tr>
+<tr>
+	<td>mouseDown</td>
+	<td>login</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>login</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>next</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Name</td>
+	<td>login.html</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Title</td>
+	<td>login</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>next</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='Publish']/label</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/server/content/login.html?tg=/content/Media</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>un</td>
+	<td>a_missing_user</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>pw</td>
+	<td>12345</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Username</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Password</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>un</td>
+	<td>super</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>pw</td>
+	<td>sup3r2008</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Empty template!</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
