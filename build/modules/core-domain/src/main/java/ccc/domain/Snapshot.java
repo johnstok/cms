@@ -153,6 +153,35 @@ public class Snapshot implements Serializable {
     }
 
     /**
+     * Mutator.
+     *
+     * @param key The key.
+     * @param value The value, as a uuid.
+     */
+    public void set(final String key, final UUID value) {
+        try {
+            _detail.put(
+                key, (null==value) ? null : value.toString());
+        } catch (final JSONException e) {
+            throw new InvalidSnapshotException(e);
+        }
+    }
+
+    /**
+     * Mutator.
+     *
+     * @param key The key.
+     * @param value The value, as a long.
+     */
+    public void set(final String key, final long value) {
+        try {
+            _detail.put(key, value);
+        } catch (final JSONException e) {
+            throw new InvalidSnapshotException(e);
+        }
+    }
+
+    /**
      * Accessor.
      *
      * @param key The key for the value.
@@ -234,5 +263,4 @@ public class Snapshot implements Serializable {
         aOutputStream.defaultWriteObject();
         aOutputStream.writeUTF(getDetail());
     }
-
 }

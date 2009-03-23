@@ -13,6 +13,9 @@ package ccc.domain;
 
 import junit.framework.TestCase;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 /**
  * Tests for the {@link Template} class.
@@ -20,6 +23,26 @@ import junit.framework.TestCase;
  * @author Civic Computing Ltd
  */
 public final class TemplateTest extends TestCase {
+
+    /**
+     * Test.
+     * @throws JSONException If the JSON is invalid.
+     */
+    public void testSnapshot() throws JSONException {
+
+        // ARRANGE
+        final Template t =
+            new Template("foo!", "bar", "Hello world", "<fields/>");
+
+        // ACT
+        final JSONObject o  = new JSONObject(t.createSnapshot().getDetail());
+
+        // ASSERT
+        assertEquals("foo!", o.get("title"));
+        assertEquals("bar", o.get("description"));
+        assertEquals("<fields/>", o.get("definition"));
+        assertEquals("Hello world", o.get("body"));
+    }
 
     /**
      * Test.

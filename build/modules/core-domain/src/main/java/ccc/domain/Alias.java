@@ -66,4 +66,14 @@ public class Alias extends Resource {
     public Resource target() {
         return _target;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public Snapshot createSnapshot() {
+        final Snapshot s = super.createSnapshot();
+        s.set("target", _target.id());
+        return s;
+    }
+
+
 }
