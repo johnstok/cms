@@ -70,7 +70,7 @@ public final class Users {
         try {
             Class.forName("org.h2.Driver");
             connection =
-                DriverManager.getConnection("jdbc:h2:tcp:apollo-vm230/mem:CCC",
+                DriverManager.getConnection("jdbc:h2:tcp:localhost/mem:CCC",
                     "CCC", "CCC");
             connection.setAutoCommit(false);
         } catch (final ClassNotFoundException e) {
