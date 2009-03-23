@@ -66,10 +66,11 @@ public final class Users {
 
     private static Connection getConnection() {
         Connection connection = null;
+        // FIXME: Hard coded connection string.
         try {
             Class.forName("org.h2.Driver");
             connection =
-                DriverManager.getConnection("jdbc:h2:tcp:localhost/mem:CCC",
+                DriverManager.getConnection("jdbc:h2:tcp:apollo-vm230/mem:CCC",
                     "CCC", "CCC");
             connection.setAutoCommit(false);
         } catch (final ClassNotFoundException e) {
