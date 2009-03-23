@@ -186,4 +186,15 @@ public class File extends Resource {
     public void size(final long size) {
         _size = size;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public Snapshot createSnapshot() {
+        final Snapshot s = super.createSnapshot();
+        s.set("description", _description);
+        s.set("mimetype", _mimeType.toString());
+        s.set("size", _size);
+        s.set("data", _data.id());
+        return s;
+    }
 }

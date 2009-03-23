@@ -13,6 +13,9 @@ package ccc.domain;
 
 import junit.framework.TestCase;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 /**
  * Tests for the {@link Alias} class.
@@ -20,6 +23,24 @@ import junit.framework.TestCase;
  * @author Civic Computing Ltd
  */
 public class AliasTest extends TestCase {
+
+    /**
+     * Test.
+     * @throws JSONException If the JSON is invalid.
+     */
+    public void testSnapshot() throws JSONException {
+
+        // ARRANGE
+        final Page p = new Page("foo");
+        final Alias alias = new Alias("bar", p);
+
+        // ACT
+        final JSONObject o = new JSONObject(alias.createSnapshot().getDetail());
+
+        // ASSERT
+        assertEquals("bar", o.get("title"));
+        assertEquals(p.id().toString(), o.get("target"));
+    }
 
     /**
      * Test.

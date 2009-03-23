@@ -141,4 +141,14 @@ public class Template extends Resource {
         DBC.require().notEmpty(body);
         _body = body;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public Snapshot createSnapshot() {
+        final Snapshot s = super.createSnapshot();
+        s.set("description", _description);
+        s.set("definition", _definition);
+        s.set("body", _body);
+        return s;
+    }
 }

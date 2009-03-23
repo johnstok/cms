@@ -16,6 +16,9 @@ import javax.activation.MimeTypeParseException;
 
 import junit.framework.TestCase;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 /**
  * Tests for the {@link File} class.
@@ -23,6 +26,34 @@ import junit.framework.TestCase;
  * @author Civic Computing Ltd
  */
 public class FileTest extends TestCase {
+
+    /**
+     * Test.
+     * @throws MimeTypeParseException  For invalid mime type.
+     * @throws JSONException If the JSON is invalid.
+     */
+    public void testSnapshot() throws MimeTypeParseException, JSONException {
+
+        // ARRANGE
+        final Data data = new Data();
+        final File f =
+            new File(new ResourceName("foo"),
+                "foo",
+                "desc",
+                data,
+                1L,
+                new MimeType("foo/bar"));
+
+        // ACT
+        final JSONObject o = new JSONObject(f.createSnapshot().getDetail());
+
+        // ASSERT
+        assertEquals("foo", o.get("title"));
+        assertEquals("desc", o.get("description"));
+        assertEquals("foo/bar", o.get("mimetype"));
+        assertEquals(1, o.getLong("size"));
+        assertEquals(data.id().toString(), o.get("data"));
+    }
 
     /**
      * Test.
