@@ -41,6 +41,8 @@ public final class UserRolesSelector
             } else if ("Administrator".equalsIgnoreCase(profile)) {
                 user._roles.add("ADMINISTRATOR");
                 user._roles.add("CONTENT_CREATOR");
+            } else {
+                user._roles.add(profile);
             }
         }
         return null;

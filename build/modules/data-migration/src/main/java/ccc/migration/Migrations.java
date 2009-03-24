@@ -277,6 +277,8 @@ public class Migrations {
             metadata.put("legacyId", ""+r.contentId());
             setMetadata(rs, metadata);
 
+            setResourceRoles(r, rs);
+
             migrateResources(rs._id, r.contentId());
 
         } catch (final Exception e) {
@@ -316,6 +318,8 @@ public class Migrations {
             setStyleSheet(r, metadata);
             metadata.put("legacyId", ""+r.contentId());
             setMetadata(rs, metadata);
+
+            setResourceRoles(r, rs);
 
             log.info("Migrated page "+r.contentId());
 
@@ -417,6 +421,18 @@ public class Migrations {
         _commands.lock(rs._id);
         _commands.updateMetadata(rs._id, metadata);
         _commands.unlock(rs._id);
+    }
+
+    private void setResourceRoles(final ResourceBean r,
+                                  final ResourceSummary rs) {
+        if (r.isSecure()) {
+            log.info("Resource "+r.contentId()+" has security constraints");
+            _commands.lock(rs._id);
+            _commands.changeRoles(
+                rs._id,
+                _legacyQueries.selectRolesForResource(r.contentId()));
+            _commands.unlock(rs._id);
+        }
     }
 
     private void setStyleSheet(final ResourceBean r,

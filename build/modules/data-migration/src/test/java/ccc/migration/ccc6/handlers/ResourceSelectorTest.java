@@ -45,8 +45,14 @@ public class ResourceSelectorTest
         final ResultSet rs =
             csv.read(
                 new StringReader(",,,,PUBLISHED,"),
-                new String[]{"CONTENT_ID",
-                    "CONTENT_TYPE", "NAME", "PAGE", "STATUS", "VERSION_ID"});
+                new String[]{
+                    "CONTENT_ID",
+                    "CONTENT_TYPE",
+                    "NAME",
+                    "PAGE",
+                    "STATUS",
+                    "VERSION_ID",
+                    "PERMISSION_NAME"});
 
         // ACT
         final List<ResourceBean> result = new ResourceSelector().handle(rs);
