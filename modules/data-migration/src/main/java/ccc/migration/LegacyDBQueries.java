@@ -2,6 +2,7 @@ package ccc.migration;
 
 import static ccc.commons.DBC.*;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -12,6 +13,7 @@ import ccc.migration.ccc6.handlers.LogEntryUserSelector;
 import ccc.migration.ccc6.handlers.ParagraphSelector;
 import ccc.migration.ccc6.handlers.ParagraphVersionsSelector;
 import ccc.migration.ccc6.handlers.ResourceSelector;
+import ccc.migration.ccc6.handlers.ResourceRolesSelector;
 import ccc.migration.ccc6.handlers.ShowInMainMenuSelector;
 import ccc.migration.ccc6.handlers.StyleSheetSelector;
 import ccc.migration.ccc6.handlers.UserEmailSelector;
@@ -105,6 +107,17 @@ public class LegacyDBQueries {
     public void selectRolesForUser(final UserDelta user, final int userId) {
         final UserRolesSelector rsh = new UserRolesSelector(user);
         _db.select(rsh, userId);
+    }
+
+    /**
+     * Returns the roles for a specified resource.
+     *
+     * @param resourceId The resource ID.
+     * @return The resource's roles.
+     */
+    public Collection<String> selectRolesForResource(final int resourceId) {
+        final ResourceRolesSelector rsh = new ResourceRolesSelector();
+        return _db.select(rsh, resourceId);
     }
 
     /**

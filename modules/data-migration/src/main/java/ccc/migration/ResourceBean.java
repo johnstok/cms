@@ -14,6 +14,7 @@ public class ResourceBean {
     private final String _displayTemplate;
     private final boolean _published;
     private final int _legacyVersion;
+    private final boolean _secure;
 
     /**
      * Constructor.
@@ -24,19 +25,22 @@ public class ResourceBean {
      * @param displayTemplate displayTemplate of resource
      * @param published published true for published resource
      * @param legacyVersion Legacy version id of the resource
+     * @param isSecure
      */
     public ResourceBean(final int contentId,
                         final String type,
                         final String name,
                         final String displayTemplate,
                         final boolean published,
-                        final int legacyVersion) {
+                        final int legacyVersion,
+                        final boolean isSecure) {
         _contentId = contentId;
         _displayTemplate = displayTemplate;
         _name = name;
         _type = type;
         _published = published;
         _legacyVersion = legacyVersion;
+        _secure = isSecure;
     }
 
 
@@ -46,7 +50,6 @@ public class ResourceBean {
      * @return type of resource
      */
     public String type() {
-
         return _type;
     }
 
@@ -56,7 +59,6 @@ public class ResourceBean {
      * @return name of resource
      */
     public String name() {
-
         return _name;
     }
 
@@ -66,7 +68,6 @@ public class ResourceBean {
      * @return displayTemplate of resource
      */
     public String displayTemplate() {
-
         return _displayTemplate;
     }
 
@@ -76,7 +77,6 @@ public class ResourceBean {
      * @return contentId of resource
      */
     public int contentId() {
-
         return _contentId;
     }
 
@@ -98,4 +98,13 @@ public class ResourceBean {
         return _legacyVersion;
     }
 
+    /**
+     * Accessor.
+     *
+     * @return true if there are security constraints for this resource, false
+     * otherwise.
+     */
+    public boolean isSecure() {
+        return _secure;
+    }
 }

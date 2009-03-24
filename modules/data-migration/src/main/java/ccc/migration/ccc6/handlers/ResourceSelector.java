@@ -30,13 +30,15 @@ public final class ResourceSelector
             final boolean published =
                 "PUBLISHED".equals(rs.getString("STATUS"));
             final int legacyVersion = rs.getInt("VERSION_ID");
+            final boolean isSecure = (null!=rs.getString("permission_name"));
 
             resultList.add(new ResourceBean(contentId,
                                             type,
                                             name,
                                             displayTemplate,
                                             published,
-                                            legacyVersion));
+                                            legacyVersion,
+                                            isSecure));
         }
         return resultList;
     }
@@ -45,7 +47,7 @@ public final class ResourceSelector
     @Override
     public String getSql() {
         return
-            "SELECT content_id, content_type, name, page, status, version_id "
+            "SELECT content_id, content_type, name, page, status, version_id, permission_name "
             + "FROM c3_content, c3_display_templates "
             + "WHERE c3_content.parent_id = ? "
             + "AND version_id = 0 "
