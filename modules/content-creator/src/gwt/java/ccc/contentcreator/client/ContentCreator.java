@@ -25,7 +25,6 @@ import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 
 
@@ -57,11 +56,7 @@ public final class ContentCreator implements EntryPoint {
 
         final QueriesServiceAsync qs = GWT.create(QueriesService.class);
 
-        qs.roots(new AsyncCallback<Collection<ResourceSummary>>(){
-
-            public void onFailure(final Throwable arg0) {
-                Globals.unexpectedError(arg0);
-            }
+        qs.roots(new ErrorReportingCallback<Collection<ResourceSummary>>(){
             // FIXME: refactor
             public void onSuccess(final Collection<ResourceSummary> arg0) {
                 final String browse = Window.Location.getParameter("browse");
