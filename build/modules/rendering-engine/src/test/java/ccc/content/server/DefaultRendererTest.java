@@ -34,7 +34,7 @@ import ccc.domain.ResourceOrder;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.DataManager;
-import ccc.services.ISearch;
+import ccc.services.SearchEngine;
 import ccc.services.StatefulReader;
 
 
@@ -361,7 +361,7 @@ public class DefaultRendererTest
 
     private DefaultRenderer _renderer;
     private final DataManager _dm = Testing.dummy(DataManager.class);
-    private final ISearch _se = Testing.dummy(ISearch.class);
+    private final SearchEngine _se = Testing.dummy(SearchEngine.class);
     private final StatefulReader _sr = Testing.dummy(StatefulReader.class);
     private final User _user = new User("fooo");
     private final Map<String, String[]> noParams =

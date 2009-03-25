@@ -15,6 +15,7 @@ package ccc.services.ejb3.local;
 import static ccc.commons.Exceptions.*;
 import static javax.ejb.TransactionAttributeType.*;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.Connection;
@@ -38,6 +39,7 @@ import ccc.domain.CCCException;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.services.DataManager;
+import ccc.services.SearchEngine;
 import ccc.services.ResourceDao;
 import ccc.services.ejb3.support.QueryNames;
 
@@ -56,6 +58,7 @@ import ccc.services.ejb3.support.QueryNames;
 public class DataManagerEJB implements DataManager {
 
     @EJB(name=ResourceDao.NAME) private ResourceDao _dao;
+    @EJB(name=SearchEngine.NAME)      private SearchEngine      _search;
     @Resource(mappedName = "java:/ccc") private DataSource _datasource;
 
     /** Constructor. */
@@ -67,11 +70,14 @@ public class DataManagerEJB implements DataManager {
      * @param ds The JDBC datasource used to manage data.
      * @param dao The ResourceDao used for CRUD operations, etc.
      */
-    public DataManagerEJB(final DataSource ds, final ResourceDao dao) {
+    public DataManagerEJB(final DataSource ds,
+                          final ResourceDao dao,
+                          final SearchEngine se) {
         DBC.require().notNull(ds);
         DBC.require().notNull(dao);
         _datasource = ds;
         _dao = dao;
+        _search = se;
     }
 
     /** {@inheritDoc} */
@@ -82,6 +88,7 @@ public class DataManagerEJB implements DataManager {
         final Data data = create(dataStream);
         file.data(data);
         _dao.create(parentId, file);
+        _search.add(file);
     }
 
 
@@ -101,6 +108,7 @@ public class DataManagerEJB implements DataManager {
         f.size(size);
         f.data(create(dataStream)); // TODO: Delete old data?
         _dao.update(f);
+        _search.update(f);
     }
 
     /** {@inheritDoc} */
@@ -151,12 +159,10 @@ public class DataManagerEJB implements DataManager {
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void retrieve(final Data data, final OutputStream dataStream) {
-
+    public InputStream retrieve(final Data data) {
+        InputStream dataStream = null;
         try {
             final Connection c = _datasource.getConnection();
-
             try {
                 final PreparedStatement ps =
                     c.prepareStatement(RETRIEVE_STATEMENT);
@@ -167,7 +173,7 @@ public class DataManagerEJB implements DataManager {
 
                     try {
                         DBC.ensure().toBeTrue(rs.next());
-                        IO.copy(rs.getBinaryStream(1), dataStream);
+                        dataStream = rs.getBinaryStream(1);
                         DBC.ensure().toBeFalse(rs.next());
 
                     } finally {
@@ -196,6 +202,24 @@ public class DataManagerEJB implements DataManager {
 
         } catch (final SQLException e) {
             throw new CCCException(e);
+        }
+        return dataStream;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void retrieve(final Data data, final OutputStream dataStream) {
+        InputStream is = null;
+        try {
+            is = retrieve(data);
+            IO.copy(is, dataStream);
+        } finally {
+            try {
+                is.close();
+            } catch (final IOException e) {
+                swallow(e);
+            }
         }
 
     }

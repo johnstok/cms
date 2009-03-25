@@ -26,7 +26,7 @@ import ccc.domain.ResourceType;
 import ccc.domain.Search;
 import ccc.domain.Snapshot;
 import ccc.services.DataManager;
-import ccc.services.ISearch;
+import ccc.services.SearchEngine;
 import ccc.services.StatefulReader;
 
 /**
@@ -39,7 +39,7 @@ public class DefaultRenderer
         Renderer {
 
     private final DataManager _dm;
-    private final ISearch _search;
+    private final SearchEngine _search;
     private final boolean _respectVisibility;
     private final StatefulReader _reader;
 
@@ -50,7 +50,7 @@ public class DefaultRenderer
      * @param respectVisiblity Should we check a resource's visibility?
      */
     public DefaultRenderer(final DataManager dm,
-                           final ISearch searchEngine,
+                           final SearchEngine searchEngine,
                            final StatefulReader reader,
                            final boolean respectVisiblity) {
         DBC.require().notNull(dm);

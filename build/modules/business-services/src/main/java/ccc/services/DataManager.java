@@ -52,6 +52,13 @@ public interface DataManager {
      */
     void retrieve(Data data, OutputStream dataStream);
 
+   /**
+     * Retrieve an existing item of binary data and return input stream.
+     *
+     * @param data The identifier for the existing data.
+     */
+    InputStream retrieve(Data data);
+
 
     /**
      * Create a file.

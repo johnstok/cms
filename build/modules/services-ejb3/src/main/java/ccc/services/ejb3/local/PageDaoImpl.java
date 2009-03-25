@@ -39,7 +39,7 @@ import ccc.domain.Paragraph;
 import ccc.domain.Snapshot;
 import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.services.ISearch;
+import ccc.services.SearchEngine;
 import ccc.services.PageDao;
 import ccc.services.ResourceDao;
 import ccc.services.UserManager;
@@ -56,7 +56,7 @@ import ccc.services.UserManager;
 public class PageDaoImpl implements PageDao {
 
     @EJB(name=ResourceDao.NAME)  private ResourceDao  _dao;
-    @EJB(name=ISearch.NAME)      private ISearch      _search;
+    @EJB(name=SearchEngine.NAME)      private SearchEngine      _search;
     @EJB(name=UserManager.NAME)  private UserManager  _users;
 
 
@@ -70,7 +70,7 @@ public class PageDaoImpl implements PageDao {
      * @param se The search engine to use.
      * @param _um
      */
-    public PageDaoImpl(final ResourceDao dao, final ISearch se, final UserManager um) {
+    public PageDaoImpl(final ResourceDao dao, final SearchEngine se, final UserManager um) {
         _dao = dao;
         _search = se;
         _users = um;
