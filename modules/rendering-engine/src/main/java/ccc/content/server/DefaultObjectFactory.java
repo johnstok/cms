@@ -14,7 +14,7 @@ package ccc.content.server;
 import ccc.commons.DBC;
 import ccc.commons.Registry;
 import ccc.services.DataManager;
-import ccc.services.ISearch;
+import ccc.services.SearchEngine;
 import ccc.services.ServiceNames;
 import ccc.services.StatefulReader;
 
@@ -95,7 +95,7 @@ public class DefaultObjectFactory implements ObjectFactory {
     }
 
 
-    private ISearch searchEngine() {
+    private SearchEngine searchEngine() {
         return _registry.get(ServiceNames.SEARCH_ENGINE_LOCAL);
     }
 }

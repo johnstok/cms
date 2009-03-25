@@ -27,7 +27,7 @@ import ccc.commons.DBC;
 import ccc.commons.VelocityProcessor;
 import ccc.domain.Search;
 import ccc.domain.Template;
-import ccc.services.ISearch;
+import ccc.services.SearchEngine;
 import ccc.services.StatefulReader;
 
 
@@ -44,7 +44,7 @@ public class SearchBody
 
     private final Search  _search;
     private final Charset _charset;
-    private final ISearch _searchEngine;
+    private final SearchEngine _searchEngine;
     private final String  _terms;
 
     /**
@@ -57,7 +57,7 @@ public class SearchBody
      */
     public SearchBody(final Search s,
                       final Charset charset,
-                      final ISearch searchEngine,
+                      final SearchEngine searchEngine,
                       final String searchTerms) {
         DBC.require().notNull(s);
         DBC.require().notNull(charset);

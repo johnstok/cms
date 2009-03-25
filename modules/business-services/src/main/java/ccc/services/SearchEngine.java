@@ -14,6 +14,7 @@ package ccc.services;
 import java.util.Set;
 import java.util.UUID;
 
+import ccc.domain.File;
 import ccc.domain.Page;
 
 
@@ -22,7 +23,7 @@ import ccc.domain.Page;
  *
  * @author Civic Computing Ltd.
  */
-public interface ISearch {
+public interface SearchEngine {
 
     /** NAME : String. */
     String NAME = "Search";
@@ -48,5 +49,19 @@ public interface ISearch {
      * @param page The page to index.
      */
     void update(Page page);
+
+    /**
+     * Add a file to the search index.
+     *
+     * @param file The file to index.
+     */
+    void add(File file);
+
+    /**
+     * Update a file that is already indexed.
+     *
+     * @param file The file to index.
+     */
+    void update(File file);
 
 }

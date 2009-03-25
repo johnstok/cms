@@ -20,7 +20,7 @@ import junit.framework.TestCase;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.User;
-import ccc.services.ISearch;
+import ccc.services.SearchEngine;
 import ccc.services.PageDao;
 import ccc.services.ResourceDao;
 import ccc.services.UserManager;
@@ -130,7 +130,7 @@ public class PageDaoImplTest
     @Override
     protected void setUp() throws Exception {
         _dao = createStrictMock(ResourceDao.class);
-        _se = createStrictMock(ISearch.class);
+        _se = createStrictMock(SearchEngine.class);
         _um = createStrictMock(UserManager.class);
         _cm = new PageDaoImpl(_dao, _se, _um);
     }
@@ -146,6 +146,6 @@ public class PageDaoImplTest
 
     private ResourceDao _dao;
     private PageDao _cm;
-    private ISearch _se;
+    private SearchEngine _se;
     private UserManager _um;
 }

@@ -38,6 +38,7 @@ import ccc.domain.Folder;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.ResourceName;
 import ccc.services.DataManager;
+import ccc.services.SearchEngine;
 import ccc.services.ResourceDao;
 
 
@@ -56,7 +57,7 @@ public class DataManagerEJBTest extends TestCase {
     private ResourceDao _al;
     private PreparedStatement _ps;
     private DataManager _dm;
-
+    private SearchEngine _se;
 
     {
         try {
@@ -74,8 +75,9 @@ public class DataManagerEJBTest extends TestCase {
          _ds = createStrictMock(DataSource.class);
          _c = createStrictMock(Connection.class);
          _al = createStrictMock(ResourceDao.class);
+         _se = createStrictMock(SearchEngine.class);
          _ps = createStrictMock(PreparedStatement.class);
-         _dm = new DataManagerEJB(_ds, _al);
+         _dm = new DataManagerEJB(_ds, _al, _se);
     }
 
     /** {@inheritDoc} */
@@ -198,7 +200,8 @@ public class DataManagerEJBTest extends TestCase {
 
         final DataManager dm =
             new DataManagerEJB(ds,
-                               dummy(ResourceDao.class));
+                               dummy(ResourceDao.class),
+                               _se);
 
         // ACT
         dm.create(_dummyStream);
@@ -243,7 +246,8 @@ public class DataManagerEJBTest extends TestCase {
 
         final DataManager dm =
             new DataManagerEJB(ds,
-                               dummy(ResourceDao.class));
+                               dummy(ResourceDao.class),
+                               _se);
 
         // ACT
         dm.retrieve(d, os);
@@ -270,7 +274,8 @@ public class DataManagerEJBTest extends TestCase {
 
         final DataManager dm =
             new DataManagerEJB(ds,
-                               dummy(ResourceDao.class));
+                               dummy(ResourceDao.class),
+                               _se);
 
         // ACT
         dm.create(_dummyStream);
@@ -311,7 +316,8 @@ public class DataManagerEJBTest extends TestCase {
 
         final DataManager dm =
             new DataManagerEJB(ds,
-                               dummy(ResourceDao.class));
+                               dummy(ResourceDao.class),
+                               _se);
         final Data d = dm.create(_dummyStream);
 
         // ACT

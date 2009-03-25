@@ -14,6 +14,7 @@ package ccc.services.ejb3.local;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -28,21 +29,30 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
+import org.pdfbox.pdmodel.PDDocument;
+import org.pdfbox.util.PDFTextStripper;
 
+import ccc.commons.JNDI;
+import ccc.commons.Registry;
+import ccc.domain.File;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
-import ccc.services.ISearch;
+import ccc.services.DataManager;
+import ccc.services.SearchEngine;
+import ccc.services.ServiceNames;
 
 
 /**
- * Lucene Implementation of the {@link ISearch} interface.
+ * Lucene Implementation of the {@link SearchEngine} interface.
  *
  * @author Civic Computing Ltd.
  */
-@Stateless(name=ISearch.NAME)
+@Stateless(name=SearchEngine.NAME)
 @TransactionAttribute(REQUIRED)
-@Local(ISearch.class)
-public class SearchEJB  implements ISearch {
+@Local(SearchEngine.class)
+public class SearchEngineEJB  implements SearchEngine {
+
+    private final Registry _registry = new JNDI();
 
     /**
      * TODO: Add Description for this type.
@@ -74,12 +84,12 @@ public class SearchEJB  implements ISearch {
 
 
     private static final Logger LOG =
-        Logger.getLogger(SearchEJB.class.getName());
+        Logger.getLogger(SearchEngineEJB.class.getName());
 
     private SimpleLucene _lucene;
 
     /** Constructor. */
-    @SuppressWarnings("unused") public SearchEJB() {
+    @SuppressWarnings("unused") public SearchEngineEJB() {
         _lucene = new SimpleLuceneFS();
     }
 
@@ -143,5 +153,69 @@ public class SearchEJB  implements ISearch {
                 Field.Store.NO,
                 Field.Index.ANALYZED));
         return d;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void add(final File file) {
+        final Document d = new Document();
+        d.add(
+            new Field(
+                "id",
+                file.id().toString(),
+                Field.Store.YES,
+                Field.Index.NOT_ANALYZED));
+
+        final String subType = file.mimeType().getSubType();
+        if ("pdf".equalsIgnoreCase(subType)) {
+            indexPDF(file, d);
+            _lucene.add(d);
+            LOG.info("Indexed: "+file.title());
+        }
+
+    }
+
+    private void indexPDF(final File file, final Document d) {
+
+        final InputStream input = dataManager().retrieve(file.data());
+        PDDocument doc = null;
+        try {
+            doc = PDDocument.load(input);
+            final PDFTextStripper stripper = new PDFTextStripper();
+            stripper.setEndPage(10);
+            final String text = stripper.getText(doc);
+            d.add(
+                new Field(
+                    "content",
+                    text,
+                    Field.Store.NO,
+                    Field.Index.ANALYZED));
+
+        } catch (final IOException e) {
+            LOG.error("PDF indexing failed. "+e.getMessage(), e);
+        } finally {
+            try {
+                doc.close();
+            } catch (final IOException e) {
+                LOG.error("Closing PDDocument failed. "+e.getMessage());
+            }
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void update(final File file) {
+        delete(file);
+        add(file);
+    }
+
+    private void delete(final File file) {
+        _lucene.remove(file.id().toString(), "id");
+    }
+
+    DataManager dataManager() {
+        return _registry.get(ServiceNames.DATA_MANAGER_LOCAL);
     }
 }
