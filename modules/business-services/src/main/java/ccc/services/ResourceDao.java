@@ -20,6 +20,7 @@ import java.util.UUID;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
+import ccc.domain.ResourcePath;
 import ccc.domain.Template;
 import ccc.domain.User;
 
@@ -116,6 +117,16 @@ public interface ResourceDao {
      * @return The resource for the specified id.
      */
     <T extends Resource> T findLocked(Class<T> type, UUID id);
+
+    /**
+     * Look up a resource.
+     *
+     * @param contentPath ResourcePath The path to the resource.
+     * @param rootName The name of the root folder in which the resource exists.
+     * @return Resource The resource at the specified path, or NULL if it
+     *  doesn't exist.
+     */
+    Resource lookup(String rootName, ResourcePath contentPath);
 
 
     /*

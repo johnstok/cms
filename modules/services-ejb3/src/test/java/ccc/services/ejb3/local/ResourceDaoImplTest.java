@@ -27,12 +27,15 @@ import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
+import ccc.domain.ResourceName;
+import ccc.domain.ResourcePath;
 import ccc.domain.ResourceType;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.UserManager;
 import ccc.services.ejb3.support.Dao;
+import ccc.services.ejb3.support.QueryNames;
 
 
 /**
@@ -50,6 +53,68 @@ import ccc.services.ejb3.support.Dao;
 public class ResourceDaoImplTest
     extends
         TestCase {
+
+    /**
+     * Test.
+     */
+    public void testLookupReturnsNullIFRootIsMissing() {
+
+        // ARRANGE
+        expect(
+            _dao.find(
+                QueryNames.ROOT_BY_NAME,
+                Folder.class,
+                new ResourceName(PredefinedResourceNames.CONTENT)))
+            .andReturn(null);
+        replayAll();
+
+        // ACT
+        final Resource resource =
+            _rdao.lookup(
+                PredefinedResourceNames.CONTENT,
+                new ResourcePath("/foo/bar"));
+
+        // ASSERT
+        verifyAll();
+        assertNull("Should be null.", resource);
+    }
+
+    /**
+     * Test.
+     */
+    public void testLookup() {
+
+        // ARRANGE
+        final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
+        final Folder foo = new Folder("foo");
+        final Page bar =
+            new Page("bar")
+                .addParagraph(
+                    Paragraph.fromText("default", "<H1>Default</H!>"));
+        contentRoot.add(foo);
+        foo.add(bar);
+
+        expect(
+            _dao.find(
+                QueryNames.ROOT_BY_NAME,
+                Folder.class,
+                new ResourceName(PredefinedResourceNames.CONTENT)))
+            .andReturn(contentRoot);
+        replayAll();
+
+
+        // ACT
+        final Resource resource =
+            _rdao.lookup(
+                PredefinedResourceNames.CONTENT,
+                new ResourcePath("/foo/bar"));
+
+
+        verifyAll();
+        assertEquals(ResourceType.PAGE, resource.type());
+        final Page page = resource.as(Page.class);
+        assertEquals(1, page.paragraphs().size());
+    }
 
     /**
      * Test.

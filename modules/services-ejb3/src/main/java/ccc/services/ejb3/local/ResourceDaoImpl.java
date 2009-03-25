@@ -29,12 +29,14 @@ import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
+import ccc.domain.ResourcePath;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.ResourceDao;
 import ccc.services.UserManager;
 import ccc.services.ejb3.support.Dao;
+import ccc.services.ejb3.support.QueryNames;
 
 
 /**
@@ -349,5 +351,27 @@ public class ResourceDaoImpl implements ResourceDao {
     public void changeRoles(final UUID id, final Collection<String> roles) {
         final Resource r = findLocked(Resource.class, id);
         r.roles(roles);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Resource lookup(final String rootName, final ResourcePath path) {
+        final Folder root =
+            _dao.find(
+                QueryNames.ROOT_BY_NAME,
+                Folder.class,
+                new ResourceName(rootName));
+
+        if (null==root) {
+            return null;
+        }
+
+        try {
+            return root.navigateTo(path);
+        } catch (final CCCException e) {
+            return null;
+        }
     }
 }
