@@ -14,8 +14,6 @@ package ccc.services;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
-import ccc.domain.User;
-
 
 
 /**
@@ -30,7 +28,7 @@ public interface StatefulReader {
     String NAME = "StatefulReader";
 
     /**
-     * Look up a resource.
+     * Look up a resource from its absolute path.
      *
      * @param contentPath ResourcePath The path to the resource.
      * @param rootName The name of the root folder in which the resource exists.
@@ -46,11 +44,4 @@ public interface StatefulReader {
      * @return The log entry with the specified index.
      */
     LogEntry lookup(long index);
-
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @return
-     */
-    User loggedInUser();
 }

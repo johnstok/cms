@@ -131,7 +131,6 @@ public class DefaultObjectFactoryTest
     public void testNewInstance() {
 
         // ARRANGE
-        _factory.setRootName("foo");
         expect(_registry.get(ServiceNames.DATA_MANAGER_LOCAL))
             .andReturn(Testing.dummy(DataManager.class));
         expect(_registry.get(ServiceNames.SEARCH_ENGINE_LOCAL))

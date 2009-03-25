@@ -30,6 +30,8 @@ import junit.framework.TestCase;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.ResourcePath;
+import ccc.domain.User;
+import ccc.services.StatefulReader;
 
 /**
  * Tests for the ContentServlet.
@@ -281,8 +283,8 @@ public final class ContentServletTest extends TestCase {
         foo.add(baz);
 
         expect(_request.getPathInfo()).andReturn("/foo");
-        expect(_factory.createLocator()).andReturn(_locator);
-        expect(_locator.locate(isA(ResourcePath.class)))
+        expect(_factory.getReader()).andReturn(_reader);
+        expect(_reader.lookup(eq((String)null), isA(ResourcePath.class)))
             .andThrow(new NotFoundException());
         expect(_request.getRequestDispatcher("/notfound")).andReturn(rd);
         rd.forward(_request, _response);
@@ -310,10 +312,11 @@ public final class ContentServletTest extends TestCase {
         expect(_request.getPathInfo()).andReturn("/foo");
         expect(_request.getParameterMap())
             .andReturn(new HashMap<String, String>());
-        expect(_factory.createLocator()).andReturn(_locator);
-        expect(_factory.createRenderer()).andReturn(_renderer);
-        expect(_locator.locate(isA(ResourcePath.class)))
+        expect(_factory.getReader()).andReturn(_reader);
+        expect(_reader.lookup(eq((String)null), isA(ResourcePath.class)))
             .andReturn(bar);
+        expect(_factory.currentUser()).andReturn(new User("user"));
+        expect(_factory.createRenderer()).andReturn(_renderer);
         expect(_renderer.render(bar, new HashMap<String, String[]>()))
             .andThrow(new RedirectRequiredException(bar));
         expect(_request.getContextPath()).andReturn("/context");
@@ -359,7 +362,7 @@ public final class ContentServletTest extends TestCase {
         _response = createStrictMock(HttpServletResponse.class);
         _request = createStrictMock(HttpServletRequest.class);
         _renderer = createStrictMock(Renderer.class);
-        _locator = createStrictMock(Locator.class);
+        _reader = createStrictMock(StatefulReader.class);
         _factory = createStrictMock(ObjectFactory.class);
         _cs = new ContentServlet(_factory);
     }
@@ -373,17 +376,17 @@ public final class ContentServletTest extends TestCase {
         _response = null;
         _request = null;
         _renderer = null;
-        _locator = null;
+        _reader = null;
         _factory = null;
         _cs = null;
     }
 
     private void verifyAll() {
-        verify(_response, _request, _renderer, _locator, _factory);
+        verify(_response, _request, _renderer, _reader, _factory);
     }
 
     private void replayAll() {
-        replay(_response, _request, _renderer, _locator, _factory);
+        replay(_response, _request, _renderer, _reader, _factory);
     }
 
     /**
@@ -412,7 +415,7 @@ public final class ContentServletTest extends TestCase {
     private HttpServletResponse _response;
     private HttpServletRequest  _request;
     private Renderer _renderer;
-    private Locator _locator;
+    private StatefulReader _reader;
     private ObjectFactory _factory;
     private ContentServlet _cs;
 }

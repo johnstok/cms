@@ -13,10 +13,12 @@ package ccc.content.server;
 
 import ccc.commons.DBC;
 import ccc.commons.Registry;
+import ccc.domain.User;
 import ccc.services.DataManager;
 import ccc.services.SearchEngine;
 import ccc.services.ServiceNames;
 import ccc.services.StatefulReader;
+import ccc.services.UserManager;
 
 
 /**
@@ -31,7 +33,6 @@ public class DefaultObjectFactory implements ObjectFactory {
 
     private final Registry _registry;
     private boolean        _respectVisiblity = true;
-    private String         _rootName = null;
 
     /**
      * Constructor.
@@ -48,13 +49,6 @@ public class DefaultObjectFactory implements ObjectFactory {
     public Renderer createRenderer() {
         return new DefaultRenderer(
             dataManager(), searchEngine(), getReader(), _respectVisiblity);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Locator createLocator() {
-        return new DefaultLocator(getReader(), _rootName);
     }
 
 
@@ -78,15 +72,15 @@ public class DefaultObjectFactory implements ObjectFactory {
 
     /** {@inheritDoc} */
     @Override
-    public boolean getRespectVisibility() {
-        return _respectVisiblity;
+    public User currentUser() {
+        return userManager().loggedInUser();
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void setRootName(final String rootName) {
-        _rootName = rootName;
+    public boolean getRespectVisibility() {
+        return _respectVisiblity;
     }
 
 
@@ -97,5 +91,10 @@ public class DefaultObjectFactory implements ObjectFactory {
 
     private SearchEngine searchEngine() {
         return _registry.get(ServiceNames.SEARCH_ENGINE_LOCAL);
+    }
+
+
+    private UserManager userManager() {
+        return _registry.get(ServiceNames.USER_MANAGER_LOCAL);
     }
 }
