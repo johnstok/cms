@@ -25,11 +25,9 @@ import javax.persistence.PersistenceContextType;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
-import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.ResourceDao;
 import ccc.services.StatefulReader;
-import ccc.services.UserManager;
 
 
 /**
@@ -50,7 +48,6 @@ public final class StatefulReaderEJB
     @SuppressWarnings("unused")
     private EntityManager _em; // Required to insure method calls are stateful.
 
-    @EJB(name=UserManager.NAME)  private UserManager  _users;
     @EJB(name=AuditLog.NAME)     private AuditLog     _log;
     @EJB(name=ResourceDao.NAME)  private ResourceDao  _resources;
 
@@ -61,11 +58,9 @@ public final class StatefulReaderEJB
      * Constructor.
      *
      * @param entityManager A JPA entity manager.
-     * @param um The user manager used to assert security privileges.
      */
-    StatefulReaderEJB(final EntityManager entityManager, final UserManager um) {
+    StatefulReaderEJB(final EntityManager entityManager) {
         _em = entityManager;
-        _users = um;
     }
 
 
@@ -82,12 +77,5 @@ public final class StatefulReaderEJB
     @Override
     public LogEntry lookup(final long index) {
         return _log.findEntryForIndex(index);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public User loggedInUser() {
-        return _users.loggedInUser();
     }
 }

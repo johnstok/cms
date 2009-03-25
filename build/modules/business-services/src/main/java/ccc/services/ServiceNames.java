@@ -34,4 +34,8 @@ public final class ServiceNames {
     public static final String SEARCH_ENGINE_LOCAL =
         "application-ear-7.0.0-SNAPSHOT/Search/local";
 
+    /** USER_MANAGER_LOCAL : String. */
+    public static final String USER_MANAGER_LOCAL =
+        "application-ear-7.0.0-SNAPSHOT/UserManager/local";
+
 }

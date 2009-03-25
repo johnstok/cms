@@ -13,6 +13,7 @@ package ccc.content.server;
 
 import java.io.Serializable;
 
+import ccc.domain.User;
 import ccc.services.StatefulReader;
 
 
@@ -31,13 +32,6 @@ public interface ObjectFactory extends Serializable {
     Renderer createRenderer();
 
     /**
-     * Create a new {@link Locator} object.
-     *
-     * @return A {@link Locator}.
-     */
-    Locator createLocator();
-
-    /**
      * Accessor for the 'respect visibility' property.
      *
      * @return A boolean.
@@ -54,16 +48,11 @@ public interface ObjectFactory extends Serializable {
     void setRespectVisibility(final String newValue);
 
     /**
-     * Mutator for the 'root name' property.
-     *
-     * @param rootName The name of the root folder to look up resources from.
-     */
-    void setRootName(String rootName);
-
-    /**
      * Accessor.
      *
      * @return The factory's stateful reader.
      */
     StatefulReader getReader();
+
+    User currentUser();
 }

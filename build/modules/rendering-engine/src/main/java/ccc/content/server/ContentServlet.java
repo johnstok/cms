@@ -1,12 +1,12 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2008 Civic Computing Ltd
+ * Copyright (c) 2008 Civic Computing Ltd.
  * All rights reserved.
  *
  * Revision      $Rev$
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log
+ * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
 
@@ -27,29 +27,19 @@ import ccc.commons.JNDI;
 import ccc.domain.CCCException;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
+import ccc.domain.User;
 
 
 /**
- * The ContentServlet class serves CCC content. Typically the servlet will be
- * mounted at the servlet path '/*' in the web.xml config file. Only the HTTP
- * GET method is currently supported.
+ * The ContentServlet class serves CCC content.
+ * Only the HTTP GET method is supported.
  *
- * TODO: Locale setting:
- *  log [getLocale;
- *       Accept-Language
- *       session locale setting]
- * TODO: Character encoding:
- *  log: [request content-type;
- *        response content-type;    // Done
- *        Accept-Charset header;
- *        Accept-encoding header]
- * TODO: Markup escaping?
- *
- * @author Civic Computing Ltd
+ * @author Civic Computing Ltd.
  */
 public final class ContentServlet extends CCCServlet {
 
     private final ObjectFactory _factory;
+    private String _rootName;
 
 
     /**
@@ -69,15 +59,16 @@ public final class ContentServlet extends CCCServlet {
         _factory = new DefaultObjectFactory(new JNDI());
     }
 
+
     /** {@inheritDoc} */
     @Override
     public void init() throws ServletException {
         final ServletConfig cf = getServletConfig();
+        _rootName = cf.getInitParameter("root_name");
         _factory.setRespectVisibility(
             cf.getInitParameter("respect_visibility"));
-        _factory.setRootName(
-            cf.getInitParameter("root_name"));
     }
+
 
     /**
      * Get the content for the specified relative URI. This method reads the
@@ -92,22 +83,13 @@ public final class ContentServlet extends CCCServlet {
                                           throws IOException, ServletException {
         try {
             final ResourcePath contentPath = determineResourcePath(request);
-            final Resource rs = _factory.createLocator().locate(contentPath);
-
-            final Map<String, String[]> parameters = request.getParameterMap();
-            final Response r;
-            if (parameters.keySet().contains("wc")) {
-                r = _factory.createRenderer().renderWorkingCopy(rs, parameters);
-            } else if (parameters.keySet().contains("v")) {
-                r = _factory.createRenderer().renderHistoricalVersion(rs, parameters);
-            } else {
-                r = _factory.createRenderer().render(rs, parameters);
-            }
+            final Resource rs = lookupResource(contentPath);
+            checkSecurity(rs);
+            final Response r = prepareResponse(request, rs);
             handle(response, request, r);
 
         } catch (final NotFoundException e) {
             dispatchNotFound(request, response);
-
         } catch (final RedirectRequiredException e) {
             final String relUri = e.getResource().absolutePath().toString();
             dispatchRedirect(request, response, relUri);
@@ -116,6 +98,50 @@ public final class ContentServlet extends CCCServlet {
             dispatchRedirect(request, response, relUri);
         }
     }
+
+
+    private Response prepareResponse(final HttpServletRequest request,
+                                     final Resource rs) {
+
+        final Map<String, String[]> parameters = request.getParameterMap();
+        final Response r;
+        if (parameters.keySet().contains("wc")) {
+            r = _factory
+                    .createRenderer()
+                    .renderWorkingCopy(rs, parameters);
+        } else if (parameters.keySet().contains("v")) {
+            r = _factory
+                    .createRenderer()
+                    .renderHistoricalVersion(rs, parameters);
+        } else {
+            r = _factory
+                    .createRenderer()
+                    .render(rs, parameters);
+        }
+        return r;
+    }
+
+
+    private Resource lookupResource(final ResourcePath contentPath) {
+        final Resource rs =
+            _factory.getReader().lookup(_rootName, contentPath);
+        if (null==rs) {
+            throw new NotFoundException();
+        }
+        return rs;
+    }
+
+
+    private void checkSecurity(final Resource r) {
+        User u = _factory.currentUser();
+        if (null==u) {
+            u = new User("anonymous");
+        }
+        if (!r.isAccessibleTo(u)) {
+            throw new AuthenticationRequiredException(r);
+        }
+    }
+
 
     /**
      * Determine the ResourcePath from a request's pathInfo.
@@ -137,6 +163,7 @@ public final class ContentServlet extends CCCServlet {
             throw new NotFoundException();
         }
     }
+
 
     /**
      * Translates a domain response into HTTP response for the servlet API.
