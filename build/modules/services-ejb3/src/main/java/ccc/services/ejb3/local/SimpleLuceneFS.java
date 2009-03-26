@@ -13,6 +13,8 @@ package ccc.services.ejb3.local;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -33,8 +35,25 @@ public class SimpleLuceneFS implements SimpleLucene {
     private static final Logger LOG =
         Logger.getLogger(SimpleLuceneFS.class.getName());
 
-    private final String _indexPath = "C:\\WINDOWS\\Temp\\lucene"; // FIXME
+    private Properties _properties = new Properties();
+    private String _indexPath;
 
+    /**
+     * Constructor.
+     * @throws IOException
+     *
+     */
+    public SimpleLuceneFS()  {
+        try {
+            final InputStream inputStream =
+                this.getClass().getClassLoader().
+                getResourceAsStream("lucene.properties");
+            _properties.load(inputStream);
+        } catch (final IOException e) {
+           LOG.error("Loading lucene.properties failed.");
+        }
+        _indexPath = _properties.getProperty("indexPath");
+    }
 
     /** {@inheritDoc} */
     @Override

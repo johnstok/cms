@@ -11,6 +11,7 @@
  */
 package ccc.services;
 
+import java.io.InputStream;
 import java.util.Set;
 import java.util.UUID;
 
@@ -55,13 +56,13 @@ public interface SearchEngine {
      *
      * @param file The file to index.
      */
-    void add(File file);
+    void add(File file, InputStream input);
 
     /**
      * Update a file that is already indexed.
      *
      * @param file The file to index.
      */
-    void update(File file);
+    void update(File file, InputStream input);
 
 }

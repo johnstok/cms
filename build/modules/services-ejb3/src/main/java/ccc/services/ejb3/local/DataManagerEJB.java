@@ -39,8 +39,8 @@ import ccc.domain.CCCException;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.services.DataManager;
-import ccc.services.SearchEngine;
 import ccc.services.ResourceDao;
+import ccc.services.SearchEngine;
 import ccc.services.ejb3.support.QueryNames;
 
 
@@ -69,6 +69,7 @@ public class DataManagerEJB implements DataManager {
      *
      * @param ds The JDBC datasource used to manage data.
      * @param dao The ResourceDao used for CRUD operations, etc.
+     * @param se The SearchEngine used for Lucene indexing.
      */
     public DataManagerEJB(final DataSource ds,
                           final ResourceDao dao,
@@ -88,7 +89,8 @@ public class DataManagerEJB implements DataManager {
         final Data data = create(dataStream);
         file.data(data);
         _dao.create(parentId, file);
-        _search.add(file);
+
+        _search.add(file, retrieve(file.data()));
     }
 
 
@@ -108,7 +110,7 @@ public class DataManagerEJB implements DataManager {
         f.size(size);
         f.data(create(dataStream)); // TODO: Delete old data?
         _dao.update(f);
-        _search.update(f);
+        _search.update(f, retrieve(f.data()));
     }
 
     /** {@inheritDoc} */

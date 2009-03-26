@@ -31,15 +31,14 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.pdfbox.pdmodel.PDDocument;
 import org.pdfbox.util.PDFTextStripper;
+import org.textmining.extraction.TextExtractor;
+import org.textmining.extraction.word.PasswordProtectedException;
+import org.textmining.extraction.word.WordTextExtractorFactory;
 
-import ccc.commons.JNDI;
-import ccc.commons.Registry;
 import ccc.domain.File;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
-import ccc.services.DataManager;
 import ccc.services.SearchEngine;
-import ccc.services.ServiceNames;
 
 
 /**
@@ -52,16 +51,14 @@ import ccc.services.ServiceNames;
 @Local(SearchEngine.class)
 public class SearchEngineEJB  implements SearchEngine {
 
-    private final Registry _registry = new JNDI();
-
     /**
      * TODO: Add Description for this type.
      *
      * @author Civic Computing Ltd.
      */
     private static final class CapturingHandler
-        extends
-            SearchHandler {
+    extends
+    SearchHandler {
 
         /** _hits : Set of UUID. */
         protected final Set<UUID> _hits = new HashSet<UUID>();
@@ -92,7 +89,6 @@ public class SearchEngineEJB  implements SearchEngine {
     @SuppressWarnings("unused") public SearchEngineEJB() {
         _lucene = new SimpleLuceneFS();
     }
-
 
     /** {@inheritDoc} */
     @Override
@@ -158,7 +154,7 @@ public class SearchEngineEJB  implements SearchEngine {
 
     /** {@inheritDoc} */
     @Override
-    public void add(final File file) {
+    public void add(final File file, final InputStream input) {
         final Document d = new Document();
         d.add(
             new Field(
@@ -168,27 +164,35 @@ public class SearchEngineEJB  implements SearchEngine {
                 Field.Index.NOT_ANALYZED));
 
         final String subType = file.mimeType().getSubType();
+        String content = null;
         if ("pdf".equalsIgnoreCase(subType)) {
-            indexPDF(file, d);
-            _lucene.add(d);
-            LOG.info("Indexed: "+file.title());
+            content = indexPDF(input, d);
+            LOG.info("Indexed PDF: "+file.title());
+        } else if ("msword".equalsIgnoreCase(subType)) {//no MS2007 support
+            content = indexWord(input, d);
+            LOG.info("Indexed Word: "+file.title());
+        } else {
+            LOG.info("Unknown type "+subType);
         }
-
+        if (content != null) {
+            _lucene.add(d);
+            LOG.info("Added to Lucene document.");
+        }
     }
 
-    private void indexPDF(final File file, final Document d) {
-
-        final InputStream input = dataManager().retrieve(file.data());
+    private String indexPDF(final InputStream input, final Document d) {
+        String content = null;
         PDDocument doc = null;
         try {
             doc = PDDocument.load(input);
             final PDFTextStripper stripper = new PDFTextStripper();
             stripper.setEndPage(10);
-            final String text = stripper.getText(doc);
+            content = stripper.getText(doc);
+            content = cleanUpContent(content);
             d.add(
                 new Field(
                     "content",
-                    text,
+                    content,
                     Field.Store.NO,
                     Field.Index.ANALYZED));
 
@@ -201,21 +205,49 @@ public class SearchEngineEJB  implements SearchEngine {
                 LOG.error("Closing PDDocument failed. "+e.getMessage());
             }
         }
+        return content;
+
     }
 
+    private String indexWord(final InputStream input, final Document d) {
+        String content = null;
+        final WordTextExtractorFactory factory = new WordTextExtractorFactory();
+        try {
+            final TextExtractor extractor = factory.textExtractor(input);
+            content = extractor.getText();
+            content = cleanUpContent(content);
+            d.add(
+                new Field(
+                    "content",
+                    content,
+                    Field.Store.NO,
+                    Field.Index.ANALYZED));
+
+        } catch (final PasswordProtectedException ppe) {
+            LOG.error("File is password protected; not indexable");
+        } catch (final Exception e) {
+            LOG.error("Exception caught when trying to extract text ", e);
+        }
+        return content;
+    }
 
     /** {@inheritDoc} */
     @Override
-    public void update(final File file) {
+    public void update(final File file, final InputStream input) {
         delete(file);
-        add(file);
+        add(file, input);
     }
 
     private void delete(final File file) {
         _lucene.remove(file.id().toString(), "id");
     }
 
-    DataManager dataManager() {
-        return _registry.get(ServiceNames.DATA_MANAGER_LOCAL);
+    private String cleanUpContent(final String content) {
+        String result = content;
+        if (result != null) {
+            result = content.replaceAll("[\\x00-\\x1f]", " ");
+            result = content.replaceAll("\\<.*?>", ""); // Scrub HTML
+        }
+        return result;
     }
 }
