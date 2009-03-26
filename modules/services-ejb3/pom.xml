@@ -57,6 +57,17 @@
 		    <artifactId>pdfbox</artifactId>
 		    <version>0.7.3</version>
 		</dependency> 
+        <dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.0.1-FINAL</version>
+       </dependency>
+        <dependency>
+			<groupId>org.textmining</groupId>
+			<artifactId>tm-extractors</artifactId>
+			<version>1.0</version>
+       </dependency>
+
   </dependencies>
     
 </project>
