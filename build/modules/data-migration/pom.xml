@@ -49,6 +49,11 @@
             <artifactId>h2</artifactId>
             <version>${h2-version}</version>
         </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.6</version>
+        </dependency>
         
         <!-- Server-side classes that may form part of a remote exception -->
 		<dependency>
