@@ -15,6 +15,7 @@ public class ResourceBean {
     private final boolean _published;
     private final int _legacyVersion;
     private final boolean _secure;
+    private final String _title;
 
     /**
      * Constructor.
@@ -26,6 +27,7 @@ public class ResourceBean {
      * @param published published true for published resource
      * @param legacyVersion Legacy version id of the resource
      * @param isSecure
+     * @param title The title for the resource
      */
     public ResourceBean(final int contentId,
                         final String type,
@@ -33,7 +35,8 @@ public class ResourceBean {
                         final String displayTemplate,
                         final boolean published,
                         final int legacyVersion,
-                        final boolean isSecure) {
+                        final boolean isSecure,
+                        final String title) {
         _contentId = contentId;
         _displayTemplate = displayTemplate;
         _name = name;
@@ -41,6 +44,7 @@ public class ResourceBean {
         _published = published;
         _legacyVersion = legacyVersion;
         _secure = isSecure;
+        _title = title;
     }
 
 
@@ -106,5 +110,14 @@ public class ResourceBean {
      */
     public boolean isSecure() {
         return _secure;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return The title as a string, may be null.
+     */
+    public String title() {
+        return _title;
     }
 }

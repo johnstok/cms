@@ -52,7 +52,8 @@ public class ResourceSelectorTest
                     "PAGE",
                     "STATUS",
                     "VERSION_ID",
-                    "PERMISSION_NAME"});
+                    "PERMISSION_NAME",
+                    "INDEX_TITLE"});
 
         // ACT
         final List<ResourceBean> result = new ResourceSelector().handle(rs);
