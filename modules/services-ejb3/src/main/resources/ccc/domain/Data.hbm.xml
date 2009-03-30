@@ -19,34 +19,87 @@
     <database-object>
         <create>
         CREATE TABLE DATA(
-            _ID VARCHAR(255) NOT NULL,
-            _VERSION INTEGER NOT NULL,
-            _BYTES BLOB NOT NULL
+            ID VARCHAR(255) NOT NULL,
+            VERSION INTEGER NOT NULL,
+            BYTES BLOB NOT NULL
         )
         </create>
         <drop>DROP TABLE data</drop>
     </database-object>
+    
     <database-object>
         <create>
         CREATE SEQUENCE LOG_ENTRY_INDEX
-        START WITH 0
+        START WITH 1
         INCREMENT BY 1
         CACHE 0
         </create>
         <drop>DROP SEQUENCE LOG_ENTRY_INDEX</drop>
+        <dialect-scope name="org.hibernate.dialect.H2Dialect"/>
+    </database-object>
+    <database-object>
+        <create>
+        CREATE SEQUENCE LOG_ENTRY_INDEX
+        START WITH 1
+        INCREMENT BY 1
+        </create>
+        <drop>DROP SEQUENCE LOG_ENTRY_INDEX</drop>
+        <dialect-scope name="org.hibernate.dialect.Oracle9Dialect"/>
+    </database-object>
+    
+    <database-object>
+        <create>
+        ALTER TABLE LOGENTRY
+        ALTER COLUMN IDX SET DEFAULT nextval('LOG_ENTRY_INDEX')
+        </create>
+        <drop/>
+        <dialect-scope name="org.hibernate.dialect.H2Dialect"/>
+    </database-object>
+    <database-object>
+        <create>
+        create or replace trigger logentry_autonumber
+        before insert on LOGENTRY for each row
+        begin
+            select LOG_ENTRY_INDEX.nextval into :new.idx from dual;
+        end;
+        </create>
+        <drop>drop trigger logentry_autonumber</drop>
+        <dialect-scope name="org.hibernate.dialect.Oracle9Dialect"/>
     </database-object>
     <database-object>
         <create>
         ALTER TABLE LOGENTRY
-        ALTER COLUMN _INDEX SET DEFAULT nextval('LOG_ENTRY_INDEX')
+        CHANGE COLUMN _INDEX _INDEX bigint(20) NOT NULL AUTO_INCREMENT UNIQUE
         </create>
         <drop/>
+        <dialect-scope name="org.hibernate.dialect.MySQL5InnoDBDialect"/>
     </database-object>
-        <database-object>
+    
+    <database-object>
         <create>
         ALTER TABLE LOGENTRY
-        ALTER COLUMN _RECORDEDON SET DEFAULT CURRENT_TIMESTAMP() 
+        ALTER COLUMN RECORDEDON SET DEFAULT CURRENT_TIMESTAMP() 
         </create>
         <drop/>
+        <dialect-scope name="org.hibernate.dialect.H2Dialect"/>
+    </database-object>
+    <database-object>
+        <create>
+        CREATE TRIGGER logentry_timestamp
+        before INSERT ON logentry FOR EACH ROW
+        begin
+            select systimestamp into :new.RECORDEDON from dual;
+        END;
+        </create>
+        <drop>drop trigger logentry_timestamp</drop>
+        <dialect-scope name="org.hibernate.dialect.Oracle9Dialect"/>
+    </database-object>
+    <database-object>
+        <create>
+        ALTER TABLE LOGENTRY
+        CHANGE COLUMN _RECORDEDON _RECORDEDON TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        </create>
+        <drop/>
+        <dialect-scope name="org.hibernate.dialect.MySQL5InnoDBDialect"/>
     </database-object>
 </hibernate-mapping>

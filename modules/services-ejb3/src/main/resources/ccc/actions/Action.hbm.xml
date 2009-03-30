@@ -25,25 +25,25 @@
         <param name="type">ccc.actions.Action$Status</param>
     </typedef>
     
-    <class name="ccc.actions.Action">
+    <class name="ccc.actions.Action" table="ACTIONS">
         
-        <id name="_id" type="ccc.services.ejb3.support.UUIDUserType">
+        <id name="_id" column="id" type="ccc.services.ejb3.support.UUIDUserType">
             <generator class="assigned" />
         </id>
         
-        <property name="_executeAfter" not-null="true" type="timestamp" />
-        <property name="_type" not-null="true" type="ActionType" />
-        <property name="_status" not-null="true" type="StatusType" />
+        <property name="_executeAfter" column="executeAfter" not-null="true" type="timestamp" />
+        <property name="_type" column="type" not-null="true" type="ActionType" />
+        <property name="_status" column="status" not-null="true" type="StatusType" />
         
-        <many-to-one name="_actor" not-null="false" />
-        <many-to-one name="_subject" not-null="false" />
+        <many-to-one name="_actor" column="actor" not-null="false" />
+        <many-to-one name="_subject" column="subject" not-null="false" />
         
         <component name="_parameters" class="ccc.domain.Snapshot">
 			<property
                 name="detail"
                 access="property"
                 not-null="true"
-                column="_parameters"
+                column="parameters"
 				type="text"  />
 		</component>
         
@@ -52,7 +52,7 @@
                 name="detail"
                 access="property"
                 not-null="false"
-                column="_failure"
+                column="failure"
                 type="text"  />
         </component>
         

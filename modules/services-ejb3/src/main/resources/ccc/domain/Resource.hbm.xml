@@ -17,30 +17,31 @@
 -->
 
 <hibernate-mapping default-access="field" default-cascade="none">
-	<class name="ccc.domain.Resource" abstract="true">
+	<class name="ccc.domain.Resource" table="RESOURCES" abstract="true">
 	
-		<id name="_id" type="ccc.services.ejb3.support.UUIDUserType">
+		<id name="_id" column="id" type="ccc.services.ejb3.support.UUIDUserType">
 			<generator class="assigned" />
 		</id>
 		
 		<version
             name="_version"
+            column="version"
             type="long"
             unsaved-value="negative" />
 
-		<property name="_title" not-null="true" type="string" length="256" />
-		<property name="_includeInMainMenu" not-null="true" />
-        <property name="_dateCreated" not-null="true" type="timestamp" />
-        <property name="_dateChanged" not-null="true" type="timestamp" />
+		<property name="_title" column="title" not-null="true" type="string" length="256" />
+		<property name="_includeInMainMenu" column="includeInMainMenu" not-null="true" />
+        <property name="_dateCreated" column="dateCreated" not-null="true" type="timestamp" />
+        <property name="_dateChanged" column="dateChanged" not-null="true" type="timestamp" />
 
-		<many-to-one name="_template" not-null="false" />
+		<many-to-one name="_template" column="template" not-null="false" />
 		
-		<many-to-one name="_lockedBy" not-null="false" />
+		<many-to-one name="_lockedBy" column="lockedBy" not-null="false" />
 		
-		<many-to-one name="_publishedBy" not-null="false" />
+		<many-to-one name="_publishedBy" column="publishedBy" not-null="false" />
 
 		<component name="_name" class="ccc.domain.ResourceName">
-			<property name="_representation" not-null="true" column="_name"
+			<property name="_representation" not-null="true" column="name"
 				type="string" length="256" />
 		</component>
 
@@ -52,28 +53,28 @@
             update="false"
         />
 
-        <list name="_tags">
-            <key column="_id" />
-            <list-index column="_index" />
+        <list name="_tags" table="RESOURCE_TAGS">
+            <key column="id" />
+            <list-index column="idx" />
             <element
-                column="_tag"
+                column="tag"
                 type="string"
                 not-null="true"
                 unique="false" />
         </list>
 
         <set name="_roles">
-            <key not-null="true" column="_id" />
+            <key not-null="true" column="id" />
             <element
-                column="_role"
+                column="role"
                 type="string"
                 not-null="true"/>
         </set>
         
         <map name="_metadata">
-            <key column="_id" />
-            <map-key type="string" column="_key" length="100" />
-            <element type="string" column="_value" length="1000" not-null="true"/>
+            <key column="id" />
+            <map-key type="string" column="key" length="100" />
+            <element type="string" column="value" length="1000" not-null="true"/>
         </map>
         
 	</class>

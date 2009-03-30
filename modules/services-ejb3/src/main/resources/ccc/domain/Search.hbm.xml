@@ -20,7 +20,7 @@
     
     <joined-subclass
         name="ccc.domain.Search"  extends="ccc.domain.Resource">
-        <key column="_id" />
+        <key column="id" />
     </joined-subclass>
     
 </hibernate-mapping>

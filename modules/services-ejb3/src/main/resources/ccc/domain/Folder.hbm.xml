@@ -24,10 +24,11 @@
     <joined-subclass
         name="ccc.domain.Folder"  extends="ccc.domain.Resource">
         
-        <key column="_id" />
+        <key column="id" />
         
         <property
             name="_order"
+            column="ordr"
             not-null="true"
             type="SortOrder" />
         

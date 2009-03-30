@@ -37,15 +37,15 @@ public class JdbcDatabase
 
     /** SQL_LOOKUP_USER : String. */
     public static final String SQL_LOOKUP_USER =
-        "SELECT USER._ID, PASSWORD._HASH, PASSWORD._ID "
-        + "FROM PASSWORD, USER "
-        + "WHERE PASSWORD._USER=USER._ID "
-        + "AND USER._USERNAME=?";
+        "SELECT USERS.ID, PASSWORD.HASH, PASSWORD.ID "
+        + "FROM PASSWORD, USERS "
+        + "WHERE PASSWORD.USR=USERS.ID "
+        + "AND USERS.USERNAME=?";
 
     /** SQL_LOOKUP_ROLES : String. */
     public static final String SQL_LOOKUP_ROLES =
         "SELECT ROLE "
-        + "FROM USER__ROLES "
+        + "FROM USERS__ROLES "
         + "where ID=?";
 
     private Registry _r = new JNDI();

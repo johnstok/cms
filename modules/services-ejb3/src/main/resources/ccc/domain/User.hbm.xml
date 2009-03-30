@@ -18,29 +18,31 @@
 
 <hibernate-mapping default-access="field">
 	
-    <class name="ccc.domain.User">
+    <class name="ccc.domain.User" table="USERS">
     
-        <id name="_id" type="ccc.services.ejb3.support.UUIDUserType">
+        <id name="_id" column="id" type="ccc.services.ejb3.support.UUIDUserType">
             <generator class="assigned" />
         </id>
         
         <version
             name="_version"
+            column="version"
             type="long"
             unsaved-value="negative" />
         
         <property
             name="_username"
+            column="username"
             not-null="true"
             unique="true"
             type="string"
-            length="256" />
+            length="255" />
         
         <component name="_email" class="ccc.commons.EmailAddress">
-            <property name="_text" column="_email" not-null="true" type="string" length="256" />
+            <property name="_text" column="email" not-null="true" type="string" length="255" />
         </component>
             
-        <set name="_roles">
+        <set name="_roles" lazy="false"> <!-- TODO: set lazy to true -->
             <key not-null="true" column="id" />
             <element
                 column="role"

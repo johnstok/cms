@@ -228,11 +228,11 @@ public class DataManagerEJB implements DataManager {
 
     /** CREATE_STATEMENT : String. */
     static final String        CREATE_STATEMENT   =
-        "INSERT INTO data (_id, _version, _bytes) VALUES (?,?,?)";
+        "INSERT INTO data (id, version, bytes) VALUES (?,?,?)";
 
     /** RETRIEVE_STATEMENT : String. */
     public static final String RETRIEVE_STATEMENT =
-        "SELECT _bytes FROM data WHERE _id=?";
+        "SELECT bytes FROM data WHERE id=?";
 
     /** STREAM_POSITION_CREATE : int. */
     public static final int STREAM_POSITION_CREATE = 3;

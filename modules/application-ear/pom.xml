@@ -57,9 +57,6 @@
                         <loader-repository>
                             CCC7:archive=CCC7.ear
                         </loader-repository>
-                        <!-- data-sources>
-                            <data-source>h2-ds.xml</data-source>
-                            </data-sources -->
                     </jboss>
                 </configuration>
             </plugin>
