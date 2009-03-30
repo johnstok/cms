@@ -261,8 +261,10 @@ public class Migrations {
                                final ResourceBean r) {
 
         try {
+            // FIXME: Specify actor & date
+            // FIXME: Set a title for folders?
             final ResourceSummary rs =
-                _commands.createFolder(parentFolderId, r.name());   // FIXME: Specify actor & date
+                _commands.createFolder(parentFolderId, r.name());
             log.debug("Created folder: "+r.contentId());
 
             setTemplateForResource(r, rs);
@@ -450,7 +452,7 @@ public class Migrations {
         final PageDelta delta = new PageDelta();
 
         delta._name = r.name();
-        delta._title = r.name();
+        delta._title = (null==r.title())?r.name():r.title();
         delta._id = id;
 
         delta._paragraphs.clear();
