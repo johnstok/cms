@@ -17,24 +17,24 @@
 -->
 
 <hibernate-mapping default-access="field">
-	<joined-subclass name="ccc.domain.File"
+	<joined-subclass name="ccc.domain.File" table="FILES"
 		extends="ccc.domain.Resource">
-		<key column="_id" />
+		<key column="id" />
 
-		<property name="_description" not-null="true" type="string"
+		<property name="_description" column="description" not-null="true" type="string"
 			length="1024" />
 			
-	    <property name="_size" not-null="true" type="long" />
+	    <property name="_size" column="siz" not-null="true" type="long" />
 
 		<component name="_data" class="ccc.domain.Data" unique="true">
-            <property name="_id" not-null="true" column="_data"
+            <property name="_id" not-null="true" column="data"
                 type="ccc.services.ejb3.support.UUIDUserType" />
         </component>
         
         <component name="_mimeType" class="javax.activation.MimeType">
-            <property name="primaryType" not-null="true" column="_mime_primary_type"
+            <property name="primaryType" not-null="true" column="mime_primary_type"
                 type="string" access="property" />
-            <property name="subType" not-null="true" column="_mime_sub_type"
+            <property name="subType" not-null="true" column="mime_sub_type"
                 type="string" access="property" />
         </component>
 

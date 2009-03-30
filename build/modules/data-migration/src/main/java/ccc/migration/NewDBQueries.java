@@ -48,24 +48,25 @@ public class NewDBQueries {
         try {
             // insert user
             ps = _connection.prepareStatement(
-                "INSERT INTO USER (_ID, _EMAIL , _USERNAME , _VERSION) "
-                + "VALUES (?,?,?,0);");
+                "INSERT INTO USERS (ID, EMAIL, USERNAME, VERSION) "
+                + "VALUES (?,?,?,?)");
             ps.setString(1, uid.toString());
             ps.setString(2, email);
             ps.setString(3, username);
+            ps.setInt(4, 0);
             ps.executeUpdate();
 
             // insert role
             ps = _connection.prepareStatement(
-                "INSERT INTO USER__ROLES (ID, ROLE) "
-            + "VALUES (?, 'ADMINISTRATOR');");
+                "INSERT INTO USERS__ROLES (ID, ROLE) "
+            + "VALUES (?, 'ADMINISTRATOR')");
             ps.setString(1, uid.toString());
             ps.executeUpdate();
 
             // insert password
             ps = _connection.prepareStatement(
-                "INSERT INTO PASSWORD ( _ID, _VERSION, _HASH, _USER) "
-            + "VALUES (?, 0, ?, ?);");
+                "INSERT INTO PASSWORD ( ID, VERSION, HASH, USR) "
+            + "VALUES (?, 0, ?, ?)");
             ps.setString(1, pwId.toString());
             ps.setBytes(2, hash);
             ps.setString(3, uid.toString());
@@ -95,7 +96,7 @@ public class NewDBQueries {
         try {
             // update password
             ps = _connection.prepareStatement(
-                "UPDATE PASSWORD SET _HASH=?, _VERSION=1 WHERE _USER = ?;");
+                "UPDATE PASSWORD SET HASH=?, VERSION=1 WHERE USR = ?");
             ps.setBytes(1, hash);
             ps.setString(2, muid.toString());
             ps.executeUpdate();

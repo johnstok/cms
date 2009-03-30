@@ -19,8 +19,8 @@
 <hibernate-mapping default-access="field">
     <joined-subclass
         name="ccc.domain.Alias" extends="ccc.domain.Resource">
-        <key column="_id" />
+        <key column="id" />
 
-		<many-to-one name="_target" not-null="true" lazy="false"/>
+		<many-to-one name="_target" column="target" not-null="true" lazy="false"/>
     </joined-subclass>
 </hibernate-mapping>

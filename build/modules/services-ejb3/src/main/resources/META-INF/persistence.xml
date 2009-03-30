@@ -14,6 +14,8 @@
 	
 	        <!-- SQL dialect -->
 	        <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
+	        <!-- property name="hibernate.dialect" value="org.hibernate.dialect.Oracle9Dialect" / -->
+	        <!-- property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" / -->
 	
 	        <!-- Caching  -->
 	        <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider" />

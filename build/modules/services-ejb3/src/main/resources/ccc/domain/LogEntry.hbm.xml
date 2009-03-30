@@ -27,41 +27,50 @@
     
     <class name="ccc.domain.LogEntry" mutable="false">
         
-        <id name="_id" type="ccc.services.ejb3.support.UUIDUserType">
+        <id name="_id" column="id" type="ccc.services.ejb3.support.UUIDUserType">
             <generator class="assigned" />
         </id>
         
 		<many-to-one
             name="_actor"
+            column="actor"
             not-null="true"/>
         
         <property
             name="_action"
+            column="action"
             not-null="true"
             type="LogEntryAction" />
         <property
             name="_happenedOn"
+            column="happenedon"
             not-null="true"
             type="timestamp" />
         <property
             name="_subjectType"
+            column="subjecttype"
             not-null="true"
             type="ResourceType" />
         <property
             name="_subjectId"
+            column="subjectid"
             not-null="true"
             type="ccc.services.ejb3.support.UUIDUserType" />
         <property
             name="_comment"
+            column="cmmnt"
             not-null="true"
             type="string"
             length="1024"/>
         <property
             name="_detail"
+            column="detail"
             not-null="true"
-            type="text"/>
+            type="text"
+            length="2147483647"/>
         <property
             name="_index"
+            column="idx"
             not-null="true"
             type="long"
             update="false"
@@ -69,6 +78,7 @@
             generated="insert"/>
         <property
             name="_recordedOn"
+            column="recordedon"
             not-null="true"
             type="timestamp"
             update="false"
@@ -76,6 +86,7 @@
             generated="insert"/>
         <property
             name="_isMajorEdit"
+            column="ismajoredit"
             not-null="false"
             type="boolean"/>
     </class>

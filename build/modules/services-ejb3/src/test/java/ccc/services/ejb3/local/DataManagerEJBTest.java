@@ -331,9 +331,9 @@ public class DataManagerEJBTest extends TestCase {
 
         final String sql =
             "CREATE TABLE data("
-            + "_ID VARCHAR(255) NOT NULL, "
-            + "_VERSION INTEGER NOT NULL, "
-            + "_bytes BLOB NOT NULL)";
+            + "ID VARCHAR(255) NOT NULL, "
+            + "VERSION INTEGER NOT NULL, "
+            + "bytes BLOB NOT NULL)";
 
         final Connection c = ds.getConnection();
 

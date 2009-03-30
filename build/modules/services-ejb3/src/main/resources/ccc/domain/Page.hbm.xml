@@ -24,21 +24,21 @@
     
     <joined-subclass
         name="ccc.domain.Page" extends="ccc.domain.Resource">
-        <key column="_id" />
+        <key column="id" />
         
         <component name="_workingCopy" class="ccc.domain.Snapshot">
-			<property name="detail" access="property" not-null="false" column="_workingCopy"
+			<property name="detail" access="property" not-null="false" column="workingCopy"
 				type="text"  />
 		</component>
 		
         <set name="_content">
             <key not-null="true" />
             <composite-element class="ccc.domain.Paragraph">
-                <property name="_text" not-null="false" type="text" />
-                <property name="_name" not-null="true" type="string" length="256" />
-                <property name="_boolean" not-null="false" type="boolean" />
-                <property name="_date" not-null="false" type="timestamp" />
-                <property name="_type" not-null="true" type="ParargraphType" />
+                <property name="_name" column="name" not-null="true" type="string" length="255" />
+                <property name="_type" column="type" not-null="true" type="ParargraphType" />
+                <property name="_text" column="value_text" not-null="false" type="text" length="2147483647" />
+                <property name="_boolean" column="value_boolean" not-null="false" type="boolean" />
+                <property name="_date" column="value_date" not-null="false" type="timestamp" />
             </composite-element>
         </set>
         
