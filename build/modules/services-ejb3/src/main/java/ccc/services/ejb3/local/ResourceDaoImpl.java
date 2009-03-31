@@ -34,6 +34,7 @@ import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.ResourceDao;
+import ccc.services.SearchEngine;
 import ccc.services.UserManager;
 import ccc.services.ejb3.support.Dao;
 import ccc.services.ejb3.support.QueryNames;
@@ -49,9 +50,10 @@ import ccc.services.ejb3.support.QueryNames;
 @Local(ResourceDao.class)
 public class ResourceDaoImpl implements ResourceDao {
 
-    @EJB(name=UserManager.NAME)  private UserManager  _users;
-    @EJB(name=AuditLog.NAME)     private AuditLog     _audit;
-    @EJB(name=Dao.NAME)          private Dao          _dao;
+    @EJB(name=UserManager.NAME)  private UserManager    _users;
+    @EJB(name=AuditLog.NAME)     private AuditLog       _audit;
+    @EJB(name=Dao.NAME)          private Dao            _dao;
+    @EJB(name=SearchEngine.NAME) private SearchEngine   _search;
 
 
     /** Constructor. */
@@ -63,13 +65,16 @@ public class ResourceDaoImpl implements ResourceDao {
      * @param userDAO UserManager service.
      * @param audit AuditLog service.
      * @param dao The DAO used for persistence.
+     * @param se The SearchEngine service.
      */
     public ResourceDaoImpl(final UserManager userDAO,
                            final AuditLog audit,
-                           final Dao dao) {
+                           final Dao dao,
+                           final SearchEngine se) {
         _users = userDAO;
         _audit = audit;
         _dao = dao;
+        _search = se;
     }
 
 
@@ -170,6 +175,7 @@ public class ResourceDaoImpl implements ResourceDao {
         r.publish(u);
         r.dateChanged(new Date());
         _audit.recordPublish(r, u, r.dateChanged());
+        _search.update(r);
         return r;
     }
 
@@ -184,6 +190,7 @@ public class ResourceDaoImpl implements ResourceDao {
         r.publish(publishedBy);
         r.dateChanged(publishedOn);
         _audit.recordPublish(r, publishedBy, publishedOn);
+        _search.update(r);
         return r;
     }
 
@@ -195,6 +202,7 @@ public class ResourceDaoImpl implements ResourceDao {
         final Resource r = findLocked(Resource.class, resourceId, u);
         r.unpublish();
         _audit.recordUnpublish(r, u, new Date());
+        _search.update(r);
         return r;
     }
 
@@ -209,6 +217,7 @@ public class ResourceDaoImpl implements ResourceDao {
             findLocked(Resource.class, resourceId, u);
         r.unpublish();
         _audit.recordUnpublish(r, u, happendedOn);
+        _search.update(r);
         return r;
     }
 

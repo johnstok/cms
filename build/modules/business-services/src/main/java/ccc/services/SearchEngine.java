@@ -17,6 +17,7 @@ import java.util.UUID;
 
 import ccc.domain.File;
 import ccc.domain.Page;
+import ccc.domain.Resource;
 
 
 /**
@@ -47,14 +48,15 @@ public interface SearchEngine {
     /**
      * Update a page that is already indexed.
      *
-     * @param page The page to index.
+     * @param r The resource to index.
      */
-    void update(Page page);
+    void update(Resource r);
 
     /**
      * Add a file to the search index.
      *
      * @param file The file to index.
+     * @param input The input stream of the file.
      */
     void add(File file, InputStream input);
 
@@ -62,6 +64,7 @@ public interface SearchEngine {
      * Update a file that is already indexed.
      *
      * @param file The file to index.
+     * @param input The input stream of the file.
      */
     void update(File file, InputStream input);
 
