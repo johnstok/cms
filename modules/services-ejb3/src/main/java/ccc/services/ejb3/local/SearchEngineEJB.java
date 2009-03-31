@@ -38,6 +38,8 @@ import org.textmining.extraction.word.WordTextExtractorFactory;
 import ccc.domain.File;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
+import ccc.domain.PredefinedResourceNames;
+import ccc.domain.Resource;
 import ccc.services.SearchEngine;
 
 
@@ -105,20 +107,21 @@ public class SearchEngineEJB  implements SearchEngine {
 
     /** {@inheritDoc} */
     @Override
-    public void update(final Page page) {
-        delete(page);
-        add(page);
-    }
-
-
-    private void delete(final Page page) {
-        _lucene.remove(page.id().toString(), "id");
+    public void update(final Resource r) {
+        if ("PAGE".equals(r.type().toString())) {
+            delete(r);
+            add(r.as(Page.class));
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void add(final Page page) {
+        if (!page.isPublished()) {
+            LOG.debug("Skipped indexing for unpublished page : "+page.title());
+            return;
+        }
         final Document d = createDocument(page);
         _lucene.add(d);
         LOG.info("Indexed: "+page.title());
@@ -155,6 +158,12 @@ public class SearchEngineEJB  implements SearchEngine {
     /** {@inheritDoc} */
     @Override
     public void add(final File file, final InputStream input) {
+        if (!PredefinedResourceNames.CONTENT.equals(
+            file.root().name().toString())) {
+            LOG.debug("Skipped indexing for non content file : "+file.title());
+            return;
+        }
+
         final Document d = new Document();
         d.add(
             new Field(
@@ -238,8 +247,8 @@ public class SearchEngineEJB  implements SearchEngine {
         add(file, input);
     }
 
-    private void delete(final File file) {
-        _lucene.remove(file.id().toString(), "id");
+    private void delete(final Resource r) {
+        _lucene.remove(r.id().toString(), "id");
     }
 
     private String cleanUpContent(final String content) {

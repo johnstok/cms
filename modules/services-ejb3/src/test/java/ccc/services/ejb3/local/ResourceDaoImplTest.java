@@ -33,6 +33,7 @@ import ccc.domain.ResourceType;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.AuditLog;
+import ccc.services.SearchEngine;
 import ccc.services.UserManager;
 import ccc.services.ejb3.support.Dao;
 import ccc.services.ejb3.support.QueryNames;
@@ -562,8 +563,9 @@ public class ResourceDaoImplTest
         _users = createStrictMock(UserManager.class);
         _dao = createStrictMock(Dao.class);
         _al = createStrictMock(AuditLog.class);
+        _se = createStrictMock(SearchEngine.class);
 
-        _rdao = new ResourceDaoImpl(_users, _al, _dao);
+        _rdao = new ResourceDaoImpl(_users, _al, _dao, _se);
         _r = new Page("foo");
     }
 
@@ -574,6 +576,7 @@ public class ResourceDaoImplTest
         _dao = null;
         _rdao = null;
         _r = null;
+        _se = null;
     }
 
 
@@ -582,6 +585,7 @@ public class ResourceDaoImplTest
     private AuditLog _al;
     private ResourceDaoImpl _rdao;
     private Resource _r;
+    private SearchEngine _se;
 
     private final User _regularUser = new User("regular");
     private final User _anotherUser = new User("another");

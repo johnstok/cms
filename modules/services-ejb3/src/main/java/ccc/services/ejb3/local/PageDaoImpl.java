@@ -39,9 +39,9 @@ import ccc.domain.Paragraph;
 import ccc.domain.Snapshot;
 import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.services.SearchEngine;
 import ccc.services.PageDao;
 import ccc.services.ResourceDao;
+import ccc.services.SearchEngine;
 import ccc.services.UserManager;
 
 
@@ -55,9 +55,9 @@ import ccc.services.UserManager;
 @Local(PageDao.class)
 public class PageDaoImpl implements PageDao {
 
-    @EJB(name=ResourceDao.NAME)  private ResourceDao  _dao;
-    @EJB(name=SearchEngine.NAME)      private SearchEngine      _search;
-    @EJB(name=UserManager.NAME)  private UserManager  _users;
+    @EJB(name=ResourceDao.NAME)     private ResourceDao     _dao;
+    @EJB(name=SearchEngine.NAME)    private SearchEngine    _search;
+    @EJB(name=UserManager.NAME)     private UserManager     _users;
 
 
     /** Constructor. */
@@ -68,9 +68,11 @@ public class PageDaoImpl implements PageDao {
      *
      * @param dao The ResourceDao used for CRUD operations, etc.
      * @param se The search engine to use.
-     * @param _um
+     * @param um The UserManager.
      */
-    public PageDaoImpl(final ResourceDao dao, final SearchEngine se, final UserManager um) {
+    public PageDaoImpl(final ResourceDao dao,
+                       final SearchEngine se,
+                       final UserManager um) {
         _dao = dao;
         _search = se;
         _users = um;
