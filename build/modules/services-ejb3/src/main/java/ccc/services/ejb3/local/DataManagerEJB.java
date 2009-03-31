@@ -86,7 +86,7 @@ public class DataManagerEJB implements DataManager {
     public void createFile(final File file,
                            final UUID parentId,
                            final InputStream dataStream) {
-        final Data data = create(dataStream);
+        final Data data = create(dataStream, (int)file.size());
         file.data(data);
         _dao.create(parentId, file);
 
@@ -108,7 +108,7 @@ public class DataManagerEJB implements DataManager {
         f.description(description);
         f.mimeType(mimeType);
         f.size(size);
-        f.data(create(dataStream)); // TODO: Delete old data?
+        f.data(create(dataStream, (int)size)); // TODO: Delete old data?
         _dao.update(f);
         _search.update(f, retrieve(f.data()));
     }
@@ -121,7 +121,7 @@ public class DataManagerEJB implements DataManager {
 
     /** {@inheritDoc} */
     @Override
-    public Data create(final InputStream dataStream) {
+    public Data create(final InputStream dataStream, final int length) {
 
         final Data data = new Data();
 
@@ -137,7 +137,7 @@ public class DataManagerEJB implements DataManager {
                     ps.setInt(2, 0);
                     ps.setBinaryStream(STREAM_POSITION_CREATE,
                                        dataStream,
-                                       Integer.MAX_VALUE);
+                                       length);
                     ps.execute();
                 } finally {
                     try {

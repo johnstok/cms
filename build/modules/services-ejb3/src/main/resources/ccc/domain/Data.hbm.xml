@@ -25,6 +25,20 @@
         )
         </create>
         <drop>DROP TABLE data</drop>
+        <dialect-scope name="org.hibernate.dialect.H2Dialect"/>
+        <dialect-scope name="org.hibernate.dialect.Oracle9Dialect"/>
+        <dialect-scope name="org.hibernate.dialect.MySQL5InnoDBDialect"/>
+    </database-object>
+    <database-object>
+        <create>
+        CREATE TABLE DATA(
+            ID VARCHAR(255) NOT NULL,
+            VERSION INTEGER NOT NULL,
+            BYTES varbinary(max) NOT NULL
+        )
+        </create>
+        <drop>DROP TABLE data</drop>
+        <dialect-scope name="org.hibernate.dialect.SQLServerDialect"/>
     </database-object>
     
     <database-object>
@@ -47,6 +61,16 @@
         <dialect-scope name="org.hibernate.dialect.Oracle9Dialect"/>
     </database-object>
     
+    <database-object>
+        <create>
+        BEGIN
+            ALTER TABLE LOGENTRY DROP COLUMN idx
+            ALTER TABLE LOGENTRY ADD idx numeric(19,0) IDENTITY(1,1)
+        END
+        </create>
+        <drop/>
+        <dialect-scope name="org.hibernate.dialect.SQLServerDialect"/>
+    </database-object>
     <database-object>
         <create>
         ALTER TABLE LOGENTRY
@@ -75,6 +99,16 @@
         <dialect-scope name="org.hibernate.dialect.MySQL5InnoDBDialect"/>
     </database-object>
     
+    <database-object>
+        <create>
+        BEGIN
+            ALTER TABLE LOGENTRY DROP COLUMN RECORDEDON
+            ALTER TABLE LOGENTRY ADD RECORDEDON datetime DEFAULT CURRENT_TIMESTAMP
+        END
+        </create>
+        <drop/>
+        <dialect-scope name="org.hibernate.dialect.SQLServerDialect"/>
+    </database-object>
     <database-object>
         <create>
         ALTER TABLE LOGENTRY

@@ -181,7 +181,7 @@ public class DataManagerEJBTest extends TestCase {
         ps.setInt(2, 0);
         ps.setBinaryStream(DataManagerEJB.STREAM_POSITION_CREATE,
                            _dummyStream,
-                           Integer.MAX_VALUE);
+                           1);
         expect(ps.execute()).andReturn(true);
         ps.close();
         replay(ps);
@@ -202,7 +202,7 @@ public class DataManagerEJBTest extends TestCase {
                                _se);
 
         // ACT
-        dm.create(_dummyStream);
+        dm.create(_dummyStream, 1);
 
         // ASSERT
         verify(ps, c, ds);
@@ -276,7 +276,7 @@ public class DataManagerEJBTest extends TestCase {
                                _se);
 
         // ACT
-        dm.create(_dummyStream);
+        dm.create(_dummyStream, 1);
 
         // ASSERT
         Connection c = ds.getConnection();
@@ -316,7 +316,7 @@ public class DataManagerEJBTest extends TestCase {
             new DataManagerEJB(ds,
                                dummy(ResourceDao.class),
                                _se);
-        final Data d = dm.create(_dummyStream);
+        final Data d = dm.create(_dummyStream, 1);
 
         // ACT
         dm.retrieve(d, os);
