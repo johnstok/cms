@@ -38,10 +38,11 @@ public interface DataManager {
      *
      * @param dataStream The input stream from which the bytes for the new data
      *        item should be read.
+     * @param length The length of the input, in bytes.
      * @return An instance of {@link Data} that represents the contents of the
      *      stream.
      */
-    Data create(InputStream dataStream);
+    Data create(InputStream dataStream, final int length);
 
     /**
      * Retrieve an existing item of binary data and write it to an output

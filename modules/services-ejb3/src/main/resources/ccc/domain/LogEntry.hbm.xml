@@ -87,7 +87,7 @@
         <property
             name="_isMajorEdit"
             column="ismajoredit"
-            not-null="false"
+            not-null="true"
             type="boolean"/>
     </class>
     

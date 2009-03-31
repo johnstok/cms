@@ -29,7 +29,7 @@ public class File extends Resource {
 
     private String _description;
     private Data _data;
-    private long _size;
+    private long _size; // FIXME: should be an int not a long.
     private MimeType _mimeType;
 
 

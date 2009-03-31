@@ -69,11 +69,13 @@ public final class Users {
         // FIXME: Hard coded connection string.
         try {
             Class.forName("org.h2.Driver");
+//            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 //            Class.forName("oracle.jdbc.driver.OracleDriver");
 //            Class.forName("com.mysql.jdbc.Driver");
             connection =
                 DriverManager.getConnection(
                     "jdbc:h2:tcp:localhost/mem:CCC", "CCC", "CCC");
+//                    "jdbc:sqlserver://hestia:1260;DatabaseName=CCC", "CCC", "CCC");
 //                    "jdbc:oracle:thin:@poseidon:1521:dev", "ccc", "d3ccc");
 //                    "jdbc:mysql://hestia:3306/ccc", "CCC", "CCC");
             connection.setAutoCommit(false);

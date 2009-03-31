@@ -73,7 +73,7 @@
         
         <map name="_metadata">
             <key column="id" />
-            <map-key type="string" column="key" length="100" />
+            <map-key type="string" column="ky" length="100" />
             <element type="string" column="value" length="1000" not-null="true"/>
         </map>
         
