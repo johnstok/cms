@@ -360,6 +360,7 @@ public class ResourceDaoImpl implements ResourceDao {
     public void changeRoles(final UUID id, final Collection<String> roles) {
         final Resource r = findLocked(Resource.class, id);
         r.roles(roles);
+        _search.updateRoles(r);
     }
 
     /**

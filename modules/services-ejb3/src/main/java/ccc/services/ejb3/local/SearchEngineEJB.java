@@ -15,6 +15,7 @@ import static javax.ejb.TransactionAttributeType.*;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -122,21 +123,16 @@ public class SearchEngineEJB  implements SearchEngine {
             LOG.debug("Skipped indexing for unpublished page : "+page.title());
             return;
         }
-        final Document d = createDocument(page);
+        final Document d = indexPage(page);
         _lucene.add(d);
         LOG.info("Indexed: "+page.title());
     }
 
 
-    private Document createDocument(final Page page) {
+    private Document indexPage(final Page page) {
 
-        final Document d = new Document();
-        d.add(
-            new Field(
-                "id",
-                page.id().toString(),
-                Field.Store.YES,
-                Field.Index.NOT_ANALYZED));
+        final Document d = createDocument(page);
+
         final StringBuilder sb = new StringBuilder(page.title());
         for (final Paragraph p : page.paragraphs()) {
             if (Paragraph.Type.TEXT == p.type()) {
@@ -149,8 +145,39 @@ public class SearchEngineEJB  implements SearchEngine {
             new Field(
                 "content",
                 sb.toString(),
-                Field.Store.NO,
+                Field.Store.YES,
                 Field.Index.ANALYZED));
+        return d;
+    }
+
+    private Document createDocument(final Resource resource) {
+
+        final Document d = new Document();
+        d.add(
+            new Field(
+                "id",
+                resource.id().toString(),
+                Field.Store.YES,
+                Field.Index.NOT_ANALYZED));
+
+        final StringBuffer roles = new StringBuffer();
+        final Collection<String> rroles = resource.computeRoles();
+        if (rroles != null && rroles.size() > 0) {
+            for (final String role : resource.computeRoles()) {
+                if (roles.length()!=0) {
+                    roles.append(",");
+                }
+                roles.append(role);
+            }
+        } else {
+            roles.append("anonymous");
+        }
+
+
+        d.add(new Field("roles",
+            roles.toString(),
+            Field.Store.YES,
+            Field.Index.NOT_ANALYZED));
         return d;
     }
 
@@ -163,14 +190,7 @@ public class SearchEngineEJB  implements SearchEngine {
             LOG.debug("Skipped indexing for non content file : "+file.title());
             return;
         }
-
-        final Document d = new Document();
-        d.add(
-            new Field(
-                "id",
-                file.id().toString(),
-                Field.Store.YES,
-                Field.Index.NOT_ANALYZED));
+        final Document d = createDocument(file);
 
         final String subType = file.mimeType().getSubType();
         String content = null;
@@ -202,7 +222,7 @@ public class SearchEngineEJB  implements SearchEngine {
                 new Field(
                     "content",
                     content,
-                    Field.Store.NO,
+                    Field.Store.YES,
                     Field.Index.ANALYZED));
 
         } catch (final IOException e) {
@@ -229,7 +249,7 @@ public class SearchEngineEJB  implements SearchEngine {
                 new Field(
                     "content",
                     content,
-                    Field.Store.NO,
+                    Field.Store.YES,
                     Field.Index.ANALYZED));
 
         } catch (final PasswordProtectedException ppe) {
@@ -258,5 +278,11 @@ public class SearchEngineEJB  implements SearchEngine {
             result = content.replaceAll("\\<.*?>", ""); // Scrub HTML
         }
         return result;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateRoles(final Resource r) {
+        _lucene.updateRolesField(r.id().toString(), r.roles());
     }
 }

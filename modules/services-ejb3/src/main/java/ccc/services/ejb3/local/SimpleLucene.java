@@ -11,6 +11,8 @@
  */
 package ccc.services.ejb3.local;
 
+import java.util.Collection;
+
 import org.apache.lucene.document.Document;
 
 
@@ -49,4 +51,13 @@ public interface SimpleLucene {
               final String field,
               final int maxHits,
               final SearchHandler sh);
+
+    /**
+     * Updates indexed resource's roles.
+     *
+     * @param id The Id of the resource.
+     * @param roles The new roles.
+     */
+    void updateRolesField(String id,
+                          Collection<String> roles);
 }
