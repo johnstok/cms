@@ -46,7 +46,7 @@ public interface SearchEngine {
     void add(Page page);
 
     /**
-     * Update a page that is already indexed.
+     * Update a resource that is already indexed.
      *
      * @param r The resource to index.
      */
@@ -67,5 +67,12 @@ public interface SearchEngine {
      * @param input The input stream of the file.
      */
     void update(File file, InputStream input);
+
+    /**
+     * Updates roles of the indexed resource.
+     *
+     * @param r The updated resource.
+     */
+    void updateRoles(Resource r);
 
 }
