@@ -61,6 +61,8 @@ public final class App {
 
         performMigration();
 
+//        LinkFixer.writeLinks();
+
         logout();
 
         reportFinish(START_TIME);
