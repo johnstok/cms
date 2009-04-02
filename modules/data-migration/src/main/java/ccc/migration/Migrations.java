@@ -100,6 +100,8 @@ public class Migrations {
         migrateCss();
         publishRecursive(_cssFolder);
         publishRecursive(_assetsImagesFolder);
+        publishRecursive(_filesFolder);
+        publishRecursive(_contentImagesFolder);
     }
 
 
@@ -530,9 +532,9 @@ public class Migrations {
             }
         }
         log.debug("Assembly done.");
-        
+
 //        new LinkFixer().extractURLs(map);
-        
+
         return map;
     }
 
