@@ -36,4 +36,7 @@ public final class QueryNames {
     /** ROOT_BY_NAME : String. */
     public static final String ROOT_BY_NAME = "rootByName";
 
+    /** RESOURCE_BY_LEGACY_ID : String. */
+    public static final String RESOURCE_BY_LEGACY_ID = "resourceByLegacyId";
+
 }

@@ -78,4 +78,11 @@ public final class StatefulReaderEJB
     public LogEntry lookup(final long index) {
         return _log.findEntryForIndex(index);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public String absolutePath(final String legacyId) {
+        final Resource r = _resources.lookupWithLegacyId(legacyId);
+        return (null==r) ? null : r.absolutePath().toString();
+    }
 }
