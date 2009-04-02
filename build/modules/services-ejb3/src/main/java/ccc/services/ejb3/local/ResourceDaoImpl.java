@@ -384,4 +384,11 @@ public class ResourceDaoImpl implements ResourceDao {
             return null;
         }
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public Resource lookupWithLegacyId(final String legacyId) {
+        return _dao.find(
+            QueryNames.RESOURCE_BY_LEGACY_ID, Resource.class, legacyId);
+    }
 }

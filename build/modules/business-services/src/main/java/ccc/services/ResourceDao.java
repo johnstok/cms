@@ -282,4 +282,12 @@ public interface ResourceDao {
      */
     void changeRoles(UUID resourceId, Collection<String> roles);
 
+    /**
+     * Look up a resource, given its CCC6 id.
+     *
+     * @param legacyId The CCC6 id.
+     * @return The corresponding resource in CCC7.
+     */
+    Resource lookupWithLegacyId(String legacyId);
+
 }

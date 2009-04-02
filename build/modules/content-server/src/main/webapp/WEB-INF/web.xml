@@ -39,6 +39,10 @@
 		<servlet-class>ccc.content.server.LoginServlet</servlet-class>
 	</servlet>
 	<servlet>
+		<servlet-name>broken-links</servlet-name>
+		<servlet-class>ccc.content.server.BrokenLinkServlet</servlet-class>
+	</servlet>
+	<servlet>
 		<servlet-name>error</servlet-name>
 		<jsp-file>/error.jsp</jsp-file>
 	</servlet>
@@ -54,6 +58,10 @@
 	<servlet-mapping>
 		<servlet-name>assets</servlet-name>
 		<url-pattern>/assets/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>broken-links</servlet-name>
+		<url-pattern>/ash/*</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>login</servlet-name>

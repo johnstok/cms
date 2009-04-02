@@ -44,4 +44,12 @@ public interface StatefulReader {
      * @return The log entry with the specified index.
      */
     LogEntry lookup(long index);
+
+    /**
+     * Determine the absolute path of a resource given its legacy id.
+     *
+     * @param legacyId The resource's id in CCC6.
+     * @return The absolute path as a string.
+     */
+    String absolutePath(String legacyId);
 }
