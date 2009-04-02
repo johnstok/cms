@@ -530,6 +530,9 @@ public class Migrations {
             }
         }
         log.debug("Assembly done.");
+        
+//        new LinkFixer().extractURLs(map);
+        
         return map;
     }
 
