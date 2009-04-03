@@ -64,8 +64,8 @@
     <database-object>
         <create>
         BEGIN
-            ALTER TABLE LOGENTRY DROP COLUMN idx
-            ALTER TABLE LOGENTRY ADD idx numeric(19,0) IDENTITY(1,1)
+            ALTER TABLE logentries DROP COLUMN idx
+            ALTER TABLE logentries ADD idx numeric(19,0) IDENTITY(1,1)
         END
         </create>
         <drop/>
@@ -73,8 +73,8 @@
     </database-object>
     <database-object>
         <create>
-        ALTER TABLE LOGENTRY
-        ALTER COLUMN IDX SET DEFAULT nextval('LOG_ENTRY_INDEX')
+        ALTER TABLE logentries
+        ALTER COLUMN index_position SET DEFAULT nextval('LOG_ENTRY_INDEX')
         </create>
         <drop/>
         <dialect-scope name="org.hibernate.dialect.H2Dialect"/>
@@ -82,7 +82,7 @@
     <database-object>
         <create>
         create or replace trigger logentry_autonumber
-        before insert on LOGENTRY for each row
+        before insert on logentries for each row
         begin
             select LOG_ENTRY_INDEX.nextval into :new.idx from dual;
         end;
@@ -92,7 +92,7 @@
     </database-object>
     <database-object>
         <create>
-        ALTER TABLE LOGENTRY
+        ALTER TABLE logentries
         CHANGE COLUMN _INDEX _INDEX bigint(20) NOT NULL AUTO_INCREMENT UNIQUE
         </create>
         <drop/>
@@ -102,8 +102,8 @@
     <database-object>
         <create>
         BEGIN
-            ALTER TABLE LOGENTRY DROP COLUMN RECORDEDON
-            ALTER TABLE LOGENTRY ADD RECORDEDON datetime DEFAULT CURRENT_TIMESTAMP
+            ALTER TABLE logentries DROP COLUMN RECORDEDON
+            ALTER TABLE logentries ADD RECORDEDON datetime DEFAULT CURRENT_TIMESTAMP
         END
         </create>
         <drop/>
@@ -111,8 +111,8 @@
     </database-object>
     <database-object>
         <create>
-        ALTER TABLE LOGENTRY
-        ALTER COLUMN RECORDEDON SET DEFAULT CURRENT_TIMESTAMP() 
+        ALTER TABLE logentries
+        ALTER COLUMN recorded_on SET DEFAULT CURRENT_TIMESTAMP() 
         </create>
         <drop/>
         <dialect-scope name="org.hibernate.dialect.H2Dialect"/>
@@ -120,7 +120,7 @@
     <database-object>
         <create>
         CREATE TRIGGER logentry_timestamp
-        before INSERT ON logentry FOR EACH ROW
+        before INSERT ON logentries FOR EACH ROW
         begin
             select systimestamp into :new.RECORDEDON from dual;
         END;
@@ -130,7 +130,7 @@
     </database-object>
     <database-object>
         <create>
-        ALTER TABLE LOGENTRY
+        ALTER TABLE logentries
         CHANGE COLUMN _RECORDEDON _RECORDEDON TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
         </create>
         <drop/>

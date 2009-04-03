@@ -132,6 +132,7 @@ public class CCCLoginModule implements LoginModule {
 
 
         } catch (final Exception e) {
+            LOG.error("Login failed", e); // TODO: do we need to log & throw?
             throw new LoginException("login failed: "+e.getMessage());
         }
     }

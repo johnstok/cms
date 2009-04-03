@@ -25,35 +25,53 @@
         <param name="type">ccc.actions.Action$Status</param>
     </typedef>
     
-    <class name="ccc.actions.Action" table="ACTIONS">
+    <class name="ccc.actions.Action" table="actions">
         
         <id name="_id" column="id" type="ccc.services.ejb3.support.UUIDUserType">
             <generator class="assigned" />
         </id>
         
-        <property name="_executeAfter" column="executeAfter" not-null="true" type="timestamp" />
-        <property name="_type" column="type" not-null="true" type="ActionType" />
-        <property name="_status" column="status" not-null="true" type="StatusType" />
+        <property
+            name="_executeAfter"
+            column="execute_after"
+            type="timestamp"
+            not-null="true" />
+        <property
+            name="_type"
+            column="type"
+            type="ActionType"
+            not-null="true" />
+        <property
+            name="_status"
+            column="status"
+            type="StatusType"
+            not-null="true" />
         
-        <many-to-one name="_actor" column="actor" not-null="false" />
-        <many-to-one name="_subject" column="subject" not-null="false" />
+        <many-to-one
+            name="_actor"
+            column="actor_id"
+            not-null="true" />
+        <many-to-one
+            name="_subject"
+            column="subject_id"
+            not-null="true" />
         
         <component name="_parameters" class="ccc.domain.Snapshot">
 			<property
                 name="detail"
-                access="property"
-                not-null="true"
                 column="parameters"
-				type="text"  />
+                type="text"
+                not-null="true"
+                access="property" />
 		</component>
         
         <component name="_failure" class="ccc.domain.Snapshot">
             <property
                 name="detail"
-                access="property"
-                not-null="false"
                 column="failure"
-                type="text"  />
+                type="text"
+                not-null="false"
+                access="property" />
         </component>
         
     </class>

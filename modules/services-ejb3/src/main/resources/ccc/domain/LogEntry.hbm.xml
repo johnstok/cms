@@ -25,7 +25,10 @@
         <param name="type">ccc.domain.ResourceType</param>
     </typedef>
     
-    <class name="ccc.domain.LogEntry" mutable="false">
+    <class
+        name="ccc.domain.LogEntry"
+        mutable="false"
+        table="logentries">
         
         <id name="_id" column="id" type="ccc.services.ejb3.support.UUIDUserType">
             <generator class="assigned" />
@@ -43,22 +46,22 @@
             type="LogEntryAction" />
         <property
             name="_happenedOn"
-            column="happenedon"
+            column="happened_on"
             not-null="true"
             type="timestamp" />
         <property
             name="_subjectType"
-            column="subjecttype"
+            column="subject_type"
             not-null="true"
             type="ResourceType" />
         <property
             name="_subjectId"
-            column="subjectid"
+            column="subject_id"
             not-null="true"
             type="ccc.services.ejb3.support.UUIDUserType" />
         <property
             name="_comment"
-            column="cmmnt"
+            column="message"
             not-null="true"
             type="string"
             length="1024"/>
@@ -70,7 +73,7 @@
             length="2147483647"/>
         <property
             name="_index"
-            column="idx"
+            column="index_position"
             not-null="true"
             type="long"
             update="false"
@@ -78,7 +81,7 @@
             generated="insert"/>
         <property
             name="_recordedOn"
-            column="recordedon"
+            column="recorded_on"
             not-null="true"
             type="timestamp"
             update="false"
@@ -86,7 +89,7 @@
             generated="insert"/>
         <property
             name="_isMajorEdit"
-            column="ismajoredit"
+            column="major_change"
             not-null="true"
             type="boolean"/>
     </class>

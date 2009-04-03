@@ -22,7 +22,7 @@
 	    <param name="type">ccc.domain.Setting$Name</param>
 	</typedef>
 	
-    <class name="ccc.domain.Setting">
+    <class name="ccc.domain.Setting" table="settings">
     
         <id name="_id" column="id" type="ccc.services.ejb3.support.UUIDUserType">
             <generator class="assigned" />

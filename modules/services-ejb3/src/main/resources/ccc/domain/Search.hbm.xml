@@ -19,7 +19,7 @@
 <hibernate-mapping default-access="field">
     
     <joined-subclass
-        name="ccc.domain.Search"  extends="ccc.domain.Resource">
+        name="ccc.domain.Search"  extends="ccc.domain.Resource" table="searches">
         <key column="id" />
     </joined-subclass>
     

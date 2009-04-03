@@ -48,8 +48,7 @@ public class NewDBQueries {
         try {
             // insert user
             ps = _connection.prepareStatement(
-                "INSERT INTO USERS (ID, EMAIL, USERNAME, VERSION) "
-                + "VALUES (?,?,?,?)");
+                "INSERT INTO users (id, email, username, version) VALUES (?,?,?,?)");
             ps.setString(1, uid.toString());
             ps.setString(2, email);
             ps.setString(3, username);
@@ -58,15 +57,13 @@ public class NewDBQueries {
 
             // insert role
             ps = _connection.prepareStatement(
-                "INSERT INTO USERS__ROLES (ID, ROLE) "
-            + "VALUES (?, 'ADMINISTRATOR')");
+                "INSERT INTO user_roles (user_id, role) VALUES (?, 'ADMINISTRATOR')");
             ps.setString(1, uid.toString());
             ps.executeUpdate();
 
             // insert password
             ps = _connection.prepareStatement(
-                "INSERT INTO PASSWORD ( ID, VERSION, HASH, USR) "
-            + "VALUES (?, 0, ?, ?)");
+                "INSERT INTO passwords (id, version, hash, user_id) VALUES (?, 0, ?, ?)");
             ps.setString(1, pwId.toString());
             ps.setBytes(2, hash);
             ps.setString(3, uid.toString());
@@ -96,7 +93,7 @@ public class NewDBQueries {
         try {
             // update password
             ps = _connection.prepareStatement(
-                "UPDATE PASSWORD SET HASH=?, VERSION=1 WHERE USR = ?");
+                "UPDATE passwords SET hash=?, version=1 WHERE user_id = ?");
             ps.setBytes(1, hash);
             ps.setString(2, muid.toString());
             ps.executeUpdate();
