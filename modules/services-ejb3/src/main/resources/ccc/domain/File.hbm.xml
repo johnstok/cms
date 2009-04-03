@@ -44,7 +44,7 @@
             <property
                 name="_id"
                 not-null="true"
-                column="data"
+                column="data_id"
                 type="ccc.services.ejb3.support.UUIDUserType" />
         </component>
         

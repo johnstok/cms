@@ -26,7 +26,7 @@
 
 		<many-to-one
             name="_target"
-            column="target"
+            column="target_id"
             not-null="true"
             lazy="false" />
 
