@@ -23,13 +23,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
-import org.htmlcleaner.HtmlCleaner;
-import org.htmlcleaner.PrettyXmlSerializer;
-import org.htmlcleaner.TagNode;
 
 
 /**
- * TODO: Add Description for this type.
+ * Corrects relative URLs stored in href attributes.
  *
  * @author Civic Computing Ltd.
  */
@@ -42,73 +39,75 @@ public class LinkFixer {
         Pattern.compile("(\\d+\\.)(\\d+\\.)*html");
     private static final Pattern FILE_PATTERN =
         Pattern.compile("files/.+");
+    static final Pattern HREF_PATTERN =
+        Pattern.compile("href\\s*=\\s*\"(.*?)\"");
+    private final String _prefix;
+
+    /**
+     * Constructor.
+     *
+     * @param prefix The prefix used when correcting links.
+     */
+    public LinkFixer(final String prefix) {
+        _prefix = prefix;
+        // TODO: Warn if prefix is a ZLS.
+    }
 
     void extractURLs(final Map<String, StringBuffer> map) {
 
         for (final Map.Entry<String, StringBuffer> para : map.entrySet()) {
-            try {
-                final HtmlCleaner cleaner  = new HtmlCleaner();
-                cleaner.getProperties().setOmitHtmlEnvelope(true);
-                final TagNode html = cleaner.clean(para.getValue().toString());
-                final Object[] l = html.evaluateXPath("//a");
+            final StringBuffer correctedPara = new StringBuffer();
+            final Matcher hrefMatcher = HREF_PATTERN.matcher(para.getValue());
 
-                for (final Object element : l) {
-                    final TagNode anchor = (TagNode) element;
-                    if (anchor.hasAttribute("href")) {
-                        final String link = anchor.getAttributeByName("href");
+            while (hrefMatcher.find()) { // search for href attributes
+                final String url = hrefMatcher.group(1);
 
-                        // Ignore links that don't need correction
-                        if (link.startsWith("mailto:")) { // email address
-                            continue;
-                        } else if (link.startsWith("http://")) { // absolute URLs
-                            continue;
-                        } else if (link.startsWith("/")) { // absolute URLs
-                            continue;
-                        } else if (link.startsWith("#")) { // link on the same page
-                            continue;
-                        }
+                if (url.startsWith("mailto:")    // email address
+                    || url.startsWith("http://") // absolute URL
+                    || url.startsWith("/")       // absolute URL
+                    ||url.startsWith("#")) {     // link on the same page
+                    hrefMatcher.appendReplacement(
+                        correctedPara, hrefMatcher.group()); // no correction
 
-                        correct(anchor, link);
-                    }
+                } else {
+                    final String correctedHref = "href=\""+correct(url)+"\"";
+                    hrefMatcher.appendReplacement(correctedPara, correctedHref);
+
                 }
-
-                para.setValue(
-                    new StringBuffer(
-                        new PrettyXmlSerializer(cleaner.getProperties())
-                            .getXmlAsString(html)
-                    )
-                );
-
-            } catch (final Exception e) {
-                log.error("HTML parsing failed:\r\n"+para.getValue(), e);
             }
+            hrefMatcher.appendTail(correctedPara);
+            para.setValue(correctedPara);
         }
     }
 
-    void correct(final TagNode anchor, final String link) {
+    String correct(final String link) {
         final Matcher pm = PAGE_PATTERN.matcher(link);
         final Matcher opm = OLDPAGE_PATTERN.matcher(link);
 
+        String corrected = link;
+
         if (pm.matches()) {
-            final String corrected = "/ash/"+pm.group(1)+"html";
-            anchor.addAttribute("href", corrected);
+            corrected = _prefix+pm.group(1)+"html";
             log.info("Corrected "+link+" to "+corrected);
+
         } else if (opm.matches()) {
-            final String corrected = "/ash/"+opm.group(1)+".html";
-            anchor.addAttribute("href", corrected);
+            corrected = _prefix+opm.group(1)+".html";
             log.info("Corrected "+link+" to "+corrected);
+
         } else if (FILE_PATTERN.matcher(link).matches()) {
-            final String corrected = "/ash/"+link;
-            anchor.addAttribute("href", corrected);
+            corrected = _prefix+link;
             log.info("Corrected "+link+" to "+corrected);
+
         } else {
             links.add(link);
+            log.info("Didn't correct "+link);
+
         }
+        return corrected;
     }
 
     /**
      * TODO: Add a description of this method.
-     *
      */
     public static void writeLinks() {
         try {
