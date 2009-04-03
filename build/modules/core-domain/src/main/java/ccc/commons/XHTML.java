@@ -189,22 +189,13 @@ public final class XHTML {
                                       final String xpathExpression) {
 
         try {
-            final DocumentBuilder builder =
-                createParser(new XhtmlErrorHandler(),
-                             new XhtmlEntityResolver());
-            final Document doc = builder.parse(page);
+            final Document doc = parse(page);
 
             final XPath xpath = createXPath();
 
             final Object result = xpath.evaluate(xpathExpression, doc);
             return (String) result;
 
-        } catch (final ParserConfigurationException e) {
-            throw new RuntimeException(e);
-        } catch (final SAXException e) {
-            throw new RuntimeException(e);
-        } catch (final IOException e) {
-            throw new RuntimeException(e);
         } catch (final XPathExpressionException e) {
             throw new RuntimeException(e);
         }
@@ -214,34 +205,38 @@ public final class XHTML {
      * Apply an xPath expression to an xhtml page.
      * TODO: Rename method.
      *
-     * @param page The page to which we'll apply the expression.
+     * @param doc The document to which we'll apply the expression.
      * @param xpathExpression The expression to apply.
      * @return The results of evaluating the expression, as a String. See
      *      {@link XPath#evaluate(String, Object)} for further details.
      */
     public static NodeList evaluateXPathToNodeList(
-                                                 final InputStream page,
+                                                 final Document doc,
                                                  final String xpathExpression) {
-
         try {
-            final DocumentBuilder builder =
-                createParser(new XhtmlErrorHandler(),
-                             new XhtmlEntityResolver());
-            final Document doc = builder.parse(page);
-
             final XPath xpath = createXPath();
 
             final Object result =
                 xpath.evaluate(xpathExpression, doc, XPathConstants.NODESET);
             return (NodeList) result;
 
+        } catch (final XPathExpressionException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static Document parse(final InputStream page) {
+        try {
+            final DocumentBuilder builder =
+                createParser(new XhtmlErrorHandler(),
+                             new XhtmlEntityResolver());
+            return builder.parse(page);
+
         } catch (final ParserConfigurationException e) {
             throw new RuntimeException(e);
         } catch (final SAXException e) {
             throw new RuntimeException(e);
         } catch (final IOException e) {
-            throw new RuntimeException(e);
-        } catch (final XPathExpressionException e) {
             throw new RuntimeException(e);
         }
     }

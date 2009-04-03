@@ -11,13 +11,15 @@
  */
 package ccc.migration;
 
-import junit.framework.TestCase;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
 
-import org.htmlcleaner.TagNode;
+import junit.framework.TestCase;
 
 
 /**
- * TODO: Add Description for this type.
+ * Tests for the {@link LinkFixer} class.
  *
  * @author Civic Computing Ltd.
  */
@@ -28,17 +30,62 @@ public class LinkFixerTest
     /**
      * Test.
      */
+    public void testFixParagraph() {
+
+        // ARRANGE
+        final LinkFixer lf = new LinkFixer("/ash/");
+        final Map<String, StringBuffer> paras =
+            new HashMap<String, StringBuffer>();
+        paras.put(
+            "foo",
+            new StringBuffer(
+                "<a href =\"mailto:kwj@civic.com\">kwj</a>"
+                + "< href= \"1234.html\" />"));
+
+        // ACT
+        lf.extractURLs(paras);
+
+        // ASSERT
+        assertEquals(
+            "<a href =\"mailto:kwj@civic.com\">kwj</a>"
+            + "< href=\"/ash/1234.html\" />",
+            paras.get("foo").toString());
+    }
+
+    /**
+     * Test.
+     */
+    public void testFindHrefAttributes() {
+
+        // ARRANGE
+        final String anchor =
+            "<a href =  \"5240.html\">A page</a>"
+            + "<a href\t=\n\"5241.html\">Another page</a>";
+
+        // ACT
+        final Matcher m = LinkFixer.HREF_PATTERN.matcher(anchor);
+
+        // ASSERT
+        assertTrue(m.find());
+        assertEquals("5240.html", m.group(1));
+        assertTrue(m.find());
+        assertEquals("5241.html", m.group(1));
+    }
+
+    /**
+     * Test.
+     */
     public void testCorrectHandlesOldPageLinksA() {
 
         // ARRANGE
-        final LinkFixer lf = new LinkFixer();
-        final TagNode tn = new TagNode("a");
+        final LinkFixer lf = new LinkFixer("/ash/");
 
         // ACT
-        lf.correct(tn, "ash_display.jsp?pContentID=4782&amp;p_applic=CCC&amp;p_service=Content.show&amp;");
+        final String corrected =
+            lf.correct("ash_display.jsp?pContentID=4782&amp;p_applic=CCC");
 
         // ASSERT
-        assertEquals("/ash/4782.html", tn.getAttributeByName("href"));
+        assertEquals("/ash/4782.html", corrected);
     }
 
     /**
@@ -47,14 +94,14 @@ public class LinkFixerTest
     public void testCorrectHandlesOldPageLinksB() {
 
         // ARRANGE
-        final LinkFixer lf = new LinkFixer();
-        final TagNode tn = new TagNode("a");
+        final LinkFixer lf = new LinkFixer("/ash/");
 
         // ACT
-        lf.correct(tn, "servlet/controller?p_service=Content.show&amp;p_applic=CCC&amp;pContentID=4264");
+        final String corrected =
+            lf.correct("servlet/controller?pContentID=4264&amp;p_applic=CCC");
 
         // ASSERT
-        assertEquals("/ash/4264.html", tn.getAttributeByName("href"));
+        assertEquals("/ash/4264.html", corrected);
     }
 
     /**
@@ -63,14 +110,13 @@ public class LinkFixerTest
     public void testCorrectHandlesPageLinks() {
 
         // ARRANGE
-        final LinkFixer lf = new LinkFixer();
-        final TagNode tn = new TagNode("a");
+        final LinkFixer lf = new LinkFixer("/ash/");
 
         // ACT
-        lf.correct(tn, "3481.html");
+        final String corrected = lf.correct("3481.html");
 
         // ASSERT
-        assertEquals("/ash/3481.html", tn.getAttributeByName("href"));
+        assertEquals("/ash/3481.html", corrected);
     }
 
     /**
@@ -79,13 +125,12 @@ public class LinkFixerTest
     public void testCorrectHandlesComplexPageLinks() {
 
         // ARRANGE
-        final LinkFixer lf = new LinkFixer();
-        final TagNode tn = new TagNode("a");
+        final LinkFixer lf = new LinkFixer("/ash/");
 
         // ACT
-        lf.correct(tn, "3481.7.1071.html");
+        final String corrected = lf.correct("3481.7.1071.html");
 
         // ASSERT
-        assertEquals("/ash/3481.html", tn.getAttributeByName("href"));
+        assertEquals("/ash/3481.html", corrected);
     }
 }
