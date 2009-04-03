@@ -275,11 +275,7 @@ public class Migrations {
 
             showInMainMenu(r, rs);
 
-            final Map<String, String> metadata =
-                new HashMap<String, String>();
-            setStyleSheet(r, metadata);
-            metadata.put("legacyId", ""+r.contentId());
-            setMetadata(rs, metadata);
+            setMetadata(r, rs);
 
             setResourceRoles(r, rs);
 
@@ -317,11 +313,7 @@ public class Migrations {
 
             showInMainMenu(r, rs);
 
-            final Map<String, String> metadata =
-                new HashMap<String, String>();
-            setStyleSheet(r, metadata);
-            metadata.put("legacyId", ""+r.contentId());
-            setMetadata(rs, metadata);
+            setMetadata(r, rs);
 
             setResourceRoles(r, rs);
 
@@ -420,8 +412,17 @@ public class Migrations {
         }
     }
 
-    private void setMetadata(final ResourceSummary rs,
-                             final Map<String, String> metadata) {
+    private void setMetadata(final ResourceBean r,
+                             final ResourceSummary rs) {
+
+        final Map<String, String> metadata =
+            new HashMap<String, String>();
+        setStyleSheet(r, metadata);
+        metadata.put("legacyId", ""+r.contentId());
+        if (r.useInIndex() != null) {
+            metadata.put("useInIndex", ""+r.useInIndex());
+        }
+
         _commands.lock(rs._id);
         _commands.updateMetadata(rs._id, metadata);
         _commands.unlock(rs._id);

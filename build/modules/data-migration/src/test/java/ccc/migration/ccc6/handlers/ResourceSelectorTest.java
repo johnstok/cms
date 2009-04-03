@@ -53,7 +53,8 @@ public class ResourceSelectorTest
                     "STATUS",
                     "VERSION_ID",
                     "PERMISSION_NAME",
-                    "INDEX_TITLE"});
+                    "INDEX_TITLE",
+                    "USE_IN_INDEX"});
 
         // ACT
         final List<ResourceBean> result = new ResourceSelector().handle(rs);

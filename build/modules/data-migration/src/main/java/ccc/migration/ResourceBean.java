@@ -16,6 +16,7 @@ public class ResourceBean {
     private final int _legacyVersion;
     private final boolean _secure;
     private final String _title;
+    private final String _useInIndex;
 
     /**
      * Constructor.
@@ -28,6 +29,7 @@ public class ResourceBean {
      * @param legacyVersion Legacy version id of the resource
      * @param isSecure
      * @param title The title for the resource
+     * @param useInIndex The value of use_in_index.
      */
     public ResourceBean(final int contentId,
                         final String type,
@@ -36,7 +38,8 @@ public class ResourceBean {
                         final boolean published,
                         final int legacyVersion,
                         final boolean isSecure,
-                        final String title) {
+                        final String title,
+                        final String useInIndex) {
         _contentId = contentId;
         _displayTemplate = displayTemplate;
         _name = name;
@@ -45,6 +48,7 @@ public class ResourceBean {
         _legacyVersion = legacyVersion;
         _secure = isSecure;
         _title = title;
+        _useInIndex = useInIndex;
     }
 
 
@@ -119,5 +123,14 @@ public class ResourceBean {
      */
     public String title() {
         return _title;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return The useInIndex as a string, may be null.
+     */
+    public String useInIndex() {
+        return _useInIndex;
     }
 }
