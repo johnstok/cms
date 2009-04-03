@@ -36,7 +36,7 @@
         
 		<many-to-one
             name="_actor"
-            column="actor"
+            column="actor_id"
             not-null="true"/>
         
         <property
