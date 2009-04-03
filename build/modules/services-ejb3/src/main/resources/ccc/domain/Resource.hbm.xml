@@ -17,7 +17,7 @@
 -->
 
 <hibernate-mapping default-access="field" default-cascade="none">
-	<class name="ccc.domain.Resource" table="RESOURCES" abstract="true">
+	<class name="ccc.domain.Resource" table="resources" abstract="true">
 	
 		<id name="_id" column="id" type="ccc.services.ejb3.support.UUIDUserType">
 			<generator class="assigned" />
@@ -29,20 +29,49 @@
             type="long"
             unsaved-value="negative" />
 
-		<property name="_title" column="title" not-null="true" type="string" length="256" />
-		<property name="_includeInMainMenu" column="includeInMainMenu" not-null="true" />
-        <property name="_dateCreated" column="dateCreated" not-null="true" type="timestamp" />
-        <property name="_dateChanged" column="dateChanged" not-null="true" type="timestamp" />
+		<property
+            name="_title"
+            column="title"
+            not-null="true"
+            type="string"
+            length="256" />
+		<property
+            name="_includeInMainMenu"
+            column="in_main_menu"
+            not-null="true" />
+        <property
+            name="_dateCreated"
+            column="date_created"
+            not-null="true"
+            type="timestamp" />
+        <property
+            name="_dateChanged"
+            column="date_changed"
+            not-null="true"
+            type="timestamp" />
 
-		<many-to-one name="_template" column="template" not-null="false" />
+		<many-to-one
+            name="_template"
+            column="template_id"
+            not-null="false" />
 		
-		<many-to-one name="_lockedBy" column="lockedBy" not-null="false" />
+		<many-to-one
+            name="_lockedBy"
+            column="locked_by_id"
+            not-null="false" />
 		
-		<many-to-one name="_publishedBy" column="publishedBy" not-null="false" />
+		<many-to-one
+            name="_publishedBy"
+            column="published_by_id"
+            not-null="false" />
 
 		<component name="_name" class="ccc.domain.ResourceName">
-			<property name="_representation" not-null="true" column="name"
-				type="string" length="256" />
+			<property
+                name="_representation"
+                not-null="true"
+                column="name"
+				type="string"
+                length="256" />
 		</component>
 
         <many-to-one
@@ -53,28 +82,32 @@
             update="false"
         />
 
-        <list name="_tags" table="RESOURCE_TAGS">
-            <key column="id" />
-            <list-index column="idx" />
+        <list
+            name="_tags"
+            table="resource_tags">
+            <key
+                column="resource_id"
+                not-null="true" />
+            <list-index column="tag_index" />
             <element
-                column="tag"
+                column="tag_value"
                 type="string"
                 not-null="true"
                 unique="false" />
         </list>
 
-        <set name="_roles">
-            <key not-null="true" column="id" />
+        <set name="_roles" table="resource_roles">
+            <key column="resource_id" not-null="true" />
             <element
                 column="role"
                 type="string"
                 not-null="true"/>
         </set>
         
-        <map name="_metadata">
-            <key column="id" />
-            <map-key type="string" column="ky" length="100" />
-            <element type="string" column="value" length="1000" not-null="true"/>
+        <map name="_metadata" table="resource_metadata">
+            <key column="resource_id" not-null="true" />
+            <map-key type="string" column="datum_key" length="100" />
+            <element type="string" column="datum_value" length="1000" not-null="true"/>
         </map>
         
 	</class>

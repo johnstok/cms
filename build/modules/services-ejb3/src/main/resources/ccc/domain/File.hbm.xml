@@ -17,25 +17,52 @@
 -->
 
 <hibernate-mapping default-access="field">
-	<joined-subclass name="ccc.domain.File" table="FILES"
-		extends="ccc.domain.Resource">
+	<joined-subclass
+        name="ccc.domain.File"
+        extends="ccc.domain.Resource"
+        table="files">
+        
 		<key column="id" />
 
-		<property name="_description" column="description" not-null="true" type="string"
+		<property
+            name="_description"
+            column="description"
+            type="string"
+            not-null="true"
 			length="1024" />
 			
-	    <property name="_size" column="siz" not-null="true" type="long" />
+	    <property
+            name="_size"
+            column="size_in_bytes"
+            not-null="true"
+            type="long" />
 
-		<component name="_data" class="ccc.domain.Data" unique="true">
-            <property name="_id" not-null="true" column="data"
+		<component
+            name="_data"
+            class="ccc.domain.Data"
+            unique="true">
+            <property
+                name="_id"
+                not-null="true"
+                column="data"
                 type="ccc.services.ejb3.support.UUIDUserType" />
         </component>
         
-        <component name="_mimeType" class="javax.activation.MimeType">
-            <property name="primaryType" not-null="true" column="mime_primary_type"
-                type="string" access="property" />
-            <property name="subType" not-null="true" column="mime_sub_type"
-                type="string" access="property" />
+        <component
+            name="_mimeType"
+            class="javax.activation.MimeType">
+            <property
+                name="primaryType"
+                not-null="true"
+                column="mime_type_primary"
+                type="string"
+                access="property" />
+            <property
+                name="subType"
+                not-null="true"
+                column="mime_type_sub"
+                type="string"
+                access="property" />
         </component>
 
 	</joined-subclass>

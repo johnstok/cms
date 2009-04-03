@@ -22,13 +22,15 @@
     </typedef>
     
     <joined-subclass
-        name="ccc.domain.Folder"  extends="ccc.domain.Resource">
+        name="ccc.domain.Folder" 
+        extends="ccc.domain.Resource"
+        table="folders">
         
         <key column="id" />
         
         <property
             name="_order"
-            column="ordr"
+            column="sort_order"
             not-null="true"
             type="SortOrder" />
         

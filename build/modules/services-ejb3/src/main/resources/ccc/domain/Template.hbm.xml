@@ -18,7 +18,7 @@
 
 <hibernate-mapping default-access="field">
     <joined-subclass
-        name="ccc.domain.Template" extends="ccc.domain.Resource">
+        name="ccc.domain.Template" extends="ccc.domain.Resource" table="templates">
         <key column="id" />
         
         <property name="_title" column="title" not-null="true" type="string" length="256" />
