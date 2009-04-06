@@ -18,6 +18,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -67,7 +68,7 @@ public class JdbcDatabaseTest
         final User u = new User("user");
 
         expect(_ds.getConnection()).andReturn(_c);
-        expect(_c.prepareStatement(JdbcDatabase.SQL_LOOKUP_USER))
+        expect(_c.prepareStatement("x"))
             .andReturn(_s);
         _s.setString(1, u.username());
         expect(_s.executeQuery()).andReturn(_rs);
@@ -83,7 +84,7 @@ public class JdbcDatabaseTest
         replayAll();
 
         // ACT
-        final Object[] result = new JdbcDatabase(_r).lookupUser(u.username());
+        final Object[] result = _db.lookupUser(u.username());
 
         verifyAll();
         assertEquals(3, result.length);
@@ -104,7 +105,7 @@ public class JdbcDatabaseTest
         final User u = new User("user");
 
         expect(_ds.getConnection()).andReturn(_c);
-        expect(_c.prepareStatement(JdbcDatabase.SQL_LOOKUP_USER))
+        expect(_c.prepareStatement("x"))
         .andReturn(_s);
         _s.setString(1, u.username());
         expect(_s.executeQuery()).andReturn(_rs);
@@ -116,7 +117,7 @@ public class JdbcDatabaseTest
         replayAll();
 
         // ACT
-        final Object[] result = new JdbcDatabase(_r).lookupUser(u.username());
+        final Object[] result = _db.lookupUser(u.username());
 
         verifyAll();
         assertNull("Should be NULL", result);
@@ -133,7 +134,7 @@ public class JdbcDatabaseTest
         final User u = new User("user");
 
         expect(_ds.getConnection()).andReturn(_c);
-        expect(_c.prepareStatement(JdbcDatabase.SQL_LOOKUP_USER))
+        expect(_c.prepareStatement("x"))
         .andReturn(_s);
         _s.setString(1, u.username());
         expect(_s.executeQuery()).andReturn(_rs);
@@ -151,7 +152,7 @@ public class JdbcDatabaseTest
 
         // ACT
         try {
-            new JdbcDatabase(_r).lookupUser(u.username());
+            _db.lookupUser(u.username());
             fail("Should throw exception.");
 
 
@@ -175,7 +176,7 @@ public class JdbcDatabaseTest
         u.addRole(CreatorRoles.CONTENT_CREATOR);
 
         expect(_ds.getConnection()).andReturn(_c);
-        expect(_c.prepareStatement(JdbcDatabase.SQL_LOOKUP_ROLES))
+        expect(_c.prepareStatement("y"))
             .andReturn(_s);
         _s.setString(1, u.id().toString());
         expect(_s.executeQuery()).andReturn(_rs);
@@ -192,7 +193,7 @@ public class JdbcDatabaseTest
 
         // ACT
         final Set<String> result =
-            new JdbcDatabase(_r).lookupRoles(u.id().toString());
+            _db.lookupRoles(u.id().toString());
 
         // ASSERT
         verifyAll();
@@ -217,6 +218,7 @@ public class JdbcDatabaseTest
     private Connection _c;
     private PreparedStatement _s;
     private ResultSet _rs;
+    private Database _db;
     private CallbackHandler _cbHandler;
 
     /** {@inheritDoc} */
@@ -228,6 +230,12 @@ public class JdbcDatabaseTest
         _rs = createStrictMock(ResultSet.class);
         _cbHandler = createStrictMock(CallbackHandler.class);
         _r.put("java:/ccc", _ds);
+        _db = new JdbcDatabase(_r);
+        _db.setOptions(new HashMap<String, Object>() {{
+            put("dsJndiName", "java:/ccc");
+            put("principalsQuery", "x");
+            put("rolesQuery", "y");
+        }});
     }
 
     /** {@inheritDoc} */
@@ -238,5 +246,6 @@ public class JdbcDatabaseTest
         _s = null;
         _rs = null;
         _cbHandler = null;
+        _db = null;
     }
 }

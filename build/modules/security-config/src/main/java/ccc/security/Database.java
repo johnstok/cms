@@ -12,6 +12,7 @@
 package ccc.security;
 
 import java.sql.SQLException;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -43,5 +44,12 @@ public interface Database {
      * @throws SQLException If an error occurs while communicating with the DB.
      */
     Set<String> lookupRoles(String userId) throws SQLException;
+
+    /**
+     * Specify the options for the database.
+     *
+     * @param options A map of key:value pairs.
+     */
+    void setOptions(Map<String, ?> options);
 
 }
