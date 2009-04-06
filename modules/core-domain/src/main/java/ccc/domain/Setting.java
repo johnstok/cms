@@ -75,7 +75,7 @@ public class Setting extends VersionedEntity {
      */
     public static enum Name {
 
-        /** DUMMY_SETTING : Name. */
-        DUMMY_SETTING
+        /** DATABASE_VERSION : Name. */
+        DATABASE_VERSION
     }
 }
