@@ -1,21 +1,11 @@
 <policy>
     <application-policy name="ccc">
         <authentication>
-            <login-module code="ccc.security.CCCLoginModule" flag="required" />
-            <!-- 
-            <login-module code="org.jboss.security.auth.spi.DatabaseServerLoginModule"
-                             flag="required">
+            <login-module code="ccc.security.CCCLoginModule" flag="required">
                 <module-option name="dsJndiName">java:/ccc</module-option>
-                <module-option name="principalsQuery">
-                    select _hash from PASSWORD where _USER=?</module-option>
-                <module-option name="rolesQuery">
-                    select ROLE, 'Roles' from USER__ROLES where ID=?</module-option>
-                <module-option name="hashAlgorithm">SHA-256</module-option>
-                <module-option name="hashEncoding">base64</module-option>
-                <module-option name="hashCharset">UTF-8</module-option>
-                <module-option name="unauthenticatedIdentity">anonymous</module-option>
+                <module-option name="principalsQuery">SELECT users.id, passwords.hash, passwords.id  FROM passwords, users WHERE passwords.user_id=users.id AND users.username=?</module-option>
+                <module-option name="rolesQuery">SELECT role FROM user_roles where user_id=?</module-option>
             </login-module>
-             -->
         </authentication>
     </application-policy>
 </policy>

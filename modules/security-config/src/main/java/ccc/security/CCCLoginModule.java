@@ -56,7 +56,6 @@ public class CCCLoginModule implements LoginModule {
         this(new JdbcDatabase());
     }
 
-
     /**
      * Constructor.
      *
@@ -96,6 +95,7 @@ public class CCCLoginModule implements LoginModule {
                            final Map<String, ?> options) {
         _subject = subject;
         _cbHandler = callbackHandler;
+        _db.setOptions(options);
     }
 
     /** {@inheritDoc} */

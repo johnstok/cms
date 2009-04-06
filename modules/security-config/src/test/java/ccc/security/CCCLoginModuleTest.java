@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.security.auth.callback.Callback;
@@ -52,6 +53,7 @@ public class CCCLoginModuleTest
         // ARRANGE
         final UUID pw = UUID.randomUUID();
         final UUID u = UUID.randomUUID();
+        _db.setOptions(isA(Map.class));
         expect(_db.lookupUser("foo")).andReturn(
             new Object[]{
                 u.toString(),
@@ -132,6 +134,7 @@ public class CCCLoginModuleTest
                                            throws LoginException, SQLException {
 
         // ARRANGE
+        _db.setOptions(isA(Map.class));
         expect(_db.lookupUser("foo")).andReturn(null);
         replay(_db);
 

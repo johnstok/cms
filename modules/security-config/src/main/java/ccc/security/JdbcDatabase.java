@@ -18,6 +18,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -35,20 +36,10 @@ public class JdbcDatabase
     implements
         Database {
 
-    /** SQL_LOOKUP_USER : String. */
-    public static final String SQL_LOOKUP_USER =
-        "SELECT users.id, passwords.hash, passwords.id "
-        + "FROM passwords, users "
-        + "WHERE passwords.user_id=users.id "
-        + "AND users.username=?";
-
-    /** SQL_LOOKUP_ROLES : String. */
-    public static final String SQL_LOOKUP_ROLES =
-        "SELECT role "
-        + "FROM user_roles "
-        + "where user_id=?";
-
     private Registry _r = new JNDI();
+    private String _datasource;
+    private String _principalQuery;
+    private String _rolesQuery;
 
     /**
      * Constructor.
@@ -67,7 +58,6 @@ public class JdbcDatabase
     }
 
 
-
     /** {@inheritDoc} */
     @Override
     public Object[] lookupUser(final String username) throws SQLException {
@@ -76,11 +66,11 @@ public class JdbcDatabase
             return null;
         }
 
-        final DataSource ds = _r.get("java:/ccc");
+        final DataSource ds = _r.get(_datasource);
         final Connection c = ds.getConnection();
 
         try { // Work with the Connection, close on error.
-            final PreparedStatement s = c.prepareStatement(SQL_LOOKUP_USER);
+            final PreparedStatement s = c.prepareStatement(_principalQuery);
 
             try { // Work with the Statement, close on error.
                 s.setString(1, username);
@@ -133,11 +123,11 @@ public class JdbcDatabase
     @Override
     public Set<String> lookupRoles(final String userId) throws SQLException {
         final Set<String> result = new HashSet<String>();
-        final DataSource ds = _r.get("java:/ccc");
+        final DataSource ds = _r.get(_datasource);
         final Connection c = ds.getConnection();
 
         try { // Work with the Connection, close on error.
-            final PreparedStatement s = c.prepareStatement(SQL_LOOKUP_ROLES);
+            final PreparedStatement s = c.prepareStatement(_rolesQuery);
 
             try { // Work with the Statement, close on error.
                 s.setString(1, userId);
@@ -172,5 +162,13 @@ public class JdbcDatabase
         }
 
         return result;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void setOptions(final Map<String, ?> options) {
+        _datasource = (String) options.get("dsJndiName");
+        _principalQuery = (String) options.get("principalsQuery");
+        _rolesQuery = (String) options.get("rolesQuery");
     }
 }
