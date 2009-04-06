@@ -264,9 +264,8 @@ public class Migrations {
 
         try {
             // FIXME: Specify actor & date
-            // FIXME: Set a title for folders?
             final ResourceSummary rs =
-                _commands.createFolder(parentFolderId, r.name());
+                _commands.createFolder(parentFolderId, r.name(), r.title());
             log.debug("Created folder: "+r.contentId());
 
             setTemplateForResource(r, rs);
