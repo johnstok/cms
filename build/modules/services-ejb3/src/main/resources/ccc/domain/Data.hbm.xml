@@ -136,4 +136,12 @@
         <drop/>
         <dialect-scope name="org.hibernate.dialect.MySQL5InnoDBDialect"/>
     </database-object>
+    
+    <database-object>
+        <create>
+        INSERT INTO SETTINGS (id, version, value, name)
+        VALUES ('145e827a-0f11-41bf-af0b-ad9a4a982c03', 0, '0', 'DATABASE_VERSION')
+        </create>
+        <drop/>
+    </database-object>
 </hibernate-mapping>
