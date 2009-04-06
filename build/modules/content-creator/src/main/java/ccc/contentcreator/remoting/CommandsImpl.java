@@ -60,6 +60,14 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
+    public ResourceSummary createFolder(final String parentId,
+                                        final String name,
+                                        final String title) {
+        return _delegate.createFolder(parentId, name, title);
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public ResourceSummary createPage(final String parentId,
                            final PageDelta delta,
                            final String templateId) {

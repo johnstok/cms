@@ -117,7 +117,18 @@ public class CommandsEJB
     @Override
     public ResourceSummary createFolder(final String parentId,
                                         final String name) {
+
+        return createFolder(parentId, name, null);
+
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceSummary createFolder(final String parentId,
+                                        final String name,
+                                        final String title) {
         final Folder f = new Folder(name);
+        f.title((null==title)?name:title);
         _resources.create(UUID.fromString(parentId), f);
         return map(f);
 

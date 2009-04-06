@@ -178,6 +178,11 @@ public interface Commands {
     ResourceSummary createFolder(String parentId, String name);
 
     /**
+     * Create a folder with the specified name and title.
+     */
+    ResourceSummary createFolder(String parentId, String name, String title);
+
+    /**
      * Create a root folder with the specified name.
      */
     ResourceSummary createRoot(String name);

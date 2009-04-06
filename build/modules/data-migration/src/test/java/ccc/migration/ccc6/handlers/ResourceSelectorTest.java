@@ -44,7 +44,7 @@ public class ResourceSelectorTest
         final Csv csv = Csv.getInstance();
         final ResultSet rs =
             csv.read(
-                new StringReader(",,,,PUBLISHED,"),
+                new StringReader(",,,,PUBLISHED,,,,"),
                 new String[]{
                     "CONTENT_ID",
                     "CONTENT_TYPE",
@@ -62,5 +62,36 @@ public class ResourceSelectorTest
         // ASSERT
         assertEquals(1, result.size());
         assertTrue(result.get(0).isPublished());
+    }
+
+    /**
+     * Test.
+     * @throws IOException If reading CSV fails.
+     * @throws SQLException From JDBC API.
+     */
+    public void testIndexInTitle() throws SQLException, IOException {
+
+        // ARRANGE
+        final Csv csv = Csv.getInstance();
+        final ResultSet rs =
+            csv.read(
+                new StringReader(",,,,PUBLISHED,,,TestTitle,"),
+                new String[]{
+                    "CONTENT_ID",
+                    "CONTENT_TYPE",
+                    "NAME",
+                    "PAGE",
+                    "STATUS",
+                    "VERSION_ID",
+                    "PERMISSION_NAME",
+                    "INDEX_TITLE",
+                "USE_IN_INDEX"});
+
+        // ACT
+        final List<ResourceBean> result = new ResourceSelector().handle(rs);
+
+        // ASSERT
+        assertEquals(1, result.size());
+        assertEquals("TestTitle", result.get(0).title());
     }
 }
