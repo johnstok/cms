@@ -929,4 +929,36 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("No folder selected")
     String noFolderSelected();
+
+    /**
+     * "Search".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Search")
+    String search();
+
+    /**
+     * "Search tool tip"
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Use * for wild card searches, for example Joh* finds John")
+    String searchToolTip();
+
+    /**
+     * "User Details".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("User Details")
+    String userDetails();
+
+    /**
+     * "Search Field".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Search Field")
+    String searchField();
 }
