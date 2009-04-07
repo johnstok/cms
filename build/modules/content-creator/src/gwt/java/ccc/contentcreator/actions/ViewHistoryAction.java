@@ -28,7 +28,7 @@ public final class ViewHistoryAction
     /**
      * Constructor.
      *
-     * @param selectionModel
+     * @param selectionModel The selection model.
      */
     public ViewHistoryAction(final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;

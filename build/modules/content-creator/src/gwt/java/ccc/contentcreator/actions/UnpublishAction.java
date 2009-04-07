@@ -38,7 +38,7 @@ public class UnpublishAction
     /**
      * Constructor.
      *
-     * @param selectionModel
+     * @param selectionModel The selection model.
      */
     public UnpublishAction(final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;

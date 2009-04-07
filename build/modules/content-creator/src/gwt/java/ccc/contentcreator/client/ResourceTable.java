@@ -29,6 +29,7 @@ import com.extjs.gxt.ui.client.widget.grid.GridViewConfig;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
+import com.extjs.gxt.ui.client.widget.tree.TreeItem;
 
 
 /**
@@ -180,7 +181,11 @@ public class ResourceTable
 
     /** {@inheritDoc} */
     public ModelData treeSelection() {
-        return _tree.getSelectedItem().getModel();
+        final TreeItem item = _tree.getSelectedItem();
+        if (item == null) {
+            return null;
+        }
+        return item.getModel();
     }
 
 

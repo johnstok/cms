@@ -31,7 +31,7 @@ public class FolderContextMenu
     /**
      * Constructor.
      *
-     * @param ssm
+     * @param ssm The selection model to use.
      */
     public FolderContextMenu(final SingleSelectionModel ssm) {
         super(ssm);

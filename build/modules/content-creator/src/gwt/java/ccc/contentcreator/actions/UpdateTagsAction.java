@@ -28,7 +28,7 @@ public final class UpdateTagsAction
     /**
      * Constructor.
      *
-     * @param selectionModel
+     * @param selectionModel The selection model.
      */
     public UpdateTagsAction(final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;

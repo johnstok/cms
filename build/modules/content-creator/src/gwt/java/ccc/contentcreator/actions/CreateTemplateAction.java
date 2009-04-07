@@ -1,6 +1,7 @@
 package ccc.contentcreator.actions;
 
 import ccc.contentcreator.client.Action;
+import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.EditTemplateDialog;
 
@@ -20,7 +21,7 @@ public final class CreateTemplateAction
     /**
      * Constructor.
      *
-     * @param selectionModel
+     * @param selectionModel The selection model to use.
      */
     public CreateTemplateAction(final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;
@@ -29,9 +30,13 @@ public final class CreateTemplateAction
     /** {@inheritDoc} */
     public void execute() {
         final ModelData item = _selectionModel.treeSelection();
-        new EditTemplateDialog(
-            item.<String>get("id"),
-            _selectionModel)
-        .show();
+        if (item == null) {
+            Globals.alert(Globals.uiConstants().noFolderSelected());
+        } else {
+            new EditTemplateDialog(
+                item.<String>get("id"),
+                _selectionModel)
+            .show();
+        }
     }
 }

@@ -26,7 +26,8 @@ public final class PreviewAction
     /**
      * Constructor.
      *
-     * @param selectionModel
+     * @param selectionModel The selection model.
+     * @param useWorkingCopy Boolean for working copy preview.
      */
     public PreviewAction(final SingleSelectionModel selectionModel,
                          final boolean useWorkingCopy) {

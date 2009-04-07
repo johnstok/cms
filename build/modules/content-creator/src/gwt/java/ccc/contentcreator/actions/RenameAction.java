@@ -20,7 +20,7 @@ public final class RenameAction
     /**
      * Constructor.
      *
-     * @param selectionModel
+     * @param selectionModel The selection model.
      */
     public RenameAction(final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;
