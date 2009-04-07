@@ -20,7 +20,6 @@ import junit.framework.TestCase;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.User;
-import ccc.services.SearchEngine;
 import ccc.services.PageDao;
 import ccc.services.ResourceDao;
 import ccc.services.UserManager;
@@ -71,7 +70,6 @@ public class PageDaoImplTest
         expect(_dao.findLocked(Page.class, page.id())).andReturn(page);
         _dao.update(eq(page), eq("comment text"), eq(false), eq(u), isA(Date.class));
         expect(_um.loggedInUser()).andReturn(u);
-        _se.update(page);
         replayAll();
 
 
@@ -119,33 +117,30 @@ public class PageDaoImplTest
 
 
     private void verifyAll() {
-        verify(_dao, _se, _um);
+        verify(_dao, _um);
     }
 
     private void replayAll() {
-        replay(_dao, _se, _um);
+        replay(_dao, _um);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {
         _dao = createStrictMock(ResourceDao.class);
-        _se = createStrictMock(SearchEngine.class);
         _um = createStrictMock(UserManager.class);
-        _cm = new PageDaoImpl(_dao, _se, _um);
+        _cm = new PageDaoImpl(_dao, _um);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void tearDown() throws Exception {
         _dao = null;
-        _se = null;
         _cm = null;
         _um = null;
     }
 
     private ResourceDao _dao;
     private PageDao _cm;
-    private SearchEngine _se;
     private UserManager _um;
 }

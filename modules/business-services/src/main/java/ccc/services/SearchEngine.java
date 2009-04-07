@@ -11,13 +11,8 @@
  */
 package ccc.services;
 
-import java.io.InputStream;
 import java.util.Set;
 import java.util.UUID;
-
-import ccc.domain.File;
-import ccc.domain.Page;
-import ccc.domain.Resource;
 
 
 /**
@@ -38,41 +33,23 @@ public interface SearchEngine {
      */
     Set<UUID> find(final String searchTerms);
 
-    /**
-     * Add a page to the search index.
-     *
-     * @param page The page to index.
-     */
-    void add(Page page);
+    void index();
 
     /**
-     * Update a resource that is already indexed.
-     *
-     * @param r The resource to index.
+     * Start the indexer running.
      */
-    void update(Resource r);
+    void start();
 
     /**
-     * Add a file to the search index.
-     *
-     * @param file The file to index.
-     * @param input The input stream of the file.
+     * Stop the indexer running.
      */
-    void add(File file, InputStream input);
+    void stop();
 
     /**
-     * Update a file that is already indexed.
+     * Query whether the indexer is running.
      *
-     * @param file The file to index.
-     * @param input The input stream of the file.
+     * @return True if the indexer is running; false otherwise.
      */
-    void update(File file, InputStream input);
-
-    /**
-     * Updates roles of the indexed resource.
-     *
-     * @param r The updated resource.
-     */
-    void updateRoles(Resource r);
+    boolean isRunning();
 
 }
