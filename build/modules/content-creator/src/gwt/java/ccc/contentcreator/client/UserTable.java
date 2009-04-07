@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.dialogs.EditUserDialog;
@@ -51,12 +52,16 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @author Civic Computing Ltd.
  */
 public class UserTable extends TablePanel {
+    /** _constants : UIConstants. */
+    private final UIConstants _constants = Globals.uiConstants();
 
     private final ListStore<ModelData> _detailsStore =
         new ListStore<ModelData>();
 
     private final RadioGroup _radioGroup = new RadioGroup("searchField");
     private final ToolBar _toolBar = new ToolBar();
+    private final TextToolItem _searchButton;
+    private final AdapterToolItem _ti;
 
     private final Radio _usernameRadio = new Radio();
     private final Radio _emailRadio = new Radio();
@@ -69,22 +74,23 @@ public class UserTable extends TablePanel {
     UserTable() {
 
         setId("UserDetails");
-        setHeading("User Details");
+        setHeading(_constants.userDetails());
         setLayout(new FitLayout());
 
         final TextField<String> searchString = new TextField<String>();
-        searchString.setToolTip("Use * for wild card searches, for example "
-        + "Joh* finds John");
+        searchString.setToolTip(_constants.searchToolTip());
         searchString.setId("searchString");
-        final AdapterToolItem ti = new AdapterToolItem(searchString);
+        _ti = new AdapterToolItem(searchString);
 
-        final TextToolItem searchButton = new TextToolItem("Search");
-        searchButton.setId("searchButton");
+        _searchButton = new TextToolItem(_constants.search());
+        _searchButton.setId("searchButton");
 
-        searchButton.addListener(Events.Select, new Listener<ComponentEvent>(){
+        _searchButton.addListener(Events.Select, new Listener<ComponentEvent>(){
             public void handleEvent(final ComponentEvent be) {
+                if (searchString.getValue() == null) {
+                    return;
+                }
                 _detailsStore.removeAll();
-
                 if (_radioGroup.getValue() == _usernameRadio) {
                     qs.listUsersWithUsername(
                         searchString.getValue().replace('*', '%'),
@@ -109,44 +115,15 @@ public class UserTable extends TablePanel {
             }
         }
         );
-
-        _usernameRadio.setName("Username");
-        _usernameRadio.setBoxLabel("Username");
-        _usernameRadio.setValue(true);
-        _usernameRadio.setId("usernameRadio");
-
-        _emailRadio.setName("Email");
-        _emailRadio.setBoxLabel("Email");
-        _emailRadio.setId("emailRadio");
-
-        _radioGroup.setFieldLabel("Search Field");
-        _radioGroup.add(_usernameRadio);
-        _radioGroup.add(_emailRadio);
-        _toolBar.add(new AdapterToolItem(_radioGroup));
-        _toolBar.add(new SeparatorToolItem());
-        _toolBar.add(ti);
-        _toolBar.add(new SeparatorToolItem());
-        _toolBar.add(searchButton);
-        _toolBar.setId("toolbar");
-
+        createToolBar();
         setTopComponent(_toolBar);
 
         final Menu contextMenu = new Menu();
-        final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
+        contextMenu.setId("userContextMenu");
         final ContextActionGridPlugin gp =
             new ContextActionGridPlugin(contextMenu);
-        configs.add(gp);
-        final ColumnConfig usernameColumn = new ColumnConfig();
-        usernameColumn.setId("username");
-        usernameColumn.setHeader("Username");
-        usernameColumn.setWidth(400);
-        configs.add(usernameColumn);
+        final List<ColumnConfig> configs = createColumnConfigs(gp);
 
-        final ColumnConfig emailColumn = new ColumnConfig();
-        emailColumn.setId("email");
-        emailColumn.setHeader("e-mail");
-        emailColumn.setWidth(400);
-        configs.add(emailColumn);
 
         final ColumnModel cm = new ColumnModel(configs);
 
@@ -154,8 +131,17 @@ public class UserTable extends TablePanel {
         grid.setLoadMask(true);
         grid.setId("UserGrid");
 
-        contextMenu.setId("userContextMenu");
-        final MenuItem editUser = new MenuItem("Edit user");
+        final MenuItem editUser = createEditUserMenu(grid);
+        contextMenu.add(editUser);
+
+        grid.setContextMenu(contextMenu);
+        grid.addPlugin(gp);
+        add(grid);
+    }
+
+    private MenuItem createEditUserMenu(final Grid<ModelData> grid) {
+
+        final MenuItem editUser = new MenuItem(_constants.editUser());
         editUser.setId("editUserMenu");
         editUser.addSelectionListener(new SelectionListener<MenuEvent>() {
 
@@ -175,11 +161,51 @@ public class UserTable extends TablePanel {
             }
 
         });
-        contextMenu.add(editUser);
+        return editUser;
+    }
 
-        grid.setContextMenu(contextMenu);
-        grid.addPlugin(gp);
-        add(grid);
+    /**
+     * TODO: Add a description of this method.
+     *
+     */
+    private void createToolBar() {
+        _usernameRadio.setName("Username");
+        _usernameRadio.setBoxLabel(_constants.username());
+        _usernameRadio.setValue(true);
+        _usernameRadio.setId("usernameRadio");
+
+        _emailRadio.setName("Email");
+        _emailRadio.setBoxLabel(_constants.email());
+        _emailRadio.setId("emailRadio");
+
+        _radioGroup.setFieldLabel(_constants.searchField());
+        _radioGroup.add(_usernameRadio);
+        _radioGroup.add(_emailRadio);
+        _toolBar.add(new AdapterToolItem(_radioGroup));
+        _toolBar.add(new SeparatorToolItem());
+        _toolBar.add(_ti);
+        _toolBar.add(new SeparatorToolItem());
+        _toolBar.add(_searchButton);
+        _toolBar.setId("toolbar");
+    }
+
+    private List<ColumnConfig> createColumnConfigs(final ContextActionGridPlugin gp) {
+        final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
+        configs.add(gp);
+
+        final ColumnConfig usernameColumn = new ColumnConfig();
+        usernameColumn.setId("username");
+        usernameColumn.setHeader(_constants.username());
+        usernameColumn.setWidth(400);
+        configs.add(usernameColumn);
+
+        final ColumnConfig emailColumn = new ColumnConfig();
+        emailColumn.setId("email");
+        emailColumn.setHeader(_constants.email());
+        emailColumn.setWidth(400);
+        configs.add(emailColumn);
+
+        return configs;
     }
 
     /**
