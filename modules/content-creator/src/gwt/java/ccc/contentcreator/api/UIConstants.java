@@ -921,4 +921,12 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("alphanumeric")
     String alphanumeric();
+
+    /**
+     * "No folder selected".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("No folder selected")
+    String noFolderSelected();
 }

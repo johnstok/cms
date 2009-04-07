@@ -49,6 +49,10 @@ public final class ChooseTemplateAction
         } else {
             item = _selectionModel.tableSelection();
         }
+        if (item == null) {
+            Globals.alert(Globals.uiConstants().noFolderSelected());
+            return;
+        }
 
         if ("PAGE".equals(item.<String>get("type"))
             || "FOLDER".equals(item.<String>get("type"))

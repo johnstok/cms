@@ -26,7 +26,7 @@ public class PublishAction
     /**
      * Constructor.
      *
-     * @param selectionModel
+     * @param selectionModel The selection model to use.
      */
     public PublishAction(final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;

@@ -36,7 +36,7 @@ public class IncludeInMainMenuAction
     /**
      * Constructor.
      *
-     * @param selectionModel
+     * @param selectionModel The selection model.
      */
     public IncludeInMainMenuAction(final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;

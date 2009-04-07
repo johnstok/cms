@@ -20,8 +20,8 @@ public final class CreateAliasAction
     /**
      * Constructor.
      *
-     * @param selectionModel
-     * @param root
+     * @param selectionModel The selection model.
+     * @param root The root of current resource tree.
      */
     public CreateAliasAction(final SingleSelectionModel selectionModel,
                              final ResourceSummary root) {

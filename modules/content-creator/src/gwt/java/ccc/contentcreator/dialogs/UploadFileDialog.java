@@ -45,7 +45,6 @@ public class UploadFileDialog extends AbstractEditDialog {
     private final HiddenField<String> _path = new HiddenField<String>();
     private FileUploadField           _file = new FileUploadField();
 
-    private final ModelData _parentFolder;
     private final Image _image =
         new Image("images/gxt/shared/large-loading.gif");
 
@@ -60,8 +59,6 @@ public class UploadFileDialog extends AbstractEditDialog {
         super(
             Globals.uiConstants().uploadFileTo()+": "+parentFolder.get("name"));
         setHeight(Globals.DEFAULT_UPLOAD_HEIGHT);
-
-        _parentFolder = parentFolder;
 
         // Create a FormPanel and point it at a service.
         _panel.setAction("upload");

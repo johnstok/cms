@@ -38,7 +38,7 @@ public class LockAction
     /**
      * Constructor.
      *
-     * @param selectionModel
+     * @param selectionModel The selection model.
      */
     public LockAction(final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;

@@ -22,8 +22,8 @@ public final class MoveAction
     /**
      * Constructor.
      *
-     * @param selectionModel
-     * @param root
+     * @param selectionModel The selection model.
+     * @param root The root of current resource tree.
      */
     public MoveAction(final SingleSelectionModel selectionModel,
                       final ResourceSummary root) {

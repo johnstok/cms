@@ -38,7 +38,7 @@ public class UnlockAction
     /**
      * Constructor.
      *
-     * @param selectionModel
+     * @param selectionModel The selection model.
      */
     public UnlockAction(final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;

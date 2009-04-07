@@ -1,6 +1,7 @@
 package ccc.contentcreator.actions;
 
 import ccc.contentcreator.client.Action;
+import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.CreateFolderDialog;
 
@@ -20,7 +21,7 @@ public final class CreateFolderAction
     /**
      * Constructor.
      *
-     * @param selectionModel
+     * @param selectionModel The selection model to use.
      */
     public CreateFolderAction(final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;
@@ -29,6 +30,10 @@ public final class CreateFolderAction
     /** {@inheritDoc} */
     public void execute() {
         final ModelData item = _selectionModel.treeSelection();
-        new CreateFolderDialog(item, _selectionModel).show();
+        if (item == null) {
+            Globals.alert(Globals.uiConstants().noFolderSelected());
+        } else {
+            new CreateFolderDialog(item, _selectionModel).show();
+        }
     }
 }

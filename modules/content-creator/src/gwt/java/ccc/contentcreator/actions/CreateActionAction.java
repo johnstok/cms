@@ -18,7 +18,7 @@ public final class CreateActionAction
     /**
      * Constructor.
      *
-     * @param root
+     * @param ssm The selection model.
      */
     public CreateActionAction(final SingleSelectionModel ssm) {
         _ssm = ssm;

@@ -28,7 +28,7 @@ public final class CreatePageAction
     /**
      * Constructor.
      *
-     * @param selectionModel
+     * @param selectionModel The selection model to use.
      */
     public CreatePageAction(final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;
@@ -37,10 +37,14 @@ public final class CreatePageAction
     /** {@inheritDoc} */
     public void execute() {
         final ModelData item = _selectionModel.treeSelection();
+        if (item == null) {
+            Globals.alert(Globals.uiConstants().noFolderSelected());
+            return;
+        }
         _queries.templates(
             new ErrorReportingCallback<Collection<TemplateDelta>>(){
                 public void onSuccess(
-                              final Collection<TemplateDelta> list) {
+                                      final Collection<TemplateDelta> list) {
                     new CreatePageDialog(list, item, _selectionModel).show();
                 }
             }

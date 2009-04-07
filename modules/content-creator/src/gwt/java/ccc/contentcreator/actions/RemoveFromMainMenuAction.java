@@ -36,7 +36,7 @@ public class RemoveFromMainMenuAction
     /**
      * Constructor.
      *
-     * @param selectionModel
+     * @param selectionModel The selection model.
      */
     public RemoveFromMainMenuAction(final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;

@@ -27,7 +27,7 @@ public final class UpdateMetadataAction
     /**
      * Constructor.
      *
-     * @param selectionModel
+     * @param selectionModel The selection model.
      */
     public UpdateMetadataAction(final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;
