@@ -53,14 +53,14 @@ public interface DataManager {
      */
     void retrieve(Data data, OutputStream dataStream);
 
-   /**
-     * Retrieve an existing item of binary data and return input stream.
+    /**
+     * Retrieve an existing item of binary data and write it to an output
+     * stream.
      *
      * @param data The identifier for the existing data.
-     * @return The input stream of the data.
+     * @param action An action to perform with the retrieved data.
      */
-    InputStream retrieve(Data data);
-
+    void retrieve(Data data, StreamAction action);
 
     /**
      * Create a file.
@@ -96,4 +96,20 @@ public interface DataManager {
      * @return The list of resources.
      */
     List<File> findImages();
+
+
+    /**
+     * An action to perform on an {@link InputStream}.
+     *
+     * @author Civic Computing Ltd.
+     */
+    public interface StreamAction {
+        /**
+         * Execute the action.
+         *
+         * @param is The input stream to operate on.
+         * @throws Exception If the action fails.
+         */
+        void execute(InputStream is) throws Exception;
+    }
 }

@@ -14,24 +14,16 @@ package ccc.services.ejb3.local;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collection;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
+import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.Term;
-import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.search.BooleanClause;
-import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 
 
@@ -46,6 +38,8 @@ public class SimpleLuceneFS implements SimpleLucene {
 
     private Properties _properties = new Properties();
     private String _indexPath;
+
+    private IndexWriter writer;
 
     /**
      * Constructor.
@@ -68,34 +62,10 @@ public class SimpleLuceneFS implements SimpleLucene {
     @Override
     public void add(final Document document) {
         try {
-            final IndexWriter writer = createWriter();
             writer.addDocument(document);
-            writer.optimize();
-            writer.close();
+            LOG.info("Added document: "+document);
         } catch (final IOException e) {
             LOG.warn("Error adding document.", e);
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void remove(final String searchTerms,
-                       final String field) {
-        try {
-            final IndexWriter writer = createWriter();
-            writer.deleteDocuments(
-                new QueryParser(
-                    field,
-                    new StandardAnalyzer())
-                .parse(searchTerms));
-            writer.expungeDeletes();
-            writer.optimize();
-            writer.close();
-        } catch (final IOException e) {
-            LOG.warn("Error removing document.", e);
-        } catch (final ParseException e) {
-            LOG.warn("Error removing document.", e);
         }
     }
 
@@ -122,17 +92,11 @@ public class SimpleLuceneFS implements SimpleLucene {
             final IndexSearcher searcher =
                 new IndexSearcher(_indexPath);
 
-            final BooleanQuery bq = new BooleanQuery();
-
-            final Query qf = new TermQuery(new Term(field, searchTerms));
-            final Query ql = new TermQuery(new Term("roles", "anonymous"));
-
-            bq.add(qf, BooleanClause.Occur.MUST);
-            bq.add(ql, BooleanClause.Occur.MUST);
-
             final TopDocs docs =
                 searcher.search(
-                    bq,
+                    new QueryParser(
+                        field,
+                        new StandardAnalyzer()).parse(searchTerms),
                         maxHits);
 
             sh.handle(searcher, docs);
@@ -140,56 +104,49 @@ public class SimpleLuceneFS implements SimpleLucene {
             searcher.close();
         } catch (final IOException e) {
             LOG.warn("Error performing query.", e);
+        } catch (final ParseException e) {
+            LOG.warn("Error performing query.", e);
         }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void clearIndex() throws CorruptIndexException, IOException, ParseException {
+        writer.deleteDocuments(
+            new QueryParser(
+                "*",
+                new StandardAnalyzer())
+            .parse("*"));
+        writer.expungeDeletes();
+        LOG.info("Deleted all existing documents.");
     }
 
     /** {@inheritDoc} */
     @Override
-    public void updateRolesField(final String id,
-                                 final Collection<String> roles) {
+    public void commitUpdate() throws CorruptIndexException, IOException {
+        writer.optimize();
+        writer.close();
+        writer = null;
+        LOG.info("Commited index update.");
+    }
 
+    /** {@inheritDoc} */
+    @Override
+    public void rollbackUpdate() {
         try {
-            final IndexSearcher searcher =
-                new IndexSearcher(_indexPath);
-            final String[] queryp = {id};
-            final String[] fields = {"id"};
-            final BooleanClause.Occur[] flags = {BooleanClause.Occur.MUST};
-            final Query query = MultiFieldQueryParser.parse(
-                queryp,
-                fields,
-                flags,
-                new StandardAnalyzer());
-
-            final TopDocs td = searcher.search(query, 1);
-            final ScoreDoc[] sd = td.scoreDocs;
-            if (sd != null && sd.length == 1){
-                final Document doc = searcher.doc(sd[0].doc);
-                doc.removeField("roles");
-
-                final StringBuffer rolesField = new StringBuffer();
-                if (roles != null && roles.size() > 0) {
-                    for (final String role : roles) {
-                        if (rolesField.length()!=0) {
-                            rolesField.append(",");
-                        }
-                        rolesField.append(role);
-                    }
-                } else {
-                    rolesField.append("anonymous");
-                }
-                doc.add(new Field("roles",
-                    rolesField.toString(),
-                    Field.Store.YES,
-                    Field.Index.NOT_ANALYZED));
-
-                remove(id, "id");
-                add(doc);
-            }
-            searcher.close();
+            writer.rollback();
+            LOG.info("Rolled back index update.");
         } catch (final IOException e) {
-            LOG.warn("Error removing document.", e);
-        } catch (final ParseException e) {
-            LOG.warn("Error removing document.", e);
+            writer = null;
+            LOG.error("Error rolling back lucene write.", e);
         }
+    }
+
+    /** {@inheritDoc}*/
+    @Override
+    public void startUpdate() throws IOException {
+        writer = createWriter();
+        LOG.info("Staring index update.");
     }
 }

@@ -72,7 +72,7 @@ public class DataManagerEJBTest extends TestCase {
          _al = createStrictMock(ResourceDao.class);
          _se = createStrictMock(SearchEngine.class);
          _ps = createStrictMock(PreparedStatement.class);
-         _dm = new DataManagerEJB(_ds, _al, _se);
+         _dm = new DataManagerEJB(_ds, _al);
     }
 
     /** {@inheritDoc} */
@@ -198,8 +198,7 @@ public class DataManagerEJBTest extends TestCase {
 
         final DataManager dm =
             new DataManagerEJB(ds,
-                               dummy(ResourceDao.class),
-                               _se);
+                               dummy(ResourceDao.class));
 
         // ACT
         dm.create(_dummyStream, 1);
@@ -244,8 +243,7 @@ public class DataManagerEJBTest extends TestCase {
 
         final DataManager dm =
             new DataManagerEJB(ds,
-                               dummy(ResourceDao.class),
-                               _se);
+                               dummy(ResourceDao.class));
 
         // ACT
         dm.retrieve(d, os);
@@ -272,8 +270,7 @@ public class DataManagerEJBTest extends TestCase {
 
         final DataManager dm =
             new DataManagerEJB(ds,
-                               dummy(ResourceDao.class),
-                               _se);
+                               dummy(ResourceDao.class));
 
         // ACT
         dm.create(_dummyStream, 1);
@@ -314,8 +311,7 @@ public class DataManagerEJBTest extends TestCase {
 
         final DataManager dm =
             new DataManagerEJB(ds,
-                               dummy(ResourceDao.class),
-                               _se);
+                               dummy(ResourceDao.class));
         final Data d = dm.create(_dummyStream, 1);
 
         // ACT

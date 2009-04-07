@@ -11,9 +11,11 @@
  */
 package ccc.services.ejb3.local;
 
-import java.util.Collection;
+import java.io.IOException;
 
 import org.apache.lucene.document.Document;
+import org.apache.lucene.index.CorruptIndexException;
+import org.apache.lucene.queryParser.ParseException;
 
 
 /**
@@ -31,15 +33,6 @@ public interface SimpleLucene {
     void add(final Document document);
 
     /**
-     * Remove document(s) from a lucene index.
-     * Removes all documents matching the specified query.
-     *
-     * @param searchTerms The search terms to match.
-     * @param field The field to query.
-     */
-    void remove(final String searchTerms, final String field);
-
-    /**
      * Search a lucene index.
      *
      * @param searchTerms The terms to match.
@@ -53,11 +46,32 @@ public interface SimpleLucene {
               final SearchHandler sh);
 
     /**
-     * Updates indexed resource's roles.
+     * TODO: Add a description of this method.
+     * @throws ParseException
+     * @throws IOException
+     * @throws CorruptIndexException
      *
-     * @param id The Id of the resource.
-     * @param roles The new roles.
      */
-    void updateRolesField(String id,
-                          Collection<String> roles);
+    void clearIndex() throws CorruptIndexException, IOException, ParseException;
+
+    /**
+     * TODO: Add a description of this method.
+     * @throws IOException
+     *
+     */
+    void startUpdate() throws IOException;
+
+    /**
+     * TODO: Add a description of this method.
+     * @throws IOException
+     * @throws CorruptIndexException
+     *
+     */
+    void commitUpdate() throws CorruptIndexException, IOException;
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     */
+    void rollbackUpdate();
 }

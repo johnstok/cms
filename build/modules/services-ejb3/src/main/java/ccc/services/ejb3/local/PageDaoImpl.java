@@ -41,7 +41,6 @@ import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.PageDao;
 import ccc.services.ResourceDao;
-import ccc.services.SearchEngine;
 import ccc.services.UserManager;
 
 
@@ -56,7 +55,6 @@ import ccc.services.UserManager;
 public class PageDaoImpl implements PageDao {
 
     @EJB(name=ResourceDao.NAME)     private ResourceDao     _dao;
-    @EJB(name=SearchEngine.NAME)    private SearchEngine    _search;
     @EJB(name=UserManager.NAME)     private UserManager     _users;
 
 
@@ -67,14 +65,11 @@ public class PageDaoImpl implements PageDao {
      * Constructor.
      *
      * @param dao The ResourceDao used for CRUD operations, etc.
-     * @param se The search engine to use.
      * @param um The UserManager.
      */
     public PageDaoImpl(final ResourceDao dao,
-                       final SearchEngine se,
                        final UserManager um) {
         _dao = dao;
-        _search = se;
         _users = um;
     }
 
@@ -118,7 +113,6 @@ public class PageDaoImpl implements PageDao {
             validateFieldsForPage(page.paragraphs(), template.definition());
         }
         _dao.update(page, comment, isMajorEdit, actor, happenedOn);
-        _search.update(page);
     }
 
     /** {@inheritDoc} */
@@ -131,7 +125,6 @@ public class PageDaoImpl implements PageDao {
 
         }
         _dao.create(id, page);
-        _search.add(page);
     }
 
     private void validateFieldsForPage(final Set<Paragraph> delta,
