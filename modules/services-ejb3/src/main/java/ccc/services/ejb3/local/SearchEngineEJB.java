@@ -98,6 +98,10 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
     public Set<UUID> find(final String searchTerms,
                           final int resultCount,
                           final int page) {
+        if (searchTerms == null || searchTerms.trim().equals("")) {
+            return new HashSet<UUID>();
+        }
+
         final String field = "content";
         final int maxHits = (page+1)*resultCount;
         final CapturingHandler sh = new CapturingHandler(resultCount, page);
