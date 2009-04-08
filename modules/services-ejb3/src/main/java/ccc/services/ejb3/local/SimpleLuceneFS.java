@@ -62,7 +62,7 @@ public class SimpleLuceneFS implements SimpleLucene {
     public void add(final Document document) {
         try {
             _writer.addDocument(document);
-            LOG.info("Added document: "+document);
+            LOG.info("Added document.");
         } catch (final IOException e) {
             LOG.warn("Error adding document.", e);
         }
