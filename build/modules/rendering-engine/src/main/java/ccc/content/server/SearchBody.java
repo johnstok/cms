@@ -88,6 +88,7 @@ public class SearchBody
         final Map<String, Object> values = new HashMap<String, Object>();
         values.put("reader", reader);
         values.put("hits", hits);
+        values.put("resource", _search);
         new VelocityProcessor().render(t, w, values);
     }
 
@@ -95,6 +96,9 @@ public class SearchBody
         new Template(
             "BUILT_IN_SEARCH_TEMPLATE",
             "BUILT_IN_SEARCH_TEMPLATE",
-            "Hits: $!hits.size()",
+            "<form name=\"search\" action=\"$resource.name()\">"
+            +"<input name=\"q\" autocomplete=\"off\"/>"
+            +"<input type=\"submit\" value=\"Search\"  name=\"go\"/>"
+            +"</form>Hits: $!hits.size()",
             "<fields/>");
 }
