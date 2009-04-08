@@ -39,4 +39,9 @@ public final class QueryNames {
     /** RESOURCE_BY_LEGACY_ID : String. */
     public static final String RESOURCE_BY_LEGACY_ID = "resourceByLegacyId";
 
+    /** ALL_PAGES : String. */
+    public static final String ALL_PAGES = "allPages";
+
+    /** ALL_FILES : String. */
+    public static final String ALL_FILES = "allFiles";
 }

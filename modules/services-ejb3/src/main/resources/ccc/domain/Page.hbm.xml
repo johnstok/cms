@@ -49,4 +49,6 @@
         </set>
         
     </joined-subclass>
+    
+	<query name="allPages">from ccc.domain.Page</query>
 </hibernate-mapping>

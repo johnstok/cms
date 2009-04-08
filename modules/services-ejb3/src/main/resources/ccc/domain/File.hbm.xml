@@ -68,5 +68,6 @@
 	</joined-subclass>
 	
 	<query name="allImages">from ccc.domain.File f where f._mimeType.primaryType = 'image'</query>
+	<query name="allFiles">from ccc.domain.File</query>
 	
 </hibernate-mapping>
