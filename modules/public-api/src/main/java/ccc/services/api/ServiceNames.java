@@ -30,7 +30,11 @@ public final class ServiceNames {
     public static final String PUBLIC_COMMANDS =
         "application-ear-7.0.0-SNAPSHOT/PublicCommands/remote";
 
-    /** PUBLIC_COMMANDS : String. */
+    /** PUBLIC_SCHEDULER : String. */
     public static final String PUBLIC_SCHEDULER =
         "application-ear-7.0.0-SNAPSHOT/ActionDao/remote";
+
+    /** SEARCH_SCHEDULER : String. */
+    public static final String SEARCH_SCHEDULER =
+        "application-ear-7.0.0-SNAPSHOT/Search/remote";
 }
