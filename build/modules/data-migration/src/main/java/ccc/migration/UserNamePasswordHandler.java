@@ -10,7 +10,7 @@ import javax.security.auth.callback.UnsupportedCallbackException;
  * Basic {@link CallbackHandler} implementation
  * that supports a username and a password.
  */
-class UserNamePasswordHandler implements CallbackHandler {
+public class UserNamePasswordHandler implements CallbackHandler {
 
    private final String _username;
    private final String _password;
@@ -21,7 +21,7 @@ class UserNamePasswordHandler implements CallbackHandler {
      * @param theUsername
      * @param thePassword
      */
-    UserNamePasswordHandler(final String theUsername,
+    public UserNamePasswordHandler(final String theUsername,
         final String thePassword) {
         _username = theUsername;
       _password = thePassword;

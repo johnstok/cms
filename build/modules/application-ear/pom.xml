@@ -258,8 +258,10 @@
                                         <echo
                                             message="data migration classpath: ${migration_classpath}" />
 
-                                        <java classname="ccc.migration.App"
-                                            fork="true" failonerror="true"
+                                        <java
+                                            classname="ccc.cli.App"
+                                            fork="true"
+                                            failonerror="true"
                                             classpath="${migration_classpath}" />
                                     </tasks>
                                 </configuration>

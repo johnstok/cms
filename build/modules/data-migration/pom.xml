@@ -112,7 +112,7 @@
                             </descriptorRefs>
                             <archive>
                                 <manifest>
-                                    <mainClass>ccc.migration.App</mainClass>
+                                    <mainClass>ccc.cli.App</mainClass>
                                 </manifest>
                             </archive>
                         </configuration>
