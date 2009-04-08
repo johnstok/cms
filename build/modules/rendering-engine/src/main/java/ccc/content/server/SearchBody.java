@@ -81,7 +81,7 @@ public class SearchBody
     public void write(final OutputStream os,
                       final StatefulReader reader) throws IOException {
 
-        final Set<UUID> hits = _searchEngine.find(_terms);
+        final Set<UUID> hits = _searchEngine.find(_terms, 10, 0);
 
         final String t = _search.computeTemplate(BUILT_IN_PAGE_TEMPLATE).body();
         final Writer w = new OutputStreamWriter(os, _charset);
