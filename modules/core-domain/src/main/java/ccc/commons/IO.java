@@ -27,7 +27,7 @@ import ccc.domain.CCCException;
  */
 public final class IO {
 
-    private static String encoding = "UTF-8";
+    private static String ENCODING = "ISO-8859-1";
 
     private IO() { super(); }
 
@@ -65,14 +65,11 @@ public final class IO {
      */
     public static String toString(final InputStream is) {
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        String result = null;
-        copy(is, baos);
         try {
-            result = baos.toString(encoding);
+            copy(is, baos);
+            return baos.toString(ENCODING);
         } catch (final UnsupportedEncodingException e) {
             throw new CCCException("Error copying data.", e);
         }
-        return result;
-
     }
 }
