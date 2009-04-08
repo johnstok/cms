@@ -1,4 +1,4 @@
-package ccc.migration;
+package ccc.cli;
 
 
 import java.util.Collections;
@@ -13,6 +13,7 @@ import javax.security.auth.login.AppConfigurationEntry.LoginModuleControlFlag;
 import org.apache.log4j.Logger;
 
 import ccc.commons.JNDI;
+import ccc.migration.UserNamePasswordHandler;
 import ccc.services.Scheduler;
 import ccc.services.api.Queries;
 import ccc.services.api.ServiceNames;

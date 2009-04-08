@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.migration;
+package ccc.cli;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,6 +18,9 @@ import java.util.UUID;
 
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.log4j.Logger;
+
+import ccc.migration.MigrationException;
+import ccc.migration.NewDBQueries;
 
 
 /**
