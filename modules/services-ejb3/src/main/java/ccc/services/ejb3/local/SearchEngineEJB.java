@@ -34,7 +34,6 @@ import org.apache.log4j.Logger;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.pdfbox.pdmodel.PDDocument;
 import org.pdfbox.util.PDFTextStripper;
@@ -96,10 +95,12 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
 
     /** {@inheritDoc} */
     @Override
-    public Set<UUID> find(final String searchTerms) {
+    public Set<UUID> find(final String searchTerms,
+                          final int resultCount,
+                          final int page) {
         final String field = "content";
-        final int maxHits = 100;
-        final CapturingHandler sh = new CapturingHandler();
+        final int maxHits = (page+1)*resultCount;
+        final CapturingHandler sh = new CapturingHandler(resultCount, page);
 
         _lucene.find(searchTerms, field, maxHits, sh);
 
@@ -347,26 +348,42 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
      *
      * @author Civic Computing Ltd.
      */
-    private static final class CapturingHandler
-    extends
-    SearchHandler {
+    static class CapturingHandler extends SearchHandler {
 
         /** _hits : Set of UUID. */
         protected final Set<UUID> _hits = new HashSet<UUID>();
+        private final int _resultCount;
+        private final int _page;
+
+        /**
+         * Constructor.
+         *
+         * @param resultCount
+         * @param page
+         */
+        public CapturingHandler(final int resultCount, final int page) {
+            _resultCount = resultCount;
+            _page = page;
+        }
 
         /** {@inheritDoc} */
         @Override
         public void handle(final IndexSearcher searcher,
                            final TopDocs docs) throws IOException {
-            for (final ScoreDoc doc : docs.scoreDocs) {
-                _hits.add(
-                    UUID.fromString(
-                        searcher.doc(doc.doc)
-                        .getField("id")
-                        .stringValue()
-                    )
-                );
+            final int firstResultIndex = _page*_resultCount;
+            final int lastResultIndex = (_page+1)*_resultCount;
+
+            for (int i=firstResultIndex; i<lastResultIndex; i++) {
+                final int docId = docs.scoreDocs[i].doc;
+                _hits.add(lookupResourceId(searcher, docId));
             }
+        }
+
+        UUID lookupResourceId(final IndexSearcher searcher,
+                              final int docId) throws IOException {
+            return UUID.fromString(
+                searcher.doc(docId).getField("id").stringValue()
+            );
         }
     }
 

@@ -29,9 +29,14 @@ public interface SearchEngine {
      * Find the entities that match the specified search terms..
      *
      * @param searchTerms The terms to match.
+     * @param resultCount The number of results to return.
+     * @param page The page of results to return (first page has index of 0).
      * @return The id's of entities that match the terms.
      */
-    Set<UUID> find(final String searchTerms);
+    Set<UUID> find(final String searchTerms, int resultCount, int page);
 
+    /**
+     * Rebuild the search index.
+     */
     void index();
 }
