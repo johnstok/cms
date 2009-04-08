@@ -76,15 +76,13 @@ public class Migrations {
     public Migrations(final LegacyDBQueries legacyQueries,
                       final Properties props,
                       final Commands commands,
-                      final Queries queries) {
+                      final Queries queries,
+                      final FileUploader fu) {
         _legacyQueries = legacyQueries;
         _queries = queries;
         _props = props;
         _commands = commands;
-        _fu =
-            new FileUploader(
-                _props.getProperty("targetUploadURL"),
-                _props.getProperty("targetApplicationURL"));
+        _fu = fu;
     }
 
 

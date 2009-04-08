@@ -12,17 +12,27 @@
 
 package ccc.cli;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Properties;
 
 import javax.security.auth.login.AppConfigurationEntry;
 import javax.security.auth.login.Configuration;
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.login.AppConfigurationEntry.LoginModuleControlFlag;
+import javax.sql.DataSource;
+
+import oracle.jdbc.pool.OracleDataSource;
 
 import org.apache.log4j.Logger;
 
+import ccc.migration.MigrationException;
 import ccc.migration.UserNamePasswordHandler;
 
 
@@ -102,5 +112,92 @@ class CccApp {
             prefix
             + elapsedTime/MILLISECS_PER_SEC
             + " seconds.");
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param props
+     * @param resourcePath
+     */
+    static void loadSettings(final Properties props,
+                             final String resourcePath) {
+        try {
+            final InputStream in =
+                Thread.currentThread().
+                getContextClassLoader().
+                getResourceAsStream(resourcePath);
+            props.load(in);
+            in.close();
+            LOG.info("Loaded settings.");
+        } catch (final IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param dbProps
+     * @return
+     */
+    static Connection getConnection(final Properties dbProps) {
+        try {
+            Class.forName(dbProps.getProperty("db.driver.class"));
+            final Connection connection =
+                DriverManager.getConnection(
+                    dbProps.getProperty("db.connection.string"),
+                    dbProps.getProperty("db.username"),
+                    dbProps.getProperty("db.password"));
+            connection.setAutoCommit(false);
+            return connection;
+
+        } catch (final ClassNotFoundException e) {
+            throw new MigrationException(e);
+        } catch (final SQLException e) {
+            throw new MigrationException(e);
+        }
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param dbProps
+     * @return
+     */
+    static DataSource getOracleDatasource(final Properties dbProps) {
+        try {
+            // Load the JDBC driver
+            final String driverName = "oracle.jdbc.driver.OracleDriver";
+            Class.forName(driverName);
+
+            // Create a connection to the database
+            final String serverName =
+                dbProps.getProperty("sourceDbServerName");
+            final String portNumber =
+                dbProps.getProperty("sourceDbPortNumber");
+            final String sid = dbProps.getProperty("sourceDbSID");
+            final String url =
+                "jdbc:oracle:thin:@"
+                + serverName + ":"
+                + portNumber + ":"
+                + sid;
+            final String username = dbProps.getProperty("sourceDbUsername");
+            final String password = dbProps.getProperty("sourceDbPassword");
+
+            final OracleDataSource ods = new OracleDataSource();
+            final Properties connectionProps = new Properties();
+            connectionProps.put("user", username);
+            connectionProps.put("password", password);
+            connectionProps.put(
+                "oracle.jdbc.FreeMemoryOnEnterImplicitCache", Boolean.TRUE);
+            ods.setConnectionProperties(connectionProps);
+            ods.setURL(url);
+            return ods;
+        } catch (final ClassNotFoundException e) {
+            throw new MigrationException(e);
+        } catch (final SQLException e) {
+            throw new MigrationException(e);
+        }
     }
 }

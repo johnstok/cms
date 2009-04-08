@@ -43,11 +43,18 @@ public class FileUploader {
     private final HttpClient _client = new HttpClient();
     private final String _targetUploadURL;
     private final String _appURL;
+    private final String _username;
+    private final String _password;
     private MimetypesFileTypeMap _mimemap;
 
-    FileUploader(final String targetUploadURL, final String appURL) {
+    public FileUploader(final String targetUploadURL,
+                 final String appURL,
+                 final String username,
+                 final String password) {
         _targetUploadURL = targetUploadURL;
         _appURL = appURL;
+        _username = username;
+        _password = password;
 
         final InputStream mimes =
             Thread.currentThread().
@@ -76,9 +83,9 @@ public class FileUploader {
 
         final PostMethod authpost = new PostMethod(_appURL+"/j_security_check");
         final NameValuePair userid   =
-            new NameValuePair("j_username", "migration");
+            new NameValuePair("j_username", _username);
         final NameValuePair password =
-            new NameValuePair("j_password", "migration");
+            new NameValuePair("j_password", _password);
         authpost.setRequestBody(
             new NameValuePair[] {userid, password});
 
