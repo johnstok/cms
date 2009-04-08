@@ -33,6 +33,7 @@ import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
+import ccc.services.ActionDao;
 import ccc.services.DataManager;
 import ccc.services.FolderDao;
 import ccc.services.ResourceDao;
@@ -50,7 +51,6 @@ import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
-import ccc.services.ejb3.local.ActionDao;
 import ccc.services.support.ModelTranslation;
 
 

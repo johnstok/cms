@@ -3,16 +3,14 @@ package ccc.cli;
 
 import org.apache.log4j.Logger;
 
-import ccc.commons.JNDI;
 import ccc.services.Scheduler;
-import ccc.services.api.ServiceNames;
 
 /**
  * Command line management of CCC7 search engine.
  */
 public final class Search extends CccApp {
-
     private static final Logger LOG = Logger.getLogger(Search.class);
+    private static ServiceLookup services;
 
     private Search() { super(); }
 
@@ -28,8 +26,9 @@ public final class Search extends CccApp {
 
         login("super", "sup3r2008");
 
-        final Scheduler s =
-            new JNDI().<Scheduler>get(ServiceNames.SEARCH_SCHEDULER);
+        services = new ServiceLookup("application-ear-7.0.0-SNAPSHOT");
+
+        final Scheduler s = services.lookupSearchScheduler();
 
         if (1 != args.length) {
             LOG.error("Wrong number of arguments.");
@@ -47,7 +46,7 @@ public final class Search extends CccApp {
                 LOG.info("Running: "+running+".");
 
             } else {
-                System.err.println("Invalid command.");
+                LOG.error("Invalid command.");
             }
         }
 

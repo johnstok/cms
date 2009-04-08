@@ -45,6 +45,7 @@ import ccc.domain.Search;
 import ccc.domain.Snapshot;
 import ccc.domain.Template;
 import ccc.domain.User;
+import ccc.services.ActionDao;
 import ccc.services.AliasDao;
 import ccc.services.AuditLog;
 import ccc.services.FolderDao;
@@ -60,7 +61,6 @@ import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
-import ccc.services.ejb3.local.ActionDao;
 import ccc.services.support.ModelTranslation;
 
 

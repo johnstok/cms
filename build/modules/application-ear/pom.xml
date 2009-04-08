@@ -259,6 +259,15 @@
                                             message="data migration classpath: ${migration_classpath}" />
 
                                         <java
+                                            classname="ccc.cli.Users"
+                                            fork="true"
+                                            failonerror="true"
+                                            classpath="${migration_classpath}">
+                                            <arg value="migration"/>
+                                            <arg value="migration@civicuk.com"/>
+                                            <arg value="migration"/>
+                                        </java>
+                                        <java
                                             classname="ccc.cli.App"
                                             fork="true"
                                             failonerror="true"
