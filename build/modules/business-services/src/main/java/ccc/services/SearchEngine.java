@@ -34,22 +34,4 @@ public interface SearchEngine {
     Set<UUID> find(final String searchTerms);
 
     void index();
-
-    /**
-     * Start the indexer running.
-     */
-    void start();
-
-    /**
-     * Stop the indexer running.
-     */
-    void stop();
-
-    /**
-     * Query whether the indexer is running.
-     *
-     * @return True if the indexer is running; false otherwise.
-     */
-    boolean isRunning();
-
 }

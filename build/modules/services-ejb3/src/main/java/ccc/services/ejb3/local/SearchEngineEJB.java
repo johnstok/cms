@@ -24,6 +24,7 @@ import java.util.UUID;
 import javax.ejb.EJB;
 import javax.ejb.EJBContext;
 import javax.ejb.Local;
+import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.Timeout;
 import javax.ejb.Timer;
@@ -48,6 +49,7 @@ import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
 import ccc.services.DataManager;
 import ccc.services.ResourceDao;
+import ccc.services.Scheduler;
 import ccc.services.SearchEngine;
 import ccc.services.ejb3.support.QueryNames;
 
@@ -59,8 +61,9 @@ import ccc.services.ejb3.support.QueryNames;
  */
 @Stateless(name=SearchEngine.NAME)
 @TransactionAttribute(REQUIRED)
+@Remote(Scheduler.class)
 @Local(SearchEngine.class)
-public class SearchEngineEJB  implements SearchEngine {
+public class SearchEngineEJB  implements SearchEngine, Scheduler {
     private static final int TIMEOUT_DELAY_SECS = 60*60*1000;
     private static final int INITIAL_DELAY_SECS = 1;
     private static final String TIMER_NAME = "index_scheduler";
