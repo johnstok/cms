@@ -19,7 +19,6 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
@@ -39,7 +38,7 @@ public class SimpleLuceneFS implements SimpleLucene {
     private Properties _properties = new Properties();
     private String _indexPath;
 
-    private IndexWriter writer;
+    private IndexWriter _writer;
 
     /**
      * Constructor.
@@ -62,7 +61,7 @@ public class SimpleLuceneFS implements SimpleLucene {
     @Override
     public void add(final Document document) {
         try {
-            writer.addDocument(document);
+            _writer.addDocument(document);
             LOG.info("Added document: "+document);
         } catch (final IOException e) {
             LOG.warn("Error adding document.", e);
@@ -112,22 +111,22 @@ public class SimpleLuceneFS implements SimpleLucene {
 
     /** {@inheritDoc} */
     @Override
-    public void clearIndex() throws CorruptIndexException, IOException, ParseException {
-        writer.deleteDocuments(
+    public void clearIndex() throws IOException, ParseException {
+        _writer.deleteDocuments(
             new QueryParser(
                 "*",
                 new StandardAnalyzer())
             .parse("*"));
-        writer.expungeDeletes();
+        _writer.expungeDeletes();
         LOG.info("Deleted all existing documents.");
     }
 
     /** {@inheritDoc} */
     @Override
-    public void commitUpdate() throws CorruptIndexException, IOException {
-        writer.optimize();
-        writer.close();
-        writer = null;
+    public void commitUpdate() throws IOException {
+        _writer.optimize();
+        _writer.close();
+        _writer = null;
         LOG.info("Commited index update.");
     }
 
@@ -135,10 +134,10 @@ public class SimpleLuceneFS implements SimpleLucene {
     @Override
     public void rollbackUpdate() {
         try {
-            writer.rollback();
+            _writer.rollback();
             LOG.info("Rolled back index update.");
         } catch (final IOException e) {
-            writer = null;
+            _writer = null;
             LOG.error("Error rolling back lucene write.", e);
         }
     }
@@ -146,7 +145,7 @@ public class SimpleLuceneFS implements SimpleLucene {
     /** {@inheritDoc}*/
     @Override
     public void startUpdate() throws IOException {
-        writer = createWriter();
+        _writer = createWriter();
         LOG.info("Staring index update.");
     }
 }

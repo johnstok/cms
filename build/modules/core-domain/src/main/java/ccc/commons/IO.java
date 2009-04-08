@@ -51,4 +51,30 @@ public final class IO {
             throw new CCCException("Error copying data.", e);
         }
     }
+
+    /**
+     * Copy an input stream to a string.
+     *
+     * @param is The {@link InputStream} to copy from.
+     * @return The result string.
+     */
+    public static String toString(final InputStream is) {
+        final StringBuilder sb = new StringBuilder();
+        final int bufferSize = 8*1024; //8K
+        final byte[] buffer = new byte[bufferSize];
+        try {
+
+        while (true) {
+            final int amountRead = is.read(buffer);
+            if (amountRead == -1) {
+               break;
+            }
+            sb.append(new String(buffer, 0, amountRead));
+        }
+        } catch (final IOException e) {
+            throw new CCCException("Error copying data.", e);
+        }
+        return sb.toString();
+
+    }
 }

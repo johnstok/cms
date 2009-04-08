@@ -40,7 +40,7 @@ import org.pdfbox.util.PDFTextStripper;
 import org.textmining.extraction.TextExtractor;
 import org.textmining.extraction.word.WordTextExtractorFactory;
 
-import ccc.domain.Data;
+import ccc.commons.IO;
 import ccc.domain.File;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
@@ -49,6 +49,7 @@ import ccc.domain.Resource;
 import ccc.services.DataManager;
 import ccc.services.ResourceDao;
 import ccc.services.SearchEngine;
+import ccc.services.ejb3.support.QueryNames;
 
 
 /**
@@ -80,8 +81,8 @@ public class SearchEngineEJB  implements SearchEngine {
     /**
      * Constructor.
      *
-     * @param rdao
-     * @param dm
+     * @param rdao The ResourceDao
+     * @param dm The DataManager
      */
     public SearchEngineEJB(final ResourceDao rdao, final DataManager dm) {
         this();
@@ -170,7 +171,7 @@ public class SearchEngineEJB  implements SearchEngine {
 
 
     private void indexFiles() {
-        final List<File> files = _dao.list("allFiles", File.class);
+        final List<File> files = _dao.list(QueryNames.ALL_FILES, File.class);
         for (final File f : files) {
             if (f.isVisible() && f.roles().isEmpty()) {
                 indexFile(f);
@@ -180,7 +181,7 @@ public class SearchEngineEJB  implements SearchEngine {
 
 
     private void indexPages() {
-        final List<Page> pages = _dao.list("allPages", Page.class);
+        final List<Page> pages = _dao.list(QueryNames.ALL_PAGES, Page.class);
         for (final Page p : pages) {
             if (p.isVisible() && p.roles().isEmpty()) {
                 indexPage(p);
@@ -195,6 +196,7 @@ public class SearchEngineEJB  implements SearchEngine {
         final StringBuilder sb = new StringBuilder(page.title());
         for (final Paragraph p : page.paragraphs()) {
             if (Paragraph.Type.TEXT == p.type()) {
+                sb.append(" ");
                 final String nohtml =
                     p.text().replaceAll("\\<.*?>", ""); // Scrub HTML
                 sb.append(nohtml);
@@ -221,19 +223,21 @@ public class SearchEngineEJB  implements SearchEngine {
         }
 
         final Document document = createDocument(file);
-        final Data data = file.data();
+        final String primaryType = file.mimeType().getPrimaryType();
         final String subType = file.mimeType().getSubType();
 
         if ("pdf".equalsIgnoreCase(subType)) {
-            indexPDF(data, document);
+            indexPDF(file, document);
             _lucene.add(document);
             LOG.info("Indexed PDF: "+file.title());
-
         } else if ("msword".equalsIgnoreCase(subType)) {//no MS2007 support
-            indexWord(data, document);
+            indexWord(file, document);
             _lucene.add(document);
             LOG.info("Indexed Word: "+file.title());
-
+        } else if ("text".equalsIgnoreCase(primaryType)) {
+            indexText(file, document);
+            _lucene.add(document);
+            LOG.info("Indexed text: "+file.title());
         } else {
             LOG.info("Unknown type "+subType);
 
@@ -251,42 +255,26 @@ public class SearchEngineEJB  implements SearchEngine {
                 Field.Store.YES,
                 Field.Index.NOT_ANALYZED));
 
-        final StringBuffer roles = new StringBuffer();
-        final Collection<String> rroles = resource.computeRoles();
-        if (rroles != null && rroles.size() > 0) {
-            for (final String role : resource.computeRoles()) {
-                if (roles.length()!=0) {
-                    roles.append(",");
-                }
-                roles.append(role);
-            }
-        } else {
-            roles.append("anonymous");
-        }
-
-
-        d.add(new Field("roles",
-            roles.toString(),
-            Field.Store.YES,
-            Field.Index.NOT_ANALYZED));
         return d;
     }
 
 
-    private void indexPDF(final Data data, final Document d) {
+    private void indexPDF(final File file, final Document d) {
         final PdfLoader pdfLoader = new PdfLoader();
 
         try {
-            _data.retrieve(data, pdfLoader);
+            _data.retrieve(file.data(), pdfLoader);
             final PDFTextStripper stripper = new PDFTextStripper();
             stripper.setEndPage(10);
-            String content = stripper.getText(pdfLoader.doc);
-            content = cleanUpContent(content);
+            final StringBuilder sb = new StringBuilder(file.title());
+            sb.append(" ");
+            final String content = stripper.getText(pdfLoader.doc);
+            sb.append(cleanUpContent(content));
             d.add(
                 new Field(
                     "content",
-                    content,
-                    Field.Store.YES,
+                    sb.toString(),
+                    Field.Store.NO,
                     Field.Index.ANALYZED));
 
         } catch (final IOException e) {
@@ -301,24 +289,44 @@ public class SearchEngineEJB  implements SearchEngine {
     }
 
 
-    private void indexWord(final Data data, final Document d) {
+    private void indexWord(final File file, final Document d) {
         final WordExtractor we = new WordExtractor();
 
         try {
-            _data.retrieve(data, we);
-            String content = we.extractor.getText();
-            content = cleanUpContent(content);
+            _data.retrieve(file.data(), we);
+            final StringBuilder sb = new StringBuilder(file.title());
+            sb.append(" ");
+            final String content = we.extractor.getText();
+            sb.append(cleanUpContent(content));
             d.add(
                 new Field(
                     "content",
-                    content,
-                    Field.Store.YES,
+                    sb.toString(),
+                    Field.Store.NO,
                     Field.Index.ANALYZED));
 
         } catch (final IOException e) {
             LOG.error("Exception caught when trying to extract text ", e);
         }
     }
+
+    private void indexText(final File file, final Document d) {
+        final TxtExtractor te = new TxtExtractor();
+
+        _data.retrieve(file.data(), te);
+        final StringBuilder sb = new StringBuilder(file.title());
+        sb.append(" ");
+        final String content = te.content;
+        sb.append(cleanUpContent(content));
+        d.add(
+            new Field(
+                "content",
+                sb.toString(),
+                Field.Store.NO,
+                Field.Index.ANALYZED));
+
+    }
+
 
 
     private String cleanUpContent(final String content) {
@@ -377,6 +385,15 @@ public class SearchEngineEJB  implements SearchEngine {
         /** {@inheritDoc} */
         @Override public void execute(final InputStream is) throws Exception {
             extractor = factory.textExtractor(is);
+        }
+    }
+
+    private static class TxtExtractor implements DataManager.StreamAction {
+        String content;
+
+        /** {@inheritDoc} */
+        @Override public void execute(final InputStream is) throws Exception {
+            content = IO.toString(is);
         }
     }
 }
