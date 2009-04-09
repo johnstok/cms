@@ -274,9 +274,12 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
 
     private void indexPDF(final File file, final Document d) {
         final PdfLoader pdfLoader = new PdfLoader();
-
+        pdfLoader.name = file.title();
         try {
             _data.retrieve(file.data(), pdfLoader);
+            if (pdfLoader.doc == null) {
+                return;
+            }
             final PDFTextStripper stripper = new PDFTextStripper();
             stripper.setEndPage(10);
             final StringBuilder sb = new StringBuilder(file.title());
@@ -294,7 +297,9 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
             LOG.error("PDF indexing failed.", e);
         } finally {
             try {
-                pdfLoader.doc.close();
+                if (pdfLoader.doc != null) {
+                    pdfLoader.doc.close();
+                }
             } catch (final IOException e) {
                 LOG.error("Closing PDF Document failed. ", e);
             }
@@ -403,10 +408,15 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
 
     private static class PdfLoader implements DataManager.StreamAction {
         PDDocument doc;
+        String name = "";
 
         /** {@inheritDoc} */
         @Override public void execute(final InputStream is) throws Exception {
-            doc = PDDocument.load(is);
+            try {
+                doc = PDDocument.load(is);
+            } catch (final IOException e) {
+                LOG.error("PDF loading failed for file: "+name);
+            }
         }
     }
 
