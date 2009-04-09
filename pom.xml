@@ -16,6 +16,7 @@
         <jboss-version>4.2.2.GA</jboss-version>
         <h2-version>1.1.103</h2-version>
         <ccc-version>${project.version}</ccc-version>
+        <application.name>application-ear-${project.version}</application.name>
     </properties>
 
 
