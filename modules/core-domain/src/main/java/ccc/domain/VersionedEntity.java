@@ -12,7 +12,6 @@
 
 package ccc.domain;
 
-import ccc.commons.serialisation.Serializer;
 
 
 /**
@@ -47,14 +46,4 @@ public abstract class VersionedEntity extends Entity {
     public void version(final long version) {
         _version = version;
     }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void serialize(final Serializer s) {
-        super.serialize(s);
-        s.number("version", version());
-    }
-
-
 }

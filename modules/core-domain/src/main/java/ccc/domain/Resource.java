@@ -25,7 +25,6 @@ import java.util.Map;
 import java.util.Set;
 
 import ccc.commons.DBC;
-import ccc.commons.serialisation.Serializer;
 
 /**
  * An abstract superclass that contains shared behaviour for the different types
@@ -361,20 +360,6 @@ public abstract class Resource extends VersionedEntity {
             (null==_parent) ? true : _parent.isVisible();
         return parentVisible && isPublished();
     }
-
-    /** {@inheritDoc} */
-    @Override
-    public void serialize(final Serializer s) {
-        super.serialize(s);
-        s.string("title", title());
-        s.string("name", name().toString());
-        s.string("locked", (isLocked()) ? lockedBy().username() : "");
-        s.string("published", (isPublished()) ? publishedBy().username() : "");
-        s.uuid("parent", (null==_parent) ? null : _parent.id());
-        s.uuid("template", (null==_template) ? null : _template.id());
-        s.array("tags", tags());
-    }
-
 
     /**
      * Confirm this resource is locked by the specified user.

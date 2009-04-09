@@ -15,7 +15,6 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.commons.DBC;
-import ccc.commons.serialisation.Serializer;
 
 
 /**
@@ -257,19 +256,6 @@ public class LogEntry extends Entity {
         le._action = Action.UNPUBLISH;
         le._comment = "Unpublished.";
         return le;
-    }
-
-    /** {@inheritDoc} */
-    @Override public void serialize(final Serializer s) {
-        s.number("index", _index);
-        s.date("recordedOn", _recordedOn);
-        s.string("actor", _actor.username());
-        s.string("action", _action.name());
-        s.date("happenedOn", _happenedOn);
-        s.string("resourceType", _subjectType.name());
-        s.string("subjectId", _subjectId.toString());
-        s.string("comment", _comment);
-        s.string("isMajorEdit", (_isMajorEdit ? "true" : "false")); // TODO check this
     }
 
 
