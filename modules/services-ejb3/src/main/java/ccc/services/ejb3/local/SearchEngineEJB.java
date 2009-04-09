@@ -41,6 +41,7 @@ import org.textmining.extraction.TextExtractor;
 import org.textmining.extraction.word.WordTextExtractorFactory;
 
 import ccc.commons.IO;
+import ccc.commons.SearchResult;
 import ccc.domain.File;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
@@ -95,11 +96,13 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
 
     /** {@inheritDoc} */
     @Override
-    public Set<UUID> find(final String searchTerms,
+    public SearchResult find(final String searchTerms,
                           final int resultCount,
                           final int page) {
+
+        final SearchResult sr = new SearchResult();
         if (searchTerms == null || searchTerms.trim().equals("")) {
-            return new HashSet<UUID>();
+            return sr;
         }
 
         final String field = "content";
@@ -107,8 +110,10 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
         final CapturingHandler sh = new CapturingHandler(resultCount, page);
 
         _lucene.find(searchTerms, field, maxHits, sh);
+        sr.totalResults(sh._searchResultCount);
+        sr.hits(sh._hits);
 
-        return sh._hits;
+        return sr;
     }
 
 
@@ -336,7 +341,6 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
     }
 
 
-
     private String cleanUpContent(final String content) {
         String result = content;
         if (result != null) {
@@ -356,6 +360,8 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
 
         /** _hits : Set of UUID. */
         protected final Set<UUID> _hits = new HashSet<UUID>();
+        /** _searchResultCount : int. */
+        protected int _searchResultCount = 0;
         private final int _resultCount;
         private final int _page;
 
@@ -376,6 +382,7 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
                            final TopDocs docs) throws IOException {
             final int firstResultIndex = _page*_resultCount;
             final int lastResultIndex = (_page+1)*_resultCount;
+            _searchResultCount = docs.totalHits;
 
             for (int i=firstResultIndex;
             i<lastResultIndex && i<docs.scoreDocs.length;

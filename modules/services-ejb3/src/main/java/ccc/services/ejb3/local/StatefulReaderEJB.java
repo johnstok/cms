@@ -14,6 +14,8 @@ package ccc.services.ejb3.local;
 
 import static javax.ejb.TransactionAttributeType.*;
 
+import java.util.UUID;
+
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateful;
@@ -70,6 +72,14 @@ public final class StatefulReaderEJB
     @Override
     public Resource lookup(final String rootName, final ResourcePath path) {
         return _resources.lookup(rootName, path);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Resource lookup(final String id) {
+        return _resources.find(Resource.class, UUID.fromString(id));
     }
 
 

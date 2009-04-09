@@ -52,4 +52,14 @@ public interface StatefulReader {
      * @return The absolute path as a string.
      */
     String absolutePath(String legacyId);
+
+    /**
+     * Look up a resource from its UUID.
+     *
+     * @param id The id of the resource.
+     * @return Resource The resource at the specified path, or NULL if it
+     *  doesn't exist.
+     */
+    Resource lookup(String id);
+
 }

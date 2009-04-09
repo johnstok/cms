@@ -15,6 +15,8 @@ package ccc.content.server;
 import java.nio.charset.Charset;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import ccc.commons.DBC;
 import ccc.domain.Alias;
 import ccc.domain.File;
@@ -37,6 +39,9 @@ import ccc.services.StatefulReader;
 public class DefaultRenderer
     implements
         Renderer {
+
+    private static final Logger LOG =
+        Logger.getLogger(DefaultRenderer.class.getName());
 
     private final DataManager _dm;
     private final SearchEngine _search;
@@ -205,12 +210,30 @@ public class DefaultRenderer
         r.setExpiry(Long.valueOf(0));
         r.setCharSet("UTF-8");
         r.setMimeType("text", "html");
+
+        String searchQuery = "";
+        final String[] qParams = parameters.get("q");
+        if (qParams != null && qParams.length != 0) {
+            searchQuery = qParams[0];
+        }
+
+        int pageNumber = 0;
+        final String[] pParams = parameters.get("p");
+        if (pParams != null && pParams.length != 0) {
+            try {
+                pageNumber = Integer.parseInt(pParams[0]);
+            } catch (final NumberFormatException e) {
+                LOG.debug("Not a number");
+            }
+        }
+
         r.setBody(
             new SearchBody(
                 search,
                 Charset.forName("UTF-8"),
                 _search,
-                parameters.get("q")[0]));
+                searchQuery,
+                pageNumber));
 
         return r;
     }
