@@ -18,12 +18,11 @@ import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
 import ccc.commons.DBC;
+import ccc.commons.SearchResult;
 import ccc.commons.VelocityProcessor;
 import ccc.domain.Search;
 import ccc.domain.Template;
@@ -46,6 +45,7 @@ public class SearchBody
     private final Charset _charset;
     private final SearchEngine _searchEngine;
     private final String  _terms;
+    private final int _pageNumber;
 
     /**
      * Constructor.
@@ -58,7 +58,8 @@ public class SearchBody
     public SearchBody(final Search s,
                       final Charset charset,
                       final SearchEngine searchEngine,
-                      final String searchTerms) {
+                      final String searchTerms,
+                      final int pageNumber) {
         DBC.require().notNull(s);
         DBC.require().notNull(charset);
         DBC.require().notNull(searchEngine);
@@ -68,6 +69,7 @@ public class SearchBody
         _charset = charset;
         _searchEngine = searchEngine;
         _terms = searchTerms;
+        _pageNumber = pageNumber;
     }
 
     /** {@inheritDoc} */
@@ -81,14 +83,16 @@ public class SearchBody
     public void write(final OutputStream os,
                       final StatefulReader reader) throws IOException {
 
-        final Set<UUID> hits = _searchEngine.find(_terms, 10, 0);
+        final SearchResult result = _searchEngine.find(_terms, 10, _pageNumber);
 
         final String t = _search.computeTemplate(BUILT_IN_PAGE_TEMPLATE).body();
         final Writer w = new OutputStreamWriter(os, _charset);
         final Map<String, Object> values = new HashMap<String, Object>();
         values.put("reader", reader);
-        values.put("hits", hits);
+        values.put("result", result);
+        values.put("pageNumber", _pageNumber);
         values.put("resource", _search);
+        values.put("terms", _terms);
         new VelocityProcessor().render(t, w, values);
     }
 
@@ -99,6 +103,6 @@ public class SearchBody
             "<form name=\"search\" action=\"$resource.name()\">"
             +"<input name=\"q\" autocomplete=\"off\"/>"
             +"<input type=\"submit\" value=\"Search\"  name=\"go\"/>"
-            +"</form>Hits: $!hits.size()",
+            +"</form>Shown Hits: $!result.hits().size() - Total: $!result.totalResults()",
             "<fields/>");
 }
