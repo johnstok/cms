@@ -8,7 +8,6 @@ import java.util.UUID;
 import javax.activation.MimeType;
 import javax.activation.MimeTypeParseException;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,14 +16,10 @@ import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ccc.commons.JNDI;
-import ccc.commons.Registry;
 import ccc.domain.CCCException;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.ResourceName;
-import ccc.services.DataManager;
-import ccc.services.ServiceNames;
 import ccc.services.api.ResourceSummary;
 import ccc.services.support.ModelTranslation;
 
@@ -35,11 +30,10 @@ import ccc.services.support.ModelTranslation;
  *
  * @author Civic Computing Ltd
  */
-public class FileUploadServlet extends HttpServlet {
+public class FileUploadServlet extends CreatorServlet {
 
     private static final Logger LOG = Logger.getLogger(FileUploadServlet.class);
 
-    private final Registry _registry = new JNDI();
 
     /**
      * {@inheritDoc}
@@ -74,7 +68,7 @@ public class FileUploadServlet extends HttpServlet {
 
             final InputStream dataStream = file.getInputStream();
             try {
-                dataManager().createFile(f, parentId, dataStream);
+                _services.dataManager().createFile(f, parentId, dataStream);
             } finally {
                 try {
                     dataStream.close();
@@ -92,14 +86,6 @@ public class FileUploadServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Accessor for the data manager.
-     *
-     * @return An AssetManager.
-     */
-    DataManager dataManager() {
-        return _registry.get(ServiceNames.DATA_MANAGER_LOCAL);
-    }
 
     /**
      * Convert a {@link ResourceSummary} to JSON.

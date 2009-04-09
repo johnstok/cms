@@ -11,12 +11,13 @@
  */
 package ccc.content.server;
 
+import ccc.commons.CCCProperties;
 import ccc.commons.DBC;
 import ccc.commons.Registry;
 import ccc.domain.User;
 import ccc.services.DataManager;
 import ccc.services.SearchEngine;
-import ccc.services.ServiceNames;
+import ccc.services.ServiceLookup;
 import ccc.services.StatefulReader;
 import ccc.services.UserManager;
 
@@ -31,8 +32,8 @@ import ccc.services.UserManager;
  */
 public class DefaultObjectFactory implements ObjectFactory {
 
-    private final Registry _registry;
-    private boolean        _respectVisiblity = true;
+    private final ServiceLookup _services;
+    private boolean _respectVisiblity = true;
 
     /**
      * Constructor.
@@ -41,7 +42,8 @@ public class DefaultObjectFactory implements ObjectFactory {
      */
     public DefaultObjectFactory(final Registry registry) {
         DBC.require().notNull(registry);
-        _registry = registry;
+        _services =
+            new ServiceLookup(CCCProperties.get("application.name"), registry);
     }
 
     /** {@inheritDoc} */
@@ -55,7 +57,7 @@ public class DefaultObjectFactory implements ObjectFactory {
     /** {@inheritDoc} */
     @Override
     public StatefulReader getReader() {
-        return _registry.get(ServiceNames.STATEFUL_READER);
+        return _services.statefulReader();
     }
 
 
@@ -85,16 +87,16 @@ public class DefaultObjectFactory implements ObjectFactory {
 
 
     private DataManager dataManager() {
-        return _registry.get(ServiceNames.DATA_MANAGER_LOCAL);
+        return _services.dataManager();
     }
 
 
     private SearchEngine searchEngine() {
-        return _registry.get(ServiceNames.SEARCH_ENGINE_LOCAL);
+        return _services.localSearchEngine();
     }
 
 
     private UserManager userManager() {
-        return _registry.get(ServiceNames.USER_MANAGER_LOCAL);
+        return _services.localUserManager();
     }
 }

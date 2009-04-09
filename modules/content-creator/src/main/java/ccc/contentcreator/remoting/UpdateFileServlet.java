@@ -8,17 +8,11 @@ import java.util.UUID;
 import javax.activation.MimeType;
 import javax.activation.MimeTypeParseException;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
-
-import ccc.commons.JNDI;
-import ccc.commons.Registry;
-import ccc.services.DataManager;
-import ccc.services.ServiceNames;
 
 
 /**
@@ -27,11 +21,10 @@ import ccc.services.ServiceNames;
  *
  * @author Civic Computing Ltd
  */
-public class UpdateFileServlet extends HttpServlet {
+public class UpdateFileServlet extends CreatorServlet {
 
     private static final Logger LOG = Logger.getLogger(UpdateFileServlet.class);
 
-    private final Registry _registry = new JNDI();
 
     /**
      * {@inheritDoc}
@@ -54,7 +47,7 @@ public class UpdateFileServlet extends HttpServlet {
 
             final InputStream dataStream = file.getInputStream();
             try {
-                dataManager().updateFile(
+                _services.dataManager().updateFile(
                     UUID.fromString(id.getString()),
                     title.getString(),
                     description.getString(),
@@ -76,14 +69,5 @@ public class UpdateFileServlet extends HttpServlet {
             response.getWriter().write("File update failed. "+e.getMessage());
             LOG.error("File update failed "+e.getMessage(), e);
         }
-    }
-
-    /**
-     * Accessor for the data manager.
-     *
-     * @return An AssetManager.
-     */
-    DataManager dataManager() {
-        return _registry.get(ServiceNames.DATA_MANAGER_LOCAL);
     }
 }
