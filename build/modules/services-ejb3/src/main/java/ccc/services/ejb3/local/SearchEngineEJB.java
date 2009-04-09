@@ -377,7 +377,9 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
             final int firstResultIndex = _page*_resultCount;
             final int lastResultIndex = (_page+1)*_resultCount;
 
-            for (int i=firstResultIndex; i<lastResultIndex; i++) {
+            for (int i=firstResultIndex;
+            i<lastResultIndex && i<docs.scoreDocs.length;
+            i++) {
                 final int docId = docs.scoreDocs[i].doc;
                 _hits.add(lookupResourceId(searcher, docId));
             }
