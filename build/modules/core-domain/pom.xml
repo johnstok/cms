@@ -1,29 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<parent>
-		<artifactId>build</artifactId>
-		<groupId>CCC7</groupId>
-		<version>7.0.0-SNAPSHOT</version>
-	</parent>
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>CCC7</groupId>
-	<artifactId>core-domain</artifactId>
-	<name>core-domain</name>
-	<version>7.0.0-SNAPSHOT</version>
-	<url>http://maven.apache.org</url>
-    
-	<dependencies>
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <artifactId>build</artifactId>
+        <groupId>CCC7</groupId>
+        <version>7.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>CCC7</groupId>
+    <artifactId>core-domain</artifactId>
+    <name>core-domain</name>
+    <version>7.0.0-SNAPSHOT</version>
+    <url>http://maven.apache.org</url>
+
+    <build>
+        <plugins>
+              <plugin>
+                  <groupId>org.codehaus.mojo</groupId>
+                  <artifactId>buildnumber-maven-plugin</artifactId>
+                  <executions>
+                      <execution>
+                          <phase>validate</phase>
+                          <goals>
+                              <goal>create</goal>
+                          </goals>
+                      </execution>
+                  </executions>
+                  <configuration>
+                      <doCheck>false</doCheck>
+                      <doUpdate>false</doUpdate>
+                  </configuration>
+              </plugin>
+              <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>write-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <outputFile>
+                                ${project.build.outputDirectory}/ccc.properties
+                            </outputFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
         <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity</artifactId>
             <version>${velocity-version}</version>
         </dependency>
         <dependency>
-        	<groupId>org.json</groupId>
-        	<artifactId>json</artifactId>
-        	<version>20080701</version>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20080701</version>
         </dependency>
     </dependencies>
 
