@@ -19,6 +19,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ccc.commons.CCCProperties;
+import ccc.services.ServiceLookup;
+
 
 /**
  * Shared behaviour for CCC servlets.
@@ -26,6 +29,9 @@ import javax.servlet.http.HttpServletResponse;
  * @author Civic Computing Ltd.
  */
 public abstract class CCCServlet extends HttpServlet {
+
+    protected ServiceLookup _services =
+        new ServiceLookup(CCCProperties.get("application.name"));
 
     /**
      * Disable caching for the response.

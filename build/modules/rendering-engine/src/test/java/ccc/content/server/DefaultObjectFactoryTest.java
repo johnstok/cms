@@ -17,7 +17,6 @@ import ccc.commons.Registry;
 import ccc.commons.Testing;
 import ccc.services.DataManager;
 import ccc.services.SearchEngine;
-import ccc.services.ServiceNames;
 import ccc.services.StatefulReader;
 
 
@@ -30,6 +29,9 @@ public class DefaultObjectFactoryTest
     extends
         TestCase {
 
+    private static final String DATA_MANAGER_LOCAL = "hello-world/DataManager/local";
+    private static final String SEARCH_ENGINE_LOCAL = "hello-world/Search/local";
+    private static final String STATEFUL_READER = "hello-world/StatefulReader/local";
     /**
      * Test.
      */
@@ -131,11 +133,11 @@ public class DefaultObjectFactoryTest
     public void testNewInstance() {
 
         // ARRANGE
-        expect(_registry.get(ServiceNames.DATA_MANAGER_LOCAL))
+        expect(_registry.get(DATA_MANAGER_LOCAL))
             .andReturn(Testing.dummy(DataManager.class));
-        expect(_registry.get(ServiceNames.SEARCH_ENGINE_LOCAL))
+        expect(_registry.get(SEARCH_ENGINE_LOCAL))
             .andReturn(Testing.dummy(SearchEngine.class));
-        expect(_registry.get(ServiceNames.STATEFUL_READER))
+        expect(_registry.get(STATEFUL_READER))
         .andReturn(Testing.dummy(StatefulReader.class));
         replay(_registry);
 

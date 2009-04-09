@@ -11,6 +11,7 @@ import ccc.migration.DbUtilsDB;
 import ccc.migration.FileUploader;
 import ccc.migration.LegacyDBQueries;
 import ccc.migration.Migrations;
+import ccc.services.ServiceLookup;
 
 /**
  * Entry class for the migration application.

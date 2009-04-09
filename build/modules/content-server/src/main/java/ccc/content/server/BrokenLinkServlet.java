@@ -22,13 +22,12 @@ import javax.servlet.http.HttpServletResponse;
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
 import ccc.domain.ResourceName;
-import ccc.services.ServiceNames;
 import ccc.services.StatefulReader;
 
 
 
 /**
- * A servlet to redirect old CCC6 urls to the corresponding CCC7 url.
+ * A servlet to redirect old CCC6 URLs to the corresponding CCC7 url.
  * <br>Supports links in the following forms:
  * <br>- /2334.html
  * <br>- /files/my%20file.txt
@@ -61,8 +60,7 @@ public class BrokenLinkServlet
         final Matcher fileMatcher = FILE_PATTERN.matcher(path);
 
         if (pageMatcher.matches()) {
-            final StatefulReader r =
-                _registry.get(ServiceNames.STATEFUL_READER);
+            final StatefulReader r = _services.statefulReader();
             final String resourcePath = r.absolutePath(pageMatcher.group(1));
             if (null==resourcePath) {
                 dispatchNotFound(req, resp);

@@ -17,8 +17,6 @@ import org.jboss.web.tomcat.security.login.WebAuthentication;
 
 import ccc.contentcreator.api.SecurityService;
 
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-
 
 /**
  * J2EE / jBoss implementation of the {@link SecurityService} interface.
@@ -26,7 +24,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
  * @author Civic Computing Ltd.
  */
 public class SecurityImpl
-    extends RemoteServiceServlet
+    extends CCCRemoteServiceServlet
     implements SecurityService {
 
     /** {@inheritDoc} */
