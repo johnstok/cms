@@ -15,6 +15,7 @@
         <velocity-version>1.6.1</velocity-version>
         <jboss-version>4.2.2.GA</jboss-version>
         <h2-version>1.1.103</h2-version>
+        <ccc-version>${project.version}</ccc-version>
     </properties>
 
 
@@ -83,6 +84,19 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>
+                                true
+                            </addDefaultImplementationEntries>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
