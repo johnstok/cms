@@ -254,12 +254,14 @@ public class Snapshot implements Serializable {
         return UUID.fromString(getString(key));
     }
 
-    private void readObject(final ObjectInputStream aInputStream) throws IOException, ClassNotFoundException  {
+    private void readObject(final ObjectInputStream aInputStream)
+                                   throws IOException, ClassNotFoundException  {
         aInputStream.defaultReadObject();
         setDetail(aInputStream.readUTF());
     }
 
-    private void writeObject(final ObjectOutputStream aOutputStream) throws IOException {
+    private void writeObject(final ObjectOutputStream aOutputStream)
+                                                            throws IOException {
         aOutputStream.defaultWriteObject();
         aOutputStream.writeUTF(getDetail());
     }

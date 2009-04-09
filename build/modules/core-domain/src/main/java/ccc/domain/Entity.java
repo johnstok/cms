@@ -16,10 +16,6 @@ import java.io.Serializable;
 import java.util.UUID;
 
 import ccc.commons.DBC;
-import ccc.commons.serialisation.CanSerialize;
-import ccc.commons.serialisation.DeSerializer;
-import ccc.commons.serialisation.JsonSerializer;
-import ccc.commons.serialisation.Serializer;
 
 
 /**
@@ -27,7 +23,7 @@ import ccc.commons.serialisation.Serializer;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class Entity implements Serializable, CanSerialize {
+public abstract class Entity implements Serializable {
 
     private UUID _id = UUID.randomUUID();
 
@@ -94,19 +90,6 @@ public abstract class Entity implements Serializable, CanSerialize {
     /** {@inheritDoc} */
     @Override
     public String toString() {
-        return new JsonSerializer().dict(this).toString();
+        return _id.toString();
     }
-
-    /** {@inheritDoc} */
-    @Override
-    public void deserialize(final DeSerializer ds) {
-        throw new UnsupportedOperationException("Method not implemented.");
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void serialize(final Serializer s) {
-        s.uuid("id", id());
-    }
-
 }
