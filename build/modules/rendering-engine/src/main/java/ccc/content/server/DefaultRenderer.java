@@ -73,36 +73,40 @@ public class DefaultRenderer
     @Override
     public Response render(final Resource resource,
                            final Map<String, String[]> parameters) {
-        if (resource == null) {
-            throw new NotFoundException();
-        } else if (_respectVisibility && !resource.isVisible()) {
-            throw new NotFoundException();
-        }
-
-        switch (resource.type()) {
-
-            case ALIAS:
-                final Alias alias = resource.as(Alias.class);
-                return renderAlias(alias);
-
-            case PAGE:
-                final Page page = resource.as(Page.class);
-                return renderPage(page, parameters);
-
-            case FILE:
-                final File f = resource.as(File.class);
-                return renderFile(f);
-
-            case FOLDER:
-                final Folder folder = resource.as(Folder.class);
-                return renderFolder(folder);
-
-            case SEARCH:
-                final Search search = resource.as(Search.class);
-                return renderSearch(search, parameters);
-
-            default:
+        try {
+            if (resource == null) {
                 throw new NotFoundException();
+            } else if (_respectVisibility && !resource.isVisible()) {
+                throw new NotFoundException();
+            }
+
+            switch (resource.type()) {
+
+                case ALIAS:
+                    final Alias alias = resource.as(Alias.class);
+                    return renderAlias(alias);
+
+                case PAGE:
+                    final Page page = resource.as(Page.class);
+                    return renderPage(page, parameters);
+
+                case FILE:
+                    final File f = resource.as(File.class);
+                    return renderFile(f);
+
+                case FOLDER:
+                    final Folder folder = resource.as(Folder.class);
+                    return renderFolder(folder);
+
+                case SEARCH:
+                    final Search search = resource.as(Search.class);
+                    return renderSearch(search, parameters);
+
+                default:
+                    throw new NotFoundException();
+            }
+        } finally {
+            _reader.close();
         }
     }
 

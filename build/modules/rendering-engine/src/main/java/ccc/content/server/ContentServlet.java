@@ -28,6 +28,7 @@ import ccc.domain.CCCException;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 import ccc.domain.User;
+import ccc.services.StatefulReader;
 
 
 /**
@@ -81,12 +82,13 @@ public final class ContentServlet extends CCCServlet {
     protected void doGet(final HttpServletRequest request,
                          final HttpServletResponse response)
                                           throws IOException, ServletException {
+        final StatefulReader reader = _factory.getReader();
         try {
             final ResourcePath contentPath = determineResourcePath(request);
-            final Resource rs = lookupResource(contentPath);
+            final Resource rs = lookupResource(contentPath, reader);
             checkSecurity(rs);
             final Response r = prepareResponse(request, rs);
-            handle(response, request, r);
+            handle(response, request, r, reader);
 
         } catch (final NotFoundException e) {
             dispatchNotFound(request, response);
@@ -96,6 +98,8 @@ public final class ContentServlet extends CCCServlet {
         } catch (final AuthenticationRequiredException e) {
             final String relUri = "/content/login?tg="+e.getResource().absolutePath().toString();
             dispatchRedirect(request, response, relUri);
+        } finally {
+            reader.close();
         }
     }
 
@@ -122,9 +126,9 @@ public final class ContentServlet extends CCCServlet {
     }
 
 
-    private Resource lookupResource(final ResourcePath contentPath) {
-        final Resource rs =
-            _factory.getReader().lookup(_rootName, contentPath);
+    private Resource lookupResource(final ResourcePath contentPath,
+                                    final StatefulReader reader) {
+        final Resource rs = reader.lookup(_rootName, contentPath);
         if (null==rs) {
             throw new NotFoundException();
         }
@@ -171,11 +175,13 @@ public final class ContentServlet extends CCCServlet {
      * @param httpResponse The servlet response.
      * @param httpRequest The servlet request.
      * @param response The CCC response.
+     * @param reader The stateful reader.
      * @throws IOException - if writing to the servlet response fails.
      */
     protected void handle(final HttpServletResponse httpResponse,
                           final HttpServletRequest httpRequest,
-                          final Response response) throws IOException {
+                          final Response response,
+                          final StatefulReader reader) throws IOException {
 
         if (null!=response.getDescription()) {
             httpResponse.setHeader(
@@ -213,7 +219,7 @@ public final class ContentServlet extends CCCServlet {
 
         if (null!=response.getBody()) {
             response.getBody()
-                .write(httpResponse.getOutputStream(), _factory.getReader());
+                .write(httpResponse.getOutputStream(), reader);
         }
     }
 }

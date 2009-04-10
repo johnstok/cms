@@ -362,7 +362,7 @@ public class DefaultRendererTest
     private DefaultRenderer _renderer;
     private final DataManager _dm = Testing.dummy(DataManager.class);
     private final SearchEngine _se = Testing.dummy(SearchEngine.class);
-    private final StatefulReader _sr = Testing.dummy(StatefulReader.class);
+    private final StatefulReader _sr = Testing.stub(StatefulReader.class);
     private final User _user = new User("fooo");
     private final Map<String, String[]> noParams =
         new HashMap<String, String[]>();

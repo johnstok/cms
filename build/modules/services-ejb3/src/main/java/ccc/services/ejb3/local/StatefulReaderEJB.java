@@ -18,6 +18,7 @@ import java.util.UUID;
 
 import javax.ejb.EJB;
 import javax.ejb.Local;
+import javax.ejb.Remove;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
@@ -94,5 +95,12 @@ public final class StatefulReaderEJB
     public String absolutePath(final String legacyId) {
         final Resource r = _resources.lookupWithLegacyId(legacyId);
         return (null==r) ? null : r.absolutePath().toString();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @Remove
+    public void close() {
+        // Nothing to do
     }
 }
