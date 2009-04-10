@@ -939,7 +939,7 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
     String search();
 
     /**
-     * "Search tool tip"
+     * "Search tool tip".
      *
      * @return The constant, in the appropriate locale.
      */
@@ -961,4 +961,12 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Search Field")
     String searchField();
+
+    /**
+     * "Edit user password".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Edit user password")
+    String editUserPw();
 }

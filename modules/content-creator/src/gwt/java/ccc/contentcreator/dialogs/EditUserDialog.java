@@ -40,14 +40,10 @@ public class EditUserDialog extends AbstractEditDialog {
 
     private final TextField<String> _username = new TextField<String>();
     private final TextField<String> _email = new TextField<String>();
-    private final TextField<String> _password1 = new TextField<String>();
-    private final TextField<String> _password2 = new TextField<String>();
     private final TextArea          _roles = new TextArea();
 
     private UserDelta _userDTO = new UserDelta();
     private final UserTable _userTable;
-
-    private static final String ROLE = "role";
 
     /**
      * Constructor.
@@ -73,16 +69,6 @@ public class EditUserDialog extends AbstractEditDialog {
         _email.setId(constants().email());
         _email.setValue(_userDTO._email);
         addField(_email);
-
-        _password1.setPassword(true);
-        _password1.setFieldLabel(constants().password());
-        _password1.setId(constants().password());
-        addField(_password1);
-
-        _password2.setPassword(true);
-        _password2.setFieldLabel(constants().confirmPassword());
-        _password2.setId(constants().confirmPassword());
-        addField(_password2);
 
         _roles.setFieldLabel(_constants.roles());
         _roles.setId("resource-roles");
@@ -110,8 +96,6 @@ public class EditUserDialog extends AbstractEditDialog {
                     .check(minLength(_username, Globals.MIN_USER_NAME_LENGTH))
                     .check(notValidResourceName(_username))
                     .check(notValidEmail(_email))
-                    .check(matchingPasswords(
-                        _password1.getValue(), _password2.getValue()))
                     .check(uniqueUsername(_userDTO, _username.getValue()))
                     .callMethodOr(reportErrors());
             }
@@ -141,12 +125,6 @@ public class EditUserDialog extends AbstractEditDialog {
                 }
                 _userDTO._roles = validRoles;
 
-                String password = null;
-                final String pw1 = _password1.getValue();
-                if (null != pw1 && !pw1.trim().equals("")) {
-                    password = pw1;
-                }
-                _userDTO._password = password;
 
                 commands().updateUser(
                     _userDTO,
@@ -193,30 +171,8 @@ public class EditUserDialog extends AbstractEditDialog {
                         }
                     );
                 }
-
-            }
-
-        };
-    }
-
-
-    /**
-     * Factory method for password validators.
-     *
-     * @param pw1 The password to check.
-     * @param pw2 The password to check.
-     * @return A new instance of the password validator.
-     */
-    private Validator matchingPasswords(final String pw1, final String pw2) {
-        return new Validator() {
-            public void validate(final Validate validate) {
-                if (pw1 != null && pw2 != null && !pw1.equals(pw2)) {
-                    validate.addMessage(
-                        constants().passwordsDidNotMatch()
-                    );
-                }
-                validate.next();
             }
         };
     }
+
 }
