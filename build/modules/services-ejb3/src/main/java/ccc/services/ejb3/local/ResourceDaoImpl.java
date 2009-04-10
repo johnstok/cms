@@ -157,8 +157,10 @@ public class ResourceDaoImpl implements ResourceDao {
     /** {@inheritDoc} */
     @Override
     public void updateTags(final UUID resourceId, final String tags) {
+        final User loggedInUser = _users.loggedInUser();
         final Resource r = findLocked(Resource.class, resourceId);
         r.tags(tags);
+        _audit.recordUpdateTags(r, loggedInUser,  new Date());
     }
 
 
@@ -330,7 +332,13 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public void includeInMainMenu(final UUID id, final boolean b) {
         final Resource r = findLocked(Resource.class, id);
+        final User u = _users.loggedInUser();
         r.includeInMainMenu(b);
+        if (b) {
+            _audit.recordIncludeInMainMenu(r, u, new Date());
+        } else {
+            _audit.recordRemoveFromMainMenu(r, u, new Date());
+        }
     }
 
 
@@ -340,17 +348,21 @@ public class ResourceDaoImpl implements ResourceDao {
                                  final Map<String,
                                  String> metadata) {
         final Resource r = findLocked(Resource.class, id);
+        final User u = _users.loggedInUser();
         r.clearMetadata();
         for (final String key : metadata.keySet()) {
             r.addMetadatum(key, metadata.get(key));
         }
+        _audit.recordUpdateMetadata(r, u, new Date());
     }
 
     /** {@inheritDoc} */
     @Override
     public void changeRoles(final UUID id, final Collection<String> roles) {
         final Resource r = findLocked(Resource.class, id);
+        final User u = _users.loggedInUser();
         r.roles(roles);
+        _audit.recordChangeRoles(r, u, new Date());
     }
 
     /**
