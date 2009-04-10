@@ -62,4 +62,6 @@ public interface StatefulReader {
      */
     Resource lookup(String id);
 
+    void close();
+
 }

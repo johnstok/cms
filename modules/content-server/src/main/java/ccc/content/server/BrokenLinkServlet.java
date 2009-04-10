@@ -61,11 +61,15 @@ public class BrokenLinkServlet
 
         if (pageMatcher.matches()) {
             final StatefulReader r = _services.statefulReader();
-            final String resourcePath = r.absolutePath(pageMatcher.group(1));
-            if (null==resourcePath) {
-                dispatchNotFound(req, resp);
-            } else {
-                dispatchRedirect(req, resp, resourcePath);
+            try {
+                final String resourcePath = r.absolutePath(pageMatcher.group(1));
+                if (null==resourcePath) {
+                    dispatchNotFound(req, resp);
+                } else {
+                    dispatchRedirect(req, resp, resourcePath);
+                }
+            } finally {
+                r.close();
             }
 
         } else if (fileMatcher.matches()) {

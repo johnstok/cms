@@ -78,7 +78,7 @@ public final class ContentServletTest extends TestCase {
         replayAll();
 
         // ACT
-        _cs.handle(_response, _request, r);
+        _cs.handle(_response, _request, r, null);
 
         // ASSERT
         verifyAll();
@@ -102,7 +102,7 @@ public final class ContentServletTest extends TestCase {
         replayAll();
 
         // ACT
-        _cs.handle(_response, _request, r);
+        _cs.handle(_response, _request, r, null);
 
         // ASSERT
         verifyAll();
@@ -122,7 +122,7 @@ public final class ContentServletTest extends TestCase {
         replayAll();
 
         // ACT
-        _cs.handle(_response, _request, r);
+        _cs.handle(_response, _request, r, null);
 
         // ASSERT
         verifyAll();
@@ -142,7 +142,7 @@ public final class ContentServletTest extends TestCase {
         replayAll();
 
         // ACT
-        _cs.handle(_response, _request, r);
+        _cs.handle(_response, _request, r, null);
 
         // ASSERT
         verifyAll();
@@ -162,7 +162,7 @@ public final class ContentServletTest extends TestCase {
         replayAll();
 
         // ACT
-        _cs.handle(_response, _request, r);
+        _cs.handle(_response, _request, r, null);
 
         // ASSERT
         verifyAll();
@@ -183,7 +183,7 @@ public final class ContentServletTest extends TestCase {
         replayAll();
 
         // ACT
-        _cs.handle(_response, _request, r);
+        _cs.handle(_response, _request, r, null);
 
         // ASSERT
         verifyAll();
@@ -205,12 +205,11 @@ public final class ContentServletTest extends TestCase {
         r.setBody(b);
 
         expect(_response.getOutputStream()).andReturn(os);
-        expect(_factory.getReader()).andReturn(null);
         b.write(os, null);
         replayAll();
 
         // ACT
-        _cs.handle(_response, _request, r);
+        _cs.handle(_response, _request, r, null);
 
         // ASSERT
         verifyAll();
@@ -286,6 +285,7 @@ public final class ContentServletTest extends TestCase {
         expect(_factory.getReader()).andReturn(_reader);
         expect(_reader.lookup(eq((String)null), isA(ResourcePath.class)))
             .andThrow(new NotFoundException());
+        _reader.close();
         expect(_request.getRequestDispatcher("/notfound")).andReturn(rd);
         rd.forward(_request, _response);
         replayAll();
@@ -315,6 +315,7 @@ public final class ContentServletTest extends TestCase {
         expect(_factory.getReader()).andReturn(_reader);
         expect(_reader.lookup(eq((String)null), isA(ResourcePath.class)))
             .andReturn(bar);
+        _reader.close();
         expect(_factory.currentUser()).andReturn(new User("user"));
         expect(_factory.createRenderer()).andReturn(_renderer);
         expect(_renderer.render(bar, new HashMap<String, String[]>()))
