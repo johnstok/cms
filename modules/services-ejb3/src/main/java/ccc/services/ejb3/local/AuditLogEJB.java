@@ -24,6 +24,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import ccc.commons.DBC;
+import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.User;
@@ -187,5 +188,83 @@ public class AuditLogEJB
         } catch (final NoResultException e) {
             return null;
         }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void recordUpdateTags(final Resource resource,
+                                 final User actor,
+                                 final Date happenedOn) {
+        DBC.require().notNull(resource);
+        final LogEntry le =
+            LogEntry.forUpdateTags(resource, actor, happenedOn);
+        _em.persist(le);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void recordUpdateMetadata(final Resource resource,
+                                 final User actor,
+                                 final Date happenedOn) {
+        DBC.require().notNull(resource);
+        final LogEntry le =
+            LogEntry.forUpdateMetadata(resource, actor, happenedOn);
+        _em.persist(le);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void recordIncludeInMainMenu(final Resource resource,
+                                        final User actor,
+                                        final Date happenedOn) {
+        DBC.require().notNull(resource);
+        final LogEntry le =
+            LogEntry.forIncludeInMainMenu(resource, actor, happenedOn);
+        _em.persist(le);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void recordRemoveFromMainMenu(final Resource resource,
+                                        final User actor,
+                                        final Date happenedOn) {
+        DBC.require().notNull(resource);
+        final LogEntry le =
+            LogEntry.forRemoveFromMainMenu(resource, actor, happenedOn);
+        _em.persist(le);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void recordChangeRoles(final Resource resource,
+                                  final User actor,
+                                  final Date happenedOn) {
+
+        DBC.require().notNull(resource);
+        final LogEntry le =
+            LogEntry.forChangeRoles(resource, actor, happenedOn);
+        _em.persist(le);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void recordReorder(final Folder folder,
+                              final User actor,
+                              final Date happenedOn) {
+        DBC.require().notNull(folder);
+        final LogEntry le =
+            LogEntry.forReorder(folder, actor, happenedOn);
+        _em.persist(le);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void recordUpdateSortOrder(final Folder folder,
+                                      final User actor,
+                                      final Date happenedOn) {
+        DBC.require().notNull(folder);
+        final LogEntry le =
+            LogEntry.forUpdateSortOrder(folder, actor, happenedOn);
+        _em.persist(le);
     }
 }

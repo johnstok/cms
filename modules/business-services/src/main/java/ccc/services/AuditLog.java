@@ -13,6 +13,7 @@ package ccc.services;
 
 import java.util.Date;
 
+import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.User;
@@ -33,6 +34,8 @@ public interface AuditLog {
      * Record that a resource was locked.
      *
      * @param resource The resource that was locked.
+     * @param actor The actor of the change.
+     * @param happenedOn The date of the change.
      */
     void recordLock(final Resource resource, User actor, Date happenedOn);
 
@@ -41,6 +44,8 @@ public interface AuditLog {
      * Record that a resource was unlocked.
      *
      * @param resource The resource that was unlocked.
+     * @param actor The actor of the change.
+     * @param happenedOn The date of the change.
      */
     void recordUnlock(final Resource resource, User actor, Date happenedOn);
 
@@ -49,6 +54,8 @@ public interface AuditLog {
      * Record that a resource was created.
      *
      * @param resource The resource that was created.
+     * @param actor The actor of the change.
+     * @param happenedOn The date of the change.
      */
     void recordCreate(Resource resource, User actor, Date happenedOn);
 
@@ -56,13 +63,23 @@ public interface AuditLog {
      * Record that a resource was updated.
      *
      * @param resource The resource that was updated.
+     * @param actor The actor of the change.
+     * @param happenedOn The date of the change.
+     * @param comment The comment for the update.
+     * @param isMajorEdit The boolean for major edit.
      */
-    void recordUpdate(Resource resource, User actor, Date happenedOn, final String comment, final boolean isMajorEdit);
+    void recordUpdate(Resource resource,
+                      User actor, Date
+                      happenedOn,
+                      final String comment,
+                      final boolean isMajorEdit);
 
     /**
      * Record that a resource was updated.
      *
      * @param resource The resource that was updated.
+     * @param actor The actor of the change.
+     * @param happenedOn The date of the change.
      */
     void recordUpdate(Resource resource, User actor, Date happenedOn);
 
@@ -70,6 +87,8 @@ public interface AuditLog {
      * Record that the template for a resource was changed.
      *
      * @param resource The resource that was changed.
+     * @param actor The actor of the change.
+     * @param happenedOn The date of the change.
      */
     void recordChangeTemplate(Resource resource, User actor, Date happenedOn);
 
@@ -77,6 +96,8 @@ public interface AuditLog {
      * Record that the resource was moved.
      *
      * @param resource The resource that was changed.
+     * @param actor The actor of the change.
+     * @param happenedOn The date of the change.
      */
     void recordMove(Resource resource, User actor, Date happenedOn);
 
@@ -84,6 +105,8 @@ public interface AuditLog {
      * Record that the resource was renamed.
      *
      * @param resource The resource that was changed.
+     * @param actor The actor of the change.
+     * @param happenedOn The date of the change.
      */
     void recordRename(Resource resource, User actor, Date happenedOn);
 
@@ -91,6 +114,8 @@ public interface AuditLog {
      * Record that a resource was published.
      *
      * @param resource The resource that was published.
+     * @param actor The actor of the change.
+     * @param happenedOn The date of the change.
      */
     void recordPublish(final Resource resource, User actor, Date happenedOn);
 
@@ -98,6 +123,8 @@ public interface AuditLog {
      * Record that a resource was unpublished.
      *
      * @param resource The resource that was unpublished.
+     * @param actor The actor of the change.
+     * @param happenedOn The date of the change.
      */
     void recordUnpublish(final Resource resource, User actor, Date happenedOn);
 
@@ -109,4 +136,77 @@ public interface AuditLog {
      * @return The log entry with the corresponding index number.
      */
     LogEntry findEntryForIndex(long index);
+
+
+    /**
+     * Record that a resource's tags were updated.
+     *
+     * @param resource The resource that was changed.
+     * @param actor The actor of the change.
+     * @param happenedOn The date of the change.
+     */
+    void recordUpdateTags(Resource resource, User actor, Date happenedOn);
+
+
+    /**
+     * Record that a resource's metadata was updated.
+     *
+     * @param resource The resource that was changed.
+     * @param actor The actor of the change.
+     * @param happenedOn The date of the change.
+     */
+    void recordUpdateMetadata(Resource resource, User actor, Date happenedOn);
+
+
+    /**
+     * Record that a resource was included in main menu.
+     *
+     * @param resource The resource that was changed.
+     * @param actor The actor of the change.
+     * @param happenedOn The date of the change.
+     */
+    void recordIncludeInMainMenu(Resource resource,
+                                 User actor,
+                                 Date happenedOn);
+
+    /**
+     * Record that a resource was removed from main menu.
+     *
+     * @param resource The resource that was changed.
+     * @param actor The actor of the change.
+     * @param happenedOn The date of the change.
+     */
+    void recordRemoveFromMainMenu(Resource resource,
+                                  User actor, Date
+                                  happenedOn);
+
+
+    /**
+     * Record that a roles of the resource were changed.
+     *
+     * @param resource The resource that was changed.
+     * @param actor The actor of the change.
+     * @param happenedOn The date of the change.
+     */
+    void recordChangeRoles(Resource resource, User actor, Date happenedOn);
+
+
+    /**
+     * Record that the folder sort order was changed.
+     *
+     * @param folder The folder that was changed.
+     * @param actor The actor of the change.
+     * @param happenedOn The date of the change.
+     */
+    void recordUpdateSortOrder(Folder folder, User actor, Date happenedOn);
+
+
+    /**
+     * Record that the folder's manual sorting was reordered.
+     *
+     * @param folder The folder that was changed.
+     * @param actor The actor of the change.
+     * @param happenedOn The date of the change.
+     */
+    void recordReorder(Folder folder, User actor, Date happenedOn);
 }

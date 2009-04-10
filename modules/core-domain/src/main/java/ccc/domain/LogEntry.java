@@ -56,7 +56,21 @@ public class LogEntry extends Entity {
         /** UNLOCK : Action. */
         UNLOCK,
         /** CHANGE_TEMPLATE : Action. */
-        CHANGE_TEMPLATE
+        CHANGE_TEMPLATE,
+        /** UPDATE_TAGS : Action. */
+        UPDATE_TAGS,
+        /** INCLUDE_IN_MM : Action. */
+        INCLUDE_IN_MM,
+        /** REMOVE_FROM_MM : Action. */
+        REMOVE_FROM_MM,
+        /** UPDATE_METADATA : Action. */
+        UPDATE_METADATA,
+        /** CHANGE_ROLES : Action. */
+        CHANGE_ROLES,
+        /** REORDER : Action. */
+        REORDER,
+        /** UPDATE_SORT_ORDER : Action. */
+        UPDATE_SORT_ORDER
     }
 
 
@@ -258,6 +272,131 @@ public class LogEntry extends Entity {
         return le;
     }
 
+    /**
+     * Create a log entry for the updating tags of a resource.
+     *
+     * @param resource The resource that was changed.
+     * @param actor The actor that performed the action.
+     * @param happenedOn The date that the actor performed the action.
+     * @return The log entry representing the action.
+     */
+    public static LogEntry forUpdateTags(final Resource resource,
+                                         final User actor,
+                                         final Date happenedOn) {
+
+        final LogEntry le = createEntry(resource, actor, happenedOn);
+        le._action = Action.UPDATE_TAGS;
+        le._comment = "Updated tags.";
+        return le;
+    }
+
+    /**
+     * Create a log entry for the updating metadata of a resource.
+     *
+     * @param resource The resource that was changed.
+     * @param actor The actor that performed the action.
+     * @param happenedOn The date that the actor performed the action.
+     * @return The log entry representing the action.
+     */
+    public static LogEntry forUpdateMetadata(final Resource resource,
+                                         final User actor,
+                                         final Date happenedOn) {
+
+        final LogEntry le = createEntry(resource, actor, happenedOn);
+        le._action = Action.UPDATE_METADATA;
+        le._comment = "Updated metadata.";
+        return le;
+    }
+
+    /**
+     * Create a log entry for the including resource in the main menu.
+     *
+     * @param resource The resource that was changed.
+     * @param actor The actor that performed the action.
+     * @param happenedOn The date that the actor performed the action.
+     * @return The log entry representing the action.
+     */
+    public static LogEntry forIncludeInMainMenu(final Resource resource,
+                                                final User actor,
+                                                final Date happenedOn) {
+        final LogEntry le = createEntry(resource, actor, happenedOn);
+        le._action = Action.INCLUDE_IN_MM;
+        le._comment = "Included in main menu.";
+        return le;
+    }
+
+
+    /**
+     * Create a log entry for the removing a resource from the main menu.
+     *
+     * @param resource The resource that was changed.
+     * @param actor The actor that performed the action.
+     * @param happenedOn The date that the actor performed the action.
+     * @return The log entry representing the action.
+     */
+    public static LogEntry forRemoveFromMainMenu(final Resource resource,
+                                                 final User actor,
+                                                 final Date happenedOn) {
+        final LogEntry le = createEntry(resource, actor, happenedOn);
+        le._action = Action.REMOVE_FROM_MM;
+        le._comment = "Removed from main menu.";
+        return le;
+    }
+
+
+    /**
+     * Create a log entry for the removing a resource from the main menu.
+     *
+     * @param resource The resource that was changed.
+     * @param actor The actor that performed the action.
+     * @param happenedOn The date that the actor performed the action.
+     * @return The log entry representing the action.
+     */
+    public static LogEntry forChangeRoles(final Resource resource,
+                                          final User actor,
+                                          final Date happenedOn) {
+        final LogEntry le = createEntry(resource, actor, happenedOn);
+        le._action = Action.CHANGE_ROLES;
+        le._comment = "Roles changed.";
+        return le;
+    }
+
+    /**
+     * Create a log entry for the reordering folder's resources.
+     *
+     * @param folder The folder that was changed.
+     * @param actor The actor that performed the action.
+     * @param happenedOn The date that the actor performed the action.
+     * @return The log entry representing the action.
+     */
+    public static LogEntry forReorder(final Folder folder,
+                                      final User actor, final
+                                      Date happenedOn) {
+
+        final LogEntry le = createEntry(folder, actor, happenedOn);
+        le._action = Action.REORDER;
+        le._comment = "Reordered.";
+        return le;
+    }
+
+
+    /**
+     * Create a log entry for the changing folder's sort order.
+     *
+     * @param folder The folder that was changed.
+     * @param actor The actor that performed the action.
+     * @param happenedOn The date that the actor performed the action.
+     * @return The log entry representing the action.
+     */
+    public static LogEntry forUpdateSortOrder(final Folder folder,
+                                              final User actor, final
+                                              Date happenedOn) {
+
+                final LogEntry le = createEntry(folder, actor, happenedOn);
+                le._action = Action.UPDATE_SORT_ORDER;
+                le._comment = "Updated sort order.";
+                return le;
+    }
 
     private static LogEntry createEntry(final Resource resource,
                                         final User actor,
@@ -374,4 +513,5 @@ public class LogEntry extends Entity {
     public boolean isMajorEdit() {
         return _isMajorEdit;
     }
+
 }

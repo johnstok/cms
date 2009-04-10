@@ -15,6 +15,7 @@ import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,8 +27,11 @@ import javax.ejb.TransactionAttribute;
 import ccc.domain.Folder;
 import ccc.domain.Resource;
 import ccc.domain.ResourceOrder;
+import ccc.domain.User;
+import ccc.services.AuditLog;
 import ccc.services.FolderDao;
 import ccc.services.ResourceDao;
+import ccc.services.UserManager;
 
 
 /**
@@ -40,8 +44,9 @@ import ccc.services.ResourceDao;
 @Local(FolderDao.class)
 public class FolderDaoImpl implements FolderDao {
 
-    @EJB(name=ResourceDao.NAME) private ResourceDao _dao;
-
+    @EJB(name=ResourceDao.NAME) private  ResourceDao    _dao;
+    @EJB(name=AuditLog.NAME)    private  AuditLog       _audit;
+    @EJB(name=UserManager.NAME)  private UserManager    _users;
 
     /** Constructor. */
     @SuppressWarnings("unused") public FolderDaoImpl() { super(); }
@@ -51,8 +56,12 @@ public class FolderDaoImpl implements FolderDao {
      *
      * @param dao The ResourceDao used for CRUD operations, etc.
      */
-    public FolderDaoImpl(final ResourceDao dao) {
+    public FolderDaoImpl(final ResourceDao dao,
+                         final AuditLog audit,
+                         final UserManager users) {
         _dao = dao;
+        _audit = audit;
+        _users = users;
     }
 
 
@@ -66,14 +75,18 @@ public class FolderDaoImpl implements FolderDao {
     @Override
     public void updateSortOrder(final UUID folderId,
                                 final ResourceOrder order) {
+
         final Folder f = _dao.find(Folder.class, folderId);
+        final User u = _users.loggedInUser();
         f.sortOrder(order);
+        _audit.recordUpdateSortOrder(f, u, new Date());
     }
 
     /** {@inheritDoc} */
     @Override
     public void reorder(final UUID folderId, final List<UUID> order) {
         final Folder f = _dao.find(Folder.class, folderId);
+        final User u = _users.loggedInUser();
         final List<Resource> newOrder = new ArrayList<Resource>();
         final List<Resource> currentOrder = f.entries();
         for (final UUID resourceId : order) {
@@ -84,5 +97,6 @@ public class FolderDaoImpl implements FolderDao {
             }
         }
         f.reorder(newOrder);
+        _audit.recordReorder(f, u, new Date());
     }
 }

@@ -124,7 +124,9 @@ public class ResourceDaoImplTest
         // ARRANGE
         _r.lock(_regularUser);
         expect(_users.loggedInUser()).andReturn(_regularUser);
+        expect(_users.loggedInUser()).andReturn(_regularUser);
         expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
+        _al.recordIncludeInMainMenu(eq(_r), eq(_regularUser), isA(Date.class));
         replayAll();
 
         // ACT
@@ -144,7 +146,9 @@ public class ResourceDaoImplTest
         // ARRANGE
         _r.lock(_regularUser);
         expect(_users.loggedInUser()).andReturn(_regularUser);
+        expect(_users.loggedInUser()).andReturn(_regularUser);
         expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
+        _al.recordUpdateTags(eq(_r), eq(_regularUser), isA(Date.class));
         replayAll();
 
         // ACT
@@ -529,12 +533,14 @@ public class ResourceDaoImplTest
     /**
      * Test.
      */
-    public void testUpdateStyleSheet() {
+    public void testUpdateMetadata() {
 
         // ARRANGE
         _r.lock(_regularUser);
         expect(_users.loggedInUser()).andReturn(_regularUser);
+        expect(_users.loggedInUser()).andReturn(_regularUser);
         expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
+        _al.recordUpdateMetadata(eq(_r), eq(_regularUser), isA(Date.class));
         replayAll();
 
         // ACT
