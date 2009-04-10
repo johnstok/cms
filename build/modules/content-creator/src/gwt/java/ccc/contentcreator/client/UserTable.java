@@ -19,6 +19,7 @@ import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.dialogs.EditUserDialog;
+import ccc.contentcreator.dialogs.EditUserPwDialog;
 import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
 
@@ -131,8 +132,9 @@ public class UserTable extends TablePanel {
         grid.setLoadMask(true);
         grid.setId("UserGrid");
 
-        final MenuItem editUser = createEditUserMenu(grid);
-        contextMenu.add(editUser);
+;
+        contextMenu.add(createEditUserMenu(grid));
+        contextMenu.add(createEditUserPwMenu(grid));
 
         grid.setContextMenu(contextMenu);
         grid.addPlugin(gp);
@@ -162,6 +164,31 @@ public class UserTable extends TablePanel {
 
         });
         return editUser;
+    }
+
+    private MenuItem createEditUserPwMenu(final Grid<ModelData> grid) {
+
+        final MenuItem editUserPw = new MenuItem(_constants.editUserPw());
+        editUserPw.setId("editUserPwMenu");
+        editUserPw.addSelectionListener(new SelectionListener<MenuEvent>() {
+
+            @Override
+            public void componentSelected(final MenuEvent ce) {
+                final ModelData userDTO =
+                    grid.getSelectionModel().getSelectedItem();
+                final String userId = userDTO.get("id");
+                qs.userDelta(userId, new AsyncCallback<UserDelta>(){
+                    public void onFailure(final Throwable arg0) {
+                        Globals.unexpectedError(arg0);
+                    }
+                    public void onSuccess(final UserDelta arg0) {
+                        new EditUserPwDialog(arg0, UserTable.this).show();
+                    }
+                });
+            }
+
+        });
+        return editUserPw;
     }
 
     /**
