@@ -9,8 +9,11 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.content.server;
+package ccc.content.response;
 
+import static org.easymock.EasyMock.*;
+
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,6 +21,7 @@ import java.util.List;
 
 import javax.activation.MimeType;
 import javax.activation.MimeTypeParseException;
+import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
 import ccc.commons.Testing;
@@ -173,23 +177,175 @@ public class ResponseTest
     }
 
 
+    /**
+     * Test.
+     * @throws IOException From servlet API.
+     */
+    public void testHandleResponseSetsConstentDescription() throws IOException {
+
+        // ARRANGE
+        final Response r = new Response(new EmptyBody());
+        r.setDescription("desc");
+
+        _response.setHeader("Content-Description", "desc");
+        replayAll();
+
+        // ACT
+        r.writeHeaders(_response);
+
+        // ASSERT
+        verifyAll();
+    }
+
+    /**
+     * Test.
+     * @throws IOException From servlet API.
+     */
+    public void testHandleResponseSetsExpiryOfZero() throws IOException {
+
+        // ARRANGE
+        final Response r = new Response(new EmptyBody());
+        r.setExpiry(Long.valueOf(0));
+
+        _response.setDateHeader("Expires", 0);
+        replayAll();
+
+        // ACT
+        r.writeHeaders(_response);
+
+        // ASSERT
+        verifyAll();
+    }
+
+    /**
+     * Test.
+     * @throws IOException From servlet API.
+     */
+    public void testHandleResponseSetsConstentDisposition() throws IOException {
+
+        // ARRANGE
+        final Response r = new Response(new EmptyBody());
+        r.setDisposition("disp");
+
+        _response.setHeader("Content-Disposition", "disp");
+        replayAll();
+
+        // ACT
+        r.writeHeaders(_response);
+
+        // ASSERT
+        verifyAll();
+    }
+
+    /**
+     * Test.
+     * @throws IOException From servlet API.
+     */
+    public void testHandleResponseSetsConstentType() throws IOException {
+
+        // ARRANGE
+        final Response r = new Response(new EmptyBody());
+        r.setMimeType("text", "html");
+
+        _response.setContentType("text/html");
+        replayAll();
+
+        // ACT
+        r.writeHeaders(_response);
+
+        // ASSERT
+        verifyAll();
+    }
+
+    /**
+     * Test.
+     * @throws IOException From servlet API.
+     */
+    public void testHandleResponseSetsCharacterEncoding() throws IOException {
+
+        // ARRANGE
+        final Response r = new Response(new EmptyBody());
+        r.setCharSet("UTF-8");
+
+        _response.setCharacterEncoding("UTF-8");
+        replayAll();
+
+        // ACT
+        r.writeHeaders(_response);
+
+        // ASSERT
+        verifyAll();
+    }
+
+    /**
+     * Test.
+     * TODO: Tests for length of 0 & negative numbers?
+     * @throws IOException From servlet API.
+     */
+    public void testHandleResponseSetsConstentLength() throws IOException {
+
+        // ARRANGE
+        final Response r = new Response(new EmptyBody());
+        r.setLength(1);
+
+        _response.setIntHeader("Content-Length", 1);
+        replayAll();
+
+        // ACT
+        r.writeHeaders(_response);
+
+        // ASSERT
+        verifyAll();
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testDisablementOfResponseCaching() {
+
+        // ARRANGE
+        final Response r = new Response(new EmptyBody());
+        _response.setHeader("Pragma", "no-cache");   // non-spec, but supported
+        _response.setHeader(
+            "Cache-Control",
+            "private, must-revalidate, max-age=0"); // equivalent to 'no-cache'
+        _response.setHeader("Expires", "0");
+        replay(_response);
+
+        // ACT
+        r.disableCaching(_response);
+
+        // VERIFY
+        verify(_response);
+    }
+
+
 
 
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {
-        _r = new Response(new ByteArrayBody(new byte[]{}));
+        _r = new Response(new EmptyBody());
+        _response = createStrictMock(HttpServletResponse.class);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void tearDown() throws Exception {
+        _response = null;
         _r = null;
+    }
+
+    private void verifyAll() {
+        verify(_response);
+    }
+
+    private void replayAll() {
+        replay(_response);
     }
 
     private Response _r;
     private Page _p = new Page("my_page");
-
-    /** UTF8 : Charset. */
-    private static final Charset UTF8 = Charset.forName("UTF-8");
+    private HttpServletResponse _response;
 }

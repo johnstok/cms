@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.content.server;
+package ccc.content.response;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -22,6 +22,7 @@ import java.util.Map;
 import ccc.commons.DBC;
 import ccc.commons.Resources;
 import ccc.commons.VelocityProcessor;
+import ccc.content.server.ContentServlet;
 import ccc.domain.Page;
 import ccc.domain.Template;
 import ccc.services.StatefulReader;

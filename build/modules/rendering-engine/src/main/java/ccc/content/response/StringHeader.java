@@ -9,9 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.content.server;
-
-import java.nio.charset.Charset;
+package ccc.content.response;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,25 +19,27 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Civic Computing Ltd.
  */
-public class CharEncodingHeader
+public class StringHeader
     implements
         Header {
-
-    private final Charset _value;
+    private final String _name;
+    private final String _value;
 
     /**
      * Constructor.
      *
+     * @param name
      * @param value
      */
-    public CharEncodingHeader(final Charset value) {
+    public StringHeader(final String name, final String value) {
+        _name = name;
         _value = value;
     }
 
     /** {@inheritDoc} */
     @Override
     public void writeTo(final HttpServletResponse response) {
-        response.setCharacterEncoding(_value.toString());
+        response.setHeader(_name, _value);
     }
 
     /** {@inheritDoc} */
@@ -47,6 +47,7 @@ public class CharEncodingHeader
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((_name == null) ? 0 : _name.hashCode());
         result = prime * result + ((_value == null) ? 0 : _value.hashCode());
         return result;
     }
@@ -63,7 +64,14 @@ public class CharEncodingHeader
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final CharEncodingHeader other = (CharEncodingHeader) obj;
+        final StringHeader other = (StringHeader) obj;
+        if (_name == null) {
+            if (other._name != null) {
+                return false;
+            }
+        } else if (!_name.equals(other._name)) {
+            return false;
+        }
         if (_value == null) {
             if (other._value != null) {
                 return false;
