@@ -79,7 +79,7 @@ public class DataManagerEJB implements DataManager {
     public void createFile(final File file,
                            final UUID parentId,
                            final InputStream dataStream) {
-        final Data data = create(dataStream, (int)file.size());
+        final Data data = create(dataStream, file.size());
         file.data(data);
         _dao.create(parentId, file);
     }
@@ -91,7 +91,7 @@ public class DataManagerEJB implements DataManager {
                            final String title,
                            final String description,
                            final MimeType mimeType,
-                           final long size,
+                           final int size,
                            final InputStream dataStream) {
 
         final File f = _dao.findLocked(File.class, fileId);
@@ -99,7 +99,7 @@ public class DataManagerEJB implements DataManager {
         f.description(description);
         f.mimeType(mimeType);
         f.size(size);
-        f.data(create(dataStream, (int)size)); // TODO: Delete old data?
+        f.data(create(dataStream, size)); // TODO: Delete old data?
         _dao.update(f);
     }
 

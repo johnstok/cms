@@ -52,7 +52,7 @@ public class UpdateFileServlet extends CreatorServlet {
                     title.getString(),
                     description.getString(),
                     new MimeType(file.getContentType()),
-                    file.getSize(),
+                    (int) file.getSize(),
                     dataStream
                 );
             } finally {

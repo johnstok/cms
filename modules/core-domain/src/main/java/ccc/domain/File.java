@@ -29,7 +29,7 @@ public class File extends Resource {
 
     private String _description;
     private Data _data;
-    private long _size; // FIXME: should be an int not a long.
+    private int _size;
     private MimeType _mimeType;
 
 
@@ -49,7 +49,7 @@ public class File extends Resource {
                 final String title,
                 final String description,
                 final Data data,
-                final long size) {
+                final int size) {
         this(name, title, description, data, size, defaultMimeType());
     }
 
@@ -83,7 +83,7 @@ public class File extends Resource {
                 final String title,
                 final String description,
                 final Data data,
-                final long size,
+                final int size,
                 final MimeType mimeType) {
 
         super(name, title);
@@ -126,7 +126,7 @@ public class File extends Resource {
      *
      * @return The size of the file in bytes, as a long.
      */
-    public long size() {
+    public int size() {
         return _size;
     }
 
@@ -183,7 +183,7 @@ public class File extends Resource {
      *
      * @param size The new size.
      */
-    public void size(final long size) {
+    public void size(final int size) {
         _size = size;
     }
 

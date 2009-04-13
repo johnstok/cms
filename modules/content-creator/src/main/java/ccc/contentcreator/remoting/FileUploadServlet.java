@@ -63,7 +63,7 @@ public class FileUploadServlet extends CreatorServlet {
                     title.getString(),
                     description.getString(),
                     new Data(),
-                    file.getSize(),
+                    (int) file.getSize(), //FIXME: need to set limit to MaxInt
                     new MimeType(file.getContentType()));
 
             final InputStream dataStream = file.getInputStream();
