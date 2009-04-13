@@ -42,7 +42,7 @@ public class SearchBody
     private static final Logger LOG = Logger.getLogger(SearchBody.class);
 
     private final Search  _search;
-    private final Charset _charset;
+    private final StatefulReader _reader;
     private final SearchEngine _searchEngine;
     private final String  _terms;
     private final int _pageNumber;
@@ -51,22 +51,21 @@ public class SearchBody
      * Constructor.
      *
      * @param s The search to render.
-     * @param charset The character set used when writing the page to an
-     *  {@link OutputStream}.
+     * @param reader A stateful reader to access other resources.
      * @param searchEngine The engine used to perform the search.
      */
     public SearchBody(final Search s,
-                      final Charset charset,
+                      final StatefulReader reader,
                       final SearchEngine searchEngine,
                       final String searchTerms,
                       final int pageNumber) {
         DBC.require().notNull(s);
-        DBC.require().notNull(charset);
+        DBC.require().notNull(reader);
         DBC.require().notNull(searchEngine);
         DBC.require().notNull(searchTerms);
 
         _search = s;
-        _charset = charset;
+        _reader = reader;
         _searchEngine = searchEngine;
         _terms = searchTerms;
         _pageNumber = pageNumber;
@@ -74,21 +73,15 @@ public class SearchBody
 
     /** {@inheritDoc} */
     @Override
-    public Search getResource() {
-        return _search;
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void write(final OutputStream os,
-                      final StatefulReader reader) throws IOException {
+                      final Charset charset) throws IOException {
 
         final SearchResult result = _searchEngine.find(_terms, 10, _pageNumber);
 
         final String t = _search.computeTemplate(BUILT_IN_PAGE_TEMPLATE).body();
-        final Writer w = new OutputStreamWriter(os, _charset);
+        final Writer w = new OutputStreamWriter(os, charset);
         final Map<String, Object> values = new HashMap<String, Object>();
-        values.put("reader", reader);
+        values.put("reader", _reader);
         values.put("result", result);
         values.put("pageNumber", _pageNumber);
         values.put("resource", _search);

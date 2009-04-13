@@ -82,13 +82,17 @@ public final class ContentServlet extends CCCServlet {
     protected void doGet(final HttpServletRequest request,
                          final HttpServletResponse response)
                                           throws IOException, ServletException {
-        final StatefulReader reader = _factory.getReader();
         try {
             final ResourcePath contentPath = determineResourcePath(request);
-            final Resource rs = lookupResource(contentPath, reader);
-            checkSecurity(rs);
-            final Response r = prepareResponse(request, rs);
-            handle(response, request, r, reader);
+            final StatefulReader reader = _factory.getReader();
+            try {
+                final Resource rs = lookupResource(contentPath, reader);
+                checkSecurity(rs);
+                final Response r = prepareResponse(request, rs);
+                r.write(response);
+            } finally {
+                reader.close();
+            }
 
         } catch (final NotFoundException e) {
             dispatchNotFound(request, response);
@@ -96,14 +100,14 @@ public final class ContentServlet extends CCCServlet {
             final String relUri = e.getResource().absolutePath().toString();
             dispatchRedirect(request, response, relUri);
         } catch (final AuthenticationRequiredException e) {
-            final String relUri = "/content/login?tg="+e.getResource().absolutePath().toString();
+            final String relUri =
+                "/content/login?tg="+e.getResource().absolutePath().toString();
             dispatchRedirect(request, response, relUri);
-        } finally {
-            reader.close();
         }
     }
 
 
+    @SuppressWarnings("unchecked")
     private Response prepareResponse(final HttpServletRequest request,
                                      final Resource rs) {
 
@@ -165,61 +169,6 @@ public final class ContentServlet extends CCCServlet {
             return contentPath;
         } catch (final CCCException e) {
             throw new NotFoundException();
-        }
-    }
-
-
-    /**
-     * Translates a domain response into HTTP response for the servlet API.
-     *
-     * @param httpResponse The servlet response.
-     * @param httpRequest The servlet request.
-     * @param response The CCC response.
-     * @param reader The stateful reader.
-     * @throws IOException - if writing to the servlet response fails.
-     */
-    protected void handle(final HttpServletResponse httpResponse,
-                          final HttpServletRequest httpRequest,
-                          final Response response,
-                          final StatefulReader reader) throws IOException {
-
-        if (null!=response.getDescription()) {
-            httpResponse.setHeader(
-                "Content-Description",
-                response.getDescription());
-        }
-
-        if (null!=response.getDisposition()) {
-            httpResponse.setHeader(
-                "Content-Disposition",
-                response.getDisposition());
-        }
-
-        if (null!=response.getLength()) {
-            httpResponse.setHeader(
-                "Content-Length",
-                String.valueOf(response.getLength().longValue()));
-        }
-
-        if (null!=response.getMimeType()) {
-            httpResponse.setContentType(response.getMimeType());
-        }
-
-        if (null!=response.getCharSet()) {
-            httpResponse.setCharacterEncoding(response.getCharSet());
-        }
-
-        if (null!=response.getExpiry()) {
-            if (response.getExpiry().longValue() < 1) {
-                disableCaching(httpResponse);
-            } else {
-                throw new RuntimeException();
-            }
-        }
-
-        if (null!=response.getBody()) {
-            response.getBody()
-                .write(httpResponse.getOutputStream(), reader);
         }
     }
 }

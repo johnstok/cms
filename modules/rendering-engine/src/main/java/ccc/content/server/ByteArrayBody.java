@@ -17,18 +17,29 @@ import java.nio.charset.Charset;
 
 
 /**
- * A response body.
+ * TODO: Add Description for this type.
  *
  * @author Civic Computing Ltd.
  */
-public interface Body {
+public class ByteArrayBody
+    implements
+        Body {
+
+    private final byte[] _bytes;
 
     /**
-     * Write the body to an {@link OutputStream}.
+     * Constructor.
      *
-     * @param os The stream to which the body will be written.
-     * @param charset The character set for the output stream.
-     * @throws IOException - if writing to the output stream fails.
+     * @param bytes
      */
-    void write(OutputStream os, Charset charset) throws IOException;
+    public ByteArrayBody (final byte[] bytes) {
+        _bytes = bytes;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void write(final OutputStream os,
+                      final Charset charset) throws IOException {
+        os.write(_bytes);
+    }
 }

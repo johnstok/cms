@@ -33,22 +33,6 @@ public abstract class CCCServlet extends HttpServlet {
     protected ServiceLookup _services =
         new ServiceLookup(CCCProperties.get("application.name"));
 
-    /**
-     * Disable caching for the response.
-     *
-     * @param response The response that should not be cached.
-     */
-    protected void disableCaching(final HttpServletResponse response) {
-        response.setHeader(// non-spec, but supported by some browsers
-            "Pragma",
-            "no-cache");
-        response.setHeader(// equivalent to 'no-cache'
-            "Cache-Control",
-            "private, must-revalidate, max-age=0");
-        response.setHeader(// TODO: Replace with epoch?
-            "Expires",
-            "0");
-    }
 
     /**
      * Dispatch to the 'not found' URI.

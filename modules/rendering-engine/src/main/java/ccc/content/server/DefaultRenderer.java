@@ -12,7 +12,6 @@
 
 package ccc.content.server;
 
-import java.nio.charset.Charset;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -173,13 +172,12 @@ public class DefaultRenderer
 
 
     private Response renderFile(final File f) {
-        final Response r = new Response();
+        final Response r = new Response(new FileBody(f, _dm));
         r.setDescription(f.description());
         r.setDisposition("inline; filename=\""+f.name()+"\"");
         r.setMimeType(f.mimeType().getPrimaryType(), f.mimeType().getSubType());
         r.setExpiry(Long.valueOf(0));
-        r.setLength(Long.valueOf(f.size()));
-        r.setBody(new FileBody(f, _dm));
+        r.setLength(f.size());
 
         return r;
     }
@@ -198,11 +196,11 @@ public class DefaultRenderer
 
     private Response renderPage(final Page page,
                                 final Map<String, String[]> parameters) {
-        final Response r = new Response();
+        final Response r =
+            new Response(new PageBody(page, _reader, parameters));
         r.setExpiry(Long.valueOf(0));
         r.setCharSet("UTF-8");
         r.setMimeType("text", "html");
-        r.setBody(new PageBody(page, Charset.forName("UTF-8"), parameters));
 
         return r;
     }
@@ -210,10 +208,6 @@ public class DefaultRenderer
 
     private Response renderSearch(final Search search,
                                   final Map<String, String[]> parameters) {
-        final Response r = new Response();
-        r.setExpiry(Long.valueOf(0));
-        r.setCharSet("UTF-8");
-        r.setMimeType("text", "html");
 
         String searchQuery = "";
         final String[] qParams = parameters.get("q");
@@ -231,13 +225,17 @@ public class DefaultRenderer
             }
         }
 
-        r.setBody(
-            new SearchBody(
-                search,
-                Charset.forName("UTF-8"),
-                _search,
-                searchQuery,
-                pageNumber));
+        final Response r =
+            new Response(
+                new SearchBody(
+                    search,
+                    _reader,
+                    _search,
+                    searchQuery,
+                    pageNumber));
+        r.setExpiry(Long.valueOf(0));
+        r.setCharSet("UTF-8");
+        r.setMimeType("text", "html");
 
         return r;
     }
