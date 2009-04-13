@@ -13,8 +13,12 @@ package ccc.content.server;
 
 import static ccc.commons.Exceptions.*;
 
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.activation.MimeType;
@@ -154,19 +158,24 @@ public class DefaultRendererTest
 
     /**
      * Test.
+     * @throws MimeTypeParseException For invalids mime types.
      */
-    public void testRenderPage() {
+    public void testRenderPage() throws MimeTypeParseException {
 
         // ARRANGE
+        final MimeType htmlMimeType = new MimeType("text", "html");
         final Page p = new Page("foo");
 
         // ACT
         final Response r = _renderer.render(p, noParams);
 
         // ASSERT
-        assertEquals(Long.valueOf(0), r.getExpiry());
-        assertEquals("UTF-8", r.getCharSet());
-        assertEquals("text/html", r.getMimeType());
+        final List<Header> expected = new ArrayList<Header>() {{
+            add(new DateHeader("Expires", new Date(0)));
+            add(new CharEncodingHeader(Charset.forName("UTF-8")));
+            add(new ContentTypeHeader(htmlMimeType));
+        }};
+        assertEquals(expected, r.getHeaders());
         assertNotNull(r.getBody());
         assertEquals(PageBody.class, r.getBody().getClass());
     }
@@ -179,6 +188,7 @@ public class DefaultRendererTest
     public void testRenderFile() throws MimeTypeParseException {
 
         // ARRANGE
+        final MimeType htmlMimeType = new MimeType("text", "html");
         final File f =
             new File(new ResourceName("meh"),
                 "meh",
@@ -191,11 +201,17 @@ public class DefaultRendererTest
         final Response r = _renderer.render(f, noParams);
 
         // ASSERT
-        assertEquals("meh", r.getDescription());
-        assertEquals("inline; filename=\""+f.name()+"\"", r.getDisposition());
-        assertEquals("text/html", r.getMimeType());
-        assertEquals(Long.valueOf(0), r.getExpiry());
-        assertEquals(Long.valueOf(0), r.getLength());
+        final List<Header> expected = new ArrayList<Header>() {{
+            add(new StringHeader("Content-Description", "meh"));
+            add(new StringHeader(
+                "Content-Disposition", "inline; filename=\""+f.name()+"\""));
+            add(new ContentTypeHeader(htmlMimeType));
+            add(new DateHeader("Expires", new Date(0)));
+            add(new IntHeader("Content-Length", 0));
+        }};
+        assertEquals(expected, r.getHeaders());
+
+
         assertNotNull(r.getBody());
         assertEquals(FileBody.class, r.getBody().getClass());
     }

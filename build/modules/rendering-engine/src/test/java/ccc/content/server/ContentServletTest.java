@@ -71,14 +71,14 @@ public final class ContentServletTest extends TestCase {
     public void testHandleResponseSetsConstentDescription() throws IOException {
 
         // ARRANGE
-        final Response r = new Response();
+        final Response r = new Response(new EmptyBody());
         r.setDescription("desc");
 
         _response.setHeader("Content-Description", "desc");
         replayAll();
 
         // ACT
-        _cs.handle(_response, _request, r, null);
+        r.writeHeaders(_response);
 
         // ASSERT
         verifyAll();
@@ -91,18 +91,14 @@ public final class ContentServletTest extends TestCase {
     public void testHandleResponseSetsExpiryOfZero() throws IOException {
 
         // ARRANGE
-        final Response r = new Response();
+        final Response r = new Response(new EmptyBody());
         r.setExpiry(Long.valueOf(0));
 
-        _response.setHeader("Pragma", "no-cache");
-        _response.setHeader(
-            "Cache-Control",
-            "private, must-revalidate, max-age=0");
-        _response.setHeader("Expires", "0");
+        _response.setDateHeader("Expires", 0);
         replayAll();
 
         // ACT
-        _cs.handle(_response, _request, r, null);
+        r.writeHeaders(_response);
 
         // ASSERT
         verifyAll();
@@ -115,14 +111,14 @@ public final class ContentServletTest extends TestCase {
     public void testHandleResponseSetsConstentDisposition() throws IOException {
 
         // ARRANGE
-        final Response r = new Response();
+        final Response r = new Response(new EmptyBody());
         r.setDisposition("disp");
 
         _response.setHeader("Content-Disposition", "disp");
         replayAll();
 
         // ACT
-        _cs.handle(_response, _request, r, null);
+        r.writeHeaders(_response);
 
         // ASSERT
         verifyAll();
@@ -135,14 +131,14 @@ public final class ContentServletTest extends TestCase {
     public void testHandleResponseSetsConstentType() throws IOException {
 
         // ARRANGE
-        final Response r = new Response();
+        final Response r = new Response(new EmptyBody());
         r.setMimeType("text", "html");
 
         _response.setContentType("text/html");
         replayAll();
 
         // ACT
-        _cs.handle(_response, _request, r, null);
+        r.writeHeaders(_response);
 
         // ASSERT
         verifyAll();
@@ -155,14 +151,14 @@ public final class ContentServletTest extends TestCase {
     public void testHandleResponseSetsCharacterEncoding() throws IOException {
 
         // ARRANGE
-        final Response r = new Response();
+        final Response r = new Response(new EmptyBody());
         r.setCharSet("UTF-8");
 
         _response.setCharacterEncoding("UTF-8");
         replayAll();
 
         // ACT
-        _cs.handle(_response, _request, r, null);
+        r.writeHeaders(_response);
 
         // ASSERT
         verifyAll();
@@ -176,14 +172,14 @@ public final class ContentServletTest extends TestCase {
     public void testHandleResponseSetsConstentLength() throws IOException {
 
         // ARRANGE
-        final Response r = new Response();
-        r.setLength(Long.valueOf(1));
+        final Response r = new Response(new EmptyBody());
+        r.setLength(1);
 
-        _response.setHeader("Content-Length", "1");
+        _response.setIntHeader("Content-Length", 1);
         replayAll();
 
         // ACT
-        _cs.handle(_response, _request, r, null);
+        r.writeHeaders(_response);
 
         // ASSERT
         verifyAll();
@@ -200,16 +196,16 @@ public final class ContentServletTest extends TestCase {
         final ByteArrayServletOutputStream os =
             new ByteArrayServletOutputStream();
 
-        final Response r = new Response();
         final Body b = createStrictMock(Body.class);
-        r.setBody(b);
+        final Response r = new Response(b);
 
         expect(_response.getOutputStream()).andReturn(os);
+        expect(_response.getCharacterEncoding()).andReturn("UTF-8");
         b.write(os, null);
         replayAll();
 
         // ACT
-        _cs.handle(_response, _request, r, null);
+        r.write(_response);
 
         // ASSERT
         verifyAll();
@@ -337,6 +333,7 @@ public final class ContentServletTest extends TestCase {
     public void testDisablementOfResponseCaching() {
 
         // ARRANGE
+        final Response r = new Response(new EmptyBody());
         _response.setHeader("Pragma", "no-cache");   // non-spec, but supported
         _response.setHeader(
             "Cache-Control",
@@ -345,7 +342,7 @@ public final class ContentServletTest extends TestCase {
         replay(_response);
 
         // ACT
-        _cs.disableCaching(_response);
+        r.disableCaching(_response);
 
         // VERIFY
         verify(_response);

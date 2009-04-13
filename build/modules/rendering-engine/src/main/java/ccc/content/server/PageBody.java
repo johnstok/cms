@@ -38,42 +38,36 @@ public class PageBody
         Body {
 
     private final Page    _page;
-    private final Charset _charset;
     private final Map<String, String[]> _params;
+    private final StatefulReader _reader;
 
     /**
      * Constructor.
      *
      * @param p The page to render.
-     * @param charset The character set used when writing the page to an
-     *  {@link OutputStream}.
-     * @param parameters
+     * @param reader A stateful reader to access other resources.
+     * @param parameters Additional parameters to control rendering.
      */
     public PageBody(final Page p,
-                    final Charset charset,
+                    final StatefulReader reader,
                     final Map<String, String[]> parameters) {
         DBC.require().notNull(p);
-        DBC.require().notNull(charset);
+        DBC.require().notNull(reader);
+        DBC.require().notNull(parameters);
 
         _page = p;
-        _charset = charset;
+        _reader = reader;
         _params = parameters;
     }
 
     /** {@inheritDoc} */
     @Override
-    public Page getResource() {
-        return _page;
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void write(final OutputStream os,
-                      final StatefulReader reader) throws IOException {
+                      final Charset charset) throws IOException {
         final String t = _page.computeTemplate(BUILT_IN_PAGE_TEMPLATE).body();
-        final Writer w = new OutputStreamWriter(os, _charset);
+        final Writer w = new OutputStreamWriter(os, charset);
         final Map<String, Object> values = new HashMap<String, Object>();
-        values.put("reader", reader);
+        values.put("reader", _reader);
         values.put("resource", _page);
         values.put("parameters", _params);
 

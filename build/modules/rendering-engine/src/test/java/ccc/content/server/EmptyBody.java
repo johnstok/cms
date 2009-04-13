@@ -17,18 +17,19 @@ import java.nio.charset.Charset;
 
 
 /**
- * A response body.
+ * An empty body.
  *
  * @author Civic Computing Ltd.
  */
-public interface Body {
+public class EmptyBody
+    implements
+        Body {
 
-    /**
-     * Write the body to an {@link OutputStream}.
-     *
-     * @param os The stream to which the body will be written.
-     * @param charset The character set for the output stream.
-     * @throws IOException - if writing to the output stream fails.
-     */
-    void write(OutputStream os, Charset charset) throws IOException;
+    /** {@inheritDoc} */
+    @Override
+    public void write(final OutputStream os,
+                      final Charset charset) throws IOException {
+        // No Op
+    }
+
 }

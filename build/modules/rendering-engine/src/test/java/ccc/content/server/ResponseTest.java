@@ -12,9 +12,17 @@
 package ccc.content.server;
 
 import java.nio.charset.Charset;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
+import javax.activation.MimeType;
+import javax.activation.MimeTypeParseException;
 
 import junit.framework.TestCase;
+import ccc.commons.Testing;
 import ccc.domain.Page;
+import ccc.services.StatefulReader;
 
 
 /**
@@ -35,10 +43,11 @@ public class ResponseTest
         _r.setDescription("foo");
 
         // ACT
-        final String desc = _r.getDescription();
+        final List<Header> headers = _r.getHeaders();
 
         // ASSERT
-        assertEquals("foo", desc);
+        assertTrue(
+            headers.contains(new StringHeader("Content-Description", "foo")));
     }
 
     /**
@@ -47,13 +56,14 @@ public class ResponseTest
     public void testLengthProperty() {
 
         // ARRANGE
-        _r.setLength(Long.valueOf(1));
+        _r.setLength(1);
 
         // ACT
-        final Long length = _r.getLength();
+        final List<Header> headers = _r.getHeaders();
 
         // ASSERT
-        assertEquals(Long.valueOf(1), length);
+        assertTrue(
+            headers.contains(new IntHeader("Content-Length", 1)));
     }
 
     /**
@@ -65,25 +75,29 @@ public class ResponseTest
         _r.setCharSet("UTF-8");
 
         // ACT
-        final String charset = _r.getCharSet();
+        final List<Header> headers = _r.getHeaders();
 
         // ASSERT
-        assertEquals("UTF-8", charset);
+        assertTrue(
+            headers.contains(new CharEncodingHeader(Charset.forName("UTF-8"))));
     }
 
     /**
      * Test.
+     * @throws MimeTypeParseException If a mime type is invalid.
      */
-    public void testMimeTypeProperty() {
+    public void testMimeTypeProperty() throws MimeTypeParseException {
 
         // ARRANGE
         _r.setMimeType("text", "html");
 
         // ACT
-        final String mimeType = _r.getMimeType();
+        final List<Header> headers = _r.getHeaders();
 
         // ASSERT
-        assertEquals("text/html", mimeType);
+        assertTrue(
+            headers.contains(
+                new ContentTypeHeader(new MimeType("text", "html"))));
     }
 
     /**
@@ -95,10 +109,10 @@ public class ResponseTest
         _r.setExpiry(Long.valueOf(0));
 
         // ACT
-        final Long expiry = _r.getExpiry();
+        final List<Header> headers = _r.getHeaders();
 
         // ASSERT
-        assertEquals(Long.valueOf(0), expiry);
+        assertTrue(headers.contains(new DateHeader("Expires", new Date(0))));
     }
 
     /**
@@ -110,10 +124,11 @@ public class ResponseTest
         _r.setDisposition("foo");
 
         // ACT
-        final String disp = _r.getDisposition();
+        final List<Header> headers = _r.getHeaders();
 
         // ASSERT
-        assertEquals("foo", disp);
+        assertTrue(
+            headers.contains(new StringHeader("Content-Disposition", "foo")));
     }
 
     /**
@@ -122,11 +137,15 @@ public class ResponseTest
     public void testBodyProperty() {
 
         // ARRANGE
-        final Body expected = new PageBody(_p, UTF8, null);
-        _r.setBody(expected);
+        final Body expected =
+            new PageBody(
+                _p,
+                Testing.dummy(StatefulReader.class),
+                new HashMap<String, String[]>());
+        final Response r = new Response(expected);
 
         // ACT
-        final Body actual = _r.getBody();
+        final Body actual = r.getBody();
 
         // ASSERT
         assertEquals(expected, actual);
@@ -141,7 +160,10 @@ public class ResponseTest
 
         // ACT
         try {
-            _r.setBody(null);
+            new PageBody(
+                null,
+                Testing.dummy(StatefulReader.class),
+                new HashMap<String, String[]>());
             fail("Should be rejected.");
 
         // ASSERT
@@ -156,7 +178,7 @@ public class ResponseTest
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {
-        _r = new Response();
+        _r = new Response(new ByteArrayBody(new byte[]{}));
     }
 
     /** {@inheritDoc} */

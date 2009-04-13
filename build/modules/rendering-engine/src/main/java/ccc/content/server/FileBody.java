@@ -13,12 +13,11 @@ package ccc.content.server;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 
 import ccc.commons.DBC;
 import ccc.domain.File;
-import ccc.domain.Resource;
 import ccc.services.DataManager;
-import ccc.services.StatefulReader;
 
 
 /**
@@ -50,15 +49,8 @@ public class FileBody
 
     /** {@inheritDoc} */
     @Override
-    public Resource getResource() {
-        return _file;
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void write(final OutputStream os,
-                      final StatefulReader reader) throws IOException {
+                      final Charset charset) throws IOException {
         _dataManager.retrieve(_file.data(), os);
     }
-
 }
