@@ -9,9 +9,8 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.content.server;
+package ccc.content.response;
 
-import javax.activation.MimeType;
 import javax.servlet.http.HttpServletResponse;
 
 
@@ -20,32 +19,42 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Civic Computing Ltd.
  */
-public class ContentTypeHeader implements Header {
-    private final String _value;
+public class IntHeader
+    implements
+        Header {
+
+    private final int _value;
+    private final String _name;
 
     /**
      * Constructor.
      *
      * @param value
+     * @param name
      */
-    ContentTypeHeader(final MimeType value) {
-        _value = value.toString();
+    public IntHeader(final String name, final int value) {
+        _value = value;
+        _name = name;
     }
+
 
     /** {@inheritDoc} */
     @Override
     public void writeTo(final HttpServletResponse response) {
-        response.setContentType(_value);
+        response.setIntHeader(_name, _value);
     }
+
 
     /** {@inheritDoc} */
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((_value == null) ? 0 : _value.hashCode());
+        result = prime * result + ((_name == null) ? 0 : _name.hashCode());
+        result = prime * result + _value;
         return result;
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -59,12 +68,15 @@ public class ContentTypeHeader implements Header {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final ContentTypeHeader other = (ContentTypeHeader) obj;
-        if (_value == null) {
-            if (other._value != null) {
+        final IntHeader other = (IntHeader) obj;
+        if (_name == null) {
+            if (other._name != null) {
                 return false;
             }
-        } else if (!_value.equals(other._value)) {
+        } else if (!_name.equals(other._name)) {
+            return false;
+        }
+        if (_value != other._value) {
             return false;
         }
         return true;

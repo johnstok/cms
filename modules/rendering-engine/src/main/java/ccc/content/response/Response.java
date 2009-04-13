@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.content.server;
+package ccc.content.response;
 
 import java.io.IOException;
 import java.io.OutputStream;

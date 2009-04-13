@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.content.server;
+package ccc.content.response;
 
 import java.util.Date;
 
@@ -33,7 +33,7 @@ public class DateHeader
      * @param name
      * @param value
      */
-    DateHeader(final String name, final Date value) {
+    public DateHeader(final String name, final Date value) {
         _name = name;
         _value = value;
     }

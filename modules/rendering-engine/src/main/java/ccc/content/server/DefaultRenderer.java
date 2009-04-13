@@ -17,6 +17,10 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import ccc.commons.DBC;
+import ccc.content.response.FileBody;
+import ccc.content.response.PageBody;
+import ccc.content.response.Response;
+import ccc.content.response.SearchBody;
 import ccc.domain.Alias;
 import ccc.domain.File;
 import ccc.domain.Folder;

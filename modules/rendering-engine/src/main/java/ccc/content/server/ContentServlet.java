@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import ccc.commons.DBC;
 import ccc.commons.JNDI;
+import ccc.content.response.Response;
 import ccc.domain.CCCException;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;

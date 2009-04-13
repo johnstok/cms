@@ -9,27 +9,16 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.content.server;
+package ccc.content.response;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
+import javax.servlet.http.HttpServletResponse;
 
 
 /**
- * An empty body.
+ * TODO: Add Description for this type.
  *
  * @author Civic Computing Ltd.
  */
-public class EmptyBody
-    implements
-        Body {
-
-    /** {@inheritDoc} */
-    @Override
-    public void write(final OutputStream os,
-                      final Charset charset) throws IOException {
-        // No Op
-    }
-
+public interface Header {
+    void writeTo(HttpServletResponse response);
 }
