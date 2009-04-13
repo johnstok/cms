@@ -35,7 +35,7 @@
             name="_size"
             column="size_in_bytes"
             not-null="true"
-            type="long" />
+            type="int" />
 
 		<component
             name="_data"

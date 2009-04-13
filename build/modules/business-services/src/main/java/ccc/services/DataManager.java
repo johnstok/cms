@@ -87,7 +87,7 @@ public interface DataManager {
                     String title,
                     String description,
                     MimeType mimeType,
-                    long size,
+                    int size,
                     InputStream dataStream);
 
     /**

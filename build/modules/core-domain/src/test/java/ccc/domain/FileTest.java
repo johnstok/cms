@@ -41,7 +41,7 @@ public class FileTest extends TestCase {
                 "foo",
                 "desc",
                 data,
-                1L,
+                1,
                 new MimeType("foo/bar"));
 
         // ACT
@@ -68,7 +68,7 @@ public class FileTest extends TestCase {
                 "foo",
                 "desc",
                 new Data(),
-                1L,
+                1,
                 new MimeType("foo/bar"));
 
         // ACT
@@ -90,7 +90,7 @@ public class FileTest extends TestCase {
                 "foo",
                 "desc",
                 new Data(),
-                1L,
+                1,
                 new MimeType("foo/bar"));
 
         // ACT
@@ -113,7 +113,7 @@ public class FileTest extends TestCase {
                 "foo",
                 "desc",
                 new Data(),
-                1L);
+                1);
 
         // ACT
         final long actual = f.size();
@@ -134,7 +134,7 @@ public class FileTest extends TestCase {
         // ACT
         try {
             new File(
-                new ResourceName("file"), "title", "desc", data, 0L);
+                new ResourceName("file"), "title", "desc", data, 0);
             fail("The constructor should reject a NULL file data.");
 
         // ASSERT
