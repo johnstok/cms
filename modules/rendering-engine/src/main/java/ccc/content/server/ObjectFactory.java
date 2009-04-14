@@ -29,7 +29,7 @@ public interface ObjectFactory extends Serializable {
      *
      * @return A {@link Renderer}.
      */
-    Renderer createRenderer();
+    Renderer createRenderer(StatefulReader reader);
 
     /**
      * Accessor for the 'respect visibility' property.

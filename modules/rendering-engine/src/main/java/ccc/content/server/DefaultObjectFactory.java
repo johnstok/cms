@@ -48,9 +48,9 @@ public class DefaultObjectFactory implements ObjectFactory {
 
     /** {@inheritDoc} */
     @Override
-    public Renderer createRenderer() {
+    public Renderer createRenderer(final StatefulReader reader) {
         return new DefaultRenderer(
-            dataManager(), searchEngine(), getReader(), _respectVisiblity);
+            dataManager(), searchEngine(), reader, _respectVisiblity);
     }
 
 
