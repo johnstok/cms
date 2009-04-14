@@ -22,6 +22,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import ccc.commons.DBC;
 import ccc.commons.JNDI;
 import ccc.content.response.Response;
@@ -39,6 +41,7 @@ import ccc.services.StatefulReader;
  * @author Civic Computing Ltd.
  */
 public final class ContentServlet extends CCCServlet {
+    private static final Logger LOG = Logger.getLogger(ContentServlet.class);
 
     private final ObjectFactory _factory;
     private String _rootName;
@@ -90,6 +93,12 @@ public final class ContentServlet extends CCCServlet {
                 final Resource rs = lookupResource(contentPath, reader);
                 checkSecurity(rs);
                 final Response r = prepareResponse(request, reader, rs);
+                r.setExpiry(0);
+//                if (rs.roles().size()>0) {
+//                    r.setExpiry(0); // Dont'cache secure pages.
+//                } else {
+//                    r.setExpiry(3600); // Cache all other pages for 1hr.
+//                }
                 r.write(response);
             } finally {
                 reader.close();
@@ -163,6 +172,7 @@ public final class ContentServlet extends CCCServlet {
     protected ResourcePath determineResourcePath(
                                              final HttpServletRequest request) {
         String pathString = request.getPathInfo();
+        LOG.info("Request for "+pathString);
         pathString = nvl(pathString, "/");
         pathString = removeTrailing('/', pathString);
 

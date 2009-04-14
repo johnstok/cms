@@ -16,7 +16,6 @@ import static ccc.commons.Exceptions.*;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +27,6 @@ import junit.framework.TestCase;
 import ccc.commons.Testing;
 import ccc.content.response.CharEncodingHeader;
 import ccc.content.response.ContentTypeHeader;
-import ccc.content.response.DateHeader;
 import ccc.content.response.FileBody;
 import ccc.content.response.Header;
 import ccc.content.response.IntHeader;
@@ -180,7 +178,6 @@ public class DefaultRendererTest
 
         // ASSERT
         final List<Header> expected = new ArrayList<Header>() {{
-            add(new DateHeader("Expires", new Date(0)));
             add(new CharEncodingHeader(Charset.forName("UTF-8")));
             add(new ContentTypeHeader(htmlMimeType));
         }};
@@ -215,7 +212,6 @@ public class DefaultRendererTest
             add(new StringHeader(
                 "Content-Disposition", "inline; filename=\""+f.name()+"\""));
             add(new ContentTypeHeader(htmlMimeType));
-            add(new DateHeader("Expires", new Date(0)));
             add(new IntHeader("Content-Length", 0));
         }};
         assertEquals(expected, r.getHeaders());

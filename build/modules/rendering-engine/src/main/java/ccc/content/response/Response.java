@@ -117,8 +117,18 @@ public class Response {
      *
      * @param expiry The response's expiry.
      */
-    public void setExpiry(final Long expiry) {
-        _headers.add(new DateHeader("Expires", new Date(0)));
+    public void setExpiry(final long expiry) {
+        if (expiry<=0) {
+            _headers.add(new StringHeader("Pragma", "no-cache"));
+            _headers.add(new StringHeader(
+                "Cache-Control", "no-store, must-revalidate, max-age=0"));
+            _headers.add(new DateHeader("Expires", new Date(0)));
+        } else {
+            final Date now = new Date();
+            final Date expiryDate = new Date(now.getTime()+expiry);
+            _headers.add(new DateHeader("Expires", expiryDate));
+            _headers.add(new StringHeader("Cache-Control", "max-age="+expiry));
+        }
     }
 
     /**
@@ -177,18 +187,5 @@ public class Response {
         for (final Header h : _headers) {
             h.writeTo(httpResponse);
         }
-//        disableCaching(httpResponse);
-    }
-
-    void disableCaching(final HttpServletResponse response) {
-        response.setHeader(// non-spec, but supported by some browsers
-            "Pragma",
-            "no-cache");
-        response.setHeader(// equivalent to 'no-cache'
-            "Cache-Control",
-            "private, must-revalidate, max-age=0");
-        response.setHeader(// TODO: Replace with epoch?
-            "Expires",
-            "0");
     }
 }

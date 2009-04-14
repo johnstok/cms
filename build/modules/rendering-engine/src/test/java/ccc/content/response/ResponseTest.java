@@ -205,8 +205,11 @@ public class ResponseTest
 
         // ARRANGE
         final Response r = new Response(new EmptyBody());
-        r.setExpiry(Long.valueOf(0));
+        r.setExpiry(0);
 
+        _response.setHeader("Pragma", "no-cache");
+        _response.setHeader(
+            "Cache-Control", "no-store, must-revalidate, max-age=0");
         _response.setDateHeader("Expires", 0);
         replayAll();
 
@@ -296,28 +299,6 @@ public class ResponseTest
 
         // ASSERT
         verifyAll();
-    }
-
-
-    /**
-     * Test.
-     */
-    public void testDisablementOfResponseCaching() {
-
-        // ARRANGE
-        final Response r = new Response(new EmptyBody());
-        _response.setHeader("Pragma", "no-cache");   // non-spec, but supported
-        _response.setHeader(
-            "Cache-Control",
-            "private, must-revalidate, max-age=0"); // equivalent to 'no-cache'
-        _response.setHeader("Expires", "0");
-        replay(_response);
-
-        // ACT
-        r.disableCaching(_response);
-
-        // VERIFY
-        verify(_response);
     }
 
 
