@@ -194,7 +194,7 @@ public final class ContentServletTest extends TestCase {
             .andReturn(bar);
         _reader.close();
         expect(_factory.currentUser()).andReturn(new User("user"));
-        expect(_factory.createRenderer()).andReturn(_renderer);
+        expect(_factory.createRenderer(_reader)).andReturn(_renderer);
         expect(_renderer.render(bar, new HashMap<String, String[]>()))
             .andThrow(new RedirectRequiredException(bar));
         expect(_request.getContextPath()).andReturn("/context");

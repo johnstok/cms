@@ -137,12 +137,10 @@ public class DefaultObjectFactoryTest
             .andReturn(Testing.dummy(DataManager.class));
         expect(_registry.get(SEARCH_ENGINE_LOCAL))
             .andReturn(Testing.dummy(SearchEngine.class));
-        expect(_registry.get(STATEFUL_READER))
-        .andReturn(Testing.dummy(StatefulReader.class));
         replay(_registry);
 
         // ACT
-        _factory.createRenderer();
+        _factory.createRenderer(Testing.dummy(StatefulReader.class));
 
         // ASSERT
         verify(_registry);

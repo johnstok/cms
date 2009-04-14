@@ -89,7 +89,7 @@ public final class ContentServlet extends CCCServlet {
             try {
                 final Resource rs = lookupResource(contentPath, reader);
                 checkSecurity(rs);
-                final Response r = prepareResponse(request, rs);
+                final Response r = prepareResponse(request, reader, rs);
                 r.write(response);
             } finally {
                 reader.close();
@@ -110,21 +110,22 @@ public final class ContentServlet extends CCCServlet {
 
     @SuppressWarnings("unchecked")
     private Response prepareResponse(final HttpServletRequest request,
+                                     final StatefulReader reader,
                                      final Resource rs) {
 
         final Map<String, String[]> parameters = request.getParameterMap();
         final Response r;
         if (parameters.keySet().contains("wc")) {
             r = _factory
-                    .createRenderer()
+                    .createRenderer(reader)
                     .renderWorkingCopy(rs, parameters);
         } else if (parameters.keySet().contains("v")) {
             r = _factory
-                    .createRenderer()
+                    .createRenderer(reader)
                     .renderHistoricalVersion(rs, parameters);
         } else {
             r = _factory
-                    .createRenderer()
+                    .createRenderer(reader)
                     .render(rs, parameters);
         }
         return r;
