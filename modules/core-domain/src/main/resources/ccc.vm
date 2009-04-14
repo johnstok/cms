@@ -45,11 +45,11 @@
 		#if ($entry.includeInMainMenu())
 		   #if ($entry.name() == $resource.name())
 		      <li class="hot">
-		         <a href="/server$entry.absolutePath()">$entry.title()</a>
+		         <a href="$entry.absolutePath()">$entry.title()</a>
 		      </li>
 		   #elseif ($entry.name() == $levels.get($depth).name()) 
 		      <li class="open">
-		         <a href="/server$entry.absolutePath()">$entry.title()</a>
+		         <a href="$entry.absolutePath()">$entry.title()</a>
 		      #if ($depth != $endLevel)
 		      <ul>
 				#set($newdepth = $depth + 1)
@@ -59,7 +59,7 @@
 		      </li>
 		   #else
 		      <li class="leaf">
-		         <a href="/server$entry.absolutePath()">$entry.title()</a>
+		         <a href="$entry.absolutePath()">$entry.title()</a>
 		      </li>
 		   #end
 		#end
