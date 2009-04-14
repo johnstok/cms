@@ -531,7 +531,7 @@ public class Migrations {
         }
         log.debug("Assembly done.");
 
-//        new LinkFixer(_props.getProperty("link-prefix", "")).extractURLs(map);
+        new LinkFixer(_props.getProperty("link-prefix", "")).extractURLs(map);
 
         return map;
     }
