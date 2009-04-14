@@ -176,7 +176,6 @@ public class DefaultRenderer
         r.setDescription(f.description());
         r.setDisposition("inline; filename=\""+f.name()+"\"");
         r.setMimeType(f.mimeType().getPrimaryType(), f.mimeType().getSubType());
-        r.setExpiry(Long.valueOf(0));
         r.setLength(f.size());
 
         return r;
@@ -198,7 +197,6 @@ public class DefaultRenderer
                                 final Map<String, String[]> parameters) {
         final Response r =
             new Response(new PageBody(page, _reader, parameters));
-        r.setExpiry(Long.valueOf(0));
         r.setCharSet("UTF-8");
         r.setMimeType("text", "html");
 
@@ -233,7 +231,6 @@ public class DefaultRenderer
                     _search,
                     searchQuery,
                     pageNumber));
-        r.setExpiry(Long.valueOf(0));
         r.setCharSet("UTF-8");
         r.setMimeType("text", "html");
 
