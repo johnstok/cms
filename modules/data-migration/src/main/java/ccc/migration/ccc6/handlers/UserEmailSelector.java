@@ -18,9 +18,9 @@ public final class UserEmailSelector
         SqlQuery<Void> {
 
     /** userId : int. */
-    private final int       userId;
+    private final int       _userId;
     /** user : UserDelta. */
-    private final UserDelta user;
+    private final UserDelta _user;
 
     /**
      * Constructor.
@@ -30,17 +30,17 @@ public final class UserEmailSelector
      */
     public UserEmailSelector(final int userId, final UserDelta user) {
 
-        this.userId = userId;
-        this.user = user;
+        _userId = userId;
+        _user = user;
     }
 
     /** {@inheritDoc} */
     @Override public Void handle(final ResultSet rs) throws SQLException {
         if (rs.next()) {
-            user._email = rs.getString("attribute_value");
+            _user._email = rs.getString("attribute_value");
             require().toBeFalse(rs.next());
         } else {
-            throw new MigrationException("User "+userId+" has no email.");
+            throw new MigrationException("User "+_userId+" has no email.");
         }
         return null;
     }

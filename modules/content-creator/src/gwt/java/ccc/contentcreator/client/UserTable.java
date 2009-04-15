@@ -132,7 +132,6 @@ public class UserTable extends TablePanel {
         grid.setLoadMask(true);
         grid.setId("UserGrid");
 
-;
         contextMenu.add(createEditUserMenu(grid));
         contextMenu.add(createEditUserPwMenu(grid));
 

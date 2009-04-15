@@ -66,7 +66,7 @@ public interface CommandServiceAsync {
 
     void validateFields(List<ParagraphDelta> delta, String definition, AsyncCallback<List <String>> callback);
 
-    void updateMetadata(String resourceId, Map<String,String> metadata, AsyncCallback<Void> callback);
+    void updateMetadata(String resourceId, Map<String, String> metadata, AsyncCallback<Void> callback);
 
     void updateFolderSortOrder(String folderId, String sortOrder, AsyncCallback<Void> callback);
 

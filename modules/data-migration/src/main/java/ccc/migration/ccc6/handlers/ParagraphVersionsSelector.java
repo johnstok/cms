@@ -28,9 +28,9 @@ public final class ParagraphVersionsSelector
     @Override
     public String getSql() {
         return
-            "select distinct version_id " +
-            "from c3_paragraphs " +
-            "where page_id=? " +
-            "order by version_id asc";
+            "select distinct version_id "
+            + "from c3_paragraphs "
+            + "where page_id=? "
+            + "order by version_id asc";
     }
 }
