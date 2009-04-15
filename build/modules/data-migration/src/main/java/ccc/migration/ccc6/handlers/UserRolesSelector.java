@@ -15,7 +15,7 @@ public final class UserRolesSelector
         SqlQuery<Void> {
 
     /** user : UserDelta. */
-    private final UserDelta user;
+    private final UserDelta _user;
 
     /**
      * Constructor.
@@ -24,7 +24,7 @@ public final class UserRolesSelector
      */
     public UserRolesSelector(final UserDelta user) {
 
-        this.user = user;
+        _user = user;
     }
 
     /** {@inheritDoc} */
@@ -33,16 +33,16 @@ public final class UserRolesSelector
             final String profile = rs.getString("profile_name");
             if ("Writer".equalsIgnoreCase(profile)
                     || "Editor".equalsIgnoreCase(profile)) {
-                user._roles.add("CONTENT_CREATOR");
+                _user._roles.add("CONTENT_CREATOR");
             } else if ("Total Control".equalsIgnoreCase(profile)) {
-                user._roles.add("SITE_BUILDER");
-                user._roles.add("CONTENT_CREATOR");
-                user._roles.add("ADMINISTRATOR");
+                _user._roles.add("SITE_BUILDER");
+                _user._roles.add("CONTENT_CREATOR");
+                _user._roles.add("ADMINISTRATOR");
             } else if ("Administrator".equalsIgnoreCase(profile)) {
-                user._roles.add("ADMINISTRATOR");
-                user._roles.add("CONTENT_CREATOR");
+                _user._roles.add("ADMINISTRATOR");
+                _user._roles.add("CONTENT_CREATOR");
             } else {
-                user._roles.add(profile);
+                _user._roles.add(profile);
             }
         }
         return null;

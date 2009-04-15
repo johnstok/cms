@@ -137,9 +137,9 @@ public class MetadataDialog
                 final ModelData datum = new BaseModelData();
                 datum.set("key", "");
                 datum.set("value", "");
-                ((EditorGrid<ModelData>)_grid).stopEditing();
+                ((EditorGrid<ModelData>) _grid).stopEditing();
                 _dataStore.insert(datum, 0);
-                ((EditorGrid<ModelData>)_grid).startEditing(0, 0);
+                ((EditorGrid<ModelData>) _grid).startEditing(0, 0);
             }
         });
         toolBar.add(add);
@@ -150,7 +150,7 @@ public class MetadataDialog
         remove.setId("remove-metadatum");
         remove.addSelectionListener(new SelectionListener<ToolBarEvent>() {
             @Override public void componentSelected(final ToolBarEvent ce) {
-                ((EditorGrid<ModelData>)_grid).stopEditing();
+                ((EditorGrid<ModelData>) _grid).stopEditing();
                 for (final ModelData item
                         : _grid.getSelectionModel().getSelectedItems()) {
                     _dataStore.remove(item);

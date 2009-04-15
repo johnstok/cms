@@ -13,7 +13,6 @@ package ccc.contentcreator.dialogs;
 
 
 import ccc.contentcreator.binding.DataBinding;
-import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
@@ -49,10 +48,11 @@ public class CreateAliasDialog extends AbstractEditDialog {
     /**
      * Constructor.
      *
+     * @param ssm Selection model.
      * @param root Resource root for folder selection
-     * @param ssm
      */
-    public CreateAliasDialog(final SingleSelectionModel ssm, final ResourceSummary root) {
+    public CreateAliasDialog(final SingleSelectionModel ssm,
+                             final ResourceSummary root) {
         super(Globals.uiConstants().createAlias());
         setPanelId("AliasPanel");
 

@@ -39,7 +39,7 @@ public class CapturingHandlerTest
 
         // ARRANGE
         final SearchEngineEJB.CapturingHandler h =
-            new SearchEngineEJB.CapturingHandler(5,1){
+            new SearchEngineEJB.CapturingHandler(5, 1){
                 /** {@inheritDoc} */ @Override
                 UUID lookupResourceId(final IndexSearcher searcher,
                                       final int docId) throws IOException {
@@ -67,7 +67,7 @@ public class CapturingHandlerTest
 
         // ARRANGE
         final SearchEngineEJB.CapturingHandler h =
-            new SearchEngineEJB.CapturingHandler(7,0){
+            new SearchEngineEJB.CapturingHandler(7, 0){
             /** {@inheritDoc} */ @Override
             UUID lookupResourceId(final IndexSearcher searcher,
                                   final int docId) throws IOException {
@@ -92,21 +92,21 @@ public class CapturingHandlerTest
     private final TopDocs _td = new TopDocs(
         15,
         new ScoreDoc[]{
-            new ScoreDoc(0,0),
-            new ScoreDoc(1,0),
-            new ScoreDoc(2,0),
-            new ScoreDoc(3,0),
-            new ScoreDoc(4,0),
-            new ScoreDoc(5,0),
-            new ScoreDoc(6,0),
-            new ScoreDoc(7,0),
-            new ScoreDoc(8,0),
-            new ScoreDoc(9,0),
-            new ScoreDoc(10,0),
-            new ScoreDoc(11,0),
-            new ScoreDoc(12,0),
-            new ScoreDoc(13,0),
-            new ScoreDoc(14,0)},
+            new ScoreDoc(0, 0),
+            new ScoreDoc(1, 0),
+            new ScoreDoc(2, 0),
+            new ScoreDoc(3, 0),
+            new ScoreDoc(4, 0),
+            new ScoreDoc(5, 0),
+            new ScoreDoc(6, 0),
+            new ScoreDoc(7, 0),
+            new ScoreDoc(8, 0),
+            new ScoreDoc(9, 0),
+            new ScoreDoc(10, 0),
+            new ScoreDoc(11, 0),
+            new ScoreDoc(12, 0),
+            new ScoreDoc(13, 0),
+            new ScoreDoc(14, 0)},
         0);
     private final UUID[] _resourceIds = new UUID[]{
         UUID.randomUUID(),

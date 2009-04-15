@@ -162,14 +162,13 @@ AbstractEditDialog {
                 final Object data = e.data;
                 // fix to avoid losing items if placed to last
                 if (data instanceof ModelData) {
-                    final int x = grid.getStore().indexOf((ModelData) data);
                     final int size = grid.getStore().getModels().size();
                     if (insertIndex > size) {
                         insertIndex = size;
                     }
                     grid.getStore().insert((ModelData) data, insertIndex);
                 } else if (data instanceof List) {
-                    for (final ModelData item : (List<BaseModelData>)data) {
+                    for (final ModelData item : (List<BaseModelData>) data) {
                         final int size = grid.getStore().getModels().size();
                         if (insertIndex > size) {
                             insertIndex = size;
