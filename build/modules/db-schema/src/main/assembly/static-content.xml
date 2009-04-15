@@ -1,0 +1,12 @@
+<assembly>
+	<id></id>
+	<formats>
+		<format>zip</format>
+	</formats>
+	<fileSets>
+		<fileSet>
+			<directory>src/main/sql</directory>
+			<outputDirectory></outputDirectory>
+		</fileSet>
+	</fileSets>
+</assembly>

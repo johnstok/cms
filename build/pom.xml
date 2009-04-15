@@ -81,6 +81,7 @@
         <module>modules/rest-api</module>
         <module>modules/security-config</module>
         <module>modules/application-ear</module>
+        <module>modules/db-schema</module>
     </modules>
 
     <build>
