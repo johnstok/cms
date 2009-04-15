@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
  * @author Civic Computing Ltd.
  */
 public class LinkFixer {
-    private static Logger log = Logger.getLogger(LinkFixer.class);
+    private static final Logger LOG = Logger.getLogger(LinkFixer.class);
     private static List<String> links = new ArrayList<String>();
     private static final Pattern OLDPAGE_PATTERN =
         Pattern.compile(".*pContentID=(\\d+).*");
@@ -50,7 +50,7 @@ public class LinkFixer {
      */
     public LinkFixer(final String prefix) {
         _prefix = prefix;
-        // TODO: Warn if prefix is a ZLS.
+        // TODO: Warn if prefix is a ZLS?
     }
 
     void extractURLs(final Map<String, StringBuffer> map) {
@@ -88,19 +88,19 @@ public class LinkFixer {
 
         if (pm.matches()) {
             corrected = _prefix+pm.group(1)+"html";
-            log.info("Corrected "+link+" to "+corrected);
+            LOG.debug("Corrected "+link+" to "+corrected);
 
         } else if (opm.matches()) {
             corrected = _prefix+opm.group(1)+".html";
-            log.info("Corrected "+link+" to "+corrected);
+            LOG.debug("Corrected "+link+" to "+corrected);
 
         } else if (FILE_PATTERN.matcher(link).matches()) {
             corrected = _prefix+link;
-            log.info("Corrected "+link+" to "+corrected);
+            LOG.debug("Corrected "+link+" to "+corrected);
 
         } else {
             links.add(link);
-            log.info("Didn't correct "+link);
+            LOG.warn("Didn't correct "+link);
 
         }
         return corrected;
@@ -120,9 +120,9 @@ public class LinkFixer {
             }
             pw.close();
         } catch (final FileNotFoundException e) {
-            log.error("Error writing links.", e);
+            LOG.error("Error writing links.", e);
         } catch (final UnsupportedEncodingException e) {
-            log.error("Error writing links.", e);
+            LOG.error("Error writing links.", e);
         }
     }
 }
