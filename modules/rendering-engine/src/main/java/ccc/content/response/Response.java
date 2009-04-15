@@ -115,7 +115,7 @@ public class Response {
     /**
      * Mutator.
      *
-     * @param expiry The response's expiry.
+     * @param expiry The response's expiry time, in seconds.
      */
     public void setExpiry(final long expiry) {
         if (expiry<=0) {
@@ -125,7 +125,7 @@ public class Response {
             _headers.add(new DateHeader("Expires", new Date(0)));
         } else {
             final Date now = new Date();
-            final Date expiryDate = new Date(now.getTime()+expiry);
+            final Date expiryDate = new Date(now.getTime()+(expiry*1000));
             _headers.add(new DateHeader("Expires", expiryDate));
             _headers.add(new StringHeader("Cache-Control", "max-age="+expiry));
         }

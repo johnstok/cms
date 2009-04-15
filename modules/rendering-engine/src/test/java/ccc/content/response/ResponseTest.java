@@ -107,16 +107,31 @@ public class ResponseTest
     /**
      * Test.
      */
-    public void testExpiryProperty() {
+    public void testExpiryPropertyOkForUncacheableResource() {
 
         // ARRANGE
-        _r.setExpiry(Long.valueOf(0));
+        _r.setExpiry(0);
 
         // ACT
         final List<Header> headers = _r.getHeaders();
 
         // ASSERT
         assertTrue(headers.contains(new DateHeader("Expires", new Date(0))));
+    }
+    /**
+     * Test.
+     */
+    public void testExpiryPropertyOkForCacheableResource() {
+
+        // ARRANGE
+        _r.setExpiry(300);
+
+        // ACT
+        final List<Header> headers = _r.getHeaders();
+
+        // ASSERT
+        assertTrue(headers.contains(new StringHeader("Cache-Control", "max-age="+300)));
+        System.out.println(headers);
     }
 
     /**

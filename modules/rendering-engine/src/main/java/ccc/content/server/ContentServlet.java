@@ -93,12 +93,12 @@ public final class ContentServlet extends CCCServlet {
                 final Resource rs = lookupResource(contentPath, reader);
                 checkSecurity(rs);
                 final Response r = prepareResponse(request, reader, rs);
-                r.setExpiry(0);
-//                if (rs.roles().size()>0) {
-//                    r.setExpiry(0); // Dont'cache secure pages.
-//                } else {
-//                    r.setExpiry(3600); // Cache all other pages for 1hr.
-//                }
+//                r.setExpiry(0);
+                if (rs.roles().size()>0) {
+                    r.setExpiry(0); // Dont'cache secure pages.
+                } else {
+                    r.setExpiry(3600); // Cache all other pages for 1hr.
+                }
                 r.write(response);
             } finally {
                 reader.close();

@@ -11,6 +11,7 @@
  */
 package ccc.content.response;
 
+import java.text.DateFormat;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
@@ -42,6 +43,17 @@ public class DateHeader
     @Override
     public void writeTo(final HttpServletResponse response) {
         response.setDateHeader(_name, _value.getTime());
+    }
+
+
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+        return
+            _name
+            + ": "
+            + DateFormat.getDateTimeInstance().format(_value);
     }
 
     /** {@inheritDoc} */
