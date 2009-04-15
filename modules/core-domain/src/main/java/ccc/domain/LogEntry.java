@@ -93,6 +93,9 @@ public class LogEntry extends Entity {
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = Action.RENAME;
         le._comment = "Renamed resource to '"+resource.name()+"'.";
+        final Snapshot ss = new Snapshot();
+        ss.set("name", resource.name().toString());
+        le._detail = ss.getDetail();
         return le;
     }
 
@@ -114,6 +117,9 @@ public class LogEntry extends Entity {
         le._action = Action.MOVE;
         le._comment = "Moved resource to parent: "
             +resource.parent().absolutePath()+".";
+        final Snapshot ss = new Snapshot();
+        ss.set("path", resource.absolutePath().toString());
+        le._detail = ss.getDetail();
         return le;
     }
 
@@ -171,6 +177,8 @@ public class LogEntry extends Entity {
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = Action.CREATE;
         le._comment = "Created.";
+        final Snapshot ss = resource.createSnapshot();
+        le._detail = ss.getDetail();
         return le;
     }
 
@@ -196,6 +204,8 @@ public class LogEntry extends Entity {
         le._action = Action.UPDATE;
         le._comment = (comment == null ? "Updated." : comment);
         le._isMajorEdit = isMajorEdit;
+        final Snapshot ss = resource.createSnapshot();
+        le._detail = ss.getDetail();
         return le;
     }
 
@@ -214,6 +224,8 @@ public class LogEntry extends Entity {
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = Action.UPDATE;
         le._comment = "Updated.";
+        final Snapshot ss = resource.createSnapshot();
+        le._detail = ss.getDetail();
         return le;
     }
 
@@ -233,6 +245,13 @@ public class LogEntry extends Entity {
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = Action.CHANGE_TEMPLATE;
         le._comment = "Template changed.";
+        final Snapshot ss = new Snapshot();
+        String templateName = "";
+        if (resource.template() != null) {
+            templateName = resource.template().name().toString();
+        }
+        ss.set("template", templateName);
+        le._detail = ss.getDetail();
         return le;
     }
 
@@ -287,6 +306,9 @@ public class LogEntry extends Entity {
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = Action.UPDATE_TAGS;
         le._comment = "Updated tags.";
+        final Snapshot ss = new Snapshot();
+        ss.set("tags", resource.tagString());
+        le._detail = ss.getDetail();
         return le;
     }
 
@@ -305,6 +327,19 @@ public class LogEntry extends Entity {
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = Action.UPDATE_METADATA;
         le._comment = "Updated metadata.";
+        final Snapshot ss = new Snapshot();
+        final StringBuilder sb = new StringBuilder();
+        for (final String key : resource.metadata().keySet()) {
+            if (sb.length() > 0) {
+                sb.append(";");
+            }
+            sb.append(key);
+            sb.append("=");
+            sb.append(resource.metadata().get(key));
+        }
+
+        ss.set("metadata", sb.toString());
+        le._detail = ss.getDetail();
         return le;
     }
 
@@ -322,6 +357,9 @@ public class LogEntry extends Entity {
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = Action.INCLUDE_IN_MM;
         le._comment = "Included in main menu.";
+        final Snapshot ss = new Snapshot();
+        ss.set("includeInMainMenu", resource.includeInMainMenu());
+        le._detail = ss.getDetail();
         return le;
     }
 
@@ -340,6 +378,9 @@ public class LogEntry extends Entity {
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = Action.REMOVE_FROM_MM;
         le._comment = "Removed from main menu.";
+        final Snapshot ss = new Snapshot();
+        ss.set("includeInMainMenu", resource.includeInMainMenu());
+        le._detail = ss.getDetail();
         return le;
     }
 
@@ -358,6 +399,16 @@ public class LogEntry extends Entity {
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = Action.CHANGE_ROLES;
         le._comment = "Roles changed.";
+        final Snapshot ss = new Snapshot();
+        final StringBuilder sb = new StringBuilder();
+        for (final String role : resource.roles()) {
+            if (sb.length() > 0) {
+                sb.append(",");
+            }
+            sb.append(role);
+        }
+        ss.set("roles", sb.toString());
+        le._detail = ss.getDetail();
         return le;
     }
 
@@ -395,6 +446,9 @@ public class LogEntry extends Entity {
                 final LogEntry le = createEntry(folder, actor, happenedOn);
                 le._action = Action.UPDATE_SORT_ORDER;
                 le._comment = "Updated sort order.";
+                final Snapshot ss = new Snapshot();
+                ss.set("sortOrder", folder.sortOrder().name());
+                le._detail = ss.getDetail();
                 return le;
     }
 
@@ -411,7 +465,6 @@ public class LogEntry extends Entity {
         le._subjectType = resource.type();
         le._actor = actor;
         le._happenedOn = happenedOn;
-        le._detail = resource.createSnapshot().getDetail();
         return le;
     }
 

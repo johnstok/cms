@@ -11,6 +11,8 @@
  */
 package ccc.domain;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 import junit.framework.TestCase;
@@ -71,7 +73,8 @@ public class LogEntryTest
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
         assertEquals(LogEntry.Action.MOVE, le.action());
-        assertEquals(p.createSnapshot().getDetail(), le.detail());
+        assertEquals("{\"path\":\"/bar/foo\"}",
+            le.detail());
     }
 
     /**
@@ -128,6 +131,12 @@ public class LogEntryTest
 
         // ARRANGE
         final Page p = new Page("foo");
+        final Template t = new Template(new ResourceName("newName"),
+            "newTitle",
+            "desc",
+            "body",
+            "<fields/>");
+        p.template(t);
 
         // ACT
         final LogEntry le = LogEntry.forTemplateChange(p, _actor, _happenedOn);
@@ -141,7 +150,7 @@ public class LogEntryTest
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
         assertEquals(LogEntry.Action.CHANGE_TEMPLATE, le.action());
-        assertEquals(p.createSnapshot().getDetail(), le.detail());
+        assertEquals("{\"template\":\"newName\"}", le.detail());
     }
 
     /**
@@ -166,7 +175,7 @@ public class LogEntryTest
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
         assertEquals(LogEntry.Action.LOCK, le.action());
-        assertEquals(p.createSnapshot().getDetail(), le.detail());
+        assertEquals(null, le.detail());
     }
 
     /**
@@ -191,7 +200,106 @@ public class LogEntryTest
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
         assertEquals(LogEntry.Action.UNLOCK, le.action());
-        assertEquals(p.createSnapshot().getDetail(), le.detail());
+        assertEquals(null, le.detail());
+    }
+
+    /**
+     * Test.
+     */
+    public void testUpdateTagsFactoryMethod() {
+
+        // ARRANGE
+        final Page p = new Page("foo");
+        p.tags("foo,bar");
+
+        // ACT
+        final LogEntry le = LogEntry.forUpdateTags(p, _actor, _happenedOn);
+
+        // ASSERT
+        assertEquals(p.id(), le.subjectId());
+        assertEquals(p.type(), le.subjectType());
+        assertEquals("Updated tags.", le.comment());
+        assertEquals(_happenedOn, le.happenedOn());
+        assertNull("Should be null", le.recordedOn());
+        assertEquals(-1, le.index());
+        assertEquals(_actor, le.actor());
+        assertEquals(LogEntry.Action.UPDATE_TAGS, le.action());
+        assertEquals("{\"tags\":\"foo,bar\"}", le.detail());
+    }
+
+    /**
+     * Test.
+     */
+    public void testUpdateSortOrderFactoryMethod() {
+
+        // ARRANGE
+        final Folder f = new Folder("foo");
+        f.sortOrder(ResourceOrder.MANUAL);
+
+        // ACT
+        final LogEntry le = LogEntry.forUpdateSortOrder(f, _actor, _happenedOn);
+
+        // ASSERT
+        assertEquals(f.id(), le.subjectId());
+        assertEquals(f.type(), le.subjectType());
+        assertEquals("Updated sort order.", le.comment());
+        assertEquals(_happenedOn, le.happenedOn());
+        assertNull("Should be null", le.recordedOn());
+        assertEquals(-1, le.index());
+        assertEquals(_actor, le.actor());
+        assertEquals(LogEntry.Action.UPDATE_SORT_ORDER, le.action());
+        assertEquals("{\"sortOrder\":\"MANUAL\"}", le.detail());
+    }
+
+    /**
+     * Test.
+     */
+    public void testUpdateMetadataFactoryMethod() {
+
+        // ARRANGE
+        final Page p = new Page("foo");
+        p.addMetadatum("bar", "zup");
+
+        // ACT
+        final LogEntry le = LogEntry.forUpdateMetadata(p, _actor, _happenedOn);
+
+        // ASSERT
+        assertEquals(p.id(), le.subjectId());
+        assertEquals(p.type(), le.subjectType());
+        assertEquals("Updated metadata.", le.comment());
+        assertEquals(_happenedOn, le.happenedOn());
+        assertNull("Should be null", le.recordedOn());
+        assertEquals(-1, le.index());
+        assertEquals(_actor, le.actor());
+        assertEquals(LogEntry.Action.UPDATE_METADATA, le.action());
+        assertEquals("{\"metadata\":\"bar=zup\"}", le.detail());
+    }
+
+    /**
+     * Test.
+     */
+    public void testChangeRolesFactoryMethod() {
+
+        // ARRANGE
+        final Page p = new Page("foo");
+        final Collection<String> roles = new ArrayList<String>();
+        roles.add("sup");
+        roles.add("zep");
+        p.roles(roles);
+
+        // ACT
+        final LogEntry le = LogEntry.forChangeRoles(p, _actor, _happenedOn);
+
+        // ASSERT
+        assertEquals(p.id(), le.subjectId());
+        assertEquals(p.type(), le.subjectType());
+        assertEquals("Roles changed.", le.comment());
+        assertEquals(_happenedOn, le.happenedOn());
+        assertNull("Should be null", le.recordedOn());
+        assertEquals(-1, le.index());
+        assertEquals(_actor, le.actor());
+        assertEquals(LogEntry.Action.CHANGE_ROLES, le.action());
+        assertEquals("{\"roles\":\"sup,zep\"}", le.detail());
     }
 
     private final User _actor = new User("actor");
