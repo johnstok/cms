@@ -184,6 +184,8 @@ public class LogEntry extends Entity {
         le._action = Action.CREATE;
         le._comment = "Created.";
         final Snapshot ss = resource.createSnapshot();
+        ss.set("path", resource.absolutePath().toString());
+        ss.set("name", resource.name().toString());
         le._detail = ss.getDetail();
         return le;
     }
@@ -439,6 +441,9 @@ public class LogEntry extends Entity {
         final LogEntry le = createEntry(folder, actor, happenedOn);
         le._action = Action.REORDER;
         le._comment = "Reordered.";
+        final Snapshot ss = new Snapshot();
+        ss.set("reorder", actor.id().toString());
+        le._detail = ss.getDetail();
         return le;
     }
 
