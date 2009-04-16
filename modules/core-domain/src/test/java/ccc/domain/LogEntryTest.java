@@ -97,7 +97,10 @@ public class LogEntryTest
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
         assertEquals(LogEntry.Action.CREATE, le.action());
-        assertEquals(p.createSnapshot().getDetail(), le.detail());
+        assertEquals("{\"title\":\"foo\","
+            + "\"name\":\"foo\","
+            + "\"path\":\"/foo\","
+            + "\"paragraphs\":[]}", le.detail());
     }
 
     /**
