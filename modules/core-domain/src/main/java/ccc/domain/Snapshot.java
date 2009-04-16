@@ -18,6 +18,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 import org.json.JSONArray;
@@ -174,6 +175,20 @@ public class Snapshot implements Serializable {
      * @param value The value, as a long.
      */
     public void set(final String key, final long value) {
+        try {
+            _detail.put(key, value);
+        } catch (final JSONException e) {
+            throw new InvalidSnapshotException(e);
+        }
+    }
+
+    /**
+     * Mutator.
+     *
+     * @param key The key.
+     * @param value The value, as a map of strings.
+     */
+    public void set(final String key, final Map<String, String> value) {
         try {
             _detail.put(key, value);
         } catch (final JSONException e) {

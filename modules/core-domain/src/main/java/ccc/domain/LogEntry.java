@@ -341,19 +341,11 @@ public class LogEntry extends Entity {
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = Action.UPDATE_METADATA;
         le._comment = "Updated metadata.";
-        final Snapshot ss = new Snapshot();
-        final StringBuilder sb = new StringBuilder();
-        for (final String key : resource.metadata().keySet()) {
-            if (sb.length() > 0) {
-                sb.append(";");
-            }
-            sb.append(key);
-            sb.append("=");
-            sb.append(resource.metadata().get(key));
-        }
 
-        ss.set("metadata", sb.toString());
+        final Snapshot ss = new Snapshot();
+        ss.set("metadata", resource.metadata());
         le._detail = ss.getDetail();
+
         return le;
     }
 
