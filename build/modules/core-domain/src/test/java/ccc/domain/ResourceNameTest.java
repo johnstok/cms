@@ -139,7 +139,7 @@ public final class ResourceNameTest extends TestCase {
 
             // ASSERT
             assertEquals(
-                "Specified string (~) does not match [\\.\\w]+",
+                "Specified string (~) does not match [\\.\\-\\w]+",
                 e.getMessage());
         }
     }
@@ -147,22 +147,17 @@ public final class ResourceNameTest extends TestCase {
     /**
      * Test.
      */
-    public void testDashIsRejected() {
+    public void testDashIsAllowed() {
 
         // ARRANGE
         final String dash = "-";
 
         // ACT
-        try {
-            new ResourceName(dash);
-            fail("ResourceName failed to reject dash.");
-        } catch (final RuntimeException e) {
+        final ResourceName rn = new ResourceName(dash);
 
-            // ASSERT
-            assertEquals(
-                "Specified string (-) does not match [\\.\\w]+",
-                e.getMessage());
-        }
+        // ASSERT
+        assertEquals(rn.toString(), dash);
+
     }
 
     /**
@@ -181,7 +176,7 @@ public final class ResourceNameTest extends TestCase {
 
             // ASSERT
             assertEquals(
-                "Specified string (\\) does not match [\\.\\w]+",
+                "Specified string (\\) does not match [\\.\\-\\w]+",
                 e.getMessage());
         }
     }
@@ -208,7 +203,7 @@ public final class ResourceNameTest extends TestCase {
                 assertEquals(
                     "Specified string ("
                     + reservedChar
-                    + ") does not match [\\.\\w]+",
+                    + ") does not match [\\.\\-\\w]+",
                     e.getMessage());
             }
         }
@@ -247,8 +242,8 @@ public final class ResourceNameTest extends TestCase {
     public void testEscapeMethod() {
 
         // ARRANGE
-        final String invalidCharacters = "!*'();:@&=+$,/\\?%#[]foo BAR_123.~-";
-        final String expectedName = "____________________foo_BAR_123.__";
+        final String invalidCharacters = "!*'();:@&=+$,/\\?%#[]foo BAR_12-3.~";
+        final String expectedName = "____________________foo_BAR_12-3._";
 
         // ACT
         final ResourceName validCharacters =

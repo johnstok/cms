@@ -133,7 +133,7 @@ public class VelocityProcessorTest extends TestCase {
         final String expectedMessage =
             "Invocation of method 'path' in  class ccc.commons.VelocityHelper "
             +"threw exception ccc.domain.CCCException: badpath does not match "
-            +"the regular expression: (/[\\.\\w]+)* at VelocityProcessor"
+            +"the regular expression: (/[\\.\\-\\w]+)* at VelocityProcessor"
             +"[line 1, column 9]";
         final StringWriter renderedOutput = new StringWriter();
         // ACT

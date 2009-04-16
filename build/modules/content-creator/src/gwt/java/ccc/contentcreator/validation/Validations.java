@@ -35,7 +35,7 @@ public class Validations {
     private final static UIConstants _uiConstants =
         GWT.create(UIConstants.class);
 
-    private static final String  VALID_CHARACTERS = "[\\.\\w]+";
+    private static final String  VALID_CHARACTERS = "[\\.\\-\\w]+";
 
     private static final String VALID_EMAIL =
         "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*"
