@@ -175,7 +175,7 @@ public class LogEntryTest
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
         assertEquals(LogEntry.Action.LOCK, le.action());
-        assertEquals(null, le.detail());
+        assertEquals("{\"lock\":\""+_actor.id().toString()+"\"}", le.detail());
     }
 
     /**
@@ -200,7 +200,9 @@ public class LogEntryTest
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
         assertEquals(LogEntry.Action.UNLOCK, le.action());
-        assertEquals(null, le.detail());
+        assertEquals(
+            "{\"unlock\":\""+_actor.id().toString()+"\"}",
+            le.detail());
     }
 
     /**
