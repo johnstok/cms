@@ -277,7 +277,7 @@ public class LogEntryTest
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
         assertEquals(LogEntry.Action.UPDATE_METADATA, le.action());
-        assertEquals("{\"metadata\":\"bar=zup\"}", le.detail());
+        assertEquals("{\"metadata\":{\"bar\":\"zup\"}}", le.detail());
     }
 
     /**
