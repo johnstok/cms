@@ -11,30 +11,18 @@
  */
 package ccc.services.ejb3.local;
 
-import static ccc.commons.Testing.*;
 import static org.easymock.EasyMock.*;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.UUID;
-
-import javax.sql.DataSource;
 
 import junit.framework.TestCase;
-
-import org.h2.jdbcx.JdbcDataSource;
-
 import ccc.domain.Data;
-import ccc.services.DataManager;
 import ccc.services.ResourceDao;
 import ccc.services.SearchEngine;
+import ccc.services.DataManager.StreamAction;
+import ccc.services.ejb3.support.CoreData;
 
 
 /**
@@ -47,50 +35,35 @@ public class DataManagerEJBTest extends TestCase {
     private final InputStream _dummyStream =
         new ByteArrayInputStream(new byte[]{1});
 
-    private DataSource _ds;
-    private Connection _c;
     private ResourceDao _al;
-    private PreparedStatement _ps;
-    private DataManager _dm;
+    private DataManagerEJB _dm;
     private SearchEngine _se;
-
-    {
-        try {
-            Class.forName("org.h2.Driver");
-        } catch (final ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
+    private CoreData _cd;
 
 
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {
-         _ds = createStrictMock(DataSource.class);
-         _c = createStrictMock(Connection.class);
          _al = createStrictMock(ResourceDao.class);
          _se = createStrictMock(SearchEngine.class);
-         _ps = createStrictMock(PreparedStatement.class);
-         _dm = new DataManagerEJB(_ds, _al);
+         _cd = createStrictMock(CoreData.class);
+         _dm = new DataManagerEJB(_cd, _al);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void tearDown() throws Exception {
-        _ds = null;
-        _c = null;
         _al = null;
-        _ps = null;
         _dm = null;
+        _cd = null;
     }
 
     private void replayAll() {
-        replay(_ps, _c, _ds,  _al);
+        replay(_al, _se, _cd);
     }
 
     private void verifyAll() {
-        verify(_ps, _c, _ds, _al);
+        verify(_al, _se, _cd);
     }
 
 //    /**
@@ -176,35 +149,16 @@ public class DataManagerEJBTest extends TestCase {
     public void testCreate() throws SQLException {
 
         // ARRANGE
-        final PreparedStatement ps = createStrictMock(PreparedStatement.class);
-        ps.setString(eq(1), isA(String.class));
-        ps.setInt(2, 0);
-        ps.setBinaryStream(DataManagerEJB.STREAM_POSITION_CREATE,
-                           _dummyStream,
-                           1);
-        expect(ps.execute()).andReturn(true);
-        ps.close();
-        replay(ps);
-
-        final Connection c = createStrictMock(Connection.class);
-        expect(c.prepareStatement(DataManagerEJB.CREATE_STATEMENT))
-            .andReturn(ps);
-        c.close();
-        replay(c);
-
-        final DataSource ds = createStrictMock(DataSource.class);
-        expect(ds.getConnection()).andReturn(c);
-        replay(ds);
-
-        final DataManager dm =
-            new DataManagerEJB(ds,
-                               dummy(ResourceDao.class));
+        final Data d = new Data();
+        expect(_cd.create(_dummyStream, 1)).andReturn(d);
+        replayAll();
 
         // ACT
-        dm.create(_dummyStream, 1);
+        final Data actual = _dm.create(_dummyStream, 1);
 
         // ASSERT
-        verify(ps, c, ds);
+        verifyAll();
+        assertSame(d, actual);
     }
 
     /**
@@ -215,133 +169,19 @@ public class DataManagerEJBTest extends TestCase {
     public void testRetrieve() throws SQLException {
 
         // ARRANGE
-        final ByteArrayOutputStream os = new ByteArrayOutputStream();
         final Data d = new Data();
-
-        final ResultSet rs = createStrictMock(ResultSet.class);
-        expect(rs.next()).andReturn(true);
-        expect(rs.getBinaryStream(1)).andReturn(_dummyStream);
-        expect(rs.next()).andReturn(false);
-        rs.close();
-        replay(rs);
-
-        final PreparedStatement ps = createStrictMock(PreparedStatement.class);
-        ps.setString(1, d.id().toString());
-        expect(ps.executeQuery()).andReturn(rs);
-        ps.close();
-        replay(ps);
-
-        final Connection c = createStrictMock(Connection.class);
-        expect(c.prepareStatement(DataManagerEJB.RETRIEVE_STATEMENT))
-            .andReturn(ps);
-        c.close();
-        replay(c);
-
-        final DataSource ds = createStrictMock(DataSource.class);
-        expect(ds.getConnection()).andReturn(c);
-        replay(ds);
-
-        final DataManager dm =
-            new DataManagerEJB(ds,
-                               dummy(ResourceDao.class));
+        final StreamAction sa = new StreamAction(){
+            @Override
+            public void execute(final InputStream is) throws Exception {
+                // No Op
+            }};
+        _cd.retrieve(d, sa);
+        replayAll();
 
         // ACT
-        dm.retrieve(d, os);
+        _dm.retrieve(d, sa);
 
         // ASSERT
-        verify(rs, ps, c, ds);
-        assertEquals(1, os.toByteArray().length);
-        assertEquals(1, os.toByteArray()[0]);
-        // TODO: assert the stream was closed?
-    }
-
-    /**
-     * Test.
-     * @throws SQLException sometimes.
-     * @throws IOException sometimes.
-     */
-    public void testCreateWithInMemoryDb() throws SQLException, IOException {
-
-        // ARRANGE
-        final JdbcDataSource ds = new JdbcDataSource();
-        ds.setURL("jdbc:h2:mem:"+UUID.randomUUID()+";DB_CLOSE_DELAY=-1");
-
-        createDataTable(ds);
-
-        final DataManager dm =
-            new DataManagerEJB(ds,
-                               dummy(ResourceDao.class));
-
-        // ACT
-        dm.create(_dummyStream, 1);
-
-        // ASSERT
-        Connection c = ds.getConnection();
-        final Statement s2 = c.createStatement();
-        ResultSet rs = s2.executeQuery("select count(*) from data");
-        rs.next();
-        assertEquals(1, rs.getInt(1));
-        s2.close();
-        c.close();
-
-        c = ds.getConnection();
-        final Statement s3 = c.createStatement();
-        rs = s3.executeQuery("select * from data");
-        rs.next();
-        final InputStream is = rs.getBinaryStream(3);
-        assertEquals(1, is.read());
-        assertEquals(-1, is.read());
-        s3.close();
-        c.close();
-    }
-
-
-    /**
-     * Test.
-     * @throws SQLException sometimes.
-     */
-    public void testRetrieveWithInMemoryDb() throws SQLException {
-
-        // ARRANGE
-        final ByteArrayOutputStream os = new ByteArrayOutputStream();
-        final JdbcDataSource ds = new JdbcDataSource();
-        ds.setURL("jdbc:h2:mem:"+UUID.randomUUID()+";DB_CLOSE_DELAY=-1");
-
-        createDataTable(ds);
-
-        final DataManager dm =
-            new DataManagerEJB(ds,
-                               dummy(ResourceDao.class));
-        final Data d = dm.create(_dummyStream, 1);
-
-        // ACT
-        dm.retrieve(d, os);
-
-        // ASSERT
-        assertEquals(1, os.toByteArray().length);
-        assertEquals(1, os.toByteArray()[0]);
-    }
-
-
-    private void createDataTable(final JdbcDataSource ds) throws SQLException {
-
-        final String sql =
-            "CREATE TABLE data("
-            + "ID VARCHAR(255) NOT NULL, "
-            + "VERSION INTEGER NOT NULL, "
-            + "bytes BLOB NOT NULL)";
-
-        final Connection c = ds.getConnection();
-
-        try {
-            final PreparedStatement s = c.prepareStatement(sql);
-            try {
-                s.execute();
-            } finally {
-                s.close();
-            }
-        } finally {
-            c.close();
-        }
+        verifyAll();
     }
 }
