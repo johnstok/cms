@@ -34,10 +34,10 @@ public final class ResourceName implements Serializable {
     private static final String ESCAPE_CHARACTER = "_";
 
     /** INVALID_CHARACTERS : String. */
-    private static final String INVALID_CHARACTERS = "[^\\.\\w]";
+    private static final String INVALID_CHARACTERS = "[^\\.\\-\\w]";
 
     /** VALID_CHARACTERS : String. */
-    public static final String  VALID_CHARACTERS = "[\\.\\w]+";
+    public static final String  VALID_CHARACTERS = "[\\.\\-\\w]+";
 
     private String _representation = escapeString(UUID.randomUUID().toString());
 
