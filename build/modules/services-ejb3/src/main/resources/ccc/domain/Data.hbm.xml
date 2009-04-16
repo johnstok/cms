@@ -27,6 +27,16 @@
         <drop>DROP TABLE data</drop>
         <dialect-scope name="org.hibernate.dialect.H2Dialect"/>
         <dialect-scope name="org.hibernate.dialect.Oracle9Dialect"/>
+    </database-object>
+    <database-object>
+        <create>
+        CREATE TABLE data(
+            id VARCHAR(255) NOT NULL,
+            version INTEGER NOT NULL,
+            bytes LONGBLOB NOT NULL
+        )
+        </create>
+        <drop>DROP TABLE data</drop>
         <dialect-scope name="org.hibernate.dialect.MySQL5InnoDBDialect"/>
     </database-object>
     <database-object>
