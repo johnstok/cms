@@ -139,6 +139,9 @@ public class LogEntry extends Entity {
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = Action.UNLOCK;
         le._comment = "Unlocked.";
+        final Snapshot ss = new Snapshot();
+        ss.set("unlock", actor.id().toString());
+        le._detail = ss.getDetail();
         return le;
     }
 
@@ -158,6 +161,9 @@ public class LogEntry extends Entity {
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = Action.LOCK;
         le._comment = "Locked.";
+        final Snapshot ss = new Snapshot();
+        ss.set("lock", actor.id().toString());
+        le._detail = ss.getDetail();
         return le;
     }
 
@@ -270,6 +276,9 @@ public class LogEntry extends Entity {
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = Action.PUBLISH;
         le._comment = "Published.";
+        final Snapshot ss = new Snapshot();
+        ss.set("publish", actor.id().toString());
+        le._detail = ss.getDetail();
         return le;
     }
 
@@ -288,6 +297,9 @@ public class LogEntry extends Entity {
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = Action.UNPUBLISH;
         le._comment = "Unpublished.";
+        final Snapshot ss = new Snapshot();
+        ss.set("unpublish", actor.id().toString());
+        le._detail = ss.getDetail();
         return le;
     }
 
