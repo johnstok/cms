@@ -16,6 +16,8 @@ import ccc.contentcreator.actions.CreateFileAction;
 import ccc.contentcreator.actions.CreateFolderAction;
 import ccc.contentcreator.actions.CreatePageAction;
 import ccc.contentcreator.actions.CreateTemplateAction;
+import ccc.contentcreator.actions.LockAction;
+import ccc.contentcreator.actions.UnlockAction;
 import ccc.contentcreator.api.UIConstants;
 
 
@@ -61,6 +63,16 @@ public class FolderToolBar
             "Choose Template",
             _constants.chooseTemplate(),
             new ChooseTemplateAction(ssm, true));
+        addSeparator();
+        addButton(
+            "lock",
+            _constants.lock(),
+            new LockAction(ssm, true));
+        addSeparator();
+        addButton(
+            "unlock-folder",
+            _constants.unlock(),
+            new UnlockAction(ssm, true));
         addSeparator();
     }
 }
