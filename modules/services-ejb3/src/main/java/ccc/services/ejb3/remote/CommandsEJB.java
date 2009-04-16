@@ -72,7 +72,7 @@ import ccc.services.support.ModelTranslation;
 @Stateless(name=Commands.NAME)
 @TransactionAttribute(REQUIRED)
 @Remote(Commands.class)
-@RolesAllowed({"ADMINISTRATOR"})
+@RolesAllowed({"ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"})
 @SecurityDomain("java:/jaas/ccc")
 public class CommandsEJB
     extends

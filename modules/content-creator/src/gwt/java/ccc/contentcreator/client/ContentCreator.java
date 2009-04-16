@@ -2,6 +2,7 @@
 package ccc.contentcreator.client;
 
 import java.util.Collection;
+import java.util.Set;
 
 import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
@@ -51,11 +52,25 @@ public final class ContentCreator implements EntryPoint {
         );
     }
 
+    /**
+     * Draws the main window based on user roles.
+     *
+     */
     public void drawMainWindow() {
         Globals.enableExitConfirmation();
 
-        final QueriesServiceAsync qs = GWT.create(QueriesService.class);
+        Globals.securityService().loggedInUserRoles(
+            new ErrorReportingCallback<Set<String>>(){
+                public void onSuccess(final Set<String> roles) {
+                    renderUI(roles);
+                }
+            }
+        );
+    }
 
+    private void renderUI(final Set<String> roles) {
+
+        final QueriesServiceAsync qs = GWT.create(QueriesService.class);
         qs.roots(new ErrorReportingCallback<Collection<ResourceSummary>>(){
             // FIXME: refactor
             public void onSuccess(final Collection<ResourceSummary> arg0) {
@@ -69,17 +84,17 @@ public final class ContentCreator implements EntryPoint {
                     contentPane.setRightHandPane(new ContentPanel());
                     contentPane.setLeftHandPane(
                         new ResourceNavigator(contentPane,
-                            arg0));
+                            arg0,
+                            roles));
 
                     final Viewport vp =
-                        layoutMainWindow(new MainMenu(), contentPane);
+                        layoutMainWindow(new MainMenu(roles), contentPane);
 
                     RootPanel.get().add(vp);
                 }
             }
         });
     }
-
 
     private static native String jsniSetUrl(String selecteUrl) /*-{
     $wnd.opener.SetUrl( selecteUrl ) ;
