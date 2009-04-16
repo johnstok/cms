@@ -11,6 +11,9 @@
  */
 package ccc.contentcreator.remoting;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.jboss.web.tomcat.security.login.WebAuthentication;
@@ -47,5 +50,14 @@ public class SecurityImpl
     public boolean isLoggedIn() {
         final HttpServletRequest request = getThreadLocalRequest();
         return null!=request.getUserPrincipal();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Set<String> loggedInUserRoles() {
+        if (isLoggedIn()) {
+            return _services.localUserManager().loggedInUser().roles();
+        }
+        return new HashSet<String>();
     }
 }

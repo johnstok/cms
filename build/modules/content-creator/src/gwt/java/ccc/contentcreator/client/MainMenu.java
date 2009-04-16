@@ -33,7 +33,7 @@ public class MainMenu
      *
      * @param app
      */
-    MainMenu() {
+    MainMenu(final java.util.Set<String> roles) {
 
         addMenu(
             "help-menu",
@@ -44,14 +44,16 @@ public class MainMenu
                 new OpenHelpAction())
         );
 
-        addMenu(
-            "users-menu",
-            _constants.users(),
-            createMenuItem(
-                "create-user-menu-item",
-                _constants.createUser(),
-                new CreateUserAction())
-        );
+        if (roles.contains("ADMINISTRATOR")) {
+            addMenu(
+                "users-menu",
+                _constants.users(),
+                createMenuItem(
+                    "create-user-menu-item",
+                    _constants.createUser(),
+                    new CreateUserAction())
+            );
+        }
 
         addMenu(
             "tools-menu",

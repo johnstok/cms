@@ -62,7 +62,7 @@ import ccc.services.support.ModelTranslation;
 @Stateless(name=Queries.NAME)
 @TransactionAttribute(REQUIRED)
 @Remote(Queries.class)
-@RolesAllowed({"ADMINISTRATOR"})
+@RolesAllowed({"ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"})
 @SecurityDomain("java:/jaas/ccc")
 public final class QueriesEJB
     extends

@@ -14,6 +14,7 @@ package ccc.contentcreator.client;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import ccc.services.api.ResourceSummary;
 
@@ -43,9 +44,11 @@ public class ResourceNavigator extends ContentPanel {
      *
      * @param view LeftRightPane of the surrounding view.
      * @param roots Collection of the resource roots.
+     * @param roles Set of the user roles.
      */
     ResourceNavigator(final LeftRightPane view,
-                      final Collection<ResourceSummary> roots) {
+                      final Collection<ResourceSummary> roots,
+                      final Set<String> roles) {
         setId("resource-navigator");
 
         _view = view;
@@ -55,6 +58,13 @@ public class ResourceNavigator extends ContentPanel {
         setHeading("Navigator");
 
         for (final ResourceSummary root : roots) {
+            if ("assets".equals(root._name)) {
+                if (!roles.contains("ADMINISTRATOR")
+                        && !roles.contains("SITE_BUILDER")) {
+                    continue;
+                }
+            }
+
             final EnhancedResourceTree tree =
                 new EnhancedResourceTree(root, _view);
             _rootTrees.add(tree);
@@ -76,22 +86,23 @@ public class ResourceNavigator extends ContentPanel {
         }
 
 
-
         _usersTree = new UserTree(_view);
-        final ContentPanel usersPanel = new ContentPanel();
-        usersPanel.getHeader().setId("user-navigator");
-        usersPanel.setScrollMode(Scroll.AUTO);
-        usersPanel.setHeading("Users");
-        usersPanel.add(_usersTree);
-        add(usersPanel);
-        usersPanel.addListener(
-            Events.Expand,
-            new Listener<ComponentEvent>(){
-                public void handleEvent(final ComponentEvent bce) {
-                    _usersTree.showTable();
+        if (roles.contains("ADMINISTRATOR")) {
+            final ContentPanel usersPanel = new ContentPanel();
+            usersPanel.getHeader().setId("user-navigator");
+            usersPanel.setScrollMode(Scroll.AUTO);
+            usersPanel.setHeading("Users");
+            usersPanel.add(_usersTree);
+            add(usersPanel);
+            usersPanel.addListener(
+                Events.Expand,
+                new Listener<ComponentEvent>(){
+                    public void handleEvent(final ComponentEvent bce) {
+                        _usersTree.showTable();
+                    }
                 }
-            }
-        );
+            );
+        }
 
         _actionTree = new ActionTree(_view);
         final ContentPanel actionPanel = new ContentPanel();

@@ -136,6 +136,8 @@
         </web-resource-collection>
         <auth-constraint>
             <role-name>ADMINISTRATOR</role-name>
+            <role-name>CONTENT_CREATOR</role-name>
+            <role-name>SITE_BUILDER</role-name>
         </auth-constraint>
     </security-constraint>
 

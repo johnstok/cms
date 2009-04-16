@@ -11,6 +11,8 @@
  */
 package ccc.contentcreator.api;
 
+import java.util.Set;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
@@ -26,4 +28,6 @@ public interface SecurityServiceAsync {
     void login(String username, String password, AsyncCallback<Boolean> asyncCallback);
 
     void isLoggedIn(AsyncCallback<Boolean> asyncCallback);
+
+    void loggedInUserRoles(AsyncCallback<Set<String>> asyncCallback);
 }
