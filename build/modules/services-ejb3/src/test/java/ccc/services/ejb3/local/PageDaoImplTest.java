@@ -111,7 +111,7 @@ public class PageDaoImplTest
         // ASSERT
         verifyAll();
         assertNotNull("Page must have a working copy", page.workingCopy());
-        assertEquals("working title", page.workingCopy().getString("test"));
+        assertEquals("test", page.workingCopy().getString("title"));
 
     }
 
