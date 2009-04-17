@@ -13,6 +13,7 @@ package ccc.contentcreator.client;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import ccc.contentcreator.api.UIConstants;
 import ccc.services.api.ResourceSummary;
@@ -46,7 +47,6 @@ public class ResourceTable
     private final UIConstants _constants = Globals.uiConstants();
     private final ListStore<ModelData> _detailsStore =
         new ListStore<ModelData>();
-    private final ToolBar _toolBar = new FolderToolBar(this);
 
     private final ResourceSummary _root;
     private final FolderResourceTree _tree;
@@ -59,12 +59,14 @@ public class ResourceTable
      * @param root ResourceSummary
      * @param tree FolderResourceTree
      */
-    ResourceTable(final ResourceSummary root, final FolderResourceTree tree) {
+    ResourceTable(final ResourceSummary root,
+        final FolderResourceTree tree,
+        final Set<String> roles) {
 
         _root = root;
         _tree = tree;
-
-        setTopComponent(_toolBar);
+        final ToolBar toolBar = new FolderToolBar(this, roles);
+        setTopComponent(toolBar);
         setHeading(_constants.resourceDetails());
         setLayout(new FitLayout());
 

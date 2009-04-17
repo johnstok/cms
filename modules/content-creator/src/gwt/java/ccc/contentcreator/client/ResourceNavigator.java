@@ -66,7 +66,7 @@ public class ResourceNavigator extends ContentPanel {
             }
 
             final EnhancedResourceTree tree =
-                new EnhancedResourceTree(root, _view);
+                new EnhancedResourceTree(root, _view, roles);
             _rootTrees.add(tree);
 
             final ContentPanel contentPanel = new ContentPanel();

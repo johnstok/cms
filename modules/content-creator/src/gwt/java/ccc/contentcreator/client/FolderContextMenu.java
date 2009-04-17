@@ -11,7 +11,6 @@
  */
 package ccc.contentcreator.client;
 
-import ccc.contentcreator.actions.ChooseTemplateAction;
 import ccc.contentcreator.actions.CreateFileAction;
 import ccc.contentcreator.actions.CreateFolderAction;
 import ccc.contentcreator.actions.CreatePageAction;
@@ -52,9 +51,5 @@ public class FolderContextMenu
             "create-template",
             Globals.uiConstants().createTemplate(),
             new CreateTemplateAction(ssm));
-        addMenuItem(
-            "choose-template",
-            Globals.uiConstants().chooseTemplate(),
-            new ChooseTemplateAction(ssm, true));
     }
 }

@@ -969,4 +969,12 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Edit user password")
     String editUserPw();
+
+    /**
+     * "Content root".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Content root")
+    String contentRoot();
 }
