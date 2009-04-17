@@ -27,28 +27,21 @@ public final class ChooseTemplateAction
     private final UIConstants _constants = Globals.uiConstants();
 
     private final SingleSelectionModel _selectionModel;
-    private final boolean _isTreeSelection;
 
     /**
      * Constructor.
      *
      * @param selectionModel The selection model.
-     * @param isTreeSelection The boolean for tree/table selection.
      */
-    public ChooseTemplateAction(final SingleSelectionModel selectionModel,
-                                final boolean isTreeSelection) {
+    public ChooseTemplateAction(final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;
-        _isTreeSelection = isTreeSelection;
     }
 
     /** {@inheritDoc} */
     public void execute() {
         ModelData item = null;
-        if (_isTreeSelection) {
-            item = _selectionModel.treeSelection();
-        } else {
-            item = _selectionModel.tableSelection();
-        }
+        item = _selectionModel.tableSelection();
+
         if (item == null) {
             Globals.alert(Globals.uiConstants().noFolderSelected());
             return;

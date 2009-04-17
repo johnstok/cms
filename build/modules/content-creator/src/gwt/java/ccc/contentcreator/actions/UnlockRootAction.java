@@ -2,7 +2,7 @@
  * Copyright (c) 2009 Civic Computing Ltd.
  * All rights reserved.
  *
- * Revision      $Rev$
+ * Revision      $Rev: 1090 $
  * Modified by   $Author$
  * Modified on   $Date$
  *
@@ -12,14 +12,10 @@
 package ccc.contentcreator.actions;
 
 import ccc.contentcreator.api.CommandServiceAsync;
-import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.Globals;
-import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.services.api.ResourceSummary;
-
-import com.extjs.gxt.ui.client.data.ModelData;
 
 
 /**
@@ -27,32 +23,30 @@ import com.extjs.gxt.ui.client.data.ModelData;
  *
  * @author Civic Computing Ltd.
  */
-public class UnlockAction
+public class UnlockRootAction
     implements
         Action {
 
     private final CommandServiceAsync _commands = Globals.commandService();
 
-    private final SingleSelectionModel _selectionModel;
+    private final String _id;
 
     /**
      * Constructor.
      *
-     * @param selectionModel The selection model.
+     * @param id The root id.
      */
-    public UnlockAction(final SingleSelectionModel selectionModel) {
-        _selectionModel = selectionModel;
+    public UnlockRootAction(final String id) {
+        _id = id;
     }
 
     /** {@inheritDoc} */
     public void execute() {
-        final ModelData item = _selectionModel.tableSelection();
         _commands.unlock(
-            item.<String>get("id"),
+            _id,
             new ErrorReportingCallback<ResourceSummary>(){
                 public void onSuccess(final ResourceSummary arg0) {
-                    DataBinding.merge(item, arg0);
-                    _selectionModel.update(item);
+                   Globals.alert("Done");
                 }
             }
         );

@@ -34,26 +34,19 @@ public class LockAction
     private final CommandServiceAsync _commands = Globals.commandService();
 
     private final SingleSelectionModel _selectionModel;
-    private final boolean _isTreeSelection;
 
     /**
      * Constructor.
      *
      * @param selectionModel The selection model.
-     * @param isTreeSelection
      */
-    public LockAction(final SingleSelectionModel selectionModel,
-                      final boolean isTreeSelection) {
+    public LockAction(final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;
-        _isTreeSelection = isTreeSelection;
     }
 
     /** {@inheritDoc} */
     public void execute() {
-        final ModelData item =
-            (_isTreeSelection)
-                ?_selectionModel.treeSelection()
-                :_selectionModel.tableSelection();
+        final ModelData item = _selectionModel.tableSelection();
         _commands.lock(
             item.<String>get("id"),
             new ErrorReportingCallback<ResourceSummary>(){

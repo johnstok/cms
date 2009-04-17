@@ -12,6 +12,7 @@
 package ccc.contentcreator.client;
 
 import java.util.List;
+import java.util.Set;
 
 import ccc.services.api.ResourceSummary;
 
@@ -43,13 +44,15 @@ public class EnhancedResourceTree extends FolderResourceTree {
      *
      * @param root The root of the tree.
      * @param view LeftRightPane of the surrounding view.
+     * @param roles Set of roles.
      */
     EnhancedResourceTree(final ResourceSummary root,
-                         final LeftRightPane view) {
+                         final LeftRightPane view,
+                         final Set<String> roles) {
 
         super(root);
 
-        _rt = new ResourceTable(root, this);
+        _rt = new ResourceTable(root, this, roles);
         _view = view;
         _contextMenu = new FolderContextMenu(_rt);
 

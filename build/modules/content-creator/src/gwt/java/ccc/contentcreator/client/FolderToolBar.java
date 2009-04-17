@@ -11,13 +11,12 @@
  */
 package ccc.contentcreator.client;
 
-import ccc.contentcreator.actions.ChooseTemplateAction;
+import java.util.Set;
+
 import ccc.contentcreator.actions.CreateFileAction;
 import ccc.contentcreator.actions.CreateFolderAction;
 import ccc.contentcreator.actions.CreatePageAction;
 import ccc.contentcreator.actions.CreateTemplateAction;
-import ccc.contentcreator.actions.LockAction;
-import ccc.contentcreator.actions.UnlockAction;
 import ccc.contentcreator.api.UIConstants;
 
 
@@ -37,7 +36,7 @@ public class FolderToolBar
      *
      * @param ssm The selection model to use.
      */
-    FolderToolBar(final SingleSelectionModel ssm) {
+    FolderToolBar(final SingleSelectionModel ssm, final Set<String> roles) {
         addSeparator();
         addButton(
             "uploadFile",
@@ -54,25 +53,12 @@ public class FolderToolBar
             _constants.createPage(),
             new CreatePageAction(ssm));
         addSeparator();
-        addButton(
-            "Create Template",
-            _constants.createTemplate(),
-            new CreateTemplateAction(ssm));
-        addSeparator();
-        addButton(
-            "Choose Template",
-            _constants.chooseTemplate(),
-            new ChooseTemplateAction(ssm, true));
-        addSeparator();
-        addButton(
-            "lock",
-            _constants.lock(),
-            new LockAction(ssm, true));
-        addSeparator();
-        addButton(
-            "unlock-folder",
-            _constants.unlock(),
-            new UnlockAction(ssm, true));
-        addSeparator();
+        if (roles.contains("ADMINISTRATOR") || roles.contains("SITE_BUILDER")) {
+            addButton(
+                "Create Template",
+                _constants.createTemplate(),
+                new CreateTemplateAction(ssm));
+            addSeparator();
+        }
     }
 }

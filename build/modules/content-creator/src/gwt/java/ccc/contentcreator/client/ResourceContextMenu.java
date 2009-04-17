@@ -107,13 +107,13 @@ public class ResourceContextMenu
         _updateTagsAction = new UpdateTagsAction(_table);
         _renameAction = new RenameAction(_table);
         _moveAction = new MoveAction(_table, _table.root());
-        _unlockAction = new UnlockAction(_table, false);
-        _lockAction = new LockAction(_table, false);
+        _unlockAction = new UnlockAction(_table);
+        _lockAction = new LockAction(_table);
         _previewAction = new PreviewAction(_table, false);
         _updateSortAction = new UpdateSortOrderAction(_table);
         _clearWorkingCopyAction = new ClearWorkingCopyAction(_table);
         _previewWorkingCopyAction = new PreviewAction(_table, true);
-        _chooseTemplateAction = new ChooseTemplateAction(_table, false);
+        _chooseTemplateAction = new ChooseTemplateAction(_table);
         _createActionAction = new CreateActionAction(_table);
         _updateRolesAction = new UpdateResourceRolesAction(_table);
 
