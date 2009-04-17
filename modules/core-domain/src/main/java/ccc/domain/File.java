@@ -24,13 +24,18 @@ import ccc.commons.DBC;
  *
  * @author Civic Computing Ltd.
  */
-public class File extends Resource {
+public class File
+    extends
+        Resource
+    implements
+        WorkingCopyAware {
 
 
     private String _description;
     private Data _data;
     private int _size;
     private MimeType _mimeType;
+    private Snapshot _workingCopy;
 
 
     /** Constructor: for persistence only. */
@@ -196,5 +201,45 @@ public class File extends Resource {
         s.set("size", _size);
         s.set("data", _data.id());
         return s;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void applySnapshot(final Snapshot s) {
+        try {
+            description(s.getString("description"));
+            mimeType(new MimeType(s.getString("mimetype")));
+            size(s.getInt("size"));
+            data(new Data(s.getUuid("data")));
+        } catch (final MimeTypeParseException e) {
+            throw new CCCException(e);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void createWorkingCopy() {
+        DBC.require().toBeNull(_workingCopy);
+        _workingCopy = createSnapshot();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Snapshot workingCopy() {
+        return _workingCopy;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void clearWorkingCopy() {
+        DBC.require().notNull(_workingCopy);
+        _workingCopy = null;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void workingCopy(final Snapshot snapshot) {
+        DBC.require().notNull(_workingCopy);
+        _workingCopy = snapshot;
     }
 }

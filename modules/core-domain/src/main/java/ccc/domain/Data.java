@@ -12,6 +12,8 @@
 
 package ccc.domain;
 
+import java.util.UUID;
+
 /**
  * The data class is used to represent raw binary data with a unique identifier.
  * Typically, an instance of this class will be passed to some data manager in
@@ -23,5 +25,14 @@ public class Data extends Entity {
 
     /** Constructor: for persistence only. */
     public Data() { super(); }
+
+    /**
+     * Constructor.
+     *
+     * @param id The uuid for this data.
+     */
+    public Data(final UUID id) {
+        id(id);
+    }
 
 }

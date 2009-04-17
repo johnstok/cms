@@ -21,7 +21,10 @@ import ccc.contentcreator.client.HistoryToolBar;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.services.api.LogEntrySummary;
 
+import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.data.ModelData;
+import com.extjs.gxt.ui.client.event.GridEvent;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
@@ -39,6 +42,7 @@ public class HistoryDialog
 
     private final ToolBar _toolBar;
     private final SingleSelectionModel _ssm;
+    private final String _resourceType;
 
     /**
      * Constructor.
@@ -52,10 +56,31 @@ public class HistoryDialog
         super(Globals.uiConstants().resourceHistory(), data, false);
 
         _ssm = ssm;
+        _resourceType = _ssm.tableSelection().<String>get(DataBinding.TYPE);
         _toolBar = new HistoryToolBar(this);
+        _toolBar.disable();
         setTopComponent(_toolBar);
         _dataStore.add(DataBinding.bindLogEntrySummary(_data));
         _grid.setAutoExpandColumn("comment");
+        _grid.addListener(
+            Events.RowClick,
+            new Listener<GridEvent>(){
+                public void handleEvent(final GridEvent be) {
+                    final ModelData md = _grid.getSelectionModel().getSelectedItem();
+                    if (null==md) {
+                        _toolBar.disable();
+                    } else {
+                        final String action = md.get(DataBinding.ACTION);
+                        if ((action.equals("CREATE") || action.equals("UPDATE"))
+                            && (_resourceType.equals("PAGE") || _resourceType.equals("FILE"))) {
+                            _toolBar.enable();
+                        } else {
+                            _toolBar.disable();
+                        }
+                    }
+                }
+            }
+        );
     }
 
 

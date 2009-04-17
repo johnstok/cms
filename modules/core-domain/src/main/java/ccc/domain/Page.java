@@ -27,7 +27,11 @@ import ccc.commons.DBC;
  *
  * @author Civic Computing Ltd
  */
-public final class Page extends Resource {
+public final class Page
+    extends
+        Resource
+    implements
+        WorkingCopyAware {
 
     private Set<Paragraph> _content = new HashSet<Paragraph>();
     private Snapshot _workingCopy;
@@ -130,12 +134,8 @@ public final class Page extends Resource {
         return s;
     }
 
-    /**
-     * Apply a snapshot to this object. The title and paragraph fields will be
-     * updated. Any other entries in the snapshot will be ignored.
-     *
-     * @param s The snapshot to apply.
-     */
+    /** {@inheritDoc} */
+    @Override
     public void applySnapshot(final Snapshot s) {
         title(s.getString("title"));
         deleteAllParagraphs();
@@ -144,38 +144,28 @@ public final class Page extends Resource {
         }
     }
 
-    /**
-     * Create a new snapshot of this object and set it as the current working
-     * copy.
-     */
+    /** {@inheritDoc} */
+    @Override
     public void createWorkingCopy() {
         DBC.require().toBeNull(_workingCopy);
         _workingCopy = createSnapshot();
     }
 
-    /**
-     * Accessor.
-     *
-     * @return The current working copy for this page, or null if there is no
-     *      working copy.
-     */
+    /** {@inheritDoc} */
+    @Override
     public Snapshot workingCopy() {
         return _workingCopy;
     }
 
-    /**
-     * Clear the current working copy.
-     */
+    /** {@inheritDoc} */
+    @Override
     public void clearWorkingCopy() {
         DBC.require().notNull(_workingCopy);
         _workingCopy = null;
     }
 
-    /**
-     * Mutator.
-     *
-     * @param snapshot The new working copy for this page.
-     */
+    /** {@inheritDoc} */
+    @Override
     public void workingCopy(final Snapshot snapshot) {
         DBC.require().notNull(_workingCopy);
         _workingCopy = snapshot;
