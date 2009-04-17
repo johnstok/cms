@@ -281,9 +281,8 @@ public class CommandsEJB
 
         assignParagraphs(delta._paragraphs, page);
 
-        _page.updateWorkingCopy(UUID.fromString(delta._id),
-                     delta._title,
-                     page.paragraphs());
+        _page.updateWorkingCopy(
+            UUID.fromString(delta._id), page.createSnapshot());
 
     }
 

@@ -50,19 +50,6 @@ public interface PageDao {
                 final boolean isMajorEdit);
 
     /**
-     * Updates the working copy. Creates working copy in case page does
-     * not have it.
-     *
-     * @param id The identifier for the page.
-     * @param newTitle The new title for the page.
-     * @param newParagraphs The new paragraphs for the page.
-     */
-    @Deprecated
-    void updateWorkingCopy(UUID id,
-                           String newTitle,
-                           Set<Paragraph> newParagraphs);
-
-    /**
      * Updates the working copy.
      *
      * @param id The identifier for the page.
@@ -100,6 +87,12 @@ public interface PageDao {
      * @param id The page's id.
      * @param comment The comment for the page edit.
      * @param isMajorEdit A boolean for major edit.
+     * @param actor The actor that performed the update.
+     * @param happenedOn The date the update took place.
      */
-    void applyWorkingCopy(UUID id, String comment, boolean isMajorEdit, User actor, Date happenedOn);
+    void applyWorkingCopy(UUID id,
+                          String comment,
+                          boolean isMajorEdit,
+                          User actor,
+                          Date happenedOn);
 }

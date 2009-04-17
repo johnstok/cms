@@ -179,32 +179,12 @@ public class PageDaoImpl implements PageDao {
 
     }
 
-
-    /** {@inheritDoc} */
-    @Override
-    public void updateWorkingCopy(final UUID id,
-                                  final String newTitle,
-                                  final Set<Paragraph> newParagraphs) {
-        final Page temp = new Page(newTitle);
-        for (final Paragraph paragraph : newParagraphs) {
-            temp.addParagraph(paragraph);
-        }
-        final Snapshot workingCopy = temp.createSnapshot();
-        updateWorkingCopy(id, workingCopy);
-    }
-
-
     /** {@inheritDoc} */
     @Override
     public void updateWorkingCopy(final UUID id, final Snapshot workingCopy) {
         final Page page = _dao.findLocked(Page.class, id);
-        if (null==page.workingCopy()) { // FIXME: This is just dumb.
-            page.createWorkingCopy();
-        }
         page.workingCopy(workingCopy);
     }
-
-
 
     /** {@inheritDoc} */
     @Override

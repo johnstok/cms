@@ -218,13 +218,6 @@ public class File
 
     /** {@inheritDoc} */
     @Override
-    public void createWorkingCopy() {
-        DBC.require().toBeNull(_workingCopy);
-        _workingCopy = createSnapshot();
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public Snapshot workingCopy() {
         return _workingCopy;
     }

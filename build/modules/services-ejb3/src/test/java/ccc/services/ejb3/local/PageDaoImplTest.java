@@ -19,6 +19,7 @@ import java.util.Date;
 import junit.framework.TestCase;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
+import ccc.domain.Snapshot;
 import ccc.domain.User;
 import ccc.services.PageDao;
 import ccc.services.ResourceDao;
@@ -43,7 +44,7 @@ public class PageDaoImplTest
 
         // ARRANGE
         final Page p = new Page("foo");
-        p.createWorkingCopy();
+        p.workingCopy(p.createSnapshot());
 
         expect(_dao.findLocked(Page.class, p.id())).andReturn(p);
         replayAll();
@@ -99,19 +100,18 @@ public class PageDaoImplTest
         // ARRANGE
         final Page page = new Page("test");
         page.addParagraph(Paragraph.fromText("abc", "def"));
+        final Snapshot before = page.createSnapshot();
 
         expect(_dao.findLocked(Page.class, page.id())).andReturn(page);
         replayAll();
 
         // ACT
-        _cm.updateWorkingCopy(page.id(),
-            "working title",
-            Collections.singleton(Paragraph.fromText("foo", "bar")));
+        _cm.updateWorkingCopy(page.id(), before);
 
         // ASSERT
         verifyAll();
         assertNotNull("Page must have a working copy", page.workingCopy());
-        assertEquals("working title", page.workingCopy().getString("title"));
+        assertEquals("working title", page.workingCopy().getString("test"));
 
     }
 

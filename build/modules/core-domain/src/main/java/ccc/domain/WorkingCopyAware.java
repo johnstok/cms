@@ -28,12 +28,6 @@ public interface WorkingCopyAware {
     void applySnapshot(final Snapshot s);
 
     /**
-     * Create a new snapshot of this object and set it as the current working
-     * copy.
-     */
-    void createWorkingCopy();
-
-    /**
      * Accessor.
      *
      * @return The current working copy for this page, or null if there is no
