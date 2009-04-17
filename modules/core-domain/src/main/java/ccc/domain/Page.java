@@ -146,13 +146,6 @@ public final class Page
 
     /** {@inheritDoc} */
     @Override
-    public void createWorkingCopy() {
-        DBC.require().toBeNull(_workingCopy);
-        _workingCopy = createSnapshot();
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public Snapshot workingCopy() {
         return _workingCopy;
     }
@@ -167,7 +160,6 @@ public final class Page
     /** {@inheritDoc} */
     @Override
     public void workingCopy(final Snapshot snapshot) {
-        DBC.require().notNull(_workingCopy);
         _workingCopy = snapshot;
     }
 }

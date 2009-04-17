@@ -62,7 +62,6 @@ public final class PageTest extends TestCase {
 
         // ARRANGE
         final Page page = new Page("foo");
-        page.createWorkingCopy();
 
         // ACT
         page.workingCopy(new Snapshot());
@@ -79,29 +78,13 @@ public final class PageTest extends TestCase {
 
         // ARRANGE
         final Page page = new Page("foo");
-        page.createWorkingCopy();
+        page.workingCopy(page.createSnapshot());
 
         // ACT
         page.clearWorkingCopy();
 
         // ASSERT
         assertNull(page.workingCopy());
-    }
-
-    /**
-     * Test.
-     */
-    public void testCreateWorkingCopy() {
-
-        // ARRANGE
-        final Page page = new Page("foo");
-
-        // ACT
-        page.createWorkingCopy();
-
-        // ASSERT
-        assertNotNull(page.workingCopy());
-        assertEquals("foo", page.workingCopy().getString("title"));
     }
 
     /**

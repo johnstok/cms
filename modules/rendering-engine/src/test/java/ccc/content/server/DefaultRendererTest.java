@@ -42,6 +42,7 @@ import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourceOrder;
+import ccc.domain.Snapshot;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.DataManager;
@@ -70,11 +71,12 @@ public class DefaultRendererTest
         final Page p = new Page("foo");
         p.publish(new User("aaaa"));
         p.addParagraph(Paragraph.fromText("bar", "baz"));
-        p.createWorkingCopy();
-        p.workingCopy().set(
+        final Snapshot s = p.createSnapshot();
+        s.set(
             "paragraphs",
             Collections.singletonList(
                 Paragraph.fromText("some", "other value").createSnapshot()));
+        p.workingCopy(s);
 
         // ACT
         rr.renderWorkingCopy(p, noParams);
@@ -92,11 +94,12 @@ public class DefaultRendererTest
         // ARRANGE
         final Page p = new Page("foo");
         p.addParagraph(Paragraph.fromText("bar", "baz"));
-        p.createWorkingCopy();
-        p.workingCopy().set(
+        final Snapshot s = p.createSnapshot();
+        s.set(
             "paragraphs",
             Collections.singletonList(
                 Paragraph.fromText("some", "other value").createSnapshot()));
+        p.workingCopy(s);
 
         // ACT
         _renderer.renderWorkingCopy(p, noParams);
