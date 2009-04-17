@@ -269,6 +269,21 @@ public class Snapshot implements Serializable {
         return UUID.fromString(getString(key));
     }
 
+
+    /**
+     * Accessor.
+     *
+     * @param key The key for the value.
+     * @return The value, as an int.
+     */
+    public int getInt(final String key) {
+        try {
+            return _detail.getInt(key);
+        } catch (final JSONException e) {
+            throw new InvalidSnapshotException(e);
+        }
+    }
+
     private void readObject(final ObjectInputStream aInputStream)
                                    throws IOException, ClassNotFoundException  {
         aInputStream.defaultReadObject();

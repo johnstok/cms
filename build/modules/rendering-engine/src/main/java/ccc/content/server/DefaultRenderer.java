@@ -30,6 +30,7 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceType;
 import ccc.domain.Search;
 import ccc.domain.Snapshot;
+import ccc.domain.WorkingCopyAware;
 import ccc.services.DataManager;
 import ccc.services.SearchEngine;
 import ccc.services.StatefulReader;
@@ -131,8 +132,9 @@ public class DefaultRenderer
     public Response renderHistoricalVersion(final Resource resource,
                                             final Map<String, String[]> parameters) {
         if (!_respectVisibility) {
-            if (resource instanceof Page) {
-                final Page p = (Page) resource;
+            if (resource instanceof WorkingCopyAware) {
+
+                final WorkingCopyAware sa = (WorkingCopyAware) resource;
 
                 if (!parameters.containsKey("v")) {
                     throw new NotFoundException();
@@ -152,7 +154,7 @@ public class DefaultRenderer
                         if (null==le) {
                             throw new NotFoundException();
                         } else if (resource.id().equals(le.subjectId())) {
-                            p.applySnapshot(new Snapshot(le.detail()));
+                            sa.applySnapshot(new Snapshot(le.detail()));
                         } else {
                             throw new NotFoundException();
                         }
