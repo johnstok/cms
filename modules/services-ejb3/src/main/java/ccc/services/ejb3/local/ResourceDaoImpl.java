@@ -120,7 +120,7 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public Resource unlock(final UUID resourceId) {
         final User loggedInUser = _users.loggedInUser();
-        final Resource r = _dao.find(Resource.class, resourceId);
+        final Resource r = _dao.find(Resource.class, resourceId); // FIXME: Use findLocked?
         r.unlock(loggedInUser);
         _audit.recordUnlock(r, loggedInUser, new Date());
         return r;
@@ -182,7 +182,7 @@ public class ResourceDaoImpl implements ResourceDao {
                             final Date publishedOn) {
         final User publishedBy = _users.find(userId);
         final Resource r =
-            find(Resource.class, resourceId); // FIXME: Should use findLocked.
+            findLocked(Resource.class, resourceId);
         r.publish(publishedBy);
         r.dateChanged(publishedOn);
         _audit.recordPublish(r, publishedBy, publishedOn);
@@ -221,7 +221,7 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public void updateTemplateForResource(final UUID resourceId,
                                           final Template template) {
-        final Resource r = find(Resource.class, resourceId);
+        final Resource r = findLocked(Resource.class, resourceId);
         r.template(template);
         _audit.recordChangeTemplate(r, _users.loggedInUser(), new Date());
     }
