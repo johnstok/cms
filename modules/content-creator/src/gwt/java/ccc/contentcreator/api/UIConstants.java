@@ -977,4 +977,20 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Content root")
     String contentRoot();
+
+    /**
+     * "Update roles".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Update roles")
+    String updateRoles();
+
+    /**
+     * "Details".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Details")
+    String details();
 }

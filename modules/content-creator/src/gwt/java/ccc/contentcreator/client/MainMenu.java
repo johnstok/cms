@@ -14,20 +14,28 @@ package ccc.contentcreator.client;
 import java.util.Collection;
 import java.util.Set;
 
-import ccc.contentcreator.actions.ChooseRootTemplateAction;
+import ccc.contentcreator.actions.ChooseTemplateAction;
 import ccc.contentcreator.actions.CreateUserAction;
-import ccc.contentcreator.actions.LockRootAction;
+import ccc.contentcreator.actions.LockAction;
 import ccc.contentcreator.actions.LogoutAction;
 import ccc.contentcreator.actions.OpenHelpAction;
-import ccc.contentcreator.actions.PublishRootAction;
-import ccc.contentcreator.actions.UnlockRootAction;
-import ccc.contentcreator.actions.UnpublishRootAction;
+import ccc.contentcreator.actions.PublishAction;
+import ccc.contentcreator.actions.UnlockAction;
+import ccc.contentcreator.actions.UnpublishAction;
+import ccc.contentcreator.actions.UpdateMetadataAction;
+import ccc.contentcreator.actions.UpdateResourceRolesAction;
+import ccc.contentcreator.actions.UpdateSortOrderAction;
+import ccc.contentcreator.actions.UpdateTagsAction;
+import ccc.contentcreator.actions.ViewHistoryAction;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.services.api.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Events;
+import com.extjs.gxt.ui.client.data.BaseModelData;
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
@@ -114,34 +122,104 @@ public class MainMenu
     }
 
     private void addRootMenuItems(final ResourceSummary root) {
+        final SingleSelectionModel ssm = createSsm(root);
+
+        _itemMenu.add(createMenuItem(
+            "details-root",
+            _constants.details(),
+            new Action(){
+
+                public void execute() {
+                    final StringBuilder sb = new StringBuilder();
+                    if (root._lockedBy != null) {
+                     sb.append(_constants.lockedBy()+" "+root._lockedBy+"\n");
+                    }
+                    if (root._publishedBy != null) {
+                        sb.append(_constants.publishedBy()
+                            +" "+root._publishedBy+"\n");
+                    }
+                    Globals.alert(sb.toString());
+                }
+
+            }));
+
+        _itemMenu.add(createMenuItem(
+            "viewHistory-root",
+            _constants.viewHistory(),
+            new ViewHistoryAction(ssm)));
 
         if (root._lockedBy == null || root._lockedBy.equals("")) {
             _itemMenu.add(createMenuItem(
                 "lock-root",
                 _constants.lock(),
-                new LockRootAction(root._id)));
+                new LockAction(ssm)));
         } else {
             _itemMenu.add(createMenuItem(
                 "unlock-root",
                 _constants.unlock(),
-                new UnlockRootAction(root._id)));
-        }
-        if (root._publishedBy == null || root._publishedBy.equals("")) {
+                new UnlockAction(ssm)));
+
+            if (root._publishedBy == null || root._publishedBy.equals("")) {
+                _itemMenu.add(createMenuItem(
+                    "publish-root",
+                    _constants.publish(),
+                    new PublishAction(ssm)));
+            } else {
+                _itemMenu.add(createMenuItem(
+                    "unpublish-root",
+                    _constants.unpublish(),
+                    new UnpublishAction(ssm)));
+            }
             _itemMenu.add(createMenuItem(
-                "publish-root",
-                _constants.publish(),
-                new PublishRootAction(root._id)));
-        } else {
+                "chooseTemplate-root",
+                _constants.chooseTemplate(),
+                new ChooseTemplateAction(ssm)));
             _itemMenu.add(createMenuItem(
-                "unpublish-root",
-                _constants.unpublish(),
-                new UnpublishRootAction(root._id)));
+                "changeSortOrder-root",
+                _constants.changeSortOrder(),
+                new UpdateSortOrderAction(ssm)));
+            _itemMenu.add(createMenuItem(
+                "updateRoles-root",
+                _constants.updateRoles(),
+                new UpdateResourceRolesAction(ssm)));
+            _itemMenu.add(createMenuItem(
+                "updateTags-root",
+                _constants.updateTags(),
+                new UpdateTagsAction(ssm)));
+            _itemMenu.add(createMenuItem(
+                "updateMetadata-root",
+                _constants.updateMetadata(),
+                new UpdateMetadataAction(ssm)));
         }
 
-        _itemMenu.add(createMenuItem(
-            "chooseTemplate-root",
-            _constants.chooseTemplate(),
-            new ChooseRootTemplateAction(root._id)));
+    }
 
+    private SingleSelectionModel createSsm(final ResourceSummary root) {
+
+        final SingleSelectionModel ssm = new SingleSelectionModel() {
+
+            public void create(final ModelData model,
+                               final ModelData newParent) {
+            }
+            public void move(final ModelData model,
+                             final ModelData newParent,
+                             final ModelData oldParent) {
+            }
+            public ModelData tableSelection() {
+                ModelData md = new BaseModelData();
+                md.set(DataBinding.TYPE, "FOLDER");
+                md.set(DataBinding.ID, root._id);
+                md.set(DataBinding.SORT_ORDER, root._sortOrder);
+                return md;
+            }
+            public ModelData treeSelection() {
+                throw new UnsupportedOperationException(
+                    "Method not implemented.");
+            }
+            public void update(final ModelData model) {
+            }
+
+        };
+        return ssm;
     }
 }
