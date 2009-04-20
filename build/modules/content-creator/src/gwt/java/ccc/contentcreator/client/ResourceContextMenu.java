@@ -186,7 +186,7 @@ public class ResourceContextMenu
     private void addUpdateRolesAction() {
         addMenuItem(
             "update-resource-roles",
-            "Update roles", // FIXME: I18n
+            _constants.updateRoles(),
             _updateRolesAction);
     }
 
