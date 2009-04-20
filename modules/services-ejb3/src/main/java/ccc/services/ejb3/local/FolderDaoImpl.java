@@ -76,7 +76,7 @@ public class FolderDaoImpl implements FolderDao {
     public void updateSortOrder(final UUID folderId,
                                 final ResourceOrder order) {
 
-        final Folder f = _dao.find(Folder.class, folderId);
+        final Folder f = _dao.findLocked(Folder.class, folderId);
         final User u = _users.loggedInUser();
         f.sortOrder(order);
         _audit.recordUpdateSortOrder(f, u, new Date());
@@ -85,7 +85,7 @@ public class FolderDaoImpl implements FolderDao {
     /** {@inheritDoc} */
     @Override
     public void reorder(final UUID folderId, final List<UUID> order) {
-        final Folder f = _dao.find(Folder.class, folderId);
+        final Folder f = _dao.findLocked(Folder.class, folderId);
         final User u = _users.loggedInUser();
         final List<Resource> newOrder = new ArrayList<Resource>();
         final List<Resource> currentOrder = f.entries();

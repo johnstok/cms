@@ -47,7 +47,7 @@ public class FolderDaoImplTest
         // ARRANGE
         _f.lock(_regularUser);
         expect(_users.loggedInUser()).andReturn(_regularUser);
-        expect(_dao.find(Folder.class, _f.id())).andReturn(_f);
+        expect(_dao.findLocked(Folder.class, _f.id())).andReturn(_f);
         _al.recordUpdateSortOrder(eq(_f), eq(_regularUser), isA(Date.class));
         replayAll();
 
@@ -74,7 +74,7 @@ public class FolderDaoImplTest
         _f.add(bar);
         _f.add(baz);
 
-        expect(_dao.find(Folder.class, _f.id())).andReturn(_f);
+        expect(_dao.findLocked(Folder.class, _f.id())).andReturn(_f);
         _al.recordReorder(eq(_f), eq(_regularUser), isA(Date.class));
         replayAll();
 
