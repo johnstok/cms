@@ -28,9 +28,10 @@
 			<version>7.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>org.jboss.client</groupId>
-			<artifactId>jbossall-client</artifactId>
-			<version>4.2.2.GA</version>
+			<groupId>org.jboss.jbossas</groupId>
+			<artifactId>jboss-as-client</artifactId>
+            <type>pom</type>
+			<version>5.0.1.GA</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-dbutils</groupId>
@@ -59,6 +60,16 @@
             <artifactId>sqlserver-jdbc4</artifactId>
             <version>2.0</version>
         </dependency>
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.htmlcleaner</groupId>
+            <artifactId>html-cleaner</artifactId>
+            <version>2.1</version>
+        </dependency>
         
         <!-- Server-side classes that may form part of a remote exception -->
 		<dependency>
@@ -67,33 +78,10 @@
 			<version>7.0.0-SNAPSHOT</version>
 			<scope>runtime</scope>
 		</dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>3.3.2.GA</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>jboss</groupId>
-            <artifactId>jboss-ejb3x</artifactId>
-            <version>${jboss-version}</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-        	<groupId>commons-httpclient</groupId>
-        	<artifactId>commons-httpclient</artifactId>
-        	<version>3.1</version>
-        </dependency>
-        <dependency>
-        	<groupId>org.htmlcleaner</groupId>
-        	<artifactId>html-cleaner</artifactId>
-        	<version>2.1</version>
-        </dependency>
 	</dependencies>
 
     <build>
         <plugins>
-            
         </plugins>
     </build>
     
