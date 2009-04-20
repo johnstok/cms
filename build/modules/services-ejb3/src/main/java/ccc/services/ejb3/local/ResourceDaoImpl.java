@@ -120,7 +120,7 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public Resource unlock(final UUID resourceId) {
         final User loggedInUser = _users.loggedInUser();
-        final Resource r = _dao.find(Resource.class, resourceId); // FIXME: Use findLocked?
+        final Resource r = _dao.find(Resource.class, resourceId);
         r.unlock(loggedInUser);
         _audit.recordUnlock(r, loggedInUser, new Date());
         return r;
