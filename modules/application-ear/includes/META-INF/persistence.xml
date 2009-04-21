@@ -6,6 +6,7 @@
 
     <persistence-unit name="ccc-persistence">
         <jta-data-source>java:/ccc</jta-data-source>
+        <jar-file>/services-ejb3-7.0.0-SNAPSHOT.jar</jar-file>
         <properties>
 
             <!-- Connection mgmt -->
