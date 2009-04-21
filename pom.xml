@@ -11,7 +11,7 @@
 
     <properties>
         <gxt-version>1.2.3</gxt-version>
-        <gwt-version>1.5.3</gwt-version>
+        <gwt-version>1.6.4</gwt-version>
         <velocity-version>1.6.1</velocity-version>
         <jboss-version>4.2.2.GA</jboss-version>
         <h2-version>1.1.103</h2-version>

@@ -58,8 +58,9 @@
                                 <echo message="Running GWT compiler" />
                                 <java classname="com.google.gwt.dev.GWTCompiler"
                                     classpath="${gwt_compile_classpath}"
-                                    fork="true" failonerror="true"
-                                    maxmemory="256m">
+                                    fork="true" failonerror="true">
+                                    <jvmarg value="-Xmx256M"/>
+                                    <jvmarg value="-Xss4M"/>
                                     <arg value="-out" />
                                     <arg value="${basedir}/target/www" />
                                     <arg
