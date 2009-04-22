@@ -171,7 +171,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Resource r = new Page();
-        Thread.sleep(100); // Wait
+        Thread.sleep(WAIT_LENGTH); // Wait
 
         // ACT
         r.dateChanged(new Date());
@@ -302,7 +302,7 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws JSONException
+     * @throws JSONException For invalid JSON.
      */
     public void testCreateSnapshot() throws JSONException {
 
@@ -1074,4 +1074,5 @@ public final class ResourceTest extends TestCase {
         public ResourceType type() { return ResourceType.FOLDER; }
     }
 
+    private static final int WAIT_LENGTH = 100;
 }

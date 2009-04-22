@@ -13,7 +13,7 @@ package ccc.domain;
 
 
 /**
- * TODO: Add Description for this type.
+ * Exception indicating an attempt to change a snapshot to an invalid state.
  *
  * @author Civic Computing Ltd.
  */
@@ -31,17 +31,18 @@ public class InvalidSnapshotException
     /**
      * Constructor.
      *
-     * @param message
-     * @param cause
+     * @param message Error message.
+     * @param cause The cause of the exception.
      */
-    public InvalidSnapshotException(final String message, final Throwable cause) {
+    public InvalidSnapshotException(final String message,
+                                    final Throwable cause) {
         super(message, cause);
     }
 
     /**
      * Constructor.
      *
-     * @param message
+     * @param message Error message.
      */
     public InvalidSnapshotException(final String message) {
         super(message);
@@ -50,7 +51,7 @@ public class InvalidSnapshotException
     /**
      * Constructor.
      *
-     * @param cause
+     * @param cause The cause of the exception.
      */
     public InvalidSnapshotException(final Throwable cause) {
         super(cause);

@@ -36,6 +36,8 @@ import ccc.commons.DBC;
 public abstract class Resource extends VersionedEntity {
 
     private static final int MAXIMUM_TITLE_LENGTH = 256;
+    private static final int MAXIMUM_DATUM_LENGTH = 1000;
+    private static final int MAXIMUM_DATUM_KEY_LENGTH = 100;
 
     private String         _title             = id().toString();
     private ResourceName   _name              = ResourceName.escape(_title);
@@ -221,7 +223,8 @@ public abstract class Resource extends VersionedEntity {
     public void lock(final User u) {
         require().notNull(u);
         if (isLocked()) {
-            throw new CCCException("Resource is already locked."); // TODO: Use better exception.
+            // TODO: Use better exception.
+            throw new CCCException("Resource is already locked.");
         }
         _lockedBy = u;
     }
@@ -247,7 +250,8 @@ public abstract class Resource extends VersionedEntity {
         }
 
         if (!canUnlock(user)) {
-            throw new CCCException("User not allowed to unlock this resource."); // TODO: Use better exception.
+            // TODO: Use better exception.
+            throw new CCCException("User not allowed to unlock this resource.");
         }
 
         _lockedBy = null;
@@ -423,9 +427,9 @@ public abstract class Resource extends VersionedEntity {
      */
     public void addMetadatum(final String key, final String value) {
         DBC.require().notEmpty(value);
-        DBC.require().maxLength(value, 1000);
+        DBC.require().maxLength(value, MAXIMUM_DATUM_LENGTH);
         DBC.require().notEmpty(key);
-        DBC.require().maxLength(key, 100);
+        DBC.require().maxLength(key, MAXIMUM_DATUM_KEY_LENGTH);
         _metadata.put(key, value);
     }
 

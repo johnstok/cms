@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import junit.framework.TestCase;
+import ccc.commons.Exceptions;
 
 
 /**
@@ -158,7 +159,7 @@ public final class PageTest extends TestCase {
 
         // ASSERT
         } catch (final RuntimeException e) {
-            // no-op
+            Exceptions.swallow(e);
         }
     }
 
