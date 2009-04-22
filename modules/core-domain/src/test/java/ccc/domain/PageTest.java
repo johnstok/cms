@@ -40,7 +40,8 @@ public final class PageTest extends TestCase {
 
         // ACT
         final Collection<Snapshot> paras = new ArrayList<Snapshot>(){{
-            add(Paragraph.fromBoolean("A boolean", true).createSnapshot());
+            add(Paragraph.fromBoolean(
+                "A boolean", Boolean.TRUE).createSnapshot());
             add(Paragraph.fromDate("A date", new Date()).createSnapshot());
         }};
 
