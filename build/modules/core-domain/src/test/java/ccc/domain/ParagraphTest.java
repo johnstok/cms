@@ -51,7 +51,7 @@ public final class ParagraphTest extends TestCase {
         s.set("name", "bar");
         s.set("type", "TEXT");
         s.set("text", "foo");
-        s.set("bool", true);
+        s.set("bool", Boolean.TRUE);
         s.set("date", new Date());
 
         // ACT
