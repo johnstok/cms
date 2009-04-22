@@ -16,15 +16,22 @@ import static javax.ejb.TransactionAttributeType.*;
 import java.util.List;
 import java.util.UUID;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
+import ccc.services.AuditLog;
 import ccc.services.ResourceDao;
 import ccc.services.TemplateDao;
+import ccc.services.UserManager;
+import ccc.services.ejb3.support.BaseDao;
+import ccc.services.ejb3.support.Dao;
 
 
 /**
@@ -37,7 +44,10 @@ import ccc.services.TemplateDao;
 @Local(TemplateDao.class)
 public class TemplateDaoImpl implements TemplateDao {
 
-    @EJB(name=ResourceDao.NAME) private ResourceDao _dao;
+    @EJB(name=UserManager.NAME) private UserManager    _users;
+    @PersistenceContext(unitName = "ccc-persistence")
+    private EntityManager _em;
+    private ResourceDao _dao;
 
 
     /** Constructor. */
@@ -85,5 +95,12 @@ public class TemplateDaoImpl implements TemplateDao {
     @Override
     public boolean nameExists(final ResourceName templateName) {
         return null!=_dao.find("templateByName", Template.class, templateName);
+    }
+
+    @PostConstruct @SuppressWarnings("unused")
+    private void configureCoreData() {
+        final Dao bdao = new BaseDao(_em);
+        final AuditLog audit = new AuditLogEJB(_em);
+        _dao = new ResourceDaoImpl(_users, audit, bdao);
     }
 }

@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.EJBContext;
@@ -27,6 +28,8 @@ import javax.ejb.Stateless;
 import javax.ejb.Timeout;
 import javax.ejb.Timer;
 import javax.ejb.TransactionAttribute;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
 
@@ -34,6 +37,7 @@ import ccc.actions.Action;
 import ccc.services.ActionDao;
 import ccc.services.ActionExecutor;
 import ccc.services.Scheduler;
+import ccc.services.ejb3.support.BaseDao;
 import ccc.services.ejb3.support.Dao;
 import ccc.services.ejb3.support.QueryNames;
 
@@ -56,7 +60,9 @@ public class SchedulerEJB implements Scheduler, ActionDao {
 
     @Resource private EJBContext _context;
     @EJB(name=ActionExecutor.NAME) private ActionExecutor _executor;
-    @EJB(name=Dao.NAME) private Dao _dao;
+    @PersistenceContext(unitName = "ccc-persistence")
+    private EntityManager _em;
+    private Dao _dao;
 
     /** Constructor. */
     @SuppressWarnings("unused") public SchedulerEJB() { super(); }
@@ -155,5 +161,10 @@ public class SchedulerEJB implements Scheduler, ActionDao {
             }
         }
         return false;
+    }
+
+    @PostConstruct @SuppressWarnings("unused")
+    private void configureCoreData() {
+        final Dao _dao = new BaseDao(_em);
     }
 }

@@ -55,10 +55,6 @@ public class ServiceLookup {
         return _registry.<DataManager>get(localPath(DataManager.NAME));
     }
 
-    public StatefulReader statefulReader() {
-        return _registry.<StatefulReader>get(localPath(StatefulReader.NAME));
-    }
-
     public UserManager localUserManager() {
         return _registry.<UserManager>get(localPath(UserManager.NAME));
     }

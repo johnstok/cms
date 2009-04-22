@@ -25,12 +25,16 @@ import javax.activation.MimeTypeParseException;
 
 import junit.framework.TestCase;
 import ccc.commons.Testing;
+import ccc.content.exceptions.NotFoundException;
+import ccc.content.exceptions.RedirectRequiredException;
 import ccc.content.response.CharEncodingHeader;
 import ccc.content.response.ContentTypeHeader;
+import ccc.content.response.DefaultRenderer;
 import ccc.content.response.FileBody;
 import ccc.content.response.Header;
 import ccc.content.response.IntHeader;
 import ccc.content.response.PageBody;
+import ccc.content.response.Renderer;
 import ccc.content.response.Response;
 import ccc.content.response.StringHeader;
 import ccc.domain.Alias;

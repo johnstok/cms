@@ -22,7 +22,6 @@ import java.util.Map;
 import ccc.commons.DBC;
 import ccc.commons.Resources;
 import ccc.commons.VelocityProcessor;
-import ccc.content.server.ContentServlet;
 import ccc.domain.Page;
 import ccc.domain.Template;
 import ccc.services.StatefulReader;
@@ -80,7 +79,8 @@ public class PageBody
             "BUILT_IN_PAGE_TEMPLATE",
             "BUILT_IN_PAGE_TEMPLATE",
             Resources.readIntoString(
-                ContentServlet.class.getResource("default-page-template.txt"),
+                PageBody.class.getResource(
+                    "/ccc/content/server/default-page-template.txt"),
                 Charset.forName("UTF-8")),
             "<fields/>");
 }

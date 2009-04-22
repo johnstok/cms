@@ -61,7 +61,4 @@ public interface StatefulReader {
      *  doesn't exist.
      */
     Resource lookup(String id);
-
-    void close();
-
 }

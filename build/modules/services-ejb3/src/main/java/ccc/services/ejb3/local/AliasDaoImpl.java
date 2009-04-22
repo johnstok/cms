@@ -15,15 +15,22 @@ import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.UUID;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import ccc.domain.Alias;
 import ccc.domain.Resource;
 import ccc.services.AliasDao;
+import ccc.services.AuditLog;
 import ccc.services.ResourceDao;
+import ccc.services.UserManager;
+import ccc.services.ejb3.support.BaseDao;
+import ccc.services.ejb3.support.Dao;
 
 
 /**
@@ -36,7 +43,10 @@ import ccc.services.ResourceDao;
 @Local(AliasDao.class)
 public class AliasDaoImpl implements AliasDao {
 
-    @EJB(name=ResourceDao.NAME) private ResourceDao _dao;
+    @EJB(name=UserManager.NAME) private UserManager    _users;
+    @PersistenceContext(unitName = "ccc-persistence")
+    private EntityManager _em;
+    private ResourceDao _dao;
 
 
     /** Constructor. */
@@ -62,5 +72,12 @@ public class AliasDaoImpl implements AliasDao {
         alias.target(target);
 
         _dao.update(alias);
+    }
+
+    @PostConstruct @SuppressWarnings("unused")
+    private void configureCoreData() {
+        final Dao bdao = new BaseDao(_em);
+        final AuditLog audit = new AuditLogEJB(_em);
+        _dao = new ResourceDaoImpl(_users, audit, bdao);
     }
 }

@@ -9,20 +9,34 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.content.server;
+package ccc.content.exceptions;
+
+import ccc.commons.DBC;
+import ccc.domain.Resource;
 
 
 /**
- * An exception to represent a missing resource.
+ * TODO: Add Description for this type.
  *
  * @author Civic Computing Ltd.
  */
-public class NotFoundException
+public class AuthenticationRequiredException
     extends
         RuntimeException {
 
+    private final Resource _resource;
+
     /**
      * Constructor.
+     *
+     * @param r
      */
-    NotFoundException() { super("Resource not found"); }
+    public AuthenticationRequiredException(final Resource r) {
+        DBC.require().notNull(r);
+        _resource = r;
+    }
+
+    public Resource getResource() {
+        return _resource;
+    }
 }

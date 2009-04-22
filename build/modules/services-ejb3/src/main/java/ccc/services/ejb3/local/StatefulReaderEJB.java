@@ -12,18 +12,7 @@
 
 package ccc.services.ejb3.local;
 
-import static javax.ejb.TransactionAttributeType.*;
-
 import java.util.UUID;
-
-import javax.ejb.EJB;
-import javax.ejb.Local;
-import javax.ejb.Remove;
-import javax.ejb.Stateful;
-import javax.ejb.TransactionAttribute;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
 
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
@@ -34,36 +23,25 @@ import ccc.services.StatefulReader;
 
 
 /**
- * EJB3 implementation of {@link StatefulReader}.
+ * Implementation of {@link StatefulReader}.
  *
  * @author Civic Computing Ltd
  */
-@Stateful(name=StatefulReader.NAME)
-@TransactionAttribute(REQUIRED)
-@Local(StatefulReader.class)
 public final class StatefulReaderEJB
     implements
         StatefulReader {
 
-    @PersistenceContext(
-        unitName = "ccc-persistence",
-        type=PersistenceContextType.EXTENDED)
-    @SuppressWarnings("unused")
-    private EntityManager _em; // Required to insure method calls are stateful.
-
-    @EJB(name=AuditLog.NAME)     private AuditLog     _log;
-    @EJB(name=ResourceDao.NAME)  private ResourceDao  _resources;
-
-    /** Constructor. */
-    @SuppressWarnings("unused") public StatefulReaderEJB() { super(); }
+    private final AuditLog     _log;
+    private final ResourceDao  _resources;
 
     /**
      * Constructor.
      *
      * @param entityManager A JPA entity manager.
      */
-    StatefulReaderEJB(final EntityManager entityManager) {
-        _em = entityManager;
+    public StatefulReaderEJB(final AuditLog log, final ResourceDao resources) {
+        _log = log;
+        _resources = resources;
     }
 
 
@@ -74,6 +52,7 @@ public final class StatefulReaderEJB
     public Resource lookup(final String rootName, final ResourcePath path) {
         return _resources.lookup(rootName, path);
     }
+
 
     /**
      * {@inheritDoc}
@@ -95,12 +74,5 @@ public final class StatefulReaderEJB
     public String absolutePath(final String legacyId) {
         final Resource r = _resources.lookupWithLegacyId(legacyId);
         return (null==r) ? null : r.absolutePath().toString();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    @Remove
-    public void close() {
-        // Nothing to do
     }
 }

@@ -232,7 +232,6 @@ public class File
     /** {@inheritDoc} */
     @Override
     public void workingCopy(final Snapshot snapshot) {
-        DBC.require().notNull(_workingCopy);
         _workingCopy = snapshot;
     }
 }

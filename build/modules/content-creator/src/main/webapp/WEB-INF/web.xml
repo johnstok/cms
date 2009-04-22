@@ -1,8 +1,22 @@
-<!DOCTYPE web-app PUBLIC
- "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd" >
+<!-- 
+    ========================================================================
+    * Copyright (c) 2008 Civic Computing Ltd
+    * All rights reserved.
+    *
+    * Revision      $Rev$
+    * Modified by   $Author$
+    * Modified on   $Date$
+    *
+    * Changes: see SubVersion log
+    ========================================================================
+-->
 
-<web-app>
+<web-app
+    version="2.5"
+    xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    
     <display-name>Content Creator</display-name>
 
     <servlet>
@@ -37,7 +51,7 @@
     </servlet>
     <servlet>
         <servlet-name>content</servlet-name>
-        <servlet-class>ccc.content.server.ContentServlet</servlet-class>
+        <servlet-class>ccc.contentcreator.remoting.ContentServlet</servlet-class>
         <init-param>
             <param-name>root_name</param-name>
             <param-value>content</param-value>
@@ -49,7 +63,7 @@
     </servlet>
     <servlet>
         <servlet-name>assets</servlet-name>
-        <servlet-class>ccc.content.server.ContentServlet</servlet-class>
+        <servlet-class>ccc.contentcreator.remoting.ContentServlet</servlet-class>
         <init-param>
             <param-name>root_name</param-name>
             <param-value>assets</param-value>

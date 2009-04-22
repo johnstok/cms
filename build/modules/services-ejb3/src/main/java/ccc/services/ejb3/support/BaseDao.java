@@ -11,19 +11,13 @@
  */
 package ccc.services.ejb3.support;
 
-import static javax.ejb.TransactionAttributeType.*;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
-import javax.ejb.Local;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import ccc.domain.CCCException;
@@ -36,17 +30,9 @@ import ccc.domain.VersionedEntity;
  *
  * @author Civic Computing Ltd.
  */
-@Stateless(name="Dao")
-@TransactionAttribute(REQUIRED)
-@Local(Dao.class)
 public class BaseDao implements Dao {
 
-    @PersistenceContext(unitName = "ccc-persistence")
-    private EntityManager _em;
-
-
-    /** Constructor. */
-    @SuppressWarnings("unused") public BaseDao() { super(); }
+    private final EntityManager _em;
 
     /**
      * Constructor.

@@ -26,15 +26,21 @@ import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 
 import ccc.commons.DBC;
 import ccc.commons.IO;
 import ccc.domain.Data;
 import ccc.domain.File;
+import ccc.services.AuditLog;
 import ccc.services.DataManager;
 import ccc.services.ResourceDao;
+import ccc.services.UserManager;
+import ccc.services.ejb3.support.BaseDao;
 import ccc.services.ejb3.support.CoreData;
+import ccc.services.ejb3.support.Dao;
 import ccc.services.ejb3.support.FsCoreData;
 import ccc.services.ejb3.support.QueryNames;
 
@@ -52,8 +58,12 @@ import ccc.services.ejb3.support.QueryNames;
 @Local(DataManager.class)
 public class DataManagerEJB implements DataManager {
 
-    @EJB(name=ResourceDao.NAME) private ResourceDao _dao;
     @Resource(mappedName = "java:/ccc") private DataSource _datasource;
+    @EJB(name=UserManager.NAME) private UserManager    _users;
+    @PersistenceContext(unitName = "ccc-persistence")
+    private EntityManager _em;
+
+    private ResourceDao _dao;
     private CoreData _cd;
 
     /** Constructor. */
@@ -141,5 +151,8 @@ public class DataManagerEJB implements DataManager {
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
         _cd = new FsCoreData();
+        final Dao bdao = new BaseDao(_em);
+        final AuditLog audit = new AuditLogEJB(_em);
+        _dao = new ResourceDaoImpl(_users, audit, bdao);
     }
 }

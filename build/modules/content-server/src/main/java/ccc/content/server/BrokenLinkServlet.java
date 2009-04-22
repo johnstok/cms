@@ -12,17 +12,24 @@
 package ccc.content.server;
 
 import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import javax.annotation.Resource;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.UserTransaction;
 
-import ccc.commons.JNDI;
-import ccc.commons.Registry;
-import ccc.domain.ResourceName;
-import ccc.services.StatefulReader;
+import org.apache.log4j.Logger;
+
+import ccc.content.actions.ErrorHandlingAction;
+import ccc.content.actions.FixLinkAction;
+import ccc.content.actions.PersistenceAction;
+import ccc.content.actions.ReadOnlyTxAction;
+import ccc.content.actions.ReaderAction;
+import ccc.content.actions.ServletAction;
 
 
 
@@ -34,51 +41,32 @@ import ccc.services.StatefulReader;
  *
  * @author Civic Computing Ltd.
  */
-public class BrokenLinkServlet
+public final class BrokenLinkServlet
     extends
-        CCCServlet {
+        HttpServlet {
+    private static final Logger LOG = Logger.getLogger(BrokenLinkServlet.class);
 
-    private final Registry _registry = new JNDI();
+    @Resource private UserTransaction _utx;
+    @PersistenceUnit(unitName="ccc-persistence")
+    private EntityManagerFactory _emf;
 
-    /** PAGE_PATTERN : Pattern. */
-    public static final Pattern PAGE_PATTERN =
-        Pattern.compile("/(\\d++)\\.html");
-
-    /** FILE_PATTERN : Pattern. */
-    public static final Pattern FILE_PATTERN =
-        Pattern.compile("/files/(.+)");
 
     /** {@inheritDoc} */
     @Override
     protected void doGet(final HttpServletRequest req,
                          final HttpServletResponse resp)
                                           throws ServletException, IOException {
+        final ServletAction action =
+            new ErrorHandlingAction(
+                new ReadOnlyTxAction(
+                    new PersistenceAction(
+                        new ReaderAction(
+                            new FixLinkAction()),
+                        _emf),
+                    _utx),
+                getServletContext()
+            );
 
-        final String path = req.getPathInfo();
-
-        final Matcher pageMatcher = PAGE_PATTERN.matcher(path);
-        final Matcher fileMatcher = FILE_PATTERN.matcher(path);
-
-        if (pageMatcher.matches()) {
-            final StatefulReader r = _services.statefulReader();
-            try {
-                final String resourcePath = r.absolutePath(pageMatcher.group(1));
-                if (null==resourcePath) {
-                    dispatchNotFound(req, resp);
-                } else {
-                    dispatchRedirect(req, resp, resourcePath);
-                }
-            } finally {
-                r.close();
-            }
-
-        } else if (fileMatcher.matches()) {
-            final String fixedUrl =
-                "/content/files/"+ResourceName.escape(fileMatcher.group(1));
-            dispatchRedirect(req, resp, fixedUrl);
-
-        } else {
-            dispatchNotFound(req, resp);
-        }
+        action.execute(req, resp);
     }
 }

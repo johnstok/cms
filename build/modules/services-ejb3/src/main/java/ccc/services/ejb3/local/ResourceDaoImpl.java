@@ -11,18 +11,11 @@
  */
 package ccc.services.ejb3.local;
 
-import static javax.ejb.TransactionAttributeType.*;
-
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import javax.ejb.EJB;
-import javax.ejb.Local;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
 
 import ccc.domain.CCCException;
 import ccc.domain.Folder;
@@ -44,18 +37,11 @@ import ccc.services.ejb3.support.QueryNames;
  *
  * @author Civic Computing Ltd.
  */
-@Stateless(name=ResourceDao.NAME)
-@TransactionAttribute(REQUIRED)
-@Local(ResourceDao.class)
 public class ResourceDaoImpl implements ResourceDao {
 
-    @EJB(name=UserManager.NAME)  private UserManager    _users;
-    @EJB(name=AuditLog.NAME)     private AuditLog       _audit;
-    @EJB(name=Dao.NAME)          private Dao            _dao;
-
-
-    /** Constructor. */
-    @SuppressWarnings("unused") public ResourceDaoImpl() { super(); }
+    private final UserManager    _users;
+    private final AuditLog       _audit;
+    private final Dao            _dao;
 
     /**
      * Constructor.
