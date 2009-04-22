@@ -12,6 +12,7 @@
 package ccc.contentcreator.client;
 
 import static ccc.contentcreator.dialogs.AbstractBaseDialog.*;
+import ccc.contentcreator.actions.ApplyWorkingCopyAction;
 import ccc.contentcreator.actions.ChooseTemplateAction;
 import ccc.contentcreator.actions.ClearWorkingCopyAction;
 import ccc.contentcreator.actions.CreateActionAction;
@@ -86,6 +87,7 @@ public class ResourceContextMenu
     private final Action _chooseTemplateAction;
     private final Action _createActionAction;
     private final Action _updateRolesAction;
+    private final Action _applyWorkingCopyAction;
 
 
     /**
@@ -118,6 +120,7 @@ public class ResourceContextMenu
         _chooseTemplateAction = new ChooseTemplateAction(_table);
         _createActionAction = new CreateActionAction(_table);
         _updateRolesAction = new UpdateResourceRolesAction(_table);
+        _applyWorkingCopyAction = new ApplyWorkingCopyAction(_table);
 
         setWidth(CONTEXT_MENU_WIDTH);
 
@@ -187,13 +190,27 @@ public class ResourceContextMenu
                 }
                 if (item.<Boolean>get("workingCopy")) {
                     add(new SeparatorMenuItem());
-                    addDeleteWorkingCopy();
                     addPreviewWorkingCopy();
+                    addDeleteWorkingCopy();
+                    if ("FILE".equals(item.get("type"))) {
+                        addApplyWorkingCopy();
+                    }
                 }
             }
         }
     }
 
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     */
+    private void addApplyWorkingCopy() {
+        addMenuItem(
+            "apply-working-copy",
+            _constants.applyWorkingCopy(),
+            _applyWorkingCopyAction);
+    }
 
     private void addUpdateRolesAction() {
         addMenuItem(

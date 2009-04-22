@@ -28,6 +28,7 @@ import ccc.services.api.UserSummary;
 
 /**
  * TODO: Add Description for this type.
+ * TODO: Inject delegate implementation.
  *
  * @author Civic Computing Ltd.
  */
@@ -63,7 +64,8 @@ public class CommandsImpl
     public ResourceSummary createPage(final String parentId,
                            final PageDelta delta,
                            final String templateId) {
-        return _services.lookupCommands().createPage(parentId, delta, templateId);
+        return _services.lookupCommands().createPage(
+            parentId, delta, templateId);
     }
 
     /** {@inheritDoc} */
@@ -103,7 +105,8 @@ public class CommandsImpl
     public ResourceSummary publish(final String resourceId,
                                    final String userId,
                                    final Date publishOn) {
-        return _services.lookupCommands().publish(resourceId, userId, publishOn);
+        return _services.lookupCommands().publish(
+            resourceId, userId, publishOn);
     }
 
     /** {@inheritDoc} */
@@ -144,7 +147,8 @@ public class CommandsImpl
     @Override
     public void updateResourceTemplate(final String resourceId,
                                        final String templateId) {
-        _services.lookupCommands().updateResourceTemplate(resourceId, templateId);
+        _services.lookupCommands().updateResourceTemplate(
+            resourceId, templateId);
     }
 
     /** {@inheritDoc} */
@@ -238,7 +242,8 @@ public class CommandsImpl
                              final String action,
                              final Date executeAfter,
                              final String parameters) {
-        _services.lookupCommands().createAction(resourceId, action, executeAfter, parameters);
+        _services.lookupCommands().createAction(
+            resourceId, action, executeAfter, parameters);
     }
 
     /** {@inheritDoc} */
@@ -252,5 +257,11 @@ public class CommandsImpl
     public void changeRoles(final String resourceId,
                             final Collection<String> roles) {
         _services.lookupCommands().changeRoles(resourceId, roles);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void applyWorkingCopyToFile(final String fileId) {
+        _services.lookupCommands().applyWorkingCopyToFile(fileId);
     }
 }

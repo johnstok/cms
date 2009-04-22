@@ -148,6 +148,16 @@ public class DataManagerEJB implements DataManager {
     }
 
 
+    /** {@inheritDoc} */
+    @Override
+    public void applyWorkingCopy(final UUID id) {
+        final File f = _dao.findLocked(File.class, id, _users.loggedInUser());
+        f.applySnapshot(f.workingCopy());
+        f.clearWorkingCopy();
+        _dao.update(f);
+    }
+
+
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
         _cd = new FsCoreData();
