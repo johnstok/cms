@@ -196,6 +196,7 @@ public class ModelTranslation {
         us._email = user.email().getText();
         us._id = user.id().toString();
         us._username = user.username();
+        us._roles = user.roles();
         return us;
     }
 

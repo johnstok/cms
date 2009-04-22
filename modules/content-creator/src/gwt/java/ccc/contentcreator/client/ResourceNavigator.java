@@ -14,9 +14,9 @@ package ccc.contentcreator.client;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import ccc.services.api.ResourceSummary;
+import ccc.services.api.UserSummary;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style.Scroll;
@@ -44,11 +44,11 @@ public class ResourceNavigator extends ContentPanel {
      *
      * @param view LeftRightPane of the surrounding view.
      * @param roots Collection of the resource roots.
-     * @param roles Set of the user roles.
+     * @param user UserSummary of the currently logged in user.
      */
     ResourceNavigator(final LeftRightPane view,
                       final Collection<ResourceSummary> roots,
-                      final Set<String> roles) {
+                      final UserSummary user) {
         setId("resource-navigator");
 
         _view = view;
@@ -59,14 +59,14 @@ public class ResourceNavigator extends ContentPanel {
 
         for (final ResourceSummary root : roots) {
             if ("assets".equals(root._name)) {
-                if (!roles.contains("ADMINISTRATOR")
-                        && !roles.contains("SITE_BUILDER")) {
+                if (!user._roles.contains(Globals.ADMINISTRATOR)
+                        && !user._roles.contains(Globals.SITE_BUILDER)) {
                     continue;
                 }
             }
 
             final EnhancedResourceTree tree =
-                new EnhancedResourceTree(root, _view, roles);
+                new EnhancedResourceTree(root, _view, user);
             _rootTrees.add(tree);
 
             final ContentPanel contentPanel = new ContentPanel();
@@ -87,7 +87,7 @@ public class ResourceNavigator extends ContentPanel {
 
 
         _usersTree = new UserTree(_view);
-        if (roles.contains("ADMINISTRATOR")) {
+        if (user._roles.contains(Globals.ADMINISTRATOR)) {
             final ContentPanel usersPanel = new ContentPanel();
             usersPanel.getHeader().setId("user-navigator");
             usersPanel.setScrollMode(Scroll.AUTO);

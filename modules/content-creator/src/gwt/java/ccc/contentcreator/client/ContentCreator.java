@@ -2,7 +2,6 @@
 package ccc.contentcreator.client;
 
 import java.util.Collection;
-import java.util.Set;
 
 import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
@@ -11,6 +10,7 @@ import ccc.contentcreator.dialogs.ImageSelectionDialog;
 import ccc.contentcreator.dialogs.LoginDialog;
 import ccc.contentcreator.dialogs.ResourceSelectionDialog;
 import ccc.services.api.ResourceSummary;
+import ccc.services.api.UserSummary;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -33,6 +33,8 @@ import com.google.gwt.user.client.ui.RootPanel;
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public final class ContentCreator implements EntryPoint {
+
+    final QueriesServiceAsync qs = GWT.create(QueriesService.class);
 
     /**
      * This is the entry point method.
@@ -58,17 +60,15 @@ public final class ContentCreator implements EntryPoint {
      */
     public void drawMainWindow() {
         Globals.enableExitConfirmation();
+        qs.loggedInUser(new ErrorReportingCallback<UserSummary>(){
+            public void onSuccess(final UserSummary user) {
+                renderUI(user);
 
-        Globals.securityService().loggedInUserRoles(
-            new ErrorReportingCallback<Set<String>>(){
-                public void onSuccess(final Set<String> roles) {
-                    renderUI(roles);
-                }
-            }
-        );
+            };
+        });
     }
 
-    private void renderUI(final Set<String> roles) {
+    private void renderUI(final UserSummary user) {
 
         final QueriesServiceAsync qs = GWT.create(QueriesService.class);
         qs.roots(new ErrorReportingCallback<Collection<ResourceSummary>>(){
@@ -85,10 +85,10 @@ public final class ContentCreator implements EntryPoint {
                     contentPane.setLeftHandPane(
                         new ResourceNavigator(contentPane,
                             arg0,
-                            roles));
+                            user));
 
                     final Viewport vp =
-                        layoutMainWindow(new MainMenu(roles), contentPane);
+                        layoutMainWindow(new MainMenu(user), contentPane);
 
                     RootPanel.get().add(vp);
                 }

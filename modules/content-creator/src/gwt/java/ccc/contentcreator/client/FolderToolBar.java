@@ -11,13 +11,12 @@
  */
 package ccc.contentcreator.client;
 
-import java.util.Set;
-
 import ccc.contentcreator.actions.CreateFileAction;
 import ccc.contentcreator.actions.CreateFolderAction;
 import ccc.contentcreator.actions.CreatePageAction;
 import ccc.contentcreator.actions.CreateTemplateAction;
 import ccc.contentcreator.api.UIConstants;
+import ccc.services.api.UserSummary;
 
 
 /**
@@ -35,8 +34,9 @@ public class FolderToolBar
      * Constructor.
      *
      * @param ssm The selection model to use.
+     * @param user UserSummary currently logged in user.
      */
-    FolderToolBar(final SingleSelectionModel ssm, final Set<String> roles) {
+    FolderToolBar(final SingleSelectionModel ssm, final UserSummary user) {
         addSeparator();
         addButton(
             "uploadFile",
@@ -53,7 +53,8 @@ public class FolderToolBar
             _constants.createPage(),
             new CreatePageAction(ssm));
         addSeparator();
-        if (roles.contains("ADMINISTRATOR") || roles.contains("SITE_BUILDER")) {
+        if (user._roles.contains(Globals.ADMINISTRATOR)
+                || user._roles.contains(Globals.SITE_BUILDER)) {
             addButton(
                 "Create Template",
                 _constants.createTemplate(),

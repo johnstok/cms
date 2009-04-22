@@ -12,9 +12,9 @@
 package ccc.contentcreator.client;
 
 import java.util.List;
-import java.util.Set;
 
 import ccc.services.api.ResourceSummary;
+import ccc.services.api.UserSummary;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -44,15 +44,15 @@ public class EnhancedResourceTree extends FolderResourceTree {
      *
      * @param root The root of the tree.
      * @param view LeftRightPane of the surrounding view.
-     * @param roles Set of roles.
+     * @param user UserSummary of currently logged in user.
      */
     EnhancedResourceTree(final ResourceSummary root,
                          final LeftRightPane view,
-                         final Set<String> roles) {
+                         final UserSummary user) {
 
         super(root);
 
-        _rt = new ResourceTable(root, this, roles);
+        _rt = new ResourceTable(root, this, user);
         _view = view;
         _contextMenu = new FolderContextMenu(_rt);
 

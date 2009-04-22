@@ -12,7 +12,6 @@
 package ccc.contentcreator.client;
 
 import java.util.Collection;
-import java.util.Set;
 
 import ccc.contentcreator.actions.ChooseTemplateAction;
 import ccc.contentcreator.actions.CreateUserAction;
@@ -32,6 +31,7 @@ import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.services.api.ResourceSummary;
+import ccc.services.api.UserSummary;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.data.BaseModelData;
@@ -53,14 +53,14 @@ public class MainMenu
 
     private final UIConstants _constants = Globals.uiConstants();
     private final Menu _itemMenu = new Menu();
-
+    private final UserSummary _user;
     /**
      * Constructor.
      *
-     * @param roles Set of roles.
+     * @param user UserSummary of the currently logged in user.
      */
-    MainMenu(final Set<String> roles) {
-
+    MainMenu(final UserSummary user) {
+        _user = user;
         addMenu(
             "help-menu",
             _constants.help(),
@@ -70,7 +70,7 @@ public class MainMenu
                 new OpenHelpAction())
         );
 
-        if (roles.contains("ADMINISTRATOR")) {
+        if (_user._roles.contains(Globals.ADMINISTRATOR)) {
             addMenu(
                 "users-menu",
                 _constants.users(),
@@ -81,7 +81,8 @@ public class MainMenu
             );
         }
 
-        if (roles.contains("ADMINISTRATOR") || roles.contains("SITE_BUILDER")) {
+        if (_user._roles.contains(Globals.ADMINISTRATOR)
+                || _user._roles.contains(Globals.SITE_BUILDER)) {
             createContentRootMenu();
         }
 
@@ -154,42 +155,47 @@ public class MainMenu
                 _constants.lock(),
                 new LockAction(ssm)));
         } else {
-            _itemMenu.add(createMenuItem(
-                "unlock-root",
-                _constants.unlock(),
-                new UnlockAction(ssm)));
+            if (root._lockedBy.equals(_user._username)
+                    || _user._roles.contains(Globals.ADMINISTRATOR)) {
 
-            if (root._publishedBy == null || root._publishedBy.equals("")) {
                 _itemMenu.add(createMenuItem(
-                    "publish-root",
-                    _constants.publish(),
-                    new PublishAction(ssm)));
-            } else {
-                _itemMenu.add(createMenuItem(
-                    "unpublish-root",
-                    _constants.unpublish(),
-                    new UnpublishAction(ssm)));
+                    "unlock-root",
+                    _constants.unlock(),
+                    new UnlockAction(ssm)));
             }
-            _itemMenu.add(createMenuItem(
-                "chooseTemplate-root",
-                _constants.chooseTemplate(),
-                new ChooseTemplateAction(ssm)));
-            _itemMenu.add(createMenuItem(
-                "changeSortOrder-root",
-                _constants.changeSortOrder(),
-                new UpdateSortOrderAction(ssm)));
-            _itemMenu.add(createMenuItem(
-                "updateRoles-root",
-                _constants.updateRoles(),
-                new UpdateResourceRolesAction(ssm)));
-            _itemMenu.add(createMenuItem(
-                "updateTags-root",
-                _constants.updateTags(),
-                new UpdateTagsAction(ssm)));
-            _itemMenu.add(createMenuItem(
-                "updateMetadata-root",
-                _constants.updateMetadata(),
-                new UpdateMetadataAction(ssm)));
+            if (root._lockedBy.equals(_user._username)) {
+                if (root._publishedBy == null || root._publishedBy.equals("")) {
+                    _itemMenu.add(createMenuItem(
+                        "publish-root",
+                        _constants.publish(),
+                        new PublishAction(ssm)));
+                } else {
+                    _itemMenu.add(createMenuItem(
+                        "unpublish-root",
+                        _constants.unpublish(),
+                        new UnpublishAction(ssm)));
+                }
+                _itemMenu.add(createMenuItem(
+                    "chooseTemplate-root",
+                    _constants.chooseTemplate(),
+                    new ChooseTemplateAction(ssm)));
+                _itemMenu.add(createMenuItem(
+                    "changeSortOrder-root",
+                    _constants.changeSortOrder(),
+                    new UpdateSortOrderAction(ssm)));
+                _itemMenu.add(createMenuItem(
+                    "updateRoles-root",
+                    _constants.updateRoles(),
+                    new UpdateResourceRolesAction(ssm)));
+                _itemMenu.add(createMenuItem(
+                    "updateTags-root",
+                    _constants.updateTags(),
+                    new UpdateTagsAction(ssm)));
+                _itemMenu.add(createMenuItem(
+                    "updateMetadata-root",
+                    _constants.updateMetadata(),
+                    new UpdateMetadataAction(ssm)));
+            }
         }
 
     }
