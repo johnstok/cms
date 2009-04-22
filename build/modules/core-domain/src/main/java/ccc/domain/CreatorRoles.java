@@ -22,11 +22,11 @@ public final class CreatorRoles {
     private CreatorRoles() { super(); }
 
     /** CONTENT_CREATOR : String. */
-    public static final String CONTENT_CREATOR = "content_creator";
+    public static final String CONTENT_CREATOR = "CONTENT_CREATOR";
 
     /** SITE_BUILDER : String. */
-    public static final String SITE_BUILDER = "site_builder";
+    public static final String SITE_BUILDER = "SITE_BUILDER";
 
     /** ADMINISTRATOR : String. */
-    public static final String ADMINISTRATOR = "administrator";
+    public static final String ADMINISTRATOR = "ADMINISTRATOR";
 }

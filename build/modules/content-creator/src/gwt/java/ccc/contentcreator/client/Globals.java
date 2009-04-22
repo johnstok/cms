@@ -210,4 +210,11 @@ public final class Globals {
     public static final String API_URL = "api/";
     /** MIN_USER_NAME_LENGTH : int. */
     public static final int MIN_USER_NAME_LENGTH = 4;
+
+    /** ADMINISTRATOR : String. */
+    public static final String ADMINISTRATOR = "ADMINISTRATOR";
+    /** SITE_BUILDER : String. */
+    public static final String SITE_BUILDER = "SITE_BUILDER";
+    /** CONTENT_CREATOR : String. */
+    public static final String CONTENT_CREATOR = "CONTENT_CREATOR";
 }

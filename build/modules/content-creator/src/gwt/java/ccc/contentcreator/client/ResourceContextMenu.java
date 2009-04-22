@@ -41,6 +41,7 @@ import ccc.services.api.AliasDelta;
 import ccc.services.api.FileDelta;
 import ccc.services.api.PageDelta;
 import ccc.services.api.TemplateDelta;
+import ccc.services.api.UserSummary;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -91,8 +92,9 @@ public class ResourceContextMenu
      * Constructor.
      *
      * @param tbl The table this menu will work for.
+     * @param user The UserSummary of the currently logged in user.
      */
-    ResourceContextMenu(final ResourceTable tbl) {
+    ResourceContextMenu(final ResourceTable tbl, final UserSummary user) {
         super(tbl);
 
         _table = tbl;
@@ -122,64 +124,74 @@ public class ResourceContextMenu
         addListener(Events.BeforeShow,
             new Listener<MenuEvent>(){
                 public void handleEvent(final MenuEvent be) {
-                    removeAll();
-                    final ModelData item = _table.tableSelection();
-                    if (item == null) {
-                        // do not display context menu if no item is selected.
-                        be.doit = false;
-                        return;
-                    }
-
-                    addPreview();
-                    addViewHistory();
-                    if (item.get("locked") == null
-                        || "".equals(item.get("locked"))) {
-                        addLockResource();
-                    } else {
-                        addUnlockResource();
-                        if (item.<String>get("published") == null
-                            || "".equals(item.get("published"))) {
-                            addPublishResource();
-                        } else {
-                            addUnpublishResource();
-                        }
-                        if ("PAGE".equals(item.get("type"))) {
-                            addEditResource();
-                            addChooseTemplate();
-                        } else if ("ALIAS".equals(item.get("type"))) {
-                            addEditResource();
-                        } else if ("FOLDER".equals(item.get("type"))) {
-                            addChooseTemplate();
-                            addFolderSortOrder();
-                        } else if ("TEMPLATE".equals(item.get("type"))) {
-                            addEditResource();
-                        } else if ("FILE".equals(item.get("type"))) {
-                            addEditResource();
-                        } else if ("SEARCH".equals(item.get("type"))) {
-                            addChooseTemplate();
-                        }
-                        addMove();
-                        addRename();
-                        addUpdateRolesAction();
-                        addUpdateTags();
-                        addUpdateMetadata();
-                        addCreateAlias();
-                        addCreateAction();
-
-                        if (item.<Boolean>get("mmInclude")) {
-                            addRemoveFromMainMenu();
-                        } else {
-                            addIncludeInMainMenu();
-                        }
-                        if (item.<Boolean>get("workingCopy")) {
-                            add(new SeparatorMenuItem());
-                            addDeleteWorkingCopy();
-                            addPreviewWorkingCopy();
-                        }
-                    }
+                    refreshMenuItems(user, be);
                 }
             }
         );
+    }
+
+    private void refreshMenuItems(final UserSummary user,
+                              final MenuEvent be) {
+        removeAll();
+        final ModelData item = _table.tableSelection();
+        if (item == null) {
+            // do not display context menu if no item is selected.
+            be.doit = false;
+            return;
+        }
+
+        addPreview();
+        addViewHistory();
+        if (item.get("locked") == null
+            || "".equals(item.get("locked"))) {
+            addLockResource();
+        } else {
+            if (item.get("locked").equals(user._username)
+                 || user._roles.contains(Globals.ADMINISTRATOR)) {
+                addUnlockResource();
+            }
+            if (item.get("locked").equals(user._username)) {
+                if (item.<String>get("published") == null
+                        || "".equals(item.get("published"))) {
+                    addPublishResource();
+                } else {
+                    addUnpublishResource();
+                }
+                if ("PAGE".equals(item.get("type"))) {
+                    addEditResource();
+                    addChooseTemplate();
+                } else if ("ALIAS".equals(item.get("type"))) {
+                    addEditResource();
+                } else if ("FOLDER".equals(item.get("type"))) {
+                    addChooseTemplate();
+                    addFolderSortOrder();
+                } else if ("TEMPLATE".equals(item.get("type"))) {
+                    addEditResource();
+                } else if ("FILE".equals(item.get("type"))) {
+                    addEditResource();
+                } else if ("SEARCH".equals(item.get("type"))) {
+                    addChooseTemplate();
+                }
+                addMove();
+                addRename();
+                addUpdateRolesAction();
+                addUpdateTags();
+                addUpdateMetadata();
+                addCreateAlias();
+                addCreateAction();
+
+                if (item.<Boolean>get("mmInclude")) {
+                    addRemoveFromMainMenu();
+                } else {
+                    addIncludeInMainMenu();
+                }
+                if (item.<Boolean>get("workingCopy")) {
+                    add(new SeparatorMenuItem());
+                    addDeleteWorkingCopy();
+                    addPreviewWorkingCopy();
+                }
+            }
+        }
     }
 
 

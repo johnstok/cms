@@ -13,10 +13,10 @@ package ccc.contentcreator.client;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import ccc.contentcreator.api.UIConstants;
 import ccc.services.api.ResourceSummary;
+import ccc.services.api.UserSummary;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -58,19 +58,20 @@ public class ResourceTable
      *
      * @param root ResourceSummary
      * @param tree FolderResourceTree
+     * @param user UserSummary of currently logged in user.
      */
     ResourceTable(final ResourceSummary root,
         final FolderResourceTree tree,
-        final Set<String> roles) {
+        final UserSummary user) {
 
         _root = root;
         _tree = tree;
-        final ToolBar toolBar = new FolderToolBar(this, roles);
+        final ToolBar toolBar = new FolderToolBar(this, user);
         setTopComponent(toolBar);
         setHeading(_constants.resourceDetails());
         setLayout(new FitLayout());
 
-        final Menu contextMenu = new ResourceContextMenu(this);
+        final Menu contextMenu = new ResourceContextMenu(this, user);
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
         final ContextActionGridPlugin gp =
             new ContextActionGridPlugin(contextMenu);
