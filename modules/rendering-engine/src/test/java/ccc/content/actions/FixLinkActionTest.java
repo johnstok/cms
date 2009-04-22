@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.content.server;
+package ccc.content.actions;
 
 import java.util.regex.Matcher;
 
@@ -17,11 +17,11 @@ import junit.framework.TestCase;
 
 
 /**
- * Tests for the {@link BrokenLinkServlet} class. 
+ * Tests for the {@link FixLinkAction} class.
  *
  * @author Civic Computing Ltd.
  */
-public class BrokenLinkServletTest
+public class FixLinkActionTest
     extends
         TestCase {
 
@@ -34,7 +34,7 @@ public class BrokenLinkServletTest
 
         // ACT
         final Matcher m =
-            BrokenLinkServlet.PAGE_PATTERN.matcher("/1234.html");
+            FixLinkAction.PAGE_PATTERN.matcher("/1234.html");
 
         // ASSERT
         assertTrue(m.matches());
@@ -50,7 +50,7 @@ public class BrokenLinkServletTest
 
         // ACT
         final Matcher m =
-            BrokenLinkServlet.FILE_PATTERN.matcher("/files/foo.pdf");
+            FixLinkAction.FILE_PATTERN.matcher("/files/foo.pdf");
 
         // ASSERT
         assertTrue(m.matches());

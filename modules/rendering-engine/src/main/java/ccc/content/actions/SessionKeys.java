@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.content.server;
+package ccc.content.actions;
 
 
 /**
@@ -18,11 +18,14 @@ package ccc.content.server;
  *
  * @author Civic Computing Ltd.
  */
-final class SessionKeys {
+public final class SessionKeys {
 
     private SessionKeys() { super(); }
 
     /** EXCEPTION_KEY : String. */
-    static final String EXCEPTION_KEY = "ccc.exception";
+    public static final String EXCEPTION_KEY = "ccc.exception";
+
+    /** PERSISTENCE_KEY : String. */
+    public static final String PERSISTENCE_KEY = "ccc.persistence";
 
 }

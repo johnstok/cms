@@ -1,12 +1,12 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2008 Civic Computing Ltd
+ * Copyright (c) 2008 Civic Computing Ltd.
  * All rights reserved.
  *
  * Revision      $Rev$
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log
+ * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
 
@@ -18,28 +18,25 @@ import static org.easymock.EasyMock.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.HashMap;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
+import ccc.content.actions.RenderResourceAction;
+import ccc.content.exceptions.NotFoundException;
 import ccc.content.response.Body;
+import ccc.content.response.Renderer;
 import ccc.content.response.Response;
-import ccc.domain.Folder;
-import ccc.domain.Page;
 import ccc.domain.ResourcePath;
-import ccc.domain.User;
 import ccc.services.StatefulReader;
 
 /**
- * Tests for the ContentServlet.
- * TODO: Test init() method.
+ * Tests for the {@link RenderResourceAction} class.
  *
- * @author Civic Computing Ltd
+ * @author Civic Computing Ltd.
  */
 public final class ContentServletTest extends TestCase {
 
@@ -49,13 +46,15 @@ public final class ContentServletTest extends TestCase {
     public void testDetermineResourcePathHandlesInvalidPath() {
 
         // ARRANGE
+        final RenderResourceAction rr =
+            new RenderResourceAction(null, true, "root", "/login", null, null);
         final String invalidPath = "$%^$%/^%$^";
         expect(_request.getPathInfo()).andReturn(invalidPath);
         replayAll();
 
         // ACT
         try {
-            _cs.determineResourcePath(_request);
+            rr.determineResourcePath(_request);
             fail("Should throw exception.");
 
         // ASSERT
@@ -98,11 +97,13 @@ public final class ContentServletTest extends TestCase {
     public void testDetermineResourcePathRemovesTrailingSlash() {
 
         // ARRANGE
+        final RenderResourceAction rr =
+            new RenderResourceAction(null, true, "root", "/login", null, null);
         expect(_request.getPathInfo()).andReturn("/foo/");
         replayAll();
 
         // ACT
-        final ResourcePath path = _cs.determineResourcePath(_request);
+        final ResourcePath path = rr.determineResourcePath(_request);
 
         // VERIFY
         verifyAll();
@@ -115,11 +116,13 @@ public final class ContentServletTest extends TestCase {
     public void testDetermineResourcePathHandlesSingleForwardSlash() {
 
         // ARRANGE
+        final RenderResourceAction rr =
+            new RenderResourceAction(null, true, "root", "/login", null, null);
         expect(_request.getPathInfo()).andReturn("/");
         replayAll();
 
         // ACT
-        final ResourcePath path = _cs.determineResourcePath(_request);
+        final ResourcePath path = rr.determineResourcePath(_request);
 
         // VERIFY
         verifyAll();
@@ -132,11 +135,13 @@ public final class ContentServletTest extends TestCase {
     public void testDetermineResourcePathHandlesNull() {
 
         // ARRANGE
+        final RenderResourceAction rr =
+            new RenderResourceAction(null, true, "root", "/login", null, null);
         expect(_request.getPathInfo()).andReturn(null);
         replayAll();
 
         // ACT
-        final ResourcePath path = _cs.determineResourcePath(_request);
+        final ResourcePath path = rr.determineResourcePath(_request);
 
         // VERIFY
         verifyAll();
@@ -153,60 +158,58 @@ public final class ContentServletTest extends TestCase {
                                                       IOException {
 
         // ARRANGE
-        final RequestDispatcher rd = createStrictMock(RequestDispatcher.class);
-        final Folder foo = new Folder("foo");
-        final Folder baz = new Folder("baz");
-        foo.add(baz);
+        final RenderResourceAction rr =
+            new RenderResourceAction(null, true, "root", "/login", null, null);
 
-        expect(_request.getPathInfo()).andReturn("/foo");
-        expect(_factory.getReader()).andReturn(_reader);
-        expect(_reader.lookup(eq((String)null), isA(ResourcePath.class)))
+        expect(_reader.lookup("root", new ResourcePath("/foo")))
             .andThrow(new NotFoundException());
-        _reader.close();
-        expect(_request.getRequestDispatcher("/notfound")).andReturn(rd);
-        rd.forward(_request, _response);
         replayAll();
 
         // ACT
-        _cs.doGet(_request, _response); // How to inject renderer???
+        try {
+            rr.lookupResource(new ResourcePath("/foo"), _reader);
+            fail();
+
+        } catch (final NotFoundException e) {
+            swallow(e);
+        }
 
         // ASSERT
         verifyAll();
     }
 
-    /**
-     * Test.
-     *
-     * @throws IOException If there is an error writing to the _response.
-     * @throws ServletException If execution of the servlet fails.
-     */
-    public void testDoGetHandlesRedirect() throws ServletException,
-                                                      IOException {
-
-        // ARRANGE
-        final Page bar = new Page("bar");
-
-        expect(_request.getPathInfo()).andReturn("/foo");
-        expect(_request.getParameterMap())
-            .andReturn(new HashMap<String, String>());
-        expect(_factory.getReader()).andReturn(_reader);
-        expect(_reader.lookup(eq((String)null), isA(ResourcePath.class)))
-            .andReturn(bar);
-        _reader.close();
-        expect(_factory.currentUser()).andReturn(new User("user"));
-        expect(_factory.createRenderer(_reader)).andReturn(_renderer);
-        expect(_renderer.render(bar, new HashMap<String, String[]>()))
-            .andThrow(new RedirectRequiredException(bar));
-        expect(_request.getContextPath()).andReturn("/context");
-        _response.sendRedirect("/context"+bar.absolutePath().toString());
-        replayAll();
-
-        // ACT
-        _cs.doGet(_request, _response);
-
-        // ASSERT
-        verifyAll();
-    }
+//    /**
+//     * Test.
+//     *
+//     * @throws IOException If there is an error writing to the _response.
+//     * @throws ServletException If execution of the servlet fails.
+//     */
+//    public void testDoGetHandlesRedirect() throws ServletException,
+//                                                      IOException {
+//
+//        // ARRANGE
+//        final Page bar = new Page("bar");
+//
+//        expect(_request.getPathInfo()).andReturn("/foo");
+//        expect(_request.getParameterMap())
+//            .andReturn(new HashMap<String, String>());
+//        expect(_factory.getReader()).andReturn(_reader);
+//        expect(_reader.lookup(eq((String)null), isA(ResourcePath.class)))
+//            .andReturn(bar);
+//        expect(_factory.currentUser()).andReturn(new User("user"));
+//        expect(_factory.createRenderer(_reader)).andReturn(_renderer);
+//        expect(_renderer.render(bar, new HashMap<String, String[]>()))
+//            .andThrow(new RedirectRequiredException(bar));
+//        expect(_request.getContextPath()).andReturn("/context");
+//        _response.sendRedirect("/context"+bar.absolutePath().toString());
+//        replayAll();
+//
+//        // ACT
+//        _cs.doGet(_request, _response);
+//
+//        // ASSERT
+//        verifyAll();
+//    }
 
 
 
@@ -221,8 +224,6 @@ public final class ContentServletTest extends TestCase {
         _request = createStrictMock(HttpServletRequest.class);
         _renderer = createStrictMock(Renderer.class);
         _reader = createStrictMock(StatefulReader.class);
-        _factory = createStrictMock(ObjectFactory.class);
-        _cs = new ContentServlet(_factory);
     }
 
     /**
@@ -235,16 +236,14 @@ public final class ContentServletTest extends TestCase {
         _request = null;
         _renderer = null;
         _reader = null;
-        _factory = null;
-        _cs = null;
     }
 
     private void verifyAll() {
-        verify(_response, _request, _renderer, _reader, _factory);
+        verify(_response, _request, _renderer, _reader);
     }
 
     private void replayAll() {
-        replay(_response, _request, _renderer, _reader, _factory);
+        replay(_response, _request, _renderer, _reader);
     }
 
     /**
@@ -274,6 +273,4 @@ public final class ContentServletTest extends TestCase {
     private HttpServletRequest  _request;
     private Renderer _renderer;
     private StatefulReader _reader;
-    private ObjectFactory _factory;
-    private ContentServlet _cs;
 }

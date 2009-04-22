@@ -22,11 +22,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.jboss.annotation.security.SecurityDomain;
 
@@ -61,6 +64,10 @@ import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
+import ccc.services.ejb3.local.AuditLogEJB;
+import ccc.services.ejb3.local.ResourceDaoImpl;
+import ccc.services.ejb3.support.BaseDao;
+import ccc.services.ejb3.support.Dao;
 import ccc.services.support.ModelTranslation;
 
 
@@ -85,9 +92,11 @@ public class CommandsEJB
     @EJB(name=AliasDao.NAME)       private AliasDao        _alias;
     @EJB(name=PageDao.NAME)        private PageDao         _page;
     @EJB(name=UserManager.NAME)    private UserManager     _users;
-    @EJB(name=ResourceDao.NAME)    private ResourceDao     _resources;
     @EJB(name=ActionDao.NAME)      private ActionDao       _scheduler;
-    @EJB(name=AuditLog.NAME)       private AuditLog        _audit;
+    @PersistenceContext(unitName = "ccc-persistence")
+    private EntityManager _em;
+    private ResourceDao     _resources;
+    private AuditLog        _audit;
 
     /** {@inheritDoc} */
     @Override
@@ -289,10 +298,10 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     public void createWorkingCopy(final String resourceId, final long index) {
-        final UUID pageUuid = UUID.fromString(resourceId);
+        final UUID resourceUuid = UUID.fromString(resourceId);
         final LogEntry le = _audit.findEntryForIndex(index);
 
-        if (pageUuid.equals(le.subjectId())) {
+        if (resourceUuid.equals(le.subjectId())) {
             _page.updateWorkingCopy(
                 UUID.fromString(resourceId),
                 new Snapshot(le.detail()));
@@ -476,6 +485,12 @@ public class CommandsEJB
         _resources.changeRoles(UUID.fromString(resourceId), roles);
     }
 
+    @PostConstruct @SuppressWarnings("unused")
+    private void configureCoreData() {
+        final Dao bdao = new BaseDao(_em);
+        _audit = new AuditLogEJB(_em);
+        _resources = new ResourceDaoImpl(_users, _audit, bdao);
+    }
 }
 
 

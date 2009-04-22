@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.content.server;
+package ccc.content.exceptions;
 
 import ccc.commons.DBC;
 import ccc.domain.Resource;

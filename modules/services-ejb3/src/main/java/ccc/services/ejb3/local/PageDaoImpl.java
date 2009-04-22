@@ -20,10 +20,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -36,12 +39,17 @@ import org.xml.sax.InputSource;
 import ccc.domain.CCCException;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
+import ccc.domain.Resource;
 import ccc.domain.Snapshot;
 import ccc.domain.Template;
 import ccc.domain.User;
+import ccc.domain.WorkingCopyAware;
+import ccc.services.AuditLog;
 import ccc.services.PageDao;
 import ccc.services.ResourceDao;
 import ccc.services.UserManager;
+import ccc.services.ejb3.support.BaseDao;
+import ccc.services.ejb3.support.Dao;
 
 
 /**
@@ -54,8 +62,10 @@ import ccc.services.UserManager;
 @Local(PageDao.class)
 public class PageDaoImpl implements PageDao {
 
-    @EJB(name=ResourceDao.NAME)     private ResourceDao     _dao;
-    @EJB(name=UserManager.NAME)     private UserManager     _users;
+    @EJB(name=UserManager.NAME) private UserManager _users;
+    @PersistenceContext(unitName = "ccc-persistence")
+    private EntityManager _em;
+    private ResourceDao _dao;
 
 
     /** Constructor. */
@@ -182,15 +192,17 @@ public class PageDaoImpl implements PageDao {
     /** {@inheritDoc} */
     @Override
     public void updateWorkingCopy(final UUID id, final Snapshot workingCopy) {
-        final Page page = _dao.findLocked(Page.class, id);
-        page.workingCopy(workingCopy);
+        final Resource r = _dao.findLocked(Resource.class, id);
+        final WorkingCopyAware wc = (WorkingCopyAware) r; // TODO: Handle class cast exception.
+        wc.workingCopy(workingCopy);
     }
 
     /** {@inheritDoc} */
     @Override
     public void clearWorkingCopy(final UUID id) {
-        final Page page = _dao.findLocked(Page.class, id);
-        page.clearWorkingCopy();
+        final Resource r = _dao.findLocked(Resource.class, id);
+        final WorkingCopyAware wc = (WorkingCopyAware) r; // TODO: Handle class cast exception.
+        wc.clearWorkingCopy();
     }
 
     /** {@inheritDoc} */
@@ -203,5 +215,12 @@ public class PageDaoImpl implements PageDao {
         final Page page = _dao.findLocked(Page.class, id, actor);
         page.applySnapshot(page.workingCopy());
         update(comment, isMajorEdit, page, actor, happenedOn);
+    }
+
+    @PostConstruct @SuppressWarnings("unused")
+    private void configureCoreData() {
+        final Dao bdao = new BaseDao(_em);
+        final AuditLog audit = new AuditLogEJB(_em);
+        _dao = new ResourceDaoImpl(_users, audit, bdao);
     }
 }

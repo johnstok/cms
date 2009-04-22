@@ -19,10 +19,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import ccc.domain.Folder;
 import ccc.domain.Resource;
@@ -32,6 +35,8 @@ import ccc.services.AuditLog;
 import ccc.services.FolderDao;
 import ccc.services.ResourceDao;
 import ccc.services.UserManager;
+import ccc.services.ejb3.support.BaseDao;
+import ccc.services.ejb3.support.Dao;
 
 
 /**
@@ -44,9 +49,11 @@ import ccc.services.UserManager;
 @Local(FolderDao.class)
 public class FolderDaoImpl implements FolderDao {
 
-    @EJB(name=ResourceDao.NAME) private  ResourceDao    _dao;
-    @EJB(name=AuditLog.NAME)    private  AuditLog       _audit;
-    @EJB(name=UserManager.NAME)  private UserManager    _users;
+    @PersistenceContext(unitName = "ccc-persistence")
+    private EntityManager _em;
+    private  ResourceDao    _dao;
+    private  AuditLog       _audit;
+    @EJB(name=UserManager.NAME) private UserManager    _users;
 
     /** Constructor. */
     @SuppressWarnings("unused") public FolderDaoImpl() { super(); }
@@ -98,5 +105,12 @@ public class FolderDaoImpl implements FolderDao {
         }
         f.reorder(newOrder);
         _audit.recordReorder(f, u, new Date());
+    }
+
+    @PostConstruct
+    public void configure() {
+        final Dao bdao = new BaseDao(_em);
+        _audit = new AuditLogEJB(_em);
+        _dao = new ResourceDaoImpl(_users, _audit, bdao);
     }
 }

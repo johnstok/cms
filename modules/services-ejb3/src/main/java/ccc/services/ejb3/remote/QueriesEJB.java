@@ -18,11 +18,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.jboss.annotation.security.SecurityDomain;
 
@@ -34,6 +37,7 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
 import ccc.services.ActionDao;
+import ccc.services.AuditLog;
 import ccc.services.DataManager;
 import ccc.services.FolderDao;
 import ccc.services.ResourceDao;
@@ -51,6 +55,10 @@ import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
+import ccc.services.ejb3.local.AuditLogEJB;
+import ccc.services.ejb3.local.ResourceDaoImpl;
+import ccc.services.ejb3.support.BaseDao;
+import ccc.services.ejb3.support.Dao;
 import ccc.services.support.ModelTranslation;
 
 
@@ -73,9 +81,11 @@ public final class QueriesEJB
     @EJB(name=TemplateDao.NAME)    private TemplateDao     _templates;
     @EJB(name=FolderDao.NAME)      private FolderDao       _folders;
     @EJB(name=UserManager.NAME)    private UserManager     _users;
-    @EJB(name=ResourceDao.NAME)    private ResourceDao     _resources;
     @EJB(name=DataManager.NAME)    private DataManager     _datas;
     @EJB(name=ActionDao.NAME)      private ActionDao       _actions;
+    @PersistenceContext(unitName = "ccc-persistence")
+    private EntityManager _em;
+    private ResourceDao     _resources;
 
     /**
      * Constructor.
@@ -299,5 +309,13 @@ public final class QueriesEJB
         final Resource r =
             _resources.find(Resource.class, UUID.fromString(resourceId));
         return r.roles();
+    }
+
+
+    @PostConstruct @SuppressWarnings("unused")
+    private void configureCoreData() {
+        final Dao bdao = new BaseDao(_em);
+        final AuditLog audit = new AuditLogEJB(_em);
+        _resources = new ResourceDaoImpl(_users, audit, bdao);
     }
 }

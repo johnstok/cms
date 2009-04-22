@@ -10,17 +10,15 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.content.server;
+package ccc.content.response;
 
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 
 import ccc.commons.DBC;
-import ccc.content.response.FileBody;
-import ccc.content.response.PageBody;
-import ccc.content.response.Response;
-import ccc.content.response.SearchBody;
+import ccc.content.exceptions.NotFoundException;
+import ccc.content.exceptions.RedirectRequiredException;
 import ccc.domain.Alias;
 import ccc.domain.File;
 import ccc.domain.Folder;
@@ -116,10 +114,12 @@ public class DefaultRenderer
     public Response renderWorkingCopy(final Resource resource,
                                       final Map<String, String[]> parameters) {
         if (!_respectVisibility) {
-            if (resource instanceof Page) {
-                final Page p = (Page) resource;
+            if (resource instanceof WorkingCopyAware) {
+                final WorkingCopyAware p = (WorkingCopyAware) resource;
                 if (null!=p.workingCopy()) {
                     p.applySnapshot(p.workingCopy());
+                } else {
+                    LOG.warn("No working copy found for resource: "+resource);
                 }
             }
         }

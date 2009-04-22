@@ -18,16 +18,19 @@ import java.util.Collection;
 import java.util.Locale;
 import java.util.UUID;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import javax.ejb.EJB;
 import javax.ejb.EJBContext;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import ccc.domain.Password;
 import ccc.domain.User;
 import ccc.services.UserManager;
+import ccc.services.ejb3.support.BaseDao;
 import ccc.services.ejb3.support.Dao;
 
 
@@ -41,8 +44,10 @@ import ccc.services.ejb3.support.Dao;
 @Local(UserManager.class)
 public class UserManagerEJB implements UserManager {
 
+    @PersistenceContext(unitName = "ccc-persistence")
+    private EntityManager _em;
     @Resource private EJBContext _context;
-    @EJB(name=Dao.NAME) private Dao _dao;
+    private Dao _dao;
 
 
     /** Constructor. */
@@ -138,5 +143,10 @@ public class UserManagerEJB implements UserManager {
     @Override
     public User find(final UUID userId) {
         return _dao.find(User.class, userId);
+    }
+
+    @PostConstruct
+    public void configure() {
+        _dao = new BaseDao(_em);
     }
 }

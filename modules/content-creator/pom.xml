@@ -96,6 +96,11 @@
         </dependency>
         <dependency>
             <groupId>CCC7</groupId>
+            <artifactId>rendering-engine</artifactId>
+            <version>7.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>CCC7</groupId>
             <artifactId>data-migration</artifactId>
             <version>7.0.0-SNAPSHOT</version>
             <scope>test</scope>
@@ -125,6 +130,24 @@
             <groupId>jboss</groupId>
             <artifactId>jbossweb-service</artifactId>
             <version>${jboss-version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>jboss</groupId>
+            <artifactId>jboss-ejb3x</artifactId>
+            <version>${jboss-version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>jboss</groupId>
+            <artifactId>jboss-j2ee</artifactId>
+            <version>${jboss-version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>ejb3-persistence</artifactId>
+            <version>1.0.1.GA</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

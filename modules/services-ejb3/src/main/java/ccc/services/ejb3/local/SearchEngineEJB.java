@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.EJBContext;
 import javax.ejb.Local;
@@ -29,6 +30,8 @@ import javax.ejb.Stateless;
 import javax.ejb.Timeout;
 import javax.ejb.Timer;
 import javax.ejb.TransactionAttribute;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
 import org.apache.lucene.document.Document;
@@ -47,10 +50,14 @@ import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
+import ccc.services.AuditLog;
 import ccc.services.DataManager;
 import ccc.services.ResourceDao;
 import ccc.services.Scheduler;
 import ccc.services.SearchEngine;
+import ccc.services.UserManager;
+import ccc.services.ejb3.support.BaseDao;
+import ccc.services.ejb3.support.Dao;
 import ccc.services.ejb3.support.QueryNames;
 
 
@@ -71,8 +78,12 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
         Logger.getLogger(SearchEngineEJB.class.getName());
 
     @javax.annotation.Resource private EJBContext _context;
-    @EJB(name=ResourceDao.NAME) private ResourceDao _dao;
     @EJB(name=DataManager.NAME) private DataManager _data;
+    @EJB(name=UserManager.NAME) private UserManager _users;
+    @PersistenceContext(unitName = "ccc-persistence")
+    private EntityManager _em;
+
+    private ResourceDao _dao;
     private SimpleLucene _lucene;
 
     /** Constructor. */
@@ -438,5 +449,12 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
         @Override public void execute(final InputStream is) throws Exception {
             content = IO.toString(is);
         }
+    }
+
+    @PostConstruct @SuppressWarnings("unused")
+    private void configureCoreData() {
+        final Dao bdao = new BaseDao(_em);
+        final AuditLog audit = new AuditLogEJB(_em);
+        _dao = new ResourceDaoImpl(_users, audit, bdao);
     }
 }

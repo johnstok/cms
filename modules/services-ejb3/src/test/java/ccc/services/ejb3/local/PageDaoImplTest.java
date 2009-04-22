@@ -19,6 +19,7 @@ import java.util.Date;
 import junit.framework.TestCase;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
+import ccc.domain.Resource;
 import ccc.domain.Snapshot;
 import ccc.domain.User;
 import ccc.services.PageDao;
@@ -46,7 +47,7 @@ public class PageDaoImplTest
         final Page p = new Page("foo");
         p.workingCopy(p.createSnapshot());
 
-        expect(_dao.findLocked(Page.class, p.id())).andReturn(p);
+        expect(_dao.findLocked(Resource.class, p.id())).andReturn(p);
         replayAll();
 
         // ACT
@@ -102,7 +103,7 @@ public class PageDaoImplTest
         page.addParagraph(Paragraph.fromText("abc", "def"));
         final Snapshot before = page.createSnapshot();
 
-        expect(_dao.findLocked(Page.class, page.id())).andReturn(page);
+        expect(_dao.findLocked(Resource.class, page.id())).andReturn(page);
         replayAll();
 
         // ACT

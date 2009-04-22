@@ -11,16 +11,10 @@
  */
 package ccc.services.ejb3.local;
 
-import static javax.ejb.TransactionAttributeType.*;
-
 import java.util.Date;
 
-import javax.ejb.Local;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import ccc.commons.DBC;
@@ -33,29 +27,21 @@ import ccc.services.ejb3.support.QueryNames;
 
 
 /**
- * EJB3 implementation of {@link AuditLog}.
+ * Implementation of {@link AuditLog}.
  *
  * @author Civic Computing Ltd.
  */
-@Stateless(name=AuditLog.NAME)
-@TransactionAttribute(REQUIRED)
-@Local(AuditLog.class)
 public class AuditLogEJB
     implements
         AuditLog {
 
-    @PersistenceContext(unitName="ccc-persistence")
     private EntityManager _em;
-
-
-    /** Constructor. */
-    @SuppressWarnings("unused") public AuditLogEJB() { super(); }
 
     /**
      * Constructor.
      * @param em The entity manager used to perform queries.
      */
-    AuditLogEJB(final EntityManager em) {
+    public AuditLogEJB(final EntityManager em) {
         DBC.require().notNull(em);
         _em = em;
     }
