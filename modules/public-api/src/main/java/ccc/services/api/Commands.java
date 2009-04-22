@@ -229,5 +229,7 @@ public interface Commands {
     void reorder(String folderId, List<String> order);
 
     void changeRoles(String resourceId, Collection<String> roles);
+
+    void applyWorkingCopyToFile(String fileId);
 }
 

@@ -993,4 +993,12 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Details")
     String details();
+
+    /**
+     * "Apply working copy".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Apply working copy")
+    String applyWorkingCopy();
 }

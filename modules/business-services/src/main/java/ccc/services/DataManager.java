@@ -98,6 +98,9 @@ public interface DataManager {
     List<File> findImages();
 
 
+    public void applyWorkingCopy(final UUID id);
+
+
     /**
      * An action to perform on an {@link InputStream}.
      *

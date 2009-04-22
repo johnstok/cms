@@ -51,6 +51,7 @@ import ccc.domain.User;
 import ccc.services.ActionDao;
 import ccc.services.AliasDao;
 import ccc.services.AuditLog;
+import ccc.services.DataManager;
 import ccc.services.FolderDao;
 import ccc.services.PageDao;
 import ccc.services.ResourceDao;
@@ -93,6 +94,8 @@ public class CommandsEJB
     @EJB(name=PageDao.NAME)        private PageDao         _page;
     @EJB(name=UserManager.NAME)    private UserManager     _users;
     @EJB(name=ActionDao.NAME)      private ActionDao       _scheduler;
+    @EJB(name=DataManager.NAME)    private DataManager     _file;
+
     @PersistenceContext(unitName = "ccc-persistence")
     private EntityManager _em;
     private ResourceDao     _resources;
@@ -490,6 +493,12 @@ public class CommandsEJB
         final Dao bdao = new BaseDao(_em);
         _audit = new AuditLogEJB(_em);
         _resources = new ResourceDaoImpl(_users, _audit, bdao);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void applyWorkingCopyToFile(final String fileId) {
+        _file.applyWorkingCopy(UUID.fromString(fileId));
     }
 }
 

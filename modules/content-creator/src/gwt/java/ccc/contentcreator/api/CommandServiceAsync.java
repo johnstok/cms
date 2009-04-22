@@ -98,4 +98,6 @@ public interface CommandServiceAsync {
     void reorder(String folderId, List<String> order, AsyncCallback<Void> callback);
 
     void changeRoles(final String resourceId, final Collection<String> roles, AsyncCallback<Void> callback);
+
+    void applyWorkingCopyToFile(String fileId, AsyncCallback<Void> callback);
 }
