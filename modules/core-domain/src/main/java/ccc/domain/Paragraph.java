@@ -22,6 +22,8 @@ import java.util.Date;
  * @author Civic Computing Ltd
  */
 public final class Paragraph implements Serializable {
+    /** MAX_NAME_LENGTH : int. */
+    static final int MAX_NAME_LENGTH = 256;
 
     private String  _text;
     private Type    _type;
@@ -34,7 +36,7 @@ public final class Paragraph implements Serializable {
 
     private void name(final String name) {
         require().notEmpty(name);
-        require().maxLength(name, 256);
+        require().maxLength(name, MAX_NAME_LENGTH);
         _name = name;
     }
 
@@ -200,9 +202,9 @@ public final class Paragraph implements Serializable {
 
 
     /**
-     * TODO: Add a description of this method.
+     * Create a snapshot of this paragraph.
      *
-     * @return
+     * @return A snapshot representing this paragraph.
      */
     public Snapshot createSnapshot() {
         final Snapshot para = new Snapshot();
@@ -216,9 +218,9 @@ public final class Paragraph implements Serializable {
 
 
     /**
-     * TODO: Add a description of this method.
+     * Create a paragraph from a snapshot.
      *
-     * @param snapshot
+     * @param snapshot The snapshot used to create a new paragraph object.
      * @return A valid paragraph.
      */
     public static Paragraph fromSnapshot(final Snapshot snapshot) {

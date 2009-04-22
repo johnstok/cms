@@ -27,7 +27,7 @@ import ccc.domain.CCCException;
  */
 public final class IO {
 
-    private static String ENCODING = "ISO-8859-1";
+    private static final String ENCODING = "ISO-8859-1";
 
     private IO() { super(); }
 
@@ -36,6 +36,7 @@ public final class IO {
      * Optimisation based on:
      * http://java.sun.com/
      * docs/books/performance/1st_edition/html/JPIOPerformance.fm.html
+     * TODO: Throw {@link IOException}.
      *
      * @param is The {@link InputStream} to copy from.
      * @param os The {@link OutputStream} to copy to.

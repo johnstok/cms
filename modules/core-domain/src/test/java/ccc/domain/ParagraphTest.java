@@ -74,7 +74,8 @@ public final class ParagraphTest extends TestCase {
 
         // ACT
         try {
-            Paragraph.fromText(Testing.dummyString('a', 257), "foo");
+            Paragraph.fromText(
+                Testing.dummyString('a', Paragraph.MAX_NAME_LENGTH), "foo");
             fail();
 
         // ASSERT

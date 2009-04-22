@@ -76,9 +76,9 @@ public final class Folder extends Resource {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Re-order the folder's children.
      *
-     * @param resources
+     * @param resources The children of this folder in a new order.
      */
     public void reorder(final List<Resource> resources) {
         DBC.require().notNull(resources);

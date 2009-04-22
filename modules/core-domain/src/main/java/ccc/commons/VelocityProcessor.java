@@ -29,7 +29,7 @@ import ccc.domain.CCCException;
 
 
 /**
- * TODO Add Description for this type.
+ * Renders a resource as text using the velocity library.
  *
  * @author Civic Computing Ltd.
  */
@@ -64,6 +64,7 @@ public class VelocityProcessor {
      * output, otherwise an {@link OutOfMemoryError} could be thrown.
      *
      * @param template The template used to render the resource.
+     * @param contextValues Additional values that are passed to the template.
      * @return The html rendering as a string.
      */
     public String render(final String template,
@@ -82,6 +83,7 @@ public class VelocityProcessor {
      * @param template The template used to render the resource.
      * @param output A valid {@link Writer}. The writer will be flushed when
      *  output is complete. The writer will not be closed.
+     * @param contextValues Additional values that are passed to the template.
      */
     public void render(final String template,
                        final Writer output,
@@ -107,7 +109,8 @@ public class VelocityProcessor {
             final VelocityHelper helper = new VelocityHelper();
             context.put("helper", helper);
 
-            for (final Map.Entry<String, Object> contextValue : contextValues.entrySet()) {
+            for (final Map.Entry<String, Object> contextValue
+                : contextValues.entrySet()) {
                 context.put(contextValue.getKey(), contextValue.getValue());
             }
 
