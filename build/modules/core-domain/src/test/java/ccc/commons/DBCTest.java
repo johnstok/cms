@@ -177,4 +177,26 @@ public final class DBCTest extends TestCase {
                 e.getMessage());
         }
     }
+    /**
+     * Test.
+     */
+    public void testRequireNoBrackets() {
+
+        // ACT
+        require().containsNoBrackets("ok string");
+
+        try {
+            require().containsNoBrackets("no good < string >");
+            fail("String containing brackets should be rejected.");
+        } catch (final IllegalArgumentException e) {
+            assertEquals("String must not contain brackets.", e.getMessage());
+        }
+        try {
+            require().containsNoBrackets("< Bad string");
+            fail("String containing brackets should be rejected.");
+        } catch (final IllegalArgumentException e) {
+            assertEquals("String must not contain brackets.", e.getMessage());
+        }
+
+    }
 }

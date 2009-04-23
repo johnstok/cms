@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ccc.commons.DBC;
 
 /**
  * An abstract superclass that contains shared behaviour for the different types
@@ -65,7 +64,7 @@ public abstract class Resource extends VersionedEntity {
     protected Resource(final ResourceName name,
                        final String title) {
         require().notNull(name);
-
+        require().containsNoBrackets(title);
         name(name);
         title(title);
     }
@@ -78,6 +77,7 @@ public abstract class Resource extends VersionedEntity {
      * @param title The title of this resource, as a string.
      */
     public Resource(final String title) {
+        require().containsNoBrackets(title);
         title(title);
         name(ResourceName.escape(title));
     }
@@ -166,6 +166,7 @@ public abstract class Resource extends VersionedEntity {
     public void title(final String titleString) {
         require().notEmpty(titleString);
         require().maxLength(titleString, MAXIMUM_TITLE_LENGTH);
+        require().containsNoBrackets(titleString);
         _title = titleString;
     }
 
@@ -275,7 +276,8 @@ public abstract class Resource extends VersionedEntity {
      *  tags for this resource.
      */
     public void tags(final String tagString) {
-        DBC.require().notNull(tagString);
+        require().notNull(tagString);
+        require().containsNoBrackets(tagString);
 
         final String[] tagArray = tagString.split(",");
         _tags.clear();
@@ -426,10 +428,12 @@ public abstract class Resource extends VersionedEntity {
      * @param value The value of the datum. May not be NULL.
      */
     public void addMetadatum(final String key, final String value) {
-        DBC.require().notEmpty(value);
-        DBC.require().maxLength(value, MAXIMUM_DATUM_LENGTH);
-        DBC.require().notEmpty(key);
-        DBC.require().maxLength(key, MAXIMUM_DATUM_KEY_LENGTH);
+        require().notEmpty(value);
+        require().maxLength(value, MAXIMUM_DATUM_LENGTH);
+        require().notEmpty(key);
+        require().maxLength(key, MAXIMUM_DATUM_KEY_LENGTH);
+        require().containsNoBrackets(key);
+        require().containsNoBrackets(value);
         _metadata.put(key, value);
     }
 
@@ -455,7 +459,7 @@ public abstract class Resource extends VersionedEntity {
      * @param key The key with which the datum was stored.
      */
     public void clearMetadatum(final String key) {
-        DBC.require().notEmpty(key);
+        require().notEmpty(key);
         _metadata.remove(key);
     }
 
@@ -499,7 +503,7 @@ public abstract class Resource extends VersionedEntity {
      * @param changedOn The date the resource changed.
      */
     public void dateChanged(final Date changedOn) {
-        DBC.require().notNull(changedOn);
+        require().notNull(changedOn);
         _dateChanged = changedOn;
     }
 

@@ -289,6 +289,7 @@ public class CreatePageDialog
                     .check(Validations.notEmpty(_second.name()))
                     .check(Validations.notValidResourceName(_second.name()))
                     .check(Validations.notEmpty(_second.title()))
+                    .check(Validations.noBrackets(_second.title()))
                     .stopIfInError()
                     .check(Validations.uniqueResourceName(
                         _parent, _second.name()))

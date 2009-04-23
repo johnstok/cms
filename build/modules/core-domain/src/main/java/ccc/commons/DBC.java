@@ -147,4 +147,16 @@ public final class DBC {
                 "Specified value must be NULL."); //$NON-NLS-1$
         }
     }
+
+    /**
+     * Assert that the specified string does not contain bracket < > characters.
+     *
+     * @param stringToTest The string to test.
+     */
+    public void containsNoBrackets(final String stringToTest) {
+        if (stringToTest != null && !stringToTest.matches("[^<^>]*")) {
+            throw new IllegalArgumentException(
+            "String must not contain brackets.");
+        }
+    }
 }

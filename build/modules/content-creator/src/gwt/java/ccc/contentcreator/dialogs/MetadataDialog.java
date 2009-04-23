@@ -55,13 +55,14 @@ public class MetadataDialog
         new SelectionListener<ButtonEvent>(){
             @Override public void componentSelected(final ButtonEvent ce) {
                 Map<String, String> metadata = currentMetadata();
-                if (isValid(metadata)) {
+                String errors = validate(metadata);
+                if (errors.length() == 0) {
                     commands().updateMetadata(
                         _resourceId,
                         metadata,
                         new DisposingCallback(MetadataDialog.this));
                 } else {
-                    Globals.alert("No empty keys or values are allowed.");
+                    Globals.alert(errors);
                 }
             }
         });
@@ -174,17 +175,24 @@ public class MetadataDialog
         return metadata;
     }
 
-    private boolean isValid(final Map<String, String> metadata) {
+    private String validate(final Map<String, String> metadata) {
+        final StringBuilder sb = new StringBuilder();
         for (final Map.Entry<String, String> datum : metadata.entrySet()) {
             if (null==datum.getKey()
                 || datum.getKey().trim().length() < 1) {
-                return false;
+                sb.append("No empty keys are allowed.\n");
             }
             if (null==datum.getValue()
                 || datum.getValue().trim().length() < 1) {
-                return false;
+                sb.append("No empty values are allowed.\n");
+            }
+            if (!datum.getKey().matches("[^<^>]*")) {
+                sb.append("Keys must not contain brackets.\n");
+            }
+            if (!datum.getValue().matches("[^<^>]*")) {
+                sb.append("Values must not contain brackets.\n");
             }
         }
-        return true;
+        return sb.toString();
     }
 }

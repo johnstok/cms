@@ -14,6 +14,8 @@ package ccc.contentcreator.dialogs;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.ResourceTable;
+import ccc.contentcreator.validation.Validate;
+import ccc.contentcreator.validation.Validations;
 import ccc.services.api.FileDelta;
 
 import com.extjs.gxt.ui.client.Events;
@@ -113,6 +115,21 @@ public class UpdateFileDialog extends AbstractEditDialog {
                 if (!_panel.isValid()) {
                     return;
                 }
+                Validate.callTo(submit())
+                .check(Validations.notEmpty(_title))
+                .check(Validations.noBrackets(_title))
+                .check(Validations.notEmpty(_description))
+                .check(Validations.noBrackets(_description))
+                .callMethodOr(Validations.reportErrors());
+
+            }
+        };
+    }
+
+    private Runnable submit() {
+        return new Runnable() {
+            @SuppressWarnings("unchecked")
+            public void run() {
                 _image.setVisible(true);
                 _panel.submit();
             }
