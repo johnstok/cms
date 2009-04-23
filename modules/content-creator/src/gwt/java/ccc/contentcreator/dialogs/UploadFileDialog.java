@@ -15,6 +15,8 @@ import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.GxtResourceSummary;
 import ccc.contentcreator.client.SingleSelectionModel;
+import ccc.contentcreator.validation.Validate;
+import ccc.contentcreator.validation.Validations;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -42,6 +44,7 @@ public class UploadFileDialog extends AbstractEditDialog {
     private final TextField<String>   _fileName = new TextField<String>();
     private final TextField<String>   _title = new TextField<String>();
     private final TextField<String>   _description = new TextField<String>();
+    private ModelData                 _parent;
     private final HiddenField<String> _path = new HiddenField<String>();
     private FileUploadField           _file = new FileUploadField();
 
@@ -58,6 +61,8 @@ public class UploadFileDialog extends AbstractEditDialog {
                             final SingleSelectionModel ssm) {
         super(
             Globals.uiConstants().uploadFileTo()+": "+parentFolder.get("name"));
+
+        _parent = parentFolder;
         setHeight(Globals.DEFAULT_UPLOAD_HEIGHT);
 
         // Create a FormPanel and point it at a service.
@@ -87,7 +92,7 @@ public class UploadFileDialog extends AbstractEditDialog {
         addField(_file);
 
         _path.setName("path");
-        _path.setValue(parentFolder.<String>get("id"));
+        _path.setValue(_parent.<String>get("id"));
         addField(_path);
 
         _image.setVisible(false);
@@ -103,7 +108,7 @@ public class UploadFileDialog extends AbstractEditDialog {
                     } else {
                         ssm.create(
                             new GxtResourceSummary(
-                                JSONParser.parse(be.resultHtml)), parentFolder);
+                                JSONParser.parse(be.resultHtml)), _parent);
                     }
                 }
             }
@@ -119,6 +124,25 @@ public class UploadFileDialog extends AbstractEditDialog {
                 if (!_panel.isValid()) {
                     return;
                 }
+                Validate.callTo(submit())
+                .check(Validations.notEmpty(_fileName))
+                .check(Validations.notValidResourceName(_fileName))
+                .check(Validations.notEmpty(_title))
+                .check(Validations.noBrackets(_title))
+                .check(Validations.notEmpty(_description))
+                .check(Validations.noBrackets(_description))
+                .stopIfInError()
+                    .check(Validations.uniqueResourceName(_parent, _fileName))
+                .callMethodOr(Validations.reportErrors());
+            }
+        };
+    }
+
+
+    private Runnable submit() {
+        return new Runnable() {
+            @SuppressWarnings("unchecked")
+            public void run() {
                 _image.setVisible(true);
                 _panel.submit();
             }

@@ -1001,4 +1001,12 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Apply working copy")
     String applyWorkingCopy();
+
+    /**
+     * "must not contain < or > character".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("must not contain < or > character")
+    String mustNotContainBrackets();
 }

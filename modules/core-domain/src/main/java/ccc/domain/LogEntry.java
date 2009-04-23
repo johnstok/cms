@@ -11,10 +11,10 @@
  */
 package ccc.domain;
 
+import static ccc.commons.DBC.*;
+
 import java.util.Date;
 import java.util.UUID;
-
-import ccc.commons.DBC;
 
 
 /**
@@ -211,6 +211,8 @@ public class LogEntry extends Entity {
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = Action.UPDATE;
         le._comment = (comment == null ? "Updated." : comment);
+        require().containsNoBrackets(le._comment);
+
         le._isMajorEdit = isMajorEdit;
         final Snapshot ss = resource.createSnapshot();
         le._detail = ss.getDetail();
@@ -465,9 +467,9 @@ public class LogEntry extends Entity {
                                         final User actor,
                                         final Date happenedOn) {
 
-        DBC.require().notNull(resource);
-        DBC.require().notNull(actor);
-        DBC.require().notNull(happenedOn);
+        require().notNull(resource);
+        require().notNull(actor);
+        require().notNull(happenedOn);
 
         final LogEntry le = new LogEntry();
         le._subjectId = resource.id();

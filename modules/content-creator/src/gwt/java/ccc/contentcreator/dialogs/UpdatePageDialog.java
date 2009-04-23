@@ -126,6 +126,7 @@ public class UpdatePageDialog
 
                 Validate.callTo(updatePage(paragraphs))
                     .check(Validations.notEmpty(panel().title()))
+                    .check(Validations.noBrackets(panel().title()))
                     .stopIfInError()
                     .check(Validations.validateDatefields(paragraphs))
                     .stopIfInError()
@@ -143,6 +144,7 @@ public class UpdatePageDialog
 
                 Validate.callTo(saveDraft(paragraphs))
                 .check(Validations.notEmpty(panel().title()))
+                .check(Validations.noBrackets(panel().title()))
                 .stopIfInError()
                 .check(Validations.validateDatefields(paragraphs))
                 .stopIfInError()

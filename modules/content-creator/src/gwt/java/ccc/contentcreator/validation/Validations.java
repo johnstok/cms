@@ -37,6 +37,8 @@ public class Validations {
 
     private static final String  VALID_CHARACTERS = "[\\.\\-\\w]+";
 
+    private static final String  NO_BRACKETS = "[^<^>]*";
+
     private static final String VALID_EMAIL =
         "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*"
         + "@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*"
@@ -277,4 +279,25 @@ public class Validations {
             }
         };
     }
+
+    /**
+     * Validates text so it does not contain bracket < > characters.
+     *
+     * @param text The text
+     * @return The Validator
+     */
+    public static Validator noBrackets(final TextField<String> text) {
+        return new Validator() {
+            public void validate(final Validate validate) {
+                if(text != null && !text.getValue().matches(NO_BRACKETS)) {
+                    validate.addMessage(
+                        text.getFieldLabel()
+                        + " "+_uiConstants.mustNotContainBrackets()
+                    );
+                }
+                validate.next();
+            }
+        };
+    }
+
 }

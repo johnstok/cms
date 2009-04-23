@@ -13,6 +13,8 @@ package ccc.contentcreator.dialogs;
 
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.validation.Validate;
+import ccc.contentcreator.validation.Validations;
 import ccc.services.api.PageDelta;
 
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -85,12 +87,24 @@ public class PageCommentDialog extends AbstractEditDialog {
         return new SelectionListener<ButtonEvent>() {
             @Override
             public void componentSelected(final ButtonEvent ce) {
-              commands().updatePage(
-                  _page,
-                  _comment.getValue(),
-                  _majorEdit.getValue(),
-                  applyNowCompletedCallback());
-                    close();
+
+                Validate.callTo(savePage())
+                .check(Validations.noBrackets(_comment))
+                .callMethodOr(Validations.reportErrors());
+            }
+        };
+    }
+
+    private Runnable savePage() {
+        return new Runnable() {
+            @SuppressWarnings("unchecked")
+            public void run() {
+                commands().updatePage(
+                    _page,
+                    _comment.getValue(),
+                    _majorEdit.getValue(),
+                    applyNowCompletedCallback());
+                      close();
             }
         };
     }
