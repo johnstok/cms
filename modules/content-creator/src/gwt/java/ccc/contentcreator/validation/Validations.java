@@ -289,7 +289,7 @@ public class Validations {
     public static Validator noBrackets(final TextField<String> text) {
         return new Validator() {
             public void validate(final Validate validate) {
-                if(text != null && !text.getValue().matches(NO_BRACKETS)) {
+                if(text.getValue() != null && !text.getValue().matches(NO_BRACKETS)) {
                     validate.addMessage(
                         text.getFieldLabel()
                         + " "+_uiConstants.mustNotContainBrackets()
