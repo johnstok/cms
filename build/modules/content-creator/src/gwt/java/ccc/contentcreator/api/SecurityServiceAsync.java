@@ -26,4 +26,6 @@ public interface SecurityServiceAsync {
     void login(String username, String password, AsyncCallback<Boolean> asyncCallback);
 
     void isLoggedIn(AsyncCallback<Boolean> asyncCallback);
+
+    void readProperty(final String key, AsyncCallback<String> asyncCallback);
 }
