@@ -11,6 +11,8 @@
  */
 package ccc.contentcreator.dialogs;
 
+import ccc.contentcreator.api.SecurityServiceAsync;
+import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -36,6 +38,16 @@ public class LoginDialog extends AbstractEditDialog {
      */
     public LoginDialog() {
         super(Globals.uiConstants().login());
+
+        final SecurityServiceAsync ss = Globals.securityService();
+        ss.readProperty("application.name",
+            new ErrorReportingCallback<String>(){
+            @Override
+            public void onSuccess(final String value) {
+                setHeading(Globals.uiConstants().login() +" - "+value);
+            }
+
+        });
 
         setPanelId("LoginPanel");
 

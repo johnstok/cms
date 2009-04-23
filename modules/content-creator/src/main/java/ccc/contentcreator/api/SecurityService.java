@@ -46,4 +46,12 @@ public interface SecurityService
      */
     boolean isLoggedIn();
 
+    /**
+     * Reads property string.
+     *
+     * @param key The key of the property.
+     * @return Value of the property if found.
+     */
+    String readProperty(final String key);
+
 }

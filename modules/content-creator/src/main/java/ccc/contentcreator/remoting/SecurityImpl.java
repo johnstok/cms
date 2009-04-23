@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.jboss.web.tomcat.security.login.WebAuthentication;
 
+import ccc.commons.CCCProperties;
 import ccc.contentcreator.api.SecurityService;
 
 
@@ -47,5 +48,11 @@ public class SecurityImpl
     public boolean isLoggedIn() {
         final HttpServletRequest request = getThreadLocalRequest();
         return null!=request.getUserPrincipal();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String readProperty(final String key) {
+        return CCCProperties.get(key);
     }
 }
