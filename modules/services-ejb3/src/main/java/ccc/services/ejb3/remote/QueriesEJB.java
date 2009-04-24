@@ -83,8 +83,7 @@ public final class QueriesEJB
     @EJB(name=UserManager.NAME)    private UserManager     _users;
     @EJB(name=DataManager.NAME)    private DataManager     _datas;
     @EJB(name=ActionDao.NAME)      private ActionDao       _actions;
-    @PersistenceContext(unitName = "ccc-persistence")
-    private EntityManager _em;
+    @PersistenceContext private EntityManager _em;
     private ResourceDao     _resources;
 
     /**

@@ -44,8 +44,7 @@ import ccc.services.ejb3.support.Dao;
 @Local(UserManager.class)
 public class UserManagerEJB implements UserManager {
 
-    @PersistenceContext(unitName = "ccc-persistence")
-    private EntityManager _em;
+    @PersistenceContext private EntityManager _em;
     @Resource private EJBContext _context;
     private Dao _dao;
 

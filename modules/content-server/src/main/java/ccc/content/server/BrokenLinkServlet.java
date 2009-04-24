@@ -47,8 +47,7 @@ public final class BrokenLinkServlet
     private static final Logger LOG = Logger.getLogger(BrokenLinkServlet.class);
 
     @Resource private UserTransaction _utx;
-    @PersistenceUnit(unitName="ccc-persistence")
-    private EntityManagerFactory _emf;
+    @PersistenceUnit private EntityManagerFactory _emf;
 
 
     /** {@inheritDoc} */

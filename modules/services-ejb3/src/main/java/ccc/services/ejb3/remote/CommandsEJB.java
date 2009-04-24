@@ -96,8 +96,7 @@ public class CommandsEJB
     @EJB(name=ActionDao.NAME)      private ActionDao       _scheduler;
     @EJB(name=DataManager.NAME)    private DataManager     _file;
 
-    @PersistenceContext(unitName = "ccc-persistence")
-    private EntityManager _em;
+    @PersistenceContext private EntityManager _em;
     private ResourceDao     _resources;
     private AuditLog        _audit;
 

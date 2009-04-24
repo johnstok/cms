@@ -25,6 +25,7 @@
             <groupId>CCC7</groupId>
             <artifactId>services-ejb3</artifactId>
             <version>7.0.0-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
         
         <dependency>

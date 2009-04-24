@@ -1,4 +1,4 @@
 <jboss>
     <security-domain>java:/jaas/ccc</security-domain>
-    <unauthenticated-principal>foo</unauthenticated-principal>
+    <unauthenticated-principal>ccc</unauthenticated-principal>
 </jboss>
