@@ -117,7 +117,7 @@ public class ImageSelectionDialog extends LayoutContainer {
             public void handleEvent(final SelectionChangedEvent<ModelData> be) {
                 if (null!=be.getSelectedItem()) {
                     jsniSetUrl(
-                        "/server"+(String) be.getSelectedItem().get("path"),
+                        (String) be.getSelectedItem().get("path"),
                         (String) be.getSelectedItem().get("title"));
                 }
             }
@@ -130,15 +130,15 @@ public class ImageSelectionDialog extends LayoutContainer {
     private native String getTemplate() /*-{
         return ['<tpl for=".">',
          '<div class="thumb-wrap" id="{name}" style="border: 1px solid white">',
-         '<div class="thumb"><img src="/server{path}" title="{title}"></div>',
+         '<div class="thumb"><img src="{path}" title="{title}"></div>',
          '<span class="x-editable">{shortName}</span></div>',
          '</tpl>',
          '<div class="x-clear"></div>'].join("");
 
          }-*/;
 
-    private static native String jsniSetUrl(String selectedUrl, String alt) /*-{
-    $wnd.opener.SetUrl( selectedUrl,null,null,alt ) ;
+    private static native String jsniSetUrl(String selectedUrl, String title) /*-{
+    $wnd.opener.FCK.InsertHtml("<img title='"+title+"' alt='"+title+"' src='"+selectedUrl+"'/>");
     $wnd.close() ;
     }-*/;
 
