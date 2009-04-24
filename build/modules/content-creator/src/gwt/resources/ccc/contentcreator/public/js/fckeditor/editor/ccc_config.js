@@ -1,19 +1,29 @@
 //ccc_config.js - custom configuration file
 //see fckconfig.js - FCKConfig.CustomConfigurationsPath
 
+FCKConfig.Plugins.Add( 'cccimage', 'en' ) ;
 
 
 // Stripped down toolbar for CCC
-FCKConfig.ToolbarSets["Default"] = [
-        ['Source','FitWindow','DocProps','-','Preview'],
-        ['Cut','Copy','Paste','PasteText','PasteWord','-','Print','SpellCheck'],
+FCKConfig.ToolbarSets["ccc"] = [
+        ['Source','FitWindow','-','Preview'],
+        ['Cut','Copy','Paste','PasteText','PasteWord','-'],
         ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
         '/',
         ['FontFormat','Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
-        ['OrderedList','UnorderedList','-','Outdent','Indent'],
-        ['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
         ['Link','Unlink','Anchor'],
-        ['Image','Table','Rule','SpecialChar'],
+        ['Table','SpecialChar','CCC_Image']
 ] ;
 
 FCKConfig.EnterMode = 'p' ;
+
+FCKConfig.LinkBrowser = false ;
+FCKConfig.LinkBrowserURL = '/ContentCreator.html?browse=link' ;
+FCKConfig.LinkBrowserWindowWidth	= FCKConfig.ScreenWidth * 0.7 ;		// 70%
+FCKConfig.LinkBrowserWindowHeight	= FCKConfig.ScreenHeight * 0.7 ;	// 70%
+
+FCKConfig.ImageBrowser = false ;
+FCKConfig.FlashUpload = false ;
+FCKConfig.ImageUpload = false ;
+FCKConfig.LinkUpload = false ;
+FCKConfig.FlashBrowser = false ;

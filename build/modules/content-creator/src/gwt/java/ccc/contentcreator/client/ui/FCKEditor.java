@@ -91,7 +91,7 @@ public class FCKEditor extends LayoutContainer {
         editorFrame.setUrl(
             getFckBaseUrl()
             + "editor/fckeditor.html?InstanceName="
-            + _elementID);
+            + _elementID +"&Toolbar=ccc");
         editorFrame.setHeight(cssHeight);
         DOM.setElementProperty(editorFrame.getElement(), "height", cssHeight);
         DOM.setElementProperty(editorFrame.getElement(), "scrolling", "no");
