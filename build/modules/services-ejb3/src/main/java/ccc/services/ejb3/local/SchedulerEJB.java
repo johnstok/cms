@@ -60,8 +60,7 @@ public class SchedulerEJB implements Scheduler, ActionDao {
 
     @Resource private EJBContext _context;
     @EJB(name=ActionExecutor.NAME) private ActionExecutor _executor;
-    @PersistenceContext(unitName = "ccc-persistence")
-    private EntityManager _em;
+    @PersistenceContext private EntityManager _em;
     private Dao _dao;
 
     /** Constructor. */

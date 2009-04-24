@@ -60,8 +60,7 @@ public class DataManagerEJB implements DataManager {
 
     @Resource(mappedName = "java:/ccc") private DataSource _datasource;
     @EJB(name=UserManager.NAME) private UserManager    _users;
-    @PersistenceContext(unitName = "ccc-persistence")
-    private EntityManager _em;
+    @PersistenceContext private EntityManager _em;
 
     private ResourceDao _dao;
     private CoreData _cd;

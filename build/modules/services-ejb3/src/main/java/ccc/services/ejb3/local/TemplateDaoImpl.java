@@ -45,8 +45,7 @@ import ccc.services.ejb3.support.Dao;
 public class TemplateDaoImpl implements TemplateDao {
 
     @EJB(name=UserManager.NAME) private UserManager    _users;
-    @PersistenceContext(unitName = "ccc-persistence")
-    private EntityManager _em;
+    @PersistenceContext private EntityManager _em;
     private ResourceDao _dao;
 
 

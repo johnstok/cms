@@ -1,6 +1,6 @@
 <server>
     <mbean code="org.jboss.security.auth.login.DynamicLoginConfig"
-        name="CCC7:service=CCCLoginConfig">
+        name="CCC7:service=${application.prefix}LoginConfig">
         <attribute name="AuthConfig">META-INF/login-config.xml</attribute>
         <!-- The service which supports dynamic processing of login-config.xml
             configurations.

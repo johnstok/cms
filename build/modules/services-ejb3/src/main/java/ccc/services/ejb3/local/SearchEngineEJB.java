@@ -80,8 +80,7 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
     @javax.annotation.Resource private EJBContext _context;
     @EJB(name=DataManager.NAME) private DataManager _data;
     @EJB(name=UserManager.NAME) private UserManager _users;
-    @PersistenceContext(unitName = "ccc-persistence")
-    private EntityManager _em;
+    @PersistenceContext private EntityManager _em;
 
     private ResourceDao _dao;
     private SimpleLucene _lucene;

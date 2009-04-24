@@ -49,8 +49,7 @@ import ccc.services.ejb3.support.Dao;
 @Local(FolderDao.class)
 public class FolderDaoImpl implements FolderDao {
 
-    @PersistenceContext(unitName = "ccc-persistence")
-    private EntityManager _em;
+    @PersistenceContext private EntityManager _em;
     private  ResourceDao    _dao;
     private  AuditLog       _audit;
     @EJB(name=UserManager.NAME) private UserManager    _users;

@@ -31,17 +31,17 @@
                         <webModule>
                             <groupId>CCC7</groupId>
                             <artifactId>content-server</artifactId>
-                            <contextRoot>/server</contextRoot>
+                            <contextRoot>/${application.prefix}/server</contextRoot>
                         </webModule>
                         <webModule>
                             <groupId>CCC7</groupId>
                             <artifactId>content-creator</artifactId>
-                            <contextRoot>/creator</contextRoot>
+                            <contextRoot>/${application.prefix}/creator</contextRoot>
                         </webModule>
                         <webModule>
                             <groupId>CCC7</groupId>
                             <artifactId>rest-api</artifactId>
-                            <contextRoot>/api</contextRoot>
+                            <contextRoot>/${application.prefix}/api</contextRoot>
                         </webModule>
                         <ejbModule>
                             <groupId>CCC7</groupId>
@@ -54,9 +54,9 @@
                     </modules>
                     <jboss>
                         <version>4.2</version>
-                        <loader-repository>
+                        <!-- loader-repository>
                             CCC7:archive=CCC7.ear
-                        </loader-repository>
+                        </loader-repository -->
                     </jboss>
                 </configuration>
             </plugin>

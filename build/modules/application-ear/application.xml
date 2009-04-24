@@ -9,19 +9,19 @@
     <module>
         <web>
             <web-uri>content-server-7.0.0-SNAPSHOT.war</web-uri>
-            <context-root>/server</context-root>
+            <context-root>/ccc/server</context-root>
         </web>
     </module>
     <module>
         <web>
             <web-uri>content-creator-7.0.0-SNAPSHOT.war</web-uri>
-            <context-root>/creator</context-root>
+            <context-root>/ccc/creator</context-root>
         </web>
     </module>
     <module>
         <web>
             <web-uri>rest-api-7.0.0-SNAPSHOT.war</web-uri>
-            <context-root>/api</context-root>
+            <context-root>/ccc/api</context-root>
         </web>
     </module>
     <module>

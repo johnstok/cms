@@ -53,8 +53,7 @@ public class ActionExecutorEJB implements ActionExecutor {
     private ResourceDao _resources;
     @EJB(name=PageDao.NAME)     private PageDao     _page;
     @EJB(name=UserManager.NAME) private UserManager    _users;
-    @PersistenceContext(unitName = "ccc-persistence")
-    private EntityManager _em;
+    @PersistenceContext private EntityManager _em;
 
     /** Constructor. */
     @SuppressWarnings("unused") public ActionExecutorEJB() { super(); }
