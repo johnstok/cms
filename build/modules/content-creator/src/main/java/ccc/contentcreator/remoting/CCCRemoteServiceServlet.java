@@ -49,20 +49,19 @@ public abstract class CCCRemoteServiceServlet extends RemoteServiceServlet {
 
         final String contextPath = request.getContextPath();
 
-        if(contextPath.equals("/creator")) {
-            try {
-                final URL baseURL =
-                    new URL(moduleBaseURL + strongName + ".gwt.rpc");
-                final URLConnection baseURLConnection =
-                    baseURL.openConnection();
-                is = baseURLConnection.getInputStream();
-            } catch(final Exception ex) {
-                final String message = "ERROR: Could not open policy file "
-                    + ex.toString();
-                getServletContext().log(message);
-                return serializationPolicy;
-            }
+        try {
+            final URL baseURL =
+                new URL(moduleBaseURL + strongName + ".gwt.rpc");
+            final URLConnection baseURLConnection =
+                baseURL.openConnection();
+            is = baseURLConnection.getInputStream();
+        } catch(final Exception ex) {
+            final String message = "ERROR: Could not open policy file "
+                + ex.toString();
+            getServletContext().log(message);
+            return serializationPolicy;
         }
+
         try {
             if (is != null) {
                 try {
