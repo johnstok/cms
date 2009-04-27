@@ -7,15 +7,11 @@ import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.dialogs.ImageSelectionDialog;
+import ccc.contentcreator.dialogs.LinkSelectionDialog;
 import ccc.contentcreator.dialogs.LoginDialog;
-import ccc.contentcreator.dialogs.ResourceSelectionDialog;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.UserSummary;
 
-import com.extjs.gxt.ui.client.Events;
-import com.extjs.gxt.ui.client.data.ModelData;
-import com.extjs.gxt.ui.client.event.ComponentEvent;
-import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.Viewport;
@@ -34,7 +30,7 @@ import com.google.gwt.user.client.ui.RootPanel;
  */
 public final class ContentCreator implements EntryPoint {
 
-    final QueriesServiceAsync qs = GWT.create(QueriesService.class);
+    private final QueriesServiceAsync _qs = GWT.create(QueriesService.class);
 
     /**
      * This is the entry point method.
@@ -60,7 +56,7 @@ public final class ContentCreator implements EntryPoint {
      */
     public void drawMainWindow() {
         Globals.enableExitConfirmation();
-        qs.loggedInUser(new ErrorReportingCallback<UserSummary>(){
+        _qs.loggedInUser(new ErrorReportingCallback<UserSummary>(){
             public void onSuccess(final UserSummary user) {
                 renderUI(user);
 
@@ -96,11 +92,6 @@ public final class ContentCreator implements EntryPoint {
         });
     }
 
-    private static native String jsniSetUrl(String selecteUrl) /*-{
-    $wnd.opener.SetUrl( selecteUrl ) ;
-    $wnd.close() ;
-    }-*/;
-
     /**
      * Lay out the GUI components of the main window.
      *
@@ -134,21 +125,9 @@ public final class ContentCreator implements EntryPoint {
                 rs = rr;
             }
         }
-        final ResourceSelectionDialog resourceSelect =
-            new ResourceSelectionDialog(rs);
+        final LinkSelectionDialog resourceSelect =
+            new LinkSelectionDialog(rs);
 
-        resourceSelect.addListener(Events.Close,
-            new Listener<ComponentEvent>() {
-            public void handleEvent(final ComponentEvent be) {
-                final ModelData target = resourceSelect.selectedResource();
-                qs.getAbsolutePath(
-                    target.<String>get("id"),
-                    new ErrorReportingCallback<String>() {
-                        public void onSuccess(final String arg0) {
-                            jsniSetUrl("/server"+arg0);
-                        }
-                });
-            }});
         resourceSelect.show();
         RootPanel.get().add(resourceSelect);
     }
