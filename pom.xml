@@ -16,9 +16,22 @@
         <jboss-version>4.2.2.GA</jboss-version>
         <h2-version>1.1.103</h2-version>
         <ccc-version>${project.version}</ccc-version>
+        
+        
+        <application.prefix>ash</application.prefix>
         <application.name>application-ear-${project.version}</application.name>
-        <filestore.path>C:\\CCC7\\filestore</filestore.path>
-        <application.prefix>ccc</application.prefix>
+        <filestore.path>C:\\WINDOWS\\Temp\\ccc\\filestore\\${application.prefix}</filestore.path>
+        <application.db-dialect>org.hibernate.dialect.H2Dialect</application.db-dialect>
+        <application.db-datasource>h2-ds.xml</application.db-datasource>
+        <application.db-username>CCC</application.db-username>
+        <application.db-password>CCC</application.db-password>
+        <application.lucene-index-path>C:\\WINDOWS\\Temp\\ccc\\lucene\\${application.prefix}</application.lucene-index-path>
+        
+        <!-- Alternative dialects:
+        org.hibernate.dialect.SQLServerDialect
+        org.hibernate.dialect.Oracle9Dialect
+        org.hibernate.dialect.MySQL5InnoDBDialect
+         -->
     </properties>
 
 
@@ -123,6 +136,7 @@
                 <version>2.1-alpha-2</version>
                 <configuration>
                     <packagingExcludes>WEB-INF/lib/*.jar</packagingExcludes>
+                    <filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
