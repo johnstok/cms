@@ -20,6 +20,7 @@ import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import javax.annotation.security.PermitAll;
 import javax.ejb.EJBContext;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
@@ -42,6 +43,7 @@ import ccc.services.ejb3.support.Dao;
 @Stateless(name=UserManager.NAME)
 @TransactionAttribute(REQUIRED)
 @Local(UserManager.class)
+@PermitAll
 public class UserManagerEJB implements UserManager {
 
     @PersistenceContext private EntityManager _em;

@@ -14,10 +14,7 @@
             <property name="hibernate.connection.aggressive_release" value="true" />
 
             <!-- SQL dialect -->
-            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
-            <!-- property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect" / -->
-            <!-- property name="hibernate.dialect" value="org.hibernate.dialect.Oracle9Dialect" / -->
-            <!-- property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" / -->
+            <property name="hibernate.dialect" value="${application.db-dialect}" />
 
             <!-- Caching  -->
             <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider" />

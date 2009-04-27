@@ -1,5 +1,5 @@
 <policy>
-    <application-policy name="ccc">
+    <application-policy name="${application.prefix}">
         <authentication>
             <login-module code="ccc.security.CCCLoginModule" flag="required">
                 <module-option name="dsJndiName">java:/${application.prefix}</module-option>

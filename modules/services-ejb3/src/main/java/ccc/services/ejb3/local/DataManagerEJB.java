@@ -21,14 +21,12 @@ import java.util.UUID;
 
 import javax.activation.MimeType;
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.sql.DataSource;
 
 import ccc.commons.DBC;
 import ccc.commons.IO;
@@ -48,9 +46,6 @@ import ccc.services.ejb3.support.QueryNames;
 /**
  * EJB implementation of the {@link DataManager} interface.
  *
- * TODO: Confirm the interaction between stateful and stateless session beans
- * w.r.t. propagating transactions...
- *
  * @author Civic Computing Ltd.
  */
 @Stateless(name=DataManager.NAME)
@@ -58,7 +53,6 @@ import ccc.services.ejb3.support.QueryNames;
 @Local(DataManager.class)
 public class DataManagerEJB implements DataManager {
 
-    @Resource(mappedName = "java:/ccc") private DataSource _datasource;
     @EJB(name=UserManager.NAME) private UserManager    _users;
     @PersistenceContext private EntityManager _em;
 
@@ -107,7 +101,7 @@ public class DataManagerEJB implements DataManager {
         f.description(description);
         f.mimeType(mimeType);
         f.size(size);
-        f.data(create(dataStream, size)); // TODO: Delete old data?
+        f.data(create(dataStream, size));
         _dao.update(f);
     }
 

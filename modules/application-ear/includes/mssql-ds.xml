@@ -2,11 +2,11 @@
 
 <datasources>
   <local-tx-datasource>
-    <jndi-name>ccc</jndi-name>
-    <connection-url>jdbc:sqlserver://hestia:1260;DatabaseName=CCC</connection-url>
+    <jndi-name>${application.prefix}</jndi-name>
+    <connection-url>jdbc:sqlserver://hestia:1260;DatabaseName=${application.prefix}</connection-url>
     <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
-    <user-name>CCC</user-name>
-    <password>CCC</password>
+    <user-name>${application.db-username}</user-name>
+    <password>${application.db-password}</password>
         <!-- sql to call when connection is created
         <new-connection-sql>some arbitrary sql</new-connection-sql>
         -->

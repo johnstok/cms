@@ -27,8 +27,6 @@ import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.jboss.annotation.security.SecurityDomain;
-
 import ccc.domain.Alias;
 import ccc.domain.File;
 import ccc.domain.Folder;
@@ -71,7 +69,6 @@ import ccc.services.support.ModelTranslation;
 @TransactionAttribute(REQUIRED)
 @Remote(Queries.class)
 @RolesAllowed({"ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"})
-@SecurityDomain("java:/jaas/ccc")
 public final class QueriesEJB
     extends
         ModelTranslation

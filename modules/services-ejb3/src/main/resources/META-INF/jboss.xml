@@ -1,4 +1,3 @@
 <jboss>
-    <security-domain>java:/jaas/ccc</security-domain>
-    <unauthenticated-principal>ccc</unauthenticated-principal>
+    <unauthenticated-principal>guest</unauthenticated-principal>
 </jboss>
