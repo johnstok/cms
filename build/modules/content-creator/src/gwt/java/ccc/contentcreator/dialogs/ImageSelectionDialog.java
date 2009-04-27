@@ -87,13 +87,13 @@ public class ImageSelectionDialog extends LayoutContainer {
         loader.load();
 
         final ContentPanel panel = new ContentPanel();
-        panel.setCollapsible(true);
+        panel.setCollapsible(false);
         panel.setAnimCollapse(false);
         panel.setFrame(true);
         panel.setId("images-view");
-        panel.setHeading("Simple ListView (0 items selected)");
-        panel.setWidth(535);
-        panel.setAutoHeight(true);
+        panel.setHeaderVisible(false);
+        panel.setWidth(620);
+        panel.setHeight(460);
         panel.setLayout(new FitLayout());
 
         panel.setBodyBorder(false);
