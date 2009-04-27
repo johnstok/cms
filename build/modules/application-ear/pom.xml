@@ -22,6 +22,7 @@
                 <configuration>
                     <filtering>true</filtering>
                     <displayName>${application.prefix}</displayName>
+                    <finalName>${application.name}</finalName>
                     <version>5</version>
                     <defaultLibBundleDir>lib</defaultLibBundleDir>
                     <earSourceDirectory>${basedir}/includes</earSourceDirectory>
@@ -61,7 +62,7 @@
                         </data-sources>
 
                         <loader-repository>
-                            CCC:archive=${application.name}.ear
+                            ccc:archive=${application.name}.ear
                         </loader-repository>
                     </jboss>
                 </configuration>
@@ -226,6 +227,9 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>jboss-maven-plugin</artifactId>
+                        <configuration>
+                            <fileName>${basedir}/target/${application.name}.ear</fileName>
+                        </configuration>
                         <executions>
                             <execution>
                                 <id>deploy</id>

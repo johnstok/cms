@@ -5,9 +5,8 @@
  1. Set the 'application.db-username' property in build/pom.xml
  1. Set the 'application.db-password' property in build/pom.xml
 
- 1. Set the 'application.lucene-index-path' property in build/pom.xml
-
- 1. Set the 'filestore.path' property in build/pom.xml
+ 1. [OPTIONAL] Set the 'application.lucene-index-path' property in build/pom.xml
+ 1. [OPTIONAL] Set the 'filestore.path' property in build/pom.xml
 
  1. [OPTIONAL] Set the 'application.name' property in build/pom.xml to <client>-<project>-<cccVersion>
 
