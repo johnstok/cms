@@ -38,7 +38,7 @@ public final class App extends CccApp {
 
         loadSettings(props, "migration.properties");
 
-        services = new ServiceLookup("application-ear-7.0.0-SNAPSHOT");
+        services = new ServiceLookup("application-ear-7.0.0-SNAPSHOT"); // FIXME: Shouldn't be hard-coded
 
         login(USERNAME, PASSWORD);
 

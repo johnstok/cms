@@ -36,6 +36,7 @@ public final class JNDI implements Registry {
     public Registry put(final String location, final Object object) {
 
         try {
+            _log.debug("Binding object to JNDI with path: "+location);
             jndiContext().rebind(location, object);
             return this;
         } catch (final NamingException ne) {
@@ -64,6 +65,7 @@ public final class JNDI implements Registry {
     @Override
     public <T> T get(final String location) {
         try {
+            _log.debug("Looking up object from JNDI with path: "+location);
             final Object o = jndiContext().lookup(location);
             return (T) o;
         } catch (final NameNotFoundException nfe) {

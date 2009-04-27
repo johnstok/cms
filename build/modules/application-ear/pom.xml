@@ -18,11 +18,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-ear-plugin</artifactId>
+                <version>2.3.2</version>
                 <configuration>
-                    <displayName>CCC7</displayName>
+                    <filtering>true</filtering>
+                    <displayName>${application.prefix}</displayName>
                     <version>5</version>
                     <defaultLibBundleDir>lib</defaultLibBundleDir>
-                    <applicationXml>${basedir}/application.xml</applicationXml>
                     <earSourceDirectory>${basedir}/includes</earSourceDirectory>
                     <generatedDescriptorLocation>
                         ${basedir}/target/descriptors
@@ -53,7 +54,12 @@
                         </sarModule>
                     </modules>
                     <jboss>
-                        <version>4.2</version>
+                        <version>4.2</version><!-- Left at 4.2 due to http://jira.codehaus.org/browse/MEAR-105 -->
+                        <security-domain>java:/jaas/${application.prefix}</security-domain>
+                        <data-sources>
+                            <data-source>${application.db-datasource}</data-source>
+                        </data-sources>
+
                         <!-- loader-repository>
                             CCC7:archive=CCC7.ear
                         </loader-repository -->

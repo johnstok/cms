@@ -2,12 +2,12 @@
 
 <datasources>
   <local-tx-datasource>
-    <jndi-name>ccc</jndi-name>
+    <jndi-name>${application.prefix}</jndi-name>
     <connection-url>jdbc:oracle:thin:@poseidon:1521:dev</connection-url>
 
     <driver-class>oracle.jdbc.driver.OracleDriver</driver-class>
-    <user-name>ccc</user-name>
-    <password>d3ccc</password>
+    <user-name>${application.db-username}</user-name>
+    <password>${application.db-password}</password>
     <!-- Uses the pingDatabase method to check a connection is still valid before handing it out from the pool -->
     <!--valid-connection-checker-class-name>org.jboss.resource.adapter.jdbc.vendor.OracleValidConnectionChecker</valid-connection-checker-class-name-->
     <!-- Checks the Oracle error codes and messages for fatal errors -->
