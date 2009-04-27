@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 
+import ccc.commons.CCCProperties;
 import ccc.migration.DbUtilsDB;
 import ccc.migration.FileUploader;
 import ccc.migration.LegacyDBQueries;
@@ -38,7 +39,7 @@ public final class App extends CccApp {
 
         loadSettings(props, "migration.properties");
 
-        services = new ServiceLookup("application-ear-7.0.0-SNAPSHOT"); // FIXME: Shouldn't be hard-coded
+        services = new ServiceLookup(props.getProperty("app-name"));
 
         login(USERNAME, PASSWORD);
 
