@@ -85,7 +85,7 @@
   						</components>
   						<componentProperties>
   							<implementation>jpaconfiguration</implementation>
-  							<persistenceunit>ccc-persistence</persistenceunit>
+  							<persistenceunit>${application.prefix}-persistence</persistenceunit>
   							<outputfilename>
   								ccc7-schema.sql
   							</outputfilename>
