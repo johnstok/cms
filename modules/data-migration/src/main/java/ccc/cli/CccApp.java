@@ -150,8 +150,9 @@ class CccApp {
                     dbProps.getProperty("db.username"),
                     dbProps.getProperty("db.password"));
             connection.setAutoCommit(false);
+            LOG.debug(
+                "Connected to "+dbProps.getProperty("db.connection.string"));
             return connection;
-
         } catch (final ClassNotFoundException e) {
             throw new MigrationException(e);
         } catch (final SQLException e) {
