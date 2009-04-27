@@ -60,9 +60,9 @@
                             <data-source>${application.db-datasource}</data-source>
                         </data-sources>
 
-                        <!-- loader-repository>
-                            CCC7:archive=CCC7.ear
-                        </loader-repository -->
+                        <loader-repository>
+                            CCC:archive=${application.name}.ear
+                        </loader-repository>
                     </jboss>
                 </configuration>
             </plugin>
