@@ -91,6 +91,7 @@ public class CreateUserDialog extends AbstractEditDialog {
                     .check(notValidEmail(_email))
                     .check(matchingPasswords(
                         _password1.getValue(), _password2.getValue()))
+                    .check(passwordStrength(_password1.getValue()))
                     .check(uniqueUsername(_username.getValue()))
                     .callMethodOr(reportErrors());
             }
@@ -124,26 +125,6 @@ public class CreateUserDialog extends AbstractEditDialog {
                 );
             }
 
-        };
-    }
-
-    /**
-     * Factory method for password validators.
-     *
-     * @param pw1 The password to check.
-     * @param pw2 The password to check.
-     * @return A new instance of the password validator.
-     */
-    private Validator matchingPasswords(final String pw1, final String pw2) {
-        return new Validator() {
-            public void validate(final Validate validate) {
-                if (pw1 != null && pw2 != null && !pw1.equals(pw2)) {
-                    validate.addMessage(
-                        constants().passwordsDidNotMatch()
-                    );
-                }
-                validate.next();
-            }
         };
     }
 

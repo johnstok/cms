@@ -1009,4 +1009,92 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("must not contain < or > character")
     String mustNotContainBrackets();
+
+    /**
+     * "Password is too weak".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Password is too weak.")
+    String passwordTooWeak();
+
+    /**
+     * "Password is too short".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Password is too short.")
+    String passwordTooShort();
+
+    /**
+     * "Please choose an action".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Please choose an action.")
+    String pleaseChooseAnAction();
+
+    /**
+     * "Please specify a date and time".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Please specify a date and time.")
+    String pleaseSpecifyDateAndTime();
+
+    /**
+     * "Date".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Date")
+    String date();
+
+    /**
+     *  "The folder name".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("The folder name")
+    String theFolderName();
+
+    /**
+     *  "Login failed".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Login failed.")
+    String loginFailed();
+
+    /**
+     *  "Key".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Key")
+    String key();
+
+    /**
+     *  "Value".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Value")
+    String value();
+
+    /**
+     *  "New".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("New")
+    String newLabel();
+
+    /**
+     *  "Remove".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Remove")
+    String remove();
 }

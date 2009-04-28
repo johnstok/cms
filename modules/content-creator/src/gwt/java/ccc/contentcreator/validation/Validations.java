@@ -44,6 +44,9 @@ public class Validations {
         + "@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*"
         +"[a-z0-9])?";
 
+    private static final String  STRONG_PW =
+        "^(?=.{10,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$";
+
     /**
      * TODO: Add a description of this method.
      *
@@ -289,7 +292,8 @@ public class Validations {
     public static Validator noBrackets(final TextField<String> text) {
         return new Validator() {
             public void validate(final Validate validate) {
-                if(text.getValue() != null && !text.getValue().matches(NO_BRACKETS)) {
+                if(text.getValue() != null
+                        && !text.getValue().matches(NO_BRACKETS)) {
                     validate.addMessage(
                         text.getFieldLabel()
                         + " "+_uiConstants.mustNotContainBrackets()
@@ -300,4 +304,43 @@ public class Validations {
         };
     }
 
+    /**
+     * Factory method for password matching validators.
+     *
+     * @param pw1 The password to check.
+     * @param pw2 The password to check.
+     * @return A new instance of the password validator.
+     */
+    public static Validator matchingPasswords(final String pw1,
+                                              final String pw2) {
+        return new Validator() {
+            public void validate(final Validate validate) {
+                if (pw1 != null && pw2 != null && !pw1.equals(pw2)) {
+                    validate.addMessage(
+                        _uiConstants.passwordsDidNotMatch()
+                    );
+                }
+                validate.next();
+            }
+        };
+    }
+
+    /**
+     * Factory method for password strength validators.
+     *
+     * @param pw The password to check.
+     * @return A new instance of the password validator.
+     */
+    public static Validator passwordStrength(final String pw) {
+        return new Validator() {
+            public void validate(final Validate validate) {
+                if (pw != null && pw.length() < 10) {
+                    validate.addMessage(_uiConstants.passwordTooShort());
+                } else if (!pw.matches(STRONG_PW)) {
+                    validate.addMessage(_uiConstants.passwordTooWeak());
+                }
+                validate.next();
+            }
+        };
+    }
 }
