@@ -18,7 +18,7 @@
         <ccc-version>${project.version}</ccc-version>
         
         
-        <application.prefix>ash</application.prefix>
+        <application.prefix>civic</application.prefix>
         <application.name>${application.prefix}</application.name>
         <filestore.path>C:\\WINDOWS\\Temp\\ccc\\filestore\\${application.prefix}</filestore.path>
         <application.db-dialect>org.hibernate.dialect.H2Dialect</application.db-dialect>
