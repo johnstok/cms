@@ -17,7 +17,6 @@ import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.UserTable;
 import ccc.contentcreator.validation.Validate;
-import ccc.contentcreator.validation.Validator;
 import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
 
@@ -83,6 +82,7 @@ public class EditUserPwDialog extends AbstractEditDialog {
                     .check(notValidResourceName(_username))
                     .check(matchingPasswords(
                         _password1.getValue(), _password2.getValue()))
+                    .check(passwordStrength(_password1.getValue()))
                     .callMethodOr(reportErrors());
             }
         };
@@ -110,32 +110,11 @@ public class EditUserPwDialog extends AbstractEditDialog {
                     _userDTO,
                     new ErrorReportingCallback<UserSummary>() {
                         public void onSuccess(final UserSummary result) {
-                            // TODO: Update the row with result
                             _userTable.refreshUsers();
                             close();
                         }
                     }
                 );
-            }
-        };
-    }
-
-    /**
-     * Factory method for password validators.
-     *
-     * @param pw1 The password to check.
-     * @param pw2 The password to check.
-     * @return A new instance of the password validator.
-     */
-    private Validator matchingPasswords(final String pw1, final String pw2) {
-        return new Validator() {
-            public void validate(final Validate validate) {
-                if (pw1 != null && pw2 != null && !pw1.equals(pw2)) {
-                    validate.addMessage(
-                        constants().passwordsDidNotMatch()
-                    );
-                }
-                validate.next();
             }
         };
     }
