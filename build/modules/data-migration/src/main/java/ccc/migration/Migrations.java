@@ -156,6 +156,19 @@ public class Migrations {
         final Map<Integer, UserDelta> mus = _legacyQueries.selectUsers();
         for (final Map.Entry<Integer, UserDelta> mu : mus.entrySet()) {
             try {
+                // TODO: improve reporting
+                final UserDelta ud = mu.getValue();
+
+                if (ud._password == null) {
+                    log.warn("User: "+ud._username+" has null password.");
+                } else if (ud._password.equals(ud._username)) {
+                    log.warn("User: "+ud._username
+                        +" has username as a password.");
+                } else if (ud._password.length() < 6) {
+                    log.warn("User: "+ud._username
+                        +" has password with less than 6 characters.");
+                }
+
                 final UserSummary u = _commands.createUser(mu.getValue());
                 _users.put(mu.getKey(), u);
             } catch (final RuntimeException e) {
