@@ -13,6 +13,7 @@ package ccc.services.ejb3.remote;
 
 import static javax.ejb.TransactionAttributeType.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,7 @@ import ccc.domain.Alias;
 import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.Page;
+import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
@@ -267,8 +269,14 @@ public final class QueriesEJB
 
     /** {@inheritDoc} */
     @Override
-    public Collection<FileSummary> getAllImages() {
-        final List<File> list = _datas.findImages();
+    public Collection<FileSummary> getAllContentImages() {
+        final List<File> list = new ArrayList<File>();
+        for (final File file : _datas.findImages()) {
+            if (PredefinedResourceNames.CONTENT.equals(
+                file.root().name().toString())) {
+                list.add(file);
+            }
+        }
         return mapFiles(list);
     }
 

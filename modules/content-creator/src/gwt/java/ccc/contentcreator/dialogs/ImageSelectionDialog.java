@@ -67,7 +67,7 @@ public class ImageSelectionDialog extends LayoutContainer {
             protected void load(final ModelData loadConfig,
                                 final AsyncCallback<List<ModelData>> callback) {
 
-                _qs.getAllImages(
+                _qs.getAllContentImages(
                     new AsyncCallback<Collection<FileSummary>>(){
 
                         public void onFailure(final Throwable arg0) {

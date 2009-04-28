@@ -173,8 +173,8 @@ public class QueriesImpl
 
     /** {@inheritDoc} */
     @Override
-    public Collection<FileSummary> getAllImages() {
-        return _services.lookupQueries().getAllImages();
+    public Collection<FileSummary> getAllContentImages() {
+        return _services.lookupQueries().getAllContentImages();
     }
 
     /** {@inheritDoc} */

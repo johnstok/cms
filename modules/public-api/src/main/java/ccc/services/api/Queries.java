@@ -64,11 +64,11 @@ public interface Queries {
     Collection<ResourceSummary> getChildren(String folderId);
 
     /**
-     * List all images.
+     * List all content images.
      *
      * @return The list of images.
      */
-    Collection<FileSummary> getAllImages();
+    Collection<FileSummary> getAllContentImages();
 
     /**
      * Determine the absolute path to a resource.
