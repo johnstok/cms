@@ -137,7 +137,7 @@ public class VelocityProcessor {
 
     private void handleException(final Writer output, final Exception e) {
         try {
-            output.write(e.getMessage());
+            output.write(""+e.getMessage()); // getMessage() is NULL for an NPE
         } catch (final IOException e1) {
             throw new CCCException(e);
         }
