@@ -1225,4 +1225,21 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Applies the selected resource's working copy.")
     String appliesTheSelectedResourcesWorkingCopy();
+
+    /**
+     * "Your session timed out - please restart the application.".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Your session timed out - please restart the application.")
+    String sessionTimeOutPleaseRestart();
+
+
+    /**
+     * "An unexpected error occured.".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("An unexpected error occured.")
+    String unexpectedErrorOccured();
 }
