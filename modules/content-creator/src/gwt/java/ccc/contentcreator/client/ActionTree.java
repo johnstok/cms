@@ -11,6 +11,8 @@
  */
 package ccc.contentcreator.client;
 
+import ccc.contentcreator.api.UIConstants;
+
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -28,6 +30,7 @@ public class ActionTree extends Tree {
 
     private final ActionTable   _at = new ActionTable();
     private final LeftRightPane _view;
+    private final UIConstants _constants = Globals.uiConstants();
 
     /**
      * Constructor.
@@ -37,11 +40,11 @@ public class ActionTree extends Tree {
     public ActionTree(final LeftRightPane view) {
         _view = view;
 
-        final TreeItem actions = new TreeItem("Actions"); // FIXME: I18n
+        final TreeItem actions = new TreeItem(_constants.actions());
         actions.setId("actions");
-        final TreeItem pending = new TreeItem("Pending"); // FIXME: I18n
+        final TreeItem pending = new TreeItem(_constants.pending());
         pending.setId("pending");
-        final TreeItem completed = new TreeItem("Completed"); // FIXME: I18n
+        final TreeItem completed = new TreeItem(_constants.completed());
         completed.setId("completed");
 
         getRootItem().add(actions);

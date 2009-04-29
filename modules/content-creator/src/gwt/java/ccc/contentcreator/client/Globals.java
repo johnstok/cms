@@ -201,8 +201,7 @@ public final class Globals {
             public void onWindowClosed() { /* No Op */ }
 
             public String onWindowClosing() {
-                return "This action will exit the application - "
-                       + "any unsaved work will be lost!"; // TODO: I18n
+                return uiConstants().exitWarning();
             }
         };
 
