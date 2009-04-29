@@ -10,7 +10,7 @@
     <url>http://maven.apache.org</url>
 
     <properties>
-        <gxt-version>1.2.3</gxt-version>
+        <gxt-version>1.2.4</gxt-version>
         <gwt-version>1.6.4</gwt-version>
         <velocity-version>1.6.1</velocity-version>
         <jboss-version>4.2.2.GA</jboss-version>
@@ -18,7 +18,7 @@
         <ccc-version>${project.version}</ccc-version>
         
         
-        <application.prefix>civic</application.prefix>
+        <application.prefix>ash</application.prefix>
         <application.name>${application.prefix}</application.name>
         <filestore.path>C:\\WINDOWS\\Temp\\ccc\\filestore\\${application.prefix}</filestore.path>
         <application.db-dialect>org.hibernate.dialect.H2Dialect</application.db-dialect>
