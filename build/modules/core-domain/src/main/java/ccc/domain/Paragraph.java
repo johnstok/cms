@@ -14,6 +14,7 @@ package ccc.domain;
 import static ccc.commons.DBC.*;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -30,8 +31,9 @@ public final class Paragraph implements Serializable {
     private Boolean _boolean;
     private Date    _date;
     private String  _name;
+    private BigDecimal _number;
 
-    @SuppressWarnings("unused") private Paragraph() { super(); }
+    private Paragraph() { super(); }
 
 
     private void name(final String name) {
@@ -56,6 +58,12 @@ public final class Paragraph implements Serializable {
         require().notNull(date);
         _date = date;
         _type = Type.DATE;
+    }
+
+    private void number(final BigDecimal number) {
+        require().notNull(number);
+        _number = number;
+        _type = Type.NUMBER;
     }
 
     /**
@@ -104,6 +112,64 @@ public final class Paragraph implements Serializable {
         p.date(date);
 
         return p;
+    }
+
+    /**
+     * Factory method. Creates a paragraph representing a number.
+     *
+     * @param number The number for this paragraph.
+     * @param name The name of the paragraph.
+     * @return A paragraph with numerical content.
+     */
+    public static Paragraph fromNumber(final String name, final long number) {
+        final Paragraph p = new Paragraph();
+
+        p.name(name);
+        p.number(BigDecimal.valueOf(number));
+
+        return p;
+    }
+
+    /**
+     * Factory method. Creates a paragraph representing a number.
+     *
+     * @param number The number for this paragraph.
+     * @param name The name of the paragraph.
+     * @return A paragraph with numerical content.
+     */
+    public static Paragraph fromNumber(final String name, final double number) {
+        final Paragraph p = new Paragraph();
+
+        p.name(name);
+        p.number(BigDecimal.valueOf(number));
+
+        return p;
+    }
+
+    /**
+     * Factory method. Creates a paragraph representing a number.
+     *
+     * @param number The number for this paragraph.
+     * @param name The name of the paragraph.
+     * @return A paragraph with numerical content.
+     */
+    public static Paragraph fromNumber(final String name,
+                                       final BigDecimal number) {
+        final Paragraph p = new Paragraph();
+
+        p.name(name);
+        p.number(number);
+
+        return p;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return The numerical representation of this paragraph.
+     */
+    public BigDecimal number() {
+        return _number;
     }
 
     /**
@@ -164,7 +230,11 @@ public final class Paragraph implements Serializable {
         BOOLEAN,
 
         /** DATE : Type. */
-        DATE}
+        DATE,
+
+        /** NUMBER : Type. */
+        NUMBER
+    }
 
     /** {@inheritDoc} */
     @Override
@@ -213,6 +283,7 @@ public final class Paragraph implements Serializable {
         para.set("text", text());
         para.set("bool", bool());
         para.set("date", date());
+        para.set("number", _number);
         return para;
     }
 
@@ -240,6 +311,10 @@ public final class Paragraph implements Serializable {
 
             case TEXT:
                 p._text = snapshot.getString("text");
+                break;
+
+            case NUMBER:
+                p._number = snapshot.getBigDecimal("number");
                 break;
 
             default:

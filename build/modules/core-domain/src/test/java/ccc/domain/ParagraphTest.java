@@ -11,6 +11,7 @@
  */
 package ccc.domain;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import junit.framework.TestCase;
@@ -23,6 +24,8 @@ import ccc.commons.Testing;
  * @author Civic Computing Ltd
  */
 public final class ParagraphTest extends TestCase {
+
+
 
     /**
      * Test.
@@ -44,6 +47,24 @@ public final class ParagraphTest extends TestCase {
     /**
      * Test.
      */
+    public void testCreateNumberSnapshot() {
+
+        // ARRANGE
+        final Paragraph p =
+            Paragraph.fromNumber("foo", new BigDecimal("123.456"));
+
+        // ACT
+        final Snapshot s = p.createSnapshot();
+
+        // ASSERT
+        assertEquals("foo", s.getString("name"));
+        assertEquals("NUMBER", s.getString("type"));
+        assertEquals(new BigDecimal("123.456"), s.getBigDecimal("number"));
+    }
+
+    /**
+     * Test.
+     */
     public void testFromSnapshot() {
 
         // ARRANGE
@@ -53,6 +74,7 @@ public final class ParagraphTest extends TestCase {
         s.set("text", "foo");
         s.set("bool", Boolean.TRUE);
         s.set("date", new Date());
+        s.set("number", new BigDecimal("123.456"));
 
         // ACT
         final Paragraph p = Paragraph.fromSnapshot(s);
@@ -63,6 +85,33 @@ public final class ParagraphTest extends TestCase {
         assertEquals("foo", p.text());
         assertNull(p.date());
         assertNull(p.bool());
+        assertNull(p.number());
+    }
+
+    /**
+     * Test.
+     */
+    public void testFromNumberSnapshot() {
+
+        // ARRANGE
+        final Snapshot s = new Snapshot();
+        s.set("name", "bar");
+        s.set("type", "NUMBER");
+        s.set("text", "foo");
+        s.set("bool", Boolean.TRUE);
+        s.set("date", new Date());
+        s.set("number", new BigDecimal("123.456"));
+
+        // ACT
+        final Paragraph p = Paragraph.fromSnapshot(s);
+
+        // ASSERT
+        assertEquals("bar", p.name());
+        assertEquals(Paragraph.Type.NUMBER, p.type());
+        assertEquals(new BigDecimal("123.456"), p.number());
+        assertNull(p.date());
+        assertNull(p.bool());
+        assertNull(p.text());
     }
 
     /**
@@ -116,6 +165,49 @@ public final class ParagraphTest extends TestCase {
         // ASSERT
         assertEquals(Paragraph.Type.TEXT, p.type());
         assertEquals("Hello world", p.text());
+        assertEquals("foo", p.name());
+    }
+
+    /**
+     * Test.
+     */
+    public void testLongConstructor() {
+
+        // ACT
+        final Paragraph p = Paragraph.fromNumber("foo", 0);
+
+        // ASSERT
+        assertEquals(Paragraph.Type.NUMBER, p.type());
+        assertEquals(BigDecimal.valueOf(0), p.number());
+        assertEquals("foo", p.name());
+    }
+
+    /**
+     * Test.
+     */
+    public void testFloatConstructor() {
+
+        // ACT
+        final Paragraph p = Paragraph.fromNumber("foo", 0.1f);
+
+        // ASSERT
+        assertEquals(Paragraph.Type.NUMBER, p.type());
+        assertEquals(BigDecimal.valueOf(0.1f), p.number());
+        assertEquals("foo", p.name());
+    }
+
+    /**
+     * Test.
+     */
+    public void testBigDecimalConstructor() {
+
+        // ACT
+        final BigDecimal bd = new BigDecimal("-1234.5400390625");
+        final Paragraph p = Paragraph.fromNumber("foo", bd);
+
+        // ASSERT
+        assertEquals(Paragraph.Type.NUMBER, p.type());
+        assertEquals(BigDecimal.valueOf(-1234.54f), p.number());
         assertEquals("foo", p.name());
     }
 

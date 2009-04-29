@@ -11,6 +11,7 @@
  */
 package ccc.domain;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -73,6 +74,21 @@ public class SnapshotTest
 
         // ASSERT
         assertEquals("{\"key\":\"value\"}", s.getDetail());
+    }
+
+    /**
+     * Test.
+     */
+    public void testAddBigDecimal() {
+
+        // ARRANGE
+        final Snapshot s = new Snapshot();
+
+        // ACT
+        s.set("key", BigDecimal.TEN);
+
+        // ASSERT
+        assertEquals("{\"key\":\"10\"}", s.getDetail());
     }
 
     /**
