@@ -264,7 +264,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                                     }});
                             break;
                         default:
-                            Globals.alert("Error.");
+                            Globals.alert(constants().error());
                             break;
                     }
             }

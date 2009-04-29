@@ -76,7 +76,7 @@ public class MetadataDialog
      */
     public MetadataDialog(final String resourceId,
                           final Collection<Map.Entry<String, String>> data) {
-        super("Metadata", data, true); // I18n
+        super(Globals.uiConstants().metadata(), data, true);
 
         _resourceId = resourceId;
 
@@ -103,7 +103,8 @@ public class MetadataDialog
         _sm = new CheckBoxSelectionModel<ModelData>();
         configs.add(_sm.getColumn());
 
-        final ColumnConfig keyColumn = new ColumnConfig("key", "Key", 100);
+        final ColumnConfig keyColumn =
+            new ColumnConfig("key", constants().key(), 100);
         final TextField<String> keyField = new TextField<String>();
         keyField.setId("key-editor");
         keyField.setAllowBlank(false);
@@ -113,7 +114,7 @@ public class MetadataDialog
 
         final ColumnConfig valueColumn = new ColumnConfig();
         valueColumn.setId("value");
-        valueColumn.setHeader("Value");
+        valueColumn.setHeader(constants().value());
         final TextField<String> valueField = new TextField<String>();
         valueField.setId("value-editor");
         valueField.setAllowBlank(false);
@@ -131,7 +132,7 @@ public class MetadataDialog
 
         toolBar.add(new SeparatorToolItem());
 
-        final TextToolItem add = new TextToolItem("New");
+        final TextToolItem add = new TextToolItem(constants().newLabel());
         add.setId("new-metadatum");
         add.addSelectionListener(new SelectionListener<ToolBarEvent>() {
             @Override public void componentSelected(final ToolBarEvent ce) {
@@ -147,7 +148,7 @@ public class MetadataDialog
 
         toolBar.add(new SeparatorToolItem());
 
-        final TextToolItem remove = new TextToolItem("Remove");
+        final TextToolItem remove = new TextToolItem(constants().remove());
         remove.setId("remove-metadatum");
         remove.addSelectionListener(new SelectionListener<ToolBarEvent>() {
             @Override public void componentSelected(final ToolBarEvent ce) {
@@ -180,17 +181,17 @@ public class MetadataDialog
         for (final Map.Entry<String, String> datum : metadata.entrySet()) {
             if (null==datum.getKey()
                 || datum.getKey().trim().length() < 1) {
-                sb.append("No empty keys are allowed.\n");
+                sb.append(_constants.noEmptyKeysAllowed());
             }
             if (null==datum.getValue()
                 || datum.getValue().trim().length() < 1) {
-                sb.append("No empty values are allowed.\n");
+                sb.append(_constants.noEmptyValuesAllowed());
             }
             if (!datum.getKey().matches("[^<^>]*")) {
-                sb.append("Keys must not contain brackets.\n");
+                sb.append(_constants.keysMustNotContainBrackets());
             }
             if (!datum.getValue().matches("[^<^>]*")) {
-                sb.append("Values must not contain brackets.\n");
+                sb.append(_constants.valuesMustNotContainBrackets());
             }
         }
         return sb.toString();

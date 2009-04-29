@@ -88,7 +88,7 @@ public class LoginDialog extends AbstractEditDialog {
                             if (loginSucceeded) {
                                 Globals.refresh();
                             } else {
-                                _message.setText("Login failed.");
+                                _message.setText(constants().loginFailed());
                             }
                         }
                 });

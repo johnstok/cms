@@ -67,11 +67,11 @@ public class CreateActionDialog
             public void componentSelected(final ButtonEvent ce) {
 
                 if (null==_createAction.actionType()) {
-                    Globals.alert("Please choose an action."); // FIXME: I18n
+                    Globals.alert(constants().pleaseChooseAnAction());
                     return;
                 }
                 if (null==_dtPicker.getDate()) {
-                    Globals.alert("Please specify a date and time."); // FIXME: I18n
+                    Globals.alert(constants().pleaseSpecifyDateAndTime());
                     return;
                 }
                 _commands.createAction(
@@ -100,9 +100,9 @@ public class CreateActionDialog
 
         DateTimePicker() {
             setLayout(new FormLayout());
-            _date.setFieldLabel("Date");
+            _date.setFieldLabel(Globals.uiConstants().date());
             add(_date, new FormData("95%"));
-            _time.setFieldLabel("Time");
+            _time.setFieldLabel(Globals.uiConstants().time());
             add(_time, new FormData("95%"));
         }
 

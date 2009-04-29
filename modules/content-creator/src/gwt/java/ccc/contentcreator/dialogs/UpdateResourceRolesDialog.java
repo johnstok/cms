@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import ccc.contentcreator.callbacks.DisposingCallback;
+import ccc.contentcreator.client.Globals;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -41,7 +42,7 @@ public class UpdateResourceRolesDialog
      */
     public UpdateResourceRolesDialog(final String resourceId,
                                      final Collection<String> currentRoles) {
-        super("Update roles"); // FIXME: I18n
+        super(Globals.uiConstants().updateRoles());
         _resourceId = resourceId;
 
         setWidth(400);

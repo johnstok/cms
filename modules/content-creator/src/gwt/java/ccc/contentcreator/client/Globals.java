@@ -18,6 +18,7 @@ import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.SecurityService;
 import ccc.contentcreator.api.SecurityServiceAsync;
 import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.api.UIMessages;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
@@ -58,6 +59,15 @@ public final class Globals {
      */
     public static UIConstants uiConstants() {
         return GWT.create(UIConstants.class);
+    }
+
+    /**
+     * Factory for {@link UIMessages} objects.
+     *
+     * @return A new instance of {@link UIMessages}.
+     */
+    public static UIMessages uiMessages() {
+        return GWT.create(UIMessages.class);
     }
 
     /**
