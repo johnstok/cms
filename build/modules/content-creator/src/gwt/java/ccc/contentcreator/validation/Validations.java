@@ -14,6 +14,7 @@ package ccc.contentcreator.validation;
 import java.util.List;
 
 import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.api.UIMessages;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.services.api.ParagraphDelta;
@@ -34,6 +35,9 @@ public class Validations {
 
     private final static UIConstants _uiConstants =
         GWT.create(UIConstants.class);
+
+    private final static UIMessages _uiMessages =
+        GWT.create(UIMessages.class);
 
     private static final String  VALID_CHARACTERS = "[\\.\\-\\w]+";
 
@@ -139,9 +143,7 @@ public class Validations {
                         public void onSuccess(final Boolean nameExists) {
                             if (nameExists) {
                                 validate.addMessage(
-                                    "A resource with name '"
-                                    + name.getValue()
-                                    + _uiConstants.alreadyExistsInThisFolder()
+                                    _uiMessages.resourceWithNameAlreadyExistsInThisFolder(name.getValue())
                                 );
                             }
                             validate.next();
@@ -188,9 +190,7 @@ public class Validations {
                         public void onSuccess(final Boolean nameExists) {
                             if (nameExists) {
                                 validate.addMessage(
-                                    _uiConstants.resourceWithName()
-                                    + name.getValue()
-                                    + _uiConstants.alreadyExistsInTheParentFolder()
+                                    _uiMessages.resourceWithNameAlreadyExistsInTheParentFolder(name.getValue())
                                 );
                             }
                             validate.next();

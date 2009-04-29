@@ -17,6 +17,7 @@ import ccc.contentcreator.api.CommandServiceAsync;
 import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.api.UIMessages;
 import ccc.contentcreator.client.Globals;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -37,6 +38,7 @@ public abstract class AbstractBaseDialog
         Window {
 
     protected final UIConstants _constants = Globals.uiConstants();
+    protected final UIMessages  _messages  = Globals.uiMessages();
 
     private final QueriesServiceAsync _qs = GWT.create(QueriesService.class);
     private final CommandServiceAsync _cs = GWT.create(CommandService.class);
@@ -80,6 +82,15 @@ public abstract class AbstractBaseDialog
      */
     protected UIConstants constants() {
         return _constants;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the _constants.
+     */
+    protected UIMessages messages() {
+        return _messages;
     }
 
     /**

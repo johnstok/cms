@@ -104,7 +104,7 @@ public class UpdatePageDialog
     private Button createApplyNowButton() {
 
         final Button applyNowButton = new Button(
-            "Apply now",
+            _constants.applyNow(),
             applyNowAction());
         applyNowButton.setId("applyNow");
         return applyNowButton;
@@ -113,7 +113,7 @@ public class UpdatePageDialog
     private Button createSaveDraftButton() {
 
         final Button saveDraftButton = new Button(
-            "Save draft",
+            _constants.saveDraft(),
             saveDraftAction());
         saveDraftButton.setId("saveDraft");
         return saveDraftButton;

@@ -627,30 +627,6 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
     String isNotValid();
 
     /**
-     * "A resource with name '".
-     *
-     * @return The constant, in the appropriate locale.
-     */
-    @DefaultStringValue("A resource with name '")
-    String resourceWithName();
-
-    /**
-     * "' already exists in the parent folder.".
-     *
-     * @return The constant, in the appropriate locale.
-     */
-    @DefaultStringValue("' already exists in the parent folder.")
-    String alreadyExistsInTheParentFolder();
-
-    /**
-     * "' already exists in this folder.".
-     *
-     * @return The constant, in the appropriate locale.
-     */
-    @DefaultStringValue("' already exists in this folder.")
-    String alreadyExistsInThisFolder();
-
-    /**
      * "is too short".
      *
      * @return The constant, in the appropriate locale.
@@ -1097,4 +1073,60 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Remove")
     String remove();
+
+    /**
+     *  "Apply now".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Apply now")
+    String applyNow();
+
+    /**
+     *  "Save draft".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Save draft")
+    String saveDraft();
+
+    /**
+     *  "No empty keys are allowed.\n".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("No empty keys are allowed.\n")
+    String noEmptyKeysAllowed();
+
+    /**
+     *  "No empty values are allowed.\n".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("No empty values are allowed.\n")
+    String noEmptyValuesAllowed();
+
+    /**
+     *  "Keys must not contain brackets.\n".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Keys must not contain brackets.\n")
+    String keysMustNotContainBrackets();
+
+    /**
+     *  "Values must not contain brackets.\n".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Values must not contain brackets.\n")
+    String valuesMustNotContainBrackets();
+
+    /**
+     * "Metadata".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Metadata")
+    String metadata();
 }

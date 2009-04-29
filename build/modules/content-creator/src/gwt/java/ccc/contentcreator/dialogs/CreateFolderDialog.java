@@ -56,7 +56,7 @@ public class CreateFolderDialog extends AbstractEditDialog {
 
         _text.setId("folder-name");
         _text.setFieldLabel(constants().name());
-        _text.setEmptyText("The folder name");
+        _text.setEmptyText(constants().theFolderName());
         _text.setAllowBlank(false);
         addField(_text);
     }
