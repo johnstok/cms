@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -182,6 +183,22 @@ public class Snapshot implements Serializable {
         }
     }
 
+
+    /**
+     * Mutator.
+     *
+     * @param key The key.
+     * @param value The value, as a big decimal.
+     */
+    public void set(final String key, final BigDecimal value) {
+        try {
+            // Javascript doesn't support decimals - store as a string.
+            _detail.put(key, (null==value) ? null : value.toString());
+        } catch (final JSONException e) {
+            throw new InvalidSnapshotException(e);
+        }
+    }
+
     /**
      * Mutator.
      *
@@ -282,6 +299,17 @@ public class Snapshot implements Serializable {
         } catch (final JSONException e) {
             throw new InvalidSnapshotException(e);
         }
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @param key The key for the value.
+     * @return The value, as a big decimal.
+     */
+    public BigDecimal getBigDecimal(final String key) {
+        return new BigDecimal(getString(key));
     }
 
     private void readObject(final ObjectInputStream aInputStream)
