@@ -78,14 +78,14 @@ public class CreateActionPanel
                         case PUBLISH:
                             _pPanel = new EmptyPanel(
                                 _uiConstants.publish(),
-                                "Publishes the selected resource."); // FIXME: I18n
+                                _uiConstants.publishesSelectedResource());
                             break;
 
                         case UNPUBLISH:
                             _pPanel =
                                 new EmptyPanel(
                                     _uiConstants.unpublish(),
-                                    "Unpublishes the selected resource."); // FIXME: I18n
+                                    _uiConstants.unpublishesSelectedResource());
                             break;
 
                         case UPDATE:
@@ -197,7 +197,9 @@ public class CreateActionPanel
         public void populateForm(final LayoutContainer form) {
             final UIConstants uiConstants = GWT.create(UIConstants.class);
 
-            _title.setHtml("<b>"+uiConstants.update()+"</b><br><br><i>Applies the selected resource's working copy.</i><br><br><hr>"); // FIXME: I18n
+            _title.setHtml("<b>"+uiConstants.update()+"</b><br><br><i>"
+                +uiConstants.appliesTheSelectedResourcesWorkingCopy()
+                +"</i><br><br><hr>");
             form.add(_title);
 
             _majorEdit.setFieldLabel(uiConstants.majorEdit());

@@ -1129,4 +1129,100 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Metadata")
     String metadata();
+
+    /**
+     * "Action details".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Action details")
+    String actionDetails();
+
+    /**
+     * "Scheduled by".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Scheduled by")
+    String scheduledBy();
+
+    /**
+     * "Scheduled for".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Scheduled for")
+    String scheduledFor();
+
+    /**
+     * "Status".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Status")
+    String status();
+
+    /**
+     * "Resource type".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Resource type")
+    String resourceType();
+
+    /**
+     * "Resource path".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Resource path")
+    String resourcePath();
+
+    /**
+     * "Pending".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Pending")
+    String pending();
+
+    /**
+     * "Completed".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Completed")
+    String completed();
+
+    /**
+     * "Publishes the selected resource.".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Publishes the selected resource.")
+    String publishesSelectedResource();
+
+    /**
+     * "Unpublishes the selected resource.".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Unpublishes the selected resource.")
+    String unpublishesSelectedResource();
+
+    /**
+     * "This action will exit the application - any unsaved work will be lost!".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("This action will exit the application - any unsaved work will be lost!")
+    String exitWarning();
+
+    /**
+     * "Applies the selected resource's working copy.".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Applies the selected resource's working copy.")
+    String appliesTheSelectedResourcesWorkingCopy();
 }

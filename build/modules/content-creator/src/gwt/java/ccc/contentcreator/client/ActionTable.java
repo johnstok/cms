@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.services.api.ActionSummary;
@@ -41,6 +42,7 @@ public class ActionTable extends TablePanel {
     private final ListStore<ModelData> _actionStore =
         new ListStore<ModelData>();
     private final Grid<ModelData> _grid;
+    private final UIConstants _constants = Globals.uiConstants();
 
     /**
      * Constructor.
@@ -49,18 +51,18 @@ public class ActionTable extends TablePanel {
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
         setId("action-details");
-        setHeading("Action Details"); // FIXME: I18n
+        setHeading(_constants.actionDetails());
         setLayout(new FitLayout());
 
         setTopComponent(new ActionToolBar(this));
 
-        addColumn(configs, "type", "Action", SMALL_COLUMN); // FIXME: I18n
-        addColumn(configs, "actor", "Scheduled by", SMALL_COLUMN); // FIXME: I18n
-        addColumn(configs, "executeAfter", "Scheduled for", SMALL_COLUMN) // FIXME: I18n
+        addColumn(configs, "type", _constants.action(), SMALL_COLUMN);
+        addColumn(configs, "actor", _constants.scheduledBy(), SMALL_COLUMN);
+        addColumn(configs, "executeAfter", _constants.scheduledFor(), SMALL_COLUMN)
             .setDateTimeFormat(DateTimeFormat.getShortDateTimeFormat());
-        addColumn(configs, "status", "Status", SMALL_COLUMN); // FIXME: I18n
-        addColumn(configs, "subjectType", "Resource type", SMALL_COLUMN); // FIXME: I18n
-        addColumn(configs, "path", "Resource path", MEDIUM_COLUMN); // FIXME: I18n
+        addColumn(configs, "status", _constants.status(), SMALL_COLUMN);
+        addColumn(configs, "subjectType", _constants.resourceType(), SMALL_COLUMN);
+        addColumn(configs, "path", _constants.resourcePath(), MEDIUM_COLUMN);
 
         final ColumnModel cm = new ColumnModel(configs);
 
