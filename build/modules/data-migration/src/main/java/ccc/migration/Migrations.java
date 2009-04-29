@@ -428,6 +428,7 @@ public class Migrations {
         final Map<String, String> metadata =
             new HashMap<String, String>();
         setStyleSheet(r, metadata);
+        setFlagged(r, metadata);
         metadata.put("legacyId", ""+r.contentId());
         if (r.useInIndex() != null) {
             metadata.put("useInIndex", ""+r.useInIndex());
@@ -455,6 +456,14 @@ public class Migrations {
         final String styleSheet = _legacyQueries.selectStyleSheet(r.contentId());
         if (styleSheet != null) {
             properties.put("bodyId", styleSheet);
+        }
+    }
+
+    private void setFlagged(final ResourceBean r,
+                            final Map<String, String> properties) {
+        final String flagged = _legacyQueries.selectFlagged(r.contentId());
+        if (flagged != null && flagged.equals("Y")) {
+            properties.put("flagged", Boolean.TRUE.toString());
         }
     }
 

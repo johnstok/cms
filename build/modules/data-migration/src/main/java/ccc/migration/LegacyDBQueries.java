@@ -9,11 +9,12 @@ import java.util.Set;
 
 import ccc.migration.ccc6.handlers.AllUsersSelector;
 import ccc.migration.ccc6.handlers.FileSelector;
+import ccc.migration.ccc6.handlers.FlaggedSelector;
 import ccc.migration.ccc6.handlers.LogEntryUserSelector;
 import ccc.migration.ccc6.handlers.ParagraphSelector;
 import ccc.migration.ccc6.handlers.ParagraphVersionsSelector;
-import ccc.migration.ccc6.handlers.ResourceSelector;
 import ccc.migration.ccc6.handlers.ResourceRolesSelector;
+import ccc.migration.ccc6.handlers.ResourceSelector;
 import ccc.migration.ccc6.handlers.ShowInMainMenuSelector;
 import ccc.migration.ccc6.handlers.StyleSheetSelector;
 import ccc.migration.ccc6.handlers.UserEmailSelector;
@@ -178,4 +179,14 @@ public class LegacyDBQueries {
         return _db.select(query);
     }
 
+    /**
+     * Return the flagged value for a resource.
+     *
+     * @param contentId The resource's id.
+     * @return "Y" if the resource is flagged, any other value indicates false.
+     */
+    public String selectFlagged(final int contentId) {
+        final FlaggedSelector query = new FlaggedSelector();
+        return _db.select(query, contentId);
+    }
 }
