@@ -147,12 +147,12 @@ public final class Globals {
         final String causeMessage =
             (null==e.getCause()) ? "" : e.getCause().getMessage();
         if (errorMesssage.startsWith("<!-- LOGIN_REQUIRED -->")){
-            alert("Your session timed out - please restart the application.");
+            alert(uiConstants().sessionTimeOutPleaseRestart());
         } else if (causeMessage.startsWith("<!-- LOGIN_REQUIRED -->")) {
-            alert("Your session timed out - please restart the application.");
+            alert(uiConstants().sessionTimeOutPleaseRestart());
         } else {
             GWT.log("An unexpected error occured.", e);
-            alert("An unexpected error occured.");
+            alert(uiConstants().unexpectedErrorOccured());
         }
     }
 
@@ -214,7 +214,7 @@ public final class Globals {
     /** DEFAULT_MIN_HEIGHT : int. */
     public static final int DEFAULT_MIN_HEIGHT = 150;
     /** APP_URL : String. */
-    public static final String APP_URL = "creator/";
+    public static final String APP_URL = "/";
     /** API_URL : String. */
     public static final String API_URL = "api/";
     /** MIN_USER_NAME_LENGTH : int. */
