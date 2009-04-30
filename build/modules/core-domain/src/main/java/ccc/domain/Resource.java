@@ -49,6 +49,7 @@ public abstract class Resource extends VersionedEntity {
     private boolean        _includeInMainMenu = false;
     private Date           _dateCreated       = new Date();
     private Date           _dateChanged       = _dateCreated;
+    private Duration       _cache             = null;
 
     private Map<String, String> _metadata = new HashMap<String, String>();
 
@@ -560,5 +561,36 @@ public abstract class Resource extends VersionedEntity {
             }
         }
         return true;
+    }
+
+    /**
+     * Mutator.
+     *
+     * @param cache The cache duration for the resource.
+     */
+    public void cache(final Duration cache) {
+        _cache = cache;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return This resource's cache duration.
+     */
+    public Duration cache() {
+        return _cache;
+    }
+
+    /**
+     * Compute the cache duration for the resource.
+     *
+     * @return This resource's computed cache duration.
+     */
+    public Duration computeCache() {
+        if (_cache != null || parent() == null) {
+            return cache();
+        } else {
+            return parent().computeCache();
+        }
     }
 }
