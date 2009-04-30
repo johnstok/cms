@@ -100,4 +100,6 @@ public interface CommandServiceAsync {
     void changeRoles(final String resourceId, final Collection<String> roles, AsyncCallback<Void> callback);
 
     void applyWorkingCopyToFile(String fileId, AsyncCallback<Void> callback);
+
+    void updateCacheDuration(String resourceId, String duration, AsyncCallback<Void> callback);
 }

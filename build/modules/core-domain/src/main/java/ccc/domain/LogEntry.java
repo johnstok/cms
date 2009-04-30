@@ -70,7 +70,9 @@ public class LogEntry extends Entity {
         /** REORDER : Action. */
         REORDER,
         /** UPDATE_SORT_ORDER : Action. */
-        UPDATE_SORT_ORDER
+        UPDATE_SORT_ORDER,
+        /** UPDATE_CACHE : Action. */
+        UPDATE_CACHE
     }
 
 
@@ -462,6 +464,30 @@ public class LogEntry extends Entity {
                 le._detail = ss.getDetail();
                 return le;
     }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param resource The resource that was changed.
+     * @param actor The actor that performed the action.
+     * @param happenedOn The date that the actor performed the action.
+     * @return The log entry representing the action.
+     * @return
+     */
+    public static LogEntry forUpdateCache(final Resource resource,
+                                          final User actor,
+                                          final Date happenedOn) {
+
+        final LogEntry le = createEntry(resource, actor, happenedOn);
+        le._action = Action.UPDATE_CACHE;
+        le._comment = "Updated cache setting.";
+
+        final Snapshot ss = new Snapshot();
+        ss.set("cache", resource.cache().time());
+        le._detail = ss.getDetail();
+        return le;
+    }
+
 
     private static LogEntry createEntry(final Resource resource,
                                         final User actor,

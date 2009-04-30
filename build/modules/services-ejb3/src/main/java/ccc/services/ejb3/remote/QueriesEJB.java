@@ -45,6 +45,7 @@ import ccc.services.TemplateDao;
 import ccc.services.UserManager;
 import ccc.services.api.ActionSummary;
 import ccc.services.api.AliasDelta;
+import ccc.services.api.DurationSummary;
 import ccc.services.api.FileDelta;
 import ccc.services.api.FileSummary;
 import ccc.services.api.LogEntrySummary;
@@ -315,6 +316,13 @@ public final class QueriesEJB
         return r.roles();
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public DurationSummary cacheDuration(final String resourceId) {
+        final Resource r =
+            _resources.find(Resource.class, UUID.fromString(resourceId));
+        return (r.cache() == null) ? null : map(r.cache());
+    }
 
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
@@ -322,4 +330,5 @@ public final class QueriesEJB
         final AuditLog audit = new AuditLogEJB(_em);
         _resources = new ResourceDaoImpl(_users, audit, bdao);
     }
+
 }

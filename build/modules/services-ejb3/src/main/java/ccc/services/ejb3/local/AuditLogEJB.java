@@ -253,4 +253,13 @@ public class AuditLogEJB
             LogEntry.forUpdateSortOrder(folder, actor, happenedOn);
         _em.persist(le);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public void recordUpdateCache(final Resource resource, final User actor, final Date happenedOn) {
+        DBC.require().notNull(resource);
+        final LogEntry le =
+            LogEntry.forUpdateCache(resource, actor, happenedOn);
+        _em.persist(le);
+    }
 }

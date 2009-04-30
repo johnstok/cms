@@ -209,4 +209,14 @@ public interface AuditLog {
      * @param happenedOn The date of the change.
      */
     void recordReorder(Folder folder, User actor, Date happenedOn);
+
+
+    /**
+     * Record that cache setting of the resource was changed.
+     *
+     * @param resource The resource that was changed.
+     * @param actor The actor of the change.
+     * @param happenedOn The date of the change.
+     */
+    void recordUpdateCache(Resource resource, User actor, Date happenedOn);
 }

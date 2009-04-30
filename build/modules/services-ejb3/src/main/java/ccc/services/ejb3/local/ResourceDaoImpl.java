@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.domain.CCCException;
+import ccc.domain.Duration;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
@@ -378,5 +379,19 @@ public class ResourceDaoImpl implements ResourceDao {
     public Resource lookupWithLegacyId(final String legacyId) {
         return _dao.find(
             QueryNames.RESOURCE_BY_LEGACY_ID, Resource.class, legacyId);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateCache(final UUID resourceId, final String duration) {
+        final User loggedInUser = _users.loggedInUser();
+        final Resource r = findLocked(Resource.class, resourceId);
+        if (duration == null) {
+            r.cache(null);
+        } else {
+            r.cache(new Duration(new Long(duration))); //FIXME parse string
+        }
+        _audit.recordUpdateCache(r, loggedInUser, new Date());
     }
 }

@@ -17,6 +17,7 @@ import java.util.List;
 
 import ccc.actions.Action;
 import ccc.domain.Alias;
+import ccc.domain.Duration;
 import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
@@ -29,6 +30,7 @@ import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.api.ActionSummary;
 import ccc.services.api.AliasDelta;
+import ccc.services.api.DurationSummary;
 import ccc.services.api.FileDelta;
 import ccc.services.api.FileSummary;
 import ccc.services.api.LogEntrySummary;
@@ -380,6 +382,21 @@ public class ModelTranslation {
             summaries.add(map(a));
         }
         return summaries;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param duration
+     * @return
+     */
+    protected DurationSummary map(final Duration duration) {
+        final DurationSummary ds = new DurationSummary();
+        ds._days = ""+duration.dayField();
+        ds._hours = ""+duration.hourField();
+        ds._minutes = ""+duration.minuteField();
+        ds._seconds = ""+duration.secondField();
+        return ds;
     }
 
     /**
