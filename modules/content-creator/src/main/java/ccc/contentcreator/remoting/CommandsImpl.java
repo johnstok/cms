@@ -264,4 +264,12 @@ public class CommandsImpl
     public void applyWorkingCopyToFile(final String fileId) {
         _services.lookupCommands().applyWorkingCopyToFile(fileId);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateCacheDuration(final String resourceId,
+                                    final String duration) {
+        _services.lookupCommands().updateCacheDuration(resourceId, duration);
+    }
+
 }

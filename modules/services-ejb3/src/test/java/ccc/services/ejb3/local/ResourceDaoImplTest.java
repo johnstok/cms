@@ -554,6 +554,27 @@ public class ResourceDaoImplTest
         assertEquals("example", _r.getMetadatum("bodyId"));
     }
 
+    /**
+     * Test.
+     */
+    public void testUpdateCache() {
+
+        // ARRANGE
+        _r.lock(_regularUser);
+        expect(_users.loggedInUser()).andReturn(_regularUser);
+        expect(_users.loggedInUser()).andReturn(_regularUser);
+        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
+        _al.recordUpdateCache(eq(_r), eq(_regularUser), isA(Date.class));
+        replayAll();
+
+        // ACT
+        _rdao.updateCache(_r.id(), "1246");
+
+        // ASSERT
+        verifyAll();
+        assertEquals(1246, _r.cache().time());
+    }
+
 
     private void replayAll() {
         replay(_dao, _users, _al);

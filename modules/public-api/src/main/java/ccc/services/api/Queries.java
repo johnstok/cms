@@ -204,6 +204,14 @@ public interface Queries {
 
     Collection<String> roles(String resourceId);
 
+    /**
+     * Retrieve resource's cache duration.
+     *
+     * @param resourceId The id of the resource.
+     * @return Duration as a DurationSummary.
+     */
+    DurationSummary cacheDuration(String resourceId);
+
     TemplateDelta templateDelta(String templateId);
     UserDelta userDelta(String userId);
     AliasDelta aliasDelta(String aliasId);
@@ -211,4 +219,5 @@ public interface Queries {
     ResourceDelta folderDelta(String folderId);
     ResourceDelta resourceDelta(String resourceId);
     FileDelta fileDelta(String fileId);
+
 }

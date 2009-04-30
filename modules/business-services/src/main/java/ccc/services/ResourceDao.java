@@ -290,4 +290,6 @@ public interface ResourceDao {
      */
     Resource lookupWithLegacyId(String legacyId);
 
+    void updateCache(UUID resourceId, String duration);
+
 }

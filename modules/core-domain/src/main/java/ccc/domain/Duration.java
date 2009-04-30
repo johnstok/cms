@@ -40,7 +40,7 @@ public class Duration implements Serializable {
      * @param minutes Number of minutes
      * @param seconds Number of seconds
      */
-    Duration(final long days,
+    public Duration(final long days,
         final long hours,
         final long minutes,
         final long seconds) {
@@ -55,7 +55,7 @@ public class Duration implements Serializable {
      *
      * @param time Time in seconds.
      */
-    Duration(final long time) {
+    public Duration(final long time) {
         _time = time;
     }
 

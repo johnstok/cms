@@ -231,5 +231,7 @@ public interface Commands {
     void changeRoles(String resourceId, Collection<String> roles);
 
     void applyWorkingCopyToFile(String fileId);
+
+    void updateCacheDuration(String resourceId, String duration);
 }
 

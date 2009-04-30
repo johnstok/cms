@@ -17,6 +17,7 @@ import java.util.Map;
 import ccc.contentcreator.api.QueriesService;
 import ccc.services.api.ActionSummary;
 import ccc.services.api.AliasDelta;
+import ccc.services.api.DurationSummary;
 import ccc.services.api.FileDelta;
 import ccc.services.api.FileSummary;
 import ccc.services.api.LogEntrySummary;
@@ -205,5 +206,11 @@ public class QueriesImpl
     @Override
     public Collection<String> roles(final String resourceId) {
         return _services.lookupQueries().roles(resourceId);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DurationSummary cacheDuration(final String resourceId) {
+        return _services.lookupQueries().cacheDuration(resourceId);
     }
 }

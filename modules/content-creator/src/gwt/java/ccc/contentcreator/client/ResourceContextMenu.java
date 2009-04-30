@@ -17,6 +17,7 @@ import ccc.contentcreator.actions.ChooseTemplateAction;
 import ccc.contentcreator.actions.ClearWorkingCopyAction;
 import ccc.contentcreator.actions.CreateActionAction;
 import ccc.contentcreator.actions.CreateAliasAction;
+import ccc.contentcreator.actions.EditCacheAction;
 import ccc.contentcreator.actions.IncludeInMainMenuAction;
 import ccc.contentcreator.actions.LockAction;
 import ccc.contentcreator.actions.MoveAction;
@@ -88,6 +89,7 @@ public class ResourceContextMenu
     private final Action _createActionAction;
     private final Action _updateRolesAction;
     private final Action _applyWorkingCopyAction;
+    private final Action _editCacheAction;
 
 
     /**
@@ -121,6 +123,7 @@ public class ResourceContextMenu
         _createActionAction = new CreateActionAction(_table);
         _updateRolesAction = new UpdateResourceRolesAction(_table);
         _applyWorkingCopyAction = new ApplyWorkingCopyAction(_table);
+        _editCacheAction = new EditCacheAction(_table);
 
         setWidth(CONTEXT_MENU_WIDTH);
 
@@ -182,6 +185,7 @@ public class ResourceContextMenu
                 addUpdateMetadata();
                 addCreateAlias();
                 addCreateAction();
+                addEditCache(); // FIXME: ADMIN&BUILDER only?
 
                 if (item.<Boolean>get("mmInclude")) {
                     addRemoveFromMainMenu();
@@ -429,5 +433,12 @@ public class ResourceContextMenu
             "preview-workingCopy",
             _constants.previewWorkingCopy(),
             _previewWorkingCopyAction);
+    }
+
+    private void addEditCache() {
+        addMenuItem(
+            "edit-cache",
+            _constants.editCache(),
+            _editCacheAction);
     }
 }

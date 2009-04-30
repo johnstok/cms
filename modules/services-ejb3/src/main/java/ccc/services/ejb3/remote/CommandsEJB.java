@@ -502,6 +502,13 @@ public class CommandsEJB
     public void applyWorkingCopyToFile(final String fileId) {
         _file.applyWorkingCopy(UUID.fromString(fileId));
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateCacheDuration(final String resourceId,
+                                    final String duration) {
+        _resources.updateCache(UUID.fromString(resourceId), duration);
+    }
 }
 
 
