@@ -1055,6 +1055,35 @@ public final class ResourceTest extends TestCase {
     }
 
     /**
+     * Test.
+     */
+    public void testComputeCache() {
+
+        // ARRANGE
+        final Duration d = new Duration(650);
+        final Duration d2 = new Duration(352);
+
+        final Resource r = new Page();
+        final Resource r2 = new Page();
+        r2.cache(d2);
+
+        final Folder f1 = new Folder();
+        final Folder f2 = new Folder();
+        f2.add(f1);
+        f1.add(r);
+        f1.add(r2);
+
+        f2.cache(d);
+        // ACT
+        final Duration actual = r.computeCache();
+        final Duration actual2 = r2.computeCache();
+
+        // ASSERT
+        assertEquals(d, actual);
+        assertEquals(d2, actual2);
+    }
+
+    /**
      * Dummy resource for testing only.
      *
      * @author Civic Computing Ltd
