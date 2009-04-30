@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.Properties;
 
 
 /**
@@ -62,6 +63,16 @@ public final class Resources {
                     swallow(e);
                 }
             }
+        }
+    }
+
+    public static Properties readIntoProps(final String resourcePath) {
+        final Properties p = new Properties();
+        try {
+            p.load(Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath));
+            return p;
+        } catch (final IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

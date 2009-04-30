@@ -24,8 +24,13 @@ public class ParagraphDelta
     implements
         Serializable {
     public String _name;
-    public String _type;
+    public Type   _type;
     public String _rawValue;
     public String _textValue;
-    public Date _dateValue;
+    public Date   _dateValue;
+    public String _numberValue;
+
+    public static enum Type {
+        TEXT, DATE, BOOLEAN, NUMBER;
+    }
 }

@@ -43,4 +43,18 @@ public final class ResourcesTest extends TestCase {
         assertEquals(expected, actual);
     }
 
+    /**
+     * Test.
+     */
+    public void testReadIntoProps() {
+
+        // ARRANGE
+
+        // ACT
+        final java.util.Properties actual =
+            Resources.readIntoProps("ccc/commons/simple.properties");
+
+        // ASSERT
+        assertEquals("bar", actual.get("foo"));
+    }
 }

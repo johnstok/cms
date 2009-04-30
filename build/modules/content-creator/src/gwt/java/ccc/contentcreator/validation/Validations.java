@@ -234,7 +234,7 @@ public class Validations {
         return new Validator() {
             public void validate(final Validate validate) {
                 for (final ParagraphDelta pg : delta) {
-                    if ("DATE".equals(pg._type)
+                    if (ParagraphDelta.Type.DATE == pg._type
                             && pg._dateValue == null
                             && pg._rawValue != null
                             && !pg._rawValue.isEmpty()) {

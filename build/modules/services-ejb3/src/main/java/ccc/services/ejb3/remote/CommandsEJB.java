@@ -382,15 +382,17 @@ public class CommandsEJB
         final Set<Paragraph> pList = new HashSet<Paragraph>();
 
         for (final ParagraphDelta para : delta) {
-            if (("TEXT".equals(para._type) || "HTML".equals(para._type))
-                    && para._textValue != null) {
-                final Paragraph paragraph =
-                    Paragraph.fromText(para._name, para._textValue);
-                pList.add(paragraph);
-            } else if ("DATE".equals(para._type) && para._dateValue != null) {
-                final Paragraph paragraph =
-                    Paragraph.fromDate(para._name, para._dateValue);
-                pList.add(paragraph);
+            switch (para._type) {
+                case TEXT:
+                    pList.add(Paragraph.fromText(para._name, para._textValue));
+                    break;
+
+                case DATE:
+                    pList.add(Paragraph.fromDate(para._name, para._dateValue));
+                    break;
+
+                default:
+                    throw new CCCException("Unexpected type");
             }
         }
 
@@ -417,15 +419,19 @@ public class CommandsEJB
                                   final Page page) {
 
         for (final ParagraphDelta para : paragraphs) {
-            if (("TEXT".equals(para._type) || "HTML".equals(para._type))
-                    && para._textValue != null) {
-                final Paragraph paragraph =
-                    Paragraph.fromText(para._name, para._textValue);
-                page.addParagraph(paragraph);
-            } else if ("DATE".equals(para._type) && para._dateValue != null) {
-                final Paragraph paragraph =
-                    Paragraph.fromDate(para._name, para._dateValue);
-                page.addParagraph(paragraph);
+            switch (para._type) {
+                case TEXT:
+                    page.addParagraph(
+                        Paragraph.fromText(para._name, para._textValue));
+                    break;
+
+                case DATE:
+                    page.addParagraph(
+                        Paragraph.fromDate(para._name, para._dateValue));
+                    break;
+
+                default:
+                    throw new CCCException("Unexpected type");
             }
         }
     }
