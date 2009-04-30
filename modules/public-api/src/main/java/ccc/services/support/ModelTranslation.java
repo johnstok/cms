@@ -302,7 +302,7 @@ public class ModelTranslation {
         for (final Paragraph p : page.paragraphs()) {
             final ParagraphDelta pDelta = new ParagraphDelta();
             pDelta._name = p.name();
-            pDelta._type = p.type().name();
+            pDelta._type = ParagraphDelta.Type.valueOf(p.type().name());
             pDelta._textValue = p.text();
             pDelta._dateValue = p.date();
             delta._paragraphs.add(pDelta);
@@ -359,7 +359,7 @@ public class ModelTranslation {
                 final Paragraph p = Paragraph.fromSnapshot(s);
                 final ParagraphDelta pDelta = new ParagraphDelta();
                 pDelta ._name = p.name();
-                pDelta._type = p.type().name();
+                pDelta._type = ParagraphDelta.Type.valueOf(p.type().name());
                 pDelta._textValue = p.text();
                 pDelta._dateValue = p.date();
                 delta._paragraphs.add(pDelta);

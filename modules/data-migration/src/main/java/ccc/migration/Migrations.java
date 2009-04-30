@@ -23,6 +23,9 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import ccc.commons.Resources;
+import ccc.domain.CCCException;
+import ccc.domain.Paragraph;
 import ccc.domain.PredefinedResourceNames;
 import ccc.services.api.Commands;
 import ccc.services.api.FileDelta;
@@ -63,6 +66,7 @@ public class Migrations {
     private final Commands _commands;
     private final Queries _queries;
     private final FileUploader _fu;
+    private final Properties _paragraphTypes = Resources.readIntoProps("paragraph-types.properties");
 
 
     /**
@@ -484,11 +488,31 @@ public class Migrations {
                 : paragraphs.entrySet()) {
             final ParagraphDelta pd = new ParagraphDelta();
             pd._name = para.getKey();
-            pd._textValue = para.getValue().toString();
-            pd._type = "TEXT";
+            final Paragraph.Type type = getParagraphType(pd._name);
+
+            switch (type) {
+                case TEXT:
+                    pd._textValue = para.getValue().toString();
+                    break;
+
+                case NUMBER:
+                    pd._numberValue = para.getValue().toString();
+                    break;
+
+                default:
+                    throw new CCCException("Unsupported paragraph type: "+type);
+            }
+
+            pd._type = ParagraphDelta.Type.valueOf(type.toString()); // :-(
             delta._paragraphs.add(pd);
         }
         return delta;
+    }
+
+
+    private Paragraph.Type getParagraphType(final String paragraphName) {
+        final String pType = _paragraphTypes.getProperty(paragraphName, "TEXT");
+        return Paragraph.Type.valueOf(pType);
     }
 
 

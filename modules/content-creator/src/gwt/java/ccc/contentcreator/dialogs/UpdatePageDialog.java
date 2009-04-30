@@ -12,6 +12,8 @@
 
 package ccc.contentcreator.dialogs;
 
+import static ccc.services.api.ParagraphDelta.Type.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -240,7 +242,7 @@ public class UpdatePageDialog
                 final ParagraphDelta p = new ParagraphDelta();
                 p._name = c.id();
                 p._textValue = f.getValue();
-                p._type = "TEXT";
+                p._type = TEXT;
                 paragraphs.add(p);
             } else if ("DATE".equals(c.type())) {
                 final DateField f = c.dateField();
@@ -248,14 +250,14 @@ public class UpdatePageDialog
                 p._name = c.id();
                 p._dateValue = f.getValue();
                 p._rawValue = f.getRawValue();
-                p._type = "DATE";
+                p._type = DATE;
                 paragraphs.add(p);
             } else if ("HTML".equals(c.type())) {
                 final FCKEditor f = c.editor();
                 final ParagraphDelta p = new ParagraphDelta();
                 p._name = c.id();
                 p._textValue = f.getHTML();
-                p._type = "HTML";
+                p._type = TEXT;
                 paragraphs.add(p);
             }
         }
