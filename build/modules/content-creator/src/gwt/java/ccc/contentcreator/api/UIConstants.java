@@ -1258,4 +1258,36 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Cache duration")
     String cacheDuration();
+
+    /**
+     * "Days".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Days")
+    String days();
+
+    /**
+     * "Hours".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Hours")
+    String hours();
+
+    /**
+     * "Minutes".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Minutes")
+    String minutes();
+
+    /**
+     * "Seconds".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Seconds")
+    String seconds();
 }
