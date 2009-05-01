@@ -1244,12 +1244,12 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
     String unexpectedErrorOccured();
 
     /**
-     * "Edit cache".
+     * "Edit cache duration".
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Edit cache")
-    String editCache();
+    @DefaultStringValue("Edit cache duration")
+    String editCacheDuration();
 
     /**
      * "Cache duration".

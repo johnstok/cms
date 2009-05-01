@@ -438,7 +438,7 @@ public class ResourceContextMenu
     private void addEditCache() {
         addMenuItem(
             "edit-cache",
-            _constants.editCache(),
+            _constants.editCacheDuration(),
             _editCacheAction);
     }
 }

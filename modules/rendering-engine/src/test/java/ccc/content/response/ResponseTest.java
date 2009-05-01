@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
 import ccc.commons.Testing;
+import ccc.domain.Duration;
 import ccc.domain.Page;
 import ccc.services.StatefulReader;
 
@@ -110,7 +111,7 @@ public class ResponseTest
     public void testExpiryPropertyOkForUncacheableResource() {
 
         // ARRANGE
-        _r.setExpiry(0);
+        _r.setExpiry(null);
 
         // ACT
         final List<Header> headers = _r.getHeaders();
@@ -124,7 +125,7 @@ public class ResponseTest
     public void testExpiryPropertyOkForCacheableResource() {
 
         // ARRANGE
-        _r.setExpiry(300);
+        _r.setExpiry(new Duration(300));
 
         // ACT
         final List<Header> headers = _r.getHeaders();
@@ -220,7 +221,7 @@ public class ResponseTest
 
         // ARRANGE
         final Response r = new Response(new EmptyBody());
-        r.setExpiry(0);
+        r.setExpiry(new Duration(0));
 
         _response.setHeader("Pragma", "no-cache");
         _response.setHeader(

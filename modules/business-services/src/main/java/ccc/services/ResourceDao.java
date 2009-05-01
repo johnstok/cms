@@ -23,6 +23,7 @@ import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 import ccc.domain.Template;
 import ccc.domain.User;
+import ccc.services.api.DurationSummary;
 
 
 /**
@@ -290,6 +291,6 @@ public interface ResourceDao {
      */
     Resource lookupWithLegacyId(String legacyId);
 
-    void updateCache(UUID resourceId, String duration);
+    void updateCache(UUID resourceId, DurationSummary duration);
 
 }

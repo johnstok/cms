@@ -34,6 +34,7 @@ import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.UserManager;
+import ccc.services.api.DurationSummary;
 import ccc.services.ejb3.support.Dao;
 import ccc.services.ejb3.support.QueryNames;
 
@@ -568,11 +569,15 @@ public class ResourceDaoImplTest
         replayAll();
 
         // ACT
-        _rdao.updateCache(_r.id(), "1246");
+        final DurationSummary ds = new DurationSummary();
+        ds._hours = 1; // 3600
+        ds._minutes = 2; //120
+        ds._seconds = 7;  // 7
+        _rdao.updateCache(_r.id(), ds);
 
         // ASSERT
         verifyAll();
-        assertEquals(1246, _r.cache().time());
+        assertEquals(3727, _r.cache().time());
     }
 
 

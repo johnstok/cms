@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import ccc.services.api.AliasDelta;
+import ccc.services.api.DurationSummary;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ParagraphDelta;
 import ccc.services.api.ResourceSummary;
@@ -101,5 +102,5 @@ public interface CommandServiceAsync {
 
     void applyWorkingCopyToFile(String fileId, AsyncCallback<Void> callback);
 
-    void updateCacheDuration(String resourceId, String duration, AsyncCallback<Void> callback);
+    void updateCacheDuration(String resourceId, DurationSummary duration, AsyncCallback<Void> callback);
 }

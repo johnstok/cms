@@ -392,10 +392,10 @@ public class ModelTranslation {
      */
     protected DurationSummary map(final Duration duration) {
         final DurationSummary ds = new DurationSummary();
-        ds._days = ""+duration.dayField();
-        ds._hours = ""+duration.hourField();
-        ds._minutes = ""+duration.minuteField();
-        ds._seconds = ""+duration.secondField();
+        ds._days = duration.dayField();
+        ds._hours = duration.hourField();
+        ds._minutes = duration.minuteField();
+        ds._seconds = duration.secondField();
         return ds;
     }
 

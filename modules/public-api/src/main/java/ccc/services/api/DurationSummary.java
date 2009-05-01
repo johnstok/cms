@@ -20,8 +20,8 @@ import java.io.Serializable;
  * @author Civic Computing Ltd.
  */
 public class DurationSummary implements Serializable {
-    public String _days;
-    public String _hours;
-    public String _minutes;
-    public String _seconds;
+    public long _days;
+    public long _hours;
+    public long _minutes;
+    public long _seconds;
 }

@@ -16,6 +16,7 @@ import static ccc.commons.Exceptions.*;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,7 @@ import ccc.content.exceptions.NotFoundException;
 import ccc.content.exceptions.RedirectRequiredException;
 import ccc.content.response.CharEncodingHeader;
 import ccc.content.response.ContentTypeHeader;
+import ccc.content.response.DateHeader;
 import ccc.content.response.DefaultRenderer;
 import ccc.content.response.FileBody;
 import ccc.content.response.Header;
@@ -39,6 +41,7 @@ import ccc.content.response.Response;
 import ccc.content.response.StringHeader;
 import ccc.domain.Alias;
 import ccc.domain.Data;
+import ccc.domain.Duration;
 import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.Page;
@@ -187,6 +190,10 @@ public class DefaultRendererTest
         final List<Header> expected = new ArrayList<Header>() {{
             add(new CharEncodingHeader(Charset.forName("UTF-8")));
             add(new ContentTypeHeader(htmlMimeType));
+            add(new StringHeader("Pragma", "no-cache"));
+            add(new StringHeader("Cache-Control",
+                "no-store, must-revalidate, max-age=0"));
+            add(new DateHeader("Expires", new Date(0)));
         }};
         assertEquals(expected, r.getHeaders());
         assertNotNull(r.getBody());
@@ -209,6 +216,7 @@ public class DefaultRendererTest
                 new Data(),
                 0,
                 new MimeType("text", "html"));
+        f.cache(new Duration(1000));
 
         // ACT
         final Response r = _renderer.render(f, noParams);
@@ -220,6 +228,10 @@ public class DefaultRendererTest
                 "Content-Disposition", "inline; filename=\""+f.name()+"\""));
             add(new ContentTypeHeader(htmlMimeType));
             add(new IntHeader("Content-Length", 0));
+            add(new DateHeader("Expires",
+                new Date(new Date().getTime()+1000000)));
+            add(new StringHeader("Cache-Control",
+                "max-age=1000"));
         }};
         assertEquals(expected, r.getHeaders());
 

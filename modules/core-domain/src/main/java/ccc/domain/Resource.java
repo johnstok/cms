@@ -584,7 +584,8 @@ public abstract class Resource extends VersionedEntity {
     /**
      * Compute the cache duration for the resource.
      *
-     * @return This resource's computed cache duration.
+     * @return This resource's computed cache duration or null
+     *  if cache is not set in hierarchy.
      */
     public Duration computeCache() {
         if (_cache != null || parent() == null) {

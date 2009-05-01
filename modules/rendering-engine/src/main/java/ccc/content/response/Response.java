@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import ccc.commons.DBC;
+import ccc.domain.Duration;
 
 
 /**
@@ -115,19 +116,21 @@ public class Response {
     /**
      * Mutator.
      *
-     * @param expiry The response's expiry time, in seconds.
+     * @param expiry The response's expiry time, in Duration.
      */
-    public void setExpiry(final long expiry) {
-        if (expiry<=0) {
+    public void setExpiry(final Duration duration) {
+        if (duration == null || duration.time() <= 0) {
             _headers.add(new StringHeader("Pragma", "no-cache"));
             _headers.add(new StringHeader(
                 "Cache-Control", "no-store, must-revalidate, max-age=0"));
             _headers.add(new DateHeader("Expires", new Date(0)));
         } else {
             final Date now = new Date();
-            final Date expiryDate = new Date(now.getTime()+(expiry*1000));
+            final Date expiryDate =
+                new Date(now.getTime()+(duration.time()*1000));
             _headers.add(new DateHeader("Expires", expiryDate));
-            _headers.add(new StringHeader("Cache-Control", "max-age="+expiry));
+            _headers.add(
+                new StringHeader("Cache-Control", "max-age="+duration.time()));
         }
     }
 

@@ -179,6 +179,7 @@ public class DefaultRenderer
         r.setDisposition("inline; filename=\""+f.name()+"\"");
         r.setMimeType(f.mimeType().getPrimaryType(), f.mimeType().getSubType());
         r.setLength(f.size());
+        r.setExpiry(f.computeCache());
 
         return r;
     }
@@ -201,6 +202,7 @@ public class DefaultRenderer
             new Response(new PageBody(page, _reader, parameters));
         r.setCharSet("UTF-8");
         r.setMimeType("text", "html");
+        r.setExpiry(page.computeCache());
 
         return r;
     }
@@ -235,6 +237,7 @@ public class DefaultRenderer
                     pageNumber));
         r.setCharSet("UTF-8");
         r.setMimeType("text", "html");
+        r.setExpiry(search.computeCache());
 
         return r;
     }

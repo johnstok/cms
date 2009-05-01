@@ -13,6 +13,8 @@ package ccc.contentcreator.dialogs;
 
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.validation.Validate;
+import ccc.contentcreator.validation.Validations;
 import ccc.services.api.DurationSummary;
 
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -29,7 +31,10 @@ import com.extjs.gxt.ui.client.widget.form.TextField;
 public class EditCacheDialog extends AbstractEditDialog {
 
     private final ModelData _item;
-    private final TextField<String> _duration = new TextField<String>();
+    private final TextField<String> _seconds = new TextField<String>();
+    private final TextField<String> _minutes = new TextField<String>();
+    private final TextField<String> _hours = new TextField<String>();
+    private final TextField<String> _days = new TextField<String>();
 
     /**
      * Constructor.
@@ -37,16 +42,29 @@ public class EditCacheDialog extends AbstractEditDialog {
      * @param item The resource to rename.
      */
     public EditCacheDialog(final ModelData item, final DurationSummary ds) {
-        super(Globals.uiConstants().editCache());
+        super(Globals.uiConstants().editCacheDuration());
         _item = item;
         setHeight(Globals.DEFAULT_MIN_HEIGHT);
 
-        _duration.setFieldLabel(constants().cacheDuration());
-        _duration.setId("cacheDuration");
+        _days.setFieldLabel("days");
+        _days.setId("cacheDurationDays");
+        _hours.setFieldLabel("hours");
+        _hours.setId("cacheDurationHours");
+        _minutes.setFieldLabel("minutes");
+        _minutes.setId("cacheDurationMinutes");
+        _seconds.setFieldLabel("sec");
+        _seconds.setId("cacheDurationSeconds");
+
         if (ds != null) {
-            _duration.setValue(ds._days+"D"+ds._hours+"H"+ds._minutes+"M"+ds._seconds+"S");
+            _days.setValue(""+ds._days);
+            _hours.setValue(""+ds._hours);
+            _minutes.setValue(""+ds._minutes);
+            _seconds.setValue(""+ds._seconds);
         }
-        addField(_duration);
+        addField(_days);
+        addField(_hours);
+        addField(_minutes);
+        addField(_seconds);
 
     }
 
@@ -56,14 +74,46 @@ public class EditCacheDialog extends AbstractEditDialog {
 
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                String duration = null;
-                if (_duration.getValue() != null
-                        && !_duration.getValue().trim().equals("")) {
-                    duration = _duration.getValue();
+                Validate.callTo(updateCache())
+                .check(Validations.emptyOrNumber(_days))
+                .check(Validations.emptyOrNumber(_hours))
+                .check(Validations.emptyOrNumber(_minutes))
+                .check(Validations.emptyOrNumber(_seconds))
+                .callMethodOr(Validations.reportErrors());
+            }
+        };
+    }
+
+    private Runnable updateCache() {
+        return new Runnable() {
+            @SuppressWarnings("unchecked")
+            public void run() {
+                final DurationSummary updatedDs = new DurationSummary();
+                boolean isDurationSet = false;
+                if (_days.getValue() != null
+                        && !_days.getValue().trim().equals("")) {
+                    isDurationSet = true;
+                    updatedDs._days = Long.parseLong(_days.getValue());
                 }
+                if (_hours.getValue() != null
+                        && !_hours.getValue().trim().equals("")) {
+                    isDurationSet = true;
+                    updatedDs._hours = Long.parseLong(_hours.getValue());
+                }
+                if (_minutes.getValue() != null
+                        && !_minutes.getValue().trim().equals("")) {
+                    isDurationSet = true;
+                    updatedDs._minutes = Long.parseLong(_minutes.getValue());
+                }
+                if (_seconds.getValue() != null
+                        && !_seconds.getValue().trim().equals("")) {
+                    isDurationSet = true;
+                    updatedDs._seconds = Long.parseLong(_seconds.getValue());
+                }
+
                 commands().updateCacheDuration(
                     _item.<String>get("id"),
-                    duration,
+                    (isDurationSet) ? updatedDs : null,
                     new ErrorReportingCallback<Void>() {
                     @Override
                     public void onSuccess(final Void arg0) {
@@ -74,5 +124,6 @@ public class EditCacheDialog extends AbstractEditDialog {
             }
         };
     }
+
 
 }
