@@ -18,6 +18,7 @@ import java.util.Map;
 
 import ccc.contentcreator.api.CommandService;
 import ccc.services.api.AliasDelta;
+import ccc.services.api.DurationSummary;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ParagraphDelta;
 import ccc.services.api.ResourceSummary;
@@ -268,7 +269,7 @@ public class CommandsImpl
     /** {@inheritDoc} */
     @Override
     public void updateCacheDuration(final String resourceId,
-                                    final String duration) {
+                                    final DurationSummary duration) {
         _services.lookupCommands().updateCacheDuration(resourceId, duration);
     }
 

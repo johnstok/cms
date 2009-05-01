@@ -232,6 +232,6 @@ public interface Commands {
 
     void applyWorkingCopyToFile(String fileId);
 
-    void updateCacheDuration(String resourceId, String duration);
+    void updateCacheDuration(String resourceId, DurationSummary duration);
 }
 

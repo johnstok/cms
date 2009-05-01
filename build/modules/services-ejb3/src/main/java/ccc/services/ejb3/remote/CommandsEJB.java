@@ -57,6 +57,7 @@ import ccc.services.TemplateDao;
 import ccc.services.UserManager;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.Commands;
+import ccc.services.api.DurationSummary;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ParagraphDelta;
 import ccc.services.api.ResourceSummary;
@@ -506,7 +507,7 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     public void updateCacheDuration(final String resourceId,
-                                    final String duration) {
+                                    final DurationSummary duration) {
         _resources.updateCache(UUID.fromString(resourceId), duration);
     }
 }

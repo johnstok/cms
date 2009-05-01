@@ -343,4 +343,28 @@ public class Validations {
             }
         };
     }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param input
+     * @return
+     */
+    public static Validator emptyOrNumber(final TextField<String> input) {
+
+        return new Validator() {
+            public void validate(final Validate validate) {
+                final String value = input.getValue();
+                if(null != value
+                        && !value.trim().equals("")
+                        && !value.matches("[0-9999]")) {
+                    validate.addMessage(
+                        input.getFieldLabel()
+                        + " "+_uiConstants.isNotValid()
+                    );
+                }
+                validate.next();
+            }
+        };
+    }
 }
