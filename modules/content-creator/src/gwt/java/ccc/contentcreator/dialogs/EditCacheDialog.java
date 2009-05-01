@@ -36,23 +36,25 @@ public class EditCacheDialog extends AbstractEditDialog {
     private final TextField<String> _hours = new TextField<String>();
     private final TextField<String> _days = new TextField<String>();
 
+
     /**
      * Constructor.
      *
      * @param item The resource to rename.
+     * @param ds The Duration summary of the resource.
      */
     public EditCacheDialog(final ModelData item, final DurationSummary ds) {
         super(Globals.uiConstants().editCacheDuration());
         _item = item;
-        setHeight(Globals.DEFAULT_MIN_HEIGHT);
-
-        _days.setFieldLabel("days");
+        setHeight(200);
+        setWidth(350);
+        _days.setFieldLabel(_constants.days());
         _days.setId("cacheDurationDays");
-        _hours.setFieldLabel("hours");
+        _hours.setFieldLabel(_constants.hours());
         _hours.setId("cacheDurationHours");
-        _minutes.setFieldLabel("minutes");
+        _minutes.setFieldLabel(_constants.minutes());
         _minutes.setId("cacheDurationMinutes");
-        _seconds.setFieldLabel("sec");
+        _seconds.setFieldLabel(_constants.seconds());
         _seconds.setId("cacheDurationSeconds");
 
         if (ds != null) {
@@ -61,11 +63,10 @@ public class EditCacheDialog extends AbstractEditDialog {
             _minutes.setValue(""+ds._minutes);
             _seconds.setValue(""+ds._seconds);
         }
-        addField(_days);
-        addField(_hours);
-        addField(_minutes);
-        addField(_seconds);
-
+        _panel.add(_days);
+        _panel.add(_hours);
+        _panel.add(_minutes);
+        _panel.add(_seconds);
     }
 
     /** {@inheritDoc} */
