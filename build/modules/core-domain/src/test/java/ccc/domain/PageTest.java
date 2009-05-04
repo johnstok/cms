@@ -34,6 +34,7 @@ public final class PageTest extends TestCase {
     public void testApplySnapshot() {
 
         // ARRANGE
+        final Date then = new Date();
         final Page page = new Page(new ResourceName("foo"), "Title");
         page.addParagraph(Paragraph.fromText("header", "Header"));
         final Snapshot s = page.createSnapshot();
@@ -42,7 +43,7 @@ public final class PageTest extends TestCase {
         final Collection<Snapshot> paras = new ArrayList<Snapshot>(){{
             add(Paragraph.fromBoolean(
                 "A boolean", Boolean.TRUE).createSnapshot());
-            add(Paragraph.fromDate("A date", new Date()).createSnapshot());
+            add(Paragraph.fromDate("A date", then).createSnapshot());
         }};
 
         s.set("paragraphs", paras);
@@ -53,8 +54,9 @@ public final class PageTest extends TestCase {
         assertEquals("new title", page.title());
         assertEquals(2, page.paragraphs().size());
         assertEquals(Boolean.TRUE, page.paragraph("A boolean").bool());
+        final Date now = new Date();
         assertTrue(
-            page.paragraph("A date").date().compareTo((new Date())) >= 0);
+            page.paragraph("A date").date().compareTo(now) <= 0);
     }
 
     /**
