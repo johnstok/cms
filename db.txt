@@ -1,6 +1,0 @@
-migration handlers
-Migrations class
-login-config.xml
-JdbcCoreData
-Data.hbm.xml
-NewDbQueries.java
