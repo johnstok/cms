@@ -466,7 +466,7 @@ public class CommandsEJB
                              final String parameters) {
       final Action a =
       new Action(
-          Action.Type.valueOf(action),
+          LogEntry.Action.valueOf(action),
           executeAfter,
           _users.loggedInUser(),
           _resources.find(Resource.class, UUID.fromString(resourceId)),
