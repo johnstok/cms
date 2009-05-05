@@ -40,7 +40,19 @@ public class SecurityImpl
         final HttpServletRequest request = getThreadLocalRequest();
         request.getSession(true);
         final WebAuthentication pwl = new WebAuthentication();
-        return pwl.login(username, password);
+        final boolean authenticated = pwl.login(username, password);
+        if (!authenticated) {
+            return false;
+        } else {
+            if (request.isUserInRole("ADMINISTRATOR")
+                || request.isUserInRole("CONTENT_CREATOR")
+                || request.isUserInRole("SITE_BUILDER")) {
+                return true;
+            } else {
+                request.getSession().invalidate();
+                return false;
+            }
+        }
     }
 
     /** {@inheritDoc} */
