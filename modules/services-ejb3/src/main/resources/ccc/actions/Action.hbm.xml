@@ -19,7 +19,7 @@
 <hibernate-mapping default-access="field">
 
     <typedef class="ccc.services.ejb3.support.EnumUserType" name="ActionType">
-        <param name="type">ccc.actions.Action$Type</param>
+        <param name="type">ccc.domain.LogEntry$Action</param>
     </typedef>
     <typedef class="ccc.services.ejb3.support.EnumUserType" name="StatusType">
         <param name="type">ccc.actions.Action$Status</param>
