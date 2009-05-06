@@ -5,23 +5,18 @@
 	</formats>
 	<fileSets>
 		<fileSet>
-			<directory>..\..\deploy</directory>
+			<directory>../../deploy</directory>
 			<lineEnding>keep</lineEnding>
 			<outputDirectory>containers</outputDirectory>
 			<excludes>
-				<exclude>jboss-5.0.1.GA-jdk6\server\all\**</exclude>
-				<exclude>jboss-5.0.1.GA-jdk6\server\minimal\**</exclude>
-				<exclude>jboss-5.0.1.GA-jdk6\server\default\**</exclude>
-				<exclude>jboss-5.0.1.GA-jdk6\server\web\**</exclude>
-				<exclude>jboss-5.0.1.GA-jdk6\server\standard\log\**</exclude>
-				<exclude>jboss-5.0.1.GA-jdk6\server\standard\work\**</exclude>
-				<exclude>jboss-5.0.1.GA-jdk6\server\standard\tmp\**</exclude>
-				<exclude>jboss-5.0.1.GA-jdk6\server\standard\data\**</exclude>
-				<exclude>jboss-4.2.2.GA\**</exclude>
+				<exclude>jboss-5.0.1.GA-jdk6/server/standard/log/**</exclude>
+				<exclude>jboss-5.0.1.GA-jdk6/server/standard/work/**</exclude>
+				<exclude>jboss-5.0.1.GA-jdk6/server/standard/tmp/**</exclude>
+				<exclude>jboss-5.0.1.GA-jdk6/server/standard/data/**</exclude>
 			</excludes>
 		</fileSet>
 		<fileSet>
-			<directory>..\..\dbms</directory>
+			<directory>../../dbms</directory>
 			<lineEnding>keep</lineEnding>
 			<outputDirectory>db-config</outputDirectory>
 		</fileSet>
