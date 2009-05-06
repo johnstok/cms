@@ -15,6 +15,7 @@ import java.util.Collection;
 
 import ccc.contentcreator.actions.ChooseTemplateAction;
 import ccc.contentcreator.actions.CreateUserAction;
+import ccc.contentcreator.actions.EditCacheAction;
 import ccc.contentcreator.actions.LockAction;
 import ccc.contentcreator.actions.LogoutAction;
 import ccc.contentcreator.actions.OpenHelpAction;
@@ -195,6 +196,11 @@ public class MainMenu
                     "updateMetadata-root",
                     _constants.updateMetadata(),
                     new UpdateMetadataAction(ssm)));
+                _itemMenu.add(createMenuItem(
+                    "cacheDuration-root",
+                    _constants.cacheDuration(),
+                    new EditCacheAction(ssm)));
+                
             }
         }
 
