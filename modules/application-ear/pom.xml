@@ -229,6 +229,7 @@
                         <artifactId>jboss-maven-plugin</artifactId>
                         <configuration>
                             <fileName>${basedir}/target/${application.name}.ear</fileName>
+                            <server>jBoss</server>
                         </configuration>
                         <executions>
                             <execution>
