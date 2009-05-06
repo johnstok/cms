@@ -148,3 +148,5 @@ ok
 lucene
 txt
 serializing
+javax
+jpa
