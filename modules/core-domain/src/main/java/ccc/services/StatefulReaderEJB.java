@@ -10,16 +10,13 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.services.ejb3.local;
+package ccc.services;
 
 import java.util.UUID;
 
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
-import ccc.services.AuditLog;
-import ccc.services.ResourceDao;
-import ccc.services.StatefulReader;
 
 
 /**

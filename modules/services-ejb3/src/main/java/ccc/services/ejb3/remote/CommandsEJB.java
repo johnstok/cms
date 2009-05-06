@@ -47,12 +47,17 @@ import ccc.domain.Search;
 import ccc.domain.Snapshot;
 import ccc.domain.Template;
 import ccc.domain.User;
+import ccc.persistence.jpa.BaseDao;
 import ccc.services.ActionDao;
 import ccc.services.AliasDao;
 import ccc.services.AuditLog;
+import ccc.services.AuditLogEJB;
+import ccc.services.Dao;
 import ccc.services.FolderDao;
+import ccc.services.ModelTranslation;
 import ccc.services.PageDao;
 import ccc.services.ResourceDao;
+import ccc.services.ResourceDaoImpl;
 import ccc.services.TemplateDao;
 import ccc.services.UserManager;
 import ccc.services.api.AliasDelta;
@@ -64,12 +69,7 @@ import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
-import ccc.services.ejb3.local.AuditLogEJB;
-import ccc.services.ejb3.local.ResourceDaoImpl;
 import ccc.services.ejb3.local.WorkingCopyManager;
-import ccc.services.ejb3.support.BaseDao;
-import ccc.services.ejb3.support.Dao;
-import ccc.services.support.ModelTranslation;
 
 
 /**
@@ -494,7 +494,7 @@ public class CommandsEJB
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
         final Dao bdao = new BaseDao(_em);
-        _audit = new AuditLogEJB(_em);
+        _audit = new AuditLogEJB(bdao);
         _resources = new ResourceDaoImpl(_users, _audit, bdao);
         _wcMgr = new WorkingCopyManager(_resources);
     }

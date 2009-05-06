@@ -34,12 +34,12 @@ import javax.persistence.PersistenceContext;
 import org.apache.log4j.Logger;
 
 import ccc.actions.Action;
+import ccc.persistence.jpa.BaseDao;
 import ccc.services.ActionDao;
 import ccc.services.ActionExecutor;
+import ccc.services.Dao;
+import ccc.services.QueryNames;
 import ccc.services.Scheduler;
-import ccc.services.ejb3.support.BaseDao;
-import ccc.services.ejb3.support.Dao;
-import ccc.services.ejb3.support.QueryNames;
 
 
 /**

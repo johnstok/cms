@@ -18,10 +18,10 @@
 
 <hibernate-mapping default-access="field">
 
-    <typedef class="ccc.services.ejb3.support.EnumUserType" name="LogEntryAction">
+    <typedef class="ccc.persistence.jpa.EnumUserType" name="LogEntryAction">
         <param name="type">ccc.domain.LogEntry$Action</param>
     </typedef>
-    <typedef class="ccc.services.ejb3.support.EnumUserType" name="ResourceType">
+    <typedef class="ccc.persistence.jpa.EnumUserType" name="ResourceType">
         <param name="type">ccc.domain.ResourceType</param>
     </typedef>
     
@@ -30,7 +30,7 @@
         mutable="false"
         table="logentries">
         
-        <id name="_id" column="id" type="ccc.services.ejb3.support.UUIDUserType">
+        <id name="_id" column="id" type="ccc.persistence.jpa.UUIDUserType">
             <generator class="assigned" />
         </id>
         
@@ -58,7 +58,7 @@
             name="_subjectId"
             column="subject_id"
             not-null="true"
-            type="ccc.services.ejb3.support.UUIDUserType" />
+            type="ccc.persistence.jpa.UUIDUserType" />
         <property
             name="_comment"
             column="message"

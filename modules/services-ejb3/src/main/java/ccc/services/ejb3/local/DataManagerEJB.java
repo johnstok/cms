@@ -32,15 +32,17 @@ import ccc.commons.DBC;
 import ccc.commons.IO;
 import ccc.domain.Data;
 import ccc.domain.File;
+import ccc.persistence.jpa.BaseDao;
+import ccc.persistence.jpa.FsCoreData;
 import ccc.services.AuditLog;
+import ccc.services.AuditLogEJB;
+import ccc.services.CoreData;
+import ccc.services.Dao;
 import ccc.services.DataManager;
+import ccc.services.QueryNames;
 import ccc.services.ResourceDao;
+import ccc.services.ResourceDaoImpl;
 import ccc.services.UserManager;
-import ccc.services.ejb3.support.BaseDao;
-import ccc.services.ejb3.support.CoreData;
-import ccc.services.ejb3.support.Dao;
-import ccc.services.ejb3.support.FsCoreData;
-import ccc.services.ejb3.support.QueryNames;
 
 
 /**
@@ -144,7 +146,7 @@ public class DataManagerEJB implements DataManager {
     private void configureCoreData() {
         _cd = new FsCoreData();
         final Dao bdao = new BaseDao(_em);
-        final AuditLog audit = new AuditLogEJB(_em);
+        final AuditLog audit = new AuditLogEJB(bdao);
         _dao = new ResourceDaoImpl(_users, audit, bdao);
     }
 }

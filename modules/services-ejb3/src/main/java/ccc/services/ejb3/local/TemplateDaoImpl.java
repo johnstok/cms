@@ -26,12 +26,14 @@ import javax.persistence.PersistenceContext;
 
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
+import ccc.persistence.jpa.BaseDao;
 import ccc.services.AuditLog;
+import ccc.services.AuditLogEJB;
+import ccc.services.Dao;
 import ccc.services.ResourceDao;
+import ccc.services.ResourceDaoImpl;
 import ccc.services.TemplateDao;
 import ccc.services.UserManager;
-import ccc.services.ejb3.support.BaseDao;
-import ccc.services.ejb3.support.Dao;
 
 
 /**
@@ -99,7 +101,7 @@ public class TemplateDaoImpl implements TemplateDao {
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
         final Dao bdao = new BaseDao(_em);
-        final AuditLog audit = new AuditLogEJB(_em);
+        final AuditLog audit = new AuditLogEJB(bdao);
         _dao = new ResourceDaoImpl(_users, audit, bdao);
     }
 }

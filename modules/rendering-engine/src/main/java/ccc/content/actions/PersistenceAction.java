@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
+import ccc.persistence.jpa.BaseDao;
+
 
 
 /**
@@ -57,7 +59,7 @@ public class PersistenceAction
         final EntityManager em = _emf.createEntityManager();
 
         try {
-            req.setAttribute(SessionKeys.PERSISTENCE_KEY, em);
+            req.setAttribute(SessionKeys.DAO_KEY, new BaseDao(em));
             _delegate.execute(req, resp);
         } finally {
             em.close();

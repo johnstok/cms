@@ -31,12 +31,14 @@ import ccc.domain.Folder;
 import ccc.domain.Resource;
 import ccc.domain.ResourceOrder;
 import ccc.domain.User;
+import ccc.persistence.jpa.BaseDao;
 import ccc.services.AuditLog;
+import ccc.services.AuditLogEJB;
+import ccc.services.Dao;
 import ccc.services.FolderDao;
 import ccc.services.ResourceDao;
+import ccc.services.ResourceDaoImpl;
 import ccc.services.UserManager;
-import ccc.services.ejb3.support.BaseDao;
-import ccc.services.ejb3.support.Dao;
 
 
 /**
@@ -109,7 +111,7 @@ public class FolderDaoImpl implements FolderDao {
     @PostConstruct
     public void configure() {
         final Dao bdao = new BaseDao(_em);
-        _audit = new AuditLogEJB(_em);
+        _audit = new AuditLogEJB(bdao);
         _dao = new ResourceDaoImpl(_users, _audit, bdao);
     }
 }

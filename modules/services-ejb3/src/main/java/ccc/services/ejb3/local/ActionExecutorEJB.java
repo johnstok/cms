@@ -29,12 +29,14 @@ import ccc.actions.Action;
 import ccc.domain.CCCException;
 import ccc.domain.Resource;
 import ccc.domain.ResourceType;
+import ccc.persistence.jpa.BaseDao;
 import ccc.services.ActionExecutor;
 import ccc.services.AuditLog;
+import ccc.services.AuditLogEJB;
+import ccc.services.Dao;
 import ccc.services.ResourceDao;
+import ccc.services.ResourceDaoImpl;
 import ccc.services.UserManager;
-import ccc.services.ejb3.support.BaseDao;
-import ccc.services.ejb3.support.Dao;
 
 
 /**
@@ -134,7 +136,7 @@ public class ActionExecutorEJB implements ActionExecutor {
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
         final Dao bdao = new BaseDao(_em);
-        final AuditLog audit = new AuditLogEJB(_em);
+        final AuditLog audit = new AuditLogEJB(bdao);
         _resources = new ResourceDaoImpl(_users, audit, bdao);
         _wcMgr = new WorkingCopyManager(_resources);
     }

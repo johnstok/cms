@@ -216,7 +216,6 @@ public class DefaultRendererTest
                 new Data(),
                 0,
                 new MimeType("text", "html"));
-        f.cache(new Duration(1000));
 
         // ACT
         final Response r = _renderer.render(f, noParams);
@@ -228,10 +227,10 @@ public class DefaultRendererTest
                 "Content-Disposition", "inline; filename=\""+f.name()+"\""));
             add(new ContentTypeHeader(htmlMimeType));
             add(new IntHeader("Content-Length", 0));
-            add(new DateHeader("Expires",
-                new Date(new Date().getTime()+1000000)));
+            add(new StringHeader("Pragma", "no-cache"));
             add(new StringHeader("Cache-Control",
-                "max-age=1000"));
+                "no-store, must-revalidate, max-age=0"));
+            add(new DateHeader("Expires", new Date(0)));
         }};
         assertEquals(expected, r.getHeaders());
 

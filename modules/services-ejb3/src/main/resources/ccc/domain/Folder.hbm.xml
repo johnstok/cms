@@ -17,7 +17,7 @@
 -->
 
 <hibernate-mapping default-access="field">
-    <typedef class="ccc.services.ejb3.support.EnumUserType" name="SortOrder">
+    <typedef class="ccc.persistence.jpa.EnumUserType" name="SortOrder">
         <param name="type">ccc.domain.ResourceOrder</param>
     </typedef>
     

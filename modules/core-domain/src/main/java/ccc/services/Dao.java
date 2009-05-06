@@ -10,7 +10,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.services.ejb3.support;
+package ccc.services;
 
 import java.util.Collection;
 import java.util.List;

@@ -45,7 +45,7 @@
                 name="_id"
                 not-null="true"
                 column="data_id"
-                type="ccc.services.ejb3.support.UUIDUserType" />
+                type="ccc.persistence.jpa.UUIDUserType" />
         </component>
         
         <component

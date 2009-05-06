@@ -12,21 +12,18 @@
 	<url>http://maven.apache.org</url>
     
 	<dependencies>
+        <!-- TODO: Should be public API!! -->
+		<dependency>
+			<groupId>CCC7</groupId>
+			<artifactId>services-ejb3</artifactId>
+			<version>7.0.0-SNAPSHOT</version>
+		</dependency>
+        
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.14</version>
         </dependency>
-		<dependency>
-			<groupId>CCC7</groupId>
-			<artifactId>business-services</artifactId>
-			<version>7.0.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>CCC7</groupId>
-			<artifactId>public-api</artifactId>
-			<version>7.0.0-SNAPSHOT</version>
-		</dependency>
 		<dependency>
 			<groupId>org.jboss.jbossas</groupId>
 			<artifactId>jboss-as-client</artifactId>
@@ -38,6 +35,11 @@
 			<artifactId>commons-dbutils</artifactId>
 			<version>1.1</version>
 		</dependency>
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>3.1</version>
+        </dependency>
         
         <!-- Database drivers -->
         <dependency>
@@ -60,24 +62,6 @@
             <artifactId>sqlserver-jdbc4</artifactId>
             <version>2.0</version>
         </dependency>
-        <dependency>
-            <groupId>commons-httpclient</groupId>
-            <artifactId>commons-httpclient</artifactId>
-            <version>3.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.htmlcleaner</groupId>
-            <artifactId>html-cleaner</artifactId>
-            <version>2.1</version>
-        </dependency>
-        
-        <!-- Server-side classes that may form part of a remote exception -->
-		<dependency>
-			<groupId>CCC7</groupId>
-			<artifactId>services-ejb3</artifactId>
-			<version>7.0.0-SNAPSHOT</version>
-			<scope>runtime</scope>
-		</dependency>
 	</dependencies>
 
     <build>

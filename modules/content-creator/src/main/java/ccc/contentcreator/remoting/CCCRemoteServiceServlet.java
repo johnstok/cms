@@ -20,7 +20,7 @@ import java.text.ParseException;
 import javax.servlet.http.HttpServletRequest;
 
 import ccc.commons.CCCProperties;
-import ccc.services.api.ServiceLookup;
+import ccc.services.ServiceLookup;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.google.gwt.user.server.rpc.SerializationPolicy;
