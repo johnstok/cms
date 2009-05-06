@@ -9,12 +9,15 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services;
+package ccc.services.api;
 
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
-import ccc.services.api.Commands;
-import ccc.services.api.Queries;
+import ccc.services.ActionDao;
+import ccc.services.DataManager;
+import ccc.services.Scheduler;
+import ccc.services.SearchEngine;
+import ccc.services.UserManager;
 
 
 /**

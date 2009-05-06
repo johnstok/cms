@@ -4,7 +4,7 @@ package ccc.cli;
 import org.apache.log4j.Logger;
 
 import ccc.services.Scheduler;
-import ccc.services.ServiceLookup;
+import ccc.services.api.ServiceLookup;
 
 /**
  * Command line management of Action executor.
@@ -27,7 +27,7 @@ public final class Scheduling extends CccApp {
         login("super", "sup3r2008");
 
         final ServiceLookup services =
-            new ServiceLookup("application-ear-7.0.0-SNAPSHOT");
+            new ServiceLookup("ash");
 
         final Scheduler s = services.lookupActionScheduler();
 

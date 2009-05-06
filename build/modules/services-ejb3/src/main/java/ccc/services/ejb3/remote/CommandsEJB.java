@@ -35,6 +35,7 @@ import ccc.actions.Action;
 import ccc.commons.EmailAddress;
 import ccc.domain.Alias;
 import ccc.domain.CCCException;
+import ccc.domain.Duration;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
@@ -508,7 +509,13 @@ public class CommandsEJB
     @Override
     public void updateCacheDuration(final String resourceId,
                                     final DurationSummary duration) {
-        _resources.updateCache(UUID.fromString(resourceId), duration);
+        _resources.updateCache(
+            UUID.fromString(resourceId),
+            new Duration(
+                duration._days,
+                duration._hours,
+                duration._minutes,
+                duration._seconds));
     }
 }
 

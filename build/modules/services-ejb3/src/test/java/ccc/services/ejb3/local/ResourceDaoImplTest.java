@@ -22,6 +22,7 @@ import java.util.Map;
 import junit.framework.TestCase;
 import ccc.domain.CCCException;
 import ccc.domain.CreatorRoles;
+import ccc.domain.Duration;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
@@ -34,7 +35,6 @@ import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.UserManager;
-import ccc.services.api.DurationSummary;
 import ccc.services.ejb3.support.Dao;
 import ccc.services.ejb3.support.QueryNames;
 
@@ -569,11 +569,7 @@ public class ResourceDaoImplTest
         replayAll();
 
         // ACT
-        final DurationSummary ds = new DurationSummary();
-        ds._hours = 1; // 3600
-        ds._minutes = 2; //120
-        ds._seconds = 7;  // 7
-        _rdao.updateCache(_r.id(), ds);
+        _rdao.updateCache(_r.id(), new Duration(0, 1, 2, 7));
 
         // ASSERT
         verifyAll();
