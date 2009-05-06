@@ -21,6 +21,7 @@ import javax.persistence.Query;
 import junit.framework.TestCase;
 import ccc.domain.Page;
 import ccc.domain.Resource;
+import ccc.persistence.jpa.BaseDao;
 
 
 /**

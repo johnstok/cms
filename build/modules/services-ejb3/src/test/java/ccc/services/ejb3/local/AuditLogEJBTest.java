@@ -15,8 +15,6 @@ import static org.easymock.EasyMock.*;
 
 import java.util.Date;
 
-import javax.persistence.EntityManager;
-
 import junit.framework.TestCase;
 
 import org.easymock.Capture;
@@ -26,6 +24,8 @@ import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.User;
 import ccc.services.AuditLog;
+import ccc.services.AuditLogEJB;
+import ccc.services.Dao;
 
 
 /**
@@ -65,7 +65,7 @@ public class AuditLogEJBTest
 
         // ARRANGE
         final Capture<LogEntry> le = new Capture<LogEntry>();
-        _em.persist(capture(le));
+        _em.create(capture(le));
         replay(_em);
 
         final AuditLog al = new AuditLogEJB(_em);
@@ -90,7 +90,7 @@ public class AuditLogEJBTest
 
         // ARRANGE
         final Capture<LogEntry> le = new Capture<LogEntry>();
-        _em.persist(capture(le));
+        _em.create(capture(le));
         replay(_em);
 
         final AuditLog al = new AuditLogEJB(_em);
@@ -114,7 +114,7 @@ public class AuditLogEJBTest
 
         // ARRANGE
         final Capture<LogEntry> le = new Capture<LogEntry>();
-        _em.persist(capture(le));
+        _em.create(capture(le));
         replay(_em);
 
         final AuditLog al = new AuditLogEJB(_em);
@@ -138,7 +138,7 @@ public class AuditLogEJBTest
 
         // ARRANGE
         final Capture<LogEntry> le = new Capture<LogEntry>();
-        _em.persist(capture(le));
+        _em.create(capture(le));
         replay(_em);
 
         final AuditLog al = new AuditLogEJB(_em);
@@ -162,7 +162,7 @@ public class AuditLogEJBTest
 
         // ARRANGE
         final Capture<LogEntry> le = new Capture<LogEntry>();
-        _em.persist(capture(le));
+        _em.create(capture(le));
         replay(_em);
 
         final AuditLog al = new AuditLogEJB(_em);
@@ -189,7 +189,7 @@ public class AuditLogEJBTest
 
         // ARRANGE
         final Capture<LogEntry> le = new Capture<LogEntry>();
-        _em.persist(capture(le));
+        _em.create(capture(le));
         replay(_em);
 
         final AuditLog al = new AuditLogEJB(_em);
@@ -211,7 +211,7 @@ public class AuditLogEJBTest
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {
-        _em = createStrictMock(EntityManager.class);
+        _em = createStrictMock(Dao.class);
     }
 
     /** {@inheritDoc} */
@@ -223,5 +223,5 @@ public class AuditLogEJBTest
 
     private final User _actor = new User("actor");
     private final Date _happenedOn = new Date();
-    private EntityManager _em;
+    private Dao _em;
 }

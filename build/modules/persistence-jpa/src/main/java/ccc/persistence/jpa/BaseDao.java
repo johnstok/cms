@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.ejb3.support;
+package ccc.persistence.jpa;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -23,6 +23,7 @@ import javax.persistence.Query;
 import ccc.domain.CCCException;
 import ccc.domain.Entity;
 import ccc.domain.VersionedEntity;
+import ccc.services.Dao;
 
 
 /**

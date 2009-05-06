@@ -30,9 +30,9 @@ import javax.persistence.PersistenceContext;
 
 import ccc.domain.Password;
 import ccc.domain.User;
+import ccc.persistence.jpa.BaseDao;
+import ccc.services.Dao;
 import ccc.services.UserManager;
-import ccc.services.ejb3.support.BaseDao;
-import ccc.services.ejb3.support.Dao;
 
 
 /**

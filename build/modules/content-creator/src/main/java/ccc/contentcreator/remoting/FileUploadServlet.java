@@ -20,8 +20,8 @@ import ccc.domain.CCCException;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.ResourceName;
+import ccc.services.ModelTranslation;
 import ccc.services.api.ResourceSummary;
-import ccc.services.support.ModelTranslation;
 
 
 /**

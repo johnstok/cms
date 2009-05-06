@@ -34,9 +34,10 @@ import ccc.domain.ResourceType;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.AuditLog;
+import ccc.services.Dao;
+import ccc.services.QueryNames;
+import ccc.services.ResourceDaoImpl;
 import ccc.services.UserManager;
-import ccc.services.ejb3.support.Dao;
-import ccc.services.ejb3.support.QueryNames;
 
 
 /**

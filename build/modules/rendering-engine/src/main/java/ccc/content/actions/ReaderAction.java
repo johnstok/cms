@@ -13,18 +13,16 @@ package ccc.content.actions;
 
 import java.io.IOException;
 
-import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ccc.services.AuditLog;
+import ccc.services.AuditLogEJB;
+import ccc.services.Dao;
+import ccc.services.ResourceDaoImpl;
 import ccc.services.StatefulReader;
-import ccc.services.ejb3.local.AuditLogEJB;
-import ccc.services.ejb3.local.ResourceDaoImpl;
-import ccc.services.ejb3.local.StatefulReaderEJB;
-import ccc.services.ejb3.support.BaseDao;
-import ccc.services.ejb3.support.Dao;
+import ccc.services.StatefulReaderEJB;
 
 
 /**
@@ -52,10 +50,9 @@ public class ReaderAction
     public void execute(final HttpServletRequest req,
                         final HttpServletResponse resp) throws ServletException,
                                                                IOException {
-        final EntityManager em =
-            (EntityManager) req.getAttribute(SessionKeys.PERSISTENCE_KEY);
-        final AuditLog al = new AuditLogEJB(em);
-        final Dao dao = new BaseDao(em);
+        final Dao dao =
+            (Dao) req.getAttribute(SessionKeys.DAO_KEY);
+        final AuditLog al = new AuditLogEJB(dao);
         final StatefulReader sr =
             new StatefulReaderEJB(
                 al,

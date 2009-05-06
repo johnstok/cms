@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.support;
+package ccc.services;
 
 import java.util.ArrayList;
 import java.util.Collection;

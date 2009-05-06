@@ -24,7 +24,7 @@ import ccc.commons.EmailAddress;
 import ccc.domain.CreatorRoles;
 import ccc.domain.Password;
 import ccc.domain.User;
-import ccc.services.ejb3.support.Dao;
+import ccc.services.Dao;
 
 
 /**

@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.ejb3.support;
+package ccc.services;
 
 import java.io.InputStream;
 

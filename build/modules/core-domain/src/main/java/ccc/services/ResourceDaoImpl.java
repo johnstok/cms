@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.ejb3.local;
+package ccc.services;
 
 import java.util.Collection;
 import java.util.Date;
@@ -26,11 +26,6 @@ import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.services.AuditLog;
-import ccc.services.ResourceDao;
-import ccc.services.UserManager;
-import ccc.services.ejb3.support.Dao;
-import ccc.services.ejb3.support.QueryNames;
 
 
 /**

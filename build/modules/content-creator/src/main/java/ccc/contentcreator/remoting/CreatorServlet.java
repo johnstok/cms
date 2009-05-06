@@ -12,7 +12,7 @@
 package ccc.contentcreator.remoting;
 
 import ccc.commons.CCCProperties;
-import ccc.services.api.ServiceLookup;
+import ccc.services.ServiceLookup;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 

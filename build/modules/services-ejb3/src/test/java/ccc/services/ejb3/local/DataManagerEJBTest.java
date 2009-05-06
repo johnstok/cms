@@ -19,10 +19,10 @@ import java.sql.SQLException;
 
 import junit.framework.TestCase;
 import ccc.domain.Data;
+import ccc.services.CoreData;
 import ccc.services.ResourceDao;
 import ccc.services.SearchEngine;
 import ccc.services.DataManager.StreamAction;
-import ccc.services.ejb3.support.CoreData;
 
 
 /**

@@ -32,6 +32,7 @@ import org.h2.jdbcx.JdbcDataSource;
 
 import ccc.commons.IO;
 import ccc.domain.Data;
+import ccc.persistence.jpa.JdbcCoreData;
 import ccc.services.DataManager.StreamAction;
 
 

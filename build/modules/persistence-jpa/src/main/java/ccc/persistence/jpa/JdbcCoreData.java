@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.ejb3.support;
+package ccc.persistence.jpa;
 
 import static ccc.commons.Exceptions.*;
 
@@ -24,6 +24,7 @@ import javax.sql.DataSource;
 import ccc.commons.DBC;
 import ccc.domain.CCCException;
 import ccc.domain.Data;
+import ccc.services.CoreData;
 import ccc.services.DataManager.StreamAction;
 
 

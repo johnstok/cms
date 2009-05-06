@@ -36,11 +36,16 @@ import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
+import ccc.persistence.jpa.BaseDao;
 import ccc.services.ActionDao;
 import ccc.services.AuditLog;
+import ccc.services.AuditLogEJB;
+import ccc.services.Dao;
 import ccc.services.DataManager;
 import ccc.services.FolderDao;
+import ccc.services.ModelTranslation;
 import ccc.services.ResourceDao;
+import ccc.services.ResourceDaoImpl;
 import ccc.services.TemplateDao;
 import ccc.services.UserManager;
 import ccc.services.api.ActionSummary;
@@ -56,11 +61,6 @@ import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
-import ccc.services.ejb3.local.AuditLogEJB;
-import ccc.services.ejb3.local.ResourceDaoImpl;
-import ccc.services.ejb3.support.BaseDao;
-import ccc.services.ejb3.support.Dao;
-import ccc.services.support.ModelTranslation;
 
 
 /**
@@ -327,7 +327,7 @@ public final class QueriesEJB
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
         final Dao bdao = new BaseDao(_em);
-        final AuditLog audit = new AuditLogEJB(_em);
+        final AuditLog audit = new AuditLogEJB(bdao);
         _resources = new ResourceDaoImpl(_users, audit, bdao);
     }
 
