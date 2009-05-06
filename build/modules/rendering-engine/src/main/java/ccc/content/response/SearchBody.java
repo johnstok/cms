@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
 
 import ccc.commons.DBC;
 import ccc.commons.SearchResult;
-import ccc.commons.VelocityProcessor;
+import ccc.content.velocity.VelocityProcessor;
 import ccc.domain.Search;
 import ccc.domain.Template;
 import ccc.services.SearchEngine;

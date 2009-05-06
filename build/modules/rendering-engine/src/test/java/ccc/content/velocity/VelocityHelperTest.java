@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.commons;
+package ccc.content.velocity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import junit.framework.TestCase;
+import ccc.content.velocity.VelocityHelper;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;

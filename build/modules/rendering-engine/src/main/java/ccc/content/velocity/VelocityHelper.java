@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.commons;
+package ccc.content.velocity;
 
 import java.util.ArrayList;
 import java.util.Calendar;

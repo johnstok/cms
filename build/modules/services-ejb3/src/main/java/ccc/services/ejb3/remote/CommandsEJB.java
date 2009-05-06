@@ -60,6 +60,7 @@ import ccc.services.ResourceDao;
 import ccc.services.ResourceDaoImpl;
 import ccc.services.TemplateDao;
 import ccc.services.UserManager;
+import ccc.services.WorkingCopyManager;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.Commands;
 import ccc.services.api.DurationSummary;
@@ -69,7 +70,6 @@ import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
-import ccc.services.ejb3.local.WorkingCopyManager;
 
 
 /**

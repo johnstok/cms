@@ -37,6 +37,7 @@ import ccc.services.Dao;
 import ccc.services.ResourceDao;
 import ccc.services.ResourceDaoImpl;
 import ccc.services.UserManager;
+import ccc.services.WorkingCopyManager;
 
 
 /**
