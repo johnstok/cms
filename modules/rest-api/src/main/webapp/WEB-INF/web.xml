@@ -38,6 +38,7 @@
     <servlet-mapping>
         <servlet-name>Resteasy</servlet-name>
         <url-pattern>/*</url-pattern>
+        <!-- Secure all HTTP Methods -->
     </servlet-mapping>
     
     <security-constraint>
@@ -52,6 +53,9 @@
         <auth-method>BASIC</auth-method>
         <realm-name>CCC API</realm-name>
     </login-config>
-
+    
+    <security-role>
+        <role-name>ADMINISTRATOR</role-name>
+    </security-role>
 </web-app>
 
