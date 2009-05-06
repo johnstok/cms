@@ -39,11 +39,8 @@ import org.xml.sax.InputSource;
 import ccc.domain.CCCException;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
-import ccc.domain.Resource;
-import ccc.domain.Snapshot;
 import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.domain.WorkingCopyAware;
 import ccc.services.AuditLog;
 import ccc.services.PageDao;
 import ccc.services.ResourceDao;
@@ -68,7 +65,7 @@ public class PageDaoImpl implements PageDao {
 
 
     /** Constructor. */
-    @SuppressWarnings("unused") public PageDaoImpl() { super(); }
+    public PageDaoImpl() { super(); }
 
     /**
      * Constructor.
@@ -186,34 +183,6 @@ public class PageDaoImpl implements PageDao {
         }
         return errors;
 
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void updateWorkingCopy(final UUID id, final Snapshot workingCopy) {
-        final Resource r = _dao.findLocked(Resource.class, id);
-        final WorkingCopyAware wc = (WorkingCopyAware) r; // TODO: Handle class cast exception.
-        wc.workingCopy(workingCopy);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void clearWorkingCopy(final UUID id) {
-        final Resource r = _dao.findLocked(Resource.class, id);
-        final WorkingCopyAware wc = (WorkingCopyAware) r; // TODO: Handle class cast exception.
-        wc.clearWorkingCopy();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void applyWorkingCopy(final UUID id,
-                                 final String comment,
-                                 final boolean isMajorEdit,
-                                 final User actor,
-                                 final Date happenedOn) {
-        final Page page = _dao.findLocked(Page.class, id, actor);
-        page.applySnapshot(page.workingCopy());
-        update(comment, isMajorEdit, page, actor, happenedOn);
     }
 
     @PostConstruct @SuppressWarnings("unused")

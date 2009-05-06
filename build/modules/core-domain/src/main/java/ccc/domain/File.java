@@ -26,16 +26,12 @@ import ccc.commons.DBC;
  */
 public class File
     extends
-        Resource
-    implements
-        WorkingCopyAware {
-
+        Resource {
 
     private String _description;
     private Data _data;
     private int _size;
     private MimeType _mimeType;
-    private Snapshot _workingCopy;
 
 
     /** Constructor: for persistence only. */
@@ -214,24 +210,5 @@ public class File
         } catch (final MimeTypeParseException e) {
             throw new CCCException(e);
         }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Snapshot workingCopy() {
-        return _workingCopy;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void clearWorkingCopy() {
-        DBC.require().notNull(_workingCopy);
-        _workingCopy = null;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void workingCopy(final Snapshot snapshot) {
-        _workingCopy = snapshot;
     }
 }

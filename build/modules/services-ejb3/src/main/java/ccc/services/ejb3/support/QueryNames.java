@@ -44,4 +44,7 @@ public final class QueryNames {
 
     /** ALL_FILES : String. */
     public static final String ALL_FILES = "allFiles";
+
+    /** LATEST_ACTION : String. */
+    public static final String LATEST_ACTION = "latest_action";
 }

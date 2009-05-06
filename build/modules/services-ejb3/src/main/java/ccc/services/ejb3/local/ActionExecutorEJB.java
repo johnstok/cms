@@ -31,7 +31,6 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceType;
 import ccc.services.ActionExecutor;
 import ccc.services.AuditLog;
-import ccc.services.PageDao;
 import ccc.services.ResourceDao;
 import ccc.services.UserManager;
 import ccc.services.ejb3.support.BaseDao;
@@ -50,13 +49,14 @@ public class ActionExecutorEJB implements ActionExecutor {
     private static final Logger LOG =
         Logger.getLogger(ActionExecutorEJB.class.getName());
 
-    private ResourceDao _resources;
-    @EJB(name=PageDao.NAME)     private PageDao     _page;
-    @EJB(name=UserManager.NAME) private UserManager    _users;
-    @PersistenceContext private EntityManager _em;
+    private ResourceDao        _resources;
+    private WorkingCopyManager _wcMgr;
+
+    @EJB(name=UserManager.NAME) private UserManager _users;
+    @PersistenceContext private EntityManager       _em;
 
     /** Constructor. */
-    @SuppressWarnings("unused") public ActionExecutorEJB() { super(); }
+    public ActionExecutorEJB() { super(); }
 
 
     /**
@@ -103,7 +103,7 @@ public class ActionExecutorEJB implements ActionExecutor {
     private void executeUpdate(final Action action) {
         final Resource r = action.subject();
         if (ResourceType.PAGE.equals(r.type())) {
-            _page.applyWorkingCopy(
+            _wcMgr.applyWorkingCopy(
                 r.id(),
                 action.parameters().getString("comment"),
                 action.parameters().getBool("majorEdit"),
@@ -136,5 +136,6 @@ public class ActionExecutorEJB implements ActionExecutor {
         final Dao bdao = new BaseDao(_em);
         final AuditLog audit = new AuditLogEJB(_em);
         _resources = new ResourceDaoImpl(_users, audit, bdao);
+        _wcMgr = new WorkingCopyManager(_resources);
     }
 }

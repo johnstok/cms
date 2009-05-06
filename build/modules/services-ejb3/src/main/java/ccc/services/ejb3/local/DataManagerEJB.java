@@ -60,7 +60,7 @@ public class DataManagerEJB implements DataManager {
     private CoreData _cd;
 
     /** Constructor. */
-    @SuppressWarnings("unused") public DataManagerEJB() { super(); }
+    public DataManagerEJB() { super(); }
 
     /**
      * Constructor.
@@ -139,17 +139,6 @@ public class DataManagerEJB implements DataManager {
             }
         );
     }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void applyWorkingCopy(final UUID id) {
-        final File f = _dao.findLocked(File.class, id, _users.loggedInUser());
-        f.applySnapshot(f.workingCopy());
-        f.clearWorkingCopy();
-        _dao.update(f);
-    }
-
 
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {

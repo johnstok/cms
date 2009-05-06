@@ -49,7 +49,6 @@ import ccc.domain.User;
 import ccc.services.ActionDao;
 import ccc.services.AliasDao;
 import ccc.services.AuditLog;
-import ccc.services.DataManager;
 import ccc.services.FolderDao;
 import ccc.services.PageDao;
 import ccc.services.ResourceDao;
@@ -66,6 +65,7 @@ import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
 import ccc.services.ejb3.local.AuditLogEJB;
 import ccc.services.ejb3.local.ResourceDaoImpl;
+import ccc.services.ejb3.local.WorkingCopyManager;
 import ccc.services.ejb3.support.BaseDao;
 import ccc.services.ejb3.support.Dao;
 import ccc.services.support.ModelTranslation;
@@ -92,11 +92,11 @@ public class CommandsEJB
     @EJB(name=PageDao.NAME)        private PageDao         _page;
     @EJB(name=UserManager.NAME)    private UserManager     _users;
     @EJB(name=ActionDao.NAME)      private ActionDao       _scheduler;
-    @EJB(name=DataManager.NAME)    private DataManager     _file;
 
     @PersistenceContext private EntityManager _em;
-    private ResourceDao     _resources;
-    private AuditLog        _audit;
+    private ResourceDao        _resources;
+    private AuditLog           _audit;
+    private WorkingCopyManager _wcMgr;
 
     /** {@inheritDoc} */
     @Override
@@ -290,9 +290,8 @@ public class CommandsEJB
 
         assignParagraphs(delta._paragraphs, page);
 
-        _page.updateWorkingCopy(
+        _wcMgr.updateWorkingCopy(
             UUID.fromString(delta._id), page.createSnapshot());
-
     }
 
     /** {@inheritDoc} */
@@ -302,7 +301,7 @@ public class CommandsEJB
         final LogEntry le = _audit.findEntryForIndex(index);
 
         if (resourceUuid.equals(le.subjectId())) {
-            _page.updateWorkingCopy(
+            _wcMgr.updateWorkingCopy(
                 UUID.fromString(resourceId),
                 new Snapshot(le.detail()));
         } else {
@@ -440,7 +439,7 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     public void clearWorkingCopy(final String pageId) {
-        _page.clearWorkingCopy(UUID.fromString(pageId));
+        _wcMgr.clearWorkingCopy(UUID.fromString(pageId));
     }
 
     /** {@inheritDoc} */
@@ -496,12 +495,13 @@ public class CommandsEJB
         final Dao bdao = new BaseDao(_em);
         _audit = new AuditLogEJB(_em);
         _resources = new ResourceDaoImpl(_users, _audit, bdao);
+        _wcMgr = new WorkingCopyManager(_resources);
     }
 
     /** {@inheritDoc} */
     @Override
     public void applyWorkingCopyToFile(final String fileId) {
-        _file.applyWorkingCopy(UUID.fromString(fileId));
+        _wcMgr.applyWorkingCopy(UUID.fromString(fileId), _users.loggedInUser());
     }
 
     /** {@inheritDoc} */
