@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ccc.commons.DBC;
+
 
 /**
  * An abstract superclass that contains shared behaviour for the different types
@@ -32,7 +34,11 @@ import java.util.Set;
  *
  * @author Civic Computing Ltd
  */
-public abstract class Resource extends VersionedEntity {
+public abstract class Resource
+    extends
+        VersionedEntity
+    implements
+        WorkingCopyAware {
 
     private static final int MAXIMUM_TITLE_LENGTH = 256;
     private static final int MAXIMUM_DATUM_LENGTH = 1000;
@@ -50,6 +56,7 @@ public abstract class Resource extends VersionedEntity {
     private Date           _dateCreated       = new Date();
     private Date           _dateChanged       = _dateCreated;
     private Duration       _cache             = null;
+    private Snapshot       _workingCopy       = null;
 
     private Map<String, String> _metadata = new HashMap<String, String>();
 
@@ -593,5 +600,30 @@ public abstract class Resource extends VersionedEntity {
         } else {
             return parent().computeCache();
         }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void applySnapshot(final Snapshot s) {
+        throw new UnsupportedOperationException("Cannot apply snapshot.");
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Snapshot workingCopy() {
+        return _workingCopy;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void clearWorkingCopy() {
+        DBC.require().notNull(_workingCopy);
+        _workingCopy = null;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void workingCopy(final Snapshot snapshot) {
+        _workingCopy = snapshot;
     }
 }

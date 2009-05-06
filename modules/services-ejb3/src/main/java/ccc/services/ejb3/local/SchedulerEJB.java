@@ -64,7 +64,7 @@ public class SchedulerEJB implements Scheduler, ActionDao {
     private Dao _dao;
 
     /** Constructor. */
-    @SuppressWarnings("unused") public SchedulerEJB() { super(); }
+    public SchedulerEJB() { super(); }
 
 
     /**
@@ -83,7 +83,7 @@ public class SchedulerEJB implements Scheduler, ActionDao {
     public void executeAction() {
         LOG.debug("Executing scheduled actions.");
         final List<Action> actions =
-            _dao.list("latest_action", Action.class, new Date());
+            _dao.list(QueryNames.LATEST_ACTION, Action.class, new Date());
         LOG.debug("Actions to execute: "+actions.size());
         try {
             if (actions.size() > 0) {
@@ -164,6 +164,6 @@ public class SchedulerEJB implements Scheduler, ActionDao {
 
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
-        final Dao _dao = new BaseDao(_em);
+        _dao = new BaseDao(_em);
     }
 }

@@ -73,6 +73,15 @@
 				type="string"
                 length="256" />
 		</component>
+                
+        <component name="_workingCopy" class="ccc.domain.Snapshot">
+            <property
+                name="detail"
+                access="property"
+                not-null="false"
+                column="working_copy"
+                type="text" />
+        </component>
 
         <many-to-one
             name="_parent"

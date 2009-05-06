@@ -19,8 +19,6 @@ import java.util.Date;
 import junit.framework.TestCase;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
-import ccc.domain.Resource;
-import ccc.domain.Snapshot;
 import ccc.domain.User;
 import ccc.services.PageDao;
 import ccc.services.ResourceDao;
@@ -41,27 +39,6 @@ public class PageDaoImplTest
     /**
      * Test.
      */
-    public void testClearWorkingCopy() {
-
-        // ARRANGE
-        final Page p = new Page("foo");
-        p.workingCopy(p.createSnapshot());
-
-        expect(_dao.findLocked(Resource.class, p.id())).andReturn(p);
-        replayAll();
-
-        // ACT
-        _cm.clearWorkingCopy(p.id());
-
-        // ASSERT
-        verifyAll();
-        assertNull(p.workingCopy());
-    }
-
-
-    /**
-     * Test.
-     */
     public void testUpdatePage() {
 
         // ARRANGE
@@ -70,7 +47,8 @@ public class PageDaoImplTest
         page.addParagraph(Paragraph.fromText("abc", "def"));
 
         expect(_dao.findLocked(Page.class, page.id())).andReturn(page);
-        _dao.update(eq(page), eq("comment text"), eq(false), eq(u), isA(Date.class));
+        _dao.update(
+            eq(page), eq("comment text"), eq(false), eq(u), isA(Date.class));
         expect(_um.loggedInUser()).andReturn(u);
         replayAll();
 
@@ -90,30 +68,6 @@ public class PageDaoImplTest
         assertEquals("foo", page.paragraphs().iterator().next().name());
         assertEquals("bar", page.paragraph("foo").text());
         assertNull("Page must not have working copy", page.workingCopy());
-    }
-
-
-    /**
-     * Test.
-     */
-    public void testUpdateWorkingCopy() {
-
-        // ARRANGE
-        final Page page = new Page("test");
-        page.addParagraph(Paragraph.fromText("abc", "def"));
-        final Snapshot before = page.createSnapshot();
-
-        expect(_dao.findLocked(Resource.class, page.id())).andReturn(page);
-        replayAll();
-
-        // ACT
-        _cm.updateWorkingCopy(page.id(), before);
-
-        // ASSERT
-        verifyAll();
-        assertNotNull("Page must have a working copy", page.workingCopy());
-        assertEquals("test", page.workingCopy().getString("title"));
-
     }
 
 

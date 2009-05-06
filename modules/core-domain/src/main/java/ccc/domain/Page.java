@@ -29,12 +29,9 @@ import ccc.commons.DBC;
  */
 public final class Page
     extends
-        Resource
-    implements
-        WorkingCopyAware {
+        Resource {
 
     private Set<Paragraph> _content = new HashSet<Paragraph>();
-    private Snapshot _workingCopy;
 
 
     /** Constructor: for persistence only. */
@@ -142,24 +139,5 @@ public final class Page
         for(final Snapshot p : s.getSnapshots("paragraphs")) {
             addParagraph(Paragraph.fromSnapshot(p));
         }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Snapshot workingCopy() {
-        return _workingCopy;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void clearWorkingCopy() {
-        DBC.require().notNull(_workingCopy);
-        _workingCopy = null;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void workingCopy(final Snapshot snapshot) {
-        _workingCopy = snapshot;
     }
 }

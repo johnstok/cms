@@ -27,15 +27,6 @@
         extends="ccc.domain.Resource"
         table="pages">
         <key column="id" />
-        
-        <component name="_workingCopy" class="ccc.domain.Snapshot">
-			<property
-                name="detail"
-                access="property"
-                not-null="false"
-                column="working_copy"
-				type="text" />
-		</component>
 		
         <set name="_content" table="paragraphs">
             <key column="page_id" not-null="true" />

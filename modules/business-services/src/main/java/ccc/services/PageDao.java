@@ -11,15 +11,12 @@
  */
 package ccc.services;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
-import ccc.domain.Snapshot;
-import ccc.domain.User;
 
 
 /**
@@ -50,14 +47,6 @@ public interface PageDao {
                 final boolean isMajorEdit);
 
     /**
-     * Updates the working copy.
-     *
-     * @param id The identifier for the page.
-     * @param workingCopy The snapshot to use as a working copy.
-     */
-    void updateWorkingCopy(UUID id, Snapshot workingCopy);
-
-    /**
      * Validate fields.
      *
      * @param delta Paragraphs of the page.
@@ -73,26 +62,4 @@ public interface PageDao {
      * @param page Page create.
      */
     void create(UUID id, Page page);
-
-    /**
-     * Delete a page's working copy.
-     *
-     * @param id The page's id.
-     */
-    void clearWorkingCopy(UUID id);
-
-    /**
-     * Applies the current working copy to update a page.
-     *
-     * @param id The page's id.
-     * @param comment The comment for the page edit.
-     * @param isMajorEdit A boolean for major edit.
-     * @param actor The actor that performed the update.
-     * @param happenedOn The date the update took place.
-     */
-    void applyWorkingCopy(UUID id,
-                          String comment,
-                          boolean isMajorEdit,
-                          User actor,
-                          Date happenedOn);
 }
