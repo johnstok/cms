@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.ejb3.local;
+package ccc.services;
 
 import java.util.Date;
 import java.util.UUID;
@@ -18,8 +18,6 @@ import ccc.commons.DBC;
 import ccc.domain.Resource;
 import ccc.domain.Snapshot;
 import ccc.domain.User;
-import ccc.services.IWorkingCopyManager;
-import ccc.services.ResourceDao;
 
 
 /**

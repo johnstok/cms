@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.commons;
+package ccc.content.velocity;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -25,6 +25,7 @@ import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeConstants;
 
+import ccc.commons.TextProcessor;
 import ccc.domain.CCCException;
 
 
@@ -33,7 +34,7 @@ import ccc.domain.CCCException;
  *
  * @author Civic Computing Ltd.
  */
-public class VelocityProcessor {
+public class VelocityProcessor implements TextProcessor {
 
     /*
      * TODO: investigate all relevant properties
@@ -56,17 +57,7 @@ public class VelocityProcessor {
         + "velocimacro.library = ccc.vm\n";
 
 
-    /**
-     * Render a resource with the specified template.
-     * <br/><br/>
-     * The rendered output will be stored in memory as a String. Therefore,
-     * caution should be taken that this method is not used to generate large
-     * output, otherwise an {@link OutOfMemoryError} could be thrown.
-     *
-     * @param template The template used to render the resource.
-     * @param contextValues Additional values that are passed to the template.
-     * @return The html rendering as a string.
-     */
+    /** {@inheritDoc} */
     public String render(final String template,
                          final Map<String, Object> contextValues) {
         final StringWriter renderedOutput = new StringWriter();
@@ -75,16 +66,7 @@ public class VelocityProcessor {
     }
 
 
-    /**
-     * Render a resource with the specified template.
-     * <br/><br/>
-     * The rendered output will be written to the specified writer.
-     *
-     * @param template The template used to render the resource.
-     * @param output A valid {@link Writer}. The writer will be flushed when
-     *  output is complete. The writer will not be closed.
-     * @param contextValues Additional values that are passed to the template.
-     */
+    /** {@inheritDoc} */
     public void render(final String template,
                        final Writer output,
                        final Map<String, Object> contextValues) {

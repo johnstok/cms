@@ -21,7 +21,7 @@ import java.util.Map;
 
 import ccc.commons.DBC;
 import ccc.commons.Resources;
-import ccc.commons.VelocityProcessor;
+import ccc.content.velocity.VelocityProcessor;
 import ccc.domain.Page;
 import ccc.domain.Template;
 import ccc.services.StatefulReader;

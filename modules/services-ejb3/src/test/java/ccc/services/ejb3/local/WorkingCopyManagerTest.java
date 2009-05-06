@@ -18,6 +18,7 @@ import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.Snapshot;
 import ccc.services.ResourceDao;
+import ccc.services.WorkingCopyManager;
 
 
 /**

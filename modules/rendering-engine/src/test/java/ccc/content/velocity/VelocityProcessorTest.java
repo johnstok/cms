@@ -9,13 +9,14 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.commons;
+package ccc.content.velocity;
 
 import java.io.StringWriter;
 import java.util.Collections;
 import java.util.HashMap;
 
 import junit.framework.TestCase;
+import ccc.commons.TextProcessor;
 import ccc.domain.CCCException;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
@@ -34,7 +35,7 @@ public class VelocityProcessorTest extends TestCase {
     public void testMacroLoading() {
 
         // ARRANGE
-        final VelocityProcessor vp = new VelocityProcessor();
+        final TextProcessor vp = new VelocityProcessor();
 
         // ACT
         final String actual =
@@ -131,7 +132,7 @@ public class VelocityProcessorTest extends TestCase {
         final Page foo = new Page("foo");
         final String template = "$helper.path(\"badpath\")";
         final String expectedMessage =
-            "Invocation of method 'path' in  class ccc.commons.VelocityHelper "
+            "Invocation of method 'path' in  class ccc.content.velocity.VelocityHelper "
             +"threw exception ccc.domain.CCCException: badpath does not match "
             +"the regular expression: (/[\\.\\-\\w]+)* at VelocityProcessor"
             +"[line 1, column 9]";
@@ -162,7 +163,7 @@ public class VelocityProcessorTest extends TestCase {
         final Page foo = new Page("foo");
         final String template = "$helper.path(null)";
         final String expectedMessage =
-            "Invocation of method 'path' in  class ccc.commons.VelocityHelper "
+            "Invocation of method 'path' in  class ccc.content.velocity.VelocityHelper "
             + "threw exception java.lang.IllegalArgumentException: Specified "
             + "value may not be NULL. at VelocityProcessor[line 1, column 9]";
         final StringWriter renderedOutput = new StringWriter();
@@ -196,5 +197,5 @@ public class VelocityProcessorTest extends TestCase {
         _vp = null;
     }
 
-    private VelocityProcessor _vp;
+    private TextProcessor _vp;
 }
