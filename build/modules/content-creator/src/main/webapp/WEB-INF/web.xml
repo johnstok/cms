@@ -147,6 +147,7 @@
             <url-pattern>/assets/*</url-pattern>
             <url-pattern>/error</url-pattern>
             <url-pattern>/notfound</url-pattern>
+            <!-- Secure all HTTP Methods -->
         </web-resource-collection>
         <auth-constraint>
             <role-name>ADMINISTRATOR</role-name>
@@ -163,4 +164,13 @@
         </form-login-config>
     </login-config>
 
+    <security-role>
+        <role-name>ADMINISTRATOR</role-name>
+    </security-role>
+    <security-role>
+        <role-name>CONTENT_CREATOR</role-name>
+    </security-role>
+    <security-role>
+        <role-name>SITE_BUILDER</role-name>
+    </security-role>
 </web-app>
