@@ -29,7 +29,6 @@ import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.ResourceDao;
 import ccc.services.UserManager;
-import ccc.services.api.DurationSummary;
 import ccc.services.ejb3.support.Dao;
 import ccc.services.ejb3.support.QueryNames;
 
@@ -386,17 +385,13 @@ public class ResourceDaoImpl implements ResourceDao {
     /** {@inheritDoc} */
     @Override
     public void updateCache(final UUID resourceId,
-                            final DurationSummary duration) {
+                            final Duration duration) {
         final User loggedInUser = _users.loggedInUser();
         final Resource r = findLocked(Resource.class, resourceId);
         if (duration == null) {
             r.cache(null);
         } else {
-            r.cache(new Duration(
-                new Long(duration._days),
-                new Long(duration._hours),
-                new Long(duration._minutes),
-                new Long(duration._seconds)));
+            r.cache(duration);
         }
         _audit.recordUpdateCache(r, loggedInUser, new Date());
     }

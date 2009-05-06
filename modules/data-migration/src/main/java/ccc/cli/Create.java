@@ -7,7 +7,7 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 
 import ccc.migration.Migrations;
-import ccc.services.ServiceLookup;
+import ccc.services.api.ServiceLookup;
 
 /**
  * Entry class for the 'create' application.
