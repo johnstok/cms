@@ -11,8 +11,6 @@
  */
 package ccc.commons;
 
-import java.io.Serializable;
-
 
 /**
  * A public API for a registry. Registries are used look up other objects. See
@@ -21,7 +19,7 @@ import java.io.Serializable;
  *
  * @author Civic Computing Ltd.
  */
-public interface Registry extends Serializable {
+public interface Registry {
 
     /**
      * Get an object from the registry.

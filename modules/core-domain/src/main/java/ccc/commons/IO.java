@@ -15,9 +15,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-
-import ccc.domain.CCCException;
+import java.nio.charset.Charset;
 
 
 /**
@@ -27,8 +25,6 @@ import ccc.domain.CCCException;
  */
 public final class IO {
 
-    private static final String ENCODING = "ISO-8859-1";
-
     private IO() { super(); }
 
     /**
@@ -36,25 +32,23 @@ public final class IO {
      * Optimisation based on:
      * http://java.sun.com/
      * docs/books/performance/1st_edition/html/JPIOPerformance.fm.html
-     * TODO: Throw {@link IOException}.
      *
      * @param is The {@link InputStream} to copy from.
      * @param os The {@link OutputStream} to copy to.
+     * @throws IOException If a failure occurs with either stream.
      */
-    public static void copy(final InputStream is, final OutputStream os) {
+    public static void copy(final InputStream is,
+                            final OutputStream os) throws IOException {
         final int bufferSize = 8*1024; //8K
         final byte[] buffer = new byte[bufferSize];
-        try {
-            while (true) {
-                final int amountRead = is.read(buffer);
-                if (amountRead == -1) {
-                   break;
-                }
-                os.write(buffer, 0, amountRead);
 
-             }
-        } catch (final IOException e) {
-            throw new CCCException("Error copying data.", e);
+        while (true) {
+            final int amountRead = is.read(buffer);
+            if (amountRead == -1) {
+                break;
+            }
+            os.write(buffer, 0, amountRead);
+
         }
     }
 
@@ -62,15 +56,14 @@ public final class IO {
      * Copy an input stream to a string.
      *
      * @param is The {@link InputStream} to copy from.
+     * @param encoding The character encoding for the stream.
      * @return The result string.
+     * @throws IOException If a failure occurs with either stream.
      */
-    public static String toString(final InputStream is) {
+    public static String toString(final InputStream is,
+                                  final Charset encoding) throws IOException {
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        try {
-            copy(is, baos);
-            return baos.toString(ENCODING);
-        } catch (final UnsupportedEncodingException e) {
-            throw new CCCException("Error copying data.", e);
-        }
+        copy(is, baos);
+        return new String(baos.toByteArray(), encoding);
     }
 }

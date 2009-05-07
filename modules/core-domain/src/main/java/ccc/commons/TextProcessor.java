@@ -17,7 +17,7 @@ import java.util.Map;
 
 
 /**
- * TODO: Add Description for this type.
+ * API for text processing.
  *
  * @author Civic Computing Ltd.
  */
@@ -34,7 +34,8 @@ public interface TextProcessor {
      * @param contextValues Additional values that are passed to the template.
      * @return The html rendering as a string.
      */
-    String render(final String template, final Map<String, Object> contextValues);
+    String render(final String template,
+                  final Map<String, Object> contextValues);
 
     /**
      * Render a resource with the specified template.

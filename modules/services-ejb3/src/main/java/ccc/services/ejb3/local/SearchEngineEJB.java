@@ -15,6 +15,7 @@ import static javax.ejb.TransactionAttributeType.*;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -451,7 +452,8 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
 
         /** {@inheritDoc} */
         @Override public void execute(final InputStream is) throws Exception {
-            content = IO.toString(is);
+            // Assume files have come from windows.
+            content = IO.toString(is, Charset.forName("windows-1252"));
         }
     }
 

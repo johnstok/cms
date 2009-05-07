@@ -85,7 +85,7 @@ public class Snapshot implements Serializable {
      *
      * @param detail The JSON string.
      */
-    void setDetail(final String detail) { // FIXME: Should be private.
+    private void setDetail(final String detail) {
         DBC.require().notNull(detail);
         try {
             _detail = new JSONObject(detail);

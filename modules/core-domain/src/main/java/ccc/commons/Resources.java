@@ -66,10 +66,20 @@ public final class Resources {
         }
     }
 
+    /**
+     * Read a resource path into memory as properties.
+     *
+     * @param resourcePath The path to the resource.
+     * @return The resource as a properties object.
+     */
     public static Properties readIntoProps(final String resourcePath) {
         final Properties p = new Properties();
         try {
-            p.load(Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath));
+            p.load(
+                Thread
+                    .currentThread()
+                    .getContextClassLoader()
+                    .getResourceAsStream(resourcePath));
             return p;
         } catch (final IOException e) {
             throw new RuntimeException(e);

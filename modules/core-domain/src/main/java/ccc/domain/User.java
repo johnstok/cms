@@ -36,7 +36,6 @@ public class User extends VersionedEntity {
      * Constructor.
      * N.B. This constructor should only be used for persistence.
      */
-    @SuppressWarnings("unused")
     protected User() { super(); }
 
     /**

@@ -16,7 +16,7 @@ import java.io.Serializable;
 
 
 /**
- * TODO: Add Description for this type.
+ * A finite period of time.
  *
  * @author Civic Computing Ltd.
  */
@@ -26,7 +26,6 @@ public class Duration implements Serializable {
     private static final long SECONDS_IN_HOUR = 3600;
     private static final int SECONDS_IN_DAY = 86400;
     private long _time; // time in seconds
-
 
 
     /** Constructor: for persistence only. */
@@ -41,9 +40,9 @@ public class Duration implements Serializable {
      * @param seconds Number of seconds
      */
     public Duration(final long days,
-        final long hours,
-        final long minutes,
-        final long seconds) {
+                    final long hours,
+                    final long minutes,
+                    final long seconds) {
         _time = seconds
                 + minutes*SECONDS_IN_MINUTE
                 + hours*SECONDS_IN_HOUR
@@ -82,7 +81,7 @@ public class Duration implements Serializable {
      *
      * @return Value of the minute field.
      */
-    public Long minuteField() {
+    public long minuteField() {
         return ((_time%SECONDS_IN_DAY)%SECONDS_IN_HOUR)/SECONDS_IN_MINUTE;
     }
 
@@ -91,7 +90,7 @@ public class Duration implements Serializable {
      *
      * @return Value of the hour field.
      */
-    public Long hourField() {
+    public long hourField() {
         return (_time%SECONDS_IN_DAY)/SECONDS_IN_HOUR;
     }
 
@@ -100,7 +99,7 @@ public class Duration implements Serializable {
      *
      * @return Value of the second field.
      */
-    public Long dayField() {
+    public long dayField() {
         return _time/SECONDS_IN_DAY;
     }
 
@@ -109,7 +108,6 @@ public class Duration implements Serializable {
      */
     @Override
     public int hashCode() {
-
         final int prime = 31;
         int result = 1;
         result = prime * result + (int) (_time ^ (_time >>> 32));
@@ -121,7 +119,6 @@ public class Duration implements Serializable {
      */
     @Override
     public boolean equals(final Object obj) {
-
         if (this == obj) {
             return true;
         }
