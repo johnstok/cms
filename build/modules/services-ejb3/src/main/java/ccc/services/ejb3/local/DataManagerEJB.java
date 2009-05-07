@@ -14,6 +14,7 @@ package ccc.services.ejb3.local;
 
 import static javax.ejb.TransactionAttributeType.*;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
@@ -136,7 +137,12 @@ public class DataManagerEJB implements DataManager {
             data,
             new StreamAction(){
                 @Override public void execute(final InputStream is) {
-                    IO.copy(is, dataStream);
+                    try {
+                        IO.copy(is, dataStream);
+                    } catch (final IOException e) {
+                        // FIXME: choose a better exception.
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         );

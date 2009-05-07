@@ -493,7 +493,7 @@ public abstract class Resource
      * @return The date of creation.
      */
     public Date dateCreated() {
-        return _dateCreated;
+        return new Date(_dateCreated.getTime());
     }
 
     /**
@@ -502,7 +502,7 @@ public abstract class Resource
      * @return The date the resource last changed.
      */
     public Date dateChanged() {
-        return _dateChanged;
+        return new Date(_dateChanged.getTime());
     }
 
     /**
@@ -512,7 +512,7 @@ public abstract class Resource
      */
     public void dateChanged(final Date changedOn) {
         require().notNull(changedOn);
-        _dateChanged = changedOn;
+        _dateChanged = new Date(changedOn.getTime());
     }
 
     /**
@@ -597,9 +597,8 @@ public abstract class Resource
     public Duration computeCache() {
         if (_cache != null || parent() == null) {
             return cache();
-        } else {
-            return parent().computeCache();
         }
+        return parent().computeCache();
     }
 
     /** {@inheritDoc} */

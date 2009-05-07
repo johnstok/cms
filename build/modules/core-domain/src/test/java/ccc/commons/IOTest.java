@@ -13,6 +13,7 @@ package ccc.commons;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 
 import junit.framework.TestCase;
@@ -27,8 +28,9 @@ public class IOTest extends TestCase {
 
     /**
      * Test.
+     * @throws IOException If a stream fails.
      */
-    public void testCopy() {
+    public void testCopy() throws IOException {
 
         // ARRANGE
         final byte[] expected = new byte[]{1};

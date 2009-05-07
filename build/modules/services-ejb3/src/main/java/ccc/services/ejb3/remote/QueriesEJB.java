@@ -89,7 +89,7 @@ public final class QueriesEJB
     /**
      * Constructor.
      */
-    @SuppressWarnings("unused") public QueriesEJB() { super(); }
+    public QueriesEJB() { super(); }
 
     /** {@inheritDoc} */
     @Override

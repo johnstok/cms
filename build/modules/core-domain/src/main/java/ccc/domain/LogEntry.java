@@ -368,7 +368,8 @@ public class LogEntry extends Entity {
         le._action = Action.INCLUDE_IN_MM;
         le._comment = "Included in main menu.";
         final Snapshot ss = new Snapshot();
-        ss.set("includeInMainMenu", resource.includeInMainMenu());
+        ss.set(
+            "includeInMainMenu", Boolean.valueOf(resource.includeInMainMenu()));
         le._detail = ss.getDetail();
         return le;
     }
@@ -389,7 +390,8 @@ public class LogEntry extends Entity {
         le._action = Action.REMOVE_FROM_MM;
         le._comment = "Removed from main menu.";
         final Snapshot ss = new Snapshot();
-        ss.set("includeInMainMenu", resource.includeInMainMenu());
+        ss.set(
+            "includeInMainMenu", Boolean.valueOf(resource.includeInMainMenu()));
         le._detail = ss.getDetail();
         return le;
     }
@@ -466,7 +468,7 @@ public class LogEntry extends Entity {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Create a log entry to record a change to the resource's caching policy.
      *
      * @param resource The resource that was changed.
      * @param actor The actor that performed the action.

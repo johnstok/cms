@@ -19,7 +19,7 @@ import junit.framework.TestCase;
 
 
 /**
- * TODO: Add Description for this type.
+ * Tests for the snapshot class.
  *
  * @author Civic Computing Ltd.
  */
@@ -94,29 +94,28 @@ public class SnapshotTest
     /**
      * Test.
      */
-    public void testDetailProperty() {
+    public void testConstructFromString() {
 
         // ARRANGE
-        final Snapshot s = new Snapshot();
 
         // ACT
-        s.setDetail("{\"foo\":\"bar\"}");
+        final Snapshot s = new Snapshot("{\"foo\":\"bar\"}");
 
         // ASSERT
         assertEquals("{\"foo\":\"bar\"}", s.getDetail());
+        assertEquals("bar", s.getString("foo"));
     }
 
     /**
      * Test.
      */
-    public void testDetailMutatorRejectsNull() {
+    public void testConstructWithNullStringFails() {
 
         // ARRANGE
-        final Snapshot s = new Snapshot();
 
         // ACT
         try {
-            s.setDetail(null);
+            new Snapshot(null);
 
         // ASSERT
         } catch (final IllegalArgumentException e) {

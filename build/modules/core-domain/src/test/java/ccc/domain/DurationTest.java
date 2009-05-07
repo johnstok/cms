@@ -28,7 +28,7 @@ public class DurationTest extends TestCase {
     public void testTimeConstructor() {
 
         // ARRANGE
-        final Duration duration = new Duration(new Long(1000));
+        final Duration duration = new Duration(1000);
 
         // ACT
         final long time = duration.time();
@@ -43,7 +43,7 @@ public class DurationTest extends TestCase {
     public void testFieldConstructor() {
 
         // ARRANGE
-        final Duration duration = new Duration(4,2,7,31);
+        final Duration duration = new Duration(4, 2, 7, 31);
 
         // ACT
         final long seconds = duration.secondField();
@@ -68,7 +68,7 @@ public class DurationTest extends TestCase {
         // ARRANGE
         // 33d 6h 15m 7s
         final Duration duration =
-            new Duration(new Long(33*86400+6*3600+15*60+59));
+            new Duration(33*86400+6*3600+15*60+59);
 
         // ACT
         final long seconds = duration.secondField();
@@ -90,7 +90,7 @@ public class DurationTest extends TestCase {
 
         // ARRANGE
         // 1d 0h 0m 0s
-        final Duration duration = new Duration(new Long(1*86400));
+        final Duration duration = new Duration(86400);
 
         // ACT
         final long seconds = duration.secondField();
