@@ -17,6 +17,7 @@ import java.util.List;
 import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.binding.DataBinding;
+import ccc.contentcreator.binding.FileSummaryModelData;
 import ccc.services.api.FileSummary;
 
 import com.extjs.gxt.ui.client.Events;
@@ -28,7 +29,6 @@ import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.store.ListStore;
-import com.extjs.gxt.ui.client.util.Util;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.ListView;
@@ -44,13 +44,11 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @author Civic Computing Ltd.
  */
 public class ImageSelectionDialog extends LayoutContainer {
-    /** _qs : QueriesServiceAsync. */
     private final QueriesServiceAsync _qs = GWT.create(QueriesService.class);
 
 
     /**
      * Constructor.
-     *
      */
     public ImageSelectionDialog() {
         setLayout(new FlowLayout(10));
@@ -61,11 +59,11 @@ public class ImageSelectionDialog extends LayoutContainer {
     protected void onRender(final Element parent, final int index) {
         super.onRender(parent, index);
 
-        final RpcProxy<ModelData, List<ModelData>> proxy =
-            new RpcProxy<ModelData, List<ModelData>>() {
+        final RpcProxy<FileSummaryModelData, List<FileSummaryModelData>> proxy =
+            new RpcProxy<FileSummaryModelData, List<FileSummaryModelData>>() {
             @Override
-            protected void load(final ModelData loadConfig,
-                                final AsyncCallback<List<ModelData>> callback) {
+            protected void load(final FileSummaryModelData loadConfig,
+                                final AsyncCallback<List<FileSummaryModelData>> callback) {
 
                 _qs.getAllContentImages(
                     new AsyncCallback<Collection<FileSummary>>(){
@@ -81,9 +79,10 @@ public class ImageSelectionDialog extends LayoutContainer {
             }
         };
 
-        final ListLoader loader = new BaseListLoader(proxy,
-            new ModelReader<ModelData>());
-        final ListStore<ModelData> store = new ListStore<ModelData>(loader);
+        final ListLoader loader =
+            new BaseListLoader(proxy, new ModelReader<ModelData>());
+        final ListStore<FileSummaryModelData> store =
+            new ListStore<FileSummaryModelData>(loader);
         loader.load();
 
         final ContentPanel panel = new ContentPanel();
@@ -98,40 +97,35 @@ public class ImageSelectionDialog extends LayoutContainer {
 
         panel.setBodyBorder(false);
 
-        final ListView<ModelData> view = new ListView<ModelData>() {
-            @Override
-            protected ModelData prepareData(final ModelData model) {
-                String s = model.get("title");
-                model.set("shortName", Util.ellipse(s, 15));
-                return model;
-            }
-
-        };
+        final ListView<FileSummaryModelData> view =
+                new ListView<FileSummaryModelData>();
 
         view.setTemplate(getTemplate());
         view.setStore(store);
         view.setItemSelector("div.thumb-wrap");
-        view.getSelectionModel().addListener(Events.SelectionChange,
-            new Listener<SelectionChangedEvent<ModelData>>() {
+        view.getSelectionModel().addListener(
+            Events.SelectionChange,
+            new Listener<SelectionChangedEvent<FileSummaryModelData>>() {
 
-            public void handleEvent(final SelectionChangedEvent<ModelData> be) {
+            public void handleEvent(final SelectionChangedEvent<FileSummaryModelData> be) {
                 if (null!=be.getSelectedItem()) {
                     jsniSetUrl(
-                        (String) be.getSelectedItem().get("path"),
-                        (String) be.getSelectedItem().get("title"));
+                        be.getSelectedItem().getPath(),
+                        be.getSelectedItem().getTitle());
                 }
             }
-
         });
+
         panel.add(view);
         add(panel);
     }
 
+    // FIXME: Property names aren't type safe.
     private native String getTemplate() /*-{
         return ['<tpl for=".">',
-         '<div class="thumb-wrap" id="{name}" style="border: 1px solid white">',
-         '<div class="thumb"><img src="{path}" title="{title}"></div>',
-         '<span class="x-editable">{shortName}</span></div>',
+         '<div class="thumb-wrap" id="{NAME}" style="border: 1px solid white">',
+         '<div class="thumb"><img src="{PATH}" title="{TITLE}"></div>',
+         '<span class="x-editable">{SHORT_NAME}</span></div>',
          '</tpl>',
          '<div class="x-clear"></div>'].join("");
 

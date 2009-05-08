@@ -13,7 +13,6 @@ package ccc.contentcreator.binding;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -36,6 +35,16 @@ import com.extjs.gxt.ui.client.data.ModelData;
  */
 public class DataBinding {
 
+    /** VALUE : String. */
+    public static final String VALUE = "value";
+    /** KEY : String. */
+    public static final String KEY = "key";
+    /** SUBJECT_TYPE : String. */
+    public static final String SUBJECT_TYPE = "subjectType";
+    /** EXECUTE_AFTER : String. */
+    public static final String EXECUTE_AFTER = "executeAfter";
+    /** STATUS : String. */
+    public static final String STATUS = "status";
     /** SUMMARY : String. */
     public static final String COMMENT = "comment";
     /** HAPPENED_ON : String. */
@@ -104,7 +113,7 @@ public class DataBinding {
             final ModelData md = new BaseModelData();
             md.set(ACTION, les._action);
             md.set(ACTOR, les._actor);
-            md.set(HAPPENED_ON, new Date(les._happenedOn));
+            md.set(HAPPENED_ON, les._happenedOn);
             md.set(COMMENT, les._comment);
             md.set(IS_MAJOR_EDIT, les._isMajorEdit);
             md.set(INDEX, les._index);
@@ -142,13 +151,11 @@ public class DataBinding {
      * @param result
      * @return
      */
-    public static List<ModelData> bindUserSummary(
+    public static List<UserSummaryModelData> bindUserSummary(
                                         final Collection<UserSummary> result) {
-        final List<ModelData> boundData = new ArrayList<ModelData>();
+        final List<UserSummaryModelData> boundData = new ArrayList<UserSummaryModelData>();
         for (final UserSummary us : result) {
-            final ModelData md = new BaseModelData();
-            merge(md, us);
-            boundData.add(md);
+            boundData.add(new UserSummaryModelData(us));
         }
         return boundData;
     }
@@ -168,18 +175,6 @@ public class DataBinding {
             boundData.add(md);
         }
         return boundData;
-    }
-
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param md
-     * @param us
-     */
-    private static void merge(final ModelData md, final UserSummary us) {
-        md.set(ID, us._id);
-        md.set(EMAIL, us._email);
-        md.set(USERNAME, us._username);
     }
 
     /**
@@ -226,15 +221,10 @@ public class DataBinding {
      * @param arg0
      * @return
      */
-    public static List<ModelData> bindFileSummary(final Collection<FileSummary> arg0) {
-
-        final List<ModelData> boundData = new ArrayList<ModelData>();
+    public static List<FileSummaryModelData> bindFileSummary(final Collection<FileSummary> arg0) {
+        final List<FileSummaryModelData> boundData = new ArrayList<FileSummaryModelData>();
         for (final FileSummary fs : arg0) {
-            final ModelData md = new BaseModelData();
-            merge(md, fs);
-            md.set(MIME_TYPE, fs._mimeType);
-            md.set(PATH, fs._path);
-            boundData.add(md);
+            boundData.add(new FileSummaryModelData(fs));
         }
         return boundData;
     }
@@ -251,8 +241,8 @@ public class DataBinding {
         final List<ModelData> boundData = new ArrayList<ModelData>();
         for (final Map.Entry<String, String> datum : data) {
             final ModelData md = new BaseModelData();
-            md.set("key", datum.getKey());
-            md.set("value", datum.getValue());
+            md.set(KEY, datum.getKey());
+            md.set(VALUE, datum.getValue());
             boundData.add(md);
         }
         return boundData;
@@ -264,18 +254,10 @@ public class DataBinding {
      * @param result
      * @return
      */
-    public static List<ModelData> bindActionSummary(final Collection<ActionSummary> result) {
-        final List<ModelData> boundData = new ArrayList<ModelData>();
+    public static List<ActionSummaryModelData> bindActionSummary(final Collection<ActionSummary> result) {
+        final List<ActionSummaryModelData> boundData = new ArrayList<ActionSummaryModelData>();
         for (final ActionSummary as : result) {
-            final ModelData md = new BaseModelData();
-            md.set(ID, as._id);
-            md.set(TYPE, as._type);
-            md.set(ACTOR, as._actor);
-            md.set("executeAfter", as._executeAfter);
-            md.set(PATH, as._subjectPath);
-            md.set("subjectType", as._subjectType);
-            md.set("status", as._status);
-            boundData.add(md);
+            boundData.add(new ActionSummaryModelData(as));
         }
         return boundData;
     }

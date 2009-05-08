@@ -26,6 +26,7 @@ import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.AuditLogEJB;
 import ccc.services.Dao;
+import ccc.services.api.Action;
 
 
 /**
@@ -77,7 +78,7 @@ public class AuditLogEJBTest
 
         // ASSERT
         verify(_em);
-        assertEquals(LogEntry.Action.LOCK, le.getValue().action());
+        assertEquals(Action.LOCK, le.getValue().action());
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
 
@@ -101,7 +102,7 @@ public class AuditLogEJBTest
 
         // ASSERT
         verify(_em);
-        assertEquals(LogEntry.Action.CREATE, le.getValue().action());
+        assertEquals(Action.CREATE, le.getValue().action());
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
         assertEquals("Created.", le.getValue().comment());
@@ -125,7 +126,7 @@ public class AuditLogEJBTest
 
         // ASSERT
         verify(_em);
-        assertEquals(LogEntry.Action.CHANGE_TEMPLATE, le.getValue().action());
+        assertEquals(Action.CHANGE_TEMPLATE, le.getValue().action());
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
         assertEquals("Template changed.", le.getValue().comment());
@@ -149,7 +150,7 @@ public class AuditLogEJBTest
 
         // ASSERT
         verify(_em);
-        assertEquals(LogEntry.Action.UPDATE, le.getValue().action());
+        assertEquals(Action.UPDATE, le.getValue().action());
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
         assertEquals("Updated.", le.getValue().comment());
@@ -175,7 +176,7 @@ public class AuditLogEJBTest
 
         // ASSERT
         verify(_em);
-        assertEquals(LogEntry.Action.MOVE, le.getValue().action());
+        assertEquals(Action.MOVE, le.getValue().action());
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
         assertEquals("Moved resource to parent: "+f.absolutePath()+".",
@@ -200,7 +201,7 @@ public class AuditLogEJBTest
 
         // ASSERT
         verify(_em);
-        assertEquals(LogEntry.Action.RENAME, le.getValue().action());
+        assertEquals(Action.RENAME, le.getValue().action());
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
         assertEquals("Renamed resource to '"+p.name().toString()+"'.",

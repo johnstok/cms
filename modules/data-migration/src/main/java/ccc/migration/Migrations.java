@@ -28,7 +28,9 @@ import ccc.domain.CCCException;
 import ccc.domain.Paragraph;
 import ccc.domain.PredefinedResourceNames;
 import ccc.services.api.Commands;
+import ccc.services.api.Decimal;
 import ccc.services.api.FileDelta;
+import ccc.services.api.ID;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ParagraphDelta;
 import ccc.services.api.Queries;
@@ -163,13 +165,13 @@ public class Migrations {
                 // TODO: improve reporting
                 final UserDelta ud = mu.getValue();
 
-                if (ud._password == null) {
-                    log.warn("User: "+ud._username+" has null password.");
-                } else if (ud._password.equals(ud._username)) {
-                    log.warn("User: "+ud._username
+                if (null == ud.getPassword()) {
+                    log.warn("User: "+ud.getUsername()+" has null password.");
+                } else if (ud.getPassword().equals(ud.getUsername())) {
+                    log.warn("User: "+ud.getUsername()
                         +" has username as a password.");
-                } else if (ud._password.length() < 6) {
-                    log.warn("User: "+ud._username
+                } else if (ud.getPassword().length() < 6) {
+                    log.warn("User: "+ud.getUsername()
                         +" has password with less than 6 characters.");
                 }
 
@@ -233,7 +235,7 @@ public class Migrations {
                 boolean managedImage = false;
                 final List<FileDelta> managedImages = _legacyQueries.selectImages();
                 for (final FileDelta legacyFile : managedImages) {
-                    if (file.getName().equals(legacyFile._name)) {
+                    if (file.getName().equals(legacyFile.getName())) {
                         managedImage = true;
                     }
                 }
@@ -243,9 +245,9 @@ public class Migrations {
                         || file.getName().startsWith(".")
                         || file.getName().startsWith("um")))  {
 
-                    final FileDelta legacyFile = new FileDelta();
-                    legacyFile._name = file.getName();
-                    legacyFile._description = "migrated file";
+                    final FileDelta legacyFile =
+                        new FileDelta(
+                            null, file.getName(), null, "Migrated file.");
                     _fu.uploadFile(_assetsImagesFolder, legacyFile, file);
                 }
             }
@@ -264,9 +266,9 @@ public class Migrations {
             final File[] images = cssDir.listFiles();
             for (final File file : images) {
                 if (file.isFile() && file.getName().endsWith(".css"))  {
-                    final FileDelta legacyFile = new FileDelta();
-                    legacyFile._name = file.getName();
-                    legacyFile._description = "migrated file";
+                    final FileDelta legacyFile =
+                        new FileDelta(
+                            null, file.getName(), null, "migrated file");
                     _fu.uploadFile(_cssFolder, legacyFile, file);
                 }
             }
@@ -411,14 +413,14 @@ public class Migrations {
 
     private void publish(final ResourceBean r, final ResourceSummary rs) {
         if (r.isPublished()) {
-            final String userId =
+            final ID userId =
                 determineActor(r.contentId(),
                                r.legacyVersion(),
                                "Changed Status to  PUBLISHED",
                                "CHANGE STATUS");
             _commands.lock(rs._id);  // FIXME: Specify actor & date
             if (null != userId) {
-                _commands.publish(rs._id, userId, new Date()); // FIXME: Specify date
+                _commands.publish(rs._id, userId.toString(), new Date()); // FIXME: Specify date
             } else {
                 _commands.publish(rs._id); // FIXME: Specify actor & date
             }
@@ -486,24 +488,34 @@ public class Migrations {
             assembleParagraphs(r.contentId(), version);
         for (final Map.Entry<String, StringBuffer> para
                 : paragraphs.entrySet()) {
-            final ParagraphDelta pd = new ParagraphDelta();
-            pd._name = para.getKey();
-            final Paragraph.Type type = getParagraphType(pd._name);
+
+            final String name = para.getKey();
+            final Paragraph.Type type = getParagraphType(name);
+            String textValue = null;
+            String numberValue = null;
 
             switch (type) {
                 case TEXT:
-                    pd._textValue = para.getValue().toString();
+                    textValue = para.getValue().toString();
                     break;
 
                 case NUMBER:
-                    pd._numberValue = para.getValue().toString();
+                    numberValue = para.getValue().toString();
                     break;
 
                 default:
                     throw new CCCException("Unsupported paragraph type: "+type);
             }
 
-            pd._type = ParagraphDelta.Type.valueOf(type.toString()); // :-(
+            final ParagraphDelta pd =
+                new ParagraphDelta(
+                    name,
+                    ParagraphDelta.Type.valueOf(type.toString()),
+                    null,
+                    textValue,
+                    null, // FIXME: Number not supported?!
+                    new Decimal(numberValue));
+
             delta._paragraphs.add(pd);
         }
         return delta;
@@ -583,7 +595,7 @@ public class Migrations {
     }
 
 
-    private String determineActor(final int id,
+    private ID determineActor(final int id,
                                   final int version,
                                   final String comment,
                                   final String action) {
@@ -601,7 +613,7 @@ public class Migrations {
             return null;
         }
 
-        return user._id;
+        return user.getId();
     }
 
 }

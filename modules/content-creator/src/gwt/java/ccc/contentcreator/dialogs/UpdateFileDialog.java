@@ -64,13 +64,13 @@ public class UpdateFileDialog extends AbstractEditDialog {
         _panel.setMethod(FormPanel.Method.POST);
 
         _title.setName("title");
-        _title.setValue(delta._title);
+        _title.setValue(delta.getTitle());
         _title.setFieldLabel(_constants.title());
         _title.setAllowBlank(false);
         addField(_title);
 
         _description.setName("description");
-        _description.setValue(delta._description);
+        _description.setValue(delta.getDescription());
         _description.setFieldLabel(_constants.description());
         _description.setAllowBlank(false);
         addField(_description);
@@ -82,7 +82,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
         addField(_file);
 
         _id.setName("id");
-        _id.setValue(delta._id);
+        _id.setValue(delta.getId().toString());
         addField(_id);
 
         _image.setVisible(false);

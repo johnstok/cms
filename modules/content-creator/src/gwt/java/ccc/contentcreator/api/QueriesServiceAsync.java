@@ -16,7 +16,7 @@ import java.util.Map;
 
 import ccc.services.api.ActionSummary;
 import ccc.services.api.AliasDelta;
-import ccc.services.api.DurationSummary;
+import ccc.services.api.Duration;
 import ccc.services.api.FileDelta;
 import ccc.services.api.FileSummary;
 import ccc.services.api.LogEntrySummary;
@@ -113,5 +113,5 @@ public interface QueriesServiceAsync {
 
     void roles(final String resourceId, AsyncCallback<Collection<String>> asyncCallback);
 
-    void cacheDuration(String resourceId, AsyncCallback<DurationSummary> asyncCallback);
+    void cacheDuration(String resourceId, AsyncCallback<Duration> asyncCallback);
 }

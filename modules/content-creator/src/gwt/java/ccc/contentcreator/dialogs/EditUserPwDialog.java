@@ -36,7 +36,7 @@ public class EditUserPwDialog extends AbstractEditDialog {
     private final TextField<String> _password1 = new TextField<String>();
     private final TextField<String> _password2 = new TextField<String>();
 
-    private UserDelta _userDTO = new UserDelta();
+    private final UserDelta _userDTO;
     private final UserTable _userTable;
 
     /**
@@ -55,7 +55,7 @@ public class EditUserPwDialog extends AbstractEditDialog {
         _username.setFieldLabel(constants().username());
         _username.setReadOnly(true);
         _username.setId(constants().username());
-        _username.setValue(_userDTO._username);
+        _username.setValue(_userDTO.getUsername());
         addField(_username);
 
         _password1.setPassword(true);
@@ -97,14 +97,14 @@ public class EditUserPwDialog extends AbstractEditDialog {
     private Runnable updateUser() {
         return new Runnable() {
             public void run() {
-                _userDTO._username = _username.getValue();
+                _userDTO.setUsername(_username.getValue());
 
                 String password = null;
                 final String pw1 = _password1.getValue();
                 if (null != pw1 && !pw1.trim().equals("")) {
                     password = pw1;
                 }
-                _userDTO._password = password;
+                _userDTO.setPassword(password);
 
                 commands().updateUser(
                     _userDTO,

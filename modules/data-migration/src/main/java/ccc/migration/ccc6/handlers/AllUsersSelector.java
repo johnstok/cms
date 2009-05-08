@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -43,11 +44,10 @@ public final class AllUsersSelector
             final String password = rs.getString("user_passwd");
             final int userId = rs.getInt("user_id");
             try {
-                final UserDelta user = new UserDelta();
-                user._username = userName;
-                user._password = password;
-                _legacyDBQueries.selectEmailForUser(user, userId);
-                _legacyDBQueries.selectRolesForUser(user, userId);
+                final String email = _legacyDBQueries.selectEmailForUser(userId);
+                final Set<String> roles = _legacyDBQueries.selectRolesForUser(userId);
+                final UserDelta user =
+                    new UserDelta(null, password, email, userName, roles);
                 resultList.put(Integer.valueOf(userId), user);
             } catch (final MigrationException e) {
                 log.warn("Error selecting user: "+e.getMessage());

@@ -17,14 +17,15 @@ import java.util.List;
 
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.DataBinding;
+import ccc.contentcreator.binding.UserSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.dialogs.EditUserDialog;
 import ccc.contentcreator.dialogs.EditUserPwDialog;
+import ccc.services.api.ID;
 import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
 
 import com.extjs.gxt.ui.client.Events;
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
@@ -56,8 +57,8 @@ public class UserTable extends TablePanel {
     /** _constants : UIConstants. */
     private final UIConstants _constants = Globals.uiConstants();
 
-    private final ListStore<ModelData> _detailsStore =
-        new ListStore<ModelData>();
+    private final ListStore<UserSummaryModelData> _detailsStore =
+        new ListStore<UserSummaryModelData>();
 
     private final RadioGroup _radioGroup = new RadioGroup("searchField");
     private final ToolBar _toolBar = new ToolBar();
@@ -128,7 +129,8 @@ public class UserTable extends TablePanel {
 
         final ColumnModel cm = new ColumnModel(configs);
 
-        final Grid<ModelData> grid = new Grid<ModelData>(_detailsStore, cm);
+        final Grid<UserSummaryModelData> grid =
+            new Grid<UserSummaryModelData>(_detailsStore, cm);
         grid.setLoadMask(true);
         grid.setId("UserGrid");
 
@@ -140,7 +142,7 @@ public class UserTable extends TablePanel {
         add(grid);
     }
 
-    private MenuItem createEditUserMenu(final Grid<ModelData> grid) {
+    private MenuItem createEditUserMenu(final Grid<UserSummaryModelData> grid) {
 
         final MenuItem editUser = new MenuItem(_constants.editUser());
         editUser.setId("editUserMenu");
@@ -148,10 +150,10 @@ public class UserTable extends TablePanel {
 
             @Override
             public void componentSelected(final MenuEvent ce) {
-                final ModelData userDTO =
+                final UserSummaryModelData userDTO =
                     grid.getSelectionModel().getSelectedItem();
-                final String userId = userDTO.get("id");
-                qs.userDelta(userId, new AsyncCallback<UserDelta>(){
+                final ID userId = userDTO.getId();
+                qs.userDelta(userId.toString(), new AsyncCallback<UserDelta>(){
                     public void onFailure(final Throwable arg0) {
                         Globals.unexpectedError(arg0);
                     }
@@ -165,7 +167,7 @@ public class UserTable extends TablePanel {
         return editUser;
     }
 
-    private MenuItem createEditUserPwMenu(final Grid<ModelData> grid) {
+    private MenuItem createEditUserPwMenu(final Grid<UserSummaryModelData> grid) {
 
         final MenuItem editUserPw = new MenuItem(_constants.editUserPw());
         editUserPw.setId("editUserPwMenu");
@@ -173,10 +175,10 @@ public class UserTable extends TablePanel {
 
             @Override
             public void componentSelected(final MenuEvent ce) {
-                final ModelData userDTO =
+                final UserSummaryModelData userDTO =
                     grid.getSelectionModel().getSelectedItem();
-                final String userId = userDTO.get("id");
-                qs.userDelta(userId, new AsyncCallback<UserDelta>(){
+                final ID userId = userDTO.getId();
+                qs.userDelta(userId.toString(), new AsyncCallback<UserDelta>(){
                     public void onFailure(final Throwable arg0) {
                         Globals.unexpectedError(arg0);
                     }
@@ -220,13 +222,13 @@ public class UserTable extends TablePanel {
         configs.add(gp);
 
         final ColumnConfig usernameColumn = new ColumnConfig();
-        usernameColumn.setId("username");
+        usernameColumn.setId(UserSummaryModelData.Property.USERNAME.name());
         usernameColumn.setHeader(_constants.username());
         usernameColumn.setWidth(400);
         configs.add(usernameColumn);
 
         final ColumnConfig emailColumn = new ColumnConfig();
-        emailColumn.setId("email");
+        emailColumn.setId(UserSummaryModelData.Property.EMAIL.name());
         emailColumn.setHeader(_constants.email());
         emailColumn.setWidth(400);
         configs.add(emailColumn);
@@ -244,20 +246,20 @@ public class UserTable extends TablePanel {
         _detailsStore.removeAll();
 
 
-        if ("Search".equals(selectedItem.getText())) {
+        if ("Search".equals(selectedItem.getText())) { // FIXME: I18n.
             _toolBar.show();
         } else {
             _toolBar.hide();
         }
 
-        if ("All".equals(selectedItem.getText())) {
+        if ("All".equals(selectedItem.getText())) { // FIXME: I18n.
             qs.listUsers(
                 new ErrorReportingCallback<Collection<UserSummary>>() {
                     public void onSuccess(final Collection<UserSummary> result) {
                         _detailsStore.add(DataBinding.bindUserSummary(result));
                     }
                 });
-        } else if ("Content creator".equals(selectedItem.getText())){
+        } else if ("Content creator".equals(selectedItem.getText())){ // FIXME: I18n.
             qs.listUsersWithRole(
                 "CONTENT_CREATOR",
                 new ErrorReportingCallback<Collection<UserSummary>>() {
@@ -265,7 +267,7 @@ public class UserTable extends TablePanel {
                         _detailsStore.add(DataBinding.bindUserSummary(result));
                     }
                 });
-        } else if ("Site Builder".equals(selectedItem.getText())) {
+        } else if ("Site Builder".equals(selectedItem.getText())) { // FIXME: I18n.
             qs.listUsersWithRole(
                 "SITE_BUILDER",
                 new ErrorReportingCallback<Collection<UserSummary>>() {
@@ -273,7 +275,7 @@ public class UserTable extends TablePanel {
                         _detailsStore.add(DataBinding.bindUserSummary(result));
                     }
                 });
-        } else if("Administrator".equals(selectedItem.getText())) {
+        } else if("Administrator".equals(selectedItem.getText())) { // FIXME: I18n.
             qs.listUsersWithRole(
                 "ADMINISTRATOR",
                 new ErrorReportingCallback<Collection<UserSummary>>() {

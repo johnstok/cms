@@ -15,7 +15,6 @@ import java.util.Date;
 
 import ccc.commons.Exceptions;
 import ccc.domain.Entity;
-import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.Snapshot;
 import ccc.domain.User;
@@ -29,7 +28,7 @@ import ccc.domain.User;
 public class Action extends Entity {
     private Date _executeAfter;
     private User _actor;
-    private LogEntry.Action _type;
+    private ccc.services.api.Action _type;
     private Snapshot _parameters;
     private Resource _subject;
     private Status _status = Status.Scheduled;
@@ -63,7 +62,7 @@ public class Action extends Entity {
      * @param subject The resource the action will operate on.
      * @param parameters Additional parameters required by the action.
      */
-    public Action(final LogEntry.Action type,
+    public Action(final ccc.services.api.Action type,
                   final Date executeAfter,
                   final User actor,
                   final Resource subject,
@@ -81,7 +80,7 @@ public class Action extends Entity {
      *
      * @return The type of the action.
      */
-    public LogEntry.Action type() {
+    public ccc.services.api.Action type() {
         return _type;
     }
 

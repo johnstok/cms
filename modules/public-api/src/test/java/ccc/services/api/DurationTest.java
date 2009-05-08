@@ -9,8 +9,9 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.domain;
+package ccc.services.api;
 
+import ccc.services.api.Duration;
 import junit.framework.TestCase;
 
 

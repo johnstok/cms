@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import ccc.migration.MigrationException;
-import ccc.services.api.UserDelta;
 
 /**
  * TODO: Add Description for this type.
@@ -15,12 +14,10 @@ import ccc.services.api.UserDelta;
  */
 public final class UserEmailSelector
     implements
-        SqlQuery<Void> {
+        SqlQuery<String> {
 
     /** userId : int. */
     private final int       _userId;
-    /** user : UserDelta. */
-    private final UserDelta _user;
 
     /**
      * Constructor.
@@ -28,21 +25,19 @@ public final class UserEmailSelector
      * @param userId
      * @param user
      */
-    public UserEmailSelector(final int userId, final UserDelta user) {
-
+    public UserEmailSelector(final int userId) {
         _userId = userId;
-        _user = user;
     }
 
     /** {@inheritDoc} */
-    @Override public Void handle(final ResultSet rs) throws SQLException {
+    @Override public String handle(final ResultSet rs) throws SQLException {
         if (rs.next()) {
-            _user._email = rs.getString("attribute_value");
+            final String email = rs.getString("attribute_value");
             require().toBeFalse(rs.next());
+            return email;
         } else {
             throw new MigrationException("User "+_userId+" has no email.");
         }
-        return null;
     }
 
     /** {@inheritDoc} */

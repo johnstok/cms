@@ -2,8 +2,8 @@ package ccc.migration.ccc6.handlers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import ccc.services.api.UserDelta;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * TODO: Add Description for this type.
@@ -12,40 +12,28 @@ import ccc.services.api.UserDelta;
  */
 public final class UserRolesSelector
     implements
-        SqlQuery<Void> {
-
-    /** user : UserDelta. */
-    private final UserDelta _user;
-
-    /**
-     * Constructor.
-     *
-     * @param user
-     */
-    public UserRolesSelector(final UserDelta user) {
-
-        _user = user;
-    }
+        SqlQuery<Set<String>> {
 
     /** {@inheritDoc} */
-    @Override public Void handle(final ResultSet rs) throws SQLException {
+    @Override public Set<String> handle(final ResultSet rs) throws SQLException {
+        final Set<String> roles = new HashSet<String>();
         while (rs.next()) {
             final String profile = rs.getString("profile_name");
             if ("Writer".equalsIgnoreCase(profile)
                     || "Editor".equalsIgnoreCase(profile)) {
-                _user._roles.add("CONTENT_CREATOR");
+                roles.add("CONTENT_CREATOR");
             } else if ("Total Control".equalsIgnoreCase(profile)) {
-                _user._roles.add("SITE_BUILDER");
-                _user._roles.add("CONTENT_CREATOR");
-                _user._roles.add("ADMINISTRATOR");
+                roles.add("SITE_BUILDER");
+                roles.add("CONTENT_CREATOR");
+                roles.add("ADMINISTRATOR");
             } else if ("Administrator".equalsIgnoreCase(profile)) {
-                _user._roles.add("ADMINISTRATOR");
-                _user._roles.add("CONTENT_CREATOR");
+                roles.add("ADMINISTRATOR");
+                roles.add("CONTENT_CREATOR");
             } else {
-                _user._roles.add(profile);
+                roles.add(profile);
             }
         }
-        return null;
+        return roles;
     }
 
     /** {@inheritDoc} */

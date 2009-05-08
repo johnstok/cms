@@ -12,12 +12,11 @@
 package ccc.contentcreator.actions;
 
 import ccc.contentcreator.api.CommandServiceAsync;
+import ccc.contentcreator.binding.ActionSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.ActionTable;
 import ccc.contentcreator.client.Globals;
-
-import com.extjs.gxt.ui.client.data.ModelData;
 
 
 /**
@@ -43,19 +42,20 @@ public class CancelActionAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ModelData action = _table.getSelectedItem();
+        final ActionSummaryModelData action = _table.getSelectedItem();
         if (null==action) {
-            Globals.alert("Please select an action.");
+            Globals.alert("Please select an action."); // FIXME: I18n.
             return;
-        } else if (!"Scheduled".equals(action.get("status"))) {
-            Globals.alert("This action has already been completed.");
+        } else if (!"Scheduled".equals(action.getStatus())) { // FIXME: Should use enum value!
+            Globals.alert("This action has already been completed."); // FIXME: I18n.
             return;
         } else {
+            final String actionId = action.getId().toString();
             _commands.cancelAction(
-                action.<String>get("id"),
+                actionId,
                 new ErrorReportingCallback<Void>(){
                     public void onSuccess(final Void arg0) {
-                        action.set("status", "Cancelled");
+                        action.setStatus("Cancelled"); // FIXME: Should use enum value!
                         _table.update(action);
                     }
                 }

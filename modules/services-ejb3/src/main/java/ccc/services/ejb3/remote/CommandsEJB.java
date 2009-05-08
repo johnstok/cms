@@ -35,7 +35,6 @@ import ccc.actions.Action;
 import ccc.commons.EmailAddress;
 import ccc.domain.Alias;
 import ccc.domain.CCCException;
-import ccc.domain.Duration;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
@@ -63,7 +62,8 @@ import ccc.services.UserManager;
 import ccc.services.WorkingCopyManager;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.Commands;
-import ccc.services.api.DurationSummary;
+import ccc.services.api.Duration;
+import ccc.services.api.ID;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ParagraphDelta;
 import ccc.services.api.ResourceSummary;
@@ -192,12 +192,12 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     public UserSummary createUser(final UserDelta delta) {
-        final User user = new User(delta._username);
-        user.email(new EmailAddress(delta._email));
-        for (final String role : delta._roles) {
+        final User user = new User(delta.getUsername());
+        user.email(new EmailAddress(delta.getEmail()));
+        for (final String role : delta.getRoles()) {
             user.addRole(role);
         }
-        _users.createUser(user, delta._password);
+        _users.createUser(user, delta.getPassword());
         return map(user);
     }
 
@@ -257,8 +257,8 @@ public class CommandsEJB
     @Override
     public void updateAlias(final AliasDelta delta) {
         _alias.updateAlias(
-            UUID.fromString(delta._targetId),
-            UUID.fromString(delta._id));
+            toUUID(delta.getTargetId()),
+            toUUID(delta.getId()));
     }
 
     /** {@inheritDoc} */
@@ -348,14 +348,14 @@ public class CommandsEJB
     @Override
     public UserSummary updateUser(final UserDelta delta) {
         // FIXME: Refactor - horrible.
-        final User user = new User(delta._username);
-        user.email(new EmailAddress(delta._email));
-        for (final String role : delta._roles) {
+        final User user = new User(delta.getUsername());
+        user.email(new EmailAddress(delta.getEmail()));
+        for (final String role : delta.getRoles()) {
             user.addRole(role);
         }
-        user.id(UUID.fromString(delta._id));
+        user.id(toUUID(delta.getId()));
 
-        _users.updateUser(user, delta._password);
+        _users.updateUser(user, delta.getPassword());
 
         return map(user);
     }
@@ -466,7 +466,7 @@ public class CommandsEJB
                              final String parameters) {
       final Action a =
       new Action(
-          LogEntry.Action.valueOf(action),
+          ccc.services.api.Action.valueOf(action),
           executeAfter,
           _users.loggedInUser(),
           _resources.find(Resource.class, UUID.fromString(resourceId)),
@@ -508,14 +508,12 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     public void updateCacheDuration(final String resourceId,
-                                    final DurationSummary duration) {
-        _resources.updateCache(
-            UUID.fromString(resourceId),
-            new Duration(
-                duration._days,
-                duration._hours,
-                duration._minutes,
-                duration._seconds));
+                                    final Duration duration) {
+        _resources.updateCache(UUID.fromString(resourceId), duration);
+    }
+
+    private UUID toUUID(final ID id) {
+        return UUID.fromString(id.toString());
     }
 }
 

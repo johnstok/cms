@@ -62,7 +62,7 @@ public class UpdatePageDialog
                 Globals.unexpectedError(arg0);
             }
             public void onSuccess(final Void arg0) {
-                ModelData md = rt().tableSelection();
+                final ModelData md = rt().tableSelection();
                 md.set("workingCopy", Boolean.TRUE);
                 rt().update(md);
                 close();
@@ -239,25 +239,36 @@ public class UpdatePageDialog
         for (final PageElement c : definitions) {
             if ("TEXT".equals(c.type())) {
                 final Field<String> f = c.field();
-                final ParagraphDelta p = new ParagraphDelta();
-                p._name = c.id();
-                p._textValue = f.getValue();
-                p._type = TEXT;
+                final ParagraphDelta p =
+                    new ParagraphDelta(
+                        c.id(),
+                        TEXT,
+                        null,
+                        f.getValue(),
+                        null,
+                        null);
                 paragraphs.add(p);
             } else if ("DATE".equals(c.type())) {
                 final DateField f = c.dateField();
-                final ParagraphDelta p = new ParagraphDelta();
-                p._name = c.id();
-                p._dateValue = f.getValue();
-                p._rawValue = f.getRawValue();
-                p._type = DATE;
+                final ParagraphDelta p =
+                    new ParagraphDelta(
+                        c.id(),
+                        DATE,
+                        f.getRawValue(),
+                        null,
+                        f.getValue(),
+                        null);
                 paragraphs.add(p);
             } else if ("HTML".equals(c.type())) {
                 final FCKEditor f = c.editor();
-                final ParagraphDelta p = new ParagraphDelta();
-                p._name = c.id();
-                p._textValue = f.getHTML();
-                p._type = TEXT;
+                final ParagraphDelta p =
+                    new ParagraphDelta(
+                        c.id(),
+                        TEXT,
+                        null,
+                        f.getHTML(),
+                        null,
+                        null);
                 paragraphs.add(p);
             }
         }

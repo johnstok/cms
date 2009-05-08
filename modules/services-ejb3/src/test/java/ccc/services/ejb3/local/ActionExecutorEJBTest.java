@@ -17,7 +17,6 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 import ccc.actions.Action;
-import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.Snapshot;
 import ccc.domain.User;
@@ -45,7 +44,7 @@ public class ActionExecutorEJBTest
             .andThrow(new RuntimeException("Oops!"));
         replay(_rdao);
         final Action a =
-            new Action(LogEntry.Action.PUBLISH, new Date(), u, p, new Snapshot());
+            new Action(ccc.services.api.Action.PUBLISH, new Date(), u, p, new Snapshot());
 
         // ACT
         _ea.executeAction(a);

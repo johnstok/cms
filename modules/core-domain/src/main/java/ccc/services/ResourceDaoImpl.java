@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.domain.CCCException;
-import ccc.domain.Duration;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
@@ -26,6 +25,7 @@ import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.Template;
 import ccc.domain.User;
+import ccc.services.api.Duration;
 
 
 /**

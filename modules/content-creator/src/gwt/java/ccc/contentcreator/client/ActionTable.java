@@ -16,11 +16,11 @@ import java.util.Collection;
 import java.util.List;
 
 import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.binding.ActionSummaryModelData;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.services.api.ActionSummary;
 
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
@@ -39,9 +39,9 @@ public class ActionTable extends TablePanel {
 
     private static final int MEDIUM_COLUMN = 200;
     private static final int SMALL_COLUMN = 100;
-    private final ListStore<ModelData> _actionStore =
-        new ListStore<ModelData>();
-    private final Grid<ModelData> _grid;
+    private final ListStore<ActionSummaryModelData> _actionStore =
+        new ListStore<ActionSummaryModelData>();
+    private final Grid<ActionSummaryModelData> _grid;
     private final UIConstants _constants = Globals.uiConstants();
 
     /**
@@ -56,18 +56,42 @@ public class ActionTable extends TablePanel {
 
         setTopComponent(new ActionToolBar(this));
 
-        addColumn(configs, "type", _constants.action(), SMALL_COLUMN);
-        addColumn(configs, "actor", _constants.scheduledBy(), SMALL_COLUMN);
-        addColumn(configs, "executeAfter", _constants.scheduledFor(), SMALL_COLUMN)
+        addColumn(
+            configs,
+            ActionSummaryModelData.Property.TYPE.name(),
+            _constants.action(),
+            SMALL_COLUMN);
+        addColumn(
+            configs,
+            ActionSummaryModelData.Property.ACTOR.name(),
+            _constants.scheduledBy(),
+            SMALL_COLUMN);
+        addColumn(
+            configs,
+            ActionSummaryModelData.Property.EXECUTE_AFTER.name(),
+            _constants.scheduledFor(),
+            SMALL_COLUMN)
             .setDateTimeFormat(DateTimeFormat.getShortDateTimeFormat());
-        addColumn(configs, "status", _constants.status(), SMALL_COLUMN);
-        addColumn(configs, "subjectType", _constants.resourceType(), SMALL_COLUMN);
-        addColumn(configs, "path", _constants.resourcePath(), MEDIUM_COLUMN);
+        addColumn(
+            configs,
+            ActionSummaryModelData.Property.STATUS.name(),
+            _constants.status(),
+            SMALL_COLUMN);
+        addColumn(
+            configs,
+            ActionSummaryModelData.Property.SUBJECT_TYPE.name(),
+            _constants.resourceType(),
+            SMALL_COLUMN);
+        addColumn(
+            configs,
+            ActionSummaryModelData.Property.PATH.name(),
+            _constants.resourcePath(),
+            MEDIUM_COLUMN);
 
         final ColumnModel cm = new ColumnModel(configs);
 
-        _grid = new Grid<ModelData>(_actionStore, cm);
-        _grid.setAutoExpandColumn("path");
+        _grid = new Grid<ActionSummaryModelData>(_actionStore, cm);
+        _grid.setAutoExpandColumn(ActionSummaryModelData.Property.PATH.name());
         _grid.setLoadMask(true);
         _grid.setId("action-grid");
 
@@ -118,7 +142,7 @@ public class ActionTable extends TablePanel {
      *
      * @return The selected row, or NULL if no row is selected.
      */
-    public ModelData getSelectedItem() {
+    public ActionSummaryModelData getSelectedItem() {
         return _grid.getSelectionModel().getSelectedItem();
     }
 
@@ -127,7 +151,7 @@ public class ActionTable extends TablePanel {
      *
      * @param action The row that was updated.
      */
-    public void update(final ModelData action) {
+    public void update(final ActionSummaryModelData action) {
         _actionStore.update(action);
     }
 

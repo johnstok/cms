@@ -91,23 +91,21 @@ public class LegacyDBQueries {
     /**
      * Sets email for the specified user.
      *
-     * @param user The user.
      * @param userId The user ID.
      */
-    public void selectEmailForUser(final UserDelta user, final int userId) {
-        final UserEmailSelector rsh = new UserEmailSelector(userId, user);
-        _db.select(rsh, userId);
+    public String selectEmailForUser(final int userId) {
+        final UserEmailSelector rsh = new UserEmailSelector(userId);
+        return _db.select(rsh, Integer.valueOf(userId));
     }
 
     /**
      * Sets roles for the specified user.
      *
-     * @param user The user.
      * @param userId The user ID.
      */
-    public void selectRolesForUser(final UserDelta user, final int userId) {
-        final UserRolesSelector rsh = new UserRolesSelector(user);
-        _db.select(rsh, userId);
+    public Set<String> selectRolesForUser(final int userId) {
+        final UserRolesSelector rsh = new UserRolesSelector();
+        return _db.select(rsh, Integer.valueOf(userId));
     }
 
     /**

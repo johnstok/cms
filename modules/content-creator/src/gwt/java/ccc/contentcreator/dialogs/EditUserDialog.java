@@ -42,7 +42,7 @@ public class EditUserDialog extends AbstractEditDialog {
     private final TextField<String> _email = new TextField<String>();
     private final TextArea          _roles = new TextArea();
 
-    private UserDelta _userDTO = new UserDelta();
+    private final UserDelta _userDTO;
     private final UserTable _userTable;
 
     /**
@@ -61,20 +61,20 @@ public class EditUserDialog extends AbstractEditDialog {
         _username.setAllowBlank(false);
         _username.setMinLength(Globals.MIN_USER_NAME_LENGTH);
         _username.setId(constants().username());
-        _username.setValue(_userDTO._username);
+        _username.setValue(_userDTO.getUsername());
         addField(_username);
 
         _email.setFieldLabel(constants().email());
         _email.setAllowBlank(false);
         _email.setId(constants().email());
-        _email.setValue(_userDTO._email);
+        _email.setValue(_userDTO.getEmail());
         addField(_email);
 
         _roles.setFieldLabel(_constants.roles());
         _roles.setId("resource-roles");
         _roles.setHeight(200);
         final StringBuilder rolesString = new StringBuilder();
-        for (final String role : _userDTO._roles) {
+        for (final String role : _userDTO.getRoles()) {
             rolesString.append(role);
             rolesString.append('\n');
         }
@@ -111,8 +111,8 @@ public class EditUserDialog extends AbstractEditDialog {
     private Runnable updateUser() {
         return new Runnable() {
             public void run() {
-                _userDTO._username = _username.getValue();
-                _userDTO._email = _email.getValue();
+                _userDTO.setUsername(_username.getValue());
+                _userDTO.setEmail(_email.getValue());
 
                 final Set<String> validRoles = new HashSet<String>();
                 final String[] roles =
@@ -123,7 +123,7 @@ public class EditUserDialog extends AbstractEditDialog {
                         validRoles.add(cleanRole);
                     }
                 }
-                _userDTO._roles = validRoles;
+                _userDTO.setRoles(validRoles);
 
 
                 commands().updateUser(
@@ -151,7 +151,7 @@ public class EditUserDialog extends AbstractEditDialog {
                                      final String username) {
         return new Validator() {
             public void validate(final Validate validate) {
-                if (userDTO._username.equals(username)) {
+                if (userDTO.getUsername().equals(username)) {
                     validate.next();
                 } else {
                     queries().usernameExists(

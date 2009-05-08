@@ -22,7 +22,6 @@ import java.util.Map;
 import junit.framework.TestCase;
 import ccc.domain.CCCException;
 import ccc.domain.CreatorRoles;
-import ccc.domain.Duration;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
@@ -38,6 +37,7 @@ import ccc.services.Dao;
 import ccc.services.QueryNames;
 import ccc.services.ResourceDaoImpl;
 import ccc.services.UserManager;
+import ccc.services.api.Duration;
 
 
 /**

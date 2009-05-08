@@ -133,15 +133,13 @@ public class CreateUserDialog extends AbstractEditDialog {
     private Runnable createUser() {
         return new Runnable() {
             public void run() {
-
-                final UserDelta delta = new UserDelta();
-                delta._username = _username.getValue();
-                delta._email = _email.getValue();
-                delta._password = _password1.getValue();
-                delta._roles = new HashSet<String>();
-
                 Globals.commandService().createUser(
-                    delta,
+                    new UserDelta(
+                        null,
+                        _password1.getValue(),
+                        _email.getValue(),
+                        _username.getValue(),
+                        new HashSet<String>()),
                     new ErrorReportingCallback<UserSummary>() {
                         public void onSuccess(final UserSummary result) {
                             // TODO: Refresh the main window.
