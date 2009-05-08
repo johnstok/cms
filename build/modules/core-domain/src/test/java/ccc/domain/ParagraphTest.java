@@ -16,6 +16,7 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 import ccc.commons.Testing;
+import ccc.services.api.ParagraphType;
 
 
 /**
@@ -81,7 +82,7 @@ public final class ParagraphTest extends TestCase {
 
         // ASSERT
         assertEquals("bar", p.name());
-        assertEquals(Paragraph.Type.TEXT, p.type());
+        assertEquals(ParagraphType.TEXT, p.type());
         assertEquals("foo", p.text());
         assertNull(p.date());
         assertNull(p.bool());
@@ -107,7 +108,7 @@ public final class ParagraphTest extends TestCase {
 
         // ASSERT
         assertEquals("bar", p.name());
-        assertEquals(Paragraph.Type.NUMBER, p.type());
+        assertEquals(ParagraphType.NUMBER, p.type());
         assertEquals(new BigDecimal("123.456"), p.number());
         assertNull(p.date());
         assertNull(p.bool());
@@ -163,7 +164,7 @@ public final class ParagraphTest extends TestCase {
         final Paragraph p = Paragraph.fromText("foo", "Hello world");
 
         // ASSERT
-        assertEquals(Paragraph.Type.TEXT, p.type());
+        assertEquals(ParagraphType.TEXT, p.type());
         assertEquals("Hello world", p.text());
         assertEquals("foo", p.name());
     }
@@ -177,7 +178,7 @@ public final class ParagraphTest extends TestCase {
         final Paragraph p = Paragraph.fromNumber("foo", 0);
 
         // ASSERT
-        assertEquals(Paragraph.Type.NUMBER, p.type());
+        assertEquals(ParagraphType.NUMBER, p.type());
         assertEquals(BigDecimal.valueOf(0), p.number());
         assertEquals("foo", p.name());
     }
@@ -191,7 +192,7 @@ public final class ParagraphTest extends TestCase {
         final Paragraph p = Paragraph.fromNumber("foo", 0.1f);
 
         // ASSERT
-        assertEquals(Paragraph.Type.NUMBER, p.type());
+        assertEquals(ParagraphType.NUMBER, p.type());
         assertEquals(BigDecimal.valueOf(0.1f), p.number());
         assertEquals("foo", p.name());
     }
@@ -206,7 +207,7 @@ public final class ParagraphTest extends TestCase {
         final Paragraph p = Paragraph.fromNumber("foo", bd);
 
         // ASSERT
-        assertEquals(Paragraph.Type.NUMBER, p.type());
+        assertEquals(ParagraphType.NUMBER, p.type());
         assertEquals(BigDecimal.valueOf(-1234.54f), p.number());
         assertEquals("foo", p.name());
     }
@@ -220,7 +221,7 @@ public final class ParagraphTest extends TestCase {
         final Paragraph p = Paragraph.fromBoolean("foo", Boolean.TRUE);
 
         // ASSERT
-        assertEquals(Paragraph.Type.BOOLEAN, p.type());
+        assertEquals(ParagraphType.BOOLEAN, p.type());
         assertEquals(Boolean.TRUE, p.bool());
         assertEquals("foo", p.name());
     }
@@ -237,7 +238,7 @@ public final class ParagraphTest extends TestCase {
         final Paragraph p = Paragraph.fromDate("foo", now);
 
         // ASSERT
-        assertEquals(Paragraph.Type.DATE, p.type());
+        assertEquals(ParagraphType.DATE, p.type());
         assertEquals(now, p.date());
         assertEquals("foo", p.name());
     }

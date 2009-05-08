@@ -27,15 +27,11 @@ public final class ParagraphDelta
     implements
         Serializable {
     private String _name;
-    private Type   _type;
+    private ParagraphType   _type;
     private String _rawValue;
     private String _textValue;
     private Date   _dateValue;
     private Decimal _numberValue;
-
-    public static enum Type {
-        TEXT, DATE, BOOLEAN, NUMBER;
-    }
 
     @SuppressWarnings("unused") private ParagraphDelta() { super(); }
 
@@ -50,7 +46,7 @@ public final class ParagraphDelta
      * @param numberValue
      */
     public ParagraphDelta(final String name,
-                          final Type   type,
+                          final ParagraphType   type,
                           final String rawValue,
                           final String textvalue,
                           final Date   dateValue,
@@ -89,7 +85,7 @@ public final class ParagraphDelta
      *
      * @return Returns the type.
      */
-    public Type getType() {
+    public ParagraphType getType() {
         return _type;
     }
 
@@ -99,7 +95,7 @@ public final class ParagraphDelta
      *
      * @param type The type to set.
      */
-    public void setType(final Type type) {
+    public void setType(final ParagraphType type) {
         _type = type;
     }
 

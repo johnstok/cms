@@ -17,6 +17,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import ccc.services.api.ParagraphType;
+
 /**
  * A paragraph of HTML.
  *
@@ -27,7 +29,7 @@ public final class Paragraph implements Serializable {
     static final int MAX_NAME_LENGTH = 256;
 
     private String  _text;
-    private Type    _type;
+    private ParagraphType    _type;
     private Boolean _boolean;
     private Date    _date;
     private String  _name;
@@ -45,25 +47,25 @@ public final class Paragraph implements Serializable {
     private void text(final String text) {
         require().notNull(text);
         _text = text;
-        _type = Type.TEXT;
+        _type = ParagraphType.TEXT;
     }
 
     private void bool(final Boolean b) {
         require().notNull(b);
         _boolean = b;
-        _type = Type.BOOLEAN;
+        _type = ParagraphType.BOOLEAN;
     }
 
     private void date(final Date date) {
         require().notNull(date);
         _date = date;
-        _type = Type.DATE;
+        _type = ParagraphType.DATE;
     }
 
     private void number(final BigDecimal number) {
         require().notNull(number);
         _number = number;
-        _type = Type.NUMBER;
+        _type = ParagraphType.NUMBER;
     }
 
     /**
@@ -186,7 +188,7 @@ public final class Paragraph implements Serializable {
      *
      * @return The type of this paragraph.
      */
-    public Type type() {
+    public ParagraphType type() {
         return _type;
     }
 
@@ -215,25 +217,6 @@ public final class Paragraph implements Serializable {
      */
     public String name() {
         return _name;
-    }
-
-    /**
-     * The types of paragraph available.
-     *
-     * @author Civic Computing Ltd.
-     */
-    public static enum Type {
-        /** TEXT : Type. */
-        TEXT,
-
-        /** BOOLEAN : Type. */
-        BOOLEAN,
-
-        /** DATE : Type. */
-        DATE,
-
-        /** NUMBER : Type. */
-        NUMBER
     }
 
     /** {@inheritDoc} */
@@ -302,7 +285,7 @@ public final class Paragraph implements Serializable {
 
         final Paragraph p = new Paragraph();
         p._name = snapshot.getString("name");
-        p._type = Type.valueOf(snapshot.getString("type"));
+        p._type = ParagraphType.valueOf(snapshot.getString("type"));
         switch (p._type) {
             case BOOLEAN:
                 p._boolean = snapshot.getBool("bool");

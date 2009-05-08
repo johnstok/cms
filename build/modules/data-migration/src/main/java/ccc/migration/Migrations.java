@@ -25,7 +25,6 @@ import org.apache.log4j.Logger;
 
 import ccc.commons.Resources;
 import ccc.domain.CCCException;
-import ccc.domain.Paragraph;
 import ccc.domain.PredefinedResourceNames;
 import ccc.services.api.Commands;
 import ccc.services.api.Decimal;
@@ -33,6 +32,7 @@ import ccc.services.api.FileDelta;
 import ccc.services.api.ID;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ParagraphDelta;
+import ccc.services.api.ParagraphType;
 import ccc.services.api.Queries;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
@@ -488,7 +488,7 @@ public class Migrations {
                 : paragraphs.entrySet()) {
 
             final String name = para.getKey();
-            final Paragraph.Type type = getParagraphType(name);
+            final ParagraphType type = getParagraphType(name);
             String textValue = null;
             String numberValue = null;
 
@@ -508,7 +508,7 @@ public class Migrations {
             final ParagraphDelta pd =
                 new ParagraphDelta(
                     name,
-                    ParagraphDelta.Type.valueOf(type.toString()),
+                    type,
                     null,
                     textValue,
                     null, // FIXME: Date not supported?!
@@ -533,9 +533,9 @@ public class Migrations {
     }
 
 
-    private Paragraph.Type getParagraphType(final String paragraphName) {
+    private ParagraphType getParagraphType(final String paragraphName) {
         final String pType = _paragraphTypes.getProperty(paragraphName, "TEXT");
-        return Paragraph.Type.valueOf(pType);
+        return ParagraphType.valueOf(pType);
     }
 
 

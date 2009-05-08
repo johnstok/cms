@@ -315,7 +315,7 @@ public class ModelTranslation {
             final ParagraphDelta pDelta =
                 new ParagraphDelta(
                     p.name(),
-                    ParagraphDelta.Type.valueOf(p.type().name()),
+                    p.type(),
                     null, // FIXME: What is the raw value?!
                     p.text(),
                     p.date(),
@@ -395,7 +395,7 @@ public class ModelTranslation {
                 final ParagraphDelta pDelta =
                     new ParagraphDelta(
                         p.name(),
-                        ParagraphDelta.Type.valueOf(p.type().name()),
+                        p.type(),
                         null,
                         p.text(),
                         p.date(),
