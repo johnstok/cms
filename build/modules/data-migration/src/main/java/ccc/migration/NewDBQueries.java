@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import org.apache.commons.dbutils.DbUtils;
 
+import ccc.domain.CCCException;
 import ccc.domain.Password;
 
 /**
@@ -70,7 +71,7 @@ public class NewDBQueries {
             ps.executeUpdate();
             _connection.commit();
         } catch (final SQLException e) {
-            throw new RuntimeException(e);
+            throw new CCCException(e);
         } finally {
             DbUtils.closeQuietly(ps);
         }
@@ -100,7 +101,7 @@ public class NewDBQueries {
             _connection.commit();
 
         } catch (final SQLException e) {
-            throw new RuntimeException(e);
+            throw new CCCException(e);
         } finally {
             DbUtils.closeQuietly(ps);
         }

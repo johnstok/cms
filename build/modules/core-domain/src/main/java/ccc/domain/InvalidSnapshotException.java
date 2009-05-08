@@ -19,7 +19,7 @@ package ccc.domain;
  */
 public class InvalidSnapshotException
     extends
-        RuntimeException {
+        CCCException {
 
     /**
      * Constructor.

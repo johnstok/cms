@@ -19,6 +19,8 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Properties;
 
+import ccc.domain.CCCException;
+
 
 /**
  * Helper methods for handling external resources.
@@ -54,7 +56,7 @@ public final class Resources {
             isr.close();
             return sb.toString();
         } catch (final IOException e) {
-            throw new RuntimeException(e);
+            throw new CCCException(e);
         } finally {
             if (null!=isr) {
                 try {
@@ -82,7 +84,7 @@ public final class Resources {
                     .getResourceAsStream(resourcePath));
             return p;
         } catch (final IOException e) {
-            throw new RuntimeException(e);
+            throw new CCCException(e);
         }
     }
 

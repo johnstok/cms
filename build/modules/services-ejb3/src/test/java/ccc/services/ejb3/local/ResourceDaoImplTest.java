@@ -23,6 +23,8 @@ import junit.framework.TestCase;
 import ccc.domain.CCCException;
 import ccc.domain.CreatorRoles;
 import ccc.domain.Folder;
+import ccc.domain.InsufficientPrivilegesException;
+import ccc.domain.LockMismatchException;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.PredefinedResourceNames;
@@ -202,9 +204,9 @@ public class ResourceDaoImplTest
             fail("Should fail.");
 
         // ASSERT
-        } catch (final CCCException e) {
+        } catch (final InsufficientPrivilegesException e) {
             assertEquals(
-                "User not allowed to unlock this resource.",
+                "User regular[] may not perform action: UNLOCK",
                 e.getMessage());
         }
         assertEquals(_anotherUser, _r.lockedBy());
@@ -268,8 +270,8 @@ public class ResourceDaoImplTest
             fail("Lock should fail.");
 
         // ASSERT
-        } catch (final CCCException e) {
-            assertEquals("Resource is already locked.", e.getMessage());
+        } catch (final LockMismatchException e) {
+            assertEquals(_r, e.resource());
         }
         verifyAll();
     }

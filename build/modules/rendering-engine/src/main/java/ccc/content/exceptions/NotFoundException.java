@@ -11,6 +11,8 @@
  */
 package ccc.content.exceptions;
 
+import ccc.domain.CCCException;
+
 
 /**
  * An exception to represent a missing resource.
@@ -19,7 +21,7 @@ package ccc.content.exceptions;
  */
 public class NotFoundException
     extends
-        RuntimeException {
+        CCCException {
 
     /**
      * Constructor.

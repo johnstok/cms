@@ -292,9 +292,12 @@ public final class Paragraph implements Serializable {
      * Create a paragraph from a snapshot.
      *
      * @param snapshot The snapshot used to create a new paragraph object.
+     * @throws InvalidSnapshotException If the snapshot data is insufficient to
+     *  create a valid paragraph.
      * @return A valid paragraph.
      */
-    public static Paragraph fromSnapshot(final Snapshot snapshot) {
+    public static Paragraph fromSnapshot(final Snapshot snapshot)
+                                               throws InvalidSnapshotException {
         require().notNull(snapshot);
 
         final Paragraph p = new Paragraph();
@@ -318,7 +321,8 @@ public final class Paragraph implements Serializable {
                 break;
 
             default:
-                throw new CCCException("Paragraph type unsupported.");
+                throw new InvalidSnapshotException(
+                    "Paragraph type unsupported.");
         }
 
         return p;

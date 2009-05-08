@@ -12,6 +12,7 @@
 package ccc.content.exceptions;
 
 import ccc.commons.DBC;
+import ccc.domain.CCCException;
 import ccc.domain.Resource;
 
 
@@ -22,7 +23,7 @@ import ccc.domain.Resource;
  */
 public class RedirectRequiredException
     extends
-        RuntimeException {
+        CCCException {
 
     private final Resource _target;
 

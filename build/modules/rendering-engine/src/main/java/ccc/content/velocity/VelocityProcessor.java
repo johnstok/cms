@@ -75,7 +75,7 @@ public class VelocityProcessor implements TextProcessor {
         try {
             velocityProperties.load(new StringReader(VELOCITY_CONFIG));
         } catch (final IOException e1) {
-            throw new RuntimeException(e1);
+            throw new CCCException(e1);
         }
         velocityProperties.setProperty(
             RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS,

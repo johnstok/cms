@@ -30,7 +30,7 @@ public final class ExceptionsTest extends TestCase {
     public void testStackTraceFor() {
 
         // ARRANGE
-        final RuntimeException re = new RuntimeException();
+        final Exception re = new Exception();
         final StringWriter output = new StringWriter();
         re.printStackTrace(new PrintWriter(output));
 

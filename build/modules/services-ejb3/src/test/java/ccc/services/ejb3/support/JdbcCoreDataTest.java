@@ -31,6 +31,7 @@ import junit.framework.TestCase;
 import org.h2.jdbcx.JdbcDataSource;
 
 import ccc.commons.IO;
+import ccc.domain.CCCException;
 import ccc.domain.Data;
 import ccc.persistence.jpa.JdbcCoreData;
 import ccc.services.DataManager.StreamAction;
@@ -129,7 +130,7 @@ public class JdbcCoreDataTest
         try {
             Class.forName("org.h2.Driver");
         } catch (final ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            throw new CCCException(e);
         }
     }
 

@@ -24,8 +24,10 @@ public interface WorkingCopyAware {
      * Apply a snapshot to this object.
      *
      * @param s The snapshot to apply.
+     * @throws InvalidSnapshotException - if the data in the snapshot cannot be
+     *  applied.
      */
-    void applySnapshot(final Snapshot s);
+    void applySnapshot(final Snapshot s) throws InvalidSnapshotException;
 
     /**
      * Accessor.
