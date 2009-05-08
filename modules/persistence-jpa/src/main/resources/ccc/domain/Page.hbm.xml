@@ -19,7 +19,7 @@
 <hibernate-mapping default-access="field">
 
     <typedef class="ccc.persistence.jpa.EnumUserType" name="ParargraphType">
-        <param name="type">ccc.domain.Paragraph$Type</param>
+        <param name="type">ccc.services.api.ParagraphType</param>
     </typedef>
     
     <joined-subclass

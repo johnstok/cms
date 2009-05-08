@@ -19,6 +19,7 @@ import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.services.api.ParagraphDelta;
+import ccc.services.api.ParagraphType;
 
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.core.client.GWT;
@@ -235,7 +236,7 @@ public class Validations {
         return new Validator() {
             public void validate(final Validate validate) {
                 for (final ParagraphDelta pg : delta) {
-                    if (ParagraphDelta.Type.DATE == pg.getType()
+                    if (ParagraphType.DATE == pg.getType()
                             && pg.getDateValue() == null
                             && pg.getRawValue() != null
                             && !pg.getRawValue().isEmpty()) {

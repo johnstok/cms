@@ -12,7 +12,7 @@
 
 package ccc.contentcreator.dialogs;
 
-import static ccc.services.api.ParagraphDelta.Type.*;
+import static ccc.services.api.ParagraphType.*;
 
 import java.util.ArrayList;
 import java.util.List;

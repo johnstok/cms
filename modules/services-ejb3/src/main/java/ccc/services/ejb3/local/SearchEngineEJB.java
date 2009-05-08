@@ -65,6 +65,7 @@ import ccc.services.ResourceDaoImpl;
 import ccc.services.Scheduler;
 import ccc.services.SearchEngine;
 import ccc.services.UserManager;
+import ccc.services.api.ParagraphType;
 
 
 /**
@@ -224,7 +225,7 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
 
         final StringBuilder sb = new StringBuilder(page.title());
         for (final Paragraph p : page.paragraphs()) {
-            if (Paragraph.Type.TEXT == p.type()) {
+            if (ParagraphType.TEXT == p.type()) {
                 sb.append(" ");
                 final String nohtml =
                     p.text().replaceAll("\\<.*?>", ""); // Scrub HTML
