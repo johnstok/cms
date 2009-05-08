@@ -138,7 +138,7 @@ public class Validations {
         return new Validator() {
             public void validate(final Validate validate) {
                 Globals.queriesService().nameExistsInFolder(
-                    folder.<String>get("id"),
+                    folder.getId().toString(),
                     name.getValue(),
                     new ErrorReportingCallback<Boolean>(){
                         public void onSuccess(final Boolean nameExists) {

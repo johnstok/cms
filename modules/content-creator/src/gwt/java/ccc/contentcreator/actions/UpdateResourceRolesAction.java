@@ -36,11 +36,11 @@ public final class UpdateResourceRolesAction
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         _queries.roles(
-            item.<String>get("id"),
+            item.getId().toString(),
             new ErrorReportingCallback<Collection<String>>(){
                 public void onSuccess(final Collection<String> data) {
                     new UpdateResourceRolesDialog(
-                        item.<String>get("id"),
+                        item.getId().toString(),
                         data)
                     .show();
                 }

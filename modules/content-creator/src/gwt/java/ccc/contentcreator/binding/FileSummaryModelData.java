@@ -45,7 +45,7 @@ public class FileSummaryModelData
     }
 
     /** {@inheritDoc} */
-    @Override @SuppressWarnings("unchecked")
+    @Override @SuppressWarnings("unchecked") @Deprecated
     public <X> X get(final String property) {
 
         final Property p = Property.valueOf(property);
@@ -77,7 +77,7 @@ public class FileSummaryModelData
     }
 
     /** {@inheritDoc} */
-    @Override
+    @Override @Deprecated
     public Map<String, Object> getProperties() {
         final Map<String, Object> properties = new HashMap<String, Object>();
         for (final Property p : Property.values()) {
@@ -87,7 +87,7 @@ public class FileSummaryModelData
     }
 
     /** {@inheritDoc} */
-    @Override
+    @Override @Deprecated
     public Collection<String> getPropertyNames() {
         final Set<String> names = new HashSet<String>();
         for (final Property p : Property.values()) {
@@ -97,13 +97,13 @@ public class FileSummaryModelData
     }
 
     /** {@inheritDoc} */
-    @Override
+    @Override @Deprecated
     public <X> X remove(final String property) {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
     /** {@inheritDoc} */
-    @Override
+    @Override @Deprecated
     public <X> X set(final String property, final X value) {
         throw new UnsupportedOperationException("Method not implemented.");
     }

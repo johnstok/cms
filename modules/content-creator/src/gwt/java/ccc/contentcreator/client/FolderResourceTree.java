@@ -69,7 +69,7 @@ public class FolderResourceTree extends Tree {
         protected void createAll() {
             for (final ResourceSummaryModelData root : store.getRootItems()) {
                 final String path = "/" + root.getName();
-                root.set("absolutePath", path);
+                root.setAbsolutePath(path);
             }
             super.createAll();
         }
@@ -80,11 +80,11 @@ public class FolderResourceTree extends Tree {
         @Override
         protected void renderChildren(final ResourceSummaryModelData parent,
                                       final List<ResourceSummaryModelData> children) {
-            final String parentPath = parent.get("absolutePath");
+            final String parentPath = parent.getAbsolutePath();
 
             for (final ResourceSummaryModelData child : children) {
                 final String path = parentPath + "/" + child.getName();
-                child.set("absolutePath", path);
+                child.setAbsolutePath(path);
             }
 
             super.renderChildren(parent, children);
@@ -96,7 +96,7 @@ public class FolderResourceTree extends Tree {
         protected TreeItem createItem(final ResourceSummaryModelData model) {
             final TreeItem item = super.createItem(model);
 
-            item.setId(model.<String>get("absolutePath"));
+            item.setId(model.getAbsolutePath());
 
             if (!"FOLDER".equals(model.getType())) {
                 item.setVisible(false);

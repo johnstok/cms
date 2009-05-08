@@ -21,7 +21,7 @@ import java.util.Date;
  * @author Civic Computing Ltd.
  */
 public final class LogEntrySummary implements Serializable {
-    private String _subject;
+    private ID _subject;
     private Action _action;
     private String _actor;
     private Date _happenedOn;
@@ -42,7 +42,7 @@ public final class LogEntrySummary implements Serializable {
      * @param majorEdit
      * @param index
      */
-    public LogEntrySummary(final String  subject,
+    public LogEntrySummary(final ID      subject,
                            final Action  action,
                            final String  actor,
                            final Date    on,
@@ -64,7 +64,7 @@ public final class LogEntrySummary implements Serializable {
      *
      * @return Returns the subject.
      */
-    public String getSubject() {
+    public ID getSubject() {
         return _subject;
     }
 

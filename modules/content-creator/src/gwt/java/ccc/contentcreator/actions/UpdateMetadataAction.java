@@ -36,11 +36,11 @@ public final class UpdateMetadataAction
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         _queries.metadata(
-            item.<String>get("id"),
+            item.getId().toString(),
             new ErrorReportingCallback<Map<String, String>>(){
                 public void onSuccess(final Map<String, String> data) {
                     new MetadataDialog(
-                        item.<String>get("id"),
+                        item.getId().toString(),
                         data.entrySet())
                     .show();
                 }

@@ -36,6 +36,7 @@ public class ResourceSummaryModelData
     public static final String DISPLAY_PROPERTY = Property.NAME.name();
 
     private ResourceSummary _rs;
+    private String          _absolutePath; // FIXME: Move to ResourceSummary?
 
     /**
      * Constructor.
@@ -131,6 +132,9 @@ public class ResourceSummaryModelData
             case WORKING_COPY:
                 return (X) Boolean.valueOf(_rs.isHasWorkingCopy());
 
+            case ABSOLUTE_PATH:
+                return (X) _absolutePath;
+
             default:
                 throw new UnsupportedOperationException(
                     "Key not supported: "+property);
@@ -183,7 +187,8 @@ public class ResourceSummaryModelData
         SORT_ORDER,
         WORKING_COPY,
         DATE_CHANGED,
-        DATE_CREATED;
+        DATE_CREATED,
+        ABSOLUTE_PATH;
     }
 
     /**
@@ -310,5 +315,59 @@ public class ResourceSummaryModelData
      */
     public String getTitle() {
         return _rs.getTitle();
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
+    public String getSortOrder() {
+        return _rs.getSortOrder();
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
+    public String getPublished() {
+        return _rs.getPublishedBy();
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
+    public boolean hasWorkingCopy() {
+        return _rs.isHasWorkingCopy();
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
+    public boolean isIncludedInMainMenu() {
+        return _rs.isIncludeInMainMenu();
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param path
+     */
+    public void setAbsolutePath(final String path) {
+        _absolutePath = path;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
+    public String getAbsolutePath() {
+        return _absolutePath;
     }
 }
