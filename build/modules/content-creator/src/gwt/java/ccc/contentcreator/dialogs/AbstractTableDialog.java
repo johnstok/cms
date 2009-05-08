@@ -27,13 +27,13 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class AbstractTableDialog<T>
+public abstract class AbstractTableDialog<T,S extends ModelData>
     extends
         AbstractBaseDialog {
 
     protected final Collection<T> _data;
-    protected final ListStore<ModelData> _dataStore = new ListStore<ModelData>();
-    protected final Grid<ModelData> _grid;
+    protected final ListStore<S> _dataStore = new ListStore<S>();
+    protected final Grid<S> _grid;
 
     /**
      * Constructor.
@@ -54,9 +54,9 @@ public abstract class AbstractTableDialog<T>
         final ColumnModel cm = defineColumnModel();
 
         if (editable) {
-            _grid = new EditorGrid<ModelData>(_dataStore, cm);
+            _grid = new EditorGrid<S>(_dataStore, cm);
         } else {
-            _grid = new Grid<ModelData>(_dataStore, cm);
+            _grid = new Grid<S>(_dataStore, cm);
         }
         _grid.setId(title);
         _grid.setBorders(false);

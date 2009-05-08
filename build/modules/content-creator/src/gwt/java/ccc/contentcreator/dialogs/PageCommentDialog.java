@@ -11,7 +11,6 @@
  */
 package ccc.contentcreator.dialogs;
 
-import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
@@ -31,7 +30,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public class PageCommentDialog extends AbstractEditDialog {
 
-    private final UIConstants _constants = Globals.uiConstants();
     private PageDelta _page;
     private UpdatePageDialog _updatePageDialog;
     private CheckBox _majorEdit = new CheckBox();
@@ -43,8 +41,8 @@ public class PageCommentDialog extends AbstractEditDialog {
                 Globals.unexpectedError(arg0);
             }
             public void onSuccess(final Void arg0) {
-                ModelData md = _updatePageDialog.rt().tableSelection();
-                md.set("title", _page._title);
+                final ModelData md = _updatePageDialog.rt().tableSelection();
+                md.set("title", _page.getTitle());
                 md.set("workingCopy", Boolean.FALSE);
                 _updatePageDialog.rt().update(md);
                 close();

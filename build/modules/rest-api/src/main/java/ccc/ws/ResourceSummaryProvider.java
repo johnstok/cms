@@ -94,7 +94,7 @@ public class ResourceSummaryProvider implements MessageBodyWriter<Collection<Res
         final PrintWriter pw = new PrintWriter(outputStream);
         pw.println("<html>");
         for (final ResourceSummary rs : object) {
-            pw.println("<h1><a href=\""+_request.getContextPath()+"/resource/"+rs._id+"\">"+rs._name+"</a></h1>");
+            pw.println("<h1><a href=\""+_request.getContextPath()+"/resource/"+rs.getId()+"\">"+rs.getName()+"</a></h1>");
         }
         pw.println("</html>");
         pw.flush();

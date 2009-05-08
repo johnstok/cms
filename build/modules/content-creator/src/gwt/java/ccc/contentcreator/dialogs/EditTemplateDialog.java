@@ -12,7 +12,6 @@
 
 package ccc.contentcreator.dialogs;
 
-import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
@@ -20,6 +19,7 @@ import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.contentcreator.validation.Validator;
+import ccc.services.api.ID;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 
@@ -48,9 +48,6 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
     /** TEXT_AREA_HEIGHT : int. */
     protected static final int TEXT_AREA_HEIGHT = 250;
 
-    /** _constants : UIConstants. */
-    private final UIConstants _constants = Globals.uiConstants();
-
 
     private final FormPanel _first = new FormPanel();
     private final FormPanel _second = new FormPanel();
@@ -62,7 +59,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
     private final TextArea _body = new TextArea();
     private final TextArea _definition = new TextArea();
 
-    private String _id;
+    private ID _id;
     private String _parentFolderId;
     private DialogMode _mode;
     private SingleSelectionModel _ssm;
@@ -117,16 +114,16 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
         _model = model;
         _proxy = proxy;
 
-        _id = _model._id;
+        _id = _model.getId();
 
         _name.setReadOnly(true);
         _name.disable();
 
-        _body.setValue(_model._body);
-        _definition.setValue(_model._definition);
-        _description.setValue(_model._description);
-        _templateTitle.setValue(_model._title);
-        _name.setValue(_model._name);
+        _body.setValue(_model.getBody());
+        _definition.setValue(_model.getDefinition());
+        _description.setValue(_model.getDescription());
+        _templateTitle.setValue(_model.getTitle());
+        _name.setValue(_model.getName());
     }
 
     private void populateFirstScreen() {
@@ -180,13 +177,15 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
     }
 
     private TemplateDelta model() {
-        final TemplateDelta delta = new TemplateDelta();
-        delta._id = _id;
-        delta._name = _name.getValue();
-        delta._title = _templateTitle.getValue();
-        delta._description = _description.getValue();
-        delta._body = _body.getValue();
-        delta._definition = _definition.getValue();
+        final TemplateDelta delta =
+            new TemplateDelta(
+                _id,
+                _name.getValue(),
+                _templateTitle.getValue(),
+                _description.getValue(),
+                _body.getValue(),
+                _definition.getValue()
+            );
         return delta;
     }
 

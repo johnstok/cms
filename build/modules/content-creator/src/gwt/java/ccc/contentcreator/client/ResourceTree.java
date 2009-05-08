@@ -64,8 +64,8 @@ public class ResourceTree extends Tree {
             protected void load(final ModelData loadConfig,
                                 final AsyncCallback<List<ModelData>> callback) {
 
-                String parentId =
-                  (null==loadConfig) ? _root._id : loadConfig.<String>get("id");
+                final String parentId =
+                  (null==loadConfig) ? _root.getId().toString() : loadConfig.<String>get("id");
 
                 _qs.getChildren(
                     parentId,

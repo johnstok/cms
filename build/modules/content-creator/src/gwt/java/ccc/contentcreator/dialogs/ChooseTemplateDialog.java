@@ -14,12 +14,12 @@ package ccc.contentcreator.dialogs;
 import java.util.Collection;
 
 import ccc.contentcreator.binding.DataBinding;
+import ccc.contentcreator.binding.TemplateSummaryModelData;
 import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.client.Globals;
+import ccc.services.api.ID;
 import ccc.services.api.TemplateDelta;
 
-import com.extjs.gxt.ui.client.data.BaseModelData;
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
@@ -38,9 +38,19 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
     private final String _resourceId;
     private final Collection<TemplateDelta> _templates;
 
-    private final ModelData _none = new BaseModelData();
-    private final ComboBox<ModelData> _selectedTemplate =
-        new ComboBox<ModelData>();
+    private final TemplateSummaryModelData _none =
+        new TemplateSummaryModelData(
+            new TemplateDelta(
+                null,
+                "{none}",
+                "{none}",
+                "{none}",
+                "{none}",
+                "{none}"
+            )
+        );
+    private final ComboBox<TemplateSummaryModelData> _selectedTemplate =
+        new ComboBox<TemplateSummaryModelData>();
 
     /**
      * Constructor.
@@ -57,13 +67,12 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
         _resourceId = resourceId;
         _templateId = templateId;
         _templates = templates;
-        _none.set("name", "{none}");
 
         _selectedTemplate.setFieldLabel(constants().defaultTemplate());
         _selectedTemplate.setTemplate("<tpl for=\".\">"
-            +"<div class=x-combo-list-item id={name}>{name}</div></tpl>");
+            +"<div class=x-combo-list-item id={NAME}>{NAME}</div></tpl>");
         _selectedTemplate.setId("default-template");
-        _selectedTemplate.setDisplayField("name");
+        _selectedTemplate.setDisplayField(TemplateSummaryModelData.Property.NAME.name());
         _selectedTemplate.setForceSelection(true);
         _selectedTemplate.setEditable(false);
         addField(_selectedTemplate);
@@ -74,7 +83,8 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
     private void drawGUI() {
 
         // Populate combo-box
-        final ListStore<ModelData> store = new ListStore<ModelData>();
+        final ListStore<TemplateSummaryModelData> store =
+            new ListStore<TemplateSummaryModelData>();
         store.add(DataBinding.bindTemplateDelta(_templates));
         store.add(_none);
         _selectedTemplate.setStore(store);
@@ -83,8 +93,8 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
         if (null == _templateId) {
             _selectedTemplate.setValue(_none);
         } else {
-            for (final ModelData model : store.getModels()) {
-                if (_templateId.equals(model.get("id"))) {
+            for (final TemplateSummaryModelData model : store.getModels()) {
+                if (_templateId.equals(model.getId().toString())) {
                     _selectedTemplate.setValue(model);
                 }
             }
@@ -97,12 +107,13 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
         return new SelectionListener<ButtonEvent>(){
             @Override public void componentSelected(final ButtonEvent ce) {
 
-                final ModelData selected = _selectedTemplate.getValue();
-                final String templateId = selected.get("id");
+                final TemplateSummaryModelData selected =
+                    _selectedTemplate.getValue();
+                final ID templateId = selected.getId();
 
                 commands().updateResourceTemplate(
                     _resourceId,
-                    templateId,
+                    templateId.toString(),
                     new DisposingCallback(ChooseTemplateDialog.this));
             }
         };

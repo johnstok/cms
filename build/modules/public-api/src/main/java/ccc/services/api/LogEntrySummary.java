@@ -20,14 +20,14 @@ import java.util.Date;
  *
  * @author Civic Computing Ltd.
  */
-public class LogEntrySummary implements Serializable {
-    public String _subject;
-    public Action _action;
-    public String _actor;
-    public Date _happenedOn;
-    public String _comment;
-    public boolean _isMajorEdit;
-    public long _index;
+public final class LogEntrySummary implements Serializable {
+    private String _subject;
+    private Action _action;
+    private String _actor;
+    private Date _happenedOn;
+    private String _comment;
+    private boolean _isMajorEdit;
+    private long _index;
 
     @SuppressWarnings("unused") private LogEntrySummary() { super(); }
 
@@ -56,5 +56,75 @@ public class LogEntrySummary implements Serializable {
         _comment = comment;
         _isMajorEdit = majorEdit;
         _index = index;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the subject.
+     */
+    public String getSubject() {
+        return _subject;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the action.
+     */
+    public Action getAction() {
+        return _action;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the actor.
+     */
+    public String getActor() {
+        return _actor;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the happenedOn.
+     */
+    public Date getHappenedOn() {
+        return _happenedOn;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the comment.
+     */
+    public String getComment() {
+        return _comment;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the isMajorEdit.
+     */
+    public boolean isMajorEdit() {
+        return _isMajorEdit;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the index.
+     */
+    public long getIndex() {
+        return _index;
     }
 }

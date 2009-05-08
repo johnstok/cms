@@ -121,7 +121,7 @@ public final class ContentCreator implements EntryPoint {
         Globals.disableExitConfirmation();
         ResourceSummary rs = null;
         for (final ResourceSummary rr : arg0) {
-            if (rr._name.equals("content")) {
+            if (rr.getName().equals("content")) {
                 rs = rr;
             }
         }

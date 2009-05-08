@@ -45,7 +45,7 @@ import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
  */
 public class MetadataDialog
     extends
-        AbstractTableDialog<Map.Entry<String, String>> {
+        AbstractTableDialog<Map.Entry<String, String>, ModelData> {
 
     private CheckBoxSelectionModel<ModelData> _sm;
     private String _resourceId;
@@ -54,8 +54,8 @@ public class MetadataDialog
         constants().save(),
         new SelectionListener<ButtonEvent>(){
             @Override public void componentSelected(final ButtonEvent ce) {
-                Map<String, String> metadata = currentMetadata();
-                String errors = validate(metadata);
+                final Map<String, String> metadata = currentMetadata();
+                final String errors = validate(metadata);
                 if (errors.length() == 0) {
                     commands().updateMetadata(
                         _resourceId,

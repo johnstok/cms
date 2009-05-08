@@ -19,6 +19,7 @@ import java.util.List;
 
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.DataBinding;
+import ccc.contentcreator.binding.TemplateSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.EditPagePanel;
 import ccc.contentcreator.client.Globals;
@@ -75,8 +76,9 @@ public class CreatePageDialog
     private final EditPagePanel _second = new EditPagePanel();
     private final ContentPanel _third = new ContentPanel();
 
-    private ListStore<ModelData> _templatesStore = new ListStore<ModelData>();
-    private Grid<ModelData> _grid;
+    private ListStore<TemplateSummaryModelData> _templatesStore =
+        new ListStore<TemplateSummaryModelData>();
+    private Grid<TemplateSummaryModelData> _grid;
 
     private ContentPanel _descriptionPanel = new ContentPanel(new RowLayout());
     private ContentPanel _rightPanel = new ContentPanel(new RowLayout());
@@ -113,7 +115,7 @@ public class CreatePageDialog
 
         final ColumnModel cm = new ColumnModel(configs);
 
-        _grid = new Grid<ModelData>(_templatesStore, cm);
+        _grid = new Grid<TemplateSummaryModelData>(_templatesStore, cm);
         _grid.setLoadMask(true);
         _grid.setId("TemplateGrid");
 
@@ -190,8 +192,8 @@ public class CreatePageDialog
                     cb.setValue(true);
                     _grid.disable();
                     _grid.getSelectionModel().deselectAll();
-                    _second.createFields(result._definition);
-                    _description.setText(result._description);
+                    _second.createFields(result.getDefinition());
+                    _description.setText(result.getDescription());
                 }
             }
         });
@@ -209,8 +211,8 @@ public class CreatePageDialog
                             } else {
                                 _grid.disable();
                                 _grid.getSelectionModel().deselectAll();
-                                _second.createFields(result._definition);
-                                _description.setText(result._description);
+                                _second.createFields(result.getDefinition());
+                                _description.setText(result.getDescription());
                             }
                         }
                     });
@@ -317,14 +319,18 @@ public class CreatePageDialog
 
     private Runnable createPage(final List<ParagraphDelta> paragraphs) {
         return new Runnable() {
-            @SuppressWarnings("unchecked")
             public void run() {
-                final PageDelta page = new PageDelta();
-                page._name = _second.name().getValue();
-                page._title = _second.title().getValue();
-                page._paragraphs = paragraphs;
-
-                page._published = _publish.getValue();
+                final PageDelta page =
+                    new PageDelta(
+                        null,
+                        _second.name().getValue(),
+                        _second.title().getValue(),
+                        null,
+                        "",
+                        _publish.getValue().booleanValue(),
+                        paragraphs,
+                        null
+                    );
 
                 final String template =
                     (null==_grid.getSelectionModel().getSelectedItem())

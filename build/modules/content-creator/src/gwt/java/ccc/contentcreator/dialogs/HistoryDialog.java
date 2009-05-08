@@ -16,9 +16,11 @@ import java.util.Collection;
 import java.util.List;
 
 import ccc.contentcreator.binding.DataBinding;
+import ccc.contentcreator.binding.LogEntrySummaryModelData;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.HistoryToolBar;
 import ccc.contentcreator.client.SingleSelectionModel;
+import ccc.services.api.Action;
 import ccc.services.api.LogEntrySummary;
 
 import com.extjs.gxt.ui.client.Events;
@@ -38,7 +40,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
  */
 public class HistoryDialog
     extends
-        AbstractTableDialog<LogEntrySummary> {
+        AbstractTableDialog<LogEntrySummary, LogEntrySummaryModelData> {
 
     private final ToolBar _toolBar;
     private final SingleSelectionModel _ssm;
@@ -61,17 +63,18 @@ public class HistoryDialog
         _toolBar.disable();
         setTopComponent(_toolBar);
         _dataStore.add(DataBinding.bindLogEntrySummary(_data));
-        _grid.setAutoExpandColumn("comment");
+        _grid.setAutoExpandColumn(LogEntrySummaryModelData.Property.COMMENT.name());
         _grid.addListener(
             Events.RowClick,
             new Listener<GridEvent>(){
                 public void handleEvent(final GridEvent be) {
-                    final ModelData md = _grid.getSelectionModel().getSelectedItem();
+                    final LogEntrySummaryModelData md =
+                        _grid.getSelectionModel().getSelectedItem();
                     if (null==md) {
                         _toolBar.disable();
                     } else {
-                        final String action = md.get(DataBinding.ACTION);
-                        if ((action.equals("CREATE") || action.equals("UPDATE"))
+                        final Action action = md.getAction();
+                        if ((Action.CREATE==action || Action.UPDATE==action)
                             && (_resourceType.equals("PAGE") || _resourceType.equals("FILE"))) {
                             _toolBar.enable();
                         } else {
@@ -91,24 +94,24 @@ public class HistoryDialog
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
         final ColumnConfig actionColumn =
-            new ColumnConfig("action", _constants.action(), 70);
+            new ColumnConfig(DataBinding.ACTION, _constants.action(), 70);
         configs.add(actionColumn);
 
         final ColumnConfig userColumn =
-            new ColumnConfig("actor", _constants.user(), 100);
+            new ColumnConfig(DataBinding.ACTOR, _constants.user(), 100);
         configs.add(userColumn);
 
         final ColumnConfig timeColumn =
-            new ColumnConfig("happenedOn", _constants.time(), 150);
+            new ColumnConfig(DataBinding.HAPPENED_ON, _constants.time(), 150);
         timeColumn.setDateTimeFormat(DateTimeFormat.getMediumDateTimeFormat());
         configs.add(timeColumn);
 
         final ColumnConfig majorEditColumn =
-            new ColumnConfig("isMajorEdit", _constants.majorEdit(), 70);
+            new ColumnConfig(DataBinding.IS_MAJOR_EDIT, _constants.majorEdit(), 70);
         configs.add(majorEditColumn);
 
         final ColumnConfig commentColumn = new ColumnConfig();
-        commentColumn.setId("comment");
+        commentColumn.setId(DataBinding.COMMENT);
         commentColumn.setHeader(_constants.comment());
         configs.add(commentColumn);
 

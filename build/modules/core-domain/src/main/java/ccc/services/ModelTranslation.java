@@ -45,7 +45,7 @@ import ccc.services.api.UserSummary;
 
 
 /**
- * TODO: Add Description for this type.
+ * Helper class for translating between the core domain and DTOs.
  *
  * @author Civic Computing Ltd.
  */
@@ -57,8 +57,10 @@ public class ModelTranslation {
      * @param folders The collection of folders to map.
      * @return The corresponding collection of FolderSummary.
      */
-    protected Collection<ResourceSummary> mapFolders(final Collection<Folder> folders) {
-        final Collection<ResourceSummary> mapped = new ArrayList<ResourceSummary>();
+    protected Collection<ResourceSummary> mapFolders(
+                                             final Collection<Folder> folders) {
+        final Collection<ResourceSummary> mapped =
+            new ArrayList<ResourceSummary>();
         for (final Folder f : folders) {
             mapped.add(map(f));
         }
@@ -71,8 +73,10 @@ public class ModelTranslation {
      * @param resources The collection of resources to map.
      * @return The corresponding collection of ResourceSummary.
      */
-    protected Collection<ResourceSummary> mapResources(final Collection<Resource> resources) {
-        final Collection<ResourceSummary> mapped = new ArrayList<ResourceSummary>();
+    protected Collection<ResourceSummary> mapResources(
+                                         final Collection<Resource> resources) {
+        final Collection<ResourceSummary> mapped =
+            new ArrayList<ResourceSummary>();
         for (final Resource r : resources) {
             mapped.add(map(r));
         }
@@ -81,10 +85,10 @@ public class ModelTranslation {
 
 
     /**
-     * TODO: Add a description of this method.
+     * Create summaries for a list of users.
      *
-     * @param listUsers
-     * @return
+     * @param users The users.
+     * @return The corresponding summaries.
      */
     protected Collection<UserSummary> mapUsers(final Collection<User> users) {
         final Collection<UserSummary> mapped = new ArrayList<UserSummary>();
@@ -94,11 +98,12 @@ public class ModelTranslation {
         return mapped;
     }
 
+
     /**
-     * TODO: Add a description of this method.
+     * Create summaries for a collection of files.
      *
-     * @param listUsers
-     * @return
+     * @param files The files.
+     * @return The corresponding summaries.
      */
     protected Collection<FileSummary> mapFiles(final Collection<File> files) {
         final Collection<FileSummary> mapped = new ArrayList<FileSummary>();
@@ -110,12 +115,13 @@ public class ModelTranslation {
 
 
     /**
-     * TODO: Add a description of this method.
+     * Create summaries for a collection of log entries.
      *
-     * @param history
-     * @return
+     * @param logEntries The log entries.
+     * @return The corresponding summaries.
      */
-    protected Collection<LogEntrySummary> mapLogEntries(final List<LogEntry> logEntries) {
+    protected Collection<LogEntrySummary> mapLogEntries(
+                                              final List<LogEntry> logEntries) {
         final Collection<LogEntrySummary> mapped =
             new ArrayList<LogEntrySummary>();
         for (final LogEntry le : logEntries) {
@@ -124,11 +130,12 @@ public class ModelTranslation {
         return mapped;
     }
 
+
     /**
-     * TODO: Add a description of this method.
+     * Create a summary for a log entry.
      *
-     * @param le
-     * @return
+     * @param le The log entry.
+     * @return A corresponding summary.
      */
     protected LogEntrySummary map(final LogEntry le) {
         return
@@ -142,6 +149,7 @@ public class ModelTranslation {
                 le.index());
     }
 
+
     /**
      * TODO: Add a description of this method.
      *
@@ -149,51 +157,46 @@ public class ModelTranslation {
      * @return
      */
     public ResourceSummary map(final Resource r) {
-        final ResourceSummary rs = new ResourceSummary();
-        rs._id = r.id().toString();
-        rs._name = r.name().toString();
-        rs._parentId = (null==r.parent()) ? null : r.parent().id().toString();
-        rs._type = r.type().name();
-        rs._lockedBy = (r.isLocked()) ? r.lockedBy().username() : null;
-        rs._title = r.title();
-        rs._publishedBy = (r.isPublished()) ? r.publishedBy().username() : null;
-        rs._childCount = 0;
-        rs._folderCount = 0;
-        rs._includeInMainMenu = r.includeInMainMenu();
-        rs._dateChanged = r.dateChanged();
-        rs._dateCreated = r.dateCreated();
+        int childCount = 0;
+        int folderCount = 0;
+        String sortOrder = null;
+        boolean hasWorkingCopy = false;
         if (r.type() == ResourceType.FOLDER) {
-            rs._childCount = r.as(Folder.class).entries().size();
-            rs._folderCount = r.as(Folder.class).folders().size();
-            rs._sortOrder = r.as(Folder.class).sortOrder().name();
+            childCount = r.as(Folder.class).entries().size();
+            folderCount = r.as(Folder.class).folders().size();
+            sortOrder = r.as(Folder.class).sortOrder().name();
+        } else if (r.type() == ResourceType.PAGE) {
+            hasWorkingCopy = (r.as(Page.class).workingCopy() != null);
+        } else if (r.type() == ResourceType.FILE) {
+            hasWorkingCopy = (r.as(File.class).workingCopy() != null);
         }
-        if (r.type() == ResourceType.PAGE) {
-            rs._hasWorkingCopy = (r.as(Page.class).workingCopy() != null);
-        }
+
+        final ResourceSummary rs =
+            new ResourceSummary(
+                toID(r.id()),
+                (null==r.parent()) ? null : toID(r.parent().id()),
+                r.name().toString(),
+                (r.isPublished()) ? r.publishedBy().username() : null,
+                r.title(),
+                (r.isLocked()) ? r.lockedBy().username() : null,
+                r.type().name(),
+                childCount,
+                folderCount,
+                r.includeInMainMenu(),
+                sortOrder,
+                hasWorkingCopy,
+                r.dateCreated(),
+                r.dateChanged()
+            );
         return rs;
     }
 
 
     /**
-     * Map a Folder to a FolderSummary.
+     * Create a summary for a user.
      *
-     * @param f
-     * @return
-     */
-    protected ResourceSummary map(final Folder f) {
-        final ResourceSummary rs = map((Resource) f);
-        rs._childCount = f.entries().size();
-        rs._folderCount = f.folders().size();
-        rs._sortOrder = f.sortOrder().name();
-        return rs;
-    }
-
-
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param loggedInUser
-     * @return
+     * @param user The user.
+     * @return A corresponding summary.
      */
     protected UserSummary map(final User user) {
         return
@@ -206,7 +209,7 @@ public class ModelTranslation {
 
 
     /**
-     * TODO: Add a description of this method.
+     * Create a summary of a file.
      *
      * @param file The file to map.
      * @return The summary of the file.
@@ -224,31 +227,32 @@ public class ModelTranslation {
 
 
     /**
-     * TODO: Add a description of this method.
+     * Create a delta for a template.
      *
-     * @param template
-     * @return
+     * @param template The template.
+     * @return A corresponding delta.
      */
     protected TemplateDelta delta(final Template template) {
         if (null==template) {
             return null;
         }
-        final TemplateDelta delta = new TemplateDelta();
-        delta._id = template.id().toString();
-        delta._body = template.body();
-        delta._definition = template.definition();
-        delta._description = template.description();
-        delta._name = template.name().toString();
-        delta._title = template.title();
+        final TemplateDelta delta = new TemplateDelta(
+            toID(template.id()),
+            template.name().toString(),
+            template.title(),
+            template.description(),
+            template.body(),
+            template.definition()
+        );
         return delta;
     }
 
 
     /**
-     * TODO: Add a description of this method.
+     * Create a delta for a user.
      *
-     * @param user
-     * @return
+     * @param user The user.
+     * @return A corresponding summary.
      */
     protected UserDelta delta(final User user) {
         final UserDelta delta =
@@ -263,10 +267,10 @@ public class ModelTranslation {
 
 
     /**
-     * TODO: Add a description of this method.
+     * Create a delta for an alias.
      *
-     * @param alias
-     * @return
+     * @param alias The alias.
+     * @return A corresponding delta.
      */
     protected AliasDelta delta(final Alias alias) {
         final AliasDelta delta =
@@ -278,11 +282,12 @@ public class ModelTranslation {
         return delta;
     }
 
+
     /**
-     * TODO: Add a description of this method.
+     * Create a delta for a file.
      *
-     * @param file
-     * @return
+     * @param file The file.
+     * @return A corresponding delta.
      */
     protected FileDelta delta(final File file) {
         final FileDelta delta =
@@ -303,15 +308,9 @@ public class ModelTranslation {
      * @return
      */
     protected PageDelta delta(final Page page) {
-        final PageDelta delta = new PageDelta();
-        delta._id = page.id().toString();
-        delta._name = page.name().toString();
-        delta._title = page.title();
         final Template t = page.template();
-        delta._templateId = (null==t) ? null : t.id().toString();
         final Template ct = page.computeTemplate(null);
-        delta._computedTemplate = (null==ct) ? null : delta(ct);
-        delta._paragraphs = new ArrayList<ParagraphDelta>();
+        final List<ParagraphDelta> paragraphs = new ArrayList<ParagraphDelta>();
         for (final Paragraph p : page.paragraphs()) {
             final ParagraphDelta pDelta =
                 new ParagraphDelta(
@@ -321,8 +320,20 @@ public class ModelTranslation {
                     p.text(),
                     p.date(),
                     new Decimal(p.number().toString()));
-            delta._paragraphs.add(pDelta);
+            paragraphs.add(pDelta);
         }
+
+        final PageDelta delta =
+            new PageDelta(
+                toID(page.id()),
+                page.name().toString(),
+                page.title(),
+                (null==t) ? null : t.id().toString(),
+                page.tagString(),
+                page.isPublished(),
+                paragraphs,
+                (null==ct) ? null : delta(ct)
+            );
         return delta;
     }
 
@@ -334,29 +345,36 @@ public class ModelTranslation {
      * @return
      */
     protected ResourceDelta delta(final Resource resource) {
-        final ResourceDelta delta = new ResourceDelta();
-        delta._id = resource.id().toString();
-        delta._name = resource.name().toString();
-        delta._title = resource.title();
-        delta._tags = resource.tagString();
         final Template t = resource.template();
-        delta._templateId = (null==t) ? null : t.id().toString();
+
+        final ResourceDelta delta =
+            new ResourceDelta(
+                toID(resource.id()),
+                resource.name().toString(),
+                resource.title(),
+                (null==t) ? null : t.id().toString(),
+                resource.tagString(),
+                resource.isPublished()
+            );
         return delta;
     }
 
+
     /**
-     * TODO: Add a description of this method.
+     * Create deltas for a collection of templates.
      *
-     * @param templates
-     * @return
+     * @param templates The templates.
+     * @return The corresponding deltas.
      */
-    protected Collection<TemplateDelta> deltaTemplates(final List<Template> templates) {
+    protected Collection<TemplateDelta> deltaTemplates(
+                                               final List<Template> templates) {
         final Collection<TemplateDelta> mapped = new ArrayList<TemplateDelta>();
         for (final Template t : templates) {
             mapped.add(delta(t));
         }
         return mapped;
     }
+
 
     /**
      * Merge page and its working copy to a page delta.
@@ -369,8 +387,9 @@ public class ModelTranslation {
 
         if (page.workingCopy() != null) {
             final Snapshot ss = page.workingCopy();
-            delta._title = ss.getString("title");
-            delta._paragraphs.clear();
+            delta.setTitle(ss.getString("title"));
+            final List<ParagraphDelta> paragraphs =
+                new ArrayList<ParagraphDelta>();
             for(final Snapshot s : ss.getSnapshots("paragraphs")) {
                 final Paragraph p = Paragraph.fromSnapshot(s);
                 final ParagraphDelta pDelta =
@@ -381,33 +400,37 @@ public class ModelTranslation {
                         p.text(),
                         p.date(),
                         new Decimal(p.number().toString()));
-                delta._paragraphs.add(pDelta);
+                paragraphs.add(pDelta);
             }
+            delta.setParagraphs(paragraphs);
         }
         return delta;
     }
 
+
     /**
-     * TODO: Add a description of this method.
+     * Create summaries for a list of actions.
      *
-     * @param pending
-     * @return
+     * @param actions The actions.
+     * @return The corresponding summaries.
      */
-    protected Collection<ActionSummary> map(final Collection<Action> pending) {
-        final Collection<ActionSummary> summaries = new ArrayList<ActionSummary>();
-        for (final Action a : pending) {
+    protected Collection<ActionSummary> map(final Collection<Action> actions) {
+        final Collection<ActionSummary> summaries =
+            new ArrayList<ActionSummary>();
+        for (final Action a : actions) {
             summaries.add(map(a));
         }
         return summaries;
     }
 
+
     /**
-     * TODO: Add a description of this method.
+     * Create a summary for an action.
      *
-     * @param a
-     * @return
+     * @param a The action.
+     * @return The corresponding summary.
      */
-    private ActionSummary map(final Action a) {
+    protected ActionSummary map(final Action a) {
         final ActionSummary summary =
             new ActionSummary(
                 toID(a.id()),
@@ -420,6 +443,7 @@ public class ModelTranslation {
                 );
         return summary;
     }
+
 
     private ID toID(final UUID uuid) {
         return new ID(uuid.toString());

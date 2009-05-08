@@ -81,25 +81,25 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      * @param resourceSummary PageDTO of the original page.
      */
     public void populateFields(final PageDelta resourceSummary) {
-        _name.setValue(resourceSummary._name);
+        _name.setValue(resourceSummary.getName());
         _name.setReadOnly(true);
         _name.disable();
-        _title.setValue(resourceSummary._title);
+        _title.setValue(resourceSummary.getTitle());
 
         for (final PageElement c : pageElements()) {
-            for (final ParagraphDelta para : resourceSummary._paragraphs) {
-                if (c.id().equals(para._name)) {
+            for (final ParagraphDelta para : resourceSummary.getParagraphs()) {
+                if (c.id().equals(para.getName())) {
                     if ("TEXT".equals(c.type())) {
                         final Field<String> f = c.field();
-                        f.setValue(para._textValue);
+                        f.setValue(para.getTextValue());
                     } else if ("DATE".equals(c.type())) {
                         final DateField f = c.dateField();
-                        f.setValue(para._dateValue);
+                        f.setValue(para.getDateValue());
                     } else if ("HTML".equals(c.type())) {
                         remove(c.editor());
                         remove(c.editorLabel());
                         final FCKEditor fck =
-                            new FCKEditor(para._textValue, "250px");
+                            new FCKEditor(para.getTextValue(), "250px");
                         add(c.editorLabel());
                         add(fck, new FormData("95%"));
                         c.editor(fck);
