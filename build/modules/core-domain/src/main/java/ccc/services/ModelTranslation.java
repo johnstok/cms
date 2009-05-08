@@ -14,10 +14,10 @@ package ccc.services;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import ccc.actions.Action;
 import ccc.domain.Alias;
-import ccc.domain.Duration;
 import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
@@ -30,9 +30,10 @@ import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.api.ActionSummary;
 import ccc.services.api.AliasDelta;
-import ccc.services.api.DurationSummary;
+import ccc.services.api.Decimal;
 import ccc.services.api.FileDelta;
 import ccc.services.api.FileSummary;
+import ccc.services.api.ID;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ParagraphDelta;
@@ -130,15 +131,15 @@ public class ModelTranslation {
      * @return
      */
     protected LogEntrySummary map(final LogEntry le) {
-        final LogEntrySummary les = new LogEntrySummary();
-        les._action = le.action().name();
-        les._actor = le.actor().username();
-        les._happenedOn = le.happenedOn().getTime();
-        les._comment = le.comment();
-        les._isMajorEdit = (le.isMajorEdit() ? "yes" : "no"); // TODO i18n
-        les._index = le.index();
-        les._subject = le.subjectId().toString();
-        return les;
+        return
+            new LogEntrySummary(
+                le.subjectId().toString(),
+                le.action(),
+                le.actor().username(),
+                le.happenedOn(),
+                le.comment(),
+                le.isMajorEdit(),
+                le.index());
     }
 
     /**
@@ -172,6 +173,7 @@ public class ModelTranslation {
         return rs;
     }
 
+
     /**
      * Map a Folder to a FolderSummary.
      *
@@ -194,29 +196,32 @@ public class ModelTranslation {
      * @return
      */
     protected UserSummary map(final User user) {
-        final UserSummary us = new UserSummary();
-        us._email = user.email().getText();
-        us._id = user.id().toString();
-        us._username = user.username();
-        us._roles = user.roles();
-        return us;
+        return
+            new UserSummary(
+                user.email().getText(),
+                toID(user.id()),
+                user.username(),
+                user.roles());
     }
+
 
     /**
      * TODO: Add a description of this method.
      *
-     * @param loggedInUser
-     * @return
+     * @param file The file to map.
+     * @return The summary of the file.
      */
     protected FileSummary map(final File file) {
-        final FileSummary fs = new FileSummary();
-        fs._id = file.id().toString();
-        fs._name = file.name().toString();
-        fs._title = file.title();
-        fs._mimeType = file.mimeType().toString();
-        fs._path = file.absolutePath().toString();
+        final FileSummary fs =
+            new FileSummary(
+                file.mimeType().toString(),
+                file.absolutePath().toString(),
+                toID(file.id()),
+                file.name().toString(),
+                file.title());
         return fs;
     }
+
 
     /**
      * TODO: Add a description of this method.
@@ -238,6 +243,7 @@ public class ModelTranslation {
         return delta;
     }
 
+
     /**
      * TODO: Add a description of this method.
      *
@@ -245,11 +251,13 @@ public class ModelTranslation {
      * @return
      */
     protected UserDelta delta(final User user) {
-        final UserDelta delta = new UserDelta();
-        delta._id = user.id().toString();
-        delta._email = user.email().getText();
-        delta._username = user.username();
-        delta._roles = user.roles();
+        final UserDelta delta =
+            new UserDelta(
+                toID(user.id()),
+                null,
+                user.email().getText(),
+                user.username(),
+                user.roles());
         return delta;
     }
 
@@ -261,11 +269,12 @@ public class ModelTranslation {
      * @return
      */
     protected AliasDelta delta(final Alias alias) {
-        final AliasDelta delta = new AliasDelta();
-        delta._id = alias.id().toString();
-        delta._name = alias.name().toString();
-        delta._targetId = alias.target().id().toString();
-        delta._targetName = alias.target().name().toString();
+        final AliasDelta delta =
+            new AliasDelta(
+                toID(alias.id()),
+                alias.name().toString(),
+                alias.target().name().toString(),
+                toID(alias.target().id()));
         return delta;
     }
 
@@ -276,11 +285,13 @@ public class ModelTranslation {
      * @return
      */
     protected FileDelta delta(final File file) {
-        final FileDelta delta = new FileDelta();
-        delta._id = file.id().toString();
-        delta._name = file.name().toString();
-        delta._title = file.title();
-        delta._description = file.description();
+        final FileDelta delta =
+            new FileDelta(
+                toID(file.id()),
+                file.name().toString(),
+                file.title(),
+                file.description()
+            );
         return delta;
     }
 
@@ -302,11 +313,14 @@ public class ModelTranslation {
         delta._computedTemplate = (null==ct) ? null : delta(ct);
         delta._paragraphs = new ArrayList<ParagraphDelta>();
         for (final Paragraph p : page.paragraphs()) {
-            final ParagraphDelta pDelta = new ParagraphDelta();
-            pDelta._name = p.name();
-            pDelta._type = ParagraphDelta.Type.valueOf(p.type().name());
-            pDelta._textValue = p.text();
-            pDelta._dateValue = p.date();
+            final ParagraphDelta pDelta =
+                new ParagraphDelta(
+                    p.name(),
+                    ParagraphDelta.Type.valueOf(p.type().name()),
+                    null, // FIXME: What is the raw value?!
+                    p.text(),
+                    p.date(),
+                    new Decimal(p.number().toString()));
             delta._paragraphs.add(pDelta);
         }
         return delta;
@@ -359,11 +373,14 @@ public class ModelTranslation {
             delta._paragraphs.clear();
             for(final Snapshot s : ss.getSnapshots("paragraphs")) {
                 final Paragraph p = Paragraph.fromSnapshot(s);
-                final ParagraphDelta pDelta = new ParagraphDelta();
-                pDelta ._name = p.name();
-                pDelta._type = ParagraphDelta.Type.valueOf(p.type().name());
-                pDelta._textValue = p.text();
-                pDelta._dateValue = p.date();
+                final ParagraphDelta pDelta =
+                    new ParagraphDelta(
+                        p.name(),
+                        ParagraphDelta.Type.valueOf(p.type().name()),
+                        null,
+                        p.text(),
+                        p.date(),
+                        new Decimal(p.number().toString()));
                 delta._paragraphs.add(pDelta);
             }
         }
@@ -387,33 +404,24 @@ public class ModelTranslation {
     /**
      * TODO: Add a description of this method.
      *
-     * @param duration
-     * @return
-     */
-    protected DurationSummary map(final Duration duration) {
-        final DurationSummary ds = new DurationSummary();
-        ds._days = duration.dayField();
-        ds._hours = duration.hourField();
-        ds._minutes = duration.minuteField();
-        ds._seconds = duration.secondField();
-        return ds;
-    }
-
-    /**
-     * TODO: Add a description of this method.
-     *
      * @param a
      * @return
      */
     private ActionSummary map(final Action a) {
-        final ActionSummary summary = new ActionSummary();
-        summary._id = a.id().toString();
-        summary._type = a.type().toString();
-        summary._actor = a.actor().username();
-        summary._subjectType = a.subject().type().toString();
-        summary._subjectPath = a.subject().absolutePath().toString();
-        summary._executeAfter = a.executeAfter();
-        summary._status = a.status().toString();
+        final ActionSummary summary =
+            new ActionSummary(
+                toID(a.id()),
+                a.type(),
+                a.actor().username(),
+                a.executeAfter(),
+                a.subject().type().toString(),
+                a.subject().absolutePath().toString(),
+                a.status().toString()
+                );
         return summary;
+    }
+
+    private ID toID(final UUID uuid) {
+        return new ID(uuid.toString());
     }
 }

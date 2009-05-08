@@ -208,9 +208,9 @@ public interface Queries {
      * Retrieve resource's cache duration.
      *
      * @param resourceId The id of the resource.
-     * @return Duration as a DurationSummary.
+     * @return Duration.
      */
-    DurationSummary cacheDuration(String resourceId);
+    Duration cacheDuration(String resourceId);
 
     TemplateDelta templateDelta(String templateId);
     UserDelta userDelta(String userId);

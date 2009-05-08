@@ -23,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import ccc.commons.Testing;
+import ccc.services.api.Duration;
 
 
 /**

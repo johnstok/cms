@@ -13,12 +13,12 @@ package ccc.contentcreator.dialogs;
 
 
 import ccc.contentcreator.callbacks.DisposingCallback;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.ResourceTable;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.services.api.AliasDelta;
+import ccc.services.api.ID;
 import ccc.services.api.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Events;
@@ -42,7 +42,6 @@ public class UpdateAliasDialog extends AbstractEditDialog {
     private final TriggerField<String> _targetName =
         new TriggerField<String>();
 
-    private ModelData _target = null;
     private AliasDelta _alias = null;
     private ResourceSummary _targetRoot;
     private final ResourceTable _rt;
@@ -67,14 +66,14 @@ public class UpdateAliasDialog extends AbstractEditDialog {
 
         _aliasName.setFieldLabel(constants().name());
         _aliasName.setId("AliasName");
-        _aliasName.setValue(_alias._name);
+        _aliasName.setValue(_alias.getName());
         _aliasName.setReadOnly(true);
         _aliasName.disable();
         addField(_aliasName);
 
         _targetName.setFieldLabel(constants().target());
         _targetName.setValue("");
-        _targetName.setValue(_alias._targetName);
+        _targetName.setValue(_alias.getTargetName());
         _targetName.setId(constants().target());
         _targetName.setReadOnly(true);
         _targetName.addListener(
@@ -86,9 +85,10 @@ public class UpdateAliasDialog extends AbstractEditDialog {
                     resourceSelect.addListener(Events.Close,
                         new Listener<ComponentEvent>() {
                         public void handleEvent(final ComponentEvent be) {
-                            _target = resourceSelect.selectedResource();
-                            _alias._targetId = _target.get("id");
-                            _targetName.setValue(_target.<String>get("name"));
+                            final ModelData target =
+                                resourceSelect.selectedResource();
+                            _alias.setTargetId(target.<ID>get("id"));
+                            _targetName.setValue(target.<String>get("name"));
                         }});
                     resourceSelect.show();
                 }});

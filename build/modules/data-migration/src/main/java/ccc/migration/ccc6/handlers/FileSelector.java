@@ -22,10 +22,12 @@ public final class FileSelector
         final List<FileDelta> results = new ArrayList<FileDelta>();
 
         while (rs.next()) {
-            final FileDelta file = new FileDelta();
-            file._name = rs.getString("object_name");
-            file._title = rs.getString("object_title");
-            file._description = rs.getString("classification");
+            final FileDelta file =
+                new FileDelta(
+                    null,
+                    rs.getString("object_name"),
+                    rs.getString("object_title"),
+                    rs.getString("classification"));
             results.add(file);
         }
 

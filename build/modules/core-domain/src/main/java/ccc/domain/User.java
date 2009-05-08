@@ -20,6 +20,7 @@ import ccc.commons.EmailAddress;
 
 /**
  * A user of the CCC system.
+ * TODO: Factor out a 'username' class.
  *
  * @author Civic Computing Ltd.
  */

@@ -25,9 +25,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
 import ccc.commons.Testing;
-import ccc.domain.Duration;
 import ccc.domain.Page;
 import ccc.services.StatefulReader;
+import ccc.services.api.Duration;
 
 
 /**

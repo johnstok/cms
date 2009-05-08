@@ -15,13 +15,113 @@ import java.io.Serializable;
 
 
 /**
- * TODO: Add Description for this type.
+ * A delta for creating / updating aliases.
  *
  * @author Civic Computing Ltd.
  */
-public class AliasDelta implements Serializable {
-    public String _id;
-    public String _name;
-    public String _targetName;
-    public String _targetId;
+public final class AliasDelta implements Serializable {
+    private ID _id;
+    private String _name;
+    private String _targetName;
+    private ID _targetId;
+
+    @SuppressWarnings("unused") private AliasDelta() { super(); }
+
+    /**
+     * Constructor.
+     *
+     * @param id The alias' Id.
+     * @param name The alias' name.
+     * @param targetName The alias' target's name.
+     * @param targetId The alias' target's id.
+     */
+    public AliasDelta(final ID id,
+                      final String name,
+                      final String targetName,
+                      final ID targetId) {
+        _id = id;
+        _name = name;
+        _targetName = targetName;
+        _targetId = targetId;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the id.
+     */
+    public ID getId() {
+        return _id;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param id The id to set.
+     */
+    public void setId(final ID id) {
+        _id = id;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the name.
+     */
+    public String getName() {
+        return _name;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param name The name to set.
+     */
+    public void setName(final String name) {
+        _name = name;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the targetName.
+     */
+    public String getTargetName() {
+        return _targetName;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param targetName The targetName to set.
+     */
+    public void setTargetName(final String targetName) {
+        _targetName = targetName;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the targetId.
+     */
+    public ID getTargetId() {
+        return _targetId;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param targetId The targetId to set.
+     */
+    public void setTargetId(final ID targetId) {
+        _targetId = targetId;
+    }
 }

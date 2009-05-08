@@ -71,7 +71,7 @@ public class MainMenu
                 new OpenHelpAction())
         );
 
-        if (_user._roles.contains(Globals.ADMINISTRATOR)) {
+        if (_user.getRoles().contains(Globals.ADMINISTRATOR)) {
             addMenu(
                 "users-menu",
                 _constants.users(),
@@ -82,8 +82,8 @@ public class MainMenu
             );
         }
 
-        if (_user._roles.contains(Globals.ADMINISTRATOR)
-                || _user._roles.contains(Globals.SITE_BUILDER)) {
+        if (_user.getRoles().contains(Globals.ADMINISTRATOR)
+                || _user.getRoles().contains(Globals.SITE_BUILDER)) {
             createContentRootMenu();
         }
 
@@ -156,15 +156,15 @@ public class MainMenu
                 _constants.lock(),
                 new LockAction(ssm)));
         } else {
-            if (root._lockedBy.equals(_user._username)
-                    || _user._roles.contains(Globals.ADMINISTRATOR)) {
+            if (root._lockedBy.equals(_user.getUsername())
+                    || _user.getRoles().contains(Globals.ADMINISTRATOR)) {
 
                 _itemMenu.add(createMenuItem(
                     "unlock-root",
                     _constants.unlock(),
                     new UnlockAction(ssm)));
             }
-            if (root._lockedBy.equals(_user._username)) {
+            if (root._lockedBy.equals(_user.getUsername())) {
                 if (root._publishedBy == null || root._publishedBy.equals("")) {
                     _itemMenu.add(createMenuItem(
                         "publish-root",
@@ -200,7 +200,7 @@ public class MainMenu
                     "cacheDuration-root",
                     _constants.cacheDuration(),
                     new EditCacheAction(ssm)));
-                
+
             }
         }
 
@@ -218,7 +218,7 @@ public class MainMenu
                              final ModelData oldParent) {
             }
             public ModelData tableSelection() {
-                ModelData md = new BaseModelData();
+                final ModelData md = new BaseModelData();
                 md.set(DataBinding.TYPE, "FOLDER");
                 md.set(DataBinding.ID, root._id);
                 md.set(DataBinding.SORT_ORDER, root._sortOrder);

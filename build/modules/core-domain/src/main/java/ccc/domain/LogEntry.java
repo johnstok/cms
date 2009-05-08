@@ -16,6 +16,8 @@ import static ccc.commons.DBC.*;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.services.api.Action;
+
 
 /**
  * Captures detail relevant to a single user action for persistence in the audit
@@ -36,45 +38,6 @@ public class LogEntry extends Entity {
     private String       _comment;
     private String       _detail;
     private boolean      _isMajorEdit;
-
-    /** Valid actions for a log entry. */
-    public static enum Action {
-        /** RENAME : Action. */
-        RENAME,
-        /** MOVE : Action. */
-        MOVE,
-        /** PUBLISH : Action. */
-        PUBLISH,
-        /** UNPUBLISH : Action. */
-        UNPUBLISH,
-        /** CREATE : Action. */
-        CREATE,
-        /** UPDATE : Action. */
-        UPDATE,
-        /** LOCK : Action. */
-        LOCK,
-        /** UNLOCK : Action. */
-        UNLOCK,
-        /** CHANGE_TEMPLATE : Action. */
-        CHANGE_TEMPLATE,
-        /** UPDATE_TAGS : Action. */
-        UPDATE_TAGS,
-        /** INCLUDE_IN_MM : Action. */
-        INCLUDE_IN_MM,
-        /** REMOVE_FROM_MM : Action. */
-        REMOVE_FROM_MM,
-        /** UPDATE_METADATA : Action. */
-        UPDATE_METADATA,
-        /** CHANGE_ROLES : Action. */
-        CHANGE_ROLES,
-        /** REORDER : Action. */
-        REORDER,
-        /** UPDATE_SORT_ORDER : Action. */
-        UPDATE_SORT_ORDER,
-        /** UPDATE_CACHE : Action. */
-        UPDATE_CACHE
-    }
-
 
     /** Constructor: for persistence only. */
     protected LogEntry() { super(); }

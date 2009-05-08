@@ -12,19 +12,49 @@
 package ccc.services.api;
 
 import java.io.Serializable;
+import java.util.Date;
 
 
 /**
- * TODO: Add Description for this type.
+ * A summary of a log entry.
  *
  * @author Civic Computing Ltd.
  */
 public class LogEntrySummary implements Serializable {
     public String _subject;
-    public String _action;
+    public Action _action;
     public String _actor;
-    public long _happenedOn;
+    public Date _happenedOn;
     public String _comment;
-    public String _isMajorEdit;
+    public boolean _isMajorEdit;
     public long _index;
+
+    @SuppressWarnings("unused") private LogEntrySummary() { super(); }
+
+    /**
+     * Constructor.
+     *
+     * @param subject
+     * @param action
+     * @param actor
+     * @param on
+     * @param comment
+     * @param majorEdit
+     * @param index
+     */
+    public LogEntrySummary(final String  subject,
+                           final Action  action,
+                           final String  actor,
+                           final Date    on,
+                           final String  comment,
+                           final boolean majorEdit,
+                           final long    index) {
+        _subject = subject;
+        _action = action;
+        _actor = actor;
+        _happenedOn = on;
+        _comment = comment;
+        _isMajorEdit = majorEdit;
+        _index = index;
+    }
 }

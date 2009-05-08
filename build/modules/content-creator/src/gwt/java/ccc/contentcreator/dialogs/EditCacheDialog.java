@@ -15,7 +15,7 @@ import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
-import ccc.services.api.DurationSummary;
+import ccc.services.api.Duration;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -43,7 +43,7 @@ public class EditCacheDialog extends AbstractEditDialog {
      * @param item The resource to rename.
      * @param ds The Duration summary of the resource.
      */
-    public EditCacheDialog(final ModelData item, final DurationSummary ds) {
+    public EditCacheDialog(final ModelData item, final Duration ds) {
         super(Globals.uiConstants().editCacheDuration());
         _item = item;
         setHeight(200);
@@ -58,10 +58,10 @@ public class EditCacheDialog extends AbstractEditDialog {
         _seconds.setId("cacheDurationSeconds");
 
         if (ds != null) {
-            _days.setValue(""+ds._days);
-            _hours.setValue(""+ds._hours);
-            _minutes.setValue(""+ds._minutes);
-            _seconds.setValue(""+ds._seconds);
+            _days.setValue(""+ds.dayField());
+            _hours.setValue(""+ds.hourField());
+            _minutes.setValue(""+ds.minuteField());
+            _seconds.setValue(""+ds.secondField());
         }
         _panel.add(_days);
         _panel.add(_hours);
@@ -89,28 +89,35 @@ public class EditCacheDialog extends AbstractEditDialog {
         return new Runnable() {
             @SuppressWarnings("unchecked")
             public void run() {
-                final DurationSummary updatedDs = new DurationSummary();
                 boolean isDurationSet = false;
+                Long days = 0l;
+                Long hours = 0l;
+                Long minutes = 0l;
+                Long seconds = 0l;
+
                 if (_days.getValue() != null
                         && !_days.getValue().trim().equals("")) {
                     isDurationSet = true;
-                    updatedDs._days = Long.parseLong(_days.getValue());
+                    days = Long.parseLong(_days.getValue());
                 }
                 if (_hours.getValue() != null
                         && !_hours.getValue().trim().equals("")) {
                     isDurationSet = true;
-                    updatedDs._hours = Long.parseLong(_hours.getValue());
+                    hours = Long.parseLong(_hours.getValue());
                 }
                 if (_minutes.getValue() != null
                         && !_minutes.getValue().trim().equals("")) {
                     isDurationSet = true;
-                    updatedDs._minutes = Long.parseLong(_minutes.getValue());
+                    minutes = Long.parseLong(_minutes.getValue());
                 }
                 if (_seconds.getValue() != null
                         && !_seconds.getValue().trim().equals("")) {
                     isDurationSet = true;
-                    updatedDs._seconds = Long.parseLong(_seconds.getValue());
+                    seconds = Long.parseLong(_seconds.getValue());
                 }
+
+                final Duration updatedDs =
+                    new Duration(days, hours, minutes, seconds);
 
                 commands().updateCacheDuration(
                     _item.<String>get("id"),

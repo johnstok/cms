@@ -12,18 +12,77 @@
 package ccc.services.api;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 
 
 /**
- * TODO: Add Description for this type.
+ * A summary of a user.
  *
  * @author Civic Computing Ltd.
  */
-public class UserSummary implements Serializable {
-    public String _email;
-    public String _id;
-    public String _username;
-    public Set<String> _roles = new HashSet<String>();
+public final class UserSummary implements Serializable {
+    private String _email;
+    private ID _id;
+    private String _username;
+    private Set<String> _roles;
+
+    @SuppressWarnings("unused") private UserSummary() { super(); }
+
+    /**
+     * Constructor.
+     *
+     * @param email The user's email.
+     * @param id The user's id.
+     * @param username The user's username.
+     * @param roles The user's roles.
+     */
+    public UserSummary(final String email,
+                       final ID id,
+                       final String username,
+                       final Set<String> roles) {
+        _email = email;
+        _id = id;
+        _username = username;
+        _roles = roles;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the email.
+     */
+    public String getEmail() {
+        return _email;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the id.
+     */
+    public ID getId() {
+        return _id;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the username.
+     */
+    public String getUsername() {
+        return _username;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the roles.
+     */
+    public Set<String> getRoles() {
+        return _roles;
+    }
 }

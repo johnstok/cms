@@ -41,7 +41,6 @@ import ccc.content.response.Response;
 import ccc.content.response.StringHeader;
 import ccc.domain.Alias;
 import ccc.domain.Data;
-import ccc.domain.Duration;
 import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.Page;
@@ -55,6 +54,7 @@ import ccc.domain.User;
 import ccc.services.DataManager;
 import ccc.services.SearchEngine;
 import ccc.services.StatefulReader;
+import ccc.services.api.Duration;
 
 
 /**

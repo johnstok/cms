@@ -22,6 +22,7 @@ import java.util.Map;
 
 /**
  * TODO: Add Description for this type.
+ * FIXME: Convert all 'xxxId' parameters to use the {@link ID} type.
  *
  * @author Civic Computing Ltd.
  */
@@ -232,6 +233,6 @@ public interface Commands {
 
     void applyWorkingCopyToFile(String fileId);
 
-    void updateCacheDuration(String resourceId, DurationSummary duration);
+    void updateCacheDuration(String resourceId, Duration duration);
 }
 

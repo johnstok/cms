@@ -112,18 +112,18 @@ public class FileUploader {
         try {
             final PostMethod filePost =
                 new PostMethod(_targetUploadURL);
-            log.debug("Migrating file: "+legacyFile._name);
+            log.debug("Migrating file: "+legacyFile.getName());
             final String name =
-                ResourceName.escape(legacyFile._name).toString();
+                ResourceName.escape(legacyFile.getName()).toString();
 
-            String title = legacyFile._title;
+            String title = legacyFile.getTitle();
             if (title == null) {
-                title = legacyFile._name;
+                title = legacyFile.getTitle();
             }
             final String description =
-                (legacyFile._description == null)
+                (legacyFile.getDescription() == null)
                     ? ""
-                    :legacyFile._description;
+                    :legacyFile.getDescription();
 
             final FilePart fp = new FilePart("file", file.getName(), file);
             fp.setContentType(_mimemap.getContentType(file));
@@ -164,9 +164,9 @@ public class FileUploader {
                             final FileDelta legacyFile,
                             final String directory) {
 
-        final File file = new File(directory+legacyFile._name);
+        final File file = new File(directory+legacyFile.getName());
         if (!file.exists()) {
-            log.debug("File not found: "+legacyFile._name);
+            log.debug("File not found: "+legacyFile.getName());
         } else {
             uploadFile(filesResource, legacyFile, file);
         }

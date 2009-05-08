@@ -17,7 +17,7 @@ import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.EditCacheDialog;
-import ccc.services.api.DurationSummary;
+import ccc.services.api.Duration;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 
@@ -46,9 +46,9 @@ public class EditCacheAction implements Action {
     public void execute() {
         final ModelData item = _selectionModel.tableSelection();
         _queries.cacheDuration(item.<String>get("id"),
-            new ErrorReportingCallback<DurationSummary>() {
+            new ErrorReportingCallback<Duration>() {
                 @Override
-                public void onSuccess(final DurationSummary arg0) {
+                public void onSuccess(final Duration arg0) {
                     final EditCacheDialog dialog = new EditCacheDialog(item, arg0);
                     dialog.show();
                 }

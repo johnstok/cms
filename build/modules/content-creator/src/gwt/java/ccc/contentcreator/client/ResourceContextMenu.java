@@ -152,11 +152,11 @@ public class ResourceContextMenu
             || "".equals(item.get("locked"))) {
             addLockResource();
         } else {
-            if (item.get("locked").equals(user._username)
-                 || user._roles.contains(Globals.ADMINISTRATOR)) {
+            if (item.get("locked").equals(user.getUsername())
+                 || user.getRoles().contains(Globals.ADMINISTRATOR)) {
                 addUnlockResource();
             }
-            if (item.get("locked").equals(user._username)) {
+            if (item.get("locked").equals(user.getUsername())) {
                 if (item.<String>get("published") == null
                         || "".equals(item.get("published"))) {
                     addPublishResource();
