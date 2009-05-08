@@ -448,7 +448,9 @@ public class LogEntry extends Entity {
         le._comment = "Updated cache setting.";
 
         final Snapshot ss = new Snapshot();
-        ss.set("cache", resource.cache().time());
+        if (resource.cache() != null) {
+            ss.set("cache", resource.cache().time());
+        }
         le._detail = ss.getDetail();
         return le;
     }
