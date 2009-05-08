@@ -11,13 +11,13 @@
  */
 package ccc.contentcreator.dialogs;
 
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.services.api.Duration;
 
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.TextField;
@@ -30,7 +30,7 @@ import com.extjs.gxt.ui.client.widget.form.TextField;
  */
 public class EditCacheDialog extends AbstractEditDialog {
 
-    private final ModelData _item;
+    private final ResourceSummaryModelData _item;
     private final TextField<String> _seconds = new TextField<String>();
     private final TextField<String> _minutes = new TextField<String>();
     private final TextField<String> _hours = new TextField<String>();
@@ -43,7 +43,8 @@ public class EditCacheDialog extends AbstractEditDialog {
      * @param item The resource to rename.
      * @param ds The Duration summary of the resource.
      */
-    public EditCacheDialog(final ModelData item, final Duration ds) {
+    public EditCacheDialog(final ResourceSummaryModelData item,
+                           final Duration ds) {
         super(Globals.uiConstants().editCacheDuration());
         _item = item;
         setHeight(200);
@@ -87,7 +88,6 @@ public class EditCacheDialog extends AbstractEditDialog {
 
     private Runnable updateCache() {
         return new Runnable() {
-            @SuppressWarnings("unchecked")
             public void run() {
                 boolean isDurationSet = false;
                 Long days = 0l;
@@ -120,7 +120,7 @@ public class EditCacheDialog extends AbstractEditDialog {
                     new Duration(days, hours, minutes, seconds);
 
                 commands().updateCacheDuration(
-                    _item.<String>get("id"),
+                    _item.getId().toString(),
                     (isDurationSet) ? updatedDs : null,
                     new ErrorReportingCallback<Void>() {
                     @Override

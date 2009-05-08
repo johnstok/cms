@@ -18,12 +18,12 @@ import java.util.List;
 import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.binding.DataBinding;
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.services.api.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.binder.TreeBinder;
 import com.extjs.gxt.ui.client.data.BaseTreeLoader;
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.ModelStringProvider;
 import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.data.TreeLoader;
@@ -41,7 +41,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public class ResourceTree extends Tree {
 
-    private final TreeStore<ModelData> _store;
+    private final TreeStore<ResourceSummaryModelData> _store;
     private final ResourceSummary _root;
     private final QueriesServiceAsync _qs = GWT.create(QueriesService.class);
 
@@ -58,14 +58,14 @@ public class ResourceTree extends Tree {
         setStyleAttribute("background", "white");
 
 
-        final RpcProxy<ModelData, List<ModelData>> proxy =
-            new RpcProxy<ModelData, List<ModelData>>() {
+        final RpcProxy<ResourceSummaryModelData, List<ResourceSummaryModelData>> proxy =
+            new RpcProxy<ResourceSummaryModelData, List<ResourceSummaryModelData>>() {
             @Override
-            protected void load(final ModelData loadConfig,
-                                final AsyncCallback<List<ModelData>> callback) {
+            protected void load(final ResourceSummaryModelData loadConfig,
+                                final AsyncCallback<List<ResourceSummaryModelData>> callback) {
 
                 final String parentId =
-                  (null==loadConfig) ? _root.getId().toString() : loadConfig.<String>get("id");
+                  (null==loadConfig) ? _root.getId().toString() : loadConfig.getId().toString();
 
                 _qs.getChildren(
                     parentId,
@@ -84,43 +84,43 @@ public class ResourceTree extends Tree {
             }
         };
 
-        final TreeLoader<ModelData> loader =
-            new BaseTreeLoader<ModelData>(proxy) {
+        final TreeLoader<ResourceSummaryModelData> loader =
+            new BaseTreeLoader<ResourceSummaryModelData>(proxy) {
             @Override
-            public boolean hasChildren(final ModelData parent) {
-                if (parent.<Integer>get("childCount") > 0) {
+            public boolean hasChildren(final ResourceSummaryModelData parent) {
+                if (parent.getChildCount() > 0) {
                     return true;
                 }
                 return false;
             }
         };
 
-        _store = new TreeStore<ModelData>(loader);
+        _store = new TreeStore<ResourceSummaryModelData>(loader);
 
 
-        final TreeBinder<ModelData> binder =
-            new TreeBinder<ModelData>(this, _store) {
+        final TreeBinder<ResourceSummaryModelData> binder =
+            new TreeBinder<ResourceSummaryModelData>(this, _store) {
             @Override
             protected void update(final TreeItem item,
-                                  final ModelData model) {
+                                  final ResourceSummaryModelData model) {
                 super.update(item, model);
-                item.setId(model.<String>get("name"));
+                item.setId(model.getName());
             }
         };
-        binder.setDisplayProperty("name");
+        binder.setDisplayProperty(ResourceSummaryModelData.DISPLAY_PROPERTY);
         binder.setCaching(false);
-        binder.setIconProvider(new ModelStringProvider<ModelData>() {
-            public String getStringValue(final ModelData model,
+        binder.setIconProvider(new ModelStringProvider<ResourceSummaryModelData>() {
+            public String getStringValue(final ResourceSummaryModelData model,
                                          final String property) {
-                if (model.<String>get("type").equals("FOLDER")) {
+                if (model.getType().equals("FOLDER")) {
                     return "images/gxt/icons/folder.gif";
-                } else if (model.<String>get("type").equals("PAGE")) {
+                } else if (model.getType().equals("PAGE")) {
                     return "images/icons/page.png";
-                } else if (model.<String>get("type").equals("TEMPLATE")) {
+                } else if (model.getType().equals("TEMPLATE")) {
                     return "images/icons/page_code.png";
-                } else if (model.<String>get("type").equals("ALIAS")) {
+                } else if (model.getType().equals("ALIAS")) {
                     return "images/icons/link.png";
-                } else if (model.<String>get("type").equals("FILE")) {
+                } else if (model.getType().equals("FILE")) {
                     return "images/icons/image.png";
                 } else {
                     return null;
@@ -136,7 +136,7 @@ public class ResourceTree extends Tree {
      *
      * @return The internal store.
      */
-    public TreeStore<ModelData> store() {
+    public TreeStore<ResourceSummaryModelData> store() {
         return _store;
     }
 }

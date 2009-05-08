@@ -26,6 +26,6 @@ public final class CreateActionAction
 
     /** {@inheritDoc} */
     public void execute() {
-        new CreateActionDialog(_ssm.tableSelection().<String>get("id")).show();
+        new CreateActionDialog(_ssm.tableSelection().getId().toString()).show();
     }
 }

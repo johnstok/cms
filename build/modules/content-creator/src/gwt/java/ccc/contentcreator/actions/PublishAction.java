@@ -1,14 +1,12 @@
 package ccc.contentcreator.actions;
 
 import ccc.contentcreator.api.CommandServiceAsync;
-import ccc.contentcreator.binding.DataBinding;
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.services.api.ResourceSummary;
-
-import com.extjs.gxt.ui.client.data.ModelData;
 
 /**
  * Publish a resource.
@@ -21,25 +19,25 @@ public class PublishAction
 
     private final CommandServiceAsync _commands = Globals.commandService();
 
-    private final SingleSelectionModel _selectionModel;
+    private final SingleSelectionModel<ResourceSummaryModelData> _selectionModel;
 
     /**
      * Constructor.
      *
      * @param selectionModel The selection model to use.
      */
-    public PublishAction(final SingleSelectionModel selectionModel) {
+    public PublishAction(final SingleSelectionModel<ResourceSummaryModelData> selectionModel) {
         _selectionModel = selectionModel;
     }
 
     /** {@inheritDoc} */
     public void execute() {
-        final ModelData item = _selectionModel.tableSelection();
+        final ResourceSummaryModelData item = _selectionModel.tableSelection();
         _commands.publish(
-            item.<String>get("id"),
+            item.getId().toString(),
             new ErrorReportingCallback<ResourceSummary>(){
                 public void onSuccess(final ResourceSummary arg0) {
-                    DataBinding.merge(item, arg0);
+                    item.merge(arg0);
                     _selectionModel.update(item);
                 }
             }

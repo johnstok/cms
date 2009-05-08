@@ -17,6 +17,7 @@ import static ccc.services.api.ParagraphDelta.Type.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.EditPagePanel;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.PageElement;
@@ -29,7 +30,6 @@ import ccc.services.api.ParagraphDelta;
 import ccc.services.api.TemplateDelta;
 
 import com.extjs.gxt.ui.client.Style;
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.button.Button;
@@ -62,8 +62,8 @@ public class UpdatePageDialog
                 Globals.unexpectedError(arg0);
             }
             public void onSuccess(final Void arg0) {
-                final ModelData md = rt().tableSelection();
-                md.set("workingCopy", Boolean.TRUE);
+                final ResourceSummaryModelData md = rt().tableSelection();
+                md.setWorkingCopy(true);
                 rt().update(md);
                 close();
             }

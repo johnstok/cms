@@ -12,7 +12,7 @@
 package ccc.contentcreator.dialogs;
 
 
-import ccc.contentcreator.binding.DataBinding;
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
@@ -21,7 +21,6 @@ import ccc.contentcreator.validation.Validations;
 import ccc.services.api.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Events;
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -42,8 +41,8 @@ public class CreateAliasDialog extends AbstractEditDialog {
     private final TriggerField<String> _parentFolder =
         new TriggerField<String>();
 
-    private final SingleSelectionModel _ssm;
-    private ModelData _parent = null;
+    private final SingleSelectionModel<ResourceSummaryModelData> _ssm;
+    private ResourceSummaryModelData _parent = null;
 
     /**
      * Constructor.
@@ -51,7 +50,7 @@ public class CreateAliasDialog extends AbstractEditDialog {
      * @param ssm Selection model.
      * @param root Resource root for folder selection
      */
-    public CreateAliasDialog(final SingleSelectionModel ssm,
+    public CreateAliasDialog(final SingleSelectionModel<ResourceSummaryModelData> ssm,
                              final ResourceSummary root) {
         super(Globals.uiConstants().createAlias());
         setPanelId("AliasPanel");
@@ -59,7 +58,7 @@ public class CreateAliasDialog extends AbstractEditDialog {
         _ssm = ssm;
 
         _targetName.setFieldLabel(constants().target());
-        _targetName.setValue(_ssm.tableSelection().<String>get("name"));
+        _targetName.setValue(_ssm.tableSelection().getName());
         _targetName.setReadOnly(true);
         _targetName.disable();
         addField(_targetName);
@@ -83,7 +82,7 @@ public class CreateAliasDialog extends AbstractEditDialog {
                         new Listener<ComponentEvent>() {
                         public void handleEvent(final ComponentEvent be) {
                             _parent = folderSelect.selectedFolder();
-                            _parentFolder.setValue(_parent.<String>get("name"));
+                            _parentFolder.setValue(_parent.getName());
                         }});
                     folderSelect.show();
                 }});
@@ -110,13 +109,13 @@ public class CreateAliasDialog extends AbstractEditDialog {
         return new Runnable() {
             public void run() {
                 Globals.commandService().createAlias(
-                    _parent.<String>get("id"),
+                    _parent.getId().toString(),
                     _aliasName.getValue(),
-                    _ssm.tableSelection().<String>get("id"),
+                    _ssm.tableSelection().getId().toString(),
                     new ErrorReportingCallback<ResourceSummary>(){
                         public void onSuccess(final ResourceSummary result) {
-                            final ModelData newAlias =
-                                DataBinding.bindResourceSummary(result);
+                            final ResourceSummaryModelData newAlias =
+                                new ResourceSummaryModelData(result);
                             _ssm.create(newAlias, _parent);
                             close();
                         }

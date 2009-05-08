@@ -226,4 +226,56 @@ public final class ResourceSummary implements Serializable {
     public Date getDateChanged() {
         return _dateChanged;
     }
+
+
+    /**
+     * Mutator.
+     *
+     * @param hasWorkingCopy The hasWorkingCopy to set.
+     */
+    public void setHasWorkingCopy(final boolean hasWorkingCopy) {
+        _hasWorkingCopy = hasWorkingCopy;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param sortOrder The sortOrder to set.
+     */
+    public void setSortOrder(final String sortOrder) {
+        _sortOrder = sortOrder;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param title The title to set.
+     */
+    public void setTitle(final String title) {
+        _title = title;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param name The name to set.
+     */
+    public void setName(final String name) {
+        _name = name;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param includeInMainMenu The includeInMainMenu to set.
+     */
+    public void setIncludeInMainMenu(final boolean includeInMainMenu) {
+        _includeInMainMenu = includeInMainMenu;
+    }
+
+
 }

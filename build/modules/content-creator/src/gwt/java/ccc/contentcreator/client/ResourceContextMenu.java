@@ -34,6 +34,7 @@ import ccc.contentcreator.actions.UpdateTagsAction;
 import ccc.contentcreator.actions.ViewHistoryAction;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.dialogs.EditTemplateDialog;
 import ccc.contentcreator.dialogs.UpdateAliasDialog;
@@ -46,7 +47,6 @@ import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserSummary;
 
 import com.extjs.gxt.ui.client.Events;
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -139,7 +139,7 @@ public class ResourceContextMenu
     private void refreshMenuItems(final UserSummary user,
                               final MenuEvent be) {
         removeAll();
-        final ModelData item = _table.tableSelection();
+        final ResourceSummaryModelData item = _table.tableSelection();
         if (item == null) {
             // do not display context menu if no item is selected.
             be.doit = false;
@@ -286,7 +286,7 @@ public class ResourceContextMenu
         update.setText(_constants.edit());
         update.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override public void componentSelected(final MenuEvent ce) {
-                    final ModelData item = _table.tableSelection();
+                    final ResourceSummaryModelData item = _table.tableSelection();
                     if ("TEMPLATE".equals(item.get("type"))) {
                         _qs.templateDelta(
                             item.<String>get("id"),

@@ -12,6 +12,7 @@
 package ccc.contentcreator.dialogs;
 
 import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.ResourceTable;
 import ccc.contentcreator.validation.Validate;
@@ -19,7 +20,6 @@ import ccc.contentcreator.validation.Validations;
 import ccc.services.api.FileDelta;
 
 import com.extjs.gxt.ui.client.Events;
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.FormEvent;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -96,9 +96,8 @@ public class UpdateFileDialog extends AbstractEditDialog {
                     if (!be.resultHtml.equals("File was updated successfully.")) {
                         Globals.unexpectedError(new Exception(be.resultHtml));
                     } else {
-                        final ModelData md = rt.tableSelection();
-                        md.set("title", _title.getValue());
-                        md.set("description", _description.getValue());
+                        final ResourceSummaryModelData md = rt.tableSelection();
+                        md.setTitle(_title.getValue());
                         rt.update(md);
                     }
                 }

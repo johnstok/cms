@@ -12,12 +12,12 @@
 package ccc.contentcreator.dialogs;
 
 import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.ResourceTree;
 import ccc.services.api.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.Window;
@@ -70,10 +70,10 @@ public class ResourceSelectionDialog extends Window {
      *
      * @return Returns the selected folder as {@link FolderDTO}
      */
-    public ModelData selectedResource() {
+    public ResourceSummaryModelData selectedResource() {
         return
             (null==_tree.getSelectedItem())
                 ? null
-                : _tree.getSelectedItem().getModel();
+                : (ResourceSummaryModelData) _tree.getSelectedItem().getModel();
     }
 }

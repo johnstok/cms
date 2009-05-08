@@ -11,7 +11,7 @@
  */
 package ccc.contentcreator.client;
 
-import com.extjs.gxt.ui.client.data.ModelData;
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 
 
 /**
@@ -19,10 +19,10 @@ import com.extjs.gxt.ui.client.data.ModelData;
  *
  * @author Civic Computing Ltd.
  */
-public interface SingleSelectionModel {
-    ModelData tableSelection();
-    ModelData treeSelection();
-    void update(ModelData model);
-    void move(ModelData model, ModelData newParent, final ModelData oldParent);
-    void create(ModelData model, ModelData newParent);
+public interface SingleSelectionModel<T extends ResourceSummaryModelData> {
+    T tableSelection();
+    T treeSelection();
+    void update(T model);
+    void move(T model, T newParent, final T oldParent);
+    void create(T model, T newParent);
 }

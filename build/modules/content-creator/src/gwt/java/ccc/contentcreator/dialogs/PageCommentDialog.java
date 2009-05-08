@@ -11,12 +11,12 @@
  */
 package ccc.contentcreator.dialogs;
 
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.services.api.PageDelta;
 
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
@@ -41,9 +41,9 @@ public class PageCommentDialog extends AbstractEditDialog {
                 Globals.unexpectedError(arg0);
             }
             public void onSuccess(final Void arg0) {
-                final ModelData md = _updatePageDialog.rt().tableSelection();
-                md.set("title", _page.getTitle());
-                md.set("workingCopy", Boolean.FALSE);
+                final ResourceSummaryModelData md = _updatePageDialog.rt().tableSelection();
+                md.setTitle(_page.getTitle());
+                md.setWorkingCopy(false);
                 _updatePageDialog.rt().update(md);
                 close();
                 _updatePageDialog.close();

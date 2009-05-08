@@ -1,12 +1,11 @@
 package ccc.contentcreator.actions;
 
 import ccc.contentcreator.api.CommandServiceAsync;
+import ccc.contentcreator.binding.LogEntrySummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.dialogs.HistoryDialog;
-
-import com.extjs.gxt.ui.client.data.ModelData;
 
 /**
  * Publish a resource.
@@ -32,7 +31,7 @@ public class CreateWorkingCopyFromHistoricalVersionAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ModelData selected = _dialog.selectedItem();
+        final LogEntrySummaryModelData selected = _dialog.selectedItem();
 
         _commands.createWorkingCopy(
             selected.<String>get("id"),

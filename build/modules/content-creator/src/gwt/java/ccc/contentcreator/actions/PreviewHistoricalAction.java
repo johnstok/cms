@@ -1,13 +1,12 @@
 package ccc.contentcreator.actions;
 
 import ccc.contentcreator.api.QueriesServiceAsync;
+import ccc.contentcreator.binding.LogEntrySummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.dialogs.HistoryDialog;
 import ccc.contentcreator.dialogs.PreviewContentDialog;
-
-import com.extjs.gxt.ui.client.data.ModelData;
 
 /**
  * Open a dialog to preview the selected resource.
@@ -33,7 +32,7 @@ public final class PreviewHistoricalAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ModelData item = _historyDialog.selectedItem();
+        final LogEntrySummaryModelData item = _historyDialog.selectedItem();
         if (null==item) {
             return;
         }

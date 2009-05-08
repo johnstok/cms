@@ -13,11 +13,11 @@ package ccc.contentcreator.client;
 
 import java.util.List;
 
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.UserSummary;
 
 import com.extjs.gxt.ui.client.Events;
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.TreeEvent;
 import com.extjs.gxt.ui.client.store.StoreEvent;
@@ -57,14 +57,14 @@ public class EnhancedResourceTree extends FolderResourceTree {
         _contextMenu = new FolderContextMenu(_rt);
 
         _store.addStoreListener(
-            new StoreListener<ModelData>(){
+            new StoreListener<ResourceSummaryModelData>(){
 
                 /** {@inheritDoc} */
                 @Override
-                public void storeDataChanged(final StoreEvent<ModelData> se) {
+                public void storeDataChanged(final StoreEvent<ResourceSummaryModelData> se) {
                     super.storeDataChanged(se);
-                    final TreeStoreEvent<ModelData> te =
-                        (TreeStoreEvent<ModelData>) se;
+                    final TreeStoreEvent<ResourceSummaryModelData> te =
+                        (TreeStoreEvent<ResourceSummaryModelData>) se;
                     final boolean itemSelected = null!=getSelectedItem();
                      if (itemSelected
                          && te.parent == getSelectedItem().getModel()) {
@@ -78,23 +78,23 @@ public class EnhancedResourceTree extends FolderResourceTree {
         final Listener<TreeEvent> treeSelectionListener =
             new Listener<TreeEvent>() {
                 public void handleEvent(final TreeEvent te) {
-                    TreeItem ti = getSelectedItem();
+                    final TreeItem ti = getSelectedItem();
 
                     // #327. in case root folder is collapsed.
                     if (ti == null) {
                         _rt.displayResourcesFor(null);
                         return;
                     }
-                    ModelData selectedModel = ti.getModel();
+                    final ResourceSummaryModelData selectedModel =
+                        (ResourceSummaryModelData) ti.getModel();
 
-                    List<ModelData> children = _store.getChildren(selectedModel);
+                    final List<ResourceSummaryModelData> children =
+                        _store.getChildren(selectedModel);
                     _rt.displayResourcesFor(children);
 
 
-                    int folderCount =
-                        selectedModel.<Integer>get("folderCount").intValue();
-                    int childCount =
-                        selectedModel.<Integer>get("childCount").intValue();
+                    final int folderCount = selectedModel.getFolderCount();
+                    final int childCount = selectedModel.getChildCount();
 
                     if (folderCount > 0) {
                         ti.setExpanded(true);

@@ -12,14 +12,13 @@
 package ccc.contentcreator.actions;
 
 import ccc.contentcreator.api.QueriesServiceAsync;
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.EditCacheDialog;
 import ccc.services.api.Duration;
-
-import com.extjs.gxt.ui.client.data.ModelData;
 
 
 /**
@@ -30,26 +29,28 @@ import com.extjs.gxt.ui.client.data.ModelData;
 public class EditCacheAction implements Action {
 
     private final QueriesServiceAsync _queries = Globals.queriesService();
-    private final SingleSelectionModel _selectionModel;
+    private final SingleSelectionModel<ResourceSummaryModelData> _selectionModel;
 
     /**
      * Constructor.
      *
      * @param selectionModel The selection model.
      */
-    public EditCacheAction(final SingleSelectionModel selectionModel) {
+    public EditCacheAction(
+          final SingleSelectionModel<ResourceSummaryModelData> selectionModel) {
         _selectionModel = selectionModel;
     }
 
     /** {@inheritDoc} */
     @Override
     public void execute() {
-        final ModelData item = _selectionModel.tableSelection();
-        _queries.cacheDuration(item.<String>get("id"),
+        final ResourceSummaryModelData item = _selectionModel.tableSelection();
+        _queries.cacheDuration(item.getId().toString(),
             new ErrorReportingCallback<Duration>() {
                 @Override
                 public void onSuccess(final Duration arg0) {
-                    final EditCacheDialog dialog = new EditCacheDialog(item, arg0);
+                    final EditCacheDialog dialog =
+                        new EditCacheDialog(item, arg0);
                     dialog.show();
                 }
 

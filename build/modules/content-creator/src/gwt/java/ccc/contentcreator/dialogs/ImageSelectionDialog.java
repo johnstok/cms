@@ -23,7 +23,6 @@ import ccc.services.api.FileSummary;
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.data.BaseListLoader;
 import com.extjs.gxt.ui.client.data.ListLoader;
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.ModelReader;
 import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -80,7 +79,7 @@ public class ImageSelectionDialog extends LayoutContainer {
         };
 
         final ListLoader loader =
-            new BaseListLoader(proxy, new ModelReader<ModelData>());
+            new BaseListLoader(proxy, new ModelReader<FileSummaryModelData>());
         final ListStore<FileSummaryModelData> store =
             new ListStore<FileSummaryModelData>(loader);
         loader.load();
