@@ -92,7 +92,7 @@ public class UpdatePageDialog
 
     private void drawGUI() {
         _panel.setScrollMode(Style.Scroll.ALWAYS);
-        _panel.createFields(_template._definition);
+        _panel.createFields(_template.getDefinition());
         _panel.populateFields(_page);
         _panel.layout();
 
@@ -161,7 +161,7 @@ public class UpdatePageDialog
         return new Runnable() {
             @SuppressWarnings("unchecked")
             public void run() {
-                _page._title = panel().title().getValue();
+                _page.setTitle(panel().title().getValue());
                 final PageCommentDialog commentDialog =
                     new PageCommentDialog(_page, UpdatePageDialog.this);
                 commentDialog.show();
@@ -173,7 +173,7 @@ public class UpdatePageDialog
         return new Runnable() {
             @SuppressWarnings("unchecked")
             public void run() {
-                _page._title = panel().title().getValue();
+                _page.setTitle(panel().title().getValue());
                 commands().updateWorkingCopy(_page,
                                              saveDraftCompletedCallback());
             }
@@ -272,7 +272,7 @@ public class UpdatePageDialog
                 paragraphs.add(p);
             }
         }
-        _page._paragraphs = paragraphs;
+        _page.setParagraphs(paragraphs);
         return paragraphs;
     }
 }

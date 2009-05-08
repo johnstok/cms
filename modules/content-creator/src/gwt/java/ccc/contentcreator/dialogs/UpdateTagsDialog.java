@@ -43,7 +43,7 @@ public class UpdateTagsDialog
         setHeight(Globals.DEFAULT_MIN_HEIGHT);
         _resource = resource;
 
-        addTextField(_resource._tags,
+        addTextField(_resource.getTags(),
                      "tags",
                      true,
                      constants().tags());
@@ -72,7 +72,7 @@ public class UpdateTagsDialog
                     (null==_tags.getValue()) ? "" : _tags.getValue();
 
                 commands().updateTags(
-                    _resource._id,
+                    _resource.getId().toString(),
                     tags,
                     new DisposingCallback(UpdateTagsDialog.this));
             }

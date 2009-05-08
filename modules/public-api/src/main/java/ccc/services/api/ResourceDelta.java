@@ -15,17 +15,163 @@ import java.io.Serializable;
 
 
 /**
- * TODO: Add Description for this type.
+ * Represents an update to a resource.
  *
  * @author Civic Computing Ltd.
  */
 public class ResourceDelta
     implements
         Serializable {
-    public String _id;
-    public String _name;
-    public String _title;
-    public String _templateId;
-    public String _tags;
-    public boolean _published;
+    private ID     _id;
+    private String _name;
+    private String _title;
+    private String _templateId;
+    private String _tags;
+    private boolean _published;
+
+    protected ResourceDelta() { super(); }
+
+    /**
+     * Constructor.
+     *
+     * @param id
+     * @param name
+     * @param title
+     * @param templateId
+     * @param tags
+     * @param published
+     */
+    public ResourceDelta(final ID     id,
+                         final String name,
+                         final String title,
+                         final String templateId,
+                         final String tags,
+                         final boolean published) {
+        _id = id;
+        _name = name;
+        _title = title;
+        _templateId = templateId;
+        _tags = tags;
+        _published = published;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the id.
+     */
+    public ID getId() {
+        return _id;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param id The id to set.
+     */
+    public void setId(final ID id) {
+        _id = id;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the name.
+     */
+    public String getName() {
+        return _name;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param name The name to set.
+     */
+    public void setName(final String name) {
+        _name = name;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the title.
+     */
+    public String getTitle() {
+        return _title;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param title The title to set.
+     */
+    public void setTitle(final String title) {
+        _title = title;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the templateId.
+     */
+    public String getTemplateId() {
+        return _templateId;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param templateId The templateId to set.
+     */
+    public void setTemplateId(final String templateId) {
+        _templateId = templateId;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the tags.
+     */
+    public String getTags() {
+        return _tags;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param tags The tags to set.
+     */
+    public void setTags(final String tags) {
+        _tags = tags;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the published.
+     */
+    public boolean isPublished() {
+        return _published;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param published The published to set.
+     */
+    public void setPublished(final boolean published) {
+        _published = published;
+    }
 }

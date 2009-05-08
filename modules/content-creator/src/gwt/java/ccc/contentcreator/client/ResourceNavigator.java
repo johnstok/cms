@@ -58,7 +58,7 @@ public class ResourceNavigator extends ContentPanel {
         setHeading("Navigator");
 
         for (final ResourceSummary root : roots) {
-            if ("assets".equals(root._name)) {
+            if ("assets".equals(root.getName())) {
                 if (!user.getRoles().contains(Globals.ADMINISTRATOR)
                         && !user.getRoles().contains(Globals.SITE_BUILDER)) {
                     continue;
@@ -70,9 +70,9 @@ public class ResourceNavigator extends ContentPanel {
             _rootTrees.add(tree);
 
             final ContentPanel contentPanel = new ContentPanel();
-            contentPanel.getHeader().setId(root._name+"-navigator");
+            contentPanel.getHeader().setId(root.getName()+"-navigator");
             contentPanel.setScrollMode(Scroll.AUTO);
-            contentPanel.setHeading(root._name);
+            contentPanel.setHeading(root.getName());
             contentPanel.add(tree);
             add(contentPanel);
             contentPanel.addListener(

@@ -96,17 +96,17 @@ public class FileUploadServlet extends CreatorServlet {
     public JSONObject toJSON(final ResourceSummary rs) {
         try {
             final JSONObject o = new JSONObject();
-            o.put("id", rs._id);
-            o.put("name", rs._name);
-            o.put("parentId", rs._parentId);
-            o.put("type", rs._type);
-            o.put("lockedBy", rs._lockedBy);
-            o.put("title", rs._title);
-            o.put("publishedBy", rs._publishedBy);
-            o.put("childCount", rs._childCount);
-            o.put("folderCount", rs._folderCount);
-            o.put("includeInMainMenu", rs._includeInMainMenu);
-            o.put("sortOrder", rs._sortOrder);
+            o.put("id", rs.getId().toString());
+            o.put("name", rs.getName());
+            o.put("parentId", rs.getParentId().toString());
+            o.put("type", rs.getType());
+            o.put("lockedBy", rs.getLockedBy());
+            o.put("title", rs.getTitle());
+            o.put("publishedBy", rs.getPublishedBy());
+            o.put("childCount", rs.getChildCount());
+            o.put("folderCount", rs.getFolderCount());
+            o.put("includeInMainMenu", rs.isIncludeInMainMenu());
+            o.put("sortOrder", rs.getSortOrder());
             return o;
         } catch (final JSONException e) {
             throw new CCCException(e);

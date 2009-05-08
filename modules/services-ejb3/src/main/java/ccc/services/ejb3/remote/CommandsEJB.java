@@ -151,10 +151,10 @@ public class CommandsEJB
                            final String templateId) {
 
         final Page page = new Page(
-            ResourceName.escape(delta._name),
-            delta._title);
+            ResourceName.escape(delta.getName()),
+            delta.getTitle());
 
-        if (delta._published) {
+        if (delta.isPublished()) {
             page.publish(_users.loggedInUser());
         }
 
@@ -164,7 +164,7 @@ public class CommandsEJB
             page.template(template);
         }
 
-        assignParagraphs(delta._paragraphs, page);
+        assignParagraphs(delta.getParagraphs(), page);
 
         _page.create(UUID.fromString(parentId), page);
 
@@ -177,11 +177,11 @@ public class CommandsEJB
                                final TemplateDelta delta) {
 
         final Template t = new Template(
-            new ResourceName(delta._name),
-            delta._title,
-            delta._description,
-            delta._body,
-            delta._definition);
+            new ResourceName(delta.getName()),
+            delta.getTitle(),
+            delta.getDescription(),
+            delta.getBody(),
+            delta.getDefinition());
 
         _resources.create(UUID.fromString(parentId), t);
 
@@ -268,14 +268,14 @@ public class CommandsEJB
                            final boolean isMajorEdit) {
 
         final Page page = new Page(
-            ResourceName.escape(delta._name),
-            delta._title);
-        page.id(UUID.fromString(delta._id));
+            ResourceName.escape(delta.getName()),
+            delta.getTitle());
+        page.id(toUUID(delta.getId()));
 
-        assignParagraphs(delta._paragraphs, page);
+        assignParagraphs(delta.getParagraphs(), page);
 
-        _page.update(UUID.fromString(delta._id),
-                     delta._title,
+        _page.update(toUUID(delta.getId()),
+                     delta.getTitle(),
                      page.paragraphs(), comment, isMajorEdit);
 
     }
@@ -285,14 +285,14 @@ public class CommandsEJB
     public void updateWorkingCopy(final PageDelta delta) {
 
         final Page page = new Page(
-            ResourceName.escape(delta._name),
-            delta._title);
-        page.id(UUID.fromString(delta._id));
+            ResourceName.escape(delta.getName()),
+            delta.getTitle());
+        page.id(toUUID(delta.getId()));
 
-        assignParagraphs(delta._paragraphs, page);
+        assignParagraphs(delta.getParagraphs(), page);
 
         _wcMgr.updateWorkingCopy(
-            UUID.fromString(delta._id), page.createSnapshot());
+            toUUID(delta.getId()), page.createSnapshot());
     }
 
     /** {@inheritDoc} */
@@ -335,11 +335,11 @@ public class CommandsEJB
     @Override
     public ResourceSummary updateTemplate(final TemplateDelta delta) {
 
-        final Template t = _templates.update(UUID.fromString(delta._id),
-                                             delta._title,
-                                             delta._description,
-                                             delta._definition,
-                                             delta._body);
+        final Template t = _templates.update(toUUID(delta.getId()),
+                                             delta.getTitle(),
+                                             delta.getDescription(),
+                                             delta.getDefinition(),
+                                             delta.getBody());
 
         return map(t);
     }
@@ -383,13 +383,15 @@ public class CommandsEJB
         final Set<Paragraph> pList = new HashSet<Paragraph>();
 
         for (final ParagraphDelta para : delta) {
-            switch (para._type) {
+            switch (para.getType()) {
                 case TEXT:
-                    pList.add(Paragraph.fromText(para._name, para._textValue));
+                    pList.add(Paragraph.fromText(para.getName(),
+                                                 para.getTextValue()));
                     break;
 
                 case DATE:
-                    pList.add(Paragraph.fromDate(para._name, para._dateValue));
+                    pList.add(Paragraph.fromDate(para.getName(),
+                                                 para.getDateValue()));
                     break;
 
                 default:
@@ -420,15 +422,17 @@ public class CommandsEJB
                                   final Page page) {
 
         for (final ParagraphDelta para : paragraphs) {
-            switch (para._type) {
+            switch (para.getType()) {
                 case TEXT:
                     page.addParagraph(
-                        Paragraph.fromText(para._name, para._textValue));
+                        Paragraph.fromText(para.getName(),
+                                           para.getTextValue()));
                     break;
 
                 case DATE:
                     page.addParagraph(
-                        Paragraph.fromDate(para._name, para._dateValue));
+                        Paragraph.fromDate(para.getName(),
+                                           para.getDateValue()));
                     break;
 
                 default:

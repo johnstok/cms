@@ -59,8 +59,8 @@ public final class ChooseTemplateAction
                             public void onSuccess(
                                 final Collection<TemplateDelta> templates) {
                                 new ChooseTemplateDialog(
-                                    delta._id,
-                                    delta._templateId,
+                                    delta.getId().toString(),
+                                    delta.getTemplateId(),
                                     templates)
                                 .show();
                             }

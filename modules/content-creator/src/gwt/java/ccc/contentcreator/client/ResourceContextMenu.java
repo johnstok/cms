@@ -305,13 +305,13 @@ public class ResourceContextMenu
                             item.<String>get("id"),
                             new ErrorReportingCallback<PageDelta>() {
                                 public void onSuccess(final PageDelta page) {
-                                    if (null==page._computedTemplate) {
+                                    if (null==page.getComputedTemplate()) {
                                         Globals.alert(
                                             _constants.noTemplateFound());
                                     } else {
                                         new UpdatePageDialog(
                                             page,
-                                            page._computedTemplate,
+                                            page.getComputedTemplate(),
                                             _table)
                                         .show();
                                     }

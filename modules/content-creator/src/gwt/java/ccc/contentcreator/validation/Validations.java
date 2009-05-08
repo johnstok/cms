@@ -234,12 +234,12 @@ public class Validations {
         return new Validator() {
             public void validate(final Validate validate) {
                 for (final ParagraphDelta pg : delta) {
-                    if (ParagraphDelta.Type.DATE == pg._type
-                            && pg._dateValue == null
-                            && pg._rawValue != null
-                            && !pg._rawValue.isEmpty()) {
+                    if (ParagraphDelta.Type.DATE == pg.getType()
+                            && pg.getDateValue() == null
+                            && pg.getRawValue() != null
+                            && !pg.getRawValue().isEmpty()) {
                         validate.addMessage(
-                            pg._name
+                            pg.getName()
                             + " "+_uiConstants.isNotValidDate()
                         );
                     }

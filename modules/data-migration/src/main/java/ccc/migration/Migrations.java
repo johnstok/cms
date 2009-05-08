@@ -98,7 +98,7 @@ public class Migrations {
     public void migrate() {
         loadSupportingData();
         migrateUsers();
-        migrateResources(_contentRoot._id, 0);
+        migrateResources(_contentRoot.getId().toString(), 0);
         migrateManagedFilesAndImages();
         migrateImages();
         migrateCss();
@@ -113,26 +113,26 @@ public class Migrations {
         _assetRoot = _commands.createRoot(PredefinedResourceNames.ASSETS);
         _contentRoot = _commands.createRoot(PredefinedResourceNames.CONTENT);
 
-        _templateFolder =_commands.createFolder(_assetRoot._id,
+        _templateFolder =_commands.createFolder(_assetRoot.getId().toString(),
             PredefinedResourceNames.TEMPLATES);
-        _cssFolder = _commands.createFolder(_assetRoot._id,
+        _cssFolder = _commands.createFolder(_assetRoot.getId().toString(),
             PredefinedResourceNames.CSS);
-        _assetsImagesFolder = _commands.createFolder(_assetRoot._id,
+        _assetsImagesFolder = _commands.createFolder(_assetRoot.getId().toString(),
             PredefinedResourceNames.IMAGES);
 
-        _filesFolder = _commands.createFolder(_contentRoot._id,
+        _filesFolder = _commands.createFolder(_contentRoot.getId().toString(),
             PredefinedResourceNames.FILES);
-        _contentImagesFolder = _commands.createFolder(_contentRoot._id,
+        _contentImagesFolder = _commands.createFolder(_contentRoot.getId().toString(),
             PredefinedResourceNames.IMAGES);
-        _commands.createSearch(_filesFolder._id, "SiteSearch");
+        _commands.createSearch(_filesFolder.getId().toString(), "SiteSearch");
 
         // TODO: Remove. Should set 'publish' root via UI
-        _commands.lock(_contentRoot._id);
-        _commands.publish(_contentRoot._id);
-        _commands.unlock(_contentRoot._id);
-        _commands.lock(_assetRoot._id);
-        _commands.publish(_assetRoot._id);
-        _commands.unlock(_assetRoot._id);
+        _commands.lock(_contentRoot.getId().toString());
+        _commands.publish(_contentRoot.getId().toString());
+        _commands.unlock(_contentRoot.getId().toString());
+        _commands.lock(_assetRoot.getId().toString());
+        _commands.publish(_assetRoot.getId().toString());
+        _commands.unlock(_assetRoot.getId().toString());
 
         log.info("Created default folder structure.");
     }
@@ -140,16 +140,16 @@ public class Migrations {
 
     // TODO: Move under command-resourceDao?
     private void publishRecursive(final ResourceSummary resource) {
-        _commands.lock(resource._id);
-        _commands.publish(resource._id);
-        if ("FOLDER".equals(resource._type)) {
+        _commands.lock(resource.getId().toString());
+        _commands.publish(resource.getId().toString());
+        if ("FOLDER".equals(resource.getType())) {
             final Collection<ResourceSummary> children =
-                _queries.getChildren(resource._id);
+                _queries.getChildren(resource.getId().toString());
             for (final ResourceSummary child : children) {
                 publishRecursive(child);
             }
         }
-        _commands.unlock(resource._id);
+        _commands.unlock(resource.getId().toString());
     }
 
 
@@ -295,7 +295,7 @@ public class Migrations {
 
             setResourceRoles(r, rs);
 
-            migrateResources(rs._id, r.contentId());
+            migrateResources(rs.getId().toString(), r.contentId());
 
         } catch (final Exception e) {
             log.warn("Error migrating folder "
@@ -345,9 +345,9 @@ public class Migrations {
     private void showInMainMenu(final ResourceBean r,
                                 final ResourceSummary rs) {
         if (_menuItems.contains(Integer.valueOf(r.contentId()))) {
-            _commands.lock(rs._id);
-            _commands.includeInMainMenu(rs._id, true);
-            _commands.unlock(rs._id);
+            _commands.lock(rs.getId().toString());
+            _commands.includeInMainMenu(rs.getId().toString(), true);
+            _commands.unlock(rs.getId().toString());
         }
     }
 
@@ -386,12 +386,12 @@ public class Migrations {
                             final ResourceSummary rs,
                             final Integer version) {
 
-        _commands.lock(rs._id);// FIXME: Specify actor & date
-        final PageDelta d = assemblePage(r, rs._id, version);
+        _commands.lock(rs.getId().toString());// FIXME: Specify actor & date
+        final PageDelta d = assemblePage(r, rs.getId().toString(), version);
 //        final String userId =
 //            determineActor(r.contentId(), version, "%", "MADE LIVE");
         _commands.updatePage(d, "Updated.", true); // FIXME: Specify actor & date
-        _commands.unlock(rs._id);  // FIXME: Specify actor & date
+        _commands.unlock(rs.getId().toString());  // FIXME: Specify actor & date
         log.debug("Updated page: "+r.contentId());
     }
 
@@ -418,13 +418,13 @@ public class Migrations {
                                r.legacyVersion(),
                                "Changed Status to  PUBLISHED",
                                "CHANGE STATUS");
-            _commands.lock(rs._id);  // FIXME: Specify actor & date
+            _commands.lock(rs.getId().toString());  // FIXME: Specify actor & date
             if (null != userId) {
-                _commands.publish(rs._id, userId.toString(), new Date()); // FIXME: Specify date
+                _commands.publish(rs.getId().toString(), userId.toString(), new Date()); // FIXME: Specify date
             } else {
-                _commands.publish(rs._id); // FIXME: Specify actor & date
+                _commands.publish(rs.getId().toString()); // FIXME: Specify actor & date
             }
-            _commands.unlock(rs._id);  // FIXME: Specify actor & date
+            _commands.unlock(rs.getId().toString());  // FIXME: Specify actor & date
         }
     }
 
@@ -440,20 +440,20 @@ public class Migrations {
             metadata.put("useInIndex", ""+r.useInIndex());
         }
 
-        _commands.lock(rs._id);
-        _commands.updateMetadata(rs._id, metadata);
-        _commands.unlock(rs._id);
+        _commands.lock(rs.getId().toString());
+        _commands.updateMetadata(rs.getId().toString(), metadata);
+        _commands.unlock(rs.getId().toString());
     }
 
     private void setResourceRoles(final ResourceBean r,
                                   final ResourceSummary rs) {
         if (r.isSecure()) {
             log.info("Resource "+r.contentId()+" has security constraints");
-            _commands.lock(rs._id);
+            _commands.lock(rs.getId().toString());
             _commands.changeRoles(
-                rs._id,
+                rs.getId().toString(),
                 _legacyQueries.selectRolesForResource(r.contentId()));
-            _commands.unlock(rs._id);
+            _commands.unlock(rs.getId().toString());
         }
     }
 
@@ -474,16 +474,14 @@ public class Migrations {
     }
 
     private PageDelta assemblePage(final ResourceBean r,
-                                         final String id,
-                                         final int version) {
+                                   final String id,
+                                   final int version) {
 
-        final PageDelta delta = new PageDelta();
 
-        delta._name = r.name();
-        delta._title = (null==r.title())?r.name():r.title();
-        delta._id = id;
 
-        delta._paragraphs.clear();
+
+        final List<ParagraphDelta> paragraphDeltas =
+            new ArrayList<ParagraphDelta>();
         final Map<String, StringBuffer> paragraphs =
             assembleParagraphs(r.contentId(), version);
         for (final Map.Entry<String, StringBuffer> para
@@ -513,11 +511,24 @@ public class Migrations {
                     ParagraphDelta.Type.valueOf(type.toString()),
                     null,
                     textValue,
-                    null, // FIXME: Number not supported?!
+                    null, // FIXME: Date not supported?!
                     new Decimal(numberValue));
 
-            delta._paragraphs.add(pd);
+            paragraphDeltas.add(pd);
         }
+
+        final PageDelta delta =
+            new PageDelta(
+                new ID(id),
+                r.name(),
+                (null==r.title())?r.name():r.title(),
+                null,
+                null,
+                false,
+                paragraphDeltas,
+                null
+            );
+
         return delta;
     }
 
@@ -541,24 +552,26 @@ public class Migrations {
             createTemplate(templateName);
         }
 
-        final String templateId = _templates.get(templateName)._id;
-        _commands.lock(rs._id);  // FIXME: Specify actor & date
-        _commands.updateResourceTemplate(rs._id, templateId);   // FIXME: Specify actor & date
-        _commands.unlock(rs._id);  // FIXME: Specify actor & date
+        final String templateId = _templates.get(templateName).getId().toString();
+        _commands.lock(rs.getId().toString());  // FIXME: Specify actor & date
+        _commands.updateResourceTemplate(rs.getId().toString(), templateId);   // FIXME: Specify actor & date
+        _commands.unlock(rs.getId().toString());  // FIXME: Specify actor & date
     }
 
 
     private void createTemplate(final String templateName) {
 
-        final TemplateDelta t = new TemplateDelta();
-        t._body = "Empty template!";
-        t._definition = "<fields/>";
-        t._description = "No description.";
-        t._name = templateName;
-        t._title = templateName;
-
+        final TemplateDelta t =
+            new TemplateDelta(
+                null,
+                templateName,
+                templateName,
+                "No description.",
+                "Empty template!",
+                "<fields/>"
+            );
         final ResourceSummary ts =
-            _commands.createTemplate(_templateFolder._id, t);  // FIXME: Specify actor & date
+            _commands.createTemplate(_templateFolder.getId().toString(), t);  // FIXME: Specify actor & date
 
         _templates.put(templateName, ts);
     }

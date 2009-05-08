@@ -16,25 +16,214 @@ import java.util.Date;
 
 
 /**
- * TODO: Add Description for this type.
+ * A summary of a resource.
  *
  * @author Civic Computing Ltd.
  */
-public class ResourceSummary implements Serializable {
+public final class ResourceSummary implements Serializable {
 
-    public String _id;
-    public String _parentId;
-    public String _name;
-    public String _publishedBy;
-    public String _title;
-    public String _lockedBy;
-    public String _type;
-    public int    _childCount;
-    public int    _folderCount;
-    public boolean _includeInMainMenu;
-    public String _sortOrder;
-    public boolean _hasWorkingCopy;
+    private ID _id;
+    private ID _parentId;
+    private String _name;
+    private String _publishedBy;
+    private String _title;
+    private String _lockedBy;
+    private String _type;
+    private int    _childCount;
+    private int    _folderCount;
+    private boolean _includeInMainMenu;
+    private String _sortOrder;
+    private boolean _hasWorkingCopy;
+    private Date _dateCreated;
+    private Date _dateChanged;
 
-    public Date _dateCreated;
-    public Date _dateChanged;
+    @SuppressWarnings("unused") private ResourceSummary() { super(); }
+
+    /**
+     * Constructor.
+     *
+     * @param id
+     * @param parentId
+     * @param name
+     * @param publishedBy
+     * @param title
+     * @param lockedBy
+     * @param type
+     * @param childCount
+     * @param folderCount
+     * @param includeInMainMenu
+     * @param sortOrder
+     * @param hasWorkingCopy
+     * @param dateCreated
+     * @param dateChanged
+     */
+    public ResourceSummary(final ID id,
+                           final ID parentId,
+                           final String name,
+                           final String publishedBy,
+                           final String title,
+                           final String lockedBy,
+                           final String type,
+                           final int childCount,
+                           final int folderCount,
+                           final boolean includeInMainMenu,
+                           final String sortOrder,
+                           final boolean hasWorkingCopy,
+                           final Date dateCreated,
+                           final Date dateChanged) {
+        _id = id;
+        _parentId = parentId;
+        _name = name;
+        _publishedBy = publishedBy;
+        _title = title;
+        _lockedBy = lockedBy;
+        _type = type;
+        _childCount = childCount;
+        _folderCount = folderCount;
+        _includeInMainMenu = includeInMainMenu;
+        _sortOrder = sortOrder;
+        _hasWorkingCopy = hasWorkingCopy;
+        _dateCreated = dateCreated;
+        _dateChanged = dateChanged;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the id.
+     */
+    public ID getId() {
+        return _id;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the parentId.
+     */
+    public ID getParentId() {
+        return _parentId;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the name.
+     */
+    public String getName() {
+        return _name;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the publishedBy.
+     */
+    public String getPublishedBy() {
+        return _publishedBy;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the title.
+     */
+    public String getTitle() {
+        return _title;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the lockedBy.
+     */
+    public String getLockedBy() {
+        return _lockedBy;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the type.
+     */
+    public String getType() {
+        return _type;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the childCount.
+     */
+    public int getChildCount() {
+        return _childCount;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the folderCount.
+     */
+    public int getFolderCount() {
+        return _folderCount;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the includeInMainMenu.
+     */
+    public boolean isIncludeInMainMenu() {
+        return _includeInMainMenu;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the sortOrder.
+     */
+    public String getSortOrder() {
+        return _sortOrder;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the hasWorkingCopy.
+     */
+    public boolean isHasWorkingCopy() {
+        return _hasWorkingCopy;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the dateCreated.
+     */
+    public Date getDateCreated() {
+        return _dateCreated;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the dateChanged.
+     */
+    public Date getDateChanged() {
+        return _dateChanged;
+    }
 }

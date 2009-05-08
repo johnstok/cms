@@ -98,39 +98,22 @@ public class DataBinding {
     /** DATE_CREATED : String. */
     public static final String DATE_CREATED = "dateCreated";
 
-    private static final String INDEX = "index";
 
     /**
-     * TODO: Add a description of this method.
+     * Convert a collection of log entry summaries to model data.
      *
-     * @param arg0
-     * @return
+     * @param arg0 The summaries
+     * @return The model data.
      */
-    public static List<ModelData> bindLogEntrySummary(
-                                    final Collection<LogEntrySummary> arg0) {
-        final List<ModelData> boundData = new ArrayList<ModelData>();
+    public static List<LogEntrySummaryModelData> bindLogEntrySummary(final Collection<LogEntrySummary> arg0) {
+        final List<LogEntrySummaryModelData> boundData = new ArrayList<LogEntrySummaryModelData>();
         for (final LogEntrySummary les : arg0) {
-            final ModelData md = new BaseModelData();
-            md.set(ACTION, les._action);
-            md.set(ACTOR, les._actor);
-            md.set(HAPPENED_ON, les._happenedOn);
-            md.set(COMMENT, les._comment);
-            md.set(IS_MAJOR_EDIT, les._isMajorEdit);
-            md.set(INDEX, les._index);
-            md.set(ID, les._subject);
-            boundData.add(md);
+            boundData.add(new LogEntrySummaryModelData(les));
         }
         return boundData;
     }
 
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param arg0
-     * @return
-     */
-    public static List<ModelData> bindResourceSummary(
-                                    final Collection<ResourceSummary> arg0) {
+    public static List<ModelData> bindResourceSummary(final Collection<ResourceSummary> arg0) {
         final List<ModelData> boundData = new ArrayList<ModelData>();
         for (final ResourceSummary fs : arg0) {
             final ModelData md = bindResourceSummary(fs);
@@ -151,8 +134,7 @@ public class DataBinding {
      * @param result
      * @return
      */
-    public static List<UserSummaryModelData> bindUserSummary(
-                                        final Collection<UserSummary> result) {
+    public static List<UserSummaryModelData> bindUserSummary(final Collection<UserSummary> result) {
         final List<UserSummaryModelData> boundData = new ArrayList<UserSummaryModelData>();
         for (final UserSummary us : result) {
             boundData.add(new UserSummaryModelData(us));
@@ -166,13 +148,10 @@ public class DataBinding {
      * @param list
      * @return
      */
-    public static List<ModelData> bindTemplateDelta(
-        final Collection<TemplateDelta> list) {
-        final List<ModelData> boundData = new ArrayList<ModelData>();
+    public static List<TemplateSummaryModelData> bindTemplateDelta(final Collection<TemplateDelta> list) {
+        final List<TemplateSummaryModelData> boundData = new ArrayList<TemplateSummaryModelData>();
         for (final TemplateDelta td : list) {
-            final ModelData md = new BaseModelData();
-            merge(td, md);
-            boundData.add(md);
+            boundData.add(new TemplateSummaryModelData(td));
         }
         return boundData;
     }
@@ -184,35 +163,20 @@ public class DataBinding {
      * @param fs
      */
     public static void merge(final ModelData md, final ResourceSummary fs) {
-        md.set(ID, fs._id);
-        md.set(PARENT_ID, fs._parentId);
-        md.set(NAME, fs._name);
-        md.set(PUBLISHED, fs._publishedBy);
-        md.set(TITLE, fs._title);
-        md.set(LOCKED, fs._lockedBy);
-        md.set(TYPE, fs._type);
-        md.set(CHILD_COUNT, fs._childCount);
-        md.set(FOLDER_COUNT, fs._folderCount);
-        md.set(MM_INCLUDE, fs._includeInMainMenu);
-        md.set(SORT_ORDER, fs._sortOrder);
-        md.set(WORKING_COPY, fs._hasWorkingCopy);
-        md.set(DATE_CHANGED, fs._dateChanged);
-        md.set(DATE_CREATED, fs._dateCreated);
-    }
-
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param td
-     * @param md
-     */
-    public static void merge(final TemplateDelta td, final ModelData md) {
-        md.set(ID, td._id);
-        md.set(NAME, td._name);
-        md.set(TITLE, td._title);
-        md.set(DESCRIPTION, td._description);
-        md.set(BODY, td._body);
-        md.set(DEFINITION, td._definition);
+        md.set(ID, fs.getId());
+        md.set(PARENT_ID, fs.getParentId());
+        md.set(NAME, fs.getName());
+        md.set(PUBLISHED, fs.getPublishedBy());
+        md.set(TITLE, fs.getTitle());
+        md.set(LOCKED, fs.getLockedBy());
+        md.set(TYPE, fs.getType());
+        md.set(CHILD_COUNT, fs.getChildCount());
+        md.set(FOLDER_COUNT, fs.getFolderCount());
+        md.set(MM_INCLUDE, fs.isIncludeInMainMenu());
+        md.set(SORT_ORDER, fs.getSortOrder());
+        md.set(WORKING_COPY, fs.isHasWorkingCopy());
+        md.set(DATE_CHANGED, fs.getDateChanged());
+        md.set(DATE_CREATED, fs.getDateCreated());
     }
 
     /**

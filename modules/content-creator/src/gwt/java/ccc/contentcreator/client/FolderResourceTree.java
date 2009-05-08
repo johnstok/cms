@@ -19,6 +19,7 @@ import java.util.List;
 import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.binding.DataBinding;
+import ccc.services.api.ID;
 import ccc.services.api.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
@@ -68,7 +69,7 @@ public class FolderResourceTree extends Tree {
         @Override
         protected void createAll() {
             for (final ModelData root : store.getRootItems()) {
-                final String path = "/" + root.get("name");
+                final String path = "/" + root.get(DataBinding.NAME);
                 root.set("absolutePath", path);
             }
             super.createAll();
@@ -83,7 +84,7 @@ public class FolderResourceTree extends Tree {
             final String parentPath = parent.get("absolutePath");
 
             for (final ModelData child : children) {
-                final String path = parentPath + "/" + child.get("name");
+                final String path = parentPath + "/" + child.get(DataBinding.NAME);
                 child.set("absolutePath", path);
             }
 
@@ -98,7 +99,7 @@ public class FolderResourceTree extends Tree {
 
             item.setId(model.<String>get("absolutePath"));
 
-            if (!"FOLDER".equals(model.get("type"))) {
+            if (!"FOLDER".equals(model.get(DataBinding.TYPE))) {
                 item.setVisible(false);
             }
 
@@ -147,7 +148,7 @@ public class FolderResourceTree extends Tree {
                 if (null==loadConfig) {
                     callback.onSuccess(DataBinding.bindResourceSummary(Collections.singletonList(_root)));
                 } else {
-                    String parentId = loadConfig.<String>get("id");
+                    final String parentId = loadConfig.<ID>get(DataBinding.ID).toString();
 
                     qs.getChildren(
                         parentId,
@@ -171,7 +172,7 @@ public class FolderResourceTree extends Tree {
             new BaseTreeLoader<ModelData>(proxy) {
             @Override
             public boolean hasChildren(final ModelData parent) {
-                int folderCount = parent.<Integer>get("folderCount").intValue();
+                final int folderCount = parent.<Integer>get(DataBinding.FOLDER_COUNT).intValue();
                 return folderCount > 0;
             }
         };
@@ -180,19 +181,19 @@ public class FolderResourceTree extends Tree {
 
         _binder = new FolderBinder(this, _store);
         _binder.setCaching(false);
-        _binder.setDisplayProperty("name");
+        _binder.setDisplayProperty(DataBinding.NAME);
         _binder.setIconProvider(new ModelStringProvider<ModelData>() {
             public String getStringValue(final ModelData model,
                                          final String property) {
-                if (model.<String>get("type").equals("FOLDER")) {
+                if (model.<String>get(DataBinding.TYPE).equals("FOLDER")) {
                     return "images/gxt/icons/folder.gif";
-                } else if (model.<String>get("type").equals("PAGE")) {
+                } else if (model.<String>get(DataBinding.TYPE).equals("PAGE")) {
                     return "images/icons/page.png";
-                } else if (model.<String>get("type").equals("TEMPLATE")) {
+                } else if (model.<String>get(DataBinding.TYPE).equals("TEMPLATE")) {
                     return "images/icons/page_code.png";
-                } else if (model.<String>get("type").equals("ALIAS")) {
+                } else if (model.<String>get(DataBinding.TYPE).equals("ALIAS")) {
                     return "images/icons/link.png";
-                } else if (model.<String>get("type").equals("FILE")) {
+                } else if (model.<String>get(DataBinding.TYPE).equals("FILE")) {
                     return "images/icons/image.png";
                 } else {
                     return null;

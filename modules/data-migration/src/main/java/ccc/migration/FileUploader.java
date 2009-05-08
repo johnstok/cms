@@ -131,7 +131,7 @@ public class FileUploader {
                     new StringPart("fileName", name),
                     new StringPart("title", title),
                     new StringPart("description", description),
-                    new StringPart("path", filesResource._id),
+                    new StringPart("path", filesResource.getId().toString()),
                     fp
             };
             filePost.setRequestEntity(

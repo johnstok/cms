@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ccc.commons.DBC;
+import ccc.services.api.Action;
 import ccc.services.api.Duration;
 
 
@@ -229,12 +230,12 @@ public abstract class Resource
      * Lock a resource.
      *
      * @param u The user who is locking the resource.
+     * @throws LockMismatchException If the resource is already locked.
      */
-    public void lock(final User u) {
+    public void lock(final User u) throws LockMismatchException {
         require().notNull(u);
         if (isLocked()) {
-            // TODO: Use better exception.
-            throw new CCCException("Resource is already locked.");
+            throw new LockMismatchException(this);
         }
         _lockedBy = u;
     }
@@ -250,18 +251,23 @@ public abstract class Resource
 
     /**
      * Unlock the resource.
+     * Only the user who locked the resource, or an administrator may call this
+     * method.
      *
      * @param user The user releasing the lock.
+     * @throws UnlockedException If the resource isn't locked.
+     * @throws InsufficientPrivilegesException If the user has insufficient
+     *  privileges to unlock the resource.
      */
-    public void unlock(final User user) {
+    public void unlock(final User user) throws InsufficientPrivilegesException,
+                                               UnlockedException {
 
         if (!isLocked()) {
             throw new UnlockedException(this);
         }
 
         if (!canUnlock(user)) {
-            // TODO: Use better exception.
-            throw new CCCException("User not allowed to unlock this resource.");
+            throw new InsufficientPrivilegesException(Action.UNLOCK, user);
         }
 
         _lockedBy = null;
@@ -378,10 +384,15 @@ public abstract class Resource
 
     /**
      * Confirm this resource is locked by the specified user.
+     * If this resource is locked by the specified user this method does
+     * nothing; otherwise an exception is thrown.
      *
      * @param user The user who should have the lock.
+     * @throws UnlockedException If the resource isn't locked.
+     * @throws LockMismatchException If the resource is locked by another user.
      */
-    public void confirmLock(final User user) {
+    public void confirmLock(final User user) throws UnlockedException,
+                                                    LockMismatchException {
         if (!isLocked()) {
             throw new UnlockedException(this);
         }
@@ -604,7 +615,8 @@ public abstract class Resource
 
     /** {@inheritDoc} */
     @Override
-    public void applySnapshot(final Snapshot s) {
+    public void applySnapshot(final Snapshot s)
+                                               throws InvalidSnapshotException {
         throw new UnsupportedOperationException("Cannot apply snapshot.");
     }
 

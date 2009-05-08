@@ -110,7 +110,7 @@ public class MainMenu
                 qs.roots(new ErrorReportingCallback<Collection<ResourceSummary>>(){
                     public void onSuccess(final Collection<ResourceSummary> roots) {
                         for (final ResourceSummary root : roots) {
-                            if ("content".equals(root._name)) {
+                            if ("content".equals(root.getName())) {
                                 addRootMenuItems(root);
                             }
                         }
@@ -133,12 +133,12 @@ public class MainMenu
 
                 public void execute() {
                     final StringBuilder sb = new StringBuilder();
-                    if (root._lockedBy != null) {
-                     sb.append(_constants.lockedBy()+" "+root._lockedBy+"\n");
+                    if (root.getLockedBy() != null) {
+                     sb.append(_constants.lockedBy()+" "+root.getLockedBy()+"\n");
                     }
-                    if (root._publishedBy != null) {
+                    if (root.getPublishedBy() != null) {
                         sb.append(_constants.publishedBy()
-                            +" "+root._publishedBy+"\n");
+                            +" "+root.getPublishedBy()+"\n");
                     }
                     Globals.alert(sb.toString());
                 }
@@ -150,13 +150,13 @@ public class MainMenu
             _constants.viewHistory(),
             new ViewHistoryAction(ssm)));
 
-        if (root._lockedBy == null || root._lockedBy.equals("")) {
+        if (root.getLockedBy() == null || root.getLockedBy().equals("")) {
             _itemMenu.add(createMenuItem(
                 "lock-root",
                 _constants.lock(),
                 new LockAction(ssm)));
         } else {
-            if (root._lockedBy.equals(_user.getUsername())
+            if (root.getLockedBy().equals(_user.getUsername())
                     || _user.getRoles().contains(Globals.ADMINISTRATOR)) {
 
                 _itemMenu.add(createMenuItem(
@@ -164,8 +164,8 @@ public class MainMenu
                     _constants.unlock(),
                     new UnlockAction(ssm)));
             }
-            if (root._lockedBy.equals(_user.getUsername())) {
-                if (root._publishedBy == null || root._publishedBy.equals("")) {
+            if (root.getLockedBy().equals(_user.getUsername())) {
+                if (root.getPublishedBy() == null || root.getPublishedBy().equals("")) {
                     _itemMenu.add(createMenuItem(
                         "publish-root",
                         _constants.publish(),
@@ -220,8 +220,8 @@ public class MainMenu
             public ModelData tableSelection() {
                 final ModelData md = new BaseModelData();
                 md.set(DataBinding.TYPE, "FOLDER");
-                md.set(DataBinding.ID, root._id);
-                md.set(DataBinding.SORT_ORDER, root._sortOrder);
+                md.set(DataBinding.ID, root.getId());
+                md.set(DataBinding.SORT_ORDER, root.getSortOrder());
                 return md;
             }
             public ModelData treeSelection() {

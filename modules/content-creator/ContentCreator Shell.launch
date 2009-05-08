@@ -28,5 +28,5 @@
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-noserver -port 8080 -out target/www ash/creator/"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="content-creator"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.maven.ide.eclipse.launchconfig.sourcepathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx256M"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx256M&#10;-Dgwt.nowarn.legacy.tools"/>
 </launchConfiguration>
