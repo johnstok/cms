@@ -19,7 +19,6 @@ import ccc.contentcreator.client.ResourceTable;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.services.api.AliasDelta;
-import ccc.services.api.ID;
 import ccc.services.api.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Events;
@@ -87,8 +86,8 @@ public class UpdateAliasDialog extends AbstractEditDialog {
                         public void handleEvent(final ComponentEvent be) {
                             final ResourceSummaryModelData target =
                                 resourceSelect.selectedResource();
-                            _alias.setTargetId(target.<ID>get("id"));
-                            _targetName.setValue(target.<String>get("name"));
+                            _alias.setTargetId(target.getId());
+                            _targetName.setValue(target.getName());
                         }});
                     resourceSelect.show();
                 }});

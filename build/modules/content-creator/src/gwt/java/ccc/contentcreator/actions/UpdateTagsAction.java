@@ -37,7 +37,7 @@ public final class UpdateTagsAction
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         _queries.resourceDelta(
-            item.<String>get("id"),
+            item.getId().toString(),
             new ErrorReportingCallback<ResourceDelta>(){
                 public void onSuccess(final ResourceDelta delta) {
                     if (delta == null) {

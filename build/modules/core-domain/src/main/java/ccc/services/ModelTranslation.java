@@ -140,7 +140,7 @@ public class ModelTranslation {
     protected LogEntrySummary map(final LogEntry le) {
         return
             new LogEntrySummary(
-                le.subjectId().toString(),
+                toID(le.subjectId()),
                 le.action(),
                 le.actor().username(),
                 le.happenedOn(),

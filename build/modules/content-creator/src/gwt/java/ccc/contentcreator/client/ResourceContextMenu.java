@@ -148,34 +148,34 @@ public class ResourceContextMenu
 
         addPreview();
         addViewHistory();
-        if (item.get("locked") == null
-            || "".equals(item.get("locked"))) {
+        if (null==item.getLocked()
+            || "".equals(item.getLocked())) {
             addLockResource();
         } else {
-            if (item.get("locked").equals(user.getUsername())
+            if (item.getLocked().equals(user.getUsername())
                  || user.getRoles().contains(Globals.ADMINISTRATOR)) {
                 addUnlockResource();
             }
-            if (item.get("locked").equals(user.getUsername())) {
-                if (item.<String>get("published") == null
-                        || "".equals(item.get("published"))) {
+            if (item.getLocked().equals(user.getUsername())) {
+                if (item.getPublished() == null
+                        || "".equals(item.getPublished())) {
                     addPublishResource();
                 } else {
                     addUnpublishResource();
                 }
-                if ("PAGE".equals(item.get("type"))) {
+                if ("PAGE".equals(item.getType())) {
                     addEditResource();
                     addChooseTemplate();
-                } else if ("ALIAS".equals(item.get("type"))) {
+                } else if ("ALIAS".equals(item.getType())) {
                     addEditResource();
-                } else if ("FOLDER".equals(item.get("type"))) {
+                } else if ("FOLDER".equals(item.getType())) {
                     addChooseTemplate();
                     addFolderSortOrder();
-                } else if ("TEMPLATE".equals(item.get("type"))) {
+                } else if ("TEMPLATE".equals(item.getType())) {
                     addEditResource();
-                } else if ("FILE".equals(item.get("type"))) {
+                } else if ("FILE".equals(item.getType())) {
                     addEditResource();
-                } else if ("SEARCH".equals(item.get("type"))) {
+                } else if ("SEARCH".equals(item.getType())) {
                     addChooseTemplate();
                 }
                 addMove();
@@ -187,16 +187,16 @@ public class ResourceContextMenu
                 addCreateAction();
                 addEditCache(); // FIXME: ADMIN&BUILDER only?
 
-                if (item.<Boolean>get("mmInclude")) {
+                if (item.isIncludedInMainMenu()) {
                     addRemoveFromMainMenu();
                 } else {
                     addIncludeInMainMenu();
                 }
-                if (item.<Boolean>get("workingCopy")) {
+                if (item.hasWorkingCopy()) {
                     add(new SeparatorMenuItem());
                     addPreviewWorkingCopy();
                     addDeleteWorkingCopy();
-                    if ("FILE".equals(item.get("type"))) {
+                    if ("FILE".equals(item.getType())) {
                         addApplyWorkingCopy();
                     }
                 }
@@ -287,9 +287,9 @@ public class ResourceContextMenu
         update.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override public void componentSelected(final MenuEvent ce) {
                     final ResourceSummaryModelData item = _table.tableSelection();
-                    if ("TEMPLATE".equals(item.get("type"))) {
+                    if ("TEMPLATE".equals(item.getType())) {
                         _qs.templateDelta(
-                            item.<String>get("id"),
+                            item.getId().toString(),
                             new ErrorReportingCallback<TemplateDelta>(){
                                 public void onSuccess(final TemplateDelta td) {
                                     new EditTemplateDialog(
@@ -300,9 +300,9 @@ public class ResourceContextMenu
                                 }
                             }
                         );
-                    } else if ("PAGE".equals(item.get("type"))) {
+                    } else if ("PAGE".equals(item.getType())) {
                         _qs.workingCopyDelta(
-                            item.<String>get("id"),
+                            item.getId().toString(),
                             new ErrorReportingCallback<PageDelta>() {
                                 public void onSuccess(final PageDelta page) {
                                     if (null==page.getComputedTemplate()) {
@@ -318,9 +318,9 @@ public class ResourceContextMenu
                                 }
                             }
                         );
-                    } else if ("ALIAS".equals(item.get("type"))) {
+                    } else if ("ALIAS".equals(item.getType())) {
                         _qs.aliasDelta(
-                            item.<String>get("id"),
+                            item.getId().toString(),
                             new ErrorReportingCallback<AliasDelta>() {
                                 public void onSuccess(final AliasDelta result) {
                                     new UpdateAliasDialog(
@@ -331,9 +331,9 @@ public class ResourceContextMenu
                                 }
                             }
                         );
-                    } else if ("FILE".equals(item.get("type"))) {
+                    } else if ("FILE".equals(item.getType())) {
                         _qs.fileDelta(
-                            item.<String>get("id"),
+                            item.getId().toString(),
                             new ErrorReportingCallback<FileDelta>() {
                                 public void onSuccess(final FileDelta result) {
                                     new UpdateFileDialog(result, _table).show();

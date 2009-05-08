@@ -46,7 +46,7 @@ public class UnpublishAction
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         _commands.unpublish(
-            item.<String>get("id"),
+            item.getId().toString(),
             new ErrorReportingCallback<ResourceSummary>(){
                 public void onSuccess(final ResourceSummary arg0) {
                     item.merge(arg0);

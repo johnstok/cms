@@ -37,10 +37,10 @@ public final class PreviewHistoricalAction
             return;
         }
         _queries.getAbsolutePath(
-            item.<String>get("id"),
+            item.getId().toString(),
             new ErrorReportingCallback<String>() {
                 public void onSuccess(final String path) {
-                    new PreviewContentDialog(path, item.<Long>get("index")).show();
+                    new PreviewContentDialog(path, item.getIndex()).show();
                 }
             }
         );

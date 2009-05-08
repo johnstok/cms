@@ -30,7 +30,7 @@ public class UpdateSortOrderAction
         final ResourceSummaryModelData selectedModel = _selectionModel.tableSelection();
         new UpdateFolderSortOrderDialog(
             _selectionModel,
-            selectedModel.<String>get("sortOrder"))
+            selectedModel.getSortOrder())
         .show();
     }
 }
