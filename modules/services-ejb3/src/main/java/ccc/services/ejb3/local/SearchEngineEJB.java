@@ -309,7 +309,7 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
                     Field.Store.NO,
                     Field.Index.ANALYZED));
 
-        } catch (final IOException e) {
+        } catch (final Exception e) {
             LOG.error("PDF indexing failed.", e);
         } finally {
             try {
@@ -339,7 +339,7 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
                     Field.Store.NO,
                     Field.Index.ANALYZED));
 
-        } catch (final IOException e) {
+        } catch (final Exception e) {
             LOG.error("Exception caught when trying to extract text ", e);
         }
     }
