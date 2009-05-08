@@ -19,13 +19,12 @@ import java.util.List;
 import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.binding.DataBinding;
-import ccc.services.api.ID;
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.services.api.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.binder.TreeBinder;
 import com.extjs.gxt.ui.client.data.BaseTreeLoader;
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.ModelStringProvider;
 import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.data.TreeLoader;
@@ -51,7 +50,7 @@ public class FolderResourceTree extends Tree {
      */
     static final class FolderBinder
         extends
-            TreeBinder<ModelData> {
+            TreeBinder<ResourceSummaryModelData> {
 
         /**
          * Constructor.
@@ -68,8 +67,8 @@ public class FolderResourceTree extends Tree {
         /** {@inheritDoc} */
         @Override
         protected void createAll() {
-            for (final ModelData root : store.getRootItems()) {
-                final String path = "/" + root.get(DataBinding.NAME);
+            for (final ResourceSummaryModelData root : store.getRootItems()) {
+                final String path = "/" + root.getName();
                 root.set("absolutePath", path);
             }
             super.createAll();
@@ -79,12 +78,12 @@ public class FolderResourceTree extends Tree {
 
         /** {@inheritDoc} */
         @Override
-        protected void renderChildren(final ModelData parent,
-                                      final List<ModelData> children) {
+        protected void renderChildren(final ResourceSummaryModelData parent,
+                                      final List<ResourceSummaryModelData> children) {
             final String parentPath = parent.get("absolutePath");
 
-            for (final ModelData child : children) {
-                final String path = parentPath + "/" + child.get(DataBinding.NAME);
+            for (final ResourceSummaryModelData child : children) {
+                final String path = parentPath + "/" + child.getName();
                 child.set("absolutePath", path);
             }
 
@@ -94,12 +93,12 @@ public class FolderResourceTree extends Tree {
 
         /** {@inheritDoc} */
         @Override
-        protected TreeItem createItem(final ModelData model) {
+        protected TreeItem createItem(final ResourceSummaryModelData model) {
             final TreeItem item = super.createItem(model);
 
             item.setId(model.<String>get("absolutePath"));
 
-            if (!"FOLDER".equals(model.get(DataBinding.TYPE))) {
+            if (!"FOLDER".equals(model.getType())) {
                 item.setVisible(false);
             }
 
@@ -119,7 +118,7 @@ public class FolderResourceTree extends Tree {
         }
     }
 
-    protected final TreeStore<ModelData> _store;
+    protected final TreeStore<ResourceSummaryModelData> _store;
     private final ResourceSummary _root;
 
     final QueriesServiceAsync qs = GWT.create(QueriesService.class);
@@ -138,17 +137,17 @@ public class FolderResourceTree extends Tree {
         setStyleAttribute("background", "white");
 
 
-        final RpcProxy<ModelData, List<ModelData>> proxy =
-            new RpcProxy<ModelData, List<ModelData>>() {
+        final RpcProxy<ResourceSummaryModelData, List<ResourceSummaryModelData>> proxy =
+            new RpcProxy<ResourceSummaryModelData, List<ResourceSummaryModelData>>() {
             @Override
-            protected void load(final ModelData loadConfig,
-                                final AsyncCallback<List<ModelData>> callback) {
+            protected void load(final ResourceSummaryModelData loadConfig,
+                                final AsyncCallback<List<ResourceSummaryModelData>> callback) {
 
 
                 if (null==loadConfig) {
                     callback.onSuccess(DataBinding.bindResourceSummary(Collections.singletonList(_root)));
                 } else {
-                    final String parentId = loadConfig.<ID>get(DataBinding.ID).toString();
+                    final String parentId = loadConfig.getId().toString();
 
                     qs.getChildren(
                         parentId,
@@ -168,32 +167,32 @@ public class FolderResourceTree extends Tree {
         };
 
 
-        final TreeLoader<ModelData> loader =
-            new BaseTreeLoader<ModelData>(proxy) {
+        final TreeLoader<ResourceSummaryModelData> loader =
+            new BaseTreeLoader<ResourceSummaryModelData>(proxy) {
             @Override
-            public boolean hasChildren(final ModelData parent) {
-                final int folderCount = parent.<Integer>get(DataBinding.FOLDER_COUNT).intValue();
+            public boolean hasChildren(final ResourceSummaryModelData parent) {
+                final int folderCount = parent.getFolderCount();
                 return folderCount > 0;
             }
         };
 
-        _store = new TreeStore<ModelData>(loader);
+        _store = new TreeStore<ResourceSummaryModelData>(loader);
 
         _binder = new FolderBinder(this, _store);
         _binder.setCaching(false);
-        _binder.setDisplayProperty(DataBinding.NAME);
-        _binder.setIconProvider(new ModelStringProvider<ModelData>() {
-            public String getStringValue(final ModelData model,
+        _binder.setDisplayProperty(ResourceSummaryModelData.DISPLAY_PROPERTY);
+        _binder.setIconProvider(new ModelStringProvider<ResourceSummaryModelData>() {
+            public String getStringValue(final ResourceSummaryModelData model,
                                          final String property) {
-                if (model.<String>get(DataBinding.TYPE).equals("FOLDER")) {
+                if (model.getType().equals("FOLDER")) {
                     return "images/gxt/icons/folder.gif";
-                } else if (model.<String>get(DataBinding.TYPE).equals("PAGE")) {
+                } else if (model.getType().equals("PAGE")) {
                     return "images/icons/page.png";
-                } else if (model.<String>get(DataBinding.TYPE).equals("TEMPLATE")) {
+                } else if (model.getType().equals("TEMPLATE")) {
                     return "images/icons/page_code.png";
-                } else if (model.<String>get(DataBinding.TYPE).equals("ALIAS")) {
+                } else if (model.getType().equals("ALIAS")) {
                     return "images/icons/link.png";
-                } else if (model.<String>get(DataBinding.TYPE).equals("FILE")) {
+                } else if (model.getType().equals("FILE")) {
                     return "images/icons/image.png";
                 } else {
                     return null;
@@ -209,7 +208,7 @@ public class FolderResourceTree extends Tree {
      *
      * @return The internal store.
      */
-    public TreeStore<ModelData> store() {
+    public TreeStore<ResourceSummaryModelData> store() {
         return _store;
     }
 }

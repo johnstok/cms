@@ -17,6 +17,7 @@ import java.util.List;
 
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.LogEntrySummaryModelData;
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.HistoryToolBar;
 import ccc.contentcreator.client.SingleSelectionModel;
@@ -24,7 +25,6 @@ import ccc.services.api.Action;
 import ccc.services.api.LogEntrySummary;
 
 import com.extjs.gxt.ui.client.Events;
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
@@ -43,7 +43,7 @@ public class HistoryDialog
         AbstractTableDialog<LogEntrySummary, LogEntrySummaryModelData> {
 
     private final ToolBar _toolBar;
-    private final SingleSelectionModel _ssm;
+    private final SingleSelectionModel<ResourceSummaryModelData> _ssm;
     private final String _resourceType;
 
     /**
@@ -54,16 +54,16 @@ public class HistoryDialog
      * @param ssm
      */
     public HistoryDialog(final Collection<LogEntrySummary> data,
-                         final SingleSelectionModel ssm) {
+                         final SingleSelectionModel<ResourceSummaryModelData> ssm) {
         super(Globals.uiConstants().resourceHistory(), data, false);
 
         _ssm = ssm;
-        _resourceType = _ssm.tableSelection().<String>get(DataBinding.TYPE);
+        _resourceType = _ssm.tableSelection().getType();
         _toolBar = new HistoryToolBar(this);
         _toolBar.disable();
         setTopComponent(_toolBar);
         _dataStore.add(DataBinding.bindLogEntrySummary(_data));
-        _grid.setAutoExpandColumn(LogEntrySummaryModelData.Property.COMMENT.name());
+        _grid.setAutoExpandColumn(LogEntrySummaryModelData.EXPAND_PROPERTY);
         _grid.addListener(
             Events.RowClick,
             new Listener<GridEvent>(){
@@ -94,24 +94,37 @@ public class HistoryDialog
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
         final ColumnConfig actionColumn =
-            new ColumnConfig(DataBinding.ACTION, _constants.action(), 70);
+            new ColumnConfig(
+                LogEntrySummaryModelData.Property.ACTION.name(),
+                _constants.action(),
+                70);
         configs.add(actionColumn);
 
         final ColumnConfig userColumn =
-            new ColumnConfig(DataBinding.ACTOR, _constants.user(), 100);
+            new ColumnConfig(
+                LogEntrySummaryModelData.Property.ACTOR.name(),
+                _constants.user(),
+                100);
         configs.add(userColumn);
 
         final ColumnConfig timeColumn =
-            new ColumnConfig(DataBinding.HAPPENED_ON, _constants.time(), 150);
+            new ColumnConfig(
+                LogEntrySummaryModelData.Property.HAPPENED_ON.name(),
+                _constants.time(),
+                150);
         timeColumn.setDateTimeFormat(DateTimeFormat.getMediumDateTimeFormat());
         configs.add(timeColumn);
 
         final ColumnConfig majorEditColumn =
-            new ColumnConfig(DataBinding.IS_MAJOR_EDIT, _constants.majorEdit(), 70);
+            new ColumnConfig(
+                LogEntrySummaryModelData.Property.IS_MAJOR_EDIT.name(),
+                _constants.majorEdit(),
+                70);
         configs.add(majorEditColumn);
 
         final ColumnConfig commentColumn = new ColumnConfig();
-        commentColumn.setId(DataBinding.COMMENT);
+        commentColumn.setId(
+            LogEntrySummaryModelData.Property.COMMENT.name());
         commentColumn.setHeader(_constants.comment());
         configs.add(commentColumn);
 
@@ -125,8 +138,8 @@ public class HistoryDialog
      *
      * @return
      */
-    public ModelData selectedItem() {
-        final ModelData selected = _grid.getSelectionModel().getSelectedItem();
+    public LogEntrySummaryModelData selectedItem() {
+        final LogEntrySummaryModelData selected = _grid.getSelectionModel().getSelectedItem();
         return selected;
     }
 
@@ -137,8 +150,8 @@ public class HistoryDialog
      * @param selectedId
      */
     public void workingCopyCreated() {
-        final ModelData selectedInMainWindow = _ssm.tableSelection();
-        selectedInMainWindow.set(DataBinding.WORKING_COPY, Boolean.TRUE);
+        final ResourceSummaryModelData selectedInMainWindow = _ssm.tableSelection();
+        selectedInMainWindow.setWorkingCopy(true);
         _ssm.update(selectedInMainWindow);
     }
 
@@ -149,6 +162,6 @@ public class HistoryDialog
      * @return
      */
     public boolean hasLock() {
-        return null!=_ssm.tableSelection().get(DataBinding.LOCKED);
+        return null!=_ssm.tableSelection().getLocked();
     }
 }

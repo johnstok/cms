@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.UserSummary;
 
@@ -42,15 +43,15 @@ public class ResourceTable
     extends
         TablePanel
     implements
-        SingleSelectionModel {
+        SingleSelectionModel<ResourceSummaryModelData> {
 
     private final UIConstants _constants = Globals.uiConstants();
-    private final ListStore<ModelData> _detailsStore =
-        new ListStore<ModelData>();
+    private final ListStore<ResourceSummaryModelData> _detailsStore =
+        new ListStore<ResourceSummaryModelData>();
 
     private final ResourceSummary _root;
     private final FolderResourceTree _tree;
-    private final Grid<ModelData> _grid;
+    private final Grid<ResourceSummaryModelData> _grid;
 
 
     /**
@@ -80,7 +81,7 @@ public class ResourceTable
         createColumnConfigs(configs);
 
         final ColumnModel cm = new ColumnModel(configs);
-        _grid = new Grid<ModelData>(_detailsStore, cm);
+        _grid = new Grid<ResourceSummaryModelData>(_detailsStore, cm);
         setUpGrid();
         _grid.setContextMenu(contextMenu);
         _grid.addPlugin(gp);
@@ -103,7 +104,7 @@ public class ResourceTable
      *
      * @param data A list of records to display in the table.
      */
-    public void displayResourcesFor(final List<ModelData> data) {
+    public void displayResourcesFor(final List<ResourceSummaryModelData> data) {
         _detailsStore.removeAll();
         // Grid throws exception with empty list.
         if (data != null && data.size() > 0) {
@@ -156,16 +157,17 @@ public class ResourceTable
             public String getRowStyle(final ModelData model,
                                       final int rowIndex,
                                       final ListStore ds) {
-
-                return model.<String>get("name")+"_row";
+                final ResourceSummaryModelData rs =
+                    (ResourceSummaryModelData) model;
+                return rs.getName()+"_row";
             }
         };
         final GridView view = _grid.getView();
         view.setViewConfig(vc);
         _grid.setView(view);
 
-        final GridSelectionModel<ModelData> gsm =
-            new GridSelectionModel<ModelData>();
+        final GridSelectionModel<ResourceSummaryModelData> gsm =
+            new GridSelectionModel<ResourceSummaryModelData>();
         gsm.setSelectionMode(SelectionMode.SINGLE);
         _grid.setSelectionModel(gsm);
         _grid.setAutoExpandColumn("title");
@@ -174,7 +176,7 @@ public class ResourceTable
 
 
     /** {@inheritDoc} */
-    public ModelData tableSelection() {
+    public ResourceSummaryModelData tableSelection() {
         if (_grid.getSelectionModel() == null) {
             return null;
         }
@@ -183,25 +185,28 @@ public class ResourceTable
 
 
     /** {@inheritDoc} */
-    public ModelData treeSelection() {
+    public ResourceSummaryModelData treeSelection() {
         final TreeItem item = _tree.getSelectedItem();
         if (item == null) {
             return null;
         }
-        return item.getModel();
+        return (ResourceSummaryModelData) item.getModel();
     }
 
 
     /** {@inheritDoc} */
-    public void update(final ModelData model) {
+    public void update(final ResourceSummaryModelData model) {
         _detailsStore.update(model);
         _tree._store.update(model);
     }
 
 
     /** {@inheritDoc} */
-    public void create(final ModelData model, final ModelData newParent) {
-        final ModelData np = _tree._store.findModel("id", newParent.get("id"));
+    public void create(final ResourceSummaryModelData model,
+                       final ResourceSummaryModelData newParent) {
+        final ResourceSummaryModelData np =
+            _tree._store.findModel(ResourceSummaryModelData.Property.ID.name(),
+                                   newParent.getId());
 
         if (newParent.equals(treeSelection())) {
             _detailsStore.add(model);
@@ -214,13 +219,15 @@ public class ResourceTable
 
 
     /** {@inheritDoc} */
-    public void move(final ModelData model,
-                     final ModelData newParent,
-                     final ModelData oldParent) {
+    public void move(final ResourceSummaryModelData model,
+                     final ResourceSummaryModelData newParent,
+                     final ResourceSummaryModelData oldParent) {
         _detailsStore.remove(model);
         _tree._store.remove(oldParent, model);
 
-        final ModelData np = _tree._store.findModel("id", newParent.get("id"));
+        final ResourceSummaryModelData np =
+            _tree._store.findModel(ResourceSummaryModelData.Property.ID.name(),
+                                   newParent.getId());
         if (null!=np) { // May not exist in other store
             _tree._store.add(np, model, false);
         }

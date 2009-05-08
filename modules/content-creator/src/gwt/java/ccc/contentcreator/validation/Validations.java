@@ -15,11 +15,11 @@ import java.util.List;
 
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.services.api.ParagraphDelta;
 
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.xml.client.XMLParser;
@@ -131,7 +131,8 @@ public class Validations {
      * @param name Resource name
      * @return The Validator
      */
-    public static Validator uniqueResourceName(final ModelData folder,
+    public static Validator uniqueResourceName(
+                                         final ResourceSummaryModelData folder,
                                          final TextField<String> name) {
 
         return new Validator() {

@@ -1,13 +1,12 @@
 package ccc.contentcreator.actions;
 
 import ccc.contentcreator.api.QueriesServiceAsync;
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.PreviewContentDialog;
-
-import com.extjs.gxt.ui.client.data.ModelData;
 
 /**
  * Open a dialog to preview the selected resource.
@@ -20,7 +19,7 @@ public final class PreviewAction
 
     private final QueriesServiceAsync _queries = Globals.queriesService();
 
-    private final SingleSelectionModel _selectionModel;
+    private final SingleSelectionModel<ResourceSummaryModelData> _selectionModel;
     private final boolean _useWorkingCopy;
 
     /**
@@ -29,7 +28,7 @@ public final class PreviewAction
      * @param selectionModel The selection model.
      * @param useWorkingCopy Boolean for working copy preview.
      */
-    public PreviewAction(final SingleSelectionModel selectionModel,
+    public PreviewAction(final SingleSelectionModel<ResourceSummaryModelData> selectionModel,
                          final boolean useWorkingCopy) {
         _selectionModel = selectionModel;
         _useWorkingCopy = useWorkingCopy;
@@ -37,7 +36,7 @@ public final class PreviewAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ModelData item = _selectionModel.tableSelection();
+        final ResourceSummaryModelData item = _selectionModel.tableSelection();
         _queries.getAbsolutePath(
             item.<String>get("id"),
             new ErrorReportingCallback<String>() {

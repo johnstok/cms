@@ -12,6 +12,7 @@
 package ccc.contentcreator.dialogs;
 
 
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.ResourceTable;
@@ -22,7 +23,6 @@ import ccc.services.api.ID;
 import ccc.services.api.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Events;
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -85,7 +85,7 @@ public class UpdateAliasDialog extends AbstractEditDialog {
                     resourceSelect.addListener(Events.Close,
                         new Listener<ComponentEvent>() {
                         public void handleEvent(final ComponentEvent be) {
-                            final ModelData target =
+                            final ResourceSummaryModelData target =
                                 resourceSelect.selectedResource();
                             _alias.setTargetId(target.<ID>get("id"));
                             _targetName.setValue(target.<String>get("name"));

@@ -31,6 +31,7 @@ import com.google.gwt.user.client.WindowCloseListener;
  *
  * @author Civic Computing Ltd.
  */
+@SuppressWarnings("deprecation")
 public final class Globals {
 
     private static final boolean ENABLE_EXIT_CONFIRMATION =

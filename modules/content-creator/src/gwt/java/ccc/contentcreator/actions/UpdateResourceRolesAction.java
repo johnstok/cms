@@ -3,13 +3,12 @@ package ccc.contentcreator.actions;
 import java.util.Collection;
 
 import ccc.contentcreator.api.QueriesServiceAsync;
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.UpdateResourceRolesDialog;
-
-import com.extjs.gxt.ui.client.data.ModelData;
 
 /**
  * Action to launch the 'update resource roles' dialog.
@@ -22,20 +21,20 @@ public final class UpdateResourceRolesAction
 
     private final QueriesServiceAsync _queries = Globals.queriesService();
 
-    private final SingleSelectionModel _selectionModel;
+    private final SingleSelectionModel<ResourceSummaryModelData> _selectionModel;
 
     /**
      * Constructor.
      *
      * @param ssm The selection model to use.
      */
-    public UpdateResourceRolesAction(final SingleSelectionModel ssm) {
+    public UpdateResourceRolesAction(final SingleSelectionModel<ResourceSummaryModelData> ssm) {
         _selectionModel = ssm;
     }
 
     /** {@inheritDoc} */
     public void execute() {
-        final ModelData item = _selectionModel.tableSelection();
+        final ResourceSummaryModelData item = _selectionModel.tableSelection();
         _queries.roles(
             item.<String>get("id"),
             new ErrorReportingCallback<Collection<String>>(){

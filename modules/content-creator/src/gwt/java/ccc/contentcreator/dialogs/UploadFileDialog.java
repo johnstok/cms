@@ -12,14 +12,13 @@
 package ccc.contentcreator.dialogs;
 
 import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.Globals;
-import ccc.contentcreator.client.GxtResourceSummary;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 
 import com.extjs.gxt.ui.client.Events;
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.FormEvent;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -44,7 +43,7 @@ public class UploadFileDialog extends AbstractEditDialog {
     private final TextField<String>   _fileName = new TextField<String>();
     private final TextField<String>   _title = new TextField<String>();
     private final TextField<String>   _description = new TextField<String>();
-    private ModelData                 _parent;
+    private final ResourceSummaryModelData _parent;
     private final HiddenField<String> _path = new HiddenField<String>();
     private FileUploadField           _file = new FileUploadField();
 
@@ -57,10 +56,10 @@ public class UploadFileDialog extends AbstractEditDialog {
      * @param parentFolder The folder in which this file should be saved.
      * @param ssm
      */
-    public UploadFileDialog(final ModelData parentFolder,
-                            final SingleSelectionModel ssm) {
+    public UploadFileDialog(final ResourceSummaryModelData parentFolder,
+                            final SingleSelectionModel<ResourceSummaryModelData> ssm) {
         super(
-            Globals.uiConstants().uploadFileTo()+": "+parentFolder.get("name"));
+            Globals.uiConstants().uploadFileTo()+": "+parentFolder.getName());
 
         _parent = parentFolder;
         setHeight(Globals.DEFAULT_UPLOAD_HEIGHT);
@@ -92,7 +91,7 @@ public class UploadFileDialog extends AbstractEditDialog {
         addField(_file);
 
         _path.setName("path");
-        _path.setValue(_parent.<String>get("id"));
+        _path.setValue(_parent.getId().toString());
         addField(_path);
 
         _image.setVisible(false);
@@ -107,7 +106,7 @@ public class UploadFileDialog extends AbstractEditDialog {
                       Globals.unexpectedError(new Exception(be.resultHtml));
                     } else {
                         ssm.create(
-                            new GxtResourceSummary(
+                            ResourceSummaryModelData.create(
                                 JSONParser.parse(be.resultHtml)), _parent);
                     }
                 }

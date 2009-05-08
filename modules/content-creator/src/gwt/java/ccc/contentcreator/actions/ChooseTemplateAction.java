@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.Globals;
@@ -11,8 +12,6 @@ import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.ChooseTemplateDialog;
 import ccc.services.api.ResourceDelta;
 import ccc.services.api.TemplateDelta;
-
-import com.extjs.gxt.ui.client.data.ModelData;
 
 /**
  * TODO: Add Description for this type.
@@ -26,32 +25,32 @@ public final class ChooseTemplateAction
     private final QueriesServiceAsync _queries = Globals.queriesService();
     private final UIConstants _constants = Globals.uiConstants();
 
-    private final SingleSelectionModel _selectionModel;
+    private final SingleSelectionModel<ResourceSummaryModelData> _selectionModel;
 
     /**
      * Constructor.
      *
      * @param selectionModel The selection model.
      */
-    public ChooseTemplateAction(final SingleSelectionModel selectionModel) {
+    public ChooseTemplateAction(
+          final SingleSelectionModel<ResourceSummaryModelData> selectionModel) {
         _selectionModel = selectionModel;
     }
 
     /** {@inheritDoc} */
     public void execute() {
-        ModelData item = null;
-        item = _selectionModel.tableSelection();
+        final ResourceSummaryModelData item = _selectionModel.tableSelection();
 
         if (item == null) {
             Globals.alert(Globals.uiConstants().noFolderSelected());
             return;
         }
 
-        if ("PAGE".equals(item.<String>get("type"))
-            || "FOLDER".equals(item.<String>get("type"))
-            || "SEARCH".equals(item.<String>get("type"))) {
+        if ("PAGE".equals(item.getType())
+            || "FOLDER".equals(item.getType())
+            || "SEARCH".equals(item.getType())) {
             _queries.resourceDelta(
-                item.<String>get("id"),
+                item.getId().toString(),
                 new ErrorReportingCallback<ResourceDelta>(){
                     public void onSuccess(final ResourceDelta delta) {
                         _queries.templates(

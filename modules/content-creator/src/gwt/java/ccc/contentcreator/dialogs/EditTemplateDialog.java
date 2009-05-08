@@ -12,7 +12,7 @@
 
 package ccc.contentcreator.dialogs;
 
-import ccc.contentcreator.binding.DataBinding;
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
@@ -23,8 +23,6 @@ import ccc.services.api.ID;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 
-import com.extjs.gxt.ui.client.data.BaseModelData;
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
@@ -62,9 +60,9 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
     private ID _id;
     private String _parentFolderId;
     private DialogMode _mode;
-    private SingleSelectionModel _ssm;
+    private SingleSelectionModel<ResourceSummaryModelData> _ssm;
     private TemplateDelta _model;
-    private ModelData _proxy = new BaseModelData();
+    private ResourceSummaryModelData _proxy;
 
     /**
      * Constructor.
@@ -73,7 +71,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
      * @param ssm
      */
     public EditTemplateDialog(final String parentFolderId,
-                              final SingleSelectionModel ssm) {
+                              final SingleSelectionModel<ResourceSummaryModelData> ssm) {
         super(Globals.uiConstants().editTemplate());
         setWidth(DEFAULT_WIDTH);
         setHeight(DEFAULT_HEIGHT);
@@ -106,8 +104,8 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
      * @param ssm
      */
     public EditTemplateDialog(final TemplateDelta model,
-                              final ModelData proxy,
-                              final SingleSelectionModel ssm) {
+                              final ResourceSummaryModelData proxy,
+                              final SingleSelectionModel<ResourceSummaryModelData> ssm) {
         this(null, ssm);
         _mode = DialogMode.UPDATE;
 
@@ -247,8 +245,9 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                             delta,
                             new ErrorReportingCallback<ResourceSummary>(){
                                 public void onSuccess(final ResourceSummary arg0) {
-                                    DataBinding.merge(_proxy, arg0);
-                                    _ssm.create(_proxy, _ssm.treeSelection());
+                                    _ssm.create(
+                                        new ResourceSummaryModelData(arg0),
+                                        _ssm.treeSelection());
                                     close();
                                 }});
                             break;
@@ -257,7 +256,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                                 delta,
                                 new ErrorReportingCallback<ResourceSummary>(){
                                     public void onSuccess(final ResourceSummary arg0) {
-                                        DataBinding.merge(_proxy, arg0);
+                                        _proxy.merge(arg0);
                                         _ssm.update(_proxy);
                                         close();
                                     }});

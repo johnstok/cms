@@ -11,7 +11,7 @@
  */
 package ccc.contentcreator.dialogs;
 
-import ccc.contentcreator.binding.DataBinding;
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
@@ -19,8 +19,6 @@ import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.services.api.ResourceSummary;
 
-import com.extjs.gxt.ui.client.data.BaseModelData;
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.TextField;
@@ -34,17 +32,17 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
  */
 public class CreateFolderDialog extends AbstractEditDialog {
 
-    private final ModelData _parent;
+    private final ResourceSummaryModelData _parent;
     private final TextField<String> _text = new TextField<String>();
-    final private SingleSelectionModel _ssm;
+    final private SingleSelectionModel<ResourceSummaryModelData> _ssm;
 
     /**
      * Constructor.
      *
      * @param parent parent folder in the GUI.
      */
-    public CreateFolderDialog(final ModelData parent,
-                              final SingleSelectionModel ssm) {
+    public CreateFolderDialog(final ResourceSummaryModelData parent,
+                              final SingleSelectionModel<ResourceSummaryModelData> ssm) {
         super(Globals.uiConstants().createFolder());
 
         _ssm = ssm;
@@ -78,15 +76,14 @@ public class CreateFolderDialog extends AbstractEditDialog {
 
     private Runnable createFolder() {
         return new Runnable() {
-            @SuppressWarnings("unchecked")
             public void run() {
                 commands().createFolder(
-                    _parent.<String>get("id"),
+                    _parent.getId().toString(),
                     _text.getValue(),
                     new ErrorReportingCallback<ResourceSummary>(){
                         public void onSuccess(final ResourceSummary result) {
-                            final ModelData newFolder = new BaseModelData();
-                            DataBinding.merge(newFolder, result);
+                            final ResourceSummaryModelData newFolder =
+                                new ResourceSummaryModelData(result);
                             _ssm.create(newFolder, _parent);
                             close();
                         }

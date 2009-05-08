@@ -29,14 +29,12 @@ import ccc.contentcreator.actions.UpdateTagsAction;
 import ccc.contentcreator.actions.ViewHistoryAction;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.UIConstants;
-import ccc.contentcreator.binding.DataBinding;
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.UserSummary;
 
 import com.extjs.gxt.ui.client.Events;
-import com.extjs.gxt.ui.client.data.BaseModelData;
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
@@ -124,7 +122,7 @@ public class MainMenu
     }
 
     private void addRootMenuItems(final ResourceSummary root) {
-        final SingleSelectionModel ssm = createSsm(root);
+        final SingleSelectionModel<ResourceSummaryModelData> ssm = createSsm(root);
 
         _itemMenu.add(createMenuItem(
             "details-root",
@@ -206,32 +204,34 @@ public class MainMenu
 
     }
 
-    private SingleSelectionModel createSsm(final ResourceSummary root) {
+    private SingleSelectionModel<ResourceSummaryModelData> createSsm(final ResourceSummary root) {
 
-        final SingleSelectionModel ssm = new SingleSelectionModel() {
+        final SingleSelectionModel<ResourceSummaryModelData> ssm =
+            new SingleSelectionModel<ResourceSummaryModelData>() {
+                private final ResourceSummaryModelData _md =
+                    new ResourceSummaryModelData(root);
 
-            public void create(final ModelData model,
-                               final ModelData newParent) {
-            }
-            public void move(final ModelData model,
-                             final ModelData newParent,
-                             final ModelData oldParent) {
-            }
-            public ModelData tableSelection() {
-                final ModelData md = new BaseModelData();
-                md.set(DataBinding.TYPE, "FOLDER");
-                md.set(DataBinding.ID, root.getId());
-                md.set(DataBinding.SORT_ORDER, root.getSortOrder());
-                return md;
-            }
-            public ModelData treeSelection() {
-                throw new UnsupportedOperationException(
-                    "Method not implemented.");
-            }
-            public void update(final ModelData model) {
-            }
+                    public void create(final ResourceSummaryModelData model,
+                                       final ResourceSummaryModelData parent) {
+                        /* No-op */
+                    }
+                    public void move(final ResourceSummaryModelData model,
+                                     final ResourceSummaryModelData newParent,
+                                     final ResourceSummaryModelData oldParent) {
+                        /* No-op */
+                    }
+                    public ResourceSummaryModelData tableSelection() {
+                        return _md;
+                    }
+                    public ResourceSummaryModelData treeSelection() {
+                        throw new UnsupportedOperationException(
+                            "Method not implemented.");
+                    }
+                    public void update(final ResourceSummaryModelData model) {
+                        /* No-op */
+                    }
 
-        };
+                };
         return ssm;
     }
 }

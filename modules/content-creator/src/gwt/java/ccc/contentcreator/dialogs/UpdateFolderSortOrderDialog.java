@@ -18,6 +18,7 @@ import java.util.List;
 import ccc.contentcreator.api.CommandServiceAsync;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.binding.DataBinding;
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
@@ -56,7 +57,7 @@ AbstractEditDialog {
     private final QueriesServiceAsync _queries = Globals.queriesService();
     private final ComboBox<ModelData> _sortOrder = new ComboBox<ModelData>();
 
-    private final SingleSelectionModel _selectionModel;
+    private final SingleSelectionModel<ResourceSummaryModelData> _selectionModel;
     private final ListStore<ModelData> _sortStore = new ListStore<ModelData>();
 
     private static final String MANUAL = "MANUAL";
@@ -66,10 +67,10 @@ AbstractEditDialog {
     private static final String DATE_CHANGED_ASC = "DATE_CHANGED_ASC";
     private static final String NAME_ALPHANUM_ASC = "NAME_ALPHANUM_ASC";
 
-    private final Grid<ModelData> _grid;
+    private final Grid<ResourceSummaryModelData> _grid;
     private final ColumnModel _cm;
-    private ListStore<ModelData> _detailsStore =
-        new ListStore<ModelData>();
+    private ListStore<ResourceSummaryModelData> _detailsStore =
+        new ListStore<ResourceSummaryModelData>();
 
     private GridDropTarget _target;
 
@@ -80,7 +81,7 @@ AbstractEditDialog {
      * @param ssm
      * @param currentSortOrder The current sort order.
      */
-    public UpdateFolderSortOrderDialog(final SingleSelectionModel ssm,
+    public UpdateFolderSortOrderDialog(final SingleSelectionModel<ResourceSummaryModelData> ssm,
                                        final String currentSortOrder) {
         super(Globals.uiConstants().folderSortOrder());
         setHeight(Globals.DEFAULT_HEIGHT);
@@ -98,7 +99,7 @@ AbstractEditDialog {
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
         createColumnConfigs(configs);
         _cm = new ColumnModel(configs);
-        _grid = new Grid<ModelData>(_detailsStore, _cm);
+        _grid = new Grid<ResourceSummaryModelData>(_detailsStore, _cm);
         _grid.setHeight(300);
         _grid.setWidth(610);
         _grid.setBorders(true);
@@ -138,8 +139,8 @@ AbstractEditDialog {
     }
 
     private void loadDetailStore() {
-        _detailsStore =  new ListStore<ModelData>();
-        final String id = _selectionModel.tableSelection().get("id");
+        _detailsStore =  new ListStore<ResourceSummaryModelData>();
+        final String id = _selectionModel.tableSelection().getId().toString();
         _queries.getChildren(id,
             new AsyncCallback<Collection<ResourceSummary>>(){
             public void onFailure(final Throwable arg0) {
@@ -251,31 +252,31 @@ AbstractEditDialog {
     protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                final ModelData md = _selectionModel.tableSelection();
+                final ResourceSummaryModelData md = _selectionModel.tableSelection();
                 final String order = _sortOrder.getValue().<String>get("value");
                 _commands.updateFolderSortOrder(
-                    md.<String>get("id"),
+                    md.getId().toString(),
                     order,
                     new ErrorReportingCallback<Void>(){
                         public void onSuccess(final Void result) {
                             // TODO cleanup
                             if (order.equals(MANUAL)) {
                                 final List<String> orderList = new ArrayList<String>();
-                                final List<ModelData> models = _grid.getStore().getModels();
-                                for(final ModelData m : models) {
-                                    orderList.add(m.<String>get("id"));
+                                final List<ResourceSummaryModelData> models = _grid.getStore().getModels();
+                                for(final ResourceSummaryModelData m : models) {
+                                    orderList.add(m.getId().toString());
                                 }
-                                _commands.reorder(md.<String>get("id"),
+                                _commands.reorder(md.getId().toString(),
                                     orderList,
                                     new ErrorReportingCallback<Void>(){
                                     public void onSuccess(final Void result) {
                                         close();
-                                        md.set("sortOrder", order);
+                                        md.setSortOrder(order);
                                     }
                                 });
                             } else {
                                 close();
-                                md.set("sortOrder", order);
+                                md.setSortOrder(order);
                             }
                         }
                     }

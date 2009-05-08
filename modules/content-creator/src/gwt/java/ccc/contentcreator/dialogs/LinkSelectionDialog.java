@@ -13,14 +13,13 @@ package ccc.contentcreator.dialogs;
 
 import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
-import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.ResourceTree;
 import ccc.services.api.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
@@ -38,7 +37,6 @@ import com.google.gwt.core.client.GWT;
 public class LinkSelectionDialog extends LayoutContainer {
 
     private final ResourceTree _tree;
-    private final UIConstants _constants = Globals.uiConstants();
     /** _qs : QueriesServiceAsync. */
     private final QueriesServiceAsync _qs = GWT.create(QueriesService.class);
 
@@ -66,15 +64,15 @@ public class LinkSelectionDialog extends LayoutContainer {
             new SelectionListener<ComponentEvent>() {
                 @Override
                 public void componentSelected(final ComponentEvent ce) {
-                    final ModelData target = selectedResource();
+                    final ResourceSummaryModelData target = selectedResource();
                     if (target == null) {
                         closeWindow();
                     } else {
                         _qs.getAbsolutePath(
-                            target.<String>get("id"),
+                            target.getId().toString(),
                             new ErrorReportingCallback<String>() {
                                 public void onSuccess(final String path) {
-                                    jsniSetUrl(path, (String) target.get("title"));
+                                    jsniSetUrl(path, target.getTitle());
                                     closeWindow();
                                 }
                             });
@@ -93,11 +91,11 @@ public class LinkSelectionDialog extends LayoutContainer {
      *
      * @return Returns the selected folder as {@link FolderDTO}
      */
-    public ModelData selectedResource() {
+    public ResourceSummaryModelData selectedResource() {
         return
             (null==_tree.getSelectedItem())
                 ? null
-                : _tree.getSelectedItem().getModel();
+                : (ResourceSummaryModelData) _tree.getSelectedItem().getModel();
     }
 
     private static native String jsniSetUrl(String selectedUrl, String title) /*-{

@@ -31,6 +31,7 @@ import com.extjs.gxt.ui.client.data.ModelData;
 public class LogEntrySummaryModelData
     implements
         ModelData {
+    public static final String EXPAND_PROPERTY = Property.COMMENT.name();
 
     private LogEntrySummary _les;
 

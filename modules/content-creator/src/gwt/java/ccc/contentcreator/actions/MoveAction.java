@@ -1,11 +1,10 @@
 package ccc.contentcreator.actions;
 
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.MoveDialog;
 import ccc.services.api.ResourceSummary;
-
-import com.extjs.gxt.ui.client.data.ModelData;
 
 /**
  * TODO: Add Description for this type.
@@ -16,7 +15,7 @@ public final class MoveAction
     implements
         Action {
 
-    private final SingleSelectionModel _selectionModel;
+    private final SingleSelectionModel<ResourceSummaryModelData> _selectionModel;
     private final ResourceSummary _root;
 
     /**
@@ -25,7 +24,7 @@ public final class MoveAction
      * @param selectionModel The selection model.
      * @param root The root of current resource tree.
      */
-    public MoveAction(final SingleSelectionModel selectionModel,
+    public MoveAction(final SingleSelectionModel<ResourceSummaryModelData> selectionModel,
                       final ResourceSummary root) {
         _selectionModel = selectionModel;
         _root = root;
@@ -33,7 +32,7 @@ public final class MoveAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ModelData item = _selectionModel.tableSelection();
+        final ResourceSummaryModelData item = _selectionModel.tableSelection();
         new MoveDialog(item, _selectionModel, _root).show();
     }
 }

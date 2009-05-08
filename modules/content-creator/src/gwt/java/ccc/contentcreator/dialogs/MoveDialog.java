@@ -11,6 +11,7 @@
  */
 package ccc.contentcreator.dialogs;
 
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
@@ -19,7 +20,6 @@ import ccc.contentcreator.validation.Validations;
 import ccc.services.api.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Events;
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -42,20 +42,20 @@ public class MoveDialog extends AbstractEditDialog {
     private final TriggerField<String> _parentFolder =
         new TriggerField<String>();
 
-    private final ModelData _target;
-    private ModelData _parent = null;
+    private final ResourceSummaryModelData _target;
+    private ResourceSummaryModelData _parent = null;
 
-    private final SingleSelectionModel _ssm;
+    private final SingleSelectionModel<ResourceSummaryModelData> _ssm;
 
     /**
      * Constructor.
      *
      * @param item The Resource item to move.
-     * @param ssm
+     * @param ssm The selection model.
      * @param root Resource root for the selection dialog.
      */
-    public MoveDialog(final ModelData item,
-                      final SingleSelectionModel ssm,
+    public MoveDialog(final ResourceSummaryModelData item,
+                      final SingleSelectionModel<ResourceSummaryModelData> ssm,
                       final ResourceSummary root) {
         super(Globals.uiConstants().move());
         setHeight(Globals.DEFAULT_MIN_HEIGHT);
@@ -67,7 +67,7 @@ public class MoveDialog extends AbstractEditDialog {
         setPanelId("MovePanel");
 
         _targetName.setFieldLabel(constants().target());
-        _targetName.setValue(item.<String>get("name"));
+        _targetName.setValue(item.getName());
         _targetName.setReadOnly(true);
         _targetName.disable();
         addField(_targetName);
@@ -86,7 +86,7 @@ public class MoveDialog extends AbstractEditDialog {
                         new Listener<ComponentEvent>() {
                         public void handleEvent(final ComponentEvent be) {
                             _parent = folderSelect.selectedFolder();
-                            _parentFolder.setValue(_parent.<String>get("name"));
+                            _parentFolder.setValue(_parent.getName());
                         }});
                     folderSelect.show();
                 }});
@@ -103,7 +103,7 @@ public class MoveDialog extends AbstractEditDialog {
                     .check(Validations.notEmpty(_parentFolder))
                     .stopIfInError()
                     .check(Validations.uniqueResourceName(
-                        _parent.<String>get("id"), _targetName))
+                        _parent.getId().toString(), _targetName))
                     .callMethodOr(Validations.reportErrors());
             }
         };
@@ -113,8 +113,8 @@ public class MoveDialog extends AbstractEditDialog {
         return new Runnable() {
             public void run() {
                 commands().move(
-                    _target.<String>get("id"),
-                    _parent.<String>get("id"),
+                    _target.getId().toString(),
+                    _parent.getId().toString(),
                     new ErrorReportingCallback<Void>() {
                         public void onSuccess(final Void result) {
                             _ssm.move(_target, _parent, _ssm.treeSelection());

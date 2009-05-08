@@ -1,12 +1,11 @@
 package ccc.contentcreator.actions;
 
 import ccc.contentcreator.api.CommandServiceAsync;
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
-
-import com.extjs.gxt.ui.client.data.ModelData;
 
 /**
  * Publish a resource.
@@ -19,26 +18,25 @@ public class ClearWorkingCopyAction
 
     private final CommandServiceAsync _commands = Globals.commandService();
 
-    private final SingleSelectionModel _selectionModel;
+    private final SingleSelectionModel<ResourceSummaryModelData> _selectionModel;
 
     /**
      * Constructor.
      *
      * @param selectionModel The selection model for this action.
      */
-    public ClearWorkingCopyAction(final SingleSelectionModel selectionModel) {
+    public ClearWorkingCopyAction(final SingleSelectionModel<ResourceSummaryModelData> selectionModel) {
         _selectionModel = selectionModel;
     }
 
     /** {@inheritDoc} */
     public void execute() {
-        final ModelData page = _selectionModel.tableSelection();
+        final ResourceSummaryModelData page = _selectionModel.tableSelection();
         _commands.clearWorkingCopy(
-            page.<String>get("id"),
+            page.getId().toString(),
             new ErrorReportingCallback<Void>(){
                 public void onSuccess(final Void arg0) {
-                    _selectionModel.tableSelection().set(
-                        "workingCopy", Boolean.FALSE);
+                    _selectionModel.tableSelection().setWorkingCopy(false);
                     _selectionModel.update(page);
                 }
             }

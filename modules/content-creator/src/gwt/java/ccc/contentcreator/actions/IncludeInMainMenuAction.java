@@ -12,12 +12,11 @@
 package ccc.contentcreator.actions;
 
 import ccc.contentcreator.api.CommandServiceAsync;
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
-
-import com.extjs.gxt.ui.client.data.ModelData;
 
 
 /**
@@ -31,30 +30,30 @@ public class IncludeInMainMenuAction
 
     private final CommandServiceAsync _commands = Globals.commandService();
 
-    private final SingleSelectionModel _selectionModel;
+    private final SingleSelectionModel<ResourceSummaryModelData> _selectionModel;
 
     /**
      * Constructor.
      *
      * @param selectionModel The selection model.
      */
-    public IncludeInMainMenuAction(final SingleSelectionModel selectionModel) {
+    public IncludeInMainMenuAction(
+          final SingleSelectionModel<ResourceSummaryModelData> selectionModel) {
         _selectionModel = selectionModel;
     }
 
     /** {@inheritDoc} */
     public void execute() {
-        final ModelData item = _selectionModel.tableSelection();
+        final ResourceSummaryModelData item = _selectionModel.tableSelection();
         _commands.includeInMainMenu(
-            item.<String>get("id"),
+            item.getId().toString(),
             true,
             new ErrorReportingCallback<Void>(){
                 public void onSuccess(final Void arg0) {
-                    item.set("mmInclude", Boolean.TRUE);
+                    item.setIncludeInMainMenu(true);
                     _selectionModel.update(item);
                 }
             }
         );
     }
-
 }

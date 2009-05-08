@@ -19,6 +19,7 @@ import java.util.List;
 
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.DataBinding;
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.binding.TemplateSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.EditPagePanel;
@@ -36,7 +37,6 @@ import ccc.services.api.TemplateDelta;
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.GridEvent;
@@ -83,8 +83,8 @@ public class CreatePageDialog
     private ContentPanel _descriptionPanel = new ContentPanel(new RowLayout());
     private ContentPanel _rightPanel = new ContentPanel(new RowLayout());
 
-    private final SingleSelectionModel _ssm;
-    private final ModelData _parent;
+    private final SingleSelectionModel<ResourceSummaryModelData> _ssm;
+    private final ResourceSummaryModelData _parent;
 
     private final CheckBox _publish = new CheckBox();
 
@@ -98,9 +98,10 @@ public class CreatePageDialog
      * @param parent The Folder in which page will created.
      * @param ssm SingleSelectionModel to update.
      */
-    public CreatePageDialog(final Collection<TemplateDelta> list,
-                            final ModelData parent,
-                            final SingleSelectionModel ssm) {
+    public CreatePageDialog(
+                    final Collection<TemplateDelta> list,
+                    final ResourceSummaryModelData parent,
+                    final SingleSelectionModel<ResourceSummaryModelData> ssm) {
         super(Globals.uiConstants().createPage());
         _ssm = ssm;
         _parent = parent;
@@ -122,10 +123,11 @@ public class CreatePageDialog
         final Listener<GridEvent> listener =
             new Listener<GridEvent>() {
             public void handleEvent(final GridEvent ge) {
-                final ModelData template =
-                    ge.grid.getSelectionModel().getSelectedItem();
-                _second.createFields(template.<String>get("definition"));
-                _description.setText(template.<String>get("description"));
+                final TemplateSummaryModelData template =
+                    (TemplateSummaryModelData)
+                        ge.grid.getSelectionModel().getSelectedItem();
+                _second.createFields(template.getDefinition());
+                _description.setText(template.getDescription());
             }
         };
         _grid.addListener(Events.RowClick, listener);
@@ -166,7 +168,7 @@ public class CreatePageDialog
         _third.setHeaderVisible(false);
 
         _publish.setId(_uiConstants.publish());
-        _publish.setValue(false);
+        _publish.setValue(Boolean.FALSE);
         _publish.setBoxLabel(_uiConstants.yes());
         _publish.setFieldLabel(_uiConstants.publish());
         _third.add(_publish);
@@ -180,16 +182,16 @@ public class CreatePageDialog
         final CheckBox cb = new CheckBox();
         cb.setBoxLabel(_uiConstants.useDefaultTemplate());
         cb.setId(_uiConstants.useDefaultTemplate());
-        queries().getTemplateForResource(_parent.<String>get("id"),
+        queries().getTemplateForResource(_parent.getId().toString(),
             new ErrorReportingCallback<TemplateDelta>() {
             public void onSuccess(final TemplateDelta result) {
                 if (result == null) {
-                    cb.setValue(false);
+                    cb.setValue(Boolean.FALSE);
                     cb.disable();
                     _grid.enable();
                     _description.setText("");
                 } else {
-                    cb.setValue(true);
+                    cb.setValue(Boolean.TRUE);
                     _grid.disable();
                     _grid.getSelectionModel().deselectAll();
                     _second.createFields(result.getDefinition());
@@ -200,8 +202,8 @@ public class CreatePageDialog
 
         cb.addListener(Events.Change, new Listener<FieldEvent>() {
             public void handleEvent(final FieldEvent be) {
-                if (cb.getValue()) {
-                    queries().getTemplateForResource(_parent.<String>get("id"),
+                if (cb.getValue().booleanValue()) {
+                    queries().getTemplateForResource(_parent.getId().toString(),
                         new ErrorReportingCallback<TemplateDelta>() {
                         public void onSuccess(final TemplateDelta result) {
                             if (result == null) {
@@ -226,15 +228,16 @@ public class CreatePageDialog
         return cb;
     }
 
-    private GridCellRenderer<ModelData> createIdRenderer() {
+    private GridCellRenderer<TemplateSummaryModelData> createIdRenderer() {
 
-        return new GridCellRenderer<ModelData>() {
-            public String render(final ModelData model,
-                                 final String property,
-                                 final ColumnData config,
-                                 final int rowIndex,
-                                 final int colIndex,
-                                 final ListStore<ModelData> store) {
+        return new GridCellRenderer<TemplateSummaryModelData>() {
+            public String render(
+                             final TemplateSummaryModelData model,
+                             final String property,
+                             final ColumnData config,
+                             final int rowIndex,
+                             final int colIndex,
+                             final ListStore<TemplateSummaryModelData> store) {
 
                 String value = "";
 
@@ -242,9 +245,9 @@ public class CreatePageDialog
                 final StringBuilder html = new StringBuilder();
                 html.append("<div id='");
                 // do not use id for id, otherwise acceptance tests fail.
-                html.append(model.<String>get("name"));
+                html.append(model.getName());
                 html.append("'>");
-                html.append(model.<String>get("name"));
+                html.append(model.getName());
                 html.append("</div>");
                 value = html.toString();
                 }
@@ -337,16 +340,16 @@ public class CreatePageDialog
                     ? null
                     : _grid.getSelectionModel()
                            .getSelectedItem()
-                           .<String>get("id");
+                           .getId().toString();
 
                 commands().createPage(
-                    _parent.<String>get("id"),
+                    _parent.getId().toString(),
                     page,
                     template,
                     new ErrorReportingCallback<ResourceSummary>() {
                         public void onSuccess(final ResourceSummary result) {
                             _ssm.create(
-                                DataBinding.bindResourceSummary(result),
+                                new ResourceSummaryModelData(result),
                                 _parent);
                             close();
                         }
