@@ -357,7 +357,7 @@ public class Validations {
                 final String value = input.getValue();
                 if(null != value
                         && !value.trim().equals("")
-                        && !value.matches("[0-9999]")) {
+                        && !value.matches("^([0-9]|[1-9][0-9]|[1-9][0-9][0-9])$")) {
                     validate.addMessage(
                         input.getFieldLabel()
                         + " "+_uiConstants.isNotValid()
