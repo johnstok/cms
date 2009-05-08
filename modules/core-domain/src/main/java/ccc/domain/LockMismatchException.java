@@ -21,7 +21,7 @@ import ccc.commons.DBC;
  */
 public class LockMismatchException
     extends
-        RuntimeException {
+        CCCException {
 
     private final Resource _resource;
 

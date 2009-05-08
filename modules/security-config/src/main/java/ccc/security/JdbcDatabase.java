@@ -25,6 +25,7 @@ import javax.sql.DataSource;
 
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
+import ccc.domain.CCCException;
 
 
 /**
@@ -88,7 +89,7 @@ public class JdbcDatabase
                     result[2] = rs.getString(3);
 
                     if (rs.next()) { // Duplicate users with username - error.
-                        throw new RuntimeException(
+                        throw new CCCException(
                             "Duplicate users for username: "+username);
                     }
 

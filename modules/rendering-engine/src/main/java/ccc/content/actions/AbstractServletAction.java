@@ -17,6 +17,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ccc.domain.CCCException;
+
 
 
 /**
@@ -91,11 +93,11 @@ public abstract class AbstractServletAction
     protected Exception getException(final HttpServletRequest request) {
         final Object o = request.getAttribute(SessionKeys.EXCEPTION_KEY);
         if (null==o) {
-            return new RuntimeException(
+            return new CCCException(
                 "No exception was found at the expected location: "
                 +SessionKeys.EXCEPTION_KEY);
         } else if (!(o instanceof Exception)) {
-            return new RuntimeException(
+            return new CCCException(
                 "Object at location: "
                 +SessionKeys.EXCEPTION_KEY
                 +" was not an exception.");

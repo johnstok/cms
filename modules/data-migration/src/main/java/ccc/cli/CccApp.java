@@ -32,6 +32,7 @@ import oracle.jdbc.pool.OracleDataSource;
 
 import org.apache.log4j.Logger;
 
+import ccc.domain.CCCException;
 import ccc.migration.MigrationException;
 import ccc.migration.UserNamePasswordHandler;
 
@@ -82,7 +83,7 @@ class CccApp {
                     new UserNamePasswordHandler(username, password));
             ctx.login();
         } catch (final LoginException e) {
-            throw new java.lang.RuntimeException(e);
+            throw new CCCException(e);
         }
         LOG.info("Logged in.");
     }
@@ -95,7 +96,7 @@ class CccApp {
         try {
             ctx.logout();
         } catch (final LoginException e) {
-            throw new java.lang.RuntimeException(e);
+            throw new CCCException(e);
         }
         LOG.info("Logged out.");
     }
@@ -131,7 +132,7 @@ class CccApp {
             in.close();
             LOG.info("Loaded settings.");
         } catch (final IOException e) {
-            throw new RuntimeException(e);
+            throw new CCCException(e);
         }
     }
 

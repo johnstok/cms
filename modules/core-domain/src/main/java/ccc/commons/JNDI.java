@@ -19,6 +19,8 @@ import javax.naming.NamingException;
 
 import org.apache.log4j.Logger;
 
+import ccc.domain.CCCException;
+
 
 /**
  * JNDI utility class.
@@ -40,7 +42,7 @@ public final class JNDI implements Registry {
             jndiContext().rebind(location, object);
             return this;
         } catch (final NamingException ne) {
-            throw new RuntimeException(
+            throw new CCCException(
                 "Error binding JNDI location: " + location,
                 ne);
         }
@@ -72,7 +74,7 @@ public final class JNDI implements Registry {
             _log.debug("JNDI lookup failed.", nfe);
             return null;
         } catch (final NamingException ne) {
-            throw new RuntimeException(
+            throw new CCCException(
                 "Error looking up JNDI location: " + location,
                 ne);
         }

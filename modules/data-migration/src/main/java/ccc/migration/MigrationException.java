@@ -1,5 +1,7 @@
 package ccc.migration;
 
+import ccc.domain.CCCException;
+
 
 
 /**
@@ -7,7 +9,7 @@ package ccc.migration;
  *
  * @author Civic Computing Ltd
  */
-public class MigrationException extends RuntimeException {
+public class MigrationException extends CCCException {
 
     /**
      * Constructor.

@@ -31,6 +31,7 @@ import javax.persistence.PersistenceContext;
 
 import ccc.commons.DBC;
 import ccc.commons.IO;
+import ccc.domain.CCCException;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.persistence.jpa.BaseDao;
@@ -141,7 +142,7 @@ public class DataManagerEJB implements DataManager {
                         IO.copy(is, dataStream);
                     } catch (final IOException e) {
                         // FIXME: choose a better exception.
-                        throw new RuntimeException(e);
+                        throw new CCCException(e);
                     }
                 }
             }

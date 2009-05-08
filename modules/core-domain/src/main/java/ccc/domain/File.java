@@ -14,6 +14,8 @@ package ccc.domain;
 import javax.activation.MimeType;
 import javax.activation.MimeTypeParseException;
 
+import org.apache.log4j.Logger;
+
 import ccc.commons.DBC;
 
 
@@ -27,6 +29,7 @@ import ccc.commons.DBC;
 public class File
     extends
         Resource {
+    private static Logger LOG = Logger.getLogger(File.class);
 
     private String _description;
     private Data _data;
@@ -64,8 +67,9 @@ public class File
         try {
             return new MimeType("application", "octet-stream");
         } catch (final MimeTypeParseException e) {
-            throw new CCCException(
-                "Failed to create mimetype: application/octet-stream", e);
+            // This should never happen.
+            LOG.error("Failed to create mimetype: application/octet-stream", e);
+            return null;
         }
     }
 
@@ -201,14 +205,15 @@ public class File
 
     /** {@inheritDoc} */
     @Override
-    public void applySnapshot(final Snapshot s) {
+    public void applySnapshot(final Snapshot s)
+                                               throws InvalidSnapshotException {
         try {
             description(s.getString("description"));
             mimeType(new MimeType(s.getString("mimetype")));
             size(s.getInt("size"));
             data(new Data(s.getUuid("data")));
         } catch (final MimeTypeParseException e) {
-            throw new CCCException(e);
+            throw new InvalidSnapshotException(e);
         }
     }
 }

@@ -385,8 +385,8 @@ public final class ResourceTest extends TestCase {
             fail();
 
         // ASSERT
-        } catch (final CCCException e) {
-            assertEquals("Resource is already locked.", e.getMessage());
+        } catch (final LockMismatchException e) {
+            assertEquals(p, e.resource());
         }
     }
 
@@ -427,9 +427,9 @@ public final class ResourceTest extends TestCase {
             fail();
 
         // ASSERT
-        } catch (final CCCException e) {
+        } catch (final InsufficientPrivilegesException e) {
             assertEquals(
-                "User not allowed to unlock this resource.", e.getMessage());
+                "User jill[] may not perform action: UNLOCK", e.getMessage());
         }
 
 
