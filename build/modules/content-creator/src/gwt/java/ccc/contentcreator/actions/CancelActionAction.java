@@ -51,9 +51,8 @@ public class CancelActionAction
             Globals.alert("This action has already been completed."); // FIXME: I18n.
             return;
         } else {
-            final String actionId = action.getId().toString();
             _commands.cancelAction(
-                actionId,
+                action.getId(),
                 new ErrorReportingCallback<Void>(){
                     public void onSuccess(final Void arg0) {
                         action.setStatus(ActionStatus.Cancelled);

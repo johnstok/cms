@@ -97,7 +97,7 @@ public class EditUserDialog extends AbstractEditDialog {
                     .check(minLength(_username, Globals.MIN_USER_NAME_LENGTH))
                     .check(notValidResourceName(_username))
                     .check(notValidEmail(_email))
-                    .check(uniqueUsername(_userDTO, _username.getValue()))
+                    .check(uniqueUsername(_userDTO, new Username(_username.getValue())))
                     .callMethodOr(reportErrors());
             }
         };
@@ -149,7 +149,7 @@ public class EditUserDialog extends AbstractEditDialog {
      * @return A new instance of the username validator.
      */
     private Validator uniqueUsername(final UserDelta userDTO,
-                                     final String username) {
+                                     final Username username) {
         return new Validator() {
             public void validate(final Validate validate) {
                 if (userDTO.getUsername().equals(username)) {
@@ -159,7 +159,7 @@ public class EditUserDialog extends AbstractEditDialog {
                         username,
                         new ErrorReportingCallback<Boolean>(){
                             public void onSuccess(final Boolean exists) {
-                                if (exists) {
+                                if (exists.booleanValue()) {
                                     validate.addMessage(
                                         _messages.userWithUsernameAlreadyExists(username)
                                     );

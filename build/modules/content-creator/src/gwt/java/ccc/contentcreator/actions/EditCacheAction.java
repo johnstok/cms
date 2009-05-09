@@ -45,7 +45,7 @@ public class EditCacheAction implements Action {
     @Override
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        _queries.cacheDuration(item.getId().toString(),
+        _queries.cacheDuration(item.getId(),
             new ErrorReportingCallback<Duration>() {
                 @Override
                 public void onSuccess(final Duration arg0) {

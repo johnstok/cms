@@ -76,7 +76,7 @@ public class RenameDialog extends AbstractEditDialog {
                     .check(Validations.notValidResourceName(_newName))
                     .stopIfInError()
                     .check(Validations.uniqueResourceName(
-                        _item.getParent().toString(),
+                        _item.getParent(),
                         _newName))
                     .callMethodOr(Validations.reportErrors());
             }
@@ -87,7 +87,7 @@ public class RenameDialog extends AbstractEditDialog {
         return new Runnable() {
             public void run() {
                 commands().rename(
-                    _item.getId().toString(),
+                    _item.getId(),
                     _newName.getValue(),
                     new ErrorReportingCallback<Void>() {
                         public void onSuccess(final Void result) {

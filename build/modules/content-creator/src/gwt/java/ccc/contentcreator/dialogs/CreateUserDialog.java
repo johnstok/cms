@@ -93,7 +93,7 @@ public class CreateUserDialog extends AbstractEditDialog {
                     .check(matchingPasswords(
                         _password1.getValue(), _password2.getValue()))
                     .check(passwordStrength(_password1.getValue()))
-                    .check(uniqueUsername(_username.getValue()))
+                    .check(uniqueUsername(new Username(_username.getValue())))
                     .callMethodOr(reportErrors());
             }
         };
@@ -105,7 +105,7 @@ public class CreateUserDialog extends AbstractEditDialog {
      * @param username The username to check.
      * @return A new instance of the username validator.
      */
-    private Validator uniqueUsername(final String username) {
+    private Validator uniqueUsername(final Username username) {
         return new Validator() {
             public void validate(final Validate validate) {
                 Globals.queriesService().usernameExists(

@@ -19,6 +19,7 @@ import ccc.services.api.AliasDelta;
 import ccc.services.api.Duration;
 import ccc.services.api.FileDelta;
 import ccc.services.api.FileSummary;
+import ccc.services.api.ID;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ResourceDelta;
@@ -26,6 +27,7 @@ import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
+import ccc.services.api.Username;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -39,21 +41,21 @@ public interface QueriesServiceAsync {
 
     void roots(AsyncCallback<Collection<ResourceSummary>> callback);
 
-    void resource(String resourceId,
+    void resource(ID resourceId,
                   AsyncCallback<ResourceSummary> callback);
 
     void templates(AsyncCallback<Collection<TemplateDelta>> callback);
 
-    void getFolderChildren(String folderId,
+    void getFolderChildren(ID folderId,
                            AsyncCallback<Collection<ResourceSummary>> callback);
 
-    void getChildren(String resourceId,
+    void getChildren(ID resourceId,
                      AsyncCallback<Collection<ResourceSummary>> callback);
 
-    void getAbsolutePath(String resourceId,
+    void getAbsolutePath(ID resourceId,
                          AsyncCallback<String> callback);
 
-    void nameExistsInFolder(final String folderId,
+    void nameExistsInFolder(final ID folderId,
                             final String name,
                             AsyncCallback<Boolean> callback);
 
@@ -65,7 +67,7 @@ public interface QueriesServiceAsync {
     void listUsersWithUsername(String username,
                                AsyncCallback<Collection<UserSummary>> callback);
 
-    void usernameExists(String username,
+    void usernameExists(Username username,
                         AsyncCallback<Boolean> callback);
 
     void listUsersWithEmail(String email,
@@ -74,7 +76,7 @@ public interface QueriesServiceAsync {
     void templateNameExists(final String templateName,
                             AsyncCallback<Boolean> callback);
 
-    void getTemplateForResource(final String resourceId,
+    void getTemplateForResource(final ID resourceId,
                                 AsyncCallback<TemplateDelta> callback);
 
     void loggedInUser(AsyncCallback<UserSummary> callback);
@@ -83,35 +85,35 @@ public interface QueriesServiceAsync {
 
     void locked(AsyncCallback<Collection<ResourceSummary>> callback);
 
-    void history(String resourceId,
+    void history(ID resourceId,
                  AsyncCallback<Collection<LogEntrySummary>> callback);
 
-    void templateDelta(String templateId, AsyncCallback<TemplateDelta> asyncCallback);
+    void templateDelta(ID templateId, AsyncCallback<TemplateDelta> asyncCallback);
 
-    void userDelta(String userId, AsyncCallback<UserDelta> asyncCallback);
+    void userDelta(ID userId, AsyncCallback<UserDelta> asyncCallback);
 
-    void aliasDelta(String aliasId, AsyncCallback<AliasDelta> asyncCallback);
+    void aliasDelta(ID aliasId, AsyncCallback<AliasDelta> asyncCallback);
 
-    void pageDelta(String pageId, AsyncCallback<PageDelta> asyncCallback);
+    void pageDelta(ID pageId, AsyncCallback<PageDelta> asyncCallback);
 
-    void folderDelta(String folderId, AsyncCallback<ResourceDelta> asyncCallback);
+    void folderDelta(ID folderId, AsyncCallback<ResourceDelta> asyncCallback);
 
-    void resourceDelta(String resourceId, AsyncCallback<ResourceDelta> asyncCallback);
+    void resourceDelta(ID resourceId, AsyncCallback<ResourceDelta> asyncCallback);
 
-    void fileDelta(String fileId, AsyncCallback<FileDelta> asyncCallback);
+    void fileDelta(ID fileId, AsyncCallback<FileDelta> asyncCallback);
 
     void getAllContentImages(AsyncCallback<Collection<FileSummary>> callback);
 
-    void metadata(String resourceId,
+    void metadata(ID resourceId,
                   AsyncCallback<Map<String, String>> asyncCallback);
 
-    void workingCopyDelta(String pageId, AsyncCallback<PageDelta> asyncCallback);
+    void workingCopyDelta(ID pageId, AsyncCallback<PageDelta> asyncCallback);
 
     void listPendingActions(AsyncCallback<Collection<ActionSummary>> asyncCallback);
 
     void listCompletedActions(AsyncCallback<Collection<ActionSummary>> asyncCallback);
 
-    void roles(final String resourceId, AsyncCallback<Collection<String>> asyncCallback);
+    void roles(final ID resourceId, AsyncCallback<Collection<String>> asyncCallback);
 
-    void cacheDuration(String resourceId, AsyncCallback<Duration> asyncCallback);
+    void cacheDuration(ID resourceId, AsyncCallback<Duration> asyncCallback);
 }

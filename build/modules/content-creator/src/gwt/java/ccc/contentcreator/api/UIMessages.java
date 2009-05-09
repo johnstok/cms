@@ -11,6 +11,8 @@
  */
 package ccc.contentcreator.api;
 
+import ccc.services.api.Username;
+
 import com.google.gwt.i18n.client.Messages;
 
 
@@ -28,7 +30,7 @@ public interface UIMessages extends Messages {
      * @return The constant, in the appropriate locale.
      */
     @DefaultMessage("User with username ''{0}'' already exists.")
-    String userWithUsernameAlreadyExists(String username);
+    String userWithUsernameAlreadyExists(Username username);
 
     /**
      * "A resource with name ''{0}'' already exists in the parent folder.".

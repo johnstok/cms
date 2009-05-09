@@ -33,7 +33,7 @@ public class ClearWorkingCopyAction
     public void execute() {
         final ResourceSummaryModelData page = _selectionModel.tableSelection();
         _commands.clearWorkingCopy(
-            page.getId().toString(),
+            page.getId(),
             new ErrorReportingCallback<Void>(){
                 public void onSuccess(final Void arg0) {
                     _selectionModel.tableSelection().setWorkingCopy(false);

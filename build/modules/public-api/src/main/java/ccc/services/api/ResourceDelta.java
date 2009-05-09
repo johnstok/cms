@@ -25,7 +25,7 @@ public class ResourceDelta
     private ID     _id;
     private String _name;
     private String _title;
-    private String _templateId;
+    private ID _templateId;
     private String _tags;
     private boolean _published;
 
@@ -44,7 +44,7 @@ public class ResourceDelta
     public ResourceDelta(final ID     id,
                          final String name,
                          final String title,
-                         final String templateId,
+                         final ID     templateId,
                          final String tags,
                          final boolean published) {
         _id = id;
@@ -121,7 +121,7 @@ public class ResourceDelta
      *
      * @return Returns the templateId.
      */
-    public String getTemplateId() {
+    public ID getTemplateId() {
         return _templateId;
     }
 
@@ -131,7 +131,7 @@ public class ResourceDelta
      *
      * @param templateId The templateId to set.
      */
-    public void setTemplateId(final String templateId) {
+    public void setTemplateId(final ID templateId) {
         _templateId = templateId;
     }
 

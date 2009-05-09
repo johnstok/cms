@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
@@ -53,6 +52,7 @@ import ccc.services.api.AliasDelta;
 import ccc.services.api.Duration;
 import ccc.services.api.FileDelta;
 import ccc.services.api.FileSummary;
+import ccc.services.api.ID;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.PageDelta;
 import ccc.services.api.Queries;
@@ -61,6 +61,7 @@ import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
+import ccc.services.api.Username;
 
 
 /**
@@ -93,42 +94,41 @@ public final class QueriesEJB
 
     /** {@inheritDoc} */
     @Override
-    public String getAbsolutePath(final String resourceId) {
+    public String getAbsolutePath(final ID resourceId) {
         return
-            _resources.find(Resource.class, UUID.fromString(resourceId))
+            _resources.find(Resource.class, toUUID(resourceId))
                       .absolutePath()
                       .toString();
     }
 
     /** {@inheritDoc} */
     @Override
-    public Collection<ResourceSummary> getChildren(final String folderId) {
+    public Collection<ResourceSummary> getChildren(final ID folderId) {
         final Folder f =
-            _resources.find(Folder.class, UUID.fromString(folderId));
+            _resources.find(Folder.class, toUUID(folderId));
         return mapResources(f.entries());
     }
 
     /** {@inheritDoc} */
     @Override
-    public Collection<ResourceSummary> getFolderChildren(
-                                                        final String folderId) {
+    public Collection<ResourceSummary> getFolderChildren(final ID folderId) {
         final Folder f =
-            _resources.find(Folder.class, UUID.fromString(folderId));
+            _resources.find(Folder.class, toUUID(folderId));
         return mapFolders(f.folders());
     }
 
     /** {@inheritDoc} */
     @Override
-    public TemplateDelta getTemplateForResource(final String resourceId) {
+    public TemplateDelta getTemplateForResource(final ID resourceId) {
         return delta(
-            _resources.find(Resource.class, UUID.fromString(resourceId))
+            _resources.find(Resource.class, toUUID(resourceId))
                       .computeTemplate(null));
     }
 
     /** {@inheritDoc} */
     @Override
-    public Collection<LogEntrySummary> history(final String resourceId) {
-        return mapLogEntries(_resources.history(resourceId));
+    public Collection<LogEntrySummary> history(final ID resourceId) {
+        return mapLogEntries(_resources.history(toUUID(resourceId)));
     }
 
     /** {@inheritDoc} */
@@ -145,19 +145,18 @@ public final class QueriesEJB
 
     /** {@inheritDoc} */
     @Override
-    public boolean nameExistsInFolder(final String folderId,
-                                      final String name) {
+    public boolean nameExistsInFolder(final ID folderId, final String name) {
         // TODO handle null folderId? (for root folders)
         return
-        _resources.find(Folder.class, UUID.fromString(folderId))
+        _resources.find(Folder.class, toUUID(folderId))
                   .hasEntryWithName(new ResourceName(name));
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary resource(final String resourceId) {
+    public ResourceSummary resource(final ID resourceId) {
         return
-            map(_resources.find(Resource.class, UUID.fromString(resourceId)));
+            map(_resources.find(Resource.class, toUUID(resourceId)));
     }
 
     /** {@inheritDoc} */
@@ -185,8 +184,8 @@ public final class QueriesEJB
      */
     /** {@inheritDoc} */
     @Override
-    public boolean usernameExists(final String username) {
-        return _users.usernameExists(username);
+    public boolean usernameExists(final Username username) {
+        return _users.usernameExists(username.toString());
     }
 
     /** {@inheritDoc} */
@@ -217,55 +216,55 @@ public final class QueriesEJB
     @Override
     public Collection<UserSummary> listUsersWithUsername(
                                                     final String username) {
-        return mapUsers(_users.listUsersWithUsername(username));
+        return mapUsers(_users.listUsersWithUsername(username.toString()));
     }
 
     /** {@inheritDoc} */
-    @Override public TemplateDelta templateDelta(final String templateId) {
+    @Override public TemplateDelta templateDelta(final ID templateId) {
         return
-            delta(_resources.find(Template.class, UUID.fromString(templateId)));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public UserDelta userDelta(final String userId) {
-        return
-            delta(_users.find(UUID.fromString(userId)));
+            delta(_resources.find(Template.class, toUUID(templateId)));
     }
 
     /** {@inheritDoc} */
     @Override
-    public AliasDelta aliasDelta(final String aliasId) {
+    public UserDelta userDelta(final ID userId) {
         return
-            delta(_resources.find(Alias.class, UUID.fromString(aliasId)));
+            delta(_users.find(toUUID(userId)));
     }
 
     /** {@inheritDoc} */
     @Override
-    public PageDelta pageDelta(final String pageId) {
+    public AliasDelta aliasDelta(final ID aliasId) {
         return
-            delta(_resources.find(Page.class, UUID.fromString(pageId)));
+            delta(_resources.find(Alias.class, toUUID(aliasId)));
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceDelta folderDelta(final String folderId) {
+    public PageDelta pageDelta(final ID pageId) {
         return
-            delta(_resources.find(Folder.class, UUID.fromString(folderId)));
+            delta(_resources.find(Page.class, toUUID(pageId)));
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceDelta resourceDelta(final String resourceId) {
+    public ResourceDelta folderDelta(final ID folderId) {
         return
-        delta(_resources.find(Resource.class, UUID.fromString(resourceId)));
+            delta(_resources.find(Folder.class, toUUID(folderId)));
     }
 
     /** {@inheritDoc} */
     @Override
-    public FileDelta fileDelta(final String fileId) {
+    public ResourceDelta resourceDelta(final ID resourceId) {
         return
-            delta(_resources.find(File.class, UUID.fromString(fileId)));
+        delta(_resources.find(Resource.class, toUUID(resourceId)));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FileDelta fileDelta(final ID fileId) {
+        return
+            delta(_resources.find(File.class, toUUID(fileId)));
     }
 
     /** {@inheritDoc} */
@@ -283,16 +282,16 @@ public final class QueriesEJB
 
     /** {@inheritDoc} */
     @Override
-    public Map<String, String> metadata(final String resourceId) {
+    public Map<String, String> metadata(final ID resourceId) {
         final Resource r =
-            _resources.find(Resource.class, UUID.fromString(resourceId));
+            _resources.find(Resource.class, toUUID(resourceId));
         return r.metadata();
     }
 
     /** {@inheritDoc} */
     @Override
-    public PageDelta workingCopyDelta(final String pageId) {
-        final Page p = _resources.find(Page.class, UUID.fromString(pageId));
+    public PageDelta workingCopyDelta(final ID pageId) {
+        final Page p = _resources.find(Page.class, toUUID(pageId));
         return workingCopyDelta(p);
     }
 
@@ -310,17 +309,17 @@ public final class QueriesEJB
 
     /** {@inheritDoc} */
     @Override
-    public Collection<String> roles(final String resourceId) {
+    public Collection<String> roles(final ID resourceId) {
         final Resource r =
-            _resources.find(Resource.class, UUID.fromString(resourceId));
+            _resources.find(Resource.class, toUUID(resourceId));
         return r.roles();
     }
 
     /** {@inheritDoc} */
     @Override
-    public Duration cacheDuration(final String resourceId) {
+    public Duration cacheDuration(final ID resourceId) {
         final Resource r =
-            _resources.find(Resource.class, UUID.fromString(resourceId));
+            _resources.find(Resource.class, toUUID(resourceId));
         return r.cache();
     }
 

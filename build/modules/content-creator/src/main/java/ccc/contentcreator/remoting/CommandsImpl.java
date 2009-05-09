@@ -17,8 +17,11 @@ import java.util.List;
 import java.util.Map;
 
 import ccc.contentcreator.api.CommandService;
+import ccc.services.api.Action;
 import ccc.services.api.AliasDelta;
+import ccc.services.api.Commands;
 import ccc.services.api.Duration;
+import ccc.services.api.ID;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ParagraphDelta;
 import ccc.services.api.ResourceSummary;
@@ -28,7 +31,7 @@ import ccc.services.api.UserSummary;
 
 
 /**
- * TODO: Add Description for this type.
+ * GWT implementation of the {@link Commands} interface.
  * TODO: Inject delegate implementation.
  *
  * @author Civic Computing Ltd.
@@ -39,22 +42,22 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createAlias(final String parentId,
+    public ResourceSummary createAlias(final ID parentId,
                             final String name,
-                            final String targetId) {
+                            final ID targetId) {
         return _services.lookupCommands().createAlias(parentId, name, targetId);
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createFolder(final String parentId,
+    public ResourceSummary createFolder(final ID parentId,
                                         final String name) {
         return _services.lookupCommands().createFolder(parentId, name);
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createFolder(final String parentId,
+    public ResourceSummary createFolder(final ID parentId,
                                         final String name,
                                         final String title) {
         return _services.lookupCommands().createFolder(parentId, name, title);
@@ -62,16 +65,16 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createPage(final String parentId,
+    public ResourceSummary createPage(final ID parentId,
                            final PageDelta delta,
-                           final String templateId) {
+                           final ID templateId) {
         return _services.lookupCommands().createPage(
             parentId, delta, templateId);
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createTemplate(final String parentId,
+    public ResourceSummary createTemplate(final ID parentId,
                                           final TemplateDelta delta) {
         return _services.lookupCommands().createTemplate(parentId, delta);
     }
@@ -84,27 +87,27 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary lock(final String resourceId) {
+    public ResourceSummary lock(final ID resourceId) {
         return _services.lookupCommands().lock(resourceId);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void move(final String resourceId,
-                     final String newParentId) {
+    public void move(final ID resourceId,
+                     final ID newParentId) {
         _services.lookupCommands().move(resourceId, newParentId);
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary publish(final String resourceId) {
+    public ResourceSummary publish(final ID resourceId) {
         return _services.lookupCommands().publish(resourceId);
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary publish(final String resourceId,
-                                   final String userId,
+    public ResourceSummary publish(final ID resourceId,
+                                   final ID userId,
                                    final Date publishOn) {
         return _services.lookupCommands().publish(
             resourceId, userId, publishOn);
@@ -112,21 +115,21 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
-    public void rename(final String resourceId,
+    public void rename(final ID resourceId,
                        final String name) {
         _services.lookupCommands().rename(resourceId, name);
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary unlock(final String resourceId) {
+    public ResourceSummary unlock(final ID resourceId) {
         return _services.lookupCommands().unlock(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary unpublish(final String resourceId) {
+    public ResourceSummary unpublish(final ID resourceId) {
         return _services.lookupCommands().unpublish(resourceId);
     }
 
@@ -146,15 +149,15 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateResourceTemplate(final String resourceId,
-                                       final String templateId) {
+    public void updateResourceTemplate(final ID resourceId,
+                                       final ID templateId) {
         _services.lookupCommands().updateResourceTemplate(
             resourceId, templateId);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void updateTags(final String resourceId,
+    public void updateTags(final ID resourceId,
                            final String tags) {
         _services.lookupCommands().updateTags(resourceId, tags);
     }
@@ -179,7 +182,7 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
-    public void includeInMainMenu(final String resourceId,
+    public void includeInMainMenu(final ID resourceId,
                                   final boolean include) {
         _services.lookupCommands().includeInMainMenu(resourceId, include);
     }
@@ -193,14 +196,14 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateMetadata(final String resourceId,
+    public void updateMetadata(final ID resourceId,
                                  final Map<String, String> metadata) {
         _services.lookupCommands().updateMetadata(resourceId, metadata);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void updateFolderSortOrder(final String folderId,
+    public void updateFolderSortOrder(final ID folderId,
                                       final String sortOrder) {
         _services.lookupCommands().updateFolderSortOrder(folderId, sortOrder);
     }
@@ -214,33 +217,33 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
-    public void clearWorkingCopy(final String pageId) {
+    public void clearWorkingCopy(final ID pageId) {
         _services.lookupCommands().clearWorkingCopy(pageId);
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createSearch(final String parentId,
+    public ResourceSummary createSearch(final ID parentId,
                                         final String title) {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
     /** {@inheritDoc} */
     @Override
-    public void createWorkingCopy(final String resourceId, final long index) {
+    public void createWorkingCopy(final ID resourceId, final long index) {
         _services.lookupCommands().createWorkingCopy(resourceId, index);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void cancelAction(final String actionId) {
+    public void cancelAction(final ID actionId) {
         _services.lookupCommands().cancelAction(actionId);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void createAction(final String resourceId,
-                             final String action,
+    public void createAction(final ID resourceId,
+                             final Action action,
                              final Date executeAfter,
                              final String parameters) {
         _services.lookupCommands().createAction(
@@ -249,26 +252,26 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
-    public void reorder(final String folderId, final List<String> order) {
+    public void reorder(final ID folderId, final List<String> order) {
         _services.lookupCommands().reorder(folderId, order);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void changeRoles(final String resourceId,
+    public void changeRoles(final ID resourceId,
                             final Collection<String> roles) {
         _services.lookupCommands().changeRoles(resourceId, roles);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void applyWorkingCopyToFile(final String fileId) {
+    public void applyWorkingCopyToFile(final ID fileId) {
         _services.lookupCommands().applyWorkingCopyToFile(fileId);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void updateCacheDuration(final String resourceId,
+    public void updateCacheDuration(final ID resourceId,
                                     final Duration duration) {
         _services.lookupCommands().updateCacheDuration(resourceId, duration);
     }

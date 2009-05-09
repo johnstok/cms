@@ -128,11 +128,9 @@ public class ResourceDaoImpl implements ResourceDao {
 
     /** {@inheritDoc} */
     @Override
-    public List<LogEntry> history(final String resourceId) {
+    public List<LogEntry> history(final UUID resourceId) {
         return
-            _dao.list("resourceHistory",
-                      LogEntry.class,
-                      UUID.fromString(resourceId));
+            _dao.list("resourceHistory", LogEntry.class, resourceId);
     }
 
 

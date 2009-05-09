@@ -29,6 +29,7 @@ import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.client.ui.FCKEditor;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
+import ccc.services.api.ID;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ParagraphDelta;
 import ccc.services.api.ResourceSummary;
@@ -182,7 +183,7 @@ public class CreatePageDialog
         final CheckBox cb = new CheckBox();
         cb.setBoxLabel(_uiConstants.useDefaultTemplate());
         cb.setId(_uiConstants.useDefaultTemplate());
-        queries().getTemplateForResource(_parent.getId().toString(),
+        queries().getTemplateForResource(_parent.getId(),
             new ErrorReportingCallback<TemplateDelta>() {
             public void onSuccess(final TemplateDelta result) {
                 if (result == null) {
@@ -203,7 +204,8 @@ public class CreatePageDialog
         cb.addListener(Events.Change, new Listener<FieldEvent>() {
             public void handleEvent(final FieldEvent be) {
                 if (cb.getValue().booleanValue()) {
-                    queries().getTemplateForResource(_parent.getId().toString(),
+                    queries().getTemplateForResource(
+                        _parent.getId(),
                         new ErrorReportingCallback<TemplateDelta>() {
                         public void onSuccess(final TemplateDelta result) {
                             if (result == null) {
@@ -335,15 +337,15 @@ public class CreatePageDialog
                         null
                     );
 
-                final String template =
+                final ID template =
                     (null==_grid.getSelectionModel().getSelectedItem())
                     ? null
                     : _grid.getSelectionModel()
                            .getSelectedItem()
-                           .getId().toString();
+                           .getId();
 
                 commands().createPage(
-                    _parent.getId().toString(),
+                    _parent.getId(),
                     page,
                     template,
                     new ErrorReportingCallback<ResourceSummary>() {

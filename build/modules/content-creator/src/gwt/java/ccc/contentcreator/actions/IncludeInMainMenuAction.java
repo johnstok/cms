@@ -46,7 +46,7 @@ public class IncludeInMainMenuAction
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         _commands.includeInMainMenu(
-            item.getId().toString(),
+            item.getId(),
             true,
             new ErrorReportingCallback<Void>(){
                 public void onSuccess(final Void arg0) {

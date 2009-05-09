@@ -34,8 +34,8 @@ import com.extjs.gxt.ui.client.widget.form.ComboBox;
  */
 public class ChooseTemplateDialog extends AbstractEditDialog {
 
-    private final String _templateId;
-    private final String _resourceId;
+    private final ID _templateId;
+    private final ID _resourceId;
     private final Collection<TemplateDelta> _templates;
 
     private final TemplateSummaryModelData _none =
@@ -58,8 +58,8 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
      * @param templateId The currently selected template.
      * @param templates The available templates.
      */
-    public ChooseTemplateDialog(final String resourceId,
-                                final String templateId,
+    public ChooseTemplateDialog(final ID resourceId,
+                                final ID templateId,
                                 final Collection<TemplateDelta> templates) {
         super(Globals.uiConstants().chooseTemplate());
         setHeight(Globals.DEFAULT_MIN_HEIGHT);
@@ -107,13 +107,11 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
         return new SelectionListener<ButtonEvent>(){
             @Override public void componentSelected(final ButtonEvent ce) {
 
-                final TemplateSummaryModelData selected =
-                    _selectedTemplate.getValue();
-                final ID templateId = selected.getId();
+                final TemplateSummaryModelData selected = _selectedTemplate.getValue();
 
                 commands().updateResourceTemplate(
                     _resourceId,
-                    templateId.toString(),
+                    selected.getId(),
                     new DisposingCallback(ChooseTemplateDialog.this));
             }
         };

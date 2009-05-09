@@ -47,6 +47,7 @@ import ccc.services.api.Username;
 
 /**
  * Helper class for translating between the core domain and DTOs.
+ * TODO: These methods can now be folded into the various CCC resource classes.
  *
  * @author Civic Computing Ltd.
  */
@@ -152,10 +153,10 @@ public class ModelTranslation {
 
 
     /**
-     * TODO: Add a description of this method.
+     * Create a summary for a resource.
      *
-     * @param r
-     * @return
+     * @param r The CCC resource.
+     * @return The corresponding summary.
      */
     public ResourceSummary map(final Resource r) {
         int childCount = 0;
@@ -177,7 +178,8 @@ public class ModelTranslation {
                 toID(r.id()),
                 (null==r.parent()) ? null : toID(r.parent().id()),
                 r.name().toString(),
-                (r.isPublished()) ? new Username(r.publishedBy().username()) : null,
+                (r.isPublished())
+                    ? new Username(r.publishedBy().username()) : null,
                 r.title(),
                 (r.isLocked()) ? new Username(r.lockedBy().username()) : null,
                 r.type(),
@@ -303,10 +305,10 @@ public class ModelTranslation {
 
 
     /**
-     * TODO: Add a description of this method.
+     * Create a delta for a page.
      *
-     * @param find
-     * @return
+     * @param page The CCC page.
+     * @return The corresponding delta.
      */
     protected PageDelta delta(final Page page) {
         final Template t = page.template();
@@ -329,7 +331,7 @@ public class ModelTranslation {
                 toID(page.id()),
                 page.name().toString(),
                 page.title(),
-                (null==t) ? null : t.id().toString(),
+                (null==t) ? null : toID(t.id()),
                 page.tagString(),
                 page.isPublished(),
                 paragraphs,
@@ -340,10 +342,10 @@ public class ModelTranslation {
 
 
     /**
-     * TODO: Add a description of this method.
+     * Create a delta for a resource.
      *
-     * @param find
-     * @return
+     * @param resource The CCC resource.
+     * @return The corresponding delta.
      */
     protected ResourceDelta delta(final Resource resource) {
         final Template t = resource.template();
@@ -353,7 +355,7 @@ public class ModelTranslation {
                 toID(resource.id()),
                 resource.name().toString(),
                 resource.title(),
-                (null==t) ? null : t.id().toString(),
+                (null==t) ? null : toID(t.id()),
                 resource.tagString(),
                 resource.isPublished()
             );
@@ -445,7 +447,24 @@ public class ModelTranslation {
     }
 
 
-    private ID toID(final UUID uuid) {
+    /**
+     * Convert a {@link UUID} to a CCC id..
+     *
+     * @param uuid The java UUID.
+     * @return The corresponding CCC id.
+     */
+    protected final ID toID(final UUID uuid) {
         return new ID(uuid.toString());
+    }
+
+
+    /**
+     * Convert a CCC id to a {@link UUID}.
+     *
+     * @param id The CCC id.
+     * @return The corresponding UUID.
+     */
+    protected final UUID toUUID(final ID id) {
+        return UUID.fromString(id.toString());
     }
 }

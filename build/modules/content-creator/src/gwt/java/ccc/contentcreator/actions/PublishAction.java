@@ -34,7 +34,7 @@ public class PublishAction
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         _commands.publish(
-            item.getId().toString(),
+            item.getId(),
             new ErrorReportingCallback<ResourceSummary>(){
                 public void onSuccess(final ResourceSummary arg0) {
                     item.merge(arg0);

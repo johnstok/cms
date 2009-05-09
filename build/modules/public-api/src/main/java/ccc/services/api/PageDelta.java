@@ -44,7 +44,7 @@ public final class PageDelta
     public PageDelta(final ID id,
                      final String name,
                      final String title,
-                     final String templateId,
+                     final ID templateId,
                      final String tags,
                      final boolean published,
                      final List<ParagraphDelta> paragraphs,

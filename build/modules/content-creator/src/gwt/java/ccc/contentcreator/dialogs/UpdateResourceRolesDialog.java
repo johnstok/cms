@@ -16,6 +16,7 @@ import java.util.Collection;
 
 import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.client.Globals;
+import ccc.services.api.ID;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -31,7 +32,7 @@ public class UpdateResourceRolesDialog
     extends
         AbstractEditDialog {
 
-    private final String _resourceId;
+    private final ID _resourceId;
     private final TextArea _roles = new TextArea();
 
     /**
@@ -40,7 +41,7 @@ public class UpdateResourceRolesDialog
      * @param resourceId The resource whose roles will be updated.
      * @param currentRoles The roles the resource currently has.
      */
-    public UpdateResourceRolesDialog(final String resourceId,
+    public UpdateResourceRolesDialog(final ID resourceId,
                                      final Collection<String> currentRoles) {
         super(Globals.uiConstants().updateRoles());
         _resourceId = resourceId;

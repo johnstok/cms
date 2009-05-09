@@ -72,7 +72,7 @@ public class UpdateTagsDialog
                     (null==_tags.getValue()) ? "" : _tags.getValue();
 
                 commands().updateTags(
-                    _resource.getId().toString(),
+                    _resource.getId(),
                     tags,
                     new DisposingCallback(UpdateTagsDialog.this));
             }

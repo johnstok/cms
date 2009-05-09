@@ -98,7 +98,7 @@ public class Migrations {
     public void migrate() {
         loadSupportingData();
         migrateUsers();
-        migrateResources(_contentRoot.getId().toString(), 0);
+        migrateResources(_contentRoot.getId(), 0);
         migrateManagedFilesAndImages();
         migrateImages();
         migrateCss();
@@ -113,26 +113,26 @@ public class Migrations {
         _assetRoot = _commands.createRoot(PredefinedResourceNames.ASSETS);
         _contentRoot = _commands.createRoot(PredefinedResourceNames.CONTENT);
 
-        _templateFolder =_commands.createFolder(_assetRoot.getId().toString(),
-            PredefinedResourceNames.TEMPLATES);
-        _cssFolder = _commands.createFolder(_assetRoot.getId().toString(),
-            PredefinedResourceNames.CSS);
-        _assetsImagesFolder = _commands.createFolder(_assetRoot.getId().toString(),
-            PredefinedResourceNames.IMAGES);
+        _templateFolder =_commands.createFolder(
+            _assetRoot.getId(), PredefinedResourceNames.TEMPLATES);
+        _cssFolder = _commands.createFolder(
+            _assetRoot.getId(), PredefinedResourceNames.CSS);
+        _assetsImagesFolder = _commands.createFolder(
+            _assetRoot.getId(), PredefinedResourceNames.IMAGES);
 
-        _filesFolder = _commands.createFolder(_contentRoot.getId().toString(),
-            PredefinedResourceNames.FILES);
-        _contentImagesFolder = _commands.createFolder(_contentRoot.getId().toString(),
-            PredefinedResourceNames.IMAGES);
-        _commands.createSearch(_filesFolder.getId().toString(), "SiteSearch");
+        _filesFolder = _commands.createFolder(
+            _contentRoot.getId(), PredefinedResourceNames.FILES);
+        _contentImagesFolder = _commands.createFolder(
+            _contentRoot.getId(), PredefinedResourceNames.IMAGES);
+        _commands.createSearch(_filesFolder.getId(), "SiteSearch");
 
         // TODO: Remove. Should set 'publish' root via UI
-        _commands.lock(_contentRoot.getId().toString());
-        _commands.publish(_contentRoot.getId().toString());
-        _commands.unlock(_contentRoot.getId().toString());
-        _commands.lock(_assetRoot.getId().toString());
-        _commands.publish(_assetRoot.getId().toString());
-        _commands.unlock(_assetRoot.getId().toString());
+        _commands.lock(_contentRoot.getId());
+        _commands.publish(_contentRoot.getId());
+        _commands.unlock(_contentRoot.getId());
+        _commands.lock(_assetRoot.getId());
+        _commands.publish(_assetRoot.getId());
+        _commands.unlock(_assetRoot.getId());
 
         log.info("Created default folder structure.");
     }
@@ -140,16 +140,16 @@ public class Migrations {
 
     // TODO: Move under command-resourceDao?
     private void publishRecursive(final ResourceSummary resource) {
-        _commands.lock(resource.getId().toString());
-        _commands.publish(resource.getId().toString());
+        _commands.lock(resource.getId());
+        _commands.publish(resource.getId());
         if ("FOLDER".equals(resource.getType())) {
             final Collection<ResourceSummary> children =
-                _queries.getChildren(resource.getId().toString());
+                _queries.getChildren(resource.getId());
             for (final ResourceSummary child : children) {
                 publishRecursive(child);
             }
         }
-        _commands.unlock(resource.getId().toString());
+        _commands.unlock(resource.getId());
     }
 
 
@@ -185,7 +185,7 @@ public class Migrations {
     }
 
 
-    private void migrateResources(final String parentFolderId,
+    private void migrateResources(final ID parentFolderId,
                                   final int parent) {
 
         final List<ResourceBean> resources = _legacyQueries.selectResources(parent);
@@ -276,7 +276,7 @@ public class Migrations {
         log.info("Migrated non-managed css files.");
     }
 
-    private void migrateFolder(final String parentFolderId,
+    private void migrateFolder(final ID parentFolderId,
                                final ResourceBean r) {
 
         try {
@@ -295,7 +295,7 @@ public class Migrations {
 
             setResourceRoles(r, rs);
 
-            migrateResources(rs.getId().toString(), r.contentId());
+            migrateResources(rs.getId(), r.contentId());
 
         } catch (final Exception e) {
             log.warn("Error migrating folder "
@@ -303,7 +303,7 @@ public class Migrations {
         }
     }
 
-    private void migratePage(final String parentFolderId,
+    private void migratePage(final ID parentFolderId,
                              final ResourceBean r) {
 
         try {
@@ -345,9 +345,9 @@ public class Migrations {
     private void showInMainMenu(final ResourceBean r,
                                 final ResourceSummary rs) {
         if (_menuItems.contains(Integer.valueOf(r.contentId()))) {
-            _commands.lock(rs.getId().toString());
-            _commands.includeInMainMenu(rs.getId().toString(), true);
-            _commands.unlock(rs.getId().toString());
+            _commands.lock(rs.getId());
+            _commands.includeInMainMenu(rs.getId(), true);
+            _commands.unlock(rs.getId());
         }
     }
 
@@ -386,17 +386,17 @@ public class Migrations {
                             final ResourceSummary rs,
                             final Integer version) {
 
-        _commands.lock(rs.getId().toString());// FIXME: Specify actor & date
+        _commands.lock(rs.getId());// FIXME: Specify actor & date
         final PageDelta d = assemblePage(r, rs.getId().toString(), version);
 //        final String userId =
 //            determineActor(r.contentId(), version, "%", "MADE LIVE");
         _commands.updatePage(d, "Updated.", true); // FIXME: Specify actor & date
-        _commands.unlock(rs.getId().toString());  // FIXME: Specify actor & date
+        _commands.unlock(rs.getId());  // FIXME: Specify actor & date
         log.debug("Updated page: "+r.contentId());
     }
 
 
-    private ResourceSummary createPage(final String parentFolderId,
+    private ResourceSummary createPage(final ID parentFolderId,
                                        final ResourceBean r,
                                        final List<Integer> paragraphVersions) {
 
@@ -418,13 +418,13 @@ public class Migrations {
                                r.legacyVersion(),
                                "Changed Status to  PUBLISHED",
                                "CHANGE STATUS");
-            _commands.lock(rs.getId().toString());  // FIXME: Specify actor & date
+            _commands.lock(rs.getId());  // FIXME: Specify actor & date
             if (null != userId) {
-                _commands.publish(rs.getId().toString(), userId.toString(), new Date()); // FIXME: Specify date
+                _commands.publish(rs.getId(), userId, new Date()); // FIXME: Specify date
             } else {
-                _commands.publish(rs.getId().toString()); // FIXME: Specify actor & date
+                _commands.publish(rs.getId()); // FIXME: Specify actor & date
             }
-            _commands.unlock(rs.getId().toString());  // FIXME: Specify actor & date
+            _commands.unlock(rs.getId());  // FIXME: Specify actor & date
         }
     }
 
@@ -440,20 +440,20 @@ public class Migrations {
             metadata.put("useInIndex", ""+r.useInIndex());
         }
 
-        _commands.lock(rs.getId().toString());
-        _commands.updateMetadata(rs.getId().toString(), metadata);
-        _commands.unlock(rs.getId().toString());
+        _commands.lock(rs.getId());
+        _commands.updateMetadata(rs.getId(), metadata);
+        _commands.unlock(rs.getId());
     }
 
     private void setResourceRoles(final ResourceBean r,
                                   final ResourceSummary rs) {
         if (r.isSecure()) {
             log.info("Resource "+r.contentId()+" has security constraints");
-            _commands.lock(rs.getId().toString());
+            _commands.lock(rs.getId());
             _commands.changeRoles(
-                rs.getId().toString(),
+                rs.getId(),
                 _legacyQueries.selectRolesForResource(r.contentId()));
-            _commands.unlock(rs.getId().toString());
+            _commands.unlock(rs.getId());
         }
     }
 
@@ -552,10 +552,10 @@ public class Migrations {
             createTemplate(templateName);
         }
 
-        final String templateId = _templates.get(templateName).getId().toString();
-        _commands.lock(rs.getId().toString());  // FIXME: Specify actor & date
-        _commands.updateResourceTemplate(rs.getId().toString(), templateId);   // FIXME: Specify actor & date
-        _commands.unlock(rs.getId().toString());  // FIXME: Specify actor & date
+        final ID templateId = _templates.get(templateName).getId();
+        _commands.lock(rs.getId());  // FIXME: Specify actor & date
+        _commands.updateResourceTemplate(rs.getId(), templateId);   // FIXME: Specify actor & date
+        _commands.unlock(rs.getId());  // FIXME: Specify actor & date
     }
 
 
@@ -571,7 +571,7 @@ public class Migrations {
                 "<fields/>"
             );
         final ResourceSummary ts =
-            _commands.createTemplate(_templateFolder.getId().toString(), t);  // FIXME: Specify actor & date
+            _commands.createTemplate(_templateFolder.getId(), t);  // FIXME: Specify actor & date
 
         _templates.put(templateName, ts);
     }

@@ -74,7 +74,7 @@ public class CreateActionPanel
                     final DataList l = (DataList) ce.component;
                     _parameters.removeAll();
 
-                    switch (l.getSelectedItem().<Action>getData("action-id")) {
+                    switch (l.getSelectedItem().<ccc.services.api.Action>getData("action-id")) {
                         case PUBLISH:
                             _pPanel = new EmptyPanel(
                                 _uiConstants.publish(),
@@ -103,16 +103,16 @@ public class CreateActionPanel
             }
         );
         final DataListItem publish = new DataListItem(_uiConstants.publish());
-        publish.setData("action-id", Action.PUBLISH);
+        publish.setData("action-id", ccc.services.api.Action.PUBLISH);
         _list.add(publish);
 
         final DataListItem unpublish =
             new DataListItem(_uiConstants.unpublish());
-        unpublish.setData("action-id", Action.UNPUBLISH);
+        unpublish.setData("action-id", ccc.services.api.Action.UNPUBLISH);
         _list.add(unpublish);
 
         final DataListItem update = new DataListItem(_uiConstants.update());
-        update.setData("action-id", Action.UPDATE);
+        update.setData("action-id", ccc.services.api.Action.UPDATE);
         _list.add(update);
 
 
@@ -132,12 +132,12 @@ public class CreateActionPanel
      *
      * @return The type of action to execute, as a string.
      */
-    public String actionType() {
+    public ccc.services.api.Action actionType() {
         final DataListItem item = _list.getSelectedItem();
         if (null==item) {
             return null;
         }
-        return item.getText().toUpperCase();
+        return item.<ccc.services.api.Action>getData("action-id");
     }
 
     /**
@@ -210,9 +210,5 @@ public class CreateActionPanel
             form.add(_comment, new FormData("95%"));
         }
 
-    }
-
-    private enum Action {
-        UPDATE, PUBLISH, UNPUBLISH;
     }
 }

@@ -37,7 +37,7 @@ public final class PreviewHistoricalAction
             return;
         }
         _queries.getAbsolutePath(
-            item.getId().toString(),
+            item.getId(),
             new ErrorReportingCallback<String>() {
                 public void onSuccess(final String path) {
                     new PreviewContentDialog(path, item.getIndex()).show();

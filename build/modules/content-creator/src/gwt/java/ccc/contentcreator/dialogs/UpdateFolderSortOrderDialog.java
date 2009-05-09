@@ -22,6 +22,7 @@ import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
+import ccc.services.api.ID;
 import ccc.services.api.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
@@ -140,7 +141,7 @@ AbstractEditDialog {
 
     private void loadDetailStore() {
         _detailsStore =  new ListStore<ResourceSummaryModelData>();
-        final String id = _selectionModel.tableSelection().getId().toString();
+        final ID id = _selectionModel.tableSelection().getId();
         _queries.getChildren(id,
             new AsyncCallback<Collection<ResourceSummary>>(){
             public void onFailure(final Throwable arg0) {
@@ -255,7 +256,7 @@ AbstractEditDialog {
                 final ResourceSummaryModelData md = _selectionModel.tableSelection();
                 final String order = _sortOrder.getValue().<String>get("value");
                 _commands.updateFolderSortOrder(
-                    md.getId().toString(),
+                    md.getId(),
                     order,
                     new ErrorReportingCallback<Void>(){
                         public void onSuccess(final Void result) {
@@ -266,7 +267,7 @@ AbstractEditDialog {
                                 for(final ResourceSummaryModelData m : models) {
                                     orderList.add(m.getId().toString());
                                 }
-                                _commands.reorder(md.getId().toString(),
+                                _commands.reorder(md.getId(),
                                     orderList,
                                     new ErrorReportingCallback<Void>(){
                                     public void onSuccess(final Void result) {
