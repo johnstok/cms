@@ -170,19 +170,10 @@ public class UserTable extends TablePanel {
         final MenuItem editUserPw = new MenuItem(_constants.editUserPw());
         editUserPw.setId("editUserPwMenu");
         editUserPw.addSelectionListener(new SelectionListener<MenuEvent>() {
-
-            @Override
-            public void componentSelected(final MenuEvent ce) {
+            @Override public void componentSelected(final MenuEvent ce) {
                 final UserSummaryModelData userDTO =
                     grid.getSelectionModel().getSelectedItem();
-                qs.userDelta(userDTO.getId(), new AsyncCallback<UserDelta>(){
-                    public void onFailure(final Throwable arg0) {
-                        Globals.unexpectedError(arg0);
-                    }
-                    public void onSuccess(final UserDelta arg0) {
-                        new EditUserPwDialog(arg0, UserTable.this).show();
-                    }
-                });
+                new EditUserPwDialog(userDTO).show();
             }
 
         });

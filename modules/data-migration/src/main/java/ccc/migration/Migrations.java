@@ -36,7 +36,6 @@ import ccc.services.api.ParagraphType;
 import ccc.services.api.Queries;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
-import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
 
 /**
@@ -159,23 +158,24 @@ public class Migrations {
 
 
     private void migrateUsers() {
-        final Map<Integer, UserDelta> mus = _legacyQueries.selectUsers();
-        for (final Map.Entry<Integer, UserDelta> mu : mus.entrySet()) {
+        final Map<Integer, ExistingUser> mus = _legacyQueries.selectUsers();
+        for (final Map.Entry<Integer, ExistingUser> mu : mus.entrySet()) {
             try {
                 // TODO: improve reporting
-                final UserDelta ud = mu.getValue();
+                final ExistingUser ud = mu.getValue();
 
-                if (null == ud.getPassword()) {
-                    log.warn("User: "+ud.getUsername()+" has null password.");
-                } else if (ud.getPassword().equals(ud.getUsername())) {
-                    log.warn("User: "+ud.getUsername()
+                if (null == ud._password) {
+                    log.warn("User: "+ud._user.getUsername()+" has null password.");
+                } else if (ud._password.equals(ud._user.getUsername())) {
+                    log.warn("User: "+ud._user.getUsername()
                         +" has username as a password.");
-                } else if (ud.getPassword().length() < 6) {
-                    log.warn("User: "+ud.getUsername()
+                } else if (ud._password.length() < 6) {
+                    log.warn("User: "+ud._user.getUsername()
                         +" has password with less than 6 characters.");
                 }
 
-                final UserSummary u = _commands.createUser(mu.getValue());
+                final UserSummary u =
+                    _commands.createUser(ud._user, ud._password);
                 _users.put(mu.getKey(), u);
             } catch (final RuntimeException e) {
                 log.warn("Failed to create user: "+e.getMessage());

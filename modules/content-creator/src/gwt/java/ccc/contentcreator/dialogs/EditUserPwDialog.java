@@ -13,13 +13,10 @@ package ccc.contentcreator.dialogs;
 
 
 import static ccc.contentcreator.validation.Validations.*;
+import ccc.contentcreator.binding.UserSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
-import ccc.contentcreator.client.UserTable;
 import ccc.contentcreator.validation.Validate;
-import ccc.services.api.UserDelta;
-import ccc.services.api.UserSummary;
-import ccc.services.api.Username;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -37,20 +34,16 @@ public class EditUserPwDialog extends AbstractEditDialog {
     private final TextField<String> _password1 = new TextField<String>();
     private final TextField<String> _password2 = new TextField<String>();
 
-    private final UserDelta _userDTO;
-    private final UserTable _userTable;
+    private final UserSummaryModelData _userDTO;
 
     /**
      * Constructor.
      *
      * @param userDTO The userDTO of the selected user.
-     * @param userTable The user table.
      */
-    public EditUserPwDialog(final UserDelta userDTO,
-                            final UserTable userTable) {
+    public EditUserPwDialog(final UserSummaryModelData userDTO) {
         super(Globals.uiConstants().editUserPw());
 
-        _userTable = userTable;
         _userDTO = userDTO;
 
         _username.setFieldLabel(constants().username());
@@ -77,10 +70,6 @@ public class EditUserPwDialog extends AbstractEditDialog {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
                 Validate.callTo(updateUser())
-                    .check(notEmpty(_username))
-                    .stopIfInError()
-                    .check(minLength(_username, Globals.MIN_USER_NAME_LENGTH))
-                    .check(notValidResourceName(_username))
                     .check(matchingPasswords(
                         _password1.getValue(), _password2.getValue()))
                     .check(passwordStrength(_password1.getValue()))
@@ -98,20 +87,11 @@ public class EditUserPwDialog extends AbstractEditDialog {
     private Runnable updateUser() {
         return new Runnable() {
             public void run() {
-                _userDTO.setUsername(new Username(_username.getValue()));
-
-                String password = null;
-                final String pw1 = _password1.getValue();
-                if (null != pw1 && !pw1.trim().equals("")) {
-                    password = pw1;
-                }
-                _userDTO.setPassword(password);
-
-                commands().updateUser(
-                    _userDTO,
-                    new ErrorReportingCallback<UserSummary>() {
-                        public void onSuccess(final UserSummary result) {
-                            _userTable.refreshUsers();
+                commands().updateUserPassword(
+                    _userDTO.getId(),
+                    _password1.getValue(),
+                    new ErrorReportingCallback<Void>() {
+                        public void onSuccess(final Void result) {
                             close();
                         }
                     }

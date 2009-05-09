@@ -261,7 +261,6 @@ public class ModelTranslation {
         final UserDelta delta =
             new UserDelta(
                 toID(user.id()),
-                null,
                 user.email().getText(),
                 new Username(user.username()),
                 user.roles());

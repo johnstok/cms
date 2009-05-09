@@ -32,7 +32,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import ccc.actions.Action;
-import ccc.commons.EmailAddress;
 import ccc.domain.Alias;
 import ccc.domain.CCCException;
 import ccc.domain.Folder;
@@ -45,7 +44,6 @@ import ccc.domain.ResourceOrder;
 import ccc.domain.Search;
 import ccc.domain.Snapshot;
 import ccc.domain.Template;
-import ccc.domain.User;
 import ccc.persistence.jpa.BaseDao;
 import ccc.services.ActionDao;
 import ccc.services.AliasDao;
@@ -189,14 +187,8 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public UserSummary createUser(final UserDelta delta) {
-        final User user = new User(delta.getUsername().toString());
-        user.email(new EmailAddress(delta.getEmail()));
-        for (final String role : delta.getRoles()) {
-            user.addRole(role);
-        }
-        _users.createUser(user, delta.getPassword());
-        return map(user);
+    public UserSummary createUser(final UserDelta delta, final String password) {
+        return map(_users.createUser(delta, password));
     }
 
     /** {@inheritDoc} */
@@ -344,17 +336,7 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     public UserSummary updateUser(final UserDelta delta) {
-        // FIXME: Refactor - horrible.
-        final User user = new User(delta.getUsername().toString());
-        user.email(new EmailAddress(delta.getEmail()));
-        for (final String role : delta.getRoles()) {
-            user.addRole(role);
-        }
-        user.id(toUUID(delta.getId()));
-
-        _users.updateUser(user, delta.getPassword());
-
-        return map(user);
+        return map(_users.updateUser(delta));
     }
 
     /** {@inheritDoc} */
@@ -511,5 +493,11 @@ public class CommandsEJB
     public void updateCacheDuration(final ID resourceId,
                                     final Duration duration) {
         _resources.updateCache(toUUID(resourceId), duration);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateUserPassword(final ID userId, final String password) {
+        _users.updatePassword(toUUID(userId),password);
     }
 }

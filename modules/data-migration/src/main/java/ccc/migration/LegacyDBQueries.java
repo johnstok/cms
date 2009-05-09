@@ -20,7 +20,6 @@ import ccc.migration.ccc6.handlers.StyleSheetSelector;
 import ccc.migration.ccc6.handlers.UserEmailSelector;
 import ccc.migration.ccc6.handlers.UserRolesSelector;
 import ccc.services.api.FileDelta;
-import ccc.services.api.UserDelta;
 
 /**
  * Queries for data migration.
@@ -83,7 +82,7 @@ public class LegacyDBQueries {
      *
      * @return The list of users.
      */
-    public Map<Integer, UserDelta> selectUsers() {
+    public Map<Integer, ExistingUser> selectUsers() {
         final AllUsersSelector rsh = new AllUsersSelector(this);
         return _db.select(rsh);
     }

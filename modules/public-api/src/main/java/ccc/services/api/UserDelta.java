@@ -16,14 +16,12 @@ import java.util.Set;
 
 
 /**
- * TODO: Add Description for this type.
- * TODO: Can we subclass {@link UserSummary}?
+ * A delta class, for updating a user.
  *
  * @author Civic Computing Ltd.
  */
 public final class UserDelta implements Serializable {
     private ID _id;
-    private String _password;
     private String _email;
     private Username _username;
     private Set<String> _roles;
@@ -40,12 +38,10 @@ public final class UserDelta implements Serializable {
      * @param roles
      */
     public UserDelta(final ID id,
-                     final String password,
                      final String email,
                      final Username username,
                      final Set<String> roles) {
         _id = id;
-        _password = password;
         _email = email;
         _username = username;
         _roles = roles;
@@ -69,26 +65,6 @@ public final class UserDelta implements Serializable {
      */
     public void setId(final ID id) {
         _id = id;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the password.
-     */
-    public String getPassword() {
-        return _password;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param password The password to set.
-     */
-    public void setPassword(final String password) {
-        _password = password;
     }
 
 

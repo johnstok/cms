@@ -22,7 +22,7 @@
         <param name="type">ccc.services.api.Action</param>
     </typedef>
     <typedef class="ccc.persistence.jpa.EnumUserType" name="StatusType">
-        <param name="type">ccc.actions.Action$Status</param>
+        <param name="type">ccc.services.api.ActionStatus</param>
     </typedef>
     
     <class name="ccc.actions.Action" table="actions">

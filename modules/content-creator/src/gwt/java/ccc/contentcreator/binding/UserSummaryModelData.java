@@ -20,6 +20,7 @@ import java.util.Set;
 import ccc.services.api.ActionSummary;
 import ccc.services.api.ID;
 import ccc.services.api.UserSummary;
+import ccc.services.api.Username;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 
@@ -110,5 +111,14 @@ public class UserSummaryModelData
      */
     public ID getId() {
         return _us.getId();
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
+    public Username getUsername() {
+        return _us.getUsername();
     }
 }
