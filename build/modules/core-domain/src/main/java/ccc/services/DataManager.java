@@ -17,10 +17,9 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.UUID;
 
-import javax.activation.MimeType;
-
 import ccc.domain.Data;
 import ccc.domain.File;
+import ccc.services.api.FileDelta;
 
 
 /**
@@ -77,18 +76,10 @@ public interface DataManager {
      *
      * @param dataStream The input stream from which the bytes for the new file
      *        should be read.
-     * @param fileId The uuid of the file to update.
-     * @param title The new title for the file.
-     * @param description The new description for the file.
-     * @param mimeType The mime type of the new file.
-     * @param size The size of the new file.
+     * @param fileDelta The delta describing changes to the file's metadata.
      */
-    void updateFile(UUID fileId,
-                    String title,
-                    String description,
-                    MimeType mimeType,
-                    int size,
-                    InputStream dataStream);
+    void updateFile(final FileDelta fd,
+                    final InputStream dataStream);
 
     /**
      * Returns a list of all images.

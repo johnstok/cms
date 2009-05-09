@@ -138,9 +138,9 @@ public class LegacyDBQueries {
     /**
      * Returns all files from the legacy database.
      *
-     * @return The list of files as FileDeltas.
+     * @return The files as FileDeltas.
      */
-    public List<FileDelta> selectFiles() {
+    public Map<String,FileDelta> selectFiles() {
         final FileSelector query = new FileSelector();
         return _db.select(query, "FILE");
     }
@@ -148,9 +148,9 @@ public class LegacyDBQueries {
     /**
      * Returns all images from the legacy database.
      *
-     * @return The list of images as FileDeltas.
+     * @return The images as FileDeltas.
      */
-    public List<FileDelta> selectImages() {
+    public Map<String,FileDelta> selectImages() {
         final FileSelector query = new FileSelector();
         return _db.select(query, "IMAGE");
     }

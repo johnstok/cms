@@ -107,23 +107,25 @@ public class FileUploader {
     }
 
     void uploadFile(final ResourceSummary filesResource,
+                    final String fileName,
                     final FileDelta legacyFile,
                     final File file) {
         try {
             final PostMethod filePost =
                 new PostMethod(_targetUploadURL);
-            log.debug("Migrating file: "+legacyFile.getName());
+            log.debug("Migrating file: "+fileName);
             final String name =
-                ResourceName.escape(legacyFile.getName()).toString();
+                ResourceName.escape(fileName).toString();
 
-            String title = legacyFile.getTitle();
-            if (title == null) {
-                title = legacyFile.getTitle();
-            }
+            final String title =
+                (null!=legacyFile.getTitle())
+                    ? legacyFile.getTitle()
+                    : fileName;
+
             final String description =
-                (legacyFile.getDescription() == null)
-                    ? ""
-                    :legacyFile.getDescription();
+                (null!=legacyFile.getDescription())
+                    ? legacyFile.getDescription()
+                    : "";
 
             final FilePart fp = new FilePart("file", file.getName(), file);
             fp.setContentType(_mimemap.getContentType(file));
@@ -161,14 +163,15 @@ public class FileUploader {
 
 
     void uploadFile(final ResourceSummary filesResource,
-                            final FileDelta legacyFile,
-                            final String directory) {
+                    final String fileName,
+                    final FileDelta legacyFile,
+                    final String directory) {
 
-        final File file = new File(directory+legacyFile.getName());
+        final File file = new File(directory+fileName);
         if (!file.exists()) {
-            log.debug("File not found: "+legacyFile.getName());
+            log.debug("File not found: "+fileName);
         } else {
-            uploadFile(filesResource, legacyFile, file);
+            uploadFile(filesResource, fileName, legacyFile, file);
         }
     }
 

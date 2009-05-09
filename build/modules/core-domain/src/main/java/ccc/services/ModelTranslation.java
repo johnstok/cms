@@ -295,10 +295,10 @@ public class ModelTranslation {
         final FileDelta delta =
             new FileDelta(
                 toID(file.id()),
-                file.name().toString(),
                 file.title(),
-                file.description()
-            );
+                file.description(),
+                file.mimeType().toString(),
+                file.size());
         return delta;
     }
 
