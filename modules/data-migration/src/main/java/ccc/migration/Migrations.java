@@ -209,20 +209,27 @@ public class Migrations {
 
 
     private void migrateManagedFilesAndImages() {
-        final List<FileDelta> files =_legacyQueries.selectFiles();
-        for (final FileDelta legacyFile : files) {
-            _fu.uploadFile(_filesFolder, legacyFile,
+        final Map<String,FileDelta> files =_legacyQueries.selectFiles();
+        for (final Map.Entry<String, FileDelta> legacyFile : files.entrySet()) {
+            _fu.uploadFile(
+                _filesFolder,
+                legacyFile.getKey(),
+                legacyFile.getValue(),
                 _props.getProperty("filesSourcePath"));
         }
 
-        final List<FileDelta> images = _legacyQueries.selectImages();
-        for (final FileDelta legacyFile : images) {
-            _fu.uploadFile(_contentImagesFolder, legacyFile,
+        final Map<String,FileDelta> images = _legacyQueries.selectImages();
+        for (final Map.Entry<String, FileDelta> legacyFile : images.entrySet()) {
+            _fu.uploadFile(
+                _contentImagesFolder,
+                legacyFile.getKey(),
+                legacyFile.getValue(),
                 _props.getProperty("imagesSourcePath"));
         }
     }
 
     private void migrateImages() {
+        final Map<String, FileDelta> managedImages = _legacyQueries.selectImages();
         final String imagePath = _props.getProperty("imagesSourcePath");
         final File imageDir = new File(imagePath);
         if (!imageDir.exists()) {
@@ -232,13 +239,7 @@ public class Migrations {
         } else {
             final File[] images = imageDir.listFiles();
             for (final File file : images) {
-                boolean managedImage = false;
-                final List<FileDelta> managedImages = _legacyQueries.selectImages();
-                for (final FileDelta legacyFile : managedImages) {
-                    if (file.getName().equals(legacyFile.getName())) {
-                        managedImage = true;
-                    }
-                }
+                final boolean managedImage = isManaged(managedImages, file);
 
                 if (!managedImage && file.isFile()
                         && !(file.getName().startsWith("ccc")
@@ -247,12 +248,30 @@ public class Migrations {
 
                     final FileDelta legacyFile =
                         new FileDelta(
-                            null, file.getName(), null, "Migrated file.");
-                    _fu.uploadFile(_assetsImagesFolder, legacyFile, file);
+                            null,
+                            file.getName(),
+                            "Migrated file.",
+                            null,
+                            -1);
+                    _fu.uploadFile(
+                        _assetsImagesFolder, file.getName(), legacyFile, file);
                 }
             }
         }
         log.info("Migrated non-managed images.");
+    }
+
+
+    private boolean isManaged(final Map<String, FileDelta> managedImages,
+                              final File file) {
+
+        boolean managedImage = false;
+        for (final Map.Entry<String, FileDelta> legacyFile : managedImages.entrySet()) {
+            if (file.getName().equals(legacyFile.getKey())) {
+                managedImage = true;
+            }
+        }
+        return managedImage;
     }
 
     private void migrateCss() {
@@ -263,13 +282,17 @@ public class Migrations {
         } else if (!cssDir.isDirectory()) {
             log.warn(cssPath+" is not a directory");
         } else {
-            final File[] images = cssDir.listFiles();
-            for (final File file : images) {
+            final File[] css = cssDir.listFiles();
+            for (final File file : css) {
                 if (file.isFile() && file.getName().endsWith(".css"))  {
                     final FileDelta legacyFile =
                         new FileDelta(
-                            null, file.getName(), null, "migrated file");
-                    _fu.uploadFile(_cssFolder, legacyFile, file);
+                            null,
+                            file.getName(),
+                            "Migrated file.",
+                            null,
+                            -1);
+                    _fu.uploadFile(_cssFolder, file.getName(), legacyFile, file);
                 }
             }
         }

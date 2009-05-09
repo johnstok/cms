@@ -2,8 +2,8 @@ package ccc.migration.ccc6.handlers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import ccc.services.api.FileDelta;
 
@@ -14,21 +14,22 @@ import ccc.services.api.FileDelta;
  */
 public final class FileSelector
     implements
-        SqlQuery<List<FileDelta>> {
+        SqlQuery<Map<String,FileDelta>> {
 
     /** {@inheritDoc} */
     @Override
-    public List<FileDelta> handle(final ResultSet rs) throws SQLException {
-        final List<FileDelta> results = new ArrayList<FileDelta>();
+    public Map<String,FileDelta> handle(final ResultSet rs) throws SQLException {
+        final Map<String,FileDelta> results = new HashMap<String,FileDelta>();
 
         while (rs.next()) {
             final FileDelta file =
                 new FileDelta(
                     null,
-                    rs.getString("object_name"),
                     rs.getString("object_title"),
-                    rs.getString("classification"));
-            results.add(file);
+                    rs.getString("classification"),
+                    null,
+                    -1);
+            results.put(rs.getString("object_name"), file);
         }
 
         return results;

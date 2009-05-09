@@ -3,16 +3,16 @@ package ccc.contentcreator.remoting;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.UUID;
 
-import javax.activation.MimeType;
-import javax.activation.MimeTypeParseException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
+
+import ccc.services.api.FileDelta;
+import ccc.services.api.ID;
 
 
 /**
@@ -38,23 +38,19 @@ public class UpdateFileServlet extends CreatorServlet {
 
         try {
             final MultipartForm form = new MultipartForm(request);
+            final FileItem file = form.get("file");
 
-            final FileItem file        = form.get("file");
-            final FileItem id          = form.get("id");
-            final FileItem title       = form.get("title");
-            final FileItem description = form.get("description");
-
-
+            final FileDelta delta =
+                new FileDelta(
+                    new ID(form.get("id").getString()),
+                    form.get("title").getString(),
+                    form.get("description").getString(),
+                    file.getContentType(),
+                    (int) file.getSize());
             final InputStream dataStream = file.getInputStream();
+
             try {
-                _services.dataManager().updateFile(
-                    UUID.fromString(id.getString()),
-                    title.getString(),
-                    description.getString(),
-                    new MimeType(file.getContentType()),
-                    (int) file.getSize(),
-                    dataStream
-                );
+                _services.dataManager().updateFile(delta, dataStream);
             } finally {
                 try {
                     dataStream.close();
@@ -65,7 +61,7 @@ public class UpdateFileServlet extends CreatorServlet {
 
             response.getWriter().write("File was updated successfully.");
 
-        } catch (final MimeTypeParseException e) {
+        } catch (final RuntimeException e) {
             response.getWriter().write("File update failed. "+e.getMessage());
             LOG.error("File update failed "+e.getMessage(), e);
         }

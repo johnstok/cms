@@ -21,9 +21,10 @@ import java.io.Serializable;
  */
 public final class FileDelta implements Serializable {
     private ID     _id;
-    private String _name;
     private String _title;
     private String _description;
+    private String _mimeType;
+    private int _size;
 
     @SuppressWarnings("unused") private FileDelta() { super(); }
 
@@ -31,18 +32,21 @@ public final class FileDelta implements Serializable {
      * Constructor.
      *
      * @param id The file's id.
-     * @param name The file's name.
      * @param title The file's title.
      * @param description The file's description.
+     * @param mimeType The file's mime type.
+     * @param size The file's size.
      */
     public FileDelta(final ID id,
-                     final String name,
                      final String title,
-                     final String description) {
+                     final String description,
+                     final String mimeType,
+                     final int size) {
         _id = id;
-        _name = name;
         _title = title;
         _description = description;
+        _mimeType = mimeType;
+        _size = size;
     }
 
 
@@ -63,26 +67,6 @@ public final class FileDelta implements Serializable {
      */
     public void setId(final ID id) {
         _id = id;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the name.
-     */
-    public String getName() {
-        return _name;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param name The name to set.
-     */
-    public void setName(final String name) {
-        _name = name;
     }
 
 
@@ -123,5 +107,25 @@ public final class FileDelta implements Serializable {
      */
     public void setDescription(final String description) {
         _description = description;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the mimeType.
+     */
+    public String getMimeType() {
+        return _mimeType;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the size.
+     */
+    public int getSize() {
+        return _size;
     }
 }

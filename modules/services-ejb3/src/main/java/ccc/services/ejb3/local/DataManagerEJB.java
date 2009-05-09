@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.activation.MimeType;
+import javax.activation.MimeTypeParseException;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Local;
@@ -45,6 +46,7 @@ import ccc.services.QueryNames;
 import ccc.services.ResourceDao;
 import ccc.services.ResourceDaoImpl;
 import ccc.services.UserManager;
+import ccc.services.api.FileDelta;
 
 
 /**
@@ -93,20 +95,22 @@ public class DataManagerEJB implements DataManager {
 
     /** {@inheritDoc} */
     @Override
-    public void updateFile(final UUID fileId,
-                           final String title,
-                           final String description,
-                           final MimeType mimeType,
-                           final int size,
+    public void updateFile(final FileDelta fd,
                            final InputStream dataStream) {
-
-        final File f = _dao.findLocked(File.class, fileId);
-        f.title(title);
-        f.description(description);
-        f.mimeType(mimeType);
-        f.size(size);
-        f.data(create(dataStream, size));
-        _dao.update(f);
+        try {
+            final File f =
+                _dao.findLocked(
+                    File.class, UUID.fromString(fd.getId().toString()));
+            f.title(fd.getTitle());
+            f.description(fd.getDescription());
+            f.mimeType(new MimeType(fd.getMimeType()));
+            f.size(fd.getSize());
+            f.data(create(dataStream, fd.getSize()));
+            _dao.update(f);
+        } catch (final MimeTypeParseException e) {
+            // Throw a runtime exception to roll back the txn.
+            throw new CCCException(e);
+        }
     }
 
 
