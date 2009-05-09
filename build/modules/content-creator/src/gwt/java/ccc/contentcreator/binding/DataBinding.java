@@ -21,7 +21,7 @@ import ccc.services.api.ActionSummary;
 import ccc.services.api.FileSummary;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.ResourceSummary;
-import ccc.services.api.TemplateDelta;
+import ccc.services.api.TemplateSummary;
 import ccc.services.api.UserSummary;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
@@ -90,11 +90,11 @@ public final class DataBinding {
 
 
     public static List<TemplateSummaryModelData> bindTemplateDelta(
-                                         final Collection<TemplateDelta> list) {
+                                         final Collection<TemplateSummary> list) {
         final List<TemplateSummaryModelData> boundData =
             new ArrayList<TemplateSummaryModelData>();
-        for (final TemplateDelta td : list) {
-            boundData.add(new TemplateSummaryModelData(td));
+        for (final TemplateSummary ts : list) {
+            boundData.add(new TemplateSummaryModelData(ts));
         }
         return boundData;
     }

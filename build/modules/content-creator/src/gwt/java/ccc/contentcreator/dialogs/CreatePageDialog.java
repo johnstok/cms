@@ -34,6 +34,7 @@ import ccc.services.api.PageDelta;
 import ccc.services.api.ParagraphDelta;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
+import ccc.services.api.TemplateSummary;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style;
@@ -100,7 +101,7 @@ public class CreatePageDialog
      * @param ssm SingleSelectionModel to update.
      */
     public CreatePageDialog(
-                    final Collection<TemplateDelta> list,
+                    final Collection<TemplateSummary> list,
                     final ResourceSummaryModelData parent,
                     final SingleSelectionModel<ResourceSummaryModelData> ssm) {
         super(Globals.uiConstants().createPage());
@@ -328,13 +329,8 @@ public class CreatePageDialog
                 final PageDelta page =
                     new PageDelta(
                         null,
-                        _second.name().getValue(),
                         _second.title().getValue(),
-                        null,
-                        "",
-                        _publish.getValue().booleanValue(),
-                        paragraphs,
-                        null
+                        paragraphs
                     );
 
                 final ID template =
@@ -347,6 +343,8 @@ public class CreatePageDialog
                 commands().createPage(
                     _parent.getId(),
                     page,
+                    _second.name().getValue(),
+                    _publish.getValue().booleanValue(),
                     template,
                     new ErrorReportingCallback<ResourceSummary>() {
                         public void onSuccess(final ResourceSummary result) {

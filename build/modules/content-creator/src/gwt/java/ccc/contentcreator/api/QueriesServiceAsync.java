@@ -25,6 +25,7 @@ import ccc.services.api.PageDelta;
 import ccc.services.api.ResourceDelta;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
+import ccc.services.api.TemplateSummary;
 import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
 import ccc.services.api.Username;
@@ -44,7 +45,7 @@ public interface QueriesServiceAsync {
     void resource(ID resourceId,
                   AsyncCallback<ResourceSummary> callback);
 
-    void templates(AsyncCallback<Collection<TemplateDelta>> callback);
+    void templates(AsyncCallback<Collection<TemplateSummary>> callback);
 
     void getFolderChildren(ID folderId,
                            AsyncCallback<Collection<ResourceSummary>> callback);
@@ -116,4 +117,6 @@ public interface QueriesServiceAsync {
     void roles(final ID resourceId, AsyncCallback<Collection<String>> asyncCallback);
 
     void cacheDuration(ID resourceId, AsyncCallback<Duration> asyncCallback);
+
+    void computeTemplate(ID resourceId, AsyncCallback<TemplateSummary> callback);
 }

@@ -59,6 +59,7 @@ import ccc.services.api.Queries;
 import ccc.services.api.ResourceDelta;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
+import ccc.services.api.TemplateSummary;
 import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
 import ccc.services.api.Username;
@@ -330,4 +331,11 @@ public final class QueriesEJB
         _resources = new ResourceDaoImpl(_users, audit, bdao);
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public TemplateSummary computeTemplate(final ID resourceId) {
+        final Resource r =
+            _resources.find(Resource.class, toUUID(resourceId));
+        return mapTemplate(r.computeTemplate(null));
+    }
 }

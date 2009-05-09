@@ -53,6 +53,7 @@ public class UpdateAliasDialog extends AbstractEditDialog {
      * @param targetRoot The root of the target resource
      */
     public UpdateAliasDialog(final AliasDelta delta,
+                             final String aliasName,
                            final ResourceTable rt,
                            final ResourceSummary targetRoot) {
         super(Globals.uiConstants().updateAlias());
@@ -65,7 +66,7 @@ public class UpdateAliasDialog extends AbstractEditDialog {
 
         _aliasName.setFieldLabel(constants().name());
         _aliasName.setId("AliasName");
-        _aliasName.setValue(_alias.getName());
+        _aliasName.setValue(aliasName);
         _aliasName.setReadOnly(true);
         _aliasName.disable();
         addField(_aliasName);

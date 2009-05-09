@@ -121,7 +121,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
         _definition.setValue(_model.getDefinition());
         _description.setValue(_model.getDescription());
         _templateTitle.setValue(_model.getTitle());
-        _name.setValue(_model.getName());
+        _name.setValue(proxy.getName());
     }
 
     private void populateFirstScreen() {
@@ -178,7 +178,6 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
         final TemplateDelta delta =
             new TemplateDelta(
                 _id,
-                _name.getValue(),
                 _templateTitle.getValue(),
                 _description.getValue(),
                 _body.getValue(),
@@ -243,6 +242,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                             commands().createTemplate(
                             _parentFolderId,
                             delta,
+                            _name.getValue(),
                             new ErrorReportingCallback<ResourceSummary>(){
                                 public void onSuccess(final ResourceSummary arg0) {
                                     _ssm.create(

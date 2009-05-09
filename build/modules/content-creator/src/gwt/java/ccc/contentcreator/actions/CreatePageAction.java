@@ -9,7 +9,7 @@ import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.CreatePageDialog;
-import ccc.services.api.TemplateDelta;
+import ccc.services.api.TemplateSummary;
 
 /**
  * TODO: Add Description for this type.
@@ -41,9 +41,9 @@ public final class CreatePageAction
             return;
         }
         _queries.templates(
-            new ErrorReportingCallback<Collection<TemplateDelta>>(){
+            new ErrorReportingCallback<Collection<TemplateSummary>>(){
                 public void onSuccess(
-                                      final Collection<TemplateDelta> list) {
+                                      final Collection<TemplateSummary> list) {
                     new CreatePageDialog(list, item, _selectionModel).show();
                 }
             }

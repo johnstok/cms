@@ -19,14 +19,15 @@ import java.io.Serializable;
  *
  * @author Civic Computing Ltd.
  */
-public final class TemplateDelta implements Serializable {
+public final class TemplateSummary implements Serializable {
     private ID     _id;
+    private String _name;
     private String _title;
     private String _description;
     private String _body;
     private String _definition;
 
-    @SuppressWarnings("unused") private TemplateDelta() { super(); }
+    @SuppressWarnings("unused") private TemplateSummary() { super(); }
 
     /**
      * Constructor.
@@ -38,12 +39,14 @@ public final class TemplateDelta implements Serializable {
      * @param body
      * @param definition
      */
-    public TemplateDelta(final ID     id,
+    public TemplateSummary(final ID   id,
+                         final String name,
                          final String title,
                          final String description,
                          final String body,
                          final String definition) {
         _id = id;
+        _name = name;
         _title = title;
         _description = description;
         _body = body;
@@ -62,12 +65,12 @@ public final class TemplateDelta implements Serializable {
 
 
     /**
-     * Mutator.
+     * Accessor.
      *
-     * @param id The id to set.
+     * @return Returns the name.
      */
-    public void setId(final ID id) {
-        _id = id;
+    public String getName() {
+        return _name;
     }
 
 
@@ -82,32 +85,12 @@ public final class TemplateDelta implements Serializable {
 
 
     /**
-     * Mutator.
-     *
-     * @param title The title to set.
-     */
-    public void setTitle(final String title) {
-        _title = title;
-    }
-
-
-    /**
      * Accessor.
      *
      * @return Returns the description.
      */
     public String getDescription() {
         return _description;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param description The description to set.
-     */
-    public void setDescription(final String description) {
-        _description = description;
     }
 
 
@@ -122,31 +105,11 @@ public final class TemplateDelta implements Serializable {
 
 
     /**
-     * Mutator.
-     *
-     * @param body The body to set.
-     */
-    public void setBody(final String body) {
-        _body = body;
-    }
-
-
-    /**
      * Accessor.
      *
      * @return Returns the definition.
      */
     public String getDefinition() {
         return _definition;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param definition The definition to set.
-     */
-    public void setDefinition(final String definition) {
-        _definition = definition;
     }
 }

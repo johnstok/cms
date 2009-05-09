@@ -90,9 +90,9 @@ public interface CommandServiceAsync {
 
     void createUser(UserDelta delta, String password, AsyncCallback<UserSummary> callback);
 
-    void createPage(ID parentId, PageDelta delta, ID templateId, AsyncCallback<ResourceSummary> callback);
+    void createPage(ID parentId, PageDelta delta, String pageName, final boolean publish, ID templateId, AsyncCallback<ResourceSummary> callback);
 
-    void createTemplate(ID parentId, TemplateDelta delta, AsyncCallback<ResourceSummary> callback);
+    void createTemplate(ID parentId, TemplateDelta delta, String name, AsyncCallback<ResourceSummary> callback);
 
     void createRoot(String name, AsyncCallback<ResourceSummary> callback);
 

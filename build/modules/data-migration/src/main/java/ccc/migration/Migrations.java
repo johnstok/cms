@@ -428,7 +428,7 @@ public class Migrations {
 //      final String userId =
 //          determineActor(r.contentId(), version, "%", "MADE LIVE");
         final ResourceSummary rs =
-            _commands.createPage(parentFolderId, delta, null);  // FIXME: Specify actor & date
+            _commands.createPage(parentFolderId, delta, r.name(), false, null);  // FIXME: Specify actor & date
         log.debug("Created page: "+r.contentId());
         return rs;
     }
@@ -499,10 +499,6 @@ public class Migrations {
     private PageDelta assemblePage(final ResourceBean r,
                                    final String id,
                                    final int version) {
-
-
-
-
         final List<ParagraphDelta> paragraphDeltas =
             new ArrayList<ParagraphDelta>();
         final Map<String, StringBuffer> paragraphs =
@@ -543,13 +539,8 @@ public class Migrations {
         final PageDelta delta =
             new PageDelta(
                 new ID(id),
-                r.name(),
                 (null==r.title())?r.name():r.title(),
-                null,
-                null,
-                false,
-                paragraphDeltas,
-                null
+                paragraphDeltas
             );
 
         return delta;
@@ -588,13 +579,12 @@ public class Migrations {
             new TemplateDelta(
                 null,
                 templateName,
-                templateName,
                 "No description.",
                 "Empty template!",
                 "<fields/>"
             );
         final ResourceSummary ts =
-            _commands.createTemplate(_templateFolder.getId(), t);  // FIXME: Specify actor & date
+            _commands.createTemplate(_templateFolder.getId(), t, templateName);  // FIXME: Specify actor & date
 
         _templates.put(templateName, ts);
     }

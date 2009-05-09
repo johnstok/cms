@@ -27,7 +27,7 @@ import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ParagraphDelta;
-import ccc.services.api.TemplateDelta;
+import ccc.services.api.TemplateSummary;
 
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -52,7 +52,7 @@ public class UpdatePageDialog
     private final EditPagePanel _panel = new EditPagePanel();
 
     private PageDelta _page;
-    private TemplateDelta _template;
+    private TemplateSummary _template;
     private final ResourceTable _rt;
 
 
@@ -78,7 +78,8 @@ public class UpdatePageDialog
      * @param rt ResourceTable required in order to refresh the contents.
      */
     public UpdatePageDialog(final PageDelta page,
-                            final TemplateDelta template,
+                            final String pageName,
+                            final TemplateSummary template,
                             final ResourceTable rt) {
         super(Globals.uiConstants().updateContent());
         _rt = rt;
@@ -87,13 +88,13 @@ public class UpdatePageDialog
 
         setLayout(new FitLayout());
 
-        drawGUI();
+        drawGUI(pageName);
     }
 
-    private void drawGUI() {
+    private void drawGUI(final String pageName) {
         _panel.setScrollMode(Style.Scroll.ALWAYS);
         _panel.createFields(_template.getDefinition());
-        _panel.populateFields(_page);
+        _panel.populateFields(_page, pageName);
         _panel.layout();
 
         add(_panel);
