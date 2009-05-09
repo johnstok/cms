@@ -43,6 +43,7 @@ import ccc.contentcreator.dialogs.UpdatePageDialog;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.FileDelta;
 import ccc.services.api.PageDelta;
+import ccc.services.api.ResourceType;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserSummary;
 
@@ -163,20 +164,29 @@ public class ResourceContextMenu
                 } else {
                     addUnpublishResource();
                 }
-                if ("PAGE".equals(item.getType())) {
-                    addEditResource();
-                    addChooseTemplate();
-                } else if ("ALIAS".equals(item.getType())) {
-                    addEditResource();
-                } else if ("FOLDER".equals(item.getType())) {
-                    addChooseTemplate();
-                    addFolderSortOrder();
-                } else if ("TEMPLATE".equals(item.getType())) {
-                    addEditResource();
-                } else if ("FILE".equals(item.getType())) {
-                    addEditResource();
-                } else if ("SEARCH".equals(item.getType())) {
-                    addChooseTemplate();
+                switch (item.getType()) {
+                    case FOLDER:
+                        addChooseTemplate();
+                        addFolderSortOrder();
+                        break;
+                    case PAGE:
+                        addEditResource();
+                        addChooseTemplate();
+                        break;
+                    case TEMPLATE:
+                        addEditResource();
+                        break;
+                    case ALIAS:
+                        addEditResource();
+                        break;
+                    case FILE:
+                        addEditResource();
+                        break;
+                    case SEARCH:
+                        addChooseTemplate();
+                        break;
+                    default:
+                        break;
                 }
                 addMove();
                 addRename();
@@ -196,7 +206,7 @@ public class ResourceContextMenu
                     add(new SeparatorMenuItem());
                     addPreviewWorkingCopy();
                     addDeleteWorkingCopy();
-                    if ("FILE".equals(item.getType())) {
+                    if (ResourceType.FILE==item.getType()) {
                         addApplyWorkingCopy();
                     }
                 }
@@ -287,7 +297,7 @@ public class ResourceContextMenu
         update.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override public void componentSelected(final MenuEvent ce) {
                     final ResourceSummaryModelData item = _table.tableSelection();
-                    if ("TEMPLATE".equals(item.getType())) {
+                    if (ResourceType.TEMPLATE==item.getType()) {
                         _qs.templateDelta(
                             item.getId().toString(),
                             new ErrorReportingCallback<TemplateDelta>(){
@@ -300,7 +310,7 @@ public class ResourceContextMenu
                                 }
                             }
                         );
-                    } else if ("PAGE".equals(item.getType())) {
+                    } else if (ResourceType.PAGE==item.getType()) {
                         _qs.workingCopyDelta(
                             item.getId().toString(),
                             new ErrorReportingCallback<PageDelta>() {
@@ -318,7 +328,7 @@ public class ResourceContextMenu
                                 }
                             }
                         );
-                    } else if ("ALIAS".equals(item.getType())) {
+                    } else if (ResourceType.ALIAS==item.getType()) {
                         _qs.aliasDelta(
                             item.getId().toString(),
                             new ErrorReportingCallback<AliasDelta>() {
@@ -331,7 +341,7 @@ public class ResourceContextMenu
                                 }
                             }
                         );
-                    } else if ("FILE".equals(item.getType())) {
+                    } else if (ResourceType.FILE==item.getType()) {
                         _qs.fileDelta(
                             item.getId().toString(),
                             new ErrorReportingCallback<FileDelta>() {

@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import ccc.services.api.ActionStatus;
 import ccc.services.api.ActionSummary;
 import ccc.services.api.ID;
 
@@ -119,7 +120,7 @@ public class ActionSummaryModelData
      *
      * @return
      */
-    public String getStatus() {
+    public ActionStatus getStatus() {
         return _as.getStatus();
     }
 
@@ -137,7 +138,7 @@ public class ActionSummaryModelData
      *
      * @param string
      */
-    public void setStatus(final String status) {
+    public void setStatus(final ActionStatus status) {
         _as.setStatus(status);
     }
 }

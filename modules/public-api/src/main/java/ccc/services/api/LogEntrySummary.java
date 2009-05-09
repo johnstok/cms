@@ -23,7 +23,7 @@ import java.util.Date;
 public final class LogEntrySummary implements Serializable {
     private ID _subject;
     private Action _action;
-    private String _actor;
+    private Username _actor;
     private Date _happenedOn;
     private String _comment;
     private boolean _isMajorEdit;
@@ -44,7 +44,7 @@ public final class LogEntrySummary implements Serializable {
      */
     public LogEntrySummary(final ID      subject,
                            final Action  action,
-                           final String  actor,
+                           final Username  actor,
                            final Date    on,
                            final String  comment,
                            final boolean majorEdit,
@@ -84,7 +84,7 @@ public final class LogEntrySummary implements Serializable {
      *
      * @return Returns the actor.
      */
-    public String getActor() {
+    public Username getActor() {
         return _actor;
     }
 

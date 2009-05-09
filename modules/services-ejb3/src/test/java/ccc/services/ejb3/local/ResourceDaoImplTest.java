@@ -31,7 +31,6 @@ import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
-import ccc.domain.ResourceType;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -40,6 +39,7 @@ import ccc.services.QueryNames;
 import ccc.services.ResourceDaoImpl;
 import ccc.services.UserManager;
 import ccc.services.api.Duration;
+import ccc.services.api.ResourceType;
 
 
 /**

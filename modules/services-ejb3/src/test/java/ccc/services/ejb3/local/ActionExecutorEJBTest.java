@@ -22,6 +22,7 @@ import ccc.domain.Page;
 import ccc.domain.Snapshot;
 import ccc.domain.User;
 import ccc.services.ResourceDao;
+import ccc.services.api.ActionStatus;
 
 
 /**
@@ -57,7 +58,7 @@ public class ActionExecutorEJBTest
 
         // ASSERT
         verify(_rdao);
-        assertEquals(Action.Status.Failed, a.status());
+        assertEquals(ActionStatus.Failed, a.status());
         assertEquals("Oops!", a.failure().getString("message"));
     }
 

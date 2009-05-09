@@ -19,6 +19,7 @@ import ccc.contentcreator.client.UserTable;
 import ccc.contentcreator.validation.Validate;
 import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
+import ccc.services.api.Username;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -55,7 +56,7 @@ public class EditUserPwDialog extends AbstractEditDialog {
         _username.setFieldLabel(constants().username());
         _username.setReadOnly(true);
         _username.setId(constants().username());
-        _username.setValue(_userDTO.getUsername());
+        _username.setValue(_userDTO.getUsername().toString());
         addField(_username);
 
         _password1.setPassword(true);
@@ -97,7 +98,7 @@ public class EditUserPwDialog extends AbstractEditDialog {
     private Runnable updateUser() {
         return new Runnable() {
             public void run() {
-                _userDTO.setUsername(_username.getValue());
+                _userDTO.setUsername(new Username(_username.getValue()));
 
                 String password = null;
                 final String pw1 = _password1.getValue();

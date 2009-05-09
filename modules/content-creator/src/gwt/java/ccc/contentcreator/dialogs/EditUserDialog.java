@@ -24,6 +24,7 @@ import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validator;
 import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
+import ccc.services.api.Username;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -61,7 +62,7 @@ public class EditUserDialog extends AbstractEditDialog {
         _username.setAllowBlank(false);
         _username.setMinLength(Globals.MIN_USER_NAME_LENGTH);
         _username.setId(constants().username());
-        _username.setValue(_userDTO.getUsername());
+        _username.setValue(_userDTO.getUsername().toString());
         addField(_username);
 
         _email.setFieldLabel(constants().email());
@@ -111,7 +112,7 @@ public class EditUserDialog extends AbstractEditDialog {
     private Runnable updateUser() {
         return new Runnable() {
             public void run() {
-                _userDTO.setUsername(_username.getValue());
+                _userDTO.setUsername(new Username(_username.getValue()));
                 _userDTO.setEmail(_email.getValue());
 
                 final Set<String> validRoles = new HashSet<String>();

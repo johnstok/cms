@@ -2,9 +2,9 @@
  * Copyright (c) 2008 Civic Computing Ltd
  * All rights reserved.
  *
- * Revision      $Rev: 712 $
- * Modified by   $Author: keith $
- * Modified on   $Date: 2008-12-11 10:43:47 +0000 (Thu, 11 Dec 2008) $
+ * Revision      $Rev$
+ * Modified by   $Author$
+ * Modified on   $Date$
  *
  * Changes: see subversion log
  *-----------------------------------------------------------------------------
@@ -16,7 +16,7 @@ import ccc.commons.JNDI;
 import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
-import ccc.domain.ResourceType;
+import ccc.services.api.ResourceType;
 import ccc.services.ServiceNames;
 import ccc.services.StatefulReader;
 

@@ -11,6 +11,7 @@ import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.ChooseTemplateDialog;
 import ccc.services.api.ResourceDelta;
+import ccc.services.api.ResourceType;
 import ccc.services.api.TemplateDelta;
 
 /**
@@ -46,9 +47,9 @@ public final class ChooseTemplateAction
             return;
         }
 
-        if ("PAGE".equals(item.getType())
-            || "FOLDER".equals(item.getType())
-            || "SEARCH".equals(item.getType())) {
+        if (ResourceType.PAGE==item.getType()
+            || ResourceType.FOLDER==item.getType()
+            || ResourceType.SEARCH==item.getType()) {
             _queries.resourceDelta(
                 item.getId().toString(),
                 new ErrorReportingCallback<ResourceDelta>(){

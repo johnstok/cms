@@ -16,11 +16,13 @@ import java.util.Set;
 
 import ccc.commons.DBC;
 import ccc.commons.EmailAddress;
+import ccc.services.api.Username;
 
 
 /**
  * A user of the CCC system.
- * TODO: Factor out a 'username' class.
+ * <p>
+ * TODO: Introduce the {@link Username} class.
  *
  * @author Civic Computing Ltd.
  */

@@ -21,11 +21,11 @@ import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.services.api.ResourceSummary;
+import ccc.services.api.ResourceType;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.binder.TreeBinder;
 import com.extjs.gxt.ui.client.data.BaseTreeLoader;
-import com.extjs.gxt.ui.client.data.ModelStringProvider;
 import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.data.TreeLoader;
 import com.extjs.gxt.ui.client.store.TreeStore;
@@ -98,7 +98,7 @@ public class FolderResourceTree extends Tree {
 
             item.setId(model.getAbsolutePath());
 
-            if (!"FOLDER".equals(model.getType())) {
+            if (ResourceType.FOLDER!=model.getType()) {
                 item.setVisible(false);
             }
 
@@ -181,24 +181,7 @@ public class FolderResourceTree extends Tree {
         _binder = new FolderBinder(this, _store);
         _binder.setCaching(false);
         _binder.setDisplayProperty(ResourceSummaryModelData.DISPLAY_PROPERTY);
-        _binder.setIconProvider(new ModelStringProvider<ResourceSummaryModelData>() {
-            public String getStringValue(final ResourceSummaryModelData model,
-                                         final String property) {
-                if (model.getType().equals("FOLDER")) {
-                    return "images/gxt/icons/folder.gif";
-                } else if (model.getType().equals("PAGE")) {
-                    return "images/icons/page.png";
-                } else if (model.getType().equals("TEMPLATE")) {
-                    return "images/icons/page_code.png";
-                } else if (model.getType().equals("ALIAS")) {
-                    return "images/icons/link.png";
-                } else if (model.getType().equals("FILE")) {
-                    return "images/icons/image.png";
-                } else {
-                    return null;
-                }
-            }
-        });
+        _binder.setIconProvider(new ResourceIconProvider());
 
         loader.load(null);
     }

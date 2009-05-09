@@ -11,6 +11,8 @@
  */
 package ccc.domain;
 
+import ccc.services.api.ResourceType;
+
 
 /**
  * A search that can return other results.

@@ -13,6 +13,7 @@ package ccc.actions;
 
 import junit.framework.TestCase;
 import ccc.commons.Exceptions;
+import ccc.services.api.ActionStatus;
 
 
 /**
@@ -36,7 +37,7 @@ public class ActionTest
         a.cancel();
 
         // ASSERT
-        assertEquals(Action.Status.Cancelled, a.status());
+        assertEquals(ActionStatus.Cancelled, a.status());
     }
 
     /**
@@ -52,7 +53,7 @@ public class ActionTest
         a.fail(e);
 
         // ASSERT
-        assertEquals(Action.Status.Failed, a.status());
+        assertEquals(ActionStatus.Failed, a.status());
         assertEquals("Oops!", a.failure().getString("message"));
         assertEquals(
             Exceptions.stackTraceFor(e), a.failure().getString("stack"));
@@ -69,7 +70,7 @@ public class ActionTest
         final Action a = new Action();
 
         // ASSERT
-        assertEquals(Action.Status.Scheduled, a.status());
+        assertEquals(ActionStatus.Scheduled, a.status());
     }
 
     /**
@@ -84,6 +85,6 @@ public class ActionTest
         a.complete();
 
         // ASSERT
-        assertEquals(Action.Status.Complete, a.status());
+        assertEquals(ActionStatus.Complete, a.status());
     }
 }

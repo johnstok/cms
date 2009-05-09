@@ -16,6 +16,8 @@ import junit.framework.TestCase;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ccc.services.api.ResourceType;
+
 
 /**
  * Tests for the {@link Template} class.

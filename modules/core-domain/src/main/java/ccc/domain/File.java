@@ -17,6 +17,7 @@ import javax.activation.MimeTypeParseException;
 import org.apache.log4j.Logger;
 
 import ccc.commons.DBC;
+import ccc.services.api.ResourceType;
 
 
 /**

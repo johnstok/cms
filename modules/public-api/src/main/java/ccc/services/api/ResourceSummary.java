@@ -25,10 +25,10 @@ public final class ResourceSummary implements Serializable {
     private ID _id;
     private ID _parentId;
     private String _name;
-    private String _publishedBy;
+    private Username _publishedBy;
     private String _title;
-    private String _lockedBy;
-    private String _type;
+    private Username _lockedBy;
+    private ResourceType _type;
     private int    _childCount;
     private int    _folderCount;
     private boolean _includeInMainMenu;
@@ -60,10 +60,10 @@ public final class ResourceSummary implements Serializable {
     public ResourceSummary(final ID id,
                            final ID parentId,
                            final String name,
-                           final String publishedBy,
+                           final Username publishedBy,
                            final String title,
-                           final String lockedBy,
-                           final String type,
+                           final Username lockedBy,
+                           final ResourceType type,
                            final int childCount,
                            final int folderCount,
                            final boolean includeInMainMenu,
@@ -123,7 +123,7 @@ public final class ResourceSummary implements Serializable {
      *
      * @return Returns the publishedBy.
      */
-    public String getPublishedBy() {
+    public Username getPublishedBy() {
         return _publishedBy;
     }
 
@@ -143,7 +143,7 @@ public final class ResourceSummary implements Serializable {
      *
      * @return Returns the lockedBy.
      */
-    public String getLockedBy() {
+    public Username getLockedBy() {
         return _lockedBy;
     }
 
@@ -153,7 +153,7 @@ public final class ResourceSummary implements Serializable {
      *
      * @return Returns the type.
      */
-    public String getType() {
+    public ResourceType getType() {
         return _type;
     }
 

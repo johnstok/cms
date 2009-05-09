@@ -24,11 +24,11 @@ public final class ActionSummary implements Serializable {
 
     private ID _id;
     private Action _type;
-    private String _actor;
+    private Username _actor;
     private Date   _executeAfter;
-    private String _subjectType;
+    private ResourceType _subjectType;
     private String _subjectPath;
-    private String _status;
+    private ActionStatus _status;
 
     @SuppressWarnings("unused") private ActionSummary() { super(); }
 
@@ -45,11 +45,11 @@ public final class ActionSummary implements Serializable {
      */
     public ActionSummary(final ID     id,
                          final Action type,
-                         final String actor,
+                         final Username actor,
                          final Date   after,
-                         final String subjectType,
+                         final ResourceType subjectType,
                          final String path,
-                         final String status) {
+                         final ActionStatus status) {
         _id = id;
         _type = type;
         _actor = actor;
@@ -85,7 +85,7 @@ public final class ActionSummary implements Serializable {
      *
      * @return Returns the actor.
      */
-    public String getActor() {
+    public Username getActor() {
         return _actor;
     }
 
@@ -105,7 +105,7 @@ public final class ActionSummary implements Serializable {
      *
      * @return Returns the subjectType.
      */
-    public String getSubjectType() {
+    public ResourceType getSubjectType() {
         return _subjectType;
     }
 
@@ -125,7 +125,7 @@ public final class ActionSummary implements Serializable {
      *
      * @return Returns the status.
      */
-    public String getStatus() {
+    public ActionStatus getStatus() {
         return _status;
     }
 
@@ -134,7 +134,7 @@ public final class ActionSummary implements Serializable {
      *
      * @param status The status to set.
      */
-    public void setStatus(final String status) {
+    public void setStatus(final ActionStatus status) {
         _status = status;
     }
 }

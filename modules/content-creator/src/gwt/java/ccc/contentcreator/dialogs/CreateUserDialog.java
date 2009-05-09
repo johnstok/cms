@@ -22,6 +22,7 @@ import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validator;
 import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
+import ccc.services.api.Username;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -138,7 +139,7 @@ public class CreateUserDialog extends AbstractEditDialog {
                         null,
                         _password1.getValue(),
                         _email.getValue(),
-                        _username.getValue(),
+                        new Username(_username.getValue()),
                         new HashSet<String>()),
                     new ErrorReportingCallback<UserSummary>() {
                         public void onSuccess(final UserSummary result) {
