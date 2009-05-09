@@ -12,7 +12,7 @@ import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.ChooseTemplateDialog;
 import ccc.services.api.ResourceDelta;
 import ccc.services.api.ResourceType;
-import ccc.services.api.TemplateDelta;
+import ccc.services.api.TemplateSummary;
 
 /**
  * TODO: Add Description for this type.
@@ -55,9 +55,9 @@ public final class ChooseTemplateAction
                 new ErrorReportingCallback<ResourceDelta>(){
                     public void onSuccess(final ResourceDelta delta) {
                         _queries.templates(
-                        new ErrorReportingCallback<Collection<TemplateDelta>>(){
+                        new ErrorReportingCallback<Collection<TemplateSummary>>(){
                             public void onSuccess(
-                                final Collection<TemplateDelta> templates) {
+                                final Collection<TemplateSummary> templates) {
                                 new ChooseTemplateDialog(
                                     delta.getId(),
                                     delta.getTemplateId(),

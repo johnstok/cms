@@ -80,8 +80,8 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      *
      * @param resourceSummary PageDTO of the original page.
      */
-    public void populateFields(final PageDelta resourceSummary) {
-        _name.setValue(resourceSummary.getName());
+    public void populateFields(final PageDelta resourceSummary, final String pageName) {
+        _name.setValue(pageName);
         _name.setReadOnly(true);
         _name.disable();
         _title.setValue(resourceSummary.getTitle());

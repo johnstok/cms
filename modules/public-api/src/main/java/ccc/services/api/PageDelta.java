@@ -11,6 +11,7 @@
  */
 package ccc.services.api;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,11 +22,10 @@ import java.util.List;
  *
  * @author Civic Computing Ltd.
  */
-public final class PageDelta
-    extends
-        ResourceDelta {
+public final class PageDelta implements Serializable {
+    private ID     _id;
+    private String _title;
     private List<ParagraphDelta> _paragraphs = new ArrayList<ParagraphDelta>();
-    private TemplateDelta _computedTemplate;
 
     @SuppressWarnings("unused") private PageDelta() { super(); }
 
@@ -33,26 +33,15 @@ public final class PageDelta
      * Constructor.
      *
      * @param id
-     * @param name
      * @param title
-     * @param templateId
-     * @param tags
-     * @param published
      * @param paragraphs
-     * @param computedTemplate
      */
     public PageDelta(final ID id,
-                     final String name,
                      final String title,
-                     final ID templateId,
-                     final String tags,
-                     final boolean published,
-                     final List<ParagraphDelta> paragraphs,
-                     final TemplateDelta computedTemplate) {
-
-        super(id, name, title, templateId, tags, published);
+                     final List<ParagraphDelta> paragraphs) {
+        _id = id;
+        _title = title;
         _paragraphs = paragraphs;
-        _computedTemplate = computedTemplate;
     }
 
 
@@ -79,19 +68,29 @@ public final class PageDelta
     /**
      * Accessor.
      *
-     * @return Returns the computedTemplate.
+     * @return Returns the title.
      */
-    public TemplateDelta getComputedTemplate() {
-        return _computedTemplate;
+    public String getTitle() {
+        return _title;
     }
 
 
     /**
      * Mutator.
      *
-     * @param computedTemplate The computedTemplate to set.
+     * @param title The title to set.
      */
-    public void setComputedTemplate(final TemplateDelta computedTemplate) {
-        _computedTemplate = computedTemplate;
+    public void setTitle(final String title) {
+        _title = title;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the id.
+     */
+    public ID getId() {
+        return _id;
     }
 }

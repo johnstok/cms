@@ -144,13 +144,15 @@ public class CommandsEJB
     @Override
     public ResourceSummary createPage(final ID parentId,
                                       final PageDelta delta,
+                                      final String name,
+                                      final boolean publish,
                                       final ID templateId) {
 
         final Page page = new Page(
-            ResourceName.escape(delta.getName()),
+            ResourceName.escape(name),
             delta.getTitle());
 
-        if (delta.isPublished()) {
+        if (publish) {
             page.publish(_users.loggedInUser());
         }
 
@@ -170,10 +172,11 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createTemplate(final ID parentId,
-                                          final TemplateDelta delta) {
+                                          final TemplateDelta delta,
+                                          final String name) {
 
         final Template t = new Template(
-            new ResourceName(delta.getName()),
+            new ResourceName(name),
             delta.getTitle(),
             delta.getDescription(),
             delta.getBody(),
@@ -256,9 +259,7 @@ public class CommandsEJB
                            final String comment,
                            final boolean isMajorEdit) {
 
-        final Page page = new Page(
-            ResourceName.escape(delta.getName()),
-            delta.getTitle());
+        final Page page = new Page(delta.getTitle());
         page.id(toUUID(delta.getId()));
 
         assignParagraphs(delta.getParagraphs(), page);
@@ -273,9 +274,7 @@ public class CommandsEJB
     @Override
     public void updateWorkingCopy(final PageDelta delta) {
 
-        final Page page = new Page(
-            ResourceName.escape(delta.getName()),
-            delta.getTitle());
+        final Page page = new Page(delta.getTitle());
         page.id(toUUID(delta.getId()));
 
         assignParagraphs(delta.getParagraphs(), page);

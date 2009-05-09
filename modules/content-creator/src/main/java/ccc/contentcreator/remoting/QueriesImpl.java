@@ -26,6 +26,7 @@ import ccc.services.api.PageDelta;
 import ccc.services.api.ResourceDelta;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
+import ccc.services.api.TemplateSummary;
 import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
 import ccc.services.api.Username;
@@ -214,5 +215,11 @@ public class QueriesImpl
     @Override
     public Duration cacheDuration(final ID resourceId) {
         return _services.lookupQueries().cacheDuration(resourceId);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TemplateSummary computeTemplate(final ID resourceId) {
+        return _services.lookupQueries().computeTemplate(resourceId);
     }
 }

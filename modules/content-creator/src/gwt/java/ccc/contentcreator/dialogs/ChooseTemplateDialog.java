@@ -18,7 +18,7 @@ import ccc.contentcreator.binding.TemplateSummaryModelData;
 import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.services.api.ID;
-import ccc.services.api.TemplateDelta;
+import ccc.services.api.TemplateSummary;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -36,11 +36,11 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
 
     private final ID _templateId;
     private final ID _resourceId;
-    private final Collection<TemplateDelta> _templates;
+    private final Collection<TemplateSummary> _templates;
 
     private final TemplateSummaryModelData _none =
         new TemplateSummaryModelData(
-            new TemplateDelta(
+            new TemplateSummary(
                 null,
                 "{none}",
                 "{none}",
@@ -60,7 +60,7 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
      */
     public ChooseTemplateDialog(final ID resourceId,
                                 final ID templateId,
-                                final Collection<TemplateDelta> templates) {
+                                final Collection<TemplateSummary> templates) {
         super(Globals.uiConstants().chooseTemplate());
         setHeight(Globals.DEFAULT_MIN_HEIGHT);
 

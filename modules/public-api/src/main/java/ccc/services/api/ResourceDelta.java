@@ -23,7 +23,6 @@ public class ResourceDelta
     implements
         Serializable {
     private ID     _id;
-    private String _name;
     private String _title;
     private ID _templateId;
     private String _tags;
@@ -42,13 +41,11 @@ public class ResourceDelta
      * @param published
      */
     public ResourceDelta(final ID     id,
-                         final String name,
                          final String title,
                          final ID     templateId,
                          final String tags,
                          final boolean published) {
         _id = id;
-        _name = name;
         _title = title;
         _templateId = templateId;
         _tags = tags;
@@ -73,26 +70,6 @@ public class ResourceDelta
      */
     public void setId(final ID id) {
         _id = id;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the name.
-     */
-    public String getName() {
-        return _name;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param name The name to set.
-     */
-    public void setName(final String name) {
-        _name = name;
     }
 
 

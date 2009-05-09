@@ -66,17 +66,20 @@ public class CommandsImpl
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createPage(final ID parentId,
-                           final PageDelta delta,
-                           final ID templateId) {
+                                      final PageDelta delta,
+                                      final String name,
+                                      final boolean publish,
+                                      final ID templateId) {
         return _services.lookupCommands().createPage(
-            parentId, delta, templateId);
+            parentId, delta, name, publish, templateId);
     }
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createTemplate(final ID parentId,
-                                          final TemplateDelta delta) {
-        return _services.lookupCommands().createTemplate(parentId, delta);
+                                          final TemplateDelta delta,
+                                          final String name) {
+        return _services.lookupCommands().createTemplate(parentId, delta, name);
     }
 
     /** {@inheritDoc} */

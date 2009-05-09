@@ -212,6 +212,8 @@ public interface Queries {
      */
     Duration cacheDuration(ID resourceId);
 
+    TemplateSummary computeTemplate(ID resourceId);
+
     TemplateDelta templateDelta(ID templateId);
     UserDelta userDelta(ID userId);
     AliasDelta aliasDelta(ID aliasId);

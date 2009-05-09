@@ -18,13 +18,13 @@ import java.util.Map;
 import java.util.Set;
 
 import ccc.services.api.ID;
-import ccc.services.api.TemplateDelta;
+import ccc.services.api.TemplateSummary;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 
 
 /**
- * {@link ModelData} implementation for the {@link TemplateDelta} class.
+ * {@link ModelData} implementation for the {@link TemplateSummary} class.
  *
  * @author Civic Computing Ltd.
  */
@@ -32,15 +32,15 @@ public class TemplateSummaryModelData
     implements
         ModelData {
 
-    private TemplateDelta _td;
+    private TemplateSummary _ts;
 
     /**
      * Constructor.
      *
-     * @param td The template delta to wrap.
+     * @param ts The template summary to wrap.
      */
-    public TemplateSummaryModelData(final TemplateDelta td) {
-        _td = td;
+    public TemplateSummaryModelData(final TemplateSummary ts) {
+        _ts = ts;
     }
 
     /** {@inheritDoc} */
@@ -52,22 +52,22 @@ public class TemplateSummaryModelData
         switch (p) {
 
             case ID:
-                return (X) _td.getId();
+                return (X) _ts.getId();
 
             case BODY:
-                return (X) _td.getBody();
+                return (X) _ts.getBody();
 
             case DEFINITION:
-                return (X) _td.getDefinition();
+                return (X) _ts.getDefinition();
 
             case DESCRIPTION:
-                return (X) _td.getDescription();
+                return (X) _ts.getDescription();
 
             case NAME:
-                return (X) _td.getName();
+                return (X) _ts.getName();
 
             case TITLE:
-                return (X) _td.getTitle();
+                return (X) _ts.getTitle();
 
             default:
                 throw new UnsupportedOperationException(
@@ -117,7 +117,7 @@ public class TemplateSummaryModelData
      * @return
      */
     public ID getId() {
-        return _td.getId();
+        return _ts.getId();
     }
 
     /**
@@ -126,7 +126,7 @@ public class TemplateSummaryModelData
      * @return
      */
     public String getDefinition() {
-        return _td.getDefinition();
+        return _ts.getDefinition();
     }
 
     /**
@@ -135,7 +135,7 @@ public class TemplateSummaryModelData
      * @return
      */
     public String getDescription() {
-        return _td.getDescription();
+        return _ts.getDescription();
     }
 
     /**
@@ -143,7 +143,7 @@ public class TemplateSummaryModelData
      *
      * @return
      */
-    public Object getName() {
-        return _td.getName();
+    public String getName() {
+        return _ts.getName();
     }
 }

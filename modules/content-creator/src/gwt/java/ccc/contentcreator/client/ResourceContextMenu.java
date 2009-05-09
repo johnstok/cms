@@ -45,6 +45,7 @@ import ccc.services.api.FileDelta;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ResourceType;
 import ccc.services.api.TemplateDelta;
+import ccc.services.api.TemplateSummary;
 import ccc.services.api.UserSummary;
 
 import com.extjs.gxt.ui.client.Events;
@@ -311,19 +312,26 @@ public class ResourceContextMenu
                             }
                         );
                     } else if (ResourceType.PAGE==item.getType()) {
-                        _qs.workingCopyDelta(
+                        _qs.computeTemplate(
                             item.getId(),
-                            new ErrorReportingCallback<PageDelta>() {
-                                public void onSuccess(final PageDelta page) {
-                                    if (null==page.getComputedTemplate()) {
-                                        Globals.alert(
-                                            _constants.noTemplateFound());
+                            new ErrorReportingCallback<TemplateSummary>() {
+                                @Override public void onSuccess(final TemplateSummary template) {
+                                    if (null==template) {
+                                        Globals.alert(_constants.noTemplateFound());
                                     } else {
-                                        new UpdatePageDialog(
-                                            page,
-                                            page.getComputedTemplate(),
-                                            _table)
-                                        .show();
+                                        _qs.workingCopyDelta(
+                                            item.getId(),
+                                            new ErrorReportingCallback<PageDelta>() {
+                                                @Override public void onSuccess(final PageDelta page) {
+                                                    new UpdatePageDialog(
+                                                        page,
+                                                        item.getName(),
+                                                        template,
+                                                        _table)
+                                                    .show();
+                                                }
+                                            }
+                                        );
                                     }
                                 }
                             }
@@ -335,6 +343,7 @@ public class ResourceContextMenu
                                 public void onSuccess(final AliasDelta result) {
                                     new UpdateAliasDialog(
                                         result,
+                                        item.getName(),
                                         _table,
                                         _table.root())
                                     .show();

@@ -196,12 +196,16 @@ public interface Commands {
     /**
      * Creates a new page.
      */
-    ResourceSummary createPage(ID parentId, PageDelta delta, ID templateId);
+    ResourceSummary createPage(ID parentId,
+                               PageDelta delta,
+                               String name,
+                               final boolean publish,
+                               ID templateId);
 
     /**
      * Create a new template in CCC.
      */
-    ResourceSummary createTemplate(ID parentId, TemplateDelta delta);
+    ResourceSummary createTemplate(ID parentId, TemplateDelta delta, String name);
 
     /**
      * Creates a new search.

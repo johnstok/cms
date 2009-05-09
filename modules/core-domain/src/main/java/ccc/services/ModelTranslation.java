@@ -18,6 +18,7 @@ import java.util.UUID;
 
 import ccc.actions.Action;
 import ccc.domain.Alias;
+import ccc.domain.CCCException;
 import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
@@ -40,6 +41,7 @@ import ccc.services.api.ResourceDelta;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.ResourceType;
 import ccc.services.api.TemplateDelta;
+import ccc.services.api.TemplateSummary;
 import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
 import ccc.services.api.Username;
@@ -241,7 +243,6 @@ public class ModelTranslation {
         }
         final TemplateDelta delta = new TemplateDelta(
             toID(template.id()),
-            template.name().toString(),
             template.title(),
             template.description(),
             template.body(),
@@ -278,7 +279,6 @@ public class ModelTranslation {
         final AliasDelta delta =
             new AliasDelta(
                 toID(alias.id()),
-                alias.name().toString(),
                 alias.target().name().toString(),
                 toID(alias.target().id()));
         return delta;
@@ -310,8 +310,6 @@ public class ModelTranslation {
      * @return The corresponding delta.
      */
     protected PageDelta delta(final Page page) {
-        final Template t = page.template();
-        final Template ct = page.computeTemplate(null);
         final List<ParagraphDelta> paragraphs = new ArrayList<ParagraphDelta>();
         for (final Paragraph p : page.paragraphs()) {
             final ParagraphDelta pDelta =
@@ -328,14 +326,8 @@ public class ModelTranslation {
         final PageDelta delta =
             new PageDelta(
                 toID(page.id()),
-                page.name().toString(),
                 page.title(),
-                (null==t) ? null : toID(t.id()),
-                page.tagString(),
-                page.isPublished(),
-                paragraphs,
-                (null==ct) ? null : delta(ct)
-            );
+                paragraphs);
         return delta;
     }
 
@@ -352,7 +344,6 @@ public class ModelTranslation {
         final ResourceDelta delta =
             new ResourceDelta(
                 toID(resource.id()),
-                resource.name().toString(),
                 resource.title(),
                 (null==t) ? null : toID(t.id()),
                 resource.tagString(),
@@ -385,27 +376,31 @@ public class ModelTranslation {
      * @return Merged page delta.
      */
     protected PageDelta workingCopyDelta(final Page page) {
-        final PageDelta delta = delta(page);
-
-        if (page.workingCopy() != null) {
-            final Snapshot ss = page.workingCopy();
-            delta.setTitle(ss.getString("title"));
-            final List<ParagraphDelta> paragraphs =
-                new ArrayList<ParagraphDelta>();
-            for(final Snapshot s : ss.getSnapshots("paragraphs")) {
-                final Paragraph p = Paragraph.fromSnapshot(s);
-                final ParagraphDelta pDelta =
-                    new ParagraphDelta(
-                        p.name(),
-                        p.type(),
-                        null,
-                        p.text(),
-                        p.date(),
-                        new Decimal(p.number().toString()));
-                paragraphs.add(pDelta);
-            }
-            delta.setParagraphs(paragraphs);
+        if (null==page.workingCopy()) {
+            throw new CCCException("No working copy!");
         }
+        final Snapshot ss = page.workingCopy();
+
+        final List<ParagraphDelta> paragraphs =
+            new ArrayList<ParagraphDelta>();
+        for(final Snapshot s : ss.getSnapshots("paragraphs")) {
+            final Paragraph p = Paragraph.fromSnapshot(s);
+            final ParagraphDelta pDelta =
+                new ParagraphDelta(
+                    p.name(),
+                    p.type(),
+                    null,
+                    p.text(),
+                    p.date(),
+                    new Decimal(p.number().toString()));
+            paragraphs.add(pDelta);
+        }
+
+        final PageDelta delta =
+            new PageDelta(
+                toID(page.id()),
+                ss.getString("title"),
+                paragraphs);
         return delta;
     }
 
@@ -443,6 +438,23 @@ public class ModelTranslation {
                 a.subject().absolutePath().toString(),
                 a.status());
         return summary;
+    }
+
+    /**
+     * Create a summary for a template.
+     *
+     * @param t The template.
+     * @return The corresponding summary.
+     */
+    protected TemplateSummary mapTemplate(final Template t) {
+        return
+            new TemplateSummary(
+                toID(t.id()),
+                t.name().toString(),
+                t.title(),
+                t.description(),
+                t.body(),
+                t.definition());
     }
 
 
