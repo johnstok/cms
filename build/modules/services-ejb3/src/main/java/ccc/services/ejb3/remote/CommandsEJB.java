@@ -192,7 +192,7 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     public UserSummary createUser(final UserDelta delta) {
-        final User user = new User(delta.getUsername());
+        final User user = new User(delta.getUsername().toString());
         user.email(new EmailAddress(delta.getEmail()));
         for (final String role : delta.getRoles()) {
             user.addRole(role);
@@ -348,7 +348,7 @@ public class CommandsEJB
     @Override
     public UserSummary updateUser(final UserDelta delta) {
         // FIXME: Refactor - horrible.
-        final User user = new User(delta.getUsername());
+        final User user = new User(delta.getUsername().toString());
         user.email(new EmailAddress(delta.getEmail()));
         for (final String role : delta.getRoles()) {
             user.addRole(role);

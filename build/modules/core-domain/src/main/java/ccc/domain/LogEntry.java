@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.services.api.Action;
+import ccc.services.api.ResourceType;
 
 
 /**

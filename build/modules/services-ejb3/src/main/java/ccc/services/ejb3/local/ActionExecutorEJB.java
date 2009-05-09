@@ -28,7 +28,6 @@ import org.apache.log4j.Logger;
 import ccc.actions.Action;
 import ccc.domain.CCCException;
 import ccc.domain.Resource;
-import ccc.domain.ResourceType;
 import ccc.persistence.jpa.BaseDao;
 import ccc.services.ActionExecutor;
 import ccc.services.AuditLog;
@@ -38,6 +37,7 @@ import ccc.services.ResourceDao;
 import ccc.services.ResourceDaoImpl;
 import ccc.services.UserManager;
 import ccc.services.WorkingCopyManager;
+import ccc.services.api.ResourceType;
 
 
 /**

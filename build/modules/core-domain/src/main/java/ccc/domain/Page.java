@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ccc.commons.DBC;
+import ccc.services.api.ResourceType;
 
 
 /**

@@ -19,6 +19,8 @@ import java.util.Set;
 
 import ccc.services.api.ID;
 import ccc.services.api.ResourceSummary;
+import ccc.services.api.ResourceType;
+import ccc.services.api.Username;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.google.gwt.json.client.JSONObject;
@@ -63,12 +65,13 @@ public class ResourceSummaryModelData
             summaryObject.get("name").isString().stringValue(),
             (null==summaryObject.get("publishedBy"))
                 ? null
-                :summaryObject.get("publishedBy").isString().stringValue(),
+                : new Username(summaryObject.get("publishedBy").isString().stringValue()),
             summaryObject.get("title").isString().stringValue(),
             (null==summaryObject.get("lockedBy"))
                 ? null
-                :summaryObject.get("lockedBy").isString().stringValue(),
-            summaryObject.get("type").isString().stringValue(),
+                : new Username(summaryObject.get("lockedBy").isString().stringValue()),
+            ResourceType.valueOf(
+                summaryObject.get("type").isString().stringValue()),
             (int) summaryObject.get("childCount").isNumber().doubleValue(),
             (int) summaryObject.get("folderCount").isNumber().doubleValue(),
             summaryObject.get("includeInMainMenu").isBoolean().booleanValue(),
@@ -232,7 +235,7 @@ public class ResourceSummaryModelData
      *
      * @return
      */
-    public String getType() {
+    public ResourceType getType() {
         return _rs.getType();
     }
 
@@ -259,7 +262,7 @@ public class ResourceSummaryModelData
      *
      * @return
      */
-    public String getLocked() {
+    public Username getLocked() {
         return _rs.getLockedBy();
     }
 
@@ -331,7 +334,7 @@ public class ResourceSummaryModelData
      *
      * @return
      */
-    public String getPublished() {
+    public Username getPublished() {
         return _rs.getPublishedBy();
     }
 

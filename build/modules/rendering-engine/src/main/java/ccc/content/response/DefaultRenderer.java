@@ -25,13 +25,13 @@ import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.Resource;
-import ccc.domain.ResourceType;
 import ccc.domain.Search;
 import ccc.domain.Snapshot;
 import ccc.domain.WorkingCopyAware;
 import ccc.services.DataManager;
 import ccc.services.SearchEngine;
 import ccc.services.StatefulReader;
+import ccc.services.api.ResourceType;
 
 /**
  * Default implementation of the {@link Renderer} interface.

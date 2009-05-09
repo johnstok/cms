@@ -16,6 +16,7 @@ import java.io.Serializable;
 
 /**
  * Simple value holder for a UUID.
+ * <p>
  * The id is represented as a string, using the java.util.UUID
  * canonical representation described in java.util.UUID#toString().
  *

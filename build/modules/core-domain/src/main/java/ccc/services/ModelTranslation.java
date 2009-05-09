@@ -24,7 +24,6 @@ import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.Resource;
-import ccc.domain.ResourceType;
 import ccc.domain.Snapshot;
 import ccc.domain.Template;
 import ccc.domain.User;
@@ -39,9 +38,11 @@ import ccc.services.api.PageDelta;
 import ccc.services.api.ParagraphDelta;
 import ccc.services.api.ResourceDelta;
 import ccc.services.api.ResourceSummary;
+import ccc.services.api.ResourceType;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
+import ccc.services.api.Username;
 
 
 /**
@@ -142,7 +143,7 @@ public class ModelTranslation {
             new LogEntrySummary(
                 toID(le.subjectId()),
                 le.action(),
-                le.actor().username(),
+                new Username(le.actor().username()),
                 le.happenedOn(),
                 le.comment(),
                 le.isMajorEdit(),
@@ -176,10 +177,10 @@ public class ModelTranslation {
                 toID(r.id()),
                 (null==r.parent()) ? null : toID(r.parent().id()),
                 r.name().toString(),
-                (r.isPublished()) ? r.publishedBy().username() : null,
+                (r.isPublished()) ? new Username(r.publishedBy().username()) : null,
                 r.title(),
-                (r.isLocked()) ? r.lockedBy().username() : null,
-                r.type().name(),
+                (r.isLocked()) ? new Username(r.lockedBy().username()) : null,
+                r.type(),
                 childCount,
                 folderCount,
                 r.includeInMainMenu(),
@@ -203,7 +204,7 @@ public class ModelTranslation {
             new UserSummary(
                 user.email().getText(),
                 toID(user.id()),
-                user.username(),
+                new Username(user.username()),
                 user.roles());
     }
 
@@ -260,7 +261,7 @@ public class ModelTranslation {
                 toID(user.id()),
                 null,
                 user.email().getText(),
-                user.username(),
+                new Username(user.username()),
                 user.roles());
         return delta;
     }
@@ -435,12 +436,11 @@ public class ModelTranslation {
             new ActionSummary(
                 toID(a.id()),
                 a.type(),
-                a.actor().username(),
+                new Username(a.actor().username()),
                 a.executeAfter(),
-                a.subject().type().toString(),
+                a.subject().type(),
                 a.subject().absolutePath().toString(),
-                a.status().toString()
-                );
+                a.status());
         return summary;
     }
 

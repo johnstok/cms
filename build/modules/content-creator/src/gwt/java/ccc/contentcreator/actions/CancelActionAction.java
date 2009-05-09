@@ -17,6 +17,7 @@ import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.ActionTable;
 import ccc.contentcreator.client.Globals;
+import ccc.services.api.ActionStatus;
 
 
 /**
@@ -46,7 +47,7 @@ public class CancelActionAction
         if (null==action) {
             Globals.alert("Please select an action."); // FIXME: I18n.
             return;
-        } else if (!"Scheduled".equals(action.getStatus())) { // FIXME: Should use enum value!
+        } else if (ActionStatus.Scheduled!=action.getStatus()) {
             Globals.alert("This action has already been completed."); // FIXME: I18n.
             return;
         } else {
@@ -55,7 +56,7 @@ public class CancelActionAction
                 actionId,
                 new ErrorReportingCallback<Void>(){
                     public void onSuccess(final Void arg0) {
-                        action.setStatus("Cancelled"); // FIXME: Should use enum value!
+                        action.setStatus(ActionStatus.Cancelled);
                         _table.update(action);
                     }
                 }

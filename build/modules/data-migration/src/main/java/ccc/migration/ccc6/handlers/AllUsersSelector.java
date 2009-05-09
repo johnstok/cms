@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import ccc.migration.LegacyDBQueries;
 import ccc.migration.MigrationException;
 import ccc.services.api.UserDelta;
+import ccc.services.api.Username;
 
 /**
  * TODO: Add Description for this type.
@@ -47,7 +48,12 @@ public final class AllUsersSelector
                 final String email = _legacyDBQueries.selectEmailForUser(userId);
                 final Set<String> roles = _legacyDBQueries.selectRolesForUser(userId);
                 final UserDelta user =
-                    new UserDelta(null, password, email, userName, roles);
+                    new UserDelta(
+                        null,
+                        password,
+                        email,
+                        new Username(userName),
+                        roles);
                 resultList.put(Integer.valueOf(userId), user);
             } catch (final MigrationException e) {
                 log.warn("Error selecting user: "+e.getMessage());

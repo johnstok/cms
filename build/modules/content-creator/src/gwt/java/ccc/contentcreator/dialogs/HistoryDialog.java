@@ -23,6 +23,7 @@ import ccc.contentcreator.client.HistoryToolBar;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.services.api.Action;
 import ccc.services.api.LogEntrySummary;
+import ccc.services.api.ResourceType;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.GridEvent;
@@ -44,7 +45,7 @@ public class HistoryDialog
 
     private final ToolBar _toolBar;
     private final SingleSelectionModel<ResourceSummaryModelData> _ssm;
-    private final String _resourceType;
+    private final ResourceType _resourceType;
 
     /**
      * Constructor.
@@ -75,7 +76,8 @@ public class HistoryDialog
                     } else {
                         final Action action = md.getAction();
                         if ((Action.CREATE==action || Action.UPDATE==action)
-                            && (_resourceType.equals("PAGE") || _resourceType.equals("FILE"))) {
+                            && (ResourceType.PAGE==_resourceType
+                                || ResourceType.FILE==_resourceType)) {
                             _toolBar.enable();
                         } else {
                             _toolBar.disable();

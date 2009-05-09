@@ -24,6 +24,7 @@ import org.json.JSONObject;
 
 import ccc.commons.Testing;
 import ccc.services.api.Duration;
+import ccc.services.api.ResourceType;
 
 
 /**

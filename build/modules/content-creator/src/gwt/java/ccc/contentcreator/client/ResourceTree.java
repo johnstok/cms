@@ -24,7 +24,6 @@ import ccc.services.api.ResourceSummary;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.binder.TreeBinder;
 import com.extjs.gxt.ui.client.data.BaseTreeLoader;
-import com.extjs.gxt.ui.client.data.ModelStringProvider;
 import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.data.TreeLoader;
 import com.extjs.gxt.ui.client.store.TreeStore;
@@ -109,24 +108,7 @@ public class ResourceTree extends Tree {
         };
         binder.setDisplayProperty(ResourceSummaryModelData.DISPLAY_PROPERTY);
         binder.setCaching(false);
-        binder.setIconProvider(new ModelStringProvider<ResourceSummaryModelData>() {
-            public String getStringValue(final ResourceSummaryModelData model,
-                                         final String property) {
-                if (model.getType().equals("FOLDER")) {
-                    return "images/gxt/icons/folder.gif";
-                } else if (model.getType().equals("PAGE")) {
-                    return "images/icons/page.png";
-                } else if (model.getType().equals("TEMPLATE")) {
-                    return "images/icons/page_code.png";
-                } else if (model.getType().equals("ALIAS")) {
-                    return "images/icons/link.png";
-                } else if (model.getType().equals("FILE")) {
-                    return "images/icons/image.png";
-                } else {
-                    return null;
-                }
-            }
-        });
+        binder.setIconProvider(new ResourceIconProvider());
 
         loader.load(null);
     }

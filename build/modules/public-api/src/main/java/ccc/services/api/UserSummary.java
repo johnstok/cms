@@ -23,7 +23,7 @@ import java.util.Set;
 public final class UserSummary implements Serializable {
     private String _email;
     private ID _id;
-    private String _username;
+    private Username _username;
     private Set<String> _roles;
 
     @SuppressWarnings("unused") private UserSummary() { super(); }
@@ -38,7 +38,7 @@ public final class UserSummary implements Serializable {
      */
     public UserSummary(final String email,
                        final ID id,
-                       final String username,
+                       final Username username,
                        final Set<String> roles) {
         _email = email;
         _id = id;
@@ -72,7 +72,7 @@ public final class UserSummary implements Serializable {
      *
      * @return Returns the username.
      */
-    public String getUsername() {
+    public Username getUsername() {
         return _username;
     }
 

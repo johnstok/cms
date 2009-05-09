@@ -13,6 +13,8 @@ package ccc.services.api;
 
 import java.io.Serializable;
 
+import ccc.annotations.ValueObject;
+
 
 
 /**
@@ -20,7 +22,8 @@ import java.io.Serializable;
  *
  * @author Civic Computing Ltd.
  */
-public class Duration implements Serializable {
+@ValueObject
+public final class Duration implements Serializable {
 
     private static final long SECONDS_IN_MINUTE = 60;
     private static final long SECONDS_IN_HOUR = 3600;

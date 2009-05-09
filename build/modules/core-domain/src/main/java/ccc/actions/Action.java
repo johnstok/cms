@@ -18,6 +18,7 @@ import ccc.domain.Entity;
 import ccc.domain.Resource;
 import ccc.domain.Snapshot;
 import ccc.domain.User;
+import ccc.services.api.ActionStatus;
 
 
 /**
@@ -31,24 +32,8 @@ public class Action extends Entity {
     private ccc.services.api.Action _type;
     private Snapshot _parameters;
     private Resource _subject;
-    private Status _status = Status.Scheduled;
+    private ActionStatus _status = ActionStatus.Scheduled;
     private Snapshot _failure;
-
-    /**
-     * Supported statuses for an action.
-     *
-     * @author Civic Computing Ltd.
-     */
-    public static enum Status {
-        /** Scheduled : Status. */
-        Scheduled,
-        /** Complete : Status. */
-        Complete,
-        /** Failed : Status. */
-        Failed,
-        /** Cancelled : Status. */
-        Cancelled;
-    }
 
     /** Constructor: for persistence only. */
     protected Action() { super(); }
@@ -116,7 +101,7 @@ public class Action extends Entity {
      */
     public void complete() {
         checkStillScheduled();
-        _status = Status.Complete;
+        _status = ActionStatus.Complete;
     }
 
     /**
@@ -124,7 +109,7 @@ public class Action extends Entity {
      *
      * @return The status of the action.
      */
-    public Status status() {
+    public ActionStatus status() {
         return _status;
     }
 
@@ -135,7 +120,7 @@ public class Action extends Entity {
      */
     public void fail(final Exception e) {
         checkStillScheduled();
-        _status = Status.Failed;
+        _status = ActionStatus.Failed;
         final Snapshot failure = new Snapshot();
         failure.set("message", Exceptions.rootCause(e).getMessage());
         failure.set("stack", Exceptions.stackTraceFor(e));
@@ -157,7 +142,7 @@ public class Action extends Entity {
      */
     public void cancel() {
         checkStillScheduled();
-        _status = Status.Cancelled;
+        _status = ActionStatus.Cancelled;
     }
 
     /**
@@ -170,7 +155,7 @@ public class Action extends Entity {
     }
 
     private void checkStillScheduled() {
-        if (Status.Scheduled!=_status) {
+        if (ActionStatus.Scheduled!=_status) {
             throw new IllegalStateException("Status is "+_status);
         }
     }

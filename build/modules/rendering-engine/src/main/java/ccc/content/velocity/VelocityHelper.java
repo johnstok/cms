@@ -25,7 +25,7 @@ import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
-import ccc.domain.ResourceType;
+import ccc.services.api.ResourceType;
 
 
 /**

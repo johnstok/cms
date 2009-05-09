@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ccc.commons.DBC;
+import ccc.services.api.ResourceType;
 
 
 /**

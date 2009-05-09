@@ -25,7 +25,7 @@ public final class UserDelta implements Serializable {
     private ID _id;
     private String _password;
     private String _email;
-    private String _username;
+    private Username _username;
     private Set<String> _roles;
 
     @SuppressWarnings("unused") private UserDelta() { super(); }
@@ -42,7 +42,7 @@ public final class UserDelta implements Serializable {
     public UserDelta(final ID id,
                      final String password,
                      final String email,
-                     final String username,
+                     final Username username,
                      final Set<String> roles) {
         _id = id;
         _password = password;
@@ -117,7 +117,7 @@ public final class UserDelta implements Serializable {
      *
      * @return Returns the username.
      */
-    public String getUsername() {
+    public Username getUsername() {
         return _username;
     }
 
@@ -127,7 +127,7 @@ public final class UserDelta implements Serializable {
      *
      * @param username The username to set.
      */
-    public void setUsername(final String username) {
+    public void setUsername(final Username username) {
         _username = username;
     }
 
