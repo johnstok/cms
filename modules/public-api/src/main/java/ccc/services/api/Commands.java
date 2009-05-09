@@ -61,22 +61,22 @@ public interface Commands {
     /**
      * Rename resource.
      */
-    void rename(final String resourceId, final String name);
+    void rename(final ID resourceId, final String name);
 
     /**
      * Update the tags for a resource.
      */
-    void updateTags(String resourceId, String tags);
+    void updateTags(ID resourceId, String tags);
 
     /**
      * Changes a resource's parent.
      */
-    void move(String resourceId, String newParentId);
+    void move(ID resourceId, ID newParentId);
 
     /**
      * Update the specified resource's template on the server.
      */
-    void updateResourceTemplate(String resourceId, String templateId);
+    void updateResourceTemplate(ID resourceId, ID templateId);
 
     /**
      * Lock the specified resource.
@@ -86,7 +86,7 @@ public interface Commands {
      * @param resourceId The uuid of the resource to lock.
      * @return The current version of resource.
      */
-    ResourceSummary lock(String resourceId);
+    ResourceSummary lock(ID resourceId);
 
     /**
      * Unlock the specified Resource.
@@ -97,7 +97,7 @@ public interface Commands {
      * @param resourceId The resource to unlock.
      * @return The current version of resource.
      */
-    ResourceSummary unlock(String resourceId);
+    ResourceSummary unlock(ID resourceId);
 
     /**
      * TODO: Add a description of this method.
@@ -105,7 +105,7 @@ public interface Commands {
      * @param resourceId The id of the resource to update.
      * @return The current version of resource.
      */
-    ResourceSummary publish(String resourceId);
+    ResourceSummary publish(ID resourceId);
 
     /**
      * TODO: Add a description of this method.
@@ -114,7 +114,7 @@ public interface Commands {
      * @param resourceId The id of the publishing user.
      * @return The current version of resource.
      */
-    ResourceSummary publish(String resourceId, String userId, Date publishDate);
+    ResourceSummary publish(ID resourceId, ID userId, Date publishDate);
 
     /**
      * TODO: Add a description of this method.
@@ -122,7 +122,7 @@ public interface Commands {
      * @param resourceId The id of the resource to update.
      * @return
      */
-    ResourceSummary unpublish(String resourceId);
+    ResourceSummary unpublish(ID resourceId);
 
     /**
      * TODO: Add a description of this method.
@@ -130,7 +130,7 @@ public interface Commands {
      * @param resourceId The id of the resource to update.
      * @param include
      */
-    void includeInMainMenu(String resourceId, boolean include);
+    void includeInMainMenu(ID resourceId, boolean include);
 
     /**
      * Update metadata of the resource.
@@ -138,7 +138,7 @@ public interface Commands {
      * @param resourceId The id of the resource to update.
      * @param metadata The metadata to update.
      */
-    void updateMetadata(String resourceId, Map<String, String> metadata);
+    void updateMetadata(ID resourceId, Map<String, String> metadata);
 
     /**
      * Update the sort order for the specified folder.
@@ -146,7 +146,7 @@ public interface Commands {
      * @param folderId The id of the folder to update.
      * @param sortOrder The new sort order.
      */
-    void updateFolderSortOrder(String folderId, String sortOrder);
+    void updateFolderSortOrder(ID folderId, String sortOrder);
 
     /**
      * TODO: Add a description of this method.
@@ -163,7 +163,7 @@ public interface Commands {
      *
      * @param pageId The id of the page with a working copy.
      */
-    public void clearWorkingCopy(String pageId);
+    public void clearWorkingCopy(ID pageId);
 
 
 
@@ -171,17 +171,17 @@ public interface Commands {
     /**
      * Create a new alias in CCC.
      */
-    ResourceSummary createAlias(String parentId, String name, String targetId);
+    ResourceSummary createAlias(ID parentId, String name, ID targetId);
 
     /**
      * Create a folder with the specified name.
      */
-    ResourceSummary createFolder(String parentId, String name);
+    ResourceSummary createFolder(ID parentId, String name);
 
     /**
      * Create a folder with the specified name and title.
      */
-    ResourceSummary createFolder(String parentId, String name, String title);
+    ResourceSummary createFolder(ID parentId, String name, String title);
 
     /**
      * Create a root folder with the specified name.
@@ -196,17 +196,17 @@ public interface Commands {
     /**
      * Creates a new page.
      */
-    ResourceSummary createPage(String parentId, PageDelta delta, String templateId);
+    ResourceSummary createPage(ID parentId, PageDelta delta, ID templateId);
 
     /**
      * Create a new template in CCC.
      */
-    ResourceSummary createTemplate(String parentId, TemplateDelta delta);
+    ResourceSummary createTemplate(ID parentId, TemplateDelta delta);
 
     /**
      * Creates a new search.
      */
-    ResourceSummary createSearch(String parentId, String title);
+    ResourceSummary createSearch(ID parentId, String title);
 
     /**
      * Create a working copy for the specified resource, using the specified log
@@ -215,11 +215,11 @@ public interface Commands {
      * @param resourceId The id of the resource.
      * @param index The index number of the log entry.
      */
-    void createWorkingCopy(String resourceId, long index);
+    void createWorkingCopy(ID resourceId, long index);
 
-    void cancelAction(String actionId);
+    void cancelAction(ID actionId);
 
-    void createAction(String resourceId, String action, Date executeAfter, String parameters);
+    void createAction(ID resourceId, Action action, Date executeAfter, String parameters);
 
     /**
      * TODO: Add a description of this method.
@@ -227,12 +227,12 @@ public interface Commands {
      * @param folderId
      * @param order
      */
-    void reorder(String folderId, List<String> order);
+    void reorder(ID folderId, List<String> order);
 
-    void changeRoles(String resourceId, Collection<String> roles);
+    void changeRoles(ID resourceId, Collection<String> roles);
 
-    void applyWorkingCopyToFile(String fileId);
+    void applyWorkingCopyToFile(ID fileId);
 
-    void updateCacheDuration(String resourceId, Duration duration);
+    void updateCacheDuration(ID resourceId, Duration duration);
 }
 

@@ -34,7 +34,7 @@ public final class CreateTemplateAction
             Globals.alert(Globals.uiConstants().noFolderSelected());
         } else {
             new EditTemplateDialog(
-                item.getId().toString(),
+                item.getId(),
                 _selectionModel)
             .show();
         }

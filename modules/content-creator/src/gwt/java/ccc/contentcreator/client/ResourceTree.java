@@ -19,6 +19,7 @@ import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
+import ccc.services.api.ID;
 import ccc.services.api.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
@@ -63,8 +64,8 @@ public class ResourceTree extends Tree {
             protected void load(final ResourceSummaryModelData loadConfig,
                                 final AsyncCallback<List<ResourceSummaryModelData>> callback) {
 
-                final String parentId =
-                  (null==loadConfig) ? _root.getId().toString() : loadConfig.getId().toString();
+                final ID parentId =
+                  (null==loadConfig) ? _root.getId() : loadConfig.getId();
 
                 _qs.getChildren(
                     parentId,

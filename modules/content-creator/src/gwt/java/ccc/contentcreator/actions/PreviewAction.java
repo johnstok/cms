@@ -38,7 +38,7 @@ public final class PreviewAction
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         _queries.getAbsolutePath(
-            item.getId().toString(),
+            item.getId(),
             new ErrorReportingCallback<String>() {
                 public void onSuccess(final String path) {
                     new PreviewContentDialog(path, _useWorkingCopy).show();

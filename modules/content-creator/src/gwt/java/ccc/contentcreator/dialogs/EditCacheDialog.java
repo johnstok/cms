@@ -120,7 +120,7 @@ public class EditCacheDialog extends AbstractEditDialog {
                     new Duration(days, hours, minutes, seconds);
 
                 commands().updateCacheDuration(
-                    _item.getId().toString(),
+                    _item.getId(),
                     (isDurationSet) ? updatedDs : null,
                     new ErrorReportingCallback<Void>() {
                     @Override

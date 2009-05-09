@@ -17,6 +17,7 @@ import ccc.contentcreator.api.CommandServiceAsync;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.CreateActionPanel;
 import ccc.contentcreator.client.Globals;
+import ccc.services.api.ID;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -41,14 +42,14 @@ public class CreateActionDialog
     private final CreateActionPanel _createAction = new CreateActionPanel();
     private final DateTimePicker _dtPicker = new DateTimePicker();
 
-    private String _resourceId;
+    private ID _resourceId;
 
     /**
      * Constructor.
      *
      * @param root
      */
-    public CreateActionDialog(final String resourceId) {
+    public CreateActionDialog(final ID resourceId) {
         super(Globals.uiConstants().createAction());
 
         _resourceId = resourceId;

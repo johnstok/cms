@@ -109,9 +109,9 @@ public class CreateAliasDialog extends AbstractEditDialog {
         return new Runnable() {
             public void run() {
                 Globals.commandService().createAlias(
-                    _parent.getId().toString(),
+                    _parent.getId(),
                     _aliasName.getValue(),
-                    _ssm.tableSelection().getId().toString(),
+                    _ssm.tableSelection().getId(),
                     new ErrorReportingCallback<ResourceSummary>(){
                         public void onSuccess(final ResourceSummary result) {
                             final ResourceSummaryModelData newAlias =

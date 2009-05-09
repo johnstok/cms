@@ -83,7 +83,7 @@ public interface ResourceDao {
      * @param resourceId The id of the resource whose history we will look up.
      * @return The list of resources.
      */
-    List<LogEntry> history(String resourceId);
+    List<LogEntry> history(UUID resourceId);
 
     /**
      * Find a resource using its unique id.

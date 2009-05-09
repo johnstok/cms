@@ -299,7 +299,7 @@ public class ResourceContextMenu
                     final ResourceSummaryModelData item = _table.tableSelection();
                     if (ResourceType.TEMPLATE==item.getType()) {
                         _qs.templateDelta(
-                            item.getId().toString(),
+                            item.getId(),
                             new ErrorReportingCallback<TemplateDelta>(){
                                 public void onSuccess(final TemplateDelta td) {
                                     new EditTemplateDialog(
@@ -312,7 +312,7 @@ public class ResourceContextMenu
                         );
                     } else if (ResourceType.PAGE==item.getType()) {
                         _qs.workingCopyDelta(
-                            item.getId().toString(),
+                            item.getId(),
                             new ErrorReportingCallback<PageDelta>() {
                                 public void onSuccess(final PageDelta page) {
                                     if (null==page.getComputedTemplate()) {
@@ -330,7 +330,7 @@ public class ResourceContextMenu
                         );
                     } else if (ResourceType.ALIAS==item.getType()) {
                         _qs.aliasDelta(
-                            item.getId().toString(),
+                            item.getId(),
                             new ErrorReportingCallback<AliasDelta>() {
                                 public void onSuccess(final AliasDelta result) {
                                     new UpdateAliasDialog(
@@ -343,7 +343,7 @@ public class ResourceContextMenu
                         );
                     } else if (ResourceType.FILE==item.getType()) {
                         _qs.fileDelta(
-                            item.getId().toString(),
+                            item.getId(),
                             new ErrorReportingCallback<FileDelta>() {
                                 public void onSuccess(final FileDelta result) {
                                     new UpdateFileDialog(result, _table).show();

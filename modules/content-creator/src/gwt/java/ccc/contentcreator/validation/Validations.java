@@ -18,6 +18,7 @@ import ccc.contentcreator.api.UIMessages;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
+import ccc.services.api.ID;
 import ccc.services.api.ParagraphDelta;
 import ccc.services.api.ParagraphType;
 
@@ -139,7 +140,7 @@ public class Validations {
         return new Validator() {
             public void validate(final Validate validate) {
                 Globals.queriesService().nameExistsInFolder(
-                    folder.getId().toString(),
+                    folder.getId(),
                     name.getValue(),
                     new ErrorReportingCallback<Boolean>(){
                         public void onSuccess(final Boolean nameExists) {
@@ -181,7 +182,7 @@ public class Validations {
      * @param name name Resource name
      * @return The Validator
      */
-    public static Validator uniqueResourceName(final String id,
+    public static Validator uniqueResourceName(final ID id,
                                                final TextField<String> name) {
         return new Validator() {
             public void validate(final Validate validate) {

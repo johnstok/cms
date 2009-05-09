@@ -35,10 +35,10 @@ public interface Queries {
     /**
      * Get the resource located at the specified path.
      *
-     * @param resourceId The UUID of the existing resource.
+     * @param resourceId The id of the existing resource.
      * @return A summary of the resource.
      */
-    ResourceSummary resource(String resourceId);
+    ResourceSummary resource(ID resourceId);
 
     /**
      * List all the templates currently available in CCC.
@@ -53,7 +53,7 @@ public interface Queries {
      * @param folderId The id of the folder.
      * @return The list of child folders.
      */
-    Collection<ResourceSummary> getFolderChildren(String folderId);
+    Collection<ResourceSummary> getFolderChildren(ID folderId);
 
     /**
      * List all of the children of the specified folder.
@@ -61,7 +61,7 @@ public interface Queries {
      * @param folderId The folder.
      * @return The folder's of children.
      */
-    Collection<ResourceSummary> getChildren(String folderId);
+    Collection<ResourceSummary> getChildren(ID folderId);
 
     /**
      * List all content images.
@@ -76,7 +76,7 @@ public interface Queries {
      * @param resourceId The id of the resource.
      * @return The absolute path as a string.
      */
-    String getAbsolutePath(String resourceId);
+    String getAbsolutePath(ID resourceId);
 
     /**
      * Query whether given folder has a resource with given name.
@@ -86,7 +86,7 @@ public interface Queries {
      * @return Returns true in case folder has a resource with given name,
      *  false otherwise.
      */
-    boolean nameExistsInFolder(final String folderId, final String name);
+    boolean nameExistsInFolder(final ID folderId, final String name);
 
     /**
      * Query all users.
@@ -117,7 +117,7 @@ public interface Queries {
      * @param username The username to check
      * @return True if the username is in use, false otherwise.
      */
-    boolean usernameExists(String username);
+    boolean usernameExists(Username username);
 
     /**
      * Query users with specified email.
@@ -141,7 +141,7 @@ public interface Queries {
      * @param resourceId Id of the resource.
      * @return TemplateDTO
      */
-    TemplateDelta getTemplateForResource(final String resourceId);
+    TemplateDelta getTemplateForResource(final ID resourceId);
 
     /**
      * Returns currently logged in user.
@@ -170,7 +170,7 @@ public interface Queries {
      * @param resourceId The id of the resource whose history we will look up.
      * @return The list of resources.
      */
-    Collection<LogEntrySummary> history(String resourceId);
+    Collection<LogEntrySummary> history(ID resourceId);
 
     /**
      * Retrieve the metadata for a resource.
@@ -178,7 +178,7 @@ public interface Queries {
      * @param resourceId The id of the resource.
      * @return The metadata in a hashmap.
      */
-    Map<String, String> metadata(String resourceId);
+    Map<String, String> metadata(ID resourceId);
 
     /**
      * Merge page and its working copy to a page delta.
@@ -186,7 +186,7 @@ public interface Queries {
      * @param pageId The id of the resource.
      * @return Page delta of the merge of page and working copy.
      */
-    PageDelta workingCopyDelta(String pageId);
+    PageDelta workingCopyDelta(ID pageId);
 
     /**
      * List all CCC actions that haven't yet been executed.
@@ -202,7 +202,7 @@ public interface Queries {
      */
     Collection<ActionSummary> listCompletedActions();
 
-    Collection<String> roles(String resourceId);
+    Collection<String> roles(ID resourceId);
 
     /**
      * Retrieve resource's cache duration.
@@ -210,14 +210,14 @@ public interface Queries {
      * @param resourceId The id of the resource.
      * @return Duration.
      */
-    Duration cacheDuration(String resourceId);
+    Duration cacheDuration(ID resourceId);
 
-    TemplateDelta templateDelta(String templateId);
-    UserDelta userDelta(String userId);
-    AliasDelta aliasDelta(String aliasId);
-    PageDelta pageDelta(String pageId);
-    ResourceDelta folderDelta(String folderId);
-    ResourceDelta resourceDelta(String resourceId);
-    FileDelta fileDelta(String fileId);
+    TemplateDelta templateDelta(ID templateId);
+    UserDelta userDelta(ID userId);
+    AliasDelta aliasDelta(ID aliasId);
+    PageDelta pageDelta(ID pageId);
+    ResourceDelta folderDelta(ID folderId);
+    ResourceDelta resourceDelta(ID resourceId);
+    FileDelta fileDelta(ID fileId);
 
 }

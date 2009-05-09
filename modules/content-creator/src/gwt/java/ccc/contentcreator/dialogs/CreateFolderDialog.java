@@ -78,7 +78,7 @@ public class CreateFolderDialog extends AbstractEditDialog {
         return new Runnable() {
             public void run() {
                 commands().createFolder(
-                    _parent.getId().toString(),
+                    _parent.getId(),
                     _text.getValue(),
                     new ErrorReportingCallback<ResourceSummary>(){
                         public void onSuccess(final ResourceSummary result) {

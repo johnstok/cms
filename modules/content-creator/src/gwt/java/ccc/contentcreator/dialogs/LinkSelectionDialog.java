@@ -69,7 +69,7 @@ public class LinkSelectionDialog extends LayoutContainer {
                         closeWindow();
                     } else {
                         _qs.getAbsolutePath(
-                            target.getId().toString(),
+                            target.getId(),
                             new ErrorReportingCallback<String>() {
                                 public void onSuccess(final String path) {
                                     jsniSetUrl(path, target.getTitle());

@@ -37,7 +37,7 @@ public final class ViewHistoryAction
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         _queries.history(
-            item.getId().toString(),
+            item.getId(),
             new ErrorReportingCallback<Collection<LogEntrySummary>>(){
                 public void onSuccess(final Collection<LogEntrySummary> data) {
                     new HistoryDialog(data, _selectionModel).show();

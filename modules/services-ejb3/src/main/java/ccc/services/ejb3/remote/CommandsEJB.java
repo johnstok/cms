@@ -101,18 +101,18 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createAlias(final String parentId,
+    public ResourceSummary createAlias(final ID parentId,
                             final String name,
-                            final String targetId) {
+                            final ID targetId) {
 
         final Resource target =
-            _resources.find(Resource.class, UUID.fromString(targetId));
+            _resources.find(Resource.class, toUUID(targetId));
         if (target == null) {
             throw new CCCException("Target does not exists.");
         }
 
         final Resource parent =
-            _resources.find(Resource.class, UUID.fromString(parentId));
+            _resources.find(Resource.class, toUUID(parentId));
         if (parent == null) {
             throw new CCCException("Parent does not exists.");
         }
@@ -125,30 +125,28 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createFolder(final String parentId,
-                                        final String name) {
-
+    public ResourceSummary createFolder(final ID parentId, final String name) {
         return createFolder(parentId, name, null);
 
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createFolder(final String parentId,
+    public ResourceSummary createFolder(final ID parentId,
                                         final String name,
                                         final String title) {
         final Folder f = new Folder(name);
         f.title((null==title)?name:title);
-        _resources.create(UUID.fromString(parentId), f);
+        _resources.create(toUUID(parentId), f);
         return map(f);
 
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createPage(final String parentId,
-                           final PageDelta delta,
-                           final String templateId) {
+    public ResourceSummary createPage(final ID parentId,
+                                      final PageDelta delta,
+                                      final ID templateId) {
 
         final Page page = new Page(
             ResourceName.escape(delta.getName()),
@@ -160,21 +158,21 @@ public class CommandsEJB
 
         if (templateId != null) {
             final Template template =
-                _resources.find(Template.class, UUID.fromString(templateId));
+                _resources.find(Template.class, toUUID(templateId));
             page.template(template);
         }
 
         assignParagraphs(delta.getParagraphs(), page);
 
-        _page.create(UUID.fromString(parentId), page);
+        _page.create(toUUID(parentId), page);
 
         return map(page);
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createTemplate(final String parentId,
-                               final TemplateDelta delta) {
+    public ResourceSummary createTemplate(final ID parentId,
+                                          final TemplateDelta delta) {
 
         final Template t = new Template(
             new ResourceName(delta.getName()),
@@ -183,7 +181,7 @@ public class CommandsEJB
             delta.getBody(),
             delta.getDefinition());
 
-        _resources.create(UUID.fromString(parentId), t);
+        _resources.create(toUUID(parentId), t);
 
         return map(t);
 
@@ -203,54 +201,53 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary lock(final String resourceId) {
-        return map(_resources.lock(UUID.fromString(resourceId)));
+    public ResourceSummary lock(final ID resourceId) {
+        return map(_resources.lock(toUUID(resourceId)));
     }
 
     /** {@inheritDoc} */
     @Override
-    public void move(final String resourceId,
-                     final String newParentId) {
+    public void move(final ID resourceId,
+                     final ID newParentId) {
 
-        _resources.move(UUID.fromString(resourceId),
-                        UUID.fromString(newParentId));
+        _resources.move(toUUID(resourceId), toUUID(newParentId));
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary publish(final String resourceId) {
-        return map(_resources.publish(UUID.fromString(resourceId)));
+    public ResourceSummary publish(final ID resourceId) {
+        return map(_resources.publish(toUUID(resourceId)));
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary publish(final String resourceId,
-                                   final String userId,
+    public ResourceSummary publish(final ID resourceId,
+                                   final ID userId,
                                    final Date date) {
         return map(_resources.publish(
-            UUID.fromString(resourceId),
-            UUID.fromString(userId),
+            toUUID(resourceId),
+            toUUID(userId),
             date));
     }
 
     /** {@inheritDoc} */
     @Override
-    public void rename(final String resourceId,
+    public void rename(final ID resourceId,
                        final String name) {
 
-        _resources.rename(UUID.fromString(resourceId), name);
+        _resources.rename(toUUID(resourceId), name);
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary unlock(final String resourceId) {
-        return map(_resources.unlock(UUID.fromString(resourceId)));
+    public ResourceSummary unlock(final ID resourceId) {
+        return map(_resources.unlock(toUUID(resourceId)));
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary unpublish(final String resourceId) {
-        return map(_resources.unpublish(UUID.fromString(resourceId)));
+    public ResourceSummary unpublish(final ID resourceId) {
+        return map(_resources.unpublish(toUUID(resourceId)));
     }
 
     /** {@inheritDoc} */
@@ -297,13 +294,13 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public void createWorkingCopy(final String resourceId, final long index) {
-        final UUID resourceUuid = UUID.fromString(resourceId);
+    public void createWorkingCopy(final ID resourceId, final long index) {
+        final UUID resourceUuid = toUUID(resourceId);
         final LogEntry le = _audit.findEntryForIndex(index);
 
         if (resourceUuid.equals(le.subjectId())) {
             _wcMgr.updateWorkingCopy(
-                UUID.fromString(resourceId),
+                toUUID(resourceId),
                 new Snapshot(le.detail()));
         } else {
             throw new CCCException("Log entry describes another resource.");
@@ -312,22 +309,22 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public void updateResourceTemplate(final String resourceId,
-                                       final String templateId) {
+    public void updateResourceTemplate(final ID resourceId,
+                                       final ID templateId) {
 
         final Template t = (null==templateId)
             ? null
-            : _resources.find(Template.class, UUID.fromString(templateId));
+            : _resources.find(Template.class, toUUID(templateId));
 
         _resources.updateTemplateForResource(
-            UUID.fromString(resourceId), t);
+            toUUID(resourceId), t);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void updateTags(final String resourceId,
+    public void updateTags(final ID resourceId,
                            final String tags) {
-        _resources.updateTags(UUID.fromString(resourceId), tags);
+        _resources.updateTags(toUUID(resourceId), tags);
 
     }
 
@@ -370,9 +367,9 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public void includeInMainMenu(final String resourceId,
+    public void includeInMainMenu(final ID resourceId,
                                   final boolean include) {
-        _resources.includeInMainMenu(UUID.fromString(resourceId),
+        _resources.includeInMainMenu(toUUID(resourceId),
                                      include);
     }
 
@@ -404,16 +401,16 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public void updateMetadata(final String resourceId,
+    public void updateMetadata(final ID resourceId,
                                final Map<String, String> metadata) {
-        _resources.updateMetadata(UUID.fromString(resourceId), metadata);
+        _resources.updateMetadata(toUUID(resourceId), metadata);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void updateFolderSortOrder(final String folderId,
+    public void updateFolderSortOrder(final ID folderId,
                                       final String sortOrder) {
-        _folders.updateSortOrder(UUID.fromString(folderId),
+        _folders.updateSortOrder(toUUID(folderId),
                                  ResourceOrder.valueOf(sortOrder));
     }
 
@@ -443,56 +440,56 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public void clearWorkingCopy(final String pageId) {
-        _wcMgr.clearWorkingCopy(UUID.fromString(pageId));
+    public void clearWorkingCopy(final ID pageId) {
+        _wcMgr.clearWorkingCopy(toUUID(pageId));
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createSearch(final String parentId,
+    public ResourceSummary createSearch(final ID parentId,
                                         final String title) {
         final Search s = new Search(title);
-        _resources.create(UUID.fromString(parentId), s);
+        _resources.create(toUUID(parentId), s);
         return map(s);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void cancelAction(final String actionId) {
-        _scheduler.cancel(UUID.fromString(actionId));
+    public void cancelAction(final ID actionId) {
+        _scheduler.cancel(toUUID(actionId));
     }
 
     /** {@inheritDoc} */
     @Override
-    public void createAction(final String resourceId,
-                             final String action,
+    public void createAction(final ID resourceId,
+                             final ccc.services.api.Action action,
                              final Date executeAfter,
                              final String parameters) {
       final Action a =
       new Action(
-          ccc.services.api.Action.valueOf(action),
+          action,
           executeAfter,
           _users.loggedInUser(),
-          _resources.find(Resource.class, UUID.fromString(resourceId)),
+          _resources.find(Resource.class, toUUID(resourceId)),
           new Snapshot(parameters));
       _scheduler.schedule(a);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void reorder(final String folderId, final List<String> order) {
+    public void reorder(final ID folderId, final List<String> order) { // FIXME: Should be List<ID>
         final List<UUID> newOrder = new ArrayList<UUID>();
         for (final String entry : order) {
             newOrder.add(UUID.fromString(entry));
         }
-        _folders.reorder(UUID.fromString(folderId), newOrder);
+        _folders.reorder(toUUID(folderId), newOrder);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void changeRoles(final String resourceId,
+    public void changeRoles(final ID resourceId,
                             final Collection<String> roles) {
-        _resources.changeRoles(UUID.fromString(resourceId), roles);
+        _resources.changeRoles(toUUID(resourceId), roles);
     }
 
     @PostConstruct @SuppressWarnings("unused")
@@ -505,20 +502,14 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public void applyWorkingCopyToFile(final String fileId) {
-        _wcMgr.applyWorkingCopy(UUID.fromString(fileId), _users.loggedInUser());
+    public void applyWorkingCopyToFile(final ID fileId) {
+        _wcMgr.applyWorkingCopy(toUUID(fileId), _users.loggedInUser());
     }
 
     /** {@inheritDoc} */
     @Override
-    public void updateCacheDuration(final String resourceId,
+    public void updateCacheDuration(final ID resourceId,
                                     final Duration duration) {
-        _resources.updateCache(UUID.fromString(resourceId), duration);
-    }
-
-    private UUID toUUID(final ID id) {
-        return UUID.fromString(id.toString());
+        _resources.updateCache(toUUID(resourceId), duration);
     }
 }
-
-

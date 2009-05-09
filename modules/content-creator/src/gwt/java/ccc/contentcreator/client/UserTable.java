@@ -21,7 +21,6 @@ import ccc.contentcreator.binding.UserSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.dialogs.EditUserDialog;
 import ccc.contentcreator.dialogs.EditUserPwDialog;
-import ccc.services.api.ID;
 import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
 
@@ -152,8 +151,7 @@ public class UserTable extends TablePanel {
             public void componentSelected(final MenuEvent ce) {
                 final UserSummaryModelData userDTO =
                     grid.getSelectionModel().getSelectedItem();
-                final ID userId = userDTO.getId();
-                qs.userDelta(userId.toString(), new AsyncCallback<UserDelta>(){
+                qs.userDelta(userDTO.getId(), new AsyncCallback<UserDelta>(){
                     public void onFailure(final Throwable arg0) {
                         Globals.unexpectedError(arg0);
                     }
@@ -177,8 +175,7 @@ public class UserTable extends TablePanel {
             public void componentSelected(final MenuEvent ce) {
                 final UserSummaryModelData userDTO =
                     grid.getSelectionModel().getSelectedItem();
-                final ID userId = userDTO.getId();
-                qs.userDelta(userId.toString(), new AsyncCallback<UserDelta>(){
+                qs.userDelta(userDTO.getId(), new AsyncCallback<UserDelta>(){
                     public void onFailure(final Throwable arg0) {
                         Globals.unexpectedError(arg0);
                     }

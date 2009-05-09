@@ -20,6 +20,7 @@ import java.util.Map;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.client.Globals;
+import ccc.services.api.ID;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -48,7 +49,7 @@ public class MetadataDialog
         AbstractTableDialog<Map.Entry<String, String>, ModelData> {
 
     private CheckBoxSelectionModel<ModelData> _sm;
-    private String _resourceId;
+    private ID _resourceId;
 
     private final Button _save = new Button(
         constants().save(),
@@ -74,7 +75,7 @@ public class MetadataDialog
      * @param resourceId The id of the resource.
      * @param data The metadata.
      */
-    public MetadataDialog(final String resourceId,
+    public MetadataDialog(final ID resourceId,
                           final Collection<Map.Entry<String, String>> data) {
         super(Globals.uiConstants().metadata(), data, true);
 

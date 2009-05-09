@@ -147,10 +147,8 @@ public class FolderResourceTree extends Tree {
                 if (null==loadConfig) {
                     callback.onSuccess(DataBinding.bindResourceSummary(Collections.singletonList(_root)));
                 } else {
-                    final String parentId = loadConfig.getId().toString();
-
                     qs.getChildren(
-                        parentId,
+                        loadConfig.getId(),
                         new AsyncCallback<Collection<ResourceSummary>>(){
 
                             public void onFailure(final Throwable arg0) {

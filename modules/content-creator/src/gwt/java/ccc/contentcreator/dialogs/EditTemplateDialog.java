@@ -58,7 +58,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
     private final TextArea _definition = new TextArea();
 
     private ID _id;
-    private String _parentFolderId;
+    private ID _parentFolderId;
     private DialogMode _mode;
     private SingleSelectionModel<ResourceSummaryModelData> _ssm;
     private TemplateDelta _model;
@@ -70,7 +70,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
      * @param parentFolderId The id of the parent folder.
      * @param ssm
      */
-    public EditTemplateDialog(final String parentFolderId,
+    public EditTemplateDialog(final ID parentFolderId,
                               final SingleSelectionModel<ResourceSummaryModelData> ssm) {
         super(Globals.uiConstants().editTemplate());
         setWidth(DEFAULT_WIDTH);

@@ -103,7 +103,7 @@ public class MoveDialog extends AbstractEditDialog {
                     .check(Validations.notEmpty(_parentFolder))
                     .stopIfInError()
                     .check(Validations.uniqueResourceName(
-                        _parent.getId().toString(), _targetName))
+                        _parent.getId(), _targetName))
                     .callMethodOr(Validations.reportErrors());
             }
         };
@@ -113,8 +113,8 @@ public class MoveDialog extends AbstractEditDialog {
         return new Runnable() {
             public void run() {
                 commands().move(
-                    _target.getId().toString(),
-                    _parent.getId().toString(),
+                    _target.getId(),
+                    _parent.getId(),
                     new ErrorReportingCallback<Void>() {
                         public void onSuccess(final Void result) {
                             _ssm.move(_target, _parent, _ssm.treeSelection());

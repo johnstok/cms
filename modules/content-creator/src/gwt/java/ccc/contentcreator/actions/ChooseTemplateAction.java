@@ -51,7 +51,7 @@ public final class ChooseTemplateAction
             || ResourceType.FOLDER==item.getType()
             || ResourceType.SEARCH==item.getType()) {
             _queries.resourceDelta(
-                item.getId().toString(),
+                item.getId(),
                 new ErrorReportingCallback<ResourceDelta>(){
                     public void onSuccess(final ResourceDelta delta) {
                         _queries.templates(
@@ -59,7 +59,7 @@ public final class ChooseTemplateAction
                             public void onSuccess(
                                 final Collection<TemplateDelta> templates) {
                                 new ChooseTemplateDialog(
-                                    delta.getId().toString(),
+                                    delta.getId(),
                                     delta.getTemplateId(),
                                     templates)
                                 .show();
