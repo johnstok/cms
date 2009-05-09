@@ -81,8 +81,9 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
-    public UserSummary createUser(final UserDelta delta) {
-        return _services.lookupCommands().createUser(delta);
+    public UserSummary createUser(final UserDelta delta,
+                                  final String password) {
+        return _services.lookupCommands().createUser(delta, password);
     }
 
     /** {@inheritDoc} */
@@ -275,5 +276,12 @@ public class CommandsImpl
                                     final Duration duration) {
         _services.lookupCommands().updateCacheDuration(resourceId, duration);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateUserPassword(final ID userId, final String password) {
+        _services.lookupCommands().updateUserPassword(userId, password);
+    }
+
 
 }

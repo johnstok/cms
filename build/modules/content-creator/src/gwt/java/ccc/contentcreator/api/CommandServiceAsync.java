@@ -88,7 +88,7 @@ public interface CommandServiceAsync {
 
     void createFolder(ID parentId, String name, String title, AsyncCallback<ResourceSummary> callback);
 
-    void createUser(UserDelta delta, AsyncCallback<UserSummary> callback);
+    void createUser(UserDelta delta, String password, AsyncCallback<UserSummary> callback);
 
     void createPage(ID parentId, PageDelta delta, ID templateId, AsyncCallback<ResourceSummary> callback);
 
@@ -105,4 +105,6 @@ public interface CommandServiceAsync {
     void applyWorkingCopyToFile(ID fileId, AsyncCallback<Void> callback);
 
     void updateCacheDuration(ID resourceId, Duration duration, AsyncCallback<Void> callback);
+
+    void updateUserPassword(ID userId, String password, AsyncCallback<Void> callback);
 }

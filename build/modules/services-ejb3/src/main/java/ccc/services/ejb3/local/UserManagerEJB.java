@@ -28,11 +28,13 @@ import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import ccc.commons.EmailAddress;
 import ccc.domain.Password;
 import ccc.domain.User;
 import ccc.persistence.jpa.BaseDao;
 import ccc.services.Dao;
 import ccc.services.UserManager;
+import ccc.services.api.UserDelta;
 
 
 /**
@@ -52,7 +54,7 @@ public class UserManagerEJB implements UserManager {
 
 
     /** Constructor. */
-    @SuppressWarnings("unused") public UserManagerEJB() { super(); }
+    public UserManagerEJB() { super(); }
 
     /**
      * Constructor.
@@ -69,10 +71,15 @@ public class UserManagerEJB implements UserManager {
 
     /** {@inheritDoc} */
     @Override
-    public User createUser(final User user, final String password) {
+    public User createUser(final UserDelta delta, final String password) {
+        final User user = new User(delta.getUsername().toString());
+        user.email(new EmailAddress(delta.getEmail()));
+        user.roles(delta.getRoles());
         _dao.create(user);
+
         final Password defaultPassword = new Password(user, password);
         _dao.create(defaultPassword);
+
         return user;
     }
 
@@ -112,18 +119,13 @@ public class UserManagerEJB implements UserManager {
 
     /** {@inheritDoc} */
     @Override
-    public void updateUser(final User user, final String password) {
-        final User current = _dao.find(User.class, user.id());
-        current.username(user.username());
-        current.email(user.email());
-        current.roles(user.roles());
-        if (password != null) {
-            final Password p =
-                _dao.find("passwordForUser", Password.class, user.id());
-            if (p != null) {
-                p.password(password);
-            }
-        }
+    public User updateUser(final UserDelta delta) {
+        final User current =
+            _dao.find(User.class, UUID.fromString(delta.getId().toString()));
+        current.username(delta.getUsername().toString());
+        current.email(new EmailAddress(delta.getEmail()));
+        current.roles(delta.getRoles());
+        return current;
     }
 
     /** {@inheritDoc} */
@@ -149,5 +151,13 @@ public class UserManagerEJB implements UserManager {
     @PostConstruct
     public void configure() {
         _dao = new BaseDao(_em);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void updatePassword(final UUID userId, final String password) {
+        final Password p =
+                _dao.find("passwordForUser", Password.class, userId);
+        p.password(password);
     }
 }

@@ -191,7 +191,7 @@ public interface Commands {
     /**
      * Create a new user in the system.
      */
-    UserSummary createUser(UserDelta delta);
+    UserSummary createUser(UserDelta delta, String password);
 
     /**
      * Creates a new page.
@@ -234,5 +234,13 @@ public interface Commands {
     void applyWorkingCopyToFile(ID fileId);
 
     void updateCacheDuration(ID resourceId, Duration duration);
+
+    /**
+     * Update the password for the specified user.
+     *
+     * @param userId The user's id.
+     * @param password The new password to set.
+     */
+    void updateUserPassword(ID userId, String password);
 }
 

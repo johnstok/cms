@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import ccc.migration.ExistingUser;
 import ccc.migration.LegacyDBQueries;
 import ccc.migration.MigrationException;
 import ccc.services.api.UserDelta;
@@ -20,7 +21,7 @@ import ccc.services.api.Username;
  */
 public final class AllUsersSelector
     implements
-        SqlQuery<Map<Integer, UserDelta>> {
+        SqlQuery<Map<Integer, ExistingUser>> {
 
     private static Logger log = Logger.getLogger(AllUsersSelector.class);
 
@@ -36,10 +37,10 @@ public final class AllUsersSelector
     }
 
     /** {@inheritDoc} */
-    @Override public Map<Integer, UserDelta> handle(final ResultSet rs)
+    @Override public Map<Integer, ExistingUser> handle(final ResultSet rs)
                                                            throws SQLException {
-        final Map<Integer, UserDelta> resultList =
-            new HashMap<Integer, UserDelta>();
+        final Map<Integer, ExistingUser> resultList =
+            new HashMap<Integer, ExistingUser>();
         while (rs.next()) {
             final String userName = rs.getString("user_name");
             final String password = rs.getString("user_passwd");
@@ -50,11 +51,11 @@ public final class AllUsersSelector
                 final UserDelta user =
                     new UserDelta(
                         null,
-                        password,
                         email,
                         new Username(userName),
                         roles);
-                resultList.put(Integer.valueOf(userId), user);
+                final ExistingUser eu = new ExistingUser(user, password);
+                resultList.put(Integer.valueOf(userId), eu);
             } catch (final MigrationException e) {
                 log.warn("Error selecting user: "+e.getMessage());
             }

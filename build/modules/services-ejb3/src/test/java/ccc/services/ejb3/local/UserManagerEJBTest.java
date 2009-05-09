@@ -16,6 +16,7 @@ import static org.easymock.EasyMock.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import javax.ejb.EJBContext;
 
@@ -25,6 +26,9 @@ import ccc.domain.CreatorRoles;
 import ccc.domain.Password;
 import ccc.domain.User;
 import ccc.services.Dao;
+import ccc.services.api.ID;
+import ccc.services.api.UserDelta;
+import ccc.services.api.Username;
 
 
 /**
@@ -111,16 +115,17 @@ public class UserManagerEJBTest extends TestCase {
 
     /**
      * Test.
+     * TODO: Test the actual values of the created user.
      */
     public void testCreateUser() {
 
         // ARRANGE
-        _em.create(_u);
+        _em.create(isA(User.class));
         _em.create(isA(Password.class));
         replay(_context, _em);
 
         // ACT
-        _um.createUser(_u, "foopass");
+        _um.createUser(_uDelta, "foopass");
 
         // ASSERT
         verify(_context, _em);
@@ -204,6 +209,7 @@ public class UserManagerEJBTest extends TestCase {
 
     /**
      * Test.
+     * TODO: Test the actual values of the created user.
      */
     public void testUpdateUser() {
 
@@ -212,7 +218,7 @@ public class UserManagerEJBTest extends TestCase {
         replay(_context, _em);
 
         // ACT
-        _um.updateUser(_u, null);
+        _um.updateUser(_uDelta);
 
         // ASSERT
         verify(_context, _em);
@@ -227,19 +233,20 @@ public class UserManagerEJBTest extends TestCase {
         // ARRANGE
         final Password pw = new Password(_u, "foo");
 
-        expect(_em.find(User.class, _u.id())).andReturn(_u);
         expect(_em.find("passwordForUser", Password.class, _u.id()))
             .andReturn(pw);
         replay(_context, _em);
 
         // ACT
-        _um.updateUser(_u, "newPass");
+        _um.updatePassword(_u.id(), "newPass");
 
         // ASSERT
         verify(_context, _em);
+        assertTrue(pw.matches("newPass"));
     }
 
     private User _u;
+    private UserDelta _uDelta;
     private Dao _em;
     private EJBContext _context;
     private Principal _p;
@@ -249,6 +256,12 @@ public class UserManagerEJBTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         _u = new User("testUser");
+        _uDelta =
+            new UserDelta(
+                new ID(_u.id().toString()),
+                "test@civicuk.com",
+                new Username("testUser"),
+                new HashSet<String>());
         _u.email(new EmailAddress("test@civicuk.com"));
         _p = new Principal(){
             @Override public String getName() {
@@ -264,6 +277,7 @@ public class UserManagerEJBTest extends TestCase {
     @Override
     protected void tearDown() throws Exception {
         _u = null;
+        _uDelta = null;
         _p = null;
         _em = null;
         _context = null;
