@@ -11,6 +11,7 @@
  */
 package ccc.services.ejb3.local;
 
+import static ccc.services.QueryNames.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.security.Principal;
@@ -86,7 +87,7 @@ public class UserManagerEJB implements UserManager {
     /** {@inheritDoc} */
     @Override
     public Collection<User> listUsers() {
-        return _dao.uniquify("users", User.class);
+        return _dao.uniquify(USERS, User.class);
     }
 
     /** {@inheritDoc} */
@@ -94,7 +95,7 @@ public class UserManagerEJB implements UserManager {
     public Collection<User> listUsersWithUsername(final String username) {
         final String searchParam =
             (null==username) ? "" : username.toLowerCase(Locale.US);
-        return _dao.list("usersWithUsername", User.class, searchParam);
+        return _dao.list(USERS_WITH_USERNAME, User.class, searchParam);
     }
 
     /** {@inheritDoc} */
@@ -102,19 +103,19 @@ public class UserManagerEJB implements UserManager {
     public Collection<User> listUsersWithEmail(final String email) {
         final String searchParam =
             (null==email) ? "" : email.toLowerCase(Locale.US);
-        return _dao.list("usersWithEmail", User.class, searchParam);
+        return _dao.list(USERS_WITH_EMAIL, User.class, searchParam);
     }
 
     /** {@inheritDoc} */
     @Override
     public Collection<User> listUsersWithRole(final String role) {
-        return _dao.uniquify("usersWithRole", User.class, role);
+        return _dao.uniquify(USERS_WITH_ROLE, User.class, role);
     }
 
     /** {@inheritDoc} */
     @Override
     public boolean usernameExists(final String username) {
-        return _dao.exists("usersWithUsername", User.class, username);
+        return _dao.exists(USERS_WITH_USERNAME, User.class, username);
     }
 
     /** {@inheritDoc} */
@@ -134,7 +135,7 @@ public class UserManagerEJB implements UserManager {
             final Principal p = _context.getCallerPrincipal();
             final String principalName = p.getName();
             final User user =
-                _dao.find("usersWithUsername", User.class, principalName);
+                _dao.find(USERS_WITH_USERNAME, User.class, principalName);
             return user;
         } catch (final IllegalStateException e) {
             return null;
@@ -156,7 +157,7 @@ public class UserManagerEJB implements UserManager {
     @Override
     public void updatePassword(final UUID userId, final String password) {
         final Password p =
-                _dao.find("passwordForUser", Password.class, userId);
+                _dao.find(PASSWORD_FOR_USER, Password.class, userId);
         p.password(password);
     }
 }

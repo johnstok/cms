@@ -75,7 +75,7 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public void createRoot(final Folder folder) {
         final Resource possibleRoot =
-            _dao.find("rootByName", Resource.class, folder.name());
+            _dao.find(QueryNames.ROOT_BY_NAME, Resource.class, folder.name());
         if (null!=possibleRoot) {
             throw new CCCException("Root exists with name: "+folder.name());
         }
@@ -113,7 +113,7 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public List<Resource> lockedByCurrentUser() {
         return
-            _dao.list("resourcesLockedByUser",
+            _dao.list(QueryNames.RESOURCES_LOCKED_BY_USER,
                       Resource.class,
                       _users.loggedInUser());
     }
@@ -122,7 +122,7 @@ public class ResourceDaoImpl implements ResourceDao {
     /** {@inheritDoc} */
     @Override
     public List<Resource> locked() {
-        return _dao.list("lockedResources", Resource.class);
+        return _dao.list(QueryNames.LOCKED_RESOURCES, Resource.class);
     }
 
 
@@ -130,7 +130,7 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public List<LogEntry> history(final UUID resourceId) {
         return
-            _dao.list("resourceHistory", LogEntry.class, resourceId);
+            _dao.list(QueryNames.RESOURCE_HISTORY, LogEntry.class, resourceId);
     }
 
 

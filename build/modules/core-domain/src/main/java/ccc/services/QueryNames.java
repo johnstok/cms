@@ -47,4 +47,28 @@ public final class QueryNames {
 
     /** LATEST_ACTION : String. */
     public static final String LATEST_ACTION = "latest_action";
+
+    /** USERS : String. */
+    public static final String USERS = "users";
+
+    /** USERS_WITH_USERNAME : String. */
+    public static final String USERS_WITH_USERNAME = "usersWithUsername";
+
+    /** USERS_WITH_EMAIL : String. */
+    public static final String USERS_WITH_EMAIL = "usersWithEmail";
+
+    /** USERS_WITH_ROLE : String. */
+    public static final String USERS_WITH_ROLE = "usersWithRole";
+
+    /** PASSWORD_FOR_USER : String. */
+    public static final String PASSWORD_FOR_USER = "passwordForUser";
+
+    /** RESOURCES_LOCKED_BY_USER : String. */
+    public static final String RESOURCES_LOCKED_BY_USER = "resourcesLockedByUser";
+
+    /** LOCKED_RESOURCES : String. */
+    public static final String LOCKED_RESOURCES = "lockedResources";
+
+    /** RESOURCE_HISTORY : String. */
+    public static final String RESOURCE_HISTORY = "resourceHistory";
 }
