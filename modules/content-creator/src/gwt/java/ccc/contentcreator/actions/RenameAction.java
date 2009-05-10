@@ -14,14 +14,14 @@ public final class RenameAction
     implements
         Action {
 
-    private final SingleSelectionModel<ResourceSummaryModelData> _selectionModel;
+    private final SingleSelectionModel _selectionModel;
 
     /**
      * Constructor.
      *
      * @param selectionModel The selection model.
      */
-    public RenameAction(final SingleSelectionModel<ResourceSummaryModelData> selectionModel) {
+    public RenameAction(final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;
     }
 

@@ -15,7 +15,7 @@ public final class MoveAction
     implements
         Action {
 
-    private final SingleSelectionModel<ResourceSummaryModelData> _selectionModel;
+    private final SingleSelectionModel _selectionModel;
     private final ResourceSummary _root;
 
     /**
@@ -24,7 +24,7 @@ public final class MoveAction
      * @param selectionModel The selection model.
      * @param root The root of current resource tree.
      */
-    public MoveAction(final SingleSelectionModel<ResourceSummaryModelData> selectionModel,
+    public MoveAction(final SingleSelectionModel selectionModel,
                       final ResourceSummary root) {
         _selectionModel = selectionModel;
         _root = root;

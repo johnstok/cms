@@ -14,14 +14,14 @@ public class UpdateSortOrderAction
     implements
         Action {
 
-    private final SingleSelectionModel<ResourceSummaryModelData> _selectionModel;
+    private final SingleSelectionModel _selectionModel;
 
     /**
      * Constructor.
      *
      * @param selectionModel The selectionModel for this action.
      */
-    public UpdateSortOrderAction(final SingleSelectionModel<ResourceSummaryModelData> selectionModel) {
+    public UpdateSortOrderAction(final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;
     }
 

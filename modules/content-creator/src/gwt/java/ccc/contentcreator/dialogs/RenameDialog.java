@@ -33,7 +33,7 @@ public class RenameDialog extends AbstractEditDialog {
     private final ResourceSummaryModelData _item;
     private final TextField<String> _oldName = new TextField<String>();
     private final TextField<String> _newName = new TextField<String>();
-    private SingleSelectionModel<ResourceSummaryModelData> _ssm;
+    private SingleSelectionModel _ssm;
 
     /**
      * Constructor.
@@ -43,7 +43,7 @@ public class RenameDialog extends AbstractEditDialog {
      */
     public RenameDialog(
                     final ResourceSummaryModelData item,
-                    final SingleSelectionModel<ResourceSummaryModelData> ssm) {
+                    final SingleSelectionModel ssm) {
         super(Globals.uiConstants().rename());
         setHeight(Globals.DEFAULT_MIN_HEIGHT);
         _item = item;

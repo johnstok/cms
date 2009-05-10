@@ -1,6 +1,5 @@
 package ccc.contentcreator.actions;
 
-import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.CreateAliasDialog;
@@ -15,7 +14,7 @@ public final class CreateAliasAction
     implements
         Action {
 
-    private final SingleSelectionModel<ResourceSummaryModelData> _selectionModel;
+    private final SingleSelectionModel _selectionModel;
     private ResourceSummary _root;
 
     /**
@@ -24,7 +23,7 @@ public final class CreateAliasAction
      * @param selectionModel The selection model.
      * @param root The root of current resource tree.
      */
-    public CreateAliasAction(final SingleSelectionModel<ResourceSummaryModelData> selectionModel,
+    public CreateAliasAction(final SingleSelectionModel selectionModel,
                              final ResourceSummary root) {
         _selectionModel = selectionModel;
         _root = root;

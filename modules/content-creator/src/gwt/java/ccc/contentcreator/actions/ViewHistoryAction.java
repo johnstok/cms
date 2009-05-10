@@ -22,14 +22,14 @@ public final class ViewHistoryAction
 
     private final QueriesServiceAsync _queries = Globals.queriesService();
 
-    private final SingleSelectionModel<ResourceSummaryModelData> _selectionModel;
+    private final SingleSelectionModel _selectionModel;
 
     /**
      * Constructor.
      *
      * @param selectionModel The selection model.
      */
-    public ViewHistoryAction(final SingleSelectionModel<ResourceSummaryModelData> selectionModel) {
+    public ViewHistoryAction(final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;
     }
 

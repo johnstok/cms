@@ -21,14 +21,14 @@ public final class UpdateMetadataAction
 
     private final QueriesServiceAsync _queries = Globals.queriesService();
 
-    private final SingleSelectionModel<ResourceSummaryModelData> _selectionModel;
+    private final SingleSelectionModel _selectionModel;
 
     /**
      * Constructor.
      *
      * @param selectionModel The selection model.
      */
-    public UpdateMetadataAction(final SingleSelectionModel<ResourceSummaryModelData> selectionModel) {
+    public UpdateMetadataAction(final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;
     }
 

@@ -85,7 +85,7 @@ public class CreatePageDialog
     private ContentPanel _descriptionPanel = new ContentPanel(new RowLayout());
     private ContentPanel _rightPanel = new ContentPanel(new RowLayout());
 
-    private final SingleSelectionModel<ResourceSummaryModelData> _ssm;
+    private final SingleSelectionModel _ssm;
     private final ResourceSummaryModelData _parent;
 
     private final CheckBox _publish = new CheckBox();
@@ -103,7 +103,7 @@ public class CreatePageDialog
     public CreatePageDialog(
                     final Collection<TemplateSummary> list,
                     final ResourceSummaryModelData parent,
-                    final SingleSelectionModel<ResourceSummaryModelData> ssm) {
+                    final SingleSelectionModel ssm) {
         super(Globals.uiConstants().createPage());
         _ssm = ssm;
         _parent = parent;

@@ -22,14 +22,14 @@ public final class CreatePageAction
 
     private final QueriesServiceAsync _queries = Globals.queriesService();
 
-    private final SingleSelectionModel<ResourceSummaryModelData> _selectionModel;
+    private final SingleSelectionModel _selectionModel;
 
     /**
      * Constructor.
      *
      * @param selectionModel The selection model to use.
      */
-    public CreatePageAction(final SingleSelectionModel<ResourceSummaryModelData> selectionModel) {
+    public CreatePageAction(final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;
     }
 

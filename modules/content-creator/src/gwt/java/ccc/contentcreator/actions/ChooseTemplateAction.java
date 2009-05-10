@@ -25,7 +25,7 @@ public final class ChooseTemplateAction
     private final QueriesServiceAsync _queries = Globals.queriesService();
     private final UIConstants _constants = Globals.uiConstants();
 
-    private final SingleSelectionModel<ResourceSummaryModelData> _selectionModel;
+    private final SingleSelectionModel _selectionModel;
 
     /**
      * Constructor.
@@ -33,7 +33,7 @@ public final class ChooseTemplateAction
      * @param selectionModel The selection model.
      */
     public ChooseTemplateAction(
-          final SingleSelectionModel<ResourceSummaryModelData> selectionModel) {
+          final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;
     }
 

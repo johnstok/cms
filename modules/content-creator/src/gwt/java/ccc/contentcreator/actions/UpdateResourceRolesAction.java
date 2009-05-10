@@ -21,14 +21,14 @@ public final class UpdateResourceRolesAction
 
     private final QueriesServiceAsync _queries = Globals.queriesService();
 
-    private final SingleSelectionModel<ResourceSummaryModelData> _selectionModel;
+    private final SingleSelectionModel _selectionModel;
 
     /**
      * Constructor.
      *
      * @param ssm The selection model to use.
      */
-    public UpdateResourceRolesAction(final SingleSelectionModel<ResourceSummaryModelData> ssm) {
+    public UpdateResourceRolesAction(final SingleSelectionModel ssm) {
         _selectionModel = ssm;
     }
 

@@ -19,14 +19,14 @@ public class PublishAction
 
     private final CommandServiceAsync _commands = Globals.commandService();
 
-    private final SingleSelectionModel<ResourceSummaryModelData> _selectionModel;
+    private final SingleSelectionModel _selectionModel;
 
     /**
      * Constructor.
      *
      * @param selectionModel The selection model to use.
      */
-    public PublishAction(final SingleSelectionModel<ResourceSummaryModelData> selectionModel) {
+    public PublishAction(final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;
     }
 

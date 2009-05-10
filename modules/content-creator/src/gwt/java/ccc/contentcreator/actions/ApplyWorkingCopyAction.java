@@ -30,7 +30,7 @@ public class ApplyWorkingCopyAction
 
     private final CommandServiceAsync _commands = Globals.commandService();
 
-    private final SingleSelectionModel<ResourceSummaryModelData> _selectionModel;
+    private final SingleSelectionModel _selectionModel;
 
     /**
      * Constructor.
@@ -38,7 +38,7 @@ public class ApplyWorkingCopyAction
      * @param selectionModel The selection model.
      */
     public ApplyWorkingCopyAction(
-          final SingleSelectionModel<ResourceSummaryModelData> selectionModel) {
+          final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;
     }
 

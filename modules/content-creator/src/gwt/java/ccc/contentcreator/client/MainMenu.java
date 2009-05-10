@@ -122,7 +122,7 @@ public class MainMenu
     }
 
     private void addRootMenuItems(final ResourceSummary root) {
-        final SingleSelectionModel<ResourceSummaryModelData> ssm = createSsm(root);
+        final SingleSelectionModel ssm = createSsm(root);
 
         _itemMenu.add(createMenuItem(
             "details-root",
@@ -204,10 +204,10 @@ public class MainMenu
 
     }
 
-    private SingleSelectionModel<ResourceSummaryModelData> createSsm(final ResourceSummary root) {
+    private SingleSelectionModel createSsm(final ResourceSummary root) {
 
-        final SingleSelectionModel<ResourceSummaryModelData> ssm =
-            new SingleSelectionModel<ResourceSummaryModelData>() {
+        final SingleSelectionModel ssm =
+            new SingleSelectionModel() {
                 private final ResourceSummaryModelData _md =
                     new ResourceSummaryModelData(root);
 

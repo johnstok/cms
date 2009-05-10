@@ -19,10 +19,13 @@ import ccc.contentcreator.binding.ResourceSummaryModelData;
  *
  * @author Civic Computing Ltd.
  */
-public interface SingleSelectionModel<T extends ResourceSummaryModelData> {
-    T tableSelection();
-    T treeSelection();
-    void update(T model);
-    void move(T model, T newParent, final T oldParent);
-    void create(T model, T newParent);
+public interface SingleSelectionModel {
+    ResourceSummaryModelData tableSelection();
+    ResourceSummaryModelData treeSelection();
+    void update(ResourceSummaryModelData model);
+    void move(ResourceSummaryModelData model,
+              ResourceSummaryModelData newParent, final
+              ResourceSummaryModelData oldParent);
+    void create(ResourceSummaryModelData model,
+                ResourceSummaryModelData newParent);
 }

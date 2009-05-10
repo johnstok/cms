@@ -15,14 +15,14 @@ public final class CreateFolderAction
     implements
         Action {
 
-    private final SingleSelectionModel<ResourceSummaryModelData> _selectionModel;
+    private final SingleSelectionModel _selectionModel;
 
     /**
      * Constructor.
      *
      * @param selectionModel The selection model to use.
      */
-    public CreateFolderAction(final SingleSelectionModel<ResourceSummaryModelData> selectionModel) {
+    public CreateFolderAction(final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;
     }
 
