@@ -36,6 +36,8 @@ public final class ResourceSummary implements Serializable {
     private boolean _hasWorkingCopy;
     private Date _dateCreated;
     private Date _dateChanged;
+    private ID _templateId;
+    private String _tags;
 
     @SuppressWarnings("unused") private ResourceSummary() { super(); }
 
@@ -70,7 +72,9 @@ public final class ResourceSummary implements Serializable {
                            final String sortOrder,
                            final boolean hasWorkingCopy,
                            final Date dateCreated,
-                           final Date dateChanged) {
+                           final Date dateChanged,
+                           final ID templateId,
+                           final String tags) {
         _id = id;
         _parentId = parentId;
         _name = name;
@@ -85,6 +89,8 @@ public final class ResourceSummary implements Serializable {
         _hasWorkingCopy = hasWorkingCopy;
         _dateCreated = dateCreated;
         _dateChanged = dateChanged;
+        _templateId = templateId;
+        _tags = tags;
     }
 
 
@@ -278,4 +284,22 @@ public final class ResourceSummary implements Serializable {
     }
 
 
+    /**
+     * Accessor.
+     *
+     * @return Returns the dateChanged.
+     */
+    public ID getTemplateId() {
+        return _templateId;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the tags.
+     */
+    public String getTags() {
+        return _tags;
+    }
 }

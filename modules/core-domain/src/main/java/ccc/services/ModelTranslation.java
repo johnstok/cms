@@ -37,7 +37,6 @@ import ccc.services.api.ID;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ParagraphDelta;
-import ccc.services.api.ResourceDelta;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.ResourceType;
 import ccc.services.api.TemplateDelta;
@@ -191,7 +190,9 @@ public class ModelTranslation {
                 sortOrder,
                 hasWorkingCopy,
                 r.dateCreated(),
-                r.dateChanged()
+                r.dateChanged(),
+                toID(r.template().id()),
+                r.tagString()
             );
         return rs;
     }
@@ -241,12 +242,12 @@ public class ModelTranslation {
         if (null==template) {
             return null;
         }
-        final TemplateDelta delta = new TemplateDelta(
-            toID(template.id()),
-            template.title(),
-            template.description(),
-            template.body(),
-            template.definition()
+        final TemplateDelta delta =
+            new TemplateDelta(
+                template.title(),
+                template.description(),
+                template.body(),
+                template.definition()
         );
         return delta;
     }
@@ -261,7 +262,6 @@ public class ModelTranslation {
     protected UserDelta delta(final User user) {
         final UserDelta delta =
             new UserDelta(
-                toID(user.id()),
                 user.email().getText(),
                 new Username(user.username()),
                 user.roles());
@@ -278,7 +278,6 @@ public class ModelTranslation {
     protected AliasDelta delta(final Alias alias) {
         final AliasDelta delta =
             new AliasDelta(
-                toID(alias.id()),
                 alias.target().name().toString(),
                 toID(alias.target().id()));
         return delta;
@@ -294,7 +293,6 @@ public class ModelTranslation {
     protected FileDelta delta(final File file) {
         final FileDelta delta =
             new FileDelta(
-                toID(file.id()),
                 file.title(),
                 file.description(),
                 file.mimeType().toString(),
@@ -325,30 +323,8 @@ public class ModelTranslation {
 
         final PageDelta delta =
             new PageDelta(
-                toID(page.id()),
                 page.title(),
                 paragraphs);
-        return delta;
-    }
-
-
-    /**
-     * Create a delta for a resource.
-     *
-     * @param resource The CCC resource.
-     * @return The corresponding delta.
-     */
-    protected ResourceDelta delta(final Resource resource) {
-        final Template t = resource.template();
-
-        final ResourceDelta delta =
-            new ResourceDelta(
-                toID(resource.id()),
-                resource.title(),
-                (null==t) ? null : toID(t.id()),
-                resource.tagString(),
-                resource.isPublished()
-            );
         return delta;
     }
 
@@ -398,7 +374,6 @@ public class ModelTranslation {
 
         final PageDelta delta =
             new PageDelta(
-                toID(page.id()),
                 ss.getString("title"),
                 paragraphs);
         return delta;

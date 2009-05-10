@@ -21,8 +21,7 @@ import java.util.Map;
 
 
 /**
- * TODO: Add Description for this type.
- * FIXME: Convert all 'xxxId' parameters to use the {@link ID} type.
+ * Command API, used to update data in CCC.
  *
  * @author Civic Computing Ltd.
  */
@@ -34,29 +33,45 @@ public interface Commands {
 
     /**
      * Update the specified page on the server.
+     *
+     * @param pageId The id of the page to update.
+     * @param delta The changes to apply.
+     * @param comment A comment describing the changes.
+     * @param isMajorEdit Is this a major change.
      */
-    void updatePage(PageDelta delta, String comment, boolean isMajorEdit)
-        throws CCCRemoteException;
+    void updatePage(ID pageId,
+                    PageDelta delta,
+                    String comment,
+                    boolean isMajorEdit);
 
     /**
      * Update the working copy of the specified page.
+     *
+     * @param pageId The id of the page to update.
+     * @param delta The changes to apply.
      */
-    void updateWorkingCopy(PageDelta delta);
+    void updateWorkingCopy(ID pageId, PageDelta delta);
 
     /**
-     * Update an alias' target.
+     * Update an alias.
+     *
+     * @param aliasId The id of the alias to update.
+     * @param delta The changes to apply.
      */
-    void updateAlias(AliasDelta delta);
+    void updateAlias(ID aliasId, AliasDelta delta);
 
     /**
      * Updates the user in the system.
      */
-    UserSummary updateUser(UserDelta delta);
+    UserSummary updateUser(ID userId, UserDelta delta);
 
     /**
      * Update the specified template on the server.
+     *
+     * @param templateId The id of the template to update.
+     * @param delta The changes to apply.
      */
-    ResourceSummary updateTemplate(TemplateDelta delta);
+    ResourceSummary updateTemplate(ID templateId, TemplateDelta delta);
 
     /**
      * Rename resource.

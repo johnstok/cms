@@ -15,10 +15,10 @@ package ccc.contentcreator.dialogs;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.client.Globals;
-import ccc.contentcreator.client.ResourceTable;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.services.api.AliasDelta;
+import ccc.services.api.ID;
 import ccc.services.api.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Events;
@@ -41,23 +41,25 @@ public class UpdateAliasDialog extends AbstractEditDialog {
     private final TriggerField<String> _targetName =
         new TriggerField<String>();
 
-    private AliasDelta _alias = null;
-    private ResourceSummary _targetRoot;
-    private final ResourceTable _rt;
+    private final ID _aliasId;
+    private final AliasDelta _alias;
+    private final ResourceSummary _targetRoot;
 
     /**
      * Constructor.
      *
-     * @param delta The alias to edit
-     * @param rt The resourceTable to refresh
+     * @param aliasId The id of the alias to edit.
+     * @param aliasName The name of the alias being edited.
+     * @param delta The changes to make.
      * @param targetRoot The root of the target resource
      */
-    public UpdateAliasDialog(final AliasDelta delta,
+    public UpdateAliasDialog(final ID aliasId,
+                             final AliasDelta delta,
                              final String aliasName,
-                           final ResourceTable rt,
-                           final ResourceSummary targetRoot) {
+                             final ResourceSummary targetRoot) {
         super(Globals.uiConstants().updateAlias());
-        _rt = rt;
+
+        _aliasId = aliasId;
         _alias = delta;
         _targetRoot = targetRoot;
         setLayout(new FitLayout());
@@ -79,12 +81,12 @@ public class UpdateAliasDialog extends AbstractEditDialog {
         _targetName.addListener(
             Events.TriggerClick,
             new Listener<ComponentEvent>(){
-                public void handleEvent(final ComponentEvent be) {
+                public void handleEvent(final ComponentEvent be1) {
                     final ResourceSelectionDialog resourceSelect =
                         new ResourceSelectionDialog(_targetRoot);
                     resourceSelect.addListener(Events.Close,
                         new Listener<ComponentEvent>() {
-                        public void handleEvent(final ComponentEvent be) {
+                        public void handleEvent(final ComponentEvent be2) {
                             final ResourceSummaryModelData target =
                                 resourceSelect.selectedResource();
                             _alias.setTargetId(target.getId());
@@ -112,8 +114,10 @@ public class UpdateAliasDialog extends AbstractEditDialog {
 
     private Runnable createAlias() {
         return new Runnable() {
+
             public void run() {
                 commands().updateAlias(
+                    _aliasId,
                     _alias,
                     new DisposingCallback(UpdateAliasDialog.this)
                 );

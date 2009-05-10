@@ -136,14 +136,13 @@ public class CreateUserDialog extends AbstractEditDialog {
             public void run() {
                 Globals.commandService().createUser(
                     new UserDelta(
-                        null,
                         _email.getValue(),
                         new Username(_username.getValue()),
                         new HashSet<String>()),
                     _password1.getValue(),
                     new ErrorReportingCallback<UserSummary>() {
                         public void onSuccess(final UserSummary result) {
-                            // TODO: Refresh the main window.
+                            // FIXME: Refresh the main window.
                             close();
                         }
                     }

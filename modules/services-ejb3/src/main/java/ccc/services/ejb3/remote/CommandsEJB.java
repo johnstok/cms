@@ -247,24 +247,24 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public void updateAlias(final AliasDelta delta) {
+    public void updateAlias(final ID aliasId, final AliasDelta delta) {
         _alias.updateAlias(
             toUUID(delta.getTargetId()),
-            toUUID(delta.getId()));
+            toUUID(aliasId));
     }
 
     /** {@inheritDoc} */
     @Override
-    public void updatePage(final PageDelta delta,
+    public void updatePage(final ID pageId,
+                           final PageDelta delta,
                            final String comment,
                            final boolean isMajorEdit) {
 
         final Page page = new Page(delta.getTitle());
-        page.id(toUUID(delta.getId()));
 
         assignParagraphs(delta.getParagraphs(), page);
 
-        _page.update(toUUID(delta.getId()),
+        _page.update(toUUID(pageId),
                      delta.getTitle(),
                      page.paragraphs(), comment, isMajorEdit);
 
@@ -272,15 +272,14 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public void updateWorkingCopy(final PageDelta delta) {
+    public void updateWorkingCopy(final ID pageId, final PageDelta delta) {
 
         final Page page = new Page(delta.getTitle());
-        page.id(toUUID(delta.getId()));
 
         assignParagraphs(delta.getParagraphs(), page);
 
         _wcMgr.updateWorkingCopy(
-            toUUID(delta.getId()), page.createSnapshot());
+            toUUID(pageId), page.createSnapshot());
     }
 
     /** {@inheritDoc} */
@@ -321,9 +320,10 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary updateTemplate(final TemplateDelta delta) {
+    public ResourceSummary updateTemplate(final ID templateId,
+                                          final TemplateDelta delta) {
 
-        final Template t = _templates.update(toUUID(delta.getId()),
+        final Template t = _templates.update(toUUID(templateId),
                                              delta.getTitle(),
                                              delta.getDescription(),
                                              delta.getDefinition(),
@@ -334,8 +334,8 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public UserSummary updateUser(final UserDelta delta) {
-        return map(_users.updateUser(delta));
+    public UserSummary updateUser(final ID userId, final UserDelta delta) {
+        return map(_users.updateUser(toUUID(userId), delta));
     }
 
     /** {@inheritDoc} */

@@ -112,7 +112,7 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
                 commands().updateResourceTemplate(
                     _resourceId,
                     selected.getId(),
-                    new DisposingCallback(ChooseTemplateDialog.this));
+                    new DisposingCallback(ChooseTemplateDialog.this)); // FIXME: Need to update resource summary with new template id!!!
             }
         };
     }

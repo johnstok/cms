@@ -10,7 +10,6 @@ import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.ChooseTemplateDialog;
-import ccc.services.api.ResourceDelta;
 import ccc.services.api.ResourceType;
 import ccc.services.api.TemplateSummary;
 
@@ -50,25 +49,17 @@ public final class ChooseTemplateAction
         if (ResourceType.PAGE==item.getType()
             || ResourceType.FOLDER==item.getType()
             || ResourceType.SEARCH==item.getType()) {
-            _queries.resourceDelta(
-                item.getId(),
-                new ErrorReportingCallback<ResourceDelta>(){
-                    public void onSuccess(final ResourceDelta delta) {
-                        _queries.templates(
-                        new ErrorReportingCallback<Collection<TemplateSummary>>(){
-                            public void onSuccess(
-                                final Collection<TemplateSummary> templates) {
-                                new ChooseTemplateDialog(
-                                    delta.getId(),
-                                    delta.getTemplateId(),
-                                    templates)
-                                .show();
-                            }
-                        });
+            _queries.templates(
+                new ErrorReportingCallback<Collection<TemplateSummary>>() {
+                    public void onSuccess(final Collection<TemplateSummary> templates) {
+                        new ChooseTemplateDialog(
+                            item.getId(),
+                            item.getTemplateId(),
+                            templates
+                        ).show();
                     }
                 }
             );
-
         } else {
             Globals.alert(_constants.templateCannotBeChosen());
 

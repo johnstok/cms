@@ -23,7 +23,6 @@ import java.util.List;
  * @author Civic Computing Ltd.
  */
 public final class PageDelta implements Serializable {
-    private ID     _id;
     private String _title;
     private List<ParagraphDelta> _paragraphs = new ArrayList<ParagraphDelta>();
 
@@ -32,14 +31,11 @@ public final class PageDelta implements Serializable {
     /**
      * Constructor.
      *
-     * @param id
      * @param title
      * @param paragraphs
      */
-    public PageDelta(final ID id,
-                     final String title,
+    public PageDelta(final String title,
                      final List<ParagraphDelta> paragraphs) {
-        _id = id;
         _title = title;
         _paragraphs = paragraphs;
     }
@@ -82,15 +78,5 @@ public final class PageDelta implements Serializable {
      */
     public void setTitle(final String title) {
         _title = title;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the id.
-     */
-    public ID getId() {
-        return _id;
     }
 }

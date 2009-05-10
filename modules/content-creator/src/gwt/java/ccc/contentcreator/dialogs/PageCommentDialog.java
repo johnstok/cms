@@ -15,6 +15,7 @@ import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
+import ccc.services.api.ID;
 import ccc.services.api.PageDelta;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -24,16 +25,17 @@ import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
- * TODO: Add Description for this type.
+ * Dialog for capturing the page edit metadata.
  *
  * @author Civic Computing Ltd.
  */
 public class PageCommentDialog extends AbstractEditDialog {
 
-    private PageDelta _page;
-    private UpdatePageDialog _updatePageDialog;
-    private CheckBox _majorEdit = new CheckBox();
-    private TextArea _comment = new TextArea();
+    private final ID _pageId;
+    private final PageDelta _page;
+    private final UpdatePageDialog _updatePageDialog;
+    private final CheckBox _majorEdit = new CheckBox();
+    private final TextArea _comment = new TextArea();
 
     private final AsyncCallback<Void> _applyNowCompletedCallback =
         new AsyncCallback<Void>() {
@@ -53,13 +55,17 @@ public class PageCommentDialog extends AbstractEditDialog {
 
     /**
      * Constructor.
+     *
+     * @param pageId The id of the page to be updated.
      * @param page The page being edited.
      * @param updatePageDialog The parent dialog.
      *
      */
-    public PageCommentDialog(final PageDelta page,
+    public PageCommentDialog(final ID pageId,
+                             final PageDelta page,
                              final UpdatePageDialog updatePageDialog) {
         super(Globals.uiConstants().pageEditComment());
+        _pageId = pageId;
         _page = page;
         _updatePageDialog = updatePageDialog;
         setModal(true);
@@ -69,7 +75,7 @@ public class PageCommentDialog extends AbstractEditDialog {
         setHeight(300);
 
         _majorEdit.setId("majorEdit");
-        _majorEdit.setValue(false);
+        _majorEdit.setValue(Boolean.FALSE);
         _majorEdit.setBoxLabel(_constants.yes());
         _majorEdit.setFieldLabel(_constants.majorEdit());
         addField(_majorEdit);
@@ -95,12 +101,12 @@ public class PageCommentDialog extends AbstractEditDialog {
 
     private Runnable savePage() {
         return new Runnable() {
-            @SuppressWarnings("unchecked")
             public void run() {
                 commands().updatePage(
+                    _pageId,
                     _page,
                     _comment.getValue(),
-                    _majorEdit.getValue(),
+                    _majorEdit.getValue().booleanValue(),
                     applyNowCompletedCallback());
                       close();
             }

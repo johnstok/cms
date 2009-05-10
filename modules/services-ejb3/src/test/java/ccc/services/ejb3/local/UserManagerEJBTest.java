@@ -26,7 +26,6 @@ import ccc.domain.CreatorRoles;
 import ccc.domain.Password;
 import ccc.domain.User;
 import ccc.services.Dao;
-import ccc.services.api.ID;
 import ccc.services.api.UserDelta;
 import ccc.services.api.Username;
 
@@ -218,7 +217,7 @@ public class UserManagerEJBTest extends TestCase {
         replay(_context, _em);
 
         // ACT
-        _um.updateUser(_uDelta);
+        _um.updateUser(_u.id(), _uDelta);
 
         // ASSERT
         verify(_context, _em);
@@ -258,9 +257,8 @@ public class UserManagerEJBTest extends TestCase {
         _u = new User("testUser");
         _uDelta =
             new UserDelta(
-                new ID(_u.id().toString()),
-                "test@civicuk.com",
-                new Username("testUser"),
+                "new.email@civicuk.com",
+                new Username("newNameUser"),
                 new HashSet<String>());
         _u.email(new EmailAddress("test@civicuk.com"));
         _p = new Principal(){

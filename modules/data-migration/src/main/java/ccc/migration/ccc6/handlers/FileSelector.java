@@ -24,7 +24,6 @@ public final class FileSelector
         while (rs.next()) {
             final FileDelta file =
                 new FileDelta(
-                    null,
                     rs.getString("object_title"),
                     rs.getString("classification"),
                     null,

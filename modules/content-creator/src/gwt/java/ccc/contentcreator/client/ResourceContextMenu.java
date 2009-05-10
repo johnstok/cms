@@ -129,7 +129,8 @@ public class ResourceContextMenu
 
         setWidth(CONTEXT_MENU_WIDTH);
 
-        addListener(Events.BeforeShow,
+        addListener(
+            Events.BeforeShow,
             new Listener<MenuEvent>(){
                 public void handleEvent(final MenuEvent be) {
                     refreshMenuItems(user, be);
@@ -138,12 +139,12 @@ public class ResourceContextMenu
         );
     }
 
+
     private void refreshMenuItems(final UserSummary user,
-                              final MenuEvent be) {
+                                  final MenuEvent be) {
         removeAll();
         final ResourceSummaryModelData item = _table.tableSelection();
-        if (item == null) {
-            // do not display context menu if no item is selected.
+        if (item == null) { // don't display menu if no item is selected.
             be.doit = false;
             return;
         }
@@ -216,10 +217,6 @@ public class ResourceContextMenu
     }
 
 
-    /**
-     * TODO: Add a description of this method.
-     *
-     */
     private void addApplyWorkingCopy() {
         addMenuItem(
             "apply-working-copy",
@@ -234,14 +231,12 @@ public class ResourceContextMenu
             _updateRolesAction);
     }
 
-
     private void addCreateAction() {
         addMenuItem(
             "create-action",
             _constants.createAction(),
             _createActionAction);
     }
-
 
     private void addFolderSortOrder() {
         addMenuItem(
@@ -250,14 +245,12 @@ public class ResourceContextMenu
             _updateSortAction);
     }
 
-
     private void addPublishResource() {
         addMenuItem(
             "publish-resource",
             _constants.publish(),
             _publishAction);
     }
-
 
     private void addIncludeInMainMenu() {
         addMenuItem(
@@ -266,14 +259,12 @@ public class ResourceContextMenu
             _includeMainMenu);
     }
 
-
     private void addRemoveFromMainMenu() {
         addMenuItem(
             "mmRemove-resource",
             _constants.removeFromMainMenu(),
             _removeMainMenu);
     }
-
 
     private void addUnpublishResource() {
         addMenuItem(
@@ -282,92 +273,12 @@ public class ResourceContextMenu
             _unpublishAction);
     }
 
-
     private void addChooseTemplate() {
         addMenuItem(
             "chooseTemplate-resource",
             _constants.chooseTemplate(),
             _chooseTemplateAction);
     }
-
-
-    private void addEditResource() {
-        final MenuItem update = new MenuItem();
-        update.setId("edit-resource");
-        update.setText(_constants.edit());
-        update.addSelectionListener(new SelectionListener<MenuEvent>() {
-            @Override public void componentSelected(final MenuEvent ce) {
-                    final ResourceSummaryModelData item = _table.tableSelection();
-                    if (ResourceType.TEMPLATE==item.getType()) {
-                        _qs.templateDelta(
-                            item.getId(),
-                            new ErrorReportingCallback<TemplateDelta>(){
-                                public void onSuccess(final TemplateDelta td) {
-                                    new EditTemplateDialog(
-                                        td,
-                                        item,
-                                        _table)
-                                    .show();
-                                }
-                            }
-                        );
-                    } else if (ResourceType.PAGE==item.getType()) {
-                        _qs.computeTemplate(
-                            item.getId(),
-                            new ErrorReportingCallback<TemplateSummary>() {
-                                @Override public void onSuccess(final TemplateSummary template) {
-                                    if (null==template) {
-                                        Globals.alert(_constants.noTemplateFound());
-                                    } else {
-                                        _qs.workingCopyDelta(
-                                            item.getId(),
-                                            new ErrorReportingCallback<PageDelta>() {
-                                                @Override public void onSuccess(final PageDelta page) {
-                                                    new UpdatePageDialog(
-                                                        page,
-                                                        item.getName(),
-                                                        template,
-                                                        _table)
-                                                    .show();
-                                                }
-                                            }
-                                        );
-                                    }
-                                }
-                            }
-                        );
-                    } else if (ResourceType.ALIAS==item.getType()) {
-                        _qs.aliasDelta(
-                            item.getId(),
-                            new ErrorReportingCallback<AliasDelta>() {
-                                public void onSuccess(final AliasDelta result) {
-                                    new UpdateAliasDialog(
-                                        result,
-                                        item.getName(),
-                                        _table,
-                                        _table.root())
-                                    .show();
-                                }
-                            }
-                        );
-                    } else if (ResourceType.FILE==item.getType()) {
-                        _qs.fileDelta(
-                            item.getId(),
-                            new ErrorReportingCallback<FileDelta>() {
-                                public void onSuccess(final FileDelta result) {
-                                    new UpdateFileDialog(result, _table).show();
-                                }
-                            }
-                        );
-                    } else {
-                        Globals.alert("No editor available for this resource.");
-                    }
-                }
-            }
-        );
-        add(update);
-    }
-
 
     private void addCreateAlias() {
         addMenuItem(
@@ -376,14 +287,12 @@ public class ResourceContextMenu
             _createAliasAction);
     }
 
-
     private void addPreview() {
         addMenuItem(
             "preview-resource",
             _constants.preview(),
             _previewAction);
     }
-
 
     private void addLockResource() {
         addMenuItem(
@@ -392,14 +301,12 @@ public class ResourceContextMenu
             _lockAction);
     }
 
-
     private void addUnlockResource() {
         addMenuItem(
             "unlock-resource",
             _constants.unlock(),
             _unlockAction);
     }
-
 
     private void addMove() {
         addMenuItem(
@@ -408,14 +315,12 @@ public class ResourceContextMenu
             _moveAction);
     }
 
-
     private void addRename() {
         addMenuItem(
             "rename",
             _constants.rename(),
             _renameAction);
     }
-
 
     private void addUpdateTags() {
         addMenuItem(
@@ -424,14 +329,12 @@ public class ResourceContextMenu
             _updateTagsAction);
     }
 
-
     private void addViewHistory() {
         addMenuItem(
             "view-history",
             _constants.viewHistory(),
             _viewHistory);
     }
-
 
     private void addUpdateMetadata() {
         addMenuItem(
@@ -459,5 +362,102 @@ public class ResourceContextMenu
             "edit-cache",
             _constants.editCacheDuration(),
             _editCacheAction);
+    }
+
+    private void addEditResource() {
+        final MenuItem update = new MenuItem();
+        update.setId("edit-resource");
+        update.setText(_constants.edit());
+        update.addSelectionListener(new SelectionListener<MenuEvent>() {
+            @Override public void componentSelected(final MenuEvent ce) {
+                final ResourceSummaryModelData item = _table.tableSelection();
+                if (ResourceType.TEMPLATE==item.getType()) { // TODO Change to switch statement.
+                    updateTemplate(item);
+                } else if (ResourceType.PAGE==item.getType()) {
+                    updatePage(item);
+                } else if (ResourceType.ALIAS==item.getType()) {
+                    updateAlias(item);
+                } else if (ResourceType.FILE==item.getType()) {
+                    updateFile(item);
+                } else {
+                    Globals.alert("No editor available for this resource.");
+                }
+            }
+        });
+        add(update);
+    }
+
+
+
+
+    // TODO: Factor these methods to actions
+    private void updateFile(final ResourceSummaryModelData item) {
+        _qs.fileDelta(
+            item.getId(),
+            new ErrorReportingCallback<FileDelta>() {
+                public void onSuccess(final FileDelta result) {
+                    new UpdateFileDialog(result, item.getId(), _table).show();
+                }
+            }
+        );
+    }
+
+    private void updateAlias(final ResourceSummaryModelData item) {
+        _qs.aliasDelta(
+            item.getId(),
+            new ErrorReportingCallback<AliasDelta>() {
+                public void onSuccess(final AliasDelta result) {
+                    new UpdateAliasDialog(
+                        item.getId(),
+                        result,
+                        item.getName(),
+                        _table.root())
+                    .show();
+                }
+            }
+        );
+    }
+
+    private void updatePage(final ResourceSummaryModelData item) {
+        _qs.computeTemplate( // Get the template for the page.
+            item.getId(),
+            new ErrorReportingCallback<TemplateSummary>() {
+                @Override public void onSuccess(final TemplateSummary template) {
+                    if (null==template) {
+                        Globals.alert(_constants.noTemplateFound());
+                    } else { // Get a delta to edit.
+                        _qs.workingCopyDelta(
+                            item.getId(),
+                            new ErrorReportingCallback<PageDelta>() {
+                                @Override public void onSuccess(final PageDelta page) {
+                                    new UpdatePageDialog(
+                                        item.getId(),
+                                        page,
+                                        item.getName(),
+                                        template,
+                                        _table)
+                                    .show(); // Ok, pop the dialog.
+                                }
+                            }
+                        );
+                    }
+                }
+            }
+        );
+    }
+
+    private void updateTemplate(final ResourceSummaryModelData item) {
+        _qs.templateDelta(
+            item.getId(),
+            new ErrorReportingCallback<TemplateDelta>(){
+                public void onSuccess(final TemplateDelta td) {
+                    new EditTemplateDialog(
+                        td,
+                        item,
+                        _table)
+                    .show();
+                }
+            }
+        );
     }
 }

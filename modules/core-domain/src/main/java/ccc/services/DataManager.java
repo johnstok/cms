@@ -20,6 +20,7 @@ import java.util.UUID;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.services.api.FileDelta;
+import ccc.services.api.ID;
 
 
 /**
@@ -74,11 +75,13 @@ public interface DataManager {
     /**
      * Update a file.
      *
+     * @param fileId The id of the file to update.
      * @param dataStream The input stream from which the bytes for the new file
      *        should be read.
      * @param fileDelta The delta describing changes to the file's metadata.
      */
-    void updateFile(final FileDelta fd,
+    void updateFile(ID fileId,
+                    final FileDelta fileDelta,
                     final InputStream dataStream);
 
     /**

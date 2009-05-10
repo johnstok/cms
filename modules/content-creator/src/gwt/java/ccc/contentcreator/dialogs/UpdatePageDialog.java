@@ -25,6 +25,7 @@ import ccc.contentcreator.client.ResourceTable;
 import ccc.contentcreator.client.ui.FCKEditor;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
+import ccc.services.api.ID;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ParagraphDelta;
 import ccc.services.api.TemplateSummary;
@@ -49,11 +50,12 @@ public class UpdatePageDialog
     extends
         AbstractBaseDialog {
 
+    private final ID _pageId;
+    private final PageDelta _page;
+    private final TemplateSummary _template;
+    private final ResourceTable _rt;
     private final EditPagePanel _panel = new EditPagePanel();
 
-    private PageDelta _page;
-    private TemplateSummary _template;
-    private final ResourceTable _rt;
 
 
         private final AsyncCallback<Void> _saveDraftCompletedCallback =
@@ -70,6 +72,7 @@ public class UpdatePageDialog
         };
 
 
+
     /**
      * Constructor.
      *
@@ -77,7 +80,8 @@ public class UpdatePageDialog
      * @param template TemplateDelta of the template assigned to the page.
      * @param rt ResourceTable required in order to refresh the contents.
      */
-    public UpdatePageDialog(final PageDelta page,
+    public UpdatePageDialog(final ID pageId,
+                            final PageDelta page,
                             final String pageName,
                             final TemplateSummary template,
                             final ResourceTable rt) {
@@ -85,6 +89,7 @@ public class UpdatePageDialog
         _rt = rt;
         _page = page;
         _template = template;
+        _pageId = pageId;
 
         setLayout(new FitLayout());
 
@@ -164,7 +169,8 @@ public class UpdatePageDialog
             public void run() {
                 _page.setTitle(panel().title().getValue());
                 final PageCommentDialog commentDialog =
-                    new PageCommentDialog(_page, UpdatePageDialog.this);
+                    new PageCommentDialog(
+                        _pageId, _page, UpdatePageDialog.this);
                 commentDialog.show();
             }
         };
@@ -175,8 +181,8 @@ public class UpdatePageDialog
             @SuppressWarnings("unchecked")
             public void run() {
                 _page.setTitle(panel().title().getValue());
-                commands().updateWorkingCopy(_page,
-                                             saveDraftCompletedCallback());
+                commands().updateWorkingCopy(
+                    _pageId, _page, saveDraftCompletedCallback());
             }
         };
     }
@@ -199,16 +205,16 @@ public class UpdatePageDialog
     protected PageDelta page() {
         return _page;
     }
-
-
-    /**
-     * Mutator.
-     *
-     * @param page The _page to set.
-     */
-    protected void page(final PageDelta page) {
-        _page = page;
-    }
+//
+//
+//    /**
+//     * Mutator.
+//     *
+//     * @param page The _page to set.
+//     */
+//    protected void page(final PageDelta page) {
+//        _page = page;
+//    }
 
 
     /**

@@ -248,7 +248,6 @@ public class Migrations {
 
                     final FileDelta legacyFile =
                         new FileDelta(
-                            null,
                             file.getName(),
                             "Migrated file.",
                             null,
@@ -287,7 +286,6 @@ public class Migrations {
                 if (file.isFile() && file.getName().endsWith(".css"))  {
                     final FileDelta legacyFile =
                         new FileDelta(
-                            null,
                             file.getName(),
                             "Migrated file.",
                             null,
@@ -407,13 +405,13 @@ public class Migrations {
 
     private void updatePage(final ResourceBean r,
                             final ResourceSummary rs,
-                            final Integer version) {
+                            final int version) {
 
         _commands.lock(rs.getId());// FIXME: Specify actor & date
-        final PageDelta d = assemblePage(r, rs.getId().toString(), version);
+        final PageDelta d = assemblePage(r, version);
 //        final String userId =
 //            determineActor(r.contentId(), version, "%", "MADE LIVE");
-        _commands.updatePage(d, "Updated.", true); // FIXME: Specify actor & date
+        _commands.updatePage(rs.getId(), d, "Updated.", true); // FIXME: Specify actor & date
         _commands.unlock(rs.getId());  // FIXME: Specify actor & date
         log.debug("Updated page: "+r.contentId());
     }
@@ -424,7 +422,7 @@ public class Migrations {
                                        final List<Integer> paragraphVersions) {
 
         final PageDelta delta =
-            assemblePage(r, null, paragraphVersions.remove(0));
+            assemblePage(r, paragraphVersions.remove(0));
 //      final String userId =
 //          determineActor(r.contentId(), version, "%", "MADE LIVE");
         final ResourceSummary rs =
@@ -497,7 +495,6 @@ public class Migrations {
     }
 
     private PageDelta assemblePage(final ResourceBean r,
-                                   final String id,
                                    final int version) {
         final List<ParagraphDelta> paragraphDeltas =
             new ArrayList<ParagraphDelta>();
@@ -538,7 +535,6 @@ public class Migrations {
 
         final PageDelta delta =
             new PageDelta(
-                new ID(id),
                 (null==r.title())?r.name():r.title(),
                 paragraphDeltas
             );
@@ -577,7 +573,6 @@ public class Migrations {
 
         final TemplateDelta t =
             new TemplateDelta(
-                null,
                 templateName,
                 "No description.",
                 "Empty template!",

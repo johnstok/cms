@@ -22,7 +22,6 @@ import ccc.services.api.FileSummary;
 import ccc.services.api.ID;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.PageDelta;
-import ccc.services.api.ResourceDelta;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.TemplateSummary;
@@ -96,10 +95,6 @@ public interface QueriesServiceAsync {
     void aliasDelta(ID aliasId, AsyncCallback<AliasDelta> asyncCallback);
 
     void pageDelta(ID pageId, AsyncCallback<PageDelta> asyncCallback);
-
-    void folderDelta(ID folderId, AsyncCallback<ResourceDelta> asyncCallback);
-
-    void resourceDelta(ID resourceId, AsyncCallback<ResourceDelta> asyncCallback);
 
     void fileDelta(ID fileId, AsyncCallback<FileDelta> asyncCallback);
 
