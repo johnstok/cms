@@ -23,6 +23,7 @@ import ccc.domain.Snapshot;
 import ccc.domain.User;
 import ccc.services.ResourceDao;
 import ccc.services.api.ActionStatus;
+import ccc.services.api.ActionType;
 
 
 /**
@@ -47,7 +48,7 @@ public class ActionExecutorEJBTest
         replay(_rdao);
         final Action a =
             new Action(
-                ccc.services.api.Action.PUBLISH,
+                ActionType.PUBLISH,
                 new Date(),
                 u,
                 p,

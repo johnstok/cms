@@ -238,7 +238,7 @@ public interface Commands {
 
     void cancelAction(ID actionId);
 
-    void createAction(ID resourceId, Action action, Date executeAfter, String parameters);
+    void createAction(ID resourceId, ActionType action, Date executeAfter, String parameters);
 
     /**
      * TODO: Add a description of this method.

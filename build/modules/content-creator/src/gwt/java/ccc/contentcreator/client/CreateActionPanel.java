@@ -13,6 +13,7 @@
 package ccc.contentcreator.client;
 
 import ccc.contentcreator.api.UIConstants;
+import ccc.services.api.ActionType;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
@@ -74,7 +75,7 @@ public class CreateActionPanel
                     final DataList l = (DataList) ce.component;
                     _parameters.removeAll();
 
-                    switch (l.getSelectedItem().<ccc.services.api.Action>getData("action-id")) {
+                    switch (l.getSelectedItem().<ActionType>getData("action-id")) {
                         case PUBLISH:
                             _pPanel = new EmptyPanel(
                                 _uiConstants.publish(),
@@ -103,16 +104,16 @@ public class CreateActionPanel
             }
         );
         final DataListItem publish = new DataListItem(_uiConstants.publish());
-        publish.setData("action-id", ccc.services.api.Action.PUBLISH);
+        publish.setData("action-id", ActionType.PUBLISH);
         _list.add(publish);
 
         final DataListItem unpublish =
             new DataListItem(_uiConstants.unpublish());
-        unpublish.setData("action-id", ccc.services.api.Action.UNPUBLISH);
+        unpublish.setData("action-id", ActionType.UNPUBLISH);
         _list.add(unpublish);
 
         final DataListItem update = new DataListItem(_uiConstants.update());
-        update.setData("action-id", ccc.services.api.Action.UPDATE);
+        update.setData("action-id", ActionType.UPDATE);
         _list.add(update);
 
 
@@ -132,12 +133,12 @@ public class CreateActionPanel
      *
      * @return The type of action to execute, as a string.
      */
-    public ccc.services.api.Action actionType() {
+    public ActionType actionType() {
         final DataListItem item = _list.getSelectedItem();
         if (null==item) {
             return null;
         }
-        return item.<ccc.services.api.Action>getData("action-id");
+        return item.<ActionType>getData("action-id");
     }
 
     /**

@@ -23,7 +23,7 @@ import java.util.Date;
 public final class ActionSummary implements Serializable {
 
     private ID _id;
-    private Action _type;
+    private ActionType _type;
     private Username _actor;
     private Date   _executeAfter;
     private ResourceType _subjectType;
@@ -44,7 +44,7 @@ public final class ActionSummary implements Serializable {
      * @param status
      */
     public ActionSummary(final ID     id,
-                         final Action type,
+                         final ActionType type,
                          final Username actor,
                          final Date   after,
                          final ResourceType subjectType,
@@ -75,7 +75,7 @@ public final class ActionSummary implements Serializable {
      *
      * @return Returns the type.
      */
-    public Action getType() {
+    public ActionType getType() {
         return _type;
     }
 

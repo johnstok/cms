@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-import ccc.services.api.Action;
+import ccc.services.api.ActionType;
 
 import junit.framework.TestCase;
 
@@ -49,7 +49,7 @@ public class LogEntryTest
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(Action.RENAME, le.action());
+        assertEquals(ActionType.RENAME, le.action());
     }
 
     /**
@@ -74,7 +74,7 @@ public class LogEntryTest
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(Action.MOVE, le.action());
+        assertEquals(ActionType.MOVE, le.action());
         assertEquals("{\"path\":\"/bar/foo\"}",
             le.detail());
     }
@@ -98,7 +98,7 @@ public class LogEntryTest
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(Action.CREATE, le.action());
+        assertEquals(ActionType.CREATE, le.action());
         assertEquals("{\"title\":\"foo\","
             + "\"name\":\"foo\","
             + "\"path\":\"/foo\","
@@ -125,7 +125,7 @@ public class LogEntryTest
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(Action.UPDATE, le.action());
+        assertEquals(ActionType.UPDATE, le.action());
         assertEquals(p.createSnapshot().getDetail(), le.detail());
     }
 
@@ -154,7 +154,7 @@ public class LogEntryTest
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(Action.CHANGE_TEMPLATE, le.action());
+        assertEquals(ActionType.CHANGE_TEMPLATE, le.action());
         assertEquals("{\"template\":\"newName\"}", le.detail());
     }
 
@@ -179,7 +179,7 @@ public class LogEntryTest
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(Action.LOCK, le.action());
+        assertEquals(ActionType.LOCK, le.action());
         assertEquals("{\"lock\":\""+_actor.id().toString()+"\"}", le.detail());
     }
 
@@ -204,7 +204,7 @@ public class LogEntryTest
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(Action.UNLOCK, le.action());
+        assertEquals(ActionType.UNLOCK, le.action());
         assertEquals(
             "{\"unlock\":\""+_actor.id().toString()+"\"}",
             le.detail());
@@ -230,7 +230,7 @@ public class LogEntryTest
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(Action.UPDATE_TAGS, le.action());
+        assertEquals(ActionType.UPDATE_TAGS, le.action());
         assertEquals("{\"tags\":\"foo,bar\"}", le.detail());
     }
 
@@ -254,7 +254,7 @@ public class LogEntryTest
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(Action.UPDATE_SORT_ORDER, le.action());
+        assertEquals(ActionType.UPDATE_SORT_ORDER, le.action());
         assertEquals("{\"sortOrder\":\"MANUAL\"}", le.detail());
     }
 
@@ -278,7 +278,7 @@ public class LogEntryTest
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(Action.UPDATE_METADATA, le.action());
+        assertEquals(ActionType.UPDATE_METADATA, le.action());
         assertEquals("{\"metadata\":{\"bar\":\"zup\"}}", le.detail());
     }
 
@@ -305,7 +305,7 @@ public class LogEntryTest
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(Action.CHANGE_ROLES, le.action());
+        assertEquals(ActionType.CHANGE_ROLES, le.action());
         assertEquals("{\"roles\":\"sup,zep\"}", le.detail());
     }
 
