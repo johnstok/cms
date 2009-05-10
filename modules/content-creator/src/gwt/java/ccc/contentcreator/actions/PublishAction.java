@@ -36,7 +36,7 @@ public class PublishAction
             item.getId(),
             new ErrorReportingCallback<Void>(){
                 public void onSuccess(final Void arg0) {
-                    item.setPublished(Globals.currentUser());
+                    item.setPublished(Globals.currentUser().getUsername());
                     _selectionModel.update(item);
                 }
             }

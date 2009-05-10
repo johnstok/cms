@@ -48,7 +48,7 @@ public class LockAction
             item.getId(),
             new ErrorReportingCallback<Void>(){
                 public void onSuccess(final Void arg0) {
-                    item.setLocked(Globals.currentUser());
+                    item.setLocked(Globals.currentUser().getUsername());
                     _selectionModel.update(item);
                 }
             }
