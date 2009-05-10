@@ -21,7 +21,6 @@ import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
-import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.api.Duration;
 
@@ -219,9 +218,9 @@ public interface ResourceDao {
      * Change the template for the specified resource.
      *
      * @param resourceId The id of the resource to change.
-     * @param template The new template to set.
+     * @param templateId The id of template to set (NULL is allowed).
      */
-    void updateTemplateForResource(UUID resourceId, Template template);
+    void updateTemplateForResource(UUID resourceId, UUID templateId);
 
     /**
      * Move a resource to a new parent.

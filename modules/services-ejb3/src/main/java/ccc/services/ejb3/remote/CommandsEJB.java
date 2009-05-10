@@ -260,20 +260,14 @@ public class CommandsEJB
                            final PageDelta delta,
                            final String comment,
                            final boolean isMajorEdit) {
-
-        final Page page = new Page(delta.getTitle());
-
-        assignParagraphs(delta.getParagraphs(), page);
-
-        _page.update(toUUID(pageId),
-                     delta.getTitle(),
-                     page.paragraphs(), comment, isMajorEdit);
+        _page.update(toUUID(pageId), delta, comment, isMajorEdit);
 
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateWorkingCopy(final ID pageId, final PageDelta delta) {
+        // FIXME: A delta and a working copy are the thing!
 
         final Page page = new Page(delta.getTitle());
 
@@ -302,13 +296,8 @@ public class CommandsEJB
     @Override
     public void updateResourceTemplate(final ID resourceId,
                                        final ID templateId) {
-
-        final Template t = (null==templateId)
-            ? null
-            : _resources.find(Template.class, toUUID(templateId));
-
         _resources.updateTemplateForResource(
-            toUUID(resourceId), t);
+            toUUID(resourceId), toUUID(templateId));
     }
 
     /** {@inheritDoc} */
@@ -323,14 +312,7 @@ public class CommandsEJB
     @Override
     public ResourceSummary updateTemplate(final ID templateId,
                                           final TemplateDelta delta) {
-
-        final Template t = _templates.update(toUUID(templateId),
-                                             delta.getTitle(),
-                                             delta.getDescription(),
-                                             delta.getDefinition(),
-                                             delta.getBody());
-
-        return mapResource(t);
+        return mapResource(_templates.update(toUUID(templateId), delta));
     }
 
     /** {@inheritDoc} */
@@ -351,8 +333,7 @@ public class CommandsEJB
     @Override
     public void includeInMainMenu(final ID resourceId,
                                   final boolean include) {
-        _resources.includeInMainMenu(toUUID(resourceId),
-                                     include);
+        _resources.includeInMainMenu(toUUID(resourceId), include);
     }
 
     /** {@inheritDoc} */
@@ -498,6 +479,6 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     public void updateUserPassword(final ID userId, final String password) {
-        _users.updatePassword(toUUID(userId),password);
+        _users.updatePassword(toUUID(userId), password);
     }
 }

@@ -23,6 +23,9 @@ import ccc.domain.User;
 import ccc.services.PageDao;
 import ccc.services.ResourceDao;
 import ccc.services.UserManager;
+import ccc.services.api.PageDelta;
+import ccc.services.api.ParagraphDelta;
+import ccc.services.api.ParagraphType;
 
 
 /**
@@ -42,6 +45,12 @@ public class PageDaoImplTest
     public void testUpdatePage() {
 
         // ARRANGE
+        final PageDelta delta =
+            new PageDelta(
+                "new title",
+                Collections.singletonList(
+                    new ParagraphDelta(
+                        "foo", ParagraphType.TEXT, null, "bar", null, null)));
         final Page page = new Page("test");
         final User u = new User("user");
         page.addParagraph(Paragraph.fromText("abc", "def"));
@@ -54,11 +63,7 @@ public class PageDaoImplTest
 
 
         // ACT
-        _cm.update(
-            page.id(),
-            "new title",
-            Collections.singleton(Paragraph.fromText("foo", "bar")),
-            "comment text", false);
+        _cm.update(page.id(), delta, "comment text", false);
 
 
         // ASSERT
