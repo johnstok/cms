@@ -56,7 +56,6 @@ import ccc.services.api.ID;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.PageDelta;
 import ccc.services.api.Queries;
-import ccc.services.api.ResourceDelta;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.TemplateSummary;
@@ -245,20 +244,6 @@ public final class QueriesEJB
     public PageDelta pageDelta(final ID pageId) {
         return
             delta(_resources.find(Page.class, toUUID(pageId)));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ResourceDelta folderDelta(final ID folderId) {
-        return
-            delta(_resources.find(Folder.class, toUUID(folderId)));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ResourceDelta resourceDelta(final ID resourceId) {
-        return
-        delta(_resources.find(Resource.class, toUUID(resourceId)));
     }
 
     /** {@inheritDoc} */

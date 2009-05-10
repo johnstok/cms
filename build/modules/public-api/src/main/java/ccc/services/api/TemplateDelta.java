@@ -20,7 +20,6 @@ import java.io.Serializable;
  * @author Civic Computing Ltd.
  */
 public final class TemplateDelta implements Serializable {
-    private ID     _id;
     private String _title;
     private String _description;
     private String _body;
@@ -31,43 +30,20 @@ public final class TemplateDelta implements Serializable {
     /**
      * Constructor.
      *
-     * @param id
      * @param name
      * @param title
      * @param description
      * @param body
      * @param definition
      */
-    public TemplateDelta(final ID     id,
-                         final String title,
+    public TemplateDelta(final String title,
                          final String description,
                          final String body,
                          final String definition) {
-        _id = id;
         _title = title;
         _description = description;
         _body = body;
         _definition = definition;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the id.
-     */
-    public ID getId() {
-        return _id;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param id The id to set.
-     */
-    public void setId(final ID id) {
-        _id = id;
     }
 
 

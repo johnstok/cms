@@ -50,7 +50,6 @@ public final class AllUsersSelector
                 final Set<String> roles = _legacyDBQueries.selectRolesForUser(userId);
                 final UserDelta user =
                     new UserDelta(
-                        null,
                         email,
                         new Username(userName),
                         roles);

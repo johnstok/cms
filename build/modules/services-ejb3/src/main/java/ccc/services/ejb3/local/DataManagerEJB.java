@@ -47,6 +47,7 @@ import ccc.services.ResourceDao;
 import ccc.services.ResourceDaoImpl;
 import ccc.services.UserManager;
 import ccc.services.api.FileDelta;
+import ccc.services.api.ID;
 
 
 /**
@@ -95,12 +96,13 @@ public class DataManagerEJB implements DataManager {
 
     /** {@inheritDoc} */
     @Override
-    public void updateFile(final FileDelta fd,
+    public void updateFile(final ID fileId,
+                           final FileDelta fd,
                            final InputStream dataStream) {
         try {
             final File f =
                 _dao.findLocked(
-                    File.class, UUID.fromString(fd.getId().toString()));
+                    File.class, UUID.fromString(fileId.toString()));
             f.title(fd.getTitle());
             f.description(fd.getDescription());
             f.mimeType(new MimeType(fd.getMimeType()));

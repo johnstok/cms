@@ -37,9 +37,9 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public interface CommandServiceAsync {
 
-    void updatePage(PageDelta delta, String comment, boolean isMajorEdit, AsyncCallback<Void> callback);
+    void updatePage(ID pageId, PageDelta delta, String comment, boolean isMajorEdit, AsyncCallback<Void> callback);
 
-    void updateWorkingCopy(PageDelta delta, AsyncCallback<Void> callback);
+    void updateWorkingCopy(ID pageId, PageDelta delta, AsyncCallback<Void> callback);
 
     void rename(final ID resourceId, final String name, AsyncCallback<Void> callback);
 
@@ -47,13 +47,13 @@ public interface CommandServiceAsync {
 
     void move(ID resourceId, ID newParentId, AsyncCallback<Void> callback);
 
-    void updateAlias(AliasDelta delta, AsyncCallback<Void> callback);
+    void updateAlias(ID aliasId, AliasDelta delta, AsyncCallback<Void> callback);
 
-    void updateUser(UserDelta delta, AsyncCallback<UserSummary> callback);
+    void updateUser(ID userId, UserDelta delta, AsyncCallback<UserSummary> callback);
 
     void updateResourceTemplate(ID resourceId, ID templateId, AsyncCallback<Void> callback);
 
-    void updateTemplate(TemplateDelta delta, AsyncCallback<ResourceSummary> callback);
+    void updateTemplate(ID templateId, TemplateDelta delta, AsyncCallback<ResourceSummary> callback);
 
     void lock(ID resourceId, AsyncCallback<ResourceSummary> callback);
 

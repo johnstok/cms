@@ -11,9 +11,9 @@
  */
 package ccc.contentcreator.dialogs;
 
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.client.Globals;
-import ccc.services.api.ResourceDelta;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -30,7 +30,7 @@ public class UpdateTagsDialog
         AbstractEditDialog {
 
     private final TextField<String> _tags = new TextField<String>();
-    private final ResourceDelta _resource;
+    private final ResourceSummaryModelData _resource;
 
 
     /**
@@ -38,7 +38,7 @@ public class UpdateTagsDialog
      *
      * @param resource The resource which tags to update.
      */
-    public UpdateTagsDialog(final ResourceDelta resource) {
+    public UpdateTagsDialog(final ResourceSummaryModelData resource) {
         super(Globals.uiConstants().updateTags());
         setHeight(Globals.DEFAULT_MIN_HEIGHT);
         _resource = resource;
@@ -54,7 +54,6 @@ public class UpdateTagsDialog
                               final String id,
                               final boolean allowBlank,
                               final String label) {
-
         _tags.setFieldLabel(label);
         _tags.setAllowBlank(allowBlank);
         _tags.setId(id);
@@ -74,7 +73,7 @@ public class UpdateTagsDialog
                 commands().updateTags(
                     _resource.getId(),
                     tags,
-                    new DisposingCallback(UpdateTagsDialog.this));
+                    new DisposingCallback(UpdateTagsDialog.this)); // FIXME: must call _resource.setTags(tags)!!!!!
             }
         };
     }

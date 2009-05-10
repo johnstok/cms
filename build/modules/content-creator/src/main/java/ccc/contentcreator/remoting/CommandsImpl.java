@@ -139,16 +139,18 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateAlias(final AliasDelta delta) {
-        _services.lookupCommands().updateAlias(delta);
+    public void updateAlias(final ID aliasId, final AliasDelta delta) {
+        _services.lookupCommands().updateAlias(aliasId, delta);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void updatePage(final PageDelta delta,
+    public void updatePage(final ID pageId,
+                           final PageDelta delta,
                            final String comment,
                            final boolean isMajorEdit) {
-        _services.lookupCommands().updatePage(delta, comment, isMajorEdit);
+        _services.lookupCommands().updatePage(
+            pageId, delta, comment, isMajorEdit);
     }
 
     /** {@inheritDoc} */
@@ -168,14 +170,15 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary updateTemplate(final TemplateDelta delta) {
-        return _services.lookupCommands().updateTemplate(delta);
+    public ResourceSummary updateTemplate(final ID templateId,
+                                          final TemplateDelta delta) {
+        return _services.lookupCommands().updateTemplate(templateId, delta);
     }
 
     /** {@inheritDoc} */
     @Override
-    public UserSummary updateUser(final UserDelta delta) {
-        return _services.lookupCommands().updateUser(delta);
+    public UserSummary updateUser(final ID userId, final UserDelta delta) {
+        return _services.lookupCommands().updateUser(userId, delta);
     }
 
     /** {@inheritDoc} */
@@ -214,8 +217,8 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateWorkingCopy(final PageDelta delta) {
-        _services.lookupCommands().updateWorkingCopy(delta);
+    public void updateWorkingCopy(final ID pageId, final PageDelta delta) {
+        _services.lookupCommands().updateWorkingCopy(pageId, delta);
     }
 
 

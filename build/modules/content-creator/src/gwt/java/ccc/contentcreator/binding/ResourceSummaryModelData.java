@@ -80,6 +80,8 @@ public class ResourceSummaryModelData
                 :summaryObject.get("lockedBy").isString().stringValue(),
             false, // FIXME: Add to JSON!
             null, // FIXME: Add to JSON!
+            null, // FIXME: Add to JSON!
+            null, // FIXME: Add to JSON!
             null // FIXME: Add to JSON!
         ));
     }
@@ -372,5 +374,23 @@ public class ResourceSummaryModelData
      */
     public String getAbsolutePath() {
         return _absolutePath;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
+    public ID getTemplateId() {
+        return _rs.getTemplateId();
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
+    public String getTags() {
+        return _rs.getTags();
     }
 }

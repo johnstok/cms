@@ -11,13 +11,13 @@
  */
 package ccc.contentcreator.dialogs;
 
-import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.Globals;
-import ccc.contentcreator.client.ResourceTable;
+import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.services.api.FileDelta;
+import ccc.services.api.ID;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -39,8 +39,6 @@ import com.google.gwt.user.client.ui.Image;
  */
 public class UpdateFileDialog extends AbstractEditDialog {
 
-    private final UIConstants       _constants = Globals.uiConstants();
-
     private final TextField<String>   _title = new TextField<String>();
     private final TextField<String>   _description = new TextField<String>();
     private final HiddenField<String> _id = new HiddenField<String>();
@@ -55,7 +53,8 @@ public class UpdateFileDialog extends AbstractEditDialog {
      * @param rt The left hand tree view in the main window.
      */
     public UpdateFileDialog(final FileDelta delta,
-                            final ResourceTable rt) {
+                            final ID fileId,
+                            final SingleSelectionModel rt) {
         super(Globals.uiConstants().updateFile());
         setHeight(Globals.DEFAULT_UPLOAD_HEIGHT);
         // Create a FormPanel and point it at a service.
@@ -82,7 +81,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
         addField(_file);
 
         _id.setName("id");
-        _id.setValue(delta.getId().toString());
+        _id.setValue(fileId.toString());
         addField(_id);
 
         _image.setVisible(false);
@@ -127,7 +126,6 @@ public class UpdateFileDialog extends AbstractEditDialog {
 
     private Runnable submit() {
         return new Runnable() {
-            @SuppressWarnings("unchecked")
             public void run() {
                 _image.setVisible(true);
                 _panel.submit();

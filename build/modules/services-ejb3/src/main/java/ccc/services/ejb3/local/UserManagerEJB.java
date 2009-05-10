@@ -119,9 +119,8 @@ public class UserManagerEJB implements UserManager {
 
     /** {@inheritDoc} */
     @Override
-    public User updateUser(final UserDelta delta) {
-        final User current =
-            _dao.find(User.class, UUID.fromString(delta.getId().toString()));
+    public User updateUser(final UUID userId, final UserDelta delta) {
+        final User current = _dao.find(User.class, userId);
         current.username(delta.getUsername().toString());
         current.email(new EmailAddress(delta.getEmail()));
         current.roles(delta.getRoles());

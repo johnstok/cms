@@ -218,8 +218,6 @@ public interface Queries {
     UserDelta userDelta(ID userId);
     AliasDelta aliasDelta(ID aliasId);
     PageDelta pageDelta(ID pageId);
-    ResourceDelta folderDelta(ID folderId);
-    ResourceDelta resourceDelta(ID resourceId);
     FileDelta fileDelta(ID fileId);
 
 }

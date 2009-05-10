@@ -38,11 +38,11 @@ public class UpdateFileServlet extends CreatorServlet {
 
         try {
             final MultipartForm form = new MultipartForm(request);
+            final ID fileId = new ID(form.get("id").getString());
             final FileItem file = form.get("file");
 
             final FileDelta delta =
                 new FileDelta(
-                    new ID(form.get("id").getString()),
                     form.get("title").getString(),
                     form.get("description").getString(),
                     file.getContentType(),
@@ -50,7 +50,7 @@ public class UpdateFileServlet extends CreatorServlet {
             final InputStream dataStream = file.getInputStream();
 
             try {
-                _services.dataManager().updateFile(delta, dataStream);
+                _services.dataManager().updateFile(fileId, delta, dataStream);
             } finally {
                 try {
                     dataStream.close();

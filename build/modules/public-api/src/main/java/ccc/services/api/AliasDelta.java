@@ -20,7 +20,6 @@ import java.io.Serializable;
  * @author Civic Computing Ltd.
  */
 public final class AliasDelta implements Serializable {
-    private ID _id;
     private String _targetName;
     private ID _targetId;
 
@@ -29,36 +28,13 @@ public final class AliasDelta implements Serializable {
     /**
      * Constructor.
      *
-     * @param id The alias' Id.
      * @param targetName The alias' target's name.
      * @param targetId The alias' target's id.
      */
-    public AliasDelta(final ID id,
-                      final String targetName,
+    public AliasDelta(final String targetName,
                       final ID targetId) {
-        _id = id;
         _targetName = targetName;
         _targetId = targetId;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the id.
-     */
-    public ID getId() {
-        return _id;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param id The id to set.
-     */
-    public void setId(final ID id) {
-        _id = id;
     }
 
 
@@ -69,16 +45,6 @@ public final class AliasDelta implements Serializable {
      */
     public String getTargetName() {
         return _targetName;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param targetName The targetName to set.
-     */
-    public void setTargetName(final String targetName) {
-        _targetName = targetName;
     }
 
 

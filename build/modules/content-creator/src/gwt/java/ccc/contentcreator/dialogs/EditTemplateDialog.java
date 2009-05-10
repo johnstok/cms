@@ -32,9 +32,9 @@ import com.extjs.gxt.ui.client.widget.layout.FormData;
 
 
 /**
- * TODO Add Description for this type.
+ * Dialog for creating / updating templates.
  *
- * @author Civic Computing Ltd
+ * @author Civic Computing Ltd.
  */
 public class EditTemplateDialog extends AbstractWizardDialog  {
 
@@ -112,7 +112,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
         _model = model;
         _proxy = proxy;
 
-        _id = _model.getId();
+        _id = proxy.getId();
 
         _name.setReadOnly(true);
         _name.disable();
@@ -177,7 +177,6 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
     private TemplateDelta model() {
         final TemplateDelta delta =
             new TemplateDelta(
-                _id,
                 _templateTitle.getValue(),
                 _description.getValue(),
                 _body.getValue(),
@@ -218,7 +217,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                         name.getValue(),
                         new ErrorReportingCallback<Boolean>(){
                             public void onSuccess(final Boolean nameExists) {
-                                if (nameExists) {
+                                if (nameExists.booleanValue()) {
                                     validate.addMessage(
                                         "A template with name '"
                                         + name.getValue()
@@ -253,6 +252,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                             break;
                         case UPDATE:
                             commands().updateTemplate(
+                                _id,
                                 delta,
                                 new ErrorReportingCallback<ResourceSummary>(){
                                     public void onSuccess(final ResourceSummary arg0) {

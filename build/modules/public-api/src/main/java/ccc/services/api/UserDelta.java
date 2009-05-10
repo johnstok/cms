@@ -21,7 +21,6 @@ import java.util.Set;
  * @author Civic Computing Ltd.
  */
 public final class UserDelta implements Serializable {
-    private ID _id;
     private String _email;
     private Username _username;
     private Set<String> _roles;
@@ -31,40 +30,16 @@ public final class UserDelta implements Serializable {
     /**
      * Constructor.
      *
-     * @param id
-     * @param password
      * @param email
      * @param username
      * @param roles
      */
-    public UserDelta(final ID id,
-                     final String email,
+    public UserDelta(final String email,
                      final Username username,
                      final Set<String> roles) {
-        _id = id;
         _email = email;
         _username = username;
         _roles = roles;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the id.
-     */
-    public ID getId() {
-        return _id;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param id The id to set.
-     */
-    public void setId(final ID id) {
-        _id = id;
     }
 
 

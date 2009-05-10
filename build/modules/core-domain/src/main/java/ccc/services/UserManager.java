@@ -81,9 +81,11 @@ public interface UserManager {
     /**
      * Update user.
      *
+     * @param userId The id of the user to update.
      * @param delta The changes to apply.
+     * @return The updated user.
      */
-    User updateUser(UserDelta delta);
+    User updateUser(UUID userId, UserDelta delta);
 
 
     /**

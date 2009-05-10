@@ -134,7 +134,7 @@ public class UserTable extends TablePanel {
         grid.setId("UserGrid");
 
         contextMenu.add(createEditUserMenu(grid));
-        contextMenu.add(createEditUserPwMenu(grid));
+        contextMenu.add(createEditPwMenu(grid));
 
         grid.setContextMenu(contextMenu);
         grid.addPlugin(gp);
@@ -142,31 +142,33 @@ public class UserTable extends TablePanel {
     }
 
     private MenuItem createEditUserMenu(final Grid<UserSummaryModelData> grid) {
-
         final MenuItem editUser = new MenuItem(_constants.editUser());
         editUser.setId("editUserMenu");
-        editUser.addSelectionListener(new SelectionListener<MenuEvent>() {
-
-            @Override
-            public void componentSelected(final MenuEvent ce) {
-                final UserSummaryModelData userDTO =
-                    grid.getSelectionModel().getSelectedItem();
-                qs.userDelta(userDTO.getId(), new AsyncCallback<UserDelta>(){
-                    public void onFailure(final Throwable arg0) {
-                        Globals.unexpectedError(arg0);
-                    }
-                    public void onSuccess(final UserDelta arg0) {
-                        new EditUserDialog(arg0, UserTable.this).show();
-                    }
-                });
+        editUser.addSelectionListener(
+            new SelectionListener<MenuEvent>() {
+                @Override public void componentSelected(final MenuEvent ce) {
+                    final UserSummaryModelData userDTO =
+                        grid.getSelectionModel().getSelectedItem();
+                    qs.userDelta(
+                        userDTO.getId(),
+                        new AsyncCallback<UserDelta>(){
+                            public void onFailure(final Throwable arg0) {
+                                Globals.unexpectedError(arg0);
+                            }
+                            public void onSuccess(final UserDelta delta) {
+                                new EditUserDialog(
+                                    userDTO.getId(),delta, UserTable.this)
+                                .show();
+                            }
+                        }
+                    );
+                }
             }
-
-        });
+        );
         return editUser;
     }
 
-    private MenuItem createEditUserPwMenu(final Grid<UserSummaryModelData> grid) {
-
+    private MenuItem createEditPwMenu(final Grid<UserSummaryModelData> grid) {
         final MenuItem editUserPw = new MenuItem(_constants.editUserPw());
         editUserPw.setId("editUserPwMenu");
         editUserPw.addSelectionListener(new SelectionListener<MenuEvent>() {
@@ -175,19 +177,14 @@ public class UserTable extends TablePanel {
                     grid.getSelectionModel().getSelectedItem();
                 new EditUserPwDialog(userDTO).show();
             }
-
         });
         return editUserPw;
     }
 
-    /**
-     * TODO: Add a description of this method.
-     *
-     */
     private void createToolBar() {
         _usernameRadio.setName("Username");
         _usernameRadio.setBoxLabel(_constants.username());
-        _usernameRadio.setValue(true);
+        _usernameRadio.setValue(Boolean.TRUE);
         _usernameRadio.setId("usernameRadio");
 
         _emailRadio.setName("Email");
@@ -276,7 +273,6 @@ public class UserTable extends TablePanel {
 
     /**
      * Refresh user list unless the last list was created through a search.
-     *
      */
     public void refreshUsers() {
         if (_lastSelected != null

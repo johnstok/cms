@@ -22,6 +22,7 @@ import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.UserTable;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validator;
+import ccc.services.api.ID;
 import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
 import ccc.services.api.Username;
@@ -43,6 +44,7 @@ public class EditUserDialog extends AbstractEditDialog {
     private final TextField<String> _email = new TextField<String>();
     private final TextArea          _roles = new TextArea();
 
+    private final ID        _userId;
     private final UserDelta _userDTO;
     private final UserTable _userTable;
 
@@ -52,11 +54,14 @@ public class EditUserDialog extends AbstractEditDialog {
      * @param userDTO The userDTO of the selected user.
      * @param userTable The user table.
      */
-    public EditUserDialog(final UserDelta userDTO, final UserTable userTable) {
+    public EditUserDialog(final ID userId,
+                          final UserDelta userDTO,
+                          final UserTable userTable) {
         super(Globals.uiConstants().editUser());
 
+        _userId    = userId;
+        _userDTO   = userDTO;
         _userTable = userTable;
-        _userDTO = userDTO;
 
         _username.setFieldLabel(constants().username());
         _username.setAllowBlank(false);
@@ -128,11 +133,11 @@ public class EditUserDialog extends AbstractEditDialog {
 
 
                 commands().updateUser(
+                    _userId,
                     _userDTO,
                     new ErrorReportingCallback<UserSummary>() {
                         public void onSuccess(final UserSummary result) {
-                            // TODO: Update the row with result
-                            _userTable.refreshUsers();
+                            _userTable.refreshUsers(); // FIXME: Update the row with result
                             close();
                         }
                     }
@@ -172,5 +177,4 @@ public class EditUserDialog extends AbstractEditDialog {
             }
         };
     }
-
 }

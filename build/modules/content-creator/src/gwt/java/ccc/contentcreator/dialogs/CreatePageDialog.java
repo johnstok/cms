@@ -328,7 +328,6 @@ public class CreatePageDialog
             public void run() {
                 final PageDelta page =
                     new PageDelta(
-                        null,
                         _second.title().getValue(),
                         paragraphs
                     );

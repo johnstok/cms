@@ -23,7 +23,6 @@ import ccc.services.api.FileSummary;
 import ccc.services.api.ID;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.PageDelta;
-import ccc.services.api.ResourceDelta;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.TemplateSummary;
@@ -155,18 +154,6 @@ public class QueriesImpl
     @Override
     public PageDelta pageDelta(final ID pageId) {
         return _services.lookupQueries().pageDelta(pageId);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ResourceDelta folderDelta(final ID folderId) {
-        return _services.lookupQueries().folderDelta(folderId);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ResourceDelta resourceDelta(final ID resourceId) {
-        return _services.lookupQueries().resourceDelta(resourceId);
     }
 
     /** {@inheritDoc} */
