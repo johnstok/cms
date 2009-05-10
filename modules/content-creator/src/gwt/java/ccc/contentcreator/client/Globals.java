@@ -19,6 +19,7 @@ import ccc.contentcreator.api.SecurityService;
 import ccc.contentcreator.api.SecurityServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
+import ccc.services.api.Username;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
@@ -227,4 +228,13 @@ public final class Globals {
     public static final String SITE_BUILDER = "SITE_BUILDER";
     /** CONTENT_CREATOR : String. */
     public static final String CONTENT_CREATOR = "CONTENT_CREATOR";
+
+    /**
+     * Accessor.
+     *
+     * @return The username of the logged in user.
+     */
+    public static Username currentUser() {
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
 }

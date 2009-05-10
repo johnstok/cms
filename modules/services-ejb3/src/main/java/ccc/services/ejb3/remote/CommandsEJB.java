@@ -197,8 +197,8 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary lock(final ID resourceId) {
-        return mapResource(_resources.lock(toUUID(resourceId)));
+    public void lock(final ID resourceId) {
+        _resources.lock(toUUID(resourceId));
     }
 
     /** {@inheritDoc} */
@@ -211,19 +211,14 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary publish(final ID resourceId) {
-        return mapResource(_resources.publish(toUUID(resourceId)));
+    public void publish(final ID resourceId) {
+        _resources.publish(toUUID(resourceId));
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary publish(final ID resourceId,
-                                   final ID userId,
-                                   final Date date) {
-        return mapResource(_resources.publish(
-            toUUID(resourceId),
-            toUUID(userId),
-            date));
+    public void publish(final ID resourceId, final ID userId, final Date date) {
+        _resources.publish(toUUID(resourceId), toUUID(userId), date);
     }
 
     /** {@inheritDoc} */
@@ -236,14 +231,14 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary unlock(final ID resourceId) {
-        return mapResource(_resources.unlock(toUUID(resourceId)));
+    public void unlock(final ID resourceId) {
+        _resources.unlock(toUUID(resourceId));
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary unpublish(final ID resourceId) {
-        return mapResource(_resources.unpublish(toUUID(resourceId)));
+    public void unpublish(final ID resourceId) {
+        _resources.unpublish(toUUID(resourceId));
     }
 
     /** {@inheritDoc} */
@@ -310,15 +305,15 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary updateTemplate(final ID templateId,
+    public void updateTemplate(final ID templateId,
                                           final TemplateDelta delta) {
-        return mapResource(_templates.update(toUUID(templateId), delta));
+        _templates.update(toUUID(templateId), delta);
     }
 
     /** {@inheritDoc} */
     @Override
-    public UserSummary updateUser(final ID userId, final UserDelta delta) {
-        return mapUser(_users.updateUser(toUUID(userId), delta));
+    public void updateUser(final ID userId, final UserDelta delta) {
+        _users.updateUser(toUUID(userId), delta);
     }
 
     /** {@inheritDoc} */

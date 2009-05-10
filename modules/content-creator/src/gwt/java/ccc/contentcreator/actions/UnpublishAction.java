@@ -17,7 +17,6 @@ import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
-import ccc.services.api.ResourceSummary;
 
 
 /**
@@ -47,9 +46,9 @@ public class UnpublishAction
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         _commands.unpublish(
             item.getId(),
-            new ErrorReportingCallback<ResourceSummary>(){
-                public void onSuccess(final ResourceSummary arg0) {
-                    item.merge(arg0);
+            new ErrorReportingCallback<Void>(){
+                public void onSuccess(final Void arg0) {
+                    item.setPublished(null);
                     _selectionModel.update(item);
                 }
             }

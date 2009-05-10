@@ -17,6 +17,7 @@ import java.util.Date;
 
 /**
  * A summary of a resource.
+ * FIXME: remove all mutators.
  *
  * @author Civic Computing Ltd.
  */
@@ -301,5 +302,25 @@ public final class ResourceSummary implements Serializable {
      */
     public String getTags() {
         return _tags;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param lockedBy The lockedBy to set.
+     */
+    public void setLockedBy(final Username lockedBy) {
+        _lockedBy = lockedBy;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param publishedBy The publishedBy to set.
+     */
+    public void setPublishedBy(final Username publishedBy) {
+        _publishedBy = publishedBy;
     }
 }

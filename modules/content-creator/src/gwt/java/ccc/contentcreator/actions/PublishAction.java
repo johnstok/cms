@@ -6,7 +6,6 @@ import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
-import ccc.services.api.ResourceSummary;
 
 /**
  * Publish a resource.
@@ -35,9 +34,9 @@ public class PublishAction
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         _commands.publish(
             item.getId(),
-            new ErrorReportingCallback<ResourceSummary>(){
-                public void onSuccess(final ResourceSummary arg0) {
-                    item.merge(arg0);
+            new ErrorReportingCallback<Void>(){
+                public void onSuccess(final Void arg0) {
+                    item.setPublished(Globals.currentUser());
                     _selectionModel.update(item);
                 }
             }

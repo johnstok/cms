@@ -24,7 +24,6 @@ import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validator;
 import ccc.services.api.ID;
 import ccc.services.api.UserDelta;
-import ccc.services.api.UserSummary;
 import ccc.services.api.Username;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -135,9 +134,10 @@ public class EditUserDialog extends AbstractEditDialog {
                 commands().updateUser(
                     _userId,
                     _userDTO,
-                    new ErrorReportingCallback<UserSummary>() {
-                        public void onSuccess(final UserSummary result) {
-                            _userTable.refreshUsers(); // FIXME: Update the row with result
+                    new ErrorReportingCallback<Void>() {
+                        public void onSuccess(final Void result) {
+                            // FIXME: Just update the edited row model data.
+                            _userTable.refreshUsers();
                             close();
                         }
                     }
