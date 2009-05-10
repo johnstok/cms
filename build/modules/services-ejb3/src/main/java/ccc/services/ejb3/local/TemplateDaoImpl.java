@@ -34,6 +34,7 @@ import ccc.services.ResourceDao;
 import ccc.services.ResourceDaoImpl;
 import ccc.services.TemplateDao;
 import ccc.services.UserManager;
+import ccc.services.api.TemplateDelta;
 
 
 /**
@@ -52,7 +53,7 @@ public class TemplateDaoImpl implements TemplateDao {
 
 
     /** Constructor. */
-    @SuppressWarnings("unused") public TemplateDaoImpl() { super(); }
+    public TemplateDaoImpl() { super(); }
 
     /**
      * Constructor.
@@ -66,18 +67,14 @@ public class TemplateDaoImpl implements TemplateDao {
 
     /** {@inheritDoc} */
     @Override
-    public Template update(final UUID templateId,
-                       final String title,
-                       final String description,
-                       final String definition,
-                       final String body) {
+    public Template update(final UUID templateId, final TemplateDelta delta) {
 
         final Template current = _dao.findLocked(Template.class, templateId);
 
-        current.title(title);
-        current.description(description);
-        current.definition(definition);
-        current.body(body);
+        current.title(delta.getTitle());
+        current.description(delta.getDescription());
+        current.definition(delta.getDefinition());
+        current.body(delta.getBody());
 
         _dao.update(current);
 

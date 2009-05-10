@@ -49,6 +49,8 @@ import ccc.services.PageDao;
 import ccc.services.ResourceDao;
 import ccc.services.ResourceDaoImpl;
 import ccc.services.UserManager;
+import ccc.services.api.PageDelta;
+import ccc.services.api.ParagraphDelta;
 
 
 /**
@@ -87,19 +89,14 @@ public class PageDaoImpl implements PageDao {
      */
     @Override
     public void update(final UUID id,
-                       final String newTitle,
-                       final Set<Paragraph> newParagraphs,
+                       final PageDelta delta,
                        final String comment,
                        final boolean isMajorEdit) {
 
         final Page page = _dao.findLocked(Page.class, id);
 
-        page.title(newTitle);
-        page.deleteAllParagraphs();
-
-        for (final Paragraph paragraph : newParagraphs) {
-            page.addParagraph(paragraph);
-        }
+        page.title(delta.getTitle());
+        assignParagraphs(page, delta);
 
         update(comment, isMajorEdit, page, _users.loggedInUser(), new Date());
     }
@@ -192,5 +189,29 @@ public class PageDaoImpl implements PageDao {
         final Dao bdao = new BaseDao(_em);
         final AuditLog audit = new AuditLogEJB(bdao);
         _dao = new ResourceDaoImpl(_users, audit, bdao);
+    }
+
+    private void assignParagraphs(final Page page, final PageDelta delta) {
+
+        page.deleteAllParagraphs();
+
+        for (final ParagraphDelta para : delta.getParagraphs()) {
+            switch (para.getType()) {
+                case TEXT:
+                    page.addParagraph(
+                        Paragraph.fromText(para.getName(),
+                                           para.getTextValue()));
+                    break;
+
+                case DATE:
+                    page.addParagraph(
+                        Paragraph.fromDate(para.getName(),
+                                           para.getDateValue()));
+                    break;
+
+                default:
+                    throw new CCCException("Unexpected type");
+            }
+        }
     }
 }

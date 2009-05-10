@@ -16,6 +16,7 @@ import java.util.UUID;
 
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
+import ccc.services.api.TemplateDelta;
 
 
 /**
@@ -39,17 +40,10 @@ public interface TemplateDao {
      * Update an existing resource.
      *
      * @param templateId The id of the template to update.
-     * @param title The template's new title.
-     * @param description The template's new description.
-     * @param definition The template's new definition.
-     * @param body The template's new body.
+     * @param delta The changes to apply.
      * @return The updated template.
      */
-    Template update(UUID templateId,
-                    String title,
-                    String description,
-                    String definition,
-                    String body);
+    Template update(UUID templateId, TemplateDelta delta);
 
     /**
      * Query if a template already exists with the specified name.

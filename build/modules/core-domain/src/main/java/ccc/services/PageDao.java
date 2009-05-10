@@ -17,6 +17,7 @@ import java.util.UUID;
 
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
+import ccc.services.api.PageDelta;
 
 
 /**
@@ -33,16 +34,12 @@ public interface PageDao {
      * Update the live version of the page. Discards working copy.
      *
      * @param id The identifier for the page.
-     * @param newTitle The new title for the page.
-     * @param newParagraphs The new paragraphs for the page. All existing
-     *      paragraphs will be removed and replaced with the paragraphs
-     *      specified here.
+     * @param delta The changes to apply.
      * @param comment The comment for the page edit.
      * @param isMajorEdit A boolean for major edit.
      */
     void update(UUID id,
-                String newTitle,
-                Set<Paragraph> newParagraphs,
+                PageDelta delta,
                 final String comment,
                 final boolean isMajorEdit);
 

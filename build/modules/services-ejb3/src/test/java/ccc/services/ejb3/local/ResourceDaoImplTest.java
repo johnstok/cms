@@ -323,14 +323,17 @@ public class ResourceDaoImplTest
             new Template("foo", "bar", "baz", "<fields/>");
         _r.lock(_regularUser);
 
-        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_dao.find(Resource.class, _r.id()))
+            .andReturn(_r);
+        expect(_dao.find(Template.class, defaultTemplate.id()))
+            .andReturn(defaultTemplate);
         expect(_users.loggedInUser()).andReturn(_regularUser);
         expect(_users.loggedInUser()).andReturn(_regularUser);
         _al.recordChangeTemplate(eq(_r), eq(_regularUser), isA(Date.class));
         replayAll();
 
         // ACT
-        _rdao.updateTemplateForResource(_r.id(), defaultTemplate);
+        _rdao.updateTemplateForResource(_r.id(), defaultTemplate.id());
 
         // ASSERT
         verifyAll();
