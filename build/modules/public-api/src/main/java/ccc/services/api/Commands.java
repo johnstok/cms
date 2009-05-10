@@ -62,8 +62,11 @@ public interface Commands {
 
     /**
      * Updates the user in the system.
+     *
+     * @param userId The id of the user to update.
+     * @param delta The changes to apply.
      */
-    UserSummary updateUser(ID userId, UserDelta delta);
+    void updateUser(ID userId, UserDelta delta);
 
     /**
      * Update the specified template on the server.
@@ -71,7 +74,7 @@ public interface Commands {
      * @param templateId The id of the template to update.
      * @param delta The changes to apply.
      */
-    ResourceSummary updateTemplate(ID templateId, TemplateDelta delta);
+    void updateTemplate(ID templateId, TemplateDelta delta);
 
     /**
      * Rename resource.
@@ -99,9 +102,8 @@ public interface Commands {
      * If the resource is already locked a CCCException will be thrown.
      *
      * @param resourceId The uuid of the resource to lock.
-     * @return The current version of resource.
      */
-    ResourceSummary lock(ID resourceId);
+    void lock(ID resourceId);
 
     /**
      * Unlock the specified Resource.
@@ -110,34 +112,31 @@ public interface Commands {
      * Unlocking an unlocked resource has no effect.
      *
      * @param resourceId The resource to unlock.
-     * @return The current version of resource.
      */
-    ResourceSummary unlock(ID resourceId);
+    void unlock(ID resourceId);
+
+    /**
+     * Publish the specified resource.
+     *
+     * @param resourceId The id of the resource to update.
+     */
+    void publish(ID resourceId);
 
     /**
      * TODO: Add a description of this method.
      *
      * @param resourceId The id of the resource to update.
-     * @return The current version of resource.
+     * @param userId The id of the publishing user.
+     * @param publishDate The date the resource was published.
      */
-    ResourceSummary publish(ID resourceId);
+    void publish(ID resourceId, ID userId, Date publishDate);
 
     /**
-     * TODO: Add a description of this method.
+     * Unpublish the specified resource.
      *
      * @param resourceId The id of the resource to update.
-     * @param resourceId The id of the publishing user.
-     * @return The current version of resource.
      */
-    ResourceSummary publish(ID resourceId, ID userId, Date publishDate);
-
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param resourceId The id of the resource to update.
-     * @return
-     */
-    ResourceSummary unpublish(ID resourceId);
+    void unpublish(ID resourceId);
 
     /**
      * TODO: Add a description of this method.
@@ -224,6 +223,10 @@ public interface Commands {
 
     /**
      * Creates a new search.
+     *
+     * @param parentId The parent folder where the search should be created.
+     * @param title The title of the search.
+     * @return A summary of the newly created search.
      */
     ResourceSummary createSearch(ID parentId, String title);
 
@@ -236,22 +239,51 @@ public interface Commands {
      */
     void createWorkingCopy(ID resourceId, long index);
 
+    /**
+     * Cancel a scheduled action.
+     *
+     * @param actionId The id of the action to cancel.
+     */
     void cancelAction(ID actionId);
 
-    void createAction(ID resourceId, ActionType action, Date executeAfter, String parameters);
+    /**
+     * Create a new scheduled action.
+     *
+     * @param resourceId The id of the resource the action will operate on.
+     * @param action The type of the action to be performed.
+     * @param executeAfter The earliest date at which the action may be
+     *  executed.
+     * @param parameters Additional parameters for the action, as a JSON string.
+     */
+    void createAction(ID resourceId,
+                      ActionType action,
+                      Date executeAfter,
+                      String parameters);
 
     /**
-     * TODO: Add a description of this method.
+     * Change the order of resources in a folder.
      *
-     * @param folderId
-     * @param order
+     * @param folderId The id of the folder to update.
+     * @param order The new order of the resources.
      */
     void reorder(ID folderId, List<String> order);
 
+    /**
+     * Change the security roles for a resource.
+     *
+     * @param resourceId The resource to update.
+     * @param roles The new set of roles.
+     */
     void changeRoles(ID resourceId, Collection<String> roles);
 
     void applyWorkingCopyToFile(ID fileId);
 
+    /**
+     * Update the period that a resource should be cached for.
+     *
+     * @param resourceId The resource to update.
+     * @param duration The cache duration.
+     */
     void updateCacheDuration(ID resourceId, Duration duration);
 
     /**

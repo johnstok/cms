@@ -254,9 +254,9 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                             commands().updateTemplate(
                                 _id,
                                 delta,
-                                new ErrorReportingCallback<ResourceSummary>(){
-                                    public void onSuccess(final ResourceSummary arg0) {
-                                        _proxy.merge(arg0);
+                                new ErrorReportingCallback<Void>(){
+                                    public void onSuccess(final Void arg0) {
+                                        _proxy.setTitle(delta.getTitle());
                                         _ssm.update(_proxy);
                                         close();
                                     }});

@@ -393,4 +393,22 @@ public class ResourceSummaryModelData
     public String getTags() {
         return _rs.getTags();
     }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param currentUser
+     */
+    public void setLocked(final Username user) {
+        _rs.setLockedBy(user);
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param currentUser
+     */
+    public void setPublished(final Username user) {
+        _rs.setPublishedBy(user);
+    }
 }

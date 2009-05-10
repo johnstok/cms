@@ -91,8 +91,8 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary lock(final ID resourceId) {
-        return _services.lookupCommands().lock(resourceId);
+    public void lock(final ID resourceId) {
+        _services.lookupCommands().lock(resourceId);
     }
 
     /** {@inheritDoc} */
@@ -104,17 +104,16 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary publish(final ID resourceId) {
-        return _services.lookupCommands().publish(resourceId);
+    public void publish(final ID resourceId) {
+        _services.lookupCommands().publish(resourceId);
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary publish(final ID resourceId,
+    public void publish(final ID resourceId,
                                    final ID userId,
                                    final Date publishOn) {
-        return _services.lookupCommands().publish(
-            resourceId, userId, publishOn);
+        _services.lookupCommands().publish(resourceId, userId, publishOn);
     }
 
     /** {@inheritDoc} */
@@ -126,15 +125,15 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary unlock(final ID resourceId) {
-        return _services.lookupCommands().unlock(resourceId);
+    public void unlock(final ID resourceId) {
+        _services.lookupCommands().unlock(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary unpublish(final ID resourceId) {
-        return _services.lookupCommands().unpublish(resourceId);
+    public void unpublish(final ID resourceId) {
+        _services.lookupCommands().unpublish(resourceId);
     }
 
     /** {@inheritDoc} */
@@ -170,15 +169,15 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary updateTemplate(final ID templateId,
+    public void updateTemplate(final ID templateId,
                                           final TemplateDelta delta) {
-        return _services.lookupCommands().updateTemplate(templateId, delta);
+        _services.lookupCommands().updateTemplate(templateId, delta);
     }
 
     /** {@inheritDoc} */
     @Override
-    public UserSummary updateUser(final ID userId, final UserDelta delta) {
-        return _services.lookupCommands().updateUser(userId, delta);
+    public void updateUser(final ID userId, final UserDelta delta) {
+        _services.lookupCommands().updateUser(userId, delta);
     }
 
     /** {@inheritDoc} */

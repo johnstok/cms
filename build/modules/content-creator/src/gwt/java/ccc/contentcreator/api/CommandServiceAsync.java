@@ -37,74 +37,154 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public interface CommandServiceAsync {
 
-    void updatePage(ID pageId, PageDelta delta, String comment, boolean isMajorEdit, AsyncCallback<Void> callback);
+    /*
+     * Update methods.
+     */
+    void updatePage(ID pageId,
+                    PageDelta delta,
+                    String comment,
+                    boolean isMajorEdit,
+                    AsyncCallback<Void> callback);
 
-    void updateWorkingCopy(ID pageId, PageDelta delta, AsyncCallback<Void> callback);
+    void updateWorkingCopy(ID pageId,
+                           PageDelta delta,
+                           AsyncCallback<Void> callback);
 
-    void rename(final ID resourceId, final String name, AsyncCallback<Void> callback);
+    void rename(final ID resourceId,
+                final String name,
+                AsyncCallback<Void> callback);
 
-    void updateTags(ID resourceId, String tags, AsyncCallback<Void> callback);
+    void updateTags(ID resourceId,
+                    String tags,
+                    AsyncCallback<Void> callback);
 
-    void move(ID resourceId, ID newParentId, AsyncCallback<Void> callback);
+    void move(ID resourceId,
+              ID newParentId,
+              AsyncCallback<Void> callback);
 
-    void updateAlias(ID aliasId, AliasDelta delta, AsyncCallback<Void> callback);
+    void updateAlias(ID aliasId,
+                     AliasDelta delta,
+                     AsyncCallback<Void> callback);
 
-    void updateUser(ID userId, UserDelta delta, AsyncCallback<UserSummary> callback);
+    void updateUser(ID userId,
+                    UserDelta delta,
+                    AsyncCallback<Void> callback);
 
-    void updateResourceTemplate(ID resourceId, ID templateId, AsyncCallback<Void> callback);
+    void updateResourceTemplate(ID resourceId,
+                                ID templateId,
+                                AsyncCallback<Void> callback);
 
-    void updateTemplate(ID templateId, TemplateDelta delta, AsyncCallback<ResourceSummary> callback);
+    void updateTemplate(ID templateId,
+                        TemplateDelta delta,
+                        AsyncCallback<Void> callback);
 
-    void lock(ID resourceId, AsyncCallback<ResourceSummary> callback);
+    void lock(ID resourceId,
+              AsyncCallback<Void> callback);
 
-    void unlock(ID resourceId, AsyncCallback<ResourceSummary> callback);
+    void unlock(ID resourceId,
+                AsyncCallback<Void> callback);
 
-    void publish(ID resourceId, AsyncCallback<ResourceSummary> callback);
+    void publish(ID resourceId,
+                 AsyncCallback<Void> callback);
 
-    void publish(ID resourceId, ID userId, Date publishDate, AsyncCallback<ResourceSummary> callback);
+    void publish(ID resourceId,
+                 ID userId,
+                 Date publishDate,
+                 AsyncCallback<Void> callback);
 
-    void unpublish(ID resourceId, AsyncCallback<ResourceSummary> callback);
+    void unpublish(ID resourceId,
+                   AsyncCallback<Void> callback);
 
-    void includeInMainMenu(ID resourceId, boolean include, AsyncCallback<Void> callback);
+    void includeInMainMenu(ID resourceId,
+                           boolean include,
+                           AsyncCallback<Void> callback);
 
-    void validateFields(List<ParagraphDelta> delta, String definition, AsyncCallback<List <String>> callback);
+    void validateFields(List<ParagraphDelta> delta,
+                        String definition,
+                        AsyncCallback<List <String>> callback);
 
-    void updateMetadata(ID resourceId, Map<String, String> metadata, AsyncCallback<Void> callback);
+    void updateMetadata(ID resourceId,
+                        Map<String, String> metadata,
+                        AsyncCallback<Void> callback);
 
-    void updateFolderSortOrder(ID folderId, String sortOrder, AsyncCallback<Void> callback);
+    void updateFolderSortOrder(ID folderId,
+                               String sortOrder,
+                               AsyncCallback<Void> callback);
 
-    public void clearWorkingCopy(ID pageId, AsyncCallback<Void> callback);
+    public void clearWorkingCopy(ID pageId,
+                                 AsyncCallback<Void> callback);
 
-    void createWorkingCopy(ID resourceId, long index, AsyncCallback<Void> callback);
+    void createWorkingCopy(ID resourceId,
+                           long index,
+                           AsyncCallback<Void> callback);
 
-    void cancelAction(ID actionId, AsyncCallback<Void> callback);
+    void cancelAction(ID actionId,
+                      AsyncCallback<Void> callback);
 
-    void createAction(ID resourceId, ActionType action, Date executeAfter, String parameters, AsyncCallback<Void> callback);
+    void createAction(ID resourceId,
+                      ActionType action,
+                      Date executeAfter,
+                      String parameters,
+                      AsyncCallback<Void> callback);
+
+    void createAlias(ID parentId,
+                     String name,
+                     ID targetId,
+                     AsyncCallback<ResourceSummary> callback);
+
+    void reorder(ID folderId,
+                 List<String> order,
+                 AsyncCallback<Void> callback);
+
+    void changeRoles(final ID resourceId,
+                     final Collection<String> roles,
+                     AsyncCallback<Void> callback);
+
+    void applyWorkingCopyToFile(ID fileId,
+                                AsyncCallback<Void> callback);
+
+    void updateCacheDuration(ID resourceId,
+                             Duration duration,
+                             AsyncCallback<Void> callback);
+
+    void updateUserPassword(ID userId,
+                            String password,
+                            AsyncCallback<Void> callback);
 
 
-    void createAlias(ID parentId, String name, ID targetId, AsyncCallback<ResourceSummary> callback);
 
-    void createFolder(ID parentId, String name, AsyncCallback<ResourceSummary> callback);
+    /*
+     * Create methods.
+     */
+    void createFolder(ID parentId,
+                      String name,
+                      AsyncCallback<ResourceSummary> callback);
 
-    void createFolder(ID parentId, String name, String title, AsyncCallback<ResourceSummary> callback);
+    void createFolder(ID parentId,
+                      String name,
+                      String title,
+                      AsyncCallback<ResourceSummary> callback);
 
-    void createUser(UserDelta delta, String password, AsyncCallback<UserSummary> callback);
+    void createUser(UserDelta delta,
+                    String password,
+                    AsyncCallback<UserSummary> callback);
 
-    void createPage(ID parentId, PageDelta delta, String pageName, final boolean publish, ID templateId, AsyncCallback<ResourceSummary> callback);
+    void createPage(ID parentId,
+                    PageDelta delta,
+                    String pageName,
+                    final boolean publish,
+                    ID templateId,
+                    AsyncCallback<ResourceSummary> callback);
 
-    void createTemplate(ID parentId, TemplateDelta delta, String name, AsyncCallback<ResourceSummary> callback);
+    void createTemplate(ID parentId,
+                        TemplateDelta delta,
+                        String name,
+                        AsyncCallback<ResourceSummary> callback);
 
-    void createRoot(String name, AsyncCallback<ResourceSummary> callback);
+    void createRoot(String name,
+                    AsyncCallback<ResourceSummary> callback);
 
-    void createSearch(ID parentId, String title, AsyncCallback<ResourceSummary> callback);
-
-    void reorder(ID folderId, List<String> order, AsyncCallback<Void> callback);
-
-    void changeRoles(final ID resourceId, final Collection<String> roles, AsyncCallback<Void> callback);
-
-    void applyWorkingCopyToFile(ID fileId, AsyncCallback<Void> callback);
-
-    void updateCacheDuration(ID resourceId, Duration duration, AsyncCallback<Void> callback);
-
-    void updateUserPassword(ID userId, String password, AsyncCallback<Void> callback);
+    void createSearch(ID parentId,
+                      String title,
+                      AsyncCallback<ResourceSummary> callback);
 }
