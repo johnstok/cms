@@ -48,27 +48,12 @@ import ccc.services.api.Username;
 
 /**
  * Helper class for translating between the core domain and DTOs.
- * TODO: These methods can now be folded into the various CCC resource classes.
+ * TODO: These methods could now be folded into the various CCC resource
+ *  classes?
  *
  * @author Civic Computing Ltd.
  */
 public class ModelTranslation {
-
-    /**
-     * Map a collection of Folder to a collection of FolderSummary.
-     *
-     * @param folders The collection of folders to map.
-     * @return The corresponding collection of FolderSummary.
-     */
-    protected Collection<ResourceSummary> mapFolders(
-                                             final Collection<Folder> folders) {
-        final Collection<ResourceSummary> mapped =
-            new ArrayList<ResourceSummary>();
-        for (final Folder f : folders) {
-            mapped.add(map(f));
-        }
-        return mapped;
-    }
 
     /**
      * Map a collection of Resource to a collection of ResourceSummary.
@@ -77,11 +62,11 @@ public class ModelTranslation {
      * @return The corresponding collection of ResourceSummary.
      */
     protected Collection<ResourceSummary> mapResources(
-                                         final Collection<Resource> resources) {
+                               final Collection<? extends Resource> resources) {
         final Collection<ResourceSummary> mapped =
             new ArrayList<ResourceSummary>();
         for (final Resource r : resources) {
-            mapped.add(map(r));
+            mapped.add(mapResource(r));
         }
         return mapped;
     }
@@ -96,7 +81,7 @@ public class ModelTranslation {
     protected Collection<UserSummary> mapUsers(final Collection<User> users) {
         final Collection<UserSummary> mapped = new ArrayList<UserSummary>();
         for (final User u : users) {
-            mapped.add(map(u));
+            mapped.add(mapUser(u));
         }
         return mapped;
     }
@@ -111,7 +96,7 @@ public class ModelTranslation {
     protected Collection<FileSummary> mapFiles(final Collection<File> files) {
         final Collection<FileSummary> mapped = new ArrayList<FileSummary>();
         for (final File f : files) {
-            mapped.add(map(f));
+            mapped.add(mapFile(f));
         }
         return mapped;
     }
@@ -128,7 +113,7 @@ public class ModelTranslation {
         final Collection<LogEntrySummary> mapped =
             new ArrayList<LogEntrySummary>();
         for (final LogEntry le : logEntries) {
-            mapped.add(map(le));
+            mapped.add(mapLogEntry(le));
         }
         return mapped;
     }
@@ -140,7 +125,7 @@ public class ModelTranslation {
      * @param le The log entry.
      * @return A corresponding summary.
      */
-    protected LogEntrySummary map(final LogEntry le) {
+    protected LogEntrySummary mapLogEntry(final LogEntry le) {
         return
             new LogEntrySummary(
                 toID(le.subjectId()),
@@ -159,7 +144,7 @@ public class ModelTranslation {
      * @param r The CCC resource.
      * @return The corresponding summary.
      */
-    public ResourceSummary map(final Resource r) {
+    public ResourceSummary mapResource(final Resource r) {
         int childCount = 0;
         int folderCount = 0;
         String sortOrder = null;
@@ -204,7 +189,7 @@ public class ModelTranslation {
      * @param user The user.
      * @return A corresponding summary.
      */
-    protected UserSummary map(final User user) {
+    protected UserSummary mapUser(final User user) {
         return
             new UserSummary(
                 user.email().getText(),
@@ -220,7 +205,7 @@ public class ModelTranslation {
      * @param file The file to map.
      * @return The summary of the file.
      */
-    protected FileSummary map(final File file) {
+    protected FileSummary mapFile(final File file) {
         final FileSummary fs =
             new FileSummary(
                 file.mimeType().toString(),
@@ -238,7 +223,7 @@ public class ModelTranslation {
      * @param template The template.
      * @return A corresponding delta.
      */
-    protected TemplateDelta delta(final Template template) {
+    protected TemplateDelta deltaTemplate(final Template template) {
         if (null==template) {
             return null;
         }
@@ -259,7 +244,7 @@ public class ModelTranslation {
      * @param user The user.
      * @return A corresponding summary.
      */
-    protected UserDelta delta(final User user) {
+    protected UserDelta deltaUser(final User user) {
         final UserDelta delta =
             new UserDelta(
                 user.email().getText(),
@@ -275,7 +260,7 @@ public class ModelTranslation {
      * @param alias The alias.
      * @return A corresponding delta.
      */
-    protected AliasDelta delta(final Alias alias) {
+    protected AliasDelta deltaAlias(final Alias alias) {
         final AliasDelta delta =
             new AliasDelta(
                 alias.target().name().toString(),
@@ -290,7 +275,7 @@ public class ModelTranslation {
      * @param file The file.
      * @return A corresponding delta.
      */
-    protected FileDelta delta(final File file) {
+    protected FileDelta deltaFile(final File file) {
         final FileDelta delta =
             new FileDelta(
                 file.title(),
@@ -307,7 +292,7 @@ public class ModelTranslation {
      * @param page The CCC page.
      * @return The corresponding delta.
      */
-    protected PageDelta delta(final Page page) {
+    protected PageDelta deltaPage(final Page page) {
         final List<ParagraphDelta> paragraphs = new ArrayList<ParagraphDelta>();
         for (final Paragraph p : page.paragraphs()) {
             final ParagraphDelta pDelta =
@@ -339,7 +324,7 @@ public class ModelTranslation {
                                                final List<Template> templates) {
         final Collection<TemplateDelta> mapped = new ArrayList<TemplateDelta>();
         for (final Template t : templates) {
-            mapped.add(delta(t));
+            mapped.add(deltaTemplate(t));
         }
         return mapped;
     }
@@ -386,11 +371,12 @@ public class ModelTranslation {
      * @param actions The actions.
      * @return The corresponding summaries.
      */
-    protected Collection<ActionSummary> map(final Collection<Action> actions) {
+    protected Collection<ActionSummary> mapActions(
+                                             final Collection<Action> actions) {
         final Collection<ActionSummary> summaries =
             new ArrayList<ActionSummary>();
         for (final Action a : actions) {
-            summaries.add(map(a));
+            summaries.add(mapAction(a));
         }
         return summaries;
     }
@@ -402,7 +388,7 @@ public class ModelTranslation {
      * @param a The action.
      * @return The corresponding summary.
      */
-    protected ActionSummary map(final Action a) {
+    protected ActionSummary mapAction(final Action a) {
         final ActionSummary summary =
             new ActionSummary(
                 toID(a.id()),
