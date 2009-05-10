@@ -119,7 +119,7 @@ public class CommandsEJB
         final Alias a = new Alias(name, target);
         _resources.create(parent.id(), a);
 
-        return map(a);
+        return mapResource(a);
     }
 
     /** {@inheritDoc} */
@@ -137,7 +137,7 @@ public class CommandsEJB
         final Folder f = new Folder(name);
         f.title((null==title)?name:title);
         _resources.create(toUUID(parentId), f);
-        return map(f);
+        return mapResource(f);
 
     }
 
@@ -167,7 +167,7 @@ public class CommandsEJB
 
         _page.create(toUUID(parentId), page);
 
-        return map(page);
+        return mapResource(page);
     }
 
     /** {@inheritDoc} */
@@ -185,20 +185,20 @@ public class CommandsEJB
 
         _resources.create(toUUID(parentId), t);
 
-        return map(t);
+        return mapResource(t);
 
     }
 
     /** {@inheritDoc} */
     @Override
     public UserSummary createUser(final UserDelta delta, final String password) {
-        return map(_users.createUser(delta, password));
+        return mapUser(_users.createUser(delta, password));
     }
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary lock(final ID resourceId) {
-        return map(_resources.lock(toUUID(resourceId)));
+        return mapResource(_resources.lock(toUUID(resourceId)));
     }
 
     /** {@inheritDoc} */
@@ -212,7 +212,7 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     public ResourceSummary publish(final ID resourceId) {
-        return map(_resources.publish(toUUID(resourceId)));
+        return mapResource(_resources.publish(toUUID(resourceId)));
     }
 
     /** {@inheritDoc} */
@@ -220,7 +220,7 @@ public class CommandsEJB
     public ResourceSummary publish(final ID resourceId,
                                    final ID userId,
                                    final Date date) {
-        return map(_resources.publish(
+        return mapResource(_resources.publish(
             toUUID(resourceId),
             toUUID(userId),
             date));
@@ -237,13 +237,13 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     public ResourceSummary unlock(final ID resourceId) {
-        return map(_resources.unlock(toUUID(resourceId)));
+        return mapResource(_resources.unlock(toUUID(resourceId)));
     }
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary unpublish(final ID resourceId) {
-        return map(_resources.unpublish(toUUID(resourceId)));
+        return mapResource(_resources.unpublish(toUUID(resourceId)));
     }
 
     /** {@inheritDoc} */
@@ -330,13 +330,13 @@ public class CommandsEJB
                                              delta.getDefinition(),
                                              delta.getBody());
 
-        return map(t);
+        return mapResource(t);
     }
 
     /** {@inheritDoc} */
     @Override
     public UserSummary updateUser(final ID userId, final UserDelta delta) {
-        return map(_users.updateUser(toUUID(userId), delta));
+        return mapUser(_users.updateUser(toUUID(userId), delta));
     }
 
     /** {@inheritDoc} */
@@ -344,7 +344,7 @@ public class CommandsEJB
     public ResourceSummary createRoot(final String name) {
         final Folder f = new Folder(name);
         _resources.createRoot(f);
-        return map(f);
+        return mapResource(f);
     }
 
     /** {@inheritDoc} */
@@ -432,7 +432,7 @@ public class CommandsEJB
                                         final String title) {
         final Search s = new Search(title);
         _resources.create(toUUID(parentId), s);
-        return map(s);
+        return mapResource(s);
     }
 
     /** {@inheritDoc} */

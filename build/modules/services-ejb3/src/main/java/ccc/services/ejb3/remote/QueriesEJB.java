@@ -114,13 +114,13 @@ public final class QueriesEJB
     public Collection<ResourceSummary> getFolderChildren(final ID folderId) {
         final Folder f =
             _resources.find(Folder.class, toUUID(folderId));
-        return mapFolders(f.folders());
+        return mapResources(f.folders());
     }
 
     /** {@inheritDoc} */
     @Override
     public TemplateDelta getTemplateForResource(final ID resourceId) {
-        return delta(
+        return deltaTemplate(
             _resources.find(Resource.class, toUUID(resourceId))
                       .computeTemplate(null));
     }
@@ -156,13 +156,13 @@ public final class QueriesEJB
     @Override
     public ResourceSummary resource(final ID resourceId) {
         return
-            map(_resources.find(Resource.class, toUUID(resourceId)));
+            mapResource(_resources.find(Resource.class, toUUID(resourceId)));
     }
 
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> roots() {
-        return mapFolders(_folders.roots());
+        return mapResources(_folders.roots());
     }
 
     /** {@inheritDoc} */
@@ -191,7 +191,7 @@ public final class QueriesEJB
     /** {@inheritDoc} */
     @Override
     public UserSummary loggedInUser() {
-        return map(_users.loggedInUser());
+        return mapUser(_users.loggedInUser());
     }
 
     /** {@inheritDoc} */
@@ -222,35 +222,35 @@ public final class QueriesEJB
     /** {@inheritDoc} */
     @Override public TemplateDelta templateDelta(final ID templateId) {
         return
-            delta(_resources.find(Template.class, toUUID(templateId)));
+            deltaTemplate(_resources.find(Template.class, toUUID(templateId)));
     }
 
     /** {@inheritDoc} */
     @Override
     public UserDelta userDelta(final ID userId) {
         return
-            delta(_users.find(toUUID(userId)));
+            deltaUser(_users.find(toUUID(userId)));
     }
 
     /** {@inheritDoc} */
     @Override
     public AliasDelta aliasDelta(final ID aliasId) {
         return
-            delta(_resources.find(Alias.class, toUUID(aliasId)));
+            deltaAlias(_resources.find(Alias.class, toUUID(aliasId)));
     }
 
     /** {@inheritDoc} */
     @Override
     public PageDelta pageDelta(final ID pageId) {
         return
-            delta(_resources.find(Page.class, toUUID(pageId)));
+            deltaPage(_resources.find(Page.class, toUUID(pageId)));
     }
 
     /** {@inheritDoc} */
     @Override
     public FileDelta fileDelta(final ID fileId) {
         return
-            delta(_resources.find(File.class, toUUID(fileId)));
+            deltaFile(_resources.find(File.class, toUUID(fileId)));
     }
 
     /** {@inheritDoc} */
@@ -284,13 +284,13 @@ public final class QueriesEJB
     /** {@inheritDoc} */
     @Override
     public Collection<ActionSummary> listPendingActions() {
-        return map(_actions.pending());
+        return mapActions(_actions.pending());
     }
 
     /** {@inheritDoc} */
     @Override
     public Collection<ActionSummary> listCompletedActions() {
-        return map(_actions.executed());
+        return mapActions(_actions.executed());
     }
 
     /** {@inheritDoc} */

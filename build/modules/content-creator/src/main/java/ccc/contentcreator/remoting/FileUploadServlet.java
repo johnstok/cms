@@ -77,7 +77,7 @@ public class FileUploadServlet extends CreatorServlet {
                 }
             }
 
-            final ResourceSummary rs = new ModelTranslation().map(f);
+            final ResourceSummary rs = new ModelTranslation().mapResource(f);
             response.getWriter().write(toJSON(rs).toString());
 
         } catch (final MimeTypeParseException e) {
