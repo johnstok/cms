@@ -21,7 +21,7 @@ import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.HistoryToolBar;
 import ccc.contentcreator.client.SingleSelectionModel;
-import ccc.services.api.Action;
+import ccc.services.api.ActionType;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.ResourceType;
 
@@ -74,8 +74,8 @@ public class HistoryDialog
                     if (null==md) {
                         _toolBar.disable();
                     } else {
-                        final Action action = md.getAction();
-                        if ((Action.CREATE==action || Action.UPDATE==action)
+                        final ActionType action = md.getAction();
+                        if ((ActionType.CREATE==action || ActionType.UPDATE==action)
                             && (ResourceType.PAGE==_resourceType
                                 || ResourceType.FILE==_resourceType)) {
                             _toolBar.enable();

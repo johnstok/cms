@@ -58,6 +58,7 @@ import ccc.services.ResourceDaoImpl;
 import ccc.services.TemplateDao;
 import ccc.services.UserManager;
 import ccc.services.WorkingCopyManager;
+import ccc.services.api.ActionType;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.Commands;
 import ccc.services.api.Duration;
@@ -443,7 +444,7 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     public void createAction(final ID resourceId,
-                             final ccc.services.api.Action action,
+                             final ActionType action,
                              final Date executeAfter,
                              final String parameters) {
       final Action a =

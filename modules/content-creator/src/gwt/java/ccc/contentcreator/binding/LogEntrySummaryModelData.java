@@ -17,7 +17,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import ccc.services.api.Action;
+import ccc.services.api.ActionType;
 import ccc.services.api.ID;
 import ccc.services.api.LogEntrySummary;
 
@@ -121,7 +121,7 @@ public class LogEntrySummaryModelData
      *
      * @return
      */
-    public Action getAction() {
+    public ActionType getAction() {
         return _les.getAction();
     }
 

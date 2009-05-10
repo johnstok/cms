@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import ccc.contentcreator.api.CommandService;
-import ccc.services.api.Action;
+import ccc.services.api.ActionType;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.Commands;
 import ccc.services.api.Duration;
@@ -250,7 +250,7 @@ public class CommandsImpl
     /** {@inheritDoc} */
     @Override
     public void createAction(final ID resourceId,
-                             final Action action,
+                             final ActionType action,
                              final Date executeAfter,
                              final String parameters) {
         _services.lookupCommands().createAction(

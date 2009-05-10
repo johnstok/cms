@@ -19,6 +19,7 @@ import ccc.domain.Resource;
 import ccc.domain.Snapshot;
 import ccc.domain.User;
 import ccc.services.api.ActionStatus;
+import ccc.services.api.ActionType;
 
 
 /**
@@ -29,7 +30,7 @@ import ccc.services.api.ActionStatus;
 public class Action extends Entity {
     private Date _executeAfter;
     private User _actor;
-    private ccc.services.api.Action _type;
+    private ActionType _type;
     private Snapshot _parameters;
     private Resource _subject;
     private ActionStatus _status = ActionStatus.Scheduled;
@@ -47,7 +48,7 @@ public class Action extends Entity {
      * @param subject The resource the action will operate on.
      * @param parameters Additional parameters required by the action.
      */
-    public Action(final ccc.services.api.Action type,
+    public Action(final ActionType type,
                   final Date executeAfter,
                   final User actor,
                   final Resource subject,
@@ -65,7 +66,7 @@ public class Action extends Entity {
      *
      * @return The type of the action.
      */
-    public ccc.services.api.Action type() {
+    public ActionType type() {
         return _type;
     }
 
