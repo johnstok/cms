@@ -58,6 +58,7 @@ public final class ContentCreator implements EntryPoint {
         Globals.enableExitConfirmation();
         _qs.loggedInUser(new ErrorReportingCallback<UserSummary>(){
             public void onSuccess(final UserSummary user) {
+                Globals.currentUser(user);
                 renderUI(user);
 
             };

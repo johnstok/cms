@@ -19,7 +19,7 @@ import ccc.contentcreator.api.SecurityService;
 import ccc.contentcreator.api.SecurityServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
-import ccc.services.api.Username;
+import ccc.services.api.UserSummary;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
@@ -37,6 +37,8 @@ public final class Globals {
 
     private static final boolean ENABLE_EXIT_CONFIRMATION =
         (null == Window.Location.getParameter("dec"));
+
+    private static UserSummary _user;
 
     private Globals() { super(); }
 
@@ -207,6 +209,24 @@ public final class Globals {
             }
         };
 
+        /**
+         * Accessor.
+         *
+         * @return The current logged in user.
+         */
+        public static UserSummary currentUser() {
+            return _user;
+        }
+
+        /**
+         * Mutator.
+         *
+         * @param user The current logged in user.
+         */
+        public static void currentUser(final UserSummary user) {
+            _user = user;
+        }
+
     /** DEFAULT_WIDTH : int. */
     public static final int DEFAULT_WIDTH = 640;
     /** DEFAULT_HEIGHT : int. */
@@ -228,13 +248,4 @@ public final class Globals {
     public static final String SITE_BUILDER = "SITE_BUILDER";
     /** CONTENT_CREATOR : String. */
     public static final String CONTENT_CREATOR = "CONTENT_CREATOR";
-
-    /**
-     * Accessor.
-     *
-     * @return The username of the logged in user.
-     */
-    public static Username currentUser() {
-        throw new UnsupportedOperationException("Method not implemented.");
-    }
 }

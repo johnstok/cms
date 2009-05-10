@@ -20,6 +20,7 @@ public final class LogoutAction
         Globals.securityService().logout(
             new ErrorReportingCallback<Void>() {
                 public void onSuccess(final Void result) {
+                    Globals.currentUser(null);
                     Globals.disableExitConfirmation();
                     Globals.redirectTo(Globals.APP_URL);
                 }
