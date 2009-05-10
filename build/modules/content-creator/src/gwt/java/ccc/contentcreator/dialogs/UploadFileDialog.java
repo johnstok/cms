@@ -57,7 +57,7 @@ public class UploadFileDialog extends AbstractEditDialog {
      * @param ssm
      */
     public UploadFileDialog(final ResourceSummaryModelData parentFolder,
-                            final SingleSelectionModel<ResourceSummaryModelData> ssm) {
+                            final SingleSelectionModel ssm) {
         super(
             Globals.uiConstants().uploadFileTo()+": "+parentFolder.getName());
 

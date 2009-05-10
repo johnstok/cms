@@ -15,7 +15,7 @@ public final class CreateTemplateAction
     implements
         Action {
 
-    private final SingleSelectionModel<ResourceSummaryModelData> _selectionModel;
+    private final SingleSelectionModel _selectionModel;
 
     /**
      * Constructor.
@@ -23,7 +23,7 @@ public final class CreateTemplateAction
      * @param selectionModel The selection model to use.
      */
     public CreateTemplateAction(
-          final SingleSelectionModel<ResourceSummaryModelData> selectionModel) {
+          final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;
     }
 

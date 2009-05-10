@@ -60,7 +60,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
     private ID _id;
     private ID _parentFolderId;
     private DialogMode _mode;
-    private SingleSelectionModel<ResourceSummaryModelData> _ssm;
+    private SingleSelectionModel _ssm;
     private TemplateDelta _model;
     private ResourceSummaryModelData _proxy;
 
@@ -71,7 +71,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
      * @param ssm
      */
     public EditTemplateDialog(final ID parentFolderId,
-                              final SingleSelectionModel<ResourceSummaryModelData> ssm) {
+                              final SingleSelectionModel ssm) {
         super(Globals.uiConstants().editTemplate());
         setWidth(DEFAULT_WIDTH);
         setHeight(DEFAULT_HEIGHT);
@@ -105,7 +105,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
      */
     public EditTemplateDialog(final TemplateDelta model,
                               final ResourceSummaryModelData proxy,
-                              final SingleSelectionModel<ResourceSummaryModelData> ssm) {
+                              final SingleSelectionModel ssm) {
         this(null, ssm);
         _mode = DialogMode.UPDATE;
 

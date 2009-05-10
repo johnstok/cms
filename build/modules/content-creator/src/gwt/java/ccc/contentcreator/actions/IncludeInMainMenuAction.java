@@ -30,7 +30,7 @@ public class IncludeInMainMenuAction
 
     private final CommandServiceAsync _commands = Globals.commandService();
 
-    private final SingleSelectionModel<ResourceSummaryModelData> _selectionModel;
+    private final SingleSelectionModel _selectionModel;
 
     /**
      * Constructor.
@@ -38,7 +38,7 @@ public class IncludeInMainMenuAction
      * @param selectionModel The selection model.
      */
     public IncludeInMainMenuAction(
-          final SingleSelectionModel<ResourceSummaryModelData> selectionModel) {
+          final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;
     }
 

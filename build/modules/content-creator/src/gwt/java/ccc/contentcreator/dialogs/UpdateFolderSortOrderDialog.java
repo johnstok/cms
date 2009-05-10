@@ -58,7 +58,7 @@ AbstractEditDialog {
     private final QueriesServiceAsync _queries = Globals.queriesService();
     private final ComboBox<ModelData> _sortOrder = new ComboBox<ModelData>();
 
-    private final SingleSelectionModel<ResourceSummaryModelData> _selectionModel;
+    private final SingleSelectionModel _selectionModel;
     private final ListStore<ModelData> _sortStore = new ListStore<ModelData>();
 
     private static final String MANUAL = "MANUAL";
@@ -82,7 +82,7 @@ AbstractEditDialog {
      * @param ssm
      * @param currentSortOrder The current sort order.
      */
-    public UpdateFolderSortOrderDialog(final SingleSelectionModel<ResourceSummaryModelData> ssm,
+    public UpdateFolderSortOrderDialog(final SingleSelectionModel ssm,
                                        final String currentSortOrder) {
         super(Globals.uiConstants().folderSortOrder());
         setHeight(Globals.DEFAULT_HEIGHT);

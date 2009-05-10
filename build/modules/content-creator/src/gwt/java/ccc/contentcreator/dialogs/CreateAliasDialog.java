@@ -41,7 +41,7 @@ public class CreateAliasDialog extends AbstractEditDialog {
     private final TriggerField<String> _parentFolder =
         new TriggerField<String>();
 
-    private final SingleSelectionModel<ResourceSummaryModelData> _ssm;
+    private final SingleSelectionModel _ssm;
     private ResourceSummaryModelData _parent = null;
 
     /**
@@ -50,7 +50,7 @@ public class CreateAliasDialog extends AbstractEditDialog {
      * @param ssm Selection model.
      * @param root Resource root for folder selection
      */
-    public CreateAliasDialog(final SingleSelectionModel<ResourceSummaryModelData> ssm,
+    public CreateAliasDialog(final SingleSelectionModel ssm,
                              final ResourceSummary root) {
         super(Globals.uiConstants().createAlias());
         setPanelId("AliasPanel");

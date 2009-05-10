@@ -19,7 +19,7 @@ public final class PreviewAction
 
     private final QueriesServiceAsync _queries = Globals.queriesService();
 
-    private final SingleSelectionModel<ResourceSummaryModelData> _selectionModel;
+    private final SingleSelectionModel _selectionModel;
     private final boolean _useWorkingCopy;
 
     /**
@@ -28,7 +28,7 @@ public final class PreviewAction
      * @param selectionModel The selection model.
      * @param useWorkingCopy Boolean for working copy preview.
      */
-    public PreviewAction(final SingleSelectionModel<ResourceSummaryModelData> selectionModel,
+    public PreviewAction(final SingleSelectionModel selectionModel,
                          final boolean useWorkingCopy) {
         _selectionModel = selectionModel;
         _useWorkingCopy = useWorkingCopy;

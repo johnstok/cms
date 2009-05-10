@@ -29,7 +29,7 @@ import ccc.services.api.Duration;
 public class EditCacheAction implements Action {
 
     private final QueriesServiceAsync _queries = Globals.queriesService();
-    private final SingleSelectionModel<ResourceSummaryModelData> _selectionModel;
+    private final SingleSelectionModel _selectionModel;
 
     /**
      * Constructor.
@@ -37,7 +37,7 @@ public class EditCacheAction implements Action {
      * @param selectionModel The selection model.
      */
     public EditCacheAction(
-          final SingleSelectionModel<ResourceSummaryModelData> selectionModel) {
+          final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;
     }
 

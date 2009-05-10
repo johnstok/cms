@@ -45,7 +45,7 @@ public class MoveDialog extends AbstractEditDialog {
     private final ResourceSummaryModelData _target;
     private ResourceSummaryModelData _parent = null;
 
-    private final SingleSelectionModel<ResourceSummaryModelData> _ssm;
+    private final SingleSelectionModel _ssm;
 
     /**
      * Constructor.
@@ -55,7 +55,7 @@ public class MoveDialog extends AbstractEditDialog {
      * @param root Resource root for the selection dialog.
      */
     public MoveDialog(final ResourceSummaryModelData item,
-                      final SingleSelectionModel<ResourceSummaryModelData> ssm,
+                      final SingleSelectionModel ssm,
                       final ResourceSummary root) {
         super(Globals.uiConstants().move());
         setHeight(Globals.DEFAULT_MIN_HEIGHT);

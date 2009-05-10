@@ -18,14 +18,14 @@ public class ClearWorkingCopyAction
 
     private final CommandServiceAsync _commands = Globals.commandService();
 
-    private final SingleSelectionModel<ResourceSummaryModelData> _selectionModel;
+    private final SingleSelectionModel _selectionModel;
 
     /**
      * Constructor.
      *
      * @param selectionModel The selection model for this action.
      */
-    public ClearWorkingCopyAction(final SingleSelectionModel<ResourceSummaryModelData> selectionModel) {
+    public ClearWorkingCopyAction(final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;
     }
 

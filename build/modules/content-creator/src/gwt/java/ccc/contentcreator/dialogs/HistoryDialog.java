@@ -44,7 +44,7 @@ public class HistoryDialog
         AbstractTableDialog<LogEntrySummary, LogEntrySummaryModelData> {
 
     private final ToolBar _toolBar;
-    private final SingleSelectionModel<ResourceSummaryModelData> _ssm;
+    private final SingleSelectionModel _ssm;
     private final ResourceType _resourceType;
 
     /**
@@ -55,7 +55,7 @@ public class HistoryDialog
      * @param ssm
      */
     public HistoryDialog(final Collection<LogEntrySummary> data,
-                         final SingleSelectionModel<ResourceSummaryModelData> ssm) {
+                         final SingleSelectionModel ssm) {
         super(Globals.uiConstants().resourceHistory(), data, false);
 
         _ssm = ssm;

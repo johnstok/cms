@@ -15,14 +15,14 @@ public final class CreateFileAction
     implements
         Action {
 
-    private final SingleSelectionModel<ResourceSummaryModelData> _selectionModel;
+    private final SingleSelectionModel _selectionModel;
 
     /**
      * Constructor.
      *
      * @param selectionModel The selection model to use.
      */
-    public CreateFileAction(final SingleSelectionModel<ResourceSummaryModelData> selectionModel) {
+    public CreateFileAction(final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;
     }
 

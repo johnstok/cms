@@ -34,7 +34,7 @@ public class CreateFolderDialog extends AbstractEditDialog {
 
     private final ResourceSummaryModelData _parent;
     private final TextField<String> _text = new TextField<String>();
-    final private SingleSelectionModel<ResourceSummaryModelData> _ssm;
+    final private SingleSelectionModel _ssm;
 
     /**
      * Constructor.
@@ -42,7 +42,7 @@ public class CreateFolderDialog extends AbstractEditDialog {
      * @param parent parent folder in the GUI.
      */
     public CreateFolderDialog(final ResourceSummaryModelData parent,
-                              final SingleSelectionModel<ResourceSummaryModelData> ssm) {
+                              final SingleSelectionModel ssm) {
         super(Globals.uiConstants().createFolder());
 
         _ssm = ssm;

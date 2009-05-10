@@ -30,7 +30,7 @@ public class RemoveFromMainMenuAction
 
     private final CommandServiceAsync _commands = Globals.commandService();
 
-    private final SingleSelectionModel<ResourceSummaryModelData> _selectionModel;
+    private final SingleSelectionModel _selectionModel;
 
     /**
      * Constructor.
@@ -38,7 +38,7 @@ public class RemoveFromMainMenuAction
      * @param selectionModel The selection model.
      */
     public RemoveFromMainMenuAction(
-          final SingleSelectionModel<ResourceSummaryModelData> selectionModel) {
+          final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;
     }
 

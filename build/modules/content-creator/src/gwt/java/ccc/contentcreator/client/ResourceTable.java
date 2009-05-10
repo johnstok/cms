@@ -43,7 +43,7 @@ public class ResourceTable
     extends
         TablePanel
     implements
-        SingleSelectionModel<ResourceSummaryModelData> {
+        SingleSelectionModel {
 
     private final UIConstants _constants = Globals.uiConstants();
     private final ListStore<ResourceSummaryModelData> _detailsStore =
