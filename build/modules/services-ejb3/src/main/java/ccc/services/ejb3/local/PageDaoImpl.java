@@ -21,7 +21,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -48,7 +47,6 @@ import ccc.services.Dao;
 import ccc.services.PageDao;
 import ccc.services.ResourceDao;
 import ccc.services.ResourceDaoImpl;
-import ccc.services.UserManager;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ParagraphDelta;
 
@@ -63,7 +61,6 @@ import ccc.services.api.ParagraphDelta;
 @Local(PageDao.class)
 public class PageDaoImpl implements PageDao {
 
-    @EJB(name=UserManager.NAME) private UserManager _users;
     @PersistenceContext private EntityManager _em;
     private ResourceDao _dao;
 
@@ -75,12 +72,9 @@ public class PageDaoImpl implements PageDao {
      * Constructor.
      *
      * @param dao The ResourceDao used for CRUD operations, etc.
-     * @param um The UserManager.
      */
-    public PageDaoImpl(final ResourceDao dao,
-                       final UserManager um) {
+    public PageDaoImpl(final ResourceDao dao) {
         _dao = dao;
-        _users = um;
     }
 
 
@@ -88,17 +82,19 @@ public class PageDaoImpl implements PageDao {
      * {@inheritDoc}
      */
     @Override
-    public void update(final UUID id,
+    public void update(final User actor,
+                       final Date happenedOn,
+                       final UUID id,
                        final PageDelta delta,
                        final String comment,
                        final boolean isMajorEdit) {
 
-        final Page page = _dao.findLocked(Page.class, id);
+        final Page page = _dao.findLocked(Page.class, id, actor);
 
         page.title(delta.getTitle());
         assignParagraphs(page, delta);
 
-        update(comment, isMajorEdit, page, _users.loggedInUser(), new Date());
+        update(comment, isMajorEdit, page, actor, happenedOn);
     }
 
     private void update(final String comment,
@@ -122,14 +118,16 @@ public class PageDaoImpl implements PageDao {
 
     /** {@inheritDoc} */
     @Override
-    public void create(final UUID id, final Page page) {
+    public void create(final User actor,
+                       final UUID id,
+                       final Page page) {
         final Template template = page.computeTemplate(null);
 
         if (template != null) {
             validateFieldsForPage(page.paragraphs(), template.definition());
 
         }
-        _dao.create(id, page);
+        _dao.create(actor, id, page);
     }
 
     private void validateFieldsForPage(final Set<Paragraph> delta,
@@ -188,7 +186,7 @@ public class PageDaoImpl implements PageDao {
     private void configureCoreData() {
         final Dao bdao = new BaseDao(_em);
         final AuditLog audit = new AuditLogEJB(bdao);
-        _dao = new ResourceDaoImpl(_users, audit, bdao);
+        _dao = new ResourceDaoImpl(audit, bdao);
     }
 
     private void assignParagraphs(final Page page, final PageDelta delta) {

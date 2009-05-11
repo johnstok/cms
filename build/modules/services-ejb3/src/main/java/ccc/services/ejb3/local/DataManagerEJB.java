@@ -23,7 +23,6 @@ import java.util.UUID;
 import javax.activation.MimeType;
 import javax.activation.MimeTypeParseException;
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -35,6 +34,7 @@ import ccc.commons.IO;
 import ccc.domain.CCCException;
 import ccc.domain.Data;
 import ccc.domain.File;
+import ccc.domain.User;
 import ccc.persistence.jpa.BaseDao;
 import ccc.persistence.jpa.FsCoreData;
 import ccc.services.AuditLog;
@@ -45,7 +45,6 @@ import ccc.services.DataManager;
 import ccc.services.QueryNames;
 import ccc.services.ResourceDao;
 import ccc.services.ResourceDaoImpl;
-import ccc.services.UserManager;
 import ccc.services.api.FileDelta;
 import ccc.services.api.ID;
 
@@ -60,7 +59,6 @@ import ccc.services.api.ID;
 @Local(DataManager.class)
 public class DataManagerEJB implements DataManager {
 
-    @EJB(name=UserManager.NAME) private UserManager    _users;
     @PersistenceContext private EntityManager _em;
 
     private ResourceDao _dao;
@@ -85,30 +83,32 @@ public class DataManagerEJB implements DataManager {
 
     /** {@inheritDoc} */
     @Override
-    public void createFile(final File file,
+    public void createFile(final User actor,
+                           final File file,
                            final UUID parentId,
                            final InputStream dataStream) {
         final Data data = create(dataStream, file.size());
         file.data(data);
-        _dao.create(parentId, file);
+        _dao.create(actor, parentId, file);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void updateFile(final ID fileId,
+    public void updateFile(final User actor,
+                           final ID fileId,
                            final FileDelta fd,
                            final InputStream dataStream) {
         try {
             final File f =
                 _dao.findLocked(
-                    File.class, UUID.fromString(fileId.toString()));
+                    File.class, UUID.fromString(fileId.toString()), actor);
             f.title(fd.getTitle());
             f.description(fd.getDescription());
             f.mimeType(new MimeType(fd.getMimeType()));
             f.size(fd.getSize());
             f.data(create(dataStream, fd.getSize()));
-            _dao.update(f);
+            _dao.update(actor, f);
         } catch (final MimeTypeParseException e) {
             // Throw a runtime exception to roll back the txn.
             throw new CCCException(e);
@@ -160,6 +160,6 @@ public class DataManagerEJB implements DataManager {
         _cd = new FsCoreData();
         final Dao bdao = new BaseDao(_em);
         final AuditLog audit = new AuditLogEJB(bdao);
-        _dao = new ResourceDaoImpl(_users, audit, bdao);
+        _dao = new ResourceDaoImpl(audit, bdao);
     }
 }

@@ -1,0 +1,42 @@
+Public API types:
+ res path
+ res name
+ ResourceOrder
+ mime type
+ password
+ email
+ paragraph
+ comment
+
+!!!
+Add Migrations EJB only accessible by ADMIN
+Add security annotations to Queries/Commands
+Pull description up into Resource.
+Factor DAOs into Command classes.
+Move comment and major edit to fields of class Action
+Broaden LogEntry to support changes to users, etc. (remove subjectType, change uuid to id).
+Pull in source for json.org json lib and send to client, add contructors for model data classes that accept json
+Working copies should be using deltas
+
+pageDelta / workingCopyDelta - deltas should always return working copy? what about file delta?
+
+!!
+Action scheduler is a security risk - can potentially elevate privileges.
+Rename model data subclasses
+factor out looking up a user from a principal
+Factor remaining actions from ResourceContextMenu
+UpdateFileServlet should return ZLS on success (or json NULL - equiv to returning NULL from a Void method)
+search indexing -> search between dates, etc.
+fold password into user, use jBoss security mgr?
+search resource is in the wrong place
+login page is hardcoded
+Remove targetName from alias delta, look up name from targetId on the client side
+Inject EJBs into GWT servlet subclasses.
+
+!
+data manager rename fo file manager
+data manager no longer an ejb, manage txn via ServletActions
+move DTOs into ccc.domain.dto
+move value type into ccc.domain.types
+move entities into ccc.domain.entities?
+

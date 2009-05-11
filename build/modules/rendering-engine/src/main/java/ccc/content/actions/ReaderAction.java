@@ -56,7 +56,7 @@ public class ReaderAction
         final StatefulReader sr =
             new StatefulReaderEJB(
                 al,
-                new ResourceDaoImpl(null, al, dao));
+                new ResourceDaoImpl(al, dao));
         req.setAttribute(RenderingKeys.READER_KEY, sr);
 
         _delegate.execute(req, resp);

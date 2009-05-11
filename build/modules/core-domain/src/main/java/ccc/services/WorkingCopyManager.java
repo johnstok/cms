@@ -41,15 +41,18 @@ public class WorkingCopyManager implements IWorkingCopyManager {
 
     /** {@inheritDoc} */
     @Override
-    public void updateWorkingCopy(final UUID id, final Snapshot workingCopy) {
-        final Resource r = _dao.findLocked(Resource.class, id);
+    public void updateWorkingCopy(final User actor,
+                                  final UUID id,
+                                  final Snapshot workingCopy) {
+        final Resource r = _dao.findLocked(Resource.class, id, actor);
         r.workingCopy(workingCopy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void clearWorkingCopy(final UUID id) {
-        final Resource r = _dao.findLocked(Resource.class, id);
+    public void clearWorkingCopy(final User actor,
+                                 final UUID id) {
+        final Resource r = _dao.findLocked(Resource.class, id, actor);
         r.clearWorkingCopy();
     }
 
@@ -79,6 +82,6 @@ public class WorkingCopyManager implements IWorkingCopyManager {
         final Resource r = _dao.findLocked(Resource.class, id, actor);
         r.applySnapshot(r.workingCopy());
         r.clearWorkingCopy();
-        _dao.update(r);
+        _dao.update(actor, r);
     }
 }

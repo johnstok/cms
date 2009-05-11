@@ -64,7 +64,6 @@ import ccc.services.ResourceDao;
 import ccc.services.ResourceDaoImpl;
 import ccc.services.Scheduler;
 import ccc.services.SearchEngine;
-import ccc.services.UserManager;
 import ccc.services.api.ParagraphType;
 
 
@@ -86,14 +85,13 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
 
     @javax.annotation.Resource private EJBContext _context;
     @EJB(name=DataManager.NAME) private DataManager _data;
-    @EJB(name=UserManager.NAME) private UserManager _users;
     @PersistenceContext private EntityManager _em;
 
     private ResourceDao _dao;
     private SimpleLucene _lucene;
 
     /** Constructor. */
-    @SuppressWarnings("unused") public SearchEngineEJB() {
+    public SearchEngineEJB() {
         _lucene = new SimpleLuceneFS();
     }
 
@@ -462,6 +460,6 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
     private void configureCoreData() {
         final Dao bdao = new BaseDao(_em);
         final AuditLog audit = new AuditLogEJB(bdao);
-        _dao = new ResourceDaoImpl(_users, audit, bdao);
+        _dao = new ResourceDaoImpl(audit, bdao);
     }
 }

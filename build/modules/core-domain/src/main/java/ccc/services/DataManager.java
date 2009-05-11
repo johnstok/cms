@@ -19,6 +19,7 @@ import java.util.UUID;
 
 import ccc.domain.Data;
 import ccc.domain.File;
+import ccc.domain.User;
 import ccc.services.api.FileDelta;
 import ccc.services.api.ID;
 
@@ -70,7 +71,10 @@ public interface DataManager {
      * @param dataStream The input stream from which the bytes for the new file
      *        should be read.
      */
-    void createFile(File file, final UUID parentId, InputStream dataStream);
+    void createFile(User actor,
+                    File file,
+                    UUID parentId,
+                    InputStream dataStream);
 
     /**
      * Update a file.
@@ -80,9 +84,10 @@ public interface DataManager {
      *        should be read.
      * @param fileDelta The delta describing changes to the file's metadata.
      */
-    void updateFile(ID fileId,
-                    final FileDelta fileDelta,
-                    final InputStream dataStream);
+    void updateFile(User actor,
+                    ID fileId,
+                    FileDelta fileDelta,
+                    InputStream dataStream);
 
     /**
      * Returns a list of all images.

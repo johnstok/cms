@@ -67,7 +67,7 @@ public interface ResourceDao {
      *
      * @return The list of resources.
      */
-    List<Resource> lockedByCurrentUser();
+    List<Resource> lockedByCurrentUser(final User actor);
 
     /**
      * List all locked resources.
@@ -108,17 +108,6 @@ public interface ResourceDao {
                                       final User lockedBy);
 
     /**
-     * Find the resource with the specified UUID. This method confirms that the
-     * resource is locked by the currently 'logged in' user.
-     *
-     * @param <T> The type of the resource to return.
-     * @param type A class representing the type of the resource to return.
-     * @param id The UUID of the resource.
-     * @return The resource for the specified id.
-     */
-    <T extends Resource> T findLocked(Class<T> type, UUID id);
-
-    /**
      * Look up a resource.
      *
      * @param contentPath ResourcePath The path to the resource.
@@ -139,7 +128,9 @@ public interface ResourceDao {
      * @param folderId The folder in which the resource will be created.
      * @param newResource The new resource.
      */
-    void create(final UUID folderId, final Resource newResource);
+    void create(final User actor,
+                final UUID folderId,
+                final Resource newResource);
 
     /**
      * Create a new root folder. The name is checked against existing root
@@ -147,7 +138,8 @@ public interface ResourceDao {
      *
      * @param folder The root folder to persists.
      */
-    void createRoot(Folder folder);
+    void createRoot(final User actor,
+                    Folder folder);
 
     /**
      * Lock the specified resource.
@@ -157,7 +149,9 @@ public interface ResourceDao {
      * @param resourceId The uuid of the resource to lock.
      * @return The current version of resource.
      */
-    Resource lock(UUID resourceId);
+    Resource lock(final User actor,
+                  final Date happenedOn,
+                  UUID resourceId);
 
     /**
      * Unlock the specified Resource.
@@ -168,7 +162,9 @@ public interface ResourceDao {
      * @param resourceId The resource to unlock.
      * @return The current version of resource.
      */
-    Resource unlock(UUID resourceId);
+    Resource unlock(final User actor,
+                    final Date happenedOn,
+                    UUID resourceId);
 
     /**
      * Update the tags for a resource.
@@ -176,7 +172,9 @@ public interface ResourceDao {
      * @param resourceId The resource to update.
      * @param tags The tags to set.
      */
-    void updateTags(UUID resourceId, String tags);
+    void updateTags(final User actor,
+                    final Date happenedOn,
+                    UUID resourceId, String tags);
 
     /**
      * Publishes the resource.
@@ -184,7 +182,9 @@ public interface ResourceDao {
      * @param resourceId The id of the resource to update.
      * @return The current version of resource.
      */
-    Resource publish(UUID resourceId);
+    Resource publish(final User actor,
+                     final Date happenedOn,
+                     UUID resourceId);
 
     /**
      * Publishes the resource by specified user.
@@ -202,7 +202,9 @@ public interface ResourceDao {
      * @param resourceId The id of the resource to update.
      * @return The current version of resource.
      */
-    Resource unpublish(UUID resourceId);
+    Resource unpublish(final User actor,
+                       final Date happenedOn,
+                       UUID resourceId);
 
     /**
      * Un-publishes the resource.
@@ -220,7 +222,10 @@ public interface ResourceDao {
      * @param resourceId The id of the resource to change.
      * @param templateId The id of template to set (NULL is allowed).
      */
-    void updateTemplateForResource(UUID resourceId, UUID templateId);
+    void updateTemplateForResource(final User actor,
+                                   final Date happenedOn,
+                                   UUID resourceId,
+                                   UUID templateId);
 
     /**
      * Move a resource to a new parent.
@@ -228,7 +233,10 @@ public interface ResourceDao {
      * @param resourceId The id of the resource to move.
      * @param newParentId The id of the new parent.
      */
-    void move(UUID resourceId, UUID newParentId);
+    void move(final User actor,
+              final Date happenedOn,
+              UUID resourceId,
+              UUID newParentId);
 
     /**
      * Rename a resource.
@@ -236,7 +244,10 @@ public interface ResourceDao {
      * @param resourceId The id of the resource to change.
      * @param name The new name to set.
      */
-    void rename(UUID resourceId, String name);
+    void rename(final User actor,
+                final Date happenedOn,
+                UUID resourceId,
+                String name);
 
     /**
      * Notify the DAO that a resource has been updated (generates a log entry).
@@ -256,7 +267,8 @@ public interface ResourceDao {
      *
      * @param resource The resource that was updated.
      */
-    void update(Resource resource);
+    void update(final User actor,
+                Resource resource);
 
     /**
      * Specify whether this resource should be included in the main menu.
@@ -264,7 +276,10 @@ public interface ResourceDao {
      * @param id The id of the resource to change.
      * @param b True if the resource should be included; false otherwise.
      */
-    void includeInMainMenu(final UUID id, final boolean b);
+    void includeInMainMenu(final User actor,
+                           final Date happenedOn,
+                           final UUID id,
+                           final boolean b);
 
     /**
      * Update metadata of the resource.
@@ -272,7 +287,10 @@ public interface ResourceDao {
      * @param resourceId The resource to update.
      * @param metadata The new metadata to set.
      */
-    void updateMetadata(UUID resourceId, Map<String, String> metadata);
+    void updateMetadata(final User actor,
+                        final Date happenedOn,
+                        UUID resourceId,
+                        Map<String, String> metadata);
 
     /**
      * Update the security roles for the specified resource.
@@ -280,7 +298,10 @@ public interface ResourceDao {
      * @param resourceId The resource to update.
      * @param roles The new roles.
      */
-    void changeRoles(UUID resourceId, Collection<String> roles);
+    void changeRoles(final User actor,
+                     final Date happenedOn,
+                     UUID resourceId,
+                     Collection<String> roles);
 
     /**
      * Look up a resource, given its CCC6 id.
@@ -290,6 +311,17 @@ public interface ResourceDao {
      */
     Resource lookupWithLegacyId(String legacyId);
 
-    void updateCache(UUID resourceId, Duration duration);
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param actor
+     * @param happenedOn
+     * @param resourceId
+     * @param duration
+     */
+    void updateCache(User actor,
+                     Date happenedOn,
+                     UUID resourceId,
+                     Duration duration);
 
 }

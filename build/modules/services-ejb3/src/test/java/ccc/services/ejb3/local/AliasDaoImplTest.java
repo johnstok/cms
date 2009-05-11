@@ -16,6 +16,7 @@ import junit.framework.TestCase;
 import ccc.domain.Alias;
 import ccc.domain.Page;
 import ccc.domain.Resource;
+import ccc.domain.User;
 import ccc.services.AliasDao;
 import ccc.services.ResourceDao;
 
@@ -54,12 +55,13 @@ public class AliasDaoImplTest
         final Alias alias = new Alias("alias", resource);
 
         expect(_dao.find(Resource.class, r2.id())).andReturn(r2);
-        expect(_dao.findLocked(Alias.class, alias.id())).andReturn(alias);
-        _dao.update(alias);
+        expect(_dao.findLocked(Alias.class, alias.id(), _user))
+            .andReturn(alias);
+        _dao.update(_user, alias);
         replay(_dao);
 
         // ACT
-        _cm.updateAlias(r2.id(), alias.id());
+        _cm.updateAlias(_user, r2.id(), alias.id());
 
         // ASSERT
         verify(_dao);
@@ -82,4 +84,5 @@ public class AliasDaoImplTest
 
     private ResourceDao _dao;
     private AliasDao _cm;
+    private final User _user = new User("currentUser");
 }

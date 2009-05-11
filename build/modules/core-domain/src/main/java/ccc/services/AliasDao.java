@@ -13,6 +13,8 @@ package ccc.services;
 
 import java.util.UUID;
 
+import ccc.domain.User;
+
 /**
  * DAO API for the {@link Alias} class.
  *
@@ -29,6 +31,6 @@ public interface AliasDao {
      * @param targetId The new target UUID
      * @param aliasId The alias UUID
      */
-    void updateAlias(UUID targetId, UUID aliasId);
+    void updateAlias(User actor, UUID targetId, UUID aliasId);
 
 }

@@ -50,7 +50,6 @@ public class RenderResourceAction
     private static final Logger LOG =
         Logger.getLogger(RenderResourceAction.class);
 
-    private final User _u;
     private final boolean _respectVisiblity;
     private final String _rootName;
     private final String _loginUri;
@@ -66,13 +65,11 @@ public class RenderResourceAction
      * @param _data
      * @param _search
      */
-    public RenderResourceAction(final User user,
-                                final boolean respectVisiblity,
+    public RenderResourceAction(final boolean respectVisiblity,
                                 final String rootName,
                                 final String loginUri,
                                 final SearchEngine search,
                                 final DataManager data) {
-        _u = (null==user) ? new User("anonymous") : user;
         _respectVisiblity = respectVisiblity;
         _rootName = rootName;
         _loginUri = loginUri;
@@ -93,7 +90,8 @@ public class RenderResourceAction
                 (StatefulReader) request.getAttribute(RenderingKeys.READER_KEY);
 
             final Resource rs = lookupResource(contentPath, reader);
-            checkSecurity(rs);
+            checkSecurity(
+                rs, (User) request.getAttribute(SessionKeys.CURRENT_USER));
             final Response r =
                 prepareResponse(request, reader, _data, _search, rs);
 
@@ -116,8 +114,9 @@ public class RenderResourceAction
     }
 
 
-    private void checkSecurity(final Resource r) {
-        if (!r.isAccessibleTo(_u)) {
+    private void checkSecurity(final Resource r, final User user) {
+        final User u = (null==user) ? new User("anonymous") : user;
+        if (!r.isAccessibleTo(u)) {
             throw new AuthenticationRequiredException(r);
         }
     }

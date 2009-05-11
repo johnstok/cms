@@ -16,7 +16,6 @@ import static javax.ejb.TransactionAttributeType.*;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -35,7 +34,6 @@ import ccc.services.AuditLogEJB;
 import ccc.services.Dao;
 import ccc.services.ResourceDao;
 import ccc.services.ResourceDaoImpl;
-import ccc.services.UserManager;
 import ccc.services.WorkingCopyManager;
 import ccc.services.api.ResourceType;
 
@@ -55,8 +53,7 @@ public class ActionExecutorEJB implements ActionExecutor {
     private ResourceDao        _resources;
     private WorkingCopyManager _wcMgr;
 
-    @EJB(name=UserManager.NAME) private UserManager _users;
-    @PersistenceContext private EntityManager       _em;
+    @PersistenceContext private EntityManager _em;
 
     /** Constructor. */
     public ActionExecutorEJB() { super(); }
@@ -138,7 +135,7 @@ public class ActionExecutorEJB implements ActionExecutor {
     private void configureCoreData() {
         final Dao bdao = new BaseDao(_em);
         final AuditLog audit = new AuditLogEJB(bdao);
-        _resources = new ResourceDaoImpl(_users, audit, bdao);
+        _resources = new ResourceDaoImpl(audit, bdao);
         _wcMgr = new WorkingCopyManager(_resources);
     }
 }

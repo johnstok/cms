@@ -25,6 +25,7 @@ import java.util.UUID;
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
+import javax.ejb.EJBContext;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -44,6 +45,7 @@ import ccc.domain.ResourceOrder;
 import ccc.domain.Search;
 import ccc.domain.Snapshot;
 import ccc.domain.Template;
+import ccc.domain.User;
 import ccc.persistence.jpa.BaseDao;
 import ccc.services.ActionDao;
 import ccc.services.AliasDao;
@@ -56,6 +58,7 @@ import ccc.services.PageDao;
 import ccc.services.ResourceDao;
 import ccc.services.ResourceDaoImpl;
 import ccc.services.TemplateDao;
+import ccc.services.UserLookup;
 import ccc.services.UserManager;
 import ccc.services.WorkingCopyManager;
 import ccc.services.api.ActionType;
@@ -94,9 +97,11 @@ public class CommandsEJB
     @EJB(name=ActionDao.NAME)      private ActionDao       _scheduler;
 
     @PersistenceContext private EntityManager _em;
+    @javax.annotation.Resource private EJBContext _context;
     private ResourceDao        _resources;
     private AuditLog           _audit;
     private WorkingCopyManager _wcMgr;
+    private UserLookup         _userLookup;
 
     /** {@inheritDoc} */
     @Override
@@ -117,7 +122,7 @@ public class CommandsEJB
         }
 
         final Alias a = new Alias(name, target);
-        _resources.create(parent.id(), a);
+        _resources.create(loggedInUser(), parent.id(), a);
 
         return mapResource(a);
     }
@@ -136,7 +141,7 @@ public class CommandsEJB
                                         final String title) {
         final Folder f = new Folder(name);
         f.title((null==title)?name:title);
-        _resources.create(toUUID(parentId), f);
+        _resources.create(loggedInUser(), toUUID(parentId), f);
         return mapResource(f);
 
     }
@@ -154,7 +159,7 @@ public class CommandsEJB
             delta.getTitle());
 
         if (publish) {
-            page.publish(_users.loggedInUser());
+            page.publish(loggedInUser());
         }
 
         if (templateId != null) {
@@ -165,7 +170,7 @@ public class CommandsEJB
 
         assignParagraphs(delta.getParagraphs(), page);
 
-        _page.create(toUUID(parentId), page);
+        _page.create(loggedInUser(), toUUID(parentId), page);
 
         return mapResource(page);
     }
@@ -183,7 +188,7 @@ public class CommandsEJB
             delta.getBody(),
             delta.getDefinition());
 
-        _resources.create(toUUID(parentId), t);
+        _resources.create(loggedInUser(), toUUID(parentId), t);
 
         return mapResource(t);
 
@@ -198,7 +203,7 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     public void lock(final ID resourceId) {
-        _resources.lock(toUUID(resourceId));
+        _resources.lock(loggedInUser(), new Date(), toUUID(resourceId));
     }
 
     /** {@inheritDoc} */
@@ -206,13 +211,15 @@ public class CommandsEJB
     public void move(final ID resourceId,
                      final ID newParentId) {
 
-        _resources.move(toUUID(resourceId), toUUID(newParentId));
+        _resources.move(
+            loggedInUser(), new Date(), toUUID(resourceId), toUUID(newParentId));
     }
 
     /** {@inheritDoc} */
     @Override
     public void publish(final ID resourceId) {
-        _resources.publish(toUUID(resourceId));
+        _resources.publish(
+            loggedInUser(), new Date(), toUUID(resourceId));
     }
 
     /** {@inheritDoc} */
@@ -226,25 +233,29 @@ public class CommandsEJB
     public void rename(final ID resourceId,
                        final String name) {
 
-        _resources.rename(toUUID(resourceId), name);
+        _resources.rename(
+            loggedInUser(), new Date(), toUUID(resourceId), name);
     }
 
     /** {@inheritDoc} */
     @Override
     public void unlock(final ID resourceId) {
-        _resources.unlock(toUUID(resourceId));
+        _resources.unlock(
+            loggedInUser(), new Date(), toUUID(resourceId));
     }
 
     /** {@inheritDoc} */
     @Override
     public void unpublish(final ID resourceId) {
-        _resources.unpublish(toUUID(resourceId));
+        _resources.unpublish(
+            loggedInUser(), new Date(), toUUID(resourceId));
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateAlias(final ID aliasId, final AliasDelta delta) {
         _alias.updateAlias(
+            loggedInUser(),
             toUUID(delta.getTargetId()),
             toUUID(aliasId));
     }
@@ -255,7 +266,7 @@ public class CommandsEJB
                            final PageDelta delta,
                            final String comment,
                            final boolean isMajorEdit) {
-        _page.update(toUUID(pageId), delta, comment, isMajorEdit);
+        _page.update(loggedInUser(), new Date(), toUUID(pageId), delta, comment, isMajorEdit);
 
     }
 
@@ -269,7 +280,7 @@ public class CommandsEJB
         assignParagraphs(delta.getParagraphs(), page);
 
         _wcMgr.updateWorkingCopy(
-            toUUID(pageId), page.createSnapshot());
+            loggedInUser(), toUUID(pageId), page.createSnapshot());
     }
 
     /** {@inheritDoc} */
@@ -280,6 +291,7 @@ public class CommandsEJB
 
         if (resourceUuid.equals(le.subjectId())) {
             _wcMgr.updateWorkingCopy(
+                loggedInUser(),
                 toUUID(resourceId),
                 new Snapshot(le.detail()));
         } else {
@@ -292,14 +304,15 @@ public class CommandsEJB
     public void updateResourceTemplate(final ID resourceId,
                                        final ID templateId) {
         _resources.updateTemplateForResource(
-            toUUID(resourceId), toUUID(templateId));
+            loggedInUser(), new Date(), toUUID(resourceId), toUUID(templateId));
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateTags(final ID resourceId,
                            final String tags) {
-        _resources.updateTags(toUUID(resourceId), tags);
+        _resources.updateTags(
+            loggedInUser(), new Date(), toUUID(resourceId), tags);
 
     }
 
@@ -307,7 +320,7 @@ public class CommandsEJB
     @Override
     public void updateTemplate(final ID templateId,
                                           final TemplateDelta delta) {
-        _templates.update(toUUID(templateId), delta);
+        _templates.update(loggedInUser(), toUUID(templateId), delta);
     }
 
     /** {@inheritDoc} */
@@ -320,7 +333,7 @@ public class CommandsEJB
     @Override
     public ResourceSummary createRoot(final String name) {
         final Folder f = new Folder(name);
-        _resources.createRoot(f);
+        _resources.createRoot(loggedInUser(), f);
         return mapResource(f);
     }
 
@@ -328,7 +341,8 @@ public class CommandsEJB
     @Override
     public void includeInMainMenu(final ID resourceId,
                                   final boolean include) {
-        _resources.includeInMainMenu(toUUID(resourceId), include);
+        _resources.includeInMainMenu(
+            loggedInUser(), new Date(), toUUID(resourceId), include);
     }
 
     /** {@inheritDoc} */
@@ -361,14 +375,17 @@ public class CommandsEJB
     @Override
     public void updateMetadata(final ID resourceId,
                                final Map<String, String> metadata) {
-        _resources.updateMetadata(toUUID(resourceId), metadata);
+        _resources.updateMetadata(
+            loggedInUser(), new Date(), toUUID(resourceId), metadata);
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateFolderSortOrder(final ID folderId,
                                       final String sortOrder) {
-        _folders.updateSortOrder(toUUID(folderId),
+        _folders.updateSortOrder(loggedInUser(),
+                                 new Date(),
+                                 toUUID(folderId),
                                  ResourceOrder.valueOf(sortOrder));
     }
 
@@ -399,7 +416,7 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     public void clearWorkingCopy(final ID pageId) {
-        _wcMgr.clearWorkingCopy(toUUID(pageId));
+        _wcMgr.clearWorkingCopy(loggedInUser(), toUUID(pageId));
     }
 
     /** {@inheritDoc} */
@@ -407,7 +424,7 @@ public class CommandsEJB
     public ResourceSummary createSearch(final ID parentId,
                                         final String title) {
         final Search s = new Search(title);
-        _resources.create(toUUID(parentId), s);
+        _resources.create(loggedInUser(), toUUID(parentId), s);
         return mapResource(s);
     }
 
@@ -427,7 +444,7 @@ public class CommandsEJB
       new Action(
           action,
           executeAfter,
-          _users.loggedInUser(),
+          loggedInUser(),
           _resources.find(Resource.class, toUUID(resourceId)),
           new Snapshot(parameters));
       _scheduler.schedule(a);
@@ -440,40 +457,48 @@ public class CommandsEJB
         for (final String entry : order) {
             newOrder.add(UUID.fromString(entry));
         }
-        _folders.reorder(toUUID(folderId), newOrder);
+        _folders.reorder(
+            loggedInUser(), new Date(), toUUID(folderId), newOrder);
     }
 
     /** {@inheritDoc} */
     @Override
     public void changeRoles(final ID resourceId,
                             final Collection<String> roles) {
-        _resources.changeRoles(toUUID(resourceId), roles);
-    }
-
-    @PostConstruct @SuppressWarnings("unused")
-    private void configureCoreData() {
-        final Dao bdao = new BaseDao(_em);
-        _audit = new AuditLogEJB(bdao);
-        _resources = new ResourceDaoImpl(_users, _audit, bdao);
-        _wcMgr = new WorkingCopyManager(_resources);
+        _resources.changeRoles(
+            loggedInUser(), new Date(), toUUID(resourceId), roles);
     }
 
     /** {@inheritDoc} */
     @Override
     public void applyWorkingCopyToFile(final ID fileId) {
-        _wcMgr.applyWorkingCopy(toUUID(fileId), _users.loggedInUser());
+        _wcMgr.applyWorkingCopy(toUUID(fileId), loggedInUser());
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateCacheDuration(final ID resourceId,
                                     final Duration duration) {
-        _resources.updateCache(toUUID(resourceId), duration);
+        _resources.updateCache(
+            loggedInUser(), new Date(), toUUID(resourceId), duration);
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateUserPassword(final ID userId, final String password) {
         _users.updatePassword(toUUID(userId), password);
+    }
+
+    @PostConstruct @SuppressWarnings("unused")
+    private void configureCoreData() {
+        final Dao bdao = new BaseDao(_em);
+        _audit = new AuditLogEJB(bdao);
+        _resources = new ResourceDaoImpl(_audit, bdao);
+        _wcMgr = new WorkingCopyManager(_resources);
+        _userLookup = new UserLookup(bdao);
+    }
+
+    private User loggedInUser() {
+        return _userLookup.loggedInUser(_context.getCallerPrincipal());
     }
 }

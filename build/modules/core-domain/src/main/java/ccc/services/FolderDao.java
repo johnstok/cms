@@ -12,11 +12,13 @@
 package ccc.services;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import ccc.domain.Folder;
 import ccc.domain.ResourceOrder;
+import ccc.domain.User;
 
 
 /**
@@ -42,7 +44,10 @@ public interface FolderDao {
      * @param folderId The id of the folder.
      * @param order The new sort order.
      */
-    void updateSortOrder(UUID folderId, ResourceOrder order);
+    void updateSortOrder(final User actor,
+                         final Date happenedOn,
+                         UUID folderId,
+                         ResourceOrder order);
 
     /**
      * Change manual ordering of the folder entries.
@@ -50,5 +55,8 @@ public interface FolderDao {
      * @param folderId The id of the folder.
      * @param order The new order of entries.
      */
-    void reorder(final UUID folderId, final List<UUID> order);
+    void reorder(final User actor,
+                 final Date happenedOn,
+                 final UUID folderId,
+                 final List<UUID> order);
 }

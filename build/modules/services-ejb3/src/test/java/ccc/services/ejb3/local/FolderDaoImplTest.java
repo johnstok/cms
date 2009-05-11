@@ -46,13 +46,14 @@ public class FolderDaoImplTest
 
         // ARRANGE
         _f.lock(_regularUser);
-        expect(_users.loggedInUser()).andReturn(_regularUser);
-        expect(_dao.findLocked(Folder.class, _f.id())).andReturn(_f);
+        expect(_dao.findLocked(Folder.class, _f.id(), _regularUser))
+            .andReturn(_f);
         _al.recordUpdateSortOrder(eq(_f), eq(_regularUser), isA(Date.class));
         replayAll();
 
         // ACT
-        _fdao.updateSortOrder(_f.id(), ResourceOrder.NAME_ALPHANUM_ASC);
+        _fdao.updateSortOrder(
+            _regularUser, new Date(), _f.id(), ResourceOrder.NAME_ALPHANUM_ASC);
 
         // ASSERT
         verifyAll();
@@ -66,7 +67,6 @@ public class FolderDaoImplTest
 
         // ARRANGE
         _f.lock(_regularUser);
-        expect(_users.loggedInUser()).andReturn(_regularUser);
         final Page foo = new Page("foo");
         final Page bar = new Page("bar");
         final Page baz = new Page("baz");
@@ -74,7 +74,8 @@ public class FolderDaoImplTest
         _f.add(bar);
         _f.add(baz);
 
-        expect(_dao.findLocked(Folder.class, _f.id())).andReturn(_f);
+        expect(_dao.findLocked(Folder.class, _f.id(), _regularUser))
+            .andReturn(_f);
         _al.recordReorder(eq(_f), eq(_regularUser), isA(Date.class));
         replayAll();
 
@@ -84,7 +85,7 @@ public class FolderDaoImplTest
         order.add(foo.id());
         order.add(bar.id());
 
-        _fdao.reorder(_f.id(), order);
+        _fdao.reorder(_regularUser, new Date(), _f.id(), order);
 
         // ASSERT
         verifyAll();
@@ -102,7 +103,7 @@ public class FolderDaoImplTest
         _al = createStrictMock(AuditLog.class);
         _users = createStrictMock(UserManager.class);
         _dao = createStrictMock(ResourceDao.class);
-        _fdao = new FolderDaoImpl(_dao, _al, _users);
+        _fdao = new FolderDaoImpl(_dao, _al);
 
         _f = new Folder("foo");
     }

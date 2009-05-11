@@ -50,7 +50,7 @@ public class UpdateFileServlet extends CreatorServlet {
             final InputStream dataStream = file.getInputStream();
 
             try {
-                _services.dataManager().updateFile(fileId, delta, dataStream);
+                _services.dataManager().updateFile(null, fileId, delta, dataStream);
             } finally {
                 try {
                     dataStream.close();
