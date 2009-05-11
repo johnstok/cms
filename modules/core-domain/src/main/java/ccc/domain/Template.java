@@ -22,7 +22,6 @@ import ccc.services.api.ResourceType;
  */
 public class Template extends Resource {
 
-    private String _description;
     private String _body;
     private String _definition;
 
@@ -47,7 +46,7 @@ public class Template extends Resource {
         DBC.require().notNull(body);
         DBC.require().notNull(definiton);
 
-        _description = description;
+        description(description);
         _body = body;
         _definition = definiton;
     }
@@ -72,7 +71,7 @@ public class Template extends Resource {
         DBC.require().notNull(body);
         DBC.require().notNull(definiton);
 
-        _description = description;
+        description(description);
         _body = body;
         _definition = definiton;
     }
@@ -83,15 +82,6 @@ public class Template extends Resource {
     @Override
     public final ResourceType type() {
         return ResourceType.TEMPLATE;
-    }
-
-    /**
-     * Accessor for the template's description.
-     *
-     * @return The description as a string.
-     */
-    public String description() {
-        return _description;
     }
 
     /**
@@ -122,17 +112,6 @@ public class Template extends Resource {
         _definition = definition;
     }
 
-
-    /**
-     * Mutator for description.
-     *
-     * @param description The new description.
-     */
-    public void description(final String description) {
-        DBC.require().notEmpty(description);
-        _description = description;
-    }
-
     /**
      * Mutator for body.
      *
@@ -147,7 +126,7 @@ public class Template extends Resource {
     @Override
     public Snapshot createSnapshot() {
         final Snapshot s = super.createSnapshot();
-        s.set("description", _description);
+        s.set("description", description());
         s.set("definition", _definition);
         s.set("body", _body);
         return s;

@@ -32,7 +32,7 @@ public class File
         Resource {
     private static Logger LOG = Logger.getLogger(File.class);
 
-    private String _description;
+
     private Data _data;
     private int _size;
     private MimeType _mimeType;
@@ -94,9 +94,9 @@ public class File
 
         super(name, title);
         data(data);
-        // TODO: null tests for other param's...
+        // TODO: null tests for other param's?
 
-        _description = description;
+        description(description);
         _size = size;
         _mimeType = mimeType; // TODO: Defensive copy???
     }
@@ -107,15 +107,6 @@ public class File
     @Override
     public ResourceType type() {
         return ResourceType.FILE;
-    }
-
-    /**
-     * Accessor for the file's description.
-     *
-     * @return The description as a string.
-     */
-    public final String description() {
-        return _description;
     }
 
     /**
@@ -166,15 +157,6 @@ public class File
     }
 
     /**
-     * Mutator for the file description.
-     *
-     * @param description The new description as a string.
-     */
-    public void description(final String description) {
-        _description = description;
-    }
-
-    /**
      * Mutator for the file's mime type.
      * TODO: Make defensive copy?
      *
@@ -197,7 +179,7 @@ public class File
     @Override
     public Snapshot createSnapshot() {
         final Snapshot s = super.createSnapshot();
-        s.set("description", _description);
+        s.set("description", description());
         s.set("mimetype", _mimeType.toString());
         s.set("size", _size);
         s.set("data", _data.id());

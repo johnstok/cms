@@ -49,6 +49,12 @@
             column="date_changed"
             not-null="true"
             type="timestamp" />
+        <property
+            name="_description"
+            column="description"
+            not-null="true"
+            type="string"
+            length="1024" />
 
 		<many-to-one
             name="_template"

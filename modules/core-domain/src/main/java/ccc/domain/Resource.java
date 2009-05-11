@@ -60,6 +60,7 @@ public abstract class Resource
     private Date           _dateChanged       = _dateCreated;
     private Duration       _cache             = null;
     private Snapshot       _workingCopy       = null;
+    private String         _description       = null;
 
     private Map<String, String> _metadata = new HashMap<String, String>();
 
@@ -649,5 +650,24 @@ public abstract class Resource
     @Override
     public void workingCopy(final Snapshot snapshot) {
         _workingCopy = snapshot;
+    }
+
+    /**
+     * Accessor for the file's description.
+     *
+     * @return The description as a string.
+     */
+    public final String description() {
+        return _description;
+    }
+
+
+    /**
+     * Mutator for the file description.
+     *
+     * @param description The new description as a string.
+     */
+    public void description(final String description) {
+        _description = description;
     }
 }
