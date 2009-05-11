@@ -21,6 +21,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
+import javax.ejb.EJBContext;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -35,6 +36,7 @@ import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
+import ccc.domain.User;
 import ccc.persistence.jpa.BaseDao;
 import ccc.services.ActionDao;
 import ccc.services.AuditLog;
@@ -46,6 +48,7 @@ import ccc.services.ModelTranslation;
 import ccc.services.ResourceDao;
 import ccc.services.ResourceDaoImpl;
 import ccc.services.TemplateDao;
+import ccc.services.UserLookup;
 import ccc.services.UserManager;
 import ccc.services.api.ActionSummary;
 import ccc.services.api.AliasDelta;
@@ -84,8 +87,11 @@ public final class QueriesEJB
     @EJB(name=UserManager.NAME)    private UserManager     _users;
     @EJB(name=DataManager.NAME)    private DataManager     _datas;
     @EJB(name=ActionDao.NAME)      private ActionDao       _actions;
+
     @PersistenceContext private EntityManager _em;
+    @javax.annotation.Resource private EJBContext _context;
     private ResourceDao     _resources;
+    private UserLookup _userLookup;
 
     /**
      * Constructor.
@@ -140,7 +146,7 @@ public final class QueriesEJB
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> lockedByCurrentUser() {
-        return mapResources(_resources.lockedByCurrentUser());
+        return mapResources(_resources.lockedByCurrentUser(currentUser()));
     }
 
     /** {@inheritDoc} */
@@ -191,7 +197,7 @@ public final class QueriesEJB
     /** {@inheritDoc} */
     @Override
     public UserSummary loggedInUser() {
-        return mapUser(_users.loggedInUser());
+        return mapUser(currentUser());
     }
 
     /** {@inheritDoc} */
@@ -313,7 +319,8 @@ public final class QueriesEJB
     private void configureCoreData() {
         final Dao bdao = new BaseDao(_em);
         final AuditLog audit = new AuditLogEJB(bdao);
-        _resources = new ResourceDaoImpl(_users, audit, bdao);
+        _resources = new ResourceDaoImpl(audit, bdao);
+        _userLookup = new UserLookup(bdao);
     }
 
     /** {@inheritDoc} */
@@ -322,5 +329,9 @@ public final class QueriesEJB
         final Resource r =
             _resources.find(Resource.class, toUUID(resourceId));
         return mapTemplate(r.computeTemplate(null));
+    }
+
+    private User currentUser() {
+        return _userLookup.loggedInUser(_context.getCallerPrincipal());
     }
 }

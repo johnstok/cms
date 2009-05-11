@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -26,6 +25,7 @@ import javax.persistence.PersistenceContext;
 
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
+import ccc.domain.User;
 import ccc.persistence.jpa.BaseDao;
 import ccc.services.AuditLog;
 import ccc.services.AuditLogEJB;
@@ -33,7 +33,6 @@ import ccc.services.Dao;
 import ccc.services.ResourceDao;
 import ccc.services.ResourceDaoImpl;
 import ccc.services.TemplateDao;
-import ccc.services.UserManager;
 import ccc.services.api.TemplateDelta;
 
 
@@ -47,7 +46,6 @@ import ccc.services.api.TemplateDelta;
 @Local(TemplateDao.class)
 public class TemplateDaoImpl implements TemplateDao {
 
-    @EJB(name=UserManager.NAME) private UserManager    _users;
     @PersistenceContext private EntityManager _em;
     private ResourceDao _dao;
 
@@ -67,16 +65,19 @@ public class TemplateDaoImpl implements TemplateDao {
 
     /** {@inheritDoc} */
     @Override
-    public Template update(final UUID templateId, final TemplateDelta delta) {
+    public Template update(final User actor,
+                           final UUID templateId,
+                           final TemplateDelta delta) {
 
-        final Template current = _dao.findLocked(Template.class, templateId);
+        final Template current =
+            _dao.findLocked(Template.class, templateId, actor);
 
         current.title(delta.getTitle());
         current.description(delta.getDescription());
         current.definition(delta.getDefinition());
         current.body(delta.getBody());
 
-        _dao.update(current);
+        _dao.update(actor, current);
 
         return current;
     }
@@ -99,6 +100,6 @@ public class TemplateDaoImpl implements TemplateDao {
     private void configureCoreData() {
         final Dao bdao = new BaseDao(_em);
         final AuditLog audit = new AuditLogEJB(bdao);
-        _dao = new ResourceDaoImpl(_users, audit, bdao);
+        _dao = new ResourceDaoImpl(audit, bdao);
     }
 }

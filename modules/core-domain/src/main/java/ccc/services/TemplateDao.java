@@ -16,6 +16,7 @@ import java.util.UUID;
 
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
+import ccc.domain.User;
 import ccc.services.api.TemplateDelta;
 
 
@@ -43,7 +44,7 @@ public interface TemplateDao {
      * @param delta The changes to apply.
      * @return The updated template.
      */
-    Template update(UUID templateId, TemplateDelta delta);
+    Template update(final User actor, UUID templateId, TemplateDelta delta);
 
     /**
      * Query if a template already exists with the specified name.

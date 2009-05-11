@@ -89,13 +89,6 @@ public interface UserManager {
 
 
     /**
-     * Determine the user calling this UserDAO.
-     *
-     * @return The user calling this DAO.
-     */
-    User loggedInUser();
-
-    /**
      * Look up a user from their Id.
      *
      * @param userId The UUID for the user.

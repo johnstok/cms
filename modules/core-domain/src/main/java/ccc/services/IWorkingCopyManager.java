@@ -31,14 +31,17 @@ public interface IWorkingCopyManager {
      * @param id The identifier for the page.
      * @param workingCopy The snapshot to use as a working copy.
      */
-    void updateWorkingCopy(UUID id, Snapshot workingCopy);
+    void updateWorkingCopy(final User actor,
+                           UUID id,
+                           Snapshot workingCopy);
 
     /**
      * Delete a page's working copy.
      *
      * @param id The page's id.
      */
-    void clearWorkingCopy(UUID id);
+    void clearWorkingCopy(final User actor,
+                          UUID id);
 
     /**
      * Applies the current working copy to update a page.

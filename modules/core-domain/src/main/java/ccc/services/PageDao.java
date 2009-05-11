@@ -11,12 +11,14 @@
  */
 package ccc.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
+import ccc.domain.User;
 import ccc.services.api.PageDelta;
 
 
@@ -38,10 +40,12 @@ public interface PageDao {
      * @param comment The comment for the page edit.
      * @param isMajorEdit A boolean for major edit.
      */
-    void update(UUID id,
+    void update(User actor,
+                Date happenedOn,
+                UUID id,
                 PageDelta delta,
-                final String comment,
-                final boolean isMajorEdit);
+                String comment,
+                boolean isMajorEdit);
 
     /**
      * Validate fields.
@@ -58,5 +62,5 @@ public interface PageDao {
      * @param id The identifier for the page.
      * @param page Page create.
      */
-    void create(UUID id, Page page);
+    void create(final User actor, UUID id, Page page);
 }

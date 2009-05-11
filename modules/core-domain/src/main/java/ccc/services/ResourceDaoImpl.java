@@ -35,21 +35,17 @@ import ccc.services.api.Duration;
  */
 public class ResourceDaoImpl implements ResourceDao {
 
-    private final UserManager    _users;
     private final AuditLog       _audit;
     private final Dao            _dao;
 
     /**
      * Constructor.
      *
-     * @param userDAO UserManager service.
      * @param audit AuditLog service.
      * @param dao The DAO used for persistence.
      */
-    public ResourceDaoImpl(final UserManager userDAO,
-                           final AuditLog audit,
+    public ResourceDaoImpl(final AuditLog audit,
                            final Dao dao) {
-        _users = userDAO;
         _audit = audit;
         _dao = dao;
     }
@@ -57,7 +53,9 @@ public class ResourceDaoImpl implements ResourceDao {
 
     /** {@inheritDoc} */
     @Override
-    public void create(final UUID folderId, final Resource newResource) {
+    public void create(final User actor,
+                       final UUID folderId,
+                       final Resource newResource) {
         final Folder folder = _dao.find(Folder.class, folderId);
         if (null==folder) {
             throw new CCCException("No folder exists with id: "+folderId);
@@ -66,14 +64,14 @@ public class ResourceDaoImpl implements ResourceDao {
         _dao.create(newResource);
         _audit.recordCreate(
             newResource,
-            _users.loggedInUser(),
+            actor,
             newResource.dateCreated());
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void createRoot(final Folder folder) {
+    public void createRoot(final User actor, final Folder folder) {
         final Resource possibleRoot =
             _dao.find(QueryNames.ROOT_BY_NAME, Resource.class, folder.name());
         if (null!=possibleRoot) {
@@ -82,40 +80,44 @@ public class ResourceDaoImpl implements ResourceDao {
         _dao.create(folder);
         _audit.recordCreate(
             folder,
-            _users.loggedInUser(),
+            actor,
             folder.dateCreated());
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Resource lock(final UUID resourceId) {
+    public Resource lock(final User actor,
+                         final Date happenedOn,
+                         final UUID resourceId) {
         final Resource r = _dao.find(Resource.class, resourceId);
-        final User u = _users.loggedInUser();
+        final User u = actor;
         r.lock(u);
-        _audit.recordLock(r, u, new Date());
+        _audit.recordLock(r, u, happenedOn);
         return r;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Resource unlock(final UUID resourceId) {
-        final User loggedInUser = _users.loggedInUser();
+    public Resource unlock(final User actor,
+                           final Date happenedOn,
+                           final UUID resourceId) {
+        final User loggedInUser = actor;
         final Resource r = _dao.find(Resource.class, resourceId);
         r.unlock(loggedInUser);
-        _audit.recordUnlock(r, loggedInUser, new Date());
+        _audit.recordUnlock(r, loggedInUser, happenedOn);
         return r;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public List<Resource> lockedByCurrentUser() {
+    public List<Resource> lockedByCurrentUser(final User actor) {
         return
             _dao.list(QueryNames.RESOURCES_LOCKED_BY_USER,
                       Resource.class,
-                      _users.loggedInUser());
+                      actor);
     }
 
 
@@ -136,21 +138,26 @@ public class ResourceDaoImpl implements ResourceDao {
 
     /** {@inheritDoc} */
     @Override
-    public void updateTags(final UUID resourceId, final String tags) {
-        final User loggedInUser = _users.loggedInUser();
-        final Resource r = findLocked(Resource.class, resourceId);
+    public void updateTags(final User actor,
+                           final Date happenedOn,
+                           final UUID resourceId,
+                           final String tags) {
+        final User loggedInUser = actor;
+        final Resource r = findLocked(Resource.class, resourceId, loggedInUser);
         r.tags(tags);
-        _audit.recordUpdateTags(r, loggedInUser,  new Date());
+        _audit.recordUpdateTags(r, loggedInUser,  happenedOn);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Resource publish(final UUID resourceId) {
-        final User u = _users.loggedInUser();
+    public Resource publish(final User actor,
+                            final Date happenedOn,
+                            final UUID resourceId) {
+        final User u = actor;
         final Resource r = findLocked(Resource.class, resourceId, u);
         r.publish(u);
-        r.dateChanged(new Date());
+        r.dateChanged(happenedOn);
         _audit.recordPublish(r, u, r.dateChanged());
         return r;
     }
@@ -160,9 +167,9 @@ public class ResourceDaoImpl implements ResourceDao {
     public Resource publish(final UUID resourceId,
                             final UUID userId,
                             final Date publishedOn) {
-        final User publishedBy = _users.find(userId);
+        final User publishedBy = _dao.find(User.class, userId);
         final Resource r =
-            findLocked(Resource.class, resourceId);
+            findLocked(Resource.class, resourceId, publishedBy);
         r.publish(publishedBy);
         r.dateChanged(publishedOn);
         _audit.recordPublish(r, publishedBy, publishedOn);
@@ -172,11 +179,13 @@ public class ResourceDaoImpl implements ResourceDao {
 
     /** {@inheritDoc} */
     @Override
-    public Resource unpublish(final UUID resourceId) {
-        final User u = _users.loggedInUser();
+    public Resource unpublish(final User actor,
+                              final Date happenedOn,
+                              final UUID resourceId) {
+        final User u = actor;
         final Resource r = findLocked(Resource.class, resourceId, u);
         r.unpublish();
-        _audit.recordUnpublish(r, u, new Date());
+        _audit.recordUnpublish(r, u, happenedOn);
         return r;
     }
 
@@ -186,7 +195,7 @@ public class ResourceDaoImpl implements ResourceDao {
     public Resource unpublish(final UUID resourceId,
                               final UUID actor,
                               final Date happendedOn) {
-        final User u = _users.find(actor);
+        final User u = _dao.find(User.class, actor);
         final Resource r =
             findLocked(Resource.class, resourceId, u);
         r.unpublish();
@@ -199,9 +208,11 @@ public class ResourceDaoImpl implements ResourceDao {
      * {@inheritDoc}
      */
     @Override
-    public void updateTemplateForResource(final UUID resourceId,
+    public void updateTemplateForResource(final User actor,
+                                          final Date happenedOn,
+                                          final UUID resourceId,
                                           final UUID templateId) {
-        final Resource r = findLocked(Resource.class, resourceId);
+        final Resource r = findLocked(Resource.class, resourceId, actor);
         final Template t =
             (null==templateId)
                 ? null
@@ -209,36 +220,40 @@ public class ResourceDaoImpl implements ResourceDao {
 
         r.template(t);
 
-        _audit.recordChangeTemplate(r, _users.loggedInUser(), new Date());
+        _audit.recordChangeTemplate(r, actor, happenedOn);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void move(final UUID resourceId,
+    public void move(final User actor,
+                     final Date happenedOn,
+                     final UUID resourceId,
                      final UUID newParentId) {
         // TODO: Check new parent doesn't contain resource with same name!
 
-        final User u = _users.loggedInUser();
+        final User u = actor;
         final Resource resource = findLocked(Resource.class, resourceId, u);
         final Folder newParent = find(Folder.class, newParentId);
 
         resource.parent().remove(resource);
         newParent.add(resource);
 
-        _audit.recordMove(resource, u, new Date());
+        _audit.recordMove(resource, u, happenedOn);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void rename(final UUID resourceId,
+    public void rename(final User actor,
+                       final Date happenedOn,
+                       final UUID resourceId,
                        final String name) {
         // TODO: Check parent doesn't contain resource with new name!
-        final User u = _users.loggedInUser();
+        final User u = actor;
         final Resource resource = findLocked(Resource.class, resourceId, u);
         resource.name(new ResourceName(name));
-        _audit.recordRename(resource, u, new Date());
+        _audit.recordRename(resource, u, happenedOn);
     }
 
 
@@ -249,12 +264,6 @@ public class ResourceDaoImpl implements ResourceDao {
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    public <T extends Resource> T findLocked(final Class<T> type,
-                                             final UUID id) {
-        return findLocked(type, id, _users.loggedInUser());
-    }
 
 
     /** {@inheritDoc} */
@@ -287,11 +296,12 @@ public class ResourceDaoImpl implements ResourceDao {
 
     /** {@inheritDoc} */
     @Override
-    public void update(final Resource resource) {
+    public void update(final User actor,
+                       final Resource resource) {
         resource.dateChanged(new Date());
         _audit.recordUpdate(
             resource,
-            _users.loggedInUser(),
+            actor,
             resource.dateChanged());
     }
 
@@ -316,39 +326,47 @@ public class ResourceDaoImpl implements ResourceDao {
 
     /** {@inheritDoc} */
     @Override
-    public void includeInMainMenu(final UUID id, final boolean b) {
-        final Resource r = findLocked(Resource.class, id);
-        final User u = _users.loggedInUser();
+    public void includeInMainMenu(final User actor,
+                                  final Date happenedOn,
+                                  final UUID id,
+                                  final boolean b) {
+        final Resource r = findLocked(Resource.class, id, actor);
+        final User u = actor;
         r.includeInMainMenu(b);
         if (b) {
-            _audit.recordIncludeInMainMenu(r, u, new Date());
+            _audit.recordIncludeInMainMenu(r, u, happenedOn);
         } else {
-            _audit.recordRemoveFromMainMenu(r, u, new Date());
+            _audit.recordRemoveFromMainMenu(r, u, happenedOn);
         }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void updateMetadata(final UUID id,
-                                 final Map<String,
-                                 String> metadata) {
-        final Resource r = findLocked(Resource.class, id);
-        final User u = _users.loggedInUser();
+    public void updateMetadata(final User actor,
+                               final Date happenedOn,
+                               final UUID id,
+                               final Map<String,
+                               String> metadata) {
+        final Resource r = findLocked(Resource.class, id, actor);
+        final User u = actor;
         r.clearMetadata();
         for (final String key : metadata.keySet()) {
             r.addMetadatum(key, metadata.get(key));
         }
-        _audit.recordUpdateMetadata(r, u, new Date());
+        _audit.recordUpdateMetadata(r, u, happenedOn);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void changeRoles(final UUID id, final Collection<String> roles) {
-        final Resource r = findLocked(Resource.class, id);
-        final User u = _users.loggedInUser();
+    public void changeRoles(final User actor,
+                            final Date happenedOn,
+                            final UUID id,
+                            final Collection<String> roles) {
+        final Resource r = findLocked(Resource.class, id, actor);
+        final User u = actor;
         r.roles(roles);
-        _audit.recordChangeRoles(r, u, new Date());
+        _audit.recordChangeRoles(r, u, happenedOn);
     }
 
     /**
@@ -383,15 +401,17 @@ public class ResourceDaoImpl implements ResourceDao {
 
     /** {@inheritDoc} */
     @Override
-    public void updateCache(final UUID resourceId,
+    public void updateCache(final User actor,
+                            final Date happenedOn,
+                            final UUID resourceId,
                             final Duration duration) {
-        final User loggedInUser = _users.loggedInUser();
-        final Resource r = findLocked(Resource.class, resourceId);
+        final User loggedInUser = actor;
+        final Resource r = findLocked(Resource.class, resourceId, actor);
         if (duration == null) {
             r.cache(null);
         } else {
             r.cache(duration);
         }
-        _audit.recordUpdateCache(r, loggedInUser, new Date());
+        _audit.recordUpdateCache(r, loggedInUser, happenedOn);
     }
 }

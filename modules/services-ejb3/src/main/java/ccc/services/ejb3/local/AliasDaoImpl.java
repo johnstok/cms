@@ -16,7 +16,6 @@ import static javax.ejb.TransactionAttributeType.*;
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -25,6 +24,7 @@ import javax.persistence.PersistenceContext;
 
 import ccc.domain.Alias;
 import ccc.domain.Resource;
+import ccc.domain.User;
 import ccc.persistence.jpa.BaseDao;
 import ccc.services.AliasDao;
 import ccc.services.AuditLog;
@@ -32,7 +32,6 @@ import ccc.services.AuditLogEJB;
 import ccc.services.Dao;
 import ccc.services.ResourceDao;
 import ccc.services.ResourceDaoImpl;
-import ccc.services.UserManager;
 
 
 /**
@@ -45,7 +44,6 @@ import ccc.services.UserManager;
 @Local(AliasDao.class)
 public class AliasDaoImpl implements AliasDao {
 
-    @EJB(name=UserManager.NAME) private UserManager    _users;
     @PersistenceContext private EntityManager _em;
     private ResourceDao _dao;
 
@@ -65,20 +63,21 @@ public class AliasDaoImpl implements AliasDao {
 
     /** {@inheritDoc} */
     @Override
-    public void updateAlias(final UUID targetId,
+    public void updateAlias(final User actor,
+                            final UUID targetId,
                             final UUID aliasId) {
         final Resource target = _dao.find(Resource.class, targetId);
-        final Alias alias = _dao.findLocked(Alias.class, aliasId);
+        final Alias alias = _dao.findLocked(Alias.class, aliasId, actor);
 
         alias.target(target);
 
-        _dao.update(alias);
+        _dao.update(actor, alias);
     }
 
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
         final Dao bdao = new BaseDao(_em);
         final AuditLog audit = new AuditLogEJB(bdao);
-        _dao = new ResourceDaoImpl(_users, audit, bdao);
+        _dao = new ResourceDaoImpl(audit, bdao);
     }
 }

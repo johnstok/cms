@@ -14,15 +14,12 @@ package ccc.services.ejb3.local;
 import static ccc.services.QueryNames.*;
 import static javax.ejb.TransactionAttributeType.*;
 
-import java.security.Principal;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
-import javax.ejb.EJBContext;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -50,7 +47,6 @@ import ccc.services.api.UserDelta;
 public class UserManagerEJB implements UserManager {
 
     @PersistenceContext private EntityManager _em;
-    @Resource private EJBContext _context;
     private Dao _dao;
 
 
@@ -61,12 +57,9 @@ public class UserManagerEJB implements UserManager {
      * Constructor.
      *
      * @param dao The ResourceDao used for CRUD operations, etc.
-     * @param context The j2ee context within which this ejb operates.
      */
-    public UserManagerEJB(final Dao dao,
-                          final EJBContext context) {
+    public UserManagerEJB(final Dao dao) {
         _dao = dao;
-        _context = context;
     }
 
 
@@ -126,20 +119,6 @@ public class UserManagerEJB implements UserManager {
         current.email(new EmailAddress(delta.getEmail()));
         current.roles(delta.getRoles());
         return current;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public User loggedInUser() {
-        try {
-            final Principal p = _context.getCallerPrincipal();
-            final String principalName = p.getName();
-            final User user =
-                _dao.find(USERS_WITH_USERNAME, User.class, principalName);
-            return user;
-        } catch (final IllegalStateException e) {
-            return null;
-        }
     }
 
     /** {@inheritDoc} */

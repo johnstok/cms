@@ -87,7 +87,6 @@ public class ContentServlet
                     new PersistenceAction(
                         new ReaderAction(
                             new RenderResourceAction(
-                                _um.loggedInUser(),
                                 _respectVisibility,
                                 _rootName,
                                 "/content/login?tg=",

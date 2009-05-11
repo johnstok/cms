@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -38,7 +37,6 @@ import ccc.services.Dao;
 import ccc.services.FolderDao;
 import ccc.services.ResourceDao;
 import ccc.services.ResourceDaoImpl;
-import ccc.services.UserManager;
 
 
 /**
@@ -54,7 +52,6 @@ public class FolderDaoImpl implements FolderDao {
     @PersistenceContext private EntityManager _em;
     private  ResourceDao    _dao;
     private  AuditLog       _audit;
-    @EJB(name=UserManager.NAME) private UserManager    _users;
 
     /** Constructor. */
     @SuppressWarnings("unused") public FolderDaoImpl() { super(); }
@@ -65,11 +62,9 @@ public class FolderDaoImpl implements FolderDao {
      * @param dao The ResourceDao used for CRUD operations, etc.
      */
     public FolderDaoImpl(final ResourceDao dao,
-                         final AuditLog audit,
-                         final UserManager users) {
+                         final AuditLog audit) {
         _dao = dao;
         _audit = audit;
-        _users = users;
     }
 
 
@@ -81,20 +76,25 @@ public class FolderDaoImpl implements FolderDao {
 
     /** {@inheritDoc} */
     @Override
-    public void updateSortOrder(final UUID folderId,
+    public void updateSortOrder(final User actor,
+                                final Date happenedOn,
+                                final UUID folderId,
                                 final ResourceOrder order) {
 
-        final Folder f = _dao.findLocked(Folder.class, folderId);
-        final User u = _users.loggedInUser();
+        final Folder f = _dao.findLocked(Folder.class, folderId, actor);
+        final User u = actor;
         f.sortOrder(order);
-        _audit.recordUpdateSortOrder(f, u, new Date());
+        _audit.recordUpdateSortOrder(f, u, happenedOn);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void reorder(final UUID folderId, final List<UUID> order) {
-        final Folder f = _dao.findLocked(Folder.class, folderId);
-        final User u = _users.loggedInUser();
+    public void reorder(final User actor,
+                        final Date happenedOn,
+                        final UUID folderId,
+                        final List<UUID> order) {
+        final Folder f = _dao.findLocked(Folder.class, folderId, actor);
+        final User u = actor;
         final List<Resource> newOrder = new ArrayList<Resource>();
         final List<Resource> currentOrder = f.entries();
         for (final UUID resourceId : order) {
@@ -105,13 +105,13 @@ public class FolderDaoImpl implements FolderDao {
             }
         }
         f.reorder(newOrder);
-        _audit.recordReorder(f, u, new Date());
+        _audit.recordReorder(f, u, happenedOn);
     }
 
     @PostConstruct
     public void configure() {
         final Dao bdao = new BaseDao(_em);
         _audit = new AuditLogEJB(bdao);
-        _dao = new ResourceDaoImpl(_users, _audit, bdao);
+        _dao = new ResourceDaoImpl(_audit, bdao);
     }
 }

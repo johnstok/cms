@@ -68,7 +68,7 @@ public class FileUploadServlet extends CreatorServlet {
 
             final InputStream dataStream = file.getInputStream();
             try {
-                _services.dataManager().createFile(f, parentId, dataStream);
+                _services.dataManager().createFile(null, f, parentId, dataStream);
             } finally {
                 try {
                     dataStream.close();
@@ -89,6 +89,7 @@ public class FileUploadServlet extends CreatorServlet {
 
     /**
      * Convert a {@link ResourceSummary} to JSON.
+     * FIXME: We are missing parameters - see ResourceSummaryModelData.
      *
      * @param rs The {@link ResourceSummary} to convert.
      * @return A JSON object.

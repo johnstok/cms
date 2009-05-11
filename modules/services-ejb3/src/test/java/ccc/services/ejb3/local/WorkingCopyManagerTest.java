@@ -17,6 +17,7 @@ import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.Snapshot;
+import ccc.domain.User;
 import ccc.services.ResourceDao;
 import ccc.services.WorkingCopyManager;
 
@@ -40,11 +41,11 @@ public class WorkingCopyManagerTest
         final Page p = new Page("foo");
         p.workingCopy(p.createSnapshot());
 
-        expect(_dao.findLocked(Resource.class, p.id())).andReturn(p);
+        expect(_dao.findLocked(Resource.class, p.id(), _user)).andReturn(p);
         replayAll();
 
         // ACT
-        _wcm.clearWorkingCopy(p.id());
+        _wcm.clearWorkingCopy(_user, p.id());
 
         // ASSERT
         verifyAll();
@@ -62,11 +63,11 @@ public class WorkingCopyManagerTest
         page.addParagraph(Paragraph.fromText("abc", "def"));
         final Snapshot before = page.createSnapshot();
 
-        expect(_dao.findLocked(Resource.class, page.id())).andReturn(page);
+        expect(_dao.findLocked(Resource.class, page.id(), _user)).andReturn(page);
         replayAll();
 
         // ACT
-        _wcm.updateWorkingCopy(page.id(), before);
+        _wcm.updateWorkingCopy(_user, page.id(), before);
 
         // ASSERT
         verifyAll();
@@ -100,4 +101,5 @@ public class WorkingCopyManagerTest
 
     private ResourceDao _dao;
     private WorkingCopyManager _wcm;
+    private final User _user = new User("currentUser");
 }

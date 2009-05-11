@@ -40,44 +40,6 @@ public class UserManagerEJBTest extends TestCase {
     /**
      * Test.
      */
-    public void testLoggedInUserHandlesAnonymousUsers() {
-
-        // ARRANGE
-        expect(_context.getCallerPrincipal())
-            .andThrow(new IllegalStateException());
-        replay(_context, _em);
-
-        // ACT
-        final User actual = _um.loggedInUser();
-
-        // ASSERT
-        verify(_context, _em);
-        assertNull(actual);
-    }
-
-    /**
-     * Test.
-     */
-    public void testLoggedInUser() {
-
-        // ARRANGE
-        expect(_context.getCallerPrincipal()).andReturn(_p);
-        expect(_em.find("usersWithUsername", User.class, _p.getName()))
-            .andReturn(_u);
-        replay(_context, _em);
-
-        // ACT
-        final User actual = _um.loggedInUser();
-
-        // ASSERT
-        verify(_context, _em);
-        assertNotNull("Shouldn't be null.", actual);
-        assertEquals(_u, actual);
-    }
-
-    /**
-     * Test.
-     */
     public void testUsernameExistsCanReturnTrue() {
 
         // ARRANGE
@@ -268,7 +230,7 @@ public class UserManagerEJBTest extends TestCase {
         };
         _em = createStrictMock(Dao.class);
         _context = createStrictMock(EJBContext.class);
-        _um = new UserManagerEJB(_em, _context);
+        _um = new UserManagerEJB(_em);
     }
 
     /** {@inheritDoc} */
@@ -278,7 +240,6 @@ public class UserManagerEJBTest extends TestCase {
         _uDelta = null;
         _p = null;
         _em = null;
-        _context = null;
         _um = null;
     }
 }
