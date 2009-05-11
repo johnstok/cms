@@ -123,16 +123,6 @@ public interface ResourceDao {
      */
 
     /**
-     * Create a resource in the specified folder.
-     *
-     * @param folderId The folder in which the resource will be created.
-     * @param newResource The new resource.
-     */
-    void create(final User actor,
-                final UUID folderId,
-                final Resource newResource);
-
-    /**
      * Create a new root folder. The name is checked against existing root
      * folders in order to prevent conflicts.
      *
@@ -248,27 +238,6 @@ public interface ResourceDao {
                 final Date happenedOn,
                 UUID resourceId,
                 String name);
-
-    /**
-     * Notify the DAO that a resource has been updated (generates a log entry).
-     *
-     * @param resource The resource that was updated.
-     * @param comment The comment for the edit.
-     * @param isMajorEdit The major edit boolean.
-     */
-    void update(Resource resource,
-                String comment,
-                boolean isMajorEdit,
-                User actor,
-                Date happenedOn);
-
-    /**
-     * Notify the DAO that a resource has been updated (generates a log entry).
-     *
-     * @param resource The resource that was updated.
-     */
-    void update(final User actor,
-                Resource resource);
 
     /**
      * Specify whether this resource should be included in the main menu.

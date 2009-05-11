@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 import junit.framework.TestCase;
-import ccc.domain.CCCException;
 import ccc.domain.CreatorRoles;
 import ccc.domain.Folder;
 import ccc.domain.InsufficientPrivilegesException;
@@ -395,64 +394,6 @@ public class ResourceDaoImplTest
         assertEquals(ResourceType.PAGE, resource.type());
         final Page page = resource.as(Page.class);
         assertEquals(1, page.paragraphs().size());
-    }
-
-    /**
-     * Test.
-     */
-    public void testCreateFailsWhenResourceExists() {
-
-        // ARRANGE
-        final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
-        final Folder fooFolder = new Folder("foo");
-        contentRoot.add(fooFolder);
-
-        expect(_dao.find(Folder.class, contentRoot.id()))
-            .andReturn(contentRoot);
-        replayAll();
-
-
-        // ACT
-        try {
-            _rdao.create(_regularUser, contentRoot.id(), _r);
-            fail("Creation of duplicates should fail.");
-
-        } catch (final CCCException e) {
-            assertEquals(
-                "Folder already contains a resource with name 'foo'.",
-                e.getMessage());
-        }
-
-
-        // ASSERT
-        verifyAll();
-        assertEquals(1, contentRoot.size());
-        assertSame(fooFolder, contentRoot.entries().get(0));
-    }
-
-    /**
-     * Test.
-     */
-    public void testCreate() {
-
-        // ARRANGE
-        final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
-
-        _al.recordCreate(eq(_r), eq(_regularUser), isA(Date.class));
-        expect(_dao.find(Folder.class, contentRoot.id()))
-            .andReturn(contentRoot);
-        _dao.create(_r);
-        replayAll();
-
-
-        // ACT
-        _rdao.create(_regularUser, contentRoot.id(), _r);
-
-
-        // ASSERT
-        verifyAll();
-        assertEquals(1, contentRoot.size());
-        assertEquals(_r, contentRoot.entries().get(0));
     }
 
     /**

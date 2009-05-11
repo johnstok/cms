@@ -20,7 +20,8 @@ import java.sql.SQLException;
 import junit.framework.TestCase;
 import ccc.domain.Data;
 import ccc.services.CoreData;
-import ccc.services.ResourceDao;
+import ccc.services.Dao;
+import ccc.services.DataManagerEJB;
 import ccc.services.SearchEngine;
 import ccc.services.DataManager.StreamAction;
 
@@ -35,7 +36,7 @@ public class DataManagerEJBTest extends TestCase {
     private final InputStream _dummyStream =
         new ByteArrayInputStream(new byte[]{1});
 
-    private ResourceDao _al;
+    private Dao _dao;
     private DataManagerEJB _dm;
     private SearchEngine _se;
     private CoreData _cd;
@@ -44,26 +45,26 @@ public class DataManagerEJBTest extends TestCase {
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {
-         _al = createStrictMock(ResourceDao.class);
+         _dao = createStrictMock(Dao.class);
          _se = createStrictMock(SearchEngine.class);
          _cd = createStrictMock(CoreData.class);
-         _dm = new DataManagerEJB(_cd, _al);
+         _dm = new DataManagerEJB(_cd, _dao);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void tearDown() throws Exception {
-        _al = null;
+        _dao = null;
         _dm = null;
         _cd = null;
     }
 
     private void replayAll() {
-        replay(_al, _se, _cd);
+        replay(_dao, _se, _cd);
     }
 
     private void verifyAll() {
-        verify(_al, _se, _cd);
+        verify(_dao, _se, _cd);
     }
 
 //    /**

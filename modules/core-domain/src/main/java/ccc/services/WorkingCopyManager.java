@@ -11,7 +11,6 @@
  */
 package ccc.services;
 
-import java.util.Date;
 import java.util.UUID;
 
 import ccc.commons.DBC;
@@ -54,34 +53,5 @@ public class WorkingCopyManager implements IWorkingCopyManager {
                                  final UUID id) {
         final Resource r = _dao.findLocked(Resource.class, id, actor);
         r.clearWorkingCopy();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void applyWorkingCopy(final UUID id,
-                                 final String comment,
-                                 final boolean isMajorEdit,
-                                 final User actor,
-                                 final Date happenedOn) {
-        final Resource r = _dao.findLocked(Resource.class, id, actor);
-        r.applySnapshot(r.workingCopy());
-        r.clearWorkingCopy();
-
-        // TODO: Move to page class?
-//        final Template template = page.computeTemplate(null);
-//
-//        if (template != null) {
-//            validateFieldsForPage(page.paragraphs(), template.definition());
-//        }
-        _dao.update(r, comment, isMajorEdit, actor, happenedOn);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void applyWorkingCopy(final UUID id, final User actor) {
-        final Resource r = _dao.findLocked(Resource.class, id, actor);
-        r.applySnapshot(r.workingCopy());
-        r.clearWorkingCopy();
-        _dao.update(actor, r);
     }
 }

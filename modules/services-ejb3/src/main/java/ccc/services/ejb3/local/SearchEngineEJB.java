@@ -23,7 +23,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.ejb.EJBContext;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -52,6 +51,7 @@ import ccc.domain.Paragraph;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
 import ccc.persistence.jpa.BaseDao;
+import ccc.persistence.jpa.FsCoreData;
 import ccc.search.lucene.SearchHandler;
 import ccc.search.lucene.SimpleLucene;
 import ccc.search.lucene.SimpleLuceneFS;
@@ -59,6 +59,7 @@ import ccc.services.AuditLog;
 import ccc.services.AuditLogEJB;
 import ccc.services.Dao;
 import ccc.services.DataManager;
+import ccc.services.DataManagerEJB;
 import ccc.services.QueryNames;
 import ccc.services.ResourceDao;
 import ccc.services.ResourceDaoImpl;
@@ -84,9 +85,9 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
         Logger.getLogger(SearchEngineEJB.class.getName());
 
     @javax.annotation.Resource private EJBContext _context;
-    @EJB(name=DataManager.NAME) private DataManager _data;
     @PersistenceContext private EntityManager _em;
 
+    private DataManager _data;
     private ResourceDao _dao;
     private SimpleLucene _lucene;
 
@@ -461,5 +462,6 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
         final Dao bdao = new BaseDao(_em);
         final AuditLog audit = new AuditLogEJB(bdao);
         _dao = new ResourceDaoImpl(audit, bdao);
+        _data = new DataManagerEJB(new FsCoreData(), bdao);
     }
 }

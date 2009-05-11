@@ -17,11 +17,12 @@ import java.util.Collections;
 import java.util.Date;
 
 import junit.framework.TestCase;
+import ccc.actions.UpdatePageCommand;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.User;
-import ccc.services.PageDao;
-import ccc.services.ResourceDao;
+import ccc.services.AuditLog;
+import ccc.services.Dao;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ParagraphDelta;
 import ccc.services.api.ParagraphType;
@@ -50,52 +51,57 @@ public class PageDaoImplTest
                 Collections.singletonList(
                     new ParagraphDelta(
                         "foo", ParagraphType.TEXT, null, "bar", null, null)));
-        final Page page = new Page("test");
-        final User u = new User("user");
-        page.addParagraph(Paragraph.fromText("abc", "def"));
+        _page.addParagraph(Paragraph.fromText("abc", "def"));
+        _page.lock(_u);
 
-        expect(_dao.findLocked(Page.class, page.id(), u)).andReturn(page);
-        _dao.update(
-            eq(page), eq("comment text"), eq(false), eq(u), isA(Date.class));
+        expect(_dao.find(Page.class, _page.id())).andReturn(_page);
+        _al.recordUpdate(_page, _u, _now, "comment text", false);
         replayAll();
 
 
         // ACT
-        _cm.update(u, new Date(), page.id(), delta, "comment text", false);
+        _updatePage.execute(
+            _u, _now, _page.id(), delta, "comment text", false);
 
 
         // ASSERT
         verifyAll();
-        assertEquals("new title", page.title());
-        assertEquals(1, page.paragraphs().size());
-        assertEquals("foo", page.paragraphs().iterator().next().name());
-        assertEquals("bar", page.paragraph("foo").text());
-        assertNull("Page must not have working copy", page.workingCopy());
+        assertEquals("new title", _page.title());
+        assertEquals(1, _page.paragraphs().size());
+        assertEquals("foo", _page.paragraphs().iterator().next().name());
+        assertEquals("bar", _page.paragraph("foo").text());
+        assertNull("Page must not have working copy", _page.workingCopy());
     }
 
 
     private void verifyAll() {
-        verify(_dao);
+        verify(_dao, _al);
     }
 
     private void replayAll() {
-        replay(_dao);
+        replay(_dao, _al);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {
-        _dao = createStrictMock(ResourceDao.class);
-        _cm = new PageDaoImpl(_dao);
+        _dao = createStrictMock(Dao.class);
+        _al = createStrictMock(AuditLog.class);
+        _updatePage = new UpdatePageCommand(_dao, _al);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void tearDown() throws Exception {
+        _updatePage = null;
+        _al = null;
         _dao = null;
-        _cm = null;
     }
 
-    private ResourceDao _dao;
-    private PageDao _cm;
+    private Dao _dao;
+    private AuditLog _al;
+    private UpdatePageCommand _updatePage;
+    private final Date _now = new Date();
+    private final Page _page = new Page("test");
+    private final User _u = new User("user");
 }

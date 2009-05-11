@@ -15,7 +15,6 @@ import java.util.Collection;
 import java.util.UUID;
 
 import ccc.domain.User;
-import ccc.services.api.UserDelta;
 
 /**
  * TODO: Add Description for this type.
@@ -27,14 +26,6 @@ public interface UserManager {
     /** NAME : String. */
     String NAME = "UserManager";
 
-    /**
-     * Create new user.
-     *
-     * @param user The user to be created.
-     * @param password The password to be used for the user.
-     * @return Persisted user.
-     */
-    User createUser(UserDelta user, String password);
 
     /**
      * List all users.
@@ -43,6 +34,7 @@ public interface UserManager {
      */
     Collection<User> listUsers();
 
+
     /**
      * List all users with the specified role.
      *
@@ -50,6 +42,7 @@ public interface UserManager {
      * @return The users with the specified role.
      */
     Collection<User> listUsersWithRole(String role);
+
 
     /**
      * List all users with matching username.
@@ -79,28 +72,10 @@ public interface UserManager {
 
 
     /**
-     * Update user.
-     *
-     * @param userId The id of the user to update.
-     * @param delta The changes to apply.
-     * @return The updated user.
-     */
-    User updateUser(UUID userId, UserDelta delta);
-
-
-    /**
      * Look up a user from their Id.
      *
      * @param userId The UUID for the user.
      * @return The user corresponding to 'userId'.
      */
     User find(UUID userId);
-
-    /**
-     * Update a user's password.
-     *
-     * @param userId The user's id.
-     * @param password The new password.
-     */
-    void updatePassword(UUID userId, String password);
 }

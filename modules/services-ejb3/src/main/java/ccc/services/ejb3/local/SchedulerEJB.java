@@ -16,7 +16,6 @@ import static javax.ejb.TransactionAttributeType.*;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -123,13 +122,6 @@ public class SchedulerEJB implements Scheduler, ActionDao {
 
     /** {@inheritDoc} */
     @Override
-    public void schedule(final Action action) {
-        _dao.create(action);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public Collection<Action> pending() {
         return _dao.list(QueryNames.PENDING, Action.class);
     }
@@ -139,13 +131,6 @@ public class SchedulerEJB implements Scheduler, ActionDao {
     @Override
     public Collection<Action> executed() {
         return _dao.list(QueryNames.EXECUTED, Action.class);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void cancel(final UUID actionId) {
-        _dao.find(Action.class, actionId).cancel();
     }
 
 
@@ -161,6 +146,7 @@ public class SchedulerEJB implements Scheduler, ActionDao {
         }
         return false;
     }
+
 
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {

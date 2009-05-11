@@ -25,16 +25,14 @@ import javax.persistence.PersistenceContext;
 import org.apache.log4j.Logger;
 
 import ccc.actions.Action;
+import ccc.actions.ApplyWorkingCopyCommand;
 import ccc.domain.CCCException;
 import ccc.domain.Resource;
 import ccc.persistence.jpa.BaseDao;
 import ccc.services.ActionExecutor;
-import ccc.services.AuditLog;
 import ccc.services.AuditLogEJB;
-import ccc.services.Dao;
 import ccc.services.ResourceDao;
 import ccc.services.ResourceDaoImpl;
-import ccc.services.WorkingCopyManager;
 import ccc.services.api.ResourceType;
 
 
@@ -51,9 +49,12 @@ public class ActionExecutorEJB implements ActionExecutor {
         Logger.getLogger(ActionExecutorEJB.class.getName());
 
     private ResourceDao        _resources;
-    private WorkingCopyManager _wcMgr;
 
     @PersistenceContext private EntityManager _em;
+
+    private BaseDao _bdao;
+
+    private AuditLogEJB _audit;
 
     /** Constructor. */
     public ActionExecutorEJB() { super(); }
@@ -103,12 +104,13 @@ public class ActionExecutorEJB implements ActionExecutor {
     private void executeUpdate(final Action action) {
         final Resource r = action.subject();
         if (ResourceType.PAGE.equals(r.type())) {
-            _wcMgr.applyWorkingCopy(
+            new ApplyWorkingCopyCommand(_bdao, _audit).execute(
+                action.actor(),
+                new Date(),
                 r.id(),
                 action.parameters().getString("comment"),
-                action.parameters().getBool("majorEdit"),
-                action.actor(),
-                new Date());  // TODO: Should we use action._executeAfter?
+                action.parameters().getBool("majorEdit").booleanValue());
+
         } else {
             throw new CCCException(
                 "Only pages can be updated via the scheduler.");
@@ -120,7 +122,7 @@ public class ActionExecutorEJB implements ActionExecutor {
         _resources.publish(
             action.subject().id(),
             action.actor().id(),
-            new Date());  // TODO: Should we use action._executeAfter?
+            new Date());
     }
 
 
@@ -128,14 +130,13 @@ public class ActionExecutorEJB implements ActionExecutor {
         _resources.unpublish(
             action.subject().id(),
             action.actor().id(),
-            new Date()); // TODO: Should we use action._executeAfter?
+            new Date());
     }
 
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
-        final Dao bdao = new BaseDao(_em);
-        final AuditLog audit = new AuditLogEJB(bdao);
-        _resources = new ResourceDaoImpl(audit, bdao);
-        _wcMgr = new WorkingCopyManager(_resources);
+        _bdao = new BaseDao(_em);
+        _audit = new AuditLogEJB(_bdao);
+        _resources = new ResourceDaoImpl(_audit, _bdao);
     }
 }

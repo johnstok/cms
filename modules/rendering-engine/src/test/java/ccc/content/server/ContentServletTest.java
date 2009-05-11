@@ -47,7 +47,7 @@ public final class ContentServletTest extends TestCase {
 
         // ARRANGE
         final RenderResourceAction rr =
-            new RenderResourceAction(true, "root", "/login", null, null);
+            new RenderResourceAction(true, "root", "/login", null);
         final String invalidPath = "$%^$%/^%$^";
         expect(_request.getPathInfo()).andReturn(invalidPath);
         replayAll();
@@ -98,7 +98,7 @@ public final class ContentServletTest extends TestCase {
 
         // ARRANGE
         final RenderResourceAction rr =
-            new RenderResourceAction(true, "root", "/login", null, null);
+            new RenderResourceAction(true, "root", "/login", null);
         expect(_request.getPathInfo()).andReturn("/foo/");
         replayAll();
 
@@ -117,7 +117,7 @@ public final class ContentServletTest extends TestCase {
 
         // ARRANGE
         final RenderResourceAction rr =
-            new RenderResourceAction(true, "root", "/login", null, null);
+            new RenderResourceAction(true, "root", "/login", null);
         expect(_request.getPathInfo()).andReturn("/");
         replayAll();
 
@@ -136,7 +136,7 @@ public final class ContentServletTest extends TestCase {
 
         // ARRANGE
         final RenderResourceAction rr =
-            new RenderResourceAction(true, "root", "/login", null, null);
+            new RenderResourceAction(true, "root", "/login", null);
         expect(_request.getPathInfo()).andReturn(null);
         replayAll();
 
@@ -159,7 +159,7 @@ public final class ContentServletTest extends TestCase {
 
         // ARRANGE
         final RenderResourceAction rr =
-            new RenderResourceAction(true, "root", "/login", null, null);
+            new RenderResourceAction(true, "root", "/login", null);
 
         expect(_reader.lookup("root", new ResourcePath("/foo")))
             .andThrow(new NotFoundException());

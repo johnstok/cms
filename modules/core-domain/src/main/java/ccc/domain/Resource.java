@@ -509,6 +509,17 @@ public abstract class Resource
         return new Date(_dateCreated.getTime());
     }
 
+
+    /**
+     * Mutator for the date the resource was created.
+     *
+     * @param createdOn The date of creation.
+     */
+    public void dateCreated(final Date createdOn) {
+        require().notNull(createdOn);
+        _dateCreated = new Date(createdOn.getTime());
+    }
+
     /**
      * Accessor for the date the resource last changed.
      *

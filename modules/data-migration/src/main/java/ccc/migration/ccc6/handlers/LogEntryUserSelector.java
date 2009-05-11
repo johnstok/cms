@@ -4,7 +4,7 @@ package ccc.migration.ccc6.handlers;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import ccc.commons.DBC;
+import ccc.domain.CCCException;
 import ccc.migration.MigrationException;
 
 
@@ -22,7 +22,10 @@ public final class LogEntryUserSelector
     public Integer handle(final ResultSet rs) throws SQLException {
         if (rs.next()) {
             final Integer userId = Integer.valueOf(rs.getInt("user_id"));
-            DBC.ensure().toBeFalse(rs.next());
+            if (rs.next()) {
+                final String contentId = rs.getString("content_id");
+                throw new CCCException("Multiple users for id: "+contentId);
+            }
             return userId;
         }
         throw new MigrationException("User missing.");
@@ -32,7 +35,7 @@ public final class LogEntryUserSelector
     @Override
     public String getSql() {
         return
-            "SELECT user_id FROM c3_version_audit_log "
+            "SELECT * FROM c3_version_audit_log "
             + "WHERE content_id = ? AND "
             + "version_id = ? AND "
             + "action = ? AND "

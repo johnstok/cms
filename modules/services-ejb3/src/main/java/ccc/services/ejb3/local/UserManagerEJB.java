@@ -26,13 +26,10 @@ import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import ccc.commons.EmailAddress;
-import ccc.domain.Password;
 import ccc.domain.User;
 import ccc.persistence.jpa.BaseDao;
 import ccc.services.Dao;
 import ccc.services.UserManager;
-import ccc.services.api.UserDelta;
 
 
 /**
@@ -62,20 +59,6 @@ public class UserManagerEJB implements UserManager {
         _dao = dao;
     }
 
-
-    /** {@inheritDoc} */
-    @Override
-    public User createUser(final UserDelta delta, final String password) {
-        final User user = new User(delta.getUsername().toString());
-        user.email(new EmailAddress(delta.getEmail()));
-        user.roles(delta.getRoles());
-        _dao.create(user);
-
-        final Password defaultPassword = new Password(user, password);
-        _dao.create(defaultPassword);
-
-        return user;
-    }
 
     /** {@inheritDoc} */
     @Override
@@ -113,16 +96,6 @@ public class UserManagerEJB implements UserManager {
 
     /** {@inheritDoc} */
     @Override
-    public User updateUser(final UUID userId, final UserDelta delta) {
-        final User current = _dao.find(User.class, userId);
-        current.username(delta.getUsername().toString());
-        current.email(new EmailAddress(delta.getEmail()));
-        current.roles(delta.getRoles());
-        return current;
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public User find(final UUID userId) {
         return _dao.find(User.class, userId);
     }
@@ -130,13 +103,5 @@ public class UserManagerEJB implements UserManager {
     @PostConstruct
     public void configure() {
         _dao = new BaseDao(_em);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void updatePassword(final UUID userId, final String password) {
-        final Password p =
-                _dao.find(PASSWORD_FOR_USER, Password.class, userId);
-        p.password(password);
     }
 }

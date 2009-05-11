@@ -51,22 +51,7 @@ public class ResourceDaoImpl implements ResourceDao {
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    public void create(final User actor,
-                       final UUID folderId,
-                       final Resource newResource) {
-        final Folder folder = _dao.find(Folder.class, folderId);
-        if (null==folder) {
-            throw new CCCException("No folder exists with id: "+folderId);
-        }
-        folder.add(newResource);
-        _dao.create(newResource);
-        _audit.recordCreate(
-            newResource,
-            actor,
-            newResource.dateCreated());
-    }
+
 
 
     /** {@inheritDoc} */
@@ -264,8 +249,6 @@ public class ResourceDaoImpl implements ResourceDao {
     }
 
 
-
-
     /** {@inheritDoc} */
     @Override
     public <T extends Resource> T findLocked(final Class<T> type,
@@ -274,35 +257,6 @@ public class ResourceDaoImpl implements ResourceDao {
         final T r = _dao.find(type, id);
         r.confirmLock(lockedBy);
         return r;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void update(final Resource resource,
-                       final String comment,
-                       final boolean isMajorEdit,
-                       final User actor,
-                       final Date happenedOn) {
-        resource.dateChanged(happenedOn);
-        _audit.recordUpdate(
-            resource,
-            actor,
-            resource.dateChanged(),
-            comment,
-            isMajorEdit);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void update(final User actor,
-                       final Resource resource) {
-        resource.dateChanged(new Date());
-        _audit.recordUpdate(
-            resource,
-            actor,
-            resource.dateChanged());
     }
 
 

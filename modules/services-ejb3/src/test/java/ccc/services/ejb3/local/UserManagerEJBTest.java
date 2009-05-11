@@ -21,10 +21,14 @@ import java.util.HashSet;
 import javax.ejb.EJBContext;
 
 import junit.framework.TestCase;
+import ccc.actions.CreateUserCommand;
+import ccc.actions.UpdatePasswordAction;
+import ccc.actions.UpdateUserCommand;
 import ccc.commons.EmailAddress;
 import ccc.domain.CreatorRoles;
 import ccc.domain.Password;
 import ccc.domain.User;
+import ccc.services.AuditLog;
 import ccc.services.Dao;
 import ccc.services.api.UserDelta;
 import ccc.services.api.Username;
@@ -43,16 +47,16 @@ public class UserManagerEJBTest extends TestCase {
     public void testUsernameExistsCanReturnTrue() {
 
         // ARRANGE
-        expect(_em.exists("usersWithUsername", User.class, "blat"))
+        expect(_dao.exists("usersWithUsername", User.class, "blat"))
             .andReturn(Boolean.TRUE);
-        replay(_context, _em);
+        replay(_context, _dao);
 
         // ACT
         final boolean actual = _um.usernameExists("blat");
 
         // ASSERT
         assertEquals(true, actual);
-        verify(_context, _em);
+        verify(_context, _dao);
     }
 
     /**
@@ -61,9 +65,9 @@ public class UserManagerEJBTest extends TestCase {
     public void testUsernameExistsCanReturnFalse() {
 
         // ARRANGE
-        expect(_em.exists("usersWithUsername", User.class, "blat"))
+        expect(_dao.exists("usersWithUsername", User.class, "blat"))
             .andReturn(Boolean.FALSE);
-        replay(_context, _em);
+        replay(_context, _dao);
 
 
         // ACT
@@ -71,7 +75,7 @@ public class UserManagerEJBTest extends TestCase {
 
         // ASSERT
         assertEquals(false, actual);
-        verify(_context, _em);
+        verify(_context, _dao);
     }
 
     /**
@@ -81,16 +85,18 @@ public class UserManagerEJBTest extends TestCase {
     public void testCreateUser() {
 
         // ARRANGE
-        _em.create(isA(User.class));
-        _em.create(isA(Password.class));
-        replay(_context, _em);
+        _dao.create(isA(User.class));
+        _dao.create(isA(Password.class));
+        replay(_context, _dao);
+
+        final CreateUserCommand cu = new CreateUserCommand(_dao, _audit);
 
         // ACT
-        _um.createUser(_uDelta, "foopass");
+        final User u = cu.execute(_uDelta, "foopass");
 
         // ASSERT
-        verify(_context, _em);
-
+        verify(_context, _dao);
+        assertEquals("newNameUser", u.username());
     }
 
     /**
@@ -99,16 +105,16 @@ public class UserManagerEJBTest extends TestCase {
     public void testListUsers() {
 
         // ARRANGE
-        expect(_em.uniquify("users", User.class))
+        expect(_dao.uniquify("users", User.class))
             .andReturn(new ArrayList<User>());
-        replay(_context, _em);
+        replay(_context, _dao);
 
 
         // ACT
         _um.listUsers();
 
         // ASSERT
-        verify(_context, _em);
+        verify(_context, _dao);
 
     }
 
@@ -118,17 +124,17 @@ public class UserManagerEJBTest extends TestCase {
     public void testListUsersWithRole() {
 
         // ARRANGE
-        expect(_em.uniquify("usersWithRole",
+        expect(_dao.uniquify("usersWithRole",
                             User.class,
                             CreatorRoles.ADMINISTRATOR))
             .andReturn(new ArrayList<User>());
-        replay(_context, _em);
+        replay(_context, _dao);
 
         // ACT
         _um.listUsersWithRole(CreatorRoles.ADMINISTRATOR);
 
         // ASSERT
-        verify(_context, _em);
+        verify(_context, _dao);
 
     }
 
@@ -138,15 +144,15 @@ public class UserManagerEJBTest extends TestCase {
     public void testListUsersWithUsername() {
 
         // ARRANGE
-        expect(_em.list("usersWithUsername", User.class, "testname"))
+        expect(_dao.list("usersWithUsername", User.class, "testname"))
             .andReturn(new ArrayList<User>());
-        replay(_context, _em);
+        replay(_context, _dao);
 
         // ACT
         _um.listUsersWithUsername("testname");
 
         // ASSERT
-        verify(_context, _em);
+        verify(_context, _dao);
 
     }
 
@@ -156,15 +162,15 @@ public class UserManagerEJBTest extends TestCase {
     public void testListUsersWithEmail() {
 
         // ARRANGE
-        expect(_em.list("usersWithEmail", User.class, "test@civicuk.com"))
+        expect(_dao.list("usersWithEmail", User.class, "test@civicuk.com"))
             .andReturn(new ArrayList<User>());
-        replay(_context, _em);
+        replay(_context, _dao);
 
         // ACT
         _um.listUsersWithEmail("test@civicuk.com");
 
         // ASSERT
-        verify(_context, _em);
+        verify(_context, _dao);
 
     }
 
@@ -175,14 +181,16 @@ public class UserManagerEJBTest extends TestCase {
     public void testUpdateUser() {
 
         // ARRANGE
-        expect(_em.find(User.class, _u.id())).andReturn(_u);
-        replay(_context, _em);
+        expect(_dao.find(User.class, _u.id())).andReturn(_u);
+        replay(_context, _dao);
+
+        final UpdateUserCommand uu = new UpdateUserCommand(_dao, _audit);
 
         // ACT
-        _um.updateUser(_u.id(), _uDelta);
+        uu.execute(_u.id(), _uDelta);
 
         // ASSERT
-        verify(_context, _em);
+        verify(_context, _dao);
 
     }
 
@@ -194,21 +202,24 @@ public class UserManagerEJBTest extends TestCase {
         // ARRANGE
         final Password pw = new Password(_u, "foo");
 
-        expect(_em.find("passwordForUser", Password.class, _u.id()))
+        expect(_dao.find("passwordForUser", Password.class, _u.id()))
             .andReturn(pw);
-        replay(_context, _em);
+        replay(_context, _dao);
+
+        final UpdatePasswordAction up = new UpdatePasswordAction(_dao, _audit);
 
         // ACT
-        _um.updatePassword(_u.id(), "newPass");
+        up.execute(_u.id(), "newPass");
 
         // ASSERT
-        verify(_context, _em);
+        verify(_context, _dao);
         assertTrue(pw.matches("newPass"));
     }
 
     private User _u;
+    private AuditLog _audit;
     private UserDelta _uDelta;
-    private Dao _em;
+    private Dao _dao;
     private EJBContext _context;
     private Principal _p;
     private UserManagerEJB _um;
@@ -228,9 +239,9 @@ public class UserManagerEJBTest extends TestCase {
                 return _u.id().toString();
             }
         };
-        _em = createStrictMock(Dao.class);
+        _dao = createStrictMock(Dao.class);
         _context = createStrictMock(EJBContext.class);
-        _um = new UserManagerEJB(_em);
+        _um = new UserManagerEJB(_dao);
     }
 
     /** {@inheritDoc} */
@@ -239,7 +250,7 @@ public class UserManagerEJBTest extends TestCase {
         _u = null;
         _uDelta = null;
         _p = null;
-        _em = null;
+        _dao = null;
         _um = null;
     }
 }

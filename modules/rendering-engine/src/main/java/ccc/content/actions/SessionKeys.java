@@ -31,4 +31,10 @@ public final class SessionKeys {
     /** CURRENT_USER : String. */
     public static final String CURRENT_USER = "ccc.current_user";
 
+    /** AUDIT_KEY : String. */
+    public static final String AUDIT_KEY = "ccc.audit";
+
+    /** DATA_KEY : String. */
+    public static final String DATA_KEY = "ccc.data";
+
 }
