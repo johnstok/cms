@@ -23,13 +23,6 @@
         table="files">
         
 		<key column="id" />
-
-		<property
-            name="_description"
-            column="description"
-            type="string"
-            not-null="true"
-			length="1024" />
 			
 	    <property
             name="_size"
