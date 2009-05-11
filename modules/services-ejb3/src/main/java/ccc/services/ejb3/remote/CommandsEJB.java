@@ -48,7 +48,6 @@ import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.persistence.jpa.BaseDao;
 import ccc.services.ActionDao;
-import ccc.services.AliasDao;
 import ccc.services.AuditLog;
 import ccc.services.AuditLogEJB;
 import ccc.services.Dao;
@@ -72,6 +71,7 @@ import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
+import ccc.services.ejb3.local.AliasDaoImpl;
 
 
 /**
@@ -91,7 +91,6 @@ public class CommandsEJB
 
     @EJB(name=TemplateDao.NAME)    private TemplateDao     _templates;
     @EJB(name=FolderDao.NAME)      private FolderDao       _folders;
-    @EJB(name=AliasDao.NAME)       private AliasDao        _alias;
     @EJB(name=PageDao.NAME)        private PageDao         _page;
     @EJB(name=UserManager.NAME)    private UserManager     _users;
     @EJB(name=ActionDao.NAME)      private ActionDao       _scheduler;
@@ -254,8 +253,9 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     public void updateAlias(final ID aliasId, final AliasDelta delta) {
-        _alias.updateAlias(
+        new AliasDaoImpl(_resources, _audit).execute(
             loggedInUser(),
+            new Date(),
             toUUID(delta.getTargetId()),
             toUUID(aliasId));
     }

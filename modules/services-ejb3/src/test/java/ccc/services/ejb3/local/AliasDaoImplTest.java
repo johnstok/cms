@@ -12,12 +12,15 @@
 package ccc.services.ejb3.local;
 
 import static org.easymock.EasyMock.*;
+
+import java.util.Date;
+
 import junit.framework.TestCase;
 import ccc.domain.Alias;
 import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.User;
-import ccc.services.AliasDao;
+import ccc.services.AuditLog;
 import ccc.services.ResourceDao;
 
 
@@ -33,56 +36,46 @@ public class AliasDaoImplTest
     /**
      * Test.
      */
-    public void testNoArgsConstructor() {
-
-        // ARRANGE
-
-        // ACT
-        new AliasDaoImpl();
-
-        // ASSERT
-
-    }
-
-    /**
-     * Test.
-     */
     public void testUpdateAlias() {
 
         // ARRANGE
-        final Page resource = new Page("foo");
-        final Page r2 = new Page("baa");
-        final Alias alias = new Alias("alias", resource);
+        final Alias alias = new Alias("alias", _resource);
 
-        expect(_dao.find(Resource.class, r2.id())).andReturn(r2);
+        expect(_dao.find(Resource.class, _r2.id())).andReturn(_r2);
         expect(_dao.findLocked(Alias.class, alias.id(), _user))
             .andReturn(alias);
-        _dao.update(_user, alias);
-        replay(_dao);
+        _audit.recordUpdate(alias, _user, _now);
+        replay(_dao, _audit);
 
         // ACT
-        _cm.updateAlias(_user, r2.id(), alias.id());
+        _updateAlias.execute(_user, _now, _r2.id(), alias.id());
 
         // ASSERT
-        verify(_dao);
-        assertEquals(r2, alias.target());
+        verify(_dao, _audit);
+        assertEquals(_r2, alias.target());
     }
 
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {
         _dao = createStrictMock(ResourceDao.class);
-        _cm = new AliasDaoImpl(_dao);
+        _audit = createStrictMock(AuditLog.class);
+        _updateAlias = new AliasDaoImpl(_dao, _audit);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void tearDown() throws Exception {
+        _updateAlias = null;
+        _audit = null;
         _dao = null;
-        _cm = null;
     }
 
     private ResourceDao _dao;
-    private AliasDao _cm;
+    private AuditLog _audit;
+    private AliasDaoImpl _updateAlias;
     private final User _user = new User("currentUser");
+    private final Date _now = new Date();
+    private final Page _resource = new Page("foo");
+    private final Page _r2 = new Page("baa");
 }

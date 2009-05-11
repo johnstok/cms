@@ -11,73 +11,56 @@
  */
 package ccc.services.ejb3.local;
 
-import static javax.ejb.TransactionAttributeType.*;
-
+import java.util.Date;
 import java.util.UUID;
-
-import javax.annotation.PostConstruct;
-import javax.ejb.Local;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import ccc.domain.Alias;
 import ccc.domain.Resource;
 import ccc.domain.User;
-import ccc.persistence.jpa.BaseDao;
-import ccc.services.AliasDao;
 import ccc.services.AuditLog;
-import ccc.services.AuditLogEJB;
-import ccc.services.Dao;
 import ccc.services.ResourceDao;
-import ccc.services.ResourceDaoImpl;
 
 
 /**
- * DAO with methods specific to a template.
+ * Command: updates an alias.
  *
  * @author Civic Computing Ltd.
  */
-@Stateless(name=AliasDao.NAME)
-@TransactionAttribute(REQUIRED)
-@Local(AliasDao.class)
-public class AliasDaoImpl implements AliasDao {
+public class AliasDaoImpl {
 
-    @PersistenceContext private EntityManager _em;
-    private ResourceDao _dao;
-
-
-    /** Constructor. */
-    @SuppressWarnings("unused") public AliasDaoImpl() { super(); }
+    private final ResourceDao _dao;
+    private final AuditLog    _audit;
 
     /**
      * Constructor.
      *
      * @param dao The ResourceDao used for CRUD operations, etc.
+     * @param audit The audit logger, for logging business actions.
      */
-    public AliasDaoImpl(final ResourceDao dao) {
+    public AliasDaoImpl(final ResourceDao dao, final AuditLog audit) {
         _dao = dao;
+        _audit = audit;
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    public void updateAlias(final User actor,
+    /**
+     * Perform the update.
+     *
+     * @param actor
+     * @param happenedOn
+     * @param targetId
+     * @param aliasId
+     */
+    public void execute(final User actor,
+                            final Date happenedOn,
                             final UUID targetId,
                             final UUID aliasId) {
         final Resource target = _dao.find(Resource.class, targetId);
         final Alias alias = _dao.findLocked(Alias.class, aliasId, actor);
 
         alias.target(target);
+        alias.dateChanged(happenedOn);
 
-        _dao.update(actor, alias);
-    }
-
-    @PostConstruct @SuppressWarnings("unused")
-    private void configureCoreData() {
-        final Dao bdao = new BaseDao(_em);
-        final AuditLog audit = new AuditLogEJB(bdao);
-        _dao = new ResourceDaoImpl(audit, bdao);
+        _audit.recordUpdate(alias, actor, happenedOn);
     }
 }
