@@ -176,7 +176,7 @@ public class ModelTranslation {
                 hasWorkingCopy,
                 r.dateCreated(),
                 r.dateChanged(),
-                toID(r.template().id()),
+                (null==r.template()) ? null : toID(r.template().id()),
                 r.tagString()
             );
         return rs;
@@ -437,6 +437,9 @@ public class ModelTranslation {
      * @return The corresponding UUID.
      */
     protected final UUID toUUID(final ID id) {
+        if (null==id) {
+            return null;
+        }
         return UUID.fromString(id.toString());
     }
 }

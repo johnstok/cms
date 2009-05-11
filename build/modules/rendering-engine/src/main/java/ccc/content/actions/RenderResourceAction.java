@@ -54,7 +54,6 @@ public class RenderResourceAction
     private final String _rootName;
     private final String _loginUri;
     private final SearchEngine _search;
-    private final DataManager _data;
 
     /**
      * Constructor.
@@ -68,12 +67,10 @@ public class RenderResourceAction
     public RenderResourceAction(final boolean respectVisiblity,
                                 final String rootName,
                                 final String loginUri,
-                                final SearchEngine search,
-                                final DataManager data) {
+                                final SearchEngine search) {
         _respectVisiblity = respectVisiblity;
         _rootName = rootName;
         _loginUri = loginUri;
-        _data = data;
         _search = search;
     }
 
@@ -84,6 +81,9 @@ public class RenderResourceAction
                         final HttpServletResponse response)
                                           throws ServletException, IOException {
         try {
+            final DataManager _data =
+                (DataManager) request.getAttribute(SessionKeys.DATA_KEY);
+
             final ResourcePath contentPath = determineResourcePath(request);
 
             final StatefulReader reader =

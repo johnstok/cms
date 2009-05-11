@@ -13,13 +13,15 @@ package ccc.services.ejb3.local;
 
 import static org.easymock.EasyMock.*;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.Date;
 
 import junit.framework.TestCase;
+import ccc.actions.UpdateTemplateCommand;
 import ccc.domain.Template;
-import ccc.services.ResourceDao;
-import ccc.services.TemplateDao;
+import ccc.domain.User;
+import ccc.services.AuditLog;
+import ccc.services.Dao;
+import ccc.services.api.TemplateDelta;
 
 
 /**
@@ -34,42 +36,51 @@ public class TemplateDaoImplTest
     /**
      * Test.
      */
-    public void testLookupTemplates() {
+    public void testUpdateTemplates() {
 
         // ARRANGE
-        final Template expected =
+        final Template foo =
             new Template("title", "description", "body", "<fields/>");
+        foo.lock(_user);
+        final TemplateDelta td = new TemplateDelta(
+            "newTitle", "newDesc", "newBody", "newDefn");
 
-        expect(_dao.list("allTemplates", Template.class))
-            .andReturn(Collections.singletonList(expected));
-        replay(_dao);
+        expect(_dao.find(Template.class, foo.id())).andReturn(foo);
+        _al.recordUpdate(foo, _user, _now, null, false);
+        replay(_dao, _al);
+
+        final UpdateTemplateCommand ut = new UpdateTemplateCommand(_dao, _al);
 
 
         // ACT
-        final List<Template> templates = _cm.allTemplates();
+        ut.execute(_user, _now, foo.id(), td);
 
 
         // ASSERT
-        verify(_dao);
-        assertEquals(1, templates.size());
-        assertEquals(expected, templates.get(0));
+        verify(_dao, _al);
+        assertEquals("newTitle", foo.title());
+        assertEquals("newDesc", foo.description());
+        assertEquals("newBody", foo.body());
+        assertEquals("newDefn", foo.definition());
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {
-        _dao = createStrictMock(ResourceDao.class);
-        _cm = new TemplateDaoImpl(_dao);
+        _dao = createStrictMock(Dao.class);
+        _al = createStrictMock(AuditLog.class);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void tearDown() throws Exception {
+        _al = null;
         _dao = null;
-        _cm = null;
     }
 
-    private ResourceDao _dao;
-    private TemplateDao _cm;
+    private Dao _dao;
+    private AuditLog _al;
+    private final Date _now = new Date();
+    private final User _user = new User("user");
 }

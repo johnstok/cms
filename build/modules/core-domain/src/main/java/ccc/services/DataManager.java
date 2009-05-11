@@ -15,13 +15,9 @@ package ccc.services;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
-import java.util.UUID;
 
 import ccc.domain.Data;
 import ccc.domain.File;
-import ccc.domain.User;
-import ccc.services.api.FileDelta;
-import ccc.services.api.ID;
 
 
 /**
@@ -62,32 +58,6 @@ public interface DataManager {
      * @param action An action to perform with the retrieved data.
      */
     void retrieve(Data data, StreamAction action);
-
-    /**
-     * Create a file.
-     *
-     * @param file The File to persist.
-     * @param parentId The unique id of the folder acting as a parent for file.
-     * @param dataStream The input stream from which the bytes for the new file
-     *        should be read.
-     */
-    void createFile(User actor,
-                    File file,
-                    UUID parentId,
-                    InputStream dataStream);
-
-    /**
-     * Update a file.
-     *
-     * @param fileId The id of the file to update.
-     * @param dataStream The input stream from which the bytes for the new file
-     *        should be read.
-     * @param fileDelta The delta describing changes to the file's metadata.
-     */
-    void updateFile(User actor,
-                    ID fileId,
-                    FileDelta fileDelta,
-                    InputStream dataStream);
 
     /**
      * Returns a list of all images.

@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.ejb3.local;
+package ccc.actions;
 
 import static org.easymock.EasyMock.*;
 
@@ -21,7 +21,7 @@ import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.services.AuditLog;
-import ccc.services.ResourceDao;
+import ccc.services.Dao;
 
 
 /**
@@ -29,7 +29,7 @@ import ccc.services.ResourceDao;
  *
  * @author Civic Computing Ltd.
  */
-public class AliasDaoImplTest
+public class UpdateAliasCommandTest
     extends
         TestCase {
 
@@ -40,11 +40,11 @@ public class AliasDaoImplTest
 
         // ARRANGE
         final Alias alias = new Alias("alias", _resource);
+        alias.lock(_user);
 
+        expect(_dao.find(Alias.class, alias.id())).andReturn(alias);
         expect(_dao.find(Resource.class, _r2.id())).andReturn(_r2);
-        expect(_dao.findLocked(Alias.class, alias.id(), _user))
-            .andReturn(alias);
-        _audit.recordUpdate(alias, _user, _now);
+        _audit.recordUpdate(alias, _user, _now, null, false);
         replay(_dao, _audit);
 
         // ACT
@@ -58,9 +58,9 @@ public class AliasDaoImplTest
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {
-        _dao = createStrictMock(ResourceDao.class);
+        _dao = createStrictMock(Dao.class);
         _audit = createStrictMock(AuditLog.class);
-        _updateAlias = new AliasDaoImpl(_dao, _audit);
+        _updateAlias = new UpdateAliasCommand(_dao, _audit);
     }
 
     /** {@inheritDoc} */
@@ -71,9 +71,9 @@ public class AliasDaoImplTest
         _dao = null;
     }
 
-    private ResourceDao _dao;
+    private Dao _dao;
     private AuditLog _audit;
-    private AliasDaoImpl _updateAlias;
+    private UpdateAliasCommand _updateAlias;
     private final User _user = new User("currentUser");
     private final Date _now = new Date();
     private final Page _resource = new Page("foo");

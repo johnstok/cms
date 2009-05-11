@@ -19,15 +19,16 @@ import java.util.List;
 import java.util.UUID;
 
 import junit.framework.TestCase;
+import ccc.actions.ReorderFolderContentsCommand;
+import ccc.actions.UpdateFolderCommand;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.ResourceOrder;
 import ccc.domain.User;
 import ccc.services.AuditLog;
-import ccc.services.FolderDao;
+import ccc.services.Dao;
 import ccc.services.ResourceDao;
-import ccc.services.UserManager;
 
 
 /**
@@ -46,13 +47,15 @@ public class FolderDaoImplTest
 
         // ARRANGE
         _f.lock(_regularUser);
-        expect(_dao.findLocked(Folder.class, _f.id(), _regularUser))
+        expect(_dao.find(Folder.class, _f.id()))
             .andReturn(_f);
         _al.recordUpdateSortOrder(eq(_f), eq(_regularUser), isA(Date.class));
         replayAll();
 
+        final UpdateFolderCommand uf = new UpdateFolderCommand(_dao, _al);
+
         // ACT
-        _fdao.updateSortOrder(
+        uf.execute(
             _regularUser, new Date(), _f.id(), ResourceOrder.NAME_ALPHANUM_ASC);
 
         // ASSERT
@@ -74,10 +77,13 @@ public class FolderDaoImplTest
         _f.add(bar);
         _f.add(baz);
 
-        expect(_dao.findLocked(Folder.class, _f.id(), _regularUser))
+        expect(_rdao.findLocked(Folder.class, _f.id(), _regularUser))
             .andReturn(_f);
         _al.recordReorder(eq(_f), eq(_regularUser), isA(Date.class));
         replayAll();
+
+        final ReorderFolderContentsCommand rf =
+            new ReorderFolderContentsCommand(_rdao, _al);
 
         // ACT
         final List<UUID> order = new ArrayList<UUID>();
@@ -85,7 +91,7 @@ public class FolderDaoImplTest
         order.add(foo.id());
         order.add(bar.id());
 
-        _fdao.reorder(_regularUser, new Date(), _f.id(), order);
+        rf.execute(_regularUser, new Date(), _f.id(), order);
 
         // ASSERT
         verifyAll();
@@ -101,9 +107,8 @@ public class FolderDaoImplTest
     @Override
     protected void setUp() throws Exception {
         _al = createStrictMock(AuditLog.class);
-        _users = createStrictMock(UserManager.class);
-        _dao = createStrictMock(ResourceDao.class);
-        _fdao = new FolderDaoImpl(_dao, _al);
+        _rdao = createStrictMock(ResourceDao.class);
+        _dao = createStrictMock(Dao.class);
 
         _f = new Folder("foo");
     }
@@ -112,24 +117,22 @@ public class FolderDaoImplTest
     @Override
     protected void tearDown() throws Exception {
         _dao = null;
-        _fdao = null;
+        _rdao = null;
         _al = null;
-        _users = null;
     }
 
     private void replayAll() {
-        replay(_dao, _users, _al);
+        replay(_rdao, _al, _dao);
     }
 
     private void verifyAll() {
-        verify(_dao, _users, _al);
+        verify(_rdao, _al, _dao);
     }
     private final User _regularUser = new User("regular");
 
     private Folder _f;
 
     private AuditLog _al;
-    private UserManager _users;
-    private ResourceDao _dao;
-    private FolderDao _fdao;
+    private ResourceDao _rdao;
+    private Dao _dao;
 }

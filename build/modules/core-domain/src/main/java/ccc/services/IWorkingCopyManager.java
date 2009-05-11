@@ -11,7 +11,6 @@
  */
 package ccc.services;
 
-import java.util.Date;
 import java.util.UUID;
 
 import ccc.domain.Snapshot;
@@ -42,27 +41,4 @@ public interface IWorkingCopyManager {
      */
     void clearWorkingCopy(final User actor,
                           UUID id);
-
-    /**
-     * Applies the current working copy to update a page.
-     *
-     * @param id The page's id.
-     * @param comment The comment for the page edit.
-     * @param isMajorEdit A boolean for major edit.
-     * @param actor The actor that performed the update.
-     * @param happenedOn The date the update took place.
-     */
-    void applyWorkingCopy(UUID id,
-                          String comment,
-                          boolean isMajorEdit,
-                          User actor,
-                          Date happenedOn);
-
-    /**
-     * Applies the current working copy to update a resource.
-     *
-     * @param id The resource's id.
-     * @param actor The actor that performed the update.
-     */
-    void applyWorkingCopy(final UUID id, User actor);
 }

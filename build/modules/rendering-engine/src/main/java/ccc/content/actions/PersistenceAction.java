@@ -23,7 +23,6 @@ import org.apache.log4j.Logger;
 
 import ccc.persistence.jpa.BaseDao;
 import ccc.services.Dao;
-import ccc.services.UserLookup;
 
 
 
@@ -62,10 +61,9 @@ public class PersistenceAction
 
         try {
             final Dao dao = new BaseDao(em);
-            final UserLookup ul = new UserLookup(dao);
-
-            req.setAttribute(SessionKeys.DAO_KEY, dao);
-            req.setAttribute(SessionKeys.CURRENT_USER, ul.loggedInUser(req.getUserPrincipal()));
+            req.setAttribute(
+                SessionKeys.DAO_KEY,
+                dao);
 
             _delegate.execute(req, resp);
 
@@ -73,5 +71,4 @@ public class PersistenceAction
             em.close();
         }
     }
-
 }

@@ -31,9 +31,7 @@ import ccc.content.actions.ReadOnlyTxAction;
 import ccc.content.actions.ReaderAction;
 import ccc.content.actions.RenderResourceAction;
 import ccc.content.actions.ServletAction;
-import ccc.services.DataManager;
 import ccc.services.SearchEngine;
-import ccc.services.UserManager;
 
 
 /**
@@ -48,9 +46,7 @@ public class ContentServlet
 
     @Resource                    private transient UserTransaction      _utx;
     @PersistenceUnit             private transient EntityManagerFactory _emf;
-    @EJB(name=DataManager.NAME)  private transient DataManager          _data;
     @EJB(name=SearchEngine.NAME) private transient SearchEngine         _search;
-    @EJB(name=UserManager.NAME)  private transient UserManager          _um;
 
 
     private String _rootName           = null;
@@ -90,8 +86,7 @@ public class ContentServlet
                                 _respectVisibility,
                                 _rootName,
                                 "/content/login?tg=",
-                                _search,
-                                _data)
+                                _search)
                             ),
                         _emf),
                     _utx),

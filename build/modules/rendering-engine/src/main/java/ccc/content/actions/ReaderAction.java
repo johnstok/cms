@@ -17,12 +17,16 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ccc.persistence.jpa.FsCoreData;
 import ccc.services.AuditLog;
 import ccc.services.AuditLogEJB;
 import ccc.services.Dao;
+import ccc.services.DataManager;
+import ccc.services.DataManagerEJB;
 import ccc.services.ResourceDaoImpl;
 import ccc.services.StatefulReader;
 import ccc.services.StatefulReaderEJB;
+import ccc.services.UserLookup;
 
 
 /**
@@ -52,7 +56,18 @@ public class ReaderAction
                                                                IOException {
         final Dao dao =
             (Dao) req.getAttribute(SessionKeys.DAO_KEY);
+
+        final UserLookup ul = new UserLookup(dao);
+        req.setAttribute(
+            SessionKeys.CURRENT_USER,
+            ul.loggedInUser(req.getUserPrincipal()));
+
         final AuditLog al = new AuditLogEJB(dao);
+        req.setAttribute(SessionKeys.AUDIT_KEY, al);
+
+        final DataManager dm = new DataManagerEJB(new FsCoreData(), dao);
+        req.setAttribute(SessionKeys.DATA_KEY, dm);
+
         final StatefulReader sr =
             new StatefulReaderEJB(
                 al,

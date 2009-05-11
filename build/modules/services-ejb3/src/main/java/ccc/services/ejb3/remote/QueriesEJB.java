@@ -41,13 +41,10 @@ import ccc.persistence.jpa.BaseDao;
 import ccc.services.ActionDao;
 import ccc.services.AuditLog;
 import ccc.services.AuditLogEJB;
-import ccc.services.Dao;
-import ccc.services.DataManager;
-import ccc.services.FolderDao;
 import ccc.services.ModelTranslation;
+import ccc.services.QueryNames;
 import ccc.services.ResourceDao;
 import ccc.services.ResourceDaoImpl;
-import ccc.services.TemplateDao;
 import ccc.services.UserLookup;
 import ccc.services.UserManager;
 import ccc.services.api.ActionSummary;
@@ -82,16 +79,14 @@ public final class QueriesEJB
     implements
         Queries {
 
-    @EJB(name=TemplateDao.NAME)    private TemplateDao     _templates;
-    @EJB(name=FolderDao.NAME)      private FolderDao       _folders;
     @EJB(name=UserManager.NAME)    private UserManager     _users;
-    @EJB(name=DataManager.NAME)    private DataManager     _datas;
     @EJB(name=ActionDao.NAME)      private ActionDao       _actions;
 
     @PersistenceContext private EntityManager _em;
     @javax.annotation.Resource private EJBContext _context;
     private ResourceDao     _resources;
     private UserLookup _userLookup;
+    private BaseDao _bdao;
 
     /**
      * Constructor.
@@ -168,13 +163,14 @@ public final class QueriesEJB
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> roots() {
-        return mapResources(_folders.roots());
+        return mapResources(_resources.list("roots", Folder.class));
     }
 
     /** {@inheritDoc} */
     @Override
     public boolean templateNameExists(final String templateName) {
-        return _templates.nameExists(new ResourceName(templateName));
+        return null!=_resources.find(
+            "templateByName", Template.class, new ResourceName(templateName));
 
 
     }
@@ -182,7 +178,7 @@ public final class QueriesEJB
     /** {@inheritDoc} */
     @Override
     public Collection<TemplateDelta> templates() {
-        return deltaTemplates(_templates.allTemplates());
+        return deltaTemplates(_resources.list("allTemplates", Template.class));
     }
 
     /*
@@ -263,7 +259,7 @@ public final class QueriesEJB
     @Override
     public Collection<FileSummary> getAllContentImages() {
         final List<File> list = new ArrayList<File>();
-        for (final File file : _datas.findImages()) {
+        for (final File file : _bdao.list(QueryNames.ALL_IMAGES, File.class)) {
             if (PredefinedResourceNames.CONTENT.equals(
                 file.root().name().toString())) {
                 list.add(file);
@@ -317,10 +313,10 @@ public final class QueriesEJB
 
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
-        final Dao bdao = new BaseDao(_em);
-        final AuditLog audit = new AuditLogEJB(bdao);
-        _resources = new ResourceDaoImpl(audit, bdao);
-        _userLookup = new UserLookup(bdao);
+        _bdao = new BaseDao(_em);
+        final AuditLog audit = new AuditLogEJB(_bdao);
+        _resources = new ResourceDaoImpl(audit, _bdao);
+        _userLookup = new UserLookup(_bdao);
     }
 
     /** {@inheritDoc} */
