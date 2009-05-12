@@ -176,4 +176,14 @@ public class WordCharFixer {
         hrefMatcher.appendTail(correctedPara);
         return correctedPara;
     }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param title
+     * @return
+     */
+    public String fix(final String title) {
+        return correct(new StringBuffer(title)).toString();
+    }
 }
