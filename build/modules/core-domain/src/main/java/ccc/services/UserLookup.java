@@ -43,6 +43,9 @@ public final class UserLookup {
      * @return The corresponding CCC user.
      */
     public User loggedInUser(final Principal p) {
+        if (null==p) {
+            return null;
+        }
         try {
             final String principalName = p.getName();
             final User user =
