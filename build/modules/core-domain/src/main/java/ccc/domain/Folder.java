@@ -63,14 +63,12 @@ public final class Folder extends Resource {
      * Add a resource to this folder.
      *
      * @param resource The resource to add.
+     * @throws ResourceExistsException
      */
-    public void add(final Resource resource) {
+    public void add(final Resource resource) throws ResourceExistsException {
         DBC.require().notNull(resource);
         if (hasEntryWithName(resource.name())) {
-            throw new CCCException(
-                "Folder already contains a resource with name '"
-                + resource.name()
-                + "'.");
+            throw new ResourceExistsException(this, resource.name());
         }
         _entries.add(resource);
         resource.parent(this);

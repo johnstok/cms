@@ -14,7 +14,9 @@ package ccc.actions;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.domain.LockMismatchException;
 import ccc.domain.Resource;
+import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -46,12 +48,15 @@ public class ApplyWorkingCopyCommand extends UpdateResourceCommand {
      * @param isMajorEdit A boolean for major edit.
      * @param actor The actor that performed the update.
      * @param happenedOn The date the update took place.
+     * @throws LockMismatchException
+     * @throws UnlockedException
      */
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID id,
                         final String comment,
-                        final boolean isMajorEdit) {
+                        final boolean isMajorEdit)
+                               throws UnlockedException, LockMismatchException {
         final Resource r = _dao.find(Resource.class, id);
         r.confirmLock(actor);
 

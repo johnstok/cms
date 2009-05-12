@@ -17,15 +17,15 @@ import java.util.List;
 import java.util.Map;
 
 import junit.framework.TestCase;
-import ccc.content.velocity.VelocityHelper;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.Resource;
+import ccc.domain.ResourceExistsException;
 
 
 /**
- * TODO: Add Description for this type.
+ * Tests for the {@link VelocityHelper} class.
  *
  * @author Civic Computing Ltd.
  */
@@ -50,9 +50,10 @@ public class VelocityHelperTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      *
      */
-    public void testSelectPathElements() {
+    public void testSelectPathElements() throws ResourceExistsException {
 
         // ARRANGE
         final VelocityHelper helper = new VelocityHelper();
@@ -77,9 +78,10 @@ public class VelocityHelperTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      *
      */
-    public void testSelectPagesForContentIndex() {
+    public void testSelectPagesForContentIndex() throws ResourceExistsException {
 
         // ARRANGE
         final VelocityHelper helper = new VelocityHelper();
@@ -111,9 +113,11 @@ public class VelocityHelperTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      *
      */
-    public void testSelectPagesForContentIndexNoLimit() {
+    public void testSelectPagesForContentIndexNoLimit()
+    throws ResourceExistsException {
 
         // ARRANGE
         final VelocityHelper helper = new VelocityHelper();

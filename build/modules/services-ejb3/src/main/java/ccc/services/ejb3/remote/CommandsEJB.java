@@ -40,6 +40,7 @@ import ccc.actions.CreatePageCommand;
 import ccc.actions.CreateSearchCommand;
 import ccc.actions.CreateTemplateCommand;
 import ccc.actions.CreateUserCommand;
+import ccc.actions.RenameResourceCommand;
 import ccc.actions.ReorderFolderContentsCommand;
 import ccc.actions.ScheduleActionCommand;
 import ccc.actions.UpdateAliasCommand;
@@ -50,14 +51,18 @@ import ccc.actions.UpdateTemplateCommand;
 import ccc.actions.UpdateUserCommand;
 import ccc.domain.CCCException;
 import ccc.domain.Folder;
+import ccc.domain.InsufficientPrivilegesException;
+import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.PageHelper;
 import ccc.domain.Paragraph;
 import ccc.domain.Resource;
+import ccc.domain.ResourceExistsException;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourceOrder;
 import ccc.domain.Snapshot;
+import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.persistence.jpa.BaseDao;
 import ccc.services.AuditLog;
@@ -109,13 +114,18 @@ public class CommandsEJB
     public ResourceSummary createAlias(final ID parentId,
                             final String name,
                             final ID targetId) {
-        return mapResource(
-            new CreateAliasCommand(_bdao, _audit).execute(
-                loggedInUser(),
-                new Date(),
-                toUUID(parentId),
-                toUUID(targetId),
-                name));
+        try {
+            return mapResource(
+                new CreateAliasCommand(_bdao, _audit).execute(
+                    loggedInUser(),
+                    new Date(),
+                    toUUID(parentId),
+                    toUUID(targetId),
+                    name));
+
+        } catch (final ResourceExistsException e) {
+            throw e.toRemoteException(ActionType.CREATE);
+        }
     }
 
     /** {@inheritDoc} */
@@ -130,9 +140,14 @@ public class CommandsEJB
     public ResourceSummary createFolder(final ID parentId,
                                         final String name,
                                         final String title) {
-        return mapResource(
-            new CreateFolderCommand(_bdao, _audit).execute(
-                loggedInUser(), new Date(), toUUID(parentId), name, title));
+        try {
+            return mapResource(
+                new CreateFolderCommand(_bdao, _audit).execute(
+                    loggedInUser(), new Date(), toUUID(parentId), name, title));
+
+        } catch (final ResourceExistsException e) {
+            throw e.toRemoteException(ActionType.CREATE);
+        }
     }
 
     /** {@inheritDoc} */
@@ -142,16 +157,20 @@ public class CommandsEJB
                                       final String name,
                                       final boolean publish,
                                       final ID templateId) {
-        final Page p = new CreatePageCommand(_bdao, _audit).execute(
-            loggedInUser(),
-            new Date(),
-            toUUID(parentId),
-            delta,
-            publish,
-            ResourceName.escape(name),
-            toUUID(templateId));
+        try {
+            final Page p = new CreatePageCommand(_bdao, _audit).execute(
+                loggedInUser(),
+                new Date(),
+                toUUID(parentId),
+                delta,
+                publish,
+                ResourceName.escape(name),
+                toUUID(templateId));
+            return mapResource(p);
 
-        return mapResource(p);
+        } catch (final ResourceExistsException e) {
+            throw e.toRemoteException(ActionType.CREATE);
+        }
     }
 
     /** {@inheritDoc} */
@@ -159,13 +178,18 @@ public class CommandsEJB
     public ResourceSummary createTemplate(final ID parentId,
                                           final TemplateDelta delta,
                                           final String name) {
-        return mapResource(
-            new CreateTemplateCommand(_bdao, _audit).execute(
-                loggedInUser(),
-                new Date(),
-                toUUID(parentId),
-                delta,
-                new ResourceName(name)));
+        try {
+            return mapResource(
+                new CreateTemplateCommand(_bdao, _audit).execute(
+                    loggedInUser(),
+                    new Date(),
+                    toUUID(parentId),
+                    delta,
+                    new ResourceName(name)));
+
+        } catch (final ResourceExistsException e) {
+            throw e.toRemoteException(ActionType.CREATE);
+        }
 
     }
 
@@ -180,64 +204,121 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     public void lock(final ID resourceId) {
-        _resources.lock(loggedInUser(), new Date(), toUUID(resourceId));
+        try {
+            _resources.lock(loggedInUser(), new Date(), toUUID(resourceId));
+
+        } catch (final LockMismatchException e) {
+            throw e.toRemoteException(ActionType.CREATE);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public void move(final ID resourceId,
                      final ID newParentId) {
-        _resources.move(
-            loggedInUser(),
-            new Date(),
-            toUUID(resourceId),
-            toUUID(newParentId));
+        try {
+            _resources.move(
+                loggedInUser(),
+                new Date(),
+                toUUID(resourceId),
+                toUUID(newParentId));
+
+        } catch (final UnlockedException e) {
+            throw e.toRemoteException(ActionType.MOVE);
+        } catch (final LockMismatchException e) {
+            throw e.toRemoteException(ActionType.MOVE);
+        } catch (final ResourceExistsException e) {
+            throw e.toRemoteException(ActionType.MOVE);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public void publish(final ID resourceId) {
-        _resources.publish(
-            loggedInUser(), new Date(), toUUID(resourceId));
+        try {
+            _resources.publish(
+                loggedInUser(), new Date(), toUUID(resourceId));
+
+        } catch (final UnlockedException e) {
+            throw e.toRemoteException(ActionType.PUBLISH);
+        } catch (final LockMismatchException e) {
+            throw e.toRemoteException(ActionType.PUBLISH);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public void publish(final ID resourceId, final ID userId, final Date date) {
-        _resources.publish(toUUID(resourceId), toUUID(userId), date);
+        try {
+            _resources.publish(toUUID(resourceId), toUUID(userId), date);
+
+        } catch (final UnlockedException e) {
+            throw e.toRemoteException(ActionType.PUBLISH);
+        } catch (final LockMismatchException e) {
+            throw e.toRemoteException(ActionType.PUBLISH);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public void rename(final ID resourceId,
                        final String name) {
+            try {
+                new RenameResourceCommand(_bdao, _audit).rename(
+                    loggedInUser(), new Date(), toUUID(resourceId), name);
 
-        _resources.rename(
-            loggedInUser(), new Date(), toUUID(resourceId), name);
+            } catch (final UnlockedException e) {
+                throw e.toRemoteException(ActionType.RENAME);
+            } catch (final LockMismatchException e) {
+                throw e.toRemoteException(ActionType.RENAME);
+            } catch (final ResourceExistsException e) {
+                throw e.toRemoteException(ActionType.RENAME);
+            }
     }
 
     /** {@inheritDoc} */
     @Override
     public void unlock(final ID resourceId) {
-        _resources.unlock(
-            loggedInUser(), new Date(), toUUID(resourceId));
+        try {
+            _resources.unlock(
+                loggedInUser(), new Date(), toUUID(resourceId));
+
+        } catch (final InsufficientPrivilegesException e) {
+            throw e.toRemoteException(ActionType.UNLOCK);
+        } catch (final UnlockedException e) {
+            throw e.toRemoteException(ActionType.UNLOCK);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public void unpublish(final ID resourceId) {
-        _resources.unpublish(
-            loggedInUser(), new Date(), toUUID(resourceId));
+        try {
+            _resources.unpublish(
+                loggedInUser(), new Date(), toUUID(resourceId));
+
+        } catch (final UnlockedException e) {
+            throw e.toRemoteException(ActionType.UNPUBLISH);
+        } catch (final LockMismatchException e) {
+            throw e.toRemoteException(ActionType.UNPUBLISH);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateAlias(final ID aliasId, final AliasDelta delta) {
-        new UpdateAliasCommand(_bdao, _audit).execute(
-            loggedInUser(),
-            new Date(),
-            toUUID(delta.getTargetId()),
-            toUUID(aliasId));
+        try {
+            new UpdateAliasCommand(_bdao, _audit).execute(
+                loggedInUser(),
+                new Date(),
+                toUUID(delta.getTargetId()),
+                toUUID(aliasId));
+
+        } catch (final UnlockedException e) {
+            throw e.toRemoteException(ActionType.UPDATE);
+        } catch (final LockMismatchException e) {
+            throw e.toRemoteException(ActionType.UPDATE);
+        }
     }
 
     /** {@inheritDoc} */
@@ -246,41 +327,62 @@ public class CommandsEJB
                            final PageDelta delta,
                            final String comment,
                            final boolean isMajorEdit) {
-        new UpdatePageCommand(_bdao, _audit).execute(
-            loggedInUser(),
-            new Date(),
-            toUUID(pageId),
-            delta,
-            comment,
-            isMajorEdit);
+        try {
+            new UpdatePageCommand(_bdao, _audit).execute(
+                loggedInUser(),
+                new Date(),
+                toUUID(pageId),
+                delta,
+                comment,
+                isMajorEdit);
+
+        } catch (final UnlockedException e) {
+            throw e.toRemoteException(ActionType.UPDATE);
+        } catch (final LockMismatchException e) {
+            throw e.toRemoteException(ActionType.UPDATE);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateWorkingCopy(final ID pageId, final PageDelta delta) {
-        // FIXME: A delta and a working copy are the thing!
+        try {
+            // FIXME: A delta and a working copy are the thing!
 
-        final Page page = new Page(delta.getTitle());
+            final Page page = new Page(delta.getTitle());
 
-        new PageHelper().assignParagraphs(page, delta);
+            new PageHelper().assignParagraphs(page, delta);
 
-        _wcMgr.updateWorkingCopy(
-            loggedInUser(), toUUID(pageId), page.createSnapshot());
+            _wcMgr.updateWorkingCopy(
+                loggedInUser(), toUUID(pageId), page.createSnapshot());
+
+        } catch (final UnlockedException e) {
+            throw e.toRemoteException(ActionType.UPDATE);
+        } catch (final LockMismatchException e) {
+            throw e.toRemoteException(ActionType.UPDATE);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public void createWorkingCopy(final ID resourceId, final long index) {
-        final UUID resourceUuid = toUUID(resourceId);
-        final LogEntry le = _audit.findEntryForIndex(index);
+        try {
+            final UUID resourceUuid = toUUID(resourceId);
+            final LogEntry le = _audit.findEntryForIndex(index);
 
-        if (resourceUuid.equals(le.subjectId())) {
-            _wcMgr.updateWorkingCopy(
-                loggedInUser(),
-                toUUID(resourceId),
-                new Snapshot(le.detail()));
-        } else {
-            throw new CCCException("Log entry describes another resource.");
+            if (resourceUuid.equals(le.subjectId())) {
+                _wcMgr.updateWorkingCopy(
+                    loggedInUser(),
+                    toUUID(resourceId),
+                    new Snapshot(le.detail()));
+            } else {
+                throw new CCCException("Log entry describes another resource.");
+            }
+
+        } catch (final UnlockedException e) {
+            throw e.toRemoteException(ActionType.CREATE);
+        } catch (final LockMismatchException e) {
+            throw e.toRemoteException(ActionType.CREATE);
         }
     }
 
@@ -288,16 +390,33 @@ public class CommandsEJB
     @Override
     public void updateResourceTemplate(final ID resourceId,
                                        final ID templateId) {
-        _resources.updateTemplateForResource(
-            loggedInUser(), new Date(), toUUID(resourceId), toUUID(templateId));
+        try {
+            _resources.updateTemplateForResource(
+                loggedInUser(),
+                new Date(),
+                toUUID(resourceId),
+                toUUID(templateId));
+
+        } catch (final UnlockedException e) {
+            throw e.toRemoteException(ActionType.CHANGE_TEMPLATE);
+        } catch (final LockMismatchException e) {
+            throw e.toRemoteException(ActionType.CHANGE_TEMPLATE);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateTags(final ID resourceId,
                            final String tags) {
-        _resources.updateTags(
-            loggedInUser(), new Date(), toUUID(resourceId), tags);
+        try {
+            _resources.updateTags(
+                loggedInUser(), new Date(), toUUID(resourceId), tags);
+
+        } catch (final UnlockedException e) {
+            throw e.toRemoteException(ActionType.UPDATE_TAGS);
+        } catch (final LockMismatchException e) {
+            throw e.toRemoteException(ActionType.UPDATE_TAGS);
+        }
 
     }
 
@@ -305,8 +424,15 @@ public class CommandsEJB
     @Override
     public void updateTemplate(final ID templateId,
                                           final TemplateDelta delta) {
-        new UpdateTemplateCommand(_bdao, _audit).execute(
-            loggedInUser(), new Date(), toUUID(templateId), delta);
+        try {
+            new UpdateTemplateCommand(_bdao, _audit).execute(
+                loggedInUser(), new Date(), toUUID(templateId), delta);
+
+        } catch (final UnlockedException e) {
+            throw e.toRemoteException(ActionType.UPDATE);
+        } catch (final LockMismatchException e) {
+            throw e.toRemoteException(ActionType.UPDATE);
+        }
     }
 
     /** {@inheritDoc} */
@@ -327,8 +453,15 @@ public class CommandsEJB
     @Override
     public void includeInMainMenu(final ID resourceId,
                                   final boolean include) {
-        _resources.includeInMainMenu(
-            loggedInUser(), new Date(), toUUID(resourceId), include);
+        try {
+            _resources.includeInMainMenu(
+                loggedInUser(), new Date(), toUUID(resourceId), include);
+
+        } catch (final UnlockedException e) {
+            throw e.toRemoteException(ActionType.INCLUDE_IN_MM);
+        } catch (final LockMismatchException e) {
+            throw e.toRemoteException(ActionType.INCLUDE_IN_MM);
+        }
     }
 
     /** {@inheritDoc} */
@@ -361,35 +494,61 @@ public class CommandsEJB
     @Override
     public void updateMetadata(final ID resourceId,
                                final Map<String, String> metadata) {
-        _resources.updateMetadata(
-            loggedInUser(), new Date(), toUUID(resourceId), metadata);
+        try {
+            _resources.updateMetadata(
+                loggedInUser(), new Date(), toUUID(resourceId), metadata);
+
+        } catch (final UnlockedException e) {
+            throw e.toRemoteException(ActionType.UPDATE_METADATA);
+        } catch (final LockMismatchException e) {
+            throw e.toRemoteException(ActionType.UPDATE_METADATA);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateFolderSortOrder(final ID folderId,
                                       final String sortOrder) {
-        new UpdateFolderCommand(_bdao, _audit).execute(
-            loggedInUser(),
-             new Date(),
-             toUUID(folderId),
-             ResourceOrder.valueOf(sortOrder));
+        try {
+            new UpdateFolderCommand(_bdao, _audit).execute(
+                loggedInUser(),
+                 new Date(),
+                 toUUID(folderId),
+                 ResourceOrder.valueOf(sortOrder));
+
+        } catch (final UnlockedException e) {
+            throw e.toRemoteException(ActionType.UPDATE_SORT_ORDER);
+        } catch (final LockMismatchException e) {
+            throw e.toRemoteException(ActionType.UPDATE_SORT_ORDER);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public void clearWorkingCopy(final ID pageId) {
-        _wcMgr.clearWorkingCopy(loggedInUser(), toUUID(pageId));
+        try {
+            _wcMgr.clearWorkingCopy(loggedInUser(), toUUID(pageId));
+
+        } catch (final UnlockedException e) {
+            throw e.toRemoteException(ActionType.CLEAR_WC);
+        } catch (final LockMismatchException e) {
+            throw e.toRemoteException(ActionType.CLEAR_WC);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createSearch(final ID parentId,
                                         final String title) {
-        return mapResource(
-            new CreateSearchCommand(_bdao, _audit).execute(
-                loggedInUser(), new Date(), toUUID(parentId), title)
-        );
+        try {
+            return mapResource(
+                new CreateSearchCommand(_bdao, _audit).execute(
+                    loggedInUser(), new Date(), toUUID(parentId), title)
+            );
+
+        } catch (final ResourceExistsException e) {
+            throw e.toRemoteException(ActionType.CREATE);
+        }
     }
 
     /** {@inheritDoc} */
@@ -418,36 +577,64 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     public void reorder(final ID folderId, final List<String> order) { // FIXME: Should be List<ID>
-        final List<UUID> newOrder = new ArrayList<UUID>();
-        for (final String entry : order) {
-            newOrder.add(UUID.fromString(entry));
-        }
+        try {
+            final List<UUID> newOrder = new ArrayList<UUID>();
+            for (final String entry : order) {
+                newOrder.add(UUID.fromString(entry));
+            }
+            new ReorderFolderContentsCommand(_resources, _audit).execute(
+                loggedInUser(), new Date(), toUUID(folderId), newOrder);
 
-        new ReorderFolderContentsCommand(_resources, _audit).execute(
-            loggedInUser(), new Date(), toUUID(folderId), newOrder);
+
+        } catch (final UnlockedException e) {
+            throw e.toRemoteException(ActionType.REORDER);
+        } catch (final LockMismatchException e) {
+            throw e.toRemoteException(ActionType.REORDER);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public void changeRoles(final ID resourceId,
                             final Collection<String> roles) {
-        _resources.changeRoles(
-            loggedInUser(), new Date(), toUUID(resourceId), roles);
+        try {
+            _resources.changeRoles(
+                loggedInUser(), new Date(), toUUID(resourceId), roles);
+
+        } catch (final UnlockedException e) {
+            throw e.toRemoteException(ActionType.CHANGE_ROLES);
+        } catch (final LockMismatchException e) {
+            throw e.toRemoteException(ActionType.CHANGE_ROLES);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public void applyWorkingCopyToFile(final ID fileId) {
-        new ApplyWorkingCopyCommand(_bdao, _audit).execute(
-            loggedInUser(), new Date(), toUUID(fileId), null, false);
+        try {
+            new ApplyWorkingCopyCommand(_bdao, _audit).execute(
+                loggedInUser(), new Date(), toUUID(fileId), null, false);
+
+        } catch (final UnlockedException e) {
+            throw e.toRemoteException(ActionType.UPDATE);
+        } catch (final LockMismatchException e) {
+            throw e.toRemoteException(ActionType.UPDATE);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateCacheDuration(final ID resourceId,
                                     final Duration duration) {
-        _resources.updateCache(
-            loggedInUser(), new Date(), toUUID(resourceId), duration);
+        try {
+            _resources.updateCache(
+                loggedInUser(), new Date(), toUUID(resourceId), duration);
+
+        } catch (final UnlockedException e) {
+            throw e.toRemoteException(ActionType.UPDATE_CACHE);
+        } catch (final LockMismatchException e) {
+            throw e.toRemoteException(ActionType.UPDATE_CACHE);
+        }
     }
 
     /** {@inheritDoc} */

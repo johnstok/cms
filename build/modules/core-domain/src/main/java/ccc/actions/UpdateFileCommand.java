@@ -19,6 +19,8 @@ import javax.activation.MimeType;
 import javax.activation.MimeTypeParseException;
 
 import ccc.domain.File;
+import ccc.domain.LockMismatchException;
+import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -59,12 +61,15 @@ public class UpdateFileCommand extends UpdateResourceCommand {
      *        should be read.
      * @param fileDelta The delta describing changes to the file's metadata.
      * @throws MimeTypeParseException
+     * @throws LockMismatchException
+     * @throws UnlockedException
      */
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID fileId,
                         final FileDelta fileDelta,
-                        final InputStream dataStream) throws MimeTypeParseException {
+                        final InputStream dataStream)
+       throws MimeTypeParseException, UnlockedException, LockMismatchException {
         final File f = _dao.find(File.class, fileId);
         f.confirmLock(actor);
 

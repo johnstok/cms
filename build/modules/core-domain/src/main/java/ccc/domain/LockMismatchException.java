@@ -11,7 +11,12 @@
  */
 package ccc.domain;
 
+import java.util.HashMap;
+
 import ccc.commons.DBC;
+import ccc.services.api.ActionType;
+import ccc.services.api.CCCRemoteException;
+import ccc.services.api.RemoteExceptionSupport;
 
 
 /**
@@ -21,7 +26,9 @@ import ccc.commons.DBC;
  */
 public class LockMismatchException
     extends
-        CCCException {
+        Exception
+    implements
+        RemoteExceptionSupport {
 
     private final Resource _resource;
 
@@ -49,5 +56,11 @@ public class LockMismatchException
     @Override
     public String getMessage() {
         return "Mismatch confirming lock on "+_resource.id()+".";
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CCCRemoteException toRemoteException(final ActionType action) {
+        return new CCCRemoteException(2, action, new HashMap<String, String>());
     }
 }

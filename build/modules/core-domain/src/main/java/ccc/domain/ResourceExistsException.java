@@ -11,56 +11,48 @@
  */
 package ccc.domain;
 
-import java.util.HashMap;
-
-import ccc.commons.DBC;
 import ccc.services.api.ActionType;
 import ccc.services.api.CCCRemoteException;
 import ccc.services.api.RemoteExceptionSupport;
 
 
 /**
- * An exception used to indicate that a resource is unlocked.
+ * TODO: Add Description for this type.
  *
  * @author Civic Computing Ltd.
  */
-public class UnlockedException
+public class ResourceExistsException
     extends
         Exception
     implements
         RemoteExceptionSupport {
 
-    private final Resource _resource;
-
+    private ResourceName _name;
+    private Folder       _folder;
 
     /**
      * Constructor.
      *
-     * @param resource The unlocked resource.
+     * @param folder
+     * @param name
      */
-    public UnlockedException(final Resource resource) {
-        DBC.require().notNull(resource);
-        _resource = resource;
+    public ResourceExistsException(final Folder folder,
+                                   final ResourceName name) {
+        _folder = folder;
+        _name = name;
     }
 
-    /**
-     * Accessor for the unlocked resource.
-     *
-     * @return The unlocked resource.
-     */
-    public Resource resource() {
-        return _resource;
-    }
 
     /** {@inheritDoc} */
     @Override
     public String getMessage() {
-        return "Resource "+_resource.id()+" is Unlocked.";
+        return "Folder already contains a resource with name '" + _name + "'.";
     }
+
 
     /** {@inheritDoc} */
     @Override
     public CCCRemoteException toRemoteException(final ActionType action) {
-        return new CCCRemoteException(1, action,new HashMap<String, String>());
+        return new CCCRemoteException(CCCRemoteException.EXISTS, action);
     }
 }

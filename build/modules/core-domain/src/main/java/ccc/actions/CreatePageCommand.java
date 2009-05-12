@@ -16,6 +16,7 @@ import java.util.UUID;
 
 import ccc.domain.Page;
 import ccc.domain.PageHelper;
+import ccc.domain.ResourceExistsException;
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
 import ccc.domain.User;
@@ -54,6 +55,7 @@ public class CreatePageCommand extends CreateResourceCommand {
      * @param publish
      * @param name
      * @param templateId
+     * @throws ResourceExistsException
      */
     public Page execute(final User actor,
                         final Date happenedOn,
@@ -61,7 +63,7 @@ public class CreatePageCommand extends CreateResourceCommand {
                         final PageDelta delta,
                         final boolean publish,
                         final ResourceName name,
-                        final UUID templateId) {
+                        final UUID templateId) throws ResourceExistsException {
 
         final Page page = new Page(name, delta.getTitle());
 

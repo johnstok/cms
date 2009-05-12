@@ -41,8 +41,10 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testResourceResourceAccessibilityRespectsParentalRoles() {
+    public void testResourceResourceAccessibilityRespectsParentalRoles()
+    throws ResourceExistsException {
 
         // ARRANGE
         final Folder f = new Folder();
@@ -97,8 +99,9 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testComputeRoles() {
+    public void testComputeRoles() throws ResourceExistsException {
 
         // ARRANGE
         final Folder f = new Folder();
@@ -200,8 +203,10 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testClearingMetadataDoesNotAffectParents() {
+    public void testClearingMetadataDoesNotAffectParents()
+    throws ResourceExistsException {
 
         // ARRANGE
         final Folder f = new Folder();
@@ -268,8 +273,10 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testMetadataIsInheritedFromParents() {
+    public void testMetadataIsInheritedFromParents()
+    throws ResourceExistsException {
 
         // ARRANGE
         final Folder f = new Folder();
@@ -285,8 +292,10 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testLocalMetadataIsChosenOverParentMetadata() {
+    public void testLocalMetadataIsChosenOverParentMetadata()
+    throws ResourceExistsException {
 
         // ARRANGE
         final Folder f = new Folder();
@@ -324,8 +333,10 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testRootAccessorReturnParent() {
+    public void testRootAccessorReturnParent()
+    throws ResourceExistsException {
 
         // ARRANGE
         final Folder root = new Folder("root");
@@ -373,8 +384,9 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
+     * @throws LockMismatchException
      */
-    public void testLockFailsWhenAlreadyLocked() {
+    public void testLockFailsWhenAlreadyLocked() throws LockMismatchException {
 
         // ARRANGE
         final Page p = new Page("myPage");
@@ -393,8 +405,10 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
+     * @throws InsufficientPrivilegesException
      */
-    public void testUnlockFailsWhenNotLocked() {
+    public void testUnlockFailsWhenNotLocked()
+    throws InsufficientPrivilegesException {
 
         // ARRANGE
         final Page p = new Page("myPage");
@@ -415,8 +429,11 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
+     * @throws LockMismatchException
+     * @throws UnlockedException
      */
-    public void testUnlockFailsWhenUserCannotUnlock() {
+    public void testUnlockFailsWhenUserCannotUnlock()
+    throws LockMismatchException, UnlockedException {
 
         // ARRANGE
         final Page p = new Page("myPage");
@@ -438,8 +455,11 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
+     * @throws LockMismatchException
+     * @throws UnlockedException
      */
-    public void testConfirmLockDoesNothingWithCorrectUser() {
+    public void testConfirmLockDoesNothingWithCorrectUser()
+    throws LockMismatchException, UnlockedException {
 
         // ARRANGE
         final Page p = new Page("myPage");
@@ -451,8 +471,9 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
+     * @throws LockMismatchException
      */
-    public void testConfirmLockThrowsUnlockedException() {
+    public void testConfirmLockThrowsUnlockedException() throws LockMismatchException {
 
         // ARRANGE
         final Page p = new Page("myPage");
@@ -470,8 +491,10 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
+     * @throws LockMismatchException
+     * @throws UnlockedException
      */
-    public void testConfirmLockThrowsLockMismatchException() {
+    public void testConfirmLockThrowsLockMismatchException() throws LockMismatchException, UnlockedException {
 
         // ARRANGE
         final Page p = new Page("myPage");
@@ -598,8 +621,9 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
+     * @throws LockMismatchException
      */
-    public void testLockResource() {
+    public void testLockResource() throws LockMismatchException {
 
         //ARRANGE
         final User u = new User("blat");
@@ -614,8 +638,9 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
+     * @throws LockMismatchException
      */
-    public void testLockResourceRejectsNull() {
+    public void testLockResourceRejectsNull() throws LockMismatchException {
         // ACT
         try {
             final Resource r = new DummyResource("foo");
@@ -630,8 +655,13 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
+     * @throws LockMismatchException
+     * @throws UnlockedException
+     * @throws InsufficientPrivilegesException
      */
-    public void testUnlockResource() {
+    public void testUnlockResource() throws LockMismatchException,
+                                            InsufficientPrivilegesException,
+                                            UnlockedException {
 
         //ARRANGE
         final Resource r = new DummyResource("foo");
@@ -646,8 +676,9 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
+     * @throws LockMismatchException
      */
-    public void testQueryForLockedByUser() {
+    public void testQueryForLockedByUser() throws LockMismatchException {
 
         //ARRANGE
         final User u = new User("blat");
@@ -784,8 +815,9 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testAbsolutePath() {
+    public void testAbsolutePath() throws ResourceExistsException {
 
         // ARRANGE
         final Folder f = new Folder("foo");
@@ -801,8 +833,10 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testComputeTemplateReturnsDefaultWhenNoTemplateIsFound() {
+    public void testComputeTemplateReturnsDefaultWhenNoTemplateIsFound()
+    throws ResourceExistsException {
 
         // ARRANGE
         final Folder f1 = new Folder();
@@ -822,8 +856,10 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testComputeTemplateLooksInCalleeFirst() {
+    public void testComputeTemplateLooksInCalleeFirst()
+    throws ResourceExistsException {
 
         // ARRANGE
         final Template t1 = new Template();
@@ -849,8 +885,10 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testComputeTemplateRecursesToParent() {
+    public void testComputeTemplateRecursesToParent()
+    throws ResourceExistsException {
 
         // ARRANGE
         final Template t = new Template();
@@ -1003,8 +1041,9 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testIsVisibleTrue() {
+    public void testIsVisibleTrue() throws ResourceExistsException {
 
         //ARRANGE
         final User u = new User("user");
@@ -1031,8 +1070,9 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testIsVisibleFalse() {
+    public void testIsVisibleFalse() throws ResourceExistsException {
 
         //ARRANGE
         final User u = new User("user");
@@ -1058,8 +1098,9 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testComputeCache() {
+    public void testComputeCache() throws ResourceExistsException {
 
         // ARRANGE
         final Duration d = new Duration(650);

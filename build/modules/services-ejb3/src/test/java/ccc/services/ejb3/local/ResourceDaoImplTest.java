@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import junit.framework.TestCase;
+import ccc.actions.RenameResourceCommand;
 import ccc.domain.CreatorRoles;
 import ccc.domain.Folder;
 import ccc.domain.InsufficientPrivilegesException;
@@ -28,9 +29,11 @@ import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
+import ccc.domain.ResourceExistsException;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.Template;
+import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -83,8 +86,9 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testLookup() {
+    public void testLookup() throws ResourceExistsException {
 
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
@@ -120,8 +124,11 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
+     * @throws LockMismatchException
+     * @throws UnlockedException
      */
-    public void testIncludeInMainMenu() {
+    public void testIncludeInMainMenu()
+    throws LockMismatchException, UnlockedException {
 
         // ARRANGE
         _r.lock(_regularUser);
@@ -140,8 +147,11 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
+     * @throws LockMismatchException
+     * @throws UnlockedException
      */
-    public void testUpdateTags() {
+    public void testUpdateTags()
+    throws LockMismatchException, UnlockedException {
 
         // ARRANGE
         _r.lock(_regularUser);
@@ -161,8 +171,12 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
+     * @throws LockMismatchException
+     * @throws UnlockedException
+     * @throws InsufficientPrivilegesException
      */
-    public void testResourceCanBeUnlockedByLockerNonadmin() {
+    public void testResourceCanBeUnlockedByLockerNonadmin()
+    throws LockMismatchException, InsufficientPrivilegesException, UnlockedException {
 
         // ARRANGE
         expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
@@ -181,8 +195,11 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
+     * @throws LockMismatchException
+     * @throws UnlockedException
      */
-    public void testResourceCannotBeUnlockedByNonlockerNonAdmin() {
+    public void testResourceCannotBeUnlockedByNonlockerNonAdmin()
+    throws LockMismatchException, UnlockedException {
 
         // ARRANGE
         expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
@@ -207,8 +224,12 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
+     * @throws LockMismatchException
+     * @throws UnlockedException
+     * @throws InsufficientPrivilegesException
      */
-    public void testResourceCanBeUnlockedByNonlockerAdmin() {
+    public void testResourceCanBeUnlockedByNonlockerAdmin()
+    throws LockMismatchException, InsufficientPrivilegesException, UnlockedException {
 
         // ARRANGE
         expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
@@ -227,8 +248,9 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
+     * @throws LockMismatchException
      */
-    public void testUnlockedResourceCanBeLocked() {
+    public void testUnlockedResourceCanBeLocked() throws LockMismatchException {
 
         // ARRANGE
         expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
@@ -245,8 +267,10 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
+     * @throws LockMismatchException
      */
-    public void testLockedResourceCannotBeRelockedBySomeoneElse() {
+    public void testLockedResourceCannotBeRelockedBySomeoneElse()
+    throws LockMismatchException {
 
         // ARRANGE
         expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
@@ -303,8 +327,11 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
+     * @throws LockMismatchException
+     * @throws UnlockedException
      */
-    public void testSetDefaultTemplate() {
+    public void testSetDefaultTemplate()
+    throws LockMismatchException, UnlockedException {
 
         // ARRANGE
         final Template defaultTemplate =
@@ -319,7 +346,8 @@ public class ResourceDaoImplTest
         replayAll();
 
         // ACT
-        _rdao.updateTemplateForResource(_regularUser, new Date(), _r.id(), defaultTemplate.id());
+        _rdao.updateTemplateForResource(
+            _regularUser, new Date(), _r.id(), defaultTemplate.id());
 
         // ASSERT
         verifyAll();
@@ -328,8 +356,12 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
+     * @throws ResourceExistsException
+     * @throws LockMismatchException
+     * @throws UnlockedException
      */
-    public void testMove() {
+    public void testMove()
+    throws ResourceExistsException, LockMismatchException, UnlockedException {
 
         // ARRANGE
         final Folder oldParent = new Folder("old");
@@ -352,8 +384,12 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
+     * @throws ResourceExistsException
+     * @throws LockMismatchException
+     * @throws UnlockedException
      */
-    public void testRename() {
+    public void testRename()
+    throws UnlockedException, LockMismatchException, ResourceExistsException {
 
         // ARRANGE
         _r.lock(_regularUser);
@@ -362,7 +398,8 @@ public class ResourceDaoImplTest
         replayAll();
 
         // ACT
-        _rdao.rename(_regularUser, new Date(), _r.id(), "baz");
+        new RenameResourceCommand(_dao, _al).rename(
+            _regularUser, new Date(), _r.id(), "baz");
 
         // ASSERT
         verifyAll();
@@ -398,8 +435,10 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
+     * @throws LockMismatchException
+     * @throws UnlockedException
      */
-    public void testPublish() {
+    public void testPublish() throws LockMismatchException, UnlockedException {
 
         // ARRANGE
         _r.lock(_regularUser);
@@ -441,8 +480,11 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
+     * @throws LockMismatchException
+     * @throws UnlockedException
      */
-    public void testUnpublishWithUser() {
+    public void testUnpublishWithUser()
+    throws LockMismatchException, UnlockedException {
 
         // ARRANGE
         _r.lock(_regularUser);
@@ -463,8 +505,11 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
+     * @throws LockMismatchException
+     * @throws UnlockedException
      */
-    public void testUpdateMetadata() {
+    public void testUpdateMetadata()
+    throws LockMismatchException, UnlockedException {
 
         // ARRANGE
         _r.lock(_regularUser);
@@ -484,8 +529,11 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
+     * @throws LockMismatchException
+     * @throws UnlockedException
      */
-    public void testUpdateCache() {
+    public void testUpdateCache()
+    throws LockMismatchException, UnlockedException {
 
         // ARRANGE
         _r.lock(_regularUser);
@@ -494,7 +542,8 @@ public class ResourceDaoImplTest
         replayAll();
 
         // ACT
-        _rdao.updateCache(_regularUser, new Date(), _r.id(), new Duration(0, 1, 2, 7));
+        _rdao.updateCache(
+            _regularUser, new Date(), _r.id(), new Duration(0, 1, 2, 7));
 
         // ASSERT
         verifyAll();
@@ -515,17 +564,20 @@ public class ResourceDaoImplTest
     protected void setUp() throws Exception {
         _dao = createStrictMock(Dao.class);
         _al = createStrictMock(AuditLog.class);
-
         _rdao = new ResourceDaoImpl(_al, _dao);
         _r = new Page("foo");
+        _parent = new Folder("parent");
+        _parent.add(_r);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void tearDown() throws Exception {
-        _dao = null;
-        _rdao = null;
-        _r = null;
+        _parent = null;
+        _r      = null;
+        _rdao   = null;
+        _al     = null;
+        _dao    = null;
     }
 
 
@@ -533,6 +585,7 @@ public class ResourceDaoImplTest
     private AuditLog _al;
     private ResourceDaoImpl _rdao;
     private Resource _r;
+    private Folder _parent;
 
     private final User _regularUser = new User("regular");
     private final User _anotherUser = new User("another");

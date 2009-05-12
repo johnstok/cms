@@ -13,10 +13,12 @@ package ccc.services.ejb3.local;
 
 import static org.easymock.EasyMock.*;
 import junit.framework.TestCase;
+import ccc.domain.LockMismatchException;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.Snapshot;
+import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.ResourceDao;
 import ccc.services.WorkingCopyManager;
@@ -34,8 +36,11 @@ public class WorkingCopyManagerTest
 
     /**
      * Test.
+     * @throws LockMismatchException
+     * @throws UnlockedException
      */
-    public void testClearWorkingCopy() {
+    public void testClearWorkingCopy()
+    throws UnlockedException, LockMismatchException {
 
         // ARRANGE
         final Page p = new Page("foo");
@@ -55,8 +60,11 @@ public class WorkingCopyManagerTest
 
     /**
      * Test.
+     * @throws LockMismatchException
+     * @throws UnlockedException
      */
-    public void testUpdateWorkingCopy() {
+    public void testUpdateWorkingCopy()
+    throws UnlockedException, LockMismatchException {
 
         // ARRANGE
         final Page page = new Page("test");

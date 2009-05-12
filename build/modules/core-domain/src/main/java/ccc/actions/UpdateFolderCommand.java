@@ -15,7 +15,9 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.domain.Folder;
+import ccc.domain.LockMismatchException;
 import ccc.domain.ResourceOrder;
+import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -46,11 +48,14 @@ public class UpdateFolderCommand extends UpdateResourceCommand {
      * @param happenedOn
      * @param folderId
      * @param order
+     * @throws LockMismatchException
+     * @throws UnlockedException
      */
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID folderId,
-                        final ResourceOrder order) {
+                        final ResourceOrder order)
+                               throws UnlockedException, LockMismatchException {
 
         final Folder f = _dao.find(Folder.class, folderId);
         f.confirmLock(actor);

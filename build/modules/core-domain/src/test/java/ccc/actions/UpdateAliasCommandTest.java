@@ -17,8 +17,10 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 import ccc.domain.Alias;
+import ccc.domain.LockMismatchException;
 import ccc.domain.Page;
 import ccc.domain.Resource;
+import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -35,8 +37,11 @@ public class UpdateAliasCommandTest
 
     /**
      * Test.
+     * @throws LockMismatchException
+     * @throws UnlockedException
      */
-    public void testUpdateAlias() {
+    public void testUpdateAlias()
+                               throws UnlockedException, LockMismatchException {
 
         // ARRANGE
         final Alias alias = new Alias("alias", _resource);

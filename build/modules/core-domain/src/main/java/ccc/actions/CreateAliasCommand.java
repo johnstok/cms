@@ -17,6 +17,7 @@ import java.util.UUID;
 import ccc.domain.Alias;
 import ccc.domain.CCCException;
 import ccc.domain.Resource;
+import ccc.domain.ResourceExistsException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -49,12 +50,13 @@ public class CreateAliasCommand
      * @param parentFolder
      * @param targetId
      * @param title
+     * @throws ResourceExistsException
      */
     public Alias execute(final User actor,
                             final Date happenedOn,
                             final UUID parentFolder,
                             final UUID targetId,
-                            final String title) {
+                            final String title) throws ResourceExistsException {
         final Resource target = _dao.find(Resource.class, targetId);
         if (target == null) {
             throw new CCCException("Target does not exists.");

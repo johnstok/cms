@@ -14,9 +14,11 @@ package ccc.actions;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.domain.LockMismatchException;
 import ccc.domain.Page;
 import ccc.domain.PageHelper;
 import ccc.domain.Template;
+import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -52,13 +54,16 @@ public class UpdatePageCommand extends UpdateResourceCommand{
      * @param delta
      * @param comment
      * @param isMajorEdit
+     * @throws LockMismatchException
+     * @throws UnlockedException
      */
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID id,
                         final PageDelta delta,
                         final String comment,
-                        final boolean isMajorEdit) {
+                        final boolean isMajorEdit)
+                               throws UnlockedException, LockMismatchException {
 
         final Page page = _dao.find(Page.class, id);
         page.confirmLock(actor);

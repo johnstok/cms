@@ -20,6 +20,7 @@ import javax.activation.MimeTypeParseException;
 
 import ccc.domain.Data;
 import ccc.domain.File;
+import ccc.domain.ResourceExistsException;
 import ccc.domain.ResourceName;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -59,6 +60,7 @@ public class CreateFileCommand extends CreateResourceCommand {
      * @param dataStream The input stream from which the bytes for the new file
      *        should be read.
      * @throws MimeTypeParseException
+     * @throws ResourceExistsException
      */
     public File execute(final User actor,
                         final Date happenedOn,
@@ -66,7 +68,7 @@ public class CreateFileCommand extends CreateResourceCommand {
                         final FileDelta file,
                         final ResourceName name,
                         final InputStream dataStream)
-                                                 throws MimeTypeParseException {
+                        throws MimeTypeParseException, ResourceExistsException {
         final Data data = _data.create(dataStream, file.getSize());
         final File f =
             new File(

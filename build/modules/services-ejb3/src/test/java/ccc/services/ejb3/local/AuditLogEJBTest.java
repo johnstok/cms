@@ -20,8 +20,10 @@ import junit.framework.TestCase;
 import org.easymock.Capture;
 
 import ccc.domain.Folder;
+import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
+import ccc.domain.ResourceExistsException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.AuditLogEJB;
@@ -61,8 +63,9 @@ public class AuditLogEJBTest
 
     /**
      * Test.
+     * @throws LockMismatchException
      */
-    public void testRecordLockPersistsLogEntry() {
+    public void testRecordLockPersistsLogEntry() throws LockMismatchException {
 
         // ARRANGE
         final Capture<LogEntry> le = new Capture<LogEntry>();
@@ -158,8 +161,9 @@ public class AuditLogEJBTest
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testRecordMove() {
+    public void testRecordMove() throws ResourceExistsException {
 
         // ARRANGE
         final Capture<LogEntry> le = new Capture<LogEntry>();

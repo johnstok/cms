@@ -22,9 +22,12 @@ import junit.framework.TestCase;
 import ccc.actions.ReorderFolderContentsCommand;
 import ccc.actions.UpdateFolderCommand;
 import ccc.domain.Folder;
+import ccc.domain.LockMismatchException;
 import ccc.domain.Page;
 import ccc.domain.Resource;
+import ccc.domain.ResourceExistsException;
 import ccc.domain.ResourceOrder;
+import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -42,8 +45,11 @@ public class FolderDaoImplTest
 
     /**
      * Test.
+     * @throws LockMismatchException
+     * @throws UnlockedException
      */
-    public void testUpdateSortOrder() {
+    public void testUpdateSortOrder()
+    throws LockMismatchException, UnlockedException {
 
         // ARRANGE
         _f.lock(_regularUser);
@@ -65,8 +71,12 @@ public class FolderDaoImplTest
 
     /**
      * Test.
+     * @throws LockMismatchException
+     * @throws ResourceExistsException
+     * @throws UnlockedException
      */
-    public void testReorder() {
+    public void testReorder()
+    throws LockMismatchException, ResourceExistsException, UnlockedException {
 
         // ARRANGE
         _f.lock(_regularUser);

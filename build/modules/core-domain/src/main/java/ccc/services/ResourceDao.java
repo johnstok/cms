@@ -18,9 +18,13 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.domain.Folder;
+import ccc.domain.InsufficientPrivilegesException;
+import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
+import ccc.domain.ResourceExistsException;
 import ccc.domain.ResourcePath;
+import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.api.Duration;
 
@@ -101,11 +105,14 @@ public interface ResourceDao {
      * @param <T> The type of the resource to return.
      * @param type A class representing the type of the resource to return.
      * @param id The UUID of the resource.
+     * @throws LockMismatchException
+     * @throws UnlockedException
      * @return The resource for the specified id.
      */
     <T extends Resource> T findLocked(Class<T> type,
                                       UUID id,
-                                      final User lockedBy);
+                                      final User lockedBy)
+                                throws UnlockedException, LockMismatchException;
 
     /**
      * Look up a resource.
@@ -141,7 +148,8 @@ public interface ResourceDao {
      */
     Resource lock(final User actor,
                   final Date happenedOn,
-                  UUID resourceId);
+                  UUID resourceId)
+    throws LockMismatchException;
 
     /**
      * Unlock the specified Resource.
@@ -154,7 +162,8 @@ public interface ResourceDao {
      */
     Resource unlock(final User actor,
                     final Date happenedOn,
-                    UUID resourceId);
+                    UUID resourceId)
+    throws InsufficientPrivilegesException, UnlockedException;
 
     /**
      * Update the tags for a resource.
@@ -164,7 +173,8 @@ public interface ResourceDao {
      */
     void updateTags(final User actor,
                     final Date happenedOn,
-                    UUID resourceId, String tags);
+                    UUID resourceId, String tags)
+    throws UnlockedException, LockMismatchException;
 
     /**
      * Publishes the resource.
@@ -174,7 +184,8 @@ public interface ResourceDao {
      */
     Resource publish(final User actor,
                      final Date happenedOn,
-                     UUID resourceId);
+                     UUID resourceId)
+    throws UnlockedException, LockMismatchException;
 
     /**
      * Publishes the resource by specified user.
@@ -184,7 +195,8 @@ public interface ResourceDao {
      * @param publishedOn The date the resource was published.
      * @return The current version of resource.
      */
-    Resource publish(UUID resourceId, UUID userId, Date publishedOn);
+    Resource publish(UUID resourceId, UUID userId, Date publishedOn)
+    throws UnlockedException, LockMismatchException;
 
     /**
      * Un-publishes the resource.
@@ -194,7 +206,8 @@ public interface ResourceDao {
      */
     Resource unpublish(final User actor,
                        final Date happenedOn,
-                       UUID resourceId);
+                       UUID resourceId)
+    throws UnlockedException, LockMismatchException;
 
     /**
      * Un-publishes the resource.
@@ -204,7 +217,8 @@ public interface ResourceDao {
      * @param happendedOn The date that the resource was unpublished.
      * @return The current version of resource.
      */
-    Resource unpublish(UUID resourceId, UUID actor, Date happendedOn);
+    Resource unpublish(UUID resourceId, UUID actor, Date happendedOn)
+    throws UnlockedException, LockMismatchException;
 
     /**
      * Change the template for the specified resource.
@@ -215,7 +229,8 @@ public interface ResourceDao {
     void updateTemplateForResource(final User actor,
                                    final Date happenedOn,
                                    UUID resourceId,
-                                   UUID templateId);
+                                   UUID templateId)
+    throws UnlockedException, LockMismatchException;
 
     /**
      * Move a resource to a new parent.
@@ -226,18 +241,8 @@ public interface ResourceDao {
     void move(final User actor,
               final Date happenedOn,
               UUID resourceId,
-              UUID newParentId);
-
-    /**
-     * Rename a resource.
-     *
-     * @param resourceId The id of the resource to change.
-     * @param name The new name to set.
-     */
-    void rename(final User actor,
-                final Date happenedOn,
-                UUID resourceId,
-                String name);
+              UUID newParentId)
+    throws UnlockedException, LockMismatchException, ResourceExistsException;
 
     /**
      * Specify whether this resource should be included in the main menu.
@@ -248,7 +253,8 @@ public interface ResourceDao {
     void includeInMainMenu(final User actor,
                            final Date happenedOn,
                            final UUID id,
-                           final boolean b);
+                           final boolean b)
+    throws UnlockedException, LockMismatchException;
 
     /**
      * Update metadata of the resource.
@@ -259,7 +265,8 @@ public interface ResourceDao {
     void updateMetadata(final User actor,
                         final Date happenedOn,
                         UUID resourceId,
-                        Map<String, String> metadata);
+                        Map<String, String> metadata)
+    throws UnlockedException, LockMismatchException;
 
     /**
      * Update the security roles for the specified resource.
@@ -270,7 +277,8 @@ public interface ResourceDao {
     void changeRoles(final User actor,
                      final Date happenedOn,
                      UUID resourceId,
-                     Collection<String> roles);
+                     Collection<String> roles)
+    throws UnlockedException, LockMismatchException;
 
     /**
      * Look up a resource, given its CCC6 id.
@@ -291,6 +299,7 @@ public interface ResourceDao {
     void updateCache(User actor,
                      Date happenedOn,
                      UUID resourceId,
-                     Duration duration);
+                     Duration duration)
+    throws UnlockedException, LockMismatchException;
 
 }

@@ -13,7 +13,9 @@ package ccc.services;
 
 import java.util.UUID;
 
+import ccc.domain.LockMismatchException;
 import ccc.domain.Snapshot;
+import ccc.domain.UnlockedException;
 import ccc.domain.User;
 
 
@@ -32,13 +34,14 @@ public interface IWorkingCopyManager {
      */
     void updateWorkingCopy(final User actor,
                            UUID id,
-                           Snapshot workingCopy);
+                           Snapshot workingCopy)
+                                throws UnlockedException, LockMismatchException;
 
     /**
      * Delete a page's working copy.
      *
      * @param id The page's id.
      */
-    void clearWorkingCopy(final User actor,
-                          UUID id);
+    void clearWorkingCopy(final User actor, UUID id)
+                                throws UnlockedException, LockMismatchException;
 }

@@ -35,5 +35,7 @@ public enum ActionType {
     /** UPDATE_SORT_ORDER : ActionType. */
     UPDATE_SORT_ORDER,
     /** UPDATE_CACHE : ActionType. */
-    UPDATE_CACHE
+    UPDATE_CACHE,
+    /** CLEAR_WC : ActionType. */
+    CLEAR_WC
 }

@@ -14,8 +14,10 @@ package ccc.services;
 import java.util.UUID;
 
 import ccc.commons.DBC;
+import ccc.domain.LockMismatchException;
 import ccc.domain.Resource;
 import ccc.domain.Snapshot;
+import ccc.domain.UnlockedException;
 import ccc.domain.User;
 
 
@@ -42,7 +44,8 @@ public class WorkingCopyManager implements IWorkingCopyManager {
     @Override
     public void updateWorkingCopy(final User actor,
                                   final UUID id,
-                                  final Snapshot workingCopy) {
+                                  final Snapshot workingCopy)
+                               throws UnlockedException, LockMismatchException {
         final Resource r = _dao.findLocked(Resource.class, id, actor);
         r.workingCopy(workingCopy);
     }
@@ -50,7 +53,8 @@ public class WorkingCopyManager implements IWorkingCopyManager {
     /** {@inheritDoc} */
     @Override
     public void clearWorkingCopy(final User actor,
-                                 final UUID id) {
+                                 final UUID id)
+                               throws UnlockedException, LockMismatchException {
         final Resource r = _dao.findLocked(Resource.class, id, actor);
         r.clearWorkingCopy();
     }

@@ -14,7 +14,9 @@ package ccc.actions;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.domain.LockMismatchException;
 import ccc.domain.Template;
+import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -45,11 +47,14 @@ public class UpdateTemplateCommand extends UpdateResourceCommand {
      * @param happenedOn
      * @param templateId
      * @param delta
+     * @throws LockMismatchException
+     * @throws UnlockedException
      */
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID templateId,
-                        final TemplateDelta delta) {
+                        final TemplateDelta delta)
+                               throws UnlockedException, LockMismatchException {
 
         final Template template = _dao.find(Template.class, templateId);
         template.confirmLock(actor);

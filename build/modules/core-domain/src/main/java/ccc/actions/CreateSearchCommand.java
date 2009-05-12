@@ -14,6 +14,7 @@ package ccc.actions;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.domain.ResourceExistsException;
 import ccc.domain.Search;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -47,11 +48,12 @@ public class CreateSearchCommand
      * @param parentFolder
      * @param title
      * @return
+     * @throws ResourceExistsException
      */
     public Search execute(final User actor,
                           final Date happenedOn,
                           final UUID parentFolder,
-                          final String title) {
+                          final String title) throws ResourceExistsException {
         final Search s = new Search(title);
 
         create(actor, happenedOn, parentFolder, s);

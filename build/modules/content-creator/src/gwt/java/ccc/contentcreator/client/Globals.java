@@ -19,6 +19,7 @@ import ccc.contentcreator.api.SecurityService;
 import ccc.contentcreator.api.SecurityServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
+import ccc.services.api.CCCRemoteException;
 import ccc.services.api.UserSummary;
 
 import com.google.gwt.core.client.GWT;
@@ -147,16 +148,21 @@ public final class Globals {
      * @param e The exception to report.
      */
     public static void unexpectedError(final Throwable e) {
-        final String errorMesssage = e.getMessage();
-        final String causeMessage =
-            (null==e.getCause()) ? "" : e.getCause().getMessage();
-        if (errorMesssage.startsWith("<!-- LOGIN_REQUIRED -->")){
-            alert(uiConstants().sessionTimeOutPleaseRestart());
-        } else if (causeMessage.startsWith("<!-- LOGIN_REQUIRED -->")) {
-            alert(uiConstants().sessionTimeOutPleaseRestart());
+        if (e instanceof CCCRemoteException) {
+            final CCCRemoteException re = (CCCRemoteException) e;
+            alert("FIXME: Proper dialog required");
         } else {
-            GWT.log("An unexpected error occured.", e);
-            alert(uiConstants().unexpectedErrorOccured());
+            final String errorMesssage = e.getMessage();
+            final String causeMessage =
+                (null==e.getCause()) ? "" : e.getCause().getMessage();
+            if (errorMesssage.startsWith("<!-- LOGIN_REQUIRED -->")){
+                alert(uiConstants().sessionTimeOutPleaseRestart());
+            } else if (causeMessage.startsWith("<!-- LOGIN_REQUIRED -->")) {
+                alert(uiConstants().sessionTimeOutPleaseRestart());
+            } else {
+                GWT.log("An unexpected error occured.", e);
+                alert(uiConstants().unexpectedErrorOccured());
+            }
         }
     }
 
