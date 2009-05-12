@@ -52,7 +52,7 @@
         <property
             name="_description"
             column="description"
-            not-null="false"
+            not-null="true"
             type="string"
             length="1024" />
 
