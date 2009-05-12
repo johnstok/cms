@@ -7,7 +7,6 @@ import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 
-import ccc.commons.CCCProperties;
 import ccc.migration.DbUtilsDB;
 import ccc.migration.FileUploader;
 import ccc.migration.LegacyDBQueries;

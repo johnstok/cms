@@ -131,6 +131,9 @@ class CccApp {
             props.load(in);
             in.close();
             LOG.info("Loaded settings.");
+            for (final Object o: props.keySet()) {
+                LOG.debug(o+"\t\t=\t"+props.get(o));
+            }
         } catch (final IOException e) {
             throw new CCCException(e);
         }

@@ -66,7 +66,8 @@ public class Migrations {
     private final Commands _commands;
     private final Queries _queries;
     private final FileUploader _fu;
-    private final Properties _paragraphTypes = Resources.readIntoProps("paragraph-types.properties");
+    private final Properties _paragraphTypes =
+        Resources.readIntoProps("paragraph-types.properties");
 
 
     /**
@@ -610,6 +611,7 @@ public class Migrations {
         log.debug("Assembly done.");
 
         new LinkFixer(_props.getProperty("link-prefix", "")).extractURLs(map);
+        new WordCharFixer().warn(map);
 
         return map;
     }
