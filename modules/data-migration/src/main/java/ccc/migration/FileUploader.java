@@ -111,6 +111,11 @@ public class FileUploader {
                     final FileDelta legacyFile,
                     final File file) {
         try {
+            if (file.length() < 1) {
+                log.warn("Zero length file : "+fileName);
+                return;
+            }
+            
             final PostMethod filePost =
                 new PostMethod(_targetUploadURL);
             log.debug("Migrating file: "+fileName);
