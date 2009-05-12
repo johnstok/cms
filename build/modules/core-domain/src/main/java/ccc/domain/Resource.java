@@ -60,7 +60,7 @@ public abstract class Resource
     private Date           _dateChanged       = _dateCreated;
     private Duration       _cache             = null;
     private Snapshot       _workingCopy       = null;
-    private String         _description       = null;
+    private String         _description       = "";
 
     private Map<String, String> _metadata = new HashMap<String, String>();
 
@@ -668,6 +668,6 @@ public abstract class Resource
      * @param description The new description as a string.
      */
     public void description(final String description) {
-        _description = description;
+        _description = (null==description) ? "" : description;
     }
 }
