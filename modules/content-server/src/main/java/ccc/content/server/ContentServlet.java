@@ -32,7 +32,6 @@ import ccc.content.actions.ReaderAction;
 import ccc.content.actions.RenderResourceAction;
 import ccc.content.actions.ServletAction;
 import ccc.services.SearchEngine;
-import ccc.services.UserManager;
 
 
 /**
@@ -48,7 +47,6 @@ public class ContentServlet
     @Resource                    private transient UserTransaction      _utx;
     @PersistenceUnit             private transient EntityManagerFactory _emf;
     @EJB(name=SearchEngine.NAME) private transient SearchEngine         _search;
-    @EJB(name=UserManager.NAME)  private transient UserManager          _um;
 
 
     private String _rootName           = null;
