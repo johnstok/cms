@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.domain.Folder;
+import ccc.domain.ResourceExistsException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -46,12 +47,13 @@ public class CreateFolderCommand extends CreateResourceCommand {
      * @param parentFolder
      * @param name
      * @param title
+     * @throws ResourceExistsException
      */
     public Folder execute(final User actor,
                           final Date happenedOn,
                           final UUID parentFolder,
                           final String name,
-                          final String title) {
+                          final String title) throws ResourceExistsException {
         final Folder f = new Folder(name);
         f.title((null==title)?name:title);
 

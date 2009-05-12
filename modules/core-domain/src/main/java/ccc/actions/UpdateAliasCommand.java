@@ -15,7 +15,9 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.domain.Alias;
+import ccc.domain.LockMismatchException;
 import ccc.domain.Resource;
+import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -46,11 +48,14 @@ public class UpdateAliasCommand extends UpdateResourceCommand {
      * @param happenedOn
      * @param targetId
      * @param aliasId
+     * @throws LockMismatchException
+     * @throws UnlockedException
      */
     public void execute(final User actor,
                             final Date happenedOn,
                             final UUID targetId,
-                            final UUID aliasId) {
+                            final UUID aliasId)
+                               throws UnlockedException, LockMismatchException {
         final Alias alias = _dao.find(Alias.class, aliasId);
         alias.confirmLock(actor);
 

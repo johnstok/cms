@@ -16,9 +16,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import ccc.services.api.ResourceType;
-
 import junit.framework.TestCase;
+import ccc.services.api.ResourceType;
 
 
 /**
@@ -60,8 +59,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testFolders() {
+    public void testFolders() throws ResourceExistsException {
 
             // ARRANGE
             final Folder f = new Folder("f");
@@ -83,8 +83,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testPages() {
+    public void testPages() throws ResourceExistsException {
 
             // ARRANGE
             final Folder f = new Folder("f");
@@ -106,8 +107,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testFirstPage() {
+    public void testFirstPage() throws ResourceExistsException {
 
         // ARRANGE
         final Folder pages = new Folder("content");
@@ -125,8 +127,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testHasPages() {
+    public void testHasPages() throws ResourceExistsException {
 
         // ARRANGE
         final Folder noPages = new Folder("content");
@@ -148,8 +151,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testTypedEntries() {
+    public void testTypedEntries() throws ResourceExistsException {
 
         // ARRANGE
         final Folder content = new Folder("content");
@@ -168,8 +172,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testFolderCount() {
+    public void testFolderCount() throws ResourceExistsException {
 
         // ARRANGE
         final Folder content = new Folder("content");
@@ -187,8 +192,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testNullContentCannotBeAddedToFolders() {
+    public void testNullContentCannotBeAddedToFolders() throws ResourceExistsException {
 
         // ARRANGE
         final Folder f = new Folder("foo");
@@ -242,8 +248,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testAddPageToFolder() {
+    public void testAddPageToFolder() throws ResourceExistsException {
 
         // ARRANGE
         final Folder folder = new Folder("foo");
@@ -260,8 +267,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testRemovePageFromFolder() {
+    public void testRemovePageFromFolder() throws ResourceExistsException {
 
         // ARRANGE
         final Folder folder = new Folder("foo");
@@ -279,8 +287,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testAddFolderToFolder() {
+    public void testAddFolderToFolder() throws ResourceExistsException {
 
         // ARRANGE
         final Folder folder = new Folder("foo");
@@ -312,8 +321,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testFindEntryByUrl() {
+    public void testFindEntryByUrl() throws ResourceExistsException {
 
         // ARRANGE
         final Folder foo = new Folder("foo");
@@ -329,8 +339,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testNavigateToContent() {
+    public void testNavigateToContent() throws ResourceExistsException {
 
         // ARRANGE
         final Folder content = new Folder("content");
@@ -349,8 +360,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testNavigateToFolder() {
+    public void testNavigateToFolder() throws ResourceExistsException {
 
         // ARRANGE
         final Folder content = new Folder("content");
@@ -369,8 +381,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testNavigateToEmptyPath() {
+    public void testNavigateToEmptyPath() throws ResourceExistsException {
 
         // ARRANGE
         final Folder content = new Folder("content");
@@ -389,8 +402,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testHasEntryWithName() {
+    public void testHasEntryWithName() throws ResourceExistsException {
 
         // ARRANGE
         final Page p = new Page("page");
@@ -414,8 +428,10 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testAddRejectsResourcesWithExistingNames() {
+    public void testAddRejectsResourcesWithExistingNames()
+    throws ResourceExistsException {
 
         // ARRANGE
         final Page p = new Page("page");
@@ -428,7 +444,7 @@ public final class FolderTest extends TestCase {
             fail("Resources with existing names should be rejected.");
 
         // ASSERT
-        } catch (final CCCException e) {
+        } catch (final ResourceExistsException e) {
             assertEquals(
                 "Folder already contains a resource with name 'page'.",
                 e.getMessage());
@@ -437,8 +453,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testHasAliases() {
+    public void testHasAliases() throws ResourceExistsException {
 
         // ARRANGE
         final Folder noAliases = new Folder("content");
@@ -459,8 +476,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testFirstAlias() {
+    public void testFirstAlias() throws ResourceExistsException {
 
         // ARRANGE
         final Folder pages = new Folder("content");
@@ -478,8 +496,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testReorderWithOriginalOrder() {
+    public void testReorderWithOriginalOrder() throws ResourceExistsException {
 
         // ARRANGE
         final Folder f = new Folder("testFolder");
@@ -502,8 +521,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testReorderWithNewOrder() {
+    public void testReorderWithNewOrder() throws ResourceExistsException {
 
         // ARRANGE
         final Folder f = new Folder("testFolder");

@@ -35,6 +35,8 @@ import ccc.content.actions.ReadWriteTxAction;
 import ccc.content.actions.ReaderAction;
 import ccc.content.actions.ServletAction;
 import ccc.content.actions.SessionKeys;
+import ccc.domain.LockMismatchException;
+import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -121,9 +123,11 @@ public class UpdateFileServlet extends CreatorServlet {
                     dataStream);
 
             } catch (final MimeTypeParseException e) {
-                response.getWriter().write(
-                    "File update failed. "+e.getMessage());
-                LOG.error("File update failed "+e.getMessage(), e);
+                handleException(response, e);
+            } catch (final UnlockedException e) {
+                handleException(response, e);
+            } catch (final LockMismatchException e) {
+                handleException(response, e);
 
             } finally {
                 try {
@@ -134,6 +138,12 @@ public class UpdateFileServlet extends CreatorServlet {
             }
 
             response.getWriter().write("File was updated successfully.");
+        }
+
+        private void handleException(final HttpServletResponse response,
+                                     final Exception e) throws IOException {
+            response.getWriter().write("File update failed. "+e.getMessage());
+            LOG.error("File update failed "+e.getMessage(), e);
         }
     }
 }

@@ -14,6 +14,7 @@ package ccc.actions;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.domain.ResourceExistsException;
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
 import ccc.domain.User;
@@ -48,12 +49,14 @@ public class CreateTemplateCommand extends CreateResourceCommand {
      * @param parentFolder
      * @param delta
      * @param name
+     * @throws ResourceExistsException
      */
     public Template execute(final User actor,
                             final Date happenedOn,
                             final UUID parentFolder,
                             final TemplateDelta delta,
-                            final ResourceName name) {
+                            final ResourceName name)
+                                                throws ResourceExistsException {
         final Template t = new Template(
             name,
             delta.getTitle(),

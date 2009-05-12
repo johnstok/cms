@@ -39,6 +39,7 @@ import ccc.content.actions.ServletAction;
 import ccc.content.actions.SessionKeys;
 import ccc.domain.CCCException;
 import ccc.domain.File;
+import ccc.domain.ResourceExistsException;
 import ccc.domain.ResourceName;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -140,9 +141,9 @@ public class FileUploadServlet extends CreatorServlet {
                 response.getWriter().write(toJSON(rs).toString());
 
             } catch (final MimeTypeParseException e) {
-                response.getWriter().write(
-                    "File Upload failed. "+e.getMessage());
-                LOG.error("File Upload failed "+e.getMessage(), e);
+                handleException(response, e);
+            } catch (final ResourceExistsException e) {
+                handleException(response, e);
 
             } finally {
                 try {
@@ -151,6 +152,12 @@ public class FileUploadServlet extends CreatorServlet {
                     LOG.error("DataStream closing failed "+e.getMessage(), e);
                 }
             }
+        }
+
+        private void handleException(final HttpServletResponse response,
+                                     final Exception e) throws IOException {
+            response.getWriter().write("File Upload failed. "+e.getMessage());
+            LOG.error("File Upload failed "+e.getMessage(), e);
         }
 
         /**

@@ -18,8 +18,10 @@ import java.util.Date;
 import junit.framework.TestCase;
 import ccc.actions.Action;
 import ccc.domain.CCCException;
+import ccc.domain.LockMismatchException;
 import ccc.domain.Page;
 import ccc.domain.Snapshot;
+import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.ResourceDao;
 import ccc.services.api.ActionStatus;
@@ -37,8 +39,11 @@ public class ActionExecutorEJBTest
 
     /**
      * Test.
+     * @throws LockMismatchException
+     * @throws UnlockedException
      */
-    public void testActionIsFailedIfMethodThrowsException() {
+    public void testActionIsFailedIfMethodThrowsException()
+    throws UnlockedException, LockMismatchException {
 
         // ARRANGE
         final Page p = new Page("foo");

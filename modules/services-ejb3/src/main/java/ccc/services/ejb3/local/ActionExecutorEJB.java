@@ -27,7 +27,9 @@ import org.apache.log4j.Logger;
 import ccc.actions.Action;
 import ccc.actions.ApplyWorkingCopyCommand;
 import ccc.domain.CCCException;
+import ccc.domain.LockMismatchException;
 import ccc.domain.Resource;
+import ccc.domain.UnlockedException;
 import ccc.persistence.jpa.BaseDao;
 import ccc.services.ActionExecutor;
 import ccc.services.AuditLogEJB;
@@ -94,14 +96,25 @@ public class ActionExecutorEJB implements ActionExecutor {
 
             }
             action.complete();
+
         } catch (final RuntimeException e) {
-            LOG.warn("Failing action.", e);
-            action.fail(e);
+            fail(action, e);
+        } catch (final UnlockedException e) {
+            fail(action, e);
+        } catch (final LockMismatchException e) {
+            fail(action, e);
         }
     }
 
 
-    private void executeUpdate(final Action action) {
+    private void fail(final Action action, final Exception e) {
+        LOG.warn("Failing action.", e);
+        action.fail(e);
+    }
+
+
+    private void executeUpdate(final Action action)
+                               throws UnlockedException, LockMismatchException {
         final Resource r = action.subject();
         if (ResourceType.PAGE.equals(r.type())) {
             new ApplyWorkingCopyCommand(_bdao, _audit).execute(
@@ -118,7 +131,8 @@ public class ActionExecutorEJB implements ActionExecutor {
     }
 
 
-    private void executePublish(final Action action) {
+    private void executePublish(final Action action)
+                               throws UnlockedException, LockMismatchException {
         _resources.publish(
             action.subject().id(),
             action.actor().id(),
@@ -126,12 +140,14 @@ public class ActionExecutorEJB implements ActionExecutor {
     }
 
 
-    private void executeUnpublish(final Action action) {
+    private void executeUnpublish(final Action action)
+                               throws UnlockedException, LockMismatchException {
         _resources.unpublish(
             action.subject().id(),
             action.actor().id(),
             new Date());
     }
+
 
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {

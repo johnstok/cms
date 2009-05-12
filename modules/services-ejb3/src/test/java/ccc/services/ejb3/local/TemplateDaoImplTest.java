@@ -17,7 +17,9 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 import ccc.actions.UpdateTemplateCommand;
+import ccc.domain.LockMismatchException;
 import ccc.domain.Template;
+import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -35,8 +37,11 @@ public class TemplateDaoImplTest
 
     /**
      * Test.
+     * @throws LockMismatchException
+     * @throws UnlockedException
      */
-    public void testUpdateTemplates() {
+    public void testUpdateTemplates()
+    throws LockMismatchException, UnlockedException {
 
         // ARRANGE
         final Template foo =

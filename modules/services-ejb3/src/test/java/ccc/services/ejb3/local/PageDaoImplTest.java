@@ -18,8 +18,10 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 import ccc.actions.UpdatePageCommand;
+import ccc.domain.LockMismatchException;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
+import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -41,8 +43,11 @@ public class PageDaoImplTest
 
     /**
      * Test.
+     * @throws LockMismatchException
+     * @throws UnlockedException
      */
-    public void testUpdatePage() {
+    public void testUpdatePage()
+    throws LockMismatchException, UnlockedException {
 
         // ARRANGE
         final PageDelta delta =

@@ -46,6 +46,7 @@ import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.Resource;
+import ccc.domain.ResourceExistsException;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourceOrder;
 import ccc.domain.Snapshot;
@@ -54,7 +55,6 @@ import ccc.domain.User;
 import ccc.services.DataManager;
 import ccc.services.SearchEngine;
 import ccc.services.StatefulReader;
-import ccc.services.api.Duration;
 
 
 /**
@@ -262,8 +262,10 @@ public class DefaultRendererTest
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testRenderFolderRedirectsToFirstPage() {
+    public void testRenderFolderRedirectsToFirstPage()
+    throws ResourceExistsException {
 
         // ARRANGE
         final Folder f = new Folder("folder");
@@ -286,8 +288,10 @@ public class DefaultRendererTest
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testRenderFolderIgnoresNonVisiblePages() {
+    public void testRenderFolderIgnoresNonVisiblePages()
+    throws ResourceExistsException {
 
         // ARRANGE
         final Folder f = new Folder("folder");
@@ -311,8 +315,10 @@ public class DefaultRendererTest
 
     /**
      * Test.
+     * @throws ResourceExistsException
      */
-    public void testRenderFolderIgnoresNonPageResources() {
+    public void testRenderFolderIgnoresNonPageResources()
+    throws ResourceExistsException {
 
         // ARRANGE
         final Folder root = new Folder("root");

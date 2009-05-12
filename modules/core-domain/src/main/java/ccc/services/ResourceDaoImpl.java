@@ -19,11 +19,15 @@ import java.util.UUID;
 
 import ccc.domain.CCCException;
 import ccc.domain.Folder;
+import ccc.domain.InsufficientPrivilegesException;
+import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
+import ccc.domain.ResourceExistsException;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.Template;
+import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.api.Duration;
 
@@ -59,7 +63,7 @@ public class ResourceDaoImpl implements ResourceDao {
     public void createRoot(final User actor, final Folder folder) {
         final Resource possibleRoot =
             _dao.find(QueryNames.ROOT_BY_NAME, Resource.class, folder.name());
-        if (null!=possibleRoot) {
+        if (null!=possibleRoot) { // TODO: Throw ResourceExistsException?
             throw new CCCException("Root exists with name: "+folder.name());
         }
         _dao.create(folder);
@@ -74,7 +78,7 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public Resource lock(final User actor,
                          final Date happenedOn,
-                         final UUID resourceId) {
+                         final UUID resourceId) throws LockMismatchException {
         final Resource r = _dao.find(Resource.class, resourceId);
         final User u = actor;
         r.lock(u);
@@ -87,7 +91,8 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public Resource unlock(final User actor,
                            final Date happenedOn,
-                           final UUID resourceId) {
+                           final UUID resourceId)
+    throws InsufficientPrivilegesException, UnlockedException {
         final User loggedInUser = actor;
         final Resource r = _dao.find(Resource.class, resourceId);
         r.unlock(loggedInUser);
@@ -126,7 +131,8 @@ public class ResourceDaoImpl implements ResourceDao {
     public void updateTags(final User actor,
                            final Date happenedOn,
                            final UUID resourceId,
-                           final String tags) {
+                           final String tags)
+    throws UnlockedException, LockMismatchException {
         final User loggedInUser = actor;
         final Resource r = findLocked(Resource.class, resourceId, loggedInUser);
         r.tags(tags);
@@ -138,7 +144,8 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public Resource publish(final User actor,
                             final Date happenedOn,
-                            final UUID resourceId) {
+                            final UUID resourceId)
+    throws UnlockedException, LockMismatchException {
         final User u = actor;
         final Resource r = findLocked(Resource.class, resourceId, u);
         r.publish(u);
@@ -151,7 +158,8 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public Resource publish(final UUID resourceId,
                             final UUID userId,
-                            final Date publishedOn) {
+                            final Date publishedOn)
+    throws UnlockedException, LockMismatchException {
         final User publishedBy = _dao.find(User.class, userId);
         final Resource r =
             findLocked(Resource.class, resourceId, publishedBy);
@@ -166,7 +174,8 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public Resource unpublish(final User actor,
                               final Date happenedOn,
-                              final UUID resourceId) {
+                              final UUID resourceId)
+    throws UnlockedException, LockMismatchException {
         final User u = actor;
         final Resource r = findLocked(Resource.class, resourceId, u);
         r.unpublish();
@@ -179,7 +188,8 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public Resource unpublish(final UUID resourceId,
                               final UUID actor,
-                              final Date happendedOn) {
+                              final Date happendedOn)
+    throws UnlockedException, LockMismatchException {
         final User u = _dao.find(User.class, actor);
         final Resource r =
             findLocked(Resource.class, resourceId, u);
@@ -190,13 +200,13 @@ public class ResourceDaoImpl implements ResourceDao {
 
 
     /**
-     * {@inheritDoc}
-     */
+     * {@inheritDoc} */
     @Override
     public void updateTemplateForResource(final User actor,
                                           final Date happenedOn,
                                           final UUID resourceId,
-                                          final UUID templateId) {
+                                          final UUID templateId)
+    throws UnlockedException, LockMismatchException {
         final Resource r = findLocked(Resource.class, resourceId, actor);
         final Template t =
             (null==templateId)
@@ -214,9 +224,8 @@ public class ResourceDaoImpl implements ResourceDao {
     public void move(final User actor,
                      final Date happenedOn,
                      final UUID resourceId,
-                     final UUID newParentId) {
-        // TODO: Check new parent doesn't contain resource with same name!
-
+                     final UUID newParentId)
+      throws UnlockedException, LockMismatchException, ResourceExistsException {
         final User u = actor;
         final Resource resource = findLocked(Resource.class, resourceId, u);
         final Folder newParent = find(Folder.class, newParentId);
@@ -225,20 +234,6 @@ public class ResourceDaoImpl implements ResourceDao {
         newParent.add(resource);
 
         _audit.recordMove(resource, u, happenedOn);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void rename(final User actor,
-                       final Date happenedOn,
-                       final UUID resourceId,
-                       final String name) {
-        // TODO: Check parent doesn't contain resource with new name!
-        final User u = actor;
-        final Resource resource = findLocked(Resource.class, resourceId, u);
-        resource.name(new ResourceName(name));
-        _audit.recordRename(resource, u, happenedOn);
     }
 
 
@@ -253,7 +248,8 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public <T extends Resource> T findLocked(final Class<T> type,
                                               final UUID id,
-                                              final User lockedBy) {
+                                              final User lockedBy)
+                               throws UnlockedException, LockMismatchException {
         final T r = _dao.find(type, id);
         r.confirmLock(lockedBy);
         return r;
@@ -283,7 +279,8 @@ public class ResourceDaoImpl implements ResourceDao {
     public void includeInMainMenu(final User actor,
                                   final Date happenedOn,
                                   final UUID id,
-                                  final boolean b) {
+                                  final boolean b)
+                               throws UnlockedException, LockMismatchException {
         final Resource r = findLocked(Resource.class, id, actor);
         final User u = actor;
         r.includeInMainMenu(b);
@@ -301,7 +298,8 @@ public class ResourceDaoImpl implements ResourceDao {
                                final Date happenedOn,
                                final UUID id,
                                final Map<String,
-                               String> metadata) {
+                               String> metadata)
+                               throws UnlockedException, LockMismatchException {
         final Resource r = findLocked(Resource.class, id, actor);
         final User u = actor;
         r.clearMetadata();
@@ -316,7 +314,8 @@ public class ResourceDaoImpl implements ResourceDao {
     public void changeRoles(final User actor,
                             final Date happenedOn,
                             final UUID id,
-                            final Collection<String> roles) {
+                            final Collection<String> roles)
+                               throws UnlockedException, LockMismatchException {
         final Resource r = findLocked(Resource.class, id, actor);
         final User u = actor;
         r.roles(roles);
@@ -358,7 +357,8 @@ public class ResourceDaoImpl implements ResourceDao {
     public void updateCache(final User actor,
                             final Date happenedOn,
                             final UUID resourceId,
-                            final Duration duration) {
+                            final Duration duration)
+                               throws UnlockedException, LockMismatchException {
         final User loggedInUser = actor;
         final Resource r = findLocked(Resource.class, resourceId, actor);
         if (duration == null) {

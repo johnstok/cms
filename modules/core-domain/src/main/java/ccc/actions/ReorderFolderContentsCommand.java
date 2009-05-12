@@ -17,7 +17,9 @@ import java.util.List;
 import java.util.UUID;
 
 import ccc.domain.Folder;
+import ccc.domain.LockMismatchException;
 import ccc.domain.Resource;
+import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.ResourceDao;
@@ -52,11 +54,14 @@ public class ReorderFolderContentsCommand {
      * @param happenedOn
      * @param folderId
      * @param order
+     * @throws LockMismatchException
+     * @throws UnlockedException
      */
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID folderId,
-                        final List<UUID> order) {
+                        final List<UUID> order)
+                               throws UnlockedException, LockMismatchException {
         final Folder f = _dao.findLocked(Folder.class, folderId, actor);
         final User u = actor;
         final List<Resource> newOrder = new ArrayList<Resource>();
