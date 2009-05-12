@@ -539,6 +539,8 @@ public class Migrations {
                 paragraphDeltas
             );
 
+        delta.setTitle(new WordCharFixer().fix(delta.getTitle()));
+
         return delta;
     }
 
