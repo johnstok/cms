@@ -1,6 +1,8 @@
 package ccc.cli;
 
 
+import java.util.Properties;
+
 import org.apache.log4j.Logger;
 
 import ccc.services.Scheduler;
@@ -12,7 +14,7 @@ import ccc.services.ServiceLookup;
 public final class Search extends CccApp {
     private static final Logger LOG = Logger.getLogger(Search.class);
     private static ServiceLookup services;
-
+    private static Properties props = new Properties();
     private Search() { super(); }
 
 
@@ -24,10 +26,10 @@ public final class Search extends CccApp {
      */
     public static void main(final String[] args) {
         LOG.info("Starting.");
-
+        loadSettings(props, "migration.properties");
         login("super", "sup3r2008");
 
-        services = new ServiceLookup("application-ear-7.0.0-SNAPSHOT");
+        services = new ServiceLookup(props.getProperty("app-name"));
 
         final Scheduler s = services.lookupSearchScheduler();
 
