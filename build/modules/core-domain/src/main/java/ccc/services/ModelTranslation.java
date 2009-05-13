@@ -416,6 +416,9 @@ public class ModelTranslation {
      * @return The corresponding summary.
      */
     protected TemplateSummary mapTemplate(final Template t) {
+        if (t == null) {
+            return null;
+        }
         return
             new TemplateSummary(
                 toID(t.id()),
