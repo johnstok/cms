@@ -2,40 +2,51 @@ package ccc.services.api;
 
 /** Valid actions for a log entry. */
 public enum ActionType {
-    /** RENAME : ActionType. */
-    RENAME,
-    /** MOVE : ActionType. */
-    MOVE,
-    /** PUBLISH : ActionType. */
-    PUBLISH,
-    /** UNPUBLISH : ActionType. */
-    UNPUBLISH,
-    /** CREATE : ActionType. */
-    CREATE,
-    /** UPDATE : ActionType. */
-    UPDATE,
-    /** LOCK : ActionType. */
-    LOCK,
-    /** UNLOCK : ActionType. */
-    UNLOCK,
-    /** CHANGE_TEMPLATE : ActionType. */
-    CHANGE_TEMPLATE,
-    /** UPDATE_TAGS : ActionType. */
-    UPDATE_TAGS,
-    /** INCLUDE_IN_MM : ActionType. */
-    INCLUDE_IN_MM,
-    /** REMOVE_FROM_MM : ActionType. */
-    REMOVE_FROM_MM,
-    /** UPDATE_METADATA : ActionType. */
-    UPDATE_METADATA,
-    /** CHANGE_ROLES : ActionType. */
-    CHANGE_ROLES,
-    /** REORDER : ActionType. */
-    REORDER,
-    /** UPDATE_SORT_ORDER : ActionType. */
-    UPDATE_SORT_ORDER,
-    /** UPDATE_CACHE : ActionType. */
-    UPDATE_CACHE,
-    /** CLEAR_WC : ActionType. */
-    CLEAR_WC
+
+    // Resource
+    RESOURCE_RENAME,
+    RESOURCE_MOVE,
+    RESOURCE_PUBLISH,
+    RESOURCE_UNPUBLISH,
+    RESOURCE_LOCK,
+    RESOURCE_UNLOCK,
+    RESOURCE_CHANGE_TEMPLATE,
+    RESOURCE_UPDATE_TAGS,
+    RESOURCE_INCLUDE_IN_MM,
+    RESOURCE_REMOVE_FROM_MM,
+    RESOURCE_UPDATE_METADATA,
+    RESOURCE_CHANGE_ROLES,
+    RESOURCE_UPDATE_CACHE,
+    RESOURCE_CLEAR_WC,
+    RESOURCE_SET_WC,
+
+    // Folder
+    FOLDER_REORDER,
+    FOLDER_UPDATE_SORT_ORDER,
+    FOLDER_UPDATE,
+    FOLDER_CREATE,
+
+    // User
+    USER_CREATE,
+    USER_UPDATE,
+    USER_CHANGE_PASSWORD,
+
+    // Page
+    PAGE_UPDATE,
+    PAGE_CREATE,
+
+    // Template
+    TEMPLATE_CREATE,
+    TEMPLATE_UPDATE,
+
+    // File
+    FILE_CREATE,
+    FILE_UPDATE,
+
+    // Search
+    SEARCH_CREATE,
+
+    // Alias
+    ALIAS_CREATE,
+    ALIAS_UPDATE,
 }

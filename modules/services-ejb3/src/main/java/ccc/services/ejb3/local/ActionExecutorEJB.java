@@ -78,15 +78,15 @@ public class ActionExecutorEJB implements ActionExecutor {
         try{
             switch (action.type()) {
 
-                case UNPUBLISH:
+                case RESOURCE_UNPUBLISH:
                     executeUnpublish(action);
                     break;
 
-                case PUBLISH:
+                case RESOURCE_PUBLISH:
                     executePublish(action);
                     break;
 
-                case UPDATE:
+                case PAGE_UPDATE:
                     executeUpdate(action);
                     break;
 

@@ -269,7 +269,7 @@ public abstract class Resource
         }
 
         if (!canUnlock(user)) {
-            throw new InsufficientPrivilegesException(ActionType.UNLOCK, user);
+            throw new InsufficientPrivilegesException(ActionType.RESOURCE_UNLOCK, user);
         }
 
         _lockedBy = null;

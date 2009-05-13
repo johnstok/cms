@@ -53,7 +53,7 @@ public class ActionExecutorEJBTest
         replay(_rdao);
         final Action a =
             new Action(
-                ActionType.PUBLISH,
+                ActionType.RESOURCE_PUBLISH,
                 new Date(),
                 u,
                 p,

@@ -81,7 +81,7 @@ public class AuditLogEJBTest
 
         // ASSERT
         verify(_em);
-        assertEquals(ActionType.LOCK, le.getValue().action());
+        assertEquals(ActionType.RESOURCE_LOCK, le.getValue().action());
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
 
@@ -105,10 +105,9 @@ public class AuditLogEJBTest
 
         // ASSERT
         verify(_em);
-        assertEquals(ActionType.CREATE, le.getValue().action());
+        assertEquals(ActionType.PAGE_CREATE, le.getValue().action());
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
-        assertEquals("Created.", le.getValue().comment());
     }
 
     /**
@@ -129,10 +128,9 @@ public class AuditLogEJBTest
 
         // ASSERT
         verify(_em);
-        assertEquals(ActionType.CHANGE_TEMPLATE, le.getValue().action());
+        assertEquals(ActionType.RESOURCE_CHANGE_TEMPLATE, le.getValue().action());
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
-        assertEquals("Template changed.", le.getValue().comment());
     }
 
     /**
@@ -153,7 +151,7 @@ public class AuditLogEJBTest
 
         // ASSERT
         verify(_em);
-        assertEquals(ActionType.UPDATE, le.getValue().action());
+        assertEquals(ActionType.PAGE_UPDATE, le.getValue().action());
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
         assertEquals("Updated.", le.getValue().comment());
@@ -180,11 +178,9 @@ public class AuditLogEJBTest
 
         // ASSERT
         verify(_em);
-        assertEquals(ActionType.MOVE, le.getValue().action());
+        assertEquals(ActionType.RESOURCE_MOVE, le.getValue().action());
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
-        assertEquals("Moved resource to parent: "+f.absolutePath()+".",
-            le.getValue().comment());
     }
 
     /**
@@ -205,11 +201,9 @@ public class AuditLogEJBTest
 
         // ASSERT
         verify(_em);
-        assertEquals(ActionType.RENAME, le.getValue().action());
+        assertEquals(ActionType.RESOURCE_RENAME, le.getValue().action());
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
-        assertEquals("Renamed resource to '"+p.name().toString()+"'.",
-            le.getValue().comment());
     }
 
 

@@ -219,4 +219,8 @@ public interface AuditLog {
      * @param happenedOn The date of the change.
      */
     void recordUpdateCache(Resource resource, User actor, Date happenedOn);
+
+    void recordUserCreate(User user, User actor, Date happenedOn);
+    void recordUserUpdate(User user, User actor, Date happenedOn);
+    void recordUserChangePassword(User user, User actor, Date happenedOn);
 }

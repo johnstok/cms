@@ -16,6 +16,7 @@ import static org.easymock.EasyMock.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 
 import javax.ejb.EJBContext;
@@ -85,17 +86,19 @@ public class UserManagerEJBTest extends TestCase {
     public void testCreateUser() {
 
         // ARRANGE
+        final Date now = new Date();
         _dao.create(isA(User.class));
         _dao.create(isA(Password.class));
-        replay(_context, _dao);
+        _audit.recordUserCreate(isA(User.class), eq(_u), eq(now));
+        replayAll();
 
         final CreateUserCommand cu = new CreateUserCommand(_dao, _audit);
 
         // ACT
-        final User u = cu.execute(_uDelta, "foopass");
+        final User u = cu.execute(_u, now, _uDelta, "foopass");
 
         // ASSERT
-        verify(_context, _dao);
+        verifyAll();
         assertEquals("newNameUser", u.username());
     }
 
@@ -181,16 +184,18 @@ public class UserManagerEJBTest extends TestCase {
     public void testUpdateUser() {
 
         // ARRANGE
+        final Date now = new Date();
         expect(_dao.find(User.class, _u.id())).andReturn(_u);
-        replay(_context, _dao);
+        _audit.recordUserUpdate(_u, _u, now);
+        replayAll();
 
         final UpdateUserCommand uu = new UpdateUserCommand(_dao, _audit);
 
         // ACT
-        uu.execute(_u.id(), _uDelta);
+        uu.execute(_u, now, _u.id(), _uDelta);
 
         // ASSERT
-        verify(_context, _dao);
+        verifyAll();
 
     }
 
@@ -200,19 +205,21 @@ public class UserManagerEJBTest extends TestCase {
     public void testUpdateUserPassword() {
 
         // ARRANGE
+        final Date now = new Date();
         final Password pw = new Password(_u, "foo");
 
         expect(_dao.find("passwordForUser", Password.class, _u.id()))
             .andReturn(pw);
-        replay(_context, _dao);
+        _audit.recordUserChangePassword(null, _u, now); // FIXME: Broken.
+        replayAll();
 
         final UpdatePasswordAction up = new UpdatePasswordAction(_dao, _audit);
 
         // ACT
-        up.execute(_u.id(), "newPass");
+        up.execute(_u, now, _u.id(), "newPass");
 
         // ASSERT
-        verify(_context, _dao);
+        verifyAll();
         assertTrue(pw.matches("newPass"));
     }
 
@@ -241,16 +248,26 @@ public class UserManagerEJBTest extends TestCase {
         };
         _dao = createStrictMock(Dao.class);
         _context = createStrictMock(EJBContext.class);
+        _audit = createStrictMock(AuditLog.class);
         _um = new UserManagerEJB(_dao);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void tearDown() throws Exception {
+        _audit = null;
         _u = null;
         _uDelta = null;
         _p = null;
         _dao = null;
         _um = null;
+    }
+
+    private void verifyAll() {
+        verify(_context, _dao, _audit);
+    }
+
+    private void replayAll() {
+        replay(_context, _dao, _audit);
     }
 }
