@@ -125,6 +125,8 @@ public interface CommandServiceAsync {
                       ActionType action,
                       Date executeAfter,
                       String parameters,
+                      String comment,
+                      boolean isMajorEdit,
                       AsyncCallback<Void> callback);
 
     void createAlias(ID parentId,

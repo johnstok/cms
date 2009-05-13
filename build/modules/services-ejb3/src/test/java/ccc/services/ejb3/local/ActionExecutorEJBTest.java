@@ -57,7 +57,9 @@ public class ActionExecutorEJBTest
                 new Date(),
                 u,
                 p,
-                new Snapshot());
+                new Snapshot(),
+                "",
+                false);
 
         // ACT
         _ea.executeAction(a);

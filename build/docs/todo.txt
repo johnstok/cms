@@ -1,3 +1,34 @@
+*underway*
+Factor DAOs into Command classes.
+Fold password into user, use jBoss security mgr?
+
+
+!!!
+Transactions
+ File upload servlets don't rollback txns!!!
+ Still not right for scheduler - could commit changes accidentally... @transaction=requiresnew
+Security
+ Add annotations to Queries/Commands
+Working copies
+ Should be using deltas
+ FileDelta should return working copy if set...
+ Review working copy stuff - borked.Make sure all commands are logged.
+
+
+!!
+Add Migrations EJB only accessible by ADMIN
+Pull in source for json.org json lib and send to client, add contructors for model data classes that accept json
+Action scheduler is a security risk - can potentially elevate privileges.
+Rename model data subclasses
+Factor remaining actions from ResourceContextMenu
+UpdateFileServlet should return ZLS on success (or json NULL - equiv to returning NULL from a Void method)
+search indexing -> search between dates, etc.
+search resource is in the wrong place
+login page is hardcoded
+Remove targetName from alias delta, look up name from targetId on the client side
+
+
+!
 Public API types:
  res path
  res name
@@ -7,36 +38,7 @@ Public API types:
  email
  paragraph
  comment
-
-!!!
-Log calls to audit log at info level.
-File upload servlets don't rollback txns!!!
-Transactions still not right for scheduler - could commit changes accidentally... @transaction=requiresnew
-Remove useless log messages - e.g. "Created."
-typ specific update / create ActionTypes
-fold password into user, use jBoss security mgr?
-Add Migrations EJB only accessible by ADMIN
-Add security annotations to Queries/Commands
-Factor DAOs into Command classes.
-Move comment and major edit to fields of class Action
-Broaden LogEntry to support changes to users, etc. (remove subjectType, change uuid to id).
-Pull in source for json.org json lib and send to client, add contructors for model data classes that accept json
-Working copies should be using deltas
-pageDelta / workingCopyDelta - deltas should always return working copy? what about file delta?
-
-!!
-Action scheduler is a security risk - can potentially elevate privileges.
-Rename model data subclasses
-factor out looking up a user from a principal
-Factor remaining actions from ResourceContextMenu
-UpdateFileServlet should return ZLS on success (or json NULL - equiv to returning NULL from a Void method)
-search indexing -> search between dates, etc.
-search resource is in the wrong place
-login page is hardcoded
-Remove targetName from alias delta, look up name from targetId on the client side
-Inject EJBs into GWT servlet subclasses.
-
-!
+Move LogEntry creation to commands.
 data manager rename fo file manager
 move DTOs into ccc.domain.dto
 move value type into ccc.domain.types

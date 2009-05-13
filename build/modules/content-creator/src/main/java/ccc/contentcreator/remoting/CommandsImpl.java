@@ -271,9 +271,12 @@ public class CommandsImpl
     public void createAction(final ID resourceId,
                              final ActionType action,
                              final Date executeAfter,
-                             final String parameters)
+                             final String parameters,
+                             final String comment,
+                             final boolean isMajorEdit)
     throws CCCRemoteException {
-        _commands.createAction(resourceId, action, executeAfter, parameters);
+        _commands.createAction(
+            resourceId, action, executeAfter, parameters, comment, isMajorEdit);
     }
 
     /** {@inheritDoc} */

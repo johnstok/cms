@@ -569,14 +569,18 @@ public class CommandsEJB
     public void createAction(final ID resourceId,
                              final ActionType action,
                              final Date executeAfter,
-                             final String parameters) {// TODO: Use ActionDelta.
+                             final String parameters,
+                             final String comment,
+                             final boolean isMajorEdit) {// TODO: Use ActionDelta.
       final Action a =
       new Action(
           action,
           executeAfter,
           loggedInUser(),
           _resources.find(Resource.class, toUUID(resourceId)),
-          new Snapshot(parameters));
+          new Snapshot(parameters),
+          comment,
+          isMajorEdit);
 
       new ScheduleActionCommand(_bdao).execute(a);
     }
