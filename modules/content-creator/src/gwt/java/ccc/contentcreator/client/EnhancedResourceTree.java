@@ -96,9 +96,10 @@ public class EnhancedResourceTree extends FolderResourceTree {
                     final int folderCount = selectedModel.getFolderCount();
                     final int childCount = selectedModel.getChildCount();
 
-                    if (folderCount > 0) {
+                    if (folderCount > 0) {         // Children are loaded.
                         ti.setExpanded(true);
-                    }else if (childCount > 0 && children.size() == 0) { // Data not loaded
+                    } else if (childCount > 0
+                        && children.size() == 0) { // Children not loaded.
                         _binder.loadChildren(ti);
                     }
                 }
