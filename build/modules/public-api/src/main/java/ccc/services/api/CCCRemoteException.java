@@ -22,14 +22,20 @@ import java.util.Map;
  */
 public class CCCRemoteException
     extends
-        RuntimeException {
+        Exception {
 
-    public static final int EXISTS = 3;
-    public static final int PRIVILEGES = 4;
+    public static final int UNEXPECTED    = 0;
+    public static final int UNLOCKED      = 1;
+    public static final int LOCK_MISMATCH = 2;
+    public static final int EXISTS        = 3;
+    public static final int PRIVILEGES    = 4;
 
-    private int _errorCode;
+    private int _errorCode = -1;
     private ActionType _action;
     private Map<String, String> _params = new HashMap<String, String>();
+    private String _localExceptionId = "";
+
+    @SuppressWarnings("unused") private CCCRemoteException() { super(); }
 
     /**
      * Constructor.
@@ -37,13 +43,17 @@ public class CCCRemoteException
      * @param errorCode
      * @param action
      * @param params
+     * @param localExceptionId
      */
     public CCCRemoteException(final int errorCode,
                               final ActionType action,
+                              final String localExceptionId,
                               final Map<String, String> params) {
+        super("Remote exception: "+localExceptionId);
         _errorCode = errorCode;
         _action = action;
         _params = params;
+        _localExceptionId  = localExceptionId;
     }
 
     /**
@@ -51,8 +61,21 @@ public class CCCRemoteException
      *
      * @param errorCode
      * @param action
+     * @param localExceptionId
      */
-    public CCCRemoteException(final int errorCode, final ActionType action) {
-        this(errorCode, action, new HashMap<String, String>());
+    public CCCRemoteException(final int errorCode,
+                              final ActionType action,
+                              final String localExceptionId) {
+        this(
+            errorCode, action, localExceptionId, new HashMap<String, String>());
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
+    public int getCode() {
+        return _errorCode;
     }
 }
