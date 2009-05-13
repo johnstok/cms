@@ -120,14 +120,6 @@ public final class QueriesEJB
 
     /** {@inheritDoc} */
     @Override
-    public TemplateDelta getTemplateForResource(final ID resourceId) {
-        return deltaTemplate(
-            _resources.find(Resource.class, toUUID(resourceId))
-                      .computeTemplate(null));
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public Collection<LogEntrySummary> history(final ID resourceId) {
         return mapLogEntries(_resources.history(toUUID(resourceId)));
     }
@@ -177,9 +169,11 @@ public final class QueriesEJB
 
     /** {@inheritDoc} */
     @Override
-    public Collection<TemplateDelta> templates() {
-        return deltaTemplates(_resources.list("allTemplates", Template.class));
+    public Collection<TemplateSummary> templates() {
+        return mapTemplates(_resources.list("allTemplates", Template.class));
     }
+
+
 
     /*
      * USER METHODS
@@ -218,7 +212,7 @@ public final class QueriesEJB
     @Override
     public Collection<UserSummary> listUsersWithUsername(
                                                     final String username) {
-        return mapUsers(_users.listUsersWithUsername(username.toString()));
+        return mapUsers(_users.listUsersWithUsername(username));
     }
 
     /** {@inheritDoc} */

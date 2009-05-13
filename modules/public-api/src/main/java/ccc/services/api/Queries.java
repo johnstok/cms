@@ -45,7 +45,7 @@ public interface Queries {
      *
      * @return A list of templates.
      */
-    Collection<TemplateDelta> templates();
+    Collection<TemplateSummary> templates();
 
     /**
      * List all of the folders that are children of the specified parent folder.
@@ -135,14 +135,6 @@ public interface Queries {
      */
      boolean templateNameExists(final String templateName);
 
-     /**
-     * Returns TemplateDTO of the template assigned for a resource.
-     *
-     * @param resourceId Id of the resource.
-     * @return TemplateDTO
-     */
-    TemplateDelta getTemplateForResource(final ID resourceId);
-
     /**
      * Returns currently logged in user.
      *
@@ -204,6 +196,13 @@ public interface Queries {
      */
     Duration cacheDuration(ID resourceId);
 
+
+    /**
+     * Returns summary of the template assigned for a resource.
+     *
+     * @param resourceId Id of the resource.
+     * @return TemplateSummary.
+     */
     TemplateSummary computeTemplate(ID resourceId);
 
     TemplateDelta templateDelta(ID templateId);

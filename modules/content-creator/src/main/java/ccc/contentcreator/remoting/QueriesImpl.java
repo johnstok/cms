@@ -56,11 +56,6 @@ public class QueriesImpl
     }
 
     /** {@inheritDoc} */
-    public TemplateDelta getTemplateForResource(final ID resourceId) {
-        return _services.lookupQueries().getTemplateForResource(resourceId);
-    }
-
-    /** {@inheritDoc} */
     public Collection<LogEntrySummary> history(final ID resourceId) {
         return _services.lookupQueries().history(resourceId);
     }
@@ -123,7 +118,7 @@ public class QueriesImpl
     }
 
     /** {@inheritDoc} */
-    public Collection<TemplateDelta> templates() {
+    public Collection<TemplateSummary> templates() {
         return _services.lookupQueries().templates();
     }
 
