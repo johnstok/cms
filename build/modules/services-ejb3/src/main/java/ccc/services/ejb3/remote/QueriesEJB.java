@@ -278,13 +278,6 @@ public final class QueriesEJB
 
     /** {@inheritDoc} */
     @Override
-    public PageDelta workingCopyDelta(final ID pageId) {
-        final Page p = _resources.find(Page.class, toUUID(pageId));
-        return workingCopyDelta(p);
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public Collection<ActionSummary> listPendingActions() {
         return mapActions(_actions.pending());
     }

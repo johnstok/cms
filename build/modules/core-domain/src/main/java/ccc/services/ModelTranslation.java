@@ -18,7 +18,6 @@ import java.util.UUID;
 
 import ccc.actions.Action;
 import ccc.domain.Alias;
-import ccc.domain.CCCException;
 import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
@@ -293,24 +292,53 @@ public class ModelTranslation {
      * @return The corresponding delta.
      */
     protected PageDelta deltaPage(final Page page) {
-        final List<ParagraphDelta> paragraphs = new ArrayList<ParagraphDelta>();
-        for (final Paragraph p : page.paragraphs()) {
-            final ParagraphDelta pDelta =
-                new ParagraphDelta(
-                    p.name(),
-                    p.type(),
-                    null, // FIXME: What is the raw value?!
-                    p.text(),
-                    p.date(),
-                    new Decimal(p.number().toString()));
-            paragraphs.add(pDelta);
-        }
+        if (null==page.workingCopy()) {             // Page has no working copy.
+            final List<ParagraphDelta> paragraphs =
+                new ArrayList<ParagraphDelta>();
+            for (final Paragraph p : page.paragraphs()) {
+                final ParagraphDelta pDelta =
+                    new ParagraphDelta(
+                        p.name(),
+                        p.type(),
+                        null, // FIXME: What is the raw value?!
+                        p.text(),
+                        p.date(),
+                        (null==p.number())
+                            ?null:new Decimal(p.number().toString()));
+                paragraphs.add(pDelta);
+            }
 
-        final PageDelta delta =
-            new PageDelta(
-                page.title(),
-                paragraphs);
-        return delta;
+            final PageDelta delta =
+                new PageDelta(
+                    page.title(),
+                    paragraphs);
+            return delta;
+
+        } else {                                     // Page has a working copy.
+            final Snapshot ss = page.workingCopy();
+            final List<ParagraphDelta> paragraphs =
+                new ArrayList<ParagraphDelta>();
+            for(final Snapshot s : ss.getSnapshots("paragraphs")) {
+                final Paragraph p = Paragraph.fromSnapshot(s);
+                final ParagraphDelta pDelta =
+                    new ParagraphDelta(
+                        p.name(),
+                        p.type(),
+                        null, // FIXME: What is the raw value?!
+                        p.text(),
+                        p.date(),
+                        (null==p.number())
+                            ?null:new Decimal(p.number().toString()));
+                paragraphs.add(pDelta);
+            }
+
+            final PageDelta delta =
+                new PageDelta(
+                    ss.getString("title"),
+                    paragraphs);
+            return delta;
+
+        }
     }
 
 
@@ -327,41 +355,6 @@ public class ModelTranslation {
             mapped.add(deltaTemplate(t));
         }
         return mapped;
-    }
-
-
-    /**
-     * Merge page and its working copy to a page delta.
-     *
-     * @param page The page to process.
-     * @return Merged page delta.
-     */
-    protected PageDelta workingCopyDelta(final Page page) {
-        if (null==page.workingCopy()) {
-            throw new CCCException("No working copy!");
-        }
-        final Snapshot ss = page.workingCopy();
-
-        final List<ParagraphDelta> paragraphs =
-            new ArrayList<ParagraphDelta>();
-        for(final Snapshot s : ss.getSnapshots("paragraphs")) {
-            final Paragraph p = Paragraph.fromSnapshot(s);
-            final ParagraphDelta pDelta =
-                new ParagraphDelta(
-                    p.name(),
-                    p.type(),
-                    null,
-                    p.text(),
-                    p.date(),
-                    new Decimal(p.number().toString()));
-            paragraphs.add(pDelta);
-        }
-
-        final PageDelta delta =
-            new PageDelta(
-                ss.getString("title"),
-                paragraphs);
-        return delta;
     }
 
 
