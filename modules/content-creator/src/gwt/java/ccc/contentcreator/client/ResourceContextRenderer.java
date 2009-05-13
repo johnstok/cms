@@ -13,7 +13,6 @@ package ccc.contentcreator.client;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
@@ -24,19 +23,19 @@ import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
  *
  * @author Civic Computing Ltd.
  */
-public class ResourceContextRenderer implements GridCellRenderer<ModelData> {
+public class ResourceContextRenderer implements GridCellRenderer<ResourceSummaryModelData> {
 
     @Override
-    public String render(final ModelData model,
+    public String render(final ResourceSummaryModelData model,
                          final String property,
                          final ColumnData d,
                          final int rowIndex,
                          final int colIndex,
-                         final ListStore<ModelData> store) {
+                         final ListStore<ResourceSummaryModelData> store) {
         d.cellAttr = "rowspan='2'";
         final StringBuilder html = new StringBuilder();
         html.append("<img class='action' id='");
-        html.append(model.<String>get(ResourceSummaryModelData.Property.NAME.name()));
+        html.append(model.getName());
         html.append("_cog");
         html.append("' src='images/icons/cog_go.png'/>&#160;");
         return html.toString();

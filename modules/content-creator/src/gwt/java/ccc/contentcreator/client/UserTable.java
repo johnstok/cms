@@ -121,10 +121,9 @@ public class UserTable extends TablePanel {
 
         final Menu contextMenu = new Menu();
         contextMenu.setId("userContextMenu");
-        final ContextActionGridPlugin gp =
-            new ContextActionGridPlugin(contextMenu, new UserContextRenderer());
+        final ContextActionGridPlugin gp = new ContextActionGridPlugin(contextMenu);
+        gp.setRenderer(new UserContextRenderer());
         final List<ColumnConfig> configs = createColumnConfigs(gp);
-
 
         final ColumnModel cm = new ColumnModel(configs);
 
