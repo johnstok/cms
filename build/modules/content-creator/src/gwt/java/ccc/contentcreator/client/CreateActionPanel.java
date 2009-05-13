@@ -76,20 +76,20 @@ public class CreateActionPanel
                     _parameters.removeAll();
 
                     switch (l.getSelectedItem().<ActionType>getData("action-id")) {
-                        case PUBLISH:
+                        case RESOURCE_PUBLISH:
                             _pPanel = new EmptyPanel(
                                 _uiConstants.publish(),
                                 _uiConstants.publishesSelectedResource());
                             break;
 
-                        case UNPUBLISH:
+                        case RESOURCE_UNPUBLISH:
                             _pPanel =
                                 new EmptyPanel(
                                     _uiConstants.unpublish(),
                                     _uiConstants.unpublishesSelectedResource());
                             break;
 
-                        case UPDATE:
+                        case PAGE_UPDATE:
                             _pPanel = new UpdatePanel();
                             break;
 
@@ -104,16 +104,16 @@ public class CreateActionPanel
             }
         );
         final DataListItem publish = new DataListItem(_uiConstants.publish());
-        publish.setData("action-id", ActionType.PUBLISH);
+        publish.setData("action-id", ActionType.RESOURCE_PUBLISH);
         _list.add(publish);
 
         final DataListItem unpublish =
             new DataListItem(_uiConstants.unpublish());
-        unpublish.setData("action-id", ActionType.UNPUBLISH);
+        unpublish.setData("action-id", ActionType.RESOURCE_UNPUBLISH);
         _list.add(unpublish);
 
-        final DataListItem update = new DataListItem(_uiConstants.update());
-        update.setData("action-id", ActionType.UPDATE);
+        final DataListItem update = new DataListItem(_uiConstants.updateContent());
+        update.setData("action-id", ActionType.PAGE_UPDATE);
         _list.add(update);
 
 

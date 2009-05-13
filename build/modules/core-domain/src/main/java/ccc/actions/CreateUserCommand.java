@@ -11,6 +11,8 @@
  */
 package ccc.actions;
 
+import java.util.Date;
+
 import ccc.commons.EmailAddress;
 import ccc.domain.Password;
 import ccc.domain.User;
@@ -47,7 +49,10 @@ public class CreateUserCommand {
      * @param password The password to be used for the user.
      * @return Persisted user.
      */
-    public User execute(final UserDelta delta, final String password) {
+    public User execute(final User actor,
+                        final Date happenedOn,
+                        final UserDelta delta,
+                        final String password) {
         final User user = new User(delta.getUsername().toString());
         user.email(new EmailAddress(delta.getEmail()));
         user.roles(delta.getRoles());
@@ -56,7 +61,7 @@ public class CreateUserCommand {
         final Password defaultPassword = new Password(user, password);
         _dao.create(defaultPassword);
 
-        // TODO: Audit user creation.
+        _audit.recordUserCreate(user, actor, happenedOn);
 
         return user;
     }

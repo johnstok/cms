@@ -23,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import ccc.commons.Testing;
+import ccc.services.api.ActionType;
 import ccc.services.api.Duration;
 import ccc.services.api.ResourceType;
 
@@ -447,7 +448,9 @@ public final class ResourceTest extends TestCase {
         // ASSERT
         } catch (final InsufficientPrivilegesException e) {
             assertEquals(
-                "User jill[] may not perform action: UNLOCK", e.getMessage());
+                "User jill[] may not perform action: "
+                + ActionType.RESOURCE_UNLOCK,
+                e.getMessage());
         }
 
 

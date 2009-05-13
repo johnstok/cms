@@ -13,9 +13,11 @@ package ccc.actions;
 
 import static ccc.services.QueryNames.*;
 
+import java.util.Date;
 import java.util.UUID;
 
 import ccc.domain.Password;
+import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
 
@@ -48,11 +50,14 @@ public class UpdatePasswordAction {
      * @param userId The user's id.
      * @param password The new password.
      */
-    public void execute(final UUID userId, final String password) {
+    public void execute(final User actor,
+                        final Date happenedOn,
+                        final UUID userId,
+                        final String password) {
         final Password p =
                 _dao.find(PASSWORD_FOR_USER, Password.class, userId);
         p.password(password);
 
-        // TODO: Audit password change.
+        _audit.recordUserChangePassword(null, actor, happenedOn); // FIXME: Broken.
     }
 }

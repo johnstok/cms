@@ -50,11 +50,6 @@
             not-null="true"
             type="timestamp" />
         <property
-            name="_subjectType"
-            column="subject_type"
-            not-null="true"
-            type="ResourceType" />
-        <property
             name="_subjectId"
             column="subject_id"
             not-null="true"

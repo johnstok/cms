@@ -15,9 +15,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-import ccc.services.api.ActionType;
-
 import junit.framework.TestCase;
+import ccc.services.api.ActionType;
 
 
 /**
@@ -43,13 +42,12 @@ public class LogEntryTest
 
         // ASSERT
         assertEquals(p.id(), le.subjectId());
-        assertEquals(p.type(), le.subjectType());
-        assertEquals("Renamed resource to 'foo'.", le.comment());
+        assertEquals("", le.comment());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(ActionType.RENAME, le.action());
+        assertEquals(ActionType.RESOURCE_RENAME, le.action());
     }
 
     /**
@@ -67,14 +65,12 @@ public class LogEntryTest
 
         // ASSERT
         assertEquals(p.id(), le.subjectId());
-        assertEquals(p.type(), le.subjectType());
-        assertEquals("Moved resource to parent: "
-            +f.absolutePath()+".", le.comment());
+        assertEquals("", le.comment());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(ActionType.MOVE, le.action());
+        assertEquals(ActionType.RESOURCE_MOVE, le.action());
         assertEquals("{\"path\":\"/bar/foo\"}",
             le.detail());
     }
@@ -92,13 +88,12 @@ public class LogEntryTest
 
         // ASSERT
         assertEquals(p.id(), le.subjectId());
-        assertEquals(p.type(), le.subjectType());
-        assertEquals("Created.", le.comment());
+        assertEquals("", le.comment());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(ActionType.CREATE, le.action());
+        assertEquals(ActionType.PAGE_CREATE, le.action());
         assertEquals("{\"title\":\"foo\","
             + "\"name\":\"foo\","
             + "\"path\":\"/foo\","
@@ -119,13 +114,12 @@ public class LogEntryTest
 
         // ASSERT
         assertEquals(p.id(), le.subjectId());
-        assertEquals(p.type(), le.subjectType());
         assertEquals("Updated.", le.comment());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(ActionType.UPDATE, le.action());
+        assertEquals(ActionType.PAGE_UPDATE, le.action());
         assertEquals(p.createSnapshot().getDetail(), le.detail());
     }
 
@@ -148,13 +142,12 @@ public class LogEntryTest
 
         // ASSERT
         assertEquals(p.id(), le.subjectId());
-        assertEquals(p.type(), le.subjectType());
-        assertEquals("Template changed.", le.comment());
+        assertEquals("", le.comment());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(ActionType.CHANGE_TEMPLATE, le.action());
+        assertEquals(ActionType.RESOURCE_CHANGE_TEMPLATE, le.action());
         assertEquals("{\"template\":\"newName\"}", le.detail());
     }
 
@@ -173,13 +166,12 @@ public class LogEntryTest
 
         // ASSERT
         assertEquals(p.id(), le.subjectId());
-        assertEquals(p.type(), le.subjectType());
-        assertEquals("Locked.", le.comment());
+        assertEquals("", le.comment());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(ActionType.LOCK, le.action());
+        assertEquals(ActionType.RESOURCE_LOCK, le.action());
         assertEquals("{\"lock\":\""+_actor.id().toString()+"\"}", le.detail());
     }
 
@@ -198,13 +190,12 @@ public class LogEntryTest
 
         // ASSERT
         assertEquals(p.id(), le.subjectId());
-        assertEquals(p.type(), le.subjectType());
-        assertEquals("Unlocked.", le.comment());
+        assertEquals("", le.comment());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(ActionType.UNLOCK, le.action());
+        assertEquals(ActionType.RESOURCE_UNLOCK, le.action());
         assertEquals(
             "{\"unlock\":\""+_actor.id().toString()+"\"}",
             le.detail());
@@ -224,13 +215,12 @@ public class LogEntryTest
 
         // ASSERT
         assertEquals(p.id(), le.subjectId());
-        assertEquals(p.type(), le.subjectType());
-        assertEquals("Updated tags.", le.comment());
+        assertEquals("", le.comment());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(ActionType.UPDATE_TAGS, le.action());
+        assertEquals(ActionType.RESOURCE_UPDATE_TAGS, le.action());
         assertEquals("{\"tags\":\"foo,bar\"}", le.detail());
     }
 
@@ -248,13 +238,12 @@ public class LogEntryTest
 
         // ASSERT
         assertEquals(f.id(), le.subjectId());
-        assertEquals(f.type(), le.subjectType());
-        assertEquals("Updated sort order.", le.comment());
+        assertEquals("", le.comment());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(ActionType.UPDATE_SORT_ORDER, le.action());
+        assertEquals(ActionType.FOLDER_UPDATE_SORT_ORDER, le.action());
         assertEquals("{\"sortOrder\":\"MANUAL\"}", le.detail());
     }
 
@@ -272,13 +261,12 @@ public class LogEntryTest
 
         // ASSERT
         assertEquals(p.id(), le.subjectId());
-        assertEquals(p.type(), le.subjectType());
-        assertEquals("Updated metadata.", le.comment());
+        assertEquals("", le.comment());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(ActionType.UPDATE_METADATA, le.action());
+        assertEquals(ActionType.RESOURCE_UPDATE_METADATA, le.action());
         assertEquals("{\"metadata\":{\"bar\":\"zup\"}}", le.detail());
     }
 
@@ -299,13 +287,12 @@ public class LogEntryTest
 
         // ASSERT
         assertEquals(p.id(), le.subjectId());
-        assertEquals(p.type(), le.subjectType());
-        assertEquals("Roles changed.", le.comment());
+        assertEquals("", le.comment());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(ActionType.CHANGE_ROLES, le.action());
+        assertEquals(ActionType.RESOURCE_CHANGE_ROLES, le.action());
         assertEquals("{\"roles\":\"sup,zep\"}", le.detail());
     }
 

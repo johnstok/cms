@@ -126,7 +126,7 @@ public class CommandsEJB
                     name));
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.CREATE);
+            throw newCCCRemoteException(e, ActionType.ALIAS_CREATE);
         }
     }
 
@@ -153,7 +153,7 @@ public class CommandsEJB
                     loggedInUser(), new Date(), toUUID(parentId), name, title));
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.CREATE);
+            throw newCCCRemoteException(e, ActionType.FOLDER_CREATE);
         }
     }
 
@@ -178,7 +178,7 @@ public class CommandsEJB
             return mapResource(p);
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.CREATE);
+            throw newCCCRemoteException(e, ActionType.PAGE_CREATE);
         }
     }
 
@@ -199,7 +199,7 @@ public class CommandsEJB
                     new ResourceName(name)));
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.CREATE);
+            throw newCCCRemoteException(e, ActionType.TEMPLATE_CREATE);
         }
 
     }
@@ -209,7 +209,8 @@ public class CommandsEJB
     public UserSummary createUser(final UserDelta delta,
                                   final String password) {
         return mapUser(
-            new CreateUserCommand(_bdao, _audit).execute(delta, password));
+            new CreateUserCommand(_bdao, _audit).execute(
+                loggedInUser(), new Date(), delta, password));
     }
 
     /** {@inheritDoc}
@@ -220,7 +221,7 @@ public class CommandsEJB
             _resources.lock(loggedInUser(), new Date(), toUUID(resourceId));
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.CREATE);
+            throw newCCCRemoteException(e, ActionType.RESOURCE_LOCK);
         }
     }
 
@@ -237,7 +238,7 @@ public class CommandsEJB
                 toUUID(newParentId));
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.MOVE);
+            throw newCCCRemoteException(e, ActionType.RESOURCE_MOVE);
         }
     }
 
@@ -250,7 +251,7 @@ public class CommandsEJB
                 loggedInUser(), new Date(), toUUID(resourceId));
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.PUBLISH);
+            throw newCCCRemoteException(e, ActionType.RESOURCE_PUBLISH);
         }
     }
 
@@ -264,7 +265,7 @@ public class CommandsEJB
             _resources.publish(toUUID(resourceId), toUUID(userId), date);
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.PUBLISH);
+            throw newCCCRemoteException(e, ActionType.RESOURCE_PUBLISH);
         }
     }
 
@@ -278,7 +279,7 @@ public class CommandsEJB
                     loggedInUser(), new Date(), toUUID(resourceId), name);
 
             } catch (final RemoteExceptionSupport e) {
-                throw newCCCRemoteException(e, ActionType.RENAME);
+                throw newCCCRemoteException(e, ActionType.RESOURCE_RENAME);
             }
     }
 
@@ -291,7 +292,7 @@ public class CommandsEJB
                 loggedInUser(), new Date(), toUUID(resourceId));
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.UNLOCK);
+            throw newCCCRemoteException(e, ActionType.RESOURCE_UNLOCK);
         }
     }
 
@@ -304,7 +305,7 @@ public class CommandsEJB
                 loggedInUser(), new Date(), toUUID(resourceId));
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.UNPUBLISH);
+            throw newCCCRemoteException(e, ActionType.RESOURCE_UNPUBLISH);
         }
     }
 
@@ -321,7 +322,7 @@ public class CommandsEJB
                 toUUID(aliasId));
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.UPDATE);
+            throw newCCCRemoteException(e, ActionType.ALIAS_UPDATE);
         }
     }
 
@@ -343,7 +344,7 @@ public class CommandsEJB
                 isMajorEdit);
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.UPDATE);
+            throw newCCCRemoteException(e, ActionType.PAGE_UPDATE);
         }
     }
 
@@ -364,7 +365,7 @@ public class CommandsEJB
                 loggedInUser(), toUUID(pageId), page.createSnapshot());
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.UPDATE);
+            throw newCCCRemoteException(e, ActionType.RESOURCE_SET_WC);
         }
     }
 
@@ -387,7 +388,7 @@ public class CommandsEJB
             }
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.CREATE);
+            throw newCCCRemoteException(e, ActionType.RESOURCE_SET_WC);
         }
     }
 
@@ -405,7 +406,7 @@ public class CommandsEJB
                 toUUID(templateId));
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.CHANGE_TEMPLATE);
+            throw newCCCRemoteException(e, ActionType.RESOURCE_CHANGE_TEMPLATE);
         }
     }
 
@@ -419,7 +420,7 @@ public class CommandsEJB
                 loggedInUser(), new Date(), toUUID(resourceId), tags);
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.UPDATE_TAGS);
+            throw newCCCRemoteException(e, ActionType.RESOURCE_UPDATE_TAGS);
         }
 
     }
@@ -435,14 +436,15 @@ public class CommandsEJB
                 loggedInUser(), new Date(), toUUID(templateId), delta);
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.UPDATE);
+            throw newCCCRemoteException(e, ActionType.TEMPLATE_UPDATE);
         }
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateUser(final ID userId, final UserDelta delta) {
-        new UpdateUserCommand(_bdao, _audit).execute(toUUID(userId), delta);
+        new UpdateUserCommand(_bdao, _audit).execute(
+            loggedInUser(), new Date(), toUUID(userId), delta);
     }
 
     /** {@inheritDoc} */
@@ -464,7 +466,7 @@ public class CommandsEJB
                 loggedInUser(), new Date(), toUUID(resourceId), include);
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.INCLUDE_IN_MM);
+            throw newCCCRemoteException(e, ActionType.RESOURCE_INCLUDE_IN_MM);
         }
     }
 
@@ -505,7 +507,7 @@ public class CommandsEJB
                 loggedInUser(), new Date(), toUUID(resourceId), metadata);
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.UPDATE_METADATA);
+            throw newCCCRemoteException(e, ActionType.RESOURCE_UPDATE_METADATA);
         }
     }
 
@@ -523,7 +525,7 @@ public class CommandsEJB
                  ResourceOrder.valueOf(sortOrder));
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.UPDATE_SORT_ORDER);
+            throw newCCCRemoteException(e, ActionType.FOLDER_UPDATE_SORT_ORDER);
         }
     }
 
@@ -535,7 +537,7 @@ public class CommandsEJB
             _wcMgr.clearWorkingCopy(loggedInUser(), toUUID(pageId));
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.CLEAR_WC);
+            throw newCCCRemoteException(e, ActionType.RESOURCE_CLEAR_WC);
         }
     }
 
@@ -552,7 +554,7 @@ public class CommandsEJB
             );
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.CREATE);
+            throw newCCCRemoteException(e, ActionType.SEARCH_CREATE);
         }
     }
 
@@ -595,7 +597,7 @@ public class CommandsEJB
 
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.REORDER);
+            throw newCCCRemoteException(e, ActionType.FOLDER_REORDER);
         }
     }
 
@@ -610,7 +612,7 @@ public class CommandsEJB
                 loggedInUser(), new Date(), toUUID(resourceId), roles);
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.CHANGE_ROLES);
+            throw newCCCRemoteException(e, ActionType.RESOURCE_CHANGE_ROLES);
         }
     }
 
@@ -624,7 +626,7 @@ public class CommandsEJB
                 loggedInUser(), new Date(), toUUID(fileId), null, false);
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.UPDATE);
+            throw newCCCRemoteException(e, ActionType.FILE_UPDATE);
         }
     }
 
@@ -639,7 +641,7 @@ public class CommandsEJB
                 loggedInUser(), new Date(), toUUID(resourceId), duration);
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.UPDATE_CACHE);
+            throw newCCCRemoteException(e, ActionType.RESOURCE_UPDATE_CACHE);
         }
     }
 
@@ -647,7 +649,7 @@ public class CommandsEJB
     @Override
     public void updateUserPassword(final ID userId, final String password) {
         new UpdatePasswordAction(_bdao, _audit).execute(
-            toUUID(userId), password);
+            loggedInUser(), new Date(), toUUID(userId), password);
     }
 
     @PostConstruct @SuppressWarnings("unused")

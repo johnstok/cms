@@ -11,6 +11,7 @@
  */
 package ccc.actions;
 
+import java.util.Date;
 import java.util.UUID;
 
 import ccc.commons.EmailAddress;
@@ -49,13 +50,17 @@ public class UpdateUserCommand {
      * @param delta The changes to apply.
      * @return The updated user.
      */
-    public User execute(final UUID userId, final UserDelta delta) {
+    public User execute(final User actor,
+                        final Date happenedOn,
+                        final UUID userId,
+                        final UserDelta delta) {
         final User current = _dao.find(User.class, userId);
         current.username(delta.getUsername().toString());
         current.email(new EmailAddress(delta.getEmail()));
         current.roles(delta.getRoles());
-        return current;
 
-        // TODO: Audit user updates.
+        _audit.recordUserUpdate(current, actor, happenedOn);
+
+        return current;
     }
 }

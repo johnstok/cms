@@ -75,9 +75,10 @@ public class HistoryDialog
                         _toolBar.disable();
                     } else {
                         final ActionType action = md.getAction();
-                        if ((ActionType.CREATE==action || ActionType.UPDATE==action)
-                            && (ResourceType.PAGE==_resourceType
-                                || ResourceType.FILE==_resourceType)) {
+                        if (ActionType.PAGE_CREATE==action
+                            || ActionType.PAGE_UPDATE==action
+                            || ActionType.FILE_CREATE==action
+                            || ActionType.FILE_UPDATE==action) {
                             _toolBar.enable();
                         } else {
                             _toolBar.disable();

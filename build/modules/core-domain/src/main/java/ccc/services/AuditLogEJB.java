@@ -18,6 +18,7 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 
 import ccc.commons.DBC;
+import ccc.domain.Entity;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
@@ -274,8 +275,44 @@ public class AuditLogEJB
         log(resource, actor, happenedOn, le);
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public void recordUserCreate(final User user,
+                                 final User actor,
+                                 final Date happenedOn) {
+        DBC.require().notNull(user);
+        final LogEntry le =
+            LogEntry.forCreateUser(user, actor, happenedOn);
+        _em.create(le);
+        log(user, actor, happenedOn, le);
+    }
 
-    private void log(final Resource resource,
+    /** {@inheritDoc} */
+    @Override
+    public void recordUserUpdate(final User user,
+                                 final User actor,
+                                 final Date happenedOn) {
+        DBC.require().notNull(user);
+        final LogEntry le =
+            LogEntry.forUserUpdate(user, actor, happenedOn);
+        _em.create(le);
+        log(user, actor, happenedOn, le);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void recordUserChangePassword(final User user,
+                                         final User actor,
+                                         final Date happenedOn) {
+        DBC.require().notNull(user);
+        final LogEntry le =
+            LogEntry.forUserChangePassword(user, actor, happenedOn);
+        _em.create(le);
+        log(user, actor, happenedOn, le);
+    }
+
+
+    private void log(final Entity entity,
                      final User actor,
                      final Date happenedOn,
                      final LogEntry le) {
@@ -283,7 +320,7 @@ public class AuditLogEJB
         final DateFormat df = new SimpleDateFormat("yyyy.MM.dd-HH:mm:ss z");
         LOG.info(
             "Action: " + le.action()
-            + " for " + resource.id()
+            + " for " + entity.id()
             + ", " + actor.username()
             + " on " + df.format(happenedOn));
     }
