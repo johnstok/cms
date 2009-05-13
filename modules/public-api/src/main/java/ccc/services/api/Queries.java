@@ -181,14 +181,6 @@ public interface Queries {
     Map<String, String> metadata(ID resourceId);
 
     /**
-     * Merge page and its working copy to a page delta.
-     *
-     * @param pageId The id of the resource.
-     * @return Page delta of the merge of page and working copy.
-     */
-    PageDelta workingCopyDelta(ID pageId);
-
-    /**
      * List all CCC actions that haven't yet been executed.
      *
      * @return A collection of action summaries, one per outstanding action.

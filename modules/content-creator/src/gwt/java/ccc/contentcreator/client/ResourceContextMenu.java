@@ -426,7 +426,7 @@ public class ResourceContextMenu
                     if (null==template) {
                         Globals.alert(_constants.noTemplateFound());
                     } else { // Get a delta to edit.
-                        _qs.workingCopyDelta(
+                        _qs.pageDelta(
                             item.getId(),
                             new ErrorReportingCallback<PageDelta>() {
                                 @Override public void onSuccess(final PageDelta page) {

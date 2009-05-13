@@ -103,8 +103,6 @@ public interface QueriesServiceAsync {
     void metadata(ID resourceId,
                   AsyncCallback<Map<String, String>> asyncCallback);
 
-    void workingCopyDelta(ID pageId, AsyncCallback<PageDelta> asyncCallback);
-
     void listPendingActions(AsyncCallback<Collection<ActionSummary>> asyncCallback);
 
     void listCompletedActions(AsyncCallback<Collection<ActionSummary>> asyncCallback);

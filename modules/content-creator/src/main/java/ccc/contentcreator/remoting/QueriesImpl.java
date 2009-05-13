@@ -176,12 +176,6 @@ public class QueriesImpl
 
     /** {@inheritDoc} */
     @Override
-    public PageDelta workingCopyDelta(final ID pageId) {
-        return _services.lookupQueries().workingCopyDelta(pageId);
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public Collection<ActionSummary> listPendingActions() {
         return _services.lookupQueries().listPendingActions();
     }
