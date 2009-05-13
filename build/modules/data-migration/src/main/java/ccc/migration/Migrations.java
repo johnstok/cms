@@ -141,7 +141,7 @@ public class Migrations {
     private void publishRecursive(final ResourceSummary resource) {
         _commands.lock(resource.getId());
         _commands.publish(resource.getId());
-        if ("FOLDER".equals(resource.getType())) {
+        if ("FOLDER".equals(resource.getType().name())) {
             final Collection<ResourceSummary> children =
                 _queries.getChildren(resource.getId());
             for (final ResourceSummary child : children) {
