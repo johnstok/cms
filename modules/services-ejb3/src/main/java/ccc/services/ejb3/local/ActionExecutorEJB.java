@@ -121,8 +121,8 @@ public class ActionExecutorEJB implements ActionExecutor {
                 action.actor(),
                 new Date(),
                 r.id(),
-                action.parameters().getString("comment"),
-                action.parameters().getBool("majorEdit").booleanValue());
+                action.getComment(),
+                action.isMajorEdit());
 
         } else {
             throw new CCCException(

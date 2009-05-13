@@ -258,7 +258,9 @@ public interface Commands {
     void createAction(ID resourceId,
                       ActionType action,
                       Date executeAfter,
-                      String parameters) throws CCCRemoteException;
+                      String parameters,
+                      String comment,
+                      boolean isMajorEdit) throws CCCRemoteException;
 
     /**
      * Change the order of resources in a folder.

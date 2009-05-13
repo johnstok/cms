@@ -148,6 +148,8 @@ public final class Globals {
      * @param e The exception to report.
      */
     public static void unexpectedError(final Throwable e) {
+        // TODO: Add clause for InvocationException
+        // TODO: Add clause for IncompatibleRemoteServiceException
         if (e instanceof CCCRemoteException) {
             final CCCRemoteException re = (CCCRemoteException) e;
             alert("Expected exception - type="+re.getCode());

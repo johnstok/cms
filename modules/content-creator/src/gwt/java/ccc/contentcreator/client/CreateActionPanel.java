@@ -33,9 +33,6 @@ import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.extjs.gxt.ui.client.widget.layout.FormData;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.json.client.JSONBoolean;
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONString;
 
 
 /**
@@ -141,17 +138,17 @@ public class CreateActionPanel
         return item.<ActionType>getData("action-id");
     }
 
-    /**
-     * Accessor.
-     *
-     * @return The parameters for the selected action, as a JSON object.
-     */
-    public JSONObject actionParameters() {
-        return (null==_pPanel) ? null : _pPanel.parameters();
+    public boolean isMajorEdit() {
+        return (null==_pPanel) ? false : _pPanel.isMajorEdit();
+    }
+
+    public String getComment() {
+        return (null==_pPanel) ? "" : _pPanel.getComment();
     }
 
     private static interface ParameterPanel {
-        JSONObject parameters();
+        boolean isMajorEdit();
+        String getComment();
         void populateForm(final LayoutContainer form);
     }
 
@@ -164,8 +161,12 @@ public class CreateActionPanel
         }
 
         /** {@inheritDoc} */
-        public JSONObject parameters() {
-            return new JSONObject();
+        public boolean isMajorEdit() {
+            return false;
+        }
+
+        public String getComment() {
+            return "";
         }
 
         /** {@inheritDoc} */
@@ -182,16 +183,13 @@ public class CreateActionPanel
         private final TextArea _comment = new TextArea();
 
         /** {@inheritDoc} */
-        public JSONObject parameters() {
+        public boolean isMajorEdit() {
+            return _majorEdit.getValue().booleanValue();
+        }
 
-            final JSONObject json = new JSONObject();
-            json.put(
-                "majorEdit",
-                JSONBoolean.getInstance(_majorEdit.getValue().booleanValue()));
-            json.put(
-                "comment",
-                new JSONString(_comment.getValue()));
-            return json;
+        public String getComment() {
+            final String comment = _comment.getValue();
+            return (null==comment) ? "" : comment;
         }
 
         /** {@inheritDoc} */

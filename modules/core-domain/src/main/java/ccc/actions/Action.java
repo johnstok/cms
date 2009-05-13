@@ -28,13 +28,16 @@ import ccc.services.api.ActionType;
  * @author Civic Computing Ltd.
  */
 public class Action extends Entity {
-    private Date _executeAfter;
-    private User _actor;
-    private ActionType _type;
-    private Snapshot _parameters;
-    private Resource _subject;
+    private User         _actor;
+    private ActionType   _type;
+    private Snapshot     _parameters;
+    private Resource     _subject;
+    private String       _comment = "";
+    private boolean      _isMajorEdit;
+
+    private Date         _executeAfter;
     private ActionStatus _status = ActionStatus.Scheduled;
-    private Snapshot _failure;
+    private Snapshot     _failure;
 
     /** Constructor: for persistence only. */
     protected Action() { super(); }
@@ -52,12 +55,16 @@ public class Action extends Entity {
                   final Date executeAfter,
                   final User actor,
                   final Resource subject,
-                  final Snapshot parameters) { // Or hashmap?
+                  final Snapshot parameters,
+                  final String comment,
+                  final boolean isMajorEdit) {
         _type = type;
         _executeAfter = new Date(executeAfter.getTime());
         _actor = actor;
         _subject = subject;
         _parameters = parameters;
+        _comment = comment;
+        _isMajorEdit = isMajorEdit;
     }
 
 
@@ -159,5 +166,23 @@ public class Action extends Entity {
         if (ActionStatus.Scheduled!=_status) {
             throw new IllegalStateException("Status is "+_status);
         }
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return The comment for this action.
+     */
+    public String getComment() {
+        return _comment;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return True if this action is a major edit, false otherwise.
+     */
+    public boolean isMajorEdit() {
+        return _isMajorEdit;
     }
 }
