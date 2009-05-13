@@ -115,31 +115,52 @@ public class ResourceTable
 
     private void createColumnConfigs(final List<ColumnConfig> configs) {
         final ColumnConfig typeColumn =
-            new ColumnConfig("type", _constants.type(), 70);
+            new ColumnConfig(
+                ResourceSummaryModelData.Property.TYPE.name(),
+                _constants.type(),
+                70);
         configs.add(typeColumn);
 
         final ColumnConfig lockedColumn =
-            new ColumnConfig("locked", _constants.lockedBy(), 80);
+            new ColumnConfig(
+                ResourceSummaryModelData.Property.LOCKED.name(),
+                _constants.lockedBy(),
+                80);
         configs.add(lockedColumn);
 
         final ColumnConfig workingCopyColumn =
-            new ColumnConfig("workingCopy",  _constants.workingCopy(), 75);
+            new ColumnConfig(
+                ResourceSummaryModelData.Property.WORKING_COPY.name(),
+                _constants.workingCopy(),
+                75);
         configs.add(workingCopyColumn);
 
         final ColumnConfig mmIncludeColumn =
-            new ColumnConfig("mmInclude", _constants.mainMenu(), 70);
+            new ColumnConfig(
+                ResourceSummaryModelData.Property.MM_INCLUDE.name(),
+                _constants.mainMenu(),
+                70);
         configs.add(mmIncludeColumn);
 
         final ColumnConfig publishedByColumn =
-            new ColumnConfig("published", _constants.publishedBy(), 80);
+            new ColumnConfig(
+                ResourceSummaryModelData.Property.PUBLISHED.name(),
+                _constants.publishedBy(),
+                80);
         configs.add(publishedByColumn);
 
         final ColumnConfig nameColumn =
-            new ColumnConfig("name", _constants.name(), 250);
+            new ColumnConfig(
+                ResourceSummaryModelData.Property.NAME.name(),
+                _constants.name(),
+                250);
         configs.add(nameColumn);
 
         final ColumnConfig titleColumn =
-            new ColumnConfig("title", _constants.title(), 250);
+            new ColumnConfig(
+                ResourceSummaryModelData.Property.TITLE.name(),
+                _constants.title(),
+                250);
         configs.add(titleColumn);
     }
 
@@ -170,7 +191,7 @@ public class ResourceTable
             new GridSelectionModel<ResourceSummaryModelData>();
         gsm.setSelectionMode(SelectionMode.SINGLE);
         _grid.setSelectionModel(gsm);
-        _grid.setAutoExpandColumn("title");
+        _grid.setAutoExpandColumn(ResourceSummaryModelData.Property.TITLE.name());
     }
 
 

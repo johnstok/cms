@@ -11,9 +11,10 @@
  */
 package ccc.contentcreator.client;
 
+import ccc.contentcreator.binding.ResourceSummaryModelData;
+
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.core.El;
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
@@ -34,7 +35,7 @@ import com.extjs.gxt.ui.client.widget.menu.Menu;
 public class ContextActionGridPlugin
     extends ColumnConfig implements ComponentPlugin {
 
-    private Grid grid;
+    private Grid<ResourceSummaryModelData> _grid;
     private Menu _contextMenu;
 
     /**
@@ -54,17 +55,17 @@ public class ContextActionGridPlugin
         setId("ToolGridExtension");
 
 
-        setRenderer(new GridCellRenderer() {
-            public String render(final ModelData model,
+        setRenderer(new GridCellRenderer<ResourceSummaryModelData>() {
+            public String render(final ResourceSummaryModelData model,
                                  final String property,
                                  final ColumnData d,
                                  final int rowIndex,
                                  final int colIndex,
-                                 final ListStore store) {
+                                 final ListStore<ResourceSummaryModelData> store) {
                 d.cellAttr = "rowspan='2'";
                 final StringBuilder html = new StringBuilder();
                 html.append("<img class='action' id='");
-                html.append(model.<String>get("name"));
+                html.append(model.getName());
                 html.append("_cog");
                 html.append("' src='images/icons/cog_go.png'/>&#160;");
                 return html.toString();
@@ -75,8 +76,8 @@ public class ContextActionGridPlugin
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
     public void init(final Component component) {
-        this.grid = (Grid) component;
-        grid.addListener(Events.RowClick, new Listener<GridEvent>() {
+        _grid = (Grid) component;
+        _grid.addListener(Events.RowClick, new Listener<GridEvent>() {
             public void handleEvent(final GridEvent be) {
                 onMouseDown(be);
             }
@@ -94,7 +95,7 @@ public class ContextActionGridPlugin
             e.stopEvent();
             final El row = e.getTarget(".x-grid3-row", 15);
             final int idx = row.dom.getPropertyInt("rowIndex");
-            grid.getSelectionModel().select(idx);
+            _grid.getSelectionModel().select(idx);
 
             _contextMenu.showAt(e.getTarget().getAbsoluteLeft()+7 ,
                 e.getTarget().getAbsoluteTop()+7);
