@@ -41,7 +41,7 @@ public class ContextActionGridPlugin
      *
      * @param contextMenu Context menu
      */
-    public ContextActionGridPlugin(final Menu contextMenu, GridCellRenderer<ModelData> renderer) {
+    public ContextActionGridPlugin(final Menu contextMenu) {
         _contextMenu = contextMenu;
         setHeader("");
         setWidth(30);
@@ -51,7 +51,6 @@ public class ContextActionGridPlugin
         setMenuDisabled(true);
         setDataIndex("");
         setId("ToolGridExtension");
-        setRenderer(renderer);
     }
 
     /** {@inheritDoc} */

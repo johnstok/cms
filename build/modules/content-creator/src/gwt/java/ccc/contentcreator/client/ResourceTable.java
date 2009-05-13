@@ -74,8 +74,8 @@ public class ResourceTable
 
         final Menu contextMenu = new ResourceContextMenu(this, user);
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
-        final ContextActionGridPlugin gp =
-            new ContextActionGridPlugin(contextMenu, new ResourceContextRenderer());
+        final ContextActionGridPlugin gp = new ContextActionGridPlugin(contextMenu);
+        gp.setRenderer(new ResourceContextRenderer());
         configs.add(gp);
 
         createColumnConfigs(configs);
