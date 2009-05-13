@@ -11,17 +11,15 @@
  */
 package ccc.contentcreator.client;
 
-import ccc.contentcreator.binding.ResourceSummaryModelData;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.core.El;
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ComponentPlugin;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
-import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
@@ -35,7 +33,7 @@ import com.extjs.gxt.ui.client.widget.menu.Menu;
 public class ContextActionGridPlugin
     extends ColumnConfig implements ComponentPlugin {
 
-    private Grid<ResourceSummaryModelData> _grid;
+    private Grid<ModelData> _grid;
     private Menu _contextMenu;
 
     /**
@@ -43,7 +41,7 @@ public class ContextActionGridPlugin
      *
      * @param contextMenu Context menu
      */
-    public ContextActionGridPlugin(final Menu contextMenu) {
+    public ContextActionGridPlugin(final Menu contextMenu, GridCellRenderer<ModelData> renderer) {
         _contextMenu = contextMenu;
         setHeader("");
         setWidth(30);
@@ -53,24 +51,7 @@ public class ContextActionGridPlugin
         setMenuDisabled(true);
         setDataIndex("");
         setId("ToolGridExtension");
-
-
-        setRenderer(new GridCellRenderer<ResourceSummaryModelData>() {
-            public String render(final ResourceSummaryModelData model,
-                                 final String property,
-                                 final ColumnData d,
-                                 final int rowIndex,
-                                 final int colIndex,
-                                 final ListStore<ResourceSummaryModelData> store) {
-                d.cellAttr = "rowspan='2'";
-                final StringBuilder html = new StringBuilder();
-                html.append("<img class='action' id='");
-                html.append(model.getName());
-                html.append("_cog");
-                html.append("' src='images/icons/cog_go.png'/>&#160;");
-                return html.toString();
-                }
-        });
+        setRenderer(renderer);
     }
 
     /** {@inheritDoc} */
