@@ -11,7 +11,11 @@
  */
 package ccc.services;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.apache.log4j.Logger;
 
 import ccc.commons.DBC;
 import ccc.domain.Folder;
@@ -28,6 +32,7 @@ import ccc.domain.User;
 public class AuditLogEJB
     implements
         AuditLog {
+    private static final Logger LOG = Logger.getLogger(AuditLogEJB.class);
 
     private Dao _em;
 
@@ -49,6 +54,7 @@ public class AuditLogEJB
         final LogEntry le =
             LogEntry.forLock(resource, actor, happenedOn);
         _em.create(le);
+        log(resource, actor, happenedOn, le);
     }
 
     /** {@inheritDoc} */
@@ -60,6 +66,7 @@ public class AuditLogEJB
         final LogEntry le =
             LogEntry.forUnlock(resource, actor, happenedOn);
         _em.create(le);
+        log(resource, actor, happenedOn, le);
     }
 
     /** {@inheritDoc} */
@@ -71,6 +78,7 @@ public class AuditLogEJB
         final LogEntry le =
             LogEntry.forCreate(resource, actor, happenedOn);
         _em.create(le);
+        log(resource, actor, happenedOn, le);
     }
 
     /** {@inheritDoc} */
@@ -82,6 +90,7 @@ public class AuditLogEJB
         final LogEntry le =
             LogEntry.forTemplateChange(resource, actor, happenedOn);
         _em.create(le);
+        log(resource, actor, happenedOn, le);
     }
 
     /** {@inheritDoc} */
@@ -99,6 +108,7 @@ public class AuditLogEJB
             comment,
             isMajorEdit);
         _em.create(le);
+        log(resource, actor, happenedOn, le);
     }
 
     /** {@inheritDoc} */
@@ -109,6 +119,7 @@ public class AuditLogEJB
         DBC.require().notNull(resource);
         final LogEntry le = LogEntry.forUpdate(resource, actor, happenedOn);
         _em.create(le);
+        log(resource, actor, happenedOn, le);
     }
 
     /** {@inheritDoc} */
@@ -120,6 +131,7 @@ public class AuditLogEJB
         final LogEntry le =
             LogEntry.forMove(resource, actor, happenedOn);
         _em.create(le);
+        log(resource, actor, happenedOn, le);
     }
 
     /** {@inheritDoc} */
@@ -131,6 +143,7 @@ public class AuditLogEJB
         final LogEntry le =
             LogEntry.forRename(resource, actor, happenedOn);
         _em.create(le);
+        log(resource, actor, happenedOn, le);
     }
 
     /** {@inheritDoc} */
@@ -142,6 +155,7 @@ public class AuditLogEJB
         final LogEntry le =
             LogEntry.forPublish(resource, actor, happenedOn);
         _em.create(le);
+        log(resource, actor, happenedOn, le);
     }
 
     /** {@inheritDoc} */
@@ -153,13 +167,14 @@ public class AuditLogEJB
         final LogEntry le =
             LogEntry.forUnpublish(resource, actor, happenedOn);
         _em.create(le);
+        log(resource, actor, happenedOn, le);
     }
 
     /** {@inheritDoc} */
     @Override
     public LogEntry findEntryForIndex(final long index) {
         return _em.find(
-            QueryNames.LOG_ENTRY_BY_ID, LogEntry.class, new Long(index));
+            QueryNames.LOG_ENTRY_BY_ID, LogEntry.class, Long.valueOf(index));
     }
 
     /** {@inheritDoc} */
@@ -171,6 +186,7 @@ public class AuditLogEJB
         final LogEntry le =
             LogEntry.forUpdateTags(resource, actor, happenedOn);
         _em.create(le);
+        log(resource, actor, happenedOn, le);
     }
 
     /** {@inheritDoc} */
@@ -182,6 +198,7 @@ public class AuditLogEJB
         final LogEntry le =
             LogEntry.forUpdateMetadata(resource, actor, happenedOn);
         _em.create(le);
+        log(resource, actor, happenedOn, le);
     }
 
     /** {@inheritDoc} */
@@ -193,6 +210,7 @@ public class AuditLogEJB
         final LogEntry le =
             LogEntry.forIncludeInMainMenu(resource, actor, happenedOn);
         _em.create(le);
+        log(resource, actor, happenedOn, le);
     }
 
     /** {@inheritDoc} */
@@ -204,6 +222,7 @@ public class AuditLogEJB
         final LogEntry le =
             LogEntry.forRemoveFromMainMenu(resource, actor, happenedOn);
         _em.create(le);
+        log(resource, actor, happenedOn, le);
     }
 
     /** {@inheritDoc} */
@@ -216,6 +235,7 @@ public class AuditLogEJB
         final LogEntry le =
             LogEntry.forChangeRoles(resource, actor, happenedOn);
         _em.create(le);
+        log(resource, actor, happenedOn, le);
     }
 
     /** {@inheritDoc} */
@@ -227,6 +247,7 @@ public class AuditLogEJB
         final LogEntry le =
             LogEntry.forReorder(folder, actor, happenedOn);
         _em.create(le);
+        log(folder, actor, happenedOn, le);
     }
 
     /** {@inheritDoc} */
@@ -238,14 +259,32 @@ public class AuditLogEJB
         final LogEntry le =
             LogEntry.forUpdateSortOrder(folder, actor, happenedOn);
         _em.create(le);
+        log(folder, actor, happenedOn, le);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void recordUpdateCache(final Resource resource, final User actor, final Date happenedOn) {
+    public void recordUpdateCache(final Resource resource,
+                                  final User actor,
+                                  final Date happenedOn) {
         DBC.require().notNull(resource);
         final LogEntry le =
             LogEntry.forUpdateCache(resource, actor, happenedOn);
         _em.create(le);
+        log(resource, actor, happenedOn, le);
+    }
+
+
+    private void log(final Resource resource,
+                     final User actor,
+                     final Date happenedOn,
+                     final LogEntry le) {
+
+        final DateFormat df = new SimpleDateFormat("yyyy.MM.dd-HH:mm:ss z");
+        LOG.info(
+            "Action: " + le.action()
+            + " for " + resource.id()
+            + ", " + actor.username()
+            + " on " + df.format(happenedOn));
     }
 }
