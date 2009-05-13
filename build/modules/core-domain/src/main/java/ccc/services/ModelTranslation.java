@@ -119,6 +119,21 @@ public class ModelTranslation {
 
 
     /**
+     * Create summaries for a collection of templates.
+     *
+     * @param templates The templates.
+     * @return The corresponding summaries.
+     */
+    protected Collection<TemplateSummary> mapTemplates(
+                                               final List<Template> templates) {
+        final Collection<TemplateSummary> mapped =
+            new ArrayList<TemplateSummary>();
+        for (final Template t : templates) { mapped.add(mapTemplate(t)); }
+        return mapped;
+    }
+
+
+    /**
      * Create a summary for a log entry.
      *
      * @param le The log entry.

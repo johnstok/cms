@@ -33,7 +33,6 @@ import ccc.services.api.ID;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ParagraphDelta;
 import ccc.services.api.ResourceSummary;
-import ccc.services.api.TemplateDelta;
 import ccc.services.api.TemplateSummary;
 
 import com.extjs.gxt.ui.client.Events;
@@ -184,9 +183,9 @@ public class CreatePageDialog
         final CheckBox cb = new CheckBox();
         cb.setBoxLabel(_uiConstants.useDefaultTemplate());
         cb.setId(_uiConstants.useDefaultTemplate());
-        queries().getTemplateForResource(_parent.getId(),
-            new ErrorReportingCallback<TemplateDelta>() {
-            public void onSuccess(final TemplateDelta result) {
+        queries().computeTemplate(_parent.getId(),
+            new ErrorReportingCallback<TemplateSummary>() {
+            public void onSuccess(final TemplateSummary result) {
                 if (result == null) {
                     cb.setValue(Boolean.FALSE);
                     cb.disable();
@@ -205,10 +204,10 @@ public class CreatePageDialog
         cb.addListener(Events.Change, new Listener<FieldEvent>() {
             public void handleEvent(final FieldEvent be) {
                 if (cb.getValue().booleanValue()) {
-                    queries().getTemplateForResource(
+                    queries().computeTemplate(
                         _parent.getId(),
-                        new ErrorReportingCallback<TemplateDelta>() {
-                        public void onSuccess(final TemplateDelta result) {
+                        new ErrorReportingCallback<TemplateSummary>() {
+                        public void onSuccess(final TemplateSummary result) {
                             if (result == null) {
                                 cb.disable();
                                 _grid.enable();

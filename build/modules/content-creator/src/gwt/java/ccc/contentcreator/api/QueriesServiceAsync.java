@@ -76,9 +76,6 @@ public interface QueriesServiceAsync {
     void templateNameExists(final String templateName,
                             AsyncCallback<Boolean> callback);
 
-    void getTemplateForResource(final ID resourceId,
-                                AsyncCallback<TemplateDelta> callback);
-
     void loggedInUser(AsyncCallback<UserSummary> callback);
 
     void lockedByCurrentUser(AsyncCallback<Collection<ResourceSummary>> callback);
