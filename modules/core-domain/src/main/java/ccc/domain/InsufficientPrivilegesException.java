@@ -14,7 +14,6 @@ package ccc.domain;
 import ccc.commons.DBC;
 import ccc.services.api.ActionType;
 import ccc.services.api.CCCRemoteException;
-import ccc.services.api.RemoteExceptionSupport;
 
 
 
@@ -26,8 +25,6 @@ import ccc.services.api.RemoteExceptionSupport;
  */
 public class InsufficientPrivilegesException
     extends
-        Exception
-    implements
         RemoteExceptionSupport {
 
     private final ActionType _action;
@@ -61,6 +58,7 @@ public class InsufficientPrivilegesException
     /** {@inheritDoc} */
     @Override
     public CCCRemoteException toRemoteException(final ActionType action) {
-        return new CCCRemoteException(CCCRemoteException.PRIVILEGES, action);
+        return new CCCRemoteException(
+            CCCRemoteException.PRIVILEGES, action, getUUID().toString());
     }
 }

@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 import ccc.commons.Resources;
 import ccc.domain.CCCException;
 import ccc.domain.PredefinedResourceNames;
+import ccc.services.api.CCCRemoteException;
 import ccc.services.api.Commands;
 import ccc.services.api.Decimal;
 import ccc.services.api.FileDelta;
@@ -95,20 +96,24 @@ public class Migrations {
      * Migrate to CCC7.
      */
     public void migrate() {
-        loadSupportingData();
-        migrateUsers();
-        migrateResources(_contentRoot.getId(), 0);
-        migrateManagedFilesAndImages();
-        migrateImages();
-        migrateCss();
-        publishRecursive(_cssFolder);
-        publishRecursive(_assetsImagesFolder);
-        publishRecursive(_filesFolder);
-        publishRecursive(_contentImagesFolder);
+        try {
+            loadSupportingData();
+            migrateUsers();
+            migrateResources(_contentRoot.getId(), 0);
+            migrateManagedFilesAndImages();
+            migrateImages();
+            migrateCss();
+            publishRecursive(_cssFolder);
+            publishRecursive(_assetsImagesFolder);
+            publishRecursive(_filesFolder);
+            publishRecursive(_contentImagesFolder);
+        } catch (final CCCRemoteException e) {
+            log.error("Catastrophic failure.", e);
+        }
     }
 
 
-    public void createDefaultFolderStructure() {
+    public void createDefaultFolderStructure() throws CCCRemoteException {
         _assetRoot = _commands.createRoot(PredefinedResourceNames.ASSETS);
         _contentRoot = _commands.createRoot(PredefinedResourceNames.CONTENT);
 
@@ -138,7 +143,7 @@ public class Migrations {
 
 
     // TODO: Move under command-resourceDao?
-    private void publishRecursive(final ResourceSummary resource) {
+    private void publishRecursive(final ResourceSummary resource) throws CCCRemoteException {
         _commands.lock(resource.getId());
         _commands.publish(resource.getId());
         if ("FOLDER".equals(resource.getType().name())) {
@@ -157,7 +162,7 @@ public class Migrations {
     }
 
 
-    private void migrateUsers() {
+    private void migrateUsers() throws CCCRemoteException {
         final Map<Integer, ExistingUser> mus = _legacyQueries.selectUsers();
         for (final Map.Entry<Integer, ExistingUser> mu : mus.entrySet()) {
             try {
@@ -364,7 +369,7 @@ public class Migrations {
 
 
     private void showInMainMenu(final ResourceBean r,
-                                final ResourceSummary rs) {
+                                final ResourceSummary rs) throws CCCRemoteException {
         if (_menuItems.contains(Integer.valueOf(r.contentId()))) {
             _commands.lock(rs.getId());
             _commands.includeInMainMenu(rs.getId(), true);
@@ -405,7 +410,7 @@ public class Migrations {
 
     private void updatePage(final ResourceBean r,
                             final ResourceSummary rs,
-                            final int version) {
+                            final int version) throws CCCRemoteException {
 
         _commands.lock(rs.getId());// FIXME: Specify actor & date
         final PageDelta d = assemblePage(r, version);
@@ -419,7 +424,7 @@ public class Migrations {
 
     private ResourceSummary createPage(final ID parentFolderId,
                                        final ResourceBean r,
-                                       final List<Integer> paragraphVersions) {
+                                       final List<Integer> paragraphVersions) throws CCCRemoteException {
 
         final PageDelta delta =
             assemblePage(r, paragraphVersions.remove(0));
@@ -432,7 +437,7 @@ public class Migrations {
     }
 
 
-    private void publish(final ResourceBean r, final ResourceSummary rs) {
+    private void publish(final ResourceBean r, final ResourceSummary rs) throws CCCRemoteException {
         if (r.isPublished()) {
             final ID userId =
                 determineActor(r.contentId(),
@@ -450,7 +455,7 @@ public class Migrations {
     }
 
     private void setMetadata(final ResourceBean r,
-                             final ResourceSummary rs) {
+                             final ResourceSummary rs) throws CCCRemoteException {
 
         final Map<String, String> metadata =
             new HashMap<String, String>();
@@ -467,7 +472,7 @@ public class Migrations {
     }
 
     private void setResourceRoles(final ResourceBean r,
-                                  final ResourceSummary rs) {
+                                  final ResourceSummary rs) throws CCCRemoteException {
         if (r.isSecure()) {
             log.info("Resource "+r.contentId()+" has security constraints");
             _commands.lock(rs.getId());
@@ -552,7 +557,7 @@ public class Migrations {
 
 
     private void setTemplateForResource(final ResourceBean r,
-                                 final ResourceSummary rs) {
+                                 final ResourceSummary rs) throws CCCRemoteException {
 
         final String templateName = r.displayTemplate();
 
@@ -571,7 +576,7 @@ public class Migrations {
     }
 
 
-    private void createTemplate(final String templateName) {
+    private void createTemplate(final String templateName) throws CCCRemoteException {
 
         final TemplateDelta t =
             new TemplateDelta(

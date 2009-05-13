@@ -42,7 +42,7 @@ public interface Commands {
     void updatePage(ID pageId,
                     PageDelta delta,
                     String comment,
-                    boolean isMajorEdit);
+                    boolean isMajorEdit) throws CCCRemoteException;
 
     /**
      * Update the working copy of the specified page.
@@ -50,7 +50,7 @@ public interface Commands {
      * @param pageId The id of the page to update.
      * @param delta The changes to apply.
      */
-    void updateWorkingCopy(ID pageId, PageDelta delta);
+    void updateWorkingCopy(ID pageId, PageDelta delta) throws CCCRemoteException;
 
     /**
      * Update an alias.
@@ -58,7 +58,7 @@ public interface Commands {
      * @param aliasId The id of the alias to update.
      * @param delta The changes to apply.
      */
-    void updateAlias(ID aliasId, AliasDelta delta);
+    void updateAlias(ID aliasId, AliasDelta delta) throws CCCRemoteException;
 
     /**
      * Updates the user in the system.
@@ -66,7 +66,7 @@ public interface Commands {
      * @param userId The id of the user to update.
      * @param delta The changes to apply.
      */
-    void updateUser(ID userId, UserDelta delta);
+    void updateUser(ID userId, UserDelta delta) throws CCCRemoteException;
 
     /**
      * Update the specified template on the server.
@@ -74,27 +74,27 @@ public interface Commands {
      * @param templateId The id of the template to update.
      * @param delta The changes to apply.
      */
-    void updateTemplate(ID templateId, TemplateDelta delta);
+    void updateTemplate(ID templateId, TemplateDelta delta) throws CCCRemoteException;
 
     /**
      * Rename resource.
      */
-    void rename(final ID resourceId, final String name);
+    void rename(final ID resourceId, final String name) throws CCCRemoteException;
 
     /**
      * Update the tags for a resource.
      */
-    void updateTags(ID resourceId, String tags);
+    void updateTags(ID resourceId, String tags) throws CCCRemoteException;
 
     /**
      * Changes a resource's parent.
      */
-    void move(ID resourceId, ID newParentId);
+    void move(ID resourceId, ID newParentId) throws CCCRemoteException;
 
     /**
      * Update the specified resource's template on the server.
      */
-    void updateResourceTemplate(ID resourceId, ID templateId);
+    void updateResourceTemplate(ID resourceId, ID templateId) throws CCCRemoteException;
 
     /**
      * Lock the specified resource.
@@ -103,7 +103,7 @@ public interface Commands {
      *
      * @param resourceId The uuid of the resource to lock.
      */
-    void lock(ID resourceId);
+    void lock(ID resourceId) throws CCCRemoteException;
 
     /**
      * Unlock the specified Resource.
@@ -113,14 +113,14 @@ public interface Commands {
      *
      * @param resourceId The resource to unlock.
      */
-    void unlock(ID resourceId);
+    void unlock(ID resourceId) throws CCCRemoteException;
 
     /**
      * Publish the specified resource.
      *
      * @param resourceId The id of the resource to update.
      */
-    void publish(ID resourceId);
+    void publish(ID resourceId) throws CCCRemoteException;
 
     /**
      * TODO: Add a description of this method.
@@ -129,14 +129,14 @@ public interface Commands {
      * @param userId The id of the publishing user.
      * @param publishDate The date the resource was published.
      */
-    void publish(ID resourceId, ID userId, Date publishDate);
+    void publish(ID resourceId, ID userId, Date publishDate) throws CCCRemoteException;
 
     /**
      * Unpublish the specified resource.
      *
      * @param resourceId The id of the resource to update.
      */
-    void unpublish(ID resourceId);
+    void unpublish(ID resourceId) throws CCCRemoteException;
 
     /**
      * TODO: Add a description of this method.
@@ -144,7 +144,7 @@ public interface Commands {
      * @param resourceId The id of the resource to update.
      * @param include
      */
-    void includeInMainMenu(ID resourceId, boolean include);
+    void includeInMainMenu(ID resourceId, boolean include) throws CCCRemoteException;
 
     /**
      * Update metadata of the resource.
@@ -152,7 +152,7 @@ public interface Commands {
      * @param resourceId The id of the resource to update.
      * @param metadata The metadata to update.
      */
-    void updateMetadata(ID resourceId, Map<String, String> metadata);
+    void updateMetadata(ID resourceId, Map<String, String> metadata) throws CCCRemoteException;
 
     /**
      * Update the sort order for the specified folder.
@@ -160,7 +160,7 @@ public interface Commands {
      * @param folderId The id of the folder to update.
      * @param sortOrder The new sort order.
      */
-    void updateFolderSortOrder(ID folderId, String sortOrder);
+    void updateFolderSortOrder(ID folderId, String sortOrder) throws CCCRemoteException;
 
     /**
      * TODO: Add a description of this method.
@@ -177,7 +177,7 @@ public interface Commands {
      *
      * @param pageId The id of the page with a working copy.
      */
-    public void clearWorkingCopy(ID pageId);
+    public void clearWorkingCopy(ID pageId) throws CCCRemoteException;
 
 
 
@@ -185,27 +185,27 @@ public interface Commands {
     /**
      * Create a new alias in CCC.
      */
-    ResourceSummary createAlias(ID parentId, String name, ID targetId);
+    ResourceSummary createAlias(ID parentId, String name, ID targetId) throws CCCRemoteException;
 
     /**
      * Create a folder with the specified name.
      */
-    ResourceSummary createFolder(ID parentId, String name);
+    ResourceSummary createFolder(ID parentId, String name) throws CCCRemoteException;
 
     /**
      * Create a folder with the specified name and title.
      */
-    ResourceSummary createFolder(ID parentId, String name, String title);
+    ResourceSummary createFolder(ID parentId, String name, String title) throws CCCRemoteException;
 
     /**
      * Create a root folder with the specified name.
      */
-    ResourceSummary createRoot(String name);
+    ResourceSummary createRoot(String name) throws CCCRemoteException;
 
     /**
      * Create a new user in the system.
      */
-    UserSummary createUser(UserDelta delta, String password);
+    UserSummary createUser(UserDelta delta, String password) throws CCCRemoteException;
 
     /**
      * Creates a new page.
@@ -214,12 +214,12 @@ public interface Commands {
                                PageDelta delta,
                                String name,
                                final boolean publish,
-                               ID templateId);
+                               ID templateId) throws CCCRemoteException;
 
     /**
      * Create a new template in CCC.
      */
-    ResourceSummary createTemplate(ID parentId, TemplateDelta delta, String name);
+    ResourceSummary createTemplate(ID parentId, TemplateDelta delta, String name) throws CCCRemoteException;
 
     /**
      * Creates a new search.
@@ -228,7 +228,7 @@ public interface Commands {
      * @param title The title of the search.
      * @return A summary of the newly created search.
      */
-    ResourceSummary createSearch(ID parentId, String title);
+    ResourceSummary createSearch(ID parentId, String title) throws CCCRemoteException;
 
     /**
      * Create a working copy for the specified resource, using the specified log
@@ -237,14 +237,14 @@ public interface Commands {
      * @param resourceId The id of the resource.
      * @param index The index number of the log entry.
      */
-    void createWorkingCopy(ID resourceId, long index);
+    void createWorkingCopy(ID resourceId, long index) throws CCCRemoteException;
 
     /**
      * Cancel a scheduled action.
      *
      * @param actionId The id of the action to cancel.
      */
-    void cancelAction(ID actionId);
+    void cancelAction(ID actionId) throws CCCRemoteException;
 
     /**
      * Create a new scheduled action.
@@ -258,7 +258,7 @@ public interface Commands {
     void createAction(ID resourceId,
                       ActionType action,
                       Date executeAfter,
-                      String parameters);
+                      String parameters) throws CCCRemoteException;
 
     /**
      * Change the order of resources in a folder.
@@ -266,7 +266,7 @@ public interface Commands {
      * @param folderId The id of the folder to update.
      * @param order The new order of the resources.
      */
-    void reorder(ID folderId, List<String> order);
+    void reorder(ID folderId, List<String> order) throws CCCRemoteException;
 
     /**
      * Change the security roles for a resource.
@@ -274,9 +274,9 @@ public interface Commands {
      * @param resourceId The resource to update.
      * @param roles The new set of roles.
      */
-    void changeRoles(ID resourceId, Collection<String> roles);
+    void changeRoles(ID resourceId, Collection<String> roles) throws CCCRemoteException;
 
-    void applyWorkingCopyToFile(ID fileId);
+    void applyWorkingCopyToFile(ID fileId) throws CCCRemoteException;
 
     /**
      * Update the period that a resource should be cached for.
@@ -284,7 +284,7 @@ public interface Commands {
      * @param resourceId The resource to update.
      * @param duration The cache duration.
      */
-    void updateCacheDuration(ID resourceId, Duration duration);
+    void updateCacheDuration(ID resourceId, Duration duration) throws CCCRemoteException;
 
     /**
      * Update the password for the specified user.
@@ -292,6 +292,6 @@ public interface Commands {
      * @param userId The user's id.
      * @param password The new password to set.
      */
-    void updateUserPassword(ID userId, String password);
+    void updateUserPassword(ID userId, String password) throws CCCRemoteException;
 }
 

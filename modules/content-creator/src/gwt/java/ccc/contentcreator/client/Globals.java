@@ -150,7 +150,7 @@ public final class Globals {
     public static void unexpectedError(final Throwable e) {
         if (e instanceof CCCRemoteException) {
             final CCCRemoteException re = (CCCRemoteException) e;
-            alert("FIXME: Proper dialog required");
+            alert("Expected exception - type="+re.getCode());
         } else {
             final String errorMesssage = e.getMessage();
             final String causeMessage =

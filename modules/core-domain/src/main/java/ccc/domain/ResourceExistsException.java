@@ -13,7 +13,6 @@ package ccc.domain;
 
 import ccc.services.api.ActionType;
 import ccc.services.api.CCCRemoteException;
-import ccc.services.api.RemoteExceptionSupport;
 
 
 /**
@@ -23,8 +22,6 @@ import ccc.services.api.RemoteExceptionSupport;
  */
 public class ResourceExistsException
     extends
-        Exception
-    implements
         RemoteExceptionSupport {
 
     private ResourceName _name;
@@ -53,6 +50,7 @@ public class ResourceExistsException
     /** {@inheritDoc} */
     @Override
     public CCCRemoteException toRemoteException(final ActionType action) {
-        return new CCCRemoteException(CCCRemoteException.EXISTS, action);
+        return new CCCRemoteException(
+            CCCRemoteException.EXISTS, action, getUUID().toString());
     }
 }
