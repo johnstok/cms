@@ -14,6 +14,8 @@ package ccc.contentcreator.remoting;
 import java.util.Collection;
 import java.util.Map;
 
+import javax.ejb.EJB;
+
 import ccc.contentcreator.api.QueriesService;
 import ccc.services.api.ActionSummary;
 import ccc.services.api.AliasDelta;
@@ -23,6 +25,7 @@ import ccc.services.api.FileSummary;
 import ccc.services.api.ID;
 import ccc.services.api.LogEntrySummary;
 import ccc.services.api.PageDelta;
+import ccc.services.api.Queries;
 import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.TemplateSummary;
@@ -32,7 +35,7 @@ import ccc.services.api.Username;
 
 
 /**
- * TODO: Add Description for this type.
+ * GWT implementation of the {@link Queries} interface.
  *
  * @author Civic Computing Ltd.
  */
@@ -40,162 +43,164 @@ public class QueriesImpl
     extends CCCRemoteServiceServlet
     implements QueriesService {
 
+    @EJB(name=Queries.NAME) private transient Queries _queries;
+
     /** {@inheritDoc} */
     public String getAbsolutePath(final ID resourceId) {
-        return _services.lookupQueries().getAbsolutePath(resourceId);
+        return _queries.getAbsolutePath(resourceId);
     }
 
     /** {@inheritDoc} */
     public Collection<ResourceSummary> getChildren(final ID folderId) {
-        return _services.lookupQueries().getChildren(folderId);
+        return _queries.getChildren(folderId);
     }
 
     /** {@inheritDoc} */
     public Collection<ResourceSummary> getFolderChildren(final ID folderId) {
-        return _services.lookupQueries().getFolderChildren(folderId);
+        return _queries.getFolderChildren(folderId);
     }
 
     /** {@inheritDoc} */
     public Collection<LogEntrySummary> history(final ID resourceId) {
-        return _services.lookupQueries().history(resourceId);
+        return _queries.history(resourceId);
     }
 
     /** {@inheritDoc} */
     public Collection<UserSummary> listUsers() {
-        return _services.lookupQueries().listUsers();
+        return _queries.listUsers();
     }
 
     /** {@inheritDoc} */
     public Collection<UserSummary> listUsersWithEmail(final String email) {
-        return _services.lookupQueries().listUsersWithEmail(email);
+        return _queries.listUsersWithEmail(email);
     }
 
     /** {@inheritDoc} */
     public Collection<UserSummary> listUsersWithRole(final String role) {
-        return _services.lookupQueries().listUsersWithRole(role);
+        return _queries.listUsersWithRole(role);
     }
 
     /** {@inheritDoc} */
     public Collection<UserSummary> listUsersWithUsername(
                                                     final String username) {
-        return _services.lookupQueries().listUsersWithUsername(username);
+        return _queries.listUsersWithUsername(username);
     }
 
     /** {@inheritDoc} */
     public Collection<ResourceSummary> locked() {
-        return _services.lookupQueries().locked();
+        return _queries.locked();
     }
 
     /** {@inheritDoc} */
     public Collection<ResourceSummary> lockedByCurrentUser() {
-        return _services.lookupQueries().lockedByCurrentUser();
+        return _queries.lockedByCurrentUser();
     }
 
     /** {@inheritDoc} */
     public UserSummary loggedInUser() {
-        return _services.lookupQueries().loggedInUser();
+        return _queries.loggedInUser();
     }
 
     /** {@inheritDoc} */
     public boolean nameExistsInFolder(final ID folderId,
                                       final String name) {
-        return _services.lookupQueries().nameExistsInFolder(folderId, name);
+        return _queries.nameExistsInFolder(folderId, name);
     }
 
     /** {@inheritDoc} */
     public ResourceSummary resource(final ID resourceId) {
-        return _services.lookupQueries().resource(resourceId);
+        return _queries.resource(resourceId);
     }
 
     /** {@inheritDoc} */
     public Collection<ResourceSummary> roots() {
-        return _services.lookupQueries().roots();
+        return _queries.roots();
     }
 
     /** {@inheritDoc} */
     public boolean templateNameExists(final String templateName) {
-        return _services.lookupQueries().templateNameExists(templateName);
+        return _queries.templateNameExists(templateName);
     }
 
     /** {@inheritDoc} */
     public Collection<TemplateSummary> templates() {
-        return _services.lookupQueries().templates();
+        return _queries.templates();
     }
 
     /** {@inheritDoc} */
     public boolean usernameExists(final Username username) {
-        return _services.lookupQueries().usernameExists(username);
+        return _queries.usernameExists(username);
     }
 
     /** {@inheritDoc} */
     @Override
     public TemplateDelta templateDelta(final ID templateId) {
-        return _services.lookupQueries().templateDelta(templateId);
+        return _queries.templateDelta(templateId);
     }
 
     /** {@inheritDoc} */
     @Override
     public UserDelta userDelta(final ID userId) {
-        return _services.lookupQueries().userDelta(userId);
+        return _queries.userDelta(userId);
     }
 
     /** {@inheritDoc} */
     @Override
     public AliasDelta aliasDelta(final ID aliasId) {
-        return _services.lookupQueries().aliasDelta(aliasId);
+        return _queries.aliasDelta(aliasId);
     }
 
     /** {@inheritDoc} */
     @Override
     public PageDelta pageDelta(final ID pageId) {
-        return _services.lookupQueries().pageDelta(pageId);
+        return _queries.pageDelta(pageId);
     }
 
     /** {@inheritDoc} */
     @Override
     public FileDelta fileDelta(final ID fileId) {
-        return _services.lookupQueries().fileDelta(fileId);
+        return _queries.fileDelta(fileId);
     }
 
     /** {@inheritDoc} */
     @Override
     public Collection<FileSummary> getAllContentImages() {
-        return _services.lookupQueries().getAllContentImages();
+        return _queries.getAllContentImages();
     }
 
     /** {@inheritDoc} */
     @Override
     public Map<String, String> metadata(final ID resourceId) {
-        return _services.lookupQueries().metadata(resourceId);
+        return _queries.metadata(resourceId);
     }
 
     /** {@inheritDoc} */
     @Override
     public Collection<ActionSummary> listPendingActions() {
-        return _services.lookupQueries().listPendingActions();
+        return _queries.listPendingActions();
     }
 
     /** {@inheritDoc} */
     @Override
     public Collection<ActionSummary> listCompletedActions() {
-        return _services.lookupQueries().listCompletedActions();
+        return _queries.listCompletedActions();
     }
 
     /** {@inheritDoc} */
     @Override
     public Collection<String> roles(final ID resourceId) {
-        return _services.lookupQueries().roles(resourceId);
+        return _queries.roles(resourceId);
     }
 
     /** {@inheritDoc} */
     @Override
     public Duration cacheDuration(final ID resourceId) {
-        return _services.lookupQueries().cacheDuration(resourceId);
+        return _queries.cacheDuration(resourceId);
     }
 
     /** {@inheritDoc} */
     @Override
     public TemplateSummary computeTemplate(final ID resourceId) {
-        return _services.lookupQueries().computeTemplate(resourceId);
+        return _queries.computeTemplate(resourceId);
     }
 }

@@ -19,8 +19,7 @@ import java.text.ParseException;
 
 import javax.servlet.http.HttpServletRequest;
 
-import ccc.commons.CCCProperties;
-import ccc.services.ServiceLookup;
+import ccc.commons.Exceptions;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.google.gwt.user.server.rpc.SerializationPolicy;
@@ -28,26 +27,24 @@ import com.google.gwt.user.server.rpc.SerializationPolicyLoader;
 
 
 /**
- * TODO: Add Description for this type.
+ * Helper class used to work around an serialization policy issues.
  *
  * @author Civic Computing Ltd.
  */
 public abstract class CCCRemoteServiceServlet extends RemoteServiceServlet {
 
-    protected ServiceLookup _services =
-        new ServiceLookup(CCCProperties.get("application.name"));
-
     /** {@inheritDoc} */
     @Override
-    protected SerializationPolicy doGetSerializationPolicy(final HttpServletRequest request,
-                                                           final String moduleBaseURL,
-                                                           final String strongName) {
+    protected SerializationPolicy doGetSerializationPolicy(
+                                               final HttpServletRequest request,
+                                               final String moduleBaseURL,
+                                               final String strongName) {
 
         SerializationPolicy serializationPolicy = null;
         final String serializationPolicyFilePath = "";
         InputStream is = null;
 
-        final String contextPath = request.getContextPath();
+//        final String contextPath = request.getContextPath();
 
         try {
             final URL baseURL =
@@ -87,7 +84,7 @@ public abstract class CCCRemoteServiceServlet extends RemoteServiceServlet {
                 try {
                     is.close();
                 } catch (final IOException e) {
-                    // Ignore
+                    Exceptions.swallow(e);
                 }
             }
         }

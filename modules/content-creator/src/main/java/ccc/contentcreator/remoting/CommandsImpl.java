@@ -16,6 +16,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.ejb.EJB;
+
 import ccc.contentcreator.api.CommandService;
 import ccc.services.api.ActionType;
 import ccc.services.api.AliasDelta;
@@ -33,7 +35,6 @@ import ccc.services.api.UserSummary;
 
 /**
  * GWT implementation of the {@link Commands} interface.
- * TODO: Inject delegate implementation.
  *
  * @author Civic Computing Ltd.
  */
@@ -41,27 +42,31 @@ public class CommandsImpl
     extends CCCRemoteServiceServlet
     implements CommandService {
 
+    @EJB(name=Commands.NAME) private transient Commands _commands;
+
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createAlias(final ID parentId,
                             final String name,
                             final ID targetId) throws CCCRemoteException {
-        return _services.lookupCommands().createAlias(parentId, name, targetId);
+        return _commands.createAlias(parentId, name, targetId);
     }
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createFolder(final ID parentId,
-                                        final String name) throws CCCRemoteException {
-        return _services.lookupCommands().createFolder(parentId, name);
+                                        final String name)
+    throws CCCRemoteException {
+        return _commands.createFolder(parentId, name);
     }
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createFolder(final ID parentId,
                                         final String name,
-                                        final String title) throws CCCRemoteException {
-        return _services.lookupCommands().createFolder(parentId, name, title);
+                                        final String title)
+    throws CCCRemoteException {
+        return _commands.createFolder(parentId, name, title);
     }
 
     /** {@inheritDoc} */
@@ -70,77 +75,81 @@ public class CommandsImpl
                                       final PageDelta delta,
                                       final String name,
                                       final boolean publish,
-                                      final ID templateId) throws CCCRemoteException {
-        return _services.lookupCommands().createPage(
-            parentId, delta, name, publish, templateId);
+                                      final ID templateId)
+    throws CCCRemoteException {
+        return _commands.createPage(parentId, delta, name, publish, templateId);
     }
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createTemplate(final ID parentId,
                                           final TemplateDelta delta,
-                                          final String name) throws CCCRemoteException {
-        return _services.lookupCommands().createTemplate(parentId, delta, name);
+                                          final String name)
+    throws CCCRemoteException {
+        return _commands.createTemplate(parentId, delta, name);
     }
 
     /** {@inheritDoc} */
     @Override
     public UserSummary createUser(final UserDelta delta,
-                                  final String password) throws CCCRemoteException {
-        return _services.lookupCommands().createUser(delta, password);
+                                  final String password)
+    throws CCCRemoteException {
+        return _commands.createUser(delta, password);
     }
 
     /** {@inheritDoc} */
     @Override
     public void lock(final ID resourceId) throws CCCRemoteException {
-        _services.lookupCommands().lock(resourceId);
+        _commands.lock(resourceId);
     }
 
     /** {@inheritDoc} */
     @Override
     public void move(final ID resourceId,
                      final ID newParentId) throws CCCRemoteException {
-        _services.lookupCommands().move(resourceId, newParentId);
+        _commands.move(resourceId, newParentId);
     }
 
     /** {@inheritDoc} */
     @Override
     public void publish(final ID resourceId) throws CCCRemoteException {
-        _services.lookupCommands().publish(resourceId);
+        _commands.publish(resourceId);
     }
 
     /** {@inheritDoc} */
     @Override
     public void publish(final ID resourceId,
                                    final ID userId,
-                                   final Date publishOn) throws CCCRemoteException {
-        _services.lookupCommands().publish(resourceId, userId, publishOn);
+                                   final Date publishOn)
+    throws CCCRemoteException {
+        _commands.publish(resourceId, userId, publishOn);
     }
 
     /** {@inheritDoc} */
     @Override
     public void rename(final ID resourceId,
                        final String name) throws CCCRemoteException {
-        _services.lookupCommands().rename(resourceId, name);
+        _commands.rename(resourceId, name);
     }
 
     /** {@inheritDoc} */
     @Override
     public void unlock(final ID resourceId) throws CCCRemoteException {
-        _services.lookupCommands().unlock(resourceId);
+        _commands.unlock(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void unpublish(final ID resourceId) throws CCCRemoteException {
-        _services.lookupCommands().unpublish(resourceId);
+        _commands.unpublish(resourceId);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void updateAlias(final ID aliasId, final AliasDelta delta) throws CCCRemoteException {
-        _services.lookupCommands().updateAlias(aliasId, delta);
+    public void updateAlias(final ID aliasId, final AliasDelta delta)
+    throws CCCRemoteException {
+        _commands.updateAlias(aliasId, delta);
     }
 
     /** {@inheritDoc} */
@@ -148,16 +157,18 @@ public class CommandsImpl
     public void updatePage(final ID pageId,
                            final PageDelta delta,
                            final String comment,
-                           final boolean isMajorEdit) throws CCCRemoteException {
-        _services.lookupCommands().updatePage(
+                           final boolean isMajorEdit)
+    throws CCCRemoteException {
+        _commands.updatePage(
             pageId, delta, comment, isMajorEdit);
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateResourceTemplate(final ID resourceId,
-                                       final ID templateId) throws CCCRemoteException {
-        _services.lookupCommands().updateResourceTemplate(
+                                       final ID templateId)
+    throws CCCRemoteException {
+        _commands.updateResourceTemplate(
             resourceId, templateId);
     }
 
@@ -165,67 +176,74 @@ public class CommandsImpl
     @Override
     public void updateTags(final ID resourceId,
                            final String tags) throws CCCRemoteException {
-        _services.lookupCommands().updateTags(resourceId, tags);
+        _commands.updateTags(resourceId, tags);
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateTemplate(final ID templateId,
-                                          final TemplateDelta delta) throws CCCRemoteException {
-        _services.lookupCommands().updateTemplate(templateId, delta);
+                                          final TemplateDelta delta)
+    throws CCCRemoteException {
+        _commands.updateTemplate(templateId, delta);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void updateUser(final ID userId, final UserDelta delta) throws CCCRemoteException {
-        _services.lookupCommands().updateUser(userId, delta);
+    public void updateUser(final ID userId, final UserDelta delta)
+    throws CCCRemoteException {
+        _commands.updateUser(userId, delta);
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createRoot(final String name) throws CCCRemoteException {
-        return _services.lookupCommands().createRoot(name);
+    public ResourceSummary createRoot(final String name)
+    throws CCCRemoteException {
+        return _commands.createRoot(name);
     }
 
     /** {@inheritDoc} */
     @Override
     public void includeInMainMenu(final ID resourceId,
-                                  final boolean include) throws CCCRemoteException {
-        _services.lookupCommands().includeInMainMenu(resourceId, include);
+                                  final boolean include)
+    throws CCCRemoteException {
+        _commands.includeInMainMenu(resourceId, include);
     }
 
     /** {@inheritDoc} */
     @Override
     public List<String> validateFields(final List<ParagraphDelta> delta,
                                        final String definition) {
-        return _services.lookupCommands().validateFields(delta, definition);
+        return _commands.validateFields(delta, definition);
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateMetadata(final ID resourceId,
-                                 final Map<String, String> metadata) throws CCCRemoteException {
-        _services.lookupCommands().updateMetadata(resourceId, metadata);
+                                 final Map<String, String> metadata)
+    throws CCCRemoteException {
+        _commands.updateMetadata(resourceId, metadata);
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateFolderSortOrder(final ID folderId,
-                                      final String sortOrder) throws CCCRemoteException {
-        _services.lookupCommands().updateFolderSortOrder(folderId, sortOrder);
+                                      final String sortOrder)
+    throws CCCRemoteException {
+        _commands.updateFolderSortOrder(folderId, sortOrder);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void updateWorkingCopy(final ID pageId, final PageDelta delta) throws CCCRemoteException {
-        _services.lookupCommands().updateWorkingCopy(pageId, delta);
+    public void updateWorkingCopy(final ID pageId, final PageDelta delta)
+    throws CCCRemoteException {
+        _commands.updateWorkingCopy(pageId, delta);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void clearWorkingCopy(final ID pageId) throws CCCRemoteException {
-        _services.lookupCommands().clearWorkingCopy(pageId);
+        _commands.clearWorkingCopy(pageId);
     }
 
     /** {@inheritDoc} */
@@ -237,14 +255,15 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
-    public void createWorkingCopy(final ID resourceId, final long index) throws CCCRemoteException {
-        _services.lookupCommands().createWorkingCopy(resourceId, index);
+    public void createWorkingCopy(final ID resourceId, final long index)
+    throws CCCRemoteException {
+        _commands.createWorkingCopy(resourceId, index);
     }
 
     /** {@inheritDoc} */
     @Override
     public void cancelAction(final ID actionId) throws CCCRemoteException {
-        _services.lookupCommands().cancelAction(actionId);
+        _commands.cancelAction(actionId);
     }
 
     /** {@inheritDoc} */
@@ -252,41 +271,46 @@ public class CommandsImpl
     public void createAction(final ID resourceId,
                              final ActionType action,
                              final Date executeAfter,
-                             final String parameters) throws CCCRemoteException {
-        _services.lookupCommands().createAction(
-            resourceId, action, executeAfter, parameters);
+                             final String parameters)
+    throws CCCRemoteException {
+        _commands.createAction(resourceId, action, executeAfter, parameters);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void reorder(final ID folderId, final List<String> order) throws CCCRemoteException {
-        _services.lookupCommands().reorder(folderId, order);
+    public void reorder(final ID folderId, final List<String> order)
+    throws CCCRemoteException {
+        _commands.reorder(folderId, order);
     }
 
     /** {@inheritDoc} */
     @Override
     public void changeRoles(final ID resourceId,
-                            final Collection<String> roles) throws CCCRemoteException {
-        _services.lookupCommands().changeRoles(resourceId, roles);
+                            final Collection<String> roles)
+    throws CCCRemoteException {
+        _commands.changeRoles(resourceId, roles);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void applyWorkingCopyToFile(final ID fileId) throws CCCRemoteException {
-        _services.lookupCommands().applyWorkingCopyToFile(fileId);
+    public void applyWorkingCopyToFile(final ID fileId)
+    throws CCCRemoteException {
+        _commands.applyWorkingCopyToFile(fileId);
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateCacheDuration(final ID resourceId,
-                                    final Duration duration) throws CCCRemoteException {
-        _services.lookupCommands().updateCacheDuration(resourceId, duration);
+                                    final Duration duration)
+    throws CCCRemoteException {
+        _commands.updateCacheDuration(resourceId, duration);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void updateUserPassword(final ID userId, final String password) throws CCCRemoteException {
-        _services.lookupCommands().updateUserPassword(userId, password);
+    public void updateUserPassword(final ID userId, final String password)
+    throws CCCRemoteException {
+        _commands.updateUserPassword(userId, password);
     }
 
 
