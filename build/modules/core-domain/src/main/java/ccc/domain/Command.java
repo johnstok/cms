@@ -9,11 +9,10 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.actions;
+package ccc.domain;
 
 import java.util.Date;
 
-import ccc.domain.RemoteExceptionSupport;
 
 
 /**

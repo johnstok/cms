@@ -13,6 +13,8 @@ package ccc.actions;
 
 import java.util.Date;
 
+import ccc.domain.Action;
+import ccc.domain.Command;
 import ccc.domain.LockMismatchException;
 import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Resource;

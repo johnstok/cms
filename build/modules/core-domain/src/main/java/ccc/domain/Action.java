@@ -9,15 +9,11 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.actions;
+package ccc.domain;
 
 import java.util.Date;
 
 import ccc.commons.Exceptions;
-import ccc.domain.Entity;
-import ccc.domain.Resource;
-import ccc.domain.Snapshot;
-import ccc.domain.User;
 import ccc.services.api.ActionStatus;
 import ccc.services.api.ActionType;
 

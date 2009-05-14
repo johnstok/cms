@@ -33,7 +33,6 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
 
-import ccc.actions.Action;
 import ccc.actions.ApplyWorkingCopyCommand;
 import ccc.actions.CancelActionCommand;
 import ccc.actions.ChangeResourceTagsCommand;
@@ -65,6 +64,7 @@ import ccc.actions.UpdateResourceRolesCommand;
 import ccc.actions.UpdateTemplateCommand;
 import ccc.actions.UpdateUserCommand;
 import ccc.actions.UpdateWorkingCopyCommand;
+import ccc.domain.Action;
 import ccc.domain.CCCException;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;

@@ -25,7 +25,7 @@
         <param name="type">ccc.services.api.ActionStatus</param>
     </typedef>
     
-    <class name="ccc.actions.Action" table="actions">
+    <class name="ccc.domain.Action" table="actions">
         
         <id name="_id" column="id" type="ccc.persistence.jpa.UUIDUserType">
             <generator class="assigned" />
@@ -87,7 +87,7 @@
         
     </class>
     
-    <query name="latest_action">FROM ccc.actions.Action a WHERE a._status='Scheduled' AND a._executeAfter &lt; ? ORDER BY a._executeAfter asc</query>
-    <query name="executed">FROM ccc.actions.Action a WHERE a._status!='Scheduled'</query>
-    <query name="pending">FROM ccc.actions.Action a WHERE a._status='Scheduled'</query>
+    <query name="latest_action">FROM ccc.domain.Action a WHERE a._status='Scheduled' AND a._executeAfter &lt; ? ORDER BY a._executeAfter asc</query>
+    <query name="executed">FROM ccc.domain.Action a WHERE a._status!='Scheduled'</query>
+    <query name="pending">FROM ccc.domain.Action a WHERE a._status='Scheduled'</query>
 </hibernate-mapping>

@@ -13,7 +13,7 @@ package ccc.services;
 
 import java.util.Collection;
 
-import ccc.actions.Action;
+import ccc.domain.Action;
 
 
 /**

@@ -18,7 +18,7 @@ import java.util.Date;
 import javax.persistence.EntityManager;
 
 import junit.framework.TestCase;
-import ccc.actions.Action;
+import ccc.domain.Action;
 import ccc.domain.LockMismatchException;
 import ccc.domain.Page;
 import ccc.domain.Snapshot;
