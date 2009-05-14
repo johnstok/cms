@@ -11,6 +11,7 @@
  */
 package ccc.actions;
 
+import ccc.domain.Action;
 import ccc.services.Dao;
 
 

@@ -11,7 +11,7 @@
  */
 package ccc.services;
 
-import ccc.actions.Action;
+import ccc.domain.Action;
 
 
 /**

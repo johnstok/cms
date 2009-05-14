@@ -24,10 +24,10 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
 
-import ccc.actions.Action;
 import ccc.actions.ApplyWorkingCopyCommand;
 import ccc.actions.PublishCommand;
 import ccc.actions.UnpublishResourceCommand;
+import ccc.domain.Action;
 import ccc.domain.CCCException;
 import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Resource;

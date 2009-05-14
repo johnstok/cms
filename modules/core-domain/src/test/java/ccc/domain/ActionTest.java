@@ -9,10 +9,11 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.actions;
+package ccc.domain;
 
 import junit.framework.TestCase;
 import ccc.commons.Exceptions;
+import ccc.domain.Action;
 import ccc.services.api.ActionStatus;
 
 

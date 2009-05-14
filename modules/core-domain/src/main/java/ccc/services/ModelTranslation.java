@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import ccc.actions.Action;
+import ccc.domain.Action;
 import ccc.domain.Alias;
 import ccc.domain.File;
 import ccc.domain.Folder;
