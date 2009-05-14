@@ -197,7 +197,10 @@ public class ResourceContextMenu
                 addUpdateMetadata();
                 addCreateAlias();
                 addCreateAction();
-                addEditCache(); // FIXME: ADMIN&BUILDER only?
+                if (user.getRoles().contains(Globals.ADMINISTRATOR) 
+                    || user.getRoles().contains(Globals.SITE_BUILDER)) {
+                    addEditCache();
+                }
 
                 if (item.isIncludedInMainMenu()) {
                     addRemoveFromMainMenu();
