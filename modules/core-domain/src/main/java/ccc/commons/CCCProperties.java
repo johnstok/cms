@@ -32,9 +32,7 @@ public final class CCCProperties {
     static {
         try {
             final InputStream in =
-                Thread.currentThread().
-                getContextClassLoader().
-                getResourceAsStream("ccc.properties");
+                CCCProperties.class.getResourceAsStream("/ccc.properties");
             try {
                 PROPS.load(in);
             } finally {
