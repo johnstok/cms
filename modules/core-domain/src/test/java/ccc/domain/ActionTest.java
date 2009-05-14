@@ -12,9 +12,8 @@
 package ccc.domain;
 
 import junit.framework.TestCase;
-import ccc.commons.Exceptions;
-import ccc.domain.Action;
 import ccc.services.api.ActionStatus;
+import ccc.services.api.Failure;
 
 
 /**
@@ -47,17 +46,17 @@ public class ActionTest
     public void testFailAnAction() {
 
         // ARRANGE
+        final Page p = new Page("page");
         final Action a = new Action();
-        final Exception e = new Exception("Outer", new Exception("Oops!"));
+        final UnlockedException e = new UnlockedException(p);
 
         // ACT
-        a.fail(e);
+        a.fail(e.toRemoteException());
 
         // ASSERT
         assertEquals(ActionStatus.Failed, a.status());
-        assertEquals("Oops!", a.failure().getString("message"));
-        assertEquals(
-            Exceptions.stackTraceFor(e), a.failure().getString("stack"));
+        assertEquals(Failure.UNLOCKED, a.failure().getCode());
+        assertEquals(e.getUUID().toString(), a.failure().getExceptionId());
     }
 
     /**

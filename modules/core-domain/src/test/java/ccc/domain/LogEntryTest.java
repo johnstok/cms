@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import junit.framework.TestCase;
-import ccc.services.api.ActionType;
+import ccc.services.api.CommandType;
 
 
 /**
@@ -47,7 +47,7 @@ public class LogEntryTest
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(ActionType.RESOURCE_RENAME, le.action());
+        assertEquals(CommandType.RESOURCE_RENAME, le.action());
     }
 
     /**
@@ -70,7 +70,7 @@ public class LogEntryTest
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(ActionType.RESOURCE_MOVE, le.action());
+        assertEquals(CommandType.RESOURCE_MOVE, le.action());
         assertEquals("{\"path\":\"/bar/foo\"}",
             le.detail());
     }
@@ -93,7 +93,7 @@ public class LogEntryTest
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(ActionType.PAGE_CREATE, le.action());
+        assertEquals(CommandType.PAGE_CREATE, le.action());
         assertEquals("{\"title\":\"foo\","
             + "\"name\":\"foo\","
             + "\"path\":\"/foo\","
@@ -119,7 +119,7 @@ public class LogEntryTest
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(ActionType.PAGE_UPDATE, le.action());
+        assertEquals(CommandType.PAGE_UPDATE, le.action());
         assertEquals(p.createSnapshot().getDetail(), le.detail());
     }
 
@@ -147,7 +147,7 @@ public class LogEntryTest
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(ActionType.RESOURCE_CHANGE_TEMPLATE, le.action());
+        assertEquals(CommandType.RESOURCE_CHANGE_TEMPLATE, le.action());
         assertEquals("{\"template\":\"newName\"}", le.detail());
     }
 
@@ -171,7 +171,7 @@ public class LogEntryTest
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(ActionType.RESOURCE_LOCK, le.action());
+        assertEquals(CommandType.RESOURCE_LOCK, le.action());
         assertEquals("{\"lock\":\""+_actor.id().toString()+"\"}", le.detail());
     }
 
@@ -195,7 +195,7 @@ public class LogEntryTest
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(ActionType.RESOURCE_UNLOCK, le.action());
+        assertEquals(CommandType.RESOURCE_UNLOCK, le.action());
         assertEquals(
             "{\"unlock\":\""+_actor.id().toString()+"\"}",
             le.detail());
@@ -220,7 +220,7 @@ public class LogEntryTest
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(ActionType.RESOURCE_UPDATE_TAGS, le.action());
+        assertEquals(CommandType.RESOURCE_UPDATE_TAGS, le.action());
         assertEquals("{\"tags\":\"foo,bar\"}", le.detail());
     }
 
@@ -243,7 +243,7 @@ public class LogEntryTest
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(ActionType.FOLDER_UPDATE_SORT_ORDER, le.action());
+        assertEquals(CommandType.FOLDER_UPDATE_SORT_ORDER, le.action());
         assertEquals("{\"sortOrder\":\"MANUAL\"}", le.detail());
     }
 
@@ -266,7 +266,7 @@ public class LogEntryTest
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(ActionType.RESOURCE_UPDATE_METADATA, le.action());
+        assertEquals(CommandType.RESOURCE_UPDATE_METADATA, le.action());
         assertEquals("{\"metadata\":{\"bar\":\"zup\"}}", le.detail());
     }
 
@@ -292,7 +292,7 @@ public class LogEntryTest
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(ActionType.RESOURCE_CHANGE_ROLES, le.action());
+        assertEquals(CommandType.RESOURCE_CHANGE_ROLES, le.action());
         assertEquals("{\"roles\":\"sup,zep\"}", le.detail());
     }
 

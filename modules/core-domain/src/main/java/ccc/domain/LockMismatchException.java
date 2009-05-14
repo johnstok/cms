@@ -12,8 +12,8 @@
 package ccc.domain;
 
 import ccc.commons.DBC;
-import ccc.services.api.ActionType;
-import ccc.services.api.CCCRemoteException;
+import ccc.services.api.CommandFailedException;
+import ccc.services.api.Failure;
 
 
 /**
@@ -55,8 +55,8 @@ public class LockMismatchException
 
     /** {@inheritDoc} */
     @Override
-    public CCCRemoteException toRemoteException(final ActionType action) {
-        return new CCCRemoteException(
-            CCCRemoteException.LOCK_MISMATCH, action, getUUID().toString());
+    public CommandFailedException toRemoteException() {
+        return new CommandFailedException(
+            Failure.LOCK_MISMATCH, getUUID().toString());
     }
 }

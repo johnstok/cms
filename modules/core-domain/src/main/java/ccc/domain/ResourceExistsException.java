@@ -11,8 +11,8 @@
  */
 package ccc.domain;
 
-import ccc.services.api.ActionType;
-import ccc.services.api.CCCRemoteException;
+import ccc.services.api.CommandFailedException;
+import ccc.services.api.Failure;
 
 
 /**
@@ -49,8 +49,7 @@ public class ResourceExistsException
 
     /** {@inheritDoc} */
     @Override
-    public CCCRemoteException toRemoteException(final ActionType action) {
-        return new CCCRemoteException(
-            CCCRemoteException.EXISTS, action, getUUID().toString());
+    public CommandFailedException toRemoteException() {
+        return new CommandFailedException(Failure.EXISTS, getUUID().toString());
     }
 }

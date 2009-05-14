@@ -12,8 +12,9 @@
 package ccc.domain;
 
 import ccc.commons.DBC;
-import ccc.services.api.ActionType;
-import ccc.services.api.CCCRemoteException;
+import ccc.services.api.CommandType;
+import ccc.services.api.CommandFailedException;
+import ccc.services.api.Failure;
 
 
 
@@ -27,7 +28,7 @@ public class InsufficientPrivilegesException
     extends
         RemoteExceptionSupport {
 
-    private final ActionType _action;
+    private final CommandType _action;
     private final User _user;
 
     /**
@@ -36,7 +37,7 @@ public class InsufficientPrivilegesException
      * @param action The action that was disallowed.
      * @param user The user attempting to perform the action.
      */
-    public InsufficientPrivilegesException(final ActionType action,
+    public InsufficientPrivilegesException(final CommandType action,
                                            final User user) {
         DBC.require().notNull(action);
         DBC.require().notNull(user);
@@ -57,8 +58,7 @@ public class InsufficientPrivilegesException
 
     /** {@inheritDoc} */
     @Override
-    public CCCRemoteException toRemoteException(final ActionType action) {
-        return new CCCRemoteException(
-            CCCRemoteException.PRIVILEGES, action, getUUID().toString());
+    public CommandFailedException toRemoteException() {
+        return new CommandFailedException(Failure.PRIVILEGES, getUUID().toString());
     }
 }

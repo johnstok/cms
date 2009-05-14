@@ -19,7 +19,7 @@
 <hibernate-mapping default-access="field">
 
     <typedef class="ccc.persistence.jpa.EnumUserType" name="ActionType">
-        <param name="type">ccc.services.api.ActionType</param>
+        <param name="type">ccc.services.api.CommandType</param>
     </typedef>
     <typedef class="ccc.persistence.jpa.EnumUserType" name="StatusType">
         <param name="type">ccc.services.api.ActionStatus</param>
@@ -38,7 +38,7 @@
             not-null="true" />
         <property
             name="_type"
-            column="type"
+            column="command"
             type="ActionType"
             not-null="true" />
         <property
@@ -76,13 +76,23 @@
                 access="property" />
 		</component>
         
-        <component name="_failure" class="ccc.domain.Snapshot">
+        <component name="_failure" class="ccc.services.api.Failure">
             <property
-                name="detail"
-                column="failure"
-                type="text"
-                not-null="false"
-                access="property" />
+                name="_code"
+                column="failure_code"
+                type="integer" />
+            <property
+                name="_exceptionId"
+                column="failure_exception_id"
+                type="string" />
+            <component name="_params" class="ccc.services.api.ParamList">
+                <property
+                    name="canonicalForm"
+                    column="failure_params"
+                    type="string"
+                    length="1024"
+                    access="property" />
+            </component>
         </component>
         
     </class>

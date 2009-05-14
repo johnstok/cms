@@ -13,9 +13,10 @@ package ccc.domain;
 
 import java.util.Date;
 
-import ccc.commons.Exceptions;
 import ccc.services.api.ActionStatus;
-import ccc.services.api.ActionType;
+import ccc.services.api.CommandFailedException;
+import ccc.services.api.CommandType;
+import ccc.services.api.Failure;
 
 
 /**
@@ -25,7 +26,7 @@ import ccc.services.api.ActionType;
  */
 public class Action extends Entity {
     private User         _actor;
-    private ActionType   _type;
+    private CommandType  _type;
     private Snapshot     _parameters;
     private Resource     _subject;
     private String       _comment = "";
@@ -33,7 +34,7 @@ public class Action extends Entity {
 
     private Date         _executeAfter;
     private ActionStatus _status = ActionStatus.Scheduled;
-    private Snapshot     _failure;
+    private Failure     _failure;
 
     /** Constructor: for persistence only. */
     protected Action() { super(); }
@@ -46,8 +47,10 @@ public class Action extends Entity {
      * @param actor The user that scheduled the action.
      * @param subject The resource the action will operate on.
      * @param parameters Additional parameters required by the action.
+     * @param comment The user comment describing this action.
+     * @param isMajorEdit Is this action a major edit.
      */
-    public Action(final ActionType type,
+    public Action(final CommandType type,
                   final Date executeAfter,
                   final User actor,
                   final Resource subject,
@@ -69,7 +72,7 @@ public class Action extends Entity {
      *
      * @return The type of the action.
      */
-    public ActionType type() {
+    public CommandType type() {
         return _type;
     }
 
@@ -122,13 +125,10 @@ public class Action extends Entity {
      *
      * @param e The exception that caused the action to fail.
      */
-    public void fail(final Exception e) {
+    public void fail(final CommandFailedException e) {
         checkStillScheduled();
         _status = ActionStatus.Failed;
-        final Snapshot failure = new Snapshot();
-        failure.set("message", Exceptions.rootCause(e).getMessage());
-        failure.set("stack", Exceptions.stackTraceFor(e));
-        _failure = failure;
+        _failure = e.getFailure();
     }
 
     /**
@@ -136,7 +136,7 @@ public class Action extends Entity {
      *
      * @return The failure, or NULL if the action hasn't failed.
      */
-    public Snapshot failure() {
+    public Failure failure() {
         return _failure;
     }
 

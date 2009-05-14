@@ -19,13 +19,16 @@ import javax.persistence.EntityManager;
 
 import junit.framework.TestCase;
 import ccc.domain.Action;
-import ccc.domain.LockMismatchException;
 import ccc.domain.Page;
 import ccc.domain.Snapshot;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.api.ActionStatus;
-import ccc.services.api.ActionType;
+import ccc.services.api.CommandType;
+import ccc.services.api.CommandFailedException;
+import ccc.services.api.Commands;
+import ccc.services.api.Failure;
+import ccc.services.api.ID;
 
 
 /**
@@ -39,19 +42,17 @@ public class ActionExecutorEJBTest
 
     /**
      * Test.
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     * @throws CommandFailedException
      */
     public void testActionIsFailedIfMethodThrowsException()
-    throws UnlockedException, LockMismatchException {
+                                                     throws CommandFailedException {
 
         // ARRANGE
         final Page p = new Page("foo");
         final User u = new User("user");
-        replay(_em);
         final Action a =
             new Action(
-                ActionType.RESOURCE_PUBLISH,
+                CommandType.RESOURCE_PUBLISH,
                 new Date(),
                 u,
                 p,
@@ -59,15 +60,22 @@ public class ActionExecutorEJBTest
                 "",
                 false);
 
+        _commands.publish(
+            eq(new ID(p.id().toString())),
+            eq(new ID(u.id().toString())),
+            isA(Date.class));
+        expectLastCall().andThrow(new UnlockedException(p).toRemoteException());
+        replay(_em, _commands);
+
         // ACT
         _ea.executeAction(a);
 
         // ASSERT
-        verify(_em);
+        verify(_em, _commands);
         assertEquals(ActionStatus.Failed, a.status());
         assertEquals(
-            null,
-            a.failure().getString("message"));
+            Failure.UNLOCKED,
+            a.failure().getCode());
     }
 
 
@@ -75,7 +83,8 @@ public class ActionExecutorEJBTest
     @Override
     protected void setUp() throws Exception {
         _em = createStrictMock(EntityManager.class);
-        _ea = new ActionExecutorEJB(_em);
+        _commands = createStrictMock(Commands.class);
+        _ea = new ActionExecutorEJB(_em, _commands);
         _ea.configureCoreData();
     }
     /** {@inheritDoc} */
@@ -83,8 +92,10 @@ public class ActionExecutorEJBTest
     protected void tearDown() throws Exception {
         _em = null;
         _ea = null;
+        _commands = null;
     }
 
     private ActionExecutorEJB _ea;
     private EntityManager _em;
+    private Commands _commands;
 }

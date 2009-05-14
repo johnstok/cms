@@ -85,9 +85,9 @@ import ccc.services.ModelTranslation;
 import ccc.services.ResourceDao;
 import ccc.services.ResourceDaoImpl;
 import ccc.services.UserLookup;
-import ccc.services.api.ActionType;
+import ccc.services.api.CommandType;
 import ccc.services.api.AliasDelta;
-import ccc.services.api.CCCRemoteException;
+import ccc.services.api.CommandFailedException;
 import ccc.services.api.Commands;
 import ccc.services.api.Duration;
 import ccc.services.api.ID;
@@ -129,7 +129,7 @@ public class CommandsEJB
     public ResourceSummary createAlias(final ID parentId,
                                        final String name,
                                        final ID targetId)
-                                                     throws CCCRemoteException {
+                                                     throws CommandFailedException {
         try {
             return mapResource(
                 new CreateAliasCommand(_bdao, _audit).execute(
@@ -140,7 +140,7 @@ public class CommandsEJB
                     name));
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.ALIAS_CREATE);
+            throw fail(e);
         }
     }
 
@@ -149,7 +149,7 @@ public class CommandsEJB
     @RolesAllowed({"CONTENT_CREATOR"})
     public ResourceSummary createFolder(final ID parentId,
                                         final String name)
-                                                     throws CCCRemoteException {
+                                                     throws CommandFailedException {
         return createFolder(parentId, name, null);
 
     }
@@ -160,14 +160,14 @@ public class CommandsEJB
     public ResourceSummary createFolder(final ID parentId,
                                         final String name,
                                         final String title)
-                                                     throws CCCRemoteException {
+                                                     throws CommandFailedException {
         try {
             return mapResource(
                 new CreateFolderCommand(_bdao, _audit).execute(
                     loggedInUser(), new Date(), toUUID(parentId), name, title));
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.FOLDER_CREATE);
+            throw fail(e);
         }
     }
 
@@ -179,7 +179,7 @@ public class CommandsEJB
                                       final String name,
                                       final boolean publish,
                                       final ID templateId)
-                                                     throws CCCRemoteException {
+                                                     throws CommandFailedException {
         try {
             final Page p = new CreatePageCommand(_bdao, _audit).execute(
                 loggedInUser(),
@@ -192,7 +192,7 @@ public class CommandsEJB
             return mapResource(p);
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.PAGE_CREATE);
+            throw fail(e);
         }
     }
 
@@ -202,7 +202,7 @@ public class CommandsEJB
     public ResourceSummary createTemplate(final ID parentId,
                                           final TemplateDelta delta,
                                           final String name)
-                                                     throws CCCRemoteException {
+                                                     throws CommandFailedException {
         try {
             return mapResource(
                 new CreateTemplateCommand(_bdao, _audit).execute(
@@ -213,7 +213,7 @@ public class CommandsEJB
                     new ResourceName(name)));
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.TEMPLATE_CREATE);
+            throw fail(e);
         }
 
     }
@@ -231,13 +231,13 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({"CONTENT_CREATOR"})
-    public void lock(final ID resourceId) throws CCCRemoteException {
+    public void lock(final ID resourceId) throws CommandFailedException {
         try {
             new LockResourceCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), toUUID(resourceId));
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.RESOURCE_LOCK);
+            throw fail(e);
         }
     }
 
@@ -245,7 +245,7 @@ public class CommandsEJB
     @Override
     @RolesAllowed({"CONTENT_CREATOR"})
     public void move(final ID resourceId,
-                     final ID newParentId) throws CCCRemoteException {
+                     final ID newParentId) throws CommandFailedException {
         try {
             new MoveResourceCommand(_bdao, _audit).execute(
                 loggedInUser(),
@@ -254,14 +254,14 @@ public class CommandsEJB
                 toUUID(newParentId));
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.RESOURCE_MOVE);
+            throw fail(e);
         }
     }
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({"CONTENT_CREATOR"})
-    public void publish(final ID resourceId) throws CCCRemoteException {
+    public void publish(final ID resourceId) throws CommandFailedException {
         try {
             new PublishCommand(_audit).execute(
                 new Date(),
@@ -269,7 +269,7 @@ public class CommandsEJB
                 _bdao.find(Resource.class, toUUID(resourceId)));
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.RESOURCE_PUBLISH);
+            throw fail(e);
         }
     }
 
@@ -278,7 +278,7 @@ public class CommandsEJB
     @RolesAllowed({"CONTENT_CREATOR"})
     public void publish(final ID resourceId,
                         final ID userId,
-                        final Date date) throws CCCRemoteException {
+                        final Date date) throws CommandFailedException {
         try {
             new PublishCommand(_audit).execute(
                 date,
@@ -286,7 +286,7 @@ public class CommandsEJB
                 _bdao.find(Resource.class, toUUID(resourceId)));
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.RESOURCE_PUBLISH);
+            throw fail(e);
         }
     }
 
@@ -294,39 +294,39 @@ public class CommandsEJB
     @Override
     @RolesAllowed({"CONTENT_CREATOR"})
     public void rename(final ID resourceId,
-                       final String name) throws CCCRemoteException {
+                       final String name) throws CommandFailedException {
             try {
                 new RenameResourceCommand(_bdao, _audit).rename(
                     loggedInUser(), new Date(), toUUID(resourceId), name);
 
             } catch (final RemoteExceptionSupport e) {
-                throw newCCCRemoteException(e, ActionType.RESOURCE_RENAME);
+                throw fail(e);
             }
     }
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({"CONTENT_CREATOR"})
-    public void unlock(final ID resourceId) throws CCCRemoteException {
+    public void unlock(final ID resourceId) throws CommandFailedException {
         try {
             new UnlockResourceCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), toUUID(resourceId));
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.RESOURCE_UNLOCK);
+            throw fail(e);
         }
     }
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({"CONTENT_CREATOR"})
-    public void unpublish(final ID resourceId) throws CCCRemoteException {
+    public void unpublish(final ID resourceId) throws CommandFailedException {
         try {
             new UnpublishResourceCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), toUUID(resourceId));
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.RESOURCE_UNPUBLISH);
+            throw fail(e);
         }
     }
 
@@ -334,7 +334,7 @@ public class CommandsEJB
     @Override
     @RolesAllowed({"CONTENT_CREATOR"})
     public void updateAlias(final ID aliasId,
-                            final AliasDelta delta) throws CCCRemoteException {
+                            final AliasDelta delta) throws CommandFailedException {
         try {
             new UpdateAliasCommand(_bdao, _audit).execute(
                 loggedInUser(),
@@ -343,7 +343,7 @@ public class CommandsEJB
                 toUUID(aliasId));
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.ALIAS_UPDATE);
+            throw fail(e);
         }
     }
 
@@ -354,7 +354,7 @@ public class CommandsEJB
                            final PageDelta delta,
                            final String comment,
                            final boolean isMajorEdit)
-                                                     throws CCCRemoteException {
+                                                     throws CommandFailedException {
         try {
             new UpdatePageCommand(_bdao, _audit).execute(
                 loggedInUser(),
@@ -365,7 +365,7 @@ public class CommandsEJB
                 isMajorEdit);
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.PAGE_UPDATE);
+            throw fail(e);
         }
     }
 
@@ -374,7 +374,7 @@ public class CommandsEJB
     @RolesAllowed({"CONTENT_CREATOR"})
     public void updateWorkingCopy(final ID pageId,
                                   final PageDelta delta)
-                                                     throws CCCRemoteException {
+                                                     throws CommandFailedException {
         try {
             // FIXME: A delta and a working copy are the thing!
 
@@ -389,7 +389,7 @@ public class CommandsEJB
                 page.createSnapshot());
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.RESOURCE_SET_WC);
+            throw fail(e);
         }
     }
 
@@ -397,7 +397,7 @@ public class CommandsEJB
     @Override
     @RolesAllowed({"CONTENT_CREATOR"})
     public void createWorkingCopy(final ID resourceId,
-                                  final long index) throws CCCRemoteException {
+                                  final long index) throws CommandFailedException {
         try {
             final UUID resourceUuid = toUUID(resourceId);
             final LogEntry le = _audit.findEntryForIndex(index);
@@ -413,7 +413,7 @@ public class CommandsEJB
             }
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.RESOURCE_SET_WC);
+            throw fail(e);
         }
     }
 
@@ -422,7 +422,7 @@ public class CommandsEJB
     @RolesAllowed({"CONTENT_CREATOR"})
     public void updateResourceTemplate(final ID resourceId,
                                        final ID templateId)
-                                                     throws CCCRemoteException {
+                                                     throws CommandFailedException {
         try {
             new ChangeTemplateForResourceCommand(_bdao, _audit).execute(
                 loggedInUser(),
@@ -431,7 +431,7 @@ public class CommandsEJB
                 toUUID(templateId));
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.RESOURCE_CHANGE_TEMPLATE);
+            throw fail(e);
         }
     }
 
@@ -439,13 +439,13 @@ public class CommandsEJB
     @Override
     @RolesAllowed({"CONTENT_CREATOR"})
     public void updateTags(final ID resourceId,
-                           final String tags) throws CCCRemoteException {
+                           final String tags) throws CommandFailedException {
         try {
             new ChangeResourceTagsCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), toUUID(resourceId), tags);
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.RESOURCE_UPDATE_TAGS);
+            throw fail(e);
         }
 
     }
@@ -455,13 +455,13 @@ public class CommandsEJB
     @RolesAllowed({"CONTENT_CREATOR"})
     public void updateTemplate(final ID templateId,
                                final TemplateDelta delta)
-                                                     throws CCCRemoteException {
+                                                     throws CommandFailedException {
         try {
             new UpdateTemplateCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), toUUID(templateId), delta);
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.TEMPLATE_UPDATE);
+            throw fail(e);
         }
     }
 
@@ -477,14 +477,14 @@ public class CommandsEJB
     @Override
     @RolesAllowed({"ADMINISTRATOR"})
     public ResourceSummary createRoot(final String name)
-                                                     throws CCCRemoteException {
+                                                     throws CommandFailedException {
         try {
             final Folder f = new Folder(name);
             new CreateRootCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), f);
             return mapResource(f);
         } catch (final ResourceExistsException e) {
-            throw newCCCRemoteException(e, ActionType.FOLDER_CREATE);
+            throw fail(e);
         }
     }
 
@@ -493,13 +493,13 @@ public class CommandsEJB
     @RolesAllowed({"CONTENT_CREATOR"})
     public void includeInMainMenu(final ID resourceId,
                                   final boolean include)
-                                                     throws CCCRemoteException {
+                                                     throws CommandFailedException {
         try {
             new IncludeInMainMenuCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), toUUID(resourceId), include);
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.RESOURCE_INCLUDE_IN_MM);
+            throw fail(e);
         }
     }
 
@@ -535,13 +535,13 @@ public class CommandsEJB
     @RolesAllowed({"CONTENT_CREATOR"})
     public void updateMetadata(final ID resourceId,
                                final Map<String, String> metadata)
-                                                     throws CCCRemoteException {
+                                                     throws CommandFailedException {
         try {
             new UpdateResourceMetadataRolesCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), toUUID(resourceId), metadata);
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.RESOURCE_UPDATE_METADATA);
+            throw fail(e);
         }
     }
 
@@ -550,7 +550,7 @@ public class CommandsEJB
     @RolesAllowed({"CONTENT_CREATOR"})
     public void updateFolderSortOrder(final ID folderId,
                                       final String sortOrder)
-                                                     throws CCCRemoteException {
+                                                     throws CommandFailedException {
         try {
             new UpdateFolderCommand(_bdao, _audit).execute(
                 loggedInUser(),
@@ -559,7 +559,7 @@ public class CommandsEJB
                  ResourceOrder.valueOf(sortOrder));
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.FOLDER_UPDATE_SORT_ORDER);
+            throw fail(e);
         }
     }
 
@@ -567,13 +567,13 @@ public class CommandsEJB
     @Override
     @RolesAllowed({"CONTENT_CREATOR"})
     public void clearWorkingCopy(final ID resourceId)
-                                                     throws CCCRemoteException {
+                                                     throws CommandFailedException {
         try {
             new ClearWorkingCopyCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), toUUID(resourceId));
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.RESOURCE_CLEAR_WC);
+            throw fail(e);
         }
     }
 
@@ -582,7 +582,7 @@ public class CommandsEJB
     @RolesAllowed({"ADMINISTRATOR"})
     public ResourceSummary createSearch(final ID parentId,
                                         final String title)
-                                                     throws CCCRemoteException {
+                                                     throws CommandFailedException {
         try {
             return mapResource(
                 new CreateSearchCommand(_bdao, _audit).execute(
@@ -590,7 +590,7 @@ public class CommandsEJB
             );
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.SEARCH_CREATE);
+            throw fail(e);
         }
     }
 
@@ -605,7 +605,7 @@ public class CommandsEJB
     @Override
     @RolesAllowed({"CONTENT_CREATOR"})
     public void createAction(final ID resourceId,
-                             final ActionType action,
+                             final CommandType action,
                              final Date executeAfter,
                              final String parameters,
                              final String comment,
@@ -628,7 +628,7 @@ public class CommandsEJB
     @RolesAllowed({"CONTENT_CREATOR"})
     public void reorder(final ID folderId,
                         final List<String> order) // FIXME: Should be List<ID>
-                                                     throws CCCRemoteException {
+                                                     throws CommandFailedException {
         try {
             final List<UUID> newOrder = new ArrayList<UUID>();
             for (final String entry : order) {
@@ -639,7 +639,7 @@ public class CommandsEJB
 
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.FOLDER_REORDER);
+            throw fail(e);
         }
     }
 
@@ -648,13 +648,13 @@ public class CommandsEJB
     @RolesAllowed({"CONTENT_CREATOR"})
     public void changeRoles(final ID resourceId,
                             final Collection<String> roles)
-                                                     throws CCCRemoteException {
+                                                     throws CommandFailedException {
         try {
             new UpdateResourceRolesCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), toUUID(resourceId), roles);
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.RESOURCE_CHANGE_ROLES);
+            throw fail(e);
         }
     }
 
@@ -662,13 +662,13 @@ public class CommandsEJB
     @Override
     @RolesAllowed({"CONTENT_CREATOR"})
     public void applyWorkingCopyToFile(final ID fileId)
-                                                     throws CCCRemoteException {
+                                                     throws CommandFailedException {
         try {
             new ApplyWorkingCopyCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), toUUID(fileId), null, false);
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.FILE_UPDATE);
+            throw fail(e);
         }
     }
 
@@ -677,13 +677,13 @@ public class CommandsEJB
     @RolesAllowed({"SITE_BUILDER"})
     public void updateCacheDuration(final ID resourceId,
                                     final Duration duration)
-                                                     throws CCCRemoteException {
+                                                     throws CommandFailedException {
         try {
             new UpdateCachingCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), toUUID(resourceId), duration);
 
         } catch (final RemoteExceptionSupport e) {
-            throw newCCCRemoteException(e, ActionType.RESOURCE_UPDATE_CACHE);
+            throw fail(e);
         }
     }
 
@@ -711,11 +711,9 @@ public class CommandsEJB
         return _userLookup.loggedInUser(_context.getCallerPrincipal());
     }
 
-    private CCCRemoteException newCCCRemoteException(
-                                        final RemoteExceptionSupport e,
-                                        final ActionType action) {
+    private CommandFailedException fail(final RemoteExceptionSupport e) {
         _context.setRollbackOnly();  // CRITICAL
         LOG.info("Handled local exception: "+e.getUUID(), e);
-        return e.toRemoteException(action);
+        return e.toRemoteException();
     }
 }

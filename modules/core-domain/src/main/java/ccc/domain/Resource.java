@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ccc.commons.DBC;
-import ccc.services.api.ActionType;
+import ccc.services.api.CommandType;
 import ccc.services.api.Duration;
 import ccc.services.api.ResourceType;
 
@@ -269,7 +269,7 @@ public abstract class Resource
         }
 
         if (!canUnlock(user)) {
-            throw new InsufficientPrivilegesException(ActionType.RESOURCE_UNLOCK, user);
+            throw new InsufficientPrivilegesException(CommandType.RESOURCE_UNLOCK, user);
         }
 
         _lockedBy = null;

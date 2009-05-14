@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 
 import ccc.migration.Migrations;
 import ccc.services.ServiceLookup;
-import ccc.services.api.CCCRemoteException;
+import ccc.services.api.CommandFailedException;
 
 /**
  * Entry class for the 'create' application.
@@ -50,7 +50,7 @@ public final class Create extends CccApp {
                 null);
         try {
             migrations.createDefaultFolderStructure();
-        } catch (final CCCRemoteException e) {
+        } catch (final CommandFailedException e) {
             LOG.error("Failed to create app.", e);
         }
     }

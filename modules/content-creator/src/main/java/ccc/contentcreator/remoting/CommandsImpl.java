@@ -19,9 +19,9 @@ import java.util.Map;
 import javax.ejb.EJB;
 
 import ccc.contentcreator.api.CommandService;
-import ccc.services.api.ActionType;
+import ccc.services.api.CommandType;
 import ccc.services.api.AliasDelta;
-import ccc.services.api.CCCRemoteException;
+import ccc.services.api.CommandFailedException;
 import ccc.services.api.Commands;
 import ccc.services.api.Duration;
 import ccc.services.api.ID;
@@ -48,7 +48,7 @@ public class CommandsImpl
     @Override
     public ResourceSummary createAlias(final ID parentId,
                             final String name,
-                            final ID targetId) throws CCCRemoteException {
+                            final ID targetId) throws CommandFailedException {
         return _commands.createAlias(parentId, name, targetId);
     }
 
@@ -56,7 +56,7 @@ public class CommandsImpl
     @Override
     public ResourceSummary createFolder(final ID parentId,
                                         final String name)
-    throws CCCRemoteException {
+    throws CommandFailedException {
         return _commands.createFolder(parentId, name);
     }
 
@@ -65,7 +65,7 @@ public class CommandsImpl
     public ResourceSummary createFolder(final ID parentId,
                                         final String name,
                                         final String title)
-    throws CCCRemoteException {
+    throws CommandFailedException {
         return _commands.createFolder(parentId, name, title);
     }
 
@@ -76,7 +76,7 @@ public class CommandsImpl
                                       final String name,
                                       final boolean publish,
                                       final ID templateId)
-    throws CCCRemoteException {
+    throws CommandFailedException {
         return _commands.createPage(parentId, delta, name, publish, templateId);
     }
 
@@ -85,7 +85,7 @@ public class CommandsImpl
     public ResourceSummary createTemplate(final ID parentId,
                                           final TemplateDelta delta,
                                           final String name)
-    throws CCCRemoteException {
+    throws CommandFailedException {
         return _commands.createTemplate(parentId, delta, name);
     }
 
@@ -93,26 +93,26 @@ public class CommandsImpl
     @Override
     public UserSummary createUser(final UserDelta delta,
                                   final String password)
-    throws CCCRemoteException {
+    throws CommandFailedException {
         return _commands.createUser(delta, password);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void lock(final ID resourceId) throws CCCRemoteException {
+    public void lock(final ID resourceId) throws CommandFailedException {
         _commands.lock(resourceId);
     }
 
     /** {@inheritDoc} */
     @Override
     public void move(final ID resourceId,
-                     final ID newParentId) throws CCCRemoteException {
+                     final ID newParentId) throws CommandFailedException {
         _commands.move(resourceId, newParentId);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void publish(final ID resourceId) throws CCCRemoteException {
+    public void publish(final ID resourceId) throws CommandFailedException {
         _commands.publish(resourceId);
     }
 
@@ -121,34 +121,34 @@ public class CommandsImpl
     public void publish(final ID resourceId,
                                    final ID userId,
                                    final Date publishOn)
-    throws CCCRemoteException {
+    throws CommandFailedException {
         _commands.publish(resourceId, userId, publishOn);
     }
 
     /** {@inheritDoc} */
     @Override
     public void rename(final ID resourceId,
-                       final String name) throws CCCRemoteException {
+                       final String name) throws CommandFailedException {
         _commands.rename(resourceId, name);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void unlock(final ID resourceId) throws CCCRemoteException {
+    public void unlock(final ID resourceId) throws CommandFailedException {
         _commands.unlock(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void unpublish(final ID resourceId) throws CCCRemoteException {
+    public void unpublish(final ID resourceId) throws CommandFailedException {
         _commands.unpublish(resourceId);
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateAlias(final ID aliasId, final AliasDelta delta)
-    throws CCCRemoteException {
+    throws CommandFailedException {
         _commands.updateAlias(aliasId, delta);
     }
 
@@ -158,7 +158,7 @@ public class CommandsImpl
                            final PageDelta delta,
                            final String comment,
                            final boolean isMajorEdit)
-    throws CCCRemoteException {
+    throws CommandFailedException {
         _commands.updatePage(
             pageId, delta, comment, isMajorEdit);
     }
@@ -167,7 +167,7 @@ public class CommandsImpl
     @Override
     public void updateResourceTemplate(final ID resourceId,
                                        final ID templateId)
-    throws CCCRemoteException {
+    throws CommandFailedException {
         _commands.updateResourceTemplate(
             resourceId, templateId);
     }
@@ -175,7 +175,7 @@ public class CommandsImpl
     /** {@inheritDoc} */
     @Override
     public void updateTags(final ID resourceId,
-                           final String tags) throws CCCRemoteException {
+                           final String tags) throws CommandFailedException {
         _commands.updateTags(resourceId, tags);
     }
 
@@ -183,21 +183,21 @@ public class CommandsImpl
     @Override
     public void updateTemplate(final ID templateId,
                                           final TemplateDelta delta)
-    throws CCCRemoteException {
+    throws CommandFailedException {
         _commands.updateTemplate(templateId, delta);
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateUser(final ID userId, final UserDelta delta)
-    throws CCCRemoteException {
+    throws CommandFailedException {
         _commands.updateUser(userId, delta);
     }
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createRoot(final String name)
-    throws CCCRemoteException {
+    throws CommandFailedException {
         return _commands.createRoot(name);
     }
 
@@ -205,7 +205,7 @@ public class CommandsImpl
     @Override
     public void includeInMainMenu(final ID resourceId,
                                   final boolean include)
-    throws CCCRemoteException {
+    throws CommandFailedException {
         _commands.includeInMainMenu(resourceId, include);
     }
 
@@ -220,7 +220,7 @@ public class CommandsImpl
     @Override
     public void updateMetadata(final ID resourceId,
                                  final Map<String, String> metadata)
-    throws CCCRemoteException {
+    throws CommandFailedException {
         _commands.updateMetadata(resourceId, metadata);
     }
 
@@ -228,21 +228,21 @@ public class CommandsImpl
     @Override
     public void updateFolderSortOrder(final ID folderId,
                                       final String sortOrder)
-    throws CCCRemoteException {
+    throws CommandFailedException {
         _commands.updateFolderSortOrder(folderId, sortOrder);
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateWorkingCopy(final ID pageId, final PageDelta delta)
-    throws CCCRemoteException {
+    throws CommandFailedException {
         _commands.updateWorkingCopy(pageId, delta);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void clearWorkingCopy(final ID pageId) throws CCCRemoteException {
+    public void clearWorkingCopy(final ID pageId) throws CommandFailedException {
         _commands.clearWorkingCopy(pageId);
     }
 
@@ -256,25 +256,25 @@ public class CommandsImpl
     /** {@inheritDoc} */
     @Override
     public void createWorkingCopy(final ID resourceId, final long index)
-    throws CCCRemoteException {
+    throws CommandFailedException {
         _commands.createWorkingCopy(resourceId, index);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void cancelAction(final ID actionId) throws CCCRemoteException {
+    public void cancelAction(final ID actionId) throws CommandFailedException {
         _commands.cancelAction(actionId);
     }
 
     /** {@inheritDoc} */
     @Override
     public void createAction(final ID resourceId,
-                             final ActionType action,
+                             final CommandType action,
                              final Date executeAfter,
                              final String parameters,
                              final String comment,
                              final boolean isMajorEdit)
-    throws CCCRemoteException {
+    throws CommandFailedException {
         _commands.createAction(
             resourceId, action, executeAfter, parameters, comment, isMajorEdit);
     }
@@ -282,7 +282,7 @@ public class CommandsImpl
     /** {@inheritDoc} */
     @Override
     public void reorder(final ID folderId, final List<String> order)
-    throws CCCRemoteException {
+    throws CommandFailedException {
         _commands.reorder(folderId, order);
     }
 
@@ -290,14 +290,14 @@ public class CommandsImpl
     @Override
     public void changeRoles(final ID resourceId,
                             final Collection<String> roles)
-    throws CCCRemoteException {
+    throws CommandFailedException {
         _commands.changeRoles(resourceId, roles);
     }
 
     /** {@inheritDoc} */
     @Override
     public void applyWorkingCopyToFile(final ID fileId)
-    throws CCCRemoteException {
+    throws CommandFailedException {
         _commands.applyWorkingCopyToFile(fileId);
     }
 
@@ -305,14 +305,14 @@ public class CommandsImpl
     @Override
     public void updateCacheDuration(final ID resourceId,
                                     final Duration duration)
-    throws CCCRemoteException {
+    throws CommandFailedException {
         _commands.updateCacheDuration(resourceId, duration);
     }
 
     /** {@inheritDoc} */
     @Override
     public void updateUserPassword(final ID userId, final String password)
-    throws CCCRemoteException {
+    throws CommandFailedException {
         _commands.updateUserPassword(userId, password);
     }
 

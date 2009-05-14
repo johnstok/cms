@@ -12,8 +12,9 @@
 package ccc.domain;
 
 import ccc.commons.DBC;
-import ccc.services.api.ActionType;
-import ccc.services.api.CCCRemoteException;
+import ccc.services.api.CommandFailedException;
+import ccc.services.api.Failure;
+import ccc.services.api.ParamList;
 
 
 /**
@@ -55,8 +56,13 @@ public class UnlockedException
 
     /** {@inheritDoc} */
     @Override
-    public CCCRemoteException toRemoteException(final ActionType action) {
-        return new CCCRemoteException(
-            CCCRemoteException.UNLOCKED, action, getUUID().toString());
+    public CommandFailedException toRemoteException() {
+        return new CommandFailedException(
+            Failure.UNLOCKED,
+            getUUID().toString(),
+            new ParamList()
+                .set("resource-path", _resource.absolutePath().toString())
+                .set("resource-id", _resource.id().toString())
+        );
     }
 }
