@@ -11,22 +11,13 @@
  */
 package ccc.services;
 
-import java.util.Collection;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
-import ccc.domain.Folder;
-import ccc.domain.InsufficientPrivilegesException;
-import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
-import ccc.domain.ResourceExistsException;
 import ccc.domain.ResourcePath;
-import ccc.domain.UnlockedException;
 import ccc.domain.User;
-import ccc.services.api.Duration;
 
 
 /**
@@ -39,10 +30,6 @@ public interface ResourceDao {
     /** NAME : String. */
     String NAME = "ResourceDao";
 
-
-    /*
-     * QUERIES
-     */
 
     /**
      * Find 0 or more objects using a query.
@@ -99,22 +86,6 @@ public interface ResourceDao {
     <T extends Resource> T find(final Class<T> type, final UUID id);
 
     /**
-     * Find the resource with the specified UUID. This method confirms that the
-     * resource is locked by the currently 'logged in' user.
-     *
-     * @param <T> The type of the resource to return.
-     * @param type A class representing the type of the resource to return.
-     * @param id The UUID of the resource.
-     * @throws LockMismatchException
-     * @throws UnlockedException
-     * @return The resource for the specified id.
-     */
-    <T extends Resource> T findLocked(Class<T> type,
-                                      UUID id,
-                                      final User lockedBy)
-                                throws UnlockedException, LockMismatchException;
-
-    /**
      * Look up a resource.
      *
      * @param contentPath ResourcePath The path to the resource.
@@ -124,162 +95,6 @@ public interface ResourceDao {
      */
     Resource lookup(String rootName, ResourcePath contentPath);
 
-
-    /*
-     * COMMANDS
-     */
-
-    /**
-     * Create a new root folder. The name is checked against existing root
-     * folders in order to prevent conflicts.
-     *
-     * @param folder The root folder to persists.
-     */
-    void createRoot(final User actor,
-                    Folder folder);
-
-    /**
-     * Lock the specified resource.
-     * The resource will be locked by the currently logged in user.
-     * If the resource is already locked a CCCException will be thrown.
-     *
-     * @param resourceId The uuid of the resource to lock.
-     * @return The current version of resource.
-     */
-    Resource lock(final User actor,
-                  final Date happenedOn,
-                  UUID resourceId)
-    throws LockMismatchException;
-
-    /**
-     * Unlock the specified Resource.
-     * If the logged in user does not have privileges to unlock this resource a
-     * CCCException will be thrown.
-     * Unlocking an unlocked resource has no effect.
-     *
-     * @param resourceId The resource to unlock.
-     * @return The current version of resource.
-     */
-    Resource unlock(final User actor,
-                    final Date happenedOn,
-                    UUID resourceId)
-    throws InsufficientPrivilegesException, UnlockedException;
-
-    /**
-     * Update the tags for a resource.
-     *
-     * @param resourceId The resource to update.
-     * @param tags The tags to set.
-     */
-    void updateTags(final User actor,
-                    final Date happenedOn,
-                    UUID resourceId, String tags)
-    throws UnlockedException, LockMismatchException;
-
-    /**
-     * Publishes the resource.
-     *
-     * @param resourceId The id of the resource to update.
-     * @return The current version of resource.
-     */
-    Resource publish(final User actor,
-                     final Date happenedOn,
-                     UUID resourceId)
-    throws UnlockedException, LockMismatchException;
-
-    /**
-     * Publishes the resource by specified user.
-     *
-     * @param resourceId The id of the resource to update.
-     * @param userId The id of the publishing user.
-     * @param publishedOn The date the resource was published.
-     * @return The current version of resource.
-     */
-    Resource publish(UUID resourceId, UUID userId, Date publishedOn)
-    throws UnlockedException, LockMismatchException;
-
-    /**
-     * Un-publishes the resource.
-     *
-     * @param resourceId The id of the resource to update.
-     * @return The current version of resource.
-     */
-    Resource unpublish(final User actor,
-                       final Date happenedOn,
-                       UUID resourceId)
-    throws UnlockedException, LockMismatchException;
-
-    /**
-     * Un-publishes the resource.
-     *
-     * @param resourceId The id of the resource to update.
-     * @param actor The user that unpublished the resource.
-     * @param happendedOn The date that the resource was unpublished.
-     * @return The current version of resource.
-     */
-    Resource unpublish(UUID resourceId, UUID actor, Date happendedOn)
-    throws UnlockedException, LockMismatchException;
-
-    /**
-     * Change the template for the specified resource.
-     *
-     * @param resourceId The id of the resource to change.
-     * @param templateId The id of template to set (NULL is allowed).
-     */
-    void updateTemplateForResource(final User actor,
-                                   final Date happenedOn,
-                                   UUID resourceId,
-                                   UUID templateId)
-    throws UnlockedException, LockMismatchException;
-
-    /**
-     * Move a resource to a new parent.
-     *
-     * @param resourceId The id of the resource to move.
-     * @param newParentId The id of the new parent.
-     */
-    void move(final User actor,
-              final Date happenedOn,
-              UUID resourceId,
-              UUID newParentId)
-    throws UnlockedException, LockMismatchException, ResourceExistsException;
-
-    /**
-     * Specify whether this resource should be included in the main menu.
-     *
-     * @param id The id of the resource to change.
-     * @param b True if the resource should be included; false otherwise.
-     */
-    void includeInMainMenu(final User actor,
-                           final Date happenedOn,
-                           final UUID id,
-                           final boolean b)
-    throws UnlockedException, LockMismatchException;
-
-    /**
-     * Update metadata of the resource.
-     *
-     * @param resourceId The resource to update.
-     * @param metadata The new metadata to set.
-     */
-    void updateMetadata(final User actor,
-                        final Date happenedOn,
-                        UUID resourceId,
-                        Map<String, String> metadata)
-    throws UnlockedException, LockMismatchException;
-
-    /**
-     * Update the security roles for the specified resource.
-     *
-     * @param resourceId The resource to update.
-     * @param roles The new roles.
-     */
-    void changeRoles(final User actor,
-                     final Date happenedOn,
-                     UUID resourceId,
-                     Collection<String> roles)
-    throws UnlockedException, LockMismatchException;
-
     /**
      * Look up a resource, given its CCC6 id.
      *
@@ -287,19 +102,4 @@ public interface ResourceDao {
      * @return The corresponding resource in CCC7.
      */
     Resource lookupWithLegacyId(String legacyId);
-
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param actor
-     * @param happenedOn
-     * @param resourceId
-     * @param duration
-     */
-    void updateCache(User actor,
-                     Date happenedOn,
-                     UUID resourceId,
-                     Duration duration)
-    throws UnlockedException, LockMismatchException;
-
 }

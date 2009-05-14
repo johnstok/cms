@@ -55,8 +55,6 @@ import ccc.persistence.jpa.FsCoreData;
 import ccc.search.lucene.SearchHandler;
 import ccc.search.lucene.SimpleLucene;
 import ccc.search.lucene.SimpleLuceneFS;
-import ccc.services.AuditLog;
-import ccc.services.AuditLogEJB;
 import ccc.services.Dao;
 import ccc.services.DataManager;
 import ccc.services.DataManagerEJB;
@@ -460,8 +458,7 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
         final Dao bdao = new BaseDao(_em);
-        final AuditLog audit = new AuditLogEJB(bdao);
-        _dao = new ResourceDaoImpl(audit, bdao);
+        _dao = new ResourceDaoImpl(bdao);
         _data = new DataManagerEJB(new FsCoreData(), bdao);
     }
 }

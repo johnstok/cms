@@ -20,7 +20,17 @@ import java.util.List;
 import java.util.Map;
 
 import junit.framework.TestCase;
+import ccc.actions.ChangeResourceTagsCommand;
+import ccc.actions.ChangeTemplateForResourceCommand;
+import ccc.actions.IncludeInMainMenuCommand;
+import ccc.actions.LockResourceCommand;
+import ccc.actions.MoveResourceCommand;
+import ccc.actions.PublishCommand;
 import ccc.actions.RenameResourceCommand;
+import ccc.actions.UnlockResourceCommand;
+import ccc.actions.UnpublishResourceCommand;
+import ccc.actions.UpdateCachingCommand;
+import ccc.actions.UpdateResourceMetadataRolesCommand;
 import ccc.domain.CreatorRoles;
 import ccc.domain.Folder;
 import ccc.domain.InsufficientPrivilegesException;
@@ -138,7 +148,8 @@ public class ResourceDaoImplTest
         replayAll();
 
         // ACT
-        _rdao.includeInMainMenu(_regularUser, new Date(), _r.id(), true);
+        new IncludeInMainMenuCommand(_dao, _al).execute(
+            _regularUser, new Date(), _r.id(), true);
 
         // ASSERT
         verifyAll();
@@ -161,7 +172,8 @@ public class ResourceDaoImplTest
         replayAll();
 
         // ACT
-        _rdao.updateTags(_regularUser, new Date(), _r.id(), "foo,bar");
+        new ChangeResourceTagsCommand(_dao, _al).execute(
+            _regularUser, new Date(), _r.id(), "foo,bar");
 
         // ASSERT
         verifyAll();
@@ -187,7 +199,8 @@ public class ResourceDaoImplTest
         _r.lock(_regularUser);
 
         // ACT
-        _rdao.unlock(_regularUser, new Date(), _r.id());
+        new UnlockResourceCommand(_dao, _al).execute(
+            _regularUser, new Date(), _r.id());
 
         // ASSERT
         assertFalse("Should be unlocked.", _r.isLocked());
@@ -210,7 +223,8 @@ public class ResourceDaoImplTest
 
         // ACT
         try {
-            _rdao.unlock(_regularUser, new Date(), _r.id());
+            new UnlockResourceCommand(_dao, _al).execute(
+                _regularUser, new Date(), _r.id());
             fail("Should fail.");
 
         // ASSERT
@@ -241,7 +255,8 @@ public class ResourceDaoImplTest
         _r.lock(_regularUser);
 
         // ACT
-        _rdao.unlock(_adminUser, new Date(), _r.id());
+        new UnlockResourceCommand(_dao, _al).execute(
+            _adminUser, new Date(), _r.id());
 
         // ASSERT
         assertFalse("Should be unlocked.", _r.isLocked());
@@ -260,7 +275,8 @@ public class ResourceDaoImplTest
         replayAll();
 
         // ACT
-        _rdao.lock(_regularUser, new Date(), _r.id());
+        new LockResourceCommand(_dao, _al).execute(
+            _regularUser, new Date(), _r.id());
 
         // ASSERT
         assertEquals(_regularUser, _r.lockedBy());
@@ -281,7 +297,8 @@ public class ResourceDaoImplTest
 
         // ACT
         try {
-            _rdao.lock(_regularUser, new Date(), _r.id());
+            new LockResourceCommand(_dao, _al).execute(
+                _regularUser, new Date(), _r.id());
             fail("Lock should fail.");
 
         // ASSERT
@@ -348,7 +365,7 @@ public class ResourceDaoImplTest
         replayAll();
 
         // ACT
-        _rdao.updateTemplateForResource(
+        new ChangeTemplateForResourceCommand(_dao, _al).execute(
             _regularUser, new Date(), _r.id(), defaultTemplate.id());
 
         // ASSERT
@@ -377,7 +394,8 @@ public class ResourceDaoImplTest
         replayAll();
 
         // ACT
-        _rdao.move(_regularUser, new Date(), _r.id(), newParent.id());
+        new MoveResourceCommand(_dao, _al).execute(
+            _regularUser, new Date(), _r.id(), newParent.id());
 
         // ASSERT
         verifyAll();
@@ -445,12 +463,11 @@ public class ResourceDaoImplTest
         // ARRANGE
         _r.lock(_regularUser);
 
-        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
         _al.recordPublish(eq(_r), eq(_regularUser), isA(Date.class));
         replayAll();
 
         // ACT
-        _rdao.publish(_regularUser, new Date(), _r.id());
+        new PublishCommand(_al).execute(new Date(), _regularUser, _r);
 
         // ASSERT
         verifyAll();
@@ -497,7 +514,8 @@ public class ResourceDaoImplTest
         replayAll();
 
         // ACT
-        _rdao.unpublish(_regularUser, new Date(), _r.id());
+        new UnpublishResourceCommand(_dao, _al).execute(
+            _regularUser, new Date(), _r.id());
 
         // ASSERT
         verifyAll();
@@ -522,7 +540,8 @@ public class ResourceDaoImplTest
         // ACT
         final Map<String, String> props = new HashMap<String, String>();
         props.put("bodyId", "example");
-        _rdao.updateMetadata(_regularUser, new Date(), _r.id(), props);
+        new UpdateResourceMetadataRolesCommand(_dao, _al).execute(
+            _regularUser, new Date(), _r.id(), props);
 
         // ASSERT
         verifyAll();
@@ -544,7 +563,7 @@ public class ResourceDaoImplTest
         replayAll();
 
         // ACT
-        _rdao.updateCache(
+        new UpdateCachingCommand(_dao, _al).execute(
             _regularUser, new Date(), _r.id(), new Duration(0, 1, 2, 7));
 
         // ASSERT
@@ -566,7 +585,7 @@ public class ResourceDaoImplTest
     protected void setUp() throws Exception {
         _dao = createStrictMock(Dao.class);
         _al = createStrictMock(AuditLog.class);
-        _rdao = new ResourceDaoImpl(_al, _dao);
+        _rdao = new ResourceDaoImpl(_dao);
         _r = new Page("foo");
         _parent = new Folder("parent");
         _parent.add(_r);

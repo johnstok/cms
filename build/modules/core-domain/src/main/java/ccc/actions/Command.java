@@ -13,6 +13,8 @@ package ccc.actions;
 
 import java.util.Date;
 
+import ccc.domain.RemoteExceptionSupport;
+
 
 /**
  * TODO: Add Description for this type.
@@ -20,5 +22,5 @@ import java.util.Date;
  * @author Civic Computing Ltd.
  */
 public interface Command<T> {
-    T execute(Action action, Date happenedOn);
+    T execute(Action action, Date happenedOn) throws RemoteExceptionSupport;
 }

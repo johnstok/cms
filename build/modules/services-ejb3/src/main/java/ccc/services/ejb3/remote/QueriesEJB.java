@@ -39,8 +39,6 @@ import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.persistence.jpa.BaseDao;
 import ccc.services.ActionDao;
-import ccc.services.AuditLog;
-import ccc.services.AuditLogEJB;
 import ccc.services.ModelTranslation;
 import ccc.services.QueryNames;
 import ccc.services.ResourceDao;
@@ -301,8 +299,7 @@ public final class QueriesEJB
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
         _bdao = new BaseDao(_em);
-        final AuditLog audit = new AuditLogEJB(_bdao);
-        _resources = new ResourceDaoImpl(audit, _bdao);
+        _resources = new ResourceDaoImpl(_bdao);
         _userLookup = new UserLookup(_bdao);
     }
 

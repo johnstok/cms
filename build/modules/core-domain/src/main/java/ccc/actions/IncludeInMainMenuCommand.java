@@ -11,12 +11,9 @@
  */
 package ccc.actions;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
-import ccc.domain.Folder;
 import ccc.domain.LockMismatchException;
 import ccc.domain.Resource;
 import ccc.domain.UnlockedException;
@@ -26,57 +23,51 @@ import ccc.services.Dao;
 
 
 /**
- * Command: reorder the entries of a folder.
+ * Command: include/exclude a resource in the main menu.
  *
  * @author Civic Computing Ltd.
  */
-public class ReorderFolderContentsCommand {
+public class IncludeInMainMenuCommand {
 
-    private final Dao _dao;
-    private final AuditLog    _audit;
+    private final Dao      _dao;
+    private final AuditLog _audit;
 
     /**
      * Constructor.
      *
-     * @param dao The DAO used for CRUD operations, etc.
+     * @param dao The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public ReorderFolderContentsCommand(final Dao dao,
-                                        final AuditLog audit) {
+    public IncludeInMainMenuCommand(final Dao dao,
+                                              final AuditLog audit) {
         _dao = dao;
         _audit = audit;
     }
 
     /**
-     * Reorder a folder's entries.
+     * Specify whether this resource should be included in the main menu.
      *
+     * @param id The id of the resource to change.
+     * @param b True if the resource should be included; false otherwise.
      * @param actor
      * @param happenedOn
-     * @param folderId
-     * @param order
      * @throws LockMismatchException
      * @throws UnlockedException
      */
     public void execute(final User actor,
                         final Date happenedOn,
-                        final UUID folderId,
-                        final List<UUID> order)
+                        final UUID id,
+                        final boolean b)
                                throws UnlockedException, LockMismatchException {
-        final Folder f = _dao.find(Folder.class, folderId);
-        f.confirmLock(actor);
+        final Resource r = _dao.find(Resource.class, id);
+        r.confirmLock(actor);
 
-        final User u = actor;
-        final List<Resource> newOrder = new ArrayList<Resource>();
-        final List<Resource> currentOrder = f.entries();
-        for (final UUID resourceId : order) {
-            for (final Resource r : currentOrder) {
-                if (r.id().equals(resourceId)) {
-                    newOrder.add(r);
-                }
-            }
+        r.includeInMainMenu(b);
+        if (b) {
+            _audit.recordIncludeInMainMenu(r, actor, happenedOn);
+        } else {
+            _audit.recordRemoveFromMainMenu(r, actor, happenedOn);
         }
-        f.reorder(newOrder);
-
-        _audit.recordReorder(f, u, happenedOn);
     }
+
 }

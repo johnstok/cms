@@ -87,13 +87,13 @@ public class FolderDaoImplTest
         _f.add(bar);
         _f.add(baz);
 
-        expect(_rdao.findLocked(Folder.class, _f.id(), _regularUser))
+        expect(_dao.find(Folder.class, _f.id()))
             .andReturn(_f);
         _al.recordReorder(eq(_f), eq(_regularUser), isA(Date.class));
         replayAll();
 
         final ReorderFolderContentsCommand rf =
-            new ReorderFolderContentsCommand(_rdao, _al);
+            new ReorderFolderContentsCommand(_dao, _al);
 
         // ACT
         final List<UUID> order = new ArrayList<UUID>();

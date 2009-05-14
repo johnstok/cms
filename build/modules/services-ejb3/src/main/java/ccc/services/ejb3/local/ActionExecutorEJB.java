@@ -26,15 +26,15 @@ import org.apache.log4j.Logger;
 
 import ccc.actions.Action;
 import ccc.actions.ApplyWorkingCopyCommand;
+import ccc.actions.PublishCommand;
+import ccc.actions.UnpublishResourceCommand;
 import ccc.domain.CCCException;
-import ccc.domain.LockMismatchException;
+import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Resource;
-import ccc.domain.UnlockedException;
 import ccc.persistence.jpa.BaseDao;
 import ccc.services.ActionExecutor;
+import ccc.services.AuditLog;
 import ccc.services.AuditLogEJB;
-import ccc.services.ResourceDao;
-import ccc.services.ResourceDaoImpl;
 import ccc.services.api.ResourceType;
 
 
@@ -50,13 +50,10 @@ public class ActionExecutorEJB implements ActionExecutor {
     private static final Logger LOG =
         Logger.getLogger(ActionExecutorEJB.class.getName());
 
-    private ResourceDao        _resources;
-
     @PersistenceContext private EntityManager _em;
 
     private BaseDao _bdao;
-
-    private AuditLogEJB _audit;
+    private AuditLog _audit;
 
     /** Constructor. */
     public ActionExecutorEJB() { super(); }
@@ -65,10 +62,10 @@ public class ActionExecutorEJB implements ActionExecutor {
     /**
      * Constructor.
      *
-     * @param rdao The resource DAO for this executor.
+     * @param em The entityManager for this action executor.
      */
-    public ActionExecutorEJB(final ResourceDao rdao) {
-        _resources = rdao;
+    public ActionExecutorEJB(final EntityManager em) {
+        _em = em;
     }
 
 
@@ -99,9 +96,7 @@ public class ActionExecutorEJB implements ActionExecutor {
 
         } catch (final RuntimeException e) {
             fail(action, e);
-        } catch (final UnlockedException e) {
-            fail(action, e);
-        } catch (final LockMismatchException e) {
+        } catch (final RemoteExceptionSupport e) {
             fail(action, e);
         }
     }
@@ -114,7 +109,7 @@ public class ActionExecutorEJB implements ActionExecutor {
 
 
     private void executeUpdate(final Action action)
-                               throws UnlockedException, LockMismatchException {
+                                                 throws RemoteExceptionSupport {
         final Resource r = action.subject();
         if (ResourceType.PAGE.equals(r.type())) {
             new ApplyWorkingCopyCommand(_bdao, _audit).execute(
@@ -132,27 +127,27 @@ public class ActionExecutorEJB implements ActionExecutor {
 
 
     private void executePublish(final Action action)
-                               throws UnlockedException, LockMismatchException {
-        _resources.publish(
-            action.subject().id(),
-            action.actor().id(),
-            new Date());
+                                                 throws RemoteExceptionSupport {
+        new PublishCommand(_audit).execute(action, new Date());
     }
 
 
     private void executeUnpublish(final Action action)
-                               throws UnlockedException, LockMismatchException {
-        _resources.unpublish(
-            action.subject().id(),
-            action.actor().id(),
-            new Date());
+                                                 throws RemoteExceptionSupport {
+        new UnpublishResourceCommand(_bdao, _audit).execute(
+            action.actor(),
+            new Date(),
+            action.subject().id());
     }
 
 
-    @PostConstruct @SuppressWarnings("unused")
-    private void configureCoreData() {
+    /**
+     * TODO: Add a description of this method.
+     * TODO: Rename this method.
+     */
+    @PostConstruct
+    void configureCoreData() {
         _bdao = new BaseDao(_em);
         _audit = new AuditLogEJB(_bdao);
-        _resources = new ResourceDaoImpl(_audit, _bdao);
     }
 }

@@ -12,20 +12,25 @@
 package ccc.services.ejb3.local;
 
 import static org.easymock.EasyMock.*;
+
+import java.util.Date;
+
 import junit.framework.TestCase;
+import ccc.actions.ClearWorkingCopyCommand;
+import ccc.actions.UpdateWorkingCopyCommand;
 import ccc.domain.LockMismatchException;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
 import ccc.domain.Resource;
+import ccc.domain.ResourceExistsException;
 import ccc.domain.Snapshot;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
-import ccc.services.ResourceDao;
-import ccc.services.WorkingCopyManager;
+import ccc.services.Dao;
 
 
 /**
- * TODO: Add Description for this type.
+ * Tests for working copy management.
  *
  * @author Civic Computing Ltd.
  */
@@ -38,19 +43,22 @@ public class WorkingCopyManagerTest
      * Test.
      * @throws LockMismatchException
      * @throws UnlockedException
+     * @throws ResourceExistsException
      */
     public void testClearWorkingCopy()
-    throws UnlockedException, LockMismatchException {
+    throws UnlockedException, LockMismatchException, ResourceExistsException {
 
         // ARRANGE
         final Page p = new Page("foo");
+        p.lock(_user);
         p.workingCopy(p.createSnapshot());
 
-        expect(_dao.findLocked(Resource.class, p.id(), _user)).andReturn(p);
+        expect(_dao.find(Resource.class, p.id())).andReturn(p);
         replayAll();
 
         // ACT
-        _wcm.clearWorkingCopy(_user, p.id());
+        new ClearWorkingCopyCommand(_dao, null).execute(
+            _user, _now, p.id());
 
         // ASSERT
         verifyAll();
@@ -62,20 +70,23 @@ public class WorkingCopyManagerTest
      * Test.
      * @throws LockMismatchException
      * @throws UnlockedException
+     * @throws ResourceExistsException
      */
     public void testUpdateWorkingCopy()
-    throws UnlockedException, LockMismatchException {
+    throws UnlockedException, LockMismatchException, ResourceExistsException {
 
         // ARRANGE
         final Page page = new Page("test");
+        page.lock(_user);
         page.addParagraph(Paragraph.fromText("abc", "def"));
         final Snapshot before = page.createSnapshot();
 
-        expect(_dao.findLocked(Resource.class, page.id(), _user)).andReturn(page);
+        expect(_dao.find(Resource.class, page.id())).andReturn(page);
         replayAll();
 
         // ACT
-        _wcm.updateWorkingCopy(_user, page.id(), before);
+        new UpdateWorkingCopyCommand(_dao, null).execute(
+            _user, _now, page.id(), before);
 
         // ASSERT
         verifyAll();
@@ -96,18 +107,16 @@ public class WorkingCopyManagerTest
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {
-        _dao = createStrictMock(ResourceDao.class);
-        _wcm = new WorkingCopyManager(_dao);
+        _dao = createStrictMock(Dao.class);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void tearDown() throws Exception {
         _dao = null;
-        _wcm = null;
     }
 
-    private ResourceDao _dao;
-    private WorkingCopyManager _wcm;
+    private Dao _dao;
     private final User _user = new User("currentUser");
+    private final Date _now = new Date();
 }

@@ -13,8 +13,8 @@ package ccc.actions;
 
 import java.util.Date;
 
-import ccc.domain.CCCException;
 import ccc.domain.LockMismatchException;
+import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Resource;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
@@ -22,7 +22,7 @@ import ccc.services.AuditLog;
 
 
 /**
- * TODO: Add Description for this type.
+ * Command: publish a resource.
  *
  * @author Civic Computing Ltd.
  */
@@ -42,22 +42,25 @@ public class PublishCommand
     }
 
     /** {@inheritDoc} */
-    @Override public Void execute(final Action a, final Date happenedOn) {
+    @Override public Void execute(final Action a, final Date happenedOn)
+                                                 throws RemoteExceptionSupport {
         final User publishedBy = a.actor();
         final Resource r = a.subject();
-        Void result;
-        try {
-            result = execute(happenedOn, publishedBy, r);
-        } catch (final UnlockedException e) {
-            throw new CCCException(e);
-        } catch (final LockMismatchException e) {
-            throw new CCCException(e);
-        }
 
-        return result;
+        execute(happenedOn, publishedBy, r);
+
+        return null;
     }
 
-    public Void execute(final Date happenedOn,
+    /**
+     * Publishes the resource by specified user.
+     *
+     * @param resourceId The id of the resource to update.
+     * @param userId The id of the publishing user.
+     * @param publishedOn The date the resource was published.
+     * @return The current version of resource.
+     */
+    public void execute(final Date happenedOn,
                         final User publishedBy,
                         final Resource r)
                                throws UnlockedException, LockMismatchException {
@@ -68,7 +71,6 @@ public class PublishCommand
         r.dateChanged(happenedOn);
 
         _audit.recordPublish(r, publishedBy, happenedOn);
-        return null;
     }
 
 }
