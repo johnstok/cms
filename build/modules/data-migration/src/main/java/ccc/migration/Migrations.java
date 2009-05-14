@@ -128,7 +128,7 @@ public class Migrations {
             _contentRoot.getId(), PredefinedResourceNames.FILES);
         _contentImagesFolder = _commands.createFolder(
             _contentRoot.getId(), PredefinedResourceNames.IMAGES);
-        _commands.createSearch(_filesFolder.getId(), "SiteSearch");
+        _commands.createSearch(_contentRoot.getId(), "search");
 
         // TODO: Remove. Should set 'publish' root via UI
         _commands.lock(_contentRoot.getId());
