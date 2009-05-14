@@ -15,6 +15,7 @@ package ccc.contentcreator.client;
 import ccc.contentcreator.client.ui.FCKEditor;
 
 import com.extjs.gxt.ui.client.widget.Text;
+import com.extjs.gxt.ui.client.widget.form.CheckBoxGroup;
 import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.Field;
 
@@ -34,6 +35,8 @@ public class PageElement {
     private DateField _dateField;
     private Field<String> _field;
 
+    private CheckBoxGroup _checkBoxGroup;
+    
     /**
      * Constructor.
      *
@@ -150,6 +153,26 @@ public class PageElement {
      */
     public void editorLabel(final Text editorLabel) {
         _editorLabel = editorLabel;
+    }
+
+    /**
+     * Mutator.
+     *
+     * @param checkBoxGroup The _checkBoxGroup to set.
+     */
+    public void checkBoxGroup(CheckBoxGroup checkBoxGroup) {
+
+        _checkBoxGroup = checkBoxGroup;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the _checkBoxGroup.
+     */
+    public CheckBoxGroup checkBoxGroup() {
+
+        return _checkBoxGroup;
     }
 
 }

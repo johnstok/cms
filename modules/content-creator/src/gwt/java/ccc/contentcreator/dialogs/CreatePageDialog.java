@@ -267,43 +267,7 @@ public class CreatePageDialog
                 final List<ParagraphDelta> paragraphs =
                     new ArrayList<ParagraphDelta>();
 
-                for (final PageElement c : definitions) {
-                    if ("TEXT".equals(c.type())) {
-                        final Field<String> f = c.field();
-                        final ParagraphDelta p =
-                            new ParagraphDelta(
-                                c.id(),
-                                TEXT,
-                                null,
-                                f.getValue(),
-                                null,
-                                null);
-                        paragraphs.add(p);
-                    } else if ("DATE".equals(c.type())) {
-                        final DateField f = c.dateField();
-                        final ParagraphDelta p =
-                            new ParagraphDelta(
-                                c.id(),
-                                DATE,
-                                f.getRawValue(),
-                                null,
-                                f.getValue(),
-                                null);
-                        paragraphs.add(p);
-                    } else if ("HTML".equals(c.type())) {
-                        final FCKEditor f = c.editor();
-                        final ParagraphDelta p =
-                            new ParagraphDelta(
-                                c.id(),
-                                TEXT,
-                                null,
-                                f.getHTML(),
-                                null,
-                                null);
-                        paragraphs.add(p);
-                    }
-                }
-
+                _second.extractValues(definitions, paragraphs);
 
                 Validate.callTo(createPage(paragraphs))
                     .check(Validations.notEmpty(_second.name()))

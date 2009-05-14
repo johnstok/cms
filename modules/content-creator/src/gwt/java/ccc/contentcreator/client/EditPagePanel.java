@@ -11,16 +11,24 @@
  */
 package ccc.contentcreator.client;
 
+import static ccc.services.api.ParagraphType.DATE;
+import static ccc.services.api.ParagraphType.TEXT;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.client.ui.FCKEditor;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ParagraphDelta;
 
+import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.Text;
+import com.extjs.gxt.ui.client.widget.form.CheckBox;
+import com.extjs.gxt.ui.client.widget.form.CheckBoxGroup;
 import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
@@ -60,21 +68,6 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         setHeaderVisible(false);
     }
 
-    private void drawStaticFields() {
-
-        _name = new TextField<String>();
-        _name.setFieldLabel(_constants.name());
-        _name.setAllowBlank(false);
-        _name.setId(_constants.name());
-        add(_name, new FormData("95%"));
-
-        _title = new TextField<String>();
-        _title.setFieldLabel(_constants.title());
-        _title.setAllowBlank(false);
-        _title.setId(_constants.title());
-        add(_title, new FormData("95%"));
-    }
-
     /**
      * Populates fields for editing.
      *
@@ -103,8 +96,100 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                         add(c.editorLabel());
                         add(fck, new FormData("95%"));
                         c.editor(fck);
+                    } else if ("CHECKBOX".equals(c.type())) {
+                        final CheckBoxGroup cbg = c.checkBoxGroup();
+                        String text = para.getTextValue();
+                        
+                        Map<String,String> valueMap = new HashMap<String, String>();
+                        
+                        String[] lines = text.split("\n");
+                        for (String line : lines) {
+                            if (line.trim().length() > 0) {
+                                String key = line.substring(0, line.indexOf("="));
+                                String value = line.substring(line.indexOf("=")+1);
+                                valueMap.put(key, value);
+                            }
+                        }
+                        
+                        List<CheckBox> boxes = cbg.getAll();
+                        for (CheckBox box : boxes) {
+                            if ("true".equals(valueMap.get(box.getId()))) {
+                                box.setValue(true);
+                            } else {
+                                box.setValue(false);
+                            }
+                        }
                     }
                 }
+            }
+        }
+    }
+    
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param definitions
+     * @param paragraphs
+     */
+    public void extractValues(final List<PageElement> definitions,
+                               final List<ParagraphDelta> paragraphs) {
+
+        for (final PageElement c : definitions) {
+            if ("TEXT".equals(c.type())) {
+                final Field<String> f = c.field();
+                final ParagraphDelta p =
+                    new ParagraphDelta(
+                        c.id(),
+                        TEXT,
+                        null,
+                        f.getValue(),
+                        null,
+                        null);
+                paragraphs.add(p);
+            } else if ("DATE".equals(c.type())) {
+                final DateField f = c.dateField();
+                final ParagraphDelta p =
+                    new ParagraphDelta(
+                        c.id(),
+                        DATE,
+                        f.getRawValue(),
+                        null,
+                        f.getValue(),
+                        null);
+                paragraphs.add(p);
+            } else if ("HTML".equals(c.type())) {
+                final FCKEditor f = c.editor();
+                final ParagraphDelta p =
+                    new ParagraphDelta(
+                        c.id(),
+                        TEXT,
+                        null,
+                        f.getHTML(),
+                        null,
+                        null);
+                paragraphs.add(p);
+            } else if ("CHECKBOX".equals(c.type())) {
+                final CheckBoxGroup cbg = c.checkBoxGroup();
+                StringBuilder sb = new StringBuilder();
+                for (CheckBox cb : cbg.getAll()) {
+                    if (sb.length() > 0) {
+                        sb.append("\n");
+                    }
+                    sb.append(cb.getId());
+                    sb.append("=");
+                    sb.append(cb.getValue().toString());
+                }
+                
+                final ParagraphDelta p =
+                    new ParagraphDelta(
+                        c.id(),
+                        TEXT,
+                        null,
+                        sb.toString(),
+                        null,
+                        null);
+                paragraphs.add(p);
             }
         }
     }
@@ -178,58 +263,154 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
             final String type = field.getAttribute("type");
             final String name = field.getAttribute("name");
             final String regexp = field.getAttribute("regexp");
-
+            
             if ("text_field".equals(type)) {
-                final TextField<String> tf = new TextField<String>();
-                tf.setData("type", "TEXT");
-                tf.setId(name);
-                tf.setFieldLabel(name);
-                if (regexp != null) {
-                    tf.setRegex(regexp);
-                }
-                add(tf, new FormData("95%"));
-                final PageElement pe = new PageElement(name);
-                pe.type("TEXT");
-                pe.field(tf);
-
-                _pageElements.add(pe);
-
+                addElementForTextField(name, regexp);
+                
             } else if ("text_area".equals(type)) {
-                final TextArea ta = new TextArea();
-                ta.setData("type", "TEXT");
-                ta.setId(name);
-                ta.setFieldLabel(name);
-                if (regexp != null) {
-                    ta.setRegex(regexp);
-                }
-                add(ta, new FormData("95%"));
-                final PageElement pe = new PageElement(name);
-                pe.type("TEXT");
-                pe.field(ta);
-                _pageElements.add(pe);
+                addElementForTextArea(name, regexp);
 
             } else if ("date".equals(type)) {
-                final DateField df = new DateField();
-                df.setFieldLabel(name);
-                df.setData("type", "DATE");
-                df.setId(name);
-
-                final PageElement pe = new PageElement(name);
-                pe.type("DATE");
-                pe.dateField(df);
-                add(df, new FormData("95%"));
-                _pageElements.add(pe);
+                addElementForDate(name);
+                
             } else if ("html".equals(type)) {
-                final Text fieldName = new Text(name);
-                add(fieldName);
-                final FCKEditor fck = new FCKEditor("", "250px");
-                final PageElement pe = new PageElement(name);
-                pe.type("HTML");
-                pe.editorLabel(fieldName);
-                pe.editor(fck);
-                add(fck, new FormData("95%"));
-                _pageElements.add(pe);
+                addElementForHtml(name);
+                
+            } else if ("checkbox".equals(type)) {
+                addElementForCheckbox(name, field);
             }
         }
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param name
+     * @param field
+     */
+    private void addElementForCheckbox(String name, Element field) {
+        final CheckBoxGroup cbg =  new  CheckBoxGroup();
+        cbg.setFieldLabel(name);
+        cbg.setData("type", "CHECKBOX");
+        cbg.setId(name);
+        cbg.setOrientation(Orientation.VERTICAL);
+        
+        NodeList nl = field.getElementsByTagName("option");
+        for (int i=0; i<nl.getLength(); i++) {
+            final Element option = ((Element) nl.item(i));
+            final String def  = option.getAttribute("default");
+            final String title = option.getAttribute("title");
+            final String value = option.getAttribute("value");
+            
+            CheckBox cb = new CheckBox();
+            cb.setBoxLabel(title);
+            cb.setId(value);
+            cb.setValue("true".equals(def));
+            
+            cbg.add(cb);
+        }
+        add(cbg, new FormData("95%"));
+        
+        final PageElement pe = new PageElement(name);
+        pe.type("CHECKBOX");
+        pe.checkBoxGroup(cbg);
+        _pageElements.add(pe);
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param name
+     */
+    private void addElementForHtml(final String name) {
+
+        final Text fieldName = new Text(name);
+        add(fieldName);
+        final FCKEditor fck = new FCKEditor("", "250px");
+        final PageElement pe = new PageElement(name);
+        pe.type("HTML");
+        pe.editorLabel(fieldName);
+        pe.editor(fck);
+        add(fck, new FormData("95%"));
+        _pageElements.add(pe);
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param name
+     */
+    private void addElementForDate(final String name) {
+
+        final DateField df = new DateField();
+        df.setFieldLabel(name);
+        df.setData("type", "DATE");
+        df.setId(name);
+
+        final PageElement pe = new PageElement(name);
+        pe.type("DATE");
+        pe.dateField(df);
+        add(df, new FormData("95%"));
+        _pageElements.add(pe);
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param name
+     * @param regexp
+     */
+    private void addElementForTextArea(final String name, final String regexp) {
+
+        final TextArea ta = new TextArea();
+        ta.setData("type", "TEXT");
+        ta.setId(name);
+        ta.setFieldLabel(name);
+        if (regexp != null) {
+            ta.setRegex(regexp);
+        }
+        add(ta, new FormData("95%"));
+        final PageElement pe = new PageElement(name);
+        pe.type("TEXT");
+        pe.field(ta);
+        _pageElements.add(pe);
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param name
+     * @param regexp
+     */
+    private void addElementForTextField(final String name, final String regexp) {
+
+        final TextField<String> tf = new TextField<String>();
+        tf.setData("type", "TEXT");
+        tf.setId(name);
+        tf.setFieldLabel(name);
+        if (regexp != null) {
+            tf.setRegex(regexp);
+        }
+        add(tf, new FormData("95%"));
+        final PageElement pe = new PageElement(name);
+        pe.type("TEXT");
+        pe.field(tf);
+
+        _pageElements.add(pe);
+    }
+    
+    private void drawStaticFields() {
+
+        _name = new TextField<String>();
+        _name.setFieldLabel(_constants.name());
+        _name.setAllowBlank(false);
+        _name.setId(_constants.name());
+        add(_name, new FormData("95%"));
+
+        _title = new TextField<String>();
+        _title.setFieldLabel(_constants.title());
+        _title.setAllowBlank(false);
+        _title.setId(_constants.title());
+        add(_title, new FormData("95%"));
     }
 }
