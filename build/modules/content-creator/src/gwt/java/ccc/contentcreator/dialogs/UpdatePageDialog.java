@@ -205,16 +205,6 @@ public class UpdatePageDialog
     protected PageDelta page() {
         return _page;
     }
-//
-//
-//    /**
-//     * Mutator.
-//     *
-//     * @param page The _page to set.
-//     */
-//    protected void page(final PageDelta page) {
-//        _page = page;
-//    }
 
 
     /**
@@ -243,42 +233,8 @@ public class UpdatePageDialog
 
         final List<PageElement> definitions =
             panel().pageElements();
-        for (final PageElement c : definitions) {
-            if ("TEXT".equals(c.type())) {
-                final Field<String> f = c.field();
-                final ParagraphDelta p =
-                    new ParagraphDelta(
-                        c.id(),
-                        TEXT,
-                        null,
-                        f.getValue(),
-                        null,
-                        null);
-                paragraphs.add(p);
-            } else if ("DATE".equals(c.type())) {
-                final DateField f = c.dateField();
-                final ParagraphDelta p =
-                    new ParagraphDelta(
-                        c.id(),
-                        DATE,
-                        f.getRawValue(),
-                        null,
-                        f.getValue(),
-                        null);
-                paragraphs.add(p);
-            } else if ("HTML".equals(c.type())) {
-                final FCKEditor f = c.editor();
-                final ParagraphDelta p =
-                    new ParagraphDelta(
-                        c.id(),
-                        TEXT,
-                        null,
-                        f.getHTML(),
-                        null,
-                        null);
-                paragraphs.add(p);
-            }
-        }
+        
+        _panel.extractValues(definitions, paragraphs);
         _page.setParagraphs(paragraphs);
         return paragraphs;
     }
