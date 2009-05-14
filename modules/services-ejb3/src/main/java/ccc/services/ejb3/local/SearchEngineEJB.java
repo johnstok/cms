@@ -23,6 +23,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBContext;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -75,6 +76,7 @@ import ccc.services.api.ParagraphType;
 @TransactionAttribute(REQUIRED)
 @Remote(Scheduler.class)
 @Local(SearchEngine.class)
+@RolesAllowed({"ADMINISTRATOR"})
 public class SearchEngineEJB  implements SearchEngine, Scheduler {
     private static final int TIMEOUT_DELAY_SECS = 60*60*1000;
     private static final int INITIAL_DELAY_SECS = 1;

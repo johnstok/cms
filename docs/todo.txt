@@ -1,18 +1,15 @@
 *underway*
-Factor DAOs into Command classes.
-Fold password into user, use jBoss security mgr?
+Transactions
+ File upload servlets don't rollback txns!!!
 
 
 !!!
-Transactions
- File upload servlets don't rollback txns!!!
- Still not right for scheduler - could commit changes accidentally... @transaction=requiresnew
-Security
- Add annotations to Queries/Commands
+Fold password into user, use jBoss security mgr?
 Working copies
  Should be using deltas
  FileDelta should return working copy if set...
- Review working copy stuff - borked.Make sure all commands are logged.
+ Review working copy stuff - borked.
+ Make sure all commands are logged.
 
 
 !!

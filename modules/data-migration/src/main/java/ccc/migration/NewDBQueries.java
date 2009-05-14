@@ -61,6 +61,14 @@ public class NewDBQueries {
                 "INSERT INTO user_roles (user_id, role) VALUES (?, 'ADMINISTRATOR')");
             ps.setString(1, uid.toString());
             ps.executeUpdate();
+            ps = _connection.prepareStatement(
+                "INSERT INTO user_roles (user_id, role) VALUES (?, 'CONTENT_CREATOR')");
+            ps.setString(1, uid.toString());
+            ps.executeUpdate();
+            ps = _connection.prepareStatement(
+                "INSERT INTO user_roles (user_id, role) VALUES (?, 'SITE_BUILDER')");
+            ps.setString(1, uid.toString());
+            ps.executeUpdate();
 
             // insert password
             ps = _connection.prepareStatement(

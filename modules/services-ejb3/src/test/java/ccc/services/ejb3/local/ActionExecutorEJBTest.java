@@ -66,7 +66,7 @@ public class ActionExecutorEJBTest
         verify(_em);
         assertEquals(ActionStatus.Failed, a.status());
         assertEquals(
-            "Resource "+p.id()+" is Unlocked.",
+            null,
             a.failure().getString("message"));
     }
 

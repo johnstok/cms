@@ -105,9 +105,9 @@ import ccc.services.api.UserSummary;
  * @author Civic Computing Ltd.
  */
 @Stateless(name=Commands.NAME)
-@TransactionAttribute(REQUIRED)
+@TransactionAttribute(REQUIRES_NEW)
 @Remote(Commands.class)
-@RolesAllowed({"ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"})
+@RolesAllowed({}) // "ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"
 public class CommandsEJB
     extends
         ModelTranslation
@@ -125,6 +125,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
     public ResourceSummary createAlias(final ID parentId,
                                        final String name,
                                        final ID targetId)
@@ -143,9 +144,9 @@ public class CommandsEJB
         }
     }
 
-    /** {@inheritDoc}
-     * @throws CCCRemoteException */
+    /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
     public ResourceSummary createFolder(final ID parentId,
                                         final String name)
                                                      throws CCCRemoteException {
@@ -153,9 +154,9 @@ public class CommandsEJB
 
     }
 
-    /** {@inheritDoc}
-     * @throws CCCRemoteException */
+    /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
     public ResourceSummary createFolder(final ID parentId,
                                         final String name,
                                         final String title)
@@ -170,9 +171,9 @@ public class CommandsEJB
         }
     }
 
-    /** {@inheritDoc}
-     * @throws CCCRemoteException */
+    /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
     public ResourceSummary createPage(final ID parentId,
                                       final PageDelta delta,
                                       final String name,
@@ -195,9 +196,9 @@ public class CommandsEJB
         }
     }
 
-    /** {@inheritDoc}
-     * @throws CCCRemoteException */
+    /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
     public ResourceSummary createTemplate(final ID parentId,
                                           final TemplateDelta delta,
                                           final String name)
@@ -219,6 +220,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"ADMINISTRATOR"})
     public UserSummary createUser(final UserDelta delta,
                                   final String password) {
         return mapUser(
@@ -226,9 +228,9 @@ public class CommandsEJB
                 loggedInUser(), new Date(), delta, password));
     }
 
-    /** {@inheritDoc}
-     * @throws CCCRemoteException */
+    /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
     public void lock(final ID resourceId) throws CCCRemoteException {
         try {
             new LockResourceCommand(_bdao, _audit).execute(
@@ -239,9 +241,9 @@ public class CommandsEJB
         }
     }
 
-    /** {@inheritDoc}
-     * @throws CCCRemoteException */
+    /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
     public void move(final ID resourceId,
                      final ID newParentId) throws CCCRemoteException {
         try {
@@ -256,9 +258,9 @@ public class CommandsEJB
         }
     }
 
-    /** {@inheritDoc}
-     * @throws CCCRemoteException */
+    /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
     public void publish(final ID resourceId) throws CCCRemoteException {
         try {
             new PublishCommand(_audit).execute(
@@ -271,9 +273,9 @@ public class CommandsEJB
         }
     }
 
-    /** {@inheritDoc}
-     * @throws CCCRemoteException */
+    /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
     public void publish(final ID resourceId,
                         final ID userId,
                         final Date date) throws CCCRemoteException {
@@ -288,9 +290,9 @@ public class CommandsEJB
         }
     }
 
-    /** {@inheritDoc}
-     * @throws CCCRemoteException */
+    /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
     public void rename(final ID resourceId,
                        final String name) throws CCCRemoteException {
             try {
@@ -302,9 +304,9 @@ public class CommandsEJB
             }
     }
 
-    /** {@inheritDoc}
-     * @throws CCCRemoteException */
+    /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
     public void unlock(final ID resourceId) throws CCCRemoteException {
         try {
             new UnlockResourceCommand(_bdao, _audit).execute(
@@ -315,9 +317,9 @@ public class CommandsEJB
         }
     }
 
-    /** {@inheritDoc}
-     * @throws CCCRemoteException */
+    /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
     public void unpublish(final ID resourceId) throws CCCRemoteException {
         try {
             new UnpublishResourceCommand(_bdao, _audit).execute(
@@ -328,9 +330,9 @@ public class CommandsEJB
         }
     }
 
-    /** {@inheritDoc}
-     * @throws CCCRemoteException */
+    /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
     public void updateAlias(final ID aliasId,
                             final AliasDelta delta) throws CCCRemoteException {
         try {
@@ -345,9 +347,9 @@ public class CommandsEJB
         }
     }
 
-    /** {@inheritDoc}
-     * @throws CCCRemoteException */
+    /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
     public void updatePage(final ID pageId,
                            final PageDelta delta,
                            final String comment,
@@ -367,9 +369,9 @@ public class CommandsEJB
         }
     }
 
-    /** {@inheritDoc}
-     * @throws CCCRemoteException */
+    /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
     public void updateWorkingCopy(final ID pageId,
                                   final PageDelta delta)
                                                      throws CCCRemoteException {
@@ -391,9 +393,9 @@ public class CommandsEJB
         }
     }
 
-    /** {@inheritDoc}
-     * @throws CCCRemoteException */
+    /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
     public void createWorkingCopy(final ID resourceId,
                                   final long index) throws CCCRemoteException {
         try {
@@ -415,9 +417,9 @@ public class CommandsEJB
         }
     }
 
-    /** {@inheritDoc}
-     * @throws CCCRemoteException */
+    /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
     public void updateResourceTemplate(final ID resourceId,
                                        final ID templateId)
                                                      throws CCCRemoteException {
@@ -433,9 +435,9 @@ public class CommandsEJB
         }
     }
 
-    /** {@inheritDoc}
-     * @throws CCCRemoteException */
+    /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
     public void updateTags(final ID resourceId,
                            final String tags) throws CCCRemoteException {
         try {
@@ -448,9 +450,9 @@ public class CommandsEJB
 
     }
 
-    /** {@inheritDoc}
-     * @throws CCCRemoteException */
+    /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
     public void updateTemplate(final ID templateId,
                                final TemplateDelta delta)
                                                      throws CCCRemoteException {
@@ -465,6 +467,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"ADMINISTRATOR"})
     public void updateUser(final ID userId, final UserDelta delta) {
         new UpdateUserCommand(_bdao, _audit).execute(
             loggedInUser(), new Date(), toUUID(userId), delta);
@@ -472,6 +475,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"ADMINISTRATOR"})
     public ResourceSummary createRoot(final String name)
                                                      throws CCCRemoteException {
         try {
@@ -484,9 +488,9 @@ public class CommandsEJB
         }
     }
 
-    /** {@inheritDoc}
-     * @throws CCCRemoteException */
+    /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
     public void includeInMainMenu(final ID resourceId,
                                   final boolean include)
                                                      throws CCCRemoteException {
@@ -501,6 +505,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
     public List<String> validateFields(final List<ParagraphDelta> delta,
                                        final String definition) {
         final Set<Paragraph> pList = new HashSet<Paragraph>();
@@ -525,9 +530,9 @@ public class CommandsEJB
         return new PageHelper().validateFields(pList, definition);
     }
 
-    /** {@inheritDoc}
-     * @throws CCCRemoteException */
+    /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
     public void updateMetadata(final ID resourceId,
                                final Map<String, String> metadata)
                                                      throws CCCRemoteException {
@@ -540,9 +545,9 @@ public class CommandsEJB
         }
     }
 
-    /** {@inheritDoc}
-     * @throws CCCRemoteException */
+    /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
     public void updateFolderSortOrder(final ID folderId,
                                       final String sortOrder)
                                                      throws CCCRemoteException {
@@ -558,9 +563,9 @@ public class CommandsEJB
         }
     }
 
-    /** {@inheritDoc}
-     * @throws CCCRemoteException */
+    /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
     public void clearWorkingCopy(final ID resourceId)
                                                      throws CCCRemoteException {
         try {
@@ -572,9 +577,9 @@ public class CommandsEJB
         }
     }
 
-    /** {@inheritDoc}
-     * @throws CCCRemoteException */
+    /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"ADMINISTRATOR"})
     public ResourceSummary createSearch(final ID parentId,
                                         final String title)
                                                      throws CCCRemoteException {
@@ -591,12 +596,14 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
     public void cancelAction(final ID actionId) {
         new CancelActionCommand(_bdao).execute(toUUID(actionId));
     }
 
     /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
     public void createAction(final ID resourceId,
                              final ActionType action,
                              final Date executeAfter,
@@ -616,9 +623,9 @@ public class CommandsEJB
       new ScheduleActionCommand(_bdao).execute(a);
     }
 
-    /** {@inheritDoc}
-     * @throws CCCRemoteException */
+    /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
     public void reorder(final ID folderId,
                         final List<String> order) // FIXME: Should be List<ID>
                                                      throws CCCRemoteException {
@@ -636,9 +643,9 @@ public class CommandsEJB
         }
     }
 
-    /** {@inheritDoc}
-     * @throws CCCRemoteException */
+    /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
     public void changeRoles(final ID resourceId,
                             final Collection<String> roles)
                                                      throws CCCRemoteException {
@@ -651,9 +658,9 @@ public class CommandsEJB
         }
     }
 
-    /** {@inheritDoc}
-     * @throws CCCRemoteException */
+    /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
     public void applyWorkingCopyToFile(final ID fileId)
                                                      throws CCCRemoteException {
         try {
@@ -665,9 +672,9 @@ public class CommandsEJB
         }
     }
 
-    /** {@inheritDoc}
-     * @throws CCCRemoteException */
+    /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"SITE_BUILDER"})
     public void updateCacheDuration(final ID resourceId,
                                     final Duration duration)
                                                      throws CCCRemoteException {
@@ -682,11 +689,16 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"ADMINISTRATOR"})
     public void updateUserPassword(final ID userId, final String password) {
         new UpdatePasswordAction(_bdao, _audit).execute(
             loggedInUser(), new Date(), toUUID(userId), password);
     }
 
+
+    /* ==============
+     * Helper methods
+     * ============== */
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
         _bdao = new BaseDao(_em);

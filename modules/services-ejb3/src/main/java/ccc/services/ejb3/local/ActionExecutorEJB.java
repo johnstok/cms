@@ -16,6 +16,9 @@ import static javax.ejb.TransactionAttributeType.*;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.security.RolesAllowed;
+import javax.annotation.security.RunAs;
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -25,7 +28,6 @@ import javax.persistence.PersistenceContext;
 import org.apache.log4j.Logger;
 
 import ccc.commands.ApplyWorkingCopyCommand;
-import ccc.commands.PublishCommand;
 import ccc.commands.UnpublishResourceCommand;
 import ccc.domain.Action;
 import ccc.domain.CCCException;
@@ -35,6 +37,9 @@ import ccc.persistence.jpa.BaseDao;
 import ccc.services.ActionExecutor;
 import ccc.services.AuditLog;
 import ccc.services.AuditLogEJB;
+import ccc.services.api.CCCRemoteException;
+import ccc.services.api.Commands;
+import ccc.services.api.ID;
 import ccc.services.api.ResourceType;
 
 
@@ -46,11 +51,14 @@ import ccc.services.api.ResourceType;
 @Stateless(name=ActionExecutor.NAME)
 @TransactionAttribute(REQUIRED)
 @Local(ActionExecutor.class)
+@RunAs("CONTENT_CREATOR")
+@RolesAllowed({"ADMINISTRATOR"})
 public class ActionExecutorEJB implements ActionExecutor {
     private static final Logger LOG =
         Logger.getLogger(ActionExecutorEJB.class.getName());
 
     @PersistenceContext private EntityManager _em;
+    @EJB(name=Commands.NAME) private transient Commands _commands;
 
     private BaseDao _bdao;
     private AuditLog _audit;
@@ -98,6 +106,8 @@ public class ActionExecutorEJB implements ActionExecutor {
             fail(action, e);
         } catch (final RemoteExceptionSupport e) {
             fail(action, e);
+        } catch (final CCCRemoteException e) {
+            fail(action, e);
         }
     }
 
@@ -126,9 +136,11 @@ public class ActionExecutorEJB implements ActionExecutor {
     }
 
 
-    private void executePublish(final Action action)
-                                                 throws RemoteExceptionSupport {
-        new PublishCommand(_audit).execute(action, new Date());
+    private void executePublish(final Action action) throws CCCRemoteException {
+        _commands.publish(
+            new ID(action.subject().id().toString()),
+            new ID(action.actor().id().toString()),
+            new Date());
     }
 
 
