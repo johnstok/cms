@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.UUID;
 
 import junit.framework.TestCase;
-import ccc.actions.ReorderFolderContentsCommand;
-import ccc.actions.UpdateFolderCommand;
+import ccc.commands.ReorderFolderContentsCommand;
+import ccc.commands.UpdateFolderCommand;
 import ccc.domain.Folder;
 import ccc.domain.LockMismatchException;
 import ccc.domain.Page;

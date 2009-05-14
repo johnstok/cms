@@ -16,8 +16,8 @@ import static org.easymock.EasyMock.*;
 import java.util.Date;
 
 import junit.framework.TestCase;
-import ccc.actions.ClearWorkingCopyCommand;
-import ccc.actions.UpdateWorkingCopyCommand;
+import ccc.commands.ClearWorkingCopyCommand;
+import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.LockMismatchException;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;
