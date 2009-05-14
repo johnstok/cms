@@ -68,7 +68,7 @@ public class CCCLoginModule implements LoginModule {
 
     /** {@inheritDoc} */
     @Override
-    public boolean abort() throws LoginException {
+    public boolean abort() {
         _cbHandler = null;
         _subject = null;
         _roles = null;
@@ -81,7 +81,7 @@ public class CCCLoginModule implements LoginModule {
 
     /** {@inheritDoc} */
     @Override
-    public boolean commit() throws LoginException {
+    public boolean commit() {
         _subject.getPrincipals().add(_callerPrincipal);
         _subject.getPrincipals().add(_roleGroup);
         return true;
@@ -139,7 +139,7 @@ public class CCCLoginModule implements LoginModule {
 
     /** {@inheritDoc} */
     @Override
-    public boolean logout() throws LoginException {
+    public boolean logout() {
         _subject.getPrincipals().remove(_roleGroup);
         _subject.getPrincipals().remove(_callerPrincipal);
         return true;

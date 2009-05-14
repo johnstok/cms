@@ -48,6 +48,7 @@ public class CCCLoginModuleTest
      * @throws LoginException
      * @throws SQLException
      */
+    @SuppressWarnings("unchecked")
     public void testLogin() throws LoginException, SQLException {
 
         // ARRANGE
@@ -87,6 +88,7 @@ public class CCCLoginModuleTest
     /**
      * Test.
      */
+    @SuppressWarnings("unchecked")
     public void testCreateCallerPrincipal() {
 
         // ARRANGE
@@ -107,7 +109,7 @@ public class CCCLoginModuleTest
      * Test.
      * @throws LoginException If abort fails.
      */
-    public void testAbort() throws LoginException {
+    public void testAbort() {
 
         // ARRANGE
 
@@ -130,6 +132,7 @@ public class CCCLoginModuleTest
      * @throws LoginException If login fails.
      * @throws SQLException From the database.
      */
+    @SuppressWarnings("unchecked")
     public void testLoginRejectsAnonymousUsers()
                                            throws LoginException, SQLException {
 
@@ -180,13 +183,13 @@ public class CCCLoginModuleTest
     private CCCLoginModule _lm;
 
     /** {@inheritDoc} */
-    @Override protected void setUp() throws Exception {
+    @Override protected void setUp() {
         _db = createStrictMock(Database.class);
         _lm = new CCCLoginModule(_db);
     }
 
     /** {@inheritDoc} */
-    @Override protected void tearDown() throws Exception {
+    @Override protected void tearDown() {
         _db = null;
         _lm = null;
     }

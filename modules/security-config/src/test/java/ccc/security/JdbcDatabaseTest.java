@@ -72,11 +72,11 @@ public class JdbcDatabaseTest
             .andReturn(_s);
         _s.setString(1, u.username());
         expect(_s.executeQuery()).andReturn(_rs);
-        expect(_rs.next()).andReturn(Boolean.TRUE);
+        expect(Boolean.valueOf(_rs.next())).andReturn(Boolean.TRUE);
         expect(_rs.getString(1)).andReturn(u.id().toString());
         expect(_rs.getBytes(2)).andReturn(new byte[]{0});
         expect(_rs.getString(3)).andReturn(UUID.randomUUID().toString());
-        expect(_rs.next()).andReturn(Boolean.FALSE);
+        expect(Boolean.valueOf(_rs.next())).andReturn(Boolean.FALSE);
         _rs.close();
         _s.close();
         _c.close();
@@ -109,7 +109,7 @@ public class JdbcDatabaseTest
         .andReturn(_s);
         _s.setString(1, u.username());
         expect(_s.executeQuery()).andReturn(_rs);
-        expect(_rs.next()).andReturn(Boolean.FALSE);
+        expect(Boolean.valueOf(_rs.next())).andReturn(Boolean.FALSE);
         _rs.close();
         _s.close();
         _c.close();
@@ -138,11 +138,11 @@ public class JdbcDatabaseTest
         .andReturn(_s);
         _s.setString(1, u.username());
         expect(_s.executeQuery()).andReturn(_rs);
-        expect(_rs.next()).andReturn(Boolean.TRUE);
+        expect(Boolean.valueOf(_rs.next())).andReturn(Boolean.TRUE);
         expect(_rs.getString(1)).andReturn(u.id().toString());
         expect(_rs.getBytes(2)).andReturn(new byte[]{0});
         expect(_rs.getString(3)).andReturn(UUID.randomUUID().toString());
-        expect(_rs.next()).andReturn(Boolean.TRUE);
+        expect(Boolean.valueOf(_rs.next())).andReturn(Boolean.TRUE);
         _rs.close();
         _s.close();
         _c.close();
@@ -180,11 +180,11 @@ public class JdbcDatabaseTest
             .andReturn(_s);
         _s.setString(1, u.id().toString());
         expect(_s.executeQuery()).andReturn(_rs);
-        expect(_rs.next()).andReturn(Boolean.TRUE);
+        expect(Boolean.valueOf(_rs.next())).andReturn(Boolean.TRUE);
         expect(_rs.getString(1)).andReturn(CreatorRoles.ADMINISTRATOR);
-        expect(_rs.next()).andReturn(Boolean.TRUE);
+        expect(Boolean.valueOf(_rs.next())).andReturn(Boolean.TRUE);
         expect(_rs.getString(1)).andReturn(CreatorRoles.CONTENT_CREATOR);
-        expect(_rs.next()).andReturn(Boolean.FALSE);
+        expect(Boolean.valueOf(_rs.next())).andReturn(Boolean.FALSE);
         _rs.close();
         _s.close();
         _c.close();
@@ -222,7 +222,7 @@ public class JdbcDatabaseTest
     private CallbackHandler _cbHandler;
 
     /** {@inheritDoc} */
-    @Override protected void setUp() throws Exception {
+    @Override protected void setUp() {
         _r = new MapRegistry();
         _ds = createStrictMock(DataSource.class);
         _c = createStrictMock(Connection.class);
@@ -239,7 +239,7 @@ public class JdbcDatabaseTest
     }
 
     /** {@inheritDoc} */
-    @Override protected void tearDown() throws Exception {
+    @Override protected void tearDown() {
         _r = null;
         _ds = null;
         _c = null;
