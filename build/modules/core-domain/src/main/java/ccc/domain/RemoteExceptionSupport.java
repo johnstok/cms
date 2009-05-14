@@ -13,8 +13,7 @@ package ccc.domain;
 
 import java.util.UUID;
 
-import ccc.services.api.ActionType;
-import ccc.services.api.CCCRemoteException;
+import ccc.services.api.CommandFailedException;
 
 
 /**
@@ -64,11 +63,9 @@ public abstract class RemoteExceptionSupport extends Exception {
     /**
      * Convert a local exception to a remote exception.
      *
-     * @param action The action being performed when this exception was raised.
      * @return The corresponding remote exception.
      */
-    public abstract CCCRemoteException toRemoteException(
-                                                       final ActionType action);
+    public abstract CommandFailedException toRemoteException();
 
     /**
      * Accessor for this exception's unique identifier.

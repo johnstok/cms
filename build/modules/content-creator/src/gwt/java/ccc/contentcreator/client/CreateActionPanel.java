@@ -13,7 +13,7 @@
 package ccc.contentcreator.client;
 
 import ccc.contentcreator.api.UIConstants;
-import ccc.services.api.ActionType;
+import ccc.services.api.CommandType;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
@@ -72,7 +72,7 @@ public class CreateActionPanel
                     final DataList l = (DataList) ce.component;
                     _parameters.removeAll();
 
-                    switch (l.getSelectedItem().<ActionType>getData("action-id")) {
+                    switch (l.getSelectedItem().<CommandType>getData("action-id")) {
                         case RESOURCE_PUBLISH:
                             _pPanel = new EmptyPanel(
                                 _uiConstants.publish(),
@@ -101,16 +101,16 @@ public class CreateActionPanel
             }
         );
         final DataListItem publish = new DataListItem(_uiConstants.publish());
-        publish.setData("action-id", ActionType.RESOURCE_PUBLISH);
+        publish.setData("action-id", CommandType.RESOURCE_PUBLISH);
         _list.add(publish);
 
         final DataListItem unpublish =
             new DataListItem(_uiConstants.unpublish());
-        unpublish.setData("action-id", ActionType.RESOURCE_UNPUBLISH);
+        unpublish.setData("action-id", CommandType.RESOURCE_UNPUBLISH);
         _list.add(unpublish);
 
         final DataListItem update = new DataListItem(_uiConstants.updateContent());
-        update.setData("action-id", ActionType.PAGE_UPDATE);
+        update.setData("action-id", CommandType.PAGE_UPDATE);
         _list.add(update);
 
 
@@ -130,12 +130,12 @@ public class CreateActionPanel
      *
      * @return The type of action to execute, as a string.
      */
-    public ActionType actionType() {
+    public CommandType commandType() {
         final DataListItem item = _list.getSelectedItem();
         if (null==item) {
             return null;
         }
-        return item.<ActionType>getData("action-id");
+        return item.<CommandType>getData("action-id");
     }
 
     public boolean isMajorEdit() {

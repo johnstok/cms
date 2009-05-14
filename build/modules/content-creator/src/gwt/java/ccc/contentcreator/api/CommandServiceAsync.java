@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import ccc.services.api.ActionType;
+import ccc.services.api.CommandType;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.Duration;
 import ccc.services.api.ID;
@@ -122,7 +122,7 @@ public interface CommandServiceAsync {
                       AsyncCallback<Void> callback);
 
     void createAction(ID resourceId,
-                      ActionType action,
+                      CommandType action,
                       Date executeAfter,
                       String parameters,
                       String comment,

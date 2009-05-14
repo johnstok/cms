@@ -27,17 +27,12 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
 
-import ccc.commands.ApplyWorkingCopyCommand;
-import ccc.commands.UnpublishResourceCommand;
 import ccc.domain.Action;
 import ccc.domain.CCCException;
-import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Resource;
 import ccc.persistence.jpa.BaseDao;
 import ccc.services.ActionExecutor;
-import ccc.services.AuditLog;
-import ccc.services.AuditLogEJB;
-import ccc.services.api.CCCRemoteException;
+import ccc.services.api.CommandFailedException;
 import ccc.services.api.Commands;
 import ccc.services.api.ID;
 import ccc.services.api.ResourceType;
@@ -61,7 +56,6 @@ public class ActionExecutorEJB implements ActionExecutor {
     @EJB(name=Commands.NAME) private transient Commands _commands;
 
     private BaseDao _bdao;
-    private AuditLog _audit;
 
     /** Constructor. */
     public ActionExecutorEJB() { super(); }
@@ -71,9 +65,11 @@ public class ActionExecutorEJB implements ActionExecutor {
      * Constructor.
      *
      * @param em The entityManager for this action executor.
+     * @param commands The commands implementation.
      */
-    public ActionExecutorEJB(final EntityManager em) {
+    public ActionExecutorEJB(final EntityManager em, final Commands commands) {
         _em = em;
+        _commands = commands;
     }
 
 
@@ -101,33 +97,33 @@ public class ActionExecutorEJB implements ActionExecutor {
 
             }
             action.complete();
+            LOG.info("Completed action: "+action.id());
 
-        } catch (final RuntimeException e) {
-            fail(action, e);
-        } catch (final RemoteExceptionSupport e) {
-            fail(action, e);
-        } catch (final CCCRemoteException e) {
+        } catch (final CommandFailedException e) {
             fail(action, e);
         }
     }
 
 
-    private void fail(final Action action, final Exception e) {
-        LOG.warn("Failing action.", e);
+    private void fail(final Action action, final CommandFailedException e) {
         action.fail(e);
+        LOG.info(
+            "Failed action: "+action.id()
+            +" [CommandFailedException was "
+            +e.getFailure().getExceptionId()+"]");
     }
 
 
     private void executeUpdate(final Action action)
-                                                 throws RemoteExceptionSupport {
+                                                 throws CommandFailedException {
         final Resource r = action.subject();
         if (ResourceType.PAGE.equals(r.type())) {
-            new ApplyWorkingCopyCommand(_bdao, _audit).execute(
-                action.actor(),
-                new Date(),
-                r.id(),
-                action.getComment(),
-                action.isMajorEdit());
+//            new ApplyWorkingCopyCommand(_bdao, _audit).execute(
+//                action.actor(),
+//                new Date(),
+//                r.id(),
+//                action.getComment(),
+//                action.isMajorEdit());
 
         } else {
             throw new CCCException(
@@ -136,7 +132,8 @@ public class ActionExecutorEJB implements ActionExecutor {
     }
 
 
-    private void executePublish(final Action action) throws CCCRemoteException {
+    private void executePublish(final Action action)
+                                                 throws CommandFailedException {
         _commands.publish(
             new ID(action.subject().id().toString()),
             new ID(action.actor().id().toString()),
@@ -145,11 +142,11 @@ public class ActionExecutorEJB implements ActionExecutor {
 
 
     private void executeUnpublish(final Action action)
-                                                 throws RemoteExceptionSupport {
-        new UnpublishResourceCommand(_bdao, _audit).execute(
-            action.actor(),
-            new Date(),
-            action.subject().id());
+                                                 throws CommandFailedException {
+//        _commands.unpublish(
+//            new ID(action.subject().id().toString()),
+//            new ID(action.actor().id().toString()),
+//            new Date());
     }
 
 
@@ -160,6 +157,5 @@ public class ActionExecutorEJB implements ActionExecutor {
     @PostConstruct
     void configureCoreData() {
         _bdao = new BaseDao(_em);
-        _audit = new AuditLogEJB(_bdao);
     }
 }

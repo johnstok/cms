@@ -16,7 +16,7 @@ import static ccc.commons.DBC.*;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.services.api.ActionType;
+import ccc.services.api.CommandType;
 
 
 /**
@@ -31,7 +31,7 @@ public class LogEntry extends Entity {
     private Date         _recordedOn;  // Only available once persisted
 
     private User         _actor;
-    private ActionType   _action;
+    private CommandType   _action;
     private Date         _happenedOn;
     private UUID         _subjectId;
     private String       _comment = "";
@@ -55,7 +55,7 @@ public class LogEntry extends Entity {
                                      final Date happenedOn) {
 
         final LogEntry le = createEntry(resource, actor, happenedOn);
-        le._action = ActionType.RESOURCE_RENAME;
+        le._action = CommandType.RESOURCE_RENAME;
         final Snapshot ss = new Snapshot();
         ss.set("name", resource.name().toString());
         le._detail = ss.getDetail();
@@ -77,7 +77,7 @@ public class LogEntry extends Entity {
                                    final Date happenedOn) {
 
         final LogEntry le = createEntry(resource, actor, happenedOn);
-        le._action = ActionType.RESOURCE_MOVE;
+        le._action = CommandType.RESOURCE_MOVE;
         final Snapshot ss = new Snapshot();
         ss.set("path", resource.absolutePath().toString());
         le._detail = ss.getDetail();
@@ -98,7 +98,7 @@ public class LogEntry extends Entity {
                                      final Date happenedOn) {
 
         final LogEntry le = createEntry(resource, actor, happenedOn);
-        le._action = ActionType.RESOURCE_UNLOCK;
+        le._action = CommandType.RESOURCE_UNLOCK;
         final Snapshot ss = new Snapshot();
         ss.set("unlock", actor.id().toString());
         le._detail = ss.getDetail();
@@ -119,7 +119,7 @@ public class LogEntry extends Entity {
                                    final Date happenedOn) {
 
         final LogEntry le = createEntry(resource, actor, happenedOn);
-        le._action = ActionType.RESOURCE_LOCK;
+        le._action = CommandType.RESOURCE_LOCK;
         final Snapshot ss = new Snapshot();
         ss.set("lock", actor.id().toString());
         le._detail = ss.getDetail();
@@ -142,22 +142,22 @@ public class LogEntry extends Entity {
         final LogEntry le = createEntry(resource, actor, happenedOn);
         switch (resource.type()) {
             case ALIAS:
-                le._action = ActionType.ALIAS_CREATE;
+                le._action = CommandType.ALIAS_CREATE;
                 break;
             case FILE:
-                le._action = ActionType.FILE_CREATE;
+                le._action = CommandType.FILE_CREATE;
                 break;
             case FOLDER:
-                le._action = ActionType.FOLDER_CREATE;
+                le._action = CommandType.FOLDER_CREATE;
                 break;
             case PAGE:
-                le._action = ActionType.PAGE_CREATE;
+                le._action = CommandType.PAGE_CREATE;
                 break;
             case SEARCH:
-                le._action = ActionType.SEARCH_CREATE;
+                le._action = CommandType.SEARCH_CREATE;
                 break;
             case TEMPLATE:
-                le._action = ActionType.TEMPLATE_CREATE;
+                le._action = CommandType.TEMPLATE_CREATE;
                 break;
             default:
                 throw new UnsupportedOperationException();
@@ -190,19 +190,19 @@ public class LogEntry extends Entity {
         final LogEntry le = createEntry(resource, actor, happenedOn);
         switch (resource.type()) {
             case ALIAS:
-                le._action = ActionType.ALIAS_UPDATE;
+                le._action = CommandType.ALIAS_UPDATE;
                 break;
             case FILE:
-                le._action = ActionType.FILE_UPDATE;
+                le._action = CommandType.FILE_UPDATE;
                 break;
             case FOLDER:
-                le._action = ActionType.FOLDER_UPDATE;
+                le._action = CommandType.FOLDER_UPDATE;
                 break;
             case PAGE:
-                le._action = ActionType.PAGE_UPDATE;
+                le._action = CommandType.PAGE_UPDATE;
                 break;
             case TEMPLATE:
-                le._action = ActionType.TEMPLATE_UPDATE;
+                le._action = CommandType.TEMPLATE_UPDATE;
                 break;
             default:
                 throw new UnsupportedOperationException();
@@ -244,7 +244,7 @@ public class LogEntry extends Entity {
                                              final Date happenedOn) {
 
         final LogEntry le = createEntry(resource, actor, happenedOn);
-        le._action = ActionType.RESOURCE_CHANGE_TEMPLATE;
+        le._action = CommandType.RESOURCE_CHANGE_TEMPLATE;
         final Snapshot ss = new Snapshot();
         String templateName = "";
         if (resource.template() != null) {
@@ -268,7 +268,7 @@ public class LogEntry extends Entity {
                                    final Date happenedOn) {
 
         final LogEntry le = createEntry(resource, actor, happenedOn);
-        le._action = ActionType.RESOURCE_PUBLISH;
+        le._action = CommandType.RESOURCE_PUBLISH;
         final Snapshot ss = new Snapshot();
         ss.set("publish", actor.id().toString());
         le._detail = ss.getDetail();
@@ -288,7 +288,7 @@ public class LogEntry extends Entity {
                                       final Date happenedOn) {
 
         final LogEntry le = createEntry(resource, actor, happenedOn);
-        le._action = ActionType.RESOURCE_UNPUBLISH;
+        le._action = CommandType.RESOURCE_UNPUBLISH;
         final Snapshot ss = new Snapshot();
         ss.set("unpublish", actor.id().toString());
         le._detail = ss.getDetail();
@@ -308,7 +308,7 @@ public class LogEntry extends Entity {
                                          final Date happenedOn) {
 
         final LogEntry le = createEntry(resource, actor, happenedOn);
-        le._action = ActionType.RESOURCE_UPDATE_TAGS;
+        le._action = CommandType.RESOURCE_UPDATE_TAGS;
         final Snapshot ss = new Snapshot();
         ss.set("tags", resource.tagString());
         le._detail = ss.getDetail();
@@ -328,7 +328,7 @@ public class LogEntry extends Entity {
                                          final Date happenedOn) {
 
         final LogEntry le = createEntry(resource, actor, happenedOn);
-        le._action = ActionType.RESOURCE_UPDATE_METADATA;
+        le._action = CommandType.RESOURCE_UPDATE_METADATA;
         final Snapshot ss = new Snapshot();
         ss.set("metadata", resource.metadata());
         le._detail = ss.getDetail();
@@ -348,7 +348,7 @@ public class LogEntry extends Entity {
                                                 final User actor,
                                                 final Date happenedOn) {
         final LogEntry le = createEntry(resource, actor, happenedOn);
-        le._action = ActionType.RESOURCE_INCLUDE_IN_MM;
+        le._action = CommandType.RESOURCE_INCLUDE_IN_MM;
         final Snapshot ss = new Snapshot();
         ss.set(
             "includeInMainMenu", Boolean.valueOf(resource.includeInMainMenu()));
@@ -369,7 +369,7 @@ public class LogEntry extends Entity {
                                                  final User actor,
                                                  final Date happenedOn) {
         final LogEntry le = createEntry(resource, actor, happenedOn);
-        le._action = ActionType.RESOURCE_REMOVE_FROM_MM;
+        le._action = CommandType.RESOURCE_REMOVE_FROM_MM;
         final Snapshot ss = new Snapshot();
         ss.set(
             "includeInMainMenu", Boolean.valueOf(resource.includeInMainMenu()));
@@ -390,7 +390,7 @@ public class LogEntry extends Entity {
                                           final User actor,
                                           final Date happenedOn) {
         final LogEntry le = createEntry(resource, actor, happenedOn);
-        le._action = ActionType.RESOURCE_CHANGE_ROLES;
+        le._action = CommandType.RESOURCE_CHANGE_ROLES;
         final Snapshot ss = new Snapshot();
         final StringBuilder sb = new StringBuilder();
         for (final String role : resource.roles()) {
@@ -417,7 +417,7 @@ public class LogEntry extends Entity {
                                       Date happenedOn) {
 
         final LogEntry le = createEntry(folder, actor, happenedOn);
-        le._action = ActionType.FOLDER_REORDER;
+        le._action = CommandType.FOLDER_REORDER;
         final Snapshot ss = new Snapshot();
         ss.set("reorder", actor.id().toString());
         le._detail = ss.getDetail();
@@ -438,7 +438,7 @@ public class LogEntry extends Entity {
                                               Date happenedOn) {
 
                 final LogEntry le = createEntry(folder, actor, happenedOn);
-                le._action = ActionType.FOLDER_UPDATE_SORT_ORDER;
+                le._action = CommandType.FOLDER_UPDATE_SORT_ORDER;
                 final Snapshot ss = new Snapshot();
                 ss.set("sortOrder", folder.sortOrder().name());
                 le._detail = ss.getDetail();
@@ -459,7 +459,7 @@ public class LogEntry extends Entity {
                                           final Date happenedOn) {
 
         final LogEntry le = createEntry(resource, actor, happenedOn);
-        le._action = ActionType.RESOURCE_UPDATE_CACHE;
+        le._action = CommandType.RESOURCE_UPDATE_CACHE;
         final Snapshot ss = new Snapshot();
         if (resource.cache() != null) {
             ss.set("cache", resource.cache().time());
@@ -481,7 +481,7 @@ public class LogEntry extends Entity {
                                          final User actor,
                                          final Date happenedOn) {
         final LogEntry le = createEntry(user, actor, happenedOn);
-        le._action = ActionType.USER_CREATE;
+        le._action = CommandType.USER_CREATE;
         final Snapshot ss = new Snapshot();
         ss.set("username", user.username());
         ss.set("email", user.email().toString());
@@ -495,7 +495,7 @@ public class LogEntry extends Entity {
                                          final User actor,
                                          final Date happenedOn) {
         final LogEntry le = createEntry(user, actor, happenedOn);
-        le._action = ActionType.USER_UPDATE;
+        le._action = CommandType.USER_UPDATE;
         final Snapshot ss = new Snapshot();
         ss.set("username", user.username());
         ss.set("email", user.email().toString());
@@ -509,7 +509,7 @@ public class LogEntry extends Entity {
                                                  final User actor,
                                                  final Date happenedOn) {
         final LogEntry le = createEntry(user, actor, happenedOn);
-        le._action = ActionType.USER_CHANGE_PASSWORD;
+        le._action = CommandType.USER_CHANGE_PASSWORD;
         final Snapshot ss = new Snapshot();
         le._detail = ss.getDetail();
         return le;
@@ -557,7 +557,7 @@ public class LogEntry extends Entity {
      *
      * @return The action that was performed.
      */
-    public ActionType action() {
+    public CommandType action() {
         return _action;
     }
 

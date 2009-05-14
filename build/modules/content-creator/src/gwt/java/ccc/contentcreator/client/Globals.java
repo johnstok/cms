@@ -19,7 +19,7 @@ import ccc.contentcreator.api.SecurityService;
 import ccc.contentcreator.api.SecurityServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
-import ccc.services.api.CCCRemoteException;
+import ccc.services.api.CommandFailedException;
 import ccc.services.api.UserSummary;
 
 import com.google.gwt.core.client.GWT;
@@ -150,8 +150,8 @@ public final class Globals {
     public static void unexpectedError(final Throwable e) {
         // TODO: Add clause for InvocationException
         // TODO: Add clause for IncompatibleRemoteServiceException
-        if (e instanceof CCCRemoteException) {
-            final CCCRemoteException re = (CCCRemoteException) e;
+        if (e instanceof CommandFailedException) {
+            final CommandFailedException re = (CommandFailedException) e;
             alert("Expected exception - type="+re.getCode());
         } else {
             final String errorMesssage = e.getMessage();

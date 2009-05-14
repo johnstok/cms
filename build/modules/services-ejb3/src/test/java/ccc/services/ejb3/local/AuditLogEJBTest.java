@@ -28,7 +28,7 @@ import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.AuditLogEJB;
 import ccc.services.Dao;
-import ccc.services.api.ActionType;
+import ccc.services.api.CommandType;
 
 
 /**
@@ -81,7 +81,7 @@ public class AuditLogEJBTest
 
         // ASSERT
         verify(_em);
-        assertEquals(ActionType.RESOURCE_LOCK, le.getValue().action());
+        assertEquals(CommandType.RESOURCE_LOCK, le.getValue().action());
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
 
@@ -105,7 +105,7 @@ public class AuditLogEJBTest
 
         // ASSERT
         verify(_em);
-        assertEquals(ActionType.PAGE_CREATE, le.getValue().action());
+        assertEquals(CommandType.PAGE_CREATE, le.getValue().action());
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
     }
@@ -128,7 +128,7 @@ public class AuditLogEJBTest
 
         // ASSERT
         verify(_em);
-        assertEquals(ActionType.RESOURCE_CHANGE_TEMPLATE, le.getValue().action());
+        assertEquals(CommandType.RESOURCE_CHANGE_TEMPLATE, le.getValue().action());
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
     }
@@ -151,7 +151,7 @@ public class AuditLogEJBTest
 
         // ASSERT
         verify(_em);
-        assertEquals(ActionType.PAGE_UPDATE, le.getValue().action());
+        assertEquals(CommandType.PAGE_UPDATE, le.getValue().action());
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
         assertEquals("Updated.", le.getValue().comment());
@@ -178,7 +178,7 @@ public class AuditLogEJBTest
 
         // ASSERT
         verify(_em);
-        assertEquals(ActionType.RESOURCE_MOVE, le.getValue().action());
+        assertEquals(CommandType.RESOURCE_MOVE, le.getValue().action());
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
     }
@@ -201,7 +201,7 @@ public class AuditLogEJBTest
 
         // ASSERT
         verify(_em);
-        assertEquals(ActionType.RESOURCE_RENAME, le.getValue().action());
+        assertEquals(CommandType.RESOURCE_RENAME, le.getValue().action());
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
     }

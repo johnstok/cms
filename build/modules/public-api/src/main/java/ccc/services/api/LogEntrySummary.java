@@ -22,7 +22,7 @@ import java.util.Date;
  */
 public final class LogEntrySummary implements Serializable {
     private ID _subject;
-    private ActionType _action;
+    private CommandType _action;
     private Username _actor;
     private Date _happenedOn;
     private String _comment;
@@ -43,7 +43,7 @@ public final class LogEntrySummary implements Serializable {
      * @param index
      */
     public LogEntrySummary(final ID      subject,
-                           final ActionType  action,
+                           final CommandType  action,
                            final Username  actor,
                            final Date    on,
                            final String  comment,
@@ -74,7 +74,7 @@ public final class LogEntrySummary implements Serializable {
      *
      * @return Returns the action.
      */
-    public ActionType getAction() {
+    public CommandType getAction() {
         return _action;
     }
 

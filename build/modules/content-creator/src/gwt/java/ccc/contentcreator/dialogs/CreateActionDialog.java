@@ -67,7 +67,7 @@ public class CreateActionDialog
             @Override
             public void componentSelected(final ButtonEvent ce) {
 
-                if (null==_createAction.actionType()) {
+                if (null==_createAction.commandType()) {
                     Globals.alert(constants().pleaseChooseAnAction());
                     return;
                 }
@@ -77,7 +77,7 @@ public class CreateActionDialog
                 }
                 _commands.createAction(
                     _resourceId,
-                    _createAction.actionType(),
+                    _createAction.commandType(),
                     _dtPicker.getDate(),
                     "{}",
                     _createAction.getComment(),

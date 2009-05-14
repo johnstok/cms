@@ -4,7 +4,14 @@ Transactions
 
 
 !!!
+Collapse schedulerEJB and actionExecutorEJB
 Fold password into user, use jBoss security mgr?
+Audit logging
+ Move factory methods on LogEntry to individual command classes.
+Error logging
+ Add ErrorLog interface.
+ Add Error class.
+ Add _error field to Action class.
 Working copies
  Should be using deltas
  FileDelta should return working copy if set...
@@ -13,14 +20,13 @@ Working copies
 
 
 !!
-Add Migrations EJB only accessible by ADMIN
+Best way to persist exceptions for Action?
 Pull in source for json.org json lib and send to client, add contructors for model data classes that accept json
 Action scheduler is a security risk - can potentially elevate privileges.
 Rename model data subclasses
 Factor remaining actions from ResourceContextMenu
 UpdateFileServlet should return ZLS on success (or json NULL - equiv to returning NULL from a Void method)
 search indexing -> search between dates, etc.
-search resource is in the wrong place
 login page is hardcoded
 Remove targetName from alias delta, look up name from targetId on the client side
 

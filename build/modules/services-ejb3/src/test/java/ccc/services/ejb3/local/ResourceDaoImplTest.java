@@ -49,7 +49,7 @@ import ccc.services.AuditLog;
 import ccc.services.Dao;
 import ccc.services.QueryNames;
 import ccc.services.ResourceDaoImpl;
-import ccc.services.api.ActionType;
+import ccc.services.api.CommandType;
 import ccc.services.api.Duration;
 import ccc.services.api.ResourceType;
 
@@ -231,7 +231,7 @@ public class ResourceDaoImplTest
         } catch (final InsufficientPrivilegesException e) {
             assertEquals(
                 "User regular[] may not perform action: "
-                +ActionType.RESOURCE_UNLOCK,
+                +CommandType.RESOURCE_UNLOCK,
                 e.getMessage());
         }
         assertEquals(_anotherUser, _r.lockedBy());

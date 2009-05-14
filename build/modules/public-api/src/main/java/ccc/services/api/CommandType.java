@@ -1,7 +1,7 @@
 package ccc.services.api;
 
 /** Valid actions for a log entry. */
-public enum ActionType {
+public enum CommandType {
 
     // Resource
     RESOURCE_RENAME,
