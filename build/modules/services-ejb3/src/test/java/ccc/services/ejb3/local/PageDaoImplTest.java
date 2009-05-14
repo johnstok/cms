@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.Date;
 
 import junit.framework.TestCase;
-import ccc.actions.UpdatePageCommand;
+import ccc.commands.UpdatePageCommand;
 import ccc.domain.LockMismatchException;
 import ccc.domain.Page;
 import ccc.domain.Paragraph;

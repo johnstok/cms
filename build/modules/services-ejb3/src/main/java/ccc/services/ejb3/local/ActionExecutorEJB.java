@@ -24,9 +24,9 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
 
-import ccc.actions.ApplyWorkingCopyCommand;
-import ccc.actions.PublishCommand;
-import ccc.actions.UnpublishResourceCommand;
+import ccc.commands.ApplyWorkingCopyCommand;
+import ccc.commands.PublishCommand;
+import ccc.commands.UnpublishResourceCommand;
 import ccc.domain.Action;
 import ccc.domain.CCCException;
 import ccc.domain.RemoteExceptionSupport;

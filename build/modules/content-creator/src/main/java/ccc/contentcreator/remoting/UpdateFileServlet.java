@@ -29,7 +29,7 @@ import javax.transaction.UserTransaction;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
 
-import ccc.actions.UpdateFileCommand;
+import ccc.commands.UpdateFileCommand;
 import ccc.content.actions.PersistenceAction;
 import ccc.content.actions.ReadWriteTxAction;
 import ccc.content.actions.ReaderAction;

@@ -16,6 +16,7 @@ import static org.easymock.EasyMock.*;
 import java.util.Date;
 
 import junit.framework.TestCase;
+import ccc.commands.UpdateAliasCommand;
 import ccc.domain.Alias;
 import ccc.domain.LockMismatchException;
 import ccc.domain.Page;

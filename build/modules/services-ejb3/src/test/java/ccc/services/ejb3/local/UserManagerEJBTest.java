@@ -22,9 +22,9 @@ import java.util.HashSet;
 import javax.ejb.EJBContext;
 
 import junit.framework.TestCase;
-import ccc.actions.CreateUserCommand;
-import ccc.actions.UpdatePasswordAction;
-import ccc.actions.UpdateUserCommand;
+import ccc.commands.CreateUserCommand;
+import ccc.commands.UpdatePasswordAction;
+import ccc.commands.UpdateUserCommand;
 import ccc.commons.EmailAddress;
 import ccc.domain.CreatorRoles;
 import ccc.domain.Password;

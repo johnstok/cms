@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ccc.actions.CreateFileCommand;
+import ccc.commands.CreateFileCommand;
 import ccc.content.actions.PersistenceAction;
 import ccc.content.actions.ReadWriteTxAction;
 import ccc.content.actions.ReaderAction;

@@ -16,7 +16,7 @@ import static org.easymock.EasyMock.*;
 import java.util.Date;
 
 import junit.framework.TestCase;
-import ccc.actions.UpdateTemplateCommand;
+import ccc.commands.UpdateTemplateCommand;
 import ccc.domain.LockMismatchException;
 import ccc.domain.Template;
 import ccc.domain.UnlockedException;
