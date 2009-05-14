@@ -13,8 +13,9 @@
 
 	<!-- Supported locales. -->
 	<!-- extend-property name="locale" values="fi" / -->
-    
-	<set-property name="user.agent" value="gecko1_8" />
+
+    <!-- Compile only for Firefox -->
+	<!--set-property name="user.agent" value="gecko1_8" /-->
 
 	<!-- Specify the app entry point class. -->
 	<entry-point class="ccc.contentcreator.client.ContentCreator" />
