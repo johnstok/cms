@@ -57,7 +57,7 @@
         <property
             name="_comment"
             column="message"
-            not-null="true"
+            not-null="false"
             type="string"
             length="1024"/>
         <property
