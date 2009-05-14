@@ -19,6 +19,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.EJBContext;
 import javax.ejb.Local;
@@ -50,6 +51,7 @@ import ccc.services.Scheduler;
 @TransactionAttribute(REQUIRED)
 @Local(ActionDao.class)
 @Remote(Scheduler.class)
+@RolesAllowed({"ADMINISTRATOR"})
 public class SchedulerEJB implements Scheduler, ActionDao {
     private static final int TIMEOUT_DELAY_SECS = 60*1000;
     private static final int INITIAL_DELAY_SECS = 30*1000;
