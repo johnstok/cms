@@ -15,15 +15,15 @@ import static org.easymock.EasyMock.*;
 
 import java.util.Date;
 
+import javax.persistence.EntityManager;
+
 import junit.framework.TestCase;
 import ccc.actions.Action;
-import ccc.domain.CCCException;
 import ccc.domain.LockMismatchException;
 import ccc.domain.Page;
 import ccc.domain.Snapshot;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
-import ccc.services.ResourceDao;
 import ccc.services.api.ActionStatus;
 import ccc.services.api.ActionType;
 
@@ -48,9 +48,7 @@ public class ActionExecutorEJBTest
         // ARRANGE
         final Page p = new Page("foo");
         final User u = new User("user");
-        expect(_rdao.publish(eq(p.id()), eq(u.id()), isA(Date.class)))
-            .andThrow(new CCCException("Oops!"));
-        replay(_rdao);
+        replay(_em);
         final Action a =
             new Action(
                 ActionType.RESOURCE_PUBLISH,
@@ -65,25 +63,28 @@ public class ActionExecutorEJBTest
         _ea.executeAction(a);
 
         // ASSERT
-        verify(_rdao);
+        verify(_em);
         assertEquals(ActionStatus.Failed, a.status());
-        assertEquals("Oops!", a.failure().getString("message"));
+        assertEquals(
+            "Resource "+p.id()+" is Unlocked.",
+            a.failure().getString("message"));
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {
-        _rdao = createStrictMock(ResourceDao.class);
-        _ea = new ActionExecutorEJB(_rdao);
+        _em = createStrictMock(EntityManager.class);
+        _ea = new ActionExecutorEJB(_em);
+        _ea.configureCoreData();
     }
     /** {@inheritDoc} */
     @Override
     protected void tearDown() throws Exception {
-        _rdao = null;
+        _em = null;
         _ea = null;
     }
 
     private ActionExecutorEJB _ea;
-    private ResourceDao _rdao;
+    private EntityManager _em;
 }

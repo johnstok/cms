@@ -11,25 +11,16 @@
  */
 package ccc.services;
 
-import java.util.Collection;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import ccc.domain.CCCException;
 import ccc.domain.Folder;
-import ccc.domain.InsufficientPrivilegesException;
-import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
-import ccc.domain.ResourceExistsException;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
-import ccc.domain.Template;
-import ccc.domain.UnlockedException;
 import ccc.domain.User;
-import ccc.services.api.Duration;
 
 
 /**
@@ -39,65 +30,15 @@ import ccc.services.api.Duration;
  */
 public class ResourceDaoImpl implements ResourceDao {
 
-    private final AuditLog       _audit;
     private final Dao            _dao;
 
     /**
      * Constructor.
      *
-     * @param audit AuditLog service.
      * @param dao The DAO used for persistence.
      */
-    public ResourceDaoImpl(final AuditLog audit,
-                           final Dao dao) {
-        _audit = audit;
+    public ResourceDaoImpl(final Dao dao) {
         _dao = dao;
-    }
-
-
-
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void createRoot(final User actor, final Folder folder) {
-        final Resource possibleRoot =
-            _dao.find(QueryNames.ROOT_BY_NAME, Resource.class, folder.name());
-        if (null!=possibleRoot) { // TODO: Throw ResourceExistsException?
-            throw new CCCException("Root exists with name: "+folder.name());
-        }
-        _dao.create(folder);
-        _audit.recordCreate(
-            folder,
-            actor,
-            folder.dateCreated());
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Resource lock(final User actor,
-                         final Date happenedOn,
-                         final UUID resourceId) throws LockMismatchException {
-        final Resource r = _dao.find(Resource.class, resourceId);
-        final User u = actor;
-        r.lock(u);
-        _audit.recordLock(r, u, happenedOn);
-        return r;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Resource unlock(final User actor,
-                           final Date happenedOn,
-                           final UUID resourceId)
-    throws InsufficientPrivilegesException, UnlockedException {
-        final User loggedInUser = actor;
-        final Resource r = _dao.find(Resource.class, resourceId);
-        r.unlock(loggedInUser);
-        _audit.recordUnlock(r, loggedInUser, happenedOn);
-        return r;
     }
 
 
@@ -128,131 +69,8 @@ public class ResourceDaoImpl implements ResourceDao {
 
     /** {@inheritDoc} */
     @Override
-    public void updateTags(final User actor,
-                           final Date happenedOn,
-                           final UUID resourceId,
-                           final String tags)
-    throws UnlockedException, LockMismatchException {
-        final User loggedInUser = actor;
-        final Resource r = findLocked(Resource.class, resourceId, loggedInUser);
-        r.tags(tags);
-        _audit.recordUpdateTags(r, loggedInUser,  happenedOn);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Resource publish(final User actor,
-                            final Date happenedOn,
-                            final UUID resourceId)
-    throws UnlockedException, LockMismatchException {
-        final User u = actor;
-        final Resource r = findLocked(Resource.class, resourceId, u);
-        r.publish(u);
-        r.dateChanged(happenedOn);
-        _audit.recordPublish(r, u, r.dateChanged());
-        return r;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Resource publish(final UUID resourceId,
-                            final UUID userId,
-                            final Date publishedOn)
-    throws UnlockedException, LockMismatchException {
-        final User publishedBy = _dao.find(User.class, userId);
-        final Resource r =
-            findLocked(Resource.class, resourceId, publishedBy);
-        r.publish(publishedBy);
-        r.dateChanged(publishedOn);
-        _audit.recordPublish(r, publishedBy, publishedOn);
-        return r;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Resource unpublish(final User actor,
-                              final Date happenedOn,
-                              final UUID resourceId)
-    throws UnlockedException, LockMismatchException {
-        final User u = actor;
-        final Resource r = findLocked(Resource.class, resourceId, u);
-        r.unpublish();
-        _audit.recordUnpublish(r, u, happenedOn);
-        return r;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Resource unpublish(final UUID resourceId,
-                              final UUID actor,
-                              final Date happendedOn)
-    throws UnlockedException, LockMismatchException {
-        final User u = _dao.find(User.class, actor);
-        final Resource r =
-            findLocked(Resource.class, resourceId, u);
-        r.unpublish();
-        _audit.recordUnpublish(r, u, happendedOn);
-        return r;
-    }
-
-
-    /**
-     * {@inheritDoc} */
-    @Override
-    public void updateTemplateForResource(final User actor,
-                                          final Date happenedOn,
-                                          final UUID resourceId,
-                                          final UUID templateId)
-    throws UnlockedException, LockMismatchException {
-        final Resource r = findLocked(Resource.class, resourceId, actor);
-        final Template t =
-            (null==templateId)
-                ? null
-                : find(Template.class, templateId);
-
-        r.template(t);
-
-        _audit.recordChangeTemplate(r, actor, happenedOn);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void move(final User actor,
-                     final Date happenedOn,
-                     final UUID resourceId,
-                     final UUID newParentId)
-      throws UnlockedException, LockMismatchException, ResourceExistsException {
-        final User u = actor;
-        final Resource resource = findLocked(Resource.class, resourceId, u);
-        final Folder newParent = find(Folder.class, newParentId);
-
-        resource.parent().remove(resource);
-        newParent.add(resource);
-
-        _audit.recordMove(resource, u, happenedOn);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public <T extends Resource> T find(final Class<T> type, final UUID id) {
         return _dao.find(type, id);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public <T extends Resource> T findLocked(final Class<T> type,
-                                              final UUID id,
-                                              final User lockedBy)
-                               throws UnlockedException, LockMismatchException {
-        final T r = _dao.find(type, id);
-        r.confirmLock(lockedBy);
-        return r;
     }
 
 
@@ -271,55 +89,6 @@ public class ResourceDaoImpl implements ResourceDao {
                       final Class<T> resultType,
                       final Object... params) {
         return _dao.find(queryName, resultType, params);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void includeInMainMenu(final User actor,
-                                  final Date happenedOn,
-                                  final UUID id,
-                                  final boolean b)
-                               throws UnlockedException, LockMismatchException {
-        final Resource r = findLocked(Resource.class, id, actor);
-        final User u = actor;
-        r.includeInMainMenu(b);
-        if (b) {
-            _audit.recordIncludeInMainMenu(r, u, happenedOn);
-        } else {
-            _audit.recordRemoveFromMainMenu(r, u, happenedOn);
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void updateMetadata(final User actor,
-                               final Date happenedOn,
-                               final UUID id,
-                               final Map<String,
-                               String> metadata)
-                               throws UnlockedException, LockMismatchException {
-        final Resource r = findLocked(Resource.class, id, actor);
-        final User u = actor;
-        r.clearMetadata();
-        for (final String key : metadata.keySet()) {
-            r.addMetadatum(key, metadata.get(key));
-        }
-        _audit.recordUpdateMetadata(r, u, happenedOn);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void changeRoles(final User actor,
-                            final Date happenedOn,
-                            final UUID id,
-                            final Collection<String> roles)
-                               throws UnlockedException, LockMismatchException {
-        final Resource r = findLocked(Resource.class, id, actor);
-        final User u = actor;
-        r.roles(roles);
-        _audit.recordChangeRoles(r, u, happenedOn);
     }
 
     /**
@@ -349,23 +118,5 @@ public class ResourceDaoImpl implements ResourceDao {
     public Resource lookupWithLegacyId(final String legacyId) {
         return _dao.find(
             QueryNames.RESOURCE_BY_LEGACY_ID, Resource.class, legacyId);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void updateCache(final User actor,
-                            final Date happenedOn,
-                            final UUID resourceId,
-                            final Duration duration)
-                               throws UnlockedException, LockMismatchException {
-        final User loggedInUser = actor;
-        final Resource r = findLocked(Resource.class, resourceId, actor);
-        if (duration == null) {
-            r.cache(null);
-        } else {
-            r.cache(duration);
-        }
-        _audit.recordUpdateCache(r, loggedInUser, happenedOn);
     }
 }

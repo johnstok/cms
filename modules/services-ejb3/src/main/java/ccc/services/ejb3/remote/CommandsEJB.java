@@ -36,21 +36,35 @@ import org.apache.log4j.Logger;
 import ccc.actions.Action;
 import ccc.actions.ApplyWorkingCopyCommand;
 import ccc.actions.CancelActionCommand;
+import ccc.actions.ChangeResourceTagsCommand;
+import ccc.actions.ChangeTemplateForResourceCommand;
+import ccc.actions.ClearWorkingCopyCommand;
 import ccc.actions.CreateAliasCommand;
 import ccc.actions.CreateFolderCommand;
 import ccc.actions.CreatePageCommand;
+import ccc.actions.CreateRootCommand;
 import ccc.actions.CreateSearchCommand;
 import ccc.actions.CreateTemplateCommand;
 import ccc.actions.CreateUserCommand;
+import ccc.actions.IncludeInMainMenuCommand;
+import ccc.actions.LockResourceCommand;
+import ccc.actions.MoveResourceCommand;
+import ccc.actions.PublishCommand;
 import ccc.actions.RenameResourceCommand;
 import ccc.actions.ReorderFolderContentsCommand;
 import ccc.actions.ScheduleActionCommand;
+import ccc.actions.UnlockResourceCommand;
+import ccc.actions.UnpublishResourceCommand;
 import ccc.actions.UpdateAliasCommand;
+import ccc.actions.UpdateCachingCommand;
 import ccc.actions.UpdateFolderCommand;
 import ccc.actions.UpdatePageCommand;
 import ccc.actions.UpdatePasswordAction;
+import ccc.actions.UpdateResourceMetadataRolesCommand;
+import ccc.actions.UpdateResourceRolesCommand;
 import ccc.actions.UpdateTemplateCommand;
 import ccc.actions.UpdateUserCommand;
+import ccc.actions.UpdateWorkingCopyCommand;
 import ccc.domain.CCCException;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
@@ -59,6 +73,7 @@ import ccc.domain.PageHelper;
 import ccc.domain.Paragraph;
 import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Resource;
+import ccc.domain.ResourceExistsException;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourceOrder;
 import ccc.domain.Snapshot;
@@ -70,7 +85,6 @@ import ccc.services.ModelTranslation;
 import ccc.services.ResourceDao;
 import ccc.services.ResourceDaoImpl;
 import ccc.services.UserLookup;
-import ccc.services.WorkingCopyManager;
 import ccc.services.api.ActionType;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.CCCRemoteException;
@@ -106,7 +120,6 @@ public class CommandsEJB
 
     private ResourceDao        _resources;
     private AuditLog           _audit;
-    private WorkingCopyManager _wcMgr;
     private UserLookup         _userLookup;
     private BaseDao            _bdao;
 
@@ -218,7 +231,8 @@ public class CommandsEJB
     @Override
     public void lock(final ID resourceId) throws CCCRemoteException {
         try {
-            _resources.lock(loggedInUser(), new Date(), toUUID(resourceId));
+            new LockResourceCommand(_bdao, _audit).execute(
+                loggedInUser(), new Date(), toUUID(resourceId));
 
         } catch (final RemoteExceptionSupport e) {
             throw newCCCRemoteException(e, ActionType.RESOURCE_LOCK);
@@ -231,7 +245,7 @@ public class CommandsEJB
     public void move(final ID resourceId,
                      final ID newParentId) throws CCCRemoteException {
         try {
-            _resources.move(
+            new MoveResourceCommand(_bdao, _audit).execute(
                 loggedInUser(),
                 new Date(),
                 toUUID(resourceId),
@@ -247,8 +261,10 @@ public class CommandsEJB
     @Override
     public void publish(final ID resourceId) throws CCCRemoteException {
         try {
-            _resources.publish(
-                loggedInUser(), new Date(), toUUID(resourceId));
+            new PublishCommand(_audit).execute(
+                new Date(),
+                loggedInUser(),
+                _bdao.find(Resource.class, toUUID(resourceId)));
 
         } catch (final RemoteExceptionSupport e) {
             throw newCCCRemoteException(e, ActionType.RESOURCE_PUBLISH);
@@ -262,7 +278,10 @@ public class CommandsEJB
                         final ID userId,
                         final Date date) throws CCCRemoteException {
         try {
-            _resources.publish(toUUID(resourceId), toUUID(userId), date);
+            new PublishCommand(_audit).execute(
+                date,
+                _bdao.find(User.class, toUUID(userId)),
+                _bdao.find(Resource.class, toUUID(resourceId)));
 
         } catch (final RemoteExceptionSupport e) {
             throw newCCCRemoteException(e, ActionType.RESOURCE_PUBLISH);
@@ -288,7 +307,7 @@ public class CommandsEJB
     @Override
     public void unlock(final ID resourceId) throws CCCRemoteException {
         try {
-            _resources.unlock(
+            new UnlockResourceCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), toUUID(resourceId));
 
         } catch (final RemoteExceptionSupport e) {
@@ -301,7 +320,7 @@ public class CommandsEJB
     @Override
     public void unpublish(final ID resourceId) throws CCCRemoteException {
         try {
-            _resources.unpublish(
+            new UnpublishResourceCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), toUUID(resourceId));
 
         } catch (final RemoteExceptionSupport e) {
@@ -361,8 +380,11 @@ public class CommandsEJB
 
             new PageHelper().assignParagraphs(page, delta);
 
-            _wcMgr.updateWorkingCopy(
-                loggedInUser(), toUUID(pageId), page.createSnapshot());
+            new UpdateWorkingCopyCommand(_bdao, _audit).execute(
+                loggedInUser(),
+                new Date(),
+                toUUID(pageId),
+                page.createSnapshot());
 
         } catch (final RemoteExceptionSupport e) {
             throw newCCCRemoteException(e, ActionType.RESOURCE_SET_WC);
@@ -379,8 +401,9 @@ public class CommandsEJB
             final LogEntry le = _audit.findEntryForIndex(index);
 
             if (resourceUuid.equals(le.subjectId())) {
-                _wcMgr.updateWorkingCopy(
+                new UpdateWorkingCopyCommand(_bdao, _audit).execute(
                     loggedInUser(),
+                    new Date(),
                     toUUID(resourceId),
                     new Snapshot(le.detail()));
             } else {
@@ -399,7 +422,7 @@ public class CommandsEJB
                                        final ID templateId)
                                                      throws CCCRemoteException {
         try {
-            _resources.updateTemplateForResource(
+            new ChangeTemplateForResourceCommand(_bdao, _audit).execute(
                 loggedInUser(),
                 new Date(),
                 toUUID(resourceId),
@@ -416,7 +439,7 @@ public class CommandsEJB
     public void updateTags(final ID resourceId,
                            final String tags) throws CCCRemoteException {
         try {
-            _resources.updateTags(
+            new ChangeResourceTagsCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), toUUID(resourceId), tags);
 
         } catch (final RemoteExceptionSupport e) {
@@ -449,10 +472,16 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createRoot(final String name) {
-        final Folder f = new Folder(name);
-        _resources.createRoot(loggedInUser(), f);
-        return mapResource(f);
+    public ResourceSummary createRoot(final String name)
+                                                     throws CCCRemoteException {
+        try {
+            final Folder f = new Folder(name);
+            new CreateRootCommand(_bdao, _audit).execute(
+                loggedInUser(), new Date(), f);
+            return mapResource(f);
+        } catch (final ResourceExistsException e) {
+            throw newCCCRemoteException(e, ActionType.FOLDER_CREATE);
+        }
     }
 
     /** {@inheritDoc}
@@ -462,7 +491,7 @@ public class CommandsEJB
                                   final boolean include)
                                                      throws CCCRemoteException {
         try {
-            _resources.includeInMainMenu(
+            new IncludeInMainMenuCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), toUUID(resourceId), include);
 
         } catch (final RemoteExceptionSupport e) {
@@ -503,7 +532,7 @@ public class CommandsEJB
                                final Map<String, String> metadata)
                                                      throws CCCRemoteException {
         try {
-            _resources.updateMetadata(
+            new UpdateResourceMetadataRolesCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), toUUID(resourceId), metadata);
 
         } catch (final RemoteExceptionSupport e) {
@@ -532,9 +561,11 @@ public class CommandsEJB
     /** {@inheritDoc}
      * @throws CCCRemoteException */
     @Override
-    public void clearWorkingCopy(final ID pageId) throws CCCRemoteException {
+    public void clearWorkingCopy(final ID resourceId)
+                                                     throws CCCRemoteException {
         try {
-            _wcMgr.clearWorkingCopy(loggedInUser(), toUUID(pageId));
+            new ClearWorkingCopyCommand(_bdao, _audit).execute(
+                loggedInUser(), new Date(), toUUID(resourceId));
 
         } catch (final RemoteExceptionSupport e) {
             throw newCCCRemoteException(e, ActionType.RESOURCE_CLEAR_WC);
@@ -596,7 +627,7 @@ public class CommandsEJB
             for (final String entry : order) {
                 newOrder.add(UUID.fromString(entry));
             }
-            new ReorderFolderContentsCommand(_resources, _audit).execute(
+            new ReorderFolderContentsCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), toUUID(folderId), newOrder);
 
 
@@ -612,7 +643,7 @@ public class CommandsEJB
                             final Collection<String> roles)
                                                      throws CCCRemoteException {
         try {
-            _resources.changeRoles(
+            new UpdateResourceRolesCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), toUUID(resourceId), roles);
 
         } catch (final RemoteExceptionSupport e) {
@@ -641,7 +672,7 @@ public class CommandsEJB
                                     final Duration duration)
                                                      throws CCCRemoteException {
         try {
-            _resources.updateCache(
+            new UpdateCachingCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), toUUID(resourceId), duration);
 
         } catch (final RemoteExceptionSupport e) {
@@ -660,8 +691,7 @@ public class CommandsEJB
     private void configureCoreData() {
         _bdao = new BaseDao(_em);
         _audit = new AuditLogEJB(_bdao);
-        _resources = new ResourceDaoImpl(_audit, _bdao);
-        _wcMgr = new WorkingCopyManager(_resources);
+        _resources = new ResourceDaoImpl(_bdao);
         _userLookup = new UserLookup(_bdao);
     }
 

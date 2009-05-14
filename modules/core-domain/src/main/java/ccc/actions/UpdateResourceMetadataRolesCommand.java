@@ -11,12 +11,10 @@
  */
 package ccc.actions;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
-import ccc.domain.Folder;
 import ccc.domain.LockMismatchException;
 import ccc.domain.Resource;
 import ccc.domain.UnlockedException;
@@ -26,57 +24,51 @@ import ccc.services.Dao;
 
 
 /**
- * Command: reorder the entries of a folder.
+ * Command: update resource metadata.
  *
  * @author Civic Computing Ltd.
  */
-public class ReorderFolderContentsCommand {
+public class UpdateResourceMetadataRolesCommand {
 
-    private final Dao _dao;
-    private final AuditLog    _audit;
+    private final Dao      _dao;
+    private final AuditLog _audit;
 
     /**
      * Constructor.
      *
-     * @param dao The DAO used for CRUD operations, etc.
+     * @param dao The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public ReorderFolderContentsCommand(final Dao dao,
-                                        final AuditLog audit) {
+    public UpdateResourceMetadataRolesCommand(final Dao dao,
+                                              final AuditLog audit) {
         _dao = dao;
         _audit = audit;
     }
 
     /**
-     * Reorder a folder's entries.
+     * Update metadata of the resource.
      *
+     * @param id The resource to update.
+     * @param metadata The new metadata to set.
      * @param actor
      * @param happenedOn
-     * @param folderId
-     * @param order
      * @throws LockMismatchException
      * @throws UnlockedException
      */
     public void execute(final User actor,
                         final Date happenedOn,
-                        final UUID folderId,
-                        final List<UUID> order)
+                        final UUID id,
+                        final Map<String, String> metadata)
                                throws UnlockedException, LockMismatchException {
-        final Folder f = _dao.find(Folder.class, folderId);
-        f.confirmLock(actor);
+        final Resource r = _dao.find(Resource.class, id);
+        r.confirmLock(actor);
 
-        final User u = actor;
-        final List<Resource> newOrder = new ArrayList<Resource>();
-        final List<Resource> currentOrder = f.entries();
-        for (final UUID resourceId : order) {
-            for (final Resource r : currentOrder) {
-                if (r.id().equals(resourceId)) {
-                    newOrder.add(r);
-                }
-            }
+        r.clearMetadata();
+        for (final String key : metadata.keySet()) {
+            r.addMetadatum(key, metadata.get(key));
         }
-        f.reorder(newOrder);
 
-        _audit.recordReorder(f, u, happenedOn);
+        _audit.recordUpdateMetadata(r, actor, happenedOn);
     }
+
 }
