@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.ejb3.local;
+package ccc.services.ejb3;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -19,6 +19,7 @@ import junit.framework.TestCase;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
+
 
 
 

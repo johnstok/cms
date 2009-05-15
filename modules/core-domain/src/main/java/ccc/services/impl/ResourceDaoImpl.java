@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services;
+package ccc.services.impl;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,6 +21,9 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.User;
+import ccc.services.Dao;
+import ccc.services.QueryNames;
+import ccc.services.ResourceDao;
 
 
 /**

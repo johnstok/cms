@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services;
+package ccc.services.impl;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,6 +23,9 @@ import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.User;
+import ccc.services.AuditLog;
+import ccc.services.Dao;
+import ccc.services.QueryNames;
 
 
 /**

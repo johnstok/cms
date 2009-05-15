@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.ejb3.local;
+package ccc.services.ejb3;
 
 import static org.easymock.EasyMock.*;
 
@@ -48,10 +48,10 @@ import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
 import ccc.services.QueryNames;
-import ccc.services.ResourceDaoImpl;
 import ccc.services.api.CommandType;
 import ccc.services.api.Duration;
 import ccc.services.api.ResourceType;
+import ccc.services.impl.ResourceDaoImpl;
 
 
 /**

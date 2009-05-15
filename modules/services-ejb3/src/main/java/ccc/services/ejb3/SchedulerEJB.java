@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.ejb3.local;
+package ccc.services.ejb3;
 
 import static javax.ejb.TransactionAttributeType.*;
 
@@ -42,6 +42,7 @@ import ccc.services.Dao;
 import ccc.services.QueryNames;
 import ccc.services.Scheduler;
 import ccc.services.api.Commands;
+import ccc.services.impl.ActionExecutorEJB;
 
 
 /**

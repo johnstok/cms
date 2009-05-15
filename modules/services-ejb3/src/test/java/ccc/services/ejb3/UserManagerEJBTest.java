@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.ejb3.local;
+package ccc.services.ejb3;
 
 
 import static org.easymock.EasyMock.*;
@@ -33,6 +33,7 @@ import ccc.services.AuditLog;
 import ccc.services.Dao;
 import ccc.services.api.UserDelta;
 import ccc.services.api.Username;
+import ccc.services.impl.UserManagerEJB;
 
 
 /**

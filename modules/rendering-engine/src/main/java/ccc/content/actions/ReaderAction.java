@@ -19,14 +19,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import ccc.persistence.jpa.FsCoreData;
 import ccc.services.AuditLog;
-import ccc.services.AuditLogEJB;
 import ccc.services.Dao;
 import ccc.services.DataManager;
-import ccc.services.DataManagerEJB;
-import ccc.services.ResourceDaoImpl;
 import ccc.services.StatefulReader;
-import ccc.services.StatefulReaderEJB;
 import ccc.services.UserLookup;
+import ccc.services.impl.AuditLogEJB;
+import ccc.services.impl.DataManagerEJB;
+import ccc.services.impl.ResourceDaoImpl;
+import ccc.services.impl.StatefulReaderEJB;
 
 
 /**

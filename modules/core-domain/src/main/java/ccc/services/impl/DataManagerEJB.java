@@ -10,7 +10,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.services;
+package ccc.services.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,6 +22,11 @@ import ccc.commons.IO;
 import ccc.domain.CCCException;
 import ccc.domain.Data;
 import ccc.domain.File;
+import ccc.services.CoreData;
+import ccc.services.Dao;
+import ccc.services.DataManager;
+import ccc.services.QueryNames;
+import ccc.services.DataManager.StreamAction;
 
 
 /**

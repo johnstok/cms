@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.ejb3.local;
+package ccc.services.ejb3;
 
 import static org.easymock.EasyMock.*;
 
@@ -26,9 +26,9 @@ import ccc.domain.Page;
 import ccc.domain.ResourceExistsException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
-import ccc.services.AuditLogEJB;
 import ccc.services.Dao;
 import ccc.services.api.CommandType;
+import ccc.services.impl.AuditLogEJB;
 
 
 /**
