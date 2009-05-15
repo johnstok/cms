@@ -63,7 +63,7 @@ public class ApplyWorkingCopyCommand extends UpdateResourceCommand {
         r.applySnapshot(r.workingCopy());
         r.clearWorkingCopy();
 
-// TODO: We don't validate the page against its definition
+// FIXME: We don't validate the page against its definition
 //        final Template template = page.computeTemplate(null);
 //
 //        if (template != null) {

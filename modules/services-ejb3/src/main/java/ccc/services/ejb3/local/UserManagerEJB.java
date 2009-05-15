@@ -12,22 +12,12 @@
 package ccc.services.ejb3.local;
 
 import static ccc.services.QueryNames.*;
-import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Collection;
 import java.util.Locale;
 import java.util.UUID;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.security.PermitAll;
-import javax.ejb.Local;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import ccc.domain.User;
-import ccc.persistence.jpa.BaseDao;
 import ccc.services.Dao;
 import ccc.services.UserManager;
 
@@ -37,18 +27,10 @@ import ccc.services.UserManager;
  *
  * @author Civic Computing Ltd.
  */
-@Stateless(name=UserManager.NAME)
-@TransactionAttribute(REQUIRED)
-@Local(UserManager.class)
-@PermitAll
 public class UserManagerEJB implements UserManager {
 
-    @PersistenceContext private EntityManager _em;
     private Dao _dao;
 
-
-    /** Constructor. */
-    public UserManagerEJB() { super(); }
 
     /**
      * Constructor.
@@ -98,10 +80,5 @@ public class UserManagerEJB implements UserManager {
     @Override
     public User find(final UUID userId) {
         return _dao.find(User.class, userId);
-    }
-
-    @PostConstruct
-    public void configure() {
-        _dao = new BaseDao(_em);
     }
 }

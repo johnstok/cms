@@ -60,6 +60,7 @@ import ccc.services.api.TemplateSummary;
 import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
 import ccc.services.api.Username;
+import ccc.services.ejb3.local.UserManagerEJB;
 
 
 /**
@@ -77,14 +78,14 @@ public final class QueriesEJB
     implements
         Queries {
 
-    @EJB(name=UserManager.NAME)    private UserManager     _users;
     @EJB(name=ActionDao.NAME)      private ActionDao       _actions;
+    @PersistenceContext            private EntityManager   _em;
+    @javax.annotation.Resource     private EJBContext      _context;
 
-    @PersistenceContext private EntityManager _em;
-    @javax.annotation.Resource private EJBContext _context;
-    private ResourceDao     _resources;
-    private UserLookup _userLookup;
-    private BaseDao _bdao;
+    private UserManager _users;
+    private ResourceDao _resources;
+    private UserLookup  _userLookup;
+    private BaseDao     _bdao;
 
     /**
      * Constructor.
@@ -301,6 +302,7 @@ public final class QueriesEJB
         _bdao = new BaseDao(_em);
         _resources = new ResourceDaoImpl(_bdao);
         _userLookup = new UserLookup(_bdao);
+        _users = new UserManagerEJB(_bdao);
     }
 
     /** {@inheritDoc} */
