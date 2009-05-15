@@ -51,14 +51,6 @@ public class ServiceLookup {
         return _registry.<Scheduler>get(jndiPath(SearchEngine.NAME));
     }
 
-    public DataManager dataManager() {
-        return _registry.<DataManager>get(localPath(DataManager.NAME));
-    }
-
-    public UserManager localUserManager() {
-        return _registry.<UserManager>get(localPath(UserManager.NAME));
-    }
-
     public SearchEngine localSearchEngine() {
         return _registry.<SearchEngine>get(localPath(SearchEngine.NAME));
     }
