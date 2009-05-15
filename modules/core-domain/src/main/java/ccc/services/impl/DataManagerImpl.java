@@ -34,7 +34,7 @@ import ccc.services.DataManager.StreamAction;
  *
  * @author Civic Computing Ltd.
  */
-public class DataManagerEJB implements DataManager {
+public class DataManagerImpl implements DataManager {
 
     private Dao _dao;
     private CoreData _cd;
@@ -45,7 +45,7 @@ public class DataManagerEJB implements DataManager {
      * @param cd The JDBC datasource used to manage data.
      * @param dao The DAO used for CRUD operations, etc.
      */
-    public DataManagerEJB(final CoreData cd, final Dao dao) {
+    public DataManagerImpl(final CoreData cd, final Dao dao) {
         DBC.require().notNull(cd);
         DBC.require().notNull(dao);
         _cd = cd;

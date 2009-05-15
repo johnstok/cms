@@ -9,22 +9,21 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.actions;
+package ccc.services.impl;
 
 import static org.easymock.EasyMock.*;
 
 import java.util.Date;
 
 import junit.framework.TestCase;
-import ccc.commands.UpdateAliasCommand;
-import ccc.domain.Alias;
+import ccc.commands.UpdateTemplateCommand;
 import ccc.domain.LockMismatchException;
-import ccc.domain.Page;
-import ccc.domain.Resource;
+import ccc.domain.Template;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
+import ccc.services.api.TemplateDelta;
 
 
 /**
@@ -32,7 +31,7 @@ import ccc.services.Dao;
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateAliasCommandTest
+public class TemplateDaoImplTest
     extends
         TestCase {
 
@@ -41,47 +40,52 @@ public class UpdateAliasCommandTest
      * @throws LockMismatchException
      * @throws UnlockedException
      */
-    public void testUpdateAlias()
-                               throws UnlockedException, LockMismatchException {
+    public void testUpdateTemplates()
+    throws LockMismatchException, UnlockedException {
 
         // ARRANGE
-        final Alias alias = new Alias("alias", _resource);
-        alias.lock(_user);
+        final Template foo =
+            new Template("title", "description", "body", "<fields/>");
+        foo.lock(_user);
+        final TemplateDelta td = new TemplateDelta(
+            "newTitle", "newDesc", "newBody", "newDefn");
 
-        expect(_dao.find(Alias.class, alias.id())).andReturn(alias);
-        expect(_dao.find(Resource.class, _r2.id())).andReturn(_r2);
-        _audit.recordUpdate(alias, _user, _now, null, false);
-        replay(_dao, _audit);
+        expect(_dao.find(Template.class, foo.id())).andReturn(foo);
+        _al.recordUpdate(foo, _user, _now, null, false);
+        replay(_dao, _al);
+
+        final UpdateTemplateCommand ut = new UpdateTemplateCommand(_dao, _al);
+
 
         // ACT
-        _updateAlias.execute(_user, _now, _r2.id(), alias.id());
+        ut.execute(_user, _now, foo.id(), td);
+
 
         // ASSERT
-        verify(_dao, _audit);
-        assertEquals(_r2, alias.target());
+        verify(_dao, _al);
+        assertEquals("newTitle", foo.title());
+        assertEquals("newDesc", foo.description());
+        assertEquals("newBody", foo.body());
+        assertEquals("newDefn", foo.definition());
     }
+
 
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {
         _dao = createStrictMock(Dao.class);
-        _audit = createStrictMock(AuditLog.class);
-        _updateAlias = new UpdateAliasCommand(_dao, _audit);
+        _al = createStrictMock(AuditLog.class);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void tearDown() throws Exception {
-        _updateAlias = null;
-        _audit = null;
+        _al = null;
         _dao = null;
     }
 
     private Dao _dao;
-    private AuditLog _audit;
-    private UpdateAliasCommand _updateAlias;
-    private final User _user = new User("currentUser");
+    private AuditLog _al;
     private final Date _now = new Date();
-    private final Page _resource = new Page("foo");
-    private final Page _r2 = new Page("baa");
+    private final User _user = new User("user");
 }

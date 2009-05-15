@@ -64,7 +64,7 @@ import ccc.services.Scheduler;
 import ccc.services.SearchEngine;
 import ccc.services.DataManager.StreamAction;
 import ccc.services.api.ParagraphType;
-import ccc.services.impl.DataManagerEJB;
+import ccc.services.impl.DataManagerImpl;
 import ccc.services.impl.ResourceDaoImpl;
 
 
@@ -462,6 +462,6 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
     private void configureCoreData() {
         final Dao bdao = new BaseDao(_em);
         _dao = new ResourceDaoImpl(bdao);
-        _data = new DataManagerEJB(new FsCoreData(), bdao);
+        _data = new DataManagerImpl(new FsCoreData(), bdao);
     }
 }

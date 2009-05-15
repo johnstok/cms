@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.ejb3;
+package ccc.services.impl;
 
 import static org.easymock.EasyMock.*;
 
@@ -23,21 +23,21 @@ import ccc.services.CoreData;
 import ccc.services.Dao;
 import ccc.services.SearchEngine;
 import ccc.services.DataManager.StreamAction;
-import ccc.services.impl.DataManagerEJB;
+import ccc.services.impl.DataManagerImpl;
 
 
 /**
- * Tests for the {@link DataManagerEJB} class.
+ * Tests for the {@link DataManagerImpl} class.
  *
  * @author Civic Computing Ltd.
  */
-public class DataManagerEJBTest extends TestCase {
+public class DataManagerImplTest extends TestCase {
 
     private final InputStream _dummyStream =
         new ByteArrayInputStream(new byte[]{1});
 
     private Dao _dao;
-    private DataManagerEJB _dm;
+    private DataManagerImpl _dm;
     private SearchEngine _se;
     private CoreData _cd;
 
@@ -48,7 +48,7 @@ public class DataManagerEJBTest extends TestCase {
          _dao = createStrictMock(Dao.class);
          _se = createStrictMock(SearchEngine.class);
          _cd = createStrictMock(CoreData.class);
-         _dm = new DataManagerEJB(_cd, _dao);
+         _dm = new DataManagerImpl(_cd, _dao);
     }
 
     /** {@inheritDoc} */

@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.ejb3;
+package ccc.services.impl;
 
 
 import static org.easymock.EasyMock.*;
@@ -18,8 +18,6 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-
-import javax.ejb.EJBContext;
 
 import junit.framework.TestCase;
 import ccc.commands.CreateUserCommand;
@@ -33,15 +31,14 @@ import ccc.services.AuditLog;
 import ccc.services.Dao;
 import ccc.services.api.UserDelta;
 import ccc.services.api.Username;
-import ccc.services.impl.UserManagerEJB;
 
 
 /**
- * Tests for the {@link UserManagerEJB} class.
+ * Tests for the {@link UserManagerImpl} class.
  *
  * @author Civic Computing Ltd.
  */
-public class UserManagerEJBTest extends TestCase {
+public class UserManagerImplTest extends TestCase {
 
     /**
      * Test.
@@ -51,14 +48,14 @@ public class UserManagerEJBTest extends TestCase {
         // ARRANGE
         expect(_dao.exists("usersWithUsername", User.class, "blat"))
             .andReturn(Boolean.TRUE);
-        replay(_context, _dao);
+        replayAll();
 
         // ACT
         final boolean actual = _um.usernameExists("blat");
 
         // ASSERT
         assertEquals(true, actual);
-        verify(_context, _dao);
+        verifyAll();
     }
 
     /**
@@ -69,7 +66,7 @@ public class UserManagerEJBTest extends TestCase {
         // ARRANGE
         expect(_dao.exists("usersWithUsername", User.class, "blat"))
             .andReturn(Boolean.FALSE);
-        replay(_context, _dao);
+        replayAll();
 
 
         // ACT
@@ -77,7 +74,7 @@ public class UserManagerEJBTest extends TestCase {
 
         // ASSERT
         assertEquals(false, actual);
-        verify(_context, _dao);
+        verifyAll();
     }
 
     /**
@@ -111,14 +108,14 @@ public class UserManagerEJBTest extends TestCase {
         // ARRANGE
         expect(_dao.uniquify("users", User.class))
             .andReturn(new ArrayList<User>());
-        replay(_context, _dao);
+        replayAll();
 
 
         // ACT
         _um.listUsers();
 
         // ASSERT
-        verify(_context, _dao);
+        verifyAll();
 
     }
 
@@ -132,13 +129,13 @@ public class UserManagerEJBTest extends TestCase {
                             User.class,
                             CreatorRoles.ADMINISTRATOR))
             .andReturn(new ArrayList<User>());
-        replay(_context, _dao);
+        replayAll();
 
         // ACT
         _um.listUsersWithRole(CreatorRoles.ADMINISTRATOR);
 
         // ASSERT
-        verify(_context, _dao);
+        verifyAll();
 
     }
 
@@ -150,13 +147,13 @@ public class UserManagerEJBTest extends TestCase {
         // ARRANGE
         expect(_dao.list("usersWithUsername", User.class, "testname"))
             .andReturn(new ArrayList<User>());
-        replay(_context, _dao);
+        replayAll();
 
         // ACT
         _um.listUsersWithUsername("testname");
 
         // ASSERT
-        verify(_context, _dao);
+        verifyAll();
 
     }
 
@@ -168,13 +165,13 @@ public class UserManagerEJBTest extends TestCase {
         // ARRANGE
         expect(_dao.list("usersWithEmail", User.class, "test@civicuk.com"))
             .andReturn(new ArrayList<User>());
-        replay(_context, _dao);
+        replayAll();
 
         // ACT
         _um.listUsersWithEmail("test@civicuk.com");
 
         // ASSERT
-        verify(_context, _dao);
+        verifyAll();
 
     }
 
@@ -228,9 +225,8 @@ public class UserManagerEJBTest extends TestCase {
     private AuditLog _audit;
     private UserDelta _uDelta;
     private Dao _dao;
-    private EJBContext _context;
     private Principal _p;
-    private UserManagerEJB _um;
+    private UserManagerImpl _um;
 
     /** {@inheritDoc} */
     @Override
@@ -248,9 +244,8 @@ public class UserManagerEJBTest extends TestCase {
             }
         };
         _dao = createStrictMock(Dao.class);
-        _context = createStrictMock(EJBContext.class);
         _audit = createStrictMock(AuditLog.class);
-        _um = new UserManagerEJB(_dao);
+        _um = new UserManagerImpl(_dao);
     }
 
     /** {@inheritDoc} */
@@ -265,10 +260,10 @@ public class UserManagerEJBTest extends TestCase {
     }
 
     private void verifyAll() {
-        verify(_context, _dao, _audit);
+        verify(_dao, _audit);
     }
 
     private void replayAll() {
-        replay(_context, _dao, _audit);
+        replay(_dao, _audit);
     }
 }

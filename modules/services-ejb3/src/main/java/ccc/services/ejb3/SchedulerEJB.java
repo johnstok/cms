@@ -42,7 +42,7 @@ import ccc.services.Dao;
 import ccc.services.QueryNames;
 import ccc.services.Scheduler;
 import ccc.services.api.Commands;
-import ccc.services.impl.ActionExecutorEJB;
+import ccc.services.impl.ActionExecutorImpl;
 
 
 /**
@@ -159,6 +159,6 @@ public class SchedulerEJB implements Scheduler, ActionDao {
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
         _dao = new BaseDao(_em);
-        _executor = new ActionExecutorEJB(_commands);
+        _executor = new ActionExecutorImpl(_commands);
     }
 }
