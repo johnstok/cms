@@ -33,10 +33,10 @@ import ccc.services.QueryNames;
  *
  * @author Civic Computing Ltd.
  */
-public class AuditLogEJB
+public class AuditLogImpl
     implements
         AuditLog {
-    private static final Logger LOG = Logger.getLogger(AuditLogEJB.class);
+    private static final Logger LOG = Logger.getLogger(AuditLogImpl.class);
 
     private Dao _em;
 
@@ -44,7 +44,7 @@ public class AuditLogEJB
      * Constructor.
      * @param em The entity manager used to perform queries.
      */
-    public AuditLogEJB(final Dao em) {
+    public AuditLogImpl(final Dao em) {
         DBC.require().notNull(em);
         _em = em;
     }

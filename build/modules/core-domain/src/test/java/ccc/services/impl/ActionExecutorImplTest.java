@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.ejb3;
+package ccc.services.impl;
 
 import static org.easymock.EasyMock.*;
 
@@ -27,15 +27,15 @@ import ccc.services.api.CommandType;
 import ccc.services.api.Commands;
 import ccc.services.api.Failure;
 import ccc.services.api.ID;
-import ccc.services.impl.ActionExecutorEJB;
+import ccc.services.impl.ActionExecutorImpl;
 
 
 /**
- * Tests for the {@link ActionExecutorEJB} class.
+ * Tests for the {@link ActionExecutorImpl} class.
  *
  * @author Civic Computing Ltd.
  */
-public class ActionExecutorEJBTest
+public class ActionExecutorImplTest
     extends
         TestCase {
 
@@ -82,7 +82,7 @@ public class ActionExecutorEJBTest
     @Override
     protected void setUp() {
         _commands = createStrictMock(Commands.class);
-        _ea = new ActionExecutorEJB(_commands);
+        _ea = new ActionExecutorImpl(_commands);
     }
     /** {@inheritDoc} */
     @Override
@@ -91,6 +91,6 @@ public class ActionExecutorEJBTest
         _commands = null;
     }
 
-    private ActionExecutorEJB _ea;
+    private ActionExecutorImpl _ea;
     private Commands _commands;
 }

@@ -81,7 +81,6 @@ import ccc.domain.User;
 import ccc.persistence.jpa.BaseDao;
 import ccc.services.AuditLog;
 import ccc.services.ModelTranslation;
-import ccc.services.ResourceDao;
 import ccc.services.UserLookup;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.CommandFailedException;
@@ -95,8 +94,7 @@ import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
-import ccc.services.impl.AuditLogEJB;
-import ccc.services.impl.ResourceDaoImpl;
+import ccc.services.impl.AuditLogImpl;
 
 
 /**
@@ -118,7 +116,6 @@ public class CommandsEJB
     @PersistenceContext private EntityManager _em;
     @javax.annotation.Resource private EJBContext _context;
 
-    private ResourceDao        _resources;
     private AuditLog           _audit;
     private UserLookup         _userLookup;
     private BaseDao            _bdao;
@@ -632,7 +629,7 @@ public class CommandsEJB
           action,
           executeAfter,
           loggedInUser(),
-          _resources.find(Resource.class, toUUID(resourceId)),
+          _bdao.find(Resource.class, toUUID(resourceId)),
           new Snapshot(parameters),
           comment,
           isMajorEdit);
@@ -741,8 +738,7 @@ public class CommandsEJB
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
         _bdao = new BaseDao(_em);
-        _audit = new AuditLogEJB(_bdao);
-        _resources = new ResourceDaoImpl(_bdao);
+        _audit = new AuditLogImpl(_bdao);
         _userLookup = new UserLookup(_bdao);
     }
 

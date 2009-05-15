@@ -60,7 +60,7 @@ import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
 import ccc.services.api.Username;
 import ccc.services.impl.ResourceDaoImpl;
-import ccc.services.impl.UserManagerEJB;
+import ccc.services.impl.UserManagerImpl;
 
 
 /**
@@ -302,7 +302,7 @@ public final class QueriesEJB
         _bdao = new BaseDao(_em);
         _resources = new ResourceDaoImpl(_bdao);
         _userLookup = new UserLookup(_bdao);
-        _users = new UserManagerEJB(_bdao);
+        _users = new UserManagerImpl(_bdao);
     }
 
     /** {@inheritDoc} */

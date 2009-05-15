@@ -27,7 +27,7 @@ import ccc.services.StatefulReader;
  *
  * @author Civic Computing Ltd
  */
-public final class StatefulReaderEJB
+public final class StatefulReaderImpl
     implements
         StatefulReader {
 
@@ -39,7 +39,7 @@ public final class StatefulReaderEJB
      *
      * @param entityManager A JPA entity manager.
      */
-    public StatefulReaderEJB(final AuditLog log, final ResourceDao resources) {
+    public StatefulReaderImpl(final AuditLog log, final ResourceDao resources) {
         _log = log;
         _resources = resources;
     }

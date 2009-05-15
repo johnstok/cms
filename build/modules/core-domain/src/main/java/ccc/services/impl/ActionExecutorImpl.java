@@ -28,9 +28,9 @@ import ccc.services.api.ID;
  *
  * @author Civic Computing Ltd.
  */
-public class ActionExecutorEJB implements ActionExecutor {
+public class ActionExecutorImpl implements ActionExecutor {
     private static final Logger LOG =
-        Logger.getLogger(ActionExecutorEJB.class.getName());
+        Logger.getLogger(ActionExecutorImpl.class.getName());
 
     private final Commands _commands;
 
@@ -39,7 +39,7 @@ public class ActionExecutorEJB implements ActionExecutor {
      *
      * @param commands The commands implementation.
      */
-    public ActionExecutorEJB(final Commands commands) {
+    public ActionExecutorImpl(final Commands commands) {
         DBC.require().notNull(commands);
         _commands = commands;
     }

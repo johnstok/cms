@@ -23,10 +23,10 @@ import ccc.services.Dao;
 import ccc.services.DataManager;
 import ccc.services.StatefulReader;
 import ccc.services.UserLookup;
-import ccc.services.impl.AuditLogEJB;
-import ccc.services.impl.DataManagerEJB;
+import ccc.services.impl.AuditLogImpl;
+import ccc.services.impl.DataManagerImpl;
 import ccc.services.impl.ResourceDaoImpl;
-import ccc.services.impl.StatefulReaderEJB;
+import ccc.services.impl.StatefulReaderImpl;
 
 
 /**
@@ -62,14 +62,14 @@ public class ReaderAction
             SessionKeys.CURRENT_USER,
             ul.loggedInUser(req.getUserPrincipal()));
 
-        final AuditLog al = new AuditLogEJB(dao);
+        final AuditLog al = new AuditLogImpl(dao);
         req.setAttribute(SessionKeys.AUDIT_KEY, al);
 
-        final DataManager dm = new DataManagerEJB(new FsCoreData(), dao);
+        final DataManager dm = new DataManagerImpl(new FsCoreData(), dao);
         req.setAttribute(SessionKeys.DATA_KEY, dm);
 
         final StatefulReader sr =
-            new StatefulReaderEJB(
+            new StatefulReaderImpl(
                 al,
                 new ResourceDaoImpl(dao));
         req.setAttribute(RenderingKeys.READER_KEY, sr);

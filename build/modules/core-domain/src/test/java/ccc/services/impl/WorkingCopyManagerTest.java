@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.ejb3;
+package ccc.services.impl;
 
 import static org.easymock.EasyMock.*;
 

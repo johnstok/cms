@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.ejb3;
+package ccc.services.impl;
 
 import static org.easymock.EasyMock.*;
 
@@ -28,7 +28,7 @@ import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
 import ccc.services.api.CommandType;
-import ccc.services.impl.AuditLogEJB;
+import ccc.services.impl.AuditLogImpl;
 
 
 /**
@@ -36,7 +36,7 @@ import ccc.services.impl.AuditLogEJB;
  *
  * @author Civic Computing Ltd.
  */
-public class AuditLogEJBTest
+public class AuditLogImplTest
     extends
         TestCase {
 
@@ -47,7 +47,7 @@ public class AuditLogEJBTest
 
         // ARRANGE
         replay(_em);
-        final AuditLog al = new AuditLogEJB(_em);
+        final AuditLog al = new AuditLogImpl(_em);
 
         // ACT
         try {
@@ -72,7 +72,7 @@ public class AuditLogEJBTest
         _em.create(capture(le));
         replay(_em);
 
-        final AuditLog al = new AuditLogEJB(_em);
+        final AuditLog al = new AuditLogImpl(_em);
         final Page p = new Page("foo");
         p.lock(_actor);
 
@@ -97,7 +97,7 @@ public class AuditLogEJBTest
         _em.create(capture(le));
         replay(_em);
 
-        final AuditLog al = new AuditLogEJB(_em);
+        final AuditLog al = new AuditLogImpl(_em);
         final Page p = new Page("foo");
 
         // ACT
@@ -120,7 +120,7 @@ public class AuditLogEJBTest
         _em.create(capture(le));
         replay(_em);
 
-        final AuditLog al = new AuditLogEJB(_em);
+        final AuditLog al = new AuditLogImpl(_em);
         final Page p = new Page("foo");
 
         // ACT
@@ -143,7 +143,7 @@ public class AuditLogEJBTest
         _em.create(capture(le));
         replay(_em);
 
-        final AuditLog al = new AuditLogEJB(_em);
+        final AuditLog al = new AuditLogImpl(_em);
         final Page p = new Page("foo");
 
         // ACT
@@ -168,7 +168,7 @@ public class AuditLogEJBTest
         _em.create(capture(le));
         replay(_em);
 
-        final AuditLog al = new AuditLogEJB(_em);
+        final AuditLog al = new AuditLogImpl(_em);
         final Page p = new Page("foo");
         final Folder f = new Folder("baz");
         f.add(p);
@@ -193,7 +193,7 @@ public class AuditLogEJBTest
         _em.create(capture(le));
         replay(_em);
 
-        final AuditLog al = new AuditLogEJB(_em);
+        final AuditLog al = new AuditLogImpl(_em);
         final Page p = new Page("foo");
 
         // ACT

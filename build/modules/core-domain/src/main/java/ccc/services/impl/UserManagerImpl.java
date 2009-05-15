@@ -27,7 +27,7 @@ import ccc.services.UserManager;
  *
  * @author Civic Computing Ltd.
  */
-public class UserManagerEJB implements UserManager {
+public class UserManagerImpl implements UserManager {
 
     private Dao _dao;
 
@@ -37,7 +37,7 @@ public class UserManagerEJB implements UserManager {
      *
      * @param dao The ResourceDao used for CRUD operations, etc.
      */
-    public UserManagerEJB(final Dao dao) {
+    public UserManagerImpl(final Dao dao) {
         _dao = dao;
     }
 
