@@ -45,7 +45,7 @@ public class ApplyWorkingCopyAction
     /** {@inheritDoc} */
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        _commands.applyWorkingCopyToFile(
+        _commands.applyWorkingCopy(
             item.getId(),
             new ErrorReportingCallback<Void>(){
                 public void onSuccess(final Void arg0) {

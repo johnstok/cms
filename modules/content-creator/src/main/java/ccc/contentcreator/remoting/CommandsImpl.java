@@ -19,9 +19,9 @@ import java.util.Map;
 import javax.ejb.EJB;
 
 import ccc.contentcreator.api.CommandService;
-import ccc.services.api.CommandType;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.CommandFailedException;
+import ccc.services.api.CommandType;
 import ccc.services.api.Commands;
 import ccc.services.api.Duration;
 import ccc.services.api.ID;
@@ -296,9 +296,9 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
-    public void applyWorkingCopyToFile(final ID fileId)
+    public void applyWorkingCopy(final ID fileId)
     throws CommandFailedException {
-        _commands.applyWorkingCopyToFile(fileId);
+        _commands.applyWorkingCopy(fileId);
     }
 
     /** {@inheritDoc} */
@@ -314,6 +314,24 @@ public class CommandsImpl
     public void updateUserPassword(final ID userId, final String password)
     throws CommandFailedException {
         _commands.updateUserPassword(userId, password);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void applyWorkingCopy(final ID resourceId,
+                                 final ID userId,
+                                 final Date happenedOn,
+                                 final boolean isMajorEdit,
+                                 final String comment) {
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void unpublish(final ID resourceId,
+                          final ID userId,
+                          final Date publishDate) {
+        throw new UnsupportedOperationException("Method not implemented.");
     }
 
 

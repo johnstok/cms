@@ -15,8 +15,6 @@ import static org.easymock.EasyMock.*;
 
 import java.util.Date;
 
-import javax.persistence.EntityManager;
-
 import junit.framework.TestCase;
 import ccc.domain.Action;
 import ccc.domain.Page;
@@ -24,15 +22,15 @@ import ccc.domain.Snapshot;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.api.ActionStatus;
-import ccc.services.api.CommandType;
 import ccc.services.api.CommandFailedException;
+import ccc.services.api.CommandType;
 import ccc.services.api.Commands;
 import ccc.services.api.Failure;
 import ccc.services.api.ID;
 
 
 /**
- * TODO: Add Description for this type.
+ * Tests for the {@link ActionExecutorEJB} class.
  *
  * @author Civic Computing Ltd.
  */
@@ -42,10 +40,10 @@ public class ActionExecutorEJBTest
 
     /**
      * Test.
-     * @throws CommandFailedException
+     * @throws CommandFailedException From the Commands API.
      */
     public void testActionIsFailedIfMethodThrowsException()
-                                                     throws CommandFailedException {
+                                                 throws CommandFailedException {
 
         // ARRANGE
         final Page p = new Page("foo");
@@ -65,13 +63,13 @@ public class ActionExecutorEJBTest
             eq(new ID(u.id().toString())),
             isA(Date.class));
         expectLastCall().andThrow(new UnlockedException(p).toRemoteException());
-        replay(_em, _commands);
+        replay(_commands);
 
         // ACT
         _ea.executeAction(a);
 
         // ASSERT
-        verify(_em, _commands);
+        verify(_commands);
         assertEquals(ActionStatus.Failed, a.status());
         assertEquals(
             Failure.UNLOCKED,
@@ -81,21 +79,17 @@ public class ActionExecutorEJBTest
 
     /** {@inheritDoc} */
     @Override
-    protected void setUp() throws Exception {
-        _em = createStrictMock(EntityManager.class);
+    protected void setUp() {
         _commands = createStrictMock(Commands.class);
-        _ea = new ActionExecutorEJB(_em, _commands);
-        _ea.configureCoreData();
+        _ea = new ActionExecutorEJB(_commands);
     }
     /** {@inheritDoc} */
     @Override
-    protected void tearDown() throws Exception {
-        _em = null;
+    protected void tearDown() {
         _ea = null;
         _commands = null;
     }
 
     private ActionExecutorEJB _ea;
-    private EntityManager _em;
     private Commands _commands;
 }

@@ -20,6 +20,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.annotation.security.RolesAllowed;
+import javax.annotation.security.RunAs;
 import javax.ejb.EJB;
 import javax.ejb.EJBContext;
 import javax.ejb.Local;
@@ -40,6 +41,7 @@ import ccc.services.ActionExecutor;
 import ccc.services.Dao;
 import ccc.services.QueryNames;
 import ccc.services.Scheduler;
+import ccc.services.api.Commands;
 
 
 /**
@@ -52,6 +54,7 @@ import ccc.services.Scheduler;
 @Local(ActionDao.class)
 @Remote(Scheduler.class)
 @RolesAllowed({"ADMINISTRATOR"})
+@RunAs("CONTENT_CREATOR")
 public class SchedulerEJB implements Scheduler, ActionDao {
     private static final int TIMEOUT_DELAY_SECS = 60*1000;
     private static final int INITIAL_DELAY_SECS = 30*1000;
@@ -60,8 +63,10 @@ public class SchedulerEJB implements Scheduler, ActionDao {
         Logger.getLogger(SchedulerEJB.class.getName());
 
     @Resource private EJBContext _context;
-    @EJB(name=ActionExecutor.NAME) private ActionExecutor _executor;
     @PersistenceContext private EntityManager _em;
+    @EJB(name=Commands.NAME) private transient Commands _commands;
+
+    private ActionExecutor _executor;
     private Dao _dao;
 
     /** Constructor. */
@@ -153,5 +158,6 @@ public class SchedulerEJB implements Scheduler, ActionDao {
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
         _dao = new BaseDao(_em);
+        _executor = new ActionExecutorEJB(_commands);
     }
 }
