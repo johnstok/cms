@@ -15,7 +15,6 @@ import static org.easymock.EasyMock.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.sql.SQLException;
 
 import junit.framework.TestCase;
 import ccc.domain.Data;
@@ -23,7 +22,6 @@ import ccc.services.CoreData;
 import ccc.services.Dao;
 import ccc.services.SearchEngine;
 import ccc.services.DataManager.StreamAction;
-import ccc.services.impl.DataManagerImpl;
 
 
 /**
@@ -44,7 +42,7 @@ public class DataManagerImplTest extends TestCase {
 
     /** {@inheritDoc} */
     @Override
-    protected void setUp() throws Exception {
+    protected void setUp() {
          _dao = createStrictMock(Dao.class);
          _se = createStrictMock(SearchEngine.class);
          _cd = createStrictMock(CoreData.class);
@@ -53,7 +51,7 @@ public class DataManagerImplTest extends TestCase {
 
     /** {@inheritDoc} */
     @Override
-    protected void tearDown() throws Exception {
+    protected void tearDown() {
         _dao = null;
         _dm = null;
         _cd = null;
@@ -144,10 +142,8 @@ public class DataManagerImplTest extends TestCase {
 
     /**
      * Test.
-     * @throws SQLException sometimes.
      */
-    @SuppressWarnings("boxing")
-    public void testCreate() throws SQLException {
+    public void testCreate() {
 
         // ARRANGE
         final Data d = new Data();
@@ -164,16 +160,14 @@ public class DataManagerImplTest extends TestCase {
 
     /**
      * Test.
-     * @throws SQLException sometimes.
      */
-    @SuppressWarnings("boxing")
-    public void testRetrieve() throws SQLException {
+    public void testRetrieve() {
 
         // ARRANGE
         final Data d = new Data();
         final StreamAction sa = new StreamAction(){
             @Override
-            public void execute(final InputStream is) throws Exception {
+            public void execute(final InputStream is) {
                 // No Op
             }};
         _cd.retrieve(d, sa);

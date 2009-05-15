@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.ejb3;
+package ccc.api.ejb3;
 
 import static javax.ejb.TransactionAttributeType.*;
 

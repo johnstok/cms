@@ -115,7 +115,7 @@ public class DefaultRenderer
                                       final Map<String, String[]> parameters) {
         if (!_respectVisibility) {
             if (resource instanceof WorkingCopyAware) {
-                final WorkingCopyAware p = (WorkingCopyAware) resource;
+                final WorkingCopyAware p = resource;
                 if (null!=p.workingCopy()) {
                     p.applySnapshot(p.workingCopy());
                 } else {
@@ -134,7 +134,7 @@ public class DefaultRenderer
         if (!_respectVisibility) {
             if (resource instanceof WorkingCopyAware) {
 
-                final WorkingCopyAware sa = (WorkingCopyAware) resource;
+                final WorkingCopyAware sa = resource;
 
                 if (!parameters.containsKey("v")) {
                     throw new NotFoundException();
