@@ -85,9 +85,9 @@ import ccc.services.ModelTranslation;
 import ccc.services.ResourceDao;
 import ccc.services.ResourceDaoImpl;
 import ccc.services.UserLookup;
-import ccc.services.api.CommandType;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.CommandFailedException;
+import ccc.services.api.CommandType;
 import ccc.services.api.Commands;
 import ccc.services.api.Duration;
 import ccc.services.api.ID;
@@ -129,7 +129,7 @@ public class CommandsEJB
     public ResourceSummary createAlias(final ID parentId,
                                        final String name,
                                        final ID targetId)
-                                                     throws CommandFailedException {
+                                                 throws CommandFailedException {
         try {
             return mapResource(
                 new CreateAliasCommand(_bdao, _audit).execute(
@@ -149,7 +149,7 @@ public class CommandsEJB
     @RolesAllowed({"CONTENT_CREATOR"})
     public ResourceSummary createFolder(final ID parentId,
                                         final String name)
-                                                     throws CommandFailedException {
+                                                 throws CommandFailedException {
         return createFolder(parentId, name, null);
 
     }
@@ -160,7 +160,7 @@ public class CommandsEJB
     public ResourceSummary createFolder(final ID parentId,
                                         final String name,
                                         final String title)
-                                                     throws CommandFailedException {
+                                                 throws CommandFailedException {
         try {
             return mapResource(
                 new CreateFolderCommand(_bdao, _audit).execute(
@@ -179,7 +179,7 @@ public class CommandsEJB
                                       final String name,
                                       final boolean publish,
                                       final ID templateId)
-                                                     throws CommandFailedException {
+                                                 throws CommandFailedException {
         try {
             final Page p = new CreatePageCommand(_bdao, _audit).execute(
                 loggedInUser(),
@@ -202,7 +202,7 @@ public class CommandsEJB
     public ResourceSummary createTemplate(final ID parentId,
                                           final TemplateDelta delta,
                                           final String name)
-                                                     throws CommandFailedException {
+                                                 throws CommandFailedException {
         try {
             return mapResource(
                 new CreateTemplateCommand(_bdao, _audit).execute(
@@ -333,8 +333,25 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({"CONTENT_CREATOR"})
+    public void unpublish(final ID resourceId, final ID userId, final Date publishDate)
+                                                 throws CommandFailedException {
+        try {
+            new UnpublishResourceCommand(_bdao, _audit).execute(
+                _bdao.find(User.class, toUUID(userId)),
+                publishDate,
+                toUUID(resourceId));
+
+        } catch (final RemoteExceptionSupport e) {
+            throw fail(e);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
     public void updateAlias(final ID aliasId,
-                            final AliasDelta delta) throws CommandFailedException {
+                            final AliasDelta delta)
+                                                 throws CommandFailedException {
         try {
             new UpdateAliasCommand(_bdao, _audit).execute(
                 loggedInUser(),
@@ -354,7 +371,7 @@ public class CommandsEJB
                            final PageDelta delta,
                            final String comment,
                            final boolean isMajorEdit)
-                                                     throws CommandFailedException {
+                                                 throws CommandFailedException {
         try {
             new UpdatePageCommand(_bdao, _audit).execute(
                 loggedInUser(),
@@ -374,7 +391,7 @@ public class CommandsEJB
     @RolesAllowed({"CONTENT_CREATOR"})
     public void updateWorkingCopy(final ID pageId,
                                   final PageDelta delta)
-                                                     throws CommandFailedException {
+                                                 throws CommandFailedException {
         try {
             // FIXME: A delta and a working copy are the thing!
 
@@ -396,8 +413,8 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({"CONTENT_CREATOR"})
-    public void createWorkingCopy(final ID resourceId,
-                                  final long index) throws CommandFailedException {
+    public void createWorkingCopy(final ID resourceId, final long index)
+                                                 throws CommandFailedException {
         try {
             final UUID resourceUuid = toUUID(resourceId);
             final LogEntry le = _audit.findEntryForIndex(index);
@@ -422,7 +439,7 @@ public class CommandsEJB
     @RolesAllowed({"CONTENT_CREATOR"})
     public void updateResourceTemplate(final ID resourceId,
                                        final ID templateId)
-                                                     throws CommandFailedException {
+                                                 throws CommandFailedException {
         try {
             new ChangeTemplateForResourceCommand(_bdao, _audit).execute(
                 loggedInUser(),
@@ -455,7 +472,7 @@ public class CommandsEJB
     @RolesAllowed({"CONTENT_CREATOR"})
     public void updateTemplate(final ID templateId,
                                final TemplateDelta delta)
-                                                     throws CommandFailedException {
+                                                 throws CommandFailedException {
         try {
             new UpdateTemplateCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), toUUID(templateId), delta);
@@ -477,7 +494,7 @@ public class CommandsEJB
     @Override
     @RolesAllowed({"ADMINISTRATOR"})
     public ResourceSummary createRoot(final String name)
-                                                     throws CommandFailedException {
+                                                 throws CommandFailedException {
         try {
             final Folder f = new Folder(name);
             new CreateRootCommand(_bdao, _audit).execute(
@@ -493,7 +510,7 @@ public class CommandsEJB
     @RolesAllowed({"CONTENT_CREATOR"})
     public void includeInMainMenu(final ID resourceId,
                                   final boolean include)
-                                                     throws CommandFailedException {
+                                                 throws CommandFailedException {
         try {
             new IncludeInMainMenuCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), toUUID(resourceId), include);
@@ -535,7 +552,7 @@ public class CommandsEJB
     @RolesAllowed({"CONTENT_CREATOR"})
     public void updateMetadata(final ID resourceId,
                                final Map<String, String> metadata)
-                                                     throws CommandFailedException {
+                                                 throws CommandFailedException {
         try {
             new UpdateResourceMetadataRolesCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), toUUID(resourceId), metadata);
@@ -550,7 +567,7 @@ public class CommandsEJB
     @RolesAllowed({"CONTENT_CREATOR"})
     public void updateFolderSortOrder(final ID folderId,
                                       final String sortOrder)
-                                                     throws CommandFailedException {
+                                                 throws CommandFailedException {
         try {
             new UpdateFolderCommand(_bdao, _audit).execute(
                 loggedInUser(),
@@ -567,7 +584,7 @@ public class CommandsEJB
     @Override
     @RolesAllowed({"CONTENT_CREATOR"})
     public void clearWorkingCopy(final ID resourceId)
-                                                     throws CommandFailedException {
+                                                 throws CommandFailedException {
         try {
             new ClearWorkingCopyCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), toUUID(resourceId));
@@ -582,7 +599,7 @@ public class CommandsEJB
     @RolesAllowed({"ADMINISTRATOR"})
     public ResourceSummary createSearch(final ID parentId,
                                         final String title)
-                                                     throws CommandFailedException {
+                                                 throws CommandFailedException {
         try {
             return mapResource(
                 new CreateSearchCommand(_bdao, _audit).execute(
@@ -628,7 +645,7 @@ public class CommandsEJB
     @RolesAllowed({"CONTENT_CREATOR"})
     public void reorder(final ID folderId,
                         final List<String> order) // FIXME: Should be List<ID>
-                                                     throws CommandFailedException {
+                                                 throws CommandFailedException {
         try {
             final List<UUID> newOrder = new ArrayList<UUID>();
             for (final String entry : order) {
@@ -648,7 +665,7 @@ public class CommandsEJB
     @RolesAllowed({"CONTENT_CREATOR"})
     public void changeRoles(final ID resourceId,
                             final Collection<String> roles)
-                                                     throws CommandFailedException {
+                                                 throws CommandFailedException {
         try {
             new UpdateResourceRolesCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), toUUID(resourceId), roles);
@@ -661,11 +678,33 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({"CONTENT_CREATOR"})
-    public void applyWorkingCopyToFile(final ID fileId)
-                                                     throws CommandFailedException {
+    public void applyWorkingCopy(final ID resourceId)
+                                                 throws CommandFailedException {
         try {
             new ApplyWorkingCopyCommand(_bdao, _audit).execute(
-                loggedInUser(), new Date(), toUUID(fileId), null, false);
+                loggedInUser(), new Date(), toUUID(resourceId), null, false);
+
+        } catch (final RemoteExceptionSupport e) {
+            throw fail(e);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
+    public void applyWorkingCopy(final ID resourceId,
+                                 final ID userId,
+                                 final Date happenedOn,
+                                 final boolean isMajorEdit,
+                                 final String comment)
+                                                 throws CommandFailedException {
+        try {
+            new ApplyWorkingCopyCommand(_bdao, _audit).execute(
+                _bdao.find(User.class, toUUID(userId)),
+                happenedOn,
+                toUUID(resourceId),
+                comment,
+                isMajorEdit);
 
         } catch (final RemoteExceptionSupport e) {
             throw fail(e);
@@ -677,7 +716,7 @@ public class CommandsEJB
     @RolesAllowed({"SITE_BUILDER"})
     public void updateCacheDuration(final ID resourceId,
                                     final Duration duration)
-                                                     throws CommandFailedException {
+                                                 throws CommandFailedException {
         try {
             new UpdateCachingCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), toUUID(resourceId), duration);

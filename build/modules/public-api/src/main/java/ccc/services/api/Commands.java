@@ -139,6 +139,16 @@ public interface Commands {
     void unpublish(ID resourceId) throws CommandFailedException;
 
     /**
+     * Unpublish the specified resource.
+     *
+     * @param resourceId The id of the resource to update.
+     * @param userId The id of the un-publishing user.
+     * @param publishDate The date the resource was un-published.
+     */
+    void unpublish(ID resourceId, ID userId, Date publishDate)
+                                                  throws CommandFailedException;
+
+    /**
      * TODO: Add a description of this method.
      *
      * @param resourceId The id of the resource to update.
@@ -278,7 +288,13 @@ public interface Commands {
      */
     void changeRoles(ID resourceId, Collection<String> roles) throws CommandFailedException;
 
-    void applyWorkingCopyToFile(ID fileId) throws CommandFailedException;
+    void applyWorkingCopy(ID resourceId) throws CommandFailedException;
+
+    void applyWorkingCopy(ID resourceId,
+                          ID userId,
+                          Date happenedOn,
+                          boolean isMajorEdit,
+                          String comment) throws CommandFailedException;
 
     /**
      * Update the period that a resource should be cached for.

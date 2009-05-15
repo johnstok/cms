@@ -16,8 +16,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import ccc.services.api.CommandType;
 import ccc.services.api.AliasDelta;
+import ccc.services.api.CommandType;
 import ccc.services.api.Duration;
 import ccc.services.api.ID;
 import ccc.services.api.PageDelta;
@@ -95,6 +95,11 @@ public interface CommandServiceAsync {
     void unpublish(ID resourceId,
                    AsyncCallback<Void> callback);
 
+    void unpublish(ID resourceId,
+                   final ID userId,
+                   final Date publishDate,
+                   AsyncCallback<Void> callback);
+
     void includeInMainMenu(ID resourceId,
                            boolean include,
                            AsyncCallback<Void> callback);
@@ -142,8 +147,14 @@ public interface CommandServiceAsync {
                      final Collection<String> roles,
                      AsyncCallback<Void> callback);
 
-    void applyWorkingCopyToFile(ID fileId,
-                                AsyncCallback<Void> callback);
+    void applyWorkingCopy(ID resourceId, AsyncCallback<Void> callback);
+
+    void applyWorkingCopy(ID resourceId,
+                          ID userId,
+                          Date happenedOn,
+                          boolean isMajorEdit,
+                          String comment,
+                          AsyncCallback<Void> callback);
 
     void updateCacheDuration(ID resourceId,
                              Duration duration,
