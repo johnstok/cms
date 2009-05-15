@@ -11,8 +11,6 @@
  */
 package ccc.contentcreator.dialogs;
 
-import static ccc.services.api.ParagraphType.*;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -26,7 +24,6 @@ import ccc.contentcreator.client.EditPagePanel;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.PageElement;
 import ccc.contentcreator.client.SingleSelectionModel;
-import ccc.contentcreator.client.ui.FCKEditor;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.services.api.ID;
@@ -48,8 +45,6 @@ import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
-import com.extjs.gxt.ui.client.widget.form.DateField;
-import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
@@ -77,12 +72,12 @@ public class CreatePageDialog
     private final EditPagePanel _second = new EditPagePanel();
     private final ContentPanel _third = new ContentPanel();
 
-    private ListStore<TemplateSummaryModelData> _templatesStore =
+    private final ListStore<TemplateSummaryModelData> _templatesStore =
         new ListStore<TemplateSummaryModelData>();
-    private Grid<TemplateSummaryModelData> _grid;
+    private final Grid<TemplateSummaryModelData> _grid;
 
-    private ContentPanel _descriptionPanel = new ContentPanel(new RowLayout());
-    private ContentPanel _rightPanel = new ContentPanel(new RowLayout());
+    private final ContentPanel _descriptionPanel = new ContentPanel(new RowLayout());
+    private final ContentPanel _rightPanel = new ContentPanel(new RowLayout());
 
     private final SingleSelectionModel _ssm;
     private final ResourceSummaryModelData _parent;
@@ -90,7 +85,7 @@ public class CreatePageDialog
     private final CheckBox _publish = new CheckBox();
 
 
-    private Text _description = new Text("");
+    private final Text _description = new Text("");
 
     /**
      * Constructor.
@@ -109,7 +104,7 @@ public class CreatePageDialog
 
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
         final ColumnConfig nameColumn = new ColumnConfig();
-        nameColumn.setId(_uiConstants.name());
+        nameColumn.setId(TemplateSummaryModelData.Property.NAME.name());
         nameColumn.setHeader(_uiConstants.name());
         nameColumn.setWidth(200);
         nameColumn.setRenderer(createIdRenderer());
