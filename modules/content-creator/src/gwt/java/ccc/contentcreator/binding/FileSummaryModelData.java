@@ -17,8 +17,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import ccc.services.api.ActionSummary;
-import ccc.services.api.FileSummary;
+import ccc.api.ActionSummary;
+import ccc.api.FileSummary;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.util.Util;

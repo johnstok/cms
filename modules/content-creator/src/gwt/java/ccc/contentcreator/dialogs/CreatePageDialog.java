@@ -15,6 +15,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import ccc.api.ID;
+import ccc.api.PageDelta;
+import ccc.api.ParagraphDelta;
+import ccc.api.ResourceSummary;
+import ccc.api.TemplateSummary;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
@@ -26,11 +31,6 @@ import ccc.contentcreator.client.PageElement;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
-import ccc.services.api.ID;
-import ccc.services.api.PageDelta;
-import ccc.services.api.ParagraphDelta;
-import ccc.services.api.ResourceSummary;
-import ccc.services.api.TemplateSummary;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style;

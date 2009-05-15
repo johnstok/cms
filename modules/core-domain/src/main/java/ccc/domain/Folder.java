@@ -16,8 +16,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import ccc.api.ResourceType;
 import ccc.commons.DBC;
-import ccc.services.api.ResourceType;
 
 
 /**

@@ -13,9 +13,9 @@ package ccc.contentcreator.client;
 
 import java.util.List;
 
+import ccc.api.ResourceSummary;
+import ccc.api.UserSummary;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.services.api.ResourceSummary;
-import ccc.services.api.UserSummary;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.Listener;

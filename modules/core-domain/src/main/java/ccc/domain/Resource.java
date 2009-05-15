@@ -24,10 +24,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ccc.api.CommandType;
+import ccc.api.Duration;
+import ccc.api.ResourceType;
 import ccc.commons.DBC;
-import ccc.services.api.CommandType;
-import ccc.services.api.Duration;
-import ccc.services.api.ResourceType;
 
 
 /**

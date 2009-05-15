@@ -24,10 +24,10 @@ import javax.activation.MimeTypeParseException;
 import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
+import ccc.api.Duration;
 import ccc.commons.Testing;
 import ccc.domain.Page;
 import ccc.services.StatefulReader;
-import ccc.services.api.Duration;
 
 
 /**

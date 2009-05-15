@@ -27,9 +27,9 @@ import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.log4j.Logger;
 
+import ccc.api.FileDelta;
+import ccc.api.ResourceSummary;
 import ccc.domain.ResourceName;
-import ccc.services.api.FileDelta;
-import ccc.services.api.ResourceSummary;
 
 
 /**

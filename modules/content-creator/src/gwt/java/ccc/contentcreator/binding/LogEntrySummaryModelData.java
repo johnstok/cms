@@ -17,9 +17,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import ccc.services.api.CommandType;
-import ccc.services.api.ID;
-import ccc.services.api.LogEntrySummary;
+import ccc.api.CommandType;
+import ccc.api.ID;
+import ccc.api.LogEntrySummary;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 

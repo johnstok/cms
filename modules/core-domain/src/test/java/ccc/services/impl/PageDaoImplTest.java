@@ -17,6 +17,9 @@ import java.util.Collections;
 import java.util.Date;
 
 import junit.framework.TestCase;
+import ccc.api.PageDelta;
+import ccc.api.ParagraphDelta;
+import ccc.api.ParagraphType;
 import ccc.commands.UpdatePageCommand;
 import ccc.domain.LockMismatchException;
 import ccc.domain.Page;
@@ -25,9 +28,6 @@ import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
-import ccc.services.api.PageDelta;
-import ccc.services.api.ParagraphDelta;
-import ccc.services.api.ParagraphType;
 
 
 /**

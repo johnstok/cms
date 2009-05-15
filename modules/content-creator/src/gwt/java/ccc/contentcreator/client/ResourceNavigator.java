@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import ccc.services.api.ResourceSummary;
-import ccc.services.api.UserSummary;
+import ccc.api.ResourceSummary;
+import ccc.api.UserSummary;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style.Scroll;

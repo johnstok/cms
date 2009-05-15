@@ -20,6 +20,9 @@ import java.util.List;
 import java.util.Map;
 
 import junit.framework.TestCase;
+import ccc.api.CommandType;
+import ccc.api.Duration;
+import ccc.api.ResourceType;
 import ccc.commands.ChangeResourceTagsCommand;
 import ccc.commands.ChangeTemplateForResourceCommand;
 import ccc.commands.IncludeInMainMenuCommand;
@@ -48,9 +51,6 @@ import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
 import ccc.services.QueryNames;
-import ccc.services.api.CommandType;
-import ccc.services.api.Duration;
-import ccc.services.api.ResourceType;
 import ccc.services.impl.ResourceDaoImpl;
 
 

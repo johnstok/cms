@@ -18,7 +18,7 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
-import ccc.services.api.Migration;
+import ccc.api.Migration;
 
 
 /**

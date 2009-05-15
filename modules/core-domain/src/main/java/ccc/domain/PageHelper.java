@@ -29,8 +29,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import ccc.services.api.PageDelta;
-import ccc.services.api.ParagraphDelta;
+import ccc.api.PageDelta;
+import ccc.api.ParagraphDelta;
 
 
 /**

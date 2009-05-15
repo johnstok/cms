@@ -31,6 +31,8 @@ import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ccc.api.FileDelta;
+import ccc.api.ResourceSummary;
 import ccc.commands.CreateFileCommand;
 import ccc.content.actions.PersistenceAction;
 import ccc.content.actions.ReadWriteTxAction;
@@ -46,8 +48,6 @@ import ccc.services.AuditLog;
 import ccc.services.Dao;
 import ccc.services.DataManager;
 import ccc.services.ModelTranslation;
-import ccc.services.api.FileDelta;
-import ccc.services.api.ResourceSummary;
 
 
 /**

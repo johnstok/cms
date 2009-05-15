@@ -17,12 +17,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import ccc.services.api.ActionSummary;
-import ccc.services.api.FileSummary;
-import ccc.services.api.LogEntrySummary;
-import ccc.services.api.ResourceSummary;
-import ccc.services.api.TemplateSummary;
-import ccc.services.api.UserSummary;
+import ccc.api.ActionSummary;
+import ccc.api.FileSummary;
+import ccc.api.LogEntrySummary;
+import ccc.api.ResourceSummary;
+import ccc.api.TemplateSummary;
+import ccc.api.UserSummary;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;

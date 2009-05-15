@@ -7,12 +7,12 @@ import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.CommandFailedException;
 import ccc.migration.DbUtilsDB;
 import ccc.migration.FileUploader;
 import ccc.migration.LegacyDBQueries;
 import ccc.migration.Migrations;
 import ccc.services.ServiceLookup;
-import ccc.services.api.CommandFailedException;
 
 /**
  * Entry class for the migration application.

@@ -5,17 +5,17 @@
 	<inherits name="com.google.gwt.json.JSON" />
 	<inherits name="com.google.gwt.user.Debug" />
 	<inherits name="com.google.gwt.i18n.I18N" />
-	<inherits name="ccc.services.API" />
+	<inherits name="ccc.API" />
 	<inherits name='com.extjs.gxt.ui.GXT' />
 
 	<!-- Inherit the default GWT style sheet. -->
 	<inherits name="com.google.gwt.user.theme.standard.Standard" />
 
 	<!-- Supported locales. -->
-	<!-- extend-property name="locale" values="fi" / -->
+	<extend-property name="locale" values="fi" />
 
     <!-- Compile only for Firefox -->
-	<!--set-property name="user.agent" value="gecko1_8" /-->
+	<!-- set-property name="user.agent" value="gecko1_8" / -->
 
 	<!-- Specify the app entry point class. -->
 	<entry-point class="ccc.contentcreator.client.ContentCreator" />

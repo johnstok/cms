@@ -20,6 +20,8 @@ import java.util.Date;
 import java.util.HashSet;
 
 import junit.framework.TestCase;
+import ccc.api.UserDelta;
+import ccc.api.Username;
 import ccc.commands.CreateUserCommand;
 import ccc.commands.UpdatePasswordAction;
 import ccc.commands.UpdateUserCommand;
@@ -29,8 +31,6 @@ import ccc.domain.Password;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
-import ccc.services.api.UserDelta;
-import ccc.services.api.Username;
 
 
 /**

@@ -11,7 +11,7 @@
  */
 package ccc.contentcreator.api;
 
-import ccc.services.api.Commands;
+import ccc.api.Commands;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;

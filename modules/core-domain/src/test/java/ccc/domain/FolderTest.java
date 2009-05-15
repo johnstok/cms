@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 import junit.framework.TestCase;
-import ccc.services.api.ResourceType;
+import ccc.api.ResourceType;
 
 
 /**

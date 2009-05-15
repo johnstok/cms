@@ -11,12 +11,12 @@
  */
 package ccc.contentcreator.client;
 
+import ccc.api.UserSummary;
 import ccc.contentcreator.actions.CreateFileAction;
 import ccc.contentcreator.actions.CreateFolderAction;
 import ccc.contentcreator.actions.CreatePageAction;
 import ccc.contentcreator.actions.CreateTemplateAction;
 import ccc.contentcreator.api.UIConstants;
-import ccc.services.api.UserSummary;
 
 
 /**

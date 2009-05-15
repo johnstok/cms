@@ -11,11 +11,11 @@
  */
 package ccc.services;
 
+import ccc.api.Commands;
+import ccc.api.Queries;
+import ccc.api.Scheduler;
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
-import ccc.services.api.Commands;
-import ccc.services.api.Queries;
-import ccc.services.api.Scheduler;
 
 
 /**

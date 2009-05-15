@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import ccc.api.ID;
+import ccc.api.ResourceSummary;
 import ccc.contentcreator.api.CommandServiceAsync;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.binding.DataBinding;
@@ -22,8 +24,6 @@ import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
-import ccc.services.api.ID;
-import ccc.services.api.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.data.BaseModelData;

@@ -15,11 +15,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import ccc.api.ActionSummary;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.ActionSummaryModelData;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.services.api.ActionSummary;
 
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;

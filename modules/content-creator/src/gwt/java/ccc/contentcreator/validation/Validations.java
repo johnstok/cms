@@ -13,14 +13,14 @@ package ccc.contentcreator.validation;
 
 import java.util.List;
 
+import ccc.api.ID;
+import ccc.api.ParagraphDelta;
+import ccc.api.ParagraphType;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
-import ccc.services.api.ID;
-import ccc.services.api.ParagraphDelta;
-import ccc.services.api.ParagraphType;
 
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.core.client.GWT;

@@ -22,21 +22,21 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.CommandFailedException;
+import ccc.api.Commands;
+import ccc.api.Decimal;
+import ccc.api.FileDelta;
+import ccc.api.ID;
+import ccc.api.PageDelta;
+import ccc.api.ParagraphDelta;
+import ccc.api.ParagraphType;
+import ccc.api.Queries;
+import ccc.api.ResourceSummary;
+import ccc.api.TemplateDelta;
+import ccc.api.UserSummary;
 import ccc.commons.Resources;
 import ccc.domain.CCCException;
 import ccc.domain.PredefinedResourceNames;
-import ccc.services.api.CommandFailedException;
-import ccc.services.api.Commands;
-import ccc.services.api.Decimal;
-import ccc.services.api.FileDelta;
-import ccc.services.api.ID;
-import ccc.services.api.PageDelta;
-import ccc.services.api.ParagraphDelta;
-import ccc.services.api.ParagraphType;
-import ccc.services.api.Queries;
-import ccc.services.api.ResourceSummary;
-import ccc.services.api.TemplateDelta;
-import ccc.services.api.UserSummary;
 
 /**
  * Data migration from CCC6 to CCC7.

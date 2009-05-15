@@ -13,12 +13,12 @@ package ccc.commands;
 
 import java.util.Date;
 
+import ccc.api.UserDelta;
 import ccc.commons.EmailAddress;
 import ccc.domain.Password;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
-import ccc.services.api.UserDelta;
 
 
 /**

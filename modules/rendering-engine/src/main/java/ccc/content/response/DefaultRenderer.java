@@ -16,6 +16,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.ResourceType;
 import ccc.commons.DBC;
 import ccc.content.exceptions.NotFoundException;
 import ccc.content.exceptions.RedirectRequiredException;
@@ -31,7 +32,6 @@ import ccc.domain.WorkingCopyAware;
 import ccc.services.DataManager;
 import ccc.services.SearchEngine;
 import ccc.services.StatefulReader;
-import ccc.services.api.ResourceType;
 
 /**
  * Default implementation of the {@link Renderer} interface.

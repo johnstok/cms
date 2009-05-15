@@ -13,6 +13,8 @@ package ccc.contentcreator.client;
 
 import java.util.Collection;
 
+import ccc.api.ResourceSummary;
+import ccc.api.UserSummary;
 import ccc.contentcreator.actions.ChooseTemplateAction;
 import ccc.contentcreator.actions.CreateUserAction;
 import ccc.contentcreator.actions.EditCacheAction;
@@ -31,8 +33,6 @@ import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.services.api.ResourceSummary;
-import ccc.services.api.UserSummary;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.Listener;

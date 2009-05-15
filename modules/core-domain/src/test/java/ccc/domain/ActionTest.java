@@ -12,8 +12,8 @@
 package ccc.domain;
 
 import junit.framework.TestCase;
-import ccc.services.api.ActionStatus;
-import ccc.services.api.Failure;
+import ccc.api.ActionStatus;
+import ccc.api.Failure;
 
 
 /**

@@ -15,14 +15,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import ccc.api.UserDelta;
+import ccc.api.UserSummary;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.UserSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.dialogs.EditUserDialog;
 import ccc.contentcreator.dialogs.EditUserPwDialog;
-import ccc.services.api.UserDelta;
-import ccc.services.api.UserSummary;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.ComponentEvent;

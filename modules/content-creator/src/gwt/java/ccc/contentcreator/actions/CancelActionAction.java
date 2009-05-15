@@ -11,13 +11,13 @@
  */
 package ccc.contentcreator.actions;
 
+import ccc.api.ActionStatus;
 import ccc.contentcreator.api.CommandServiceAsync;
 import ccc.contentcreator.binding.ActionSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.ActionTable;
 import ccc.contentcreator.client.Globals;
-import ccc.services.api.ActionStatus;
 
 
 /**

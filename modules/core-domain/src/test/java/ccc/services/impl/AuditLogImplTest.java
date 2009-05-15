@@ -19,6 +19,7 @@ import junit.framework.TestCase;
 
 import org.easymock.Capture;
 
+import ccc.api.CommandType;
 import ccc.domain.Folder;
 import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
@@ -27,7 +28,6 @@ import ccc.domain.ResourceExistsException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
-import ccc.services.api.CommandType;
 import ccc.services.impl.AuditLogImpl;
 
 
