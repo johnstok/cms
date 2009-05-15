@@ -18,6 +18,7 @@ import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.form.CheckBoxGroup;
 import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.Field;
+import com.extjs.gxt.ui.client.widget.form.RadioGroup;
 
 
 /**
@@ -36,6 +37,7 @@ public class PageElement {
     private Field<String> _field;
 
     private CheckBoxGroup _checkBoxGroup;
+    private RadioGroup _radioGroup;
     
     /**
      * Constructor.
@@ -158,7 +160,7 @@ public class PageElement {
     /**
      * Mutator.
      *
-     * @param checkBoxGroup The _checkBoxGroup to set.
+     * @param checkBoxGroup The checkBoxGroup to set.
      */
     public void checkBoxGroup(CheckBoxGroup checkBoxGroup) {
 
@@ -168,11 +170,30 @@ public class PageElement {
     /**
      * Accessor.
      *
-     * @return Returns the _checkBoxGroup.
+     * @return Returns the checkBoxGroup.
      */
     public CheckBoxGroup checkBoxGroup() {
 
         return _checkBoxGroup;
+    }
+
+    /**
+     * Mutator.
+     *
+     * @param _radioGroup The radioGroup to set.
+     */
+    public void radioGroup(RadioGroup radioGroup) {
+        _radioGroup = radioGroup;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the _radioGroup.
+     */
+    public RadioGroup radioGroup() {
+
+        return _radioGroup;
     }
 
 }
