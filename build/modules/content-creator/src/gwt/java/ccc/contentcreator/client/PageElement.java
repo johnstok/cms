@@ -14,8 +14,10 @@ package ccc.contentcreator.client;
 
 import ccc.contentcreator.client.ui.FCKEditor;
 
+import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.form.CheckBoxGroup;
+import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.form.RadioGroup;
@@ -38,7 +40,8 @@ public class PageElement {
 
     private CheckBoxGroup _checkBoxGroup;
     private RadioGroup _radioGroup;
-    
+    private ComboBox<BaseModelData> _combobox;
+
     /**
      * Constructor.
      *
@@ -46,7 +49,7 @@ public class PageElement {
      */
     public PageElement(final String id) {
         super();
-        this._id = id;
+        _id = id;
     }
 
     /**
@@ -162,7 +165,7 @@ public class PageElement {
      *
      * @param checkBoxGroup The checkBoxGroup to set.
      */
-    public void checkBoxGroup(CheckBoxGroup checkBoxGroup) {
+    public void checkBoxGroup(final CheckBoxGroup checkBoxGroup) {
 
         _checkBoxGroup = checkBoxGroup;
     }
@@ -180,20 +183,40 @@ public class PageElement {
     /**
      * Mutator.
      *
-     * @param _radioGroup The radioGroup to set.
+     * @param radioGroup The radioGroup to set.
      */
-    public void radioGroup(RadioGroup radioGroup) {
+    public void radioGroup(final RadioGroup radioGroup) {
         _radioGroup = radioGroup;
     }
 
     /**
      * Accessor.
      *
-     * @return Returns the _radioGroup.
+     * @return Returns the radioGroup.
      */
     public RadioGroup radioGroup() {
 
         return _radioGroup;
+    }
+
+    /**
+     * Mutator.
+     *
+     * @param combobox The combobox to set.
+     */
+    public void combobox(final ComboBox<BaseModelData> combobox) {
+
+        _combobox = combobox;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the combobox.
+     */
+    public ComboBox<BaseModelData> combobox() {
+
+        return _combobox;
     }
 
 }
