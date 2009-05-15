@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.ejb3.local;
+package ccc.services.ejb3;
 
 import static org.easymock.EasyMock.*;
 
@@ -21,9 +21,9 @@ import junit.framework.TestCase;
 import ccc.domain.Data;
 import ccc.services.CoreData;
 import ccc.services.Dao;
-import ccc.services.DataManagerEJB;
 import ccc.services.SearchEngine;
 import ccc.services.DataManager.StreamAction;
+import ccc.services.impl.DataManagerEJB;
 
 
 /**

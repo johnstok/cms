@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.ejb3.local;
+package ccc.services.ejb3;
 
 import static javax.ejb.TransactionAttributeType.*;
 
@@ -58,13 +58,14 @@ import ccc.search.lucene.SimpleLucene;
 import ccc.search.lucene.SimpleLuceneFS;
 import ccc.services.Dao;
 import ccc.services.DataManager;
-import ccc.services.DataManagerEJB;
 import ccc.services.QueryNames;
 import ccc.services.ResourceDao;
-import ccc.services.ResourceDaoImpl;
 import ccc.services.Scheduler;
 import ccc.services.SearchEngine;
+import ccc.services.DataManager.StreamAction;
 import ccc.services.api.ParagraphType;
+import ccc.services.impl.DataManagerEJB;
+import ccc.services.impl.ResourceDaoImpl;
 
 
 /**

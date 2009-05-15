@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.ejb3.remote;
+package ccc.services.ejb3;
 
 import static javax.ejb.TransactionAttributeType.*;
 
@@ -80,10 +80,8 @@ import ccc.domain.Snapshot;
 import ccc.domain.User;
 import ccc.persistence.jpa.BaseDao;
 import ccc.services.AuditLog;
-import ccc.services.AuditLogEJB;
 import ccc.services.ModelTranslation;
 import ccc.services.ResourceDao;
-import ccc.services.ResourceDaoImpl;
 import ccc.services.UserLookup;
 import ccc.services.api.AliasDelta;
 import ccc.services.api.CommandFailedException;
@@ -97,6 +95,8 @@ import ccc.services.api.ResourceSummary;
 import ccc.services.api.TemplateDelta;
 import ccc.services.api.UserDelta;
 import ccc.services.api.UserSummary;
+import ccc.services.impl.AuditLogEJB;
+import ccc.services.impl.ResourceDaoImpl;
 
 
 /**
