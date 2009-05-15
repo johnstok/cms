@@ -16,17 +16,17 @@ import static org.easymock.EasyMock.*;
 import java.util.Date;
 
 import junit.framework.TestCase;
+import ccc.api.ActionStatus;
+import ccc.api.CommandFailedException;
+import ccc.api.CommandType;
+import ccc.api.Commands;
+import ccc.api.Failure;
+import ccc.api.ID;
 import ccc.domain.Action;
 import ccc.domain.Page;
 import ccc.domain.Snapshot;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
-import ccc.services.api.ActionStatus;
-import ccc.services.api.CommandFailedException;
-import ccc.services.api.CommandType;
-import ccc.services.api.Commands;
-import ccc.services.api.Failure;
-import ccc.services.api.ID;
 import ccc.services.impl.ActionExecutorImpl;
 
 

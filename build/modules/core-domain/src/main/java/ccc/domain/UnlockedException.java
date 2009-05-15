@@ -11,10 +11,10 @@
  */
 package ccc.domain;
 
+import ccc.api.CommandFailedException;
+import ccc.api.Failure;
+import ccc.api.ParamList;
 import ccc.commons.DBC;
-import ccc.services.api.CommandFailedException;
-import ccc.services.api.Failure;
-import ccc.services.api.ParamList;
 
 
 /**

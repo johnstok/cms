@@ -11,6 +11,8 @@
  */
 package ccc.contentcreator.client;
 
+import ccc.api.CommandFailedException;
+import ccc.api.UserSummary;
 import ccc.contentcreator.api.CommandService;
 import ccc.contentcreator.api.CommandServiceAsync;
 import ccc.contentcreator.api.QueriesService;
@@ -19,8 +21,6 @@ import ccc.contentcreator.api.SecurityService;
 import ccc.contentcreator.api.SecurityServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
-import ccc.services.api.CommandFailedException;
-import ccc.services.api.UserSummary;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;

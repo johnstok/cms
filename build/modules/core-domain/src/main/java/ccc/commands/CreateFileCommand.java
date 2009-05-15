@@ -18,6 +18,7 @@ import java.util.UUID;
 import javax.activation.MimeType;
 import javax.activation.MimeTypeParseException;
 
+import ccc.api.FileDelta;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.ResourceExistsException;
@@ -26,7 +27,6 @@ import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
 import ccc.services.DataManager;
-import ccc.services.api.FileDelta;
 
 
 /**

@@ -3,8 +3,8 @@ package ccc.cli;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.Scheduler;
 import ccc.services.ServiceLookup;
-import ccc.services.api.Scheduler;
 
 /**
  * Command line management of Action executor.

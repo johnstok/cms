@@ -1,0 +1,52 @@
+package ccc.api;
+
+/** Valid actions for a log entry. */
+public enum CommandType {
+
+    // Resource
+    RESOURCE_RENAME,
+    RESOURCE_MOVE,
+    RESOURCE_PUBLISH,
+    RESOURCE_UNPUBLISH,
+    RESOURCE_LOCK,
+    RESOURCE_UNLOCK,
+    RESOURCE_CHANGE_TEMPLATE,
+    RESOURCE_UPDATE_TAGS,
+    RESOURCE_INCLUDE_IN_MM,
+    RESOURCE_REMOVE_FROM_MM,
+    RESOURCE_UPDATE_METADATA,
+    RESOURCE_CHANGE_ROLES,
+    RESOURCE_UPDATE_CACHE,
+    RESOURCE_CLEAR_WC,
+    RESOURCE_SET_WC,
+
+    // Folder
+    FOLDER_REORDER,
+    FOLDER_UPDATE_SORT_ORDER,
+    FOLDER_UPDATE,
+    FOLDER_CREATE,
+
+    // User
+    USER_CREATE,
+    USER_UPDATE,
+    USER_CHANGE_PASSWORD,
+
+    // Page
+    PAGE_UPDATE,
+    PAGE_CREATE,
+
+    // Template
+    TEMPLATE_CREATE,
+    TEMPLATE_UPDATE,
+
+    // File
+    FILE_CREATE,
+    FILE_UPDATE,
+
+    // Search
+    SEARCH_CREATE,
+
+    // Alias
+    ALIAS_CREATE,
+    ALIAS_UPDATE,
+}

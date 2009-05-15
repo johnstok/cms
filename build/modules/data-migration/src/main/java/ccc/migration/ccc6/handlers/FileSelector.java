@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.services.api.FileDelta;
+import ccc.api.FileDelta;
 
 /**
  * TODO: Add Description for this type.

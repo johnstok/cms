@@ -11,7 +11,7 @@
  */
 package ccc.migration;
 
-import ccc.services.api.UserDelta;
+import ccc.api.UserDelta;
 
 /**
  * An existing user in CCC6.

@@ -15,8 +15,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import junit.framework.TestCase;
+import ccc.api.ParagraphType;
 import ccc.commons.Testing;
-import ccc.services.api.ParagraphType;
 
 
 /**

@@ -13,7 +13,7 @@ package ccc.domain;
 
 import java.util.UUID;
 
-import ccc.services.api.CommandFailedException;
+import ccc.api.CommandFailedException;
 
 
 /**

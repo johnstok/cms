@@ -11,8 +11,8 @@
  */
 package ccc.domain;
 
+import ccc.api.ResourceType;
 import ccc.commons.DBC;
-import ccc.services.api.ResourceType;
 
 
 /**

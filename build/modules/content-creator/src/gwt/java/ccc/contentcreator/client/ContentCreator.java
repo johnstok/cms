@@ -3,14 +3,14 @@ package ccc.contentcreator.client;
 
 import java.util.Collection;
 
+import ccc.api.ResourceSummary;
+import ccc.api.UserSummary;
 import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.dialogs.ImageSelectionDialog;
 import ccc.contentcreator.dialogs.LinkSelectionDialog;
 import ccc.contentcreator.dialogs.LoginDialog;
-import ccc.services.api.ResourceSummary;
-import ccc.services.api.UserSummary;
 
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;

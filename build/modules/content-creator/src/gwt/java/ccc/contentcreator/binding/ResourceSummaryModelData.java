@@ -17,10 +17,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import ccc.services.api.ID;
-import ccc.services.api.ResourceSummary;
-import ccc.services.api.ResourceType;
-import ccc.services.api.Username;
+import ccc.api.ID;
+import ccc.api.ResourceSummary;
+import ccc.api.ResourceType;
+import ccc.api.Username;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.google.gwt.json.client.JSONObject;

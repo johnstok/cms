@@ -22,10 +22,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ccc.api.CommandType;
+import ccc.api.Duration;
+import ccc.api.ResourceType;
 import ccc.commons.Testing;
-import ccc.services.api.CommandType;
-import ccc.services.api.Duration;
-import ccc.services.api.ResourceType;
 
 
 /**

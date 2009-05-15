@@ -12,6 +12,13 @@
 package ccc.contentcreator.client;
 
 import static ccc.contentcreator.dialogs.AbstractBaseDialog.*;
+import ccc.api.AliasDelta;
+import ccc.api.FileDelta;
+import ccc.api.PageDelta;
+import ccc.api.ResourceType;
+import ccc.api.TemplateDelta;
+import ccc.api.TemplateSummary;
+import ccc.api.UserSummary;
 import ccc.contentcreator.actions.ApplyWorkingCopyAction;
 import ccc.contentcreator.actions.ChooseTemplateAction;
 import ccc.contentcreator.actions.ClearWorkingCopyAction;
@@ -40,13 +47,6 @@ import ccc.contentcreator.dialogs.EditTemplateDialog;
 import ccc.contentcreator.dialogs.UpdateAliasDialog;
 import ccc.contentcreator.dialogs.UpdateFileDialog;
 import ccc.contentcreator.dialogs.UpdatePageDialog;
-import ccc.services.api.AliasDelta;
-import ccc.services.api.FileDelta;
-import ccc.services.api.PageDelta;
-import ccc.services.api.ResourceType;
-import ccc.services.api.TemplateDelta;
-import ccc.services.api.TemplateSummary;
-import ccc.services.api.UserSummary;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.Listener;

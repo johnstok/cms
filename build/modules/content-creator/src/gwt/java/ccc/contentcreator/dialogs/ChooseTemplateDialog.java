@@ -13,12 +13,12 @@ package ccc.contentcreator.dialogs;
 
 import java.util.Collection;
 
+import ccc.api.ID;
+import ccc.api.TemplateSummary;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.TemplateSummaryModelData;
 import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.client.Globals;
-import ccc.services.api.ID;
-import ccc.services.api.TemplateSummary;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;

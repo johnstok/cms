@@ -12,14 +12,14 @@
 package ccc.contentcreator.dialogs;
 
 
+import ccc.api.AliasDelta;
+import ccc.api.ID;
+import ccc.api.ResourceSummary;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
-import ccc.services.api.AliasDelta;
-import ccc.services.api.ID;
-import ccc.services.api.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.ButtonEvent;

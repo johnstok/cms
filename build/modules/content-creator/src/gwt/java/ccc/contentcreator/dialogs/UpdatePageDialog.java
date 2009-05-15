@@ -12,11 +12,15 @@
 
 package ccc.contentcreator.dialogs;
 
-import static ccc.services.api.ParagraphType.*;
+import static ccc.api.ParagraphType.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import ccc.api.ID;
+import ccc.api.PageDelta;
+import ccc.api.ParagraphDelta;
+import ccc.api.TemplateSummary;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.EditPagePanel;
 import ccc.contentcreator.client.Globals;
@@ -25,10 +29,6 @@ import ccc.contentcreator.client.ResourceTable;
 import ccc.contentcreator.client.ui.FCKEditor;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
-import ccc.services.api.ID;
-import ccc.services.api.PageDelta;
-import ccc.services.api.ParagraphDelta;
-import ccc.services.api.TemplateSummary;
 
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.event.ButtonEvent;

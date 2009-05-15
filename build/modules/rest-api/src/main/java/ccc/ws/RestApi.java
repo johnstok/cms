@@ -19,8 +19,8 @@ import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
 
-import ccc.services.api.Queries;
-import ccc.services.api.ResourceSummary;
+import ccc.api.Queries;
+import ccc.api.ResourceSummary;
 
 
 /**

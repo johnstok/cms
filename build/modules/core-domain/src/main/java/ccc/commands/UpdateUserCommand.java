@@ -14,11 +14,11 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.UserDelta;
 import ccc.commons.EmailAddress;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
-import ccc.services.api.UserDelta;
 
 
 /**

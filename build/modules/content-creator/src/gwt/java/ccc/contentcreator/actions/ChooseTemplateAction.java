@@ -2,6 +2,8 @@ package ccc.contentcreator.actions;
 
 import java.util.Collection;
 
+import ccc.api.ResourceType;
+import ccc.api.TemplateSummary;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
@@ -10,8 +12,6 @@ import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.ChooseTemplateDialog;
-import ccc.services.api.ResourceType;
-import ccc.services.api.TemplateSummary;
 
 /**
  * TODO: Add Description for this type.

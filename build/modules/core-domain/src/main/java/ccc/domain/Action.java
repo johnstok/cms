@@ -13,10 +13,10 @@ package ccc.domain;
 
 import java.util.Date;
 
-import ccc.services.api.ActionStatus;
-import ccc.services.api.CommandFailedException;
-import ccc.services.api.CommandType;
-import ccc.services.api.Failure;
+import ccc.api.ActionStatus;
+import ccc.api.CommandFailedException;
+import ccc.api.CommandType;
+import ccc.api.Failure;
 
 
 /**

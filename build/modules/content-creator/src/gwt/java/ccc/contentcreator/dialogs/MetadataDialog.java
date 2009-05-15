@@ -17,10 +17,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ccc.api.ID;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.client.Globals;
-import ccc.services.api.ID;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;

@@ -11,11 +11,11 @@
  */
 package ccc.contentcreator.dialogs;
 
+import ccc.api.ResourceSummary;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.ResourceTree;
-import ccc.services.api.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.event.ComponentEvent;

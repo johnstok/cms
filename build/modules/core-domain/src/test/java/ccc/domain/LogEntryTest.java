@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import junit.framework.TestCase;
-import ccc.services.api.CommandType;
+import ccc.api.CommandType;
 
 
 /**

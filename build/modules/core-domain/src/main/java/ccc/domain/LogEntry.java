@@ -16,7 +16,7 @@ import static ccc.commons.DBC.*;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.services.api.CommandType;
+import ccc.api.CommandType;
 
 
 /**

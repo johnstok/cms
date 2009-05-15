@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ccc.api.FileDelta;
 import ccc.migration.ccc6.handlers.AllUsersSelector;
 import ccc.migration.ccc6.handlers.FileSelector;
 import ccc.migration.ccc6.handlers.FlaggedSelector;
@@ -19,7 +20,6 @@ import ccc.migration.ccc6.handlers.ShowInMainMenuSelector;
 import ccc.migration.ccc6.handlers.StyleSheetSelector;
 import ccc.migration.ccc6.handlers.UserEmailSelector;
 import ccc.migration.ccc6.handlers.UserRolesSelector;
-import ccc.services.api.FileDelta;
 
 /**
  * Queries for data migration.

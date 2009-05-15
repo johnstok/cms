@@ -2,6 +2,7 @@ package ccc.contentcreator.actions;
 
 import java.util.Collection;
 
+import ccc.api.LogEntrySummary;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
@@ -9,7 +10,6 @@ import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.HistoryDialog;
-import ccc.services.api.LogEntrySummary;
 
 /**
  * TODO: Add Description for this type.

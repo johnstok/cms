@@ -11,12 +11,12 @@
  */
 package ccc.contentcreator.dialogs;
 
+import ccc.api.ID;
+import ccc.api.PageDelta;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
-import ccc.services.api.ID;
-import ccc.services.api.PageDelta;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;

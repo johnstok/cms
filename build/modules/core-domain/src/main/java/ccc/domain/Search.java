@@ -11,7 +11,7 @@
  */
 package ccc.domain;
 
-import ccc.services.api.ResourceType;
+import ccc.api.ResourceType;
 
 
 /**

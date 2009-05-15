@@ -16,11 +16,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ccc.api.PageDelta;
+import ccc.api.ParagraphDelta;
+import ccc.api.ParagraphType;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.client.ui.FCKEditor;
-import ccc.services.api.PageDelta;
-import ccc.services.api.ParagraphDelta;
-import ccc.services.api.ParagraphType;
 
 import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.widget.Component;

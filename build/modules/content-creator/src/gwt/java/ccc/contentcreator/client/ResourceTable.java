@@ -14,10 +14,10 @@ package ccc.contentcreator.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import ccc.api.ResourceSummary;
+import ccc.api.UserSummary;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.services.api.ResourceSummary;
-import ccc.services.api.UserSummary;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.data.ModelData;

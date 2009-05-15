@@ -44,6 +44,8 @@ import org.pdfbox.util.PDFTextStripper;
 import org.textmining.extraction.TextExtractor;
 import org.textmining.extraction.word.WordTextExtractorFactory;
 
+import ccc.api.ParagraphType;
+import ccc.api.Scheduler;
 import ccc.commons.IO;
 import ccc.commons.SearchResult;
 import ccc.domain.File;
@@ -61,8 +63,6 @@ import ccc.services.DataManager;
 import ccc.services.QueryNames;
 import ccc.services.ResourceDao;
 import ccc.services.SearchEngine;
-import ccc.services.api.ParagraphType;
-import ccc.services.api.Scheduler;
 import ccc.services.impl.DataManagerImpl;
 import ccc.services.impl.ResourceDaoImpl;
 

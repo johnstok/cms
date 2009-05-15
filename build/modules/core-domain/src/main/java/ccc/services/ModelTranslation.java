@@ -16,6 +16,22 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import ccc.api.ActionSummary;
+import ccc.api.AliasDelta;
+import ccc.api.Decimal;
+import ccc.api.FileDelta;
+import ccc.api.FileSummary;
+import ccc.api.ID;
+import ccc.api.LogEntrySummary;
+import ccc.api.PageDelta;
+import ccc.api.ParagraphDelta;
+import ccc.api.ResourceSummary;
+import ccc.api.ResourceType;
+import ccc.api.TemplateDelta;
+import ccc.api.TemplateSummary;
+import ccc.api.UserDelta;
+import ccc.api.UserSummary;
+import ccc.api.Username;
 import ccc.domain.Action;
 import ccc.domain.Alias;
 import ccc.domain.File;
@@ -27,22 +43,6 @@ import ccc.domain.Resource;
 import ccc.domain.Snapshot;
 import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.services.api.ActionSummary;
-import ccc.services.api.AliasDelta;
-import ccc.services.api.Decimal;
-import ccc.services.api.FileDelta;
-import ccc.services.api.FileSummary;
-import ccc.services.api.ID;
-import ccc.services.api.LogEntrySummary;
-import ccc.services.api.PageDelta;
-import ccc.services.api.ParagraphDelta;
-import ccc.services.api.ResourceSummary;
-import ccc.services.api.ResourceType;
-import ccc.services.api.TemplateDelta;
-import ccc.services.api.TemplateSummary;
-import ccc.services.api.UserDelta;
-import ccc.services.api.UserSummary;
-import ccc.services.api.Username;
 
 
 /**

@@ -14,11 +14,11 @@ package ccc.contentcreator.dialogs;
 import java.util.Collection;
 import java.util.List;
 
+import ccc.api.FileSummary;
 import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.FileSummaryModelData;
-import ccc.services.api.FileSummary;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.data.BaseListLoader;

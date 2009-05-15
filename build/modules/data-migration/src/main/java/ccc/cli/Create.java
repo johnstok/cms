@@ -6,9 +6,9 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.CommandFailedException;
 import ccc.migration.Migrations;
 import ccc.services.ServiceLookup;
-import ccc.services.api.CommandFailedException;
 
 /**
  * Entry class for the 'create' application.

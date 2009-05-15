@@ -12,8 +12,8 @@
 
 package ccc.contentcreator.client;
 
+import ccc.api.CommandType;
 import ccc.contentcreator.api.UIConstants;
-import ccc.services.api.CommandType;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style.LayoutRegion;

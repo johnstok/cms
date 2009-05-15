@@ -14,20 +14,20 @@ package ccc.contentcreator.api;
 import java.util.Collection;
 import java.util.Map;
 
-import ccc.services.api.ActionSummary;
-import ccc.services.api.AliasDelta;
-import ccc.services.api.Duration;
-import ccc.services.api.FileDelta;
-import ccc.services.api.FileSummary;
-import ccc.services.api.ID;
-import ccc.services.api.LogEntrySummary;
-import ccc.services.api.PageDelta;
-import ccc.services.api.ResourceSummary;
-import ccc.services.api.TemplateDelta;
-import ccc.services.api.TemplateSummary;
-import ccc.services.api.UserDelta;
-import ccc.services.api.UserSummary;
-import ccc.services.api.Username;
+import ccc.api.ActionSummary;
+import ccc.api.AliasDelta;
+import ccc.api.Duration;
+import ccc.api.FileDelta;
+import ccc.api.FileSummary;
+import ccc.api.ID;
+import ccc.api.LogEntrySummary;
+import ccc.api.PageDelta;
+import ccc.api.ResourceSummary;
+import ccc.api.TemplateDelta;
+import ccc.api.TemplateSummary;
+import ccc.api.UserDelta;
+import ccc.api.UserSummary;
+import ccc.api.Username;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 

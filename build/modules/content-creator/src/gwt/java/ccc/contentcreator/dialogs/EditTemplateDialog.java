@@ -12,6 +12,9 @@
 
 package ccc.contentcreator.dialogs;
 
+import ccc.api.ID;
+import ccc.api.ResourceSummary;
+import ccc.api.TemplateDelta;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
@@ -19,9 +22,6 @@ import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.contentcreator.validation.Validator;
-import ccc.services.api.ID;
-import ccc.services.api.ResourceSummary;
-import ccc.services.api.TemplateDelta;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;

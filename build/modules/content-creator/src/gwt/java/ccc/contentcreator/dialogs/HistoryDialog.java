@@ -15,15 +15,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import ccc.api.CommandType;
+import ccc.api.LogEntrySummary;
+import ccc.api.ResourceType;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.LogEntrySummaryModelData;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.HistoryToolBar;
 import ccc.contentcreator.client.SingleSelectionModel;
-import ccc.services.api.CommandType;
-import ccc.services.api.LogEntrySummary;
-import ccc.services.api.ResourceType;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.GridEvent;

@@ -29,6 +29,8 @@ import javax.transaction.UserTransaction;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
 
+import ccc.api.FileDelta;
+import ccc.api.ID;
 import ccc.commands.UpdateFileCommand;
 import ccc.content.actions.PersistenceAction;
 import ccc.content.actions.ReadWriteTxAction;
@@ -41,8 +43,6 @@ import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
 import ccc.services.DataManager;
-import ccc.services.api.FileDelta;
-import ccc.services.api.ID;
 
 
 /**

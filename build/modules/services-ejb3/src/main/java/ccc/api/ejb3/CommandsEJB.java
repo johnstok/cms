@@ -33,6 +33,18 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.AliasDelta;
+import ccc.api.CommandFailedException;
+import ccc.api.CommandType;
+import ccc.api.Commands;
+import ccc.api.Duration;
+import ccc.api.ID;
+import ccc.api.PageDelta;
+import ccc.api.ParagraphDelta;
+import ccc.api.ResourceSummary;
+import ccc.api.TemplateDelta;
+import ccc.api.UserDelta;
+import ccc.api.UserSummary;
 import ccc.commands.ApplyWorkingCopyCommand;
 import ccc.commands.CancelActionCommand;
 import ccc.commands.ChangeResourceTagsCommand;
@@ -82,18 +94,6 @@ import ccc.persistence.jpa.BaseDao;
 import ccc.services.AuditLog;
 import ccc.services.ModelTranslation;
 import ccc.services.UserLookup;
-import ccc.services.api.AliasDelta;
-import ccc.services.api.CommandFailedException;
-import ccc.services.api.CommandType;
-import ccc.services.api.Commands;
-import ccc.services.api.Duration;
-import ccc.services.api.ID;
-import ccc.services.api.PageDelta;
-import ccc.services.api.ParagraphDelta;
-import ccc.services.api.ResourceSummary;
-import ccc.services.api.TemplateDelta;
-import ccc.services.api.UserDelta;
-import ccc.services.api.UserSummary;
 import ccc.services.impl.AuditLogImpl;
 
 

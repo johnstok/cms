@@ -16,7 +16,7 @@ import junit.framework.TestCase;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ccc.services.api.ResourceType;
+import ccc.api.ResourceType;
 
 
 /**
