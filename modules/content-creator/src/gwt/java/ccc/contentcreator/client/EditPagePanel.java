@@ -11,9 +11,6 @@
  */
 package ccc.contentcreator.client;
 
-import static ccc.services.api.ParagraphType.DATE;
-import static ccc.services.api.ParagraphType.TEXT;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +20,7 @@ import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.client.ui.FCKEditor;
 import ccc.services.api.PageDelta;
 import ccc.services.api.ParagraphDelta;
+import ccc.services.api.ParagraphType;
 
 import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.widget.Component;
@@ -32,6 +30,8 @@ import com.extjs.gxt.ui.client.widget.form.CheckBoxGroup;
 import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
+import com.extjs.gxt.ui.client.widget.form.Radio;
+import com.extjs.gxt.ui.client.widget.form.RadioGroup;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.layout.FormData;
@@ -55,6 +55,12 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
 
     /** _constants : UIConstants. */
     private final UIConstants _constants = Globals.uiConstants();
+    
+    private final static String CHECKBOX = "CHECKBOX";
+    private final static String RADIO = "RADIO";
+    private final static String HTML = "HTML";
+    private final static String TEXT = "TEXT";
+    private final static String DATE = "DATE";
 
     /**
      * Constructor.
@@ -82,13 +88,13 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         for (final PageElement c : pageElements()) {
             for (final ParagraphDelta para : resourceSummary.getParagraphs()) {
                 if (c.id().equals(para.getName())) {
-                    if ("TEXT".equals(c.type())) {
+                    if (TEXT.equals(c.type())) {
                         final Field<String> f = c.field();
                         f.setValue(para.getTextValue());
-                    } else if ("DATE".equals(c.type())) {
+                    } else if (DATE.equals(c.type())) {
                         final DateField f = c.dateField();
                         f.setValue(para.getDateValue());
-                    } else if ("HTML".equals(c.type())) {
+                    } else if (HTML.equals(c.type())) {
                         remove(c.editor());
                         remove(c.editorLabel());
                         final FCKEditor fck =
@@ -96,20 +102,9 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                         add(c.editorLabel());
                         add(fck, new FormData("95%"));
                         c.editor(fck);
-                    } else if ("CHECKBOX".equals(c.type())) {
+                    } else if (CHECKBOX.equals(c.type())) {
                         final CheckBoxGroup cbg = c.checkBoxGroup();
-                        String text = para.getTextValue();
-                        
-                        Map<String,String> valueMap = new HashMap<String, String>();
-                        
-                        String[] lines = text.split("\n");
-                        for (String line : lines) {
-                            if (line.trim().length() > 0) {
-                                String key = line.substring(0, line.indexOf("="));
-                                String value = line.substring(line.indexOf("=")+1);
-                                valueMap.put(key, value);
-                            }
-                        }
+                        Map<String, String> valueMap = fillValueMap(para);
                         
                         List<CheckBox> boxes = cbg.getAll();
                         for (CheckBox box : boxes) {
@@ -119,10 +114,45 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                                 box.setValue(false);
                             }
                         }
+                    } else if (RADIO.equals(c.type())) {
+                        final RadioGroup rg = c.radioGroup();
+                        Map<String, String> valueMap = fillValueMap(para);
+                        
+                        List<Radio> radios = rg.getAll();
+                        for (Radio radio : radios) {
+                            if ("true".equals(valueMap.get(radio.getId()))) {
+                                radio.setValue(true);
+                            } else {
+                                radio.setValue(false);
+                            }
+                        }
                     }
                 }
             }
         }
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param para
+     * @return
+     */
+    private Map<String, String> fillValueMap(final ParagraphDelta para) {
+
+        String text = para.getTextValue();
+        
+        Map<String,String> valueMap = new HashMap<String, String>();
+        
+        String[] lines = text.split("\n");
+        for (String line : lines) {
+            if (line.trim().length() > 0) {
+                String key = line.substring(0, line.indexOf("="));
+                String value = line.substring(line.indexOf("=")+1);
+                valueMap.put(key, value);
+            }
+        }
+        return valueMap;
     }
     
 
@@ -136,40 +166,40 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                                final List<ParagraphDelta> paragraphs) {
 
         for (final PageElement c : definitions) {
-            if ("TEXT".equals(c.type())) {
+            if (TEXT.equals(c.type())) {
                 final Field<String> f = c.field();
                 final ParagraphDelta p =
                     new ParagraphDelta(
                         c.id(),
-                        TEXT,
+                        ParagraphType.TEXT,
                         null,
                         f.getValue(),
                         null,
                         null);
                 paragraphs.add(p);
-            } else if ("DATE".equals(c.type())) {
+            } else if (DATE.equals(c.type())) {
                 final DateField f = c.dateField();
                 final ParagraphDelta p =
                     new ParagraphDelta(
                         c.id(),
-                        DATE,
+                        ParagraphType.DATE,
                         f.getRawValue(),
                         null,
                         f.getValue(),
                         null);
                 paragraphs.add(p);
-            } else if ("HTML".equals(c.type())) {
+            } else if (HTML.equals(c.type())) {
                 final FCKEditor f = c.editor();
                 final ParagraphDelta p =
                     new ParagraphDelta(
                         c.id(),
-                        TEXT,
+                        ParagraphType.TEXT,
                         null,
                         f.getHTML(),
                         null,
                         null);
                 paragraphs.add(p);
-            } else if ("CHECKBOX".equals(c.type())) {
+            } else if (CHECKBOX.equals(c.type())) {
                 final CheckBoxGroup cbg = c.checkBoxGroup();
                 StringBuilder sb = new StringBuilder();
                 for (CheckBox cb : cbg.getAll()) {
@@ -184,7 +214,28 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                 final ParagraphDelta p =
                     new ParagraphDelta(
                         c.id(),
-                        TEXT,
+                        ParagraphType.TEXT,
+                        null,
+                        sb.toString(),
+                        null,
+                        null);
+                paragraphs.add(p);
+            } else if (RADIO.equals(c.type())) {
+                final RadioGroup rg = c.radioGroup();
+                StringBuilder sb = new StringBuilder();
+                for (Radio radio : rg.getAll()) {
+                    if (sb.length() > 0) {
+                        sb.append("\n");
+                    }
+                    sb.append(radio.getId());
+                    sb.append("=");
+                    sb.append(radio.getValue().toString());
+                }
+                
+                final ParagraphDelta p =
+                    new ParagraphDelta(
+                        c.id(),
+                        ParagraphType.TEXT,
                         null,
                         sb.toString(),
                         null,
@@ -278,6 +329,8 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                 
             } else if ("checkbox".equals(type)) {
                 addElementForCheckbox(name, field);
+            } else if ("radio".equals(type)) {
+                addElementForRadio(name, field);
             }
         }
     }
@@ -291,7 +344,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private void addElementForCheckbox(String name, Element field) {
         final CheckBoxGroup cbg =  new  CheckBoxGroup();
         cbg.setFieldLabel(name);
-        cbg.setData("type", "CHECKBOX");
+        cbg.setData("type", CHECKBOX);
         cbg.setId(name);
         cbg.setOrientation(Orientation.VERTICAL);
         
@@ -312,8 +365,43 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         add(cbg, new FormData("95%"));
         
         final PageElement pe = new PageElement(name);
-        pe.type("CHECKBOX");
+        pe.type(CHECKBOX);
         pe.checkBoxGroup(cbg);
+        _pageElements.add(pe);
+    }
+    
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param name
+     * @param field
+     */
+    private void addElementForRadio(String name, Element field) {
+        final RadioGroup rg =  new  RadioGroup();
+        rg.setFieldLabel(name);
+        rg.setData("type", RADIO);
+        rg.setId(name);
+        rg.setOrientation(Orientation.VERTICAL);
+        
+        NodeList nl = field.getElementsByTagName("option");
+        for (int i=0; i<nl.getLength(); i++) {
+            final Element option = ((Element) nl.item(i));
+            final String def  = option.getAttribute("default");
+            final String title = option.getAttribute("title");
+            final String value = option.getAttribute("value");
+            
+            Radio r = new Radio();
+            r.setBoxLabel(title);
+            r.setId(value);
+            r.setValue("true".equals(def));
+            
+            rg.add(r);
+        }
+        add(rg, new FormData("95%"));
+        
+        final PageElement pe = new PageElement(name);
+        pe.type(RADIO);
+        pe.radioGroup(rg);
         _pageElements.add(pe);
     }
 
@@ -328,7 +416,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         add(fieldName);
         final FCKEditor fck = new FCKEditor("", "250px");
         final PageElement pe = new PageElement(name);
-        pe.type("HTML");
+        pe.type(HTML);
         pe.editorLabel(fieldName);
         pe.editor(fck);
         add(fck, new FormData("95%"));
@@ -344,11 +432,11 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
 
         final DateField df = new DateField();
         df.setFieldLabel(name);
-        df.setData("type", "DATE");
+        df.setData("type", DATE);
         df.setId(name);
 
         final PageElement pe = new PageElement(name);
-        pe.type("DATE");
+        pe.type(DATE);
         pe.dateField(df);
         add(df, new FormData("95%"));
         _pageElements.add(pe);
@@ -363,7 +451,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private void addElementForTextArea(final String name, final String regexp) {
 
         final TextArea ta = new TextArea();
-        ta.setData("type", "TEXT");
+        ta.setData("type", TEXT);
         ta.setId(name);
         ta.setFieldLabel(name);
         if (regexp != null) {
@@ -371,7 +459,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         }
         add(ta, new FormData("95%"));
         final PageElement pe = new PageElement(name);
-        pe.type("TEXT");
+        pe.type(TEXT);
         pe.field(ta);
         _pageElements.add(pe);
     }
@@ -385,7 +473,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private void addElementForTextField(final String name, final String regexp) {
 
         final TextField<String> tf = new TextField<String>();
-        tf.setData("type", "TEXT");
+        tf.setData("type", TEXT);
         tf.setId(name);
         tf.setFieldLabel(name);
         if (regexp != null) {
@@ -393,7 +481,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         }
         add(tf, new FormData("95%"));
         final PageElement pe = new PageElement(name);
-        pe.type("TEXT");
+        pe.type(TEXT);
         pe.field(tf);
 
         _pageElements.add(pe);
