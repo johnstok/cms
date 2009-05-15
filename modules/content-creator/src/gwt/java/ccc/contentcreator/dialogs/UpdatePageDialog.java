@@ -12,8 +12,6 @@
 
 package ccc.contentcreator.dialogs;
 
-import static ccc.api.ParagraphType.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +24,6 @@ import ccc.contentcreator.client.EditPagePanel;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.PageElement;
 import ccc.contentcreator.client.ResourceTable;
-import ccc.contentcreator.client.ui.FCKEditor;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 
@@ -34,8 +31,6 @@ import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.button.Button;
-import com.extjs.gxt.ui.client.widget.form.DateField;
-import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -233,7 +228,7 @@ public class UpdatePageDialog
 
         final List<PageElement> definitions =
             panel().pageElements();
-        
+
         _panel.extractValues(definitions, paragraphs);
         _page.setParagraphs(paragraphs);
         return paragraphs;

@@ -23,10 +23,13 @@ import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.client.ui.FCKEditor;
 
 import com.extjs.gxt.ui.client.Style.Orientation;
+import com.extjs.gxt.ui.client.data.BaseModelData;
+import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.form.CheckBoxGroup;
+import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
@@ -50,17 +53,19 @@ import com.google.gwt.xml.client.XMLParser;
 public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private TextField<String> _title = new TextField<String>();
     private TextField<String> _name = new TextField<String>();
-    private List<PageElement> _pageElements = new ArrayList<PageElement>();
+    private final List<PageElement> _pageElements =
+        new ArrayList<PageElement>();
     private String _definition;
 
     /** _constants : UIConstants. */
     private final UIConstants _constants = Globals.uiConstants();
-    
-    private final static String CHECKBOX = "CHECKBOX";
-    private final static String RADIO = "RADIO";
-    private final static String HTML = "HTML";
-    private final static String TEXT = "TEXT";
-    private final static String DATE = "DATE";
+
+    private static final String CHECKBOX = "CHECKBOX";
+    private static final String RADIO = "RADIO";
+    private static final String HTML = "HTML";
+    private static final String TEXT = "TEXT";
+    private static final String DATE = "DATE";
+    private static final String COMBOBOX = "COMBOBOX";
 
     /**
      * Constructor.
@@ -78,8 +83,10 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      * Populates fields for editing.
      *
      * @param resourceSummary PageDTO of the original page.
+     * @param pageName The name of the page.
      */
-    public void populateFields(final PageDelta resourceSummary, final String pageName) {
+    public void populateFields(final PageDelta resourceSummary,
+                               final String pageName) {
         _name.setValue(pageName);
         _name.setReadOnly(true);
         _name.disable();
@@ -105,7 +112,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                     } else if (CHECKBOX.equals(c.type())) {
                         final CheckBoxGroup cbg = c.checkBoxGroup();
                         Map<String, String> valueMap = fillValueMap(para);
-                        
+
                         List<CheckBox> boxes = cbg.getAll();
                         for (CheckBox box : boxes) {
                             if ("true".equals(valueMap.get(box.getId()))) {
@@ -116,14 +123,24 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                         }
                     } else if (RADIO.equals(c.type())) {
                         final RadioGroup rg = c.radioGroup();
-                        Map<String, String> valueMap = fillValueMap(para);
-                        
+                        String value = para.getTextValue();
+
                         List<Radio> radios = rg.getAll();
                         for (Radio radio : radios) {
-                            if ("true".equals(valueMap.get(radio.getId()))) {
+                            if (radio.getId().equals(value)) {
                                 radio.setValue(true);
                             } else {
                                 radio.setValue(false);
+                            }
+                        }
+                    } else if (COMBOBOX.equals(c.type())) {
+                        ComboBox<BaseModelData> cb = c.combobox();
+                        String value = para.getTextValue();
+
+                        ListStore<BaseModelData> store = cb.getStore();
+                        for (BaseModelData model : store.getModels()) {
+                            if (model.get("value").equals(value)) {
+                                cb.setValue(model);
                             }
                         }
                     }
@@ -141,9 +158,9 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private Map<String, String> fillValueMap(final ParagraphDelta para) {
 
         String text = para.getTextValue();
-        
-        Map<String,String> valueMap = new HashMap<String, String>();
-        
+
+        Map<String, String> valueMap = new HashMap<String, String>();
+
         String[] lines = text.split("\n");
         for (String line : lines) {
             if (line.trim().length() > 0) {
@@ -154,7 +171,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         }
         return valueMap;
     }
-    
+
 
     /**
      * TODO: Add a description of this method.
@@ -210,7 +227,6 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                     sb.append("=");
                     sb.append(cb.getValue().toString());
                 }
-                
                 final ParagraphDelta p =
                     new ParagraphDelta(
                         c.id(),
@@ -222,22 +238,33 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                 paragraphs.add(p);
             } else if (RADIO.equals(c.type())) {
                 final RadioGroup rg = c.radioGroup();
-                StringBuilder sb = new StringBuilder();
-                for (Radio radio : rg.getAll()) {
-                    if (sb.length() > 0) {
-                        sb.append("\n");
-                    }
-                    sb.append(radio.getId());
-                    sb.append("=");
-                    sb.append(radio.getValue().toString());
+                String selected = "";
+                if (rg.getValue() != null) {
+                    selected = rg.getValue().getId();
                 }
-                
+
                 final ParagraphDelta p =
                     new ParagraphDelta(
                         c.id(),
                         ParagraphType.TEXT,
                         null,
-                        sb.toString(),
+                        selected,
+                        null,
+                        null);
+                paragraphs.add(p);
+            } else if (COMBOBOX.equals(c.type())) {
+                final ComboBox<BaseModelData> cb = c.combobox();
+                String selected = "";
+                if (cb.getValue() != null) {
+                    selected = cb.getValue().get("value");
+                }
+
+                final ParagraphDelta p =
+                    new ParagraphDelta(
+                        c.id(),
+                        ParagraphType.TEXT,
+                        null,
+                        selected,
                         null,
                         null);
                 paragraphs.add(p);
@@ -314,23 +341,21 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
             final String type = field.getAttribute("type");
             final String name = field.getAttribute("name");
             final String regexp = field.getAttribute("regexp");
-            
+
             if ("text_field".equals(type)) {
                 addElementForTextField(name, regexp);
-                
             } else if ("text_area".equals(type)) {
                 addElementForTextArea(name, regexp);
-
             } else if ("date".equals(type)) {
                 addElementForDate(name);
-                
             } else if ("html".equals(type)) {
                 addElementForHtml(name);
-                
             } else if ("checkbox".equals(type)) {
                 addElementForCheckbox(name, field);
             } else if ("radio".equals(type)) {
                 addElementForRadio(name, field);
+            } else if ("combobox".equals(type)) {
+                addElementForCombobox(name, field);
             }
         }
     }
@@ -341,64 +366,102 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      * @param name
      * @param field
      */
-    private void addElementForCheckbox(String name, Element field) {
-        final CheckBoxGroup cbg =  new  CheckBoxGroup();
-        cbg.setFieldLabel(name);
-        cbg.setData("type", CHECKBOX);
-        cbg.setId(name);
-        cbg.setOrientation(Orientation.VERTICAL);
-        
+    private void addElementForCombobox(final String name, final Element field) {
+        final ComboBox<BaseModelData> cb = new ComboBox<BaseModelData>();
+        cb.setFieldLabel(name);
+        cb.setData("type", COMBOBOX);
+        cb.setDisplayField("title");
+        cb.setId(name);
+
+        ListStore<BaseModelData> store =  new ListStore<BaseModelData>();
         NodeList nl = field.getElementsByTagName("option");
         for (int i=0; i<nl.getLength(); i++) {
             final Element option = ((Element) nl.item(i));
             final String def  = option.getAttribute("default");
             final String title = option.getAttribute("title");
             final String value = option.getAttribute("value");
-            
-            CheckBox cb = new CheckBox();
-            cb.setBoxLabel(title);
-            cb.setId(value);
-            cb.setValue("true".equals(def));
-            
-            cbg.add(cb);
+
+            BaseModelData model = new BaseModelData();
+            model.set("title", title);
+            model.set("value", value);
+            store.add(model);
+            if ("true".equals(def)) {
+                cb.setValue(model);
+            }
         }
-        add(cbg, new FormData("95%"));
-        
+        cb.setStore(store);
+        add(cb, new FormData("95%"));
+
         final PageElement pe = new PageElement(name);
-        pe.type(CHECKBOX);
-        pe.checkBoxGroup(cbg);
+        pe.type(COMBOBOX);
+        pe.combobox(cb);
         _pageElements.add(pe);
     }
-    
+
     /**
      * TODO: Add a description of this method.
      *
      * @param name
      * @param field
      */
-    private void addElementForRadio(String name, Element field) {
-        final RadioGroup rg =  new  RadioGroup();
-        rg.setFieldLabel(name);
-        rg.setData("type", RADIO);
-        rg.setId(name);
-        rg.setOrientation(Orientation.VERTICAL);
-        
+    private void addElementForCheckbox(final String name, final Element field) {
+        final CheckBoxGroup cbg =  new  CheckBoxGroup();
+        cbg.setFieldLabel(name);
+        cbg.setData("type", CHECKBOX);
+        cbg.setId(name);
+        cbg.setOrientation(Orientation.VERTICAL);
+
         NodeList nl = field.getElementsByTagName("option");
         for (int i=0; i<nl.getLength(); i++) {
             final Element option = ((Element) nl.item(i));
             final String def  = option.getAttribute("default");
             final String title = option.getAttribute("title");
             final String value = option.getAttribute("value");
-            
+
+            CheckBox cb = new CheckBox();
+            cb.setBoxLabel(title);
+            cb.setId(value);
+            cb.setValue("true".equals(def));
+
+            cbg.add(cb);
+        }
+        add(cbg, new FormData("95%"));
+
+        final PageElement pe = new PageElement(name);
+        pe.type(CHECKBOX);
+        pe.checkBoxGroup(cbg);
+        _pageElements.add(pe);
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param name
+     * @param field
+     */
+    private void addElementForRadio(final String name, final Element field) {
+        final RadioGroup rg =  new  RadioGroup();
+        rg.setFieldLabel(name);
+        rg.setData("type", RADIO);
+        rg.setId(name);
+        rg.setOrientation(Orientation.VERTICAL);
+
+        NodeList nl = field.getElementsByTagName("option");
+        for (int i=0; i<nl.getLength(); i++) {
+            final Element option = ((Element) nl.item(i));
+            final String def  = option.getAttribute("default");
+            final String title = option.getAttribute("title");
+            final String value = option.getAttribute("value");
+
             Radio r = new Radio();
             r.setBoxLabel(title);
             r.setId(value);
             r.setValue("true".equals(def));
-            
+
             rg.add(r);
         }
         add(rg, new FormData("95%"));
-        
+
         final PageElement pe = new PageElement(name);
         pe.type(RADIO);
         pe.radioGroup(rg);
@@ -470,7 +533,8 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      * @param name
      * @param regexp
      */
-    private void addElementForTextField(final String name, final String regexp) {
+    private void addElementForTextField(final String name,
+                                        final String regexp) {
 
         final TextField<String> tf = new TextField<String>();
         tf.setData("type", TEXT);
@@ -486,7 +550,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
 
         _pageElements.add(pe);
     }
-    
+
     private void drawStaticFields() {
 
         _name = new TextField<String>();
