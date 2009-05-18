@@ -20,6 +20,7 @@ import com.extjs.gxt.ui.client.widget.form.CheckBoxGroup;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.Field;
+import com.extjs.gxt.ui.client.widget.form.ListField;
 import com.extjs.gxt.ui.client.widget.form.RadioGroup;
 
 
@@ -41,6 +42,7 @@ public class PageElement {
     private CheckBoxGroup _checkBoxGroup;
     private RadioGroup _radioGroup;
     private ComboBox<BaseModelData> _combobox;
+    private ListField<BaseModelData> _list;
 
     /**
      * Constructor.
@@ -217,6 +219,26 @@ public class PageElement {
     public ComboBox<BaseModelData> combobox() {
 
         return _combobox;
+    }
+
+    /**
+     * Mutator.
+     *
+     * @param list The list to set.
+     */
+    public void list(final ListField<BaseModelData> list) {
+
+        _list = list;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the list.
+     */
+    public ListField<BaseModelData> list() {
+
+        return _list;
     }
 
 }

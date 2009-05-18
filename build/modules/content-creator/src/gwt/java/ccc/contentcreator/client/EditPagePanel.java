@@ -22,8 +22,11 @@ import ccc.api.ParagraphType;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.client.ui.FCKEditor;
 
+import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.data.BaseModelData;
+import com.extjs.gxt.ui.client.event.BaseEvent;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.Text;
@@ -33,6 +36,7 @@ import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
+import com.extjs.gxt.ui.client.widget.form.ListField;
 import com.extjs.gxt.ui.client.widget.form.Radio;
 import com.extjs.gxt.ui.client.widget.form.RadioGroup;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
@@ -66,6 +70,9 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private static final String TEXT = "TEXT";
     private static final String DATE = "DATE";
     private static final String COMBOBOX = "COMBOBOX";
+    private static final String LIST = "LIST";
+    private static final String IMAGE = "IMAGE";
+
 
     /**
      * Constructor.
@@ -92,6 +99,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         _name.disable();
         _title.setValue(resourceSummary.getTitle());
 
+        // TODO: Refactor
         for (final PageElement c : pageElements()) {
             for (final ParagraphDelta para : resourceSummary.getParagraphs()) {
                 if (c.id().equals(para.getName())) {
@@ -143,6 +151,25 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                                 cb.setValue(model);
                             }
                         }
+                    }  else if (LIST.equals(c.type())) {
+                        final ListField<BaseModelData> list = c.list();
+                        Map<String, String> valueMap = fillValueMap(para);
+                        final List<BaseModelData> selection =
+                            new ArrayList<BaseModelData>();
+
+                        ListStore<BaseModelData> items = list.getStore();
+                        for (BaseModelData item : items.getModels()) {
+                            if (valueMap.containsKey(item.get("value"))) {
+                                selection.add(item);
+                            }
+                        }
+                        list.removeAllListeners();
+                        // ListField bug/feature - http://extjs.com/forum/showthread.php?t=55659
+                        list.addListener(Events.Render, new Listener<BaseEvent>() {
+                            public void handleEvent(final BaseEvent baseEvent) {
+                                list.setSelection(selection);
+                            }
+                        });
                     }
                 }
             }
@@ -174,102 +201,198 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
 
 
     /**
-     * TODO: Add a description of this method.
+     * Reads values from the form and stores them to the {@link ParagraphDelta}
+     * objects of the paragraphs list.
      *
-     * @param definitions
-     * @param paragraphs
+     * @param definitions List of form elements
+     * @param paragraphs List of paragraphs
      */
     public void extractValues(final List<PageElement> definitions,
                                final List<ParagraphDelta> paragraphs) {
+        ParagraphDelta p = null;
 
         for (final PageElement c : definitions) {
             if (TEXT.equals(c.type())) {
-                final Field<String> f = c.field();
-                final ParagraphDelta p =
-                    new ParagraphDelta(
-                        c.id(),
-                        ParagraphType.TEXT,
-                        null,
-                        f.getValue(),
-                        null,
-                        null);
-                paragraphs.add(p);
+                p = extractText(c);
             } else if (DATE.equals(c.type())) {
-                final DateField f = c.dateField();
-                final ParagraphDelta p =
-                    new ParagraphDelta(
-                        c.id(),
-                        ParagraphType.DATE,
-                        f.getRawValue(),
-                        null,
-                        f.getValue(),
-                        null);
-                paragraphs.add(p);
+                p = extractDate(c);
             } else if (HTML.equals(c.type())) {
-                final FCKEditor f = c.editor();
-                final ParagraphDelta p =
-                    new ParagraphDelta(
-                        c.id(),
-                        ParagraphType.TEXT,
-                        null,
-                        f.getHTML(),
-                        null,
-                        null);
-                paragraphs.add(p);
+                p = extractHtml(c);
             } else if (CHECKBOX.equals(c.type())) {
-                final CheckBoxGroup cbg = c.checkBoxGroup();
-                StringBuilder sb = new StringBuilder();
-                for (CheckBox cb : cbg.getAll()) {
-                    if (sb.length() > 0) {
-                        sb.append("\n");
-                    }
-                    sb.append(cb.getId());
-                    sb.append("=");
-                    sb.append(cb.getValue().toString());
-                }
-                final ParagraphDelta p =
-                    new ParagraphDelta(
-                        c.id(),
-                        ParagraphType.TEXT,
-                        null,
-                        sb.toString(),
-                        null,
-                        null);
-                paragraphs.add(p);
+                p = extractCheckBox(c);
             } else if (RADIO.equals(c.type())) {
-                final RadioGroup rg = c.radioGroup();
-                String selected = "";
-                if (rg.getValue() != null) {
-                    selected = rg.getValue().getId();
-                }
-
-                final ParagraphDelta p =
-                    new ParagraphDelta(
-                        c.id(),
-                        ParagraphType.TEXT,
-                        null,
-                        selected,
-                        null,
-                        null);
-                paragraphs.add(p);
+                p = extractRadio(c);
             } else if (COMBOBOX.equals(c.type())) {
-                final ComboBox<BaseModelData> cb = c.combobox();
-                String selected = "";
-                if (cb.getValue() != null) {
-                    selected = cb.getValue().get("value");
-                }
-
-                final ParagraphDelta p =
-                    new ParagraphDelta(
-                        c.id(),
-                        ParagraphType.TEXT,
-                        null,
-                        selected,
-                        null,
-                        null);
+                p = extractComboBox(c);
+            } else if (LIST.equals(c.type())) {
+                p = extractList(c);
+            }
+            if (p != null) {
                 paragraphs.add(p);
             }
         }
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param c
+     * @return
+     */
+    private ParagraphDelta extractList(PageElement c) {
+
+        final ListField<BaseModelData> list = c.list();
+        StringBuilder sb = new StringBuilder();
+        for (BaseModelData item : list.getSelection()) {
+            if (sb.length() > 0) {
+                sb.append("\n");
+            }
+            sb.append(item.get("value"));
+            sb.append("=");
+            sb.append(item.get("title"));
+        }
+        ParagraphDelta p = new ParagraphDelta(
+                c.id(),
+                ParagraphType.TEXT,
+                null,
+                sb.toString(),
+                null,
+                null);
+        return p;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param c
+     * @return
+     */
+    private ParagraphDelta extractComboBox(PageElement c) {
+
+        final ComboBox<BaseModelData> cb = c.combobox();
+        String selected = "";
+        if (cb.getValue() != null) {
+            selected = cb.getValue().get("value");
+        }
+
+        ParagraphDelta p = new ParagraphDelta(
+                c.id(),
+                ParagraphType.TEXT,
+                null,
+                selected,
+                null,
+                null);
+        return p;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param c
+     * @return
+     */
+    private ParagraphDelta extractRadio(PageElement c) {
+
+        final RadioGroup rg = c.radioGroup();
+        String selected = "";
+        if (rg.getValue() != null) {
+            selected = rg.getValue().getId();
+        }
+
+        ParagraphDelta p = new ParagraphDelta(
+                c.id(),
+                ParagraphType.TEXT,
+                null,
+                selected,
+                null,
+                null);
+        return p;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param c
+     * @return
+     */
+    private ParagraphDelta extractCheckBox(PageElement c) {
+
+        final CheckBoxGroup cbg = c.checkBoxGroup();
+        StringBuilder sb = new StringBuilder();
+        for (CheckBox cb : cbg.getAll()) {
+            if (sb.length() > 0) {
+                sb.append("\n");
+            }
+            sb.append(cb.getId());
+            sb.append("=");
+            sb.append(cb.getValue().toString());
+        }
+
+        ParagraphDelta p = new ParagraphDelta(
+                c.id(),
+                ParagraphType.TEXT,
+                null,
+                sb.toString(),
+                null,
+                null);
+        return p;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param c
+     * @return
+     */
+    private ParagraphDelta extractHtml(PageElement c) {
+
+        final FCKEditor f = c.editor();
+        ParagraphDelta p = new ParagraphDelta(
+                c.id(),
+                ParagraphType.TEXT,
+                null,
+                f.getHTML(),
+                null,
+                null);
+        return p;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param c
+     * @return
+     */
+    private ParagraphDelta extractDate(PageElement c) {
+
+        final DateField f = c.dateField();
+        ParagraphDelta p = new ParagraphDelta(
+                c.id(),
+                ParagraphType.DATE,
+                f.getRawValue(),
+                null,
+                f.getValue(),
+                null);
+        return p;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param c
+     * @return
+     */
+    private ParagraphDelta extractText(PageElement c) {
+
+        final Field<String> f = c.field();
+        ParagraphDelta p = new ParagraphDelta(
+                c.id(),
+                ParagraphType.TEXT,
+                null,
+                f.getValue(),
+                null,
+                null);
+        return p;
     }
 
 
@@ -331,7 +454,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         if (definition == null || definition.trim().equals("")) {
             return;
         }
-        drawStaticFields();
+        addStaticFields();
 
         final Document def = XMLParser.parse(definition);
 
@@ -356,8 +479,71 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                 addElementForRadio(name, field);
             } else if ("combobox".equals(type)) {
                 addElementForCombobox(name, field);
+            } else if ("list".equals(type)) {
+                addElementForList(name, field);
+            } else if ("image".equals(type)) {
+                addElementForImage(name, field);
             }
         }
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param name
+     * @param field
+     */
+    private void addElementForImage(String name, Element field) {
+
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param name
+     * @param field
+     */
+    private void addElementForList(String name, Element field) {
+        final ListField<BaseModelData> list = new ListField<BaseModelData>();
+        list.setFieldLabel(name);
+        list.setData("type", LIST);
+        list.setDisplayField("title");
+        list.setValueField("value");
+        list.setId(name);
+
+        final ListStore<BaseModelData> store =  new ListStore<BaseModelData>();
+        final List<BaseModelData> selection = new ArrayList<BaseModelData>();
+
+        NodeList nl = field.getElementsByTagName("option");
+        for (int i=0; i<nl.getLength(); i++) {
+            final Element option = ((Element) nl.item(i));
+            final String def  = option.getAttribute("default");
+            final String title = option.getAttribute("title");
+            final String value = option.getAttribute("value");
+
+            BaseModelData model = new BaseModelData();
+            model.set("title", title);
+            model.set("value", value);
+            store.add(model);
+            if ("true".equals(def)) {
+                selection.add(model);
+            }
+        }
+        list.setStore(store);
+        add(list, new FormData("95%"));
+        // ListField bug/feature - http://extjs.com/forum/showthread.php?t=55659
+        list.addListener(Events.Render, new Listener<BaseEvent>() {
+            public void handleEvent(final BaseEvent baseEvent) {
+                list.setSelection(selection);
+            }
+        });
+
+        final PageElement pe = new PageElement(name);
+        pe.type(LIST);
+        pe.list(list);
+        _pageElements.add(pe);
+
     }
 
     /**
@@ -371,6 +557,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         cb.setFieldLabel(name);
         cb.setData("type", COMBOBOX);
         cb.setDisplayField("title");
+        cb.setValueField("value");
         cb.setId(name);
 
         ListStore<BaseModelData> store =  new ListStore<BaseModelData>();
@@ -551,7 +738,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         _pageElements.add(pe);
     }
 
-    private void drawStaticFields() {
+    private void addStaticFields() {
 
         _name = new TextField<String>();
         _name.setFieldLabel(_constants.name());
