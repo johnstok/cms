@@ -69,8 +69,7 @@ public class UpdateFileServlet extends CreatorServlet {
             new ReadWriteTxAction(
                 new PersistenceAction(
                     new ReaderAction(
-                        new UpdateFileAction()
-                        ),
+                        new UpdateFileAction()),
                     _emf),
                 _utx);
 
@@ -89,7 +88,7 @@ public class UpdateFileServlet extends CreatorServlet {
         @Override
         public void execute(final HttpServletRequest request,
                             final HttpServletResponse response)
-                                          throws ServletException, IOException {
+                                                            throws IOException {
 
             final Dao dao =
                 (Dao) request.getAttribute(SessionKeys.DAO_KEY);

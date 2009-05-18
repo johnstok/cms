@@ -24,6 +24,7 @@ import ccc.api.CommandType;
 import ccc.api.Commands;
 import ccc.api.Duration;
 import ccc.api.ID;
+import ccc.api.LocalCommands;
 import ccc.api.PageDelta;
 import ccc.api.ParagraphDelta;
 import ccc.api.ResourceSummary;
@@ -42,7 +43,7 @@ public class CommandsImpl
     extends CCCRemoteServiceServlet
     implements CommandService {
 
-    @EJB(name=Commands.NAME) private transient Commands _commands;
+    @EJB(name=Commands.NAME) private LocalCommands _commands;
 
     /** {@inheritDoc} */
     @Override

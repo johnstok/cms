@@ -13,6 +13,7 @@ package ccc.api.ejb3;
 
 import static javax.ejb.TransactionAttributeType.*;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -22,9 +23,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.activation.MimeTypeParseException;
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBContext;
+import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -38,7 +41,9 @@ import ccc.api.CommandFailedException;
 import ccc.api.CommandType;
 import ccc.api.Commands;
 import ccc.api.Duration;
+import ccc.api.FileDelta;
 import ccc.api.ID;
+import ccc.api.LocalCommands;
 import ccc.api.PageDelta;
 import ccc.api.ParagraphDelta;
 import ccc.api.ResourceSummary;
@@ -51,6 +56,7 @@ import ccc.commands.ChangeResourceTagsCommand;
 import ccc.commands.ChangeTemplateForResourceCommand;
 import ccc.commands.ClearWorkingCopyCommand;
 import ccc.commands.CreateAliasCommand;
+import ccc.commands.CreateFileCommand;
 import ccc.commands.CreateFolderCommand;
 import ccc.commands.CreatePageCommand;
 import ccc.commands.CreateRootCommand;
@@ -78,6 +84,7 @@ import ccc.commands.UpdateUserCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.Action;
 import ccc.domain.CCCException;
+import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
@@ -89,12 +96,15 @@ import ccc.domain.ResourceExistsException;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourceOrder;
 import ccc.domain.Snapshot;
+import ccc.domain.UnexpectedException;
 import ccc.domain.User;
 import ccc.persistence.jpa.BaseDao;
+import ccc.persistence.jpa.FsCoreData;
 import ccc.services.AuditLog;
 import ccc.services.ModelTranslation;
 import ccc.services.UserLookup;
 import ccc.services.impl.AuditLogImpl;
+import ccc.services.impl.DataManagerImpl;
 
 
 /**
@@ -105,12 +115,13 @@ import ccc.services.impl.AuditLogImpl;
 @Stateless(name=Commands.NAME)
 @TransactionAttribute(REQUIRES_NEW)
 @Remote(Commands.class)
+@Local(LocalCommands.class)
 @RolesAllowed({}) // "ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"
 public class CommandsEJB
     extends
         ModelTranslation
     implements
-        Commands {
+        Commands, LocalCommands {
     private static final Logger LOG = Logger.getLogger(CommandsEJB.class);
 
     @PersistenceContext private EntityManager _em;
@@ -119,6 +130,8 @@ public class CommandsEJB
     private AuditLog           _audit;
     private UserLookup         _userLookup;
     private BaseDao            _bdao;
+
+    private DataManagerImpl _dm;
 
     /** {@inheritDoc} */
     @Override
@@ -742,6 +755,41 @@ public class CommandsEJB
             loggedInUser(), new Date(), toUUID(userId), password);
     }
 
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
+    public ResourceSummary createFile(final ID parentFolder,
+                                      final FileDelta file,
+                                      final String resourceName,
+                                      final InputStream dataStream,
+                                      final boolean publish)
+                                                 throws CommandFailedException {
+        try {
+            final User u = loggedInUser();
+
+            final File f =
+                new CreateFileCommand(_bdao, _audit, _dm).execute(
+                    u,
+                    new Date(),
+                    toUUID(parentFolder),
+                    file,
+                    new ResourceName(resourceName),
+                    dataStream);
+
+            if (publish) {
+                f.lock(u);
+                new PublishCommand(_audit).execute(new Date(), u, f);
+                f.unlock(u);
+            }
+
+            return mapResource(f);
+        } catch (final RemoteExceptionSupport e) {
+            throw fail(e);
+        } catch (final MimeTypeParseException e) {
+            throw fail(new UnexpectedException(e));
+        }
+    }
+
 
     /* ==============
      * Helper methods
@@ -751,6 +799,7 @@ public class CommandsEJB
         _bdao = new BaseDao(_em);
         _audit = new AuditLogImpl(_bdao);
         _userLookup = new UserLookup(_bdao);
+        _dm = new DataManagerImpl(new FsCoreData(), _bdao);
     }
 
     private User loggedInUser() {

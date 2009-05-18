@@ -21,6 +21,7 @@ import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
+import ccc.api.CommandFailedException;
 import ccc.api.Commands;
 import ccc.api.Queries;
 import ccc.cli.fileupload.CccServer;
@@ -34,7 +35,7 @@ import ccc.services.ServiceLookup;
 /**
  * A command line tool that allows bulk upload of files into CCC.
  *
- * TODO: Add the ability to publish at the same time.
+ * TODO: Report failure to create a file (currently silently ignored).
  * TODO: Add the ability to overwrite/ignore existing files/folders.
  *
  * @author Civic Computing Ltd.
@@ -57,9 +58,15 @@ public class FileUpload extends CccApp {
                 if (child.isFile()) {
                     server.createFile(parentId, child, publish);
                 } else {
-                    final UUID childFolder =
-                        server.createFolder(parentId, child.getName(), publish);
-                    recurse(childFolder, child, includeHidden, publish);
+                    try {
+                        final UUID childFolder = server.createFolder(
+                            parentId, child.getName(), publish);
+                        recurse(childFolder, child, includeHidden, publish);
+                    } catch (final CommandFailedException e) {
+                        LOG.warn(
+                            "Failed to create folder '"+child.getName()
+                            + "' [error code: "+e.getCode()+"].");
+                    }
                 }
             }
         }

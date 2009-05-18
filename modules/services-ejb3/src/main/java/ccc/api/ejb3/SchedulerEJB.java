@@ -65,7 +65,7 @@ public class SchedulerEJB implements Scheduler, ActionDao {
 
     @Resource private EJBContext _context;
     @PersistenceContext private EntityManager _em;
-    @EJB(name=Commands.NAME) private transient Commands _commands;
+    @EJB(name=Commands.NAME) private LocalCommands _commands;
 
     private ActionExecutor _executor;
     private Dao _dao;
