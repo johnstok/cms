@@ -74,6 +74,7 @@ import ccc.commands.UnlockResourceCommand;
 import ccc.commands.UnpublishResourceCommand;
 import ccc.commands.UpdateAliasCommand;
 import ccc.commands.UpdateCachingCommand;
+import ccc.commands.UpdateFileCommand;
 import ccc.commands.UpdateFolderCommand;
 import ccc.commands.UpdatePageCommand;
 import ccc.commands.UpdatePasswordAction;
@@ -649,14 +650,14 @@ public class CommandsEJB
                              final String comment,
                              final boolean isMajorEdit) {// TODO: Use ActionDelta.
       final Action a =
-      new Action(
-          action,
-          executeAfter,
-          loggedInUser(),
-          _bdao.find(Resource.class, toUUID(resourceId)),
-          new Snapshot(parameters),
-          comment,
-          isMajorEdit);
+          new Action(
+              action,
+              executeAfter,
+              loggedInUser(),
+              _bdao.find(Resource.class, toUUID(resourceId)),
+              new Snapshot(parameters),
+              comment,
+              isMajorEdit);
 
       new ScheduleActionCommand(_bdao).execute(a);
     }
@@ -783,6 +784,28 @@ public class CommandsEJB
             }
 
             return mapResource(f);
+        } catch (final RemoteExceptionSupport e) {
+            throw fail(e);
+        } catch (final MimeTypeParseException e) {
+            throw fail(new UnexpectedException(e));
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
+    public void updateFile(final ID fileId,
+                           final FileDelta fileDelta,
+                           final InputStream dataStream) throws CommandFailedException {
+
+        try {
+            new UpdateFileCommand(_bdao, _audit, _dm).execute(
+                loggedInUser(),
+                new Date(),
+                UUID.fromString(fileId.toString()),
+                fileDelta,
+                dataStream);
+
         } catch (final RemoteExceptionSupport e) {
             throw fail(e);
         } catch (final MimeTypeParseException e) {
