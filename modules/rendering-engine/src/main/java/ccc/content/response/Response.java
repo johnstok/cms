@@ -18,13 +18,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.activation.MimeType;
-import javax.activation.MimeTypeParseException;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
 import ccc.api.Duration;
+import ccc.api.MimeType;
 import ccc.commons.DBC;
 
 
@@ -105,12 +104,7 @@ public class Response {
      * @param secondary The secondary part of the mime type.
      */
     public void setMimeType(final String primary, final String secondary) {
-        try {
-            _headers.add(
-                new ContentTypeHeader(new MimeType(primary, secondary)));
-        } catch (final MimeTypeParseException e) {
-            LOG.warn("Ignoring invalid mimetype: "+primary+"/"+secondary);
-        }
+        _headers.add(new ContentTypeHeader(new MimeType(primary, secondary)));
     }
 
     /**

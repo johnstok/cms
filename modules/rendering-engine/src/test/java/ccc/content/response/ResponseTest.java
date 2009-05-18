@@ -19,12 +19,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.activation.MimeType;
-import javax.activation.MimeTypeParseException;
 import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
 import ccc.api.Duration;
+import ccc.api.MimeType;
 import ccc.commons.Testing;
 import ccc.domain.Page;
 import ccc.services.StatefulReader;
@@ -91,7 +90,7 @@ public class ResponseTest
      * Test.
      * @throws MimeTypeParseException If a mime type is invalid.
      */
-    public void testMimeTypeProperty() throws MimeTypeParseException {
+    public void testMimeTypeProperty() {
 
         // ARRANGE
         _r.setMimeType("text", "html");
@@ -102,7 +101,7 @@ public class ResponseTest
         // ASSERT
         assertTrue(
             headers.contains(
-                new ContentTypeHeader(new MimeType("text", "html"))));
+                new ContentTypeHeader(MimeType.HTML)));
     }
 
     /**

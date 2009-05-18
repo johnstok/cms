@@ -17,6 +17,7 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 import ccc.api.CommandType;
+import ccc.api.MimeType;
 
 
 /**
@@ -134,7 +135,8 @@ public class LogEntryTest
             "newTitle",
             "desc",
             "body",
-            "<fields/>");
+            "<fields/>",
+            MimeType.HTML);
         p.template(t);
 
         // ACT

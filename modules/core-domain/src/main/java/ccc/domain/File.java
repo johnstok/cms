@@ -11,11 +11,9 @@
  */
 package ccc.domain;
 
-import javax.activation.MimeType;
-import javax.activation.MimeTypeParseException;
-
 import org.apache.log4j.Logger;
 
+import ccc.api.MimeType;
 import ccc.api.ResourceType;
 import ccc.commons.DBC;
 
@@ -55,23 +53,7 @@ public class File
                 final String description,
                 final Data data,
                 final int size) {
-        this(name, title, description, data, size, defaultMimeType());
-    }
-
-    /**
-     * Create a mime type representing the default value
-     * ('application/octet-stream').
-     *
-     * @return An instance of {@link MimeType}.
-     */
-    public static MimeType defaultMimeType() {
-        try {
-            return new MimeType("application", "octet-stream");
-        } catch (final MimeTypeParseException e) {
-            // This should never happen.
-            LOG.error("Failed to create mimetype: application/octet-stream", e);
-            return null;
-        }
+        this(name, title, description, data, size, MimeType.BINARY_DATA);
     }
 
 
@@ -188,15 +170,10 @@ public class File
 
     /** {@inheritDoc} */
     @Override
-    public void applySnapshot(final Snapshot s)
-                                               throws InvalidSnapshotException {
-        try {
-            description(s.getString("description"));
-            mimeType(new MimeType(s.getString("mimetype")));
-            size(s.getInt("size"));
-            data(new Data(s.getUuid("data")));
-        } catch (final MimeTypeParseException e) {
-            throw new InvalidSnapshotException(e);
-        }
+    public void applySnapshot(final Snapshot s) {
+        description(s.getString("description"));
+        mimeType(MimeType.HTML);
+        size(s.getInt("size"));
+        data(new Data(s.getUuid("data")));
     }
 }

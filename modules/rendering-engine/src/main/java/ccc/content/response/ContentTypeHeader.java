@@ -11,8 +11,9 @@
  */
 package ccc.content.response;
 
-import javax.activation.MimeType;
 import javax.servlet.http.HttpServletResponse;
+
+import ccc.api.MimeType;
 
 
 /**

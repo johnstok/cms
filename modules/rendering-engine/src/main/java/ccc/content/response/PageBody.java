@@ -19,6 +19,7 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
+import ccc.api.MimeType;
 import ccc.commons.DBC;
 import ccc.commons.Resources;
 import ccc.content.velocity.VelocityProcessor;
@@ -82,5 +83,6 @@ public class PageBody
                 PageBody.class.getResource(
                     "/ccc/content/server/default-page-template.txt"),
                 Charset.forName("UTF-8")),
-            "<fields/>");
+            "<fields/>",
+            MimeType.HTML);
 }

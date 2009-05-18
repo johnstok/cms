@@ -16,6 +16,7 @@ import junit.framework.TestCase;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ccc.api.MimeType;
 import ccc.api.ResourceType;
 
 
@@ -33,8 +34,8 @@ public final class TemplateTest extends TestCase {
     public void testSnapshot() throws JSONException {
 
         // ARRANGE
-        final Template t =
-            new Template("foo!", "bar", "Hello world", "<fields/>");
+        final Template t = new Template(
+            "foo!", "bar", "Hello world", "<fields/>", MimeType.HTML);
 
         // ACT
         final JSONObject o  = new JSONObject(t.createSnapshot().getDetail());
@@ -54,8 +55,8 @@ public final class TemplateTest extends TestCase {
         // ARRANGE
 
         // ACT
-        final Template t =
-            new Template("foo!", "bar", "Hello world", "<fields/>");
+        final Template t = new Template(
+            "foo!", "bar", "Hello world", "<fields/>", MimeType.HTML);
 
         // ASSERT
         assertEquals(new ResourceName("foo_"), t.name());
@@ -78,7 +79,8 @@ public final class TemplateTest extends TestCase {
             "foo!",
             "bar",
             "Hello world",
-            "<fields/>");
+            "<fields/>",
+            MimeType.HTML);
 
         // ASSERT
         assertEquals(new ResourceName("testName"), t.name());

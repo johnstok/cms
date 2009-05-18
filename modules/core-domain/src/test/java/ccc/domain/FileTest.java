@@ -11,13 +11,12 @@
  */
 package ccc.domain;
 
-import javax.activation.MimeType;
-import javax.activation.MimeTypeParseException;
-
 import junit.framework.TestCase;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import ccc.api.MimeType;
 
 
 /**
@@ -29,10 +28,9 @@ public class FileTest extends TestCase {
 
     /**
      * Test.
-     * @throws MimeTypeParseException  For invalid mime type.
      * @throws JSONException If the JSON is invalid.
      */
-    public void testSnapshot() throws MimeTypeParseException, JSONException {
+    public void testSnapshot() throws JSONException {
 
         // ARRANGE
         final Data data = new Data();
@@ -42,7 +40,7 @@ public class FileTest extends TestCase {
                 "desc",
                 data,
                 1,
-                new MimeType("foo/bar"));
+                new MimeType("foo", "bar"));
 
         // ACT
         final JSONObject o = new JSONObject(f.createSnapshot().getDetail());
@@ -57,9 +55,8 @@ public class FileTest extends TestCase {
 
     /**
      * Test.
-     * @throws MimeTypeParseException For invalid mime type.
      */
-    public void testDataPropertyCanBeUpdated() throws MimeTypeParseException {
+    public void testDataPropertyCanBeUpdated() {
 
         // ARRANGE
         final Data newData = new Data();
@@ -69,7 +66,7 @@ public class FileTest extends TestCase {
                 "desc",
                 new Data(),
                 1,
-                new MimeType("foo/bar"));
+                new MimeType("foo", "bar"));
 
         // ACT
         f.data(newData);
@@ -80,9 +77,8 @@ public class FileTest extends TestCase {
 
     /**
      * Test.
-     * @throws MimeTypeParseException For invalid mime type.
      */
-    public void testMimeTypeProperty() throws MimeTypeParseException {
+    public void testMimeTypeProperty() {
 
         // ARRANGE
         final File f =
@@ -91,15 +87,13 @@ public class FileTest extends TestCase {
                 "desc",
                 new Data(),
                 1,
-                new MimeType("foo/bar"));
+                new MimeType("foo", "bar"));
 
         // ACT
         final MimeType actual = f.mimeType();
 
         // ASSERT
-        assertTrue(
-            "Mime types should match",
-            new MimeType("foo", "bar").match(actual));
+        assertEquals(new MimeType("foo", "bar"), actual);
     }
 
     /**
@@ -124,7 +118,6 @@ public class FileTest extends TestCase {
 
     /**
      * Test.
-     *
      */
     public void testRejectMissingData() {
 

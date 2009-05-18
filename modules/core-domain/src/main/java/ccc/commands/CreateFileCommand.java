@@ -15,7 +15,6 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.UUID;
 
-import javax.activation.MimeType;
 import javax.activation.MimeTypeParseException;
 
 import ccc.api.FileDelta;
@@ -30,7 +29,7 @@ import ccc.services.DataManager;
 
 
 /**
- * TODO: Add Description for this type.
+ * C.
  *
  * @author Civic Computing Ltd.
  */
@@ -77,7 +76,7 @@ public class CreateFileCommand extends CreateResourceCommand {
                 file.getDescription(),
                 data,
                 file.getSize(),
-                new MimeType(file.getMimeType()));
+                file.getMimeType());
 
         create(actor, happenedOn, parentFolder, f);
 

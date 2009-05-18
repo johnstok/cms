@@ -27,6 +27,7 @@ import ccc.api.CommandFailedException;
 import ccc.api.Commands;
 import ccc.api.Decimal;
 import ccc.api.ID;
+import ccc.api.MimeType;
 import ccc.api.PageDelta;
 import ccc.api.ParagraphDelta;
 import ccc.api.ParagraphType;
@@ -583,8 +584,8 @@ public class Migrations {
                 templateName,
                 "No description.",
                 "Empty template!",
-                "<fields/>"
-            );
+                "<fields/>",
+                MimeType.HTML);
         final ResourceSummary ts =
             _commands.createTemplate(_templateFolder.getId(), t, templateName);  // FIXME: Specify actor & date
 

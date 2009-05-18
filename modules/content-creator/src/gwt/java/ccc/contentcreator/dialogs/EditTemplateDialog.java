@@ -13,6 +13,7 @@
 package ccc.contentcreator.dialogs;
 
 import ccc.api.ID;
+import ccc.api.MimeType;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
@@ -180,7 +181,8 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                 _templateTitle.getValue(),
                 _description.getValue(),
                 _body.getValue(),
-                _definition.getValue()
+                _definition.getValue(),
+                MimeType.HTML
             );
         return delta;
     }
