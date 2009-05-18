@@ -15,7 +15,6 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.UUID;
 
-import javax.activation.MimeType;
 import javax.activation.MimeTypeParseException;
 
 import ccc.api.FileDelta;
@@ -75,7 +74,7 @@ public class UpdateFileCommand extends UpdateResourceCommand {
 
          f.title(fileDelta.getTitle());
          f.description(fileDelta.getDescription());
-         f.mimeType(new MimeType(fileDelta.getMimeType()));
+         f.mimeType(fileDelta.getMimeType());
          f.size(fileDelta.getSize());
          f.data(_data.create(dataStream, fileDelta.getSize()));
 

@@ -30,6 +30,7 @@ import ccc.api.Commands;
 import ccc.api.FileDelta;
 import ccc.api.ID;
 import ccc.api.LocalCommands;
+import ccc.api.MimeType;
 import ccc.api.ResourceSummary;
 import ccc.domain.CCCException;
 
@@ -73,7 +74,7 @@ public class CreateFileServlet extends HttpServlet {
             new FileDelta(
                 title.getString(),
                 description.getString(),
-                file.getContentType(),
+                toMimeType(file.getContentType()),
                 (int) file.getSize());
 
         final InputStream dataStream = file.getInputStream();
@@ -95,11 +96,23 @@ public class CreateFileServlet extends HttpServlet {
         }
     }
 
+
+    private MimeType toMimeType(final String contentType) {
+        final String[] parts = contentType.split("/");
+        if (2!=parts.length) {
+            LOG.warn("Ignored invalid mime type: "+contentType);
+            return MimeType.BINARY_DATA;
+        }
+        return new MimeType(parts[0], parts[1]);
+    }
+
+
     private void handleException(final HttpServletResponse response,
                                  final Exception e) throws IOException {
         response.getWriter().write("File Upload failed. "+e.getMessage());
         LOG.error("File Upload failed "+e.getMessage(), e);
     }
+
 
     /**
      * Convert a {@link ResourceSummary} to JSON.

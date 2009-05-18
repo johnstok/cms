@@ -11,6 +11,7 @@
  */
 package ccc.domain;
 
+import ccc.api.MimeType;
 import ccc.api.ResourceType;
 import ccc.commons.DBC;
 
@@ -24,6 +25,7 @@ public class Template extends Resource {
 
     private String _body;
     private String _definition;
+    private MimeType _mimeType;
 
     /** Constructor: for persistence only. */
     protected Template() { super(); }
@@ -35,20 +37,21 @@ public class Template extends Resource {
      * @param description The description for the template.
      * @param body A valid velocity template for rendering a page.
      * @param definiton An xml definition of the fields that the body requires.
+     * @param mimeType The mime type this template will produce.
      */
     public Template(final String title,
                     final String description,
                     final String body,
-                    final String definiton) {
+                    final String definiton,
+                    final MimeType mimeType) {
 
-        super(title);
-        DBC.require().notNull(description);
-        DBC.require().notNull(body);
-        DBC.require().notNull(definiton);
-
-        description(description);
-        _body = body;
-        _definition = definiton;
+        this(
+            ResourceName.escape(title),
+            title,
+            description,
+            body,
+            definiton,
+            mimeType);
     }
 
     /**
@@ -59,21 +62,25 @@ public class Template extends Resource {
      * @param description The description for the template.
      * @param body A valid velocity template for rendering a page.
      * @param definiton An xml definition of the fields that the body requires.
+     * @param mimeType The mime type this template will produce.
      */
     public Template(final ResourceName name,
                     final String title,
                     final String description,
                     final String body,
-                    final String definiton) {
+                    final String definiton,
+                    final MimeType mimeType) {
 
         super(name, title);
         DBC.require().notNull(description);
         DBC.require().notNull(body);
         DBC.require().notNull(definiton);
+        DBC.require().notNull(mimeType);
 
         description(description);
         _body = body;
         _definition = definiton;
+        _mimeType = mimeType;
     }
 
     /**
@@ -120,6 +127,24 @@ public class Template extends Resource {
     public void body(final String body) {
         DBC.require().notEmpty(body);
         _body = body;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the mimeType.
+     */
+    public MimeType mimeType() {
+        return _mimeType;
+    }
+
+    /**
+     * Mutator.
+     *
+     * @param mimeType The mimeType to set.
+     */
+    public void mimeType(final MimeType mimeType) {
+        _mimeType = mimeType;
     }
 
     /** {@inheritDoc} */

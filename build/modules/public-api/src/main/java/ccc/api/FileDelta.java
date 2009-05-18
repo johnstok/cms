@@ -22,7 +22,7 @@ import java.io.Serializable;
 public final class FileDelta implements Serializable {
     private String _title;
     private String _description;
-    private String _mimeType;
+    private MimeType _mimeType;
     private int _size;
 
     @SuppressWarnings("unused") private FileDelta() { super(); }
@@ -37,7 +37,7 @@ public final class FileDelta implements Serializable {
      */
     public FileDelta(final String title,
                      final String description,
-                     final String mimeType,
+                     final MimeType mimeType,
                      final int size) {
         _title = title;
         _description = description;
@@ -91,7 +91,7 @@ public final class FileDelta implements Serializable {
      *
      * @return Returns the mimeType.
      */
-    public String getMimeType() {
+    public MimeType getMimeType() {
         return _mimeType;
     }
 

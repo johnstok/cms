@@ -27,6 +27,7 @@ import ccc.api.Commands;
 import ccc.api.FileDelta;
 import ccc.api.ID;
 import ccc.api.LocalCommands;
+import ccc.api.MimeType;
 
 
 /**
@@ -57,7 +58,7 @@ public class UpdateFileServlet extends CreatorServlet {
             new FileDelta(
                 form.get("title").getString(),
                 form.get("description").getString(),
-                file.getContentType(),
+                toMimeType(file.getContentType()),
                 (int) file.getSize());
         final InputStream dataStream = file.getInputStream();
 
@@ -77,6 +78,17 @@ public class UpdateFileServlet extends CreatorServlet {
 
         response.getWriter().write("File was updated successfully.");
     }
+
+
+    private MimeType toMimeType(final String contentType) {
+        final String[] parts = contentType.split("/");
+        if (2!=parts.length) {
+            LOG.warn("Ignored invalid mime type: "+contentType);
+            return MimeType.BINARY_DATA;
+        }
+        return new MimeType(parts[0], parts[1]);
+    }
+
 
     private void handleException(final HttpServletResponse response,
                                  final Exception e) throws IOException {

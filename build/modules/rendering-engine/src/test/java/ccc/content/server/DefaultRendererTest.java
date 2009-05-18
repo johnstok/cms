@@ -21,10 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.activation.MimeType;
-import javax.activation.MimeTypeParseException;
-
 import junit.framework.TestCase;
+import ccc.api.MimeType;
 import ccc.commons.Testing;
 import ccc.content.exceptions.NotFoundException;
 import ccc.content.exceptions.RedirectRequiredException;
@@ -123,7 +121,8 @@ public class DefaultRendererTest
     public void testRenderHandlesUnsupportedResourceTypes() {
 
         // ARRANGE
-        final Template t = new Template("template", "", "", "<fields/>");
+        final Template t =
+            new Template("template", "", "", "<fields/>", MimeType.HTML);
 
         // ACT
         try {
@@ -177,7 +176,7 @@ public class DefaultRendererTest
      * Test.
      * @throws MimeTypeParseException For invalids mime types.
      */
-    public void testRenderPage() throws MimeTypeParseException {
+    public void testRenderPage() {
 
         // ARRANGE
         final MimeType htmlMimeType = new MimeType("text", "html");
@@ -189,7 +188,7 @@ public class DefaultRendererTest
         // ASSERT
         final List<Header> expected = new ArrayList<Header>() {{
             add(new CharEncodingHeader(Charset.forName("UTF-8")));
-            add(new ContentTypeHeader(htmlMimeType));
+            add(new ContentTypeHeader(MimeType.HTML));
             add(new StringHeader("Pragma", "no-cache"));
             add(new StringHeader("Cache-Control",
                 "no-store, must-revalidate, max-age=0"));
@@ -205,17 +204,16 @@ public class DefaultRendererTest
      * Test.
      * @throws MimeTypeParseException For invalid mime type.
      */
-    public void testRenderFile() throws MimeTypeParseException {
+    public void testRenderFile() {
 
         // ARRANGE
-        final MimeType htmlMimeType = new MimeType("text", "html");
         final File f =
             new File(new ResourceName("meh"),
                 "meh",
                 "meh",
                 new Data(),
                 0,
-                new MimeType("text", "html"));
+                MimeType.HTML);
 
         // ACT
         final Response r = _renderer.render(f, noParams);
@@ -225,7 +223,7 @@ public class DefaultRendererTest
             add(new StringHeader("Content-Description", "meh"));
             add(new StringHeader(
                 "Content-Disposition", "inline; filename=\""+f.name()+"\""));
-            add(new ContentTypeHeader(htmlMimeType));
+            add(new ContentTypeHeader(MimeType.HTML));
             add(new IntHeader("Content-Length", 0));
             add(new StringHeader("Pragma", "no-cache"));
             add(new StringHeader("Cache-Control",
@@ -323,7 +321,7 @@ public class DefaultRendererTest
         // ARRANGE
         final Folder root = new Folder("root");
 
-        final Template a = new Template("a", "", "", "");
+        final Template a = new Template("a", "", "", "", MimeType.HTML);
         final Folder b = new Folder("b");
         final File c = new File(new ResourceName("c"), "c", "c", new Data(), 0);
         final Alias d = new Alias("d", a);
@@ -391,7 +389,7 @@ public class DefaultRendererTest
 
     /** {@inheritDoc} */
     @Override
-    protected void setUp() throws Exception {
+    protected void setUp() {
         _renderer = new DefaultRenderer(_dm, _se, _sr, false);
 
     }
@@ -399,7 +397,7 @@ public class DefaultRendererTest
 
     /** {@inheritDoc} */
     @Override
-    protected void tearDown() throws Exception {
+    protected void tearDown() {
         _renderer = null;
     }
 

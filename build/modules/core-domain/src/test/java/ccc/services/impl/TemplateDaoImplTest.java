@@ -16,6 +16,7 @@ import static org.easymock.EasyMock.*;
 import java.util.Date;
 
 import junit.framework.TestCase;
+import ccc.api.MimeType;
 import ccc.api.TemplateDelta;
 import ccc.commands.UpdateTemplateCommand;
 import ccc.domain.LockMismatchException;
@@ -44,11 +45,11 @@ public class TemplateDaoImplTest
     throws LockMismatchException, UnlockedException {
 
         // ARRANGE
-        final Template foo =
-            new Template("title", "description", "body", "<fields/>");
+        final Template foo = new Template(
+            "title", "description", "body", "<fields/>", MimeType.HTML);
         foo.lock(_user);
         final TemplateDelta td = new TemplateDelta(
-            "newTitle", "newDesc", "newBody", "newDefn");
+            "newTitle", "newDesc", "newBody", "newDefn", MimeType.HTML);
 
         expect(_dao.find(Template.class, foo.id())).andReturn(foo);
         _al.recordUpdate(foo, _user, _now, null, false);

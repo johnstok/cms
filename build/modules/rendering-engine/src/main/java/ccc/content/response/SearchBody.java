@@ -21,6 +21,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.MimeType;
 import ccc.commons.DBC;
 import ccc.commons.SearchResult;
 import ccc.content.velocity.VelocityProcessor;
@@ -97,5 +98,6 @@ public class SearchBody
             +"<input name=\"q\" autocomplete=\"off\"/>"
             +"<input type=\"submit\" value=\"Search\"  name=\"go\"/>"
             +"</form>Shown Hits: $!result.hits().size() - Total: $!result.totalResults()",
-            "<fields/>");
+            "<fields/>",
+            MimeType.HTML);
 }

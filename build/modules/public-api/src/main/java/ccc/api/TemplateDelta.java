@@ -24,6 +24,7 @@ public final class TemplateDelta implements Serializable {
     private String _description;
     private String _body;
     private String _definition;
+    private MimeType _mimeType;
 
     @SuppressWarnings("unused") private TemplateDelta() { super(); }
 
@@ -35,15 +36,18 @@ public final class TemplateDelta implements Serializable {
      * @param description
      * @param body
      * @param definition
+     * @param mimeType
      */
     public TemplateDelta(final String title,
                          final String description,
                          final String body,
-                         final String definition) {
+                         final String definition,
+                         final MimeType mimeType) {
         _title = title;
         _description = description;
         _body = body;
         _definition = definition;
+        _mimeType = mimeType;
     }
 
 
@@ -124,5 +128,25 @@ public final class TemplateDelta implements Serializable {
      */
     public void setDefinition(final String definition) {
         _definition = definition;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the mimeType.
+     */
+    public MimeType getMimeType() {
+        return _mimeType;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param mimeType The mimeType to set.
+     */
+    public void setMimeType(final MimeType mimeType) {
+        _mimeType = mimeType;
     }
 }

@@ -246,7 +246,8 @@ public class ModelTranslation {
                 template.title(),
                 template.description(),
                 template.body(),
-                template.definition()
+                template.definition(),
+                template.mimeType()
         );
         return delta;
     }
@@ -294,7 +295,7 @@ public class ModelTranslation {
             new FileDelta(
                 file.title(),
                 file.description(),
-                file.mimeType().toString(),
+                file.mimeType(),
                 file.size());
         return delta;
     }

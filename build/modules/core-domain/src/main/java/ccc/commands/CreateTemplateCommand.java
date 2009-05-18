@@ -62,7 +62,8 @@ public class CreateTemplateCommand extends CreateResourceCommand {
             delta.getTitle(),
             delta.getDescription(),
             delta.getBody(),
-            delta.getDefinition());
+            delta.getDefinition(),
+            delta.getMimeType());
 
         create(actor, happenedOn, parentFolder, t);
 

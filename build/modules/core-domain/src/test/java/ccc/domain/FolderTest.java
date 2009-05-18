@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 import junit.framework.TestCase;
+import ccc.api.MimeType;
 import ccc.api.ResourceType;
 
 
@@ -67,7 +68,8 @@ public final class FolderTest extends TestCase {
             final Folder f = new Folder("f");
             final Folder p = new Folder("p");
             final Folder q = new Folder("q");
-            final Template r = new Template("r", "desc", "body", "<fields/>");
+            final Template r =
+                new Template("r", "desc", "body", "<fields/>", MimeType.HTML);
             f.add(p);
             f.add(q);
             f.add(r);
@@ -91,7 +93,8 @@ public final class FolderTest extends TestCase {
             final Folder f = new Folder("f");
             final Page p = new Page("p");
             final Page q = new Page("q");
-            final Template r = new Template("r", "desc", "body", "<fields/>");
+            final Template r =
+                new Template("r", "desc", "body", "<fields/>", MimeType.HTML);
             f.add(p);
             f.add(q);
             f.add(r);

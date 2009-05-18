@@ -22,6 +22,7 @@ import java.util.Map;
 import junit.framework.TestCase;
 import ccc.api.CommandType;
 import ccc.api.Duration;
+import ccc.api.MimeType;
 import ccc.api.ResourceType;
 import ccc.commands.ChangeResourceTagsCommand;
 import ccc.commands.ChangeTemplateForResourceCommand;
@@ -51,7 +52,6 @@ import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
 import ccc.services.QueryNames;
-import ccc.services.impl.ResourceDaoImpl;
 
 
 /**
@@ -354,7 +354,7 @@ public class ResourceDaoImplTest
 
         // ARRANGE
         final Template defaultTemplate =
-            new Template("foo", "bar", "baz", "<fields/>");
+            new Template("foo", "bar", "baz", "<fields/>", MimeType.HTML);
         _r.lock(_regularUser);
 
         expect(_dao.find(Resource.class, _r.id()))
