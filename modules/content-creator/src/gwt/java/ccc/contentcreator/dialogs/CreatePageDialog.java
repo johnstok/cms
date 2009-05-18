@@ -76,7 +76,8 @@ public class CreatePageDialog
         new ListStore<TemplateSummaryModelData>();
     private final Grid<TemplateSummaryModelData> _grid;
 
-    private final ContentPanel _descriptionPanel = new ContentPanel(new RowLayout());
+    private final ContentPanel _descriptionPanel =
+        new ContentPanel(new RowLayout());
     private final ContentPanel _rightPanel = new ContentPanel(new RowLayout());
 
     private final SingleSelectionModel _ssm;
