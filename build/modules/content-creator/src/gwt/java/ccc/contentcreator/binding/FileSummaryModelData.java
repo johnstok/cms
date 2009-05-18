@@ -127,6 +127,6 @@ public class FileSummaryModelData
      * @return
      */
     public String getPath() {
-        return _fs.getTitle();
+        return _fs.getPath();
     }
 }
