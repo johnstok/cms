@@ -43,6 +43,7 @@ public class PageElement {
     private RadioGroup _radioGroup;
     private ComboBox<BaseModelData> _combobox;
     private ListField<BaseModelData> _list;
+    private ImageTriggerField _image;
 
     /**
      * Constructor.
@@ -239,6 +240,19 @@ public class PageElement {
     public ListField<BaseModelData> list() {
 
         return _list;
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param image
+     */
+    public void image(ImageTriggerField image) {
+        _image = image;
+    }
+
+    public ImageTriggerField image() {
+        return _image;
     }
 
 }

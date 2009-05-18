@@ -19,6 +19,7 @@ import java.util.Set;
 
 import ccc.api.ActionSummary;
 import ccc.api.FileSummary;
+import ccc.api.ID;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.util.Util;
@@ -128,5 +129,14 @@ public class FileSummaryModelData
      */
     public String getPath() {
         return _fs.getPath();
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
+    public ID getId() {
+        return _fs.getId();
     }
 }
