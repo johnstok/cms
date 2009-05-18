@@ -14,6 +14,8 @@ package ccc.cli.fileupload;
 import java.io.File;
 import java.util.UUID;
 
+import org.apache.log4j.Logger;
+
 import ccc.api.CommandFailedException;
 import ccc.api.Commands;
 import ccc.api.ID;
@@ -24,11 +26,12 @@ import ccc.migration.FileUploader;
 
 
 /**
- * TODO: Add Description for this type.
+ * Implementation of the {@link Server} interface - calls the CCC server.
  *
  * @author Civic Computing Ltd.
  */
 public class CccServer implements Server {
+    private static final Logger LOG = Logger.getLogger(CccServer.class);
 
     ResourcePath _rootPath;
     FileUploader _uploader;
@@ -61,7 +64,8 @@ public class CccServer implements Server {
     public void createFile(final UUID parentFolder,
                            final File f,
                            final boolean publish) {
-        _uploader.uploadFile(parentFolder, f.getName(), f.getName(), "", f);
+        _uploader.uploadFile(
+            parentFolder, f.getName(), f.getName(), "", f, publish);
     }
 
 
@@ -69,14 +73,11 @@ public class CccServer implements Server {
     @Override
     public UUID createFolder(final UUID parentFolder,
                              final String name,
-                             final boolean publish) {
-        try {
-            final ResourceSummary rs = _commands.createFolder(
-                new ID(parentFolder.toString()), name, name, publish);
-            return UUID.fromString(rs.getId().toString());
-        } catch (final CommandFailedException e) {
-            throw new RuntimeException(e); // FIXME: Throw checked exception.
-        }
+                             final boolean publish)
+                                                 throws CommandFailedException {
+        final ResourceSummary rs = _commands.createFolder(
+            new ID(parentFolder.toString()), name, name, publish);
+        return UUID.fromString(rs.getId().toString());
     }
 
 

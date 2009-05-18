@@ -257,7 +257,8 @@ public class Migrations {
                         file.getName(),
                         file.getName(),
                         "Migrated file.",
-                        file);
+                        file,
+                        false);
                 }
             }
         }
@@ -293,7 +294,8 @@ public class Migrations {
                         file.getName(),
                         file.getName(),
                         "",
-                        file);
+                        file,
+                        false);
                 }
             }
         }

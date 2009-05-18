@@ -110,7 +110,8 @@ public class FileUploader {
                     final String fileName,
                     final String title_,
                     final String description_,
-                    final File file) {
+                    final File file,
+                    final boolean publish) {
         try {
             if (file.length() < 1) {
                 log.warn("Zero length file : "+fileName);
@@ -134,6 +135,7 @@ public class FileUploader {
                     new StringPart("title", title),
                     new StringPart("description", description),
                     new StringPart("path", parentId.toString()),
+                    new StringPart("publish", String.valueOf(publish)),
                     fp
             };
             filePost.setRequestEntity(
@@ -173,7 +175,7 @@ public class FileUploader {
         if (!file.exists()) {
             log.debug("File not found: "+fileName);
         } else {
-            uploadFile(parentId, fileName, title_, description_, file);
+            uploadFile(parentId, fileName, title_, description_, file, false);
         }
     }
 }

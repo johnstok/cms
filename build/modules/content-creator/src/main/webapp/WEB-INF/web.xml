@@ -40,7 +40,7 @@
     <servlet>
         <servlet-name>FileUploadServlet</servlet-name>
         <servlet-class>
-            ccc.contentcreator.remoting.FileUploadServlet
+            ccc.contentcreator.remoting.CreateFileServlet
         </servlet-class>
     </servlet>
     <servlet>

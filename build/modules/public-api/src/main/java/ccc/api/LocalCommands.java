@@ -9,13 +9,9 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.cli.fileupload;
+package ccc.api;
 
-import java.io.File;
-import java.util.UUID;
-
-import ccc.api.CommandFailedException;
-
+import java.io.InputStream;
 
 
 /**
@@ -23,8 +19,11 @@ import ccc.api.CommandFailedException;
  *
  * @author Civic Computing Ltd.
  */
-public interface Server {
-    void createFile(final UUID parentFolder, final File f, boolean publish);
-    UUID createFolder(final UUID parentFolder, String name, boolean publish) throws CommandFailedException;
-    UUID getRoot();
+public interface LocalCommands extends Commands {
+
+    ResourceSummary createFile(ID parentFolder,
+                               FileDelta file,
+                               String resourceName,
+                               InputStream dataStream,
+                               boolean publish) throws CommandFailedException;
 }
