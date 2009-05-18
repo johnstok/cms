@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.api.FileDelta;
+import ccc.migration.LegacyFile;
 
 /**
  * TODO: Add Description for this type.
@@ -14,20 +14,18 @@ import ccc.api.FileDelta;
  */
 public final class FileSelector
     implements
-        SqlQuery<Map<String,FileDelta>> {
+        SqlQuery<Map<String,LegacyFile>> {
 
     /** {@inheritDoc} */
     @Override
-    public Map<String,FileDelta> handle(final ResultSet rs) throws SQLException {
-        final Map<String,FileDelta> results = new HashMap<String,FileDelta>();
+    public Map<String,LegacyFile> handle(final ResultSet rs) throws SQLException {
+        final Map<String,LegacyFile> results = new HashMap<String,LegacyFile>();
 
         while (rs.next()) {
-            final FileDelta file =
-                new FileDelta(
+            final LegacyFile file =
+                new LegacyFile(
                     rs.getString("object_title"),
-                    rs.getString("classification"),
-                    null,
-                    -1);
+                    rs.getString("classification"));
             results.put(rs.getString("object_name"), file);
         }
 

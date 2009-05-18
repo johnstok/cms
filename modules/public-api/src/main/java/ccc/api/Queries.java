@@ -211,4 +211,12 @@ public interface Queries {
     PageDelta pageDelta(ID pageId);
     FileDelta fileDelta(ID fileId);
 
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param rootPath
+     * @return
+     */
+    ResourceSummary resourceForPath(String rootPath);
+
 }

@@ -50,6 +50,7 @@ import ccc.domain.Page;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
+import ccc.domain.ResourcePath;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.persistence.jpa.BaseDao;
@@ -315,5 +316,13 @@ public final class QueriesEJB
 
     private User currentUser() {
         return _userLookup.loggedInUser(_context.getCallerPrincipal());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceSummary resourceForPath(final String rootPath) {
+        final ResourcePath rp = new ResourcePath(rootPath);
+        return mapResource(
+            _resources.lookup(rp.top().toString(), rp.removeTop()));
     }
 }

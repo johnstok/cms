@@ -104,6 +104,16 @@ public final class ResourcePath {
     }
 
     /**
+     * Constructor.
+     *
+     * @param elements A list of resource names.
+     */
+    public ResourcePath(final List<ResourceName> elements) {
+        DBC.require().notNull(elements);
+        _elements = unmodifiableList(new ArrayList<ResourceName>(elements));
+    }
+
+    /**
      * Append a resource name to the end of an existing path. For example, with
      * an existing path '/foo' calling append('bar') will return a new path
      * object that represents '/foo/bar'.
@@ -195,5 +205,24 @@ public final class ResourcePath {
         return true;
     }
 
+    /**
+     * Return a path minus the top most (i.e. root) element.
+     *
+     * @return Resource path.
+     */
+    public ResourcePath removeTop() {
+        final List<ResourceName> limitedElements =
+            new ArrayList<ResourceName>(_elements);
+        limitedElements.remove(0);
+        return new ResourcePath(limitedElements);
+    }
 
+    /**
+     * Return the top.
+     *
+     * @return The name for the resource at the top of the path.
+     */
+    public ResourceName top() { // Rename to 'start()'
+        return (0==_elements.size()) ? null : _elements.get(0);
+    }
 }

@@ -20,7 +20,7 @@
         
         <application.prefix>ash</application.prefix>
         <application.name>${application.prefix}</application.name>
-        <filestore.path>C:\\WINDOWS\\Temp\\ccc\\filestore\\${application.prefix}</filestore.path>
+        <filestore.path>/tmp/ccc7/filestore/${application.prefix}</filestore.path>
         <application.db-dialect>org.hibernate.dialect.H2Dialect</application.db-dialect>
         <application.db-datasource>h2-ds.xml</application.db-datasource>
         <application.db-username>CCC</application.db-username>

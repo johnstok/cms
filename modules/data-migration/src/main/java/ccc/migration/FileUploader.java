@@ -13,6 +13,7 @@ package ccc.migration;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.UUID;
 
 import javax.activation.MimetypesFileTypeMap;
 
@@ -27,8 +28,6 @@ import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.log4j.Logger;
 
-import ccc.api.FileDelta;
-import ccc.api.ResourceSummary;
 import ccc.domain.ResourceName;
 
 
@@ -48,9 +47,9 @@ public class FileUploader {
     private MimetypesFileTypeMap _mimemap;
 
     public FileUploader(final String targetUploadURL,
-                 final String appURL,
-                 final String username,
-                 final String password) {
+                        final String appURL,
+                        final String username,
+                        final String password) {
         _targetUploadURL = targetUploadURL;
         _appURL = appURL;
         _username = username;
@@ -82,6 +81,7 @@ public class FileUploader {
         get.releaseConnection();
 
         final PostMethod authpost = new PostMethod(_appURL+"/j_security_check");
+//        final authpost.
         final NameValuePair userid   =
             new NameValuePair("j_username", _username);
         final NameValuePair password =
@@ -97,7 +97,7 @@ public class FileUploader {
         }
         authpost.releaseConnection();
 
-        // in order to prevent 'not a multipart post error' for the first upload
+        // in order to prevent 'not a multi-part post error' for the first upload
         try {
             _client.executeMethod(get);
         } catch (final Exception e) {
@@ -106,31 +106,26 @@ public class FileUploader {
         get.releaseConnection();
     }
 
-    void uploadFile(final ResourceSummary filesResource,
+    public void uploadFile(final UUID parentId,
                     final String fileName,
-                    final FileDelta legacyFile,
+                    final String title_,
+                    final String description_,
                     final File file) {
         try {
             if (file.length() < 1) {
                 log.warn("Zero length file : "+fileName);
                 return;
             }
-            
+
             final PostMethod filePost =
                 new PostMethod(_targetUploadURL);
             log.debug("Migrating file: "+fileName);
             final String name =
                 ResourceName.escape(fileName).toString();
 
-            final String title =
-                (null!=legacyFile.getTitle())
-                    ? legacyFile.getTitle()
-                    : fileName;
+            final String title = (null!=title_) ? title_ : fileName;
 
-            final String description =
-                (null!=legacyFile.getDescription())
-                    ? legacyFile.getDescription()
-                    : "";
+            final String description = (null!=description_) ? description_ : "";
 
             final FilePart fp = new FilePart("file", file.getName(), file);
             fp.setContentType(_mimemap.getContentType(file));
@@ -138,7 +133,7 @@ public class FileUploader {
                     new StringPart("fileName", name),
                     new StringPart("title", title),
                     new StringPart("description", description),
-                    new StringPart("path", filesResource.getId().toString()),
+                    new StringPart("path", parentId.toString()),
                     fp
             };
             filePost.setRequestEntity(
@@ -158,6 +153,7 @@ public class FileUploader {
             } else {
                 log.error(
                     "Upload failed, response="
+                    + status+", "
                     + HttpStatus.getStatusText(status)
                 );
             }
@@ -167,17 +163,17 @@ public class FileUploader {
     }
 
 
-    void uploadFile(final ResourceSummary filesResource,
+    void uploadFile(final UUID parentId,
                     final String fileName,
-                    final FileDelta legacyFile,
+                    final String title_,
+                    final String description_,
                     final String directory) {
 
         final File file = new File(directory+fileName);
         if (!file.exists()) {
             log.debug("File not found: "+fileName);
         } else {
-            uploadFile(filesResource, fileName, legacyFile, file);
+            uploadFile(parentId, fileName, title_, description_, file);
         }
     }
-
 }

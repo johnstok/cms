@@ -147,7 +147,7 @@ public class CommandsEJB
     public ResourceSummary createFolder(final ID parentId,
                                         final String name)
                                                  throws CommandFailedException {
-        return createFolder(parentId, name, null);
+        return createFolder(parentId, name, null, false);
 
     }
 
@@ -156,12 +156,23 @@ public class CommandsEJB
     @RolesAllowed({"CONTENT_CREATOR"})
     public ResourceSummary createFolder(final ID parentId,
                                         final String name,
-                                        final String title)
+                                        final String title,
+                                        final boolean publish)
                                                  throws CommandFailedException {
         try {
-            return mapResource(
+            final User u = loggedInUser();
+
+            final Folder f =
                 new CreateFolderCommand(_bdao, _audit).execute(
-                    loggedInUser(), new Date(), toUUID(parentId), name, title));
+                    u, new Date(), toUUID(parentId), name, title);
+
+            if (publish) {
+                f.lock(u);
+                new PublishCommand(_audit).execute(new Date(), u, f);
+                f.unlock(u);
+            }
+
+            return mapResource(f);
 
         } catch (final RemoteExceptionSupport e) {
             throw fail(e);

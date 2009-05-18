@@ -203,4 +203,10 @@ public class QueriesImpl
     public TemplateSummary computeTemplate(final ID resourceId) {
         return _queries.computeTemplate(resourceId);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceSummary resourceForPath(final String rootPath) {
+        return _queries.resourceForPath(rootPath);
+    }
 }

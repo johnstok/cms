@@ -176,6 +176,7 @@ public interface CommandServiceAsync {
     void createFolder(ID parentId,
                       String name,
                       String title,
+                      boolean publish,
                       AsyncCallback<ResourceSummary> callback);
 
     void createUser(UserDelta delta,

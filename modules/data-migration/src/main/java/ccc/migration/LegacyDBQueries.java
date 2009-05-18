@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ccc.api.FileDelta;
 import ccc.migration.ccc6.handlers.AllUsersSelector;
 import ccc.migration.ccc6.handlers.FileSelector;
 import ccc.migration.ccc6.handlers.FlaggedSelector;
@@ -140,7 +139,7 @@ public class LegacyDBQueries {
      *
      * @return The files as FileDeltas.
      */
-    public Map<String,FileDelta> selectFiles() {
+    public Map<String,LegacyFile> selectFiles() {
         final FileSelector query = new FileSelector();
         return _db.select(query, "FILE");
     }
@@ -150,7 +149,7 @@ public class LegacyDBQueries {
      *
      * @return The images as FileDeltas.
      */
-    public Map<String,FileDelta> selectImages() {
+    public Map<String,LegacyFile> selectImages() {
         final FileSelector query = new FileSelector();
         return _db.select(query, "IMAGE");
     }

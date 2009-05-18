@@ -109,4 +109,6 @@ public interface QueriesServiceAsync {
     void cacheDuration(ID resourceId, AsyncCallback<Duration> asyncCallback);
 
     void computeTemplate(ID resourceId, AsyncCallback<TemplateSummary> callback);
+
+    void resourceForPath(String rootPath, AsyncCallback<ccc.api.ResourceSummary> callback);
 }
