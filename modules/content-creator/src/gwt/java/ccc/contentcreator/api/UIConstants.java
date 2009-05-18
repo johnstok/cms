@@ -1290,4 +1290,13 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Seconds")
     String seconds();
+
+    /**
+     * "Select image".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Select image")
+    String selectImage();
+
 }

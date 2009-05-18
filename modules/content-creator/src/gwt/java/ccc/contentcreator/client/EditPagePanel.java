@@ -16,16 +16,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ccc.api.FileSummary;
+import ccc.api.ID;
 import ccc.api.PageDelta;
 import ccc.api.ParagraphDelta;
 import ccc.api.ParagraphType;
+import ccc.contentcreator.api.QueriesService;
+import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.binding.FileSummaryModelData;
+import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.ui.FCKEditor;
+import ccc.contentcreator.dialogs.ImageChooserDialog;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.event.BaseEvent;
+import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.Component;
@@ -43,6 +51,7 @@ import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.layout.FormData;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
@@ -60,6 +69,9 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private final List<PageElement> _pageElements =
         new ArrayList<PageElement>();
     private String _definition;
+
+    // used to retrieve FileSummary for UUID
+    private final QueriesServiceAsync _qs = GWT.create(QueriesService.class);
 
     /** _constants : UIConstants. */
     private final UIConstants _constants = Globals.uiConstants();
@@ -170,6 +182,20 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                                 list.setSelection(selection);
                             }
                         });
+                    } else if (IMAGE.equals(c.type())) {
+                        final ImageTriggerField image = c.image();
+                        String id = para.getTextValue();
+                        final ID resourceId = new ID(id);
+                        _qs.getAbsolutePath(resourceId, new ErrorReportingCallback<String>() {
+
+                            @Override
+                            public void onSuccess(String path) {
+                                FileSummary fs = new FileSummary("image", path, resourceId, "", "");
+                                FileSummaryModelData model = new FileSummaryModelData(fs);
+                                image.setValue(path);
+                                image.setFSModel(model);
+                            }
+                        });
                     }
                 }
             }
@@ -208,7 +234,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      * @param paragraphs List of paragraphs
      */
     public void extractValues(final List<PageElement> definitions,
-                               final List<ParagraphDelta> paragraphs) {
+                              final List<ParagraphDelta> paragraphs) {
         ParagraphDelta p = null;
 
         for (final PageElement c : definitions) {
@@ -226,11 +252,37 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                 p = extractComboBox(c);
             } else if (LIST.equals(c.type())) {
                 p = extractList(c);
+            } else if (IMAGE.equals(c.type())) {
+                p = extractImage(c);
             }
             if (p != null) {
                 paragraphs.add(p);
             }
         }
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param c
+     * @return
+     */
+    private ParagraphDelta extractImage(PageElement c) {
+        ImageTriggerField image = c.image();
+        String id = "";
+        FileSummaryModelData model = image.getFSModel();
+        if (model != null) {
+            id = model.getId().toString();
+        }
+
+        ParagraphDelta p = new ParagraphDelta(
+            c.id(),
+            ParagraphType.TEXT,
+            null,
+            id,
+            null,
+            null);
+        return p;
     }
 
     /**
@@ -252,12 +304,12 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
             sb.append(item.get("title"));
         }
         ParagraphDelta p = new ParagraphDelta(
-                c.id(),
-                ParagraphType.TEXT,
-                null,
-                sb.toString(),
-                null,
-                null);
+            c.id(),
+            ParagraphType.TEXT,
+            null,
+            sb.toString(),
+            null,
+            null);
         return p;
     }
 
@@ -276,12 +328,12 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         }
 
         ParagraphDelta p = new ParagraphDelta(
-                c.id(),
-                ParagraphType.TEXT,
-                null,
-                selected,
-                null,
-                null);
+            c.id(),
+            ParagraphType.TEXT,
+            null,
+            selected,
+            null,
+            null);
         return p;
     }
 
@@ -300,12 +352,12 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         }
 
         ParagraphDelta p = new ParagraphDelta(
-                c.id(),
-                ParagraphType.TEXT,
-                null,
-                selected,
-                null,
-                null);
+            c.id(),
+            ParagraphType.TEXT,
+            null,
+            selected,
+            null,
+            null);
         return p;
     }
 
@@ -329,12 +381,12 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         }
 
         ParagraphDelta p = new ParagraphDelta(
-                c.id(),
-                ParagraphType.TEXT,
-                null,
-                sb.toString(),
-                null,
-                null);
+            c.id(),
+            ParagraphType.TEXT,
+            null,
+            sb.toString(),
+            null,
+            null);
         return p;
     }
 
@@ -348,12 +400,12 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
 
         final FCKEditor f = c.editor();
         ParagraphDelta p = new ParagraphDelta(
-                c.id(),
-                ParagraphType.TEXT,
-                null,
-                f.getHTML(),
-                null,
-                null);
+            c.id(),
+            ParagraphType.TEXT,
+            null,
+            f.getHTML(),
+            null,
+            null);
         return p;
     }
 
@@ -367,12 +419,12 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
 
         final DateField f = c.dateField();
         ParagraphDelta p = new ParagraphDelta(
-                c.id(),
-                ParagraphType.DATE,
-                f.getRawValue(),
-                null,
-                f.getValue(),
-                null);
+            c.id(),
+            ParagraphType.DATE,
+            f.getRawValue(),
+            null,
+            f.getValue(),
+            null);
         return p;
     }
 
@@ -386,12 +438,12 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
 
         final Field<String> f = c.field();
         ParagraphDelta p = new ParagraphDelta(
-                c.id(),
-                ParagraphType.TEXT,
-                null,
-                f.getValue(),
-                null,
-                null);
+            c.id(),
+            ParagraphType.TEXT,
+            null,
+            f.getValue(),
+            null,
+            null);
         return p;
     }
 
@@ -493,9 +545,29 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      * @param name
      * @param field
      */
-    private void addElementForImage(String name, Element field) {
+    private void addElementForImage(final String name, final Element field) {
+        final ImageTriggerField image =
+            new ImageTriggerField();
+        image.setFieldLabel(name);
+        image.setData("type", IMAGE);
+        image.setId(name);
+        image.setReadOnly(true);
 
-        throw new UnsupportedOperationException("Method not implemented.");
+        image.addListener(
+            Events.TriggerClick,
+            new Listener<ComponentEvent>(){
+                public void handleEvent(final ComponentEvent be) {
+                    final ImageChooserDialog imageChooser =
+                        new ImageChooserDialog(image);
+                    imageChooser.show();
+                }});
+
+        add(image, new FormData("95%"));
+
+        final PageElement pe = new PageElement(name);
+        pe.type(IMAGE);
+        pe.image(image);
+        _pageElements.add(pe);
     }
 
     /**
@@ -504,7 +576,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      * @param name
      * @param field
      */
-    private void addElementForList(String name, Element field) {
+    private void addElementForList(final String name, final Element field) {
         final ListField<BaseModelData> list = new ListField<BaseModelData>();
         list.setFieldLabel(name);
         list.setData("type", LIST);
