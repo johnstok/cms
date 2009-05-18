@@ -64,9 +64,10 @@ public class CommandsImpl
     @Override
     public ResourceSummary createFolder(final ID parentId,
                                         final String name,
-                                        final String title)
+                                        final String title,
+                                        final boolean publish)
     throws CommandFailedException {
-        return _commands.createFolder(parentId, name, title);
+        return _commands.createFolder(parentId, name, title, publish);
     }
 
     /** {@inheritDoc} */

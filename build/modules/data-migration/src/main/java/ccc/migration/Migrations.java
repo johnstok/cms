@@ -19,13 +19,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
 import ccc.api.CommandFailedException;
 import ccc.api.Commands;
 import ccc.api.Decimal;
-import ccc.api.FileDelta;
 import ccc.api.ID;
 import ccc.api.PageDelta;
 import ccc.api.ParagraphDelta;
@@ -214,27 +214,29 @@ public class Migrations {
 
 
     private void migrateManagedFilesAndImages() {
-        final Map<String,FileDelta> files =_legacyQueries.selectFiles();
-        for (final Map.Entry<String, FileDelta> legacyFile : files.entrySet()) {
+        final Map<String,LegacyFile> files =_legacyQueries.selectFiles();
+        for (final Map.Entry<String, LegacyFile> legacyFile : files.entrySet()) {
             _fu.uploadFile(
-                _filesFolder,
+                UUID.fromString(_filesFolder.getId().toString()),
                 legacyFile.getKey(),
-                legacyFile.getValue(),
+                legacyFile.getValue()._title,
+                legacyFile.getValue()._description,
                 _props.getProperty("filesSourcePath"));
         }
 
-        final Map<String,FileDelta> images = _legacyQueries.selectImages();
-        for (final Map.Entry<String, FileDelta> legacyFile : images.entrySet()) {
+        final Map<String,LegacyFile> images = _legacyQueries.selectImages();
+        for (final Map.Entry<String, LegacyFile> legacyFile : images.entrySet()) {
             _fu.uploadFile(
-                _contentImagesFolder,
+                UUID.fromString(_contentImagesFolder.getId().toString()),
                 legacyFile.getKey(),
-                legacyFile.getValue(),
+                legacyFile.getValue()._title,
+                legacyFile.getValue()._description,
                 _props.getProperty("imagesSourcePath"));
         }
     }
 
     private void migrateImages() {
-        final Map<String, FileDelta> managedImages = _legacyQueries.selectImages();
+        final Map<String, LegacyFile> managedImages = _legacyQueries.selectImages();
         final String imagePath = _props.getProperty("imagesSourcePath");
         final File imageDir = new File(imagePath);
         if (!imageDir.exists()) {
@@ -250,15 +252,12 @@ public class Migrations {
                         && !(file.getName().startsWith("ccc")
                         || file.getName().startsWith(".")
                         || file.getName().startsWith("um")))  {
-
-                    final FileDelta legacyFile =
-                        new FileDelta(
-                            file.getName(),
-                            "Migrated file.",
-                            null,
-                            -1);
                     _fu.uploadFile(
-                        _assetsImagesFolder, file.getName(), legacyFile, file);
+                        UUID.fromString(_assetsImagesFolder.getId().toString()),
+                        file.getName(),
+                        file.getName(),
+                        "Migrated file.",
+                        file);
                 }
             }
         }
@@ -266,11 +265,11 @@ public class Migrations {
     }
 
 
-    private boolean isManaged(final Map<String, FileDelta> managedImages,
+    private boolean isManaged(final Map<String, LegacyFile> managedImages,
                               final File file) {
 
         boolean managedImage = false;
-        for (final Map.Entry<String, FileDelta> legacyFile : managedImages.entrySet()) {
+        for (final Map.Entry<String, LegacyFile> legacyFile : managedImages.entrySet()) {
             if (file.getName().equals(legacyFile.getKey())) {
                 managedImage = true;
             }
@@ -289,13 +288,12 @@ public class Migrations {
             final File[] css = cssDir.listFiles();
             for (final File file : css) {
                 if (file.isFile() && file.getName().endsWith(".css"))  {
-                    final FileDelta legacyFile =
-                        new FileDelta(
-                            file.getName(),
-                            "Migrated file.",
-                            null,
-                            -1);
-                    _fu.uploadFile(_cssFolder, file.getName(), legacyFile, file);
+                    _fu.uploadFile(
+                        UUID.fromString(_cssFolder.getId().toString()),
+                        file.getName(),
+                        file.getName(),
+                        "",
+                        file);
                 }
             }
         }
@@ -307,8 +305,8 @@ public class Migrations {
 
         try {
             // FIXME: Specify actor & date
-            final ResourceSummary rs =
-                _commands.createFolder(parentFolderId, r.name(), r.title());
+            final ResourceSummary rs = _commands.createFolder(
+                    parentFolderId, r.name(), r.title(), false);
             log.debug("Created folder: "+r.contentId());
 
             setTemplateForResource(r, rs);

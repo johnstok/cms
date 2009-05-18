@@ -205,7 +205,7 @@ public interface Commands {
     /**
      * Create a folder with the specified name and title.
      */
-    ResourceSummary createFolder(ID parentId, String name, String title) throws CommandFailedException;
+    ResourceSummary createFolder(ID parentId, String name, String title, boolean publish) throws CommandFailedException;
 
     /**
      * Create a root folder with the specified name.
