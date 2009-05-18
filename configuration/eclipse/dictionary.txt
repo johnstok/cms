@@ -150,3 +150,5 @@ txt
 serializing
 javax
 jpa
+locales
+firefox
