@@ -26,4 +26,8 @@ public interface LocalCommands extends Commands {
                                String resourceName,
                                InputStream dataStream,
                                boolean publish) throws CommandFailedException;
+
+    void updateFile(ID fileId,
+                    FileDelta fileDelta,
+                    InputStream dataStream) throws CommandFailedException;
 }
