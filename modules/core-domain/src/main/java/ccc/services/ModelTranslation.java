@@ -22,6 +22,7 @@ import ccc.api.Decimal;
 import ccc.api.FileDelta;
 import ccc.api.FileSummary;
 import ccc.api.ID;
+import ccc.api.Json;
 import ccc.api.LogEntrySummary;
 import ccc.api.PageDelta;
 import ccc.api.ParagraphDelta;
@@ -334,7 +335,7 @@ public class ModelTranslation {
             final Snapshot ss = page.workingCopy();
             final List<ParagraphDelta> paragraphs =
                 new ArrayList<ParagraphDelta>();
-            for(final Snapshot s : ss.getSnapshots("paragraphs")) {
+            for(final Json s : ss.getCollection("paragraphs")) {
                 final Paragraph p = Paragraph.fromSnapshot(s);
                 final ParagraphDelta pDelta =
                     new ParagraphDelta(

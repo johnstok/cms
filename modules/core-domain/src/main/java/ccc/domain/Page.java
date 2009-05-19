@@ -14,11 +14,10 @@ package ccc.domain;
 
 import static java.util.Collections.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import ccc.api.Json;
 import ccc.api.ResourceType;
 import ccc.commons.DBC;
 
@@ -124,11 +123,7 @@ public final class Page
     @Override
     public Snapshot createSnapshot() {
         final Snapshot s = super.createSnapshot();
-        final Collection<Snapshot> paras = new ArrayList<Snapshot>();
-        for (final Paragraph p : _content) {
-            paras.add(p.createSnapshot());
-        }
-        s.set("paragraphs", paras);
+        s.set("paragraphs", _content);
         return s;
     }
 
@@ -137,7 +132,7 @@ public final class Page
     public void applySnapshot(final Snapshot s) {
         title(s.getString("title"));
         deleteAllParagraphs();
-        for(final Snapshot p : s.getSnapshots("paragraphs")) {
+        for(final Json p : s.getCollection("paragraphs")) {
             addParagraph(Paragraph.fromSnapshot(p));
         }
     }

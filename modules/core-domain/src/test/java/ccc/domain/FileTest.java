@@ -48,7 +48,9 @@ public class FileTest extends TestCase {
         // ASSERT
         assertEquals("foo", o.get("title"));
         assertEquals("desc", o.get("description"));
-        assertEquals("foo/bar", o.get("mimetype"));
+        assertEquals(
+            "{\"primary-type\":\"foo\",\"sub-type\":\"bar\"}",
+            o.get("mimetype").toString());
         assertEquals(1, o.getLong("size"));
         assertEquals(data.id().toString(), o.get("data"));
     }

@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import junit.framework.TestCase;
+import ccc.api.Jsonable;
 import ccc.commons.Exceptions;
 
 
@@ -40,10 +41,10 @@ public final class PageTest extends TestCase {
         final Snapshot s = page.createSnapshot();
 
         // ACT
-        final Collection<Snapshot> paras = new ArrayList<Snapshot>(){{
+        final Collection<Jsonable> paras = new ArrayList<Jsonable>(){{
             add(Paragraph.fromBoolean(
-                "A boolean", Boolean.TRUE).createSnapshot());
-            add(Paragraph.fromDate("A date", then).createSnapshot());
+                "A boolean", Boolean.TRUE));
+            add(Paragraph.fromDate("A date", then));
         }};
 
         s.set("paragraphs", paras);

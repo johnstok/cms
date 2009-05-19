@@ -80,7 +80,7 @@ public class DefaultRendererTest
         s.set(
             "paragraphs",
             Collections.singletonList(
-                Paragraph.fromText("some", "other value").createSnapshot()));
+                Paragraph.fromText("some", "other value")));
         p.workingCopy(s);
 
         // ACT
@@ -103,7 +103,7 @@ public class DefaultRendererTest
         s.set(
             "paragraphs",
             Collections.singletonList(
-                Paragraph.fromText("some", "other value").createSnapshot()));
+                Paragraph.fromText("some", "other value")));
         p.workingCopy(s);
 
         // ACT

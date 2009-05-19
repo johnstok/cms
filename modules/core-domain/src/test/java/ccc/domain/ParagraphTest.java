@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import junit.framework.TestCase;
+import ccc.api.Decimal;
 import ccc.api.ParagraphType;
 import ccc.commons.Testing;
 
@@ -34,10 +35,11 @@ public final class ParagraphTest extends TestCase {
     public void testCreateSnapshot() {
 
         // ARRANGE
+        final Snapshot s = new Snapshot();
         final Paragraph p = Paragraph.fromText("foo", "bar");
 
         // ACT
-        final Snapshot s = p.createSnapshot();
+        p.toJson(s);
 
         // ASSERT
         assertEquals("foo", s.getString("name"));
@@ -51,16 +53,17 @@ public final class ParagraphTest extends TestCase {
     public void testCreateNumberSnapshot() {
 
         // ARRANGE
+        final Snapshot s = new Snapshot();
         final Paragraph p =
             Paragraph.fromNumber("foo", new BigDecimal("123.456"));
 
         // ACT
-        final Snapshot s = p.createSnapshot();
+        p.toJson(s);
 
         // ASSERT
         assertEquals("foo", s.getString("name"));
         assertEquals("NUMBER", s.getString("type"));
-        assertEquals(new BigDecimal("123.456"), s.getBigDecimal("number"));
+        assertEquals("123.456", s.getDecimal("number").toString());
     }
 
     /**
@@ -75,7 +78,7 @@ public final class ParagraphTest extends TestCase {
         s.set("text", "foo");
         s.set("bool", Boolean.TRUE);
         s.set("date", new Date());
-        s.set("number", new BigDecimal("123.456"));
+        s.set("number", new Decimal("123.456"));
 
         // ACT
         final Paragraph p = Paragraph.fromSnapshot(s);
@@ -101,7 +104,7 @@ public final class ParagraphTest extends TestCase {
         s.set("text", "foo");
         s.set("bool", Boolean.TRUE);
         s.set("date", new Date());
-        s.set("number", new BigDecimal("123.456"));
+        s.set("number", new Decimal("123.456"));
 
         // ACT
         final Paragraph p = Paragraph.fromSnapshot(s);

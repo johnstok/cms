@@ -22,7 +22,7 @@ import java.io.Serializable;
  *
  * @author Civic Computing Ltd.
  */
-public class MimeType implements Serializable {
+public class MimeType implements Serializable, Jsonable {
     private String _primaryType;
     private String _subType;
 
@@ -39,6 +39,16 @@ public class MimeType implements Serializable {
         _subType = subType;
     }
 
+
+    /**
+     * Constructor.
+     *
+     * @param json The JSON representation of this mime type.
+     */
+    public MimeType(final Json json) {
+        _primaryType = json.getString("primary-type");
+        _subType = json.getString("sub-type");
+    }
 
     /**
      * Accessor.
@@ -118,4 +128,11 @@ public class MimeType implements Serializable {
         new MimeType("text", "html");
     public static final MimeType BINARY_DATA =
         new MimeType("application", "octet-stream");
+
+    /** {@inheritDoc} */
+    @Override
+    public void toJson(final Json json) {
+        json.set("primary-type", _primaryType);
+        json.set("sub-type", _subType);
+    }
 }
