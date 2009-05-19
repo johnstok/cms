@@ -26,6 +26,7 @@ import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.FileSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
+import ccc.contentcreator.client.PageElement.FieldType;
 import ccc.contentcreator.client.ui.FCKEditor;
 import ccc.contentcreator.dialogs.ImageChooserDialog;
 
@@ -76,16 +77,6 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     /** _constants : UIConstants. */
     private final UIConstants _constants = Globals.uiConstants();
 
-    private static final String CHECKBOX = "CHECKBOX";
-    private static final String RADIO = "RADIO";
-    private static final String HTML = "HTML";
-    private static final String TEXT = "TEXT";
-    private static final String DATE = "DATE";
-    private static final String COMBOBOX = "COMBOBOX";
-    private static final String LIST = "LIST";
-    private static final String IMAGE = "IMAGE";
-
-
     /**
      * Constructor.
      *
@@ -111,94 +102,165 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         _name.disable();
         _title.setValue(resourceSummary.getTitle());
 
-        // TODO: Refactor
         for (final PageElement c : pageElements()) {
             for (final ParagraphDelta para : resourceSummary.getParagraphs()) {
                 if (c.id().equals(para.getName())) {
-                    if (TEXT.equals(c.type())) {
+                    if (FieldType.TEXT == c.fieldType()) {
                         final Field<String> f = c.field();
                         f.setValue(para.getTextValue());
-                    } else if (DATE.equals(c.type())) {
+                    } else if (FieldType.DATE == c.fieldType()) {
                         final DateField f = c.dateField();
                         f.setValue(para.getDateValue());
-                    } else if (HTML.equals(c.type())) {
-                        remove(c.editor());
-                        remove(c.editorLabel());
-                        final FCKEditor fck =
-                            new FCKEditor(para.getTextValue(), "250px");
-                        add(c.editorLabel());
-                        add(fck, new FormData("95%"));
-                        c.editor(fck);
-                    } else if (CHECKBOX.equals(c.type())) {
-                        final CheckBoxGroup cbg = c.checkBoxGroup();
-                        Map<String, String> valueMap = fillValueMap(para);
-
-                        List<CheckBox> boxes = cbg.getAll();
-                        for (CheckBox box : boxes) {
-                            if ("true".equals(valueMap.get(box.getId()))) {
-                                box.setValue(true);
-                            } else {
-                                box.setValue(false);
-                            }
-                        }
-                    } else if (RADIO.equals(c.type())) {
-                        final RadioGroup rg = c.radioGroup();
-                        String value = para.getTextValue();
-
-                        List<Radio> radios = rg.getAll();
-                        for (Radio radio : radios) {
-                            if (radio.getId().equals(value)) {
-                                radio.setValue(true);
-                            } else {
-                                radio.setValue(false);
-                            }
-                        }
-                    } else if (COMBOBOX.equals(c.type())) {
-                        ComboBox<BaseModelData> cb = c.combobox();
-                        String value = para.getTextValue();
-
-                        ListStore<BaseModelData> store = cb.getStore();
-                        for (BaseModelData model : store.getModels()) {
-                            if (model.get("value").equals(value)) {
-                                cb.setValue(model);
-                            }
-                        }
-                    }  else if (LIST.equals(c.type())) {
-                        final ListField<BaseModelData> list = c.list();
-                        Map<String, String> valueMap = fillValueMap(para);
-                        final List<BaseModelData> selection =
-                            new ArrayList<BaseModelData>();
-
-                        ListStore<BaseModelData> items = list.getStore();
-                        for (BaseModelData item : items.getModels()) {
-                            if (valueMap.containsKey(item.get("value"))) {
-                                selection.add(item);
-                            }
-                        }
-                        list.removeAllListeners();
-                        // ListField bug/feature - http://extjs.com/forum/showthread.php?t=55659
-                        list.addListener(Events.Render, new Listener<BaseEvent>() {
-                            public void handleEvent(final BaseEvent baseEvent) {
-                                list.setSelection(selection);
-                            }
-                        });
-                    } else if (IMAGE.equals(c.type())) {
-                        final ImageTriggerField image = c.image();
-                        String id = para.getTextValue();
-                        final ID resourceId = new ID(id);
-                        _qs.getAbsolutePath(resourceId, new ErrorReportingCallback<String>() {
-
-                            @Override
-                            public void onSuccess(String path) {
-                                FileSummary fs = new FileSummary("image", path, resourceId, "", "");
-                                FileSummaryModelData model = new FileSummaryModelData(fs);
-                                image.setValue(path);
-                                image.setFSModel(model);
-                            }
-                        });
+                    } else if (FieldType.HTML == c.fieldType()) {
+                        populateHtml(c, para);
+                    } else if (FieldType.CHECKBOX == c.fieldType()) {
+                        populateCheckbox(c, para);
+                    } else if (FieldType.RADIO == c.fieldType()) {
+                        populateRadio(c, para);
+                    } else if (FieldType.COMBOBOX == c.fieldType()) {
+                        populateComboBox(c, para);
+                    }  else if (FieldType.LIST == c.fieldType()) {
+                        populateList(c, para);
+                    } else if (FieldType.IMAGE == c.fieldType()) {
+                        populateImage(c, para);
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param c
+     * @param para
+     */
+    private void populateHtml(final PageElement c, final ParagraphDelta para) {
+
+        remove(c.editor());
+        remove(c.editorLabel());
+        final FCKEditor fck =
+            new FCKEditor(para.getTextValue(), "250px");
+        add(c.editorLabel());
+        add(fck, new FormData("95%"));
+        c.editor(fck);
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param c
+     * @param para
+     */
+    private void populateCheckbox(final PageElement c,
+                                  final ParagraphDelta para) {
+
+        final CheckBoxGroup cbg = c.checkBoxGroup();
+        Map<String, String> valueMap = fillValueMap(para);
+
+        List<CheckBox> boxes = cbg.getAll();
+        for (CheckBox box : boxes) {
+            if ("true".equals(valueMap.get(box.getId()))) {
+                box.setValue(true);
+            } else {
+                box.setValue(false);
+            }
+        }
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param c
+     * @param para
+     */
+    private void populateRadio(final PageElement c, final ParagraphDelta para) {
+
+        final RadioGroup rg = c.radioGroup();
+        String value = para.getTextValue();
+
+        List<Radio> radios = rg.getAll();
+        for (Radio radio : radios) {
+            if (radio.getId().equals(value)) {
+                radio.setValue(true);
+            } else {
+                radio.setValue(false);
+            }
+        }
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param c
+     * @param para
+     */
+    private void populateComboBox(final PageElement c,
+                                  final ParagraphDelta para) {
+
+        ComboBox<BaseModelData> cb = c.combobox();
+        String value = para.getTextValue();
+
+        ListStore<BaseModelData> store = cb.getStore();
+        for (BaseModelData model : store.getModels()) {
+            if (model.get("value").equals(value)) {
+                cb.setValue(model);
+            }
+        }
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param c
+     * @param para
+     */
+    private void populateList(final PageElement c, final ParagraphDelta para) {
+
+        final ListField<BaseModelData> list = c.list();
+        Map<String, String> valueMap = fillValueMap(para);
+        final List<BaseModelData> selection =
+            new ArrayList<BaseModelData>();
+
+        ListStore<BaseModelData> items = list.getStore();
+        for (BaseModelData item : items.getModels()) {
+            if (valueMap.containsKey(item.get("value"))) {
+                selection.add(item);
+            }
+        }
+        list.removeAllListeners();
+        // ListField bug/feature - http://extjs.com/forum/showthread.php?t=55659
+        list.addListener(Events.Render, new Listener<BaseEvent>() {
+            public void handleEvent(final BaseEvent baseEvent) {
+                list.setSelection(selection);
+            }
+        });
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param c
+     * @param para
+     */
+    private void populateImage(final PageElement c, final ParagraphDelta para) {
+
+        final ImageTriggerField image = c.image();
+        String id = para.getTextValue();
+        if (id != null && !id.trim().equals("")) {
+            final ID resourceId = new ID(id);
+            _qs.getAbsolutePath(resourceId,
+                new ErrorReportingCallback<String>() {
+
+                @Override
+                public void onSuccess(final String path) {
+                    FileSummary fs =
+                        new FileSummary("image", path, resourceId, "", "");
+                    FileSummaryModelData model = new FileSummaryModelData(fs);
+                    image.setValue(path);
+                    image.setFSModel(model);
+                }
+            });
         }
     }
 
@@ -238,21 +300,21 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         ParagraphDelta p = null;
 
         for (final PageElement c : definitions) {
-            if (TEXT.equals(c.type())) {
+            if (FieldType.TEXT == c.fieldType()) {
                 p = extractText(c);
-            } else if (DATE.equals(c.type())) {
+            } else if (FieldType.DATE == c.fieldType()) {
                 p = extractDate(c);
-            } else if (HTML.equals(c.type())) {
+            } else if (FieldType.HTML == c.fieldType()) {
                 p = extractHtml(c);
-            } else if (CHECKBOX.equals(c.type())) {
+            } else if (FieldType.CHECKBOX == c.fieldType()) {
                 p = extractCheckBox(c);
-            } else if (RADIO.equals(c.type())) {
+            } else if (FieldType.RADIO == c.fieldType()) {
                 p = extractRadio(c);
-            } else if (COMBOBOX.equals(c.type())) {
+            } else if (FieldType.COMBOBOX == c.fieldType()) {
                 p = extractComboBox(c);
-            } else if (LIST.equals(c.type())) {
+            } else if (FieldType.LIST == c.fieldType()) {
                 p = extractList(c);
-            } else if (IMAGE.equals(c.type())) {
+            } else if (FieldType.IMAGE == c.fieldType()) {
                 p = extractImage(c);
             }
             if (p != null) {
@@ -267,7 +329,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      * @param c
      * @return
      */
-    private ParagraphDelta extractImage(PageElement c) {
+    private ParagraphDelta extractImage(final PageElement c) {
         ImageTriggerField image = c.image();
         String id = "";
         FileSummaryModelData model = image.getFSModel();
@@ -291,7 +353,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      * @param c
      * @return
      */
-    private ParagraphDelta extractList(PageElement c) {
+    private ParagraphDelta extractList(final PageElement c) {
 
         final ListField<BaseModelData> list = c.list();
         StringBuilder sb = new StringBuilder();
@@ -319,7 +381,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      * @param c
      * @return
      */
-    private ParagraphDelta extractComboBox(PageElement c) {
+    private ParagraphDelta extractComboBox(final PageElement c) {
 
         final ComboBox<BaseModelData> cb = c.combobox();
         String selected = "";
@@ -343,7 +405,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      * @param c
      * @return
      */
-    private ParagraphDelta extractRadio(PageElement c) {
+    private ParagraphDelta extractRadio(final PageElement c) {
 
         final RadioGroup rg = c.radioGroup();
         String selected = "";
@@ -367,7 +429,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      * @param c
      * @return
      */
-    private ParagraphDelta extractCheckBox(PageElement c) {
+    private ParagraphDelta extractCheckBox(final PageElement c) {
 
         final CheckBoxGroup cbg = c.checkBoxGroup();
         StringBuilder sb = new StringBuilder();
@@ -396,7 +458,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      * @param c
      * @return
      */
-    private ParagraphDelta extractHtml(PageElement c) {
+    private ParagraphDelta extractHtml(final PageElement c) {
 
         final FCKEditor f = c.editor();
         ParagraphDelta p = new ParagraphDelta(
@@ -415,7 +477,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      * @param c
      * @return
      */
-    private ParagraphDelta extractDate(PageElement c) {
+    private ParagraphDelta extractDate(final PageElement c) {
 
         final DateField f = c.dateField();
         ParagraphDelta p = new ParagraphDelta(
@@ -434,7 +496,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      * @param c
      * @return
      */
-    private ParagraphDelta extractText(PageElement c) {
+    private ParagraphDelta extractText(final PageElement c) {
 
         final Field<String> f = c.field();
         ParagraphDelta p = new ParagraphDelta(
@@ -549,7 +611,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         final ImageTriggerField image =
             new ImageTriggerField();
         image.setFieldLabel(name);
-        image.setData("type", IMAGE);
+        image.setData("type", FieldType.IMAGE);
         image.setId(name);
         image.setReadOnly(true);
 
@@ -565,7 +627,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         add(image, new FormData("95%"));
 
         final PageElement pe = new PageElement(name);
-        pe.type(IMAGE);
+        pe.fieldType(FieldType.IMAGE);
         pe.image(image);
         _pageElements.add(pe);
     }
@@ -579,7 +641,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private void addElementForList(final String name, final Element field) {
         final ListField<BaseModelData> list = new ListField<BaseModelData>();
         list.setFieldLabel(name);
-        list.setData("type", LIST);
+        list.setData("type", FieldType.LIST);
         list.setDisplayField("title");
         list.setValueField("value");
         list.setId(name);
@@ -612,7 +674,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         });
 
         final PageElement pe = new PageElement(name);
-        pe.type(LIST);
+        pe.fieldType(FieldType.LIST);
         pe.list(list);
         _pageElements.add(pe);
 
@@ -627,7 +689,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private void addElementForCombobox(final String name, final Element field) {
         final ComboBox<BaseModelData> cb = new ComboBox<BaseModelData>();
         cb.setFieldLabel(name);
-        cb.setData("type", COMBOBOX);
+        cb.setData("type", FieldType.COMBOBOX);
         cb.setDisplayField("title");
         cb.setValueField("value");
         cb.setId(name);
@@ -652,7 +714,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         add(cb, new FormData("95%"));
 
         final PageElement pe = new PageElement(name);
-        pe.type(COMBOBOX);
+        pe.fieldType(FieldType.COMBOBOX);
         pe.combobox(cb);
         _pageElements.add(pe);
     }
@@ -666,7 +728,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private void addElementForCheckbox(final String name, final Element field) {
         final CheckBoxGroup cbg =  new  CheckBoxGroup();
         cbg.setFieldLabel(name);
-        cbg.setData("type", CHECKBOX);
+        cbg.setData("type", FieldType.CHECKBOX);
         cbg.setId(name);
         cbg.setOrientation(Orientation.VERTICAL);
 
@@ -687,7 +749,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         add(cbg, new FormData("95%"));
 
         final PageElement pe = new PageElement(name);
-        pe.type(CHECKBOX);
+        pe.fieldType(FieldType.CHECKBOX);
         pe.checkBoxGroup(cbg);
         _pageElements.add(pe);
     }
@@ -701,7 +763,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private void addElementForRadio(final String name, final Element field) {
         final RadioGroup rg =  new  RadioGroup();
         rg.setFieldLabel(name);
-        rg.setData("type", RADIO);
+        rg.setData("type", FieldType.RADIO);
         rg.setId(name);
         rg.setOrientation(Orientation.VERTICAL);
 
@@ -722,7 +784,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         add(rg, new FormData("95%"));
 
         final PageElement pe = new PageElement(name);
-        pe.type(RADIO);
+        pe.fieldType(FieldType.RADIO);
         pe.radioGroup(rg);
         _pageElements.add(pe);
     }
@@ -738,7 +800,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         add(fieldName);
         final FCKEditor fck = new FCKEditor("", "250px");
         final PageElement pe = new PageElement(name);
-        pe.type(HTML);
+        pe.fieldType(FieldType.HTML);
         pe.editorLabel(fieldName);
         pe.editor(fck);
         add(fck, new FormData("95%"));
@@ -754,11 +816,11 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
 
         final DateField df = new DateField();
         df.setFieldLabel(name);
-        df.setData("type", DATE);
+        df.setData("type", FieldType.DATE);
         df.setId(name);
 
         final PageElement pe = new PageElement(name);
-        pe.type(DATE);
+        pe.fieldType(FieldType.DATE);
         pe.dateField(df);
         add(df, new FormData("95%"));
         _pageElements.add(pe);
@@ -773,7 +835,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private void addElementForTextArea(final String name, final String regexp) {
 
         final TextArea ta = new TextArea();
-        ta.setData("type", TEXT);
+        ta.setData("type", FieldType.TEXT);
         ta.setId(name);
         ta.setFieldLabel(name);
         if (regexp != null) {
@@ -781,7 +843,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         }
         add(ta, new FormData("95%"));
         final PageElement pe = new PageElement(name);
-        pe.type(TEXT);
+        pe.fieldType(FieldType.TEXT);
         pe.field(ta);
         _pageElements.add(pe);
     }
@@ -796,7 +858,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                                         final String regexp) {
 
         final TextField<String> tf = new TextField<String>();
-        tf.setData("type", TEXT);
+        tf.setData("type", FieldType.TEXT);
         tf.setId(name);
         tf.setFieldLabel(name);
         if (regexp != null) {
@@ -804,7 +866,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         }
         add(tf, new FormData("95%"));
         final PageElement pe = new PageElement(name);
-        pe.type(TEXT);
+        pe.fieldType(FieldType.TEXT);
         pe.field(tf);
 
         _pageElements.add(pe);

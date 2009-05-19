@@ -17,7 +17,8 @@ import com.extjs.gxt.ui.client.widget.form.TriggerField;
 
 
 /**
- * TODO: Add Description for this type.
+ * An extended trigger field storing selected image as
+ * {@link FileSummaryModelData}.
  *
  * @author Civic Computing Ltd.
  */
@@ -28,12 +29,17 @@ public class ImageTriggerField extends TriggerField<String> {
     /**
      * TODO: Add a description of this method.
      *
-     * @param md
+     * @param md FileSummaryModelData to set.
      */
-    public void setFSModel(FileSummaryModelData md) {
+    public void setFSModel(final FileSummaryModelData md) {
         _md = md;
     }
 
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return FileSummaryModelData of the field.
+     */
     public FileSummaryModelData getFSModel() {
         return _md;
     }

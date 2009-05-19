@@ -32,7 +32,7 @@ import com.extjs.gxt.ui.client.widget.form.RadioGroup;
 public class PageElement {
 
     private String _id;
-    private String _type;
+    private FieldType _fieldType;
 
     private FCKEditor _editor;
     private Text _editorLabel;
@@ -44,6 +44,16 @@ public class PageElement {
     private ComboBox<BaseModelData> _combobox;
     private ListField<BaseModelData> _list;
     private ImageTriggerField _image;
+
+
+    /**
+     * TODO: Add Description for this type.
+     *
+     * @author Civic Computing Ltd.
+     */
+    public enum FieldType {
+        RADIO, HTML, TEXT, DATE, CHECKBOX, COMBOBOX, LIST, IMAGE;
+    }
 
     /**
      * Constructor.
@@ -78,17 +88,17 @@ public class PageElement {
      *
      * @return The type.
      */
-    public String type() {
-        return _type;
+    public FieldType fieldType() {
+        return _fieldType;
     }
 
     /**
      * Mutator for the type of the page element.
      *
-     * @param type The type of the page element.
+     * @param fieldType The type of the page element.
      */
-    public void type(final String type) {
-        _type = type;
+    public void fieldType(final FieldType fieldType) {
+        _fieldType = fieldType;
     }
 
     /**
