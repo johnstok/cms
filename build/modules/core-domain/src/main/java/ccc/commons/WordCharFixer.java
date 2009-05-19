@@ -2,14 +2,14 @@
  * Copyright (c) 2009 Civic Computing Ltd.
  * All rights reserved.
  *
- * Revision      $Rev$
- * Modified by   $Author$
- * Modified on   $Date$
+ * Revision      $Rev: 1224 $
+ * Modified by   $Author: keith $
+ * Modified on   $Date: 2009-05-13 11:17:18 +0100 (Wed, 13 May 2009) $
  *
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.migration;
+package ccc.commons;
 
 import java.util.Map;
 import java.util.regex.Matcher;

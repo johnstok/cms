@@ -31,6 +31,7 @@ import org.xml.sax.SAXException;
 
 import ccc.api.PageDelta;
 import ccc.api.ParagraphDelta;
+import ccc.commons.WordCharFixer;
 
 
 /**
@@ -99,9 +100,10 @@ public class PageHelper {
         for (final ParagraphDelta para : delta.getParagraphs()) {
             switch (para.getType()) {
                 case TEXT:
+                    WordCharFixer fixer = new WordCharFixer();
                     page.addParagraph(
                         Paragraph.fromText(para.getName(),
-                                           para.getTextValue()));
+                            fixer.fix(para.getTextValue())));
                     break;
 
                 case DATE:
@@ -115,27 +117,4 @@ public class PageHelper {
             }
         }
     }
-
-//    private void assignParagraphs(final List<ParagraphDelta> paragraphs,
-//                                  final Page page) {
-//
-//        for (final ParagraphDelta para : paragraphs) {
-//            switch (para.getType()) {
-//                case TEXT:
-//                    page.addParagraph(
-//                        Paragraph.fromText(para.getName(),
-//                                           para.getTextValue()));
-//                    break;
-//
-//                case DATE:
-//                    page.addParagraph(
-//                        Paragraph.fromDate(para.getName(),
-//                                           para.getDateValue()));
-//                    break;
-//
-//                default:
-//                    throw new CCCException("Unexpected type");
-//            }
-//        }
-//    }
 }

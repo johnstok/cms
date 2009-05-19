@@ -2,14 +2,14 @@
  * Copyright (c) 2009 Civic Computing Ltd.
  * All rights reserved.
  *
- * Revision      $Rev$
- * Modified by   $Author$
- * Modified on   $Date$
+ * Revision      $Rev: 1219 $
+ * Modified by   $Author: keith $
+ * Modified on   $Date: 2009-05-12 16:29:05 +0100 (Tue, 12 May 2009) $
  *
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.migration;
+package ccc.commons;
 
 import java.util.HashMap;
 import java.util.Map;
