@@ -54,6 +54,8 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
 
     private final TextField<String> _templateTitle = new TextField<String>();
     private final TextField<String> _name = new TextField<String>();
+    private final TextField<String> _mimePrimary = new TextField<String>();
+    private final TextField<String> _mimeSub = new TextField<String>();
     private final TextArea _description = new TextArea();
     private final TextArea _body = new TextArea();
     private final TextArea _definition = new TextArea();
@@ -83,6 +85,8 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
         _name.setId("name");
         _templateTitle.setId("title");
         _description.setId("description");
+        _mimePrimary.setId("mime-primary");
+        _mimeSub.setId("mime-sub");
 
         populateFirstScreen();
         populateSecondScreen();
@@ -123,6 +127,8 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
         _description.setValue(_model.getDescription());
         _templateTitle.setValue(_model.getTitle());
         _name.setValue(proxy.getName());
+        _mimePrimary.setValue(model.getMimeType().getPrimaryType());
+        _mimeSub.setValue(model.getMimeType().getSubType());
     }
 
     private void populateFirstScreen() {
@@ -145,6 +151,14 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
         _description.setAllowBlank(false);
         _description.setId(_constants.description());
         _first.add(_description, new FormData("95%"));
+
+        _mimePrimary.setFieldLabel(_constants.mimePrimaryType());
+        _mimePrimary.setAllowBlank(false);
+        _first.add(_mimePrimary, new FormData("95%"));
+
+        _mimeSub.setFieldLabel(_constants.mimeSubType());
+        _mimeSub.setAllowBlank(false);
+        _first.add(_mimeSub, new FormData("95%"));
     }
 
     private void populateSecondScreen() {
@@ -182,7 +196,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                 _description.getValue(),
                 _body.getValue(),
                 _definition.getValue(),
-                MimeType.HTML
+                new MimeType(_mimePrimary.getValue(), _mimeSub.getValue())
             );
         return delta;
     }
@@ -201,6 +215,8 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                     .check(Validations.notEmpty(_description))
                     .check(Validations.noBrackets(_description))
                     .check(Validations.notEmpty(_body))
+                    .check(Validations.notEmpty(_mimePrimary))
+                    .check(Validations.notEmpty(_mimeSub))
                     .stopIfInError()
                     .check(Validations.notValidXML(_definition))
                     .check(uniqueTemplateName(_name))

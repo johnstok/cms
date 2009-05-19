@@ -1298,5 +1298,20 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Select image")
     String selectImage();
+    
+    /**
+     * "Mime Sub-type".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Mime Sub-type")
+    String mimeSubType();
 
+    /**
+     * "Mime Primary Type".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Mime Primary Type")
+    String mimePrimaryType();
 }

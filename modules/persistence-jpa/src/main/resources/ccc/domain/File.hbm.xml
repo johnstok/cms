@@ -43,24 +43,22 @@
         
         <component
             name="_mimeType"
-            class="javax.activation.MimeType">
+            class="ccc.api.MimeType">
             <property
-                name="primaryType"
+                name="_primaryType"
                 not-null="true"
                 column="mime_type_primary"
-                type="string"
-                access="property" />
+                type="string" />
             <property
-                name="subType"
+                name="_subType"
                 not-null="true"
                 column="mime_type_sub"
-                type="string"
-                access="property" />
+                type="string" />
         </component>
 
 	</joined-subclass>
 	
-	<query name="allImages">from ccc.domain.File f where f._mimeType.primaryType = 'image'</query>
+	<query name="allImages">from ccc.domain.File f where f._mimeType._primaryType = 'image'</query>
 	<query name="allFiles">from ccc.domain.File</query>
 	
 </hibernate-mapping>
