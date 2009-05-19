@@ -25,11 +25,15 @@ import ccc.contentcreator.dialogs.EditUserDialog;
 import ccc.contentcreator.dialogs.EditUserPwDialog;
 
 import com.extjs.gxt.ui.client.Events;
+import com.extjs.gxt.ui.client.data.BasePagingLoader;
+import com.extjs.gxt.ui.client.data.PagingLoader;
+import com.extjs.gxt.ui.client.data.PagingModelMemoryProxy;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.widget.PagingToolBar;
 import com.extjs.gxt.ui.client.widget.form.Radio;
 import com.extjs.gxt.ui.client.widget.form.RadioGroup;
 import com.extjs.gxt.ui.client.widget.form.TextField;
@@ -53,10 +57,11 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @author Civic Computing Ltd.
  */
 public class UserTable extends TablePanel {
+
     /** _constants : UIConstants. */
     private final UIConstants _constants = Globals.uiConstants();
 
-    private final ListStore<UserSummaryModelData> _detailsStore =
+    private ListStore<UserSummaryModelData> _detailsStore =
         new ListStore<UserSummaryModelData>();
 
     private final RadioGroup _radioGroup = new RadioGroup("searchField");
@@ -69,6 +74,11 @@ public class UserTable extends TablePanel {
 
     private TreeItem _lastSelected = null;
 
+    private final TextField<String> _searchString;
+
+    private final Grid<UserSummaryModelData> _grid;
+    private final PagingToolBar _pagerBar;
+
     /**
      * Constructor.
      */
@@ -78,66 +88,39 @@ public class UserTable extends TablePanel {
         setHeading(_constants.userDetails());
         setLayout(new FitLayout());
 
-        final TextField<String> searchString = new TextField<String>();
-        searchString.setToolTip(_constants.searchToolTip());
-        searchString.setId("searchString");
-        _ti = new AdapterToolItem(searchString);
+        _searchString = new TextField<String>();
+        _searchString.setToolTip(_constants.searchToolTip());
+        _searchString.setId("searchString");
+        _ti = new AdapterToolItem(_searchString);
 
         _searchButton = new TextToolItem(_constants.search());
         _searchButton.setId("searchButton");
 
-        _searchButton.addListener(Events.Select, new Listener<ComponentEvent>(){
-            public void handleEvent(final ComponentEvent be) {
-                if (searchString.getValue() == null) {
-                    return;
-                }
-                _detailsStore.removeAll();
-                if (_radioGroup.getValue() == _usernameRadio) {
-                    qs.listUsersWithUsername(
-                        searchString.getValue().replace('*', '%'),
-                        new ErrorReportingCallback<Collection<UserSummary>>() {
-                            public void onSuccess(final Collection<UserSummary> result) {
-                                if (result != null && result.size() > 0) {
-                                    _detailsStore.add(DataBinding.bindUserSummary(result));
-                                }
-                            }
-                        });
-                } else if (_radioGroup.getValue() == _emailRadio) {
-                    qs.listUsersWithEmail(
-                        searchString.getValue().replace('*', '%'),
-                        new ErrorReportingCallback<Collection<UserSummary>>() {
-                            public void onSuccess(final Collection<UserSummary> result) {
-                                if (result != null && result.size() > 0) {
-                                    _detailsStore.add(DataBinding.bindUserSummary(result));
-                                }
-                            }
-                        });
-                }
-            }
-        }
-        );
+        _searchButton.addListener(Events.Select, new SearchListener());
         createToolBar();
         setTopComponent(_toolBar);
 
         final Menu contextMenu = new Menu();
         contextMenu.setId("userContextMenu");
-        final ContextActionGridPlugin gp = new ContextActionGridPlugin(contextMenu);
+        final ContextActionGridPlugin gp =
+            new ContextActionGridPlugin(contextMenu);
         gp.setRenderer(new UserContextRenderer());
         final List<ColumnConfig> configs = createColumnConfigs(gp);
 
         final ColumnModel cm = new ColumnModel(configs);
 
-        final Grid<UserSummaryModelData> grid =
-            new Grid<UserSummaryModelData>(_detailsStore, cm);
-        grid.setLoadMask(true);
-        grid.setId("UserGrid");
+        _grid = new Grid<UserSummaryModelData>(_detailsStore, cm);
+        _grid.setId("UserGrid");
 
-        contextMenu.add(createEditUserMenu(grid));
-        contextMenu.add(createEditPwMenu(grid));
+        contextMenu.add(createEditUserMenu(_grid));
+        contextMenu.add(createEditPwMenu(_grid));
 
-        grid.setContextMenu(contextMenu);
-        grid.addPlugin(gp);
-        add(grid);
+        _grid.setContextMenu(contextMenu);
+        _grid.addPlugin(gp);
+        add(_grid);
+
+        _pagerBar = new PagingToolBar(20);
+        setBottomComponent(_pagerBar);
     }
 
     private MenuItem createEditUserMenu(final Grid<UserSummaryModelData> grid) {
@@ -156,7 +139,7 @@ public class UserTable extends TablePanel {
                             }
                             public void onSuccess(final UserDelta delta) {
                                 new EditUserDialog(
-                                    userDTO.getId(),delta, UserTable.this)
+                                    userDTO.getId(), delta, UserTable.this)
                                 .show();
                             }
                         }
@@ -240,7 +223,7 @@ public class UserTable extends TablePanel {
             qs.listUsers(
                 new ErrorReportingCallback<Collection<UserSummary>>() {
                     public void onSuccess(final Collection<UserSummary> result) {
-                        _detailsStore.add(DataBinding.bindUserSummary(result));
+                        updatePager(result);
                     }
                 });
         } else if ("Content creator".equals(selectedItem.getText())){ // FIXME: I18n.
@@ -248,7 +231,7 @@ public class UserTable extends TablePanel {
                 "CONTENT_CREATOR",
                 new ErrorReportingCallback<Collection<UserSummary>>() {
                     public void onSuccess(final Collection<UserSummary> result) {
-                        _detailsStore.add(DataBinding.bindUserSummary(result));
+                        updatePager(result);
                     }
                 });
         } else if ("Site Builder".equals(selectedItem.getText())) { // FIXME: I18n.
@@ -256,7 +239,7 @@ public class UserTable extends TablePanel {
                 "SITE_BUILDER",
                 new ErrorReportingCallback<Collection<UserSummary>>() {
                     public void onSuccess(final Collection<UserSummary> result) {
-                        _detailsStore.add(DataBinding.bindUserSummary(result));
+                        updatePager(result);
                     }
                 });
         } else if("Administrator".equals(selectedItem.getText())) { // FIXME: I18n.
@@ -264,7 +247,7 @@ public class UserTable extends TablePanel {
                 "ADMINISTRATOR",
                 new ErrorReportingCallback<Collection<UserSummary>>() {
                     public void onSuccess(final Collection<UserSummary> result) {
-                        _detailsStore.add(DataBinding.bindUserSummary(result));
+                        updatePager(result);
                     }
                 });
         }
@@ -278,5 +261,53 @@ public class UserTable extends TablePanel {
                 && !"Search".equals(_lastSelected.getText())) {
             displayUsersFor(_lastSelected);
         }
+    }
+
+    /**
+     * TODO: Add Description for this type.
+     *
+     * @author Civic Computing Ltd.
+     */
+    private final class SearchListener implements Listener<ComponentEvent> {
+
+        public void handleEvent(final ComponentEvent be) {
+            if (_searchString.getValue() == null) {
+                return;
+            }
+            _detailsStore.removeAll();
+            if (_radioGroup.getValue() == _usernameRadio) {
+                qs.listUsersWithUsername(
+                    _searchString.getValue().replace('*', '%'),
+                    new ErrorReportingCallback<Collection<UserSummary>>() {
+                        public void onSuccess(final Collection<UserSummary> result) {
+                            if (result != null && result.size() > 0) {
+                                updatePager(result);
+                            }
+                        }
+                    });
+            } else if (_radioGroup.getValue() == _emailRadio) {
+                qs.listUsersWithEmail(
+                    _searchString.getValue().replace('*', '%'),
+                    new ErrorReportingCallback<Collection<UserSummary>>() {
+                        public void onSuccess(final Collection<UserSummary> result) {
+                            if (result != null && result.size() > 0) {
+                                updatePager(result);
+                            }
+                        }
+                    });
+            }
+        }
+    }
+
+    private void updatePager(final Collection<UserSummary> data){
+        PagingModelMemoryProxy proxy =
+            new PagingModelMemoryProxy(DataBinding.bindUserSummary(data));
+        PagingLoader loader = new BasePagingLoader(proxy);
+        loader.setRemoteSort(true);
+        _detailsStore = new ListStore<UserSummaryModelData>(loader);
+        _pagerBar.bind(loader);
+        loader.load(0, 20);
+        ColumnModel cm = _grid.getColumnModel();
+        _grid.reconfigure(_detailsStore, cm);
     }
 }

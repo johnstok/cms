@@ -20,8 +20,12 @@ import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
+import com.extjs.gxt.ui.client.data.BasePagingLoader;
 import com.extjs.gxt.ui.client.data.ModelData;
+import com.extjs.gxt.ui.client.data.PagingLoader;
+import com.extjs.gxt.ui.client.data.PagingModelMemoryProxy;
 import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.widget.PagingToolBar;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
@@ -46,12 +50,13 @@ public class ResourceTable
         SingleSelectionModel {
 
     private final UIConstants _constants = Globals.uiConstants();
-    private final ListStore<ResourceSummaryModelData> _detailsStore =
+    private ListStore<ResourceSummaryModelData> _detailsStore =
         new ListStore<ResourceSummaryModelData>();
 
     private final ResourceSummary _root;
     private final FolderResourceTree _tree;
     private final Grid<ResourceSummaryModelData> _grid;
+    private final PagingToolBar _pagerBar;
 
 
     /**
@@ -74,7 +79,8 @@ public class ResourceTable
 
         final Menu contextMenu = new ResourceContextMenu(this, user);
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
-        final ContextActionGridPlugin gp = new ContextActionGridPlugin(contextMenu);
+        final ContextActionGridPlugin gp =
+            new ContextActionGridPlugin(contextMenu);
         gp.setRenderer(new ResourceContextRenderer());
         configs.add(gp);
 
@@ -86,6 +92,9 @@ public class ResourceTable
         _grid.setContextMenu(contextMenu);
         _grid.addPlugin(gp);
         add(_grid);
+
+        _pagerBar = new PagingToolBar(20);
+        setBottomComponent(_pagerBar);
     }
 
 
@@ -105,11 +114,14 @@ public class ResourceTable
      * @param data A list of records to display in the table.
      */
     public void displayResourcesFor(final List<ResourceSummaryModelData> data) {
-        _detailsStore.removeAll();
-        // Grid throws exception with empty list.
-        if (data != null && data.size() > 0) {
-            _detailsStore.add(data);
-        }
+        PagingModelMemoryProxy proxy = new PagingModelMemoryProxy(data);
+        PagingLoader loader = new BasePagingLoader(proxy);
+        loader.setRemoteSort(true);
+        _detailsStore = new ListStore<ResourceSummaryModelData>(loader);
+        _pagerBar.bind(loader);
+        loader.load(0, 20);
+        ColumnModel cm = _grid.getColumnModel();
+        _grid.reconfigure(_detailsStore, cm);
     }
 
 
@@ -168,7 +180,6 @@ public class ResourceTable
     private void setUpGrid() {
         _grid.setId("ResourceGrid");
 
-        _grid.setLoadMask(true);
         _grid.setBorders(false);
 
         // Assign a CSS style for each row with GridViewConfig
@@ -191,7 +202,8 @@ public class ResourceTable
             new GridSelectionModel<ResourceSummaryModelData>();
         gsm.setSelectionMode(SelectionMode.SINGLE);
         _grid.setSelectionModel(gsm);
-        _grid.setAutoExpandColumn(ResourceSummaryModelData.Property.TITLE.name());
+        _grid.setAutoExpandColumn(
+            ResourceSummaryModelData.Property.TITLE.name());
     }
 
 
