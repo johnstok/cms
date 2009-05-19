@@ -121,7 +121,9 @@ public class LogEntryTest
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
         assertEquals(CommandType.PAGE_UPDATE, le.action());
-        assertEquals(p.createSnapshot().getDetail(), le.detail());
+        final Snapshot s = new Snapshot();
+        p.createSnapshot().toJson(s);
+        assertEquals(s.getDetail(), le.detail());
     }
 
     /**

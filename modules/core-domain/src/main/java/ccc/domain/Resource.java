@@ -12,7 +12,7 @@
 
 package ccc.domain;
 
-import static ccc.commons.DBC.*;
+import static ccc.api.DBC.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,8 +26,8 @@ import java.util.Set;
 
 import ccc.api.CommandType;
 import ccc.api.Duration;
+import ccc.api.Jsonable;
 import ccc.api.ResourceType;
-import ccc.commons.DBC;
 
 
 /**
@@ -39,9 +39,7 @@ import ccc.commons.DBC;
  */
 public abstract class Resource
     extends
-        VersionedEntity
-    implements
-        WorkingCopyAware {
+        VersionedEntity {
 
     private static final int MAXIMUM_TITLE_LENGTH = 256;
     private static final int MAXIMUM_DATUM_LENGTH = 1000;
@@ -59,7 +57,6 @@ public abstract class Resource
     private Date           _dateCreated       = new Date();
     private Date           _dateChanged       = _dateCreated;
     private Duration       _cache             = null;
-    private Snapshot       _workingCopy       = null;
     private String         _description       = "";
 
     private Map<String, String> _metadata = new HashMap<String, String>();
@@ -434,16 +431,6 @@ public abstract class Resource
     }
 
     /**
-     * Create a snapshot of the current state of the resource.
-     * @return A new snapshot.
-     */
-    public Snapshot createSnapshot() {
-        final Snapshot s = new Snapshot();
-        s.set("title", _title);
-        return s;
-    }
-
-    /**
      * Add new metadata for this resource.
      *
      * @param key The key by which the datum will be accessed.
@@ -626,32 +613,6 @@ public abstract class Resource
         return parent().computeCache();
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public void applySnapshot(final Snapshot s)
-                                               throws InvalidSnapshotException {
-        throw new UnsupportedOperationException("Cannot apply snapshot.");
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Snapshot workingCopy() {
-        return _workingCopy;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void clearWorkingCopy() {
-        DBC.require().notNull(_workingCopy);
-        _workingCopy = null;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void workingCopy(final Snapshot snapshot) {
-        _workingCopy = snapshot;
-    }
-
     /**
      * Accessor for the file's description.
      *
@@ -661,7 +622,6 @@ public abstract class Resource
         return _description;
     }
 
-
     /**
      * Mutator for the file description.
      *
@@ -670,4 +630,11 @@ public abstract class Resource
     public void description(final String description) {
         _description = (null==description) ? "" : description;
     }
+
+    /**
+     * Create a snapshot of this resource that can be serialized to JSON.
+     *
+     * @return The snapshot as an implementation of {@link Jsonable}.
+     */
+    public abstract Jsonable createSnapshot();
 }

@@ -17,13 +17,9 @@ import java.util.Date;
 import java.util.List;
 
 import junit.framework.TestCase;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import ccc.api.CommandType;
 import ccc.api.Duration;
+import ccc.api.Jsonable;
 import ccc.api.ResourceType;
 import ccc.commons.Testing;
 
@@ -310,26 +306,6 @@ public final class ResourceTest extends TestCase {
         // ASSERT
         assertEquals("baz", p.getMetadatum("foo"));
         assertEquals("bar", f.getMetadatum("foo"));
-    }
-
-    /**
-     * Test.
-     * @throws JSONException For invalid JSON.
-     */
-    public void testCreateSnapshot() throws JSONException {
-
-        // ARRANGE
-        final String expected =
-            new JSONObject().put("title", "Foo")
-                            .put("paragraphs", new JSONArray())
-                            .toString();
-        final Resource r = new Page("Foo");
-
-        // ACT
-        final Snapshot s = r.createSnapshot();
-
-        // ASSERT
-        assertEquals(expected, s.getDetail());
     }
 
     /**
@@ -703,6 +679,7 @@ public final class ResourceTest extends TestCase {
             final Resource r =
                 new Resource("foo"){
                     @Override public ResourceType type() { return null; }
+                    @Override public Jsonable createSnapshot() { return null; }
                 };
             r.name((ResourceName) null);
             fail("Null should be rejected.");
@@ -725,6 +702,7 @@ public final class ResourceTest extends TestCase {
         try {
             new Resource(new ResourceName("x"), tooLongTitle) {
                 @Override public ResourceType type() { return null; }
+                @Override public Jsonable createSnapshot() { return null; }
             };
             fail("Title should be rejected - too long.");
 
@@ -748,6 +726,7 @@ public final class ResourceTest extends TestCase {
         try {
             new Resource(tooLongTitle){
                 @Override public ResourceType type() { return null; }
+                @Override public Jsonable createSnapshot() { return null; }
             };
             fail("Title should be rejected - too long.");
 
@@ -772,6 +751,7 @@ public final class ResourceTest extends TestCase {
             final Resource r =
                 new Resource("foo"){
                     @Override public ResourceType type() { return null; }
+                    @Override public Jsonable createSnapshot() { return null; }
                 };
             r.title(tooLongTitle);
             fail("Title should be rejected - too long.");
@@ -792,6 +772,7 @@ public final class ResourceTest extends TestCase {
         final Resource r =
             new Resource("foo?"){
                 @Override public ResourceType type() { return null; }
+                @Override public Jsonable createSnapshot() { return null; }
             };
 
         // ASSERT
@@ -807,6 +788,7 @@ public final class ResourceTest extends TestCase {
         try {
             new Resource((String) null){
                 @Override public ResourceType type() { return null; }
+                @Override public Jsonable createSnapshot() { return null; }
             };
             fail("Null should be rejected.");
 
@@ -1145,8 +1127,8 @@ public final class ResourceTest extends TestCase {
             super(title);
         }
 
-        @Override
-        public ResourceType type() { return ResourceType.FOLDER; }
+        @Override public ResourceType type() { return ResourceType.FOLDER; }
+        @Override public Jsonable createSnapshot() { return null; }
     }
 
     private static final int WAIT_LENGTH = 100;

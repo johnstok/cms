@@ -13,11 +13,13 @@ package ccc.contentcreator.dialogs;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import ccc.api.ID;
 import ccc.api.PageDelta;
-import ccc.api.ParagraphDelta;
+import ccc.api.Paragraph;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateSummary;
 import ccc.contentcreator.api.UIConstants;
@@ -260,8 +262,8 @@ public class CreatePageDialog
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
                 final List<PageElement> definitions =_second.pageElements();
-                final List<ParagraphDelta> paragraphs =
-                    new ArrayList<ParagraphDelta>();
+                final Set<Paragraph> paragraphs =
+                    new HashSet<Paragraph>();
 
                 _second.extractValues(definitions, paragraphs);
 
@@ -282,7 +284,7 @@ public class CreatePageDialog
         };
     }
 
-    private Runnable createPage(final List<ParagraphDelta> paragraphs) {
+    private Runnable createPage(final Set<Paragraph> paragraphs) {
         return new Runnable() {
             public void run() {
                 final PageDelta page =

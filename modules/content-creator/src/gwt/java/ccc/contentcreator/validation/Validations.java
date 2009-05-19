@@ -12,9 +12,10 @@
 package ccc.contentcreator.validation;
 
 import java.util.List;
+import java.util.Set;
 
 import ccc.api.ID;
-import ccc.api.ParagraphDelta;
+import ccc.api.Paragraph;
 import ccc.api.ParagraphType;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
@@ -233,16 +234,17 @@ public class Validations {
      * @return The Validator
      */
     public static Validator validateDatefields(
-                                final List<ParagraphDelta> delta) {
+                                final Set<Paragraph> delta) { // FIXME: Raw value!
         return new Validator() {
             public void validate(final Validate validate) {
-                for (final ParagraphDelta pg : delta) {
-                    if (ParagraphType.DATE == pg.getType()
-                            && pg.getDateValue() == null
-                            && pg.getRawValue() != null
-                            && !pg.getRawValue().isEmpty()) {
+                for (final Paragraph pg : delta) {
+                    if (ParagraphType.DATE == pg.type()
+                            && pg.date() == null
+//                            && pg.getRawValue() != null
+//                            && !pg.getRawValue().isEmpty()
+                            ) {
                         validate.addMessage(
-                            pg.getName()
+                            pg.name()
                             + " "+_uiConstants.isNotValidDate()
                         );
                     }
@@ -259,7 +261,7 @@ public class Validations {
      * @param definition Template definition.
      * @return The Validator
      */
-    public static Validator validateFields(final List<ParagraphDelta> delta,
+    public static Validator validateFields(final Set<Paragraph> delta,
                                            final String definition) {
         return new Validator() {
             public void validate(final Validate validate) {

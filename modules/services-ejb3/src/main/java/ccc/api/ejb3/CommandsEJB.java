@@ -17,7 +17,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -45,7 +44,7 @@ import ccc.api.FileDelta;
 import ccc.api.ID;
 import ccc.api.LocalCommands;
 import ccc.api.PageDelta;
-import ccc.api.ParagraphDelta;
+import ccc.api.Paragraph;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
 import ccc.api.UserDelta;
@@ -90,7 +89,6 @@ import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.PageHelper;
-import ccc.domain.Paragraph;
 import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Resource;
 import ccc.domain.ResourceExistsException;
@@ -415,8 +413,6 @@ public class CommandsEJB
                                   final PageDelta delta)
                                                  throws CommandFailedException {
         try {
-            // FIXME: A delta and a working copy are the thing!
-
             final Page page = new Page(delta.getTitle());
 
             new PageHelper().assignParagraphs(page, delta);
@@ -446,7 +442,7 @@ public class CommandsEJB
                     loggedInUser(),
                     new Date(),
                     toUUID(resourceId),
-                    new Snapshot(le.detail()));
+                    new PageDelta(new Snapshot(le.detail())));
             } else {
                 throw new CCCException("Log entry describes another resource.");
             }
@@ -545,28 +541,9 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({"CONTENT_CREATOR"})
-    public List<String> validateFields(final List<ParagraphDelta> delta,
+    public List<String> validateFields(final Set<Paragraph> delta,
                                        final String definition) {
-        final Set<Paragraph> pList = new HashSet<Paragraph>();
-
-        for (final ParagraphDelta para : delta) {
-            switch (para.getType()) {
-                case TEXT:
-                    pList.add(Paragraph.fromText(para.getName(),
-                                                 para.getTextValue()));
-                    break;
-
-                case DATE:
-                    pList.add(Paragraph.fromDate(para.getName(),
-                                                 para.getDateValue()));
-                    break;
-
-                default:
-                    throw new CCCException("Unexpected type");
-            }
-        }
-
-        return new PageHelper().validateFields(pList, definition);
+        return new PageHelper().validateFields(delta, definition);
     }
 
     /** {@inheritDoc} */

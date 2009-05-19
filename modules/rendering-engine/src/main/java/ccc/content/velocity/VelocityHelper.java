@@ -20,10 +20,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import ccc.api.Paragraph;
 import ccc.api.ResourceType;
 import ccc.domain.Folder;
 import ccc.domain.Page;
-import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 

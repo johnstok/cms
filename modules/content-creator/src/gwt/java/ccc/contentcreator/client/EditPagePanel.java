@@ -15,12 +15,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ccc.api.FileSummary;
 import ccc.api.ID;
 import ccc.api.PageDelta;
-import ccc.api.ParagraphDelta;
-import ccc.api.ParagraphType;
+import ccc.api.Paragraph;
 import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.UIConstants;
@@ -103,14 +103,14 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         _title.setValue(resourceSummary.getTitle());
 
         for (final PageElement c : pageElements()) {
-            for (final ParagraphDelta para : resourceSummary.getParagraphs()) {
-                if (c.id().equals(para.getName())) {
+            for (final Paragraph para : resourceSummary.getParagraphs()) {
+                if (c.id().equals(para.name())) {
                     if (FieldType.TEXT == c.fieldType()) {
                         final Field<String> f = c.field();
-                        f.setValue(para.getTextValue());
+                        f.setValue(para.text());
                     } else if (FieldType.DATE == c.fieldType()) {
                         final DateField f = c.dateField();
-                        f.setValue(para.getDateValue());
+                        f.setValue(para.date());
                     } else if (FieldType.HTML == c.fieldType()) {
                         populateHtml(c, para);
                     } else if (FieldType.CHECKBOX == c.fieldType()) {
@@ -135,12 +135,12 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      * @param c
      * @param para
      */
-    private void populateHtml(final PageElement c, final ParagraphDelta para) {
+    private void populateHtml(final PageElement c, final Paragraph para) {
 
         remove(c.editor());
         remove(c.editorLabel());
         final FCKEditor fck =
-            new FCKEditor(para.getTextValue(), "250px");
+            new FCKEditor(para.text(), "250px");
         add(c.editorLabel());
         add(fck, new FormData("95%"));
         c.editor(fck);
@@ -153,13 +153,13 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      * @param para
      */
     private void populateCheckbox(final PageElement c,
-                                  final ParagraphDelta para) {
+                                  final Paragraph para) {
 
         final CheckBoxGroup cbg = c.checkBoxGroup();
-        Map<String, String> valueMap = fillValueMap(para);
+        final Map<String, String> valueMap = fillValueMap(para);
 
-        List<CheckBox> boxes = cbg.getAll();
-        for (CheckBox box : boxes) {
+        final List<CheckBox> boxes = cbg.getAll();
+        for (final CheckBox box : boxes) {
             if ("true".equals(valueMap.get(box.getId()))) {
                 box.setValue(true);
             } else {
@@ -174,13 +174,13 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      * @param c
      * @param para
      */
-    private void populateRadio(final PageElement c, final ParagraphDelta para) {
+    private void populateRadio(final PageElement c, final Paragraph para) {
 
         final RadioGroup rg = c.radioGroup();
-        String value = para.getTextValue();
+        final String value = para.text();
 
-        List<Radio> radios = rg.getAll();
-        for (Radio radio : radios) {
+        final List<Radio> radios = rg.getAll();
+        for (final Radio radio : radios) {
             if (radio.getId().equals(value)) {
                 radio.setValue(true);
             } else {
@@ -196,13 +196,13 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      * @param para
      */
     private void populateComboBox(final PageElement c,
-                                  final ParagraphDelta para) {
+                                  final Paragraph para) {
 
-        ComboBox<BaseModelData> cb = c.combobox();
-        String value = para.getTextValue();
+        final ComboBox<BaseModelData> cb = c.combobox();
+        final String value = para.text();
 
-        ListStore<BaseModelData> store = cb.getStore();
-        for (BaseModelData model : store.getModels()) {
+        final ListStore<BaseModelData> store = cb.getStore();
+        for (final BaseModelData model : store.getModels()) {
             if (model.get("value").equals(value)) {
                 cb.setValue(model);
             }
@@ -215,15 +215,15 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      * @param c
      * @param para
      */
-    private void populateList(final PageElement c, final ParagraphDelta para) {
+    private void populateList(final PageElement c, final Paragraph para) {
 
         final ListField<BaseModelData> list = c.list();
-        Map<String, String> valueMap = fillValueMap(para);
+        final Map<String, String> valueMap = fillValueMap(para);
         final List<BaseModelData> selection =
             new ArrayList<BaseModelData>();
 
-        ListStore<BaseModelData> items = list.getStore();
-        for (BaseModelData item : items.getModels()) {
+        final ListStore<BaseModelData> items = list.getStore();
+        for (final BaseModelData item : items.getModels()) {
             if (valueMap.containsKey(item.get("value"))) {
                 selection.add(item);
             }
@@ -243,10 +243,10 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      * @param c
      * @param para
      */
-    private void populateImage(final PageElement c, final ParagraphDelta para) {
+    private void populateImage(final PageElement c, final Paragraph para) {
 
         final ImageTriggerField image = c.image();
-        String id = para.getTextValue();
+        final String id = para.text();
         if (id != null && !id.trim().equals("")) {
             final ID resourceId = new ID(id);
             _qs.getAbsolutePath(resourceId,
@@ -254,9 +254,9 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
 
                 @Override
                 public void onSuccess(final String path) {
-                    FileSummary fs =
+                    final FileSummary fs =
                         new FileSummary("image", path, resourceId, "", "");
-                    FileSummaryModelData model = new FileSummaryModelData(fs);
+                    final FileSummaryModelData model = new FileSummaryModelData(fs);
                     image.setValue(path);
                     image.setFSModel(model);
                 }
@@ -270,17 +270,17 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      * @param para
      * @return
      */
-    private Map<String, String> fillValueMap(final ParagraphDelta para) {
+    private Map<String, String> fillValueMap(final Paragraph para) {
 
-        String text = para.getTextValue();
+        final String text = para.text();
 
-        Map<String, String> valueMap = new HashMap<String, String>();
+        final Map<String, String> valueMap = new HashMap<String, String>();
 
-        String[] lines = text.split("\n");
-        for (String line : lines) {
+        final String[] lines = text.split("\n");
+        for (final String line : lines) {
             if (line.trim().length() > 0) {
-                String key = line.substring(0, line.indexOf("="));
-                String value = line.substring(line.indexOf("=")+1);
+                final String key = line.substring(0, line.indexOf("="));
+                final String value = line.substring(line.indexOf("=")+1);
                 valueMap.put(key, value);
             }
         }
@@ -296,8 +296,8 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      * @param paragraphs List of paragraphs
      */
     public void extractValues(final List<PageElement> definitions,
-                              final List<ParagraphDelta> paragraphs) {
-        ParagraphDelta p = null;
+                              final Set<Paragraph> paragraphs) {
+        Paragraph p = null;
 
         for (final PageElement c : definitions) {
             if (FieldType.TEXT == c.fieldType()) {
@@ -323,41 +323,25 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         }
     }
 
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param c
-     * @return
-     */
-    private ParagraphDelta extractImage(final PageElement c) {
-        ImageTriggerField image = c.image();
+
+    private Paragraph extractImage(final PageElement c) {
+        final ImageTriggerField image = c.image();
         String id = "";
-        FileSummaryModelData model = image.getFSModel();
+        final FileSummaryModelData model = image.getFSModel();
         if (model != null) {
             id = model.getId().toString();
         }
 
-        ParagraphDelta p = new ParagraphDelta(
-            c.id(),
-            ParagraphType.TEXT,
-            null,
-            id,
-            null,
-            null);
+        final Paragraph p =
+            Paragraph.fromText(c.id(), id);
         return p;
     }
 
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param c
-     * @return
-     */
-    private ParagraphDelta extractList(final PageElement c) {
 
+    private Paragraph extractList(final PageElement c) {
         final ListField<BaseModelData> list = c.list();
-        StringBuilder sb = new StringBuilder();
-        for (BaseModelData item : list.getSelection()) {
+        final StringBuilder sb = new StringBuilder();
+        for (final BaseModelData item : list.getSelection()) {
             if (sb.length() > 0) {
                 sb.append("\n");
             }
@@ -365,75 +349,43 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
             sb.append("=");
             sb.append(item.get("title"));
         }
-        ParagraphDelta p = new ParagraphDelta(
-            c.id(),
-            ParagraphType.TEXT,
-            null,
-            sb.toString(),
-            null,
-            null);
+
+        final Paragraph p =
+            Paragraph.fromText(c.id(), sb.toString());
         return p;
     }
 
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param c
-     * @return
-     */
-    private ParagraphDelta extractComboBox(final PageElement c) {
 
+    private Paragraph extractComboBox(final PageElement c) {
         final ComboBox<BaseModelData> cb = c.combobox();
         String selected = "";
         if (cb.getValue() != null) {
             selected = cb.getValue().get("value");
         }
 
-        ParagraphDelta p = new ParagraphDelta(
-            c.id(),
-            ParagraphType.TEXT,
-            null,
-            selected,
-            null,
-            null);
+        final Paragraph p =
+            Paragraph.fromText(c.id(), selected);
         return p;
     }
 
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param c
-     * @return
-     */
-    private ParagraphDelta extractRadio(final PageElement c) {
 
+    private Paragraph extractRadio(final PageElement c) {
         final RadioGroup rg = c.radioGroup();
         String selected = "";
         if (rg.getValue() != null) {
             selected = rg.getValue().getId();
         }
 
-        ParagraphDelta p = new ParagraphDelta(
-            c.id(),
-            ParagraphType.TEXT,
-            null,
-            selected,
-            null,
-            null);
+        final Paragraph p =
+            Paragraph.fromText(c.id(), selected);
         return p;
     }
 
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param c
-     * @return
-     */
-    private ParagraphDelta extractCheckBox(final PageElement c) {
 
+    private Paragraph extractCheckBox(final PageElement c) {
         final CheckBoxGroup cbg = c.checkBoxGroup();
-        StringBuilder sb = new StringBuilder();
-        for (CheckBox cb : cbg.getAll()) {
+        final StringBuilder sb = new StringBuilder();
+        for (final CheckBox cb : cbg.getAll()) {
             if (sb.length() > 0) {
                 sb.append("\n");
             }
@@ -442,70 +394,32 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
             sb.append(cb.getValue().toString());
         }
 
-        ParagraphDelta p = new ParagraphDelta(
-            c.id(),
-            ParagraphType.TEXT,
-            null,
-            sb.toString(),
-            null,
-            null);
+        final Paragraph p =
+            Paragraph.fromText(c.id(), sb.toString());
         return p;
     }
 
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param c
-     * @return
-     */
-    private ParagraphDelta extractHtml(final PageElement c) {
 
+    private Paragraph extractHtml(final PageElement c) {
         final FCKEditor f = c.editor();
-        ParagraphDelta p = new ParagraphDelta(
-            c.id(),
-            ParagraphType.TEXT,
-            null,
-            f.getHTML(),
-            null,
-            null);
+        final Paragraph p =
+            Paragraph.fromText(c.id(), f.getHTML());
         return p;
     }
 
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param c
-     * @return
-     */
-    private ParagraphDelta extractDate(final PageElement c) {
 
+    private Paragraph extractDate(final PageElement c) { // FIXME: RawValue?
         final DateField f = c.dateField();
-        ParagraphDelta p = new ParagraphDelta(
-            c.id(),
-            ParagraphType.DATE,
-            f.getRawValue(),
-            null,
-            f.getValue(),
-            null);
+        final Paragraph p =
+            Paragraph.fromDate(c.id(), f.getValue());
         return p;
     }
 
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param c
-     * @return
-     */
-    private ParagraphDelta extractText(final PageElement c) {
 
+    private Paragraph extractText(final PageElement c) {
         final Field<String> f = c.field();
-        ParagraphDelta p = new ParagraphDelta(
-            c.id(),
-            ParagraphType.TEXT,
-            null,
-            f.getValue(),
-            null,
-            null);
+        final Paragraph p =
+            Paragraph.fromText(c.id(), f.getValue());
         return p;
     }
 
@@ -649,14 +563,14 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         final ListStore<BaseModelData> store =  new ListStore<BaseModelData>();
         final List<BaseModelData> selection = new ArrayList<BaseModelData>();
 
-        NodeList nl = field.getElementsByTagName("option");
+        final NodeList nl = field.getElementsByTagName("option");
         for (int i=0; i<nl.getLength(); i++) {
             final Element option = ((Element) nl.item(i));
             final String def  = option.getAttribute("default");
             final String title = option.getAttribute("title");
             final String value = option.getAttribute("value");
 
-            BaseModelData model = new BaseModelData();
+            final BaseModelData model = new BaseModelData();
             model.set("title", title);
             model.set("value", value);
             store.add(model);
@@ -694,15 +608,15 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         cb.setValueField("value");
         cb.setId(name);
 
-        ListStore<BaseModelData> store =  new ListStore<BaseModelData>();
-        NodeList nl = field.getElementsByTagName("option");
+        final ListStore<BaseModelData> store =  new ListStore<BaseModelData>();
+        final NodeList nl = field.getElementsByTagName("option");
         for (int i=0; i<nl.getLength(); i++) {
             final Element option = ((Element) nl.item(i));
             final String def  = option.getAttribute("default");
             final String title = option.getAttribute("title");
             final String value = option.getAttribute("value");
 
-            BaseModelData model = new BaseModelData();
+            final BaseModelData model = new BaseModelData();
             model.set("title", title);
             model.set("value", value);
             store.add(model);
@@ -732,14 +646,14 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         cbg.setId(name);
         cbg.setOrientation(Orientation.VERTICAL);
 
-        NodeList nl = field.getElementsByTagName("option");
+        final NodeList nl = field.getElementsByTagName("option");
         for (int i=0; i<nl.getLength(); i++) {
             final Element option = ((Element) nl.item(i));
             final String def  = option.getAttribute("default");
             final String title = option.getAttribute("title");
             final String value = option.getAttribute("value");
 
-            CheckBox cb = new CheckBox();
+            final CheckBox cb = new CheckBox();
             cb.setBoxLabel(title);
             cb.setId(value);
             cb.setValue("true".equals(def));
@@ -767,14 +681,14 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         rg.setId(name);
         rg.setOrientation(Orientation.VERTICAL);
 
-        NodeList nl = field.getElementsByTagName("option");
+        final NodeList nl = field.getElementsByTagName("option");
         for (int i=0; i<nl.getLength(); i++) {
             final Element option = ((Element) nl.item(i));
             final String def  = option.getAttribute("default");
             final String title = option.getAttribute("title");
             final String value = option.getAttribute("value");
 
-            Radio r = new Radio();
+            final Radio r = new Radio();
             r.setBoxLabel(title);
             r.setId(value);
             r.setValue("true".equals(def));

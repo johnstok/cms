@@ -55,6 +55,15 @@
                 column="mime_type_sub"
                 type="string" />
         </component>
+        
+        <!-- component name="_workingCopy" class="ccc.domain.Snapshot">
+            <property
+                name="detail"
+                access="property"
+                not-null="false"
+                column="working_copy"
+                type="text" />
+        </component -->
 
 	</joined-subclass>
 	

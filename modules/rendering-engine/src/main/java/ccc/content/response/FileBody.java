@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
-import ccc.commons.DBC;
+import ccc.api.DBC;
 import ccc.domain.File;
 import ccc.services.DataManager;
 

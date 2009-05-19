@@ -9,18 +9,13 @@
  * Changes: see subversion log
  *-----------------------------------------------------------------------------
  */
-package ccc.domain;
+package ccc.api;
 
-import static ccc.commons.DBC.*;
+import static ccc.api.DBC.*;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 
-import ccc.api.Decimal;
-import ccc.api.Json;
-import ccc.api.Jsonable;
-import ccc.api.ParagraphType;
 
 /**
  * A paragraph of HTML.
@@ -36,9 +31,19 @@ public final class Paragraph implements Serializable, Jsonable {
     private Boolean _boolean;
     private Date    _date;
     private String  _name;
-    private BigDecimal _number;
+    private Decimal _number;
 
     private Paragraph() { super(); }
+
+
+    /**
+     * Constructor.
+     *
+     * @param json The JSON representation of a paragraph.
+     */
+    public Paragraph(final Json json) {
+        throw new UnsupportedOperationException("Not implemented.");
+    }
 
 
     private void name(final String name) {
@@ -65,7 +70,7 @@ public final class Paragraph implements Serializable, Jsonable {
         _type = ParagraphType.DATE;
     }
 
-    private void number(final BigDecimal number) {
+    private void number(final Decimal number) {
         require().notNull(number);
         _number = number;
         _type = ParagraphType.NUMBER;
@@ -130,7 +135,7 @@ public final class Paragraph implements Serializable, Jsonable {
         final Paragraph p = new Paragraph();
 
         p.name(name);
-        p.number(BigDecimal.valueOf(number));
+        p.number(new Decimal(String.valueOf(number)));
 
         return p;
     }
@@ -146,7 +151,7 @@ public final class Paragraph implements Serializable, Jsonable {
         final Paragraph p = new Paragraph();
 
         p.name(name);
-        p.number(BigDecimal.valueOf(number));
+        p.number(new Decimal(String.valueOf(number)));
 
         return p;
     }
@@ -159,7 +164,7 @@ public final class Paragraph implements Serializable, Jsonable {
      * @return A paragraph with numerical content.
      */
     public static Paragraph fromNumber(final String name,
-                                       final BigDecimal number) {
+                                       final Decimal number) {
         final Paragraph p = new Paragraph();
 
         p.name(name);
@@ -173,7 +178,7 @@ public final class Paragraph implements Serializable, Jsonable {
      *
      * @return The numerical representation of this paragraph.
      */
-    public BigDecimal number() {
+    public Decimal number() {
         return _number;
     }
 
@@ -260,12 +265,9 @@ public final class Paragraph implements Serializable, Jsonable {
      * Create a paragraph from a snapshot.
      *
      * @param json The snapshot used to create a new paragraph object.
-     * @throws InvalidSnapshotException If the snapshot data is insufficient to
-     *  create a valid paragraph.
      * @return A valid paragraph.
      */
-    public static Paragraph fromSnapshot(final Json json)
-                                               throws InvalidSnapshotException {
+    public static Paragraph fromSnapshot(final Json json) {
         require().notNull(json);
 
         final Paragraph p = new Paragraph();
@@ -286,12 +288,12 @@ public final class Paragraph implements Serializable, Jsonable {
 
             case NUMBER:
                 p._number =
-                    new BigDecimal(json.getDecimal("number").toString());
+                    json.getDecimal("number");
                 break;
 
             default:
-                throw new InvalidSnapshotException(
-                    "Paragraph type unsupported.");
+                // FIXME: Throw a better exception.
+                throw new RuntimeException("Paragraph type unsupported.");
         }
 
         return p;

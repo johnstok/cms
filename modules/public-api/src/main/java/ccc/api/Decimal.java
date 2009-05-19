@@ -13,6 +13,8 @@ package ccc.api;
 
 import java.io.Serializable;
 
+import ccc.annotations.ValueObject;
+
 
 /**
  * Simple value holder for a decimal.
@@ -21,6 +23,7 @@ import java.io.Serializable;
  *
  * @author Civic Computing Ltd.
  */
+@ValueObject
 public final class Decimal implements Serializable {
     private String _value;
 
@@ -40,4 +43,28 @@ public final class Decimal implements Serializable {
     public String toString() {
         return _value;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((_value == null) ? 0 : _value.hashCode());
+        return result;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) { return true; }
+        if (obj == null) { return false; }
+        if (getClass() != obj.getClass()) { return false; }
+        final Decimal other = (Decimal) obj;
+        if (_value == null) {
+            if (other._value != null) { return false; }
+        } else if (!_value.equals(other._value)) { return false; }
+        return true;
+    }
+
+
 }

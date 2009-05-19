@@ -14,10 +14,10 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.PageDelta;
 import ccc.domain.LockMismatchException;
-import ccc.domain.Resource;
+import ccc.domain.Page;
 import ccc.domain.ResourceExistsException;
-import ccc.domain.Snapshot;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -48,7 +48,7 @@ public class UpdateWorkingCopyCommand {
     /**
      * Updates the working copy.
      *
-     * @param workingCopy The snapshot to use as a working copy.
+     * @param delta The page delta to store in the page.
      * @param resourceId The resource's id.
      * @param actor The user that updated the working copy.
      * @param happenedOn The date that the w.c. was updated.
@@ -60,13 +60,13 @@ public class UpdateWorkingCopyCommand {
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID resourceId,
-                        final Snapshot workingCopy)
-      throws UnlockedException, LockMismatchException, ResourceExistsException {
-        final Resource r = _dao.find(Resource.class, resourceId);
+                        final PageDelta delta)
+                               throws UnlockedException, LockMismatchException {
+        final Page r = _dao.find(Page.class, resourceId);
         r.confirmLock(actor);
 
-        r.workingCopy(workingCopy);
+        r.workingCopy(delta);
 
-        // FIXME: Audit this action.
+        // FIXME: Audit this action?
     }
 }

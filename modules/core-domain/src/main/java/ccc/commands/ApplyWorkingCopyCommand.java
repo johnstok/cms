@@ -15,9 +15,9 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.domain.LockMismatchException;
-import ccc.domain.Resource;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
+import ccc.domain.WorkingCopyAware;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
 
@@ -57,18 +57,10 @@ public class ApplyWorkingCopyCommand extends UpdateResourceCommand {
                         final String comment,
                         final boolean isMajorEdit)
                                throws UnlockedException, LockMismatchException {
-        final Resource r = _dao.find(Resource.class, id);
+        final WorkingCopyAware<?> r = _dao.find(WorkingCopyAware.class, id);
         r.confirmLock(actor);
 
-        r.applySnapshot(r.workingCopy());
-        r.clearWorkingCopy();
-
-// FIXME: We don't validate the page against its definition
-//        final Template template = page.computeTemplate(null);
-//
-//        if (template != null) {
-//            validateFieldsForPage(page.paragraphs(), template.definition());
-//        }
+        r.applySnapshot();
 
         update(r, comment, isMajorEdit, actor, happenedOn);
     }

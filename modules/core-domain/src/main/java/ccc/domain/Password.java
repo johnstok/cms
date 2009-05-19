@@ -16,7 +16,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
-import ccc.commons.DBC;
+import ccc.api.DBC;
 
 
 /**

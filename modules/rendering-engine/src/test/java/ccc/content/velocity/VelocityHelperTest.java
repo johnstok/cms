@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.Map;
 
 import junit.framework.TestCase;
+import ccc.api.Paragraph;
 import ccc.domain.Folder;
 import ccc.domain.Page;
-import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.ResourceExistsException;
 

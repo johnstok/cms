@@ -3,7 +3,7 @@ package ccc.migration.ccc6.handlers;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import ccc.commons.DBC;
+import ccc.api.DBC;
 
 /**
  * TODO: Add Description for this type.

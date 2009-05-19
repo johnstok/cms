@@ -11,9 +11,10 @@
  */
 package ccc.domain;
 
+import ccc.api.AliasDelta;
+import ccc.api.DBC;
 import ccc.api.ID;
 import ccc.api.ResourceType;
-import ccc.commons.DBC;
 
 
 /**
@@ -69,11 +70,11 @@ public class Alias extends Resource {
         return _target;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public Snapshot createSnapshot() {
-        final Snapshot s = super.createSnapshot();
-        s.set("target", new ID(_target.id().toString()));
-        return s;
+    public AliasDelta createSnapshot() {
+        final AliasDelta delta =
+            new AliasDelta(
+                target().name().toString(),
+                new ID(target().id().toString()));
+        return delta;
     }
 }

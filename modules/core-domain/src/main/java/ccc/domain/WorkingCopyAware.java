@@ -11,41 +11,83 @@
  */
 package ccc.domain;
 
+import ccc.api.DBC;
+import ccc.api.Json;
+
 
 
 /**
  * API for working-copy support.
  *
+ * @param <T> The type of the working copy.
+ *
  * @author Civic Computing Ltd.
  */
-public interface WorkingCopyAware {
+public abstract class WorkingCopyAware<T> extends Resource {
+
+    protected T _workingCopy = null;
+
+    /** Constructor. */
+    protected WorkingCopyAware() { super(); }
 
     /**
-     * Apply a snapshot to this object.
+     * Constructor.
      *
-     * @param s The snapshot to apply.
-     * @throws InvalidSnapshotException - if the data in the snapshot cannot be
-     *  applied.
+     * @param name The name of the resource.
+     * @param title The title of the resource.
      */
-    void applySnapshot(final Snapshot s) throws InvalidSnapshotException;
+    public WorkingCopyAware(final ResourceName name, final String title) {
+        super(name, title);
+    }
 
     /**
-     * Accessor.
+     * Constructor.
      *
-     * @return The current working copy for this page, or null if there is no
-     *      working copy.
+     * @param title The title of the resource.
      */
-    Snapshot workingCopy();
+    public WorkingCopyAware(final String title) {
+        super(title);
+    }
+
 
     /**
      * Clear the current working copy.
      */
-    void clearWorkingCopy();
+    public final void clearWorkingCopy() {
+        DBC.require().notNull(_workingCopy);
+        _workingCopy = null;
+    }
+
 
     /**
      * Mutator.
      *
      * @param snapshot The new working copy for this page.
      */
-    void workingCopy(final Snapshot snapshot);
+    public final void workingCopy(final T snapshot) {
+        DBC.require().notNull(snapshot);
+        _workingCopy = snapshot;
+    }
+
+
+    /**
+     * Apply a snapshot to this resource.
+     */
+    public abstract void applySnapshot(); // Should be applyWorkingCopy()
+
+
+    /**
+     * Accessor.
+     *
+     * @return The current working copy for this page, or a new working copy if
+     *  none exists.
+     */
+    public abstract T workingCopy();
+
+    /**
+     * Mutator.
+     *
+     * @param snapshot The new working copy for this page.
+     */
+    public abstract void workingCopy(final Json snapshot);
 }

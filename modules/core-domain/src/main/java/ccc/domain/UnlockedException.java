@@ -12,9 +12,9 @@
 package ccc.domain;
 
 import ccc.api.CommandFailedException;
+import ccc.api.DBC;
 import ccc.api.Failure;
 import ccc.api.ParamList;
-import ccc.commons.DBC;
 
 
 /**

@@ -11,6 +11,8 @@
  */
 package ccc.domain;
 
+import ccc.api.Json;
+import ccc.api.Jsonable;
 import ccc.api.ResourceType;
 
 
@@ -39,6 +41,17 @@ public class Search
     @Override
     public ResourceType type() {
         return ResourceType.SEARCH;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Jsonable createSnapshot() {
+        return new Jsonable(){
+            /** {@inheritDoc} */
+            @Override public void toJson(final Json json) {
+                json.set("title", title());
+            }
+        };
     }
 
 }

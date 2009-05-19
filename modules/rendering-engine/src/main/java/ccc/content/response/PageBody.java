@@ -19,8 +19,8 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
+import ccc.api.DBC;
 import ccc.api.MimeType;
-import ccc.commons.DBC;
 import ccc.commons.Resources;
 import ccc.content.velocity.VelocityProcessor;
 import ccc.domain.Page;

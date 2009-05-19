@@ -15,13 +15,14 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ccc.api.AliasDelta;
 import ccc.api.CommandType;
 import ccc.api.Duration;
 import ccc.api.ID;
 import ccc.api.PageDelta;
-import ccc.api.ParagraphDelta;
+import ccc.api.Paragraph;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
 import ccc.api.UserDelta;
@@ -104,7 +105,7 @@ public interface CommandServiceAsync {
                            boolean include,
                            AsyncCallback<Void> callback);
 
-    void validateFields(List<ParagraphDelta> delta,
+    void validateFields(Set<Paragraph> delta,
                         String definition,
                         AsyncCallback<List <String>> callback);
 

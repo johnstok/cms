@@ -19,7 +19,7 @@ import java.io.Serializable;
  *
  * @author Civic Computing Ltd.
  */
-public final class TemplateDelta implements Serializable {
+public final class TemplateDelta implements Serializable, Jsonable {
     private String _title;
     private String _description;
     private String _body;
@@ -148,5 +148,16 @@ public final class TemplateDelta implements Serializable {
      */
     public void setMimeType(final MimeType mimeType) {
         _mimeType = mimeType;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void toJson(final Json json) {
+        json.set("title",       getTitle());
+        json.set("description", getDescription());
+        json.set("definition",  getDefinition());
+        json.set("body",        getBody());
+        json.set("mime-type",   getMimeType());
     }
 }

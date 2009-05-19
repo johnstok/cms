@@ -13,12 +13,12 @@ package ccc.domain;
 
 import java.util.UUID;
 
-import org.apache.log4j.Logger;
-
+import ccc.api.DBC;
+import ccc.api.FileDelta;
 import ccc.api.ID;
+import ccc.api.Json;
 import ccc.api.MimeType;
 import ccc.api.ResourceType;
-import ccc.commons.DBC;
 
 
 /**
@@ -30,13 +30,11 @@ import ccc.commons.DBC;
  */
 public class File
     extends
-        Resource {
-    private static Logger LOG = Logger.getLogger(File.class);
+        WorkingCopyAware<FileDelta> {
 
-
-    private Data _data;
-    private int _size;
-    private MimeType _mimeType;
+    private Data      _data;
+    private int       _size;
+    private MimeType  _mimeType;
 
 
     /** Constructor: for persistence only. */
@@ -160,23 +158,46 @@ public class File
         _size = size;
     }
 
+    //--
     /** {@inheritDoc} */
     @Override
-    public Snapshot createSnapshot() {
-        final Snapshot s = super.createSnapshot();
-        s.set("description", description());
-        s.set("mimetype", _mimeType);
-        s.set("size", _size);
-        s.set("data", new ID(_data.id().toString()));
-        return s;
+    public void applySnapshot() {
+        DBC.require().notNull(_workingCopy);
+
+        description(_workingCopy.getDescription());
+        mimeType(_workingCopy.getMimeType());
+        size(_workingCopy.getSize());
+        title(_workingCopy.getTitle());
+        data(new Data(UUID.fromString(_workingCopy.getData().toString())));
+
+        clearWorkingCopy();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void applySnapshot(final Snapshot s) {
-        description(s.getString("description"));
-        mimeType(new MimeType(s.getJson("mimetype")));
-        size(s.getInt("size"));
-        data(new Data(UUID.fromString(s.getId("data").toString())));
+    public FileDelta workingCopy() {
+        if (null!=_workingCopy) {
+            return _workingCopy;
+        }
+        return createSnapshot();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void workingCopy(final Json snapshot) {
+        workingCopy(new FileDelta(snapshot));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FileDelta createSnapshot() {
+        final FileDelta delta =
+            new FileDelta(
+                title(),
+                description(),
+                mimeType(),
+                new ID(data().id().toString()),
+                size());
+        return delta;
     }
 }

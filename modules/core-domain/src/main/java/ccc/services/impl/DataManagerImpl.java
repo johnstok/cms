@@ -17,7 +17,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
-import ccc.commons.DBC;
+import ccc.api.DBC;
 import ccc.commons.IO;
 import ccc.domain.CCCException;
 import ccc.domain.Data;

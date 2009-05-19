@@ -15,6 +15,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -29,7 +30,7 @@ import ccc.api.Decimal;
 import ccc.api.ID;
 import ccc.api.MimeType;
 import ccc.api.PageDelta;
-import ccc.api.ParagraphDelta;
+import ccc.api.Paragraph;
 import ccc.api.ParagraphType;
 import ccc.api.Queries;
 import ccc.api.ResourceSummary;
@@ -503,8 +504,8 @@ public class Migrations {
 
     private PageDelta assemblePage(final ResourceBean r,
                                    final int version) {
-        final List<ParagraphDelta> paragraphDeltas =
-            new ArrayList<ParagraphDelta>();
+        final Set<Paragraph> paragraphDeltas =
+            new HashSet<Paragraph>();
         final Map<String, StringBuffer> paragraphs =
             assembleParagraphs(r.contentId(), version);
         for (final Map.Entry<String, StringBuffer> para
@@ -512,32 +513,22 @@ public class Migrations {
 
             final String name = para.getKey();
             final ParagraphType type = getParagraphType(name);
-            String textValue = null;
-            String numberValue = null;
+            final String value = para.getValue().toString();
 
             switch (type) {
                 case TEXT:
-                    textValue = para.getValue().toString();
+                    paragraphDeltas.add(
+                        Paragraph.fromText(name, value));
                     break;
 
                 case NUMBER:
-                    numberValue = para.getValue().toString();
+                    paragraphDeltas.add(
+                        Paragraph.fromNumber(name, new Decimal(value)));
                     break;
 
                 default:
                     throw new CCCException("Unsupported paragraph type: "+type);
             }
-
-            final ParagraphDelta pd =
-                new ParagraphDelta(
-                    name,
-                    type,
-                    null,
-                    textValue,
-                    null, // FIXME: Date not supported?!
-                    new Decimal(numberValue));
-
-            paragraphDeltas.add(pd);
         }
 
         final PageDelta delta =
@@ -559,7 +550,8 @@ public class Migrations {
 
 
     private void setTemplateForResource(final ResourceBean r,
-                                 final ResourceSummary rs) throws CommandFailedException {
+                                        final ResourceSummary rs)
+                                                 throws CommandFailedException {
 
         final String templateName = r.displayTemplate();
 

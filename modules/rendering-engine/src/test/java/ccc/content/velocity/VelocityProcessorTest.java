@@ -16,10 +16,10 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import junit.framework.TestCase;
+import ccc.api.Paragraph;
 import ccc.commons.TextProcessor;
 import ccc.domain.CCCException;
 import ccc.domain.Page;
-import ccc.domain.Paragraph;
 
 
 /**

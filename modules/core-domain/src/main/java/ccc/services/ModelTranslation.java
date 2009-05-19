@@ -18,14 +18,11 @@ import java.util.UUID;
 
 import ccc.api.ActionSummary;
 import ccc.api.AliasDelta;
-import ccc.api.Decimal;
 import ccc.api.FileDelta;
 import ccc.api.FileSummary;
 import ccc.api.ID;
-import ccc.api.Json;
 import ccc.api.LogEntrySummary;
 import ccc.api.PageDelta;
-import ccc.api.ParagraphDelta;
 import ccc.api.ResourceSummary;
 import ccc.api.ResourceType;
 import ccc.api.TemplateDelta;
@@ -39,9 +36,7 @@ import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
-import ccc.domain.Paragraph;
 import ccc.domain.Resource;
-import ccc.domain.Snapshot;
 import ccc.domain.Template;
 import ccc.domain.User;
 
@@ -277,11 +272,7 @@ public class ModelTranslation {
      * @return A corresponding delta.
      */
     protected AliasDelta deltaAlias(final Alias alias) {
-        final AliasDelta delta =
-            new AliasDelta(
-                alias.target().name().toString(),
-                toID(alias.target().id()));
-        return delta;
+        return alias.createSnapshot();
     }
 
 
@@ -292,13 +283,7 @@ public class ModelTranslation {
      * @return A corresponding delta.
      */
     protected FileDelta deltaFile(final File file) {
-        final FileDelta delta =
-            new FileDelta(
-                file.title(),
-                file.description(),
-                file.mimeType(),
-                file.size());
-        return delta;
+        return file.workingCopy();
     }
 
 
@@ -309,53 +294,7 @@ public class ModelTranslation {
      * @return The corresponding delta.
      */
     protected PageDelta deltaPage(final Page page) {
-        if (null==page.workingCopy()) {             // Page has no working copy.
-            final List<ParagraphDelta> paragraphs =
-                new ArrayList<ParagraphDelta>();
-            for (final Paragraph p : page.paragraphs()) {
-                final ParagraphDelta pDelta =
-                    new ParagraphDelta(
-                        p.name(),
-                        p.type(),
-                        null, // FIXME: What is the raw value?!
-                        p.text(),
-                        p.date(),
-                        (null==p.number())
-                            ?null:new Decimal(p.number().toString()));
-                paragraphs.add(pDelta);
-            }
-
-            final PageDelta delta =
-                new PageDelta(
-                    page.title(),
-                    paragraphs);
-            return delta;
-
-        } else {                                     // Page has a working copy.
-            final Snapshot ss = page.workingCopy();
-            final List<ParagraphDelta> paragraphs =
-                new ArrayList<ParagraphDelta>();
-            for(final Json s : ss.getCollection("paragraphs")) {
-                final Paragraph p = Paragraph.fromSnapshot(s);
-                final ParagraphDelta pDelta =
-                    new ParagraphDelta(
-                        p.name(),
-                        p.type(),
-                        null, // FIXME: What is the raw value?!
-                        p.text(),
-                        p.date(),
-                        (null==p.number())
-                            ?null:new Decimal(p.number().toString()));
-                paragraphs.add(pDelta);
-            }
-
-            final PageDelta delta =
-                new PageDelta(
-                    ss.getString("title"),
-                    paragraphs);
-            return delta;
-
-        }
+        return page.workingCopy();
     }
 
 

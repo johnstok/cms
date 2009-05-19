@@ -15,6 +15,7 @@ package ccc.domain;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -30,7 +31,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import ccc.api.PageDelta;
-import ccc.api.ParagraphDelta;
+import ccc.api.Paragraph;
+import ccc.api.ParagraphType;
 import ccc.commons.WordCharFixer;
 
 
@@ -55,7 +57,7 @@ public class PageHelper {
         }
     }
 
-    public List<String> validateFields(final Set<Paragraph> delta,
+    public List<String> validateFields(final Collection<Paragraph> delta,
                                        final String t) {
         Document document;
         final List<String> errors = new ArrayList<String>();
@@ -97,23 +99,15 @@ public class PageHelper {
 
         page.deleteAllParagraphs();
 
-        for (final ParagraphDelta para : delta.getParagraphs()) {
-            switch (para.getType()) {
-                case TEXT:
-                    WordCharFixer fixer = new WordCharFixer();
-                    page.addParagraph(
-                        Paragraph.fromText(para.getName(),
-                            fixer.fix(para.getTextValue())));
-                    break;
+        for (final Paragraph para : delta.getParagraphs()) {
 
-                case DATE:
-                    page.addParagraph(
-                        Paragraph.fromDate(para.getName(),
-                                           para.getDateValue()));
-                    break;
-
-                default:
-                    throw new CCCException("Unexpected type");
+            if (ParagraphType.TEXT==para.type()) {
+                    final WordCharFixer fixer = new WordCharFixer();
+                    final Paragraph p =
+                        Paragraph.fromText(para.name(), fixer.fix(para.text()));
+                    page.addParagraph(para);
+            } else {
+                page.addParagraph(para);
             }
         }
     }
