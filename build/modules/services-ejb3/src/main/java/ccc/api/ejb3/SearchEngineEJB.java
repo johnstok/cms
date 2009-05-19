@@ -44,13 +44,13 @@ import org.pdfbox.util.PDFTextStripper;
 import org.textmining.extraction.TextExtractor;
 import org.textmining.extraction.word.WordTextExtractorFactory;
 
+import ccc.api.Paragraph;
 import ccc.api.ParagraphType;
 import ccc.api.Scheduler;
 import ccc.commons.IO;
 import ccc.commons.SearchResult;
 import ccc.domain.File;
 import ccc.domain.Page;
-import ccc.domain.Paragraph;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
 import ccc.persistence.jpa.BaseDao;

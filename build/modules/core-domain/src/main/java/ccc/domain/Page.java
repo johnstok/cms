@@ -17,9 +17,11 @@ import static java.util.Collections.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import ccc.api.DBC;
 import ccc.api.Json;
+import ccc.api.PageDelta;
+import ccc.api.Paragraph;
 import ccc.api.ResourceType;
-import ccc.commons.DBC;
 
 
 /**
@@ -29,9 +31,9 @@ import ccc.commons.DBC;
  */
 public final class Page
     extends
-        Resource {
+        WorkingCopyAware<PageDelta> {
 
-    private Set<Paragraph> _content = new HashSet<Paragraph>();
+    private Set<Paragraph> _content     = new HashSet<Paragraph>();
 
 
     /** Constructor: for persistence only. */
@@ -121,19 +123,40 @@ public final class Page
 
     /** {@inheritDoc} */
     @Override
-    public Snapshot createSnapshot() {
-        final Snapshot s = super.createSnapshot();
-        s.set("paragraphs", _content);
-        return s;
+    public void applySnapshot() {
+        DBC.require().notNull(_workingCopy);
+        final PageHelper pageHelper = new PageHelper();
+
+        title(_workingCopy.getTitle());
+        pageHelper.assignParagraphs(this, _workingCopy);
+
+        clearWorkingCopy();
+
+        final Template template = computeTemplate(null);
+        if (null!=template) {
+            pageHelper.validateFieldsForPage(
+                paragraphs(), template.definition());
+        }
     }
 
     /** {@inheritDoc} */
     @Override
-    public void applySnapshot(final Snapshot s) {
-        title(s.getString("title"));
-        deleteAllParagraphs();
-        for(final Json p : s.getCollection("paragraphs")) {
-            addParagraph(Paragraph.fromSnapshot(p));
+    public PageDelta workingCopy() {
+        if (null!=_workingCopy) {
+            return _workingCopy;
         }
+        return createSnapshot();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void workingCopy(final Json snapshot) {
+        workingCopy(new PageDelta(snapshot));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PageDelta createSnapshot() {
+        return new PageDelta(title(), paragraphs()); // TODO: Copy paragraphs?
     }
 }

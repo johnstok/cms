@@ -1,6 +1,6 @@
 package ccc.migration;
 
-import static ccc.commons.DBC.*;
+import static ccc.api.DBC.*;
 
 import java.util.Collection;
 import java.util.List;

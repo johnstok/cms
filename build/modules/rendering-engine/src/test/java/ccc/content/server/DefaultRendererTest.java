@@ -23,6 +23,8 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 import ccc.api.MimeType;
+import ccc.api.PageDelta;
+import ccc.api.Paragraph;
 import ccc.commons.Testing;
 import ccc.content.exceptions.NotFoundException;
 import ccc.content.exceptions.RedirectRequiredException;
@@ -42,12 +44,10 @@ import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.Page;
-import ccc.domain.Paragraph;
 import ccc.domain.Resource;
 import ccc.domain.ResourceExistsException;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourceOrder;
-import ccc.domain.Snapshot;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.DataManager;
@@ -76,12 +76,10 @@ public class DefaultRendererTest
         final Page p = new Page("foo");
         p.publish(new User("aaaa"));
         p.addParagraph(Paragraph.fromText("bar", "baz"));
-        final Snapshot s = p.createSnapshot();
-        s.set(
-            "paragraphs",
-            Collections.singletonList(
-                Paragraph.fromText("some", "other value")));
-        p.workingCopy(s);
+        final PageDelta delta = p.workingCopy();
+        delta.setParagraphs(
+            Collections.singleton(Paragraph.fromText("some", "other value")));
+        p.workingCopy(delta);
 
         // ACT
         rr.renderWorkingCopy(p, noParams);
@@ -99,12 +97,10 @@ public class DefaultRendererTest
         // ARRANGE
         final Page p = new Page("foo");
         p.addParagraph(Paragraph.fromText("bar", "baz"));
-        final Snapshot s = p.createSnapshot();
-        s.set(
-            "paragraphs",
-            Collections.singletonList(
-                Paragraph.fromText("some", "other value")));
-        p.workingCopy(s);
+        final PageDelta delta = p.workingCopy();
+        delta.setParagraphs(
+            Collections.singleton(Paragraph.fromText("some", "other value")));
+        p.workingCopy(delta);
 
         // ACT
         _renderer.renderWorkingCopy(p, noParams);

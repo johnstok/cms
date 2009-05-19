@@ -12,12 +12,13 @@
 
 package ccc.contentcreator.dialogs;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import ccc.api.ID;
 import ccc.api.PageDelta;
-import ccc.api.ParagraphDelta;
+import ccc.api.Paragraph;
 import ccc.api.TemplateSummary;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.EditPagePanel;
@@ -125,7 +126,7 @@ public class UpdatePageDialog
     private SelectionListener<ButtonEvent> applyNowAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                final List<ParagraphDelta> paragraphs = assignParagraphs();
+                final Set<Paragraph> paragraphs = assignParagraphs();
 
                 Validate.callTo(updatePage(paragraphs))
                     .check(Validations.notEmpty(panel().title()))
@@ -143,7 +144,7 @@ public class UpdatePageDialog
     private SelectionListener<ButtonEvent> saveDraftAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                final List<ParagraphDelta> paragraphs = assignParagraphs();
+                final Set<Paragraph> paragraphs = assignParagraphs();
 
                 Validate.callTo(saveDraft(paragraphs))
                 .check(Validations.notEmpty(panel().title()))
@@ -158,9 +159,8 @@ public class UpdatePageDialog
         };
     }
 
-    private Runnable updatePage(final List<ParagraphDelta> paragraphs) {
+    private Runnable updatePage(final Set<Paragraph> paragraphs) {
         return new Runnable() {
-            @SuppressWarnings("unchecked")
             public void run() {
                 _page.setTitle(panel().title().getValue());
                 final PageCommentDialog commentDialog =
@@ -171,9 +171,8 @@ public class UpdatePageDialog
         };
     }
 
-    private Runnable saveDraft(final List<ParagraphDelta> paragraphs) {
+    private Runnable saveDraft(final Set<Paragraph> paragraphs) {
         return new Runnable() {
-            @SuppressWarnings("unchecked")
             public void run() {
                 _page.setTitle(panel().title().getValue());
                 commands().updateWorkingCopy(
@@ -221,10 +220,10 @@ public class UpdatePageDialog
         return _saveDraftCompletedCallback;
     }
 
-    private List<ParagraphDelta> assignParagraphs() {
+    private Set<Paragraph> assignParagraphs() {
 
-        final List<ParagraphDelta> paragraphs =
-            new ArrayList<ParagraphDelta>();
+        final Set<Paragraph> paragraphs =
+            new HashSet<Paragraph>();
 
         final List<PageElement> definitions =
             panel().pageElements();

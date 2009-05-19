@@ -30,7 +30,7 @@
 		
         <set name="_content" table="paragraphs">
             <key column="page_id" not-null="true" />
-            <composite-element class="ccc.domain.Paragraph">
+            <composite-element class="ccc.api.Paragraph">
                 <property name="_name" column="name" not-null="true" type="string" length="255" />
                 <property name="_type" column="type" not-null="true" type="ParargraphType" />
                 <property name="_text" column="value_text" not-null="false" type="text" length="2147483647" />
@@ -39,6 +39,15 @@
                 <property name="_number" column="value_number" not-null="false" type="big_decimal" />
             </composite-element>
         </set>
+        
+        <!-- component name="_workingCopy" class="ccc.domain.Snapshot">
+            <property
+                name="detail"
+                access="property"
+                not-null="false"
+                column="working_copy"
+                type="text" />
+        </component -->
         
     </joined-subclass>
     

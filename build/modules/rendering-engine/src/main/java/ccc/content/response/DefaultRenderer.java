@@ -16,8 +16,8 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.DBC;
 import ccc.api.ResourceType;
-import ccc.commons.DBC;
 import ccc.content.exceptions.NotFoundException;
 import ccc.content.exceptions.RedirectRequiredException;
 import ccc.domain.Alias;
@@ -115,9 +115,9 @@ public class DefaultRenderer
                                       final Map<String, String[]> parameters) {
         if (!_respectVisibility) {
             if (resource instanceof WorkingCopyAware) {
-                final WorkingCopyAware p = resource;
+                final WorkingCopyAware<?> p = (WorkingCopyAware<?>) resource;
                 if (null!=p.workingCopy()) {
-                    p.applySnapshot(p.workingCopy());
+                    p.applySnapshot();
                 } else {
                     LOG.warn("No working copy found for resource: "+resource);
                 }
@@ -134,7 +134,7 @@ public class DefaultRenderer
         if (!_respectVisibility) {
             if (resource instanceof WorkingCopyAware) {
 
-                final WorkingCopyAware sa = resource;
+                final WorkingCopyAware<?> sa = (WorkingCopyAware<?>) resource;
 
                 if (!parameters.containsKey("v")) {
                     throw new NotFoundException();
@@ -154,7 +154,8 @@ public class DefaultRenderer
                         if (null==le) {
                             throw new NotFoundException();
                         } else if (resource.id().equals(le.subjectId())) {
-                            sa.applySnapshot(new Snapshot(le.detail()));
+                            sa.workingCopy(new Snapshot(le.detail()));
+                            sa.applySnapshot();
                         } else {
                             throw new NotFoundException();
                         }

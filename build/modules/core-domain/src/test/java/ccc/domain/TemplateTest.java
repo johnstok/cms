@@ -12,12 +12,9 @@
 package ccc.domain;
 
 import junit.framework.TestCase;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import ccc.api.MimeType;
 import ccc.api.ResourceType;
+import ccc.api.TemplateDelta;
 
 
 /**
@@ -29,22 +26,22 @@ public final class TemplateTest extends TestCase {
 
     /**
      * Test.
-     * @throws JSONException If the JSON is invalid.
      */
-    public void testSnapshot() throws JSONException {
+    public void testSnapshot() {
 
         // ARRANGE
         final Template t = new Template(
             "foo!", "bar", "Hello world", "<fields/>", MimeType.HTML);
 
         // ACT
-        final JSONObject o  = new JSONObject(t.createSnapshot().getDetail());
+        final TemplateDelta o  = t.createSnapshot();
 
         // ASSERT
-        assertEquals("foo!", o.get("title"));
-        assertEquals("bar", o.get("description"));
-        assertEquals("<fields/>", o.get("definition"));
-        assertEquals("Hello world", o.get("body"));
+        assertEquals("foo!", o.getTitle());
+        assertEquals("bar", o.getDescription());
+        assertEquals("<fields/>", o.getDefinition());
+        assertEquals("Hello world", o.getBody());
+        assertEquals(MimeType.HTML, o.getMimeType());
     }
 
     /**

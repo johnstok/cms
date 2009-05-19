@@ -19,7 +19,7 @@ import java.io.Serializable;
  *
  * @author Civic Computing Ltd.
  */
-public final class AliasDelta implements Serializable {
+public final class AliasDelta implements Serializable, Jsonable {
     private String _targetName;
     private ID _targetId;
 
@@ -65,5 +65,12 @@ public final class AliasDelta implements Serializable {
      */
     public void setTargetId(final ID targetId) {
         _targetId = targetId;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void toJson(final Json json) {
+        json.set("target-name", getTargetName());
+        json.set("target-id", getTargetId());
     }
 }

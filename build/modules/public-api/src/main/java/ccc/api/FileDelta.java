@@ -19,11 +19,12 @@ import java.io.Serializable;
  *
  * @author Civic Computing Ltd.
  */
-public final class FileDelta implements Serializable {
+public final class FileDelta implements Serializable, Jsonable {
     private String _title;
     private String _description;
     private MimeType _mimeType;
     private int _size;
+    private ID _data;
 
     @SuppressWarnings("unused") private FileDelta() { super(); }
 
@@ -34,17 +35,34 @@ public final class FileDelta implements Serializable {
      * @param description The file's description.
      * @param mimeType The file's mime type.
      * @param size The file's size.
+     * @param data A reference to the files data.
      */
     public FileDelta(final String title,
                      final String description,
                      final MimeType mimeType,
+                     final ID data,
                      final int size) {
         _title = title;
         _description = description;
         _mimeType = mimeType;
+        _data = data;
         _size = size;
     }
 
+
+    /**
+     * Constructor.
+     *
+     * @param json The JSON representation of this delta.
+     */
+    public FileDelta(final Json json) {
+        this(
+            json.getString("title"),
+            json.getString("description"),
+            new MimeType(json.getJson("mime-type")),
+            json.getId("data"),
+            json.getInt("size"));
+    }
 
     /**
      * Accessor.
@@ -103,5 +121,36 @@ public final class FileDelta implements Serializable {
      */
     public int getSize() {
         return _size;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the data.
+     */
+    public ID getData() {
+        return _data;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param data The data to set.
+     */
+    public void setData(final ID data) {
+        _data = data;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void toJson(final Json json) {
+        json.set("title", getTitle());
+        json.set("mime-type", getMimeType());
+        json.set("size", getSize());
+        json.set("description", getDescription());
+        json.set("data", getData());
     }
 }

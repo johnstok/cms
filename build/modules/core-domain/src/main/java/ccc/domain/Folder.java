@@ -16,8 +16,10 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import ccc.api.DBC;
+import ccc.api.Json;
+import ccc.api.Jsonable;
 import ccc.api.ResourceType;
-import ccc.commons.DBC;
 
 
 /**
@@ -326,5 +328,16 @@ public final class Folder extends Resource {
     public void sortOrder(final ResourceOrder order) {
         DBC.require().notNull(order);
         _order = order;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Jsonable createSnapshot() {
+        return new Jsonable(){
+            /** {@inheritDoc} */
+            @Override public void toJson(final Json json) {
+                json.set("title", title());
+            }
+        };
     }
 }

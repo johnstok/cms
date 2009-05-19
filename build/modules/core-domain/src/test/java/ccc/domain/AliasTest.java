@@ -12,10 +12,8 @@
 package ccc.domain;
 
 import junit.framework.TestCase;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import ccc.api.AliasDelta;
+import ccc.api.ID;
 import ccc.api.ResourceType;
 
 
@@ -28,20 +26,19 @@ public class AliasTest extends TestCase {
 
     /**
      * Test.
-     * @throws JSONException If the JSON is invalid.
      */
-    public void testSnapshot() throws JSONException {
+    public void testSnapshot() {
 
         // ARRANGE
         final Page p = new Page("foo");
         final Alias alias = new Alias("bar", p);
 
         // ACT
-        final JSONObject o = new JSONObject(alias.createSnapshot().getDetail());
+        final AliasDelta o = alias.createSnapshot();
 
         // ASSERT
-        assertEquals("bar", o.get("title"));
-        assertEquals(p.id().toString(), o.get("target"));
+        assertEquals("foo", o.getTargetName());
+        assertEquals(new ID(p.id().toString()), o.getTargetId());
     }
 
     /**

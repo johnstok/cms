@@ -13,8 +13,8 @@ package ccc.domain;
 
 import ccc.api.CommandFailedException;
 import ccc.api.CommandType;
+import ccc.api.DBC;
 import ccc.api.Failure;
-import ccc.commons.DBC;
 
 
 

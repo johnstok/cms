@@ -11,7 +11,7 @@
  */
 package ccc.domain;
 
-import static ccc.commons.DBC.*;
+import static ccc.api.DBC.*;
 
 import java.util.Date;
 import java.util.UUID;
@@ -162,7 +162,8 @@ public class LogEntry extends Entity {
             default:
                 throw new UnsupportedOperationException();
         }
-        final Snapshot ss = resource.createSnapshot();
+        final Snapshot ss = new Snapshot();
+        resource.createSnapshot().toJson(ss);
         ss.set("path", resource.absolutePath().toString());
         ss.set("name", resource.name().toString());
         le._detail = ss.getDetail();
@@ -211,7 +212,8 @@ public class LogEntry extends Entity {
         require().containsNoBrackets(le._comment);
 
         le._isMajorEdit = isMajorEdit;
-        final Snapshot ss = resource.createSnapshot();
+        final Snapshot ss = new Snapshot();
+        resource.createSnapshot().toJson(ss);
         le._detail = ss.getDetail();
         return le;
     }

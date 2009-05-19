@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.ejb.EJB;
 
@@ -26,7 +27,7 @@ import ccc.api.Duration;
 import ccc.api.ID;
 import ccc.api.LocalCommands;
 import ccc.api.PageDelta;
-import ccc.api.ParagraphDelta;
+import ccc.api.Paragraph;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
 import ccc.api.UserDelta;
@@ -213,7 +214,7 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
-    public List<String> validateFields(final List<ParagraphDelta> delta,
+    public List<String> validateFields(final Set<Paragraph> delta,
                                        final String definition) {
         return _commands.validateFields(delta, definition);
     }

@@ -4,10 +4,11 @@
 !!!
 Fold password into user, use jBoss security mgr?
 Working copies
- Should be using deltas
  FileDelta should return working copy if set...
  Review working copy stuff - borked.
  Make sure all commands are logged.
+ Extract JSON keys to constants file.
+ UpdateWorkingCopyCommand only supports pages - should support files.
 
 
 !!

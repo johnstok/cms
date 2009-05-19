@@ -14,8 +14,8 @@ package ccc.domain;
 import java.util.HashSet;
 import java.util.Set;
 
+import ccc.api.DBC;
 import ccc.api.Username;
-import ccc.commons.DBC;
 import ccc.commons.EmailAddress;
 
 

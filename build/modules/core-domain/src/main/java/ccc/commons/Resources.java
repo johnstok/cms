@@ -19,6 +19,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Properties;
 
+import ccc.api.DBC;
 import ccc.domain.CCCException;
 
 

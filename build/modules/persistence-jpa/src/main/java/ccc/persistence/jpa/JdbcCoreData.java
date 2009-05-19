@@ -21,7 +21,7 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import ccc.commons.DBC;
+import ccc.api.DBC;
 import ccc.domain.CCCException;
 import ccc.domain.Data;
 import ccc.services.CoreData;

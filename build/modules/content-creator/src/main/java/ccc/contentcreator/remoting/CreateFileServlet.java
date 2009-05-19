@@ -75,6 +75,7 @@ public class CreateFileServlet extends HttpServlet {
                 title.getString(),
                 description.getString(),
                 toMimeType(file.getContentType()),
+                null,
                 (int) file.getSize());
 
         final InputStream dataStream = file.getInputStream();

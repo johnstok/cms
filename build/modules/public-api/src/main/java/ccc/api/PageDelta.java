@@ -12,8 +12,8 @@
 package ccc.api;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 
 
@@ -22,31 +22,43 @@ import java.util.List;
  *
  * @author Civic Computing Ltd.
  */
-public final class PageDelta implements Serializable {
+public final class PageDelta implements Serializable, Jsonable {
     private String _title;
-    private List<ParagraphDelta> _paragraphs = new ArrayList<ParagraphDelta>();
+    private Set<Paragraph> _paragraphs = new HashSet<Paragraph>();
 
     @SuppressWarnings("unused") private PageDelta() { super(); }
 
     /**
      * Constructor.
      *
-     * @param title
-     * @param paragraphs
+     * @param title The page's title.
+     * @param paragraphs The page's paragraphs.
      */
     public PageDelta(final String title,
-                     final List<ParagraphDelta> paragraphs) {
+                     final Set<Paragraph> paragraphs) {
         _title = title;
         _paragraphs = paragraphs;
     }
 
 
     /**
+     * Constructor.
+     *
+     * @param json The JSON representation of a page delta.
+     */
+    public PageDelta(final Json json) {
+        setTitle(json.getString("title"));
+        for (final Json jsonPara : json.getCollection("paragraphs")) {
+            _paragraphs.add(new Paragraph(jsonPara));
+        }
+    }
+
+    /**
      * Accessor.
      *
      * @return Returns the paragraphs.
      */
-    public List<ParagraphDelta> getParagraphs() {
+    public Set<Paragraph> getParagraphs() {
         return _paragraphs;
     }
 
@@ -56,7 +68,7 @@ public final class PageDelta implements Serializable {
      *
      * @param paragraphs The paragraphs to set.
      */
-    public void setParagraphs(final List<ParagraphDelta> paragraphs) {
+    public void setParagraphs(final Set<Paragraph> paragraphs) {
         _paragraphs = paragraphs;
     }
 
@@ -78,5 +90,12 @@ public final class PageDelta implements Serializable {
      */
     public void setTitle(final String title) {
         _title = title;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void toJson(final Json json) {
+        json.set("title", getTitle());
+        json.set("paragraphs", getParagraphs());
     }
 }

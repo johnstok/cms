@@ -11,9 +11,10 @@
  */
 package ccc.domain;
 
+import ccc.api.DBC;
 import ccc.api.MimeType;
 import ccc.api.ResourceType;
-import ccc.commons.DBC;
+import ccc.api.TemplateDelta;
 
 
 /**
@@ -149,11 +150,12 @@ public class Template extends Resource {
 
     /** {@inheritDoc} */
     @Override
-    public Snapshot createSnapshot() {
-        final Snapshot s = super.createSnapshot();
-        s.set("description", description());
-        s.set("definition", _definition);
-        s.set("body", _body);
-        return s;
+    public TemplateDelta createSnapshot() {
+        return new TemplateDelta(
+            title(),
+            description(),
+            body(),
+            definition(),
+            mimeType());
     }
 }

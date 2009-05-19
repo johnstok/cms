@@ -59,6 +59,7 @@ public class UpdateFileServlet extends CreatorServlet {
                 form.get("title").getString(),
                 form.get("description").getString(),
                 toMimeType(file.getContentType()),
+                null,
                 (int) file.getSize());
         final InputStream dataStream = file.getInputStream();
 

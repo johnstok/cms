@@ -14,8 +14,9 @@ package ccc.domain;
 import junit.framework.TestCase;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
+import ccc.api.FileDelta;
+import ccc.api.ID;
 import ccc.api.MimeType;
 
 
@@ -30,7 +31,7 @@ public class FileTest extends TestCase {
      * Test.
      * @throws JSONException If the JSON is invalid.
      */
-    public void testSnapshot() throws JSONException {
+    public void testSnapshot() {
 
         // ARRANGE
         final Data data = new Data();
@@ -43,16 +44,14 @@ public class FileTest extends TestCase {
                 new MimeType("foo", "bar"));
 
         // ACT
-        final JSONObject o = new JSONObject(f.createSnapshot().getDetail());
+        final FileDelta o = f.createSnapshot();
 
         // ASSERT
-        assertEquals("foo", o.get("title"));
-        assertEquals("desc", o.get("description"));
-        assertEquals(
-            "{\"primary-type\":\"foo\",\"sub-type\":\"bar\"}",
-            o.get("mimetype").toString());
-        assertEquals(1, o.getLong("size"));
-        assertEquals(data.id().toString(), o.get("data"));
+        assertEquals("foo", o.getTitle());
+        assertEquals("desc", o.getDescription());
+        assertEquals(new MimeType("foo", "bar"), o.getMimeType());
+        assertEquals(1, o.getSize());
+        assertEquals(new ID(data.id().toString()), o.getData());
     }
 
     /**
