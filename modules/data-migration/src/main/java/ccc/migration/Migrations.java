@@ -36,6 +36,7 @@ import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
 import ccc.api.UserSummary;
 import ccc.commons.Resources;
+import ccc.commons.WordCharFixer;
 import ccc.domain.CCCException;
 import ccc.domain.PredefinedResourceNames;
 
