@@ -11,6 +11,7 @@
  */
 package ccc.contentcreator.dialogs;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -24,7 +25,10 @@ import ccc.contentcreator.client.ImageTriggerField;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.ListView;
+import com.extjs.gxt.ui.client.widget.button.Button;
+import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 
 
 /**
@@ -32,7 +36,7 @@ import com.extjs.gxt.ui.client.widget.ListView;
  *
  * @author Civic Computing Ltd.
  */
-public class ImageChooserDialog extends AbstractEditDialog {
+public class ImageChooserDialog extends AbstractBaseDialog {
 
     private final ImageTriggerField _image;
     private  final ListView<FileSummaryModelData> _view =
@@ -41,11 +45,10 @@ public class ImageChooserDialog extends AbstractEditDialog {
 
     /**
      * Constructor.
-     * @param image
      *
-     * @param title
+     * @param image The trigger field for the image.
      */
-    public ImageChooserDialog(ImageTriggerField image) {
+    public ImageChooserDialog(final ImageTriggerField image) {
 
         super(Globals.uiConstants().selectImage());
 
@@ -59,20 +62,48 @@ public class ImageChooserDialog extends AbstractEditDialog {
                     _models = DataBinding.bindFileSummary(arg0);
                     if (_models != null && _models.size() > 0) {
                         store.add(_models);
+                        FileSummaryModelData fs = image.getFSModel();
+                        if (fs != null) {
+                            List<FileSummaryModelData> selection =
+                                new ArrayList<FileSummaryModelData>();
+                            for (FileSummaryModelData item :_models) {
+                                if (item.getId().equals(fs.getId())) {
+                                    selection.add(item);
+                                }
+                            }
+                            _view.getSelectionModel().setSelection(selection);
+                        }
                     }
                 }
             });
 
 
+        final ContentPanel panel = new ContentPanel();
+        panel.setCollapsible(false);
+        panel.setAnimCollapse(false);
+        panel.setFrame(true);
+        panel.setId("images-view");
+        panel.setHeaderVisible(false);
+        panel.setWidth(620);
+        panel.setHeight(460);
+        panel.setLayout(new FitLayout());
+
+        panel.setBodyBorder(false);
+
         _view.setTemplate(getTemplate());
         _view.setStore(store);
         _view.setItemSelector("div.thumb-wrap");
-        addField(_view);
+
+        panel.add(_view);
+        add(panel);
+
+        addButton(_cancel);
+        Button save = new Button(constants().save(), saveAction());
+        addButton(save);
 
     }
 
     /** {@inheritDoc} */
-    @Override
     protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>(){
             @Override
