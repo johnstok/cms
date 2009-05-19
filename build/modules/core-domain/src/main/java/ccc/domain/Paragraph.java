@@ -17,6 +17,9 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import ccc.api.Decimal;
+import ccc.api.Json;
+import ccc.api.Jsonable;
 import ccc.api.ParagraphType;
 
 /**
@@ -24,7 +27,7 @@ import ccc.api.ParagraphType;
  *
  * @author Civic Computing Ltd
  */
-public final class Paragraph implements Serializable {
+public final class Paragraph implements Serializable, Jsonable {
     /** MAX_NAME_LENGTH : int. */
     static final int MAX_NAME_LENGTH = 256;
 
@@ -253,54 +256,37 @@ public final class Paragraph implements Serializable {
         return true;
     }
 
-
-    /**
-     * Create a snapshot of this paragraph.
-     *
-     * @return A snapshot representing this paragraph.
-     */
-    public Snapshot createSnapshot() {
-        final Snapshot para = new Snapshot();
-        para.set("name", name());
-        para.set("type", _type.name());
-        para.set("text", text());
-        para.set("bool", bool());
-        para.set("date", date());
-        para.set("number", _number);
-        return para;
-    }
-
-
     /**
      * Create a paragraph from a snapshot.
      *
-     * @param snapshot The snapshot used to create a new paragraph object.
+     * @param json The snapshot used to create a new paragraph object.
      * @throws InvalidSnapshotException If the snapshot data is insufficient to
      *  create a valid paragraph.
      * @return A valid paragraph.
      */
-    public static Paragraph fromSnapshot(final Snapshot snapshot)
+    public static Paragraph fromSnapshot(final Json json)
                                                throws InvalidSnapshotException {
-        require().notNull(snapshot);
+        require().notNull(json);
 
         final Paragraph p = new Paragraph();
-        p._name = snapshot.getString("name");
-        p._type = ParagraphType.valueOf(snapshot.getString("type"));
+        p._name = json.getString("name");
+        p._type = ParagraphType.valueOf(json.getString("type"));
         switch (p._type) {
             case BOOLEAN:
-                p._boolean = snapshot.getBool("bool");
+                p._boolean = json.getBool("bool");
                 break;
 
             case DATE:
-                p._date = snapshot.getDate("date");
+                p._date = json.getDate("date");
                 break;
 
             case TEXT:
-                p._text = snapshot.getString("text");
+                p._text = json.getString("text");
                 break;
 
             case NUMBER:
-                p._number = snapshot.getBigDecimal("number");
+                p._number =
+                    new BigDecimal(json.getDecimal("number").toString());
                 break;
 
             default:
@@ -309,5 +295,18 @@ public final class Paragraph implements Serializable {
         }
 
         return p;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void toJson(final Json json) {
+        json.set("name", name());
+        json.set("type", _type.name());
+        json.set("text", text());
+        json.set("bool", bool());
+        json.set("date", date());
+        json.set("number",
+            (null==_number) ? null : new Decimal(_number.toString()));
+
     }
 }

@@ -11,7 +11,6 @@ Working copies
 
 
 !!
-Best way to persist exceptions for Action?
 Pull in source for json.org json lib and send to client, add contructors for model data classes that accept json
 Rename model data subclasses
 Factor remaining actions from ResourceContextMenu

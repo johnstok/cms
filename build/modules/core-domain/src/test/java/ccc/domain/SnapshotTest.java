@@ -11,11 +11,13 @@
  */
 package ccc.domain;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import junit.framework.TestCase;
+import ccc.api.Decimal;
+import ccc.api.Json;
+import ccc.api.Jsonable;
 
 
 /**
@@ -34,7 +36,7 @@ public class SnapshotTest
 
         // ARRANGE
         final Snapshot s = new Snapshot();
-        final Collection<Snapshot> children = new ArrayList<Snapshot>();
+        final Collection<Jsonable> children = new ArrayList<Jsonable>();
 
         // ACT
         s.set("children", children);
@@ -50,15 +52,16 @@ public class SnapshotTest
 
         // ARRANGE
         final Snapshot s = new Snapshot();
-        final Collection<Snapshot> children = new ArrayList<Snapshot>();
-        children.add(new Snapshot());
-        children.add(new Snapshot());
+        final Collection<Jsonable> children = new ArrayList<Jsonable>();
+        children.add(
+            new Jsonable(){
+                @Override public void toJson(final Json json) { /* no op */ }});
 
         // ACT
         s.set("children", children);
 
         // ASSERT
-        assertEquals("{\"children\":[{},{}]}", s.getDetail());
+        assertEquals("{\"children\":[{}]}", s.getDetail());
     }
 
     /**
@@ -85,7 +88,7 @@ public class SnapshotTest
         final Snapshot s = new Snapshot();
 
         // ACT
-        s.set("key", BigDecimal.TEN);
+        s.set("key", new Decimal("10"));
 
         // ASSERT
         assertEquals("{\"key\":\"10\"}", s.getDetail());

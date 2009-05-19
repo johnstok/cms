@@ -11,6 +11,7 @@
  */
 package ccc.domain;
 
+import ccc.api.ID;
 import ccc.api.ResourceType;
 import ccc.commons.DBC;
 
@@ -72,9 +73,7 @@ public class Alias extends Resource {
     @Override
     public Snapshot createSnapshot() {
         final Snapshot s = super.createSnapshot();
-        s.set("target", _target.id());
+        s.set("target", new ID(_target.id().toString()));
         return s;
     }
-
-
 }

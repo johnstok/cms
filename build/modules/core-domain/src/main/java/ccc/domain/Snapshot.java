@@ -15,17 +15,19 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
-import java.util.UUID;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ccc.api.Decimal;
+import ccc.api.ID;
+import ccc.api.Json;
+import ccc.api.Jsonable;
 import ccc.commons.DBC;
 
 
@@ -35,7 +37,7 @@ import ccc.commons.DBC;
  *
  * @author Civic Computing Ltd.
  */
-public class Snapshot implements Serializable {
+public class Snapshot implements Serializable, Json {
 
     private transient JSONObject _detail;
 
@@ -94,12 +96,7 @@ public class Snapshot implements Serializable {
         }
     }
 
-    /**
-     * Mutator.
-     *
-     * @param key The key.
-     * @param value The value, as a string.
-     */
+    /** {@inheritDoc} */
     public void set(final String key, final String value) {
         try {
             _detail.put(key, value);
@@ -108,16 +105,14 @@ public class Snapshot implements Serializable {
         }
     }
 
-    /**
-     * Mutator.
-     *
-     * @param key The key.
-     * @param snapshots The value, as a collection of snapshots.
-     */
-    public void set(final String key, final Collection<Snapshot> snapshots) {
+    /** {@inheritDoc} */
+    public void set(final String key,
+                    final Collection<? extends Jsonable> snapshots) {
         try {
             _detail.put(key, new JSONArray());
-            for (final Snapshot s : snapshots) {
+            for (final Jsonable o : snapshots) {
+                final Snapshot s = new Snapshot();
+                o.toJson(s);
                 _detail.append(key, s._detail);
             }
         } catch (final JSONException e) {
@@ -125,12 +120,7 @@ public class Snapshot implements Serializable {
         }
     }
 
-    /**
-     * Mutator.
-     *
-     * @param key The key.
-     * @param bool The value, as a boolean.
-     */
+    /** {@inheritDoc} */
     public void set(final String key, final Boolean bool) {
         try {
             _detail.put(key, bool);
@@ -139,12 +129,7 @@ public class Snapshot implements Serializable {
         }
     }
 
-    /**
-     * Mutator.
-     *
-     * @param key The key.
-     * @param date The value, as a date.
-     */
+    /** {@inheritDoc} */
     public void set(final String key, final Date date) {
         try {
             _detail.put(
@@ -154,13 +139,8 @@ public class Snapshot implements Serializable {
         }
     }
 
-    /**
-     * Mutator.
-     *
-     * @param key The key.
-     * @param value The value, as a uuid.
-     */
-    public void set(final String key, final UUID value) {
+    /** {@inheritDoc} */
+    public void set(final String key, final ID value) {
         try {
             _detail.put(
                 key, (null==value) ? null : value.toString());
@@ -169,12 +149,7 @@ public class Snapshot implements Serializable {
         }
     }
 
-    /**
-     * Mutator.
-     *
-     * @param key The key.
-     * @param value The value, as a long.
-     */
+    /** {@inheritDoc} */
     public void set(final String key, final long value) {
         try {
             _detail.put(key, value);
@@ -184,13 +159,8 @@ public class Snapshot implements Serializable {
     }
 
 
-    /**
-     * Mutator.
-     *
-     * @param key The key.
-     * @param value The value, as a big decimal.
-     */
-    public void set(final String key, final BigDecimal value) {
+    /** {@inheritDoc} */
+    public void set(final String key, final Decimal value) {
         try {
             // Javascript doesn't support decimals - store as a string.
             _detail.put(key, (null==value) ? null : value.toString());
@@ -199,12 +169,7 @@ public class Snapshot implements Serializable {
         }
     }
 
-    /**
-     * Mutator.
-     *
-     * @param key The key.
-     * @param value The value, as a map of strings.
-     */
+    /** {@inheritDoc} */
     public void set(final String key, final Map<String, String> value) {
         try {
             _detail.put(key, value);
@@ -213,12 +178,19 @@ public class Snapshot implements Serializable {
         }
     }
 
-    /**
-     * Accessor.
-     *
-     * @param key The key for the value.
-     * @return The value, as a string.
-     */
+    /** {@inheritDoc} */
+    @Override
+    public void set(final String key, final Jsonable value) {
+        try {
+            final Snapshot s = new Snapshot();
+            value.toJson(s);
+            _detail.put(key, s._detail);
+        } catch (final JSONException e) {
+            throw new InvalidSnapshotException(e);
+        }
+    }
+
+    /** {@inheritDoc} */
     public String getString(final String key) {
         try {
             return _detail.getString(key);
@@ -227,17 +199,12 @@ public class Snapshot implements Serializable {
         }
     }
 
-    /**
-     * Accessor.
-     *
-     * @param key The key for the value.
-     * @return The value, as a collection of snapshots.
-     */
-    public Collection<Snapshot> getSnapshots(final String key) {
+    /** {@inheritDoc} */
+    public Collection<Json> getCollection(final String key) {
         try {
             final JSONArray a = _detail.getJSONArray(key);
-            final Collection<Snapshot> snapshots =
-                new ArrayList<Snapshot>(a.length());
+            final Collection<Json> snapshots =
+                new ArrayList<Json>(a.length());
             for (int i=0; i<a.length(); i++) {
                 snapshots.add(new Snapshot(a.getJSONObject(i)));
             }
@@ -248,12 +215,7 @@ public class Snapshot implements Serializable {
         }
     }
 
-    /**
-     * Accessor.
-     *
-     * @param key The key for the value.
-     * @return The value, as a Date.
-     */
+    /** {@inheritDoc} */
     public Date getDate(final String key) {
         try {
             return new Date(_detail.getLong(key));
@@ -262,12 +224,7 @@ public class Snapshot implements Serializable {
         }
     }
 
-    /**
-     * Accessor.
-     *
-     * @param key The key for the value.
-     * @return The value, as a boolean.
-     */
+    /** {@inheritDoc} */
     public Boolean getBool(final String key) {
         try {
             return Boolean.valueOf(_detail.getBoolean(key));
@@ -276,23 +233,13 @@ public class Snapshot implements Serializable {
         }
     }
 
-    /**
-     * Accessor.
-     *
-     * @param key The key for the value.
-     * @return The value, as a UUID.
-     */
-    public UUID getUuid(final String key) {
-        return UUID.fromString(getString(key));
+    /** {@inheritDoc} */
+    public ID getId(final String key) {
+        return new ID(getString(key));
     }
 
 
-    /**
-     * Accessor.
-     *
-     * @param key The key for the value.
-     * @return The value, as an int.
-     */
+    /** {@inheritDoc} */
     public int getInt(final String key) {
         try {
             return _detail.getInt(key);
@@ -302,14 +249,9 @@ public class Snapshot implements Serializable {
     }
 
 
-    /**
-     * Accessor.
-     *
-     * @param key The key for the value.
-     * @return The value, as a big decimal.
-     */
-    public BigDecimal getBigDecimal(final String key) {
-        return new BigDecimal(getString(key));
+    /** {@inheritDoc} */
+    public Decimal getDecimal(final String key) {
+        return new Decimal(getString(key));
     }
 
     private void readObject(final ObjectInputStream aInputStream)
@@ -322,5 +264,15 @@ public class Snapshot implements Serializable {
                                                             throws IOException {
         aOutputStream.defaultWriteObject();
         aOutputStream.writeUTF(getDetail());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Json getJson(final String string) {
+        try {
+            return new Snapshot(_detail.getJSONObject(string));
+        } catch (final JSONException e) {
+            throw new InvalidSnapshotException(e);
+        }
     }
 }

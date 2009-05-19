@@ -11,8 +11,11 @@
  */
 package ccc.domain;
 
+import java.util.UUID;
+
 import org.apache.log4j.Logger;
 
+import ccc.api.ID;
 import ccc.api.MimeType;
 import ccc.api.ResourceType;
 import ccc.commons.DBC;
@@ -162,9 +165,9 @@ public class File
     public Snapshot createSnapshot() {
         final Snapshot s = super.createSnapshot();
         s.set("description", description());
-        s.set("mimetype", _mimeType.toString());
+        s.set("mimetype", _mimeType);
         s.set("size", _size);
-        s.set("data", _data.id());
+        s.set("data", new ID(_data.id().toString()));
         return s;
     }
 
@@ -172,8 +175,8 @@ public class File
     @Override
     public void applySnapshot(final Snapshot s) {
         description(s.getString("description"));
-        mimeType(MimeType.HTML);
+        mimeType(new MimeType(s.getJson("mimetype")));
         size(s.getInt("size"));
-        data(new Data(s.getUuid("data")));
+        data(new Data(UUID.fromString(s.getId("data").toString())));
     }
 }
