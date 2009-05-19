@@ -63,6 +63,7 @@ public class UpdateTemplateCommand extends UpdateResourceCommand {
         template.description(delta.getDescription());
         template.definition(delta.getDefinition());
         template.body(delta.getBody());
+        template.mimeType(delta.getMimeType());
 
         update(template, null, false, actor, happenedOn);
     }
