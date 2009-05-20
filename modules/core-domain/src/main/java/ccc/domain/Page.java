@@ -33,7 +33,7 @@ public final class Page
     extends
         WorkingCopyAware<PageDelta> {
 
-    private Set<Paragraph> _content     = new HashSet<Paragraph>();
+    private Set<Paragraph> _content = new HashSet<Paragraph>();
 
 
     /** Constructor: for persistence only. */
@@ -157,6 +157,25 @@ public final class Page
     /** {@inheritDoc} */
     @Override
     public PageDelta createSnapshot() {
-        return new PageDelta(title(), paragraphs()); // TODO: Copy paragraphs?
+        return new PageDelta(title(), new HashSet<Paragraph>(paragraphs()));
+    }
+
+    @SuppressWarnings("unused")
+    private String getWorkingCopyString() {
+        if (null==_workingCopy) {
+            return null;
+        }
+        final Snapshot s = new Snapshot();
+        _workingCopy.toJson(s);
+        return s.getDetail();
+    }
+
+    @SuppressWarnings("unused")
+    private void setWorkingCopyString(final String wcs) {
+        if (null==wcs) {
+            return;
+        }
+        final Snapshot s = new Snapshot(wcs);
+        _workingCopy = new PageDelta(s);
     }
 }

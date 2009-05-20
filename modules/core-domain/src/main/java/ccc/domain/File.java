@@ -200,4 +200,23 @@ public class File
                 size());
         return delta;
     }
+
+    @SuppressWarnings("unused")
+    private String getWorkingCopyString() {
+        if (null==_workingCopy) {
+            return null;
+        }
+        final Snapshot s = new Snapshot();
+        _workingCopy.toJson(s);
+        return s.getDetail();
+    }
+
+    @SuppressWarnings("unused")
+    private void setWorkingCopyString(final String wcs) {
+        if (null==wcs) {
+            return;
+        }
+        final Snapshot s = new Snapshot(wcs);
+        _workingCopy = new FileDelta(s);
+    }
 }
