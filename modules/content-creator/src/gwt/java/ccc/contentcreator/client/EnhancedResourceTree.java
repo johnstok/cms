@@ -11,6 +11,7 @@
  */
 package ccc.contentcreator.client;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ccc.api.ResourceSummary;
@@ -82,7 +83,8 @@ public class EnhancedResourceTree extends FolderResourceTree {
 
                     // #327. in case root folder is collapsed.
                     if (ti == null) {
-                        _rt.displayResourcesFor(null);
+                        _rt.displayResourcesFor(
+                            new ArrayList<ResourceSummaryModelData>());
                         return;
                     }
                     final ResourceSummaryModelData selectedModel =
