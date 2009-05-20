@@ -250,7 +250,10 @@ public class UserTable extends TablePanel {
                         updatePager(result);
                     }
                 });
+        } else {
+            updatePager(new ArrayList<UserSummary>());
         }
+
     }
 
     /**
@@ -280,9 +283,7 @@ public class UserTable extends TablePanel {
                     _searchString.getValue().replace('*', '%'),
                     new ErrorReportingCallback<Collection<UserSummary>>() {
                         public void onSuccess(final Collection<UserSummary> result) {
-                            if (result != null && result.size() > 0) {
-                                updatePager(result);
-                            }
+                            updatePager(result);
                         }
                     });
             } else if (_radioGroup.getValue() == _emailRadio) {
@@ -290,9 +291,7 @@ public class UserTable extends TablePanel {
                     _searchString.getValue().replace('*', '%'),
                     new ErrorReportingCallback<Collection<UserSummary>>() {
                         public void onSuccess(final Collection<UserSummary> result) {
-                            if (result != null && result.size() > 0) {
-                                updatePager(result);
-                            }
+                            updatePager(result);
                         }
                     });
             }
