@@ -57,12 +57,12 @@ public class CreateFileServlet extends HttpServlet {
 
         final MultipartForm form = new MultipartForm(request);
 
-        final FileItem file        = form.get("file");
-        final FileItem name        = form.get("fileName");
-        final FileItem title       = form.get("title");
-        final FileItem description = form.get("description");
-        final FileItem path        = form.get("path");
-        final FileItem publish     = form.get("publish");
+        final FileItem file        = form.getFileItem();
+        final FileItem name        = form.getFormItem("fileName");
+        final FileItem title       = form.getFormItem("title");
+        final FileItem description = form.getFormItem("description");
+        final FileItem path        = form.getFormItem("path");
+        final FileItem publish     = form.getFormItem("publish");
 
         final ID parentId = new ID(path.getString());
         final boolean p =
