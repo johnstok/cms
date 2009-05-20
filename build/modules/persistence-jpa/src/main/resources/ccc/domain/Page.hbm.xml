@@ -40,14 +40,13 @@
             </composite-element>
         </set>
         
-        <!-- component name="_workingCopy" class="ccc.domain.Snapshot">
-            <property
-                name="detail"
-                access="property"
-                not-null="false"
-                column="working_copy"
-                type="text" />
-        </component -->
+        <property
+            name="workingCopyString"
+            column="working_copy"
+            not-null="false"
+            access="property"
+            length="2162688"
+            type="text" />
         
     </joined-subclass>
     

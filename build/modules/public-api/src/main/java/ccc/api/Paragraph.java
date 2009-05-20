@@ -26,12 +26,12 @@ public final class Paragraph implements Serializable, Jsonable {
     /** MAX_NAME_LENGTH : int. */
     static final int MAX_NAME_LENGTH = 256;
 
-    private String  _text;
-    private ParagraphType    _type;
-    private Boolean _boolean;
-    private Date    _date;
-    private String  _name;
-    private Decimal _number;
+    private String        _text;
+    private ParagraphType _type;
+    private Boolean       _boolean;
+    private Date          _date;
+    private String        _name;
+    private Decimal       _number;
 
     private Paragraph() { super(); }
 
@@ -42,7 +42,31 @@ public final class Paragraph implements Serializable, Jsonable {
      * @param json The JSON representation of a paragraph.
      */
     public Paragraph(final Json json) {
-        throw new UnsupportedOperationException("Not implemented.");
+        require().notNull(json);
+
+        _name = json.getString("name");
+        _type = ParagraphType.valueOf(json.getString("type"));
+        switch (_type) {
+            case BOOLEAN:
+                _boolean = json.getBool("bool");
+                break;
+
+            case DATE:
+                _date = json.getDate("date");
+                break;
+
+            case TEXT:
+                _text = json.getString("text");
+                break;
+
+            case NUMBER:
+                _number = json.getDecimal("number");
+                break;
+
+            default:
+                // FIXME: Throw a better exception.
+                throw new RuntimeException("Paragraph type unsupported.");
+        }
     }
 
 
@@ -268,35 +292,7 @@ public final class Paragraph implements Serializable, Jsonable {
      * @return A valid paragraph.
      */
     public static Paragraph fromSnapshot(final Json json) {
-        require().notNull(json);
-
-        final Paragraph p = new Paragraph();
-        p._name = json.getString("name");
-        p._type = ParagraphType.valueOf(json.getString("type"));
-        switch (p._type) {
-            case BOOLEAN:
-                p._boolean = json.getBool("bool");
-                break;
-
-            case DATE:
-                p._date = json.getDate("date");
-                break;
-
-            case TEXT:
-                p._text = json.getString("text");
-                break;
-
-            case NUMBER:
-                p._number =
-                    json.getDecimal("number");
-                break;
-
-            default:
-                // FIXME: Throw a better exception.
-                throw new RuntimeException("Paragraph type unsupported.");
-        }
-
-        return p;
+        return new Paragraph(json);
     }
 
     /** {@inheritDoc} */
