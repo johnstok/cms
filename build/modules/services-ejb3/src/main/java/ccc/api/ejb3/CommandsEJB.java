@@ -413,15 +413,11 @@ public class CommandsEJB
                                   final PageDelta delta)
                                                  throws CommandFailedException {
         try {
-            final Page page = new Page(delta.getTitle());
-
-            new PageHelper().assignParagraphs(page, delta);
-
             new UpdateWorkingCopyCommand(_bdao, _audit).execute(
                 loggedInUser(),
                 new Date(),
                 toUUID(pageId),
-                page.createSnapshot());
+                delta);
 
         } catch (final RemoteExceptionSupport e) {
             throw fail(e);
@@ -441,9 +437,10 @@ public class CommandsEJB
                 new UpdateWorkingCopyCommand(_bdao, _audit).execute(
                     loggedInUser(),
                     new Date(),
-                    toUUID(resourceId),
-                    new PageDelta(new Snapshot(le.detail())));
+                    resourceUuid,
+                    new Snapshot(le.detail()));
             } else {
+                // FIXME: Throw a command failed exception
                 throw new CCCException("Log entry describes another resource.");
             }
 

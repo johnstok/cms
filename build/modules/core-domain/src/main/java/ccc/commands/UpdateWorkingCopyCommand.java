@@ -18,14 +18,16 @@ import ccc.api.PageDelta;
 import ccc.domain.LockMismatchException;
 import ccc.domain.Page;
 import ccc.domain.ResourceExistsException;
+import ccc.domain.Snapshot;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
+import ccc.domain.WorkingCopyAware;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
 
 
 /**
- * Command: updates the working copy for a resource.
+ * Command: updates the working copy for a page.
  *
  * @author Civic Computing Ltd.
  */
@@ -49,7 +51,7 @@ public class UpdateWorkingCopyCommand {
      * Updates the working copy.
      *
      * @param delta The page delta to store in the page.
-     * @param resourceId The resource's id.
+     * @param resourceId The page's id.
      * @param actor The user that updated the working copy.
      * @param happenedOn The date that the w.c. was updated.
      *
@@ -63,6 +65,32 @@ public class UpdateWorkingCopyCommand {
                         final PageDelta delta)
                                throws UnlockedException, LockMismatchException {
         final Page r = _dao.find(Page.class, resourceId);
+        r.confirmLock(actor);
+
+        r.workingCopy(delta);
+
+        // FIXME: Audit this action?
+    }
+
+    /**
+     * Updates the working copy.
+     *
+     * @param delta The resource delta to store in the page.
+     * @param resourceId The page's id.
+     * @param actor The user that updated the working copy.
+     * @param happenedOn The date that the w.c. was updated.
+     *
+     * @throws LockMismatchException
+     * @throws UnlockedException
+     * @throws ResourceExistsException
+     */
+    public void execute(final User actor,
+                        final Date happenedOn,
+                        final UUID resourceId,
+                        final Snapshot delta)
+                               throws UnlockedException, LockMismatchException {
+        final WorkingCopyAware r =
+            _dao.find(WorkingCopyAware.class, resourceId);
         r.confirmLock(actor);
 
         r.workingCopy(delta);
