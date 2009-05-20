@@ -182,6 +182,7 @@ public class UserTable extends TablePanel {
         _toolBar.add(new SeparatorToolItem());
         _toolBar.add(_searchButton);
         _toolBar.setId("toolbar");
+        _toolBar.disable();
     }
 
     private List<ColumnConfig> createColumnConfigs(final ContextActionGridPlugin gp) {
@@ -212,11 +213,10 @@ public class UserTable extends TablePanel {
         _lastSelected = selectedItem;
         _detailsStore.removeAll();
 
-
         if ("Search".equals(selectedItem.getText())) { // FIXME: I18n.
-            _toolBar.show();
+            _toolBar.enable();
         } else {
-            _toolBar.hide();
+            _toolBar.disable();
         }
 
         if ("All".equals(selectedItem.getText())) { // FIXME: I18n.
