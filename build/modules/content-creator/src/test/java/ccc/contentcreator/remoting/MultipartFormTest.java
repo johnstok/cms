@@ -45,7 +45,7 @@ public class MultipartFormTest extends TestCase {
         // ACT
         final MultipartForm f = new MultipartForm(items);
 
-        assertSame(foo, f.get("foo"));
+        assertSame(foo, f.getFormItem("foo"));
 
     }
 
@@ -118,8 +118,7 @@ public class MultipartFormTest extends TestCase {
         }
 
         public boolean isFormField() {
-
-            throw new UnsupportedOperationException("Method not implemented.");
+            return true;
         }
 
         public boolean isInMemory() {

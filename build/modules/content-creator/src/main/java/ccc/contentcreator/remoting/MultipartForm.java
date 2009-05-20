@@ -36,8 +36,10 @@ public class MultipartForm {
     private static final long MAX_FILE_SIZE      = 32*1024*1024; //  32mb
     private static final int  MAX_IN_MEMORY_SIZE = 500*1024;     // 500kb
 
-    private final Map<String, FileItem> _items =
+    private final Map<String, FileItem> _formItems =
         new HashMap<String, FileItem>();
+
+    private FileItem _fileItem = null;
 
     /**
      * Constructor.
@@ -48,11 +50,18 @@ public class MultipartForm {
         DBC.require().notNull(items);
 
         for (final FileItem item : items) {
-            final String fn = item.getFieldName();
-            if (_items.containsKey(fn)) {
-                throw new CCCException("Duplicate field name on form: "+fn);
+            // #430: IE 6 and IE 7 send two fields with same name.
+            // The other one is with content type 'file' and the other one
+            // is the path of the original file location.
+            if (item.isFormField()) {
+                final String fn = item.getFieldName();
+                if (_formItems.containsKey(fn)) {
+                    throw new CCCException("Duplicate field name on form: "+fn);
+                }
+                _formItems.put(fn, item);
+            } else {
+                _fileItem = item;
             }
-            _items.put(fn, item);
         }
     }
 
@@ -103,13 +112,21 @@ public class MultipartForm {
     }
 
     /**
-     * Retrieve a file item by name.
+     * Retrieve a form item by name.
      *
      * @param string The name of the item.
-     * @return The item identified by the specified name.
+     * @return The form item identified by the specified name.
      */
-    public FileItem get(final String string) {
-        return _items.get(string);
+    public FileItem getFormItem(final String string) {
+        return _formItems.get(string);
     }
 
+    /**
+     * Retrieve a file item.
+     *
+     * @return The file item identified by the specified name.
+     */
+    public FileItem getFileItem() {
+        return _fileItem;
+    }
 }

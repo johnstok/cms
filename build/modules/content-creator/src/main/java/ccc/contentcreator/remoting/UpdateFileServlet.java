@@ -51,13 +51,13 @@ public class UpdateFileServlet extends CreatorServlet {
         response.setContentType("text/html");
 
         final MultipartForm form = new MultipartForm(request);
-        final ID fileId = new ID(form.get("id").getString());
-        final FileItem file = form.get("file");
+        final ID fileId = new ID(form.getFormItem("id").getString());
+        final FileItem file = form.getFileItem();
 
         final FileDelta delta =
             new FileDelta(
-                form.get("title").getString(),
-                form.get("description").getString(),
+                form.getFormItem("title").getString(),
+                form.getFormItem("description").getString(),
                 toMimeType(file.getContentType()),
                 null,
                 (int) file.getSize());
