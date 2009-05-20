@@ -24,7 +24,7 @@
     
     <joined-subclass
         name="ccc.domain.Page"
-        extends="ccc.domain.Resource"
+        extends="ccc.domain.WorkingCopyAware"
         table="pages">
         <key column="id" />
 		
