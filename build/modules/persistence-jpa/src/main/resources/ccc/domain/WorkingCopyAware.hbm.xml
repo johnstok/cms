@@ -22,7 +22,7 @@
         abstract="true"
         extends="ccc.domain.Resource">
         
-		<key column="id" />
+		<key column="id" foreign-key="FK_WCA_RESOURCE_ID" />
         
 	</joined-subclass>
 </hibernate-mapping>

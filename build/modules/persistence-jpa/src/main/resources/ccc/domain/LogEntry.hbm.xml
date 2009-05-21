@@ -37,7 +37,8 @@
 		<many-to-one
             name="_actor"
             column="actor_id"
-            not-null="true"/>
+            not-null="true"
+            foreign-key="FK_LOGENTRY_USER_ACTOR_ID"/>
         
         <property
             name="_action"

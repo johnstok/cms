@@ -22,13 +22,14 @@
         extends="ccc.domain.Resource"
         table="aliases">
 
-        <key column="id" />
+        <key column="id" foreign-key="FK_ALIAS_RESOURCE_ID" />
 
 		<many-to-one
             name="_target"
             column="target_id"
             not-null="true"
-            lazy="false" />
+            lazy="false"
+            foreign-key="FK_ALIAS_RESOURCE_TARGET_ID" />
 
     </joined-subclass>
 </hibernate-mapping>

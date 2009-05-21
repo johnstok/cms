@@ -26,10 +26,10 @@
         name="ccc.domain.Page"
         extends="ccc.domain.WorkingCopyAware"
         table="pages">
-        <key column="id" />
+        <key column="id" foreign-key="FK_PAGE_WCA_ID"/>
 		
         <set name="_content" table="paragraphs">
-            <key column="page_id" not-null="true" />
+            <key column="page_id" not-null="true" foreign-key="FK_PARAGRAPH_PAGE_ID"/>
             <composite-element class="ccc.api.Paragraph">
                 <property name="_name" column="name" not-null="true" type="string" length="256" />
                 <property name="_type" column="type" not-null="true" type="ParagraphType" />

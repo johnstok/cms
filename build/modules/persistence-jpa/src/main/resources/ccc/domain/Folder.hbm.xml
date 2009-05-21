@@ -26,7 +26,7 @@
         extends="ccc.domain.Resource"
         table="folders">
         
-        <key column="id" />
+        <key column="id" foreign-key="FK_FOLDER_RESOURCE_ID"/>
         
         <property
             name="_order"

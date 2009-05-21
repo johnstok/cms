@@ -61,11 +61,13 @@
         <many-to-one
             name="_actor"
             column="actor_id"
-            not-null="true" />
+            not-null="true" 
+            foreign-key="FK_ACTION_USER_ACTOR_ID"/>
         <many-to-one
             name="_subject"
             column="subject_id"
-            not-null="true" />
+            not-null="true"
+            foreign-key="FK_ACTION_RESOURCE_SUBJECT_ID" />
         
         <component name="_parameters" class="ccc.domain.Snapshot">
 			<property

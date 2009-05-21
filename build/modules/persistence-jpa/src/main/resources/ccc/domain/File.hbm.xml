@@ -22,7 +22,7 @@
         extends="ccc.domain.WorkingCopyAware"
         table="files">
         
-		<key column="id" />
+		<key column="id" foreign-key="FK_FILE_WCA_ID" />
 			
 	    <property
             name="_size"
