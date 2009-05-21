@@ -36,10 +36,10 @@
             not-null="true"
             unique="true"
             type="string"
-            length="255" />
+            length="512" />
         
         <component name="_email" class="ccc.commons.EmailAddress">
-            <property name="_text" column="email" not-null="true" type="string" length="255" />
+            <property name="_text" column="email" not-null="true" type="string" length="512" />
         </component>
             
         <set name="_roles" lazy="false" table="user_roles"> <!-- TODO: set lazy to true -->

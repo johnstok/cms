@@ -39,14 +39,14 @@
             column="value"
             not-null="true"
             type="string"
-            length="255" />
+            length="1024" />
             
         <property
             name="_name"
             column="name"
             not-null="true"
             type="settingName"
-            length="255"
+            length="256"
             unique="true" />
         
     </class>
