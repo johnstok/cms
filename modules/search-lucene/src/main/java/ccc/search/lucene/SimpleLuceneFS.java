@@ -42,8 +42,6 @@ public class SimpleLuceneFS implements SimpleLucene {
 
     /**
      * Constructor.
-     * @throws IOException
-     *
      */
     public SimpleLuceneFS()  {
         try {
