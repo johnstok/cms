@@ -34,8 +34,8 @@ public class CommandFailedException
      * @param localExceptionId
      */
     public CommandFailedException(final int errorCode,
-                              final String localExceptionId,
-                              final ParamList params) {
+                                  final String localExceptionId,
+                                  final ParamList params) {
         super("CCC Error: "+localExceptionId);
         _failure = new Failure(errorCode, params, localExceptionId);
     }
