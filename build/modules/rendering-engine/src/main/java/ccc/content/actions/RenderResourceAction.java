@@ -44,9 +44,7 @@ import ccc.services.StatefulReader;
  */
 public class RenderResourceAction
     extends
-        AbstractServletAction
-    implements
-        ServletAction {
+        AbstractServletAction {
     private static final Logger LOG =
         Logger.getLogger(RenderResourceAction.class);
 
@@ -123,7 +121,7 @@ public class RenderResourceAction
 
 
     public Resource lookupResource(final ResourcePath contentPath,
-                                    final StatefulReader reader) {
+                                   final StatefulReader reader) {
         final Resource rs = reader.lookup(_rootName, contentPath);
         if (null==rs) {
             throw new NotFoundException();
@@ -142,9 +140,10 @@ public class RenderResourceAction
     public ResourcePath determineResourcePath(
                                              final HttpServletRequest request) {
         String pathString = request.getPathInfo();
-        LOG.info("Request for /"+_rootName+pathString);
         pathString = nvl(pathString, "/");
         pathString = removeTrailing('/', pathString);
+        LOG.info(
+            "Request for "+request.getContextPath()+"/"+_rootName+pathString);
 
         try {
             final ResourcePath contentPath = new ResourcePath(pathString);

@@ -323,4 +323,14 @@ public final class ResourceSummary implements Serializable {
     public void setPublishedBy(final Username publishedBy) {
         _publishedBy = publishedBy;
     }
+
+
+    /**
+     * Mutator.
+     *
+     * @param templateId The templateId to set.
+     */
+    public void setTemplateId(final ID templateId) {
+        _templateId = templateId;
+    }
 }

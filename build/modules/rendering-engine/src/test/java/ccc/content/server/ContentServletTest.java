@@ -50,6 +50,7 @@ public final class ContentServletTest extends TestCase {
             new RenderResourceAction(true, "root", "/login", null);
         final String invalidPath = "$%^$%/^%$^";
         expect(_request.getPathInfo()).andReturn(invalidPath);
+        expect(_request.getContextPath()).andReturn("");
         replayAll();
 
         // ACT
@@ -100,6 +101,7 @@ public final class ContentServletTest extends TestCase {
         final RenderResourceAction rr =
             new RenderResourceAction(true, "root", "/login", null);
         expect(_request.getPathInfo()).andReturn("/foo/");
+        expect(_request.getContextPath()).andReturn("");
         replayAll();
 
         // ACT
@@ -119,6 +121,7 @@ public final class ContentServletTest extends TestCase {
         final RenderResourceAction rr =
             new RenderResourceAction(true, "root", "/login", null);
         expect(_request.getPathInfo()).andReturn("/");
+        expect(_request.getContextPath()).andReturn("");
         replayAll();
 
         // ACT
@@ -138,6 +141,7 @@ public final class ContentServletTest extends TestCase {
         final RenderResourceAction rr =
             new RenderResourceAction(true, "root", "/login", null);
         expect(_request.getPathInfo()).andReturn(null);
+        expect(_request.getContextPath()).andReturn("");
         replayAll();
 
         // ACT

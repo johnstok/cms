@@ -12,10 +12,12 @@
 package ccc.content.actions;
 
 import java.io.IOException;
+import java.security.Principal;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import ccc.persistence.jpa.FsCoreData;
 import ccc.services.AuditLog;
@@ -58,9 +60,8 @@ public class ReaderAction
             (Dao) req.getAttribute(SessionKeys.DAO_KEY);
 
         final UserLookup ul = new UserLookup(dao);
-        req.setAttribute(
-            SessionKeys.CURRENT_USER,
-            ul.loggedInUser(req.getUserPrincipal()));
+        final Principal p = req.getUserPrincipal();
+        req.setAttribute(SessionKeys.CURRENT_USER, ul.loggedInUser(p));
 
         final AuditLog al = new AuditLogImpl(dao);
         req.setAttribute(SessionKeys.AUDIT_KEY, al);

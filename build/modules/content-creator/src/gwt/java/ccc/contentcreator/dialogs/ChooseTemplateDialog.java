@@ -13,12 +13,13 @@ package ccc.contentcreator.dialogs;
 
 import java.util.Collection;
 
-import ccc.api.ID;
 import ccc.api.TemplateSummary;
 import ccc.contentcreator.binding.DataBinding;
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.binding.TemplateSummaryModelData;
-import ccc.contentcreator.callbacks.DisposingCallback;
+import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.SingleSelectionModel;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -34,9 +35,9 @@ import com.extjs.gxt.ui.client.widget.form.ComboBox;
  */
 public class ChooseTemplateDialog extends AbstractEditDialog {
 
-    private final ID _templateId;
-    private final ID _resourceId;
+    private final ResourceSummaryModelData    _resource;
     private final Collection<TemplateSummary> _templates;
+    private final SingleSelectionModel        _ssm;
 
     private final TemplateSummaryModelData _none =
         new TemplateSummaryModelData(
@@ -55,24 +56,26 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
     /**
      * Constructor.
      *
-     * @param templateId The currently selected template.
+     * @param resource The resource to update.
      * @param templates The available templates.
+     * @param ssm The selection model.
      */
-    public ChooseTemplateDialog(final ID resourceId,
-                                final ID templateId,
-                                final Collection<TemplateSummary> templates) {
+    public ChooseTemplateDialog(final ResourceSummaryModelData resource,
+                                final Collection<TemplateSummary> templates,
+                                final SingleSelectionModel ssm) {
         super(Globals.uiConstants().chooseTemplate());
         setHeight(Globals.DEFAULT_MIN_HEIGHT);
 
-        _resourceId = resourceId;
-        _templateId = templateId;
+        _resource = resource;
         _templates = templates;
+        _ssm = ssm;
 
         _selectedTemplate.setFieldLabel(constants().defaultTemplate());
         _selectedTemplate.setTemplate("<tpl for=\".\">"
             +"<div class=x-combo-list-item id={NAME}>{NAME}</div></tpl>");
         _selectedTemplate.setId("default-template");
-        _selectedTemplate.setDisplayField(TemplateSummaryModelData.Property.NAME.name());
+        _selectedTemplate.setDisplayField(
+            TemplateSummaryModelData.Property.NAME.name());
         _selectedTemplate.setForceSelection(true);
         _selectedTemplate.setEditable(false);
         addField(_selectedTemplate);
@@ -90,12 +93,13 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
         _selectedTemplate.setStore(store);
 
         // Set the current value
-        if (null == _templateId) {
+        if (null == _resource.getTemplateId()) {
             _selectedTemplate.setValue(_none);
         } else {
             for (final TemplateSummaryModelData model : store.getModels()) {
-                if (_templateId.equals(model.getId().toString())) {
+                if (_resource.getTemplateId().equals(model.getId())) {
                     _selectedTemplate.setValue(model);
+                    break;
                 }
             }
         }
@@ -110,9 +114,16 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
                 final TemplateSummaryModelData selected = _selectedTemplate.getValue();
 
                 commands().updateResourceTemplate(
-                    _resourceId,
+                    _resource.getId(),
                     selected.getId(),
-                    new DisposingCallback(ChooseTemplateDialog.this)); // FIXME: Need to update resource summary with new template id!!!
+                    new ErrorReportingCallback<Void>(){
+                        @Override public void onSuccess(final Void x) {
+                            ChooseTemplateDialog.this.close();
+                            _resource.setTemplateId(selected.getId());
+                            _ssm.update(_resource);
+                        }
+                    }
+                );
             }
         };
     }

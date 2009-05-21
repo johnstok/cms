@@ -33,7 +33,7 @@ public class LoginServlet
 
     // TODO: move to web.xml
     private final String _siteRoot = "/content";
-    private final String _loginPage = "/content/login.html";
+    private final String _loginPage = "/content/login";
 
     /** {@inheritDoc} */
     @Override
