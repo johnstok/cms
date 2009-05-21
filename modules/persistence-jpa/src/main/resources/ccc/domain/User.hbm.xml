@@ -43,7 +43,7 @@
         </component>
             
         <set name="_roles" lazy="false" table="user_roles"> <!-- TODO: set lazy to true -->
-            <key not-null="true" column="user_id" />
+            <key not-null="true" column="user_id" foreign-key="FK_USERROLES_USER_ID"/>
             <element
                 column="role"
                 type="string"
