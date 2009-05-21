@@ -52,7 +52,7 @@
         <property
             name="_description"
             column="description"
-            not-null="true"
+            not-null="false"
             type="string"
             length="1024" />
 
@@ -112,8 +112,8 @@
         
         <map name="_metadata" table="resource_metadata">
             <key column="resource_id" not-null="true" />
-            <map-key type="string" column="datum_key" length="100" />
-            <element type="string" column="datum_value" length="1000" not-null="true"/>
+            <map-key type="string" column="datum_key" length="256" />
+            <element type="string" column="datum_value" length="1024" not-null="true"/>
         </map>
         
         <component name="_cache" class="ccc.api.Duration">

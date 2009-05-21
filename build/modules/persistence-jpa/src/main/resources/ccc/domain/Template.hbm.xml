@@ -22,8 +22,8 @@
         <key column="id" />
         
         <property name="_title" column="title" not-null="true" type="string" length="256" />
-        <property name="_body" column="body" not-null="true" type="text" />
-        <property name="_definition" column="definition" not-null="true" type="text" />
+        <property name="_body" column="body" not-null="true" type="text" length="65536" />
+        <property name="_definition" column="definition" not-null="true" type="text" length="65536" />
         
         <component
             name="_mimeType"
