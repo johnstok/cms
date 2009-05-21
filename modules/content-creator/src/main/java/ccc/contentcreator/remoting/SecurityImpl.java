@@ -41,18 +41,22 @@ public class SecurityImpl
         request.getSession(true);
         final WebAuthentication pwl = new WebAuthentication();
         final boolean authenticated = pwl.login(username, password);
+
+        // Credentials are bad.
         if (!authenticated) {
             return false;
-        } else {
-            if (request.isUserInRole("ADMINISTRATOR")
-                || request.isUserInRole("CONTENT_CREATOR")
-                || request.isUserInRole("SITE_BUILDER")) {
-                return true;
-            } else {
-                request.getSession().invalidate();
-                return false;
-            }
         }
+
+        // Has necessary roles.
+        if (request.isUserInRole("ADMINISTRATOR")
+            || request.isUserInRole("CONTENT_CREATOR")
+            || request.isUserInRole("SITE_BUILDER")) {
+            return true;
+        }
+
+        // Missing necessary roles.
+        request.getSession().invalidate();
+        return false;
     }
 
     /** {@inheritDoc} */

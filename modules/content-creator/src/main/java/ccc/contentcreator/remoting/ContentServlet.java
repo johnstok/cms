@@ -55,7 +55,7 @@ public class ContentServlet
 
     /** {@inheritDoc} */
     @Override
-    public void init() throws ServletException {
+    public void init() {
         final ServletConfig cf = getServletConfig();
         _rootName = cf.getInitParameter("root_name");
         if ("false".equals(cf.getInitParameter("respect_visibility"))) {
