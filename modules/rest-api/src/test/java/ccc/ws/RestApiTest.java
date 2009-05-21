@@ -22,7 +22,7 @@ import ccc.api.ResourceSummary;
 
 
 /**
- * TODO: Add Description for this type.
+ * Tests for the {@link RestApi} class.
  *
  * @author Civic Computing Ltd.
  */
@@ -51,14 +51,14 @@ public class RestApiTest
 
     /** {@inheritDoc} */
     @Override
-    protected void setUp() throws Exception {
+    protected void setUp() {
         _queries = createStrictMock(Queries.class);
         _unit = new RestApi(_queries);
     }
 
     /** {@inheritDoc} */
     @Override
-    protected void tearDown() throws Exception {
+    protected void tearDown() {
         _queries = null;
         _unit = null;
     }

@@ -92,21 +92,31 @@ public class ResourceSummaryProviderTest
 
     }
 
+    /**
+     * Minimal implementation of Josh Bloch's 'super type token'.
+     *
+     * @param <T> The type of the reference.
+     */
     public abstract class TypeReference<T> {
 
-        private final Type type;
+        private final Type _t;
 
+        /**
+         * Constructor.
+         */
         protected TypeReference() {
             final Type superclass = getClass().getGenericSuperclass();
-            this.type =
+            this._t =
                 ((ParameterizedType) superclass).getActualTypeArguments()[0];
         }
 
         /**
-         * Gets the referenced type.
+         * Accessor.
+         *
+         * @return The referenced type.
          */
         public Type getType() {
-            return this.type;
+            return this._t;
         }
     }
 
