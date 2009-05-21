@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import javax.ejb.EJB;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -35,7 +36,7 @@ import ccc.api.MimeType;
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateFileServlet extends CreatorServlet {
+public class UpdateFileServlet extends HttpServlet {
     private static final Logger LOG = Logger.getLogger(UpdateFileServlet.class);
 
     @EJB(name=Commands.NAME) private LocalCommands _commands;

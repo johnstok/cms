@@ -245,7 +245,8 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
-    public void clearWorkingCopy(final ID pageId) throws CommandFailedException {
+    public void clearWorkingCopy(final ID pageId)
+                                                 throws CommandFailedException {
         _commands.clearWorkingCopy(pageId);
     }
 
