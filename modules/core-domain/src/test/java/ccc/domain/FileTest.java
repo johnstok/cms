@@ -29,6 +29,48 @@ public class FileTest extends TestCase {
 
     /**
      * Test.
+     */
+    public void testImageFilesAreDetected() {
+
+        // ARRANGE
+        final File f = new File(
+            new ResourceName("name"),
+            "title",
+            "desc",
+            new Data(),
+            0,
+            new MimeType("image", "jpeg"));
+
+        // ACT
+        final boolean isImage = f.isImage();
+
+        // ASSERT
+        assertTrue(isImage);
+    }
+
+    /**
+     * Test.
+     */
+    public void testNonImageFilesAreDetected() {
+
+        // ARRANGE
+        final File f = new File(
+            new ResourceName("name"),
+            "title",
+            "desc",
+            new Data(),
+            0,
+            new MimeType("text", "plain"));
+
+        // ACT
+        final boolean isImage = f.isImage();
+
+        // ASSERT
+        assertFalse(isImage);
+    }
+
+    /**
+     * Test.
      * @throws JSONException If the JSON is invalid.
      */
     public void testSnapshot() {

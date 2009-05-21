@@ -632,6 +632,15 @@ public abstract class Resource
     }
 
     /**
+     * TODO: Add a description of this method.
+     *
+     * @param metadata
+     */
+    public void addMetadata(final Map<String, String> metadata) {
+        _metadata.putAll(metadata);
+    }
+
+    /**
      * Create a snapshot of this resource that can be serialized to JSON.
      *
      * @return The snapshot as an implementation of {@link Jsonable}.
