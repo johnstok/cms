@@ -351,7 +351,9 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({"CONTENT_CREATOR"})
-    public void unpublish(final ID resourceId, final ID userId, final Date publishDate)
+    public void unpublish(final ID resourceId,
+                          final ID userId,
+                          final Date publishDate)
                                                  throws CommandFailedException {
         try {
             new UnpublishResourceCommand(_bdao, _audit).execute(
@@ -615,12 +617,12 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({"CONTENT_CREATOR"})
-    public void createAction(final ID resourceId,
+    public void createAction(final ID resourceId,      // TODO: Use ActionDelta.
                              final CommandType action,
                              final Date executeAfter,
                              final String parameters,
                              final String comment,
-                             final boolean isMajorEdit) {// TODO: Use ActionDelta.
+                             final boolean isMajorEdit) {
       final Action a =
           new Action(
               action,
