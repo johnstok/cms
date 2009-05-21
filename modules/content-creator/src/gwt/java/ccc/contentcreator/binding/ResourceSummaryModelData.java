@@ -411,4 +411,13 @@ public class ResourceSummaryModelData
     public void setPublished(final Username user) {
         _rs.setPublishedBy(user);
     }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param id
+     */
+    public void setTemplateId(final ID id) {
+        _rs.setTemplateId(id);
+    }
 }

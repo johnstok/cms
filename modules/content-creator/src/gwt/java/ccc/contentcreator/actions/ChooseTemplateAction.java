@@ -53,9 +53,9 @@ public final class ChooseTemplateAction
                 new ErrorReportingCallback<Collection<TemplateSummary>>() {
                     public void onSuccess(final Collection<TemplateSummary> templates) {
                         new ChooseTemplateDialog(
-                            item.getId(),
-                            item.getTemplateId(),
-                            templates
+                            item,
+                            templates,
+                            _selectionModel
                         ).show();
                     }
                 }
