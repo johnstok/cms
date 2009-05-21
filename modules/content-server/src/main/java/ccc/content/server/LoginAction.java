@@ -13,27 +13,23 @@ package ccc.content.server;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jboss.web.tomcat.security.login.WebAuthentication;
 
 import ccc.content.actions.AbstractServletAction;
-import ccc.content.actions.ServletAction;
 import ccc.domain.CCCException;
 
 
 /**
- * TODO: Add Description for this type.
+ * A servlet action that performs user login.
  *
  * @author Civic Computing Ltd.
  */
 public class LoginAction
     extends
-        AbstractServletAction
-    implements
-        ServletAction {
+        AbstractServletAction {
 
     private final String _siteRoot;
     private final String _loginPage;
@@ -41,8 +37,8 @@ public class LoginAction
     /**
      * Constructor.
      *
-     * @param root
-     * @param page
+     * @param root The root folder for the site.
+     * @param page The absolute URL of the login page.
      */
     public LoginAction(final String root, final String page) {
         _siteRoot = root;
@@ -53,8 +49,7 @@ public class LoginAction
     /** {@inheritDoc} */
     @Override
     public void execute(final HttpServletRequest req,
-                        final HttpServletResponse resp) throws ServletException,
-                                                               IOException {
+                        final HttpServletResponse resp) throws IOException {
         String target = null;
         final String[] targets = req.getParameterValues("tg");
         if (null!=targets && 1==targets.length) {
