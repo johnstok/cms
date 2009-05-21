@@ -38,7 +38,8 @@
                 name="_id"
                 not-null="true"
                 column="data_id"
-                type="ccc.persistence.jpa.UUIDUserType" />
+                type="ccc.persistence.jpa.UUIDUserType" 
+                length="36" />
         </component>
         
         <component
@@ -48,12 +49,14 @@
                 name="_primaryType"
                 not-null="true"
                 column="mime_type_primary"
-                type="string" />
+                type="string" 
+                 length="256" />
             <property
                 name="_subType"
                 not-null="true"
                 column="mime_type_sub"
-                type="string" />
+                type="string" 
+                 length="256" />
         </component>
         
         <property

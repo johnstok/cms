@@ -32,7 +32,7 @@
             <key column="page_id" not-null="true" foreign-key="FK_PARAGRAPH_PAGE_ID"/>
             <composite-element class="ccc.api.Paragraph">
                 <property name="_name" column="name" not-null="true" type="string" length="256" />
-                <property name="_type" column="type" not-null="true" type="ParagraphType" />
+                <property name="_type" column="type" not-null="true" type="ParagraphType" length="256" />
                 <property name="_text" column="value_text" not-null="false" type="text" length="2147483647" />
                 <property name="_boolean" column="value_boolean" not-null="false" type="boolean" />
                 <property name="_date" column="value_date" not-null="false" type="timestamp" />

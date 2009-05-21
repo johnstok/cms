@@ -30,7 +30,10 @@
         mutable="false"
         table="logentries">
         
-        <id name="_id" column="id" type="ccc.persistence.jpa.UUIDUserType">
+        <id name="_id" 
+        	column="id" 
+        	type="ccc.persistence.jpa.UUIDUserType" 
+        	length="36">
             <generator class="assigned" />
         </id>
         
@@ -38,13 +41,14 @@
             name="_actor"
             column="actor_id"
             not-null="true"
-            foreign-key="FK_LOGENTRY_USER_ACTOR_ID"/>
+            foreign-key="FK_LOGENTRY_USER_ACTOR_ID" />
         
         <property
             name="_action"
             column="command"
             not-null="true"
-            type="LogEntryAction" />
+            type="LogEntryAction"
+            length="256" />
         <property
             name="_happenedOn"
             column="happened_on"
@@ -54,7 +58,8 @@
             name="_subjectId"
             column="subject_id"
             not-null="true"
-            type="ccc.persistence.jpa.UUIDUserType" />
+            type="ccc.persistence.jpa.UUIDUserType" 
+            length="36" />
         <property
             name="_comment"
             column="message"
