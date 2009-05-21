@@ -22,8 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.UserTransaction;
 
-import org.apache.log4j.Logger;
-
 import ccc.content.actions.ErrorHandlingAction;
 import ccc.content.actions.FixLinkAction;
 import ccc.content.actions.PersistenceAction;
@@ -44,7 +42,6 @@ import ccc.content.actions.ServletAction;
 public final class BrokenLinkServlet
     extends
         HttpServlet {
-    private static final Logger LOG = Logger.getLogger(BrokenLinkServlet.class);
 
     @Resource private UserTransaction _utx;
     @PersistenceUnit private EntityManagerFactory _emf;
