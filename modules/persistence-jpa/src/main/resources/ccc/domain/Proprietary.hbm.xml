@@ -18,41 +18,6 @@
 <hibernate-mapping default-access="field">
     <database-object>
         <create>
-        CREATE TABLE data(
-            id VARCHAR(255) NOT NULL,
-            version INTEGER NOT NULL,
-            bytes BLOB NOT NULL
-        )
-        </create>
-        <drop>DROP TABLE data</drop>
-        <dialect-scope name="org.hibernate.dialect.H2Dialect"/>
-        <dialect-scope name="org.hibernate.dialect.Oracle9Dialect"/>
-    </database-object>
-    <database-object>
-        <create>
-        CREATE TABLE data(
-            id VARCHAR(255) NOT NULL,
-            version INTEGER NOT NULL,
-            bytes LONGBLOB NOT NULL
-        )
-        </create>
-        <drop>DROP TABLE data</drop>
-        <dialect-scope name="org.hibernate.dialect.MySQL5InnoDBDialect"/>
-    </database-object>
-    <database-object>
-        <create>
-        CREATE TABLE data(
-            id VARCHAR(255) NOT NULL,
-            version INTEGER NOT NULL,
-            bytes varbinary(max) NOT NULL
-        )
-        </create>
-        <drop>DROP TABLE data</drop>
-        <dialect-scope name="org.hibernate.dialect.SQLServerDialect"/>
-    </database-object>
-    
-    <database-object>
-        <create>
         CREATE SEQUENCE log_entry_index
         START WITH 1
         INCREMENT BY 1
