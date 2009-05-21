@@ -13,6 +13,7 @@ package ccc.contentcreator.client;
 
 import ccc.api.CommandFailedException;
 import ccc.api.UserSummary;
+import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.api.CommandService;
 import ccc.contentcreator.api.CommandServiceAsync;
 import ccc.contentcreator.api.QueriesService;
@@ -21,6 +22,7 @@ import ccc.contentcreator.api.SecurityService;
 import ccc.contentcreator.api.SecurityServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
+import ccc.contentcreator.dialogs.ErrorDialog;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
@@ -38,6 +40,8 @@ public final class Globals {
 
     private static final boolean ENABLE_EXIT_CONFIRMATION =
         (null == Window.Location.getParameter("dec"));
+    private static final ActionNameConstants USER_ACTIONS =
+        GWT.create(ActionNameConstants.class);
 
     private static UserSummary _user;
 
@@ -152,7 +156,7 @@ public final class Globals {
         // TODO: Add clause for IncompatibleRemoteServiceException
         if (e instanceof CommandFailedException) {
             final CommandFailedException re = (CommandFailedException) e;
-            alert("Expected exception - type="+re.getCode());
+            new ErrorDialog(re, USER_ACTIONS.unknownAction()).show();
         } else {
             final String errorMesssage = e.getMessage();
             final String causeMessage =
@@ -163,7 +167,7 @@ public final class Globals {
                 alert(uiConstants().sessionTimeOutPleaseRestart());
             } else {
                 GWT.log("An unexpected error occured.", e);
-                alert(uiConstants().unexpectedErrorOccured());
+                new ErrorDialog(e, USER_ACTIONS.unknownAction()).show();
             }
         }
     }
