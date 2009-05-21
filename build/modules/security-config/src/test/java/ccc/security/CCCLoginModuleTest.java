@@ -45,8 +45,8 @@ public class CCCLoginModuleTest
 
     /**
      * Test.
-     * @throws LoginException
-     * @throws SQLException
+     * @throws LoginException If authentication fails.
+     * @throws SQLException If a DB query fails.
      */
     @SuppressWarnings("unchecked")
     public void testLogin() throws LoginException, SQLException {
@@ -94,12 +94,11 @@ public class CCCLoginModuleTest
         // ARRANGE
 
         // ACT
-        final Principal p = _lm.createCallerPrincipal("foo");
+        final Group p = _lm.createCallerPrincipal("foo");
 
         // ASSERT
-        assertTrue(p instanceof Group);
         final List<Principal> callers =
-            (List<Principal>) Collections.list(((Group) p).members());
+            (List<Principal>) Collections.list((p).members());
         assertEquals(1, callers.size());
         assertEquals("foo", callers.get(0).getName());
 
@@ -107,7 +106,6 @@ public class CCCLoginModuleTest
 
     /**
      * Test.
-     * @throws LoginException If abort fails.
      */
     public void testAbort() {
 
