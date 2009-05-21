@@ -337,7 +337,7 @@ public class ResourceDaoImplTest
         replayAll();
 
         // ACT
-        final List<Resource> locked = _rdao.lockedByCurrentUser(_regularUser);
+        final List<Resource> locked = _rdao.lockedByUser(_regularUser);
 
         // ASSERT
         verifyAll();

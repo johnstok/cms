@@ -63,5 +63,7 @@ public final class Exceptions {
      *
      * @param t The exception to ignore.
      */
-    public static void swallow(final Throwable t) { /* NO-OP */ }
+    public static void swallow(@SuppressWarnings("unused") final Throwable t) {
+        /* NO-OP */
+    }
 }

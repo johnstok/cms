@@ -28,7 +28,7 @@ import ccc.cli.fileupload.CccServer;
 import ccc.cli.fileupload.Server;
 import ccc.domain.ResourcePath;
 import ccc.migration.FileUploader;
-import ccc.services.ServiceLookup;
+import ccc.migration.ServiceLookup;
 
 
 

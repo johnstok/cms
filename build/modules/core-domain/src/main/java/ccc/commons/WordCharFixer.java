@@ -19,7 +19,9 @@ import org.apache.log4j.Logger;
 
 
 /**
- * TODO: Add Description for this type.
+ * Fixes bad (non-printing) characters in strings.
+ * <p>These often arise when text has been pasted from applications using the
+ * windows-1252 character set.
  *
  * @author Civic Computing Ltd.
  */
@@ -29,9 +31,9 @@ public class WordCharFixer {
         Pattern.compile("[\\x7F-\\x9F]{1}");
 
     /**
-     * TODO: Add a description of this method.
+     * Corrects values in a hashmap.
      *
-     * @param map
+     * @param map The hashmap to correct.
      */
     public void warn(final Map<String, StringBuffer> map) {
         for (final Map.Entry<String, StringBuffer> para : map.entrySet()) {
@@ -178,12 +180,12 @@ public class WordCharFixer {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Fix all the bad characters in a string.
      *
-     * @param title
-     * @return
+     * @param badString The string to correct.
+     * @return The corrected string.
      */
-    public String fix(final String title) {
-        return correct(new StringBuffer(title)).toString();
+    public String fix(final String badString) {
+        return correct(new StringBuffer(badString)).toString();
     }
 }
