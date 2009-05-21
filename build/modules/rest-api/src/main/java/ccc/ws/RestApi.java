@@ -43,6 +43,11 @@ public class RestApi {
         _queries = queries;
     }
 
+    /**
+     * Query: list the root folders available.
+     *
+     * @return The root folders, as a collection of resource summaries.
+     */
     @GET @Path("/roots") @NoCache
     public Collection<ResourceSummary> roots() {
         return _queries.roots();

@@ -11,7 +11,6 @@
  */
 package ccc.ws;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
@@ -21,7 +20,6 @@ import java.util.Collection;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -32,7 +30,7 @@ import ccc.api.ResourceSummary;
 
 
 /**
- * TODO: Add Description for this type.
+ * A {@link MessageBodyWriter} a collection of resource summaries.
  * TODO: Set char encoding?
  * TODO: Use velocity?
  * TODO: eTags?
@@ -41,9 +39,11 @@ import ccc.api.ResourceSummary;
  */
 @Provider
 @Produces("text/html")
-public class ResourceSummaryProvider implements MessageBodyWriter<Collection<ResourceSummary>>{
+public class ResourceSummaryProvider
+    implements
+        MessageBodyWriter<Collection<ResourceSummary>>{
 
-    @Context HttpServletRequest _request;
+    @Context private HttpServletRequest _request;
 
     /** {@inheritDoc} */
     @Override
@@ -68,6 +68,13 @@ public class ResourceSummaryProvider implements MessageBodyWriter<Collection<Res
         return isWriteable;
     }
 
+    /**
+     * Determine if a type is a collection of the specified class.
+     *
+     * @param clazz The parameterized type of the collection.
+     * @param type The type to check.
+     * @return True if 'type' is a collection of type 'clazz', false otherwise.
+     */
     boolean isCollectionOfType(final Class<?> clazz, final Type type) {
         if (type instanceof ParameterizedType) {
             final ParameterizedType pType = (ParameterizedType) type;
@@ -89,12 +96,19 @@ public class ResourceSummaryProvider implements MessageBodyWriter<Collection<Res
                         final Annotation[] annotations,
                         final MediaType mediaType,
                         final MultivaluedMap<String, Object> httpHeaders,
-                        final OutputStream outputStream) throws IOException, WebApplicationException {
+                        final OutputStream outputStream) {
 
         final PrintWriter pw = new PrintWriter(outputStream);
         pw.println("<html>");
         for (final ResourceSummary rs : object) {
-            pw.println("<h1><a href=\""+_request.getContextPath()+"/resource/"+rs.getId()+"\">"+rs.getName()+"</a></h1>");
+            pw.println(
+                "<h1><a href=\""
+                +_request.getContextPath()
+                +"/resource/"
+                +rs.getId()
+                +"\">"
+                +rs.getName()
+                +"</a></h1>");
         }
         pw.println("</html>");
         pw.flush();
