@@ -36,6 +36,10 @@ final class ImageMetadataStreamAction
     @Override public void execute(final InputStream is) throws Exception {
 
         final BufferedImage image = ImageIO.read(is);
+        if (null==image) { // No valid image reader exists.
+            return;
+        }
+
         _metadata.clear();
         _metadata.put("image.height", String.valueOf(image.getHeight()));
         _metadata.put("image.width", String.valueOf(image.getWidth()));
