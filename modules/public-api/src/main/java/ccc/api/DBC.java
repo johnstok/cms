@@ -158,4 +158,19 @@ public final class DBC {
             "String must not contain brackets.");
         }
     }
+
+
+    /**
+     * Assert that the specified value is less than the criteria.
+     *
+     * @param valueToTest The value to test.
+     * @param maximum The maximum acceptable value.
+     */
+    public void maxValue(final long valueToTest, final long maximum) {
+        if (valueToTest > maximum) {
+            throw new IllegalArgumentException(
+                "Specified value must be under "
+                +maximum+".");
+        }
+    }
 }

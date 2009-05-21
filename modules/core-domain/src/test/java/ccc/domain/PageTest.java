@@ -245,4 +245,44 @@ public final class PageTest extends TestCase {
         // ASSERT
         assertEquals(0, page.paragraphs().size());
     }
+
+    /**
+     * Test.
+     */
+    public void testAdd32NewParagraphs() {
+
+        // ARRANGE
+        final Page page = new Page(new ResourceName("foo"), "Title");
+
+        // ACT
+        for (int a=1;a <= 32;a++) {
+            page.addParagraph(Paragraph.fromText("header"+a, "<H1>Header"+a+"</H1>"));
+        }
+
+        // ASSERT
+        assertEquals(32, page.paragraphs().size());
+
+    }
+
+    /**
+     * Test.
+     */
+    public void testAdd33NewParagraphs() {
+
+        // ARRANGE
+        final Page page = new Page(new ResourceName("foo"), "Title");
+
+        // ACT
+        try {
+            for (int a=1;a <= 33;a++) {
+            page.addParagraph(Paragraph.fromText("header"+a, "<H1>Header"+a+"</H1>"));
+        }
+        fail("Resources should reject adding more than 32 paragraphs.");
+        }
+        // ASSERT
+        catch (final IllegalArgumentException e) {
+            assertEquals("Specified value must be under 32.", e.getMessage());
+        }
+
+    }
 }
