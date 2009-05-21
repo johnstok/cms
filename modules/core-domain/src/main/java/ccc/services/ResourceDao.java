@@ -27,10 +27,6 @@ import ccc.domain.User;
  */
 public interface ResourceDao {
 
-    /** NAME : String. */
-    String NAME = "ResourceDao";
-
-
     /**
      * Find 0 or more objects using a query.
      *
@@ -54,11 +50,12 @@ public interface ResourceDao {
     <T> T find(String queryName, Class<T> resultType, Object... params);
 
     /**
-     * List the resources locked by the currently logged in user.
+     * List the resources locked by a specific user.
      *
+     * @param actor The user to search with.
      * @return The list of resources.
      */
-    List<Resource> lockedByCurrentUser(final User actor);
+    List<Resource> lockedByUser(final User actor);
 
     /**
      * List all locked resources.

@@ -28,7 +28,6 @@ import ccc.domain.ResourceExistsException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
-import ccc.services.impl.AuditLogImpl;
 
 
 /**
@@ -63,7 +62,7 @@ public class AuditLogImplTest
 
     /**
      * Test.
-     * @throws LockMismatchException
+     * @throws LockMismatchException If the resource is already locked.
      */
     public void testRecordLockPersistsLogEntry() throws LockMismatchException {
 
@@ -128,7 +127,8 @@ public class AuditLogImplTest
 
         // ASSERT
         verify(_em);
-        assertEquals(CommandType.RESOURCE_CHANGE_TEMPLATE, le.getValue().action());
+        assertEquals(
+            CommandType.RESOURCE_CHANGE_TEMPLATE, le.getValue().action());
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
     }
@@ -159,7 +159,7 @@ public class AuditLogImplTest
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     * @throws ResourceExistsException If the resource already exists.
      */
     public void testRecordMove() throws ResourceExistsException {
 
@@ -209,13 +209,13 @@ public class AuditLogImplTest
 
     /** {@inheritDoc} */
     @Override
-    protected void setUp() throws Exception {
+    protected void setUp() {
         _em = createStrictMock(Dao.class);
     }
 
     /** {@inheritDoc} */
     @Override
-    protected void tearDown() throws Exception {
+    protected void tearDown() {
         _em = null;
     }
 

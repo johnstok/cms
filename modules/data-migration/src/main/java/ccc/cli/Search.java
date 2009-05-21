@@ -6,7 +6,7 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 
 import ccc.api.Scheduler;
-import ccc.services.ServiceLookup;
+import ccc.migration.ServiceLookup;
 
 /**
  * Command line management of CCC7 search engine.

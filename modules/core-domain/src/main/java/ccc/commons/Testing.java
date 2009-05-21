@@ -72,7 +72,7 @@ public final class Testing {
                     @Override
                     public Object invoke(final Object proxy,
                                          final Method method,
-                                         final Object[] args) throws Throwable {
+                                         final Object[] args) {
                         return null;
                     }
                 }));

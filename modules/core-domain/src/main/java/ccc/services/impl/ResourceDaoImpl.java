@@ -47,7 +47,7 @@ public class ResourceDaoImpl implements ResourceDao {
 
     /** {@inheritDoc} */
     @Override
-    public List<Resource> lockedByCurrentUser(final User actor) {
+    public List<Resource> lockedByUser(final User actor) {
         return
             _dao.list(QueryNames.RESOURCES_LOCKED_BY_USER,
                       Resource.class,

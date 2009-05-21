@@ -65,7 +65,8 @@ public final class Folder extends Resource {
      * Add a resource to this folder.
      *
      * @param resource The resource to add.
-     * @throws ResourceExistsException
+     * @throws ResourceExistsException If a resource already exists in this
+     *  folder with the same name.
      */
     public void add(final Resource resource) throws ResourceExistsException {
         DBC.require().notNull(resource);

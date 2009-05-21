@@ -133,7 +133,7 @@ public final class QueriesEJB
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> lockedByCurrentUser() {
-        return mapResources(_resources.lockedByCurrentUser(currentUser()));
+        return mapResources(_resources.lockedByUser(currentUser()));
     }
 
     /** {@inheritDoc} */

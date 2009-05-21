@@ -16,10 +16,21 @@ import java.util.Date;
 
 
 /**
- * TODO: Add Description for this type.
+ * A command that can be executed using a CCC action.
+ *
+ * @param <T> The return type of the command.
  *
  * @author Civic Computing Ltd.
  */
 public interface Command<T> {
+
+    /**
+     * Execute the command.
+     *
+     * @param action The action that supplies the command parameters.
+     * @param happenedOn When the command took place.
+     * @return A command specific result of type T.
+     * @throws RemoteExceptionSupport If the command fails.
+     */
     T execute(Action action, Date happenedOn) throws RemoteExceptionSupport;
 }

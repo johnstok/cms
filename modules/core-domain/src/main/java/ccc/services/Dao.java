@@ -27,9 +27,6 @@ import ccc.domain.VersionedEntity;
  */
 public interface Dao {
 
-    /** NAME : String. */
-    String NAME = "Dao";
-
     /**
      * Find the object with the specified type and id.
      *
@@ -40,17 +37,71 @@ public interface Dao {
      */
     <T extends Entity> T find(Class<T> type, UUID id);
 
+    /**
+     * Find an object with the specified ID and version.
+     * <p>If an object with the specified ID is found, but the version is
+     * different then an exception will be thrown.
+     *
+     * @param <T> The type of the object to be searched for.
+     * @param type The class representing the type of the object.
+     * @param id The id of the object.
+     * @param version The expected version of the object.
+     * @return The object (of type T) with the specified ID and version.
+     */
     <T extends VersionedEntity> T find(Class<T> type, UUID id, long version);
 
+    /**
+     * List zero or more matches for a query - duplicates may be possible.
+     *
+     * @param <T> The type of the resource to be searched for.
+     * @param queryName The name of the query used to perform the search.
+     * @param resultType The class representing the type of the resource.
+     * @param params The query parameters.
+     * @return A collection of objects of type T.
+     */
     <T> List<T> list(String queryName, Class<T> resultType, Object... params);
 
+    /**
+     * List zero or more matches for a query - each result is guaranteed to
+     * exist only once in the resulting collection.
+     *
+     * @param <T> The type of the resource to be searched for.
+     * @param queryName The name of the query used to perform the search.
+     * @param resultType The class representing the type of the resource.
+     * @param params The query parameters.
+     * @return A collection of objects of type T.
+     */
     <T> Collection<T> uniquify(
         String queryName, Class<T> resultType, Object... params);
 
+    /**
+     * Find a single object using a query.
+     *
+     * @param <T> The type of the resource to be searched for.
+     * @param queryName The name of the query used to perform the search.
+     * @param resultType The class representing the type of the resource.
+     * @param params The query parameters.
+     * @return The resource that matches the query, or NULL if no match is
+     *  found.
+     */
     <T> T find(String queryName, Class<T> resultType, Object... params);
 
+    /**
+     * Determine whether a resource exists.
+     *
+     * @param <T> The type of the resource to be searched for.
+     * @param queryName The name of the query used to perform the search.
+     * @param resultType The class representing the type of the resource.
+     * @param params The query parameters.
+     * @return True if the resource exists, false otherwise.
+     */
     <T> boolean exists(String queryName, Class<T> resultType, Object... params);
 
+    /**
+     * Persist the specified entity.
+     *
+     * @param entity The un-persisted entity.
+     */
     void create(Entity entity);
 
 }

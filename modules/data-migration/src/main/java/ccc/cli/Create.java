@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 
 import ccc.api.CommandFailedException;
 import ccc.migration.Migrations;
-import ccc.services.ServiceLookup;
+import ccc.migration.ServiceLookup;
 
 /**
  * Entry class for the 'create' application.

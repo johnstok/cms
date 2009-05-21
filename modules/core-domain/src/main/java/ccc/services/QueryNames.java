@@ -64,7 +64,8 @@ public final class QueryNames {
     public static final String PASSWORD_FOR_USER = "passwordForUser";
 
     /** RESOURCES_LOCKED_BY_USER : String. */
-    public static final String RESOURCES_LOCKED_BY_USER = "resourcesLockedByUser";
+    public static final String RESOURCES_LOCKED_BY_USER =
+        "resourcesLockedByUser";
 
     /** LOCKED_RESOURCES : String. */
     public static final String LOCKED_RESOURCES = "lockedResources";

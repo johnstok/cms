@@ -493,6 +493,14 @@ public class LogEntry extends Entity {
     }
 
 
+    /**
+     * Create a log entry for a user update.
+     *
+     * @param user The user that was updated.
+     * @param actor The user that performed the action.
+     * @param happenedOn When the action took place.
+     * @return The log entry representing the action.
+     */
     public static LogEntry forUserUpdate(final User user,
                                          final User actor,
                                          final Date happenedOn) {
@@ -507,6 +515,14 @@ public class LogEntry extends Entity {
     }
 
 
+    /**
+     * Create a log entry for user password change.
+     *
+     * @param user The user who's password changed.
+     * @param actor The user that performed the action.
+     * @param happenedOn When the action took place.
+     * @return The log entry representing the action.
+     */
     public static LogEntry forUserChangePassword(final User user,
                                                  final User actor,
                                                  final Date happenedOn) {
@@ -521,7 +537,6 @@ public class LogEntry extends Entity {
     private static LogEntry createEntry(final Entity entity,
                                         final User actor,
                                         final Date happenedOn) {
-
         require().notNull(entity);
         require().notNull(actor);
         require().notNull(happenedOn);

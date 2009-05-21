@@ -35,7 +35,7 @@ import ccc.services.ResourceDao;
 
 
 /**
- * TODO: Add Description for this type.
+ * Tests for the folder commands.
  *
  * @author Civic Computing Ltd.
  */
@@ -45,8 +45,8 @@ public class FolderDaoImplTest
 
     /**
      * Test.
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     * @throws LockMismatchException If the resource is locked by another user.
+     * @throws UnlockedException If the resource isn't locked.
      */
     public void testUpdateSortOrder()
     throws LockMismatchException, UnlockedException {
@@ -71,9 +71,9 @@ public class FolderDaoImplTest
 
     /**
      * Test.
-     * @throws LockMismatchException
-     * @throws ResourceExistsException
-     * @throws UnlockedException
+     * @throws ResourceExistsException If the resource already exists.
+     * @throws LockMismatchException If the resource is locked by another user.
+     * @throws UnlockedException If the resource isn't locked.
      */
     public void testReorder()
     throws LockMismatchException, ResourceExistsException, UnlockedException {
@@ -115,7 +115,7 @@ public class FolderDaoImplTest
 
     /** {@inheritDoc} */
     @Override
-    protected void setUp() throws Exception {
+    protected void setUp() {
         _al = createStrictMock(AuditLog.class);
         _rdao = createStrictMock(ResourceDao.class);
         _dao = createStrictMock(Dao.class);
@@ -125,7 +125,7 @@ public class FolderDaoImplTest
 
     /** {@inheritDoc} */
     @Override
-    protected void tearDown() throws Exception {
+    protected void tearDown() {
         _dao = null;
         _rdao = null;
         _al = null;

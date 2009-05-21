@@ -220,7 +220,30 @@ public interface AuditLog {
      */
     void recordUpdateCache(Resource resource, User actor, Date happenedOn);
 
+    /**
+     * Record that a new user was created.
+     *
+     * @param user The user that changed.
+     * @param actor The user that performed the change.
+     * @param happenedOn When the change occurred.
+     */
     void recordUserCreate(User user, User actor, Date happenedOn);
+
+    /**
+     * Record that a user was updated.
+     *
+     * @param user The user that changed.
+     * @param actor The user that performed the change.
+     * @param happenedOn When the change occurred.
+     */
     void recordUserUpdate(User user, User actor, Date happenedOn);
+
+    /**
+     * Record that a user's password was changed.
+     *
+     * @param user The user that changed.
+     * @param actor The user that performed the change.
+     * @param happenedOn When the change occurred.
+     */
     void recordUserChangePassword(User user, User actor, Date happenedOn);
 }

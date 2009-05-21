@@ -37,7 +37,8 @@ public final class StatefulReaderImpl
     /**
      * Constructor.
      *
-     * @param entityManager A JPA entity manager.
+     * @param log The audit logger to use.
+     * @param resources The DAO to use.
      */
     public StatefulReaderImpl(final AuditLog log, final ResourceDao resources) {
         _log = log;

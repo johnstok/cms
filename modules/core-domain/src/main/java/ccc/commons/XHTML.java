@@ -60,8 +60,7 @@ public final class XHTML {
         /** {@inheritDoc} */
         @Override
         public InputSource resolveEntity(final String publicId,
-                                         final String systemId)
-                throws SAXException, IOException {
+                                         final String systemId) {
             final InputStream stream =
                 getClass().getResourceAsStream(dtdFilename(systemId));
             return new InputSource(new InputStreamReader(stream));

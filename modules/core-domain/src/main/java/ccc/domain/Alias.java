@@ -70,6 +70,8 @@ public class Alias extends Resource {
         return _target;
     }
 
+    /** {@inheritDoc} */
+    @Override
     public AliasDelta createSnapshot() {
         final AliasDelta delta =
             new AliasDelta(
