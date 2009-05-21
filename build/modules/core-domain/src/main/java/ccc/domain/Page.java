@@ -12,7 +12,7 @@
 
 package ccc.domain;
 
-import static java.util.Collections.*;
+import static java.util.Collections.unmodifiableSet;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -34,6 +34,8 @@ public final class Page
         WorkingCopyAware<PageDelta> {
 
     private Set<Paragraph> _content = new HashSet<Paragraph>();
+
+    private static int MAXIMUM_PARAGRAPHS = 32;
 
 
     /** Constructor: for persistence only. */
@@ -75,6 +77,7 @@ public final class Page
      */
     public Page addParagraph(final Paragraph paragraph) {
         DBC.require().notNull(paragraph);
+        DBC.require().maxValue(_content.size()+1, MAXIMUM_PARAGRAPHS);
         _content.add(paragraph);
         return this;
     }
