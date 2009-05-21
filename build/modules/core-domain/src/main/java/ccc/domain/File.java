@@ -219,4 +219,13 @@ public class File
         final Snapshot s = new Snapshot(wcs);
         _workingCopy = new FileDelta(s);
     }
+
+    /**
+     * Query if this file is an image.
+     *
+     * @return True if the file is an image, false otherwise.
+     */
+    public boolean isImage() {
+        return "image".equalsIgnoreCase(mimeType().getPrimaryType());
+    }
 }

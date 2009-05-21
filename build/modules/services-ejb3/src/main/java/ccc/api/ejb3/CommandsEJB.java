@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.activation.MimeTypeParseException;
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBContext;
@@ -95,7 +94,6 @@ import ccc.domain.ResourceExistsException;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourceOrder;
 import ccc.domain.Snapshot;
-import ccc.domain.UnexpectedException;
 import ccc.domain.User;
 import ccc.persistence.jpa.BaseDao;
 import ccc.persistence.jpa.FsCoreData;
@@ -760,8 +758,6 @@ public class CommandsEJB
             return mapResource(f);
         } catch (final RemoteExceptionSupport e) {
             throw fail(e);
-        } catch (final MimeTypeParseException e) {
-            throw fail(new UnexpectedException(e));
         }
     }
 
@@ -770,7 +766,8 @@ public class CommandsEJB
     @RolesAllowed({"CONTENT_CREATOR"})
     public void updateFile(final ID fileId,
                            final FileDelta fileDelta,
-                           final InputStream dataStream) throws CommandFailedException {
+                           final InputStream dataStream)
+                                                 throws CommandFailedException {
 
         try {
             new UpdateFileCommand(_bdao, _audit, _dm).execute(
@@ -782,8 +779,6 @@ public class CommandsEJB
 
         } catch (final RemoteExceptionSupport e) {
             throw fail(e);
-        } catch (final MimeTypeParseException e) {
-            throw fail(new UnexpectedException(e));
         }
     }
 

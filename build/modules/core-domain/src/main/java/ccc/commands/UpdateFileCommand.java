@@ -15,8 +15,6 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.UUID;
 
-import javax.activation.MimeTypeParseException;
-
 import ccc.api.FileDelta;
 import ccc.domain.File;
 import ccc.domain.LockMismatchException;
@@ -28,7 +26,7 @@ import ccc.services.DataManager;
 
 
 /**
- * TODO: Add Description for this type.
+ * Command: update an existing file.
  *
  * @author Civic Computing Ltd.
  */
@@ -41,6 +39,7 @@ public class UpdateFileCommand extends UpdateResourceCommand {
      *
      * @param dao The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
+     * @param data The data manager to use for reading / writing the file data.
      */
     public UpdateFileCommand(final Dao dao,
                              final AuditLog audit,
@@ -53,30 +52,34 @@ public class UpdateFileCommand extends UpdateResourceCommand {
     /**
      * Update a file.
      *
-     * @param actor
-     * @param happenedOn
+     * @param actor The user updating the file.
+     * @param happenedOn The date that the file was updated.
      * @param fileId The id of the file to update.
      * @param dataStream The input stream from which the bytes for the new file
      *        should be read.
      * @param fileDelta The delta describing changes to the file's metadata.
-     * @throws MimeTypeParseException
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     *
+     * @throws LockMismatchException If the file is locked by another user.
+     * @throws UnlockedException If the file is unlocked.
      */
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID fileId,
                         final FileDelta fileDelta,
                         final InputStream dataStream)
-       throws MimeTypeParseException, UnlockedException, LockMismatchException {
+       throws UnlockedException, LockMismatchException {
         final File f = _dao.find(File.class, fileId);
         f.confirmLock(actor);
 
-         f.title(fileDelta.getTitle());
-         f.description(fileDelta.getDescription());
-         f.mimeType(fileDelta.getMimeType());
-         f.size(fileDelta.getSize());
-         f.data(_data.create(dataStream, fileDelta.getSize()));
+        f.title(fileDelta.getTitle());
+        f.description(fileDelta.getDescription());
+        f.mimeType(fileDelta.getMimeType());
+        f.size(fileDelta.getSize());
+        f.data(_data.create(dataStream, fileDelta.getSize()));
+
+        if (f.isImage()) {
+            new FileHelper().extractImageMetadata(f, _data);
+        }
 
         update(f, null, false, actor, happenedOn);
     }

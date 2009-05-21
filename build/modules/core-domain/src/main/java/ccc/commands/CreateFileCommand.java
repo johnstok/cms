@@ -15,8 +15,6 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.UUID;
 
-import javax.activation.MimeTypeParseException;
-
 import ccc.api.FileDelta;
 import ccc.domain.Data;
 import ccc.domain.File;
@@ -29,7 +27,7 @@ import ccc.services.DataManager;
 
 
 /**
- * C.
+ * Command: creates a new file in CCC.
  *
  * @author Civic Computing Ltd.
  */
@@ -42,6 +40,7 @@ public class CreateFileCommand extends CreateResourceCommand {
      *
      * @param dao The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
+     * @param data The data manager to use for reading / writing the file data.
      */
     public CreateFileCommand(final Dao dao,
                              final AuditLog audit,
@@ -50,16 +49,23 @@ public class CreateFileCommand extends CreateResourceCommand {
         _data = data;
     }
 
+
     /**
      * Create the file.
      *
+     * @param actor The user creating the file.
+     * @param happenedOn The date that the file was created.
      * @param file The File to persist.
      * @param parentFolder The unique id of the folder acting as a parent for
      *  file.
      * @param dataStream The input stream from which the bytes for the new file
-     *        should be read.
-     * @throws MimeTypeParseException
-     * @throws ResourceExistsException
+     *  should be read.
+     * @param name The name of the file to create.
+     *
+     * @throws ResourceExistsException If a resource with the specified name
+     *  already exists.
+     *
+     * @return The file that was created.
      */
     public File execute(final User actor,
                         final Date happenedOn,
@@ -67,7 +73,7 @@ public class CreateFileCommand extends CreateResourceCommand {
                         final FileDelta file,
                         final ResourceName name,
                         final InputStream dataStream)
-                        throws MimeTypeParseException, ResourceExistsException {
+                                                throws ResourceExistsException {
         final Data data = _data.create(dataStream, file.getSize());
         final File f =
             new File(
@@ -77,6 +83,10 @@ public class CreateFileCommand extends CreateResourceCommand {
                 data,
                 file.getSize(),
                 file.getMimeType());
+
+        if (f.isImage()) {
+            new FileHelper().extractImageMetadata(f, _data);
+        }
 
         create(actor, happenedOn, parentFolder, f);
 
