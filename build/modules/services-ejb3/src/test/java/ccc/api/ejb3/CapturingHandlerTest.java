@@ -20,13 +20,11 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 
-import ccc.api.ejb3.SearchEngineEJB;
-
 
 
 
 /**
- * TODO: Add Description for this type.
+ * Tests for the {@link CapturingHandler} class.
  *
  * @author Civic Computing Ltd.
  */
@@ -41,11 +39,11 @@ public class CapturingHandlerTest
     public void testHandlesPagingA() throws IOException {
 
         // ARRANGE
-        final SearchEngineEJB.CapturingHandler h =
-            new SearchEngineEJB.CapturingHandler(5, 1){
+        final CapturingHandler h =
+            new CapturingHandler(5, 1){
                 /** {@inheritDoc} */ @Override
                 UUID lookupResourceId(final IndexSearcher searcher,
-                                      final int docId) throws IOException {
+                                      final int docId) {
                     return _resourceIds[docId];
                 }
             };
@@ -54,12 +52,12 @@ public class CapturingHandlerTest
         h.handle(null, _td);
 
         // ASSERT
-        assertEquals(5, h._hits.size());
-        assertTrue(h._hits.contains(_resourceIds[5]));
-        assertTrue(h._hits.contains(_resourceIds[6]));
-        assertTrue(h._hits.contains(_resourceIds[7]));
-        assertTrue(h._hits.contains(_resourceIds[8]));
-        assertTrue(h._hits.contains(_resourceIds[9]));
+        assertEquals(5, h.getHits().size());
+        assertTrue(h.getHits().contains(_resourceIds[5]));
+        assertTrue(h.getHits().contains(_resourceIds[6]));
+        assertTrue(h.getHits().contains(_resourceIds[7]));
+        assertTrue(h.getHits().contains(_resourceIds[8]));
+        assertTrue(h.getHits().contains(_resourceIds[9]));
     }
 
     /**
@@ -69,11 +67,11 @@ public class CapturingHandlerTest
     public void testHandlesPagingB() throws IOException {
 
         // ARRANGE
-        final SearchEngineEJB.CapturingHandler h =
-            new SearchEngineEJB.CapturingHandler(7, 0){
+        final CapturingHandler h =
+            new CapturingHandler(7, 0){
             /** {@inheritDoc} */ @Override
             UUID lookupResourceId(final IndexSearcher searcher,
-                                  final int docId) throws IOException {
+                                  final int docId) {
                 return _resourceIds[docId];
             }
         };
@@ -82,14 +80,14 @@ public class CapturingHandlerTest
         h.handle(null, _td);
 
         // ASSERT
-        assertEquals(7, h._hits.size());
-        assertTrue(h._hits.contains(_resourceIds[0]));
-        assertTrue(h._hits.contains(_resourceIds[1]));
-        assertTrue(h._hits.contains(_resourceIds[2]));
-        assertTrue(h._hits.contains(_resourceIds[3]));
-        assertTrue(h._hits.contains(_resourceIds[4]));
-        assertTrue(h._hits.contains(_resourceIds[5]));
-        assertTrue(h._hits.contains(_resourceIds[6]));
+        assertEquals(7, h.getHits().size());
+        assertTrue(h.getHits().contains(_resourceIds[0]));
+        assertTrue(h.getHits().contains(_resourceIds[1]));
+        assertTrue(h.getHits().contains(_resourceIds[2]));
+        assertTrue(h.getHits().contains(_resourceIds[3]));
+        assertTrue(h.getHits().contains(_resourceIds[4]));
+        assertTrue(h.getHits().contains(_resourceIds[5]));
+        assertTrue(h.getHits().contains(_resourceIds[6]));
     }
 
     private final TopDocs _td = new TopDocs(

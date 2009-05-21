@@ -22,7 +22,7 @@ import ccc.api.Migration;
 
 
 /**
- * TODO: Add Description for this type.
+ * EJB implementation of the {@link Migration} interface.
  *
  * @author Civic Computing Ltd.
  */
@@ -31,5 +31,5 @@ import ccc.api.Migration;
 @Remote(Migration.class)
 @RolesAllowed({"ADMINISTRATOR"})
 public class MigrationEJB implements Migration {
-
+    /* No methods. */
 }

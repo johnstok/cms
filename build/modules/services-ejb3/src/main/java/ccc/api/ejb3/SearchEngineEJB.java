@@ -14,13 +14,8 @@ package ccc.api.ejb3;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
@@ -37,17 +32,12 @@ import javax.persistence.PersistenceContext;
 import org.apache.log4j.Logger;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.TopDocs;
 import org.pdfbox.pdmodel.PDDocument;
 import org.pdfbox.util.PDFTextStripper;
-import org.textmining.extraction.TextExtractor;
-import org.textmining.extraction.word.WordTextExtractorFactory;
 
 import ccc.api.Paragraph;
 import ccc.api.ParagraphType;
 import ccc.api.Scheduler;
-import ccc.commons.IO;
 import ccc.commons.SearchResult;
 import ccc.domain.File;
 import ccc.domain.Page;
@@ -55,7 +45,6 @@ import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
 import ccc.persistence.jpa.BaseDao;
 import ccc.persistence.jpa.FsCoreData;
-import ccc.search.lucene.SearchHandler;
 import ccc.search.lucene.SimpleLucene;
 import ccc.search.lucene.SimpleLuceneFS;
 import ccc.services.Dao;
@@ -78,6 +67,7 @@ import ccc.services.impl.ResourceDaoImpl;
 @Local(SearchEngine.class)
 @RolesAllowed({"ADMINISTRATOR"})
 public class SearchEngineEJB  implements SearchEngine, Scheduler {
+    private static final int MAX_PAGES_TO_INDEX = 10;
     private static final int TIMEOUT_DELAY_SECS = 60*60*1000;
     private static final int INITIAL_DELAY_SECS = 1;
     private static final String TIMER_NAME = "index_scheduler";
@@ -126,8 +116,8 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
         final CapturingHandler sh = new CapturingHandler(resultCount, page);
 
         _lucene.find(searchTerms, field, maxHits, sh);
-        sr.totalResults(sh._searchResultCount);
-        sr.hits(sh._hits);
+        sr.totalResults(sh.getResultCount());
+        sr.hits(sh.getHits());
 
         return sr;
     }
@@ -289,18 +279,20 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
 
 
     private void indexPDF(final File file, final Document d) {
-        final PdfLoader pdfLoader = new PdfLoader();
-        pdfLoader.name = file.title();
+        final PdfLoader pdfLoader = new PdfLoader(file.title());
+        PDDocument doc = null;
+
         try {
             _data.retrieve(file.data(), pdfLoader);
-            if (pdfLoader.doc == null) {
+            doc = pdfLoader.getDocument();
+            if (doc == null) {
                 return;
             }
             final PDFTextStripper stripper = new PDFTextStripper();
-            stripper.setEndPage(10);
+            stripper.setEndPage(MAX_PAGES_TO_INDEX);
             final StringBuilder sb = new StringBuilder(file.title());
             sb.append(" ");
-            final String content = stripper.getText(pdfLoader.doc);
+            final String content = stripper.getText(doc);
             sb.append(cleanUpContent(content));
             d.add(
                 new Field(
@@ -313,8 +305,8 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
             LOG.error("PDF indexing failed.", e);
         } finally {
             try {
-                if (pdfLoader.doc != null) {
-                    pdfLoader.doc.close();
+                if (doc != null) {
+                    doc.close();
                 }
             } catch (final IOException e) {
                 LOG.error("Closing PDF Document failed. ", e);
@@ -330,7 +322,7 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
             _data.retrieve(file.data(), we);
             final StringBuilder sb = new StringBuilder(file.title());
             sb.append(" ");
-            final String content = we.extractor.getText();
+            final String content = we.getExtractor().getText();
             sb.append(cleanUpContent(content));
             d.add(
                 new Field(
@@ -350,7 +342,7 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
         _data.retrieve(file.data(), te);
         final StringBuilder sb = new StringBuilder(file.title());
         sb.append(" ");
-        final String content = te.content;
+        final String content = te.getContent();
         sb.append(cleanUpContent(content));
         d.add(
             new Field(
@@ -371,91 +363,6 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
         return result;
     }
 
-
-    /**
-     * TODO: Add Description for this type.
-     *
-     * @author Civic Computing Ltd.
-     */
-    static class CapturingHandler extends SearchHandler {
-
-        /** _hits : Set of UUID. */
-        protected final Set<UUID> _hits = new HashSet<UUID>();
-        /** _searchResultCount : int. */
-        protected int _searchResultCount = 0;
-        private final int _resultCount;
-        private final int _page;
-
-        /**
-         * Constructor.
-         *
-         * @param resultCount
-         * @param page
-         */
-        public CapturingHandler(final int resultCount, final int page) {
-            _resultCount = resultCount;
-            _page = page;
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public void handle(final IndexSearcher searcher,
-                           final TopDocs docs) throws IOException {
-            final int firstResultIndex = _page*_resultCount;
-            final int lastResultIndex = (_page+1)*_resultCount;
-            _searchResultCount = docs.totalHits;
-
-            for (int i=firstResultIndex;
-            i<lastResultIndex && i<docs.scoreDocs.length;
-            i++) {
-                final int docId = docs.scoreDocs[i].doc;
-                _hits.add(lookupResourceId(searcher, docId));
-            }
-        }
-
-        UUID lookupResourceId(final IndexSearcher searcher,
-                              final int docId) throws IOException {
-            return UUID.fromString(
-                searcher.doc(docId).getField("id").stringValue()
-            );
-        }
-    }
-
-
-    private static class PdfLoader implements DataManager.StreamAction {
-        PDDocument doc;
-        String name = "";
-
-        /** {@inheritDoc} */
-        @Override public void execute(final InputStream is) throws Exception {
-            try {
-                doc = PDDocument.load(is);
-            } catch (final IOException e) {
-                LOG.error("PDF loading failed for file: "+name);
-            }
-        }
-    }
-
-
-    private static class WordExtractor implements DataManager.StreamAction {
-        final WordTextExtractorFactory factory = new WordTextExtractorFactory();
-        TextExtractor extractor;
-
-        /** {@inheritDoc} */
-        @Override public void execute(final InputStream is) throws Exception {
-            extractor = factory.textExtractor(is);
-        }
-    }
-
-    private static class TxtExtractor implements DataManager.StreamAction {
-        String content;
-
-        /** {@inheritDoc} */
-        @Override public void execute(final InputStream is) throws Exception {
-            // Assume files have come from windows.
-            content = IO.toString(is, Charset.forName("windows-1252"));
-        }
-    }
 
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
