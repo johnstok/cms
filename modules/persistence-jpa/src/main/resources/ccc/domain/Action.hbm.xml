@@ -27,7 +27,10 @@
     
     <class name="ccc.domain.Action" table="actions">
         
-        <id name="_id" column="id" type="ccc.persistence.jpa.UUIDUserType">
+        <id name="_id" 
+        	column="id" 
+        	type="ccc.persistence.jpa.UUIDUserType" 
+        	length="36">
             <generator class="assigned" />
         </id>
         
@@ -40,12 +43,14 @@
             name="_type"
             column="command"
             type="ActionType"
-            not-null="true" />
+            not-null="true"
+            length="256" />
         <property
             name="_status"
             column="status"
             type="StatusType"
-            not-null="true" />
+            not-null="true"
+            length="256" />
         <property
             name="_isMajorEdit"
             column="major_change"
@@ -61,7 +66,7 @@
         <many-to-one
             name="_actor"
             column="actor_id"
-            not-null="true" 
+            not-null="true"
             foreign-key="FK_ACTION_USER_ACTOR_ID"/>
         <many-to-one
             name="_subject"
@@ -86,7 +91,8 @@
             <property
                 name="_exceptionId"
                 column="failure_exception_id"
-                type="string" />
+                type="string" 
+                length="256" />
             <component name="_params" class="ccc.api.ParamList">
                 <property
                     name="canonicalForm"

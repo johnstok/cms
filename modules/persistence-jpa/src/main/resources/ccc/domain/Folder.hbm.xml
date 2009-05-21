@@ -32,7 +32,8 @@
             name="_order"
             column="sort_order"
             not-null="true"
-            type="SortOrder" />
+            type="SortOrder" 
+            length="256" />
         
         <list name="_entries">
             <key column="parent_id" />

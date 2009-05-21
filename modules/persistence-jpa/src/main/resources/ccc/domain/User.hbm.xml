@@ -20,7 +20,10 @@
 	
     <class name="ccc.domain.User" table="users">
     
-        <id name="_id" column="id" type="ccc.persistence.jpa.UUIDUserType">
+        <id name="_id" 
+        	column="id" 
+        	type="ccc.persistence.jpa.UUIDUserType"
+        	length="36">
             <generator class="assigned" />
         </id>
         
@@ -47,7 +50,8 @@
             <element
                 column="role"
                 type="string"
-                not-null="true"/>
+                not-null="true"
+                length="256" />
         </set>
 
             

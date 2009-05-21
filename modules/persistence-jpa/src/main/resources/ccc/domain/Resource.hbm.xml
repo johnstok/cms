@@ -19,7 +19,10 @@
 <hibernate-mapping default-access="field" default-cascade="none">
 	<class name="ccc.domain.Resource" table="resources" abstract="true">
 	
-		<id name="_id" column="id" type="ccc.persistence.jpa.UUIDUserType">
+		<id name="_id" 
+			column="id" 
+			type="ccc.persistence.jpa.UUIDUserType"
+			length="36">
 			<generator class="assigned" />
 		</id>
 		
@@ -104,7 +107,8 @@
                 column="tag_value"
                 type="string"
                 not-null="true"
-                unique="false" />
+                unique="false" 
+                length="256" />
         </list>
 
         <set name="_roles" table="resource_roles">
@@ -112,7 +116,8 @@
             <element
                 column="role"
                 type="string"
-                not-null="true"/>
+                not-null="true"
+                length="256" />
         </set>
         
         <map name="_metadata" table="resource_metadata">
