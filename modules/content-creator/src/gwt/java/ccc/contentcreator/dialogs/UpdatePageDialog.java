@@ -72,7 +72,9 @@ public class UpdatePageDialog
     /**
      * Constructor.
      *
+     * @param pageId ID of the page to be updated.
      * @param page PageDelta of the page to be updated.
+     * @param pageName Name of the page to be updated.
      * @param template TemplateDelta of the template assigned to the page.
      * @param rt ResourceTable required in order to refresh the contents.
      */

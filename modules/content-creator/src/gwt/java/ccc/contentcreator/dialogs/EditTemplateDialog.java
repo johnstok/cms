@@ -61,9 +61,9 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
     private final TextArea _definition = new TextArea();
 
     private ID _id;
-    private ID _parentFolderId;
+    private final ID _parentFolderId;
     private DialogMode _mode;
-    private SingleSelectionModel _ssm;
+    private final SingleSelectionModel _ssm;
     private TemplateDelta _model;
     private ResourceSummaryModelData _proxy;
 
@@ -71,7 +71,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
      * Constructor.
      *
      * @param parentFolderId The id of the parent folder.
-     * @param ssm
+     * @param ssm The selection model.
      */
     public EditTemplateDialog(final ID parentFolderId,
                               final SingleSelectionModel ssm) {
@@ -105,8 +105,8 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
      * Constructor.
      *
      * @param model The template to update.
-     * @param proxy
-     * @param ssm
+     * @param proxy The resource model.
+     * @param ssm The selection model.
      */
     public EditTemplateDialog(final TemplateDelta model,
                               final ResourceSummaryModelData proxy,

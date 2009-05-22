@@ -52,7 +52,7 @@ public class HistoryDialog
      *
      * @param data The history to display, as a collection of
      *  {@link LogEntrySummary}.
-     * @param ssm
+     * @param ssm The selection model.
      */
     public HistoryDialog(final Collection<LogEntrySummary> data,
                          final SingleSelectionModel ssm) {

@@ -42,12 +42,12 @@ public class CreateActionDialog
     private final CreateActionPanel _createAction = new CreateActionPanel();
     private final DateTimePicker _dtPicker = new DateTimePicker();
 
-    private ID _resourceId;
+    private final ID _resourceId;
 
     /**
      * Constructor.
      *
-     * @param root
+     * @param resourceId The ID of the resource.
      */
     public CreateActionDialog(final ID resourceId) {
         super(Globals.uiConstants().createAction());
