@@ -111,7 +111,8 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
         return new SelectionListener<ButtonEvent>(){
             @Override public void componentSelected(final ButtonEvent ce) {
 
-                final TemplateSummaryModelData selected = _selectedTemplate.getValue();
+                final TemplateSummaryModelData selected =
+                    _selectedTemplate.getValue();
 
                 commands().updateResourceTemplate(
                     _resource.getId(),

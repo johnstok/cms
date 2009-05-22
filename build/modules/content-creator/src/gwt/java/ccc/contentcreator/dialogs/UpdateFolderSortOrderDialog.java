@@ -79,7 +79,7 @@ AbstractEditDialog {
     /**
      * Constructor.
      *
-     * @param ssm
+     * @param ssm The selection model.
      * @param currentSortOrder The current sort order.
      */
     public UpdateFolderSortOrderDialog(final SingleSelectionModel ssm,

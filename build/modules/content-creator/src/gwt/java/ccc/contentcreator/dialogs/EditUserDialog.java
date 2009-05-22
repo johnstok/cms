@@ -12,7 +12,11 @@
 package ccc.contentcreator.dialogs;
 
 
-import static ccc.contentcreator.validation.Validations.*;
+import static ccc.contentcreator.validation.Validations.minLength;
+import static ccc.contentcreator.validation.Validations.notEmpty;
+import static ccc.contentcreator.validation.Validations.notValidEmail;
+import static ccc.contentcreator.validation.Validations.notValidResourceName;
+import static ccc.contentcreator.validation.Validations.reportErrors;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -50,6 +54,7 @@ public class EditUserDialog extends AbstractEditDialog {
     /**
      * Constructor.
      *
+     * @param userId The ID of the selected user.
      * @param userDTO The userDTO of the selected user.
      * @param userTable The user table.
      */
@@ -101,7 +106,8 @@ public class EditUserDialog extends AbstractEditDialog {
                     .check(minLength(_username, Globals.MIN_USER_NAME_LENGTH))
                     .check(notValidResourceName(_username))
                     .check(notValidEmail(_email))
-                    .check(uniqueUsername(_userDTO, new Username(_username.getValue())))
+                    .check(uniqueUsername(_userDTO,
+                        new Username(_username.getValue())))
                     .callMethodOr(reportErrors());
             }
         };

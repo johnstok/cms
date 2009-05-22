@@ -45,7 +45,7 @@ public class UploadFileDialog extends AbstractEditDialog {
     private final TextField<String>   _description = new TextField<String>();
     private final ResourceSummaryModelData _parent;
     private final HiddenField<String> _path = new HiddenField<String>();
-    private FileUploadField           _file = new FileUploadField();
+    private final FileUploadField           _file = new FileUploadField();
 
     private final Image _image =
         new Image("images/gxt/shared/large-loading.gif");
@@ -54,7 +54,7 @@ public class UploadFileDialog extends AbstractEditDialog {
      * Constructor.
      *
      * @param parentFolder The folder in which this file should be saved.
-     * @param ssm
+     * @param ssm The selection model.
      */
     public UploadFileDialog(final ResourceSummaryModelData parentFolder,
                             final SingleSelectionModel ssm) {
@@ -140,7 +140,6 @@ public class UploadFileDialog extends AbstractEditDialog {
 
     private Runnable submit() {
         return new Runnable() {
-            @SuppressWarnings("unchecked")
             public void run() {
                 _image.setVisible(true);
                 _panel.submit();
