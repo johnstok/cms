@@ -1322,4 +1322,12 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("Resolution")
     String resolution();
+
+    /**
+     * "This action has already been completed.".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("This action has already been completed.")
+    String thisActionHasAlreadyCompleted();
 }
