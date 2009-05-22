@@ -24,7 +24,7 @@ import ccc.services.Dao;
 
 
 /**
- * TODO: Add Description for this type.
+ * Command: create a new template.
  *
  * @author Civic Computing Ltd.
  */
@@ -44,12 +44,16 @@ public class CreateTemplateCommand extends CreateResourceCommand {
     /**
      * Create the template.
      *
-     * @param actor
-     * @param happenedOn
-     * @param parentFolder
-     * @param delta
-     * @param name
-     * @throws ResourceExistsException
+     * @param parentFolder The folder in which the template will be created.
+     * @param delta The template's details.
+     * @param name The name of the template.
+     * @param actor The user who performed the command.
+     * @param happenedOn When the command was performed.
+     *
+     * @throws ResourceExistsException If a resource with the same name already
+     *  exists.
+     *
+     *  @return The new template.
      */
     public Template execute(final User actor,
                             final Date happenedOn,

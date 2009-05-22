@@ -23,7 +23,7 @@ import ccc.services.Dao;
 
 
 /**
- * TODO: Add Description for this type.
+ * Command: apply the current working copy.
  *
  * @author Civic Computing Ltd.
  */
@@ -46,10 +46,11 @@ public class ApplyWorkingCopyCommand extends UpdateResourceCommand {
      * @param id The resource's id.
      * @param comment The comment for the page edit.
      * @param isMajorEdit A boolean for major edit.
-     * @param actor The actor that performed the update.
-     * @param happenedOn The date the update took place.
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     * @param actor The user who performed the command.
+     * @param happenedOn When the command was performed.
+     *
+     * @throws LockMismatchException If the resource is locked by another user.
+     * @throws UnlockedException If the resource is unlocked.
      */
     public void execute(final User actor,
                         final Date happenedOn,
@@ -57,7 +58,7 @@ public class ApplyWorkingCopyCommand extends UpdateResourceCommand {
                         final String comment,
                         final boolean isMajorEdit)
                                throws UnlockedException, LockMismatchException {
-        final WorkingCopyAware<?> r = _dao.find(WorkingCopyAware.class, id);
+        final WorkingCopyAware<?> r = getDao().find(WorkingCopyAware.class, id);
         r.confirmLock(actor);
 
         r.applySnapshot();

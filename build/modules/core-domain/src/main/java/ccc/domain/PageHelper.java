@@ -44,6 +44,12 @@ import ccc.commons.WordCharFixer;
  */
 public class PageHelper {
 
+    /**
+     * Validate the fields of a page.
+     *
+     * @param delta The paragraphs to validate
+     * @param t The template definition.
+     */
     public void validateFieldsForPage(final Set<Paragraph> delta,
                                       final String t) {
         final List<String> errors = validateFields(delta, t);
@@ -57,6 +63,14 @@ public class PageHelper {
         }
     }
 
+    /**
+     * Validate the fields of a page.
+     *
+     * @param delta The paragraphs to validate
+     * @param t The template definition.
+     *
+     * @return The errors, as a list of strings.
+     */
     public List<String> validateFields(final Collection<Paragraph> delta,
                                        final String t) {
         Document document;
@@ -95,6 +109,13 @@ public class PageHelper {
     }
 
 
+    /**
+     * Apply the specified delta to a page.
+     * TODO: I think this is duplicated in a method on the page class.
+     *
+     * @param page The page.
+     * @param delta The delta to apply.
+     */
     public void assignParagraphs(final Page page, final PageDelta delta) {
 
         page.deleteAllParagraphs();
@@ -105,7 +126,7 @@ public class PageHelper {
                     final WordCharFixer fixer = new WordCharFixer();
                     final Paragraph p =
                         Paragraph.fromText(para.name(), fixer.fix(para.text()));
-                    page.addParagraph(para);
+                    page.addParagraph(p);
             } else {
                 page.addParagraph(para);
             }

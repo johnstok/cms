@@ -26,7 +26,7 @@ import ccc.services.Dao;
 
 
 /**
- * TODO: Add Description for this type.
+ * Command: create a new page.
  *
  * @author Civic Computing Ltd.
  */
@@ -46,16 +46,20 @@ public class CreatePageCommand extends CreateResourceCommand {
 
 
     /**
-     * Create the page.
+     * Create a page.
      *
-     * @param actor
-     * @param happenedOn
-     * @param parentFolder
-     * @param delta
-     * @param publish
-     * @param name
-     * @param templateId
-     * @throws ResourceExistsException
+     * @param parentFolder The folder in which the page will be created.
+     * @param delta The contents of the new page.
+     * @param publish Should the new page be published.
+     * @param name The new page's name.
+     * @param templateId The new page's template.
+     * @param actor The user who performed the command.
+     * @param happenedOn When the command was performed.
+     *
+     * @throws ResourceExistsException If a resource with the same name already
+     *  exists.
+     *
+     *  @return The new page.
      */
     public Page execute(final User actor,
                         final Date happenedOn,
@@ -73,7 +77,7 @@ public class CreatePageCommand extends CreateResourceCommand {
 
         if (templateId != null) {
             final Template template =
-                _dao.find(Template.class, templateId);
+                getDao().find(Template.class, templateId);
             page.template(template);
         }
 

@@ -49,10 +49,11 @@ public class IncludeInMainMenuCommand {
      *
      * @param id The id of the resource to change.
      * @param b True if the resource should be included; false otherwise.
-     * @param actor
-     * @param happenedOn
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     * @param actor The user who performed the command.
+     * @param happenedOn When the command was performed.
+     *
+     * @throws LockMismatchException If the resource is locked by another user.
+     * @throws UnlockedException If the resource is unlocked.
      */
     public void execute(final User actor,
                         final Date happenedOn,

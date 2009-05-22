@@ -22,7 +22,7 @@ import ccc.services.Dao;
 
 
 /**
- * TODO: Add Description for this type.
+ * Command: update a user.
  *
  * @author Civic Computing Ltd.
  */
@@ -48,6 +48,9 @@ public class UpdateUserCommand {
      *
      * @param userId The id of the user to update.
      * @param delta The changes to apply.
+     * @param actor The user who performed the command.
+     * @param happenedOn When the command was performed.
+     *
      * @return The updated user.
      */
     public User execute(final User actor,

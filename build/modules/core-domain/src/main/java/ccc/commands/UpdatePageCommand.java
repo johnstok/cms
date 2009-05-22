@@ -44,14 +44,15 @@ public class UpdatePageCommand extends UpdateResourceCommand{
     /**
      * Update a page.
      *
-     * @param actor
-     * @param happenedOn
-     * @param id
-     * @param delta
-     * @param comment
-     * @param isMajorEdit
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     * @param id The id of the page to update.
+     * @param delta The changes to the page.
+     * @param comment Comment describing the change.
+     * @param isMajorEdit Is this a major change.
+     * @param actor The user who performed the command.
+     * @param happenedOn When the command was performed.
+     *
+     * @throws LockMismatchException If the resource is locked by another user.
+     * @throws UnlockedException If the resource is unlocked.
      */
     public void execute(final User actor,
                         final Date happenedOn,
@@ -61,7 +62,7 @@ public class UpdatePageCommand extends UpdateResourceCommand{
                         final boolean isMajorEdit)
                                throws UnlockedException, LockMismatchException {
 
-        final Page page = _dao.find(Page.class, id);
+        final Page page = getDao().find(Page.class, id);
         page.confirmLock(actor);
 
         page.workingCopy(delta);

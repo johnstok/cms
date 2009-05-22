@@ -16,7 +16,6 @@ import java.util.UUID;
 
 import ccc.domain.LockMismatchException;
 import ccc.domain.Resource;
-import ccc.domain.ResourceExistsException;
 import ccc.domain.Template;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
@@ -51,11 +50,11 @@ public class ChangeTemplateForResourceCommand {
      *
      * @param resourceId The id of the resource to change.
      * @param templateId The id of template to set (NULL is allowed).
-     * @param actor
-     * @param happenedOn
-     * @throws LockMismatchException
-     * @throws UnlockedException
-     * @throws ResourceExistsException
+     * @param actor The user who performed the command.
+     * @param happenedOn When the command was performed.
+     *
+     * @throws LockMismatchException If the resource is locked by another user.
+     * @throws UnlockedException If the resource is unlocked.
      */
     public void execute(final User actor,
                         final Date happenedOn,

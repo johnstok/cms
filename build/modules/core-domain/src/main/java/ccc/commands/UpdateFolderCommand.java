@@ -42,14 +42,15 @@ public class UpdateFolderCommand extends UpdateResourceCommand {
 
 
     /**
-     * TODO: Add a description of this method.
+     * Update the folder.
      *
-     * @param actor
-     * @param happenedOn
-     * @param folderId
-     * @param order
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     * @param folderId The folder to update.
+     * @param order The new sort order.
+     * @param actor The user who performed the command.
+     * @param happenedOn When the command was performed.
+     *
+     * @throws LockMismatchException If the resource is locked by another user.
+     * @throws UnlockedException If the resource is unlocked.
      */
     public void execute(final User actor,
                         final Date happenedOn,
@@ -57,12 +58,13 @@ public class UpdateFolderCommand extends UpdateResourceCommand {
                         final ResourceOrder order)
                                throws UnlockedException, LockMismatchException {
 
-        final Folder f = _dao.find(Folder.class, folderId);
+        final Folder f = getDao().find(Folder.class, folderId);
         f.confirmLock(actor);
 
         f.sortOrder(order);
 
         // Set folder.dateChanged()?
-        _audit.recordUpdateSortOrder(f, actor, happenedOn); // FIXME: Should this just be 'update folder'?
+        // FIXME: Should this just be 'update folder'?
+        getAudit().recordUpdateSortOrder(f, actor, happenedOn);
     }
 }

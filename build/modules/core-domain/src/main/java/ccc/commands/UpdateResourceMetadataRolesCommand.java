@@ -50,10 +50,11 @@ public class UpdateResourceMetadataRolesCommand {
      *
      * @param id The resource to update.
      * @param metadata The new metadata to set.
-     * @param actor
-     * @param happenedOn
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     * @param actor The user who performed the command.
+     * @param happenedOn When the command was performed.
+     *
+     * @throws LockMismatchException If the resource is locked by another user.
+     * @throws UnlockedException If the resource is unlocked.
      */
     public void execute(final User actor,
                         final Date happenedOn,

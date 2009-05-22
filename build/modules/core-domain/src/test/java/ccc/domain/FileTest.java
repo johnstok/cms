@@ -12,9 +12,6 @@
 package ccc.domain;
 
 import junit.framework.TestCase;
-
-import org.json.JSONException;
-
 import ccc.api.FileDelta;
 import ccc.api.ID;
 import ccc.api.MimeType;
@@ -71,7 +68,6 @@ public class FileTest extends TestCase {
 
     /**
      * Test.
-     * @throws JSONException If the JSON is invalid.
      */
     public void testSnapshot() {
 

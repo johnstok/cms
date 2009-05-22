@@ -17,7 +17,8 @@ import ccc.api.CommandFailedException;
 
 
 /**
- * TODO: Add Description for this type.
+ * Abstract base class for CCC exceptions.
+ * TODO: Rename.
  *
  * @author Civic Computing Ltd.
  */
@@ -35,8 +36,8 @@ public abstract class RemoteExceptionSupport extends Exception {
     /**
      * Constructor.
      *
-     * @param message
-     * @param cause
+     * @param message The exception message.
+     * @param cause The exception cause.
      */
     public RemoteExceptionSupport(final String message, final Throwable cause) {
         super(message, cause);
@@ -45,7 +46,7 @@ public abstract class RemoteExceptionSupport extends Exception {
     /**
      * Constructor.
      *
-     * @param message
+     * @param message The exception message.
      */
     public RemoteExceptionSupport(final String message) {
         super(message);
@@ -54,7 +55,7 @@ public abstract class RemoteExceptionSupport extends Exception {
     /**
      * Constructor.
      *
-     * @param cause
+     * @param cause The exception cause.
      */
     public RemoteExceptionSupport(final Throwable cause) {
         super(cause);

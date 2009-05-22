@@ -57,10 +57,12 @@ public class PublishCommand
     /**
      * Publishes the resource by specified user.
      *
-     * @param resourceId The id of the resource to update.
-     * @param userId The id of the publishing user.
-     * @param publishedOn The date the resource was published.
-     * @return The current version of resource.
+     * @param r The resource to update.
+     * @param publishedBy The id of the publishing user.
+     * @param happenedOn The date the resource was published.
+     *
+     * @throws UnlockedException If the resource is unlocked.
+     * @throws LockMismatchException If the resource is locked by another user.
      */
     public void execute(final Date happenedOn,
                         final User publishedBy,

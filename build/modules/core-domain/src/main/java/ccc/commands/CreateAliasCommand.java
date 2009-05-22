@@ -24,7 +24,7 @@ import ccc.services.Dao;
 
 
 /**
- * TODO: Add Description for this type.
+ * Command: create an alias.
  *
  * @author Civic Computing Ltd.
  */
@@ -43,21 +43,25 @@ public class CreateAliasCommand
     }
 
     /**
-     * Create the alias.
+     * Create an alias.
      *
-     * @param actor
-     * @param happenedOn
-     * @param parentFolder
-     * @param targetId
-     * @param title
-     * @throws ResourceExistsException
+     * @param parentFolder The folder in which the alias should be created.
+     * @param targetId The alias' target resource.
+     * @param title The alias' title.
+     * @param actor The user who performed the command.
+     * @param happenedOn When the command was performed.
+     *
+     * @throws ResourceExistsException If a resource with the same name already
+     *  exists.
+     *
+     *  @return The new alias.
      */
     public Alias execute(final User actor,
                             final Date happenedOn,
                             final UUID parentFolder,
                             final UUID targetId,
                             final String title) throws ResourceExistsException {
-        final Resource target = _dao.find(Resource.class, targetId);
+        final Resource target = getDao().find(Resource.class, targetId);
         if (target == null) {
             throw new CCCException("Target does not exists.");
         }

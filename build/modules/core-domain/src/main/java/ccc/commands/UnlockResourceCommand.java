@@ -50,10 +50,12 @@ public class UnlockResourceCommand {
      * Unlocking an unlocked resource has no effect.
      *
      * @param resourceId The resource to unlock.
-     * @param actor The user that unpublished the resource.
-     * @param happenedOn The date that the resource was unpublished.
-     * @throws UnlockedException
-     * @throws InsufficientPrivilegesException
+     * @param actor The user who performed the command.
+     * @param happenedOn When the command was performed.
+     *
+     * @throws UnlockedException If the resource is unlocked.
+     * @throws InsufficientPrivilegesException If the user does not have enough
+     *  privileges to perform this command.
      */
     public void execute(final User actor,
                         final Date happenedOn,

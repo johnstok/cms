@@ -16,7 +16,7 @@ import ccc.services.Dao;
 
 
 /**
- * TODO: Add Description for this type.
+ * Command: schedule an action.
  *
  * @author Civic Computing Ltd.
  */
@@ -35,9 +35,9 @@ public class ScheduleActionCommand {
 
 
     /**
-     * TODO: Add a description of this method.
+     * Schedule an action.
      *
-     * @param action
+     * @param action The action to schedule
      */
     public void execute(final Action action) {
         _dao.create(action);

@@ -44,13 +44,14 @@ public class LockResourceCommand {
 
     /**
      * Lock the specified resource.
-     * The resource will be locked by the currently logged in user.
+     * <p>The resource will be locked by the currently logged in user.
      * If the resource is already locked a CCCException will be thrown.
      *
      * @param resourceId The uuid of the resource to lock.
-     * @param actor The user that unpublished the resource.
-     * @param happenedOn The date that the resource was unpublished.
-     * @throws LockMismatchException
+     * @param actor The user who performed the command.
+     * @param happenedOn When the command was performed.
+     *
+     * @throws LockMismatchException If the resource is locked by another user.
      */
     public void execute(final User actor,
                         final Date happenedOn,

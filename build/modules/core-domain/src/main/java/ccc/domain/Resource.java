@@ -266,7 +266,8 @@ public abstract class Resource
         }
 
         if (!canUnlock(user)) {
-            throw new InsufficientPrivilegesException(CommandType.RESOURCE_UNLOCK, user);
+            throw new InsufficientPrivilegesException(
+                CommandType.RESOURCE_UNLOCK, user);
         }
 
         _lockedBy = null;
@@ -632,9 +633,9 @@ public abstract class Resource
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Add metadata to this resource.
      *
-     * @param metadata
+     * @param metadata The metadata to add, as a hashmap.
      */
     public void addMetadata(final Map<String, String> metadata) {
         _metadata.putAll(metadata);
