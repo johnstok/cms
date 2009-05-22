@@ -1330,4 +1330,12 @@ public interface UIConstants extends com.google.gwt.i18n.client.Constants {
      */
     @DefaultStringValue("This action has already been completed.")
     String thisActionHasAlreadyCompleted();
+
+    /**
+     * "Use default setting".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Use default setting")
+    String useDefaultSetting();
 }

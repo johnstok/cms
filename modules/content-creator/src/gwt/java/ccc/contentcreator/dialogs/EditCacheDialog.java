@@ -18,8 +18,13 @@ import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 
+import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.FieldEvent;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.widget.form.CheckBox;
+import com.extjs.gxt.ui.client.widget.form.CheckBoxGroup;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 
 
@@ -35,6 +40,8 @@ public class EditCacheDialog extends AbstractEditDialog {
     private final TextField<String> _minutes = new TextField<String>();
     private final TextField<String> _hours = new TextField<String>();
     private final TextField<String> _days = new TextField<String>();
+    private final CheckBox _useDefault = new CheckBox();
+    private final CheckBoxGroup _cbg = new CheckBoxGroup();
 
 
     /**
@@ -47,8 +54,16 @@ public class EditCacheDialog extends AbstractEditDialog {
                            final Duration ds) {
         super(Globals.uiConstants().editCacheDuration());
         _item = item;
-        setHeight(200);
+        setHeight(240);
         setWidth(350);
+
+        _useDefault.setBoxLabel(_constants.yes());
+        _useDefault.addListener(Events.Change, checkBoxListener());
+
+        _cbg.setFieldLabel(_constants.useDefaultSetting());
+        _cbg.add(_useDefault);
+        _panel.add(_cbg);
+
         _days.setFieldLabel(_constants.days());
         _days.setId("cacheDurationDays");
         _hours.setFieldLabel(_constants.hours());
@@ -59,15 +74,35 @@ public class EditCacheDialog extends AbstractEditDialog {
         _seconds.setId("cacheDurationSeconds");
 
         if (ds != null) {
+            _useDefault.setValue(false);
             _days.setValue(""+ds.dayField());
             _hours.setValue(""+ds.hourField());
             _minutes.setValue(""+ds.minuteField());
             _seconds.setValue(""+ds.secondField());
+        } else {
+            _useDefault.setValue(true);
         }
+        changeFieldVisibility();
+
         _panel.add(_days);
         _panel.add(_hours);
         _panel.add(_minutes);
         _panel.add(_seconds);
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @return
+     */
+    private Listener<FieldEvent> checkBoxListener() {
+
+        return new Listener<FieldEvent>() {
+            @Override
+            public void handleEvent(final FieldEvent be) {
+                changeFieldVisibility();
+            }
+        };
     }
 
     /** {@inheritDoc} */
@@ -90,10 +125,10 @@ public class EditCacheDialog extends AbstractEditDialog {
         return new Runnable() {
             public void run() {
                 boolean isDurationSet = false;
-                Long days = 0l;
-                Long hours = 0l;
-                Long minutes = 0l;
-                Long seconds = 0l;
+                Long days = 0L;
+                Long hours = 0L;
+                Long minutes = 0L;
+                Long seconds = 0L;
 
                 if (_days.getValue() != null
                         && !_days.getValue().trim().equals("")) {
@@ -116,12 +151,15 @@ public class EditCacheDialog extends AbstractEditDialog {
                     seconds = Long.parseLong(_seconds.getValue());
                 }
 
-                final Duration updatedDs =
-                    new Duration(days, hours, minutes, seconds);
+                Duration updatedDs = null;
+
+                if (isDurationSet && !_useDefault.getValue()) {
+                    updatedDs = new Duration(days, hours, minutes, seconds);
+                }
 
                 commands().updateCacheDuration(
                     _item.getId(),
-                    (isDurationSet) ? updatedDs : null,
+                    updatedDs,
                     new ErrorReportingCallback<Void>() {
                     @Override
                     public void onSuccess(final Void arg0) {
@@ -131,6 +169,30 @@ public class EditCacheDialog extends AbstractEditDialog {
                 );
             }
         };
+    }
+
+    /**
+     * TODO: Add a description of this method.
+     *
+     */
+    private void changeFieldVisibility() {
+
+        if (_useDefault.getValue().booleanValue()) {
+            _hours.setValue("");
+            _days.setValue("");
+            _minutes.setValue("");
+            _seconds.setValue("");
+
+            _days.disable();
+            _hours.disable();
+            _minutes.disable();
+            _seconds.disable();
+        } else {
+            _days.enable();
+            _hours.enable();
+            _minutes.enable();
+            _seconds.enable();
+        }
     }
 
 
