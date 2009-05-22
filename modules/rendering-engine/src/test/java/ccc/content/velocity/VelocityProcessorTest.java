@@ -23,7 +23,7 @@ import ccc.domain.Page;
 
 
 /**
- * TODO: Add Description for this type.
+ * Tests for the {@link VelocityProcessor} class.
  *
  * @author Civic Computing Ltd.
  */
@@ -132,7 +132,8 @@ public class VelocityProcessorTest extends TestCase {
         final Page foo = new Page("foo");
         final String template = "$helper.path(\"badpath\")";
         final String expectedMessage =
-            "Invocation of method 'path' in  class ccc.content.velocity.VelocityHelper "
+            "Invocation of method 'path' in  "
+            +"class ccc.content.velocity.VelocityHelper "
             +"threw exception ccc.domain.CCCException: badpath does not match "
             +"the regular expression: (/[\\.\\-\\w]+)* at VelocityProcessor"
             +"[line 1, column 9]";
@@ -163,7 +164,8 @@ public class VelocityProcessorTest extends TestCase {
         final Page foo = new Page("foo");
         final String template = "$helper.path(null)";
         final String expectedMessage =
-            "Invocation of method 'path' in  class ccc.content.velocity.VelocityHelper "
+            "Invocation of method 'path' in  "
+            +"class ccc.content.velocity.VelocityHelper "
             + "threw exception java.lang.IllegalArgumentException: Specified "
             + "value may not be NULL. at VelocityProcessor[line 1, column 9]";
         final StringWriter renderedOutput = new StringWriter();
@@ -187,13 +189,13 @@ public class VelocityProcessorTest extends TestCase {
 
     /** {@inheritDoc} */
     @Override
-    protected void setUp() throws Exception {
+    protected void setUp() {
         _vp = new VelocityProcessor();
     }
 
     /** {@inheritDoc} */
     @Override
-    protected void tearDown() throws Exception {
+    protected void tearDown() {
         _vp = null;
     }
 

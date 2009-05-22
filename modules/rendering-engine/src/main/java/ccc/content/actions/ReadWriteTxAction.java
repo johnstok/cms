@@ -27,7 +27,9 @@ import org.apache.log4j.Logger;
 
 
 /**
- * TODO: Add Description for this type.
+ * A servlet action that manages a read/write J2EE transaction.
+ * <p>The transaction rolls back if an exception is thrown and commits
+ * otherwise.
  *
  * @author Civic Computing Ltd.
  */
@@ -42,8 +44,8 @@ public class ReadWriteTxAction
     /**
      * Constructor.
      *
-     * @param delegate
-     * @param utx
+     * @param delegate The action to call next in the chain.
+     * @param utx The J2EE transaction to use.
      */
     public ReadWriteTxAction(final ServletAction delegate,
                             final UserTransaction utx) {

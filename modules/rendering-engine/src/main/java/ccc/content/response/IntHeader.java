@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 /**
- * TODO: Add Description for this type.
+ * A response header with an integer value.
  *
  * @author Civic Computing Ltd.
  */
@@ -29,8 +29,8 @@ public class IntHeader
     /**
      * Constructor.
      *
-     * @param value
-     * @param name
+     * @param value The value of the header.
+     * @param name The name of the header.
      */
     public IntHeader(final String name, final int value) {
         _value = value;

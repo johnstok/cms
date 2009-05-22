@@ -28,6 +28,8 @@ public interface Renderer {
      * Generate an appropriate response for the specified resource.
      *
      * @param resource The resource to render.
+     * @param parameters The request parameters.
+     *
      * @return The corresponding response.
      */
     Response render(Resource resource,
@@ -41,6 +43,8 @@ public interface Renderer {
      * method executes outside of a transaction.
      *
      * @param resource The resource to render.
+     * @param parameters The request parameters.
+     *
      * @return The response, ready to be written.
      */
     Response renderWorkingCopy(Resource resource,
@@ -55,6 +59,8 @@ public interface Renderer {
      * of a transaction.
      *
      * @param resource The resource to render.
+     * @param parameters The request parameters.
+     *
      * @return The response, ready to be written.
      */
     Response renderHistoricalVersion(Resource resource,

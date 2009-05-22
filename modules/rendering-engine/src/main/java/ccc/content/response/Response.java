@@ -34,6 +34,7 @@ import ccc.api.MimeType;
  * @author Civic Computing Ltd.
  */
 public class Response {
+    private static final int MILLISECONDS_IN_A_SECOND = 1000;
     private static final Logger LOG = Logger.getLogger(Response.class);
 
     private final List<Header> _headers = new ArrayList<Header>();
@@ -43,9 +44,9 @@ public class Response {
     /**
      * Constructor.
      *
-     * @param headers
-     * @param body
-     * @param canCache
+     * @param headers The response's headers.
+     * @param body The response's body.
+     * @param canCache Can the resource be cached.
      */
     public Response(final List<Header> headers,
                     final Body body,
@@ -56,15 +57,17 @@ public class Response {
         _canCache = canCache;
     }
 
+
     /**
      * Constructor.
      *
-     * @param body
+     * @param body The response's body.
      */
     public Response(final Body body) {
         DBC.require().notNull(body);
         _body = body;
     }
+
 
     /**
      * Mutator.
@@ -75,6 +78,7 @@ public class Response {
         _headers.add(new StringHeader("Content-Description", description));
     }
 
+
     /**
      * Mutator.
      *
@@ -83,6 +87,7 @@ public class Response {
     public void setLength(final int length) {
         _headers.add(new IntHeader("Content-Length", length));
     }
+
 
     /**
      * Mutator.
@@ -97,6 +102,7 @@ public class Response {
         }
     }
 
+
     /**
      * Mutator.
      *
@@ -107,13 +113,14 @@ public class Response {
         _headers.add(new ContentTypeHeader(new MimeType(primary, secondary)));
     }
 
+
     /**
      * Mutator.
      *
-     * @param expiry The response's expiry time, in Duration.
+     * @param expiry The response's expiry time, as a Duration.
      */
-    public void setExpiry(final Duration duration) {
-        if (duration == null || duration.time() <= 0) {
+    public void setExpiry(final Duration expiry) {
+        if (expiry == null || expiry.time() <= 0) {
             _headers.add(new StringHeader("Pragma", "no-cache"));
             _headers.add(new StringHeader(
                 "Cache-Control", "no-store, must-revalidate, max-age=0"));
@@ -121,12 +128,14 @@ public class Response {
         } else {
             final Date now = new Date();
             final Date expiryDate =
-                new Date(now.getTime()+(duration.time()*1000));
+                new Date(
+                    now.getTime()+(expiry.time()*MILLISECONDS_IN_A_SECOND));
             _headers.add(new DateHeader("Expires", expiryDate));
             _headers.add(
-                new StringHeader("Cache-Control", "max-age="+duration.time()));
+                new StringHeader("Cache-Control", "max-age="+expiry.time()));
         }
     }
+
 
     /**
      * Mutator.
@@ -137,6 +146,7 @@ public class Response {
         _headers.add(new StringHeader("Content-Disposition", disposition));
     }
 
+
     /**
      * Accessor.
      *
@@ -146,6 +156,7 @@ public class Response {
         return _body;
     }
 
+
     /**
      * Accessor.
      *
@@ -154,6 +165,7 @@ public class Response {
     public List<Header> getHeaders() {
         return new ArrayList<Header>(_headers);
     }
+
 
     /**
      * Write the response using the servlet API.
@@ -169,6 +181,14 @@ public class Response {
             httpResponse.getCharacterEncoding());
     }
 
+
+    /**
+     * Write this response's body to an output stream.
+     *
+     * @param os The output stream.
+     * @param charsetName The character set to use.
+     * @throws IOException If the output stream encounters an error.
+     */
     void writeBody(final OutputStream os,
                            final String charsetName) throws IOException {
         Charset charset = Charset.defaultCharset();
@@ -180,6 +200,12 @@ public class Response {
         _body.write(os, charset);
     }
 
+
+    /**
+     * Write this response's headers to the servlet response.
+     *
+     * @param httpResponse The servlet response.
+     */
     void writeHeaders(final HttpServletResponse httpResponse) {
         for (final Header h : _headers) {
             h.writeTo(httpResponse);

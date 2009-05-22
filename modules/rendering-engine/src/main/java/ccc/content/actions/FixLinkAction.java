@@ -30,9 +30,7 @@ import ccc.services.StatefulReader;
  */
 public class FixLinkAction
     extends
-        AbstractServletAction
-    implements
-        ServletAction {
+        AbstractServletAction {
 
 
     /** {@inheritDoc} */

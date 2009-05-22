@@ -17,7 +17,6 @@ import java.security.Principal;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import ccc.persistence.jpa.FsCoreData;
 import ccc.services.AuditLog;
@@ -32,7 +31,7 @@ import ccc.services.impl.StatefulReaderImpl;
 
 
 /**
- * TODO: Add Description for this type.
+ * A servlet action that attaches ccc services to the request scope.
  *
  * @author Civic Computing Ltd.
  */
@@ -45,7 +44,7 @@ public class ReaderAction
     /**
      * Constructor.
      *
-     * @param delegate
+     * @param delegate The action that will be called next in the chain.
      */
     public ReaderAction(final ServletAction delegate) {
         _delegate = delegate;

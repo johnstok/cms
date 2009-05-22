@@ -19,18 +19,21 @@ import javax.servlet.http.HttpServletResponse;
 
 
 /**
- * TODO: Add Description for this type.
+ * An action perform during the execution of a servlet request.
  *
  * @author Civic Computing Ltd.
  */
 public interface ServletAction {
+
     /**
      * Perform the action.
      *
-     * @param req
-     * @param resp
-     * @throws ServletException
-     * @throws IOException
+     * @param req The servlet request.
+     * @param resp The servlet response.
+     *
+     * @throws ServletException If a servlet error occurs.
+     * @throws IOException If an error occurs reading from the request or
+     *  writing to the response.
      */
     void execute(final HttpServletRequest req,
                  final HttpServletResponse resp) throws ServletException,

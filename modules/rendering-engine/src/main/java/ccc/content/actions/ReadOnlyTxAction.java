@@ -24,7 +24,8 @@ import org.apache.log4j.Logger;
 
 
 /**
- * TODO: Add Description for this type.
+ * A servlet action that manages a read-only J2EE transaction.
+ * <p>The transaction always rolls back.
  *
  * @author Civic Computing Ltd.
  */
@@ -39,8 +40,8 @@ public class ReadOnlyTxAction
     /**
      * Constructor.
      *
-     * @param delegate
-     * @param utx
+     * @param delegate The action to call next in the chain.
+     * @param utx The J2EE transaction to use.
      */
     public ReadOnlyTxAction(final ServletAction delegate,
                             final UserTransaction utx) {
