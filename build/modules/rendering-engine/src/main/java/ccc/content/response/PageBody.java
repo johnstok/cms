@@ -11,7 +11,6 @@
  */
 package ccc.content.response;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -64,7 +63,7 @@ public class PageBody
     /** {@inheritDoc} */
     @Override
     public void write(final OutputStream os,
-                      final Charset charset) throws IOException {
+                      final Charset charset) {
         final String t = _page.computeTemplate(BUILT_IN_PAGE_TEMPLATE).body();
         final Writer w = new OutputStreamWriter(os, charset);
         final Map<String, Object> values = new HashMap<String, Object>();

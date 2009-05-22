@@ -65,8 +65,8 @@ public class UpdateResourceMetadataRolesCommand {
         r.confirmLock(actor);
 
         r.clearMetadata();
-        for (final String key : metadata.keySet()) {
-            r.addMetadatum(key, metadata.get(key));
+        for (final Map.Entry<String, String> metadatum: metadata.entrySet()) {
+            r.addMetadatum(metadatum.getKey(), metadatum.getValue());
         }
 
         _audit.recordUpdateMetadata(r, actor, happenedOn);

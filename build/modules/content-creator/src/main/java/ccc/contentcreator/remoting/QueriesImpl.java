@@ -43,7 +43,7 @@ public class QueriesImpl
     extends CCCRemoteServiceServlet
     implements QueriesService {
 
-    @EJB(name=Queries.NAME) private transient Queries _queries;
+    @EJB(name=Queries.NAME) private Queries _queries;
 
     /** {@inheritDoc} */
     public String getAbsolutePath(final ID resourceId) {

@@ -11,7 +11,6 @@
  */
 package ccc.content.response;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
@@ -50,7 +49,7 @@ public class FileBody
     /** {@inheritDoc} */
     @Override
     public void write(final OutputStream os,
-                      final Charset charset) throws IOException {
+                      final Charset charset) {
         _dataManager.retrieve(_file.data(), os);
     }
 }

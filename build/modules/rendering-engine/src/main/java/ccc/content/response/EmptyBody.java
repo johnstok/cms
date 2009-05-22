@@ -11,7 +11,6 @@
  */
 package ccc.content.response;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
@@ -29,7 +28,7 @@ public class EmptyBody
     /** {@inheritDoc} */
     @Override
     public void write(final OutputStream os,
-                      final Charset charset) throws IOException {
+                      final Charset charset) {
         // No Op
     }
 

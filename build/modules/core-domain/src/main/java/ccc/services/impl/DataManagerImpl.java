@@ -12,14 +12,11 @@
 
 package ccc.services.impl;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
 import ccc.api.DBC;
-import ccc.commons.IO;
-import ccc.domain.CCCException;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.services.CoreData;
@@ -78,16 +75,7 @@ public class DataManagerImpl implements DataManager {
     public void retrieve(final Data data, final OutputStream dataStream) {
         retrieve(
             data,
-            new StreamAction(){
-                @Override public void execute(final InputStream is) {
-                    try {
-                        IO.copy(is, dataStream);
-                    } catch (final IOException e) {
-                        // FIXME: choose a better exception.
-                        throw new CCCException(e);
-                    }
-                }
-            }
+            new CopyAction(dataStream)
         );
     }
 }

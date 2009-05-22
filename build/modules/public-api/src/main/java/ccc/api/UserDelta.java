@@ -12,6 +12,7 @@
 package ccc.api;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -23,7 +24,7 @@ import java.util.Set;
 public final class UserDelta implements Serializable {
     private String _email;
     private Username _username;
-    private Set<String> _roles;
+    private HashSet<String> _roles;
 
     @SuppressWarnings("unused") private UserDelta() { super(); }
 
@@ -39,7 +40,7 @@ public final class UserDelta implements Serializable {
                      final Set<String> roles) {
         _email = email;
         _username = username;
-        _roles = roles;
+        _roles = new HashSet<String>(roles);
     }
 
 
@@ -99,6 +100,6 @@ public final class UserDelta implements Serializable {
      * @param roles The roles to set.
      */
     public void setRoles(final Set<String> roles) {
-        _roles = roles;
+        _roles = new HashSet<String>(roles);
     }
 }

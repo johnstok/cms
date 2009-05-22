@@ -12,6 +12,7 @@
 package ccc.api;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -24,7 +25,7 @@ public final class UserSummary implements Serializable {
     private String _email;
     private ID _id;
     private Username _username;
-    private Set<String> _roles;
+    private HashSet<String> _roles;
 
     @SuppressWarnings("unused") private UserSummary() { super(); }
 
@@ -43,7 +44,7 @@ public final class UserSummary implements Serializable {
         _email = email;
         _id = id;
         _username = username;
-        _roles = roles;
+        _roles = new HashSet<String>(roles);
     }
 
 

@@ -52,7 +52,7 @@ public final class LogEntrySummary implements Serializable {
         _subject = subject;
         _action = action;
         _actor = actor;
-        _happenedOn = on;
+        _happenedOn = new Date(on.getTime());
         _comment = comment;
         _isMajorEdit = majorEdit;
         _index = index;
@@ -95,7 +95,7 @@ public final class LogEntrySummary implements Serializable {
      * @return Returns the happenedOn.
      */
     public Date getHappenedOn() {
-        return _happenedOn;
+        return new Date(_happenedOn.getTime());
     }
 
 
