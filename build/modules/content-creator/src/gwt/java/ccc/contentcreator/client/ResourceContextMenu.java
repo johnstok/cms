@@ -11,7 +11,7 @@
  */
 package ccc.contentcreator.client;
 
-import static ccc.contentcreator.dialogs.AbstractBaseDialog.*;
+import static ccc.contentcreator.dialogs.AbstractBaseDialog.CONTEXT_MENU_WIDTH;
 import ccc.api.AliasDelta;
 import ccc.api.FileDelta;
 import ccc.api.PageDelta;
@@ -197,7 +197,7 @@ public class ResourceContextMenu
                 addUpdateMetadata();
                 addCreateAlias();
                 addCreateAction();
-                if (user.getRoles().contains(Globals.ADMINISTRATOR) 
+                if (user.getRoles().contains(Globals.ADMINISTRATOR)
                     || user.getRoles().contains(Globals.SITE_BUILDER)) {
                     addEditCache();
                 }

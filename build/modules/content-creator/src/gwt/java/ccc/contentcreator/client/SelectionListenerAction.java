@@ -14,6 +14,11 @@ package ccc.contentcreator.client;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 
+/**
+ * TODO: Add Description for this type.
+ *
+ * @author Civic Computing Ltd.
+ */
 final class SelectionListenerAction
     extends
         SelectionListener<MenuEvent> {
@@ -23,7 +28,7 @@ final class SelectionListenerAction
     /**
      * Constructor.
      *
-     * @param action
+     * @param action The Action.
      */
     SelectionListenerAction(final Action action) {
         _action = action;
