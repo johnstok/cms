@@ -14,6 +14,7 @@ package ccc.content.response;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 
 
 /**
@@ -33,7 +34,7 @@ public class ByteArrayBody
      * @param bytes The body data.
      */
     public ByteArrayBody(final byte[] bytes) {
-        _bytes = bytes;
+        _bytes = Arrays.copyOf(bytes, bytes.length);
     }
 
     /** {@inheritDoc} */

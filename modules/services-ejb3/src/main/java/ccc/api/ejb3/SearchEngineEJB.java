@@ -357,8 +357,8 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
     private String cleanUpContent(final String content) {
         String result = content;
         if (result != null) {
-            result = content.replaceAll("[\\x00-\\x1f]", " ");
-            result = content.replaceAll("\\<.*?>", ""); // Scrub HTML
+            result = result.replaceAll("[\\x00-\\x1f]", " ");
+            result = result.replaceAll("\\<.*?>", ""); // Scrub HTML
         }
         return result;
     }

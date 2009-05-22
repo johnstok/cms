@@ -13,6 +13,7 @@ package ccc.contentcreator.remoting;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.ParseException;
@@ -52,9 +53,14 @@ public abstract class CCCRemoteServiceServlet extends RemoteServiceServlet {
             final URLConnection baseURLConnection =
                 baseURL.openConnection();
             is = baseURLConnection.getInputStream();
-        } catch(final Exception ex) {
+        } catch(final MalformedURLException ex) {
             final String message = "ERROR: Could not open policy file "
                 + ex.toString();
+            getServletContext().log(message);
+            return serializationPolicy;
+        } catch (final IOException e) {
+            final String message = "ERROR: Could not open policy file "
+                + e.toString();
             getServletContext().log(message);
             return serializationPolicy;
         }

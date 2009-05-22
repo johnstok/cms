@@ -36,7 +36,7 @@ public class DateHeader
      */
     public DateHeader(final String name, final Date value) {
         _name = name;
-        _value = value;
+        _value = new Date(value.getTime());
     }
 
     /** {@inheritDoc} */

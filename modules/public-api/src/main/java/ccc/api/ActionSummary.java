@@ -53,7 +53,7 @@ public final class ActionSummary implements Serializable {
         _id = id;
         _type = type;
         _actor = actor;
-        _executeAfter = after;
+        _executeAfter = new Date(after.getTime());
         _subjectType = subjectType;
         _subjectPath = path;
         _status = status;
@@ -96,7 +96,7 @@ public final class ActionSummary implements Serializable {
      * @return Returns the executeAfter.
      */
     public Date getExecuteAfter() {
-        return _executeAfter;
+        return new Date(_executeAfter.getTime());
     }
 
 

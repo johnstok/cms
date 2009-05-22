@@ -24,7 +24,7 @@ import java.util.Set;
  */
 public final class PageDelta implements Serializable, Jsonable {
     private String _title;
-    private Set<Paragraph> _paragraphs = new HashSet<Paragraph>();
+    private HashSet<Paragraph> _paragraphs = new HashSet<Paragraph>();
 
     @SuppressWarnings("unused") private PageDelta() { super(); }
 
@@ -37,7 +37,7 @@ public final class PageDelta implements Serializable, Jsonable {
     public PageDelta(final String title,
                      final Set<Paragraph> paragraphs) {
         _title = title;
-        _paragraphs = paragraphs;
+        _paragraphs = new HashSet<Paragraph>(paragraphs);
     }
 
 
@@ -69,7 +69,7 @@ public final class PageDelta implements Serializable, Jsonable {
      * @param paragraphs The paragraphs to set.
      */
     public void setParagraphs(final Set<Paragraph> paragraphs) {
-        _paragraphs = paragraphs;
+        _paragraphs = new HashSet<Paragraph>(paragraphs);
     }
 
 

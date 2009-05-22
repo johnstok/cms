@@ -88,8 +88,8 @@ public final class ResourceSummary implements Serializable {
         _includeInMainMenu = includeInMainMenu;
         _sortOrder = sortOrder;
         _hasWorkingCopy = hasWorkingCopy;
-        _dateCreated = dateCreated;
-        _dateChanged = dateChanged;
+        _dateCreated = new Date(dateCreated.getTime());
+        _dateChanged = new Date(dateChanged.getTime());
         _templateId = templateId;
         _tags = tags;
     }
@@ -221,7 +221,7 @@ public final class ResourceSummary implements Serializable {
      * @return Returns the dateCreated.
      */
     public Date getDateCreated() {
-        return _dateCreated;
+        return new Date(_dateCreated.getTime());
     }
 
 
@@ -231,7 +231,7 @@ public final class ResourceSummary implements Serializable {
      * @return Returns the dateChanged.
      */
     public Date getDateChanged() {
-        return _dateChanged;
+        return new Date(_dateChanged.getTime());
     }
 
 

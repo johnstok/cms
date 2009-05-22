@@ -47,6 +47,7 @@ import ccc.domain.PredefinedResourceNames;
  * @author Civic Computing Ltd
  */
 public class Migrations {
+    private static final int MIN_PW_LENGTH = 6;
     private static final boolean DEBUG = true;
     private static Logger log = Logger.getLogger(Migrations.class);
 
@@ -173,11 +174,13 @@ public class Migrations {
                 final ExistingUser ud = mu.getValue();
 
                 if (null == ud._password) {
-                    log.warn("User: "+ud._user.getUsername()+" has null password.");
-                } else if (ud._password.equals(ud._user.getUsername())) {
+                    log.warn(
+                        "User: "+ud._user.getUsername()+" has null password.");
+                } else if (ud._password.equals(
+                               ud._user.getUsername().toString())) {
                     log.warn("User: "+ud._user.getUsername()
                         +" has username as a password.");
-                } else if (ud._password.length() < 6) {
+                } else if (ud._password.length() < MIN_PW_LENGTH) {
                     log.warn("User: "+ud._user.getUsername()
                         +" has password with less than 6 characters.");
                 }
