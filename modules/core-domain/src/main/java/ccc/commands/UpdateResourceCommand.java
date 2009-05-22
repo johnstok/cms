@@ -20,15 +20,15 @@ import ccc.services.Dao;
 
 
 /**
- * TODO: Add Description for this type.
+ * Abstract superclass for commands that update resources.
  *
  * @author Civic Computing Ltd.
  */
 class UpdateResourceCommand {
 
 
-    protected final Dao      _dao;
-    protected final AuditLog _audit;
+    private final Dao      _dao;
+    private final AuditLog _audit;
 
     /**
      * Constructor.
@@ -63,4 +63,26 @@ class UpdateResourceCommand {
             comment,
             isMajorEdit);
     }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the DAO.
+     */
+    protected Dao getDao() {
+        return _dao;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the audit logger.
+     */
+    protected AuditLog getAudit() {
+        return _audit;
+    }
+
+
 }

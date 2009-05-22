@@ -30,8 +30,8 @@ public class ResourceExistsException
     /**
      * Constructor.
      *
-     * @param folder
-     * @param name
+     * @param folder The folder in which the resource exists.
+     * @param name The name of the resource that exists.
      */
     public ResourceExistsException(final Folder folder,
                                    final ResourceName name) {

@@ -18,7 +18,7 @@ import ccc.services.Dao;
 
 
 /**
- * TODO: Add Description for this type.
+ * Command: cancel an action.
  *
  * @author Civic Computing Ltd.
  */
@@ -37,9 +37,9 @@ public class CancelActionCommand {
 
 
     /**
-     * TODO: Add a description of this method.
+     * Cancel an action.
      *
-     * @param action
+     * @param actionId The id of the action to cancel.
      */
     public void execute(final UUID actionId) {
         _dao.find(Action.class, actionId).cancel();

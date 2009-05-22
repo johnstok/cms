@@ -23,7 +23,7 @@ import ccc.services.Dao;
 
 
 /**
- * TODO: Add Description for this type.
+ * Command: update a user's password..
  *
  * @author Civic Computing Ltd.
  */
@@ -49,6 +49,8 @@ public class UpdatePasswordAction {
      *
      * @param userId The user's id.
      * @param password The new password.
+     * @param actor The user who performed the command.
+     * @param happenedOn When the command was performed.
      */
     public void execute(final User actor,
                         final Date happenedOn,
@@ -58,6 +60,7 @@ public class UpdatePasswordAction {
                 _dao.find(PASSWORD_FOR_USER, Password.class, userId);
         p.password(password);
 
-        _audit.recordUserChangePassword(null, actor, happenedOn); // FIXME: Broken.
+        // FIXME: Broken.
+        _audit.recordUserChangePassword(null, actor, happenedOn);
     }
 }

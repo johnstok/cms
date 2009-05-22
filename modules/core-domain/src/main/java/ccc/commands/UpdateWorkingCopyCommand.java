@@ -17,7 +17,6 @@ import java.util.UUID;
 import ccc.api.PageDelta;
 import ccc.domain.LockMismatchException;
 import ccc.domain.Page;
-import ccc.domain.ResourceExistsException;
 import ccc.domain.Snapshot;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
@@ -52,12 +51,11 @@ public class UpdateWorkingCopyCommand {
      *
      * @param delta The page delta to store in the page.
      * @param resourceId The page's id.
-     * @param actor The user that updated the working copy.
-     * @param happenedOn The date that the w.c. was updated.
+     * @param actor The user who performed the command.
+     * @param happenedOn When the command was performed.
      *
-     * @throws LockMismatchException
-     * @throws UnlockedException
-     * @throws ResourceExistsException
+     * @throws LockMismatchException If the resource is locked by another user.
+     * @throws UnlockedException If the resource is unlocked.
      */
     public void execute(final User actor,
                         final Date happenedOn,
@@ -77,12 +75,11 @@ public class UpdateWorkingCopyCommand {
      *
      * @param delta The resource delta to store in the page.
      * @param resourceId The page's id.
-     * @param actor The user that updated the working copy.
-     * @param happenedOn The date that the w.c. was updated.
+     * @param actor The user who performed the command.
+     * @param happenedOn When the command was performed.
      *
-     * @throws LockMismatchException
-     * @throws UnlockedException
-     * @throws ResourceExistsException
+     * @throws LockMismatchException If the resource is locked by another user.
+     * @throws UnlockedException If the resource is unlocked.
      */
     public void execute(final User actor,
                         final Date happenedOn,

@@ -47,12 +47,13 @@ public class UpdateCachingCommand {
     /**
      * Change the cache duration for a resource.
      *
-     * @param actor
-     * @param happenedOn
-     * @param resourceId
-     * @param duration
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     * @param resourceId The resource to update.
+     * @param duration The new caching duration.
+     * @param actor The user who performed the command.
+     * @param happenedOn When the command was performed.
+     *
+     * @throws LockMismatchException If the resource is locked by another user.
+     * @throws UnlockedException If the resource is unlocked.
      */
     public void execute(final User actor,
                         final Date happenedOn,

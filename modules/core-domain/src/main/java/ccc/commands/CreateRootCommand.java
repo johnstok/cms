@@ -41,26 +41,29 @@ public class CreateRootCommand extends CreateResourceCommand {
 
 
     /**
-     * Create a new root folder. The name is checked against existing root
-     * folders in order to prevent conflicts.
+     * Create a new root folder.
+     * <p>The name is checked against existing root folders in order to prevent
+     * conflicts.
      *
-     * @param folder The root folder to persists.
-     * @param actor
-     * @param happenedOn
-     * @throws ResourceExistsException
+     * @param folder The root folder to create.
+     * @param actor The user who performed the command.
+     * @param happenedOn When the command was performed.
+     *
+     * @throws ResourceExistsException If a resource with the same name already
+     *  exists.
      */
     public void execute(final User actor,
                         final Date happenedOn,
                         final Folder folder) throws ResourceExistsException {
-        final Resource possibleRoot =
-            _dao.find(QueryNames.ROOT_BY_NAME, Resource.class, folder.name());
-        if (null!=possibleRoot) { // TODO: Throw ResourceExistsException?
+        final Resource possibleRoot = getDao().find(
+            QueryNames.ROOT_BY_NAME, Resource.class, folder.name());
+        if (null!=possibleRoot) {
             throw new ResourceExistsException(null, folder.name());
         }
 
         folder.dateCreated(happenedOn);
-        _dao.create(folder);
+        getDao().create(folder);
 
-        _audit.recordCreate(folder, actor, happenedOn);
+        getAudit().recordCreate(folder, actor, happenedOn);
     }
 }

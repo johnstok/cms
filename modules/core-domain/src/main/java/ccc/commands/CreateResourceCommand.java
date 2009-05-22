@@ -24,14 +24,14 @@ import ccc.services.Dao;
 
 
 /**
- * TODO: Add Description for this type.
+ * Abstract superclass for commands that create resources.
  *
  * @author Civic Computing Ltd.
  */
 public abstract class CreateResourceCommand {
 
-    protected final Dao      _dao;
-    protected final AuditLog _audit;
+    private final Dao      _dao;
+    private final AuditLog _audit;
 
     /**
      * Constructor.
@@ -72,4 +72,26 @@ public abstract class CreateResourceCommand {
             actor,
             happenedOn);
     }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the DAO.
+     */
+    protected Dao getDao() {
+        return _dao;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the audit logger.
+     */
+    protected AuditLog getAudit() {
+        return _audit;
+    }
+
+
 }

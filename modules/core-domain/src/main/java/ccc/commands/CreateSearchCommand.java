@@ -22,7 +22,7 @@ import ccc.services.Dao;
 
 
 /**
- * TODO: Add Description for this type.
+ * Command: create a new search.
  *
  * @author Civic Computing Ltd.
  */
@@ -41,14 +41,17 @@ public class CreateSearchCommand
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Create a new search.
      *
-     * @param actor
-     * @param happenedOn
-     * @param parentFolder
-     * @param title
-     * @return
-     * @throws ResourceExistsException
+     * @param parentFolder The folder in which the search will be created.
+     * @param title The title of the search.
+     * @param actor The user who performed the command.
+     * @param happenedOn When the command was performed.
+     *
+     * @throws ResourceExistsException If a resource with the same name already
+     *  exists.
+     *
+     *  @return The new search.
      */
     public Search execute(final User actor,
                           final Date happenedOn,

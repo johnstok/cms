@@ -22,7 +22,7 @@ import ccc.services.Dao;
 
 
 /**
- * TODO: Add Description for this type.
+ * Command: create a new folder.
  *
  * @author Civic Computing Ltd.
  */
@@ -40,14 +40,18 @@ public class CreateFolderCommand extends CreateResourceCommand {
 
 
     /**
-     * Create the page.
+     * Create a folder.
      *
-     * @param actor
-     * @param happenedOn
-     * @param parentFolder
-     * @param name
-     * @param title
-     * @throws ResourceExistsException
+     * @param parentFolder The folder in which the new folder will be created.
+     * @param name The name of the new folder.
+     * @param title The title of the new folder.
+     * @param actor The user who performed the command.
+     * @param happenedOn When the command was performed.
+     *
+     * @throws ResourceExistsException If a resource with the same name already
+     *  exists.
+     *
+     *  @return The new folder.
      */
     public Folder execute(final User actor,
                           final Date happenedOn,
@@ -61,5 +65,4 @@ public class CreateFolderCommand extends CreateResourceCommand {
 
         return f;
     }
-
 }

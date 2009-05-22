@@ -47,12 +47,13 @@ public class UpdateResourceRolesCommand {
     /**
      * Update the security roles for the specified resource.
      *
-     * @param resourceId The resource to update.
+     * @param id The id of the resource to update.
      * @param roles The new roles.
-     * @param actor
-     * @param happenedOn
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     * @param actor The actor that made the change.
+     * @param happenedOn When the update took place.
+     *
+     * @throws UnlockedException If the resource is unlocked.
+     * @throws LockMismatchException If the resource is locked by another user.
      */
     public void execute(final User actor,
                         final Date happenedOn,

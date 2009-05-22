@@ -68,7 +68,7 @@ public class UpdateFileCommand extends UpdateResourceCommand {
                         final FileDelta fileDelta,
                         final InputStream dataStream)
        throws UnlockedException, LockMismatchException {
-        final File f = _dao.find(File.class, fileId);
+        final File f = getDao().find(File.class, fileId);
         f.confirmLock(actor);
 
         f.title(fileDelta.getTitle());

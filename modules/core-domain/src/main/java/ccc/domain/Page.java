@@ -12,7 +12,7 @@
 
 package ccc.domain;
 
-import static java.util.Collections.unmodifiableSet;
+import static java.util.Collections.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -35,7 +35,8 @@ public final class Page
 
     private Set<Paragraph> _content = new HashSet<Paragraph>();
 
-    private static int MAXIMUM_PARAGRAPHS = 32;
+    /** MAXIMUM_PARAGRAPHS : int. */
+    public static final int MAXIMUM_PARAGRAPHS = 32;
 
 
     /** Constructor: for persistence only. */

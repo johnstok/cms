@@ -22,7 +22,7 @@ import ccc.services.Dao;
 
 
 /**
- * TODO: Add Description for this type.
+ * Command: create a new user.
  *
  * @author Civic Computing Ltd.
  */
@@ -47,6 +47,9 @@ public class CreateUserCommand {
      *
      * @param delta The properties for the new user.
      * @param password The password to be used for the user.
+     * @param actor The user who performed the command.
+     * @param happenedOn When the command was performed.
+     *
      * @return Persisted user.
      */
     public User execute(final User actor,

@@ -24,7 +24,7 @@ import ccc.services.Dao;
 
 
 /**
- * TODO: Add Description for this type.
+ * Command: update a template.
  *
  * @author Civic Computing Ltd.
  */
@@ -43,12 +43,13 @@ public class UpdateTemplateCommand extends UpdateResourceCommand {
     /**
      * Update a template.
      *
-     * @param actor
-     * @param happenedOn
-     * @param templateId
-     * @param delta
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     * @param templateId The id of the template to update.
+     * @param delta The changes to the template.
+     * @param actor The user who performed the command.
+     * @param happenedOn When the command was performed.
+     *
+     * @throws LockMismatchException If the resource is locked by another user.
+     * @throws UnlockedException If the resource is unlocked.
      */
     public void execute(final User actor,
                         final Date happenedOn,
@@ -56,7 +57,7 @@ public class UpdateTemplateCommand extends UpdateResourceCommand {
                         final TemplateDelta delta)
                                throws UnlockedException, LockMismatchException {
 
-        final Template template = _dao.find(Template.class, templateId);
+        final Template template = getDao().find(Template.class, templateId);
         template.confirmLock(actor);
 
         template.title(delta.getTitle());

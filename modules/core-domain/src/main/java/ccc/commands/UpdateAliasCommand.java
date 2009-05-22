@@ -44,22 +44,23 @@ public class UpdateAliasCommand extends UpdateResourceCommand {
     /**
      * Perform the update.
      *
-     * @param actor
-     * @param happenedOn
-     * @param targetId
-     * @param aliasId
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     * @param targetId The new target for the alias.
+     * @param aliasId The alias to update.
+     * @param actor The user who performed the command.
+     * @param happenedOn When the command was performed.
+     *
+     * @throws LockMismatchException If the resource is locked by another user.
+     * @throws UnlockedException If the resource is unlocked.
      */
     public void execute(final User actor,
-                            final Date happenedOn,
-                            final UUID targetId,
-                            final UUID aliasId)
+                        final Date happenedOn,
+                        final UUID targetId,
+                        final UUID aliasId)
                                throws UnlockedException, LockMismatchException {
-        final Alias alias = _dao.find(Alias.class, aliasId);
+        final Alias alias = getDao().find(Alias.class, aliasId);
         alias.confirmLock(actor);
 
-        final Resource target = _dao.find(Resource.class, targetId);
+        final Resource target = getDao().find(Resource.class, targetId);
         alias.target(target);
 
         update(alias, null, false, actor, happenedOn);

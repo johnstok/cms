@@ -25,6 +25,7 @@ import ccc.api.Json;
  */
 public abstract class WorkingCopyAware<T> extends Resource {
 
+    /** _workingCopy : T. */
     protected T _workingCopy = null;
 
     /** Constructor. */

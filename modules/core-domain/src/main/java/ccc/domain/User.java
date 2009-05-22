@@ -15,14 +15,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ccc.api.DBC;
-import ccc.api.Username;
 import ccc.commons.EmailAddress;
 
 
 /**
  * A user of the CCC system.
  * <p>
- * TODO: Introduce the {@link Username} class.
+ * TODO: Introduce the Username class.
  *
  * @author Civic Computing Ltd.
  */

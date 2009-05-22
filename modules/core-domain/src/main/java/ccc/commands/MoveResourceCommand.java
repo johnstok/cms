@@ -51,11 +51,13 @@ public class MoveResourceCommand {
      *
      * @param resourceId The id of the resource to move.
      * @param newParentId The id of the new parent.
-     * @param actor
-     * @param happenedOn
-     * @throws LockMismatchException
-     * @throws UnlockedException
-     * @throws ResourceExistsException
+     * @param actor The user who performed the command.
+     * @param happenedOn When the command was performed.
+     *
+     * @throws LockMismatchException If the resource is locked by another user.
+     * @throws UnlockedException If the resource is unlocked.
+     * @throws ResourceExistsException If a resource with the same name already
+     *  exists.
      */
     public void execute(final User actor,
                         final Date happenedOn,

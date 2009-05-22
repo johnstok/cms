@@ -49,8 +49,9 @@ public class ClearWorkingCopyCommand {
      * @param resourceId The resource's id.
      * @param actor The user that unpublished the resource.
      * @param happenedOn The date that the resource was unpublished.
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     *
+     * @throws LockMismatchException If the resource is locked by another user.
+     * @throws UnlockedException If the resource is unlocked.
      */
     public void execute(final User actor,
                         final Date happenedOn,

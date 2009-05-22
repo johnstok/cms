@@ -16,7 +16,6 @@ import java.util.UUID;
 
 import ccc.domain.LockMismatchException;
 import ccc.domain.Resource;
-import ccc.domain.ResourceExistsException;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -52,9 +51,9 @@ public class ChangeResourceTagsCommand {
      * @param tags The tags to set.
      * @param actor The user that unpublished the resource.
      * @param happenedOn The date that the resource was unpublished.
-     * @throws LockMismatchException
-     * @throws UnlockedException
-     * @throws ResourceExistsException
+     *
+     * @throws LockMismatchException If the resource is locked by another user.
+     * @throws UnlockedException If the resource is unlocked.
      */
     public void execute(final User actor,
                         final Date happenedOn,

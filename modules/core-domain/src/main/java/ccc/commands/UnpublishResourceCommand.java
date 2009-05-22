@@ -48,10 +48,11 @@ public class UnpublishResourceCommand {
      * Un-publishes the resource.
      *
      * @param resourceId The id of the resource to update.
-     * @param actor The user that unpublished the resource.
-     * @param happenedOn The date that the resource was unpublished.
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     * @param actor The user who performed the command.
+     * @param happenedOn When the command was performed.
+     *
+     * @throws LockMismatchException If the resource is locked by another user.
+     * @throws UnlockedException If the resource is unlocked.
      */
     public void execute(final User actor,
                         final Date happenedOn,
