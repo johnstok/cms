@@ -23,8 +23,10 @@ import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
  *
  * @author Civic Computing Ltd.
  */
-public class UserContextRenderer implements GridCellRenderer<UserSummaryModelData> {
+public class UserContextRenderer implements
+    GridCellRenderer<UserSummaryModelData> {
 
+    /** {@inheritDoc} */
     @Override
     public String render(final UserSummaryModelData model,
                          final String property,

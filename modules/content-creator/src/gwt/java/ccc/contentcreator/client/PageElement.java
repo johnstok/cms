@@ -52,7 +52,22 @@ public class PageElement {
      * @author Civic Computing Ltd.
      */
     public enum FieldType {
-        RADIO, HTML, TEXT, DATE, CHECKBOX, COMBOBOX, LIST, IMAGE;
+        /** RADIO : FieldType. */
+        RADIO,
+        /** HTML : FieldType. */
+        HTML,
+        /** TEXT : FieldType. */
+        TEXT,
+        /** DATE : FieldType. */
+        DATE,
+        /** CHECKBOX : FieldType. */
+        CHECKBOX,
+        /** COMBOBOX : FieldType. */
+        COMBOBOX,
+        /** LIST : FieldType. */
+        LIST,
+        /** IMAGE : FieldType. */
+        IMAGE;
     }
 
     /**
@@ -253,14 +268,19 @@ public class PageElement {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Mutator.
      *
-     * @param image
+     * @param image The field for the image selector.
      */
-    public void image(ImageTriggerField image) {
+    public void image(final ImageTriggerField image) {
         _image = image;
     }
 
+    /**
+     * Accessor.
+     *
+     * @return  The field of the image selector.
+     */
     public ImageTriggerField image() {
         return _image;
     }

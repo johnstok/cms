@@ -25,6 +25,7 @@ import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
  */
 public class ResourceContextRenderer implements GridCellRenderer<ResourceSummaryModelData> {
 
+    /** {@inheritDoc} */
     @Override
     public String render(final ResourceSummaryModelData model,
                          final String property,

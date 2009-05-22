@@ -132,7 +132,8 @@ public class MainMenu
                 public void execute() {
                     final StringBuilder sb = new StringBuilder();
                     if (root.getLockedBy() != null) {
-                     sb.append(_constants.lockedBy()+" "+root.getLockedBy()+"\n");
+                     sb.append(_constants.lockedBy()
+                         +" "+root.getLockedBy()+"\n");
                     }
                     if (root.getPublishedBy() != null) {
                         sb.append(_constants.publishedBy()
@@ -163,7 +164,8 @@ public class MainMenu
                     new UnlockAction(ssm)));
             }
             if (root.getLockedBy().equals(_user.getUsername())) {
-                if (root.getPublishedBy() == null || root.getPublishedBy().equals("")) {
+                if (root.getPublishedBy() == null
+                        || root.getPublishedBy().equals("")) {
                     _itemMenu.add(createMenuItem(
                         "publish-root",
                         _constants.publish(),

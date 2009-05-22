@@ -17,7 +17,7 @@ final class ListenerAction
     /**
      * Constructor.
      *
-     * @param action
+     * @param action The Action.
      */
     ListenerAction(final Action action) {
         _action = action;

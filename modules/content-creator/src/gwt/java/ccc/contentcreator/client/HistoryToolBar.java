@@ -32,7 +32,7 @@ public class HistoryToolBar
     /**
      * Constructor.
      *
-     * @param historyDialog
+     * @param historyDialog The history dialog.
      */
     public HistoryToolBar(final HistoryDialog historyDialog) {
         _historyDialog = historyDialog;
