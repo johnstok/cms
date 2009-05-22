@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 /**
- * TODO: Add Description for this type.
+ * A response header with a date value.
  *
  * @author Civic Computing Ltd.
  */
@@ -31,8 +31,8 @@ public class DateHeader
     /**
      * Constructor.
      *
-     * @param name
-     * @param value
+     * @param name The name of the header.
+     * @param value The value of the header.
      */
     public DateHeader(final String name, final Date value) {
         _name = name;

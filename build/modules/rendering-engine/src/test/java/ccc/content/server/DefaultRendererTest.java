@@ -82,7 +82,7 @@ public class DefaultRendererTest
         p.workingCopy(delta);
 
         // ACT
-        rr.renderWorkingCopy(p, noParams);
+        rr.renderWorkingCopy(p, _noParams);
 
         // ASSERT
         assertEquals(1, p.paragraphs().size());
@@ -103,7 +103,7 @@ public class DefaultRendererTest
         p.workingCopy(delta);
 
         // ACT
-        _renderer.renderWorkingCopy(p, noParams);
+        _renderer.renderWorkingCopy(p, _noParams);
 
         // ASSERT
         assertEquals(1, p.paragraphs().size());
@@ -122,7 +122,7 @@ public class DefaultRendererTest
 
         // ACT
         try {
-            _renderer.render(t, noParams);
+            _renderer.render(t, _noParams);
             fail();
 
         // ASSERT
@@ -141,7 +141,7 @@ public class DefaultRendererTest
 
         // ACT
         try {
-            _renderer.render(null, noParams);
+            _renderer.render(null, _noParams);
 
         // ASSERT
         } catch (final NotFoundException e) {
@@ -159,7 +159,7 @@ public class DefaultRendererTest
 
         // ACT
         try {
-            _renderer.render((Resource) null, noParams);
+            _renderer.render((Resource) null, _noParams);
 
         // ASSERT
         } catch (final NotFoundException e) {
@@ -170,16 +170,14 @@ public class DefaultRendererTest
 
     /**
      * Test.
-     * @throws MimeTypeParseException For invalids mime types.
      */
     public void testRenderPage() {
 
         // ARRANGE
-        final MimeType htmlMimeType = new MimeType("text", "html");
         final Page p = new Page("foo");
 
         // ACT
-        final Response r = _renderer.render(p, noParams);
+        final Response r = _renderer.render(p, _noParams);
 
         // ASSERT
         final List<Header> expected = new ArrayList<Header>() {{
@@ -198,7 +196,6 @@ public class DefaultRendererTest
 
     /**
      * Test.
-     * @throws MimeTypeParseException For invalid mime type.
      */
     public void testRenderFile() {
 
@@ -212,7 +209,7 @@ public class DefaultRendererTest
                 MimeType.HTML);
 
         // ACT
-        final Response r = _renderer.render(f, noParams);
+        final Response r = _renderer.render(f, _noParams);
 
         // ASSERT
         final List<Header> expected = new ArrayList<Header>() {{
@@ -244,7 +241,7 @@ public class DefaultRendererTest
 
         // ACT
         try {
-            _renderer.render(f, noParams);
+            _renderer.render(f, _noParams);
             fail("Should throw exception");
 
         // ASSERT
@@ -256,7 +253,7 @@ public class DefaultRendererTest
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     * @throws ResourceExistsException If a folder already contains a resource.
      */
     public void testRenderFolderRedirectsToFirstPage()
     throws ResourceExistsException {
@@ -271,7 +268,7 @@ public class DefaultRendererTest
 
         // ACT
         try {
-            _renderer.render(f, noParams);
+            _renderer.render(f, _noParams);
             fail("Should throw exception");
 
         // ASSERT
@@ -282,7 +279,7 @@ public class DefaultRendererTest
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     * @throws ResourceExistsException If a folder already contains a resource.
      */
     public void testRenderFolderIgnoresNonVisiblePages()
     throws ResourceExistsException {
@@ -297,7 +294,7 @@ public class DefaultRendererTest
 
         // ACT
         try {
-            _renderer.render(f, noParams);
+            _renderer.render(f, _noParams);
             fail("Should throw exception");
 
         // ASSERT
@@ -309,7 +306,7 @@ public class DefaultRendererTest
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     * @throws ResourceExistsException If a folder already contains a resource.
      */
     public void testRenderFolderIgnoresNonPageResources()
     throws ResourceExistsException {
@@ -330,7 +327,7 @@ public class DefaultRendererTest
 
         // ACT
         try {
-            _renderer.render(root, noParams);
+            _renderer.render(root, _noParams);
             fail("Should throw exception");
 
         // ASSERT
@@ -351,7 +348,7 @@ public class DefaultRendererTest
 
         // ACT
         try {
-            _renderer.render(a, noParams);
+            _renderer.render(a, _noParams);
             fail("Should throw exception");
 
         // ASSERT
@@ -373,7 +370,7 @@ public class DefaultRendererTest
 
         // ACT
         try {
-            rr.render(p, noParams);
+            rr.render(p, _noParams);
             fail("Should throw exception");
 
         // ASSERT
@@ -403,6 +400,6 @@ public class DefaultRendererTest
     private final SearchEngine _se = Testing.dummy(SearchEngine.class);
     private final StatefulReader _sr = Testing.stub(StatefulReader.class);
     private final User _user = new User("fooo");
-    private final Map<String, String[]> noParams =
+    private final Map<String, String[]> _noParams =
         new HashMap<String, String[]>();
 }

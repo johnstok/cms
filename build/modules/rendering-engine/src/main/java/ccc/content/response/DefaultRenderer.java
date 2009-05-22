@@ -55,6 +55,8 @@ public class DefaultRenderer
      *
      * @param dm The data manager for this resource renderer.
      * @param respectVisiblity Should we check a resource's visibility?
+     * @param searchEngine The search engine to use.
+     * @param reader The resource reader to use.
      */
     public DefaultRenderer(final DataManager dm,
                            final SearchEngine searchEngine,
@@ -129,8 +131,9 @@ public class DefaultRenderer
 
     /** {@inheritDoc} */
     @Override
-    public Response renderHistoricalVersion(final Resource resource,
-                                            final Map<String, String[]> parameters) {
+    public Response renderHistoricalVersion(
+                                    final Resource resource,
+                                    final Map<String, String[]> parameters) {
         if (!_respectVisibility) {
             if (resource instanceof WorkingCopyAware) {
 

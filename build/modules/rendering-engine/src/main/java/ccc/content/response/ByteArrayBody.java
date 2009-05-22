@@ -17,7 +17,7 @@ import java.nio.charset.Charset;
 
 
 /**
- * TODO: Add Description for this type.
+ * A response body defined by a byte array.
  *
  * @author Civic Computing Ltd.
  */
@@ -30,9 +30,9 @@ public class ByteArrayBody
     /**
      * Constructor.
      *
-     * @param bytes
+     * @param bytes The body data.
      */
-    public ByteArrayBody (final byte[] bytes) {
+    public ByteArrayBody(final byte[] bytes) {
         _bytes = bytes;
     }
 

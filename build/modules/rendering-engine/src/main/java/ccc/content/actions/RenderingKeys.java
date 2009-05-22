@@ -13,14 +13,21 @@ package ccc.content.actions;
 
 
 /**
- * TODO: Add Description for this type.
+ * Attribute keys for the rendering module.
  *
  * @author Civic Computing Ltd.
  */
-public class RenderingKeys {
+public final class RenderingKeys {
 
+    private RenderingKeys() { super(); }
+
+    /** READER_KEY : String. */
     public static final String READER_KEY = "ccc.reader";
+
+    /** SEARCH_KEY : String. */
     public static final String SEARCH_KEY = "ccc.search";
+
+    /** DATAMGR_KEY : String. */
     public static final String DATAMGR_KEY = "ccc.data";
 
 }

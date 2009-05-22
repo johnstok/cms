@@ -11,15 +11,12 @@
  */
 package ccc.content.response;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 import ccc.api.DBC;
 import ccc.api.MimeType;
@@ -40,7 +37,6 @@ import ccc.services.StatefulReader;
 public class SearchBody
     implements
         Body {
-    private static final Logger LOG = Logger.getLogger(SearchBody.class);
 
     private final Search  _search;
     private final StatefulReader _reader;
@@ -54,6 +50,8 @@ public class SearchBody
      * @param s The search to render.
      * @param reader A stateful reader to access other resources.
      * @param searchEngine The engine used to perform the search.
+     * @param searchTerms The query terms supplied to the request.
+     * @param pageNumber The page of results required.
      */
     public SearchBody(final Search s,
                       final StatefulReader reader,
@@ -75,7 +73,7 @@ public class SearchBody
     /** {@inheritDoc} */
     @Override
     public void write(final OutputStream os,
-                      final Charset charset) throws IOException {
+                      final Charset charset) {
 
         final SearchResult result = _searchEngine.find(_terms, 10, _pageNumber);
 
@@ -84,7 +82,7 @@ public class SearchBody
         final Map<String, Object> values = new HashMap<String, Object>();
         values.put("reader", _reader);
         values.put("result", result);
-        values.put("pageNumber", _pageNumber);
+        values.put("pageNumber", Integer.valueOf(_pageNumber));
         values.put("resource", _search);
         values.put("terms", _terms);
         new VelocityProcessor().render(t, w, values);
@@ -97,7 +95,8 @@ public class SearchBody
             "<form name=\"search\" action=\"$resource.name()\">"
             +"<input name=\"q\" autocomplete=\"off\"/>"
             +"<input type=\"submit\" value=\"Search\"  name=\"go\"/>"
-            +"</form>Shown Hits: $!result.hits().size() - Total: $!result.totalResults()",
+            +"</form>Shown Hits: $!result.hits().size() - "
+            +"Total: $!result.totalResults()",
             "<fields/>",
             MimeType.HTML);
 }

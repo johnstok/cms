@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 /**
- * TODO: Add Description for this type.
+ * A character encoding header.
  *
  * @author Civic Computing Ltd.
  */
@@ -30,7 +30,7 @@ public class CharEncodingHeader
     /**
      * Constructor.
      *
-     * @param value
+     * @param value The value of the header.
      */
     public CharEncodingHeader(final Charset value) {
         _value = value;

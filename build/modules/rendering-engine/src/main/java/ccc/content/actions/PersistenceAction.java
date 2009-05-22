@@ -19,22 +19,19 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
-
 import ccc.persistence.jpa.BaseDao;
 import ccc.services.Dao;
 
 
 
 /**
- * TODO: Add Description for this type.
+ * A servlet action that manages JPA persistence contexts.
  *
  * @author Civic Computing Ltd.
  */
 public class PersistenceAction
     implements
         ServletAction {
-    private static final Logger LOG = Logger.getLogger(PersistenceAction.class);
 
     private final EntityManagerFactory _emf;
     private final ServletAction _delegate;
@@ -42,8 +39,8 @@ public class PersistenceAction
     /**
      * Constructor.
      *
-     * @param delegate
-     * @param utx
+     * @param delegate The next action in the chain.
+     * @param emf The entity manager factory used to create entity mangers.
      */
     public PersistenceAction(final ServletAction delegate,
                              final EntityManagerFactory emf) {

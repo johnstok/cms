@@ -17,7 +17,8 @@ import ccc.domain.Resource;
 
 
 /**
- * TODO: Add Description for this type.
+ * An exception indicating that a user attempted to access a resource without
+ * sufficient privileges.
  *
  * @author Civic Computing Ltd.
  */
@@ -30,13 +31,18 @@ public class AuthenticationRequiredException
     /**
      * Constructor.
      *
-     * @param r
+     * @param r The resource that requires authentication.
      */
     public AuthenticationRequiredException(final Resource r) {
         DBC.require().notNull(r);
         _resource = r;
     }
 
+    /**
+     * Accessor.
+     *
+     * @return The resource that requires authentication.
+     */
     public Resource getResource() {
         return _resource;
     }

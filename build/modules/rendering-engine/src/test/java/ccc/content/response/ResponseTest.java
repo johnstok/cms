@@ -38,6 +38,8 @@ public class ResponseTest
     extends
         TestCase {
 
+    /** MILLISECS_300 : int. */
+    private static final int MILLISECS_300 = 300;
     /**
      * Test.
      */
@@ -88,7 +90,6 @@ public class ResponseTest
 
     /**
      * Test.
-     * @throws MimeTypeParseException If a mime type is invalid.
      */
     public void testMimeTypeProperty() {
 
@@ -124,13 +125,15 @@ public class ResponseTest
     public void testExpiryPropertyOkForCacheableResource() {
 
         // ARRANGE
-        _r.setExpiry(new Duration(300));
+        _r.setExpiry(new Duration(MILLISECS_300));
 
         // ACT
         final List<Header> headers = _r.getHeaders();
 
         // ASSERT
-        assertTrue(headers.contains(new StringHeader("Cache-Control", "max-age="+300)));
+        assertTrue(
+            headers.contains(
+                new StringHeader("Cache-Control", "max-age="+MILLISECS_300)));
         System.out.println(headers);
     }
 

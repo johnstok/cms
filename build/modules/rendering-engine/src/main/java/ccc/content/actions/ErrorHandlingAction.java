@@ -20,15 +20,13 @@ import javax.servlet.http.HttpServletResponse;
 
 
 /**
- * TODO: Add Description for this type.
+ * A servlet action that catches and handles runtime exceptions.
  *
  * @author Civic Computing Ltd.
  */
 public class ErrorHandlingAction
     extends
-        AbstractServletAction
-    implements
-        ServletAction {
+        AbstractServletAction {
 
     private final ServletAction _delegate;
     private final ServletContext _context;
@@ -36,8 +34,8 @@ public class ErrorHandlingAction
     /**
      * Constructor.
      *
-     * @param delegate
-     * @param context
+     * @param delegate The next action in the chain.
+     * @param context The servlet context.
      */
     public ErrorHandlingAction(final ServletAction delegate,
                                final ServletContext context) {

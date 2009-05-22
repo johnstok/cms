@@ -38,7 +38,7 @@ import ccc.services.StatefulReader;
 
 
 /**
- * TODO: Add Description for this type.
+ * A servlet action that renders a resource to servlet response.
  *
  * @author Civic Computing Ltd.
  */
@@ -56,11 +56,11 @@ public class RenderResourceAction
     /**
      * Constructor.
      *
-     * @param user
-     * @param respectVisiblity
-     * @param rootName
-     * @param _data
-     * @param _search
+     * @param respectVisiblity Should we respect the visibility of resources,
+     *  as specified by their published status.
+     * @param rootName The name of content root to serve from.
+     * @param loginUri The url of the login page for secure resources.
+     * @param search The search engine to use.
      */
     public RenderResourceAction(final boolean respectVisiblity,
                                 final String rootName,
@@ -79,7 +79,7 @@ public class RenderResourceAction
                         final HttpServletResponse response)
                                           throws ServletException, IOException {
         try {
-            final DataManager _data =
+            final DataManager data =
                 (DataManager) request.getAttribute(SessionKeys.DATA_KEY);
 
             final ResourcePath contentPath = determineResourcePath(request);
@@ -91,7 +91,7 @@ public class RenderResourceAction
             checkSecurity(
                 rs, (User) request.getAttribute(SessionKeys.CURRENT_USER));
             final Response r =
-                prepareResponse(request, reader, _data, _search, rs);
+                prepareResponse(request, reader, data, _search, rs);
 
             if (rs.roles().size()>0) {
                 r.setExpiry(null); // Dont'cache secure pages.
@@ -120,6 +120,14 @@ public class RenderResourceAction
     }
 
 
+    /**
+     * Look up a resource given its path.
+     *
+     * @param contentPath The resource path.
+     * @param reader The reader to perform the lookup.
+     *
+     * @return The corresponding resource.
+     */
     public Resource lookupResource(final ResourcePath contentPath,
                                    final StatefulReader reader) {
         final Resource rs = reader.lookup(_rootName, contentPath);

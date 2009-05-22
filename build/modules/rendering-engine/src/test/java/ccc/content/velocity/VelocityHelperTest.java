@@ -50,8 +50,8 @@ public class VelocityHelperTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
      *
+     * @throws ResourceExistsException If a folder already contains a page.
      */
     public void testSelectPathElements() throws ResourceExistsException {
 
@@ -78,10 +78,11 @@ public class VelocityHelperTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
      *
+     * @throws ResourceExistsException If a folder already contains a page.
      */
-    public void testSelectPagesForContentIndex() throws ResourceExistsException {
+    public void testSelectPagesForContentIndex()
+                                                throws ResourceExistsException {
 
         // ARRANGE
         final VelocityHelper helper = new VelocityHelper();
@@ -113,8 +114,8 @@ public class VelocityHelperTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
      *
+     * @throws ResourceExistsException If a folder already contains a page.
      */
     public void testSelectPagesForContentIndexNoLimit()
     throws ResourceExistsException {

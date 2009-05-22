@@ -17,7 +17,7 @@ import ccc.api.MimeType;
 
 
 /**
- * TODO: Add Description for this type.
+ * A content-type header.
  *
  * @author Civic Computing Ltd.
  */
@@ -27,7 +27,7 @@ public class ContentTypeHeader implements Header {
     /**
      * Constructor.
      *
-     * @param value
+     * @param value The value of the header.
      */
     public ContentTypeHeader(final MimeType value) {
         _value = value.toString();

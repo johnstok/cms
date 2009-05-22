@@ -15,10 +15,16 @@ import javax.servlet.http.HttpServletResponse;
 
 
 /**
- * TODO: Add Description for this type.
+ * API for a ccc response header.
  *
  * @author Civic Computing Ltd.
  */
 public interface Header {
+
+    /**
+     * Write this header to a servlet response.
+     *
+     * @param response The servlet response.
+     */
     void writeTo(HttpServletResponse response);
 }
