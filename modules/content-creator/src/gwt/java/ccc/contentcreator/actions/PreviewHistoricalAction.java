@@ -24,7 +24,7 @@ public final class PreviewHistoricalAction
     /**
      * Constructor.
      *
-     * @param dialog
+     * @param dialog The history dialog.
      */
     public PreviewHistoricalAction(final HistoryDialog dialog) {
         _historyDialog = dialog;

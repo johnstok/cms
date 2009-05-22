@@ -42,7 +42,7 @@ public final class ChooseTemplateAction
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
 
         if (item == null) {
-            Globals.alert(Globals.uiConstants().noFolderSelected());
+            Globals.alert(_constants.noFolderSelected());
             return;
         }
 
