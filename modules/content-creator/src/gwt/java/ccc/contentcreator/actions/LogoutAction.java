@@ -18,7 +18,7 @@ public final class LogoutAction
     /** {@inheritDoc} */
     public void execute() {
         Globals.securityService().logout(
-            new ErrorReportingCallback<Void>() {
+            new ErrorReportingCallback<Void>(UI_CONSTANTS.logout()) {
                 public void onSuccess(final Void result) {
                     Globals.currentUser(null);
                     Globals.disableExitConfirmation();

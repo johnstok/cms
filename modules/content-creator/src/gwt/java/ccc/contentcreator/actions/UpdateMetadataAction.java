@@ -37,7 +37,7 @@ public final class UpdateMetadataAction
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         _queries.metadata(
             item.getId(),
-            new ErrorReportingCallback<Map<String, String>>(){
+            new ErrorReportingCallback<Map<String, String>>(UI_CONSTANTS.updateMetadata()){
                 public void onSuccess(final Map<String, String> data) {
                     new MetadataDialog(
                         item.getId(),

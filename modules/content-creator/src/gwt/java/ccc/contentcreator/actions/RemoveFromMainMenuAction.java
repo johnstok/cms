@@ -48,7 +48,7 @@ public class RemoveFromMainMenuAction
         _commands.includeInMainMenu(
             item.getId(),
             false,
-            new ErrorReportingCallback<Void>(){
+            new ErrorReportingCallback<Void>(UI_CONSTANTS.removeFromMainMenu()){
                 public void onSuccess(final Void arg0) {
                     item.setIncludeInMainMenu(false);
                     _selectionModel.update(item);

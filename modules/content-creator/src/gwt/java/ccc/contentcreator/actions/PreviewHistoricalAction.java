@@ -38,7 +38,7 @@ public final class PreviewHistoricalAction
         }
         _queries.getAbsolutePath(
             item.getId(),
-            new ErrorReportingCallback<String>() {
+            new ErrorReportingCallback<String>(UI_CONSTANTS.preview()) {
                 public void onSuccess(final String path) {
                     new PreviewContentDialog(path, item.getIndex()).show();
                 }

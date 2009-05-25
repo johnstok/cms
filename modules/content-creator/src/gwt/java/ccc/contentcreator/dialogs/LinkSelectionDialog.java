@@ -12,6 +12,7 @@
 package ccc.contentcreator.dialogs;
 
 import ccc.api.ResourceSummary;
+import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
@@ -35,6 +36,8 @@ import com.google.gwt.core.client.GWT;
  * @author Civic Computing Ltd.
  */
 public class LinkSelectionDialog extends LayoutContainer {
+    private static final ActionNameConstants USER_ACTIONS =
+        GWT.create(ActionNameConstants.class);
 
     private final ResourceTree _tree;
     /** _qs : QueriesServiceAsync. */
@@ -70,7 +73,7 @@ public class LinkSelectionDialog extends LayoutContainer {
                     } else {
                         _qs.getAbsolutePath(
                             target.getId(),
-                            new ErrorReportingCallback<String>() {
+                            new ErrorReportingCallback<String>(USER_ACTIONS.unknownAction()) {
                                 public void onSuccess(final String path) {
                                     jsniSetUrl(path, target.getTitle());
                                     closeWindow();

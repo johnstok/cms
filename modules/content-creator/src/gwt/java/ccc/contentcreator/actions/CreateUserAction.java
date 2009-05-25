@@ -20,7 +20,7 @@ public final class CreateUserAction
     /** {@inheritDoc} */
     public void execute() {
         Globals.queriesService().loggedInUser(
-          new ErrorReportingCallback<UserSummary>() {
+          new ErrorReportingCallback<UserSummary>(UI_CONSTANTS.createUser()) {
               public void onSuccess(final UserSummary user) {
                   new CreateUserDialog().show();
               }

@@ -57,7 +57,7 @@ public class UpdatePageDialog
         private final AsyncCallback<Void> _saveDraftCompletedCallback =
             new AsyncCallback<Void>() {
             public void onFailure(final Throwable arg0) {
-                Globals.unexpectedError(arg0);
+                Globals.unexpectedError(arg0, _constants.saveDraft());
             }
             public void onSuccess(final Void arg0) {
                 final ResourceSummaryModelData md = rt().tableSelection();

@@ -55,7 +55,7 @@ public class CancelActionAction
         } else {
             _commands.cancelAction(
                 action.getId(),
-                new ErrorReportingCallback<Void>(){
+                new ErrorReportingCallback<Void>(UI_CONSTANTS.cancel()){
                     public void onSuccess(final Void arg0) {
                         action.setStatus(ActionStatus.Cancelled);
                         _table.update(action);

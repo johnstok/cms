@@ -41,7 +41,7 @@ public final class CreatePageAction
             return;
         }
         _queries.templates(
-            new ErrorReportingCallback<Collection<TemplateSummary>>(){
+            new ErrorReportingCallback<Collection<TemplateSummary>>(UI_CONSTANTS.createPage()){
                 public void onSuccess(
                                       final Collection<TemplateSummary> list) {
                     new CreatePageDialog(list, item, _selectionModel).show();

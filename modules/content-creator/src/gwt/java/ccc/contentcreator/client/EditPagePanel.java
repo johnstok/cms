@@ -250,13 +250,14 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         if (id != null && !id.trim().equals("")) {
             final ID resourceId = new ID(id);
             _qs.getAbsolutePath(resourceId,
-                new ErrorReportingCallback<String>() {
+                new ErrorReportingCallback<String>(_constants.updateContent()) { // FIXME: Could also be 'create page'.
 
                 @Override
                 public void onSuccess(final String path) {
                     final FileSummary fs =
                         new FileSummary("image", path, resourceId, "", "");
-                    final FileSummaryModelData model = new FileSummaryModelData(fs);
+                    final FileSummaryModelData model =
+                        new FileSummaryModelData(fs);
                     image.setValue(path);
                     image.setFSModel(model);
                 }

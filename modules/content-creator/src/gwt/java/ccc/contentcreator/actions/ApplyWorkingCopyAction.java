@@ -47,7 +47,7 @@ public class ApplyWorkingCopyAction
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         _commands.applyWorkingCopy(
             item.getId(),
-            new ErrorReportingCallback<Void>(){
+            new ErrorReportingCallback<Void>(UI_CONSTANTS.applyWorkingCopy()){
                 public void onSuccess(final Void arg0) {
                     item.setWorkingCopy(false);
                     _selectionModel.update(item);

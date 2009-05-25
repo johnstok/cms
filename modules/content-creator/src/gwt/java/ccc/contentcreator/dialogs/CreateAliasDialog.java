@@ -112,7 +112,7 @@ public class CreateAliasDialog extends AbstractEditDialog {
                     _parent.getId(),
                     _aliasName.getValue(),
                     _ssm.tableSelection().getId(),
-                    new ErrorReportingCallback<ResourceSummary>(){
+                    new ErrorReportingCallback<ResourceSummary>(_constants.createAlias()){
                         public void onSuccess(final ResourceSummary result) {
                             final ResourceSummaryModelData newAlias =
                                 new ResourceSummaryModelData(result);

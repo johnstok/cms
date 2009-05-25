@@ -34,7 +34,7 @@ public class ClearWorkingCopyAction
         final ResourceSummaryModelData page = _selectionModel.tableSelection();
         _commands.clearWorkingCopy(
             page.getId(),
-            new ErrorReportingCallback<Void>(){
+            new ErrorReportingCallback<Void>(UI_CONSTANTS.deleteWorkingCopy()){
                 public void onSuccess(final Void arg0) {
                     _selectionModel.tableSelection().setWorkingCopy(false);
                     _selectionModel.update(page);

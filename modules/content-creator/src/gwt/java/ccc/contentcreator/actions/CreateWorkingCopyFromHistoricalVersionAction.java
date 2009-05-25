@@ -36,7 +36,7 @@ public class CreateWorkingCopyFromHistoricalVersionAction
         _commands.createWorkingCopy(
             selected.getId(),
             selected.getIndex(),
-            new ErrorReportingCallback<Void>(){
+            new ErrorReportingCallback<Void>(UI_CONSTANTS.revert()){
                 public void onSuccess(final Void arg0) {
                     _dialog.workingCopyCreated();
                     _dialog.close();

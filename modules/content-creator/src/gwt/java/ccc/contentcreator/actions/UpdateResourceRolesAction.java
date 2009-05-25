@@ -37,7 +37,8 @@ public final class UpdateResourceRolesAction
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         _queries.roles(
             item.getId(),
-            new ErrorReportingCallback<Collection<String>>(){
+            new ErrorReportingCallback<Collection<String>>(
+                UI_CONSTANTS.updateRoles()){
                 public void onSuccess(final Collection<String> data) {
                     new UpdateResourceRolesDialog(
                         item.getId(),

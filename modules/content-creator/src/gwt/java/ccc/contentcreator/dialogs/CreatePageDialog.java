@@ -182,7 +182,7 @@ public class CreatePageDialog
         cb.setBoxLabel(_uiConstants.useDefaultTemplate());
         cb.setId(_uiConstants.useDefaultTemplate());
         queries().computeTemplate(_parent.getId(),
-            new ErrorReportingCallback<TemplateSummary>() {
+            new ErrorReportingCallback<TemplateSummary>(_constants.createPage()) {
             public void onSuccess(final TemplateSummary result) {
                 if (result == null) {
                     cb.setValue(Boolean.FALSE);
@@ -204,7 +204,7 @@ public class CreatePageDialog
                 if (cb.getValue().booleanValue()) {
                     queries().computeTemplate(
                         _parent.getId(),
-                        new ErrorReportingCallback<TemplateSummary>() {
+                        new ErrorReportingCallback<TemplateSummary>(_constants.createPage()) {
                         public void onSuccess(final TemplateSummary result) {
                             if (result == null) {
                                 cb.disable();
@@ -306,7 +306,7 @@ public class CreatePageDialog
                     _second.name().getValue(),
                     _publish.getValue().booleanValue(),
                     template,
-                    new ErrorReportingCallback<ResourceSummary>() {
+                    new ErrorReportingCallback<ResourceSummary>(_constants.createPage()) {
                         public void onSuccess(final ResourceSummary result) {
                             _ssm.create(
                                 new ResourceSummaryModelData(result),

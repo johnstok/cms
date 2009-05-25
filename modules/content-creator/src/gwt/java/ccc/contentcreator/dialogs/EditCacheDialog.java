@@ -160,7 +160,7 @@ public class EditCacheDialog extends AbstractEditDialog {
                 commands().updateCacheDuration(
                     _item.getId(),
                     updatedDs,
-                    new ErrorReportingCallback<Void>() {
+                    new ErrorReportingCallback<Void>(_constants.editCacheDuration()) {
                     @Override
                     public void onSuccess(final Void arg0) {
                         close();

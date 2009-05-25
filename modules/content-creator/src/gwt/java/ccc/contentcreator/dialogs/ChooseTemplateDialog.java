@@ -117,7 +117,7 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
                 commands().updateResourceTemplate(
                     _resource.getId(),
                     selected.getId(),
-                    new ErrorReportingCallback<Void>(){
+                    new ErrorReportingCallback<Void>(_constants.chooseTemplate()){
                         @Override public void onSuccess(final Void x) {
                             ChooseTemplateDialog.this.close();
                             _resource.setTemplateId(selected.getId());

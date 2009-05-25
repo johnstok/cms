@@ -12,8 +12,13 @@
 
 package ccc.contentcreator.client;
 
+import ccc.contentcreator.api.ActionNameConstants;
+import ccc.contentcreator.api.QueriesServiceAsync;
+import ccc.contentcreator.api.UIConstants;
+
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
+import com.google.gwt.core.client.GWT;
 
 
 /**
@@ -24,6 +29,11 @@ import com.extjs.gxt.ui.client.widget.menu.MenuItem;
 public class AbstractContextMenu
     extends
         Menu {
+
+    protected static final ActionNameConstants USER_ACTIONS =
+        GWT.create(ActionNameConstants.class);
+    protected final UIConstants _constants = Globals.uiConstants();
+    protected final QueriesServiceAsync _qs = Globals.queriesService();
 
     private final SingleSelectionModel _ssm;
 

@@ -135,7 +135,8 @@ public class UserTable extends TablePanel {
                         userDTO.getId(),
                         new AsyncCallback<UserDelta>(){
                             public void onFailure(final Throwable arg0) {
-                                Globals.unexpectedError(arg0);
+                                Globals.unexpectedError(
+                                    arg0, _constants.editUser());
                             }
                             public void onSuccess(final UserDelta delta) {
                                 new EditUserDialog(
@@ -221,32 +222,40 @@ public class UserTable extends TablePanel {
 
         if ("All".equals(selectedItem.getText())) { // FIXME: I18n.
             qs.listUsers(
-                new ErrorReportingCallback<Collection<UserSummary>>() {
-                    public void onSuccess(final Collection<UserSummary> result) {
+                new ErrorReportingCallback<Collection<UserSummary>>(
+                    USER_ACTIONS.viewUsers()) {
+                    public void onSuccess(
+                                      final Collection<UserSummary> result) {
                         updatePager(result);
                     }
                 });
         } else if ("Content creator".equals(selectedItem.getText())){ // FIXME: I18n.
             qs.listUsersWithRole(
                 "CONTENT_CREATOR",
-                new ErrorReportingCallback<Collection<UserSummary>>() {
-                    public void onSuccess(final Collection<UserSummary> result) {
+                new ErrorReportingCallback<Collection<UserSummary>>(
+                    USER_ACTIONS.viewUsers()) {
+                    public void onSuccess(
+                                      final Collection<UserSummary> result) {
                         updatePager(result);
                     }
                 });
         } else if ("Site Builder".equals(selectedItem.getText())) { // FIXME: I18n.
             qs.listUsersWithRole(
                 "SITE_BUILDER",
-                new ErrorReportingCallback<Collection<UserSummary>>() {
-                    public void onSuccess(final Collection<UserSummary> result) {
+                new ErrorReportingCallback<Collection<UserSummary>>(
+                    USER_ACTIONS.viewUsers()) {
+                    public void onSuccess(
+                                      final Collection<UserSummary> result) {
                         updatePager(result);
                     }
                 });
         } else if("Administrator".equals(selectedItem.getText())) { // FIXME: I18n.
             qs.listUsersWithRole(
                 "ADMINISTRATOR",
-                new ErrorReportingCallback<Collection<UserSummary>>() {
-                    public void onSuccess(final Collection<UserSummary> result) {
+                new ErrorReportingCallback<Collection<UserSummary>>(
+                    USER_ACTIONS.viewUsers()) {
+                    public void onSuccess(
+                                      final Collection<UserSummary> result) {
                         updatePager(result);
                     }
                 });
@@ -281,16 +290,20 @@ public class UserTable extends TablePanel {
             if (_radioGroup.getValue() == _usernameRadio) {
                 qs.listUsersWithUsername(
                     _searchString.getValue().replace('*', '%'),
-                    new ErrorReportingCallback<Collection<UserSummary>>() {
-                        public void onSuccess(final Collection<UserSummary> result) {
+                    new ErrorReportingCallback<Collection<UserSummary>>(
+                        USER_ACTIONS.viewUsers()) {
+                        public void onSuccess(
+                                      final Collection<UserSummary> result) {
                             updatePager(result);
                         }
                     });
             } else if (_radioGroup.getValue() == _emailRadio) {
                 qs.listUsersWithEmail(
                     _searchString.getValue().replace('*', '%'),
-                    new ErrorReportingCallback<Collection<UserSummary>>() {
-                        public void onSuccess(final Collection<UserSummary> result) {
+                    new ErrorReportingCallback<Collection<UserSummary>>(
+                        USER_ACTIONS.viewUsers()) {
+                        public void onSuccess(
+                                      final Collection<UserSummary> result) {
                             updatePager(result);
                         }
                     });
@@ -299,14 +312,14 @@ public class UserTable extends TablePanel {
     }
 
     private void updatePager(final Collection<UserSummary> data){
-        PagingModelMemoryProxy proxy =
+        final PagingModelMemoryProxy proxy =
             new PagingModelMemoryProxy(DataBinding.bindUserSummary(data));
-        PagingLoader loader = new BasePagingLoader(proxy);
+        final PagingLoader loader = new BasePagingLoader(proxy);
         loader.setRemoteSort(true);
         _detailsStore = new ListStore<UserSummaryModelData>(loader);
         _pagerBar.bind(loader);
         loader.load(0, 20);
-        ColumnModel cm = _grid.getColumnModel();
+        final ColumnModel cm = _grid.getColumnModel();
         _grid.reconfigure(_detailsStore, cm);
     }
 }

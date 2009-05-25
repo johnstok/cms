@@ -11,7 +11,7 @@
  */
 package ccc.contentcreator.client;
 
-import static ccc.contentcreator.dialogs.AbstractBaseDialog.CONTEXT_MENU_WIDTH;
+import static ccc.contentcreator.dialogs.AbstractBaseDialog.*;
 import ccc.api.AliasDelta;
 import ccc.api.FileDelta;
 import ccc.api.PageDelta;
@@ -39,8 +39,6 @@ import ccc.contentcreator.actions.UpdateResourceRolesAction;
 import ccc.contentcreator.actions.UpdateSortOrderAction;
 import ccc.contentcreator.actions.UpdateTagsAction;
 import ccc.contentcreator.actions.ViewHistoryAction;
-import ccc.contentcreator.api.QueriesServiceAsync;
-import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.dialogs.EditTemplateDialog;
@@ -64,9 +62,6 @@ import com.extjs.gxt.ui.client.widget.menu.SeparatorMenuItem;
 public class ResourceContextMenu
     extends
         AbstractContextMenu {
-
-    private final UIConstants _constants = Globals.uiConstants();
-    private final QueriesServiceAsync _qs = Globals.queriesService();
 
     private final ResourceTable _table;
 
@@ -397,7 +392,7 @@ public class ResourceContextMenu
     private void updateFile(final ResourceSummaryModelData item) {
         _qs.fileDelta(
             item.getId(),
-            new ErrorReportingCallback<FileDelta>() {
+            new ErrorReportingCallback<FileDelta>(_constants.uploadFile()) {
                 public void onSuccess(final FileDelta result) {
                     new UpdateFileDialog(result, item.getId(), _table).show();
                 }
@@ -408,7 +403,7 @@ public class ResourceContextMenu
     private void updateAlias(final ResourceSummaryModelData item) {
         _qs.aliasDelta(
             item.getId(),
-            new ErrorReportingCallback<AliasDelta>() {
+            new ErrorReportingCallback<AliasDelta>(_constants.updateAlias()) {
                 public void onSuccess(final AliasDelta result) {
                     new UpdateAliasDialog(
                         item.getId(),
@@ -424,14 +419,14 @@ public class ResourceContextMenu
     private void updatePage(final ResourceSummaryModelData item) {
         _qs.computeTemplate( // Get the template for the page.
             item.getId(),
-            new ErrorReportingCallback<TemplateSummary>() {
+            new ErrorReportingCallback<TemplateSummary>(_constants.updateContent()) {
                 @Override public void onSuccess(final TemplateSummary template) {
                     if (null==template) {
                         Globals.alert(_constants.noTemplateFound());
                     } else { // Get a delta to edit.
                         _qs.pageDelta(
                             item.getId(),
-                            new ErrorReportingCallback<PageDelta>() {
+                            new ErrorReportingCallback<PageDelta>(_constants.updateContent()) {
                                 @Override public void onSuccess(final PageDelta page) {
                                     new UpdatePageDialog(
                                         item.getId(),
@@ -452,7 +447,7 @@ public class ResourceContextMenu
     private void updateTemplate(final ResourceSummaryModelData item) {
         _qs.templateDelta(
             item.getId(),
-            new ErrorReportingCallback<TemplateDelta>(){
+            new ErrorReportingCallback<TemplateDelta>(_constants.editTemplate()){
                 public void onSuccess(final TemplateDelta td) {
                     new EditTemplateDialog(
                         td,

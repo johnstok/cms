@@ -57,16 +57,16 @@ public class ImageChooserDialog extends AbstractBaseDialog {
             new ListStore<FileSummaryModelData>();
 
         queries().getAllContentImages(
-            new ErrorReportingCallback<Collection<FileSummary>>(){
+            new ErrorReportingCallback<Collection<FileSummary>>(_constants.selectImage()){
                 public void onSuccess(final Collection<FileSummary> arg0) {
                     _models = DataBinding.bindFileSummary(arg0);
                     if (_models != null && _models.size() > 0) {
                         store.add(_models);
-                        FileSummaryModelData fs = image.getFSModel();
+                        final FileSummaryModelData fs = image.getFSModel();
                         if (fs != null) {
-                            List<FileSummaryModelData> selection =
+                            final List<FileSummaryModelData> selection =
                                 new ArrayList<FileSummaryModelData>();
-                            for (FileSummaryModelData item :_models) {
+                            for (final FileSummaryModelData item :_models) {
                                 if (item.getId().equals(fs.getId())) {
                                     selection.add(item);
                                 }
@@ -98,7 +98,7 @@ public class ImageChooserDialog extends AbstractBaseDialog {
         add(panel);
 
         addButton(_cancel);
-        Button save = new Button(constants().save(), saveAction());
+        final Button save = new Button(constants().save(), saveAction());
         addButton(save);
 
     }
@@ -108,9 +108,10 @@ public class ImageChooserDialog extends AbstractBaseDialog {
         return new SelectionListener<ButtonEvent>(){
             @Override
             public void componentSelected(final ButtonEvent ce) {
-                FileSummaryModelData md = _view.getSelectionModel().getSelectedItem();
-                if (md != null)
+                final FileSummaryModelData md = _view.getSelectionModel().getSelectedItem();
+                if (md != null) {
                     _image.setValue(md.getPath());
+                }
                     _image.setFSModel(md);
                 hide();
             }

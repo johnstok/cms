@@ -48,7 +48,7 @@ public class IncludeInMainMenuAction
         _commands.includeInMainMenu(
             item.getId(),
             true,
-            new ErrorReportingCallback<Void>(){
+            new ErrorReportingCallback<Void>(UI_CONSTANTS.addToMainMenu()){
                 public void onSuccess(final Void arg0) {
                     item.setIncludeInMainMenu(true);
                     _selectionModel.update(item);

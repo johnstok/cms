@@ -29,6 +29,7 @@ import ccc.contentcreator.actions.UpdateResourceRolesAction;
 import ccc.contentcreator.actions.UpdateSortOrderAction;
 import ccc.contentcreator.actions.UpdateTagsAction;
 import ccc.contentcreator.actions.ViewHistoryAction;
+import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
@@ -39,6 +40,7 @@ import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.toolbar.TextToolItem;
+import com.google.gwt.core.client.GWT;
 
 
 /**
@@ -51,6 +53,8 @@ public class MainMenu
         AbstractToolBar {
 
     private final UIConstants _constants = Globals.uiConstants();
+    private static final ActionNameConstants USER_ACTIONS =
+        GWT.create(ActionNameConstants.class);
     private final Menu _itemMenu = new Menu();
     private final UserSummary _user;
     /**
@@ -105,7 +109,7 @@ public class MainMenu
             public void handleEvent(final MenuEvent be) {
                 _itemMenu.removeAll();
                 final QueriesServiceAsync qs = Globals.queriesService();
-                qs.roots(new ErrorReportingCallback<Collection<ResourceSummary>>(){
+                qs.roots(new ErrorReportingCallback<Collection<ResourceSummary>>(USER_ACTIONS.internalAction()){
                     public void onSuccess(final Collection<ResourceSummary> roots) {
                         for (final ResourceSummary root : roots) {
                             if ("content".equals(root.getName())) {

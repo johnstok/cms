@@ -119,7 +119,8 @@ public class UpdateAliasDialog extends AbstractEditDialog {
                 commands().updateAlias(
                     _aliasId,
                     _alias,
-                    new DisposingCallback(UpdateAliasDialog.this)
+                    new DisposingCallback(
+                        UpdateAliasDialog.this, _constants.updateAlias())
                 );
             }
         };

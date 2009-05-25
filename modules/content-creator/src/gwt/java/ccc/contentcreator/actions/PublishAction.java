@@ -34,7 +34,7 @@ public class PublishAction
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         _commands.publish(
             item.getId(),
-            new ErrorReportingCallback<Void>(){
+            new ErrorReportingCallback<Void>(UI_CONSTANTS.publish()){
                 public void onSuccess(final Void arg0) {
                     item.setPublished(Globals.currentUser().getUsername());
                     _selectionModel.update(item);

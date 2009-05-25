@@ -50,7 +50,7 @@ public final class ChooseTemplateAction
             || ResourceType.FOLDER==item.getType()
             || ResourceType.SEARCH==item.getType()) {
             _queries.templates(
-                new ErrorReportingCallback<Collection<TemplateSummary>>() {
+                new ErrorReportingCallback<Collection<TemplateSummary>>(UI_CONSTANTS.chooseTemplate()) {
                     public void onSuccess(final Collection<TemplateSummary> templates) {
                         new ChooseTemplateDialog(
                             item,

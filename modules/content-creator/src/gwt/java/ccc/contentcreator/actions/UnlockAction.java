@@ -46,7 +46,7 @@ public class UnlockAction
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         _commands.unlock(
             item.getId(),
-            new ErrorReportingCallback<Void>(){
+            new ErrorReportingCallback<Void>(UI_CONSTANTS.unlock()){
                 public void onSuccess(final Void arg0) {
                     item.setLocked(null);
                     _selectionModel.update(item);

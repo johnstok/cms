@@ -89,7 +89,7 @@ public class RenameDialog extends AbstractEditDialog {
                 commands().rename(
                     _item.getId(),
                     _newName.getValue(),
-                    new ErrorReportingCallback<Void>() {
+                    new ErrorReportingCallback<Void>(_constants.rename()) {
                         public void onSuccess(final Void result) {
                             _item.setName(_newName.getValue());
                             _ssm.update(_item);

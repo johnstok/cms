@@ -93,7 +93,9 @@ public class UpdateFileDialog extends AbstractEditDialog {
                 public void handleEvent(final FormEvent be) {
                     hide();
                     if (!be.resultHtml.equals("File was updated successfully.")) {
-                        Globals.unexpectedError(new Exception(be.resultHtml));
+                        Globals.unexpectedError(
+                            new Exception(be.resultHtml),
+                            _constants.updateFile());
                     } else {
                         final ResourceSummaryModelData md = rt.tableSelection();
                         md.setTitle(_title.getValue());

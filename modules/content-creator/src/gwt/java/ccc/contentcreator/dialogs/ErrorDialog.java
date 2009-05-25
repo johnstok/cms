@@ -107,6 +107,12 @@ public class ErrorDialog extends AbstractEditDialog {
         switch (code) {
             case Failure.UNLOCKED:
                 return ERR_RESOLUTIONS.unlocked();
+            case Failure.EXISTS:
+                return ERR_RESOLUTIONS.exists();
+            case Failure.LOCK_MISMATCH:
+                return ERR_RESOLUTIONS.lockMismatch();
+            case Failure.UNEXPECTED:
+                return ERR_RESOLUTIONS.contactSysAdmin();
             default:
                 return ERR_RESOLUTIONS.contactSysAdmin();
         }
@@ -117,6 +123,12 @@ public class ErrorDialog extends AbstractEditDialog {
         switch (code) {
             case Failure.UNLOCKED:
                 return ERR_DESCRIPTIONS.unlocked();
+            case Failure.EXISTS:
+                return ERR_DESCRIPTIONS.exists();
+            case Failure.LOCK_MISMATCH:
+                return ERR_DESCRIPTIONS.lockMismatch();
+            case Failure.UNEXPECTED:
+                return ERR_DESCRIPTIONS.unknown();
             default:
                 return ERR_DESCRIPTIONS.unknown();
         }

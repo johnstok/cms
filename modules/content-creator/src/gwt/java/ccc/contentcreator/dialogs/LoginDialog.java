@@ -11,6 +11,7 @@
  */
 package ccc.contentcreator.dialogs;
 
+import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.api.SecurityServiceAsync;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
@@ -19,6 +20,7 @@ import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
@@ -28,6 +30,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @author Civic Computing Ltd.
  */
 public class LoginDialog extends AbstractEditDialog {
+    private static final ActionNameConstants USER_ACTIONS =
+        GWT.create(ActionNameConstants.class);
 
     private final TextField<String> _username = new TextField<String>();
     private final TextField<String> _password = new TextField<String>();
@@ -41,7 +45,7 @@ public class LoginDialog extends AbstractEditDialog {
 
         final SecurityServiceAsync ss = Globals.securityService();
         ss.readProperty("application.name",
-            new ErrorReportingCallback<String>(){
+            new ErrorReportingCallback<String>(USER_ACTIONS.readProperty()){
             @Override
             public void onSuccess(final String value) {
                 setHeading(Globals.uiConstants().login() +" - "+value);
@@ -82,7 +86,7 @@ public class LoginDialog extends AbstractEditDialog {
                     _password.getValue(),
                     new AsyncCallback<Boolean>(){
                         public void onFailure(final Throwable caught) {
-                            Globals.unexpectedError(caught);
+                            Globals.unexpectedError(caught, _constants.login());
                         }
                         public void onSuccess(final Boolean loginSucceeded) {
                             if (loginSucceeded) {
