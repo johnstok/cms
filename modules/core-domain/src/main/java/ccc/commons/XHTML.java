@@ -291,4 +291,24 @@ public final class XHTML {
             throw new CCCException(e);
         }
     }
+
+    /**
+     * Escape a html/xhtml string.
+     * <p>
+     * This method converts all HTML 4.01 'markup significant' characters to
+     * their equivalent entities, as follows:
+     * <ol>\u0022 -> &amp;quot;</ol>
+     * <ol>\u0026 -> &amp;amp;</ol>
+     * <ol>\u003c -> &amp;lt;</ol>
+     * <ol>\u003e -> &amp;gt;</ol>
+     *
+     * @param string The string to escape.
+     * @return The escaped string.
+     */
+    public static String escape(final String string) {
+        return string.replace("\u0026", "&amp;")        // &
+                     .replace("\u005C\u0022", "&quot;") // "
+                     .replace("\u003c", "&lt;")         // <
+                     .replace("\u003e", "&gt;");        // >
+    }
 }
