@@ -82,7 +82,7 @@ public class CreateActionDialog
                     "{}",
                     _createAction.getComment(),
                     _createAction.isMajorEdit(),
-                    new ErrorReportingCallback<Void>(){
+                    new ErrorReportingCallback<Void>(_constants.createAction()){
                         public void onSuccess(final Void arg0) {
                             close();
                         }

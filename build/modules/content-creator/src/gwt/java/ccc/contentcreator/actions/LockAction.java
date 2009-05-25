@@ -46,7 +46,7 @@ public class LockAction
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         _commands.lock(
             item.getId(),
-            new ErrorReportingCallback<Void>(){
+            new ErrorReportingCallback<Void>(UI_CONSTANTS.lock()){
                 public void onSuccess(final Void arg0) {
                     item.setLocked(Globals.currentUser().getUsername());
                     _selectionModel.update(item);

@@ -55,7 +55,7 @@ public final class Globals {
         GWT.setUncaughtExceptionHandler(
             new UncaughtExceptionHandler(){
                 public void onUncaughtException(final Throwable e) {
-                    Globals.unexpectedError(e);
+                    Globals.unexpectedError(e, USER_ACTIONS.unknownAction());
                 }
             }
         );
@@ -150,13 +150,14 @@ public final class Globals {
      * Report an unexpected exception to the user.
      *
      * @param e The exception to report.
+     * @param action The action being performed.
      */
-    public static void unexpectedError(final Throwable e) {
+    public static void unexpectedError(final Throwable e, final String action) {
         // TODO: Add clause for InvocationException
         // TODO: Add clause for IncompatibleRemoteServiceException
         if (e instanceof CommandFailedException) {
             final CommandFailedException re = (CommandFailedException) e;
-            new ErrorDialog(re, USER_ACTIONS.unknownAction()).show();
+            new ErrorDialog(re, action).show();
         } else {
             final String errorMesssage = e.getMessage();
             final String causeMessage =
@@ -167,7 +168,7 @@ public final class Globals {
                 alert(uiConstants().sessionTimeOutPleaseRestart());
             } else {
                 GWT.log("An unexpected error occured.", e);
-                new ErrorDialog(e, USER_ACTIONS.unknownAction()).show();
+                new ErrorDialog(e, action).show();
             }
         }
     }

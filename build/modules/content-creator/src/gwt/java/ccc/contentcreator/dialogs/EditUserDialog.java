@@ -12,11 +12,7 @@
 package ccc.contentcreator.dialogs;
 
 
-import static ccc.contentcreator.validation.Validations.minLength;
-import static ccc.contentcreator.validation.Validations.notEmpty;
-import static ccc.contentcreator.validation.Validations.notValidEmail;
-import static ccc.contentcreator.validation.Validations.notValidResourceName;
-import static ccc.contentcreator.validation.Validations.reportErrors;
+import static ccc.contentcreator.validation.Validations.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -24,6 +20,7 @@ import java.util.Set;
 import ccc.api.ID;
 import ccc.api.UserDelta;
 import ccc.api.Username;
+import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.UserTable;
@@ -34,6 +31,7 @@ import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.google.gwt.core.client.GWT;
 
 
 /**
@@ -42,6 +40,8 @@ import com.extjs.gxt.ui.client.widget.form.TextField;
  * @author Civic Computing Ltd
  */
 public class EditUserDialog extends AbstractEditDialog {
+    private static final ActionNameConstants USER_ACTIONS =
+        GWT.create(ActionNameConstants.class);
 
     private final TextField<String> _username = new TextField<String>();
     private final TextField<String> _email = new TextField<String>();
@@ -140,7 +140,7 @@ public class EditUserDialog extends AbstractEditDialog {
                 commands().updateUser(
                     _userId,
                     _userDTO,
-                    new ErrorReportingCallback<Void>() {
+                    new ErrorReportingCallback<Void>(_constants.editUser()) {
                         public void onSuccess(final Void result) {
                             // FIXME: Just update the edited row model data.
                             _userTable.refreshUsers();
@@ -168,7 +168,7 @@ public class EditUserDialog extends AbstractEditDialog {
                 } else {
                     queries().usernameExists(
                         username,
-                        new ErrorReportingCallback<Boolean>(){
+                        new ErrorReportingCallback<Boolean>(USER_ACTIONS.checkUniqueUsername()){
                             public void onSuccess(final Boolean exists) {
                                 if (exists.booleanValue()) {
                                     validate.addMessage(

@@ -19,6 +19,7 @@ import java.util.HashSet;
 import ccc.api.UserDelta;
 import ccc.api.UserSummary;
 import ccc.api.Username;
+import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.validation.Validate;
@@ -27,6 +28,7 @@ import ccc.contentcreator.validation.Validator;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.google.gwt.core.client.GWT;
 
 
 /**
@@ -35,6 +37,8 @@ import com.extjs.gxt.ui.client.widget.form.TextField;
  * @author Civic Computing Ltd
  */
 public class CreateUserDialog extends AbstractEditDialog {
+    private static final ActionNameConstants USER_ACTIONS =
+        GWT.create(ActionNameConstants.class);
 
     private static final int LABEL_WIDTH = 150;
     private final TextField<String> _username = new TextField<String>();
@@ -110,7 +114,7 @@ public class CreateUserDialog extends AbstractEditDialog {
             public void validate(final Validate validate) {
                 Globals.queriesService().usernameExists(
                     username,
-                    new ErrorReportingCallback<Boolean>(){
+                    new ErrorReportingCallback<Boolean>(USER_ACTIONS.checkUniqueUsername()){
                         public void onSuccess(final Boolean exists) {
                             if (exists) {
                                 validate.addMessage(
@@ -140,7 +144,7 @@ public class CreateUserDialog extends AbstractEditDialog {
                         new Username(_username.getValue()),
                         new HashSet<String>()),
                     _password1.getValue(),
-                    new ErrorReportingCallback<UserSummary>() {
+                    new ErrorReportingCallback<UserSummary>(_constants.createUser()) {
                         public void onSuccess(final UserSummary result) {
                             // FIXME: Refresh the main window.
                             close();

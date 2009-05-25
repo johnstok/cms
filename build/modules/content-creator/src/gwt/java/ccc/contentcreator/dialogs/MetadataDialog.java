@@ -61,7 +61,8 @@ public class MetadataDialog
                     commands().updateMetadata(
                         _resourceId,
                         metadata,
-                        new DisposingCallback(MetadataDialog.this));
+                        new DisposingCallback(
+                            MetadataDialog.this, _constants.updateMetadata()));
                 } else {
                     Globals.alert(errors);
                 }

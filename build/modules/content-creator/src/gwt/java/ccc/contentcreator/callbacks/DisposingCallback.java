@@ -16,8 +16,10 @@ public final class DisposingCallback extends ErrorReportingCallback<Void> {
      * Constructor.
      *
      * @param window The window that will hidden.
+     * @param action The action being performed when the error happened.
      */
-    public DisposingCallback(final Window window) {
+    public DisposingCallback(final Window window, final String action) {
+        super(action);
         _window = window;
     }
 

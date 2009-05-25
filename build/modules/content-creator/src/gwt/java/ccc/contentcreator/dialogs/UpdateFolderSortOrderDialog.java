@@ -258,7 +258,7 @@ AbstractEditDialog {
                 _commands.updateFolderSortOrder(
                     md.getId(),
                     order,
-                    new ErrorReportingCallback<Void>(){
+                    new ErrorReportingCallback<Void>(_constants.folderSortOrder()){
                         public void onSuccess(final Void result) {
                             // TODO cleanup
                             if (order.equals(MANUAL)) {
@@ -269,7 +269,7 @@ AbstractEditDialog {
                                 }
                                 _commands.reorder(md.getId(),
                                     orderList,
-                                    new ErrorReportingCallback<Void>(){
+                                    new ErrorReportingCallback<Void>(_constants.folderSortOrder()){
                                     public void onSuccess(final Void result) {
                                         close();
                                         md.setSortOrder(order);

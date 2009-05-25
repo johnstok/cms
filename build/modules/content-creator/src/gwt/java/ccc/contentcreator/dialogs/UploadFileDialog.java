@@ -103,7 +103,9 @@ public class UploadFileDialog extends AbstractEditDialog {
                 public void handleEvent(final FormEvent be) {
                     hide();
                     if (be.resultHtml.startsWith("File Upload failed.")) {
-                      Globals.unexpectedError(new Exception(be.resultHtml));
+                      Globals.unexpectedError(
+                          new Exception(be.resultHtml),
+                          _constants.updateFile());
                     } else {
                         ssm.create(
                             ResourceSummaryModelData.create(

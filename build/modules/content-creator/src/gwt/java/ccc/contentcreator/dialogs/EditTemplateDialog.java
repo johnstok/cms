@@ -16,6 +16,7 @@ import ccc.api.ID;
 import ccc.api.MimeType;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
+import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
@@ -30,6 +31,7 @@ import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.layout.FormData;
+import com.google.gwt.core.client.GWT;
 
 
 /**
@@ -38,6 +40,8 @@ import com.extjs.gxt.ui.client.widget.layout.FormData;
  * @author Civic Computing Ltd.
  */
 public class EditTemplateDialog extends AbstractWizardDialog  {
+    private static final ActionNameConstants USER_ACTIONS =
+        GWT.create(ActionNameConstants.class);
 
 
     /** DEFAULT_WIDTH : int. */
@@ -233,7 +237,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                 } else {
                     queries().templateNameExists(
                         name.getValue(),
-                        new ErrorReportingCallback<Boolean>(){
+                        new ErrorReportingCallback<Boolean>(USER_ACTIONS.checkUniqueTemplateName()){
                             public void onSuccess(final Boolean nameExists) {
                                 if (nameExists.booleanValue()) {
                                     validate.addMessage(
@@ -260,7 +264,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                             _parentFolderId,
                             delta,
                             _name.getValue(),
-                            new ErrorReportingCallback<ResourceSummary>(){
+                            new ErrorReportingCallback<ResourceSummary>(_constants.createTemplate()){
                                 public void onSuccess(final ResourceSummary arg0) {
                                     _ssm.create(
                                         new ResourceSummaryModelData(arg0),
@@ -272,7 +276,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                             commands().updateTemplate(
                                 _id,
                                 delta,
-                                new ErrorReportingCallback<Void>(){
+                                new ErrorReportingCallback<Void>(_constants.editTemplate()){
                                     public void onSuccess(final Void arg0) {
                                         _proxy.setTitle(delta.getTitle());
                                         _ssm.update(_proxy);

@@ -115,7 +115,7 @@ public class MoveDialog extends AbstractEditDialog {
                 commands().move(
                     _target.getId(),
                     _parent.getId(),
-                    new ErrorReportingCallback<Void>() {
+                    new ErrorReportingCallback<Void>(_constants.move()) {
                         public void onSuccess(final Void result) {
                             _ssm.move(_target, _parent, _ssm.treeSelection());
                             close();

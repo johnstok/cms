@@ -46,9 +46,8 @@ public class EditCacheAction implements Action {
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         _queries.cacheDuration(item.getId(),
-            new ErrorReportingCallback<Duration>() {
-                @Override
-                public void onSuccess(final Duration arg0) {
+            new ErrorReportingCallback<Duration>(UI_CONSTANTS.editCacheDuration()) {
+                @Override public void onSuccess(final Duration arg0) {
                     final EditCacheDialog dialog =
                         new EditCacheDialog(item, arg0);
                     dialog.show();

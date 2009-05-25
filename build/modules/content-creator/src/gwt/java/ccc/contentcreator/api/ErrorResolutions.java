@@ -37,4 +37,20 @@ public interface ErrorResolutions extends Messages {
      */
     @DefaultMessage("Contact your system administrator.")
     String contactSysAdmin();
+
+    /**
+     * "Try using a different name.".
+     *
+     * @return The message, in the appropriate locale.
+     */
+    @DefaultMessage("Try using a different name.")
+    String exists();
+
+    /**
+     * "Ask the user who locked the resource to unlock it.".
+     *
+     * @return The message, in the appropriate locale.
+     */
+    @DefaultMessage("Ask the user who locked the resource to unlock it.")
+    String lockMismatch();
 }

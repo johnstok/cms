@@ -17,6 +17,7 @@ import java.util.Set;
 import ccc.api.ID;
 import ccc.api.Paragraph;
 import ccc.api.ParagraphType;
+import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
@@ -38,9 +39,10 @@ public class Validations {
 
     private final static UIConstants _uiConstants =
         GWT.create(UIConstants.class);
-
     private final static UIMessages _uiMessages =
         GWT.create(UIMessages.class);
+    private static final ActionNameConstants USER_ACTIONS =
+        GWT.create(ActionNameConstants.class);
 
     private static final String  VALID_CHARACTERS = "[\\.\\-\\w]+";
 
@@ -143,7 +145,7 @@ public class Validations {
                 Globals.queriesService().nameExistsInFolder(
                     folder.getId(),
                     name.getValue(),
-                    new ErrorReportingCallback<Boolean>(){
+                    new ErrorReportingCallback<Boolean>(USER_ACTIONS.checkUniqueResourceName()){
                         public void onSuccess(final Boolean nameExists) {
                             if (nameExists) {
                                 validate.addMessage(
@@ -190,7 +192,7 @@ public class Validations {
                 Globals.queriesService().nameExistsInFolder(
                     id,
                     name.getValue(),
-                    new ErrorReportingCallback<Boolean>(){
+                    new ErrorReportingCallback<Boolean>(USER_ACTIONS.checkUniqueResourceName()){
                         public void onSuccess(final Boolean nameExists) {
                             if (nameExists) {
                                 validate.addMessage(
@@ -268,7 +270,7 @@ public class Validations {
                 Globals.commandService().validateFields(
                     delta,
                     definition,
-                    new ErrorReportingCallback<List <String>>(){
+                    new ErrorReportingCallback<List <String>>(USER_ACTIONS.validatePageFields()){
                         public void onSuccess(final List<String> errors) {
                             if (!errors.isEmpty()) {
                                 final StringBuffer sb = new StringBuffer();

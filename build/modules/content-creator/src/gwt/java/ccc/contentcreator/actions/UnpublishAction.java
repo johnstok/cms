@@ -46,7 +46,7 @@ public class UnpublishAction
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         _commands.unpublish(
             item.getId(),
-            new ErrorReportingCallback<Void>(){
+            new ErrorReportingCallback<Void>(UI_CONSTANTS.unpublish()){
                 public void onSuccess(final Void arg0) {
                     item.setPublished(null);
                     _selectionModel.update(item);

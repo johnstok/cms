@@ -47,4 +47,21 @@ public interface ErrorDescriptions extends Messages {
      */
     @DefaultMessage("Unknown error.")
     String unknown();
+
+    /**
+     * "A resource already exists with the specified name.".
+     *
+     * @return The message, in the appropriate locale.
+     */
+    @DefaultMessage("A resource already exists with the specified name.")
+    String exists();
+
+    /**
+     * "The resource you tried to update is locked by another user.".
+     *
+     * @return The message, in the appropriate locale.
+     */
+    @DefaultMessage(
+        "The resource you tried to update is locked by another user.")
+    String lockMismatch();
 }

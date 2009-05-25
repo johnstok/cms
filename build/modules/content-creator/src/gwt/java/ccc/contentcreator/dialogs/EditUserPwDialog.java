@@ -90,7 +90,7 @@ public class EditUserPwDialog extends AbstractEditDialog {
                 commands().updateUserPassword(
                     _userDTO.getId(),
                     _password1.getValue(),
-                    new ErrorReportingCallback<Void>() {
+                    new ErrorReportingCallback<Void>(_constants.editUserPw()) {
                         public void onSuccess(final Void result) {
                             close();
                         }

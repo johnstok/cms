@@ -70,10 +70,12 @@ public class UpdateTagsDialog
                 final String tags =
                     (null==_tags.getValue()) ? "" : _tags.getValue();
 
+                // FIXME: must call _resource.setTags(tags)!!!!!
                 commands().updateTags(
                     _resource.getId(),
                     tags,
-                    new DisposingCallback(UpdateTagsDialog.this)); // FIXME: must call _resource.setTags(tags)!!!!!
+                    new DisposingCallback(
+                        UpdateTagsDialog.this, _constants.updateTags()));
             }
         };
     }

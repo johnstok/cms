@@ -11,12 +11,27 @@
  */
 package ccc.contentcreator.client;
 
+import ccc.contentcreator.api.ActionNameConstants;
+import ccc.contentcreator.api.UIConstants;
+
+import com.google.gwt.core.client.GWT;
+
 
 /**
- * TODO: Add Description for this type.
+ * A GUI action.
  *
  * @author Civic Computing Ltd.
  */
 public interface Action {
+    /** USER_ACTIONS : ActionNameConstants. */
+    final ActionNameConstants USER_ACTIONS =
+        GWT.create(ActionNameConstants.class);
+    /** UI_CONSTANTS : UIConstants. */
+    final UIConstants UI_CONSTANTS =
+        GWT.create(UIConstants.class);
+
+    /**
+     * Perform the action.
+     */
     void execute();
 }

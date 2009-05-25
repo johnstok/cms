@@ -80,7 +80,9 @@ public class UpdateResourceRolesDialog
                 commands().changeRoles(
                     _resourceId,
                     validRoles,
-                    new DisposingCallback(UpdateResourceRolesDialog.this)
+                    new DisposingCallback(
+                        UpdateResourceRolesDialog.this,
+                        _constants.updateRoles())
                 );
             }
         };
