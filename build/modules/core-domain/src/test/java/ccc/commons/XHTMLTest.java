@@ -28,6 +28,21 @@ public final class XHTMLTest extends TestCase {
 
     /**
      * Test.
+     */
+    public void testEscape() {
+
+        // ARRANGE
+        final String badString = "<p id=\"e&m\">";
+
+        // ACT
+        final String encodedString = XHTML.escape(badString);
+
+        // ASSERT
+        assertEquals("&lt;p id=&quot;e&amp;m&quot;&gt;", encodedString);
+    }
+
+    /**
+     * Test.
      *
      * @throws IOException If the server cannot be reached.
      */
