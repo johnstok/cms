@@ -301,9 +301,8 @@ public class ResponseTest
     /**
      * Test.
      * TODO: Tests for length of 0 & negative numbers?
-     * @throws IOException From servlet API.
      */
-    public void testHandleResponseSetsConstentLength() throws IOException {
+    public void testHandleResponseSetsConstentLength() {
 
         // ARRANGE
         final Response r = new Response(new EmptyBody());

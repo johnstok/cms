@@ -14,8 +14,11 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.CommandType;
 import ccc.api.UserDelta;
 import ccc.commons.EmailAddress;
+import ccc.domain.LogEntry;
+import ccc.domain.Snapshot;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -62,7 +65,15 @@ public class UpdateUserCommand {
         current.email(new EmailAddress(delta.getEmail()));
         current.roles(delta.getRoles());
 
-        _audit.recordUserUpdate(current, actor, happenedOn);
+        _audit.record(
+            new LogEntry(
+                actor,
+                CommandType.USER_UPDATE,
+                happenedOn,
+                userId,
+                null,
+                new Snapshot(delta).getDetail(),
+                false));
 
         return current;
     }

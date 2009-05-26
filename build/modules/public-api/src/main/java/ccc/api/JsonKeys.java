@@ -53,4 +53,10 @@ public final class JsonKeys {
     public static final String NAME = "name";
     /** ID : String. */
     public static final String ID = "id";
+    /** USERNAME : String. */
+    public static final String USERNAME = "username";
+    /** EMAIL : String. */
+    public static final String EMAIL = "email";
+    /** ROLES : String. */
+    public static final String ROLES = "roles";
 }

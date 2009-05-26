@@ -15,6 +15,7 @@ import java.util.Date;
 
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
+import ccc.domain.Password;
 import ccc.domain.Resource;
 import ccc.domain.User;
 
@@ -221,29 +222,18 @@ public interface AuditLog {
     void recordUpdateCache(Resource resource, User actor, Date happenedOn);
 
     /**
-     * Record that a new user was created.
-     *
-     * @param user The user that changed.
-     * @param actor The user that performed the change.
-     * @param happenedOn When the change occurred.
-     */
-    void recordUserCreate(User user, User actor, Date happenedOn);
-
-    /**
-     * Record that a user was updated.
-     *
-     * @param user The user that changed.
-     * @param actor The user that performed the change.
-     * @param happenedOn When the change occurred.
-     */
-    void recordUserUpdate(User user, User actor, Date happenedOn);
-
-    /**
      * Record that a user's password was changed.
      *
-     * @param user The user that changed.
+     * @param pw The password that changed.
      * @param actor The user that performed the change.
      * @param happenedOn When the change occurred.
      */
-    void recordUserChangePassword(User user, User actor, Date happenedOn);
+    void recordUserChangePassword(Password pw, User actor, Date happenedOn);
+
+    /**
+     * Record a log entry.
+     *
+     * @param le The log entry to record.
+     */
+    void record(LogEntry le);
 }

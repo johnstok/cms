@@ -285,7 +285,7 @@ public class SnapshotTest
 
         // ACT
         try {
-            new Snapshot(null);
+            new Snapshot((String) null);
 
         // ASSERT
         } catch (final IllegalArgumentException e) {

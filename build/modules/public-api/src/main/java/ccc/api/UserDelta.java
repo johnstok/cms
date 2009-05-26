@@ -21,7 +21,7 @@ import java.util.Set;
  *
  * @author Civic Computing Ltd.
  */
-public final class UserDelta implements Serializable {
+public final class UserDelta implements Serializable, Jsonable {
     private String _email;
     private Username _username;
     private HashSet<String> _roles;
@@ -101,5 +101,14 @@ public final class UserDelta implements Serializable {
      */
     public void setRoles(final Set<String> roles) {
         _roles = new HashSet<String>(roles);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void toJson(final Json json) {
+        json.set(JsonKeys.USERNAME, getUsername().toString());
+        json.set(JsonKeys.EMAIL, getEmail());
+        json.setStrings(JsonKeys.ROLES, getRoles());
     }
 }

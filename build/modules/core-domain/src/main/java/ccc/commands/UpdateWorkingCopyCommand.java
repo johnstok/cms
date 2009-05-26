@@ -14,8 +14,10 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.CommandType;
 import ccc.api.PageDelta;
 import ccc.domain.LockMismatchException;
+import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.Snapshot;
 import ccc.domain.UnlockedException;
@@ -67,7 +69,15 @@ public class UpdateWorkingCopyCommand {
 
         r.workingCopy(delta);
 
-        // FIXME: Audit this action?
+        _audit.record(
+            new LogEntry(
+                actor,
+                CommandType.RESOURCE_UPDATE_WC,
+                happenedOn,
+                resourceId,
+                null,
+                new Snapshot(delta).getDetail(),
+                false));
     }
 
     /**
@@ -92,6 +102,14 @@ public class UpdateWorkingCopyCommand {
 
         r.workingCopy(delta);
 
-        // FIXME: Audit this action?
+        _audit.record(
+            new LogEntry(
+                actor,
+                CommandType.RESOURCE_UPDATE_WC,
+                happenedOn,
+                resourceId,
+                null,
+                delta.getDetail(),
+                false));
     }
 }

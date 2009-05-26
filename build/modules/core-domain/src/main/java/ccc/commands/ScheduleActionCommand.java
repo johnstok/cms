@@ -11,7 +11,13 @@
  */
 package ccc.commands;
 
+import java.util.Date;
+
+import ccc.api.CommandType;
 import ccc.domain.Action;
+import ccc.domain.LogEntry;
+import ccc.domain.User;
+import ccc.services.AuditLog;
 import ccc.services.Dao;
 
 
@@ -23,25 +29,40 @@ import ccc.services.Dao;
 public class ScheduleActionCommand {
 
     private final Dao _dao;
+    private final AuditLog _audit;
 
     /**
      * Constructor.
      *
      * @param dao The DAO used for CRUD operations, etc.
+     * @param audit The audit logger, for logging business actions.
      */
-    public ScheduleActionCommand(final Dao dao) {
+    public ScheduleActionCommand(final Dao dao, final AuditLog audit) {
         _dao = dao;
+        _audit = audit;
     }
 
 
     /**
      * Schedule an action.
      *
-     * @param action The action to schedule
+     * @param action The action to schedule.
+     * @param actor The user that executed the command.
+     * @param happenedOn The date the command was executed.
      */
-    public void execute(final Action action) {
+    public void execute(final User actor,
+                        final Date happenedOn,
+                        final Action action) {
         _dao.create(action);
 
-        // TODO: Audit this action.
+        _audit.record(
+            new LogEntry(
+                actor,
+                CommandType.ACTION_CREATE,
+                happenedOn,
+                action.id(),
+                null,
+                null, // FIXME: Add detail
+                false));
     }
 }

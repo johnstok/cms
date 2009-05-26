@@ -27,6 +27,7 @@ import ccc.commands.UpdatePasswordAction;
 import ccc.commands.UpdateUserCommand;
 import ccc.commons.EmailAddress;
 import ccc.domain.CreatorRoles;
+import ccc.domain.LogEntry;
 import ccc.domain.Password;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -87,7 +88,7 @@ public class UserManagerImplTest extends TestCase {
         final Date now = new Date();
         _dao.create(isA(User.class));
         _dao.create(isA(Password.class));
-        _audit.recordUserCreate(isA(User.class), eq(_u), eq(now));
+        _audit.record(isA(LogEntry.class)); // TODO: Capture and test values.
         replayAll();
 
         final CreateUserCommand cu = new CreateUserCommand(_dao, _audit);
@@ -184,7 +185,7 @@ public class UserManagerImplTest extends TestCase {
         // ARRANGE
         final Date now = new Date();
         expect(_dao.find(User.class, _u.id())).andReturn(_u);
-        _audit.recordUserUpdate(_u, _u, now);
+        _audit.record(isA(LogEntry.class)); // TODO: Capture and test values.
         replayAll();
 
         final UpdateUserCommand uu = new UpdateUserCommand(_dao, _audit);
@@ -208,7 +209,7 @@ public class UserManagerImplTest extends TestCase {
 
         expect(_dao.find("passwordForUser", Password.class, _u.id()))
             .andReturn(pw);
-        _audit.recordUserChangePassword(null, _u, now); // FIXME: Broken.
+        _audit.recordUserChangePassword(pw, _u, now); // FIXME: Broken.
         replayAll();
 
         final UpdatePasswordAction up = new UpdatePasswordAction(_dao, _audit);

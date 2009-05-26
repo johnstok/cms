@@ -41,6 +41,40 @@ public class LogEntry extends Entity {
     /** Constructor: for persistence only. */
     protected LogEntry() { super(); }
 
+    /**
+     * Constructor.
+     *
+     * @param actor
+     * @param action
+     * @param happenedOn
+     * @param subjectId
+     * @param comment
+     * @param detail
+     * @param isMajorEdit
+     */
+    public LogEntry(final User actor,
+                    final CommandType action,
+                    final Date happenedOn,
+                    final UUID subjectId,
+                    final String comment,
+                    final String detail,
+                    final boolean isMajorEdit) {
+        require().notNull(subjectId);
+        require().notNull(actor);
+        require().notNull(happenedOn);
+        require().notNull(action);
+
+        _actor = actor;
+        _action = action;
+        _happenedOn = happenedOn;
+        _subjectId = subjectId;
+        _comment = comment;
+        _detail = detail;
+        _isMajorEdit = isMajorEdit;
+    }
+
+
+
 
     /**
      * Create a log entry for the rename of a resource.
@@ -472,61 +506,17 @@ public class LogEntry extends Entity {
 
 
     /**
-     * Create a log entry to record the creation of a new user.
-     *
-     * @param user The new user.
-     * @param actor The user that created the new user.
-     * @param happenedOn When the user was created.
-     * @return The log entry representing the action.
-     */
-    public static LogEntry forCreateUser(final User user,
-                                         final User actor,
-                                         final Date happenedOn) {
-        final LogEntry le = createEntry(user, actor, happenedOn);
-        le._action = CommandType.USER_CREATE;
-        final Snapshot ss = new Snapshot();
-        ss.set("username", user.username());
-        ss.set("email", user.email().toString());
-        ss.set("roles", user.roles().toString()); // FIXME: Broken.
-        le._detail = ss.getDetail();
-        return le;
-    }
-
-
-    /**
-     * Create a log entry for a user update.
-     *
-     * @param user The user that was updated.
-     * @param actor The user that performed the action.
-     * @param happenedOn When the action took place.
-     * @return The log entry representing the action.
-     */
-    public static LogEntry forUserUpdate(final User user,
-                                         final User actor,
-                                         final Date happenedOn) {
-        final LogEntry le = createEntry(user, actor, happenedOn);
-        le._action = CommandType.USER_UPDATE;
-        final Snapshot ss = new Snapshot();
-        ss.set("username", user.username());
-        ss.set("email", user.email().toString());
-        ss.set("roles", user.roles().toString()); // FIXME: Broken.
-        le._detail = ss.getDetail();
-        return le;
-    }
-
-
-    /**
      * Create a log entry for user password change.
      *
-     * @param user The user who's password changed.
+     * @param pw The password that changed.
      * @param actor The user that performed the action.
      * @param happenedOn When the action took place.
      * @return The log entry representing the action.
      */
-    public static LogEntry forUserChangePassword(final User user,
+    public static LogEntry forUserChangePassword(final Password pw,
                                                  final User actor,
                                                  final Date happenedOn) {
-        final LogEntry le = createEntry(user, actor, happenedOn);
+        final LogEntry le = createEntry(pw, actor, happenedOn);
         le._action = CommandType.USER_CHANGE_PASSWORD;
         final Snapshot ss = new Snapshot();
         le._detail = ss.getDetail();

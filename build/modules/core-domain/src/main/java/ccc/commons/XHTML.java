@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 
 import javax.xml.XMLConstants;
@@ -115,12 +116,10 @@ public final class XHTML {
         /**
          * Accessor for the errors collection.
          *
-         * TODO: make defensive copy?
-         *
          * @return A collection of strings, one per error.
          */
         public Collection<String> errors() {
-            return _errors;
+            return Collections.unmodifiableCollection(_errors);
         }
     }
 

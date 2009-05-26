@@ -14,7 +14,7 @@ package ccc.domain;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 import junit.framework.TestCase;
 import ccc.api.CommandType;
@@ -503,11 +503,11 @@ public final class ResourceTest extends TestCase {
         p.tags(tagString);
 
         // ASSERT
-        final List<String> tags = p.tags();
+        final Set<String> tags = p.tags();
         assertEquals(3, tags.size());
-        assertEquals("foo", tags.get(0));
-        assertEquals("bar", tags.get(1));
-        assertEquals("baz", tags.get(2));
+        assertTrue(tags.contains("foo"));
+        assertTrue(tags.contains("bar"));
+        assertTrue(tags.contains("baz"));
     }
 
     /**
@@ -523,11 +523,11 @@ public final class ResourceTest extends TestCase {
         p.tags(tagString);
 
         // ASSERT
-        final List<String> tags = p.tags();
+        final Set<String> tags = p.tags();
         assertEquals(3, tags.size());
-        assertEquals("foo", tags.get(0));
-        assertEquals("bar", tags.get(1));
-        assertEquals("baz", tags.get(2));
+        assertTrue(tags.contains("foo"));
+        assertTrue(tags.contains("bar"));
+        assertTrue(tags.contains("baz"));
     }
 
     /**
@@ -543,7 +543,7 @@ public final class ResourceTest extends TestCase {
         p.tags(tagString);
 
         // ASSERT
-        final List<String> tags = p.tags();
+        final Set<String> tags = p.tags();
         assertEquals(0, tags.size());
     }
 
@@ -560,10 +560,10 @@ public final class ResourceTest extends TestCase {
         p.tags(tagString);
 
         // ASSERT
-        final List<String> tags = p.tags();
+        final Set<String> tags = p.tags();
         assertEquals(2, tags.size());
-        assertEquals("foo", tags.get(0));
-        assertEquals("baz", tags.get(1));
+        assertTrue(tags.contains("foo"));
+        assertTrue(tags.contains("baz"));
     }
 
     /**
