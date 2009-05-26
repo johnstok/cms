@@ -11,12 +11,14 @@
  */
 package ccc.contentcreator.api;
 
+import com.google.gwt.i18n.client.Constants;
+
 /**
  * Constants for i18n.
  *
  * @author Civic Computing Ltd
  */
-public interface UIConstants extends com.google.gwt.i18n.client.Constants {
+public interface UIConstants extends Constants {
 
     /**
      * "Update Page".

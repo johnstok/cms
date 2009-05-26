@@ -411,6 +411,9 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
 
     private Paragraph extractDate(final PageElement c) { // FIXME: RawValue?
         final DateField f = c.dateField();
+        if (null==f.getValue()) {
+            return null;
+        }
         final Paragraph p =
             Paragraph.fromDate(c.id(), f.getValue());
         return p;
@@ -733,6 +736,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         df.setFieldLabel(name);
         df.setData("type", FieldType.DATE);
         df.setId(name);
+        df.setEditable(false);
 
         final PageElement pe = new PageElement(name);
         pe.fieldType(FieldType.DATE);

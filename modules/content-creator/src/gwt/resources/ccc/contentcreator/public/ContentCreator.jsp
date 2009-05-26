@@ -2,6 +2,8 @@
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="gwt:property" content="locale=<%= request.getLocale() %>" />
+    
     <script language="javascript" type="text/javascript" src="js/htmlarea/fckeditor/fckeditor.js"></script>
     <link rel="stylesheet" type="text/css" href="css/ext-all.css" />
     <!--                                           -->
