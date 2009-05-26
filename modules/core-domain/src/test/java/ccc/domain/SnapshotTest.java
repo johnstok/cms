@@ -11,8 +11,11 @@
  */
 package ccc.domain;
 
+import static ccc.commons.Exceptions.*;
+
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import junit.framework.TestCase;
 import ccc.api.Decimal;
@@ -28,6 +31,170 @@ import ccc.api.Jsonable;
 public class SnapshotTest
     extends
         TestCase {
+
+    /**
+     * Test.
+     */
+    public void testGetDate() {
+
+        // ARRANGE
+        final Date d = new Date();
+        final Snapshot s = new Snapshot("{\"d\"="+d.getTime()+"}");
+
+        // ACT
+        final Date i = s.getDate("d");
+
+        // ASSERT
+        assertEquals(d, i);
+    }
+
+    /**
+     * Test.
+     */
+    public void testGetSmallDate() {
+
+        // ARRANGE
+        final Snapshot s = new Snapshot("{\"d\"=3}");
+
+        // ACT
+        final Date i = s.getDate("d");
+
+        // ASSERT
+        assertEquals(new Date(3), i);
+    }
+
+    /**
+     * Test.
+     */
+    public void testGetBoolean() {
+
+        // ARRANGE
+        final Snapshot s = new Snapshot("{\"bool\"=true}");
+
+        // ACT
+        final Boolean b = s.getBool("bool");
+
+        // ASSERT
+        assertTrue(b.booleanValue());
+    }
+
+    /**
+     * Test.
+     */
+    public void testGetInteger() {
+
+        // ARRANGE
+        final Snapshot s = new Snapshot("{\"num\"=3}");
+
+        // ACT
+        final Integer i = s.getInt("num");
+
+        // ASSERT
+        assertEquals(Integer.valueOf(3), i);
+    }
+
+    /**
+     * Test.
+     */
+    public void testMutatorsAddKeyForNullValue() {
+
+        // ARRANGE
+        final Snapshot s = new Snapshot();
+
+        // ACT
+        s.set("null", (String) null);
+
+        // ASSERT
+        assertNull(s.getString("null"));
+        assertNull(s.getCollection("null"));
+        assertNull(s.getInt("null"));
+        assertNull(s.getBool("null"));
+        assertNull(s.getDate("null"));
+        assertNull(s.getDecimal("null"));
+        assertNull(s.getId("null"));
+        assertNull(s.getJson("null"));
+    }
+
+    /**
+     * Test.
+     */
+    public void testMissingKeyGivesException() {
+
+        // ARRANGE
+        final Snapshot s = new Snapshot();
+
+
+        // ACT
+        try {
+            s.getString("missing");
+            fail();
+
+        // ASSERT
+        } catch (final InvalidSnapshotException e) { swallow(e); }
+
+
+        // ACT
+        try {
+            s.getBool("missing");
+            fail();
+
+        // ASSERT
+        } catch (final InvalidSnapshotException e) { swallow(e); }
+
+
+        // ACT
+        try {
+            s.getCollection("missing");
+            fail();
+
+        // ASSERT
+        } catch (final InvalidSnapshotException e) { swallow(e); }
+
+
+        // ACT
+        try {
+            s.getInt("missing");
+            fail();
+
+        // ASSERT
+        } catch (final InvalidSnapshotException e) { swallow(e); }
+
+
+        // ACT
+        try {
+            s.getId("missing");
+            fail();
+
+        // ASSERT
+        } catch (final InvalidSnapshotException e) { swallow(e); }
+
+
+        // ACT
+        try {
+            s.getDecimal("missing");
+            fail();
+
+        // ASSERT
+        } catch (final InvalidSnapshotException e) { swallow(e); }
+
+
+        // ACT
+        try {
+            s.getDate("missing");
+            fail();
+
+        // ASSERT
+        } catch (final InvalidSnapshotException e) { swallow(e); }
+
+
+        // ACT
+        try {
+            s.getJson("missing");
+            fail();
+
+        // ASSERT
+        } catch (final InvalidSnapshotException e) { swallow(e); }
+    }
 
     /**
      * Test.
@@ -82,7 +249,7 @@ public class SnapshotTest
     /**
      * Test.
      */
-    public void testAddBigDecimal() {
+    public void testAddDecimal() {
 
         // ARRANGE
         final Snapshot s = new Snapshot();
