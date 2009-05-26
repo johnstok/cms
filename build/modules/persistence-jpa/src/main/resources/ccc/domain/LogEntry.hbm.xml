@@ -48,7 +48,7 @@
             column="command"
             not-null="true"
             type="LogEntryAction"
-            length="256" />
+            length="255" />
         <property
             name="_happenedOn"
             column="happened_on"

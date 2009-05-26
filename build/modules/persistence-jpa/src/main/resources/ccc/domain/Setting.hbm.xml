@@ -49,7 +49,7 @@
             column="name"
             not-null="true"
             type="settingName"
-            length="256"
+            length="255"
             unique="true" />
         
     </class>

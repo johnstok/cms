@@ -21,7 +21,7 @@
         name="ccc.domain.Template" extends="ccc.domain.Resource" table="templates">
         <key column="id" foreign-key="FK_TEMPLATE_RESOURCE_ID"/>
         
-        <property name="_title" column="title" not-null="true" type="string" length="256" />
+        <property name="_title" column="title" not-null="true" type="string" length="255" />
         <property name="_body" column="body" not-null="true" type="text" length="65536" />
         <property name="_definition" column="definition" not-null="true" type="text" length="65536" />
         
@@ -33,13 +33,13 @@
                 not-null="true"
                 column="mime_type_primary"
                 type="string"
-                length="256" />
+                length="255" />
             <property
                 name="_subType"
                 not-null="true"
                 column="mime_type_sub"
                 type="string" 
-                length="256"/>
+                length="255"/>
         </component>
         
     </joined-subclass>
