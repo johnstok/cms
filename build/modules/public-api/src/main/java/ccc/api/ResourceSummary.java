@@ -11,6 +11,8 @@
  */
 package ccc.api;
 
+import static ccc.api.JsonKeys.*;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -337,22 +339,22 @@ public final class ResourceSummary implements Serializable, Jsonable {
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
-        json.set("id", _id);
-        json.set("name", _name);
-        json.set("parentId", _parentId);
-        json.set("type", _type.name());
-        json.set("lockedBy", (null==_lockedBy)?null:_lockedBy.toString());
-        json.set("title", _title);
+        json.set(ID, _id);
+        json.set(NAME, _name);
+        json.set(PARENT_ID, _parentId);
+        json.set(TYPE, _type.name());
+        json.set(LOCKED_BY, (null==_lockedBy)?null:_lockedBy.toString());
+        json.set(TITLE, _title);
         json.set(
-            "publishedBy", (null==_publishedBy)?null:_publishedBy.toString());
-        json.set("childCount", _childCount);
-        json.set("folderCount", _folderCount);
-        json.set("includeInMainMenu", Boolean.valueOf(_includeInMainMenu));
-        json.set("sortOrder", _sortOrder);
-        json.set("hasWorkingCopy", Boolean.valueOf(_hasWorkingCopy));
-        json.set("dateCreated", _dateCreated);
-        json.set("dateChanged", _dateChanged);
-        json.set("templateId", _templateId);
-        json.set("tags", _tags);
+            PUBLISHED_BY, (null==_publishedBy)?null:_publishedBy.toString());
+        json.set(CHILD_COUNT, _childCount);
+        json.set(FOLDER_COUNT, _folderCount);
+        json.set(INCLUDE_IN_MAIN_MENU, Boolean.valueOf(_includeInMainMenu));
+        json.set(SORT_ORDER, _sortOrder);
+        json.set(HAS_WORKING_COPY, Boolean.valueOf(_hasWorkingCopy));
+        json.set(DATE_CREATED, _dateCreated);
+        json.set(DATE_CHANGED, _dateChanged);
+        json.set(TEMPLATE_ID, _templateId);
+        json.set(TAGS, _tags);
     }
 }

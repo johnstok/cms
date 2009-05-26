@@ -146,7 +146,7 @@ public final class FileDelta implements Serializable, Jsonable {
 
     /** {@inheritDoc} */
     @Override
-    public void toJson(final Json json) {
+    public void toJson(final Json json) { // TODO: Use JsonKeys
         json.set("title", getTitle());
         json.set("mime-type", getMimeType());
         json.set("size", getSize());
