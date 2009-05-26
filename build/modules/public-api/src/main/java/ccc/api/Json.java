@@ -142,7 +142,7 @@ public interface Json {
      * @param key The key for the value.
      * @return The value, as an int.
      */
-    int getInt(final String key);
+    Integer getInt(final String key);
 
     /**
      * Accessor.
