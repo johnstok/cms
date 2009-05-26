@@ -85,7 +85,6 @@ public abstract class AbstractServletAction
     /**
      * Retrieves the exception that this servlet should report.
      * Guarantees to return an exception and never NULL.
-     * TODO: Should return Throwable?
      *
      * @param request The request that the exception will be retrieved from.
      * @return The exception that should be reported.

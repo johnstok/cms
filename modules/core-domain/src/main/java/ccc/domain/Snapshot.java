@@ -76,6 +76,17 @@ public class Snapshot implements Serializable, Json {
     }
 
     /**
+     * Constructor.
+     *
+     * @param jsonable The object to convert to JSON.
+     */
+    public Snapshot(final Jsonable jsonable) {
+        this();
+        DBC.require().notNull(jsonable);
+        jsonable.toJson(this);
+    }
+
+    /**
      * Get the internal state of the snapshot.
      *
      * @return The snapshot's state, as JSON a string.
@@ -128,6 +139,19 @@ public class Snapshot implements Serializable, Json {
                 final Snapshot s = new Snapshot();
                 o.toJson(s);
                 _detail.append(key, s._detail);
+            }
+        } catch (final JSONException e) {
+            throw new InvalidSnapshotException(e);
+        }
+    }
+
+    /** {@inheritDoc} */
+    public void setStrings(final String key,
+                           final Collection<String> value) {
+        try {
+            _detail.put(key, new JSONArray());
+            for (final String o : value) {
+                _detail.append(key, o);
             }
         } catch (final JSONException e) {
             throw new InvalidSnapshotException(e);

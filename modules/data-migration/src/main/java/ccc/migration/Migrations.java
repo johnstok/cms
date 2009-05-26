@@ -635,7 +635,6 @@ public class Migrations {
 
         if (null==user) {
             log.warn("User missing: "+userId);
-            // TODO: select 'unknown' user.
             return null;
         }
 

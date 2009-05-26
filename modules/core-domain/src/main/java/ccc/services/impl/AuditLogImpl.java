@@ -18,9 +18,9 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 
 import ccc.api.DBC;
-import ccc.domain.Entity;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
+import ccc.domain.Password;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -57,8 +57,7 @@ public class AuditLogImpl
         DBC.require().notNull(resource);
         final LogEntry le =
             LogEntry.forLock(resource, actor, happenedOn);
-        _em.create(le);
-        log(resource, actor, happenedOn, le);
+        record(le);
     }
 
     /** {@inheritDoc} */
@@ -69,8 +68,7 @@ public class AuditLogImpl
         DBC.require().notNull(resource);
         final LogEntry le =
             LogEntry.forUnlock(resource, actor, happenedOn);
-        _em.create(le);
-        log(resource, actor, happenedOn, le);
+        record(le);
     }
 
     /** {@inheritDoc} */
@@ -81,8 +79,7 @@ public class AuditLogImpl
         DBC.require().notNull(resource);
         final LogEntry le =
             LogEntry.forCreate(resource, actor, happenedOn);
-        _em.create(le);
-        log(resource, actor, happenedOn, le);
+        record(le);
     }
 
     /** {@inheritDoc} */
@@ -93,8 +90,7 @@ public class AuditLogImpl
         DBC.require().notNull(resource);
         final LogEntry le =
             LogEntry.forTemplateChange(resource, actor, happenedOn);
-        _em.create(le);
-        log(resource, actor, happenedOn, le);
+        record(le);
     }
 
     /** {@inheritDoc} */
@@ -111,8 +107,7 @@ public class AuditLogImpl
             happenedOn,
             comment,
             isMajorEdit);
-        _em.create(le);
-        log(resource, actor, happenedOn, le);
+        record(le);
     }
 
     /** {@inheritDoc} */
@@ -122,8 +117,7 @@ public class AuditLogImpl
                              final Date happenedOn) {
         DBC.require().notNull(resource);
         final LogEntry le = LogEntry.forUpdate(resource, actor, happenedOn);
-        _em.create(le);
-        log(resource, actor, happenedOn, le);
+        record(le);
     }
 
     /** {@inheritDoc} */
@@ -134,8 +128,7 @@ public class AuditLogImpl
         DBC.require().notNull(resource);
         final LogEntry le =
             LogEntry.forMove(resource, actor, happenedOn);
-        _em.create(le);
-        log(resource, actor, happenedOn, le);
+        record(le);
     }
 
     /** {@inheritDoc} */
@@ -146,8 +139,7 @@ public class AuditLogImpl
         DBC.require().notNull(resource);
         final LogEntry le =
             LogEntry.forRename(resource, actor, happenedOn);
-        _em.create(le);
-        log(resource, actor, happenedOn, le);
+        record(le);
     }
 
     /** {@inheritDoc} */
@@ -158,8 +150,7 @@ public class AuditLogImpl
         DBC.require().notNull(resource);
         final LogEntry le =
             LogEntry.forPublish(resource, actor, happenedOn);
-        _em.create(le);
-        log(resource, actor, happenedOn, le);
+        record(le);
     }
 
     /** {@inheritDoc} */
@@ -170,8 +161,7 @@ public class AuditLogImpl
         DBC.require().notNull(resource);
         final LogEntry le =
             LogEntry.forUnpublish(resource, actor, happenedOn);
-        _em.create(le);
-        log(resource, actor, happenedOn, le);
+        record(le);
     }
 
     /** {@inheritDoc} */
@@ -189,8 +179,7 @@ public class AuditLogImpl
         DBC.require().notNull(resource);
         final LogEntry le =
             LogEntry.forUpdateTags(resource, actor, happenedOn);
-        _em.create(le);
-        log(resource, actor, happenedOn, le);
+        record(le);
     }
 
     /** {@inheritDoc} */
@@ -201,8 +190,7 @@ public class AuditLogImpl
         DBC.require().notNull(resource);
         final LogEntry le =
             LogEntry.forUpdateMetadata(resource, actor, happenedOn);
-        _em.create(le);
-        log(resource, actor, happenedOn, le);
+        record(le);
     }
 
     /** {@inheritDoc} */
@@ -213,8 +201,7 @@ public class AuditLogImpl
         DBC.require().notNull(resource);
         final LogEntry le =
             LogEntry.forIncludeInMainMenu(resource, actor, happenedOn);
-        _em.create(le);
-        log(resource, actor, happenedOn, le);
+        record(le);
     }
 
     /** {@inheritDoc} */
@@ -225,8 +212,7 @@ public class AuditLogImpl
         DBC.require().notNull(resource);
         final LogEntry le =
             LogEntry.forRemoveFromMainMenu(resource, actor, happenedOn);
-        _em.create(le);
-        log(resource, actor, happenedOn, le);
+        record(le);
     }
 
     /** {@inheritDoc} */
@@ -238,8 +224,7 @@ public class AuditLogImpl
         DBC.require().notNull(resource);
         final LogEntry le =
             LogEntry.forChangeRoles(resource, actor, happenedOn);
-        _em.create(le);
-        log(resource, actor, happenedOn, le);
+        record(le);
     }
 
     /** {@inheritDoc} */
@@ -250,8 +235,7 @@ public class AuditLogImpl
         DBC.require().notNull(folder);
         final LogEntry le =
             LogEntry.forReorder(folder, actor, happenedOn);
-        _em.create(le);
-        log(folder, actor, happenedOn, le);
+        record(le);
     }
 
     /** {@inheritDoc} */
@@ -262,8 +246,7 @@ public class AuditLogImpl
         DBC.require().notNull(folder);
         final LogEntry le =
             LogEntry.forUpdateSortOrder(folder, actor, happenedOn);
-        _em.create(le);
-        log(folder, actor, happenedOn, le);
+        record(le);
     }
 
     /** {@inheritDoc} */
@@ -274,57 +257,33 @@ public class AuditLogImpl
         DBC.require().notNull(resource);
         final LogEntry le =
             LogEntry.forUpdateCache(resource, actor, happenedOn);
-        _em.create(le);
-        log(resource, actor, happenedOn, le);
+        record(le);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void recordUserCreate(final User user,
-                                 final User actor,
-                                 final Date happenedOn) {
-        DBC.require().notNull(user);
-        final LogEntry le =
-            LogEntry.forCreateUser(user, actor, happenedOn);
-        _em.create(le);
-        log(user, actor, happenedOn, le);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void recordUserUpdate(final User user,
-                                 final User actor,
-                                 final Date happenedOn) {
-        DBC.require().notNull(user);
-        final LogEntry le =
-            LogEntry.forUserUpdate(user, actor, happenedOn);
-        _em.create(le);
-        log(user, actor, happenedOn, le);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void recordUserChangePassword(final User user,
+    public void recordUserChangePassword(final Password pw,
                                          final User actor,
                                          final Date happenedOn) {
-        DBC.require().notNull(user);
+        DBC.require().notNull(pw);
         final LogEntry le =
-            LogEntry.forUserChangePassword(user, actor, happenedOn);
-        _em.create(le);
-        log(user, actor, happenedOn, le);
+            LogEntry.forUserChangePassword(pw, actor, happenedOn);
+        record(le);
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public void record(final LogEntry le) {
+        _em.create(le);
+        log(le);
+    }
 
-    private void log(final Entity entity,
-                     final User actor,
-                     final Date happenedOn,
-                     final LogEntry le) {
-
+    private void log(final LogEntry le) {
         final DateFormat df = new SimpleDateFormat("yyyy.MM.dd-HH:mm:ss z");
         LOG.info(
             "Action: " + le.action()
-            + " for " + entity.id()
-            + ", " + actor.username()
-            + " on " + df.format(happenedOn));
+            + " for " + le.subjectId()
+            + ", " + le.actor().username()
+            + " on " + df.format(le.happenedOn()));
     }
 }

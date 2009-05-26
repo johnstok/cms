@@ -14,7 +14,9 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.CommandType;
 import ccc.domain.LockMismatchException;
+import ccc.domain.LogEntry;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.domain.WorkingCopyAware;
@@ -47,8 +49,8 @@ public class ClearWorkingCopyCommand {
      * Clear a resource's working copy.
      *
      * @param resourceId The resource's id.
-     * @param actor The user that unpublished the resource.
-     * @param happenedOn The date that the resource was unpublished.
+     * @param actor The user that executed the command.
+     * @param happenedOn The date the command was executed.
      *
      * @throws LockMismatchException If the resource is locked by another user.
      * @throws UnlockedException If the resource is unlocked.
@@ -63,6 +65,14 @@ public class ClearWorkingCopyCommand {
 
         r.clearWorkingCopy();
 
-        // FIXME: Audit this action?
+        _audit.record(
+            new LogEntry(
+                actor,
+                CommandType.RESOURCE_CLEAR_WC,
+                happenedOn,
+                resourceId,
+                null,
+                null,
+                false));
     }
 }

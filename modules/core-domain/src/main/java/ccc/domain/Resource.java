@@ -20,7 +20,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -33,7 +32,6 @@ import ccc.api.ResourceType;
 /**
  * An abstract superclass that contains shared behaviour for the different types
  * of CCC resource.
- * TODO: Should _tags be a linked hash set?
  *
  * @author Civic Computing Ltd
  */
@@ -50,7 +48,7 @@ public abstract class Resource
     private Template       _template          = null;
     private Folder         _parent            = null;
     private User           _lockedBy          = null;
-    private List<String>   _tags              = new ArrayList<String>();
+    private Set<String>    _tags              = new HashSet<String>();
     private Set<String>    _roles             = new HashSet<String>();
     private User           _publishedBy       = null;
     private boolean        _includeInMainMenu = false;
@@ -309,8 +307,8 @@ public abstract class Resource
      *
      * @return The tags for this resource as a list.
      */
-    public List<String> tags() {
-        return Collections.unmodifiableList(_tags);
+    public Set<String> tags() {
+        return Collections.unmodifiableSet(_tags);
     }
 
 

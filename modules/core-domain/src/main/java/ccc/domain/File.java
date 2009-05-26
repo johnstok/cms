@@ -74,11 +74,8 @@ public class File
                 final Data data,
                 final int size,
                 final MimeType mimeType) {
-
         super(name, title);
         data(data);
-        // TODO: null tests for other param's?
-
         description(description);
         _size = size;
         _mimeType = mimeType; // TODO: Defensive copy???

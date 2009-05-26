@@ -18,7 +18,7 @@ public enum CommandType {
     RESOURCE_CHANGE_ROLES,
     RESOURCE_UPDATE_CACHE,
     RESOURCE_CLEAR_WC,
-    RESOURCE_SET_WC,
+    RESOURCE_UPDATE_WC,
 
     // Folder
     FOLDER_REORDER,
@@ -49,4 +49,8 @@ public enum CommandType {
     // Alias
     ALIAS_CREATE,
     ALIAS_UPDATE,
+
+    // Action
+    ACTION_CANCEL,
+    ACTION_CREATE,
 }

@@ -178,8 +178,8 @@ public class ResourceDaoImplTest
         // ASSERT
         verifyAll();
         assertEquals(2, _r.tags().size());
-        assertEquals("foo", _r.tags().get(0));
-        assertEquals("bar", _r.tags().get(1));
+        assertTrue(_r.tags().contains("foo"));
+        assertTrue(_r.tags().contains("bar"));
     }
 
     /**

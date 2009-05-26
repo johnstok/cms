@@ -23,7 +23,7 @@ import ccc.content.actions.ServletAction;
 
 
 /**
- * TODO: Add Description for this type.
+ * A servlet to perform user authentication for the content-creator web app.
  *
  * @author Civic Computing Ltd.
  */

@@ -11,9 +11,14 @@
  */
 package ccc.commands;
 
+import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.CommandType;
 import ccc.domain.Action;
+import ccc.domain.LogEntry;
+import ccc.domain.User;
+import ccc.services.AuditLog;
 import ccc.services.Dao;
 
 
@@ -25,14 +30,17 @@ import ccc.services.Dao;
 public class CancelActionCommand {
 
     private final Dao _dao;
+    private final AuditLog _audit;
 
     /**
      * Constructor.
      *
      * @param dao The DAO used for CRUD operations, etc.
+     * @param audit The audit logger, for logging business actions.
      */
-    public CancelActionCommand(final Dao dao) {
+    public CancelActionCommand(final Dao dao, final AuditLog audit) {
         _dao = dao;
+        _audit = audit;
     }
 
 
@@ -40,10 +48,22 @@ public class CancelActionCommand {
      * Cancel an action.
      *
      * @param actionId The id of the action to cancel.
+     * @param actor The user who performed the command.
+     * @param happenedOn When the command was performed.
      */
-    public void execute(final UUID actionId) {
+    public void execute(final User actor,
+                        final Date happenedOn,
+                        final UUID actionId) {
         _dao.find(Action.class, actionId).cancel();
 
-        // TODO: Audit this action.
+        _audit.record(
+            new LogEntry(
+                actor,
+                CommandType.ACTION_CANCEL,
+                happenedOn,
+                actionId,
+                null,
+                null,
+                false));
     }
 }

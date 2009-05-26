@@ -142,7 +142,6 @@ public class Action extends Entity {
 
     /**
      * Mark the action as cancelled.
-     * TODO: Pass the actor who cancelled?
      */
     public void cancel() {
         checkStillScheduled();

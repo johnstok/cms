@@ -36,9 +36,17 @@ public interface Json {
      * Mutator.
      *
      * @param key The key.
-     * @param snapshots The value, as a collection of snapshots.
+     * @param values The value, as a collection of strings.
      */
-    void set(final String key, final Collection<? extends Jsonable> snapshots);
+    void setStrings(String roles, Collection<String> value);
+
+    /**
+     * Mutator.
+     *
+     * @param key The key.
+     * @param values The value, as a collection of Jsonable objects.
+     */
+    void set(final String key, final Collection<? extends Jsonable> values);
 
     /**
      * Mutator.
@@ -159,5 +167,4 @@ public interface Json {
      * @return The value, as a JSON object.
      */
     Json getJson(String key);
-
 }

@@ -60,7 +60,6 @@ public class UpdatePasswordAction {
                 _dao.find(PASSWORD_FOR_USER, Password.class, userId);
         p.password(password);
 
-        // FIXME: Broken.
-        _audit.recordUserChangePassword(null, actor, happenedOn);
+        _audit.recordUserChangePassword(p, actor, happenedOn);
     }
 }

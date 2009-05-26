@@ -611,7 +611,8 @@ public class CommandsEJB
     @Override
     @RolesAllowed({"CONTENT_CREATOR"})
     public void cancelAction(final ID actionId) {
-        new CancelActionCommand(_bdao).execute(toUUID(actionId));
+        new CancelActionCommand(_bdao, _audit).execute(
+            loggedInUser(), new Date(), toUUID(actionId));
     }
 
     /** {@inheritDoc} */
@@ -633,7 +634,8 @@ public class CommandsEJB
               comment,
               isMajorEdit);
 
-      new ScheduleActionCommand(_bdao).execute(a);
+      new ScheduleActionCommand(_bdao, _audit).execute(
+          loggedInUser(), new Date(), a);
     }
 
     /** {@inheritDoc} */

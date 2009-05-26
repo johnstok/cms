@@ -13,9 +13,12 @@ package ccc.commands;
 
 import java.util.Date;
 
+import ccc.api.CommandType;
 import ccc.api.UserDelta;
 import ccc.commons.EmailAddress;
+import ccc.domain.LogEntry;
 import ccc.domain.Password;
+import ccc.domain.Snapshot;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -64,7 +67,15 @@ public class CreateUserCommand {
         final Password defaultPassword = new Password(user, password);
         _dao.create(defaultPassword);
 
-        _audit.recordUserCreate(user, actor, happenedOn);
+        _audit.record(
+            new LogEntry(
+                actor,
+                CommandType.USER_CREATE,
+                happenedOn,
+                user.id(),
+                null,
+                new Snapshot(delta).getDetail(),
+                false));
 
         return user;
     }
