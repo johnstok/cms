@@ -22,6 +22,7 @@ import java.util.Random;
 
 import ccc.api.Paragraph;
 import ccc.api.ResourceType;
+import ccc.commons.XHTML;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Resource;
@@ -122,4 +123,17 @@ public class VelocityHelper {
         return elements;
     }
 
+    /**
+     * Escape strings that will be rendered in the main body of an HTML
+     * document.
+     *
+     * @param unescaped The un-escaped string.
+     * @return The escaped string.
+     */
+    public String escape(final String unescaped) {
+        if (null==unescaped) {
+            return null;
+        }
+        return XHTML.escape(unescaped);
+    }
 }
