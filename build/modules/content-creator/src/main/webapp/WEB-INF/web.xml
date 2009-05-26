@@ -124,7 +124,7 @@
     </session-config -->
 
     <welcome-file-list>
-        <welcome-file>ContentCreator.html</welcome-file>
+        <welcome-file>ContentCreator.jsp</welcome-file>
     </welcome-file-list>
 
     <error-page>
