@@ -44,13 +44,13 @@
             column="command"
             type="ActionType"
             not-null="true"
-            length="256" />
+            length="255" />
         <property
             name="_status"
             column="status"
             type="StatusType"
             not-null="true"
-            length="256" />
+            length="255" />
         <property
             name="_isMajorEdit"
             column="major_change"
@@ -92,7 +92,7 @@
                 name="_exceptionId"
                 column="failure_exception_id"
                 type="string" 
-                length="256" />
+                length="255" />
             <component name="_params" class="ccc.api.ParamList">
                 <property
                     name="canonicalForm"

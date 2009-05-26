@@ -50,13 +50,13 @@
                 not-null="true"
                 column="mime_type_primary"
                 type="string" 
-                 length="256" />
+                 length="255" />
             <property
                 name="_subType"
                 not-null="true"
                 column="mime_type_sub"
                 type="string" 
-                 length="256" />
+                 length="255" />
         </component>
         
         <property

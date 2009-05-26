@@ -18,7 +18,7 @@
 
 <hibernate-mapping default-access="field" default-cascade="none">
 	<class name="ccc.domain.Resource" table="resources" abstract="true">
-	
+		<cache usage="transactional"/>
 		<id name="_id" 
 			column="id" 
 			type="ccc.persistence.jpa.UUIDUserType"
@@ -37,7 +37,7 @@
             column="title"
             not-null="true"
             type="string"
-            length="256" />
+            length="255" />
 		<property
             name="_includeInMainMenu"
             column="in_main_menu"
@@ -83,7 +83,7 @@
                 not-null="true"
                 column="name"
 				type="string"
-                length="256" />
+                length="255" />
 		</component>
 
         <many-to-one
@@ -98,6 +98,7 @@
         <list
             name="_tags"
             table="resource_tags">
+            <cache usage="transactional"/>
             <key
                 column="resource_id"
                 not-null="true" 
@@ -108,21 +109,23 @@
                 type="string"
                 not-null="true"
                 unique="false" 
-                length="256" />
+                length="255" />
         </list>
 
         <set name="_roles" table="resource_roles">
+            <cache usage="transactional"/>
             <key column="resource_id" not-null="true" foreign-key="FK_RESROLES_RESOURCE_ID"/>
             <element
                 column="role"
                 type="string"
                 not-null="true"
-                length="256" />
+                length="255" />
         </set>
         
         <map name="_metadata" table="resource_metadata">
+        	<cache usage="transactional"/>
             <key column="resource_id" not-null="true" foreign-key="FK_RESMETADATA_RESOURCE_ID"/>
-            <map-key type="string" column="datum_key" length="256" />
+            <map-key type="string" column="datum_key" length="255" />
             <element type="string" column="datum_value" length="1024" not-null="true"/>
         </map>
         

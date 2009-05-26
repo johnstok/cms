@@ -39,7 +39,7 @@
             not-null="true"
             unique="true"
             type="string"
-            length="512" />
+            length="255" />
         
         <component name="_email" class="ccc.commons.EmailAddress">
             <property name="_text" column="email" not-null="true" type="string" length="512" />
@@ -51,7 +51,7 @@
                 column="role"
                 type="string"
                 not-null="true"
-                length="256" />
+                length="255" />
         </set>
 
             

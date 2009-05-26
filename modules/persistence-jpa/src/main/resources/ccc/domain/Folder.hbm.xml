@@ -33,9 +33,10 @@
             column="sort_order"
             not-null="true"
             type="SortOrder" 
-            length="256" />
+            length="255" />
         
         <list name="_entries">
+       		<cache usage="transactional"/>
             <key column="parent_id" />
             <list-index column="parent_index" />
             <one-to-many class="ccc.domain.Resource" />
