@@ -70,6 +70,15 @@ public abstract class WorkingCopyAware<T> extends Resource {
         _workingCopy = snapshot;
     }
 
+    /**
+     * Query method.
+     *
+     * @return True if this object has a working copy, false otherwise.
+     */
+    public boolean hasWorkingCopy() {
+        return null!=_workingCopy;
+    }
+
 
     /**
      * Apply a snapshot to this resource.

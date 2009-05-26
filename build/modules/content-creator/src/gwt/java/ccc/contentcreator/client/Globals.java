@@ -158,6 +158,9 @@ public final class Globals {
         if (e instanceof CommandFailedException) {
             final CommandFailedException re = (CommandFailedException) e;
             new ErrorDialog(re, action).show();
+        } else if (e instanceof NullPointerException) {
+            new ErrorDialog(e, action).show();
+            GWT.log("An unexpected error occured.", e);
         } else {
             final String errorMesssage = e.getMessage();
             final String causeMessage =

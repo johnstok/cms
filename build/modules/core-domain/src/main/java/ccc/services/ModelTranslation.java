@@ -164,9 +164,9 @@ public class ModelTranslation {
             folderCount = r.as(Folder.class).folders().size();
             sortOrder = r.as(Folder.class).sortOrder().name();
         } else if (r.type() == ResourceType.PAGE) {
-            hasWorkingCopy = (r.as(Page.class).workingCopy() != null);
+            hasWorkingCopy = (r.as(Page.class).hasWorkingCopy());
         } else if (r.type() == ResourceType.FILE) {
-            hasWorkingCopy = (r.as(File.class).workingCopy() != null);
+            hasWorkingCopy = (r.as(File.class).hasWorkingCopy());
         }
 
         final ResourceSummary rs =

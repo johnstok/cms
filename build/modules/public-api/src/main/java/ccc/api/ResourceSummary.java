@@ -21,7 +21,7 @@ import java.util.Date;
  *
  * @author Civic Computing Ltd.
  */
-public final class ResourceSummary implements Serializable {
+public final class ResourceSummary implements Serializable, Jsonable {
 
     private ID _id;
     private ID _parentId;
@@ -332,5 +332,27 @@ public final class ResourceSummary implements Serializable {
      */
     public void setTemplateId(final ID templateId) {
         _templateId = templateId;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void toJson(final Json json) {
+        json.set("id", _id);
+        json.set("name", _name);
+        json.set("parentId", _parentId);
+        json.set("type", _type.name());
+        json.set("lockedBy", (null==_lockedBy)?null:_lockedBy.toString());
+        json.set("title", _title);
+        json.set(
+            "publishedBy", (null==_publishedBy)?null:_publishedBy.toString());
+        json.set("childCount", _childCount);
+        json.set("folderCount", _folderCount);
+        json.set("includeInMainMenu", Boolean.valueOf(_includeInMainMenu));
+        json.set("sortOrder", _sortOrder);
+        json.set("hasWorkingCopy", Boolean.valueOf(_hasWorkingCopy));
+        json.set("dateCreated", _dateCreated);
+        json.set("dateChanged", _dateChanged);
+        json.set("templateId", _templateId);
+        json.set("tags", _tags);
     }
 }

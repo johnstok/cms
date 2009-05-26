@@ -12,6 +12,7 @@
 package ccc.contentcreator.binding;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -63,11 +64,11 @@ public class ResourceSummaryModelData
             new ID(summaryObject.get("id").isString().stringValue()),
             new ID(summaryObject.get("parentId").isString().stringValue()),
             summaryObject.get("name").isString().stringValue(),
-            (null==summaryObject.get("publishedBy"))
+            (null!=summaryObject.get("publishedBy").isNull())
                 ? null
                 : new Username(summaryObject.get("publishedBy").isString().stringValue()),
             summaryObject.get("title").isString().stringValue(),
-            (null==summaryObject.get("lockedBy"))
+            (null!=summaryObject.get("lockedBy").isNull())
                 ? null
                 : new Username(summaryObject.get("lockedBy").isString().stringValue()),
             ResourceType.valueOf(
@@ -75,14 +76,16 @@ public class ResourceSummaryModelData
             (int) summaryObject.get("childCount").isNumber().doubleValue(),
             (int) summaryObject.get("folderCount").isNumber().doubleValue(),
             summaryObject.get("includeInMainMenu").isBoolean().booleanValue(),
-            (null==summaryObject.get("sortOrder"))
+            (null!=summaryObject.get("sortOrder").isNull())
                 ? null
                 :summaryObject.get("lockedBy").isString().stringValue(),
-            false, // FIXME: Add to JSON!
-            null, // FIXME: Add to JSON!
-            null, // FIXME: Add to JSON!
-            null, // FIXME: Add to JSON!
-            null // FIXME: Add to JSON!
+            summaryObject.get("hasWorkingCopy").isBoolean().booleanValue(),
+            new Date((long) summaryObject.get("dateCreated").isNumber().doubleValue()),
+            new Date((long) summaryObject.get("dateChanged").isNumber().doubleValue()),
+            (null!=summaryObject.get("templateId").isNull())
+                ? null
+                : new ID(summaryObject.get("templateId").isString().stringValue()),
+            summaryObject.get("tags").isString().stringValue()
         ));
     }
 
