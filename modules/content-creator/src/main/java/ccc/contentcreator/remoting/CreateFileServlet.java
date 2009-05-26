@@ -22,8 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import ccc.api.CommandFailedException;
 import ccc.api.Commands;
@@ -32,7 +30,7 @@ import ccc.api.ID;
 import ccc.api.LocalCommands;
 import ccc.api.MimeType;
 import ccc.api.ResourceSummary;
-import ccc.domain.CCCException;
+import ccc.domain.Snapshot;
 
 
 /**
@@ -83,7 +81,7 @@ public class CreateFileServlet extends HttpServlet {
         try {
             final ResourceSummary rs = _commands.createFile(
                 parentId, delta, name.getString(), dataStream, p);
-            response.getWriter().write(toJSON(rs).toString());
+            response.getWriter().write(toJSON(rs));
 
         } catch (final CommandFailedException e) {
             handleException(response, e);
@@ -117,28 +115,13 @@ public class CreateFileServlet extends HttpServlet {
 
     /**
      * Convert a {@link ResourceSummary} to JSON.
-     * FIXME: We are missing parameters - see ResourceSummaryModelData.
      *
      * @param rs The {@link ResourceSummary} to convert.
-     * @return A JSON object.
+     * @return The JSON representation,as a string.
      */
-    public JSONObject toJSON(final ResourceSummary rs) {
-        try {
-            final JSONObject o = new JSONObject();
-            o.put("id", rs.getId().toString());
-            o.put("name", rs.getName());
-            o.put("parentId", rs.getParentId().toString());
-            o.put("type", rs.getType());
-            o.put("lockedBy", rs.getLockedBy());
-            o.put("title", rs.getTitle());
-            o.put("publishedBy", rs.getPublishedBy());
-            o.put("childCount", rs.getChildCount());
-            o.put("folderCount", rs.getFolderCount());
-            o.put("includeInMainMenu", rs.isIncludeInMainMenu());
-            o.put("sortOrder", rs.getSortOrder());
-            return o;
-        } catch (final JSONException e) {
-            throw new CCCException(e);
-        }
+    public String toJSON(final ResourceSummary rs) {
+        final Snapshot s = new Snapshot();
+        rs.toJson(s);
+        return s.getDetail();
     }
 }
