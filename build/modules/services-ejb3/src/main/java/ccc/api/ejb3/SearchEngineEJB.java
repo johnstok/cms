@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBContext;
 import javax.ejb.Local;
@@ -102,6 +103,7 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
 
     /** {@inheritDoc} */
     @Override
+    @PermitAll
     public SearchResult find(final String searchTerms,
                           final int resultCount,
                           final int page) {
