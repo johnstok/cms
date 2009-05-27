@@ -39,24 +39,6 @@ public class Response {
 
     private final List<Header> _headers = new ArrayList<Header>();
     private final Body    _body;
-    private boolean _canCache;
-
-    /**
-     * Constructor.
-     *
-     * @param headers The response's headers.
-     * @param body The response's body.
-     * @param canCache Can the resource be cached.
-     */
-    public Response(final List<Header> headers,
-                    final Body body,
-                    final boolean canCache) {
-        DBC.require().notNull(body);
-        _headers.addAll(headers);
-        _body = body;
-        _canCache = canCache;
-    }
-
 
     /**
      * Constructor.
@@ -126,6 +108,10 @@ public class Response {
                 "Cache-Control", "no-store, must-revalidate, max-age=0"));
             _headers.add(new DateHeader("Expires", new Date(0)));
         } else {
+            // Pragma needs to set to NULL because tomcat is adding "pragma:no-cache"
+            // otherwise. See https://issues.apache.org/bugzilla/show_bug.cgi?id=27122
+            // and  http://www.mail-archive.com/tomcat-user@jakarta.apache.org/msg151294.html
+            _headers.add(new StringHeader("Pragma", null));
             final Date now = new Date();
             final Date expiryDate =
                 new Date(
