@@ -28,6 +28,7 @@ import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.Search;
 import ccc.domain.Snapshot;
+import ccc.domain.Template;
 import ccc.domain.WorkingCopyAware;
 import ccc.services.DataManager;
 import ccc.services.SearchEngine;
@@ -178,6 +179,8 @@ public class DefaultRenderer
 
 
     private Response renderFile(final File f) {
+        // Factor into 'FileResponse' class.
+
         final Response r = new Response(new FileBody(f, _dm));
         r.setDescription(f.description());
         r.setDisposition("inline; filename=\""+f.name()+"\"");
@@ -202,10 +205,14 @@ public class DefaultRenderer
 
     private Response renderPage(final Page page,
                                 final Map<String, String[]> parameters) {
+        // Factor into 'PageResponse' class.
+
+        final Template t =
+            page.computeTemplate(PageBody.BUILT_IN_PAGE_TEMPLATE);
         final Response r =
-            new Response(new PageBody(page, _reader, parameters));
+            new Response(new PageBody(page, _reader, t, parameters));
         r.setCharSet("UTF-8");
-        r.setMimeType("text", "html");
+        r.setMimeType(t.mimeType().getPrimaryType(), t.mimeType().getSubType());
         r.setExpiry(page.computeCache());
 
         return r;
@@ -214,6 +221,7 @@ public class DefaultRenderer
 
     private Response renderSearch(final Search search,
                                   final Map<String, String[]> parameters) {
+        // Factor into 'SearchResponse' class.
 
         String searchQuery = "";
         final String[] qParams = parameters.get("q");
@@ -231,6 +239,8 @@ public class DefaultRenderer
             }
         }
 
+        final Template t =
+            search.computeTemplate(SearchBody.BUILT_IN_SEARCH_TEMPLATE);
         final Response r =
             new Response(
                 new SearchBody(
@@ -238,9 +248,10 @@ public class DefaultRenderer
                     _reader,
                     _search,
                     searchQuery,
+                    t,
                     pageNumber));
         r.setCharSet("UTF-8");
-        r.setMimeType("text", "html");
+        r.setMimeType(t.mimeType().getPrimaryType(), t.mimeType().getSubType());
         r.setExpiry(search.computeCache());
 
         return r;
