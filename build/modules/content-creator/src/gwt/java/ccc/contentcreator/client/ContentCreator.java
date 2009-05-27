@@ -72,7 +72,7 @@ public final class ContentCreator implements EntryPoint {
 
         final QueriesServiceAsync qs = GWT.create(QueriesService.class);
         qs.roots(new ErrorReportingCallback<Collection<ResourceSummary>>(USER_ACTIONS.internalAction()){
-            // FIXME: refactor
+            // TODO: refactor
             public void onSuccess(final Collection<ResourceSummary> arg0) {
                 final String browse = Window.Location.getParameter("browse");
                 if (browse != null && browse.equals("image")) {

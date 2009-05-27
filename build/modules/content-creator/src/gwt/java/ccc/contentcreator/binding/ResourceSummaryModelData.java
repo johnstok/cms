@@ -41,7 +41,7 @@ public class ResourceSummaryModelData
     public static final String DISPLAY_PROPERTY = Property.NAME.name();
 
     private ResourceSummary _rs;
-    private String          _absolutePath; // FIXME: Move to ResourceSummary?
+    private String          _absolutePath; // TODO: Move to ResourceSummary?
 
     /**
      * Constructor.
