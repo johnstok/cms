@@ -18,9 +18,6 @@ import java.util.Map;
 import java.util.Set;
 
 
-
-
-
 /**
  * Command API, used to update data in CCC.
  *
@@ -39,6 +36,8 @@ public interface Commands {
      * @param delta The changes to apply.
      * @param comment A comment describing the changes.
      * @param isMajorEdit Is this a major change.
+     *
+     * @throws CommandFailedException If the method fails.
      */
     void updatePage(ID pageId,
                     PageDelta delta,
@@ -50,22 +49,30 @@ public interface Commands {
      *
      * @param pageId The id of the page to update.
      * @param delta The changes to apply.
+     *
+     * @throws CommandFailedException If the method fails.
      */
-    void updateWorkingCopy(ID pageId, PageDelta delta) throws CommandFailedException;
+    void updateWorkingCopy(ID pageId, PageDelta delta)
+    throws CommandFailedException;
 
     /**
      * Update an alias.
      *
      * @param aliasId The id of the alias to update.
      * @param delta The changes to apply.
+     *
+     * @throws CommandFailedException If the method fails.
      */
-    void updateAlias(ID aliasId, AliasDelta delta) throws CommandFailedException;
+    void updateAlias(ID aliasId, AliasDelta delta)
+    throws CommandFailedException;
 
     /**
      * Updates the user in the system.
      *
      * @param userId The id of the user to update.
      * @param delta The changes to apply.
+     *
+     * @throws CommandFailedException If the method fails.
      */
     void updateUser(ID userId, UserDelta delta) throws CommandFailedException;
 
@@ -74,28 +81,42 @@ public interface Commands {
      *
      * @param templateId The id of the template to update.
      * @param delta The changes to apply.
+     *
+     * @throws CommandFailedException If the method fails.
      */
-    void updateTemplate(ID templateId, TemplateDelta delta) throws CommandFailedException;
+    void updateTemplate(ID templateId, TemplateDelta delta)
+    throws CommandFailedException;
 
     /**
      * Rename resource.
+     *
+     * @throws CommandFailedException If the method fails.
      */
-    void rename(final ID resourceId, final String name) throws CommandFailedException;
+    void rename(final ID resourceId, final String name)
+    throws CommandFailedException;
 
     /**
      * Update the tags for a resource.
+     *
+     * @throws CommandFailedException If the method fails.
      */
     void updateTags(ID resourceId, String tags) throws CommandFailedException;
 
     /**
      * Changes a resource's parent.
+     *
+     * @throws CommandFailedException If the method fails.
      */
-    void move(ID resourceId, ID newParentId) throws CommandFailedException;
+    void move(ID resourceId, ID newParentId)
+    throws CommandFailedException;
 
     /**
      * Update the specified resource's template on the server.
+     *
+     * @throws CommandFailedException If the method fails.
      */
-    void updateResourceTemplate(ID resourceId, ID templateId) throws CommandFailedException;
+    void updateResourceTemplate(ID resourceId, ID templateId)
+    throws CommandFailedException;
 
     /**
      * Lock the specified resource.
@@ -103,6 +124,8 @@ public interface Commands {
      * If the resource is already locked a CCCException will be thrown.
      *
      * @param resourceId The uuid of the resource to lock.
+     *
+     * @throws CommandFailedException If the method fails.
      */
     void lock(ID resourceId) throws CommandFailedException;
 
@@ -113,6 +136,8 @@ public interface Commands {
      * Unlocking an unlocked resource has no effect.
      *
      * @param resourceId The resource to unlock.
+     *
+     * @throws CommandFailedException If the method fails.
      */
     void unlock(ID resourceId) throws CommandFailedException;
 
@@ -120,22 +145,29 @@ public interface Commands {
      * Publish the specified resource.
      *
      * @param resourceId The id of the resource to update.
+     *
+     * @throws CommandFailedException If the method fails.
      */
     void publish(ID resourceId) throws CommandFailedException;
 
     /**
-     * TODO: Add a description of this method.
+     * Publish the specified resource.
      *
      * @param resourceId The id of the resource to update.
      * @param userId The id of the publishing user.
      * @param publishDate The date the resource was published.
+     *
+     * @throws CommandFailedException If the method fails.
      */
-    void publish(ID resourceId, ID userId, Date publishDate) throws CommandFailedException;
+    void publish(ID resourceId, ID userId, Date publishDate)
+    throws CommandFailedException;
 
     /**
      * Unpublish the specified resource.
      *
      * @param resourceId The id of the resource to update.
+     *
+     * @throws CommandFailedException If the method fails.
      */
     void unpublish(ID resourceId) throws CommandFailedException;
 
@@ -145,33 +177,44 @@ public interface Commands {
      * @param resourceId The id of the resource to update.
      * @param userId The id of the un-publishing user.
      * @param publishDate The date the resource was un-published.
+     *
+     * @throws CommandFailedException If the method fails.
      */
     void unpublish(ID resourceId, ID userId, Date publishDate)
                                                   throws CommandFailedException;
 
     /**
-     * TODO: Add a description of this method.
+     * Specify whether a resource should be included in a site's main menu.
      *
      * @param resourceId The id of the resource to update.
-     * @param include
+     * @param include True if the resource should be included, false otherwise.
+     *
+     * @throws CommandFailedException If the method fails.
      */
-    void includeInMainMenu(ID resourceId, boolean include) throws CommandFailedException;
+    void includeInMainMenu(ID resourceId, boolean include)
+    throws CommandFailedException;
 
     /**
      * Update metadata of the resource.
      *
      * @param resourceId The id of the resource to update.
      * @param metadata The metadata to update.
+     *
+     * @throws CommandFailedException If the method fails.
      */
-    void updateMetadata(ID resourceId, Map<String, String> metadata) throws CommandFailedException;
+    void updateMetadata(ID resourceId, Map<String, String> metadata)
+    throws CommandFailedException;
 
     /**
      * Update the sort order for the specified folder.
      *
      * @param folderId The id of the folder to update.
      * @param sortOrder The new sort order.
+     *
+     * @throws CommandFailedException If the method fails.
      */
-    void updateFolderSortOrder(ID folderId, String sortOrder) throws CommandFailedException;
+    void updateFolderSortOrder(ID folderId, String sortOrder)
+    throws CommandFailedException;
 
     /**
      * TODO: Add a description of this method.
@@ -187,6 +230,8 @@ public interface Commands {
      * Delete the working copy for a page.
      *
      * @param pageId The id of the page with a working copy.
+     *
+     * @throws CommandFailedException If the method fails.
      */
     public void clearWorkingCopy(ID pageId) throws CommandFailedException;
 
@@ -195,31 +240,49 @@ public interface Commands {
 
     /**
      * Create a new alias in CCC.
+     *
+     * @throws CommandFailedException If the method fails.
      */
-    ResourceSummary createAlias(ID parentId, String name, ID targetId) throws CommandFailedException;
+    ResourceSummary createAlias(ID parentId, String name, ID targetId)
+    throws CommandFailedException;
 
     /**
      * Create a folder with the specified name.
+     *
+     * @throws CommandFailedException If the method fails.
      */
-    ResourceSummary createFolder(ID parentId, String name) throws CommandFailedException;
+    ResourceSummary createFolder(ID parentId, String name)
+    throws CommandFailedException;
 
     /**
      * Create a folder with the specified name and title.
+     *
+     * @throws CommandFailedException If the method fails.
      */
-    ResourceSummary createFolder(ID parentId, String name, String title, boolean publish) throws CommandFailedException;
+    ResourceSummary createFolder(ID parentId,
+                                 String name,
+                                 String title,
+                                 boolean publish) throws CommandFailedException;
 
     /**
      * Create a root folder with the specified name.
+     *
+     * @throws CommandFailedException If the method fails.
      */
-    ResourceSummary createRoot(String name) throws CommandFailedException;
+    ResourceSummary createRoot(String name)
+    throws CommandFailedException;
 
     /**
      * Create a new user in the system.
+     * @throws CommandFailedException If the method fails.
      */
-    UserSummary createUser(UserDelta delta, String password) throws CommandFailedException;
+    UserSummary createUser(UserDelta delta, String password)
+    throws CommandFailedException;
 
     /**
      * Creates a new page.
+     *
+     * @throws CommandFailedException If the method fails.
      */
     ResourceSummary createPage(ID parentId,
                                PageDelta delta,
@@ -229,17 +292,25 @@ public interface Commands {
 
     /**
      * Create a new template in CCC.
+     *
+     * @throws CommandFailedException If the method fails.
      */
-    ResourceSummary createTemplate(ID parentId, TemplateDelta delta, String name) throws CommandFailedException;
+    ResourceSummary createTemplate(ID parentId,
+                                   TemplateDelta delta,
+                                   String name) throws CommandFailedException;
 
     /**
      * Creates a new search.
      *
      * @param parentId The parent folder where the search should be created.
      * @param title The title of the search.
+     *
      * @return A summary of the newly created search.
+     *
+     * @throws CommandFailedException If the method fails.
      */
-    ResourceSummary createSearch(ID parentId, String title) throws CommandFailedException;
+    ResourceSummary createSearch(ID parentId, String title)
+    throws CommandFailedException;
 
     /**
      * Create a working copy for the specified resource, using the specified log
@@ -247,13 +318,18 @@ public interface Commands {
      *
      * @param resourceId The id of the resource.
      * @param index The index number of the log entry.
+     *
+     * @throws CommandFailedException If the method fails.
      */
-    void createWorkingCopy(ID resourceId, long index) throws CommandFailedException;
+    void createWorkingCopy(ID resourceId, long index)
+    throws CommandFailedException;
 
     /**
      * Cancel a scheduled action.
      *
      * @param actionId The id of the action to cancel.
+     *
+     * @throws CommandFailedException If the method fails.
      */
     void cancelAction(ID actionId) throws CommandFailedException;
 
@@ -265,6 +341,8 @@ public interface Commands {
      * @param executeAfter The earliest date at which the action may be
      *  executed.
      * @param parameters Additional parameters for the action, as a JSON string.
+     *
+     * @throws CommandFailedException If the method fails.
      */
     void createAction(ID resourceId,
                       CommandType action,
@@ -286,11 +364,32 @@ public interface Commands {
      *
      * @param resourceId The resource to update.
      * @param roles The new set of roles.
+     *
+     * @throws CommandFailedException If the method fails.
      */
-    void changeRoles(ID resourceId, Collection<String> roles) throws CommandFailedException;
+    void changeRoles(ID resourceId, Collection<String> roles)
+    throws CommandFailedException;
 
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param resourceId
+     *
+     * @throws CommandFailedException If the method fails.
+     */
     void applyWorkingCopy(ID resourceId) throws CommandFailedException;
 
+    /**
+     * TODO: Add a description of this method.
+     *
+     * @param resourceId
+     * @param userId
+     * @param happenedOn
+     * @param isMajorEdit
+     * @param comment
+     *
+     * @throws CommandFailedException If the method fails.
+     */
     void applyWorkingCopy(ID resourceId,
                           ID userId,
                           Date happenedOn,
@@ -302,15 +401,21 @@ public interface Commands {
      *
      * @param resourceId The resource to update.
      * @param duration The cache duration.
+     *
+     * @throws CommandFailedException If the method fails.
      */
-    void updateCacheDuration(ID resourceId, Duration duration) throws CommandFailedException;
+    void updateCacheDuration(ID resourceId, Duration duration)
+    throws CommandFailedException;
 
     /**
      * Update the password for the specified user.
      *
      * @param userId The user's id.
      * @param password The new password to set.
+     *
+     * @throws CommandFailedException If the method fails.
      */
-    void updateUserPassword(ID userId, String password) throws CommandFailedException;
+    void updateUserPassword(ID userId, String password)
+    throws CommandFailedException;
 }
 
