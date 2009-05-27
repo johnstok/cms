@@ -30,9 +30,15 @@
             <property name="hibernate.dialect" value="${application.db-dialect}" />
 
             <!-- Caching  -->
-            <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider" />
+            <!-- property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider" /-->
+            <property name="hibernate.cache.use_second_level_cache" value="true" />
             <property name="hibernate.cache.use_query_cache" value="false" />
-            <property name="hibernate.cache.use_second_level_cache" value="false" />
+	        <property name="hibernate.cache.region.factory_class" value="org.hibernate.cache.jbc2.JndiMultiplexedJBossCacheRegionFactory"/>
+	        <property name="hibernate.cache.region.jbc2.cachefactory" value="java:CacheManager"/>
+	        <property name="hibernate.cache.region_prefix" value="${application.prefix}"/>
+	        <property name="hibernate.cache.region.jbc2.cfg.entity" value="mvcc-entity"/>
+	        <property name="hibernate.cache.region.jbc2.cfg.query" value="local-query"/>
+            
 
             <!-- Debugging -->
             <!-- property name="hibernate.ejb.interceptor" value="ccc.services.ejb3.support.DebugInterceptor" / -->
@@ -41,8 +47,12 @@
             <property name="hibernate.use_sql_comments" value="true" />
 
             <!-- Drop and re-create the database schema on startup -->
-            <property name="hibernate.hbm2ddl.auto" value="create" />
+            <!-- property name="hibernate.hbm2ddl.auto" value="create" /-->
 
         </properties>
     </persistence-unit>
 </persistence>
+
+
+
+

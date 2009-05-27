@@ -26,7 +26,7 @@ import org.hibernate.usertype.UserType;
  *
  * @author Civic Computing Ltd.
  */
-public class UUIDUserType implements UserType {
+public class UUIDUserType implements UserType, Serializable {
 
     /** {@inheritDoc} */
     @Override
