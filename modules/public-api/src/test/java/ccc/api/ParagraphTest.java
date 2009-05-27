@@ -64,7 +64,7 @@ public final class ParagraphTest extends TestCase {
         _json.set("text", (String) null);
         _json.set("bool", (Boolean) null);
         _json.set("date", (Date) null);
-        _json.set("number", new Decimal("123.456"));
+        _json.set(eq("number"), isA(Decimal.class));
         replay(_json);
 
         // ACT
@@ -116,7 +116,7 @@ public final class ParagraphTest extends TestCase {
         verify(_json);
         assertEquals("bar", p.name());
         assertEquals(ParagraphType.NUMBER, p.type());
-        assertEquals(new Decimal("123.456"), p.number());
+        assertEquals("123.456", p.number().toString());
         assertNull(p.date());
         assertNull(p.bool());
         assertNull(p.text());
@@ -186,7 +186,7 @@ public final class ParagraphTest extends TestCase {
 
         // ASSERT
         assertEquals(ParagraphType.NUMBER, p.type());
-        assertEquals(new Decimal("0"), p.number());
+        assertEquals("0", p.number().toString());
         assertEquals("foo", p.name());
     }
 
@@ -200,7 +200,7 @@ public final class ParagraphTest extends TestCase {
 
         // ASSERT
         assertEquals(ParagraphType.NUMBER, p.type());
-        assertEquals(new Decimal(String.valueOf(0.1d)), p.number());
+        assertEquals(String.valueOf(0.1d), p.number().toString());
         assertEquals("foo", p.name());
     }
 
@@ -215,7 +215,7 @@ public final class ParagraphTest extends TestCase {
 
         // ASSERT
         assertEquals(ParagraphType.NUMBER, p.type());
-        assertEquals(new Decimal("-1234.54"), p.number());
+        assertEquals("-1234.54", p.number().toString());
         assertEquals("foo", p.name());
     }
 
