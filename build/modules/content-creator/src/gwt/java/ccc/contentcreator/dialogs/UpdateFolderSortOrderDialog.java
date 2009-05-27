@@ -32,7 +32,6 @@ import com.extjs.gxt.ui.client.dnd.GridDragSource;
 import com.extjs.gxt.ui.client.dnd.GridDropTarget;
 import com.extjs.gxt.ui.client.dnd.DND.Feedback;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
-import com.extjs.gxt.ui.client.event.DNDEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -157,29 +156,7 @@ AbstractEditDialog {
 
     private void configureDropTarget() {
 
-        _target = new GridDropTarget(_grid) {
-            /** {@inheritDoc} */
-            @Override
-            protected void onDragDrop(final DNDEvent e) {
-                final Object data = e.data;
-                // fix to avoid losing items if placed to last
-                if (data instanceof ModelData) {
-                    final int size = grid.getStore().getModels().size();
-                    if (insertIndex > size) {
-                        insertIndex = size;
-                    }
-                    grid.getStore().insert((ModelData) data, insertIndex);
-                } else if (data instanceof List) {
-                    for (final ModelData item : (List<BaseModelData>) data) {
-                        final int size = grid.getStore().getModels().size();
-                        if (insertIndex > size) {
-                            insertIndex = size;
-                        }
-                        grid.getStore().insert(item, insertIndex);
-                    }
-                }
-            }
-        };
+        _target = new GridDropTarget(_grid);
         _target.setFeedback(Feedback.INSERT);
         _target.setAllowSelfAsSource(true);
     }
@@ -290,33 +267,43 @@ AbstractEditDialog {
         final DateTimeFormat dateTimeFormat =
             DateTimeFormat.getFormat("dd.MM.yyyy");
 
-        final ColumnConfig typeColumn =
-            new ColumnConfig("type", _constants.type(), 70);
+        final ColumnConfig typeColumn = new ColumnConfig(
+            ResourceSummaryModelData.Property.TYPE.name(),
+            _constants.type(),
+            70);
         typeColumn.setSortable(false);
         typeColumn.setMenuDisabled(true);
         configs.add(typeColumn);
 
-        final ColumnConfig nameColumn =
-            new ColumnConfig("name", _constants.name(), 170);
+        final ColumnConfig nameColumn = new ColumnConfig(
+            ResourceSummaryModelData.Property.NAME.name(),
+            _constants.name(),
+            170);
         nameColumn.setSortable(false);
         nameColumn.setMenuDisabled(true);
         configs.add(nameColumn);
 
-        final ColumnConfig titleColumn =
-            new ColumnConfig("title", _constants.title(), 170);
+        final ColumnConfig titleColumn = new ColumnConfig(
+            ResourceSummaryModelData.Property.TITLE.name(),
+            _constants.title(),
+            170);
         titleColumn.setSortable(false);
         titleColumn.setMenuDisabled(true);
         configs.add(titleColumn);
 
-        final ColumnConfig createdColumn =
-            new ColumnConfig("dateCreated", _constants.created(), 70);
+        final ColumnConfig createdColumn = new ColumnConfig(
+            ResourceSummaryModelData.Property.DATE_CREATED.name(),
+            _constants.created(),
+            70);
         createdColumn.setSortable(false);
         createdColumn.setMenuDisabled(true);
         createdColumn.setDateTimeFormat(dateTimeFormat);
         configs.add(createdColumn);
 
-        final ColumnConfig changedColumn =
-            new ColumnConfig("dateChanged", _constants.changed(), 70);
+        final ColumnConfig changedColumn = new ColumnConfig(
+            ResourceSummaryModelData.Property.DATE_CHANGED.name(),
+            _constants.changed(),
+            70);
         changedColumn.setSortable(false);
         changedColumn.setMenuDisabled(true);
         changedColumn.setDateTimeFormat(dateTimeFormat);
