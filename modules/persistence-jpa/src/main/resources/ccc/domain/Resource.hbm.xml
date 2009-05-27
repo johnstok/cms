@@ -95,7 +95,7 @@
             foreign-key="FK_RESOURCE_FOLDER_PARENT_ID"
         />
 
-        <list
+        <set
             name="_tags"
             table="resource_tags">
             <cache usage="transactional"/>
@@ -103,14 +103,13 @@
                 column="resource_id"
                 not-null="true" 
                 foreign-key="FK_RESTAGS_RESOURCE_ID"/>
-            <list-index column="tag_index" />
             <element
                 column="tag_value"
                 type="string"
                 not-null="true"
                 unique="false" 
                 length="255" />
-        </list>
+        </set>
 
         <set name="_roles" table="resource_roles">
             <cache usage="transactional"/>
