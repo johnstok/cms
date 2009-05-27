@@ -30,7 +30,7 @@ import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 
 
 /**
- * TODO: Add Description for this type.
+ * Dialog for creating a new scheduled action.
  *
  * @author Civic Computing Ltd.
  */
@@ -104,8 +104,10 @@ public class CreateActionDialog
         DateTimePicker() {
             setLayout(new FormLayout());
             _date.setFieldLabel(Globals.uiConstants().date());
+            _date.setEditable(false);
             add(_date, new FormData("95%"));
             _time.setFieldLabel(Globals.uiConstants().time());
+            _time.setEditable(false);
             add(_time, new FormData("95%"));
         }
 
