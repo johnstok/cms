@@ -31,7 +31,7 @@ public class LogEntry extends Entity {
     private Date         _recordedOn;  // Only available once persisted
 
     private User         _actor;
-    private CommandType   _action;
+    private CommandType  _action;
     private Date         _happenedOn;
     private UUID         _subjectId;
     private String       _comment = "";
@@ -68,7 +68,7 @@ public class LogEntry extends Entity {
         _action = action;
         _happenedOn = happenedOn;
         _subjectId = subjectId;
-        _comment = comment;
+        _comment = (null==comment) ? "" : comment;
         _detail = detail;
         _isMajorEdit = isMajorEdit;
     }
@@ -242,7 +242,7 @@ public class LogEntry extends Entity {
             default:
                 throw new UnsupportedOperationException();
         }
-        le._comment = comment;
+        le._comment = (null==comment) ? "" : comment;
         require().containsNoBrackets(le._comment);
 
         le._isMajorEdit = isMajorEdit;
@@ -473,12 +473,12 @@ public class LogEntry extends Entity {
                                               final User actor, final
                                               Date happenedOn) {
 
-                final LogEntry le = createEntry(folder, actor, happenedOn);
-                le._action = CommandType.FOLDER_UPDATE_SORT_ORDER;
-                final Snapshot ss = new Snapshot();
-                ss.set("sortOrder", folder.sortOrder().name());
-                le._detail = ss.getDetail();
-                return le;
+        final LogEntry le = createEntry(folder, actor, happenedOn);
+        le._action = CommandType.FOLDER_UPDATE_SORT_ORDER;
+        final Snapshot ss = new Snapshot();
+        ss.set("sortOrder", folder.sortOrder().name());
+        le._detail = ss.getDetail();
+        return le;
     }
 
     /**
