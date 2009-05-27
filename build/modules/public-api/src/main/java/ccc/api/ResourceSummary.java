@@ -336,6 +336,15 @@ public final class ResourceSummary implements Serializable, Jsonable {
         _templateId = templateId;
     }
 
+    /**
+     * Mutator.
+     *
+     * @param tags The tags to set.
+     */
+    public void setTags(final String tags) {
+        _tags = tags;
+    }
+
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {

@@ -425,4 +425,13 @@ public class ResourceSummaryModelData
     public void setTemplateId(final ID id) {
         _rs.setTemplateId(id);
     }
+
+    /**
+     * Mutator.
+     *
+     * @param tags The tags to set.
+     */
+    public void setTags(final String tags) {
+        _rs.setTags(tags);
+    }
 }

@@ -12,7 +12,7 @@
 package ccc.contentcreator.dialogs;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.callbacks.DisposingCallback;
+import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -70,12 +70,16 @@ public class UpdateTagsDialog
                 final String tags =
                     (null==_tags.getValue()) ? "" : _tags.getValue();
 
-                // FIXME: must call _resource.setTags(tags)!!!!!
                 commands().updateTags(
                     _resource.getId(),
                     tags,
-                    new DisposingCallback(
-                        UpdateTagsDialog.this, _constants.updateTags()));
+                    new ErrorReportingCallback<Void>(_constants.updateTags()){
+                        @Override public void onSuccess(final Void arg0) {
+                            _resource.setTags(tags);
+                            UpdateTagsDialog.this.close();
+                        }
+                    }
+                );
             }
         };
     }
