@@ -409,7 +409,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     }
 
 
-    private Paragraph extractDate(final PageElement c) { // FIXME: RawValue?
+    private Paragraph extractDate(final PageElement c) {
         final DateField f = c.dateField();
         if (null==f.getValue()) {
             return null;

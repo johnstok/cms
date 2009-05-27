@@ -142,7 +142,7 @@ public class EditUserDialog extends AbstractEditDialog {
                     _userDTO,
                     new ErrorReportingCallback<Void>(_constants.editUser()) {
                         public void onSuccess(final Void result) {
-                            // FIXME: Just update the edited row model data.
+                            // TODO: Just update the edited row model data.
                             _userTable.refreshUsers();
                             close();
                         }

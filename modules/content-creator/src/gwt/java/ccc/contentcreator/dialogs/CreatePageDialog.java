@@ -275,7 +275,6 @@ public class CreatePageDialog
                     .stopIfInError()
                     .check(Validations.uniqueResourceName(
                         _parent, _second.name()))
-                    .check(Validations.validateDatefields(paragraphs))
                     .stopIfInError()
                     .check(Validations.validateFields(paragraphs,
                         _second.definition()))

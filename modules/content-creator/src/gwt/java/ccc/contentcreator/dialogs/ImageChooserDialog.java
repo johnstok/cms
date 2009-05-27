@@ -118,7 +118,7 @@ public class ImageChooserDialog extends AbstractBaseDialog {
         };
     }
 
-    // FIXME: Property names aren't type safe.
+    // TODO: Property names aren't type safe.
     private native String getTemplate() /*-{
     return ['<tpl for=".">',
      '<div class="thumb-wrap" id="{NAME}" style="border: 1px solid white">',

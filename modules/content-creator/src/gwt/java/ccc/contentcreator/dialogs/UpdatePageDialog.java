@@ -134,7 +134,6 @@ public class UpdatePageDialog
                     .check(Validations.notEmpty(panel().title()))
                     .check(Validations.noBrackets(panel().title()))
                     .stopIfInError()
-                    .check(Validations.validateDatefields(paragraphs))
                     .stopIfInError()
                     .check(Validations.validateFields(paragraphs,
                         _panel.definition()))
@@ -152,7 +151,6 @@ public class UpdatePageDialog
                 .check(Validations.notEmpty(panel().title()))
                 .check(Validations.noBrackets(panel().title()))
                 .stopIfInError()
-                .check(Validations.validateDatefields(paragraphs))
                 .stopIfInError()
                 .check(Validations.validateFields(paragraphs,
                     _panel.definition()))

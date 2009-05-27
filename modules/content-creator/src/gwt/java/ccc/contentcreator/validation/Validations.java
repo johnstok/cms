@@ -16,7 +16,6 @@ import java.util.Set;
 
 import ccc.api.ID;
 import ccc.api.Paragraph;
-import ccc.api.ParagraphType;
 import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
@@ -223,33 +222,6 @@ public class Validations {
                         input.getFieldLabel()
                         + " "+_uiConstants.isTooShort()
                     );
-                }
-                validate.next();
-            }
-        };
-    }
-
-    /**
-     * Validates date fields.
-     *
-     * @param delta The list of fields to validate.
-     * @return The Validator
-     */
-    public static Validator validateDatefields(
-                                final Set<Paragraph> delta) { // FIXME: Raw value!
-        return new Validator() {
-            public void validate(final Validate validate) {
-                for (final Paragraph pg : delta) {
-                    if (ParagraphType.DATE == pg.type()
-                            && pg.date() == null
-//                            && pg.getRawValue() != null
-//                            && !pg.getRawValue().isEmpty()
-                            ) {
-                        validate.addMessage(
-                            pg.name()
-                            + " "+_uiConstants.isNotValidDate()
-                        );
-                    }
                 }
                 validate.next();
             }

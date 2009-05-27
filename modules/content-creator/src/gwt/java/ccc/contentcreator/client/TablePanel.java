@@ -23,13 +23,12 @@ import com.google.gwt.core.client.GWT;
 
 
 /**
- * TODO: Add Description for this type.
+ * Abstract base class for table panels.
  *
  * @author Civic Computing Ltd.
  */
-public class TablePanel extends ContentPanel {
+public abstract class TablePanel extends ContentPanel {
 
-    // TODO: Factor out.
     protected final CommandServiceAsync _cs =
         GWT.create(CommandService.class);
     protected final QueriesServiceAsync qs =
