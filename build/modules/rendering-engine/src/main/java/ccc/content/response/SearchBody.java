@@ -43,6 +43,7 @@ public class SearchBody
     private final SearchEngine _searchEngine;
     private final String  _terms;
     private final int _pageNumber;
+    private final Template _template;
 
     /**
      * Constructor.
@@ -52,22 +53,26 @@ public class SearchBody
      * @param searchEngine The engine used to perform the search.
      * @param searchTerms The query terms supplied to the request.
      * @param pageNumber The page of results required.
+     * @param t The template to use for this body.
      */
     public SearchBody(final Search s,
                       final StatefulReader reader,
                       final SearchEngine searchEngine,
                       final String searchTerms,
+                      final Template t,
                       final int pageNumber) {
         DBC.require().notNull(s);
         DBC.require().notNull(reader);
         DBC.require().notNull(searchEngine);
         DBC.require().notNull(searchTerms);
+        DBC.require().notNull(t);
 
         _search = s;
         _reader = reader;
         _searchEngine = searchEngine;
         _terms = searchTerms;
         _pageNumber = pageNumber;
+        _template = t;
     }
 
     /** {@inheritDoc} */
@@ -77,7 +82,7 @@ public class SearchBody
 
         final SearchResult result = _searchEngine.find(_terms, 10, _pageNumber);
 
-        final String t = _search.computeTemplate(BUILT_IN_PAGE_TEMPLATE).body();
+        final String templateString = _template.body();
         final Writer w = new OutputStreamWriter(os, charset);
         final Map<String, Object> values = new HashMap<String, Object>();
         values.put("reader", _reader);
@@ -85,10 +90,12 @@ public class SearchBody
         values.put("pageNumber", Integer.valueOf(_pageNumber));
         values.put("resource", _search);
         values.put("terms", _terms);
-        new VelocityProcessor().render(t, w, values);
+        new VelocityProcessor().render(templateString, w, values);
     }
 
-    private static final Template BUILT_IN_PAGE_TEMPLATE =
+
+    /** BUILT_IN_SEARCH_TEMPLATE : Template. */
+    static final Template BUILT_IN_SEARCH_TEMPLATE =
         new Template(
             "BUILT_IN_SEARCH_TEMPLATE",
             "BUILT_IN_SEARCH_TEMPLATE",

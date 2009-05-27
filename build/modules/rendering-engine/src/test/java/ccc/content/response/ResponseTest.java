@@ -13,7 +13,6 @@ package ccc.content.response;
 
 import static org.easymock.EasyMock.*;
 
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.HashMap;
@@ -163,6 +162,7 @@ public class ResponseTest
             new PageBody(
                 _p,
                 Testing.dummy(StatefulReader.class),
+                PageBody.BUILT_IN_PAGE_TEMPLATE,
                 new HashMap<String, String[]>());
         final Response r = new Response(expected);
 
@@ -185,6 +185,7 @@ public class ResponseTest
             new PageBody(
                 null,
                 Testing.dummy(StatefulReader.class),
+                PageBody.BUILT_IN_PAGE_TEMPLATE,
                 new HashMap<String, String[]>());
             fail("Should be rejected.");
 
@@ -197,9 +198,8 @@ public class ResponseTest
 
     /**
      * Test.
-     * @throws IOException From servlet API.
      */
-    public void testHandleResponseSetsConstentDescription() throws IOException {
+    public void testHandleResponseSetsConstentDescription() {
 
         // ARRANGE
         final Response r = new Response(new EmptyBody());
@@ -217,9 +217,8 @@ public class ResponseTest
 
     /**
      * Test.
-     * @throws IOException From servlet API.
      */
-    public void testHandleResponseSetsExpiryOfZero() throws IOException {
+    public void testHandleResponseSetsExpiryOfZero() {
 
         // ARRANGE
         final Response r = new Response(new EmptyBody());
@@ -240,9 +239,8 @@ public class ResponseTest
 
     /**
      * Test.
-     * @throws IOException From servlet API.
      */
-    public void testHandleResponseSetsConstentDisposition() throws IOException {
+    public void testHandleResponseSetsConstentDisposition() {
 
         // ARRANGE
         final Response r = new Response(new EmptyBody());
@@ -260,9 +258,8 @@ public class ResponseTest
 
     /**
      * Test.
-     * @throws IOException From servlet API.
      */
-    public void testHandleResponseSetsConstentType() throws IOException {
+    public void testHandleResponseSetsConstentType() {
 
         // ARRANGE
         final Response r = new Response(new EmptyBody());
@@ -280,9 +277,8 @@ public class ResponseTest
 
     /**
      * Test.
-     * @throws IOException From servlet API.
      */
-    public void testHandleResponseSetsCharacterEncoding() throws IOException {
+    public void testHandleResponseSetsCharacterEncoding() {
 
         // ARRANGE
         final Response r = new Response(new EmptyBody());
@@ -323,14 +319,14 @@ public class ResponseTest
 
     /** {@inheritDoc} */
     @Override
-    protected void setUp() throws Exception {
+    protected void setUp() {
         _r = new Response(new EmptyBody());
         _response = createStrictMock(HttpServletResponse.class);
     }
 
     /** {@inheritDoc} */
     @Override
-    protected void tearDown() throws Exception {
+    protected void tearDown() {
         _response = null;
         _r = null;
     }

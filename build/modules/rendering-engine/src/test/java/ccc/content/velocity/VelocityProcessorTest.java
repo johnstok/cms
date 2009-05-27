@@ -18,7 +18,6 @@ import java.util.HashMap;
 import junit.framework.TestCase;
 import ccc.api.Paragraph;
 import ccc.commons.TextProcessor;
-import ccc.domain.CCCException;
 import ccc.domain.Page;
 
 
@@ -106,17 +105,12 @@ public class VelocityProcessorTest extends TestCase {
         final String expectedMessage =
             "Encountered \"#end\" at VelocityProcessor[line 1, column 17]";
         final StringWriter renderedOutput = new StringWriter();
+
         // ACT
-        try {
-            _vp.render(
-                template,
-                renderedOutput,
-                Collections.<String, Object>singletonMap("resource", foo));
-            fail("should throw CCCException");
-        } catch (final CCCException e) {
-            assertTrue(e.getMessage().startsWith(
-                expectedMessage));
-        }
+        _vp.render(
+            template,
+            renderedOutput,
+            Collections.<String, Object>singletonMap("resource", foo));
 
         // ASSERT
         final String html = renderedOutput.toString();
@@ -138,16 +132,12 @@ public class VelocityProcessorTest extends TestCase {
             +"the regular expression: (/[\\.\\-\\w]+)* at VelocityProcessor"
             +"[line 1, column 9]";
         final StringWriter renderedOutput = new StringWriter();
+
         // ACT
-        try {
-            _vp.render(
-                template,
-                renderedOutput,
-                Collections.<String, Object>singletonMap("resource", foo));
-            fail("should throw CCCException");
-        } catch (final CCCException e) {
-            assertEquals(expectedMessage, e.getMessage());
-        }
+        _vp.render(
+            template,
+            renderedOutput,
+            Collections.<String, Object>singletonMap("resource", foo));
 
         // ASSERT
         final String html = renderedOutput.toString();
@@ -169,16 +159,12 @@ public class VelocityProcessorTest extends TestCase {
             + "threw exception java.lang.IllegalArgumentException: Specified "
             + "value may not be NULL. at VelocityProcessor[line 1, column 9]";
         final StringWriter renderedOutput = new StringWriter();
+
         // ACT
-        try {
-            _vp.render(
-                template,
-                renderedOutput,
-                Collections.<String, Object>singletonMap("resource", foo));
-            fail("should throw CCCException");
-        } catch (final CCCException e) {
-            assertEquals(expectedMessage, e.getMessage());
-        }
+        _vp.render(
+            template,
+            renderedOutput,
+            Collections.<String, Object>singletonMap("resource", foo));
 
         // ASSERT
         final String html = renderedOutput.toString();

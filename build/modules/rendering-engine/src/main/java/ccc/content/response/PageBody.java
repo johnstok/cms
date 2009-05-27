@@ -40,6 +40,7 @@ public class PageBody
     private final Page    _page;
     private final Map<String, String[]> _params;
     private final StatefulReader _reader;
+    private final Template _template;
 
     /**
      * Constructor.
@@ -47,24 +48,28 @@ public class PageBody
      * @param p The page to render.
      * @param reader A stateful reader to access other resources.
      * @param parameters Additional parameters to control rendering.
+     * @param t The template to use for this body.
      */
     public PageBody(final Page p,
                     final StatefulReader reader,
+                    final Template t,
                     final Map<String, String[]> parameters) {
         DBC.require().notNull(p);
         DBC.require().notNull(reader);
         DBC.require().notNull(parameters);
+        DBC.require().notNull(t);
 
         _page = p;
         _reader = reader;
         _params = parameters;
+        _template = t;
     }
 
     /** {@inheritDoc} */
     @Override
     public void write(final OutputStream os,
                       final Charset charset) {
-        final String t = _page.computeTemplate(BUILT_IN_PAGE_TEMPLATE).body();
+        final String t = _template.body();
         final Writer w = new OutputStreamWriter(os, charset);
         final Map<String, Object> values = new HashMap<String, Object>();
         values.put("reader", _reader);
@@ -74,7 +79,9 @@ public class PageBody
         new VelocityProcessor().render(t, w, values);
     }
 
-    private static final Template BUILT_IN_PAGE_TEMPLATE =
+
+    /** BUILT_IN_PAGE_TEMPLATE : Template. */
+    static final Template BUILT_IN_PAGE_TEMPLATE =
         new Template(
             "BUILT_IN_PAGE_TEMPLATE",
             "BUILT_IN_PAGE_TEMPLATE",

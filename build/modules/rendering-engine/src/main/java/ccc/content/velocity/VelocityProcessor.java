@@ -18,6 +18,7 @@ import java.io.Writer;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.MethodInvocationException;
@@ -35,6 +36,7 @@ import ccc.domain.CCCException;
  * @author Civic Computing Ltd.
  */
 public class VelocityProcessor implements TextProcessor {
+    private static final Logger LOG = Logger.getLogger(VelocityProcessor.class);
 
     /*
      * TODO: investigate all relevant properties
@@ -112,17 +114,19 @@ public class VelocityProcessor implements TextProcessor {
             try {
                 output.flush();
             } catch (final IOException e) {
-                throw new CCCException(e);
+                LOG.warn("Error flushing servlet response.", e);
             }
         }
     }
 
     private void handleException(final Writer output, final Exception e) {
+        final String msg = ""+e.getMessage(); // getMessage() is NULL for an NPE
+        LOG.warn("Error in template: "+msg);
+
         try {
-            output.write(""+e.getMessage()); // getMessage() is NULL for an NPE
+            output.write(msg);
         } catch (final IOException e1) {
-            throw new CCCException(e);
+            LOG.warn("Error writing to servlet response.", e1);
         }
-        throw new CCCException(e.getMessage(), e);
     }
 }
