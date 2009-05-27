@@ -21,10 +21,12 @@ import ccc.api.Paragraph;
 import ccc.commands.ClearWorkingCopyCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.LockMismatchException;
+import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.domain.WorkingCopyAware;
+import ccc.services.AuditLog;
 import ccc.services.Dao;
 
 
@@ -52,10 +54,11 @@ public class WorkingCopyManagerTest
         p.workingCopy(p.createSnapshot());
 
         expect(_dao.find(WorkingCopyAware.class, p.id())).andReturn(p);
+        _audit.record(isA(LogEntry.class));
         replayAll();
 
         // ACT
-        new ClearWorkingCopyCommand(_dao, null).execute(
+        new ClearWorkingCopyCommand(_dao, _audit).execute(
             _user, _now, p.id());
 
         // ASSERT
@@ -79,10 +82,11 @@ public class WorkingCopyManagerTest
         final PageDelta before = page.createSnapshot();
 
         expect(_dao.find(Page.class, page.id())).andReturn(page);
+        _audit.record(isA(LogEntry.class));
         replayAll();
 
         // ACT
-        new UpdateWorkingCopyCommand(_dao, null).execute(
+        new UpdateWorkingCopyCommand(_dao, _audit).execute(
             _user, _now, page.id(), before);
 
         // ASSERT
@@ -94,26 +98,29 @@ public class WorkingCopyManagerTest
 
 
     private void verifyAll() {
-        verify(_dao);
+        verify(_dao, _audit);
     }
 
     private void replayAll() {
-        replay(_dao);
+        replay(_dao, _audit);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void setUp() {
         _dao = createStrictMock(Dao.class);
+        _audit = createStrictMock(AuditLog.class);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void tearDown() {
         _dao = null;
+        _audit = null;
     }
 
     private Dao _dao;
+    private AuditLog _audit;
     private final User _user = new User("currentUser");
     private final Date _now = new Date();
 }
