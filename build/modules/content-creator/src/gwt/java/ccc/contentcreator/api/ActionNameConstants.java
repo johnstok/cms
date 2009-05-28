@@ -91,4 +91,12 @@ public interface ActionNameConstants extends Constants {
      */
     @DefaultStringValue("Internal action")
     String internalAction();
+
+    /**
+     * "Load data".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Load data")
+    String loadData();
 }
