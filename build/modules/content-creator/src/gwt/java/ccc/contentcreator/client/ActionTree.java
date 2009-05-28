@@ -44,8 +44,10 @@ public class ActionTree extends Tree {
         actions.setId("actions");
         final TreeItem pending = new TreeItem(_constants.pending());
         pending.setId("pending");
+        pending.setIconStyle("images/icons/hourglass.png");
         final TreeItem completed = new TreeItem(_constants.completed());
         completed.setId("completed");
+        completed.setIconStyle("images/icons/accept.png");
 
         getRootItem().add(actions);
         actions.add(pending);
