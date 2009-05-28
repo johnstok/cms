@@ -18,6 +18,7 @@ import java.util.List;
 
 import ccc.api.ResourceSummary;
 import ccc.api.ResourceType;
+import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.binding.DataBinding;
@@ -42,6 +43,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @author Civic Computing Ltd.
  */
 public class FolderResourceTree extends Tree {
+    private final ActionNameConstants USER_ACTIONS =
+        GWT.create(ActionNameConstants.class);
 
     /**
      * TODO: Add Description for this type.
@@ -137,15 +140,20 @@ public class FolderResourceTree extends Tree {
         setStyleAttribute("background", "white");
 
 
-        final RpcProxy<ResourceSummaryModelData, List<ResourceSummaryModelData>> proxy =
-            new RpcProxy<ResourceSummaryModelData, List<ResourceSummaryModelData>>() {
+        final RpcProxy<ResourceSummaryModelData,
+                       List<ResourceSummaryModelData>> proxy =
+            new RpcProxy<ResourceSummaryModelData,
+                         List<ResourceSummaryModelData>>() {
             @Override
-            protected void load(final ResourceSummaryModelData loadConfig,
-                                final AsyncCallback<List<ResourceSummaryModelData>> callback) {
+            protected void load(
+                final ResourceSummaryModelData loadConfig,
+                final AsyncCallback<List<ResourceSummaryModelData>> callback) {
 
 
                 if (null==loadConfig) {
-                    callback.onSuccess(DataBinding.bindResourceSummary(Collections.singletonList(_root)));
+                    callback.onSuccess(
+                        DataBinding.bindResourceSummary(
+                            Collections.singletonList(_root)));
                 } else {
                     qs.getChildren(
                         loadConfig.getId(),
@@ -153,10 +161,14 @@ public class FolderResourceTree extends Tree {
 
                             public void onFailure(final Throwable arg0) {
                                 callback.onFailure(arg0);
+                                Globals.unexpectedError(
+                                    arg0, USER_ACTIONS.loadData());
                             }
 
-                            public void onSuccess(final Collection<ResourceSummary> arg0) {
-                                callback.onSuccess(DataBinding.bindResourceSummary(arg0));
+                            public void onSuccess(
+                                      final Collection<ResourceSummary> arg0) {
+                                callback.onSuccess(
+                                    DataBinding.bindResourceSummary(arg0));
                             }
                         }
                     );

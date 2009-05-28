@@ -17,6 +17,7 @@ import java.util.List;
 
 import ccc.api.ID;
 import ccc.api.ResourceSummary;
+import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.binding.DataBinding;
@@ -40,6 +41,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @author Civic Computing Ltd.
  */
 public class ResourceTree extends Tree {
+    private final ActionNameConstants USER_ACTIONS =
+        GWT.create(ActionNameConstants.class);
 
     private final TreeStore<ResourceSummaryModelData> _store;
     private final ResourceSummary _root;
@@ -58,11 +61,14 @@ public class ResourceTree extends Tree {
         setStyleAttribute("background", "white");
 
 
-        final RpcProxy<ResourceSummaryModelData, List<ResourceSummaryModelData>> proxy =
-            new RpcProxy<ResourceSummaryModelData, List<ResourceSummaryModelData>>() {
+        final RpcProxy<ResourceSummaryModelData,
+                       List<ResourceSummaryModelData>> proxy =
+            new RpcProxy<ResourceSummaryModelData,
+                         List<ResourceSummaryModelData>>() {
             @Override
-            protected void load(final ResourceSummaryModelData loadConfig,
-                                final AsyncCallback<List<ResourceSummaryModelData>> callback) {
+            protected void load(
+                final ResourceSummaryModelData loadConfig,
+                final AsyncCallback<List<ResourceSummaryModelData>> callback) {
 
                 final ID parentId =
                   (null==loadConfig) ? _root.getId() : loadConfig.getId();
@@ -73,6 +79,8 @@ public class ResourceTree extends Tree {
 
                     public void onFailure(final Throwable arg0) {
                         callback.onFailure(arg0);
+                        Globals.unexpectedError(
+                            arg0, USER_ACTIONS.loadData());
                     }
 
                     public void onSuccess(

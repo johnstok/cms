@@ -50,7 +50,7 @@ public class UserTree extends Tree {
      *
      * @param view LeftRightPane of the surrounding view.
      */
-    UserTree(final LeftRightPane view) {
+    UserTree(final LeftRightPane view) { // FIXME: I18n!
 
         _view = view;
 
