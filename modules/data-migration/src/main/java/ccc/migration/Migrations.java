@@ -368,8 +368,9 @@ public class Migrations {
             log.info("Migrated page "+r.contentId());
 
         } catch (final Exception e) {
-            log.warn("Error migrating page "
-                +r.contentId()+": "+e.getMessage());
+//            log.warn("Error migrating page "+r.contentId(),  e);
+            log.warn(
+                "Error migrating page " +r.contentId()+": "+e.getMessage());
         }
     }
 
