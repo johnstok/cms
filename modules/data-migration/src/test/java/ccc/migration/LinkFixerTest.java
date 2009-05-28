@@ -55,6 +55,27 @@ public class LinkFixerTest
     /**
      * Test.
      */
+    public void testFixFileUrls() {
+
+        // ARRANGE
+        final LinkFixer lf = new LinkFixer("/ash/");
+        final Map<String, StringBuffer> paras =
+            new HashMap<String, StringBuffer>();
+        paras.put(
+            "foo",
+            new StringBuffer("< href= \"files/fo$o.pdf\" />"));
+
+        // ACT
+        lf.extractURLs(paras);
+
+        // ASSERT
+        assertEquals(
+            "< href=\"/ash/files/fo$o.pdf\" />", paras.get("foo").toString());
+    }
+
+    /**
+     * Test.
+     */
     public void testFindHrefAttributes() {
 
         // ARRANGE
