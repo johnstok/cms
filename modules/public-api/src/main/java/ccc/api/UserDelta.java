@@ -31,9 +31,9 @@ public final class UserDelta implements Serializable, Jsonable {
     /**
      * Constructor.
      *
-     * @param email
-     * @param username
-     * @param roles
+     * @param email The user's email.
+     * @param username The user's username.
+     * @param roles The user's roles.
      */
     public UserDelta(final String email,
                      final Username username,

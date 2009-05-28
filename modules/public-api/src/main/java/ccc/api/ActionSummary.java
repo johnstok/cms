@@ -35,13 +35,13 @@ public final class ActionSummary implements Serializable {
     /**
      * Constructor.
      *
-     * @param id
-     * @param type
-     * @param actor
-     * @param after
-     * @param type
-     * @param path
-     * @param status
+     * @param id The action's id.
+     * @param type The type of command the action will perform.
+     * @param subjectType The subject's type.
+     * @param actor The action's actor.
+     * @param after The date after which the action should be executed.
+     * @param path The absolute path of the action's subject.
+     * @param status The action's status.
      */
     public ActionSummary(final ID     id,
                          final CommandType type,

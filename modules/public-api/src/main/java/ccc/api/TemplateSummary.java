@@ -32,12 +32,12 @@ public final class TemplateSummary implements Serializable {
     /**
      * Constructor.
      *
-     * @param id
-     * @param name
-     * @param title
-     * @param description
-     * @param body
-     * @param definition
+     * @param id The template's id.
+     * @param name The template's name.
+     * @param title The template's title.
+     * @param description The template's description.
+     * @param body The template's body.
+     * @param definition The template's definition.
      */
     public TemplateSummary(final ID   id,
                          final String name,
