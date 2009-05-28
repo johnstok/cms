@@ -47,20 +47,22 @@ public final class ResourceSummary implements Serializable, Jsonable {
     /**
      * Constructor.
      *
-     * @param id
-     * @param parentId
-     * @param name
-     * @param publishedBy
-     * @param title
-     * @param lockedBy
-     * @param type
-     * @param childCount
-     * @param folderCount
-     * @param includeInMainMenu
-     * @param sortOrder
-     * @param hasWorkingCopy
-     * @param dateCreated
-     * @param dateChanged
+     * @param id The resource's id.
+     * @param parentId The resource's parent folder id.
+     * @param name The resource's name.
+     * @param publishedBy The user that published the resource.
+     * @param title The resource's title.
+     * @param lockedBy The user that locked the resource.
+     * @param type The type of the resource.
+     * @param childCount The number of children the resource has.
+     * @param folderCount The number of folders the resource contains.
+     * @param includeInMainMenu Is the resource included in the main menu.
+     * @param sortOrder The sort order for the resource.
+     * @param hasWorkingCopy Does the resource have a working copy.
+     * @param dateCreated When was the resource created.
+     * @param dateChanged When was the resource last changed.
+     * @param templateId The id of the resource's template.
+     * @param tags The resource's tags.
      */
     public ResourceSummary(final ID id,
                            final ID parentId,

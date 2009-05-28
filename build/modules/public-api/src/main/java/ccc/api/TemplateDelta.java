@@ -31,12 +31,11 @@ public final class TemplateDelta implements Serializable, Jsonable {
     /**
      * Constructor.
      *
-     * @param name
-     * @param title
-     * @param description
-     * @param body
-     * @param definition
-     * @param mimeType
+     * @param title The template's title.
+     * @param description The template's description.
+     * @param body The template's body.
+     * @param definition The template's definition.
+     * @param mimeType The template's mime type.
      */
     public TemplateDelta(final String title,
                          final String description,

@@ -90,6 +90,9 @@ public interface Commands {
     /**
      * Rename resource.
      *
+     * @param resourceId The id of the resource to rename.
+     * @param name The new name.
+     *
      * @throws CommandFailedException If the method fails.
      */
     void rename(final ID resourceId, final String name)
@@ -98,12 +101,19 @@ public interface Commands {
     /**
      * Update the tags for a resource.
      *
+     * @param resourceId The id of the resource to update.
+     * @param tags The new tags to set.
+     *
      * @throws CommandFailedException If the method fails.
      */
     void updateTags(ID resourceId, String tags) throws CommandFailedException;
 
     /**
      * Changes a resource's parent.
+     *
+     * @param resourceId The id of the resource to move.
+     * @param newParentId The id of the folder to which the resource should be
+     *  moved.
      *
      * @throws CommandFailedException If the method fails.
      */
@@ -112,6 +122,9 @@ public interface Commands {
 
     /**
      * Update the specified resource's template on the server.
+     *
+     * @param resourceId The id of the resource to update.
+     * @param templateId The new template to set for the resource.
      *
      * @throws CommandFailedException If the method fails.
      */
@@ -217,14 +230,14 @@ public interface Commands {
     throws CommandFailedException;
 
     /**
-     * TODO: Add a description of this method.
+     * Validate a set of paragraphs against a given definition.
      *
-     * @param delta
-     * @param definition
-     * @return
+     * @param delta The paragraphs.
+     * @param definition The xml definition, as a string.
+     * @return A list of errors, as strings.
      */
-    public List<String> validateFields(final Set<Paragraph> delta,
-                                       final String definition);
+    List<String> validateFields(final Set<Paragraph> delta,
+                                final String definition);
 
     /**
      * Delete the working copy for a page.
@@ -233,15 +246,18 @@ public interface Commands {
      *
      * @throws CommandFailedException If the method fails.
      */
-    public void clearWorkingCopy(ID pageId) throws CommandFailedException;
-
-
-
+    void clearWorkingCopy(ID pageId) throws CommandFailedException;
 
     /**
      * Create a new alias in CCC.
      *
+     * @param parentId The folder in which the alias should be created.
+     * @param name The name of the alias.
+     * @param targetId The target resource to which the alias should link.
+     *
      * @throws CommandFailedException If the method fails.
+     *
+     * @return A resource summary describing the new alias.
      */
     ResourceSummary createAlias(ID parentId, String name, ID targetId)
     throws CommandFailedException;
@@ -249,7 +265,12 @@ public interface Commands {
     /**
      * Create a folder with the specified name.
      *
+     * @param parentId The folder in which the new folder should be created.
+     * @param name The name of the new folder.
+     *
      * @throws CommandFailedException If the method fails.
+     *
+     * @return A resource summary describing the new folder.
      */
     ResourceSummary createFolder(ID parentId, String name)
     throws CommandFailedException;
@@ -257,7 +278,14 @@ public interface Commands {
     /**
      * Create a folder with the specified name and title.
      *
+     * @param parentId The folder in which the new folder should be created.
+     * @param name The name of the new folder.
+     * @param title The title of the folder.
+     * @param publish True if the title should be published, false otherwise.
+     *
      * @throws CommandFailedException If the method fails.
+     *
+     * @return A resource summary describing the new folder.
      */
     ResourceSummary createFolder(ID parentId,
                                  String name,
@@ -267,14 +295,24 @@ public interface Commands {
     /**
      * Create a root folder with the specified name.
      *
+     * @param name The name of the root folder.
+     *
      * @throws CommandFailedException If the method fails.
+     *
+     * @return A resource summary describing the new root.
      */
     ResourceSummary createRoot(String name)
     throws CommandFailedException;
 
     /**
      * Create a new user in the system.
+     *
+     * @param delta The new user details.
+     * @param password The new user's password.
+     *
      * @throws CommandFailedException If the method fails.
+     *
+     * @return A user summary describing the new user.
      */
     UserSummary createUser(UserDelta delta, String password)
     throws CommandFailedException;
@@ -282,7 +320,15 @@ public interface Commands {
     /**
      * Creates a new page.
      *
+     * @param parentId The folder in which the page will be created.
+     * @param delta The page's details.
+     * @param name The page's name.
+     * @param publish True if the folder should be published, false otherwise.
+     * @param templateId The page's template.
+     *
      * @throws CommandFailedException If the method fails.
+     *
+     * @return A resource summary describing the new page.
      */
     ResourceSummary createPage(ID parentId,
                                PageDelta delta,
@@ -293,7 +339,13 @@ public interface Commands {
     /**
      * Create a new template in CCC.
      *
+     * @param parentId The folder in which the template should be created.
+     * @param delta The template's details.
+     * @param name The template's name.
+     *
      * @throws CommandFailedException If the method fails.
+     *
+     * @return A resource summary describing the new template.
      */
     ResourceSummary createTemplate(ID parentId,
                                    TemplateDelta delta,
@@ -341,6 +393,8 @@ public interface Commands {
      * @param executeAfter The earliest date at which the action may be
      *  executed.
      * @param parameters Additional parameters for the action, as a JSON string.
+     * @param comment The comment for the action.
+     * @param isMajorEdit Is the action a major change.
      *
      * @throws CommandFailedException If the method fails.
      */
@@ -356,6 +410,8 @@ public interface Commands {
      *
      * @param folderId The id of the folder to update.
      * @param order The new order of the resources.
+     *
+     * @throws CommandFailedException If the method fails.
      */
     void reorder(ID folderId, List<String> order) throws CommandFailedException;
 
@@ -371,22 +427,22 @@ public interface Commands {
     throws CommandFailedException;
 
     /**
-     * TODO: Add a description of this method.
+     * Apply a resource's working copy.
      *
-     * @param resourceId
+     * @param resourceId The id of the resource.
      *
      * @throws CommandFailedException If the method fails.
      */
     void applyWorkingCopy(ID resourceId) throws CommandFailedException;
 
     /**
-     * TODO: Add a description of this method.
+     * Apply a resource's working copy.
      *
-     * @param resourceId
-     * @param userId
-     * @param happenedOn
-     * @param isMajorEdit
-     * @param comment
+     * @param resourceId The id of the resource.
+     * @param userId The user applying the working copy.
+     * @param happenedOn When the command happened.
+     * @param isMajorEdit Was this a major change.
+     * @param comment A comment describing the change.
      *
      * @throws CommandFailedException If the method fails.
      */
