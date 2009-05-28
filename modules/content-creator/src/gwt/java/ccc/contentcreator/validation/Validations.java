@@ -294,10 +294,8 @@ public class Validations {
                                               final String pw2) {
         return new Validator() {
             public void validate(final Validate validate) {
-                if (pw1 != null && pw2 != null && !pw1.equals(pw2)) {
-                    validate.addMessage(
-                        _uiConstants.passwordsDidNotMatch()
-                    );
+                if (pw1 != null && !pw1.equals(pw2)) {
+                    validate.addMessage(_uiConstants.passwordsDidNotMatch());
                 }
                 validate.next();
             }

@@ -70,9 +70,9 @@ public class EditUserPwDialog extends AbstractEditDialog {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
                 Validate.callTo(updateUser())
+                    .check(passwordStrength(_password1.getValue()))
                     .check(matchingPasswords(
                         _password1.getValue(), _password2.getValue()))
-                    .check(passwordStrength(_password1.getValue()))
                     .callMethodOr(reportErrors());
             }
         };
