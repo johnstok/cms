@@ -240,15 +240,10 @@ public class ResourceTable
         final ResourceSummaryModelData np =
             _tree._store.findModel(ResourceSummaryModelData.Property.ID.name(),
                                    newParent.getId());
+        if (null!=np) { // May not exist in the store
+            _tree._store.add(np, model, false); // Add to the left-hand tree
 
-        if (newParent.equals(treeSelection())) {
-            _detailsStore.add(model);
-        }
-
-        if (null!=np) { // May not exist in other store
-            _tree._store.add(np, model, false);
-
-            if (np.equals(treeSelection())) {
+            if (np.equals(treeSelection())) {   // Add to the right-hand table
                 _detailsStore.add(model);
             }
         }
