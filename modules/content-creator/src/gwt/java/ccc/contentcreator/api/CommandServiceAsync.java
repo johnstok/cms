@@ -130,7 +130,7 @@ public interface CommandServiceAsync {
     void createAction(ID resourceId,
                       CommandType action,
                       Date executeAfter,
-                      String parameters,
+                      final Map<String, String> parameters,
                       String comment,
                       boolean isMajorEdit,
                       AsyncCallback<Void> callback);

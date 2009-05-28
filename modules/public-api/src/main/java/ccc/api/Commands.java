@@ -392,7 +392,7 @@ public interface Commands {
      * @param action The type of the action to be performed.
      * @param executeAfter The earliest date at which the action may be
      *  executed.
-     * @param parameters Additional parameters for the action, as a JSON string.
+     * @param parameters Additional parameters for the action.
      * @param comment The comment for the action.
      * @param isMajorEdit Is the action a major change.
      *
@@ -401,7 +401,7 @@ public interface Commands {
     void createAction(ID resourceId,
                       CommandType action,
                       Date executeAfter,
-                      String parameters,
+                      Map<String, String> parameters,
                       String comment,
                       boolean isMajorEdit) throws CommandFailedException;
 

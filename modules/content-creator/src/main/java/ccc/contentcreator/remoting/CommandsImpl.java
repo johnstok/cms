@@ -275,7 +275,7 @@ public class CommandsImpl
     public void createAction(final ID resourceId,
                              final CommandType action,
                              final Date executeAfter,
-                             final String parameters,
+                             final Map<String, String> parameters,
                              final String comment,
                              final boolean isMajorEdit)
     throws CommandFailedException {
