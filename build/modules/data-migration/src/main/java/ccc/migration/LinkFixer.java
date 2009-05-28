@@ -66,12 +66,15 @@ public class LinkFixer {
                     || url.startsWith("http://") // absolute URL
                     || url.startsWith("/")       // absolute URL
                     ||url.startsWith("#")) {     // link on the same page
-                    hrefMatcher.appendReplacement(
-                        correctedPara, hrefMatcher.group()); // no correction
+                    hrefMatcher.appendReplacement(// no correction
+                        correctedPara,
+                        Matcher.quoteReplacement(hrefMatcher.group()));
 
                 } else {
                     final String correctedHref = "href=\""+correct(url)+"\"";
-                    hrefMatcher.appendReplacement(correctedPara, correctedHref);
+                    hrefMatcher.appendReplacement(
+                        correctedPara,
+                        Matcher.quoteReplacement(correctedHref));
 
                 }
             }
