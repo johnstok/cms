@@ -21,6 +21,7 @@ import ccc.contentcreator.api.CommandServiceAsync;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
+import ccc.contentcreator.binding.ResourceSummaryModelData.Property;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
@@ -121,15 +122,20 @@ AbstractEditDialog {
                         } else  {
                             _grid.disable();
                             if (NAME_ALPHANUM_ASC.equals(order)) {
-                                _detailsStore.sort("name", SortDir.ASC);
+                                _detailsStore.sort(
+                                    Property.NAME.name(), SortDir.ASC);
                             } else if (DATE_CHANGED_ASC.equals(order)) {
-                                _detailsStore.sort("dateChanged", SortDir.ASC);
+                                _detailsStore.sort(
+                                    Property.DATE_CHANGED.name(), SortDir.ASC);
                             } else if (DATE_CHANGED_DESC.equals(order)) {
-                                _detailsStore.sort("dateChanged", SortDir.DESC);
+                                _detailsStore.sort(
+                                    Property.DATE_CHANGED.name(), SortDir.DESC);
                             } else if (DATE_CREATED_ASC.equals(order)) {
-                                _detailsStore.sort("dateCreated", SortDir.ASC);
+                                _detailsStore.sort(
+                                    Property.DATE_CREATED.name(), SortDir.ASC);
                             } else if (DATE_CREATED_DESC.equals(order)) {
-                                _detailsStore.sort("dateCreated", SortDir.DESC);
+                                _detailsStore.sort(
+                                    Property.DATE_CREATED.name(), SortDir.DESC);
                             }
                         }
                         configureDropTarget();
@@ -268,7 +274,7 @@ AbstractEditDialog {
             DateTimeFormat.getFormat("dd.MM.yyyy");
 
         final ColumnConfig typeColumn = new ColumnConfig(
-            ResourceSummaryModelData.Property.TYPE.name(),
+            Property.TYPE.name(),
             _constants.type(),
             70);
         typeColumn.setSortable(false);
@@ -276,7 +282,7 @@ AbstractEditDialog {
         configs.add(typeColumn);
 
         final ColumnConfig nameColumn = new ColumnConfig(
-            ResourceSummaryModelData.Property.NAME.name(),
+            Property.NAME.name(),
             _constants.name(),
             170);
         nameColumn.setSortable(false);
@@ -284,7 +290,7 @@ AbstractEditDialog {
         configs.add(nameColumn);
 
         final ColumnConfig titleColumn = new ColumnConfig(
-            ResourceSummaryModelData.Property.TITLE.name(),
+            Property.TITLE.name(),
             _constants.title(),
             170);
         titleColumn.setSortable(false);
@@ -292,7 +298,7 @@ AbstractEditDialog {
         configs.add(titleColumn);
 
         final ColumnConfig createdColumn = new ColumnConfig(
-            ResourceSummaryModelData.Property.DATE_CREATED.name(),
+            Property.DATE_CREATED.name(),
             _constants.created(),
             70);
         createdColumn.setSortable(false);
@@ -301,7 +307,7 @@ AbstractEditDialog {
         configs.add(createdColumn);
 
         final ColumnConfig changedColumn = new ColumnConfig(
-            ResourceSummaryModelData.Property.DATE_CHANGED.name(),
+            Property.DATE_CHANGED.name(),
             _constants.changed(),
             70);
         changedColumn.setSortable(false);
