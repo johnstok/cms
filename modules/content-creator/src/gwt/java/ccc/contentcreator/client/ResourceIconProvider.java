@@ -38,6 +38,8 @@ final class ResourceIconProvider
                 return "images/icons/link.png";
             case FILE:
                 return "images/icons/image.png";
+            case SEARCH:
+                return "images/icons/magnifier.png";
             default:
                 return null;
         }
