@@ -24,7 +24,7 @@ public interface SingleSelectionModel {
     ResourceSummaryModelData treeSelection();
     void update(ResourceSummaryModelData model);
     void move(ResourceSummaryModelData model,
-              ResourceSummaryModelData newParent, final
+              ResourceSummaryModelData newParent,
               ResourceSummaryModelData oldParent);
     void create(ResourceSummaryModelData model,
                 ResourceSummaryModelData newParent);
