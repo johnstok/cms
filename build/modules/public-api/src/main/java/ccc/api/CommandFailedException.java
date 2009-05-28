@@ -13,6 +13,7 @@ package ccc.api;
 
 
 
+
 /**
  * An exception representing the failure of a CCC command.
  *
@@ -30,27 +31,12 @@ public class CommandFailedException
      * Constructor.
      *
      * @param errorCode
-     * @param params
      * @param localExceptionId
      */
     public CommandFailedException(final int errorCode,
-                                  final String localExceptionId,
-                                  final ParamList params) {
+                                  final String localExceptionId) {
         super("CCC Error: "+localExceptionId);
-        _failure = new Failure(errorCode, params, localExceptionId);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param errorCode
-     * @param action
-     * @param localExceptionId
-     */
-    public CommandFailedException(final int errorCode,
-                              final String localExceptionId) {
-        this(
-            errorCode, localExceptionId, new ParamList());
+        _failure = new Failure(errorCode, localExceptionId);
     }
 
     /**

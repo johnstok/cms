@@ -21,14 +21,18 @@ import java.io.Serializable;
  */
 public class Failure implements Serializable {
 
+    /** UNEXPECTED : int. */
     public static final int UNEXPECTED    = 0;
+    /** UNLOCKED : int. */
     public static final int UNLOCKED      = 1;
+    /** LOCK_MISMATCH : int. */
     public static final int LOCK_MISMATCH = 2;
+    /** EXISTS : int. */
     public static final int EXISTS        = 3;
+    /** PRIVILEGES : int. */
     public static final int PRIVILEGES    = 4;
 
     private int                 _code        = 0;
-    private ParamList           _params      = new ParamList();
     private String              _exceptionId = "";
 
     @SuppressWarnings("unused") private Failure() { super(); }
@@ -37,15 +41,12 @@ public class Failure implements Serializable {
      * Constructor.
      *
      * @param code The internal code for this failure.
-     * @param params Additional details regarding the failure.
      * @param exceptionId The unique id of the exception logged for this
      *  failure.
      */
     public Failure(final int code,
-                   final ParamList params,
                    final String exceptionId) {
         _code = code;
-        _params = params;
         _exceptionId = exceptionId;
     }
 
@@ -57,16 +58,6 @@ public class Failure implements Serializable {
      */
     public int getCode() {
         return _code;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the param's.
-     */
-    public ParamList getParams() {
-        return _params;
     }
 
 

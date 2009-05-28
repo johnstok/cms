@@ -621,7 +621,7 @@ public class CommandsEJB
     public void createAction(final ID resourceId,      // TODO: Use ActionDelta.
                              final CommandType action,
                              final Date executeAfter,
-                             final String parameters,
+                             final Map<String, String> parameters,
                              final String comment,
                              final boolean isMajorEdit) {
       final Action a =
@@ -630,7 +630,7 @@ public class CommandsEJB
               executeAfter,
               loggedInUser(),
               _bdao.find(Resource.class, toUUID(resourceId)),
-              new Snapshot(parameters),
+              parameters,
               comment,
               isMajorEdit);
 

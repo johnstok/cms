@@ -14,7 +14,6 @@ package ccc.domain;
 import ccc.api.CommandFailedException;
 import ccc.api.DBC;
 import ccc.api.Failure;
-import ccc.api.ParamList;
 
 
 /**
@@ -28,7 +27,6 @@ public class UnlockedException
 
     private final Resource _resource;
 
-
     /**
      * Constructor.
      *
@@ -39,6 +37,7 @@ public class UnlockedException
         _resource = resource;
     }
 
+
     /**
      * Accessor for the unlocked resource.
      *
@@ -48,21 +47,20 @@ public class UnlockedException
         return _resource;
     }
 
+
     /** {@inheritDoc} */
     @Override
     public String getMessage() {
         return "Resource "+_resource.id()+" is Unlocked.";
     }
 
+
     /** {@inheritDoc} */
     @Override
     public CommandFailedException toRemoteException() {
         return new CommandFailedException(
             Failure.UNLOCKED,
-            getUUID().toString(),
-            new ParamList()
-                .set("resource-path", _resource.absolutePath().toString())
-                .set("resource-id", _resource.id().toString())
+            getUUID().toString()
         );
     }
 }

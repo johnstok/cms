@@ -14,6 +14,7 @@ package ccc.services.impl;
 import static org.easymock.EasyMock.*;
 
 import java.util.Date;
+import java.util.HashMap;
 
 import junit.framework.TestCase;
 import ccc.api.ActionStatus;
@@ -24,7 +25,6 @@ import ccc.api.Failure;
 import ccc.api.ID;
 import ccc.domain.Action;
 import ccc.domain.Page;
-import ccc.domain.Snapshot;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 
@@ -54,7 +54,7 @@ public class ActionExecutorImplTest
                 new Date(),
                 u,
                 p,
-                new Snapshot(),
+                new HashMap<String, String>(),
                 "",
                 false);
 

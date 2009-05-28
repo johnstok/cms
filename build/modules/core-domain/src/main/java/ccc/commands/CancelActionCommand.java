@@ -63,7 +63,7 @@ public class CancelActionCommand {
                 happenedOn,
                 actionId,
                 null,
-                null,
+                "{}",
                 false));
     }
 }

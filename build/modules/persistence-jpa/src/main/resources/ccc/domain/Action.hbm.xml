@@ -74,14 +74,12 @@
             not-null="true"
             foreign-key="FK_ACTION_RESOURCE_SUBJECT_ID" />
         
-        <component name="_parameters" class="ccc.domain.Snapshot">
-			<property
-                name="detail"
-                column="parameters"
-                type="text"
-                not-null="true"
-                access="property" />
-		</component>
+        <map name="_parameters" table="action_params">
+            <cache usage="transactional"/>
+            <key column="action_id" not-null="true" foreign-key="FK_ACTION_PARAM_ACTION_ID"/>
+            <map-key type="string" column="param_key" length="255"/>
+            <element type="string" column="param_value" length="1024"  not-null="true"/>
+        </map>
         
         <component name="_failure" class="ccc.api.Failure">
             <property
@@ -93,14 +91,13 @@
                 column="failure_exception_id"
                 type="string" 
                 length="255" />
-            <component name="_params" class="ccc.api.ParamList">
-                <property
-                    name="canonicalForm"
-                    column="failure_params"
-                    type="string"
-                    length="1024"
-                    access="property" />
-            </component>
+                
+            <!--<map name="_params" table="action_failure_params">
+                <cache usage="transactional"/>
+                <key column="action_id" not-null="true" foreign-key="FK_ACTION_FAILURE_ACTION_ID"/>
+                <map-key type="string" column="param_key" length="255"/>
+                <element type="string" column="param_value" length="2048"  not-null="true"/>
+            </map>-->
         </component>
         
     </class>

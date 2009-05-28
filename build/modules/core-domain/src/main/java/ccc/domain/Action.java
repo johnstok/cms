@@ -12,6 +12,7 @@
 package ccc.domain;
 
 import java.util.Date;
+import java.util.Map;
 
 import ccc.api.ActionStatus;
 import ccc.api.CommandFailedException;
@@ -25,16 +26,16 @@ import ccc.api.Failure;
  * @author Civic Computing Ltd.
  */
 public class Action extends Entity {
-    private User         _actor;
-    private CommandType  _type;
-    private Snapshot     _parameters;
-    private Resource     _subject;
-    private String       _comment = "";
-    private boolean      _isMajorEdit;
+    private User                _actor;
+    private CommandType         _type;
+    private Map<String, String> _parameters;
+    private Resource            _subject;
+    private String              _comment = "";
+    private boolean             _isMajorEdit;
 
-    private Date         _executeAfter;
-    private ActionStatus _status = ActionStatus.Scheduled;
-    private Failure     _failure;
+    private Date                _executeAfter;
+    private ActionStatus        _status = ActionStatus.Scheduled;
+    private Failure             _failure;
 
     /** Constructor: for persistence only. */
     protected Action() { super(); }
@@ -54,7 +55,7 @@ public class Action extends Entity {
                   final Date executeAfter,
                   final User actor,
                   final Resource subject,
-                  final Snapshot parameters,
+                  final Map<String, String> parameters,
                   final String comment,
                   final boolean isMajorEdit) {
         _type = type;
@@ -81,7 +82,7 @@ public class Action extends Entity {
      *
      * @return The parameters for this action.
      */
-    public Snapshot parameters() {
+    public Map<String, String> parameters() {
         return _parameters;
     }
 

@@ -16,6 +16,7 @@ import java.util.Date;
 import ccc.api.CommandType;
 import ccc.domain.Action;
 import ccc.domain.LogEntry;
+import ccc.domain.Snapshot;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -62,7 +63,21 @@ public class ScheduleActionCommand {
                 happenedOn,
                 action.id(),
                 null,
-                null, // FIXME: Add detail
+                toJson(action),
                 false));
+    }
+
+
+    private String toJson(final Action action) {
+        final Snapshot s = new Snapshot();
+        s.set("actor", action.actor().id().toString());
+        s.set("type", action.type().name());
+        s.set("parameters", action.parameters());
+        s.set("subject", action.subject().id().toString());
+        s.set("comment", action.getComment());
+        s.set("major_edit", Boolean.valueOf(action.isMajorEdit()));
+        s.set("execute_after", action.executeAfter());
+
+        return s.getDetail();
     }
 }
