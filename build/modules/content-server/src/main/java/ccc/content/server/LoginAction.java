@@ -55,6 +55,9 @@ public class LoginAction
         if (null!=targets && 1==targets.length) {
             target = targets[0];
         }
+        if (null==target || target.trim().length()<1) {
+            target = _siteRoot;
+        }
 
         final String[] usernames = req.getParameterValues("un");
         if (null==usernames || 1!=usernames.length) {
@@ -72,10 +75,10 @@ public class LoginAction
         final WebAuthentication pwl = new WebAuthentication();
         if(pwl.login(username, password)) {
             dispatchRedirect(
-                req, resp, (null==target)?_siteRoot:target);
+                req, resp, target);
         } else {
             dispatchRedirect(
-                req, resp, _loginPage+"?tg="+((null==target)?_siteRoot:target));
+                req, resp, _loginPage+"?tg="+target);
         }
     }
 
