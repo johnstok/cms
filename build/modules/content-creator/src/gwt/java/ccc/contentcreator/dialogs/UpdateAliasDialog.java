@@ -89,8 +89,10 @@ public class UpdateAliasDialog extends AbstractEditDialog {
                         public void handleEvent(final ComponentEvent be2) {
                             final ResourceSummaryModelData target =
                                 resourceSelect.selectedResource();
-                            _alias.setTargetId(target.getId());
-                            _targetName.setValue(target.getName());
+                            if (target != null) {
+                                _alias.setTargetId(target.getId());
+                                _targetName.setValue(target.getName());
+                            }
                         }});
                     resourceSelect.show();
                 }});
