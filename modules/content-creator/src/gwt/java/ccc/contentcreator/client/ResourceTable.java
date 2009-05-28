@@ -114,13 +114,13 @@ public class ResourceTable
      * @param data A list of records to display in the table.
      */
     public void displayResourcesFor(final List<ResourceSummaryModelData> data) {
-        PagingModelMemoryProxy proxy = new PagingModelMemoryProxy(data);
-        PagingLoader loader = new BasePagingLoader(proxy);
+        final PagingModelMemoryProxy proxy = new PagingModelMemoryProxy(data);
+        final PagingLoader loader = new BasePagingLoader(proxy);
         loader.setRemoteSort(true);
         _detailsStore = new ListStore<ResourceSummaryModelData>(loader);
         _pagerBar.bind(loader);
         loader.load(0, 20);
-        ColumnModel cm = _grid.getColumnModel();
+        final ColumnModel cm = _grid.getColumnModel();
         _grid.reconfigure(_detailsStore, cm);
     }
 
@@ -247,6 +247,10 @@ public class ResourceTable
 
         if (null!=np) { // May not exist in other store
             _tree._store.add(np, model, false);
+
+            if (np.equals(treeSelection())) {
+                _detailsStore.add(model);
+            }
         }
     }
 
