@@ -72,7 +72,7 @@ public class ClearWorkingCopyCommand {
                 happenedOn,
                 resourceId,
                 null,
-                null,
+                "{}",
                 false));
     }
 }
