@@ -42,14 +42,16 @@ public class UpdateFileDialog extends AbstractEditDialog {
     private final TextField<String>   _title = new TextField<String>();
     private final TextField<String>   _description = new TextField<String>();
     private final HiddenField<String> _id = new HiddenField<String>();
-    private FileUploadField           _file = new FileUploadField();
+    private final FileUploadField           _file = new FileUploadField();
     private final Image _image =
         new Image("images/gxt/shared/large-loading.gif");
 
+    private static final String UPDATE_OK = "File was updated successfully.";
     /**
      * Constructor.
      *
      * @param delta FileDelta of the file to be updated.
+     * @param fileId The {@link ID} of the file.
      * @param rt The left hand tree view in the main window.
      */
     public UpdateFileDialog(final FileDelta delta,
@@ -90,9 +92,10 @@ public class UpdateFileDialog extends AbstractEditDialog {
         _panel.addListener(
             Events.Submit,
             new Listener<FormEvent>() {
+
                 public void handleEvent(final FormEvent be) {
                     hide();
-                    if (!be.resultHtml.equals("File was updated successfully.")) {
+                    if (!be.resultHtml.equals(UPDATE_OK)) {
                         Globals.unexpectedError(
                             new Exception(be.resultHtml),
                             _constants.updateFile());
