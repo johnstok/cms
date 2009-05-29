@@ -69,8 +69,12 @@ public class UpdateResourceRolesDialog
             @Override
             public void componentSelected(final ButtonEvent ce) {
                 final Collection<String> validRoles = new ArrayList<String>();
+                String roleString = _roles.getValue();
+                if (null==roleString) {
+                    roleString = "";
+                }
                 final String[] roles =
-                    _roles.getValue().split("\n"); // FIXME: what about \r?
+                    roleString.split("\n"); // FIXME: what about \r?
                 for (final String role : roles) {
                     final String cleanRole = role.trim();
                     if (cleanRole.length() > 0) {
