@@ -605,12 +605,12 @@ public interface UIConstants extends Constants {
     String mainMenu();
 
     /**
-     * "Validation failed for: ".
+     * "Regular expression validation failed for: ".
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Validation failed for: ")
-    String validationFailed();
+    @DefaultStringValue("Regular expression validation failed for: ")
+    String regexpValidationFailed();
 
     /**
      * "cannot be empty".
