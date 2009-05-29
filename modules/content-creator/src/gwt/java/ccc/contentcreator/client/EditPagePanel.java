@@ -611,6 +611,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         cb.setDisplayField("title");
         cb.setValueField("value");
         cb.setId(name);
+        cb.setEditable(false);
 
         final ListStore<BaseModelData> store =  new ListStore<BaseModelData>();
         final NodeList nl = field.getElementsByTagName("option");
