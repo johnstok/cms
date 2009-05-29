@@ -993,7 +993,7 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Password is too weak.")
+    @DefaultStringValue("Password is too weak - it should be at least 10 characters and contain both upper and lower case alphabets, number and non-alphanumeric character.")
     String passwordTooWeak();
 
     /**
@@ -1001,7 +1001,7 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Password is too short.")
+    @DefaultStringValue("Password is too short - the minimum length is 10 characters.")
     String passwordTooShort();
 
     /**
