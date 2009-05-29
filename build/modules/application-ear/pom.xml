@@ -317,7 +317,7 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <browser>*chrome -P Selenium -no-remote</browser>
+                            <browser>*custom firefox -P Selenium -no-remote</browser>
                             <startURL>http://localhost:8080/</startURL>
                             <suite>src/test/selenese/acceptance-tests.html</suite>
                             <timeoutInSeconds>1800</timeoutInSeconds>
