@@ -120,7 +120,7 @@ public class Validations {
                 if(!name.getValue().matches(VALID_CHARACTERS)) {
                     validate.addMessage(
                         name.getFieldLabel()
-                        + " "+_uiConstants.isNotValid()
+                        + " "+_uiConstants.isNotValidResourceName()
                     );
                 }
                 validate.next();

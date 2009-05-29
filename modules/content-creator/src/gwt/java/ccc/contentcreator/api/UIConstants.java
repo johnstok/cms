@@ -1340,4 +1340,12 @@ public interface UIConstants extends Constants {
      */
     @DefaultStringValue("Use default setting")
     String useDefaultSetting();
+
+    /**
+     * "is not valid resource name - it should contain only alphanumeric characters".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("is not valid resource name - it should contain only alphanumeric or -_ characters")
+    String isNotValidResourceName();
 }
