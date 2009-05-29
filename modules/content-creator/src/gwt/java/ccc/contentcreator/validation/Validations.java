@@ -252,7 +252,7 @@ public class Validations {
                                 }
 
                                 validate.addMessage(
-                                    _uiConstants.validationFailed()
+                                    _uiConstants.regexpValidationFailed()
                                     +sb.toString()
                                 );
                             }

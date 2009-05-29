@@ -91,9 +91,9 @@ public class PageHelper {
                     for (final Paragraph para : delta) {
                         if (name.getNodeValue().equals(para.name())
                             && !para.text().matches(regexp.getNodeValue())
-                            && ("TEXT".equals(para.type().name())
-                                || "HTML".equals(para.type().name()))) {
-                            errors.add(para.name());
+                            && (para.type() == ParagraphType.TEXT)) {
+                            errors.add("\n"+para.name()
+                                +", regexp: "+regexp.getNodeValue());
                         }
                     }
                 }
