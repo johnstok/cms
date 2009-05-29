@@ -34,12 +34,13 @@ public class CreateFolderDialog extends AbstractEditDialog {
 
     private final ResourceSummaryModelData _parent;
     private final TextField<String> _text = new TextField<String>();
-    final private SingleSelectionModel _ssm;
+    private final SingleSelectionModel _ssm;
 
     /**
      * Constructor.
      *
      * @param parent parent folder in the GUI.
+     * @param ssm The selection model.
      */
     public CreateFolderDialog(final ResourceSummaryModelData parent,
                               final SingleSelectionModel ssm) {
