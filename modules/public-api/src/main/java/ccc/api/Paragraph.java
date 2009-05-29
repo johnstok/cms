@@ -11,7 +11,7 @@
  */
 package ccc.api;
 
-import static ccc.api.DBC.*;
+import static ccc.api.DBC.require;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -109,9 +109,8 @@ public final class Paragraph implements Serializable, Jsonable {
      */
     public static Paragraph fromText(final String name, final String text) {
         final Paragraph p = new Paragraph();
-
         p.name(name);
-        p.text(text);
+        p.text((text == null) ?"" : text);
 
         return p;
     }

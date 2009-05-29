@@ -11,11 +11,20 @@
  */
 package ccc.api;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 
 import java.util.Date;
 
 import junit.framework.TestCase;
+import ccc.api.Decimal;
+import ccc.api.Json;
+import ccc.api.Paragraph;
+import ccc.api.ParagraphType;
 
 
 /**
@@ -253,17 +262,14 @@ public final class ParagraphTest extends TestCase {
     /**
      * Test.
      */
-    public void testTextConstructorRejectsNull() {
+    public void testTextConstructorHandlesNull() {
 
         // ACT
-        try {
-            Paragraph.fromText("foo", null);
-            fail("NULL should be rejected.");
+        final Paragraph p = Paragraph.fromText("foo", null);
 
         // ASSERT
-        } catch (final IllegalArgumentException e) {
-            assertEquals("Specified value may not be NULL.", e.getMessage());
-        }
+        assertEquals("foo", p.name());
+        assertEquals("", p.text());
     }
 
     /**
