@@ -136,13 +136,11 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      * @param para
      */
     private void populateHtml(final PageElement c, final Paragraph para) {
-
+        int editorIndex = indexOf(c.editor());
         remove(c.editor());
-        remove(c.editorLabel());
         final FCKEditor fck =
             new FCKEditor(para.text(), "250px");
-        add(c.editorLabel());
-        add(fck, new FormData("95%"));
+        insert(fck, editorIndex, new FormData("95%"));
         c.editor(fck);
     }
 
