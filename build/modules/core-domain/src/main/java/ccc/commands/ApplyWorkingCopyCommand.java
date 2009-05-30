@@ -15,9 +15,11 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.domain.LockMismatchException;
+import ccc.domain.Resource;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
-import ccc.domain.WorkingCopyAware;
+import ccc.domain.WCAware;
+import ccc.domain.WorkingCopyNotSupportedException;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
 
@@ -51,17 +53,26 @@ public class ApplyWorkingCopyCommand extends UpdateResourceCommand {
      *
      * @throws LockMismatchException If the resource is locked by another user.
      * @throws UnlockedException If the resource is unlocked.
+     * @throws WorkingCopyNotSupportedException If the resource is not working
+     *  copy aware.
      */
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID id,
                         final String comment,
                         final boolean isMajorEdit)
-                               throws UnlockedException, LockMismatchException {
-        final WorkingCopyAware<?> r = getDao().find(WorkingCopyAware.class, id);
+                                       throws UnlockedException,
+                                              LockMismatchException,
+                                              WorkingCopyNotSupportedException {
+        final Resource r = getDao().find(Resource.class, id);
         r.confirmLock(actor);
 
-        r.applySnapshot();
+        if (r instanceof WCAware<?>) {
+            final WCAware<?> wcAware = (WCAware<?>) r;
+            wcAware.applySnapshot();
+        } else {
+            throw new WorkingCopyNotSupportedException(r);
+        }
 
         update(r, comment, isMajorEdit, actor, happenedOn);
     }

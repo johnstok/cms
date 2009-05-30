@@ -20,12 +20,11 @@ import ccc.api.PageDelta;
 import ccc.api.Paragraph;
 import ccc.commands.ClearWorkingCopyCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
-import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
-import ccc.domain.UnlockedException;
+import ccc.domain.RemoteExceptionSupport;
+import ccc.domain.Resource;
 import ccc.domain.User;
-import ccc.domain.WorkingCopyAware;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
 
@@ -42,18 +41,16 @@ public class WorkingCopyManagerTest
 
     /**
      * Test.
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     * @throws RemoteExceptionSupport If the command fails.
      */
-    public void testClearWorkingCopy()
-    throws UnlockedException, LockMismatchException {
+    public void testClearWorkingCopy() throws RemoteExceptionSupport {
 
         // ARRANGE
         final Page p = new Page("foo");
         p.lock(_user);
         p.workingCopy(p.createSnapshot());
 
-        expect(_dao.find(WorkingCopyAware.class, p.id())).andReturn(p);
+        expect(_dao.find(Resource.class, p.id())).andReturn(p);
         _audit.record(isA(LogEntry.class));
         replayAll();
 
@@ -69,11 +66,9 @@ public class WorkingCopyManagerTest
 
     /**
      * Test.
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     * @throws RemoteExceptionSupport If the command fails.
      */
-    public void testUpdateWorkingCopy()
-    throws UnlockedException, LockMismatchException {
+    public void testUpdateWorkingCopy() throws RemoteExceptionSupport {
 
         // ARRANGE
         final Page page = new Page("test");

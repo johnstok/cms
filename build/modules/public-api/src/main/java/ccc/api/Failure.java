@@ -31,6 +31,8 @@ public class Failure implements Serializable {
     public static final int EXISTS        = 3;
     /** PRIVILEGES : int. */
     public static final int PRIVILEGES    = 4;
+    /** WC_UNSUPPORTED : int. */
+    public static final int WC_UNSUPPORTED = 5;
 
     private int                 _code        = 0;
     private String              _exceptionId = "";

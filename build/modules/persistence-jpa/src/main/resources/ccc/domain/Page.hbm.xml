@@ -24,9 +24,9 @@
     
     <joined-subclass
         name="ccc.domain.Page"
-        extends="ccc.domain.WorkingCopyAware"
+        extends="ccc.domain.Resource"
         table="pages">
-        <key column="id" foreign-key="FK_PAGE_WCA_ID"/>
+        <key column="id" foreign-key="FK_PAGE_RESOURCE_ID"/>
 		
         <set name="_content" table="paragraphs">
             <cache usage="transactional"/>
