@@ -9,82 +9,43 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
+
 package ccc.domain;
 
-import ccc.api.DBC;
 import ccc.api.Json;
 
 
-
 /**
- * API for working-copy support.
- *
- * @param <T> The type of the working copy.
+ * The API for working copy support.
  *
  * @author Civic Computing Ltd.
+ * @param <T>
  */
-public abstract class WorkingCopyAware<T> extends Resource {
-
-    /** _workingCopy : T. */
-    protected T _workingCopy = null;
-
-    /** Constructor. */
-    protected WorkingCopyAware() { super(); }
-
-    /**
-     * Constructor.
-     *
-     * @param name The name of the resource.
-     * @param title The title of the resource.
-     */
-    public WorkingCopyAware(final ResourceName name, final String title) {
-        super(name, title);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param title The title of the resource.
-     */
-    public WorkingCopyAware(final String title) {
-        super(title);
-    }
-
+public interface WCAware<T> {
 
     /**
      * Clear the current working copy.
      */
-    public final void clearWorkingCopy() {
-        DBC.require().notNull(_workingCopy);
-        _workingCopy = null;
-    }
-
+    public abstract void clearWorkingCopy();
 
     /**
      * Mutator.
      *
      * @param snapshot The new working copy for this page.
      */
-    public final void workingCopy(final T snapshot) {
-        DBC.require().notNull(snapshot);
-        _workingCopy = snapshot;
-    }
+    public abstract void workingCopy(final T snapshot);
 
     /**
      * Query method.
      *
      * @return True if this object has a working copy, false otherwise.
      */
-    public boolean hasWorkingCopy() {
-        return null!=_workingCopy;
-    }
-
+    public abstract boolean hasWorkingCopy();
 
     /**
      * Apply a snapshot to this resource.
      */
     public abstract void applySnapshot(); // Should be applyWorkingCopy()
-
 
     /**
      * Accessor.
@@ -100,4 +61,5 @@ public abstract class WorkingCopyAware<T> extends Resource {
      * @param snapshot The new working copy for this page.
      */
     public abstract void workingCopy(final Json snapshot);
+
 }

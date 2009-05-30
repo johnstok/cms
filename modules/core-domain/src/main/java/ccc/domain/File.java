@@ -30,11 +30,14 @@ import ccc.api.ResourceType;
  */
 public class File
     extends
-        WorkingCopyAware<FileDelta> {
+        Resource
+    implements
+        WCAware<FileDelta> {
 
     private Data      _data;
     private int       _size;
     private MimeType  _mimeType;
+    private FileDelta _workingCopy;
 
 
     /** Constructor: for persistence only. */
@@ -155,7 +158,21 @@ public class File
         _size = size;
     }
 
-    //--
+    /**
+     * Query if this file is an image.
+     *
+     * @return True if the file is an image, false otherwise.
+     */
+    public boolean isImage() {
+        return "image".equalsIgnoreCase(mimeType().getPrimaryType());
+    }
+
+
+
+    /* ====================================================================
+     * Working copy implementation.
+     * ================================================================== */
+
     /** {@inheritDoc} */
     @Override
     public void applySnapshot() {
@@ -198,6 +215,23 @@ public class File
         return delta;
     }
 
+    /** {@inheritDoc} */
+    public final void clearWorkingCopy() {
+        DBC.require().notNull(_workingCopy);
+        _workingCopy = null;
+    }
+
+    /** {@inheritDoc} */
+    public final void workingCopy(final FileDelta snapshot) {
+        DBC.require().notNull(snapshot);
+        _workingCopy = snapshot;
+    }
+
+    /** {@inheritDoc} */
+    public boolean hasWorkingCopy() {
+        return null!=_workingCopy;
+    }
+
     @SuppressWarnings("unused")
     private String getWorkingCopyString() {
         if (null==_workingCopy) {
@@ -215,14 +249,5 @@ public class File
         }
         final Snapshot s = new Snapshot(wcs);
         _workingCopy = new FileDelta(s);
-    }
-
-    /**
-     * Query if this file is an image.
-     *
-     * @return True if the file is an image, false otherwise.
-     */
-    public boolean isImage() {
-        return "image".equalsIgnoreCase(mimeType().getPrimaryType());
     }
 }

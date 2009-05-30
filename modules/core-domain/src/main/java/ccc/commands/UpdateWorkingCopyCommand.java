@@ -19,10 +19,12 @@ import ccc.api.PageDelta;
 import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
+import ccc.domain.Resource;
 import ccc.domain.Snapshot;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
-import ccc.domain.WorkingCopyAware;
+import ccc.domain.WCAware;
+import ccc.domain.WorkingCopyNotSupportedException;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
 
@@ -90,17 +92,27 @@ public class UpdateWorkingCopyCommand {
      *
      * @throws LockMismatchException If the resource is locked by another user.
      * @throws UnlockedException If the resource is unlocked.
+     * @throws WorkingCopyNotSupportedException If the resource is not working
+     *  copy aware.
      */
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID resourceId,
                         final Snapshot delta)
-                               throws UnlockedException, LockMismatchException {
-        final WorkingCopyAware r =
-            _dao.find(WorkingCopyAware.class, resourceId);
+                                       throws UnlockedException,
+                                              LockMismatchException,
+                                              WorkingCopyNotSupportedException {
+        final Resource r =
+            _dao.find(Resource.class, resourceId);
         r.confirmLock(actor);
 
-        r.workingCopy(delta);
+
+        if (r instanceof WCAware<?>) {
+            final WCAware<?> wcAware = (WCAware<?>) r;
+            wcAware.workingCopy(delta);
+        } else {
+            throw new WorkingCopyNotSupportedException(r);
+        }
 
         _audit.record(
             new LogEntry(

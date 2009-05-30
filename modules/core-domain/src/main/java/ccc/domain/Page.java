@@ -31,9 +31,12 @@ import ccc.api.ResourceType;
  */
 public final class Page
     extends
-        WorkingCopyAware<PageDelta> {
+        Resource
+    implements
+        WCAware<PageDelta> {
 
     private Set<Paragraph> _content = new HashSet<Paragraph>();
+    private PageDelta      _workingCopy;
 
     /** MAXIMUM_PARAGRAPHS : int. */
     public static final int MAXIMUM_PARAGRAPHS = 32;
@@ -125,6 +128,12 @@ public final class Page
         throw new CCCException("No paragraph with name: "+name);
     }
 
+
+
+    /* ====================================================================
+     * Working copy implementation.
+     * ================================================================== */
+
     /** {@inheritDoc} */
     @Override
     public void applySnapshot() {
@@ -162,6 +171,23 @@ public final class Page
     @Override
     public PageDelta createSnapshot() {
         return new PageDelta(title(), new HashSet<Paragraph>(paragraphs()));
+    }
+
+    /** {@inheritDoc} */
+    public void clearWorkingCopy() {
+        DBC.require().notNull(_workingCopy);
+        _workingCopy = null;
+    }
+
+    /** {@inheritDoc} */
+    public void workingCopy(final PageDelta snapshot) {
+        DBC.require().notNull(snapshot);
+        _workingCopy = snapshot;
+    }
+
+    /** {@inheritDoc} */
+    public boolean hasWorkingCopy() {
+        return null!=_workingCopy;
     }
 
     @SuppressWarnings("unused")

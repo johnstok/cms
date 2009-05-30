@@ -29,7 +29,7 @@ import ccc.domain.Resource;
 import ccc.domain.Search;
 import ccc.domain.Snapshot;
 import ccc.domain.Template;
-import ccc.domain.WorkingCopyAware;
+import ccc.domain.WCAware;
 import ccc.services.DataManager;
 import ccc.services.SearchEngine;
 import ccc.services.StatefulReader;
@@ -117,8 +117,8 @@ public class DefaultRenderer
     public Response renderWorkingCopy(final Resource resource,
                                       final Map<String, String[]> parameters) {
         if (!_respectVisibility) {
-            if (resource instanceof WorkingCopyAware) {
-                final WorkingCopyAware<?> p = (WorkingCopyAware<?>) resource;
+            if (resource instanceof WCAware) {
+                final WCAware<?> p = (WCAware<?>) resource;
                 if (null!=p.workingCopy()) {
                     p.applySnapshot();
                 } else {
@@ -136,9 +136,9 @@ public class DefaultRenderer
                                     final Resource resource,
                                     final Map<String, String[]> parameters) {
         if (!_respectVisibility) {
-            if (resource instanceof WorkingCopyAware) {
+            if (resource instanceof WCAware) {
 
-                final WorkingCopyAware<?> sa = (WorkingCopyAware<?>) resource;
+                final WCAware<?> sa = (WCAware<?>) resource;
 
                 if (!parameters.containsKey("v")) {
                     throw new NotFoundException();

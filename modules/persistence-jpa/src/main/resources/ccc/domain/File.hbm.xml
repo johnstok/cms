@@ -19,10 +19,10 @@
 <hibernate-mapping default-access="field">
 	<joined-subclass
         name="ccc.domain.File"
-        extends="ccc.domain.WorkingCopyAware"
+        extends="ccc.domain.Resource"
         table="files">
         
-		<key column="id" foreign-key="FK_FILE_WCA_ID" />
+		<key column="id" foreign-key="FK_FILE_RESOURCE_ID" />
 			
 	    <property
             name="_size"
