@@ -17,7 +17,6 @@ import com.extjs.gxt.ui.client.data.ModelStringProvider;
 
 /**
  * Provides icon URLs for each type of resource.
- * TODO: Add an icon for type 'SEARCH'.
  *
  * @author Civic Computing Ltd.
  */
