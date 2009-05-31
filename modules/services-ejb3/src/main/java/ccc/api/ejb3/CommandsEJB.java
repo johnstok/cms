@@ -169,12 +169,27 @@ public class CommandsEJB
                                         final String title,
                                         final boolean publish)
                                                  throws CommandFailedException {
+        return createFolder(
+            parentId, name, title, publish, loggedInUserId(), new Date());
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({"ADMINISTRATOR"})
+    public ResourceSummary createFolder(final ID parentId,
+                                        final String name,
+                                        final String title,
+                                        final boolean publish,
+                                        final ID actorId,
+                                        final Date happenedOn)
+                                                 throws CommandFailedException {
         try {
-            final User u = loggedInUser();
+            final User u = userForId(actorId);
 
             final Folder f =
                 new CreateFolderCommand(_bdao, _audit).execute(
-                    u, new Date(), toUUID(parentId), name, title);
+                    u, happenedOn, toUUID(parentId), name, title);
 
             if (publish) {
                 f.lock(u);
@@ -198,10 +213,31 @@ public class CommandsEJB
                                       final boolean publish,
                                       final ID templateId)
                                                  throws CommandFailedException {
+        return createPage(
+            parentId,
+            delta,
+            name,
+            publish,
+            templateId,
+            loggedInUserId(),
+            new Date());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({"ADMINISTRATOR"})
+    public ResourceSummary createPage(final ID parentId,
+                                      final PageDelta delta,
+                                      final String name,
+                                      final boolean publish,
+                                      final ID templateId,
+                                      final ID actorId,
+                                      final Date happenedOn)
+                                                 throws CommandFailedException {
         try {
             final Page p = new CreatePageCommand(_bdao, _audit).execute(
-                loggedInUser(),
-                new Date(),
+                userForId(actorId),
+                happenedOn,
                 toUUID(parentId),
                 delta,
                 publish,
@@ -250,9 +286,18 @@ public class CommandsEJB
     @Override
     @RolesAllowed({"CONTENT_CREATOR"})
     public void lock(final ID resourceId) throws CommandFailedException {
+        lock(resourceId, loggedInUserId(), new Date());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({"ADMINISTRATOR"})
+    public void lock(final ID resourceId,
+                     final ID actorId,
+                     final Date happenedOn) throws CommandFailedException {
         try {
             new LockResourceCommand(_bdao, _audit).execute(
-                loggedInUser(), new Date(), toUUID(resourceId));
+                userForId(actorId), happenedOn, toUUID(resourceId));
 
         } catch (final RemoteExceptionSupport e) {
             throw fail(e);
@@ -300,7 +345,7 @@ public class CommandsEJB
         try {
             new PublishCommand(_audit).execute(
                 date,
-                _bdao.find(User.class, toUUID(userId)),
+                userForId(userId),
                 _bdao.find(Resource.class, toUUID(resourceId)));
 
         } catch (final RemoteExceptionSupport e) {
@@ -326,9 +371,18 @@ public class CommandsEJB
     @Override
     @RolesAllowed({"CONTENT_CREATOR"})
     public void unlock(final ID resourceId) throws CommandFailedException {
+        unlock(resourceId, loggedInUserId(), new Date());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({"ADMINISTRATOR"})
+    public void unlock(final ID resourceId,
+                       final ID actorId,
+                       final Date happenedOn) throws CommandFailedException {
         try {
             new UnlockResourceCommand(_bdao, _audit).execute(
-                loggedInUser(), new Date(), toUUID(resourceId));
+                userForId(actorId), happenedOn, toUUID(resourceId));
 
         } catch (final RemoteExceptionSupport e) {
             throw fail(e);
@@ -392,10 +446,25 @@ public class CommandsEJB
                            final String comment,
                            final boolean isMajorEdit)
                                                  throws CommandFailedException {
+        updatePage(
+            pageId, delta, comment, isMajorEdit, loggedInUserId(), new Date());
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({"ADMINISTRATOR"})
+    public void updatePage(final ID pageId,
+                           final PageDelta delta,
+                           final String comment,
+                           final boolean isMajorEdit,
+                           final ID actorId,
+                           final Date happenedOn)
+                                                 throws CommandFailedException {
         try {
             new UpdatePageCommand(_bdao, _audit).execute(
-                loggedInUser(),
-                new Date(),
+                userForId(actorId),
+                happenedOn,
                 toUUID(pageId),
                 delta,
                 comment,
@@ -455,10 +524,23 @@ public class CommandsEJB
     public void updateResourceTemplate(final ID resourceId,
                                        final ID templateId)
                                                  throws CommandFailedException {
+        updateResourceTemplate(
+            resourceId, templateId, loggedInUserId(), new Date());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({"ADMINISTRATOR"})
+    public void updateResourceTemplate(final ID resourceId,
+                                       final ID templateId,
+                                       final ID actorId,
+                                       final Date happenedOn)
+                                                 throws CommandFailedException {
+
         try {
             new ChangeTemplateForResourceCommand(_bdao, _audit).execute(
-                loggedInUser(),
-                new Date(),
+                userForId(actorId),
+                happenedOn,
                 toUUID(resourceId),
                 toUUID(templateId));
 
@@ -526,9 +608,20 @@ public class CommandsEJB
     public void includeInMainMenu(final ID resourceId,
                                   final boolean include)
                                                  throws CommandFailedException {
+        includeInMainMenu(resourceId, include, loggedInUserId(), new Date());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({"ADMINISTRATOR"})
+    public void includeInMainMenu(final ID resourceId,
+                                  final boolean include,
+                                  final ID actorId,
+                                  final Date happenedOn)
+                                                 throws CommandFailedException {
         try {
             new IncludeInMainMenuCommand(_bdao, _audit).execute(
-                loggedInUser(), new Date(), toUUID(resourceId), include);
+                userForId(actorId), happenedOn, toUUID(resourceId), include);
 
         } catch (final RemoteExceptionSupport e) {
             throw fail(e);
@@ -549,9 +642,20 @@ public class CommandsEJB
     public void updateMetadata(final ID resourceId,
                                final Map<String, String> metadata)
                                                  throws CommandFailedException {
+        updateMetadata(resourceId, metadata, loggedInUserId(), new Date());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({"ADMINISTRATOR"})
+    public void updateMetadata(final ID resourceId,
+                               final Map<String, String> metadata,
+                               final ID actorId,
+                               final Date happenedOn)
+                                                 throws CommandFailedException {
         try {
             new UpdateResourceMetadataRolesCommand(_bdao, _audit).execute(
-                loggedInUser(), new Date(), toUUID(resourceId), metadata);
+                userForId(actorId), happenedOn, toUUID(resourceId), metadata);
 
         } catch (final RemoteExceptionSupport e) {
             throw fail(e);
@@ -664,9 +768,21 @@ public class CommandsEJB
     public void changeRoles(final ID resourceId,
                             final Collection<String> roles)
                                                  throws CommandFailedException {
+        changeRoles(resourceId, roles, loggedInUserId(), new Date());
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({"ADMINISTRATOR"})
+    public void changeRoles(final ID resourceId,
+                            final Collection<String> roles,
+                            final ID actorId,
+                            final Date happenedOn)
+                                                 throws CommandFailedException {
         try {
             new UpdateResourceRolesCommand(_bdao, _audit).execute(
-                loggedInUser(), new Date(), toUUID(resourceId), roles);
+                userForId(actorId), happenedOn, toUUID(resourceId), roles);
 
         } catch (final RemoteExceptionSupport e) {
             throw fail(e);
@@ -798,8 +914,18 @@ public class CommandsEJB
         _dm = new DataManagerImpl(new FsCoreData(), _bdao);
     }
 
+
+    private User userForId(final ID userId) {
+        final User u = _bdao.find(User.class, toUUID(userId));
+        return u;
+    }
+
     private User loggedInUser() {
         return _userLookup.loggedInUser(_context.getCallerPrincipal());
+    }
+
+    private ID loggedInUserId() {
+        return new ID(loggedInUser().id().toString());
     }
 
     private CommandFailedException fail(final RemoteExceptionSupport e) {

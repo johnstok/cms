@@ -45,6 +45,23 @@ public interface Commands {
                     boolean isMajorEdit) throws CommandFailedException;
 
     /**
+     * Update the specified page on the server.
+     *
+     * @param pageId The id of the page to update.
+     * @param delta The changes to apply.
+     * @param comment A comment describing the changes.
+     * @param isMajorEdit Is this a major change.
+     *
+     * @throws CommandFailedException If the method fails.
+     */
+    void updatePage(ID pageId,
+                    PageDelta delta,
+                    String comment,
+                    boolean isMajorEdit,
+                    ID actorId,
+                    Date happenedOn) throws CommandFailedException;
+
+    /**
      * Update the working copy of the specified page.
      *
      * @param pageId The id of the page to update.
@@ -132,6 +149,20 @@ public interface Commands {
     throws CommandFailedException;
 
     /**
+     * Update the specified resource's template on the server.
+     *
+     * @param resourceId The id of the resource to update.
+     * @param templateId The new template to set for the resource.
+     *
+     * @throws CommandFailedException If the method fails.
+     */
+    void updateResourceTemplate(ID resourceId,
+                                ID templateId,
+                                ID actorId,
+                                Date happenedOn)
+    throws CommandFailedException;
+
+    /**
      * Lock the specified resource.
      * The resource will be locked by the currently logged in user.
      * If the resource is already locked a CCCException will be thrown.
@@ -141,6 +172,18 @@ public interface Commands {
      * @throws CommandFailedException If the method fails.
      */
     void lock(ID resourceId) throws CommandFailedException;
+
+    /**
+     * Lock the specified resource.
+     * The resource will be locked by the currently logged in user.
+     * If the resource is already locked a CCCException will be thrown.
+     *
+     * @param resourceId The uuid of the resource to lock.
+     *
+     * @throws CommandFailedException If the method fails.
+     */
+    void lock(ID resourceId, ID actorId, Date happenedOn)
+    throws CommandFailedException;
 
     /**
      * Unlock the specified Resource.
@@ -153,6 +196,19 @@ public interface Commands {
      * @throws CommandFailedException If the method fails.
      */
     void unlock(ID resourceId) throws CommandFailedException;
+
+    /**
+     * Unlock the specified Resource.
+     * If the logged in user does not have privileges to unlock this resource a
+     * CCCException will be thrown.
+     * Unlocking an unlocked resource has no effect.
+     *
+     * @param resourceId The resource to unlock.
+     *
+     * @throws CommandFailedException If the method fails.
+     */
+    void unlock(ID resourceId, ID actorId, Date happenedOn)
+    throws CommandFailedException;
 
     /**
      * Publish the specified resource.
@@ -208,6 +264,20 @@ public interface Commands {
     throws CommandFailedException;
 
     /**
+     * Specify whether a resource should be included in a site's main menu.
+     *
+     * @param resourceId The id of the resource to update.
+     * @param include True if the resource should be included, false otherwise.
+     *
+     * @throws CommandFailedException If the method fails.
+     */
+    void includeInMainMenu(ID resourceId,
+                           boolean include,
+                           ID actorId,
+                           Date happenedOn)
+    throws CommandFailedException;
+
+    /**
      * Update metadata of the resource.
      *
      * @param resourceId The id of the resource to update.
@@ -216,6 +286,20 @@ public interface Commands {
      * @throws CommandFailedException If the method fails.
      */
     void updateMetadata(ID resourceId, Map<String, String> metadata)
+    throws CommandFailedException;
+
+    /**
+     * Update metadata of the resource.
+     *
+     * @param resourceId The id of the resource to update.
+     * @param metadata The metadata to update.
+     *
+     * @throws CommandFailedException If the method fails.
+     */
+    void updateMetadata(ID resourceId,
+                        Map<String, String> metadata,
+                        ID actorId,
+                        Date happenedOn)
     throws CommandFailedException;
 
     /**
@@ -293,6 +377,26 @@ public interface Commands {
                                  boolean publish) throws CommandFailedException;
 
     /**
+     * Create a folder with the specified name and title.
+     *
+     * @param parentId The folder in which the new folder should be created.
+     * @param name The name of the new folder.
+     * @param title The title of the folder.
+     * @param publish True if the title should be published, false otherwise.
+     *
+     * @throws CommandFailedException If the method fails.
+     *
+     * @return A resource summary describing the new folder.
+     */
+    ResourceSummary createFolder(ID parentId,
+                                 String name,
+                                 String title,
+                                 boolean publish,
+                                 ID actorId,
+                                 Date happenedOn)
+    throws CommandFailedException;
+
+    /**
      * Create a root folder with the specified name.
      *
      * @param name The name of the root folder.
@@ -335,6 +439,27 @@ public interface Commands {
                                String name,
                                final boolean publish,
                                ID templateId) throws CommandFailedException;
+
+    /**
+     * Creates a new page.
+     *
+     * @param parentId The folder in which the page will be created.
+     * @param delta The page's details.
+     * @param name The page's name.
+     * @param publish True if the folder should be published, false otherwise.
+     * @param templateId The page's template.
+     *
+     * @throws CommandFailedException If the method fails.
+     *
+     * @return A resource summary describing the new page.
+     */
+    ResourceSummary createPage(ID parentId,
+                               PageDelta delta,
+                               String name,
+                               boolean publish,
+                               ID templateId,
+                               ID actorId,
+                               Date happenedOn) throws CommandFailedException;
 
     /**
      * Create a new template in CCC.
@@ -424,6 +549,20 @@ public interface Commands {
      * @throws CommandFailedException If the method fails.
      */
     void changeRoles(ID resourceId, Collection<String> roles)
+    throws CommandFailedException;
+
+    /**
+     * Change the security roles for a resource.
+     *
+     * @param resourceId The resource to update.
+     * @param roles The new set of roles.
+     *
+     * @throws CommandFailedException If the method fails.
+     */
+    void changeRoles(ID resourceId,
+                     Collection<String> roles,
+                     ID actorId,
+                     Date happenedOn)
     throws CommandFailedException;
 
     /**

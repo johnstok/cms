@@ -118,20 +118,18 @@ public class LegacyDBQueries {
     }
 
     /**
-     * Returns legacy user id from c3_version_audit_log.
+     * Returns the log entry for an action.
      *
      * @param contentId Content id
      * @param legacyVersion Version id
      * @param action Action
-     * @param comment Version comment
-     * @return User id as an Integer, null if no user id is found.
+     * @return A log entry bean representing the action.
      */
-    public Integer selectUserFromLog(final int contentId,
-                                     final int legacyVersion,
-                                     final String action,
-                                     final String comment) {
+    public LogEntryBean selectUserFromLog(final int contentId,
+                                          final int legacyVersion,
+                                          final String action) {
         final LogEntryUserSelector rsh = new LogEntryUserSelector();
-        return _db.select(rsh, contentId, legacyVersion, action, comment);
+        return _db.select(rsh, contentId, legacyVersion, action);
     }
 
     /**

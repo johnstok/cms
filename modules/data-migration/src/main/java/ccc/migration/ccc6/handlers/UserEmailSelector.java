@@ -5,8 +5,6 @@ import static ccc.api.DBC.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import ccc.migration.MigrationException;
-
 /**
  * TODO: Add Description for this type.
  *
@@ -35,9 +33,8 @@ public final class UserEmailSelector
             final String email = rs.getString("attribute_value");
             require().toBeFalse(rs.next());
             return email;
-        } else {
-            throw new MigrationException("User "+_userId+" has no email.");
         }
+        return "";
     }
 
     /** {@inheritDoc} */

@@ -3,8 +3,9 @@ package ccc.migration.ccc6.handlers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
-import ccc.domain.CCCException;
+import ccc.migration.LogEntryBean;
 import ccc.migration.MigrationException;
 
 
@@ -15,18 +16,18 @@ import ccc.migration.MigrationException;
  */
 public final class LogEntryUserSelector
     implements
-        SqlQuery<Integer> {
+        SqlQuery<LogEntryBean> {
 
     /** {@inheritDoc} */
     @Override
-    public Integer handle(final ResultSet rs) throws SQLException {
+    public LogEntryBean handle(final ResultSet rs) throws SQLException {
         if (rs.next()) {
-            final Integer userId = Integer.valueOf(rs.getInt("user_id"));
-            if (rs.next()) {
-                final String contentId = rs.getString("content_id");
-                throw new CCCException("Multiple users for id: "+contentId);
-            }
-            return userId;
+            final int  userId     = rs.getInt("USER_ID");
+            final Date happenedOn = rs.getDate("ACTION_DATE");
+
+            return new LogEntryBean(userId, happenedOn);
+
+            // Ignore further records - choose the first.
         }
         throw new MigrationException("User missing.");
     }
@@ -38,7 +39,6 @@ public final class LogEntryUserSelector
             "SELECT * FROM c3_version_audit_log "
             + "WHERE content_id = ? AND "
             + "version_id = ? AND "
-            + "action = ? AND "
-            + "version_comment like ?";
+            + "action = ?";
     }
 }

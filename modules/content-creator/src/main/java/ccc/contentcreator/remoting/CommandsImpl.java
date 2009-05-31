@@ -338,5 +338,89 @@ public class CommandsImpl
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public void changeRoles(final ID resourceId,
+                            final Collection<String> roles,
+                            final ID actorId,
+                            final Date happenedOn) {
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
 
+    /** {@inheritDoc} */
+    @Override
+    public ResourceSummary createFolder(final ID parentId,
+                                        final String name,
+                                        final String title,
+                                        final boolean publish,
+                                        final ID actorId,
+                                        final Date happenedOn) {
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceSummary createPage(final ID parentId,
+                                      final PageDelta delta,
+                                      final String name,
+                                      final boolean publish,
+                                      final ID templateId,
+                                      final ID actorId,
+                                      final Date happenedOn) {
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void includeInMainMenu(final ID resourceId,
+                                  final boolean include,
+                                  final ID actorId,
+                                  final Date happenedOn) {
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void lock(final ID resourceId,
+                     final ID actorId,
+                     final Date happenedOn) {
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void unlock(final ID resourceId,
+                       final ID actorId,
+                       final Date happenedOn) {
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateMetadata(final ID resourceId,
+                               final Map<String, String> metadata,
+                               final ID actorId,
+                               final Date happenedOn) {
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void updatePage(final ID pageId,
+                           final PageDelta delta,
+                           final String comment,
+                           final boolean isMajorEdit,
+                           final ID actorId,
+                           final Date happenedOn) {
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateResourceTemplate(final ID resourceId,
+                                       final ID templateId,
+                                       final ID actorId,
+                                       final Date happenedOn) {
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
 }

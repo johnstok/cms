@@ -11,7 +11,6 @@
  */
 package ccc.migration;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -20,21 +19,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
 import ccc.api.CommandFailedException;
 import ccc.api.Commands;
 import ccc.api.Decimal;
+import ccc.api.Failure;
 import ccc.api.ID;
-import ccc.api.MimeType;
 import ccc.api.PageDelta;
 import ccc.api.Paragraph;
 import ccc.api.ParagraphType;
 import ccc.api.Queries;
 import ccc.api.ResourceSummary;
-import ccc.api.TemplateDelta;
 import ccc.api.UserSummary;
 import ccc.commons.Resources;
 import ccc.commons.WordCharFixer;
@@ -47,15 +44,8 @@ import ccc.domain.PredefinedResourceNames;
  * @author Civic Computing Ltd
  */
 public class Migrations {
-    private static final int MIN_PW_LENGTH = 6;
     private static final boolean DEBUG = true;
     private static Logger log = Logger.getLogger(Migrations.class);
-
-    private final Map<String, ResourceSummary> _templates =
-        new HashMap<String, ResourceSummary>();
-
-    private final Map<Integer, UserSummary> _users =
-        new HashMap<Integer, UserSummary>();
 
     private ResourceSummary _assetRoot;
     private ResourceSummary _contentRoot;
@@ -70,7 +60,9 @@ public class Migrations {
     private final Properties _props;
     private final Commands _commands;
     private final Queries _queries;
-    private final FileUploader _fu;
+    private final FileMigrator _fm;
+    private final UserMigration _um;
+    private final TemplateMigration _tm;
     private final Properties _paragraphTypes =
         Resources.readIntoProps("paragraph-types.properties");
 
@@ -82,6 +74,7 @@ public class Migrations {
      * @param props Properties of the migration
      * @param commands The available commands for CCC7.
      * @param queries The available queries for CCC7.
+     * @param fu The file uploader to use.
      */
     public Migrations(final LegacyDBQueries legacyQueries,
                       final Properties props,
@@ -92,7 +85,9 @@ public class Migrations {
         _queries = queries;
         _props = props;
         _commands = commands;
-        _fu = fu;
+        _fm = new FileMigrator(fu, _legacyQueries, _props);
+        _um = new UserMigration(_legacyQueries, _commands);
+        _tm = new TemplateMigration(_commands);
     }
 
 
@@ -102,11 +97,12 @@ public class Migrations {
     public void migrate() {
         try {
             loadSupportingData();
-            migrateUsers();
+            _um.migrateUsers();
             migrateResources(_contentRoot.getId(), 0);
-            migrateManagedFilesAndImages();
-            migrateImages();
-            migrateCss();
+            _fm.migrateManagedFilesAndImages(
+                _filesFolder, _contentImagesFolder);
+            _fm.migrateImages(_assetsImagesFolder);
+            _fm.migrateCss(_cssFolder);
             publishRecursive(_cssFolder);
             publishRecursive(_assetsImagesFolder);
             publishRecursive(_filesFolder);
@@ -147,7 +143,8 @@ public class Migrations {
 
 
     // TODO: Move under command-resourceDao?
-    private void publishRecursive(final ResourceSummary resource) throws CommandFailedException {
+    private void publishRecursive(final ResourceSummary resource)
+                                                 throws CommandFailedException {
         _commands.lock(resource.getId());
         _commands.publish(resource.getId());
         if ("FOLDER".equals(resource.getType().name())) {
@@ -166,40 +163,11 @@ public class Migrations {
     }
 
 
-    private void migrateUsers() throws CommandFailedException {
-        final Map<Integer, ExistingUser> mus = _legacyQueries.selectUsers();
-        for (final Map.Entry<Integer, ExistingUser> mu : mus.entrySet()) {
-            try {
-                // TODO: improve reporting
-                final ExistingUser ud = mu.getValue();
-
-                if (null == ud._password) {
-                    log.warn(
-                        "User: "+ud._user.getUsername()+" has null password.");
-                } else if (ud._password.equals(
-                               ud._user.getUsername().toString())) {
-                    log.warn("User: "+ud._user.getUsername()
-                        +" has username as a password.");
-                } else if (ud._password.length() < MIN_PW_LENGTH) {
-                    log.warn("User: "+ud._user.getUsername()
-                        +" has password with less than 6 characters.");
-                }
-
-                final UserSummary u =
-                    _commands.createUser(ud._user, ud._password);
-                _users.put(mu.getKey(), u);
-            } catch (final RuntimeException e) {
-                log.warn("Failed to create user: "+e.getMessage());
-            }
-        }
-        log.info("Migrated users.");
-    }
-
-
     private void migrateResources(final ID parentFolderId,
                                   final int parent) {
 
-        final List<ResourceBean> resources = _legacyQueries.selectResources(parent);
+        final List<ResourceBean> resources =
+            _legacyQueries.selectResources(parent);
 
         for (final ResourceBean r : resources) {
             if (r.name() == null || r.name().trim().equals("")) {
@@ -218,118 +186,36 @@ public class Migrations {
         }
     }
 
-
-    private void migrateManagedFilesAndImages() {
-        final Map<String,LegacyFile> files =_legacyQueries.selectFiles();
-        for (final Map.Entry<String, LegacyFile> legacyFile : files.entrySet()) {
-            _fu.uploadFile(
-                UUID.fromString(_filesFolder.getId().toString()),
-                legacyFile.getKey(),
-                legacyFile.getValue()._title,
-                legacyFile.getValue()._description,
-                _props.getProperty("filesSourcePath"));
-        }
-
-        final Map<String,LegacyFile> images = _legacyQueries.selectImages();
-        for (final Map.Entry<String, LegacyFile> legacyFile : images.entrySet()) {
-            _fu.uploadFile(
-                UUID.fromString(_contentImagesFolder.getId().toString()),
-                legacyFile.getKey(),
-                legacyFile.getValue()._title,
-                legacyFile.getValue()._description,
-                _props.getProperty("imagesSourcePath"));
-        }
-    }
-
-    private void migrateImages() {
-        final Map<String, LegacyFile> managedImages = _legacyQueries.selectImages();
-        final String imagePath = _props.getProperty("imagesSourcePath");
-        final File imageDir = new File(imagePath);
-        if (!imageDir.exists()) {
-            log.debug("File not found: "+imagePath);
-        } else if (!imageDir.isDirectory()) {
-            log.warn(imagePath+" is not a directory");
-        } else {
-            final File[] images = imageDir.listFiles();
-            for (final File file : images) {
-                final boolean managedImage = isManaged(managedImages, file);
-
-                if (!managedImage && file.isFile()
-                        && !(file.getName().startsWith("ccc")
-                        || file.getName().startsWith(".")
-                        || file.getName().startsWith("um")))  {
-                    _fu.uploadFile(
-                        UUID.fromString(_assetsImagesFolder.getId().toString()),
-                        file.getName(),
-                        file.getName(),
-                        "Migrated file.",
-                        file,
-                        false);
-                }
-            }
-        }
-        log.info("Migrated non-managed images.");
-    }
-
-
-    private boolean isManaged(final Map<String, LegacyFile> managedImages,
-                              final File file) {
-
-        boolean managedImage = false;
-        for (final Map.Entry<String, LegacyFile> legacyFile : managedImages.entrySet()) {
-            if (file.getName().equals(legacyFile.getKey())) {
-                managedImage = true;
-            }
-        }
-        return managedImage;
-    }
-
-    private void migrateCss() {
-        final String cssPath = _props.getProperty("cssSourcePath");
-        final File cssDir = new File(cssPath);
-        if (!cssDir.exists()) {
-            log.debug("File not found: "+cssPath);
-        } else if (!cssDir.isDirectory()) {
-            log.warn(cssPath+" is not a directory");
-        } else {
-            final File[] css = cssDir.listFiles();
-            for (final File file : css) {
-                if (file.isFile() && file.getName().endsWith(".css"))  {
-                    _fu.uploadFile(
-                        UUID.fromString(_cssFolder.getId().toString()),
-                        file.getName(),
-                        file.getName(),
-                        "",
-                        file,
-                        false);
-                }
-            }
-        }
-        log.info("Migrated non-managed css files.");
-    }
-
     private void migrateFolder(final ID parentFolderId,
                                final ResourceBean r) {
 
         try {
-            // FIXME: Specify actor & date
+            final LogEntryBean le = logEntryForVersion(
+                r.contentId(), r.legacyVersion(), "CREATED FOLDER");
+
             final ResourceSummary rs = _commands.createFolder(
-                    parentFolderId, r.name(), r.title(), false);
+                    parentFolderId,
+                    r.name(),
+                    r.title(),
+                    false,
+                    le.getUser().getId(),
+                    le.getHappenedOn());
             log.debug("Created folder: "+r.contentId());
 
-            setTemplateForResource(r, rs);
-
-            publish(r, rs);
-
-            showInMainMenu(r, rs);
-
-            setMetadata(r, rs);
-
-            setResourceRoles(r, rs);
+            _commands.lock(
+                rs.getId(), le.getUser().getId(), le.getHappenedOn());
+            setTemplateForResource(r, rs, le);
+            publish(r, rs, le);
+            showInMainMenu(r, rs, le);
+            setMetadata(r, rs, le);
+            setResourceRoles(r, rs, le);
+            _commands.unlock(
+                rs.getId(), le.getUser().getId(), le.getHappenedOn());
 
             migrateResources(rs.getId(), r.contentId());
 
         } catch (final Exception e) {
+//          log.warn("Error migrating folder "+r.contentId(),  e);
             log.warn("Error migrating folder "
                 +r.contentId()+": "+e.getMessage());
         }
@@ -343,27 +229,27 @@ public class Migrations {
             final List<Integer> paragraphVersions = determinePageVersions(r);
 
             // Create the page
+            final Integer createVersion = paragraphVersions.remove(0);
+            LogEntryBean le = logEntryForVersion(
+                r.contentId(), createVersion, "CREATED PAGE");
             final ResourceSummary rs =
-                createPage(parentFolderId, r, paragraphVersions);
+                createPage(parentFolderId, r, createVersion, le);
 
             // Apply all updates
-            if (DEBUG) {
-                for (final Integer version : paragraphVersions) {
-                    updatePage(r, rs, version);
-                }
+            for (final Integer version : paragraphVersions) {
+                le = logEntryForVersion(r.contentId(), version, "UPDATE");
+                updatePage(r, rs, version, le);
             }
 
-            // Set the template
-            setTemplateForResource(r, rs);
-
-            // Publish, if necessary
-            publish(r, rs);
-
-            showInMainMenu(r, rs);
-
-            setMetadata(r, rs);
-
-            setResourceRoles(r, rs);
+            _commands.lock(
+                rs.getId(), le.getUser().getId(), le.getHappenedOn());
+            setTemplateForResource(r, rs, le);
+            publish(r, rs, le);
+            showInMainMenu(r, rs, le);
+            setMetadata(r, rs, le);
+            setResourceRoles(r, rs, le);
+            _commands.unlock(
+                rs.getId(), le.getUser().getId(), le.getHappenedOn());
 
             log.info("Migrated page "+r.contentId());
 
@@ -376,11 +262,12 @@ public class Migrations {
 
 
     private void showInMainMenu(final ResourceBean r,
-                                final ResourceSummary rs) throws CommandFailedException {
+                                final ResourceSummary rs,
+                                final LogEntryBean le)
+                                                 throws CommandFailedException {
         if (_menuItems.contains(Integer.valueOf(r.contentId()))) {
-            _commands.lock(rs.getId());
-            _commands.includeInMainMenu(rs.getId(), true);
-            _commands.unlock(rs.getId());
+            _commands.includeInMainMenu(
+                rs.getId(), true, le.getUser().getId(), le.getHappenedOn());
         }
     }
 
@@ -417,52 +304,76 @@ public class Migrations {
 
     private void updatePage(final ResourceBean r,
                             final ResourceSummary rs,
-                            final int version) throws CommandFailedException {
+                            final int version,
+                            final LogEntryBean le)
+                                                 throws CommandFailedException {
 
-        _commands.lock(rs.getId());// FIXME: Specify actor & date
+        _commands.lock(rs.getId(), le.getUser().getId(), le.getHappenedOn());
         final PageDelta d = assemblePage(r, version);
-//        final String userId =
-//            determineActor(r.contentId(), version, "%", "MADE LIVE");
-        _commands.updatePage(rs.getId(), d, "Updated.", true); // FIXME: Specify actor & date
-        _commands.unlock(rs.getId());  // FIXME: Specify actor & date
-        log.debug("Updated page: "+r.contentId());
+        _commands.updatePage(
+            rs.getId(),
+            d,
+            null,
+            false,
+            le.getUser().getId(),
+            le.getHappenedOn());
+        _commands.unlock(rs.getId(), le.getUser().getId(), le.getHappenedOn());
+
+        log.debug("Updated page: "+r.contentId()+" v."+version);
     }
 
 
     private ResourceSummary createPage(final ID parentFolderId,
                                        final ResourceBean r,
-                                       final List<Integer> paragraphVersions) throws CommandFailedException {
+                                       final Integer version,
+                                       final LogEntryBean le)
+                                                 throws CommandFailedException {
 
-        final PageDelta delta =
-            assemblePage(r, paragraphVersions.remove(0));
-//      final String userId =
-//          determineActor(r.contentId(), version, "%", "MADE LIVE");
-        final ResourceSummary rs =
-            _commands.createPage(parentFolderId, delta, r.name(), false, null);  // FIXME: Specify actor & date
-        log.debug("Created page: "+r.contentId());
+        final PageDelta delta = assemblePage(r, version.intValue());
+
+        ResourceSummary rs;
+        try {
+            rs = _commands.createPage(
+                parentFolderId,
+                delta,
+                r.name(),
+                false,
+                null,
+                le.getUser().getId(),
+                le.getHappenedOn());
+        } catch (final CommandFailedException e) {
+            if (Failure.EXISTS ==e.getCode()) {
+                rs = _commands.createPage(
+                    parentFolderId,
+                    delta,
+                    r.name()+"1",
+                    false,
+                    null,
+                    le.getUser().getId(),
+                    le.getHappenedOn());
+                log.warn("Renamed page '"+r.name()+"' to '"+r.name()+"1'.");
+            } else {
+                throw e;
+            }
+        }
+        log.debug("Created page: "+r.contentId()+" v."+version);
         return rs;
     }
 
 
-    private void publish(final ResourceBean r, final ResourceSummary rs) throws CommandFailedException {
+    private void publish(final ResourceBean r,
+                         final ResourceSummary rs,
+                         final LogEntryBean le) throws CommandFailedException {
         if (r.isPublished()) {
-            final ID userId =
-                determineActor(r.contentId(),
-                               r.legacyVersion(),
-                               "Changed Status to  PUBLISHED",
-                               "CHANGE STATUS");
-            _commands.lock(rs.getId());  // FIXME: Specify actor & date
-            if (null != userId) {
-                _commands.publish(rs.getId() /*, userId, new Date()*/); // FIXME: Specify date
-            } else {
-                _commands.publish(rs.getId()); // FIXME: Specify actor & date
-            }
-            _commands.unlock(rs.getId());  // FIXME: Specify actor & date
+            _commands.publish(
+                rs.getId(), le.getUser().getId(), le.getHappenedOn());
         }
     }
 
     private void setMetadata(final ResourceBean r,
-                             final ResourceSummary rs) throws CommandFailedException {
+                             final ResourceSummary rs,
+                             final LogEntryBean le)
+                                                 throws CommandFailedException {
 
         final Map<String, String> metadata =
             new HashMap<String, String>();
@@ -473,26 +384,28 @@ public class Migrations {
             metadata.put("useInIndex", ""+r.useInIndex());
         }
 
-        _commands.lock(rs.getId());
-        _commands.updateMetadata(rs.getId(), metadata);
-        _commands.unlock(rs.getId());
+        _commands.updateMetadata(
+            rs.getId(), metadata, le.getUser().getId(), le.getHappenedOn());
     }
 
     private void setResourceRoles(final ResourceBean r,
-                                  final ResourceSummary rs) throws CommandFailedException {
+                                  final ResourceSummary rs,
+                                  final LogEntryBean le)
+                                                 throws CommandFailedException {
         if (r.isSecure()) {
             log.info("Resource "+r.contentId()+" has security constraints");
-            _commands.lock(rs.getId());
             _commands.changeRoles(
                 rs.getId(),
-                _legacyQueries.selectRolesForResource(r.contentId()));
-            _commands.unlock(rs.getId());
+                _legacyQueries.selectRolesForResource(r.contentId()),
+                le.getUser().getId(),
+                le.getHappenedOn());
         }
     }
 
     private void setStyleSheet(final ResourceBean r,
                                final Map<String, String> properties) {
-        final String styleSheet = _legacyQueries.selectStyleSheet(r.contentId());
+        final String styleSheet =
+            _legacyQueries.selectStyleSheet(r.contentId());
         if (styleSheet != null) {
             properties.put("bodyId", styleSheet);
         }
@@ -554,40 +467,20 @@ public class Migrations {
 
 
     private void setTemplateForResource(final ResourceBean r,
-                                        final ResourceSummary rs)
+                                        final ResourceSummary rs,
+                                        final LogEntryBean le)
                                                  throws CommandFailedException {
-
         final String templateName = r.displayTemplate();
 
         if (null == templateName) { // Resource has no template
             return;
         }
 
-        if (!_templates.containsKey(templateName)) { // Not yet migrated
-            createTemplate(templateName);
-        }
-
-        final ID templateId = _templates.get(templateName).getId();
-        _commands.lock(rs.getId());  // FIXME: Specify actor & date
-        _commands.updateResourceTemplate(rs.getId(), templateId);   // FIXME: Specify actor & date
-        _commands.unlock(rs.getId());  // FIXME: Specify actor & date
+        final ID templateId = _tm.getTemplate(templateName, _templateFolder);
+        _commands.updateResourceTemplate(
+            rs.getId(), templateId, le.getUser().getId(), le.getHappenedOn());
     }
 
-
-    private void createTemplate(final String templateName) throws CommandFailedException {
-
-        final TemplateDelta t =
-            new TemplateDelta(
-                templateName,
-                "No description.",
-                "Empty template!",
-                "<fields/>",
-                MimeType.HTML);
-        final ResourceSummary ts =
-            _commands.createTemplate(_templateFolder.getId(), t, templateName);  // FIXME: Specify actor & date
-
-        _templates.put(templateName, ts);
-    }
 
 
     private Map<String, StringBuffer> assembleParagraphs(final int pageId,
@@ -622,24 +515,27 @@ public class Migrations {
     }
 
 
-    private ID determineActor(final int id,
-                                  final int version,
-                                  final String comment,
-                                  final String action) {
+    private LogEntryBean logEntryForVersion(final int id,
+                                            final int version,
+                                            final String action) {
+        // TODO Throw LogEntryIncompleteException
+        try {
+            final LogEntryBean le =
+                _legacyQueries.selectUserFromLog(id, version, action);
 
-        final Integer userId =
-            _legacyQueries.selectUserFromLog(id, version, action, comment);
+            log.debug("Actor for "+id+" v."+version+" is "+le.getActor());
 
-        log.debug("Actor for "+action+" on "+id+" v."+version+" is "+userId);
+            final UserSummary user =_um.getUser(le.getActor());
+            le.setUser(user);
 
-        final UserSummary user =_users.get(userId);
+            if (null==user) {
+                throw new MigrationException("User missing: "+le.getActor());
+            }
 
-        if (null==user) {
-            log.warn("User missing: "+userId);
-            return null;
+            return le;
+        } catch (final MigrationException e) {
+            throw new MigrationException(
+                "Log entry missing: "+id+" v."+version+", action: "+action);
         }
-
-        return user.getId();
     }
-
 }
