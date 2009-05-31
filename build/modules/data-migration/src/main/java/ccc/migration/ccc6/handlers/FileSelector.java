@@ -8,18 +8,20 @@ import java.util.Map;
 import ccc.migration.LegacyFile;
 
 /**
- * TODO: Add Description for this type.
+ * SQL query used to select file records from CCC6.
  *
  * @author Civic Computing Ltd.
  */
 public final class FileSelector
     implements
-        SqlQuery<Map<String,LegacyFile>> {
+        SqlQuery<Map<String, LegacyFile>> {
 
     /** {@inheritDoc} */
     @Override
-    public Map<String,LegacyFile> handle(final ResultSet rs) throws SQLException {
-        final Map<String,LegacyFile> results = new HashMap<String,LegacyFile>();
+    public Map<String, LegacyFile> handle(final ResultSet rs)
+    throws SQLException {
+        final Map<String, LegacyFile> results =
+            new HashMap<String, LegacyFile>();
 
         while (rs.next()) {
             final LegacyFile file =

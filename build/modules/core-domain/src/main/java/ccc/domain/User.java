@@ -29,6 +29,7 @@ public class User extends VersionedEntity {
 
     /** VALID_CHARACTERS : String. */
     public static final String  VALID_CHARACTERS = "[\\w]*";
+    private static final int USERNAME_MIN_LENGTH = 4;
 
     private String _username;
     private EmailAddress _email;
@@ -47,8 +48,8 @@ public class User extends VersionedEntity {
      */
     public User(final String username) {
         DBC.require().notEmpty(username);
-        DBC.require().minLength(username, USERNAME_MIN_LENGTH);
-        DBC.require().toMatch(VALID_CHARACTERS, username);
+//        DBC.require().minLength(username, USERNAME_MIN_LENGTH);
+//        DBC.require().toMatch(VALID_CHARACTERS, username);
 
         _username = username;
     }
@@ -75,7 +76,6 @@ public class User extends VersionedEntity {
         _username = username;
     }
 
-    private static final int USERNAME_MIN_LENGTH = 4;
 
     /**
      * Mutator for the user's email.
@@ -84,7 +84,7 @@ public class User extends VersionedEntity {
      */
     public void email(final EmailAddress email) {
         DBC.require().notNull(email);
-        DBC.require().toBeTrue(email.isValid());
+//        DBC.require().toBeTrue(email.isValid());
         _email = email;
     }
 

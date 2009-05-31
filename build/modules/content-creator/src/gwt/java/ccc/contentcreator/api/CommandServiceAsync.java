@@ -202,4 +202,18 @@ public interface CommandServiceAsync {
     void createSearch(ID parentId,
                       String title,
                       AsyncCallback<ResourceSummary> callback);
+
+
+
+    // TODO: Clean this up.
+    void changeRoles(ccc.api.ID resourceId, java.util.Collection<java.lang.String> roles, ccc.api.ID actorId, java.util.Date happenedOn, com.google.gwt.user.client.rpc.AsyncCallback<java.lang.Void> arg5);
+    void createFolder(ccc.api.ID parentId, java.lang.String name, java.lang.String title, boolean publish, ccc.api.ID actorId, java.util.Date happenedOn, com.google.gwt.user.client.rpc.AsyncCallback<ccc.api.ResourceSummary> arg7);
+    void createPage(ccc.api.ID parentId, ccc.api.PageDelta delta, java.lang.String name, boolean publish, ccc.api.ID templateId, ccc.api.ID actorId, java.util.Date happenedOn, com.google.gwt.user.client.rpc.AsyncCallback<ccc.api.ResourceSummary> arg8);
+    void includeInMainMenu(ccc.api.ID resourceId, boolean include, ccc.api.ID actorId, java.util.Date happenedOn, com.google.gwt.user.client.rpc.AsyncCallback<java.lang.Void> arg5);
+    void lock(ccc.api.ID resourceId, ccc.api.ID actorId, java.util.Date happenedOn, com.google.gwt.user.client.rpc.AsyncCallback<java.lang.Void> arg4);
+    void unlock(ccc.api.ID resourceId, ccc.api.ID actorId, java.util.Date happenedOn, com.google.gwt.user.client.rpc.AsyncCallback<java.lang.Void> arg4);
+    void updateMetadata(ccc.api.ID resourceId, java.util.Map<java.lang.String, java.lang.String> metadata, ccc.api.ID actorId, java.util.Date happenedOn, com.google.gwt.user.client.rpc.AsyncCallback<java.lang.Void> arg5);
+    void updatePage(ccc.api.ID pageId, ccc.api.PageDelta delta, java.lang.String comment, boolean isMajorEdit, ccc.api.ID actorId, java.util.Date happenedOn, com.google.gwt.user.client.rpc.AsyncCallback<java.lang.Void> arg7);
+    void updateResourceTemplate(ccc.api.ID resourceId, ccc.api.ID templateId, ccc.api.ID actorId, java.util.Date happenedOn, com.google.gwt.user.client.rpc.AsyncCallback<java.lang.Void> arg5);
+
 }

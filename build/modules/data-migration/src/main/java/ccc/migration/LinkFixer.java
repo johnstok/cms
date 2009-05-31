@@ -103,7 +103,7 @@ public class LinkFixer {
 
         } else {
             links.add(link);
-            LOG.warn("Didn't correct "+link);
+            LOG.info("Didn't correct "+link);
 
         }
         return corrected;
