@@ -272,23 +272,61 @@
                                         </path>
                                         <property name="migration_classpath"
                                             refid="migration.classpath" />
-                                        <echo
-                                            message="data migration classpath: ${migration_classpath}" />
+                                        <!-- echo
+                                            message="data migration classpath: ${migration_classpath}" / -->
 
                                         <java
                                             classname="ccc.cli.Users"
                                             fork="true"
                                             failonerror="true"
                                             classpath="${migration_classpath}">
+                                            <arg value="-c"/>
+                                            <arg value="jdbc:h2:tcp:localhost/mem:${application.prefix}"/>
+                                            <arg value="-u"/>
+                                            <arg value="CCC"/>
+                                            <arg value="-p"/>
+                                            <arg value="CCC"/>
+                                            <arg value="-nu"/>
                                             <arg value="migration"/>
+                                            <arg value="-ne"/>
                                             <arg value="migration@civicuk.com"/>
+                                            <arg value="-np"/>
                                             <arg value="migration"/>
                                         </java>
+                                        
+                                        <java
+                                            classname="ccc.cli.Create"
+                                            fork="true"
+                                            failonerror="true"
+                                            classpath="${migration_classpath}">
+                                            <arg value="-u"/>
+                                            <arg value="migration"/>
+                                            <arg value="-p"/>
+                                            <arg value="migration"/>
+                                            <arg value="-a"/>
+                                            <arg value="${application.prefix}"/>
+                                        </java>
+                                        
                                         <java
                                             classname="ccc.cli.App"
                                             fork="true"
                                             failonerror="true"
-                                            classpath="${migration_classpath}" />
+                                            classpath="${migration_classpath}">
+                                            <arg value="-u"/>
+                                            <arg value="migration"/>
+                                            <arg value="-p"/>
+                                            <arg value="migration"/>
+                                            <arg value="-a"/>
+                                            <arg value="${application.prefix}"/>
+                                            <arg value="-cu"/>
+                                            <arg value="http://localhost:8080/${application.prefix}/creator"/>
+                                            <arg value="-lu"/>
+                                            <arg value="ccc_migration"/>
+                                            <arg value="-lp"/>
+                                            <arg value="d3ccc_migration"/>
+                                            <arg value="-lc"/>
+                                            <arg value="jdbc:oracle:thin:@poseidon:1521:DEV"/>
+                                        </java>
                                     </tasks>
                                 </configuration>
                                 <goals>

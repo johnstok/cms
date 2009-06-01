@@ -50,7 +50,7 @@ public class LinkFixer {
      */
     public LinkFixer(final String prefix) {
         _prefix = prefix;
-        // TODO: Warn if prefix is a ZLS?
+        // TODO: Warn if prefix is NULL or ZLS?
     }
 
     void extractURLs(final Map<String, StringBuffer> map) {

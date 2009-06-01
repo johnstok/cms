@@ -13,7 +13,6 @@ package ccc.migration;
 
 import java.io.File;
 import java.util.Map;
-import java.util.Properties;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
@@ -32,8 +31,9 @@ public class FileMigrator {
 
     private final FileUploader _fu;
     private final LegacyDBQueries _legacyQueries;
-    private final Properties _props;
-
+    private final String _filesSourcePath;
+    private final String _imagesSourcePath;
+    private final String _cssSourcePath;
 
 
     /**
@@ -45,10 +45,14 @@ public class FileMigrator {
      */
     public FileMigrator(final FileUploader fu,
                         final LegacyDBQueries legacyQueries,
-                        final Properties props) {
+                        final String filesSourcePath,
+                        final String imagesSourcePath,
+                        final String cssSourcePath) {
         _fu = fu;
         _legacyQueries = legacyQueries;
-        _props = props;
+        _filesSourcePath = filesSourcePath;
+        _imagesSourcePath = imagesSourcePath;
+        _cssSourcePath = cssSourcePath;
     }
 
     void migrateManagedFilesAndImages(
@@ -62,7 +66,7 @@ public class FileMigrator {
                 legacyFile.getKey(),
                 legacyFile.getValue()._title,
                 legacyFile.getValue()._description,
-                _props.getProperty("filesSourcePath"));
+                _filesSourcePath);
         }
 
         final Map<String,LegacyFile> images = _legacyQueries.selectImages();
@@ -73,19 +77,18 @@ public class FileMigrator {
                 legacyFile.getKey(),
                 legacyFile.getValue()._title,
                 legacyFile.getValue()._description,
-                _props.getProperty("imagesSourcePath"));
+                _imagesSourcePath);
         }
     }
 
     void migrateImages(final ResourceSummary _assetsImagesFolder) {
         final Map<String, LegacyFile> managedImages =
             _legacyQueries.selectImages();
-        final String imagePath = _props.getProperty("imagesSourcePath");
-        final File imageDir = new File(imagePath);
+        final File imageDir = new File(_imagesSourcePath);
         if (!imageDir.exists()) {
-            log.debug("File not found: "+imagePath);
+            log.debug("File not found: "+_imagesSourcePath);
         } else if (!imageDir.isDirectory()) {
-            log.warn(imagePath+" is not a directory");
+            log.warn(_imagesSourcePath+" is not a directory");
         } else {
             final File[] images = imageDir.listFiles();
             for (final File file : images) {
@@ -123,7 +126,7 @@ public class FileMigrator {
     }
 
     void migrateCss(final ResourceSummary _cssFolder) {
-        final String cssPath = _props.getProperty("cssSourcePath");
+        final String cssPath = _cssSourcePath;
         final File cssDir = new File(cssPath);
         if (!cssDir.exists()) {
             log.debug("File not found: "+cssPath);

@@ -13,7 +13,7 @@
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.maven.ide.eclipse.launchconfig.classpathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="ccc.cli.Users"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="super super@civicuk.com sup3r2008"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-c jdbc:h2:tcp:localhost/mem:ash&#10;-u CCC&#10;-p CCC&#10;-nu super &#10;-ne super@civicuk.com &#10;-np sup3r2008"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="data-migration"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.maven.ide.eclipse.launchconfig.sourcepathProvider"/>
 </launchConfiguration>

@@ -1,13 +1,11 @@
 package ccc.cli;
 
 
-import java.util.Properties;
-
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
+import org.kohsuke.args4j.Option;
 
-import ccc.api.CommandFailedException;
 import ccc.migration.DbUtilsDB;
 import ccc.migration.FileUploader;
 import ccc.migration.LegacyDBQueries;
@@ -20,11 +18,9 @@ import ccc.migration.ServiceLookup;
  */
 public final class App extends CccApp {
     private static final Logger LOG = Logger.getLogger(App.class);
-    private static final String USERNAME = "migration";
-    private static final String PASSWORD = "migration";
-    private static Properties props = new Properties();
     private static LegacyDBQueries legacyDBQueries;
     private static ServiceLookup services;
+    private static Options _options;
 
     private App() { /* NO-OP */ }
 
@@ -37,11 +33,11 @@ public final class App extends CccApp {
     public static void main(final String[] args) {
         LOG.info("Starting.");
 
-        loadSettings(props, "migration.properties");
+        _options  = parseOptions(args, Options.class);
 
-        services = new ServiceLookup(props.getProperty("app-name"));
+        login(_options._username, _options._password);
 
-        login(USERNAME, PASSWORD);
+        services = new ServiceLookup(_options._app);
 
         connectToLegacySystem();
 
@@ -53,7 +49,11 @@ public final class App extends CccApp {
     }
 
     private static void connectToLegacySystem() {
-        final DataSource legacyConnection = getOracleDatasource(props);
+        final DataSource legacyConnection =
+            getOracleDatasource(
+                _options._legConString,
+                _options._legUsername,
+                _options._legPassword);
         legacyDBQueries = new LegacyDBQueries(new DbUtilsDB(legacyConnection));
         LOG.info("Connected to legacy DB.");
     }
@@ -62,20 +62,45 @@ public final class App extends CccApp {
         final Migrations migrations =
             new Migrations(
                 legacyDBQueries,
-                props,
+                "/"+_options._app+"/",
                 services.lookupCommands(),
                 services.lookupQueries(),
                 new FileUploader(
-                    props.getProperty("targetUploadURL"),
-                    props.getProperty("targetApplicationURL"),
-                    USERNAME,
-                    PASSWORD)
+                    _options._ccURL,
+                    _options._username,
+                    _options._password)
             );
-        try {
-            migrations.createDefaultFolderStructure();
-        } catch (final CommandFailedException e) {
-            LOG.error("Failed to create app.", e);
-        }
         migrations.migrate();
     }
+
+    static class Options {
+        @Option(
+            name="-u", required=true, usage="Username for connecting to CCC.")
+        String _username;
+
+        @Option(
+            name="-p", required=true, usage="Password for connecting to CCC.")
+        String _password;
+
+        @Option(
+            name="-a", required=true, usage="App name.")
+        String _app;
+
+        @Option(
+            name="-cu", required=true, usage="Content-creator URL.")
+        String _ccURL;
+
+        @Option(
+            name="-lu", required=true, usage="Username for legacy DB.")
+        String _legUsername;
+
+        @Option(
+            name="-lp", required=true, usage="Password for legacy DB.")
+        String _legPassword;
+
+        @Option(
+            name="-lc", required=true, usage="Connection string for legacy DB.")
+        String _legConString;
+    }
 }
+

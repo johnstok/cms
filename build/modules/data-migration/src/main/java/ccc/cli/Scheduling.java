@@ -2,6 +2,7 @@ package ccc.cli;
 
 
 import org.apache.log4j.Logger;
+import org.kohsuke.args4j.Option;
 
 import ccc.api.Scheduler;
 import ccc.migration.ServiceLookup;
@@ -12,41 +13,64 @@ import ccc.migration.ServiceLookup;
 public final class Scheduling extends CccApp {
     private static final Logger LOG = Logger.getLogger(Scheduling.class);
 
+    private static Options _options;
+    private static ServiceLookup services;
+
     private Scheduling() { super(); }
 
 
     /**
      * Entry point for this application.
-     * TODO: Supply app_name, username, password from the console.
      *
      * @param args String array of application arguments.
      */
     public static void main(final String[] args) {
         LOG.info("Starting.");
 
-        login("super", "sup3r2008");
+        _options  = parseOptions(args, Options.class);
 
-        final ServiceLookup services =
-            new ServiceLookup("ash");
+        login(_options._username, _options._password);
+
+        services = new ServiceLookup(_options._app);
 
         final Scheduler s = services.lookupActionScheduler();
 
-        if (1 != args.length) {
-            LOG.error("Wrong number of arguments.");
+        if ("start".equals(_options._action)) {
+            s.start();
+            LOG.info("Started.");
+
+        } else if ("stop".equals(_options._action)) {
+            s.stop();
+            LOG.info("Stopped.");
+
+        } else if ("running".equals(_options._action)) {
+            final boolean running = s.isRunning();
+            LOG.info("Running: "+running+".");
+
         } else {
-            if ("start".equals(args[0])) {
-                s.start();
-
-            } else if ("stop".equals(args[0])) {
-                s.stop();
-
-            } else {
-                LOG.error("Invalid command.");
-            }
+            LOG.error("Invalid command.");
         }
 
         logout();
 
         report("Finished in ");
+    }
+
+    static class Options {
+        @Option(
+            name="-u", required=true, usage="Username for connecting to CCC.")
+        String _username;
+
+        @Option(
+            name="-p", required=true, usage="Password for connecting to CCC.")
+        String _password;
+
+        @Option(
+            name="-a", required=true, usage="App name.")
+        String _app;
+
+        @Option(
+            name="-c", required=true, usage="Action.")
+        String _action;
     }
 }
