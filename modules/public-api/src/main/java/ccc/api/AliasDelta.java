@@ -71,6 +71,6 @@ public final class AliasDelta implements Serializable, Jsonable {
     @Override
     public void toJson(final Json json) { // TODO: Use JsonKeys
         json.set("target-name", getTargetName());
-        json.set("target-id", getTargetId());
+        json.set(JsonKeys.TARGET, getTargetId());
     }
 }

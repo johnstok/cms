@@ -59,4 +59,22 @@ public final class JsonKeys {
     public static final String EMAIL = "email";
     /** ROLES : String. */
     public static final String ROLES = "roles";
+    /** PATH : String. */
+    public static final String PATH = "path";
+    /** METADATA : String. */
+    public static final String METADATA = "metadata";
+    /** SIZE : String. */
+    public static final String SIZE = "size";
+    /** DESCRIPTION : String. */
+    public static final String DESCRIPTION = "description";
+    /** DATA : String. */
+    public static final String DATA = "data";
+    /** MIME_TYPE : String. */
+    public static final String MIME_TYPE = "mime-type";
+    /** BODY : String. */
+    public static final String BODY = "body";
+    /** DEFINITION : String. */
+    public static final String DEFINITION = "definition";
+    /** TARGET : String. */
+    public static final String TARGET = "target";
 }

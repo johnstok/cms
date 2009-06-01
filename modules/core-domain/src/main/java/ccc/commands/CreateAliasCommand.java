@@ -57,10 +57,10 @@ public class CreateAliasCommand
      *  @return The new alias.
      */
     public Alias execute(final User actor,
-                            final Date happenedOn,
-                            final UUID parentFolder,
-                            final UUID targetId,
-                            final String title) throws ResourceExistsException {
+                         final Date happenedOn,
+                         final UUID parentFolder,
+                         final UUID targetId,
+                         final String title) throws ResourceExistsException {
         final Resource target = getDao().find(Resource.class, targetId);
         if (target == null) {
             throw new CCCException("Target does not exists.");
