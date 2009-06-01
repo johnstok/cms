@@ -152,11 +152,11 @@ public final class TemplateDelta implements Serializable, Jsonable {
 
     /** {@inheritDoc} */
     @Override
-    public void toJson(final Json json) { // TODO: Use JsonKeys
-        json.set("title",       getTitle());
-        json.set("description", getDescription());
-        json.set("definition",  getDefinition());
-        json.set("body",        getBody());
-        json.set("mime-type",   getMimeType());
+    public void toJson(final Json json) {
+        json.set(JsonKeys.TITLE,       getTitle());
+        json.set(JsonKeys.DESCRIPTION, getDescription());
+        json.set(JsonKeys.DEFINITION,  getDefinition());
+        json.set(JsonKeys.BODY,        getBody());
+        json.set(JsonKeys.MIME_TYPE,   getMimeType());
     }
 }

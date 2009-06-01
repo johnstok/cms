@@ -78,7 +78,7 @@ public interface Json {
      * @param key The key.
      * @param value The value, as a long.
      */
-    void set(final String key, final long value);
+    void set(final String key, final Long value);
 
     /**
      * Mutator.

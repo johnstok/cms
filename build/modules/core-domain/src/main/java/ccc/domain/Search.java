@@ -12,6 +12,7 @@
 package ccc.domain;
 
 import ccc.api.Json;
+import ccc.api.JsonKeys;
 import ccc.api.Jsonable;
 import ccc.api.ResourceType;
 
@@ -49,9 +50,8 @@ public class Search
         return new Jsonable(){
             /** {@inheritDoc} */
             @Override public void toJson(final Json json) {
-                json.set("title", title());
+                json.set(JsonKeys.TITLE, title());
             }
         };
     }
-
 }

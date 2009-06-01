@@ -39,7 +39,7 @@ public class IncludeInMainMenuCommand {
      * @param audit The audit logger, for logging business actions.
      */
     public IncludeInMainMenuCommand(final Dao dao,
-                                              final AuditLog audit) {
+                                    final AuditLog audit) {
         _dao = dao;
         _audit = audit;
     }

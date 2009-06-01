@@ -72,7 +72,7 @@ public class LogEntryTest
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
         assertEquals(CommandType.RESOURCE_MOVE, le.action());
-        assertEquals("{\"path\":\"/bar/foo\"}",
+        assertEquals("{\"parentId\":\""+f.id()+"\",\"path\":\"/bar/foo\"}",
             le.detail());
     }
 
@@ -95,9 +95,9 @@ public class LogEntryTest
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
         assertEquals(CommandType.PAGE_CREATE, le.action());
-        assertEquals("{\"title\":\"foo\","
+        assertEquals("{\"parentId\":null,\"title\":\"foo\","
+            + "\"publishedBy\":null,"
             + "\"name\":\"foo\","
-            + "\"path\":\"/foo\","
             + "\"paragraphs\":[]}", le.detail());
     }
 
@@ -152,7 +152,7 @@ public class LogEntryTest
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
         assertEquals(CommandType.RESOURCE_CHANGE_TEMPLATE, le.action());
-        assertEquals("{\"template\":\"newName\"}", le.detail());
+        assertEquals("{\"templateId\":\""+t.id()+"\"}", le.detail());
     }
 
     /**
@@ -225,7 +225,7 @@ public class LogEntryTest
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
         assertEquals(CommandType.RESOURCE_UPDATE_TAGS, le.action());
-        assertEquals("{\"tags\":\"foo,bar\"}", le.detail());
+        assertEquals("{\"tags\":[\"foo\",\"bar\"]}", le.detail());
     }
 
     /**
@@ -297,7 +297,7 @@ public class LogEntryTest
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
         assertEquals(CommandType.RESOURCE_CHANGE_ROLES, le.action());
-        assertEquals("{\"roles\":\"sup,zep\"}", le.detail());
+        assertEquals("{\"roles\":[\"sup\",\"zep\"]}", le.detail());
     }
 
     private final User _actor = new User("actor");

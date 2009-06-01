@@ -188,7 +188,7 @@ public class Snapshot implements Serializable, Json {
     }
 
     /** {@inheritDoc} */
-    public void set(final String key, final long value) {
+    public void set(final String key, final Long value) {
         try {
             _detail.put(key, value);
         } catch (final JSONException e) {

@@ -17,6 +17,8 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.CommandType;
+import ccc.api.Duration;
+import ccc.api.JsonKeys;
 
 
 /**
@@ -36,7 +38,7 @@ public class LogEntry extends Entity {
     private UUID         _subjectId;
     private String       _comment = "";
     private String       _detail;
-    private boolean      _isMajorEdit;
+    private boolean      _isMajorEdit = false;
 
     /** Constructor: for persistence only. */
     protected LogEntry() { super(); }
@@ -91,7 +93,7 @@ public class LogEntry extends Entity {
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = CommandType.RESOURCE_RENAME;
         final Snapshot ss = new Snapshot();
-        ss.set("name", resource.name().toString());
+        ss.set(JsonKeys.NAME, resource.name().toString());
         le._detail = ss.getDetail();
         return le;
     }
@@ -113,7 +115,8 @@ public class LogEntry extends Entity {
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = CommandType.RESOURCE_MOVE;
         final Snapshot ss = new Snapshot();
-        ss.set("path", resource.absolutePath().toString());
+        ss.set(JsonKeys.PATH, resource.absolutePath().toString());
+        ss.set(JsonKeys.PARENT_ID, resource.parent().id().toString());
         le._detail = ss.getDetail();
         return le;
     }
@@ -196,10 +199,17 @@ public class LogEntry extends Entity {
             default:
                 throw new UnsupportedOperationException();
         }
-        final Snapshot ss = new Snapshot();
-        resource.createSnapshot().toJson(ss);
-        ss.set("path", resource.absolutePath().toString());
-        ss.set("name", resource.name().toString());
+
+        final Snapshot ss = new Snapshot(resource.createSnapshot());
+
+        ss.set(JsonKeys.NAME, resource.name().toString());
+
+        final User pBy = resource.publishedBy();
+        ss.set(JsonKeys.PUBLISHED_BY, (null==pBy)?null:pBy.id().toString());
+
+        final Resource parent = resource.parent();
+        ss.set(JsonKeys.PARENT_ID, (null==parent)?null:parent.id().toString());
+
         le._detail = ss.getDetail();
         return le;
     }
@@ -246,8 +256,7 @@ public class LogEntry extends Entity {
         require().containsNoBrackets(le._comment);
 
         le._isMajorEdit = isMajorEdit;
-        final Snapshot ss = new Snapshot();
-        resource.createSnapshot().toJson(ss);
+        final Snapshot ss = new Snapshot(resource.createSnapshot());
         le._detail = ss.getDetail();
         return le;
     }
@@ -278,15 +287,11 @@ public class LogEntry extends Entity {
     public static LogEntry forTemplateChange(final Resource resource,
                                              final User actor,
                                              final Date happenedOn) {
-
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = CommandType.RESOURCE_CHANGE_TEMPLATE;
         final Snapshot ss = new Snapshot();
-        String templateName = "";
-        if (resource.template() != null) {
-            templateName = resource.template().name().toString();
-        }
-        ss.set("template", templateName);
+        final Template t = resource.template();
+        ss.set(JsonKeys.TEMPLATE_ID, (null==t)?null:t.id().toString());
         le._detail = ss.getDetail();
         return le;
     }
@@ -300,8 +305,8 @@ public class LogEntry extends Entity {
      * @return The log entry representing the action.
      */
     public static LogEntry forPublish(final Resource resource,
-                                   final User actor,
-                                   final Date happenedOn) {
+                                      final User actor,
+                                      final Date happenedOn) {
 
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = CommandType.RESOURCE_PUBLISH;
@@ -346,7 +351,7 @@ public class LogEntry extends Entity {
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = CommandType.RESOURCE_UPDATE_TAGS;
         final Snapshot ss = new Snapshot();
-        ss.set("tags", resource.tagString());
+        ss.setStrings(JsonKeys.TAGS, resource.tags());
         le._detail = ss.getDetail();
         return le;
     }
@@ -366,9 +371,8 @@ public class LogEntry extends Entity {
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = CommandType.RESOURCE_UPDATE_METADATA;
         final Snapshot ss = new Snapshot();
-        ss.set("metadata", resource.metadata());
+        ss.set(JsonKeys.METADATA, resource.metadata());
         le._detail = ss.getDetail();
-
         return le;
     }
 
@@ -386,8 +390,8 @@ public class LogEntry extends Entity {
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = CommandType.RESOURCE_INCLUDE_IN_MM;
         final Snapshot ss = new Snapshot();
-        ss.set(
-            "includeInMainMenu", Boolean.valueOf(resource.includeInMainMenu()));
+        ss.set(JsonKeys.INCLUDE_IN_MAIN_MENU,
+               Boolean.valueOf(resource.includeInMainMenu()));
         le._detail = ss.getDetail();
         return le;
     }
@@ -407,8 +411,8 @@ public class LogEntry extends Entity {
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = CommandType.RESOURCE_REMOVE_FROM_MM;
         final Snapshot ss = new Snapshot();
-        ss.set(
-            "includeInMainMenu", Boolean.valueOf(resource.includeInMainMenu()));
+        ss.set(JsonKeys.INCLUDE_IN_MAIN_MENU,
+               Boolean.valueOf(resource.includeInMainMenu()));
         le._detail = ss.getDetail();
         return le;
     }
@@ -428,14 +432,7 @@ public class LogEntry extends Entity {
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = CommandType.RESOURCE_CHANGE_ROLES;
         final Snapshot ss = new Snapshot();
-        final StringBuilder sb = new StringBuilder();
-        for (final String role : resource.roles()) {
-            if (sb.length() > 0) {
-                sb.append(",");
-            }
-            sb.append(role);
-        }
-        ss.set("roles", sb.toString());
+        ss.setStrings("roles", resource.roles());
         le._detail = ss.getDetail();
         return le;
     }
@@ -449,8 +446,8 @@ public class LogEntry extends Entity {
      * @return The log entry representing the action.
      */
     public static LogEntry forReorder(final Folder folder,
-                                      final User actor, final
-                                      Date happenedOn) {
+                                      final User actor,
+                                      final Date happenedOn) {
 
         final LogEntry le = createEntry(folder, actor, happenedOn);
         le._action = CommandType.FOLDER_REORDER;
@@ -470,13 +467,13 @@ public class LogEntry extends Entity {
      * @return The log entry representing the action.
      */
     public static LogEntry forUpdateSortOrder(final Folder folder,
-                                              final User actor, final
-                                              Date happenedOn) {
+                                              final User actor,
+                                              final Date happenedOn) {
 
         final LogEntry le = createEntry(folder, actor, happenedOn);
         le._action = CommandType.FOLDER_UPDATE_SORT_ORDER;
         final Snapshot ss = new Snapshot();
-        ss.set("sortOrder", folder.sortOrder().name());
+        ss.set(JsonKeys.SORT_ORDER, folder.sortOrder().name());
         le._detail = ss.getDetail();
         return le;
     }
@@ -497,9 +494,8 @@ public class LogEntry extends Entity {
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = CommandType.RESOURCE_UPDATE_CACHE;
         final Snapshot ss = new Snapshot();
-        if (resource.cache() != null) {
-            ss.set("cache", resource.cache().time());
-        }
+        final Duration d = resource.cache();
+        ss.set("cache", (null==d) ? (Long) null : Long.valueOf(d.time()));
         le._detail = ss.getDetail();
         return le;
     }

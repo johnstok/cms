@@ -57,11 +57,11 @@ public final class FileDelta implements Serializable, Jsonable {
      */
     public FileDelta(final Json json) {
         this(
-            json.getString("title"),
-            json.getString("description"),
-            new MimeType(json.getJson("mime-type")),
-            json.getId("data"),
-            json.getInt("size"));
+            json.getString(JsonKeys.TITLE),
+            json.getString(JsonKeys.DESCRIPTION),
+            new MimeType(json.getJson(JsonKeys.MIME_TYPE)),
+            json.getId(JsonKeys.DATA),
+            json.getInt(JsonKeys.SIZE));
     }
 
     /**
@@ -146,11 +146,11 @@ public final class FileDelta implements Serializable, Jsonable {
 
     /** {@inheritDoc} */
     @Override
-    public void toJson(final Json json) { // TODO: Use JsonKeys
-        json.set("title", getTitle());
-        json.set("mime-type", getMimeType());
-        json.set("size", getSize());
-        json.set("description", getDescription());
-        json.set("data", getData());
+    public void toJson(final Json json) {
+        json.set(JsonKeys.TITLE, getTitle());
+        json.set(JsonKeys.MIME_TYPE, getMimeType());
+        json.set(JsonKeys.SIZE, (long) getSize());
+        json.set(JsonKeys.DESCRIPTION, getDescription());
+        json.set(JsonKeys.DATA, getData());
     }
 }

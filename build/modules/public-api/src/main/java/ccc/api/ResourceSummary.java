@@ -358,8 +358,8 @@ public final class ResourceSummary implements Serializable, Jsonable {
         json.set(TITLE, _title);
         json.set(
             PUBLISHED_BY, (null==_publishedBy)?null:_publishedBy.toString());
-        json.set(CHILD_COUNT, _childCount);
-        json.set(FOLDER_COUNT, _folderCount);
+        json.set(CHILD_COUNT, (long) _childCount);
+        json.set(FOLDER_COUNT, (long) _folderCount);
         json.set(INCLUDE_IN_MAIN_MENU, Boolean.valueOf(_includeInMainMenu));
         json.set(SORT_ORDER, _sortOrder);
         json.set(HAS_WORKING_COPY, Boolean.valueOf(_hasWorkingCopy));
