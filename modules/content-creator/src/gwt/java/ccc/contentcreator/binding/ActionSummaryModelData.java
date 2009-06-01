@@ -15,13 +15,17 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.MissingResourceException;
 import java.util.Set;
 
 import ccc.api.ActionStatus;
 import ccc.api.ActionSummary;
+import ccc.api.CommandType;
 import ccc.api.ID;
+import ccc.contentcreator.api.CommandTypeConstants;
 
 import com.extjs.gxt.ui.client.data.ModelData;
+import com.google.gwt.core.client.GWT;
 
 
 /**
@@ -33,7 +37,7 @@ public class ActionSummaryModelData
     implements
         ModelData {
 
-    private ActionSummary _as;
+    private final ActionSummary _as;
 
     /**
      * Constructor.
@@ -72,6 +76,9 @@ public class ActionSummaryModelData
 
             case TYPE:
                 return (X) _as.getType();
+
+            case LOCALISED_TYPE:
+                return (X) getLocalisedType();
 
             default:
                 throw new UnsupportedOperationException(
@@ -112,7 +119,7 @@ public class ActionSummaryModelData
     }
 
     public enum Property {
-        ID, TYPE, ACTOR, EXECUTE_AFTER, PATH, SUBJECT_TYPE, STATUS;
+        ID, TYPE, LOCALISED_TYPE, ACTOR, EXECUTE_AFTER, PATH, SUBJECT_TYPE, STATUS;
     }
 
     /**
@@ -122,6 +129,23 @@ public class ActionSummaryModelData
      */
     public ActionStatus getStatus() {
         return _as.getStatus();
+    }
+
+    /**
+     * Looks up for localised string for the {@link CommandType}.
+     *
+     * @return The localised string or name of the enum if nothing found.
+     */
+    public String getLocalisedType() {
+        CommandTypeConstants types = GWT.create(CommandTypeConstants.class);
+
+        String local = null;
+        try {
+            local = types.getString(_as.getType().name());
+        } catch (MissingResourceException e) {
+            local = _as.getType().name();
+        }
+        return local;
     }
 
     /**

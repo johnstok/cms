@@ -58,7 +58,7 @@ public class ActionTable extends TablePanel {
 
         addColumn(
             configs,
-            ActionSummaryModelData.Property.TYPE.name(),
+            ActionSummaryModelData.Property.LOCALISED_TYPE.name(),
             _constants.action(),
             SMALL_COLUMN);
         addColumn(
