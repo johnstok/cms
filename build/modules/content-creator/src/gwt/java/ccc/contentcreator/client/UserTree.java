@@ -12,6 +12,8 @@
 
 package ccc.contentcreator.client;
 
+import ccc.contentcreator.api.UIConstants;
+
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -28,8 +30,21 @@ import com.extjs.gxt.ui.client.widget.tree.TreeItem;
 public class UserTree extends Tree {
 
     private final UserTable _ut = new UserTable();
+    private final UIConstants _constants = Globals.uiConstants();
+    private final LeftRightPane _view;
 
-    private LeftRightPane _view;
+    /** USERS : String. */
+    public static final String USERS = "Users";
+    /** ALL : String. */
+    public static final String ALL = "All";
+    /** CONTENT_CREATOR : String. */
+    public static final String CONTENT_CREATOR = "Content creator";
+    /** SITE_BUILDER : String. */
+    public static final String SITE_BUILDER = "Site Builder";
+    /** ADMINISTRATOR : String. */
+    public static final String ADMINISTRATOR = "Administrator";
+    /** SEARCH : String. */
+    public static final String SEARCH = "Search";
 
     /**
      * TODO: Add Description for this type.
@@ -50,28 +65,28 @@ public class UserTree extends Tree {
      *
      * @param view LeftRightPane of the surrounding view.
      */
-    UserTree(final LeftRightPane view) { // FIXME: I18n!
+    UserTree(final LeftRightPane view) {
 
         _view = view;
 
-        final TreeItem users = new TreeItem("Users");
-        users.setId("Users");
-        final TreeItem all = new TreeItem("All");
-        all.setId("All");
-        final TreeItem creator = new TreeItem("Content creator");
+        final TreeItem users = new TreeItem(_constants.users());
+        users.setId(USERS);
+        final TreeItem all = new TreeItem(_constants.all());
+        all.setId(ALL);
+        final TreeItem creator = new TreeItem(_constants.contentCreator());
         creator.setIconStyle("images/icons/user.png");
-        creator.setId("Content creator");
+        creator.setId(CONTENT_CREATOR);
 
-        final TreeItem builder = new TreeItem("Site Builder");
+        final TreeItem builder = new TreeItem(_constants.siteBuilder());
         builder.setIconStyle("images/icons/user.png");
-        builder.setId("Site Builder");
+        builder.setId(SITE_BUILDER);
 
-        final TreeItem admin = new TreeItem("Administrator");
-        admin.setId("Administrator");
+        final TreeItem admin = new TreeItem(_constants.administrator());
+        admin.setId(ADMINISTRATOR);
         admin.setIconStyle("images/icons/user_gray.png");
 
-        final TreeItem search = new TreeItem("Search");
-        search.setId("Search");
+        final TreeItem search = new TreeItem(_constants.search());
+        search.setId(SEARCH);
         search.setIconStyle("images/icons/magnifier.png");
 
         getRootItem().add(users);

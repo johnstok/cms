@@ -214,13 +214,13 @@ public class UserTable extends TablePanel {
         _lastSelected = selectedItem;
         _detailsStore.removeAll();
 
-        if ("Search".equals(selectedItem.getText())) { // FIXME: I18n.
+        if (UserTree.SEARCH.equals(selectedItem.getId())) {
             _toolBar.enable();
         } else {
             _toolBar.disable();
         }
 
-        if ("All".equals(selectedItem.getText())) { // FIXME: I18n.
+        if (UserTree.ALL.equals(selectedItem.getId())) {
             qs.listUsers(
                 new ErrorReportingCallback<Collection<UserSummary>>(
                     USER_ACTIONS.viewUsers()) {
@@ -229,7 +229,7 @@ public class UserTable extends TablePanel {
                         updatePager(result);
                     }
                 });
-        } else if ("Content creator".equals(selectedItem.getText())){ // FIXME: I18n.
+        } else if (UserTree.CONTENT_CREATOR.equals(selectedItem.getText())){
             qs.listUsersWithRole(
                 "CONTENT_CREATOR",
                 new ErrorReportingCallback<Collection<UserSummary>>(
@@ -239,7 +239,7 @@ public class UserTable extends TablePanel {
                         updatePager(result);
                     }
                 });
-        } else if ("Site Builder".equals(selectedItem.getText())) { // FIXME: I18n.
+        } else if (UserTree.SITE_BUILDER.equals(selectedItem.getText())) {
             qs.listUsersWithRole(
                 "SITE_BUILDER",
                 new ErrorReportingCallback<Collection<UserSummary>>(
@@ -249,7 +249,7 @@ public class UserTable extends TablePanel {
                         updatePager(result);
                     }
                 });
-        } else if("Administrator".equals(selectedItem.getText())) { // FIXME: I18n.
+        } else if(UserTree.ADMINISTRATOR.equals(selectedItem.getText())) {
             qs.listUsersWithRole(
                 "ADMINISTRATOR",
                 new ErrorReportingCallback<Collection<UserSummary>>(

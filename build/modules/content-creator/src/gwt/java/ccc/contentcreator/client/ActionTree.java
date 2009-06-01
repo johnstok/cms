@@ -32,6 +32,13 @@ public class ActionTree extends Tree {
     private final LeftRightPane _view;
     private final UIConstants _constants = Globals.uiConstants();
 
+    /** ACTIONS : String. */
+    public static final String ACTIONS = "actions";
+    /** PENDING : String. */
+    public static final String PENDING = "pending";
+    /** COMPLETED : String. */
+    public static final String COMPLETED = "completed";
+
     /**
      * Constructor.
      *
@@ -41,12 +48,12 @@ public class ActionTree extends Tree {
         _view = view;
 
         final TreeItem actions = new TreeItem(_constants.actions());
-        actions.setId("actions");
+        actions.setId(ACTIONS);
         final TreeItem pending = new TreeItem(_constants.pending());
-        pending.setId("pending");
+        pending.setId(PENDING);
         pending.setIconStyle("images/icons/hourglass.png");
         final TreeItem completed = new TreeItem(_constants.completed());
-        completed.setId("completed");
+        completed.setId(COMPLETED);
         completed.setIconStyle("images/icons/accept.png");
 
         getRootItem().add(actions);
