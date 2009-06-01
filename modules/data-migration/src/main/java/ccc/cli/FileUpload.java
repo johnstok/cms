@@ -17,8 +17,6 @@ import java.util.Properties;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
-import org.kohsuke.args4j.CmdLineException;
-import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
 import ccc.api.CommandFailedException;
@@ -81,7 +79,7 @@ public class FileUpload extends CccApp {
     public static void main(final String[] args) throws IOException {
         LOG.info("Starting.");
 
-        final Options o = parseOptions(args);
+        final Options o = parseOptions(args, Options.class);
 
         loadSettings(props, "migration.properties");
 
@@ -95,7 +93,6 @@ public class FileUpload extends CccApp {
         server = new CccServer(
             new ResourcePath(o._remotePath),
             new FileUploader(
-                props.getProperty("targetUploadURL"),
                 props.getProperty("targetApplicationURL"),
                 o._username,
                 o._password),
@@ -113,20 +110,6 @@ public class FileUpload extends CccApp {
         report("Migration finished in ");
     }
 
-    private static Options parseOptions(final String[] args) {
-        final Options options = new Options();
-        final CmdLineParser parser = new CmdLineParser(options);
-        try {
-            parser.parseArgument(args);
-            return options;
-        } catch(final CmdLineException e) {
-            System.err.println(e.getMessage());
-            parser.printUsage(System.err);
-            System.exit(1);
-            return null; // We can't actually get here.
-        }
-
-    }
 
     private static class Options {
         @Option(

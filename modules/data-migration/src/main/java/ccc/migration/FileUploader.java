@@ -46,12 +46,11 @@ public class FileUploader {
     private final String _password;
     private MimetypesFileTypeMap _mimemap;
 
-    public FileUploader(final String targetUploadURL,
-                        final String appURL,
+    public FileUploader(final String appURL,
                         final String username,
                         final String password) {
-        _targetUploadURL = targetUploadURL;
         _appURL = appURL;
+        _targetUploadURL = appURL+"/upload";
         _username = username;
         _password = password;
 

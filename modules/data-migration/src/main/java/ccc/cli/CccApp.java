@@ -31,6 +31,8 @@ import javax.sql.DataSource;
 import oracle.jdbc.pool.OracleDataSource;
 
 import org.apache.log4j.Logger;
+import org.kohsuke.args4j.CmdLineException;
+import org.kohsuke.args4j.CmdLineParser;
 
 import ccc.domain.CCCException;
 import ccc.migration.MigrationException;
@@ -140,22 +142,42 @@ class CccApp {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Create a JDBC connection to a database.
      *
-     * @param dbProps
-     * @return
+     * @param dbProps The properties for the connection.
+     * @return A new connection.
      */
     static Connection getConnection(final Properties dbProps) {
+        final String driverClass = dbProps.getProperty("db.driver.class");
+        final String conString = dbProps.getProperty("db.connection.string");
+        final String username = dbProps.getProperty("db.username");
+        final String password = dbProps.getProperty("db.password");
+        return getConnection(driverClass, conString, username, password);
+    }
+
+
+    /**
+     * Create a JDBC connection to a database.
+     *
+     * @param driverClass The java class of the driver.
+     * @param connectionString The DB connection string.
+     * @param username The username for the DB.
+     * @param password The password for the DB.
+     * @return A new connection.
+     */
+    static Connection getConnection(final String driverClass,
+                                    final String connectionString,
+                                    final String username,
+                                    final String password) {
         try {
-            Class.forName(dbProps.getProperty("db.driver.class"));
+            Class.forName(driverClass);
             final Connection connection =
                 DriverManager.getConnection(
-                    dbProps.getProperty("db.connection.string"),
-                    dbProps.getProperty("db.username"),
-                    dbProps.getProperty("db.password"));
+                    connectionString,
+                    username,
+                    password);
             connection.setAutoCommit(false);
-            LOG.debug(
-                "Connected to "+dbProps.getProperty("db.connection.string"));
+            LOG.debug("Connected to "+connectionString);
             return connection;
         } catch (final ClassNotFoundException e) {
             throw new MigrationException(e);
@@ -167,29 +189,20 @@ class CccApp {
     /**
      * TODO: Add a description of this method.
      *
-     * @param dbProps
+     * @param url
+     * @param username
+     * @param password
      * @return
      */
-    static DataSource getOracleDatasource(final Properties dbProps) {
+    static DataSource getOracleDatasource(final String url,
+                                          final String username,
+                                          final String password) {
         try {
             // Load the JDBC driver
             final String driverName = "oracle.jdbc.driver.OracleDriver";
             Class.forName(driverName);
 
             // Create a connection to the database
-            final String serverName =
-                dbProps.getProperty("sourceDbServerName");
-            final String portNumber =
-                dbProps.getProperty("sourceDbPortNumber");
-            final String sid = dbProps.getProperty("sourceDbSID");
-            final String url =
-                "jdbc:oracle:thin:@"
-                + serverName + ":"
-                + portNumber + ":"
-                + sid;
-            final String username = dbProps.getProperty("sourceDbUsername");
-            final String password = dbProps.getProperty("sourceDbPassword");
-
             final OracleDataSource ods = new OracleDataSource();
             final Properties connectionProps = new Properties();
             connectionProps.put("user", username);
@@ -204,5 +217,49 @@ class CccApp {
         } catch (final SQLException e) {
             throw new MigrationException(e);
         }
+    }
+
+
+    static <T> T parseOptions(final String[] args,
+                              final Class<T> optionsClass) {
+        T options;
+        try {
+            options = optionsClass.newInstance();
+        } catch (final InstantiationException e1) {
+            throw new RuntimeException(e1);
+        } catch (final IllegalAccessException e1) {
+            throw new RuntimeException(e1);
+        }
+        final CmdLineParser parser = new CmdLineParser(options);
+        try {
+            parser.parseArgument(args);
+            return options;
+        } catch(final CmdLineException e) {
+            System.err.println(e.getMessage());
+            parser.printUsage(System.err);
+            System.exit(1);
+            return null; // We can't actually get here.
+        }
+    }
+
+    /**
+     * Determine the driver class based on connection string.
+     *
+     * @param conString The connection string.
+     * @return The corresponding driver class.
+     */
+    static String getDriverForConnectionString(final String conString) {
+        if (conString.startsWith("jdbc:oracle")) {
+            return "oracle.jdbc.driver.OracleDriver";
+        } else if (conString.startsWith("jdbc:mysql")) {
+            return "com.mysql.jdbc.Driver";
+        } else if (conString.startsWith("jdbc:sqlserver")) {
+            return "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+        } else if (conString.startsWith("jdbc:h2")) {
+            return "org.h2.Driver";
+        } else {
+            throw new MigrationException("Unsupported database");
+        }
+
     }
 }

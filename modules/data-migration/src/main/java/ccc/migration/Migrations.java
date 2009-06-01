@@ -36,7 +36,6 @@ import ccc.api.UserSummary;
 import ccc.commons.Resources;
 import ccc.commons.WordCharFixer;
 import ccc.domain.CCCException;
-import ccc.domain.PredefinedResourceNames;
 
 /**
  * Data migration from CCC6 to CCC7.
@@ -47,22 +46,24 @@ public class Migrations {
     private static final boolean DEBUG = true;
     private static Logger log = Logger.getLogger(Migrations.class);
 
-    private ResourceSummary _assetRoot;
-    private ResourceSummary _contentRoot;
-    private ResourceSummary _templateFolder;
-    private ResourceSummary _filesFolder;
-    private ResourceSummary _contentImagesFolder;
-    private ResourceSummary _assetsImagesFolder;
-    private ResourceSummary _cssFolder;
+    private final ResourceSummary _contentRoot;
+    private final ResourceSummary _templateFolder;
+    private final ResourceSummary _filesFolder;
+    private final ResourceSummary _contentImagesFolder;
+    private final ResourceSummary _assetsImagesFolder;
+    private final ResourceSummary _cssFolder;
+
     private Set<Integer>    _menuItems;
 
     private final LegacyDBQueries _legacyQueries;
-    private final Properties _props;
     private final Commands _commands;
     private final Queries _queries;
+    private final String _linkPrefix;
+
     private final FileMigrator _fm;
     private final UserMigration _um;
     private final TemplateMigration _tm;
+
     private final Properties _paragraphTypes =
         Resources.readIntoProps("paragraph-types.properties");
 
@@ -71,21 +72,31 @@ public class Migrations {
      * Constructor.
      *
      * @param legacyQueries Queries
-     * @param props Properties of the migration
+     * @param linkPrefix The prefix to attach to legacy URLs.
      * @param commands The available commands for CCC7.
      * @param queries The available queries for CCC7.
-     * @param fu The file uploader to use.
+     * @param fu The file up-loader to use.
      */
     public Migrations(final LegacyDBQueries legacyQueries,
-                      final Properties props,
+                      final String linkPrefix,
                       final Commands commands,
                       final Queries queries,
                       final FileUploader fu) {
         _legacyQueries = legacyQueries;
         _queries = queries;
-        _props = props;
         _commands = commands;
-        _fm = new FileMigrator(fu, _legacyQueries, _props);
+        _linkPrefix = linkPrefix;
+
+        _contentRoot = _queries.resourceForPath("/content");
+        _filesFolder = _queries.resourceForPath("/content/files");
+        _contentImagesFolder = _queries.resourceForPath("/content/images");
+
+        _templateFolder = _queries.resourceForPath("/assets/templates");
+        _assetsImagesFolder = _queries.resourceForPath("/assets/images");
+        _cssFolder = _queries.resourceForPath("/assets/css");
+
+
+        _fm = new FileMigrator(fu, _legacyQueries, "files/", "images/", "css/");
         _um = new UserMigration(_legacyQueries, _commands);
         _tm = new TemplateMigration(_commands);
     }
@@ -110,35 +121,6 @@ public class Migrations {
         } catch (final CommandFailedException e) {
             log.error("Catastrophic failure.", e);
         }
-    }
-
-
-    public void createDefaultFolderStructure() throws CommandFailedException {
-        _assetRoot = _commands.createRoot(PredefinedResourceNames.ASSETS);
-        _contentRoot = _commands.createRoot(PredefinedResourceNames.CONTENT);
-
-        _templateFolder =_commands.createFolder(
-            _assetRoot.getId(), PredefinedResourceNames.TEMPLATES);
-        _cssFolder = _commands.createFolder(
-            _assetRoot.getId(), PredefinedResourceNames.CSS);
-        _assetsImagesFolder = _commands.createFolder(
-            _assetRoot.getId(), PredefinedResourceNames.IMAGES);
-
-        _filesFolder = _commands.createFolder(
-            _contentRoot.getId(), PredefinedResourceNames.FILES);
-        _contentImagesFolder = _commands.createFolder(
-            _contentRoot.getId(), PredefinedResourceNames.IMAGES);
-        _commands.createSearch(_contentRoot.getId(), "search");
-
-        // TODO: Remove. Should set 'publish' root via UI
-        _commands.lock(_contentRoot.getId());
-        _commands.publish(_contentRoot.getId());
-        _commands.unlock(_contentRoot.getId());
-        _commands.lock(_assetRoot.getId());
-        _commands.publish(_assetRoot.getId());
-        _commands.unlock(_assetRoot.getId());
-
-        log.info("Created default folder structure.");
     }
 
 
@@ -251,7 +233,7 @@ public class Migrations {
             _commands.unlock(
                 rs.getId(), le.getUser().getId(), le.getHappenedOn());
 
-            log.info("Migrated page "+r.contentId());
+            log.debug("Migrated page "+r.contentId());
 
         } catch (final Exception e) {
 //            log.warn("Error migrating page "+r.contentId(),  e);
@@ -508,7 +490,7 @@ public class Migrations {
         }
         log.debug("Assembly done.");
 
-        new LinkFixer(_props.getProperty("link-prefix", "")).extractURLs(map);
+        new LinkFixer(_linkPrefix).extractURLs(map);
         new WordCharFixer().warn(map);
 
         return map;
@@ -529,6 +511,7 @@ public class Migrations {
             le.setUser(user);
 
             if (null==user) {
+                // FIXME This error is caught by the outer catch!
                 throw new MigrationException("User missing: "+le.getActor());
             }
 
