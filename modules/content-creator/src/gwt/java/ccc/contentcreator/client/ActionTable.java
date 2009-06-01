@@ -119,7 +119,7 @@ public class ActionTable extends TablePanel {
      */
     public void displayActionsFor(final TreeItem selectedItem) {
         _actionStore.removeAll();
-        if ("Pending".equals(selectedItem.getText())) { // FIXME: Will break with I18n
+        if (ActionTree.PENDING.equals(selectedItem.getId())) {
             qs.listPendingActions(
                 new ErrorReportingCallback<Collection<ActionSummary>>(USER_ACTIONS.viewActions()) {
                     public void onSuccess(final Collection<ActionSummary> result) {
@@ -127,7 +127,7 @@ public class ActionTable extends TablePanel {
                     }
                 }
             );
-        } else if ("Completed".equals(selectedItem.getText())){  // FIXME: Will break with I18n
+        } else if (ActionTree.COMPLETED.equals(selectedItem.getText())){
             qs.listCompletedActions(
                 new ErrorReportingCallback<Collection<ActionSummary>>(USER_ACTIONS.viewActions()) {
                     public void onSuccess(final Collection<ActionSummary> result) {
