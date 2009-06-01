@@ -15,13 +15,16 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.MissingResourceException;
 import java.util.Set;
 
 import ccc.api.CommandType;
 import ccc.api.ID;
 import ccc.api.LogEntrySummary;
+import ccc.contentcreator.api.CommandTypeConstants;
 
 import com.extjs.gxt.ui.client.data.ModelData;
+import com.google.gwt.core.client.GWT;
 
 
 /**
@@ -34,7 +37,7 @@ public class LogEntrySummaryModelData
         ModelData {
     public static final String EXPAND_PROPERTY = Property.COMMENT.name();
 
-    private LogEntrySummary _les;
+    private final LogEntrySummary _les;
 
     /**
      * Constructor.
@@ -58,6 +61,9 @@ public class LogEntrySummaryModelData
 
             case ACTION:
                 return (X) _les.getAction();
+
+            case LOCALISED_ACTION:
+                return (X) getLocalisedAction();
 
             case COMMENT:
                 return (X) _les.getComment();
@@ -113,7 +119,7 @@ public class LogEntrySummaryModelData
     }
 
     public enum Property {
-        SUBJECT_ID, ACTION, ACTOR, HAPPENED_ON, COMMENT, IS_MAJOR_EDIT, INDEX;
+        SUBJECT_ID, ACTION, LOCALISED_ACTION, ACTOR, HAPPENED_ON, COMMENT, IS_MAJOR_EDIT, INDEX;
     }
 
     /**
@@ -123,6 +129,23 @@ public class LogEntrySummaryModelData
      */
     public CommandType getAction() {
         return _les.getAction();
+    }
+
+    /**
+     * Looks up for localised string for the {@link CommandType}.
+     *
+     * @return The localised string or name of the enum if nothing found.
+     */
+    public String getLocalisedAction() {
+        CommandTypeConstants types = GWT.create(CommandTypeConstants.class);
+
+        String local = null;
+        try {
+            local = types.getString(_les.getAction().name());
+        } catch (MissingResourceException e) {
+            local = _les.getAction().name();
+        }
+        return local;
     }
 
     /**
