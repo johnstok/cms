@@ -38,6 +38,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 public class ActionTable extends TablePanel {
 
     private static final int MEDIUM_COLUMN = 200;
+    private static final int TYPE_COLUMN = 150;
     private static final int SMALL_COLUMN = 100;
     private final ListStore<ActionSummaryModelData> _actionStore =
         new ListStore<ActionSummaryModelData>();
@@ -60,7 +61,7 @@ public class ActionTable extends TablePanel {
             configs,
             ActionSummaryModelData.Property.LOCALISED_TYPE.name(),
             _constants.action(),
-            SMALL_COLUMN);
+            TYPE_COLUMN);
         addColumn(
             configs,
             ActionSummaryModelData.Property.ACTOR.name(),
@@ -74,7 +75,7 @@ public class ActionTable extends TablePanel {
             .setDateTimeFormat(DateTimeFormat.getShortDateTimeFormat());
         addColumn(
             configs,
-            ActionSummaryModelData.Property.STATUS.name(),
+            ActionSummaryModelData.Property.LOCALISED_STATUS.name(),
             _constants.status(),
             SMALL_COLUMN);
         addColumn(

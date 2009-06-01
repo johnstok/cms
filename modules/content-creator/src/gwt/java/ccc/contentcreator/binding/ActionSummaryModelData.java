@@ -20,8 +20,8 @@ import java.util.Set;
 
 import ccc.api.ActionStatus;
 import ccc.api.ActionSummary;
-import ccc.api.CommandType;
 import ccc.api.ID;
+import ccc.contentcreator.api.ActionStatusConstants;
 import ccc.contentcreator.api.CommandTypeConstants;
 
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -71,6 +71,9 @@ public class ActionSummaryModelData
             case STATUS:
                 return (X) _as.getStatus();
 
+            case LOCALISED_STATUS:
+                return (X) getLocalisedStatus();
+
             case SUBJECT_TYPE:
                 return (X) _as.getSubjectType();
 
@@ -119,7 +122,24 @@ public class ActionSummaryModelData
     }
 
     public enum Property {
-        ID, TYPE, LOCALISED_TYPE, ACTOR, EXECUTE_AFTER, PATH, SUBJECT_TYPE, STATUS;
+        /** ID : Property. */
+        ID,
+        /** TYPE : Property. */
+        TYPE,
+        /** LOCALISED_TYPE : Property. */
+        LOCALISED_TYPE,
+        /** ACTOR : Property. */
+        ACTOR,
+        /** EXECUTE_AFTER : Property. */
+        EXECUTE_AFTER,
+        /** PATH : Property. */
+        PATH,
+        /** SUBJECT_TYPE : Property. */
+        SUBJECT_TYPE,
+        /** STATUS : Property. */
+        STATUS,
+        /** LOCALISED_STATUS : Property. */
+        LOCALISED_STATUS;
     }
 
     /**
@@ -129,6 +149,23 @@ public class ActionSummaryModelData
      */
     public ActionStatus getStatus() {
         return _as.getStatus();
+    }
+
+    /**
+     * Looks up for localised string for the {@link ActionStatus}.
+     *
+     * @return The localised string or name of the enum if nothing found.
+     */
+    public String getLocalisedStatus() {
+        ActionStatusConstants types = GWT.create(ActionStatusConstants.class);
+
+        String local = null;
+        try {
+            local = types.getString(_as.getStatus().name());
+        } catch (MissingResourceException e) {
+            local = _as.getStatus().name();
+        }
+        return local;
     }
 
     /**

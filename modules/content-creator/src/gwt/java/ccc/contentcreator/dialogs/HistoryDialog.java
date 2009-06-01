@@ -97,7 +97,7 @@ public class HistoryDialog
             new ColumnConfig(
                 LogEntrySummaryModelData.Property.LOCALISED_ACTION.name(),
                 _constants.action(),
-                200);
+                150);
         configs.add(actionColumn);
 
         final ColumnConfig userColumn =
