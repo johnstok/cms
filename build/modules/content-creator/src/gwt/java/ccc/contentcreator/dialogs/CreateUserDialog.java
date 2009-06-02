@@ -16,7 +16,7 @@ import static ccc.contentcreator.validation.Validations.matchingPasswords;
 import static ccc.contentcreator.validation.Validations.minLength;
 import static ccc.contentcreator.validation.Validations.notEmpty;
 import static ccc.contentcreator.validation.Validations.notValidEmail;
-import static ccc.contentcreator.validation.Validations.notValidResourceName;
+import static ccc.contentcreator.validation.Validations.notValidUserName;
 import static ccc.contentcreator.validation.Validations.passwordStrength;
 import static ccc.contentcreator.validation.Validations.reportErrors;
 
@@ -98,7 +98,7 @@ public class CreateUserDialog extends AbstractEditDialog {
                     .check(notEmpty(_password2))
                     .stopIfInError()
                     .check(minLength(_username, Globals.MIN_USER_NAME_LENGTH))
-                    .check(notValidResourceName(_username))
+                    .check(notValidUserName(_username))
                     .check(notValidEmail(_email))
                     .check(matchingPasswords(
                         _password1.getValue(), _password2.getValue()))
@@ -152,7 +152,7 @@ public class CreateUserDialog extends AbstractEditDialog {
                     _password1.getValue(),
                     new ErrorReportingCallback<UserSummary>(_constants.createUser()) {
                         public void onSuccess(final UserSummary result) {
-                            // FIXME: Refresh the main window.
+                            // TODO: Refresh the main window.
                             close();
                         }
                     }
