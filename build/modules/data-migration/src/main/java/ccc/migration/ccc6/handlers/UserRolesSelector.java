@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * TODO: Add Description for this type.
+ * SQL query to select user roles.
  *
  * @author Civic Computing Ltd.
  */
@@ -15,7 +15,8 @@ public final class UserRolesSelector
         SqlQuery<Set<String>> {
 
     /** {@inheritDoc} */
-    @Override public Set<String> handle(final ResultSet rs) throws SQLException {
+    @Override public Set<String> handle(final ResultSet rs)
+    throws SQLException {
         final Set<String> roles = new HashSet<String>();
         while (rs.next()) {
             final String profile = rs.getString("profile_name");

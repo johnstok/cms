@@ -15,7 +15,7 @@ import ccc.migration.LegacyDBQueries;
 import ccc.migration.MigrationException;
 
 /**
- * TODO: Add Description for this type.
+ * A SQL query to export all users from CCC6.
  *
  * @author Civic Computing Ltd.
  */
@@ -30,7 +30,7 @@ public final class AllUsersSelector
     /**
      * Constructor.
      *
-     * @param legacyDBQueries
+     * @param legacyDBQueries A query class to perform sub-queries.
      */
     public AllUsersSelector(final LegacyDBQueries legacyDBQueries) {
         _legacyDBQueries = legacyDBQueries;
@@ -46,8 +46,10 @@ public final class AllUsersSelector
             final String password = rs.getString("user_passwd");
             final int userId = rs.getInt("user_id");
             try {
-                final String email = _legacyDBQueries.selectEmailForUser(userId);
-                final Set<String> roles = _legacyDBQueries.selectRolesForUser(userId);
+                final String email =
+                    _legacyDBQueries.selectEmailForUser(userId);
+                final Set<String> roles =
+                    _legacyDBQueries.selectRolesForUser(userId);
                 final UserDelta user =
                     new UserDelta(
                         email,

@@ -92,7 +92,7 @@ public class LegacyDBQueries {
      * @param userId The user ID.
      */
     public String selectEmailForUser(final int userId) {
-        final UserEmailSelector rsh = new UserEmailSelector(userId);
+        final UserEmailSelector rsh = new UserEmailSelector();
         return _db.select(rsh, Integer.valueOf(userId));
     }
 

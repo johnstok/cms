@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import ccc.api.DBC;
 
 /**
- * TODO: Add Description for this type.
+ * A SQL query to determine if a resource is flagged in CCC6..
  *
  * @author Civic Computing Ltd.
  */

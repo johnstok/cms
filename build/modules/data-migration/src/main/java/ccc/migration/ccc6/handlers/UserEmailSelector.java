@@ -6,26 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * TODO: Add Description for this type.
+ * SQL query to select a user's email.
  *
  * @author Civic Computing Ltd.
  */
 public final class UserEmailSelector
     implements
         SqlQuery<String> {
-
-    /** userId : int. */
-    private final int       _userId;
-
-    /**
-     * Constructor.
-     *
-     * @param userId
-     * @param user
-     */
-    public UserEmailSelector(final int userId) {
-        _userId = userId;
-    }
 
     /** {@inheritDoc} */
     @Override public String handle(final ResultSet rs) throws SQLException {

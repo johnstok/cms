@@ -10,7 +10,7 @@ import ccc.migration.MigrationException;
 
 
 /**
- * TODO: Add Description for this type.
+ * A SQL query to return the user associated with a specified CCC6 log entry.
  *
  * @author Civic Computing Ltd.
  */
