@@ -65,7 +65,6 @@ public class BaseDao implements Dao {
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked") // JPA query API isn't type safe.
     public <T> List<T> list(final String queryName,
-                            @SuppressWarnings("unused")
                             final Class<T> resultType,
                             final Object... params) {
 
@@ -87,7 +86,7 @@ public class BaseDao implements Dao {
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked") // JPA query API isn't type safe.
     public <T> T find(final String queryName,
-                      @SuppressWarnings("unused") final Class<T> resultType,
+                      final Class<T> resultType,
                       final Object... params) {
 
         final Query q = _em.createNamedQuery(queryName);

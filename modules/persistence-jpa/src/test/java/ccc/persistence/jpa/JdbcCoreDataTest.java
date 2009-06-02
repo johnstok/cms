@@ -11,8 +11,6 @@
  */
 package ccc.persistence.jpa;
 
-import static org.easymock.EasyMock.*;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -24,8 +22,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.UUID;
 
-import javax.sql.DataSource;
-
 import junit.framework.TestCase;
 
 import org.h2.jdbcx.JdbcDataSource;
@@ -33,12 +29,11 @@ import org.h2.jdbcx.JdbcDataSource;
 import ccc.commons.IO;
 import ccc.domain.CCCException;
 import ccc.domain.Data;
-import ccc.persistence.jpa.JdbcCoreData;
 import ccc.services.DataManager.StreamAction;
 
 
 /**
- * TODO: Add Description for this type.
+ * Tests for the {@link JdbcCoreData} class.
  *
  * @author Civic Computing Ltd.
  */
@@ -48,11 +43,6 @@ public class JdbcCoreDataTest
 
     private final InputStream _dummyStream =
         new ByteArrayInputStream(new byte[]{1});
-
-    private DataSource _ds;
-    private Connection _c;
-    private PreparedStatement _ps;
-
 
     /**
      * Test.
@@ -132,30 +122,6 @@ public class JdbcCoreDataTest
         } catch (final ClassNotFoundException e) {
             throw new CCCException(e);
         }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void setUp() throws Exception {
-         _ds = createStrictMock(DataSource.class);
-         _c = createStrictMock(Connection.class);
-         _ps = createStrictMock(PreparedStatement.class);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void tearDown() throws Exception {
-        _ds = null;
-        _c = null;
-        _ps = null;
-    }
-
-    private void replayAll() {
-        replay(_ps, _c, _ds);
-    }
-
-    private void verifyAll() {
-        verify(_ps, _c, _ds);
     }
 
     private void createDataTable(final JdbcDataSource ds) throws SQLException {
