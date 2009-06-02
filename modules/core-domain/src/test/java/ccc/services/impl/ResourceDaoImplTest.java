@@ -42,12 +42,11 @@ import ccc.domain.InsufficientPrivilegesException;
 import ccc.domain.LockMismatchException;
 import ccc.domain.Page;
 import ccc.domain.PredefinedResourceNames;
+import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Resource;
-import ccc.domain.ResourceExistsException;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.Template;
-import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -97,9 +96,9 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     * @throws RemoteExceptionSupport If the command fails.
      */
-    public void testLookup() throws ResourceExistsException {
+    public void testLookup() throws RemoteExceptionSupport {
 
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
@@ -135,11 +134,10 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     * @throws RemoteExceptionSupport If the command fails.
      */
     public void testIncludeInMainMenu()
-    throws LockMismatchException, UnlockedException {
+    throws RemoteExceptionSupport {
 
         // ARRANGE
         _r.lock(_regularUser);
@@ -159,11 +157,10 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     * @throws RemoteExceptionSupport If the command fails.
      */
     public void testUpdateTags()
-    throws LockMismatchException, UnlockedException {
+    throws RemoteExceptionSupport {
 
         // ARRANGE
         _r.lock(_regularUser);
@@ -184,12 +181,10 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws LockMismatchException
-     * @throws UnlockedException
-     * @throws InsufficientPrivilegesException
+     * @throws RemoteExceptionSupport If the command fails.
      */
     public void testResourceCanBeUnlockedByLockerNonadmin()
-    throws LockMismatchException, InsufficientPrivilegesException, UnlockedException {
+    throws RemoteExceptionSupport {
 
         // ARRANGE
         expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
@@ -209,11 +204,10 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     * @throws RemoteExceptionSupport If the command fails.
      */
     public void testResourceCannotBeUnlockedByNonlockerNonAdmin()
-    throws LockMismatchException, UnlockedException {
+    throws RemoteExceptionSupport {
 
         // ARRANGE
         expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
@@ -240,12 +234,10 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws LockMismatchException
-     * @throws UnlockedException
-     * @throws InsufficientPrivilegesException
+     * @throws RemoteExceptionSupport If the command fails.
      */
     public void testResourceCanBeUnlockedByNonlockerAdmin()
-    throws LockMismatchException, InsufficientPrivilegesException, UnlockedException {
+    throws RemoteExceptionSupport {
 
         // ARRANGE
         expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
@@ -265,9 +257,10 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws LockMismatchException
+     * @throws RemoteExceptionSupport If the command fails.
      */
-    public void testUnlockedResourceCanBeLocked() throws LockMismatchException {
+    public void testUnlockedResourceCanBeLocked()
+    throws RemoteExceptionSupport {
 
         // ARRANGE
         expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
@@ -285,10 +278,10 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws LockMismatchException
+     * @throws RemoteExceptionSupport If the command fails.
      */
     public void testLockedResourceCannotBeRelockedBySomeoneElse()
-    throws LockMismatchException {
+    throws RemoteExceptionSupport {
 
         // ARRANGE
         expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
@@ -346,11 +339,10 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     * @throws RemoteExceptionSupport If the command fails.
      */
     public void testSetDefaultTemplate()
-    throws LockMismatchException, UnlockedException {
+    throws RemoteExceptionSupport {
 
         // ARRANGE
         final Template defaultTemplate =
@@ -375,12 +367,10 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws ResourceExistsException
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     * @throws RemoteExceptionSupport If the command fails.
      */
     public void testMove()
-    throws ResourceExistsException, LockMismatchException, UnlockedException {
+    throws RemoteExceptionSupport {
 
         // ARRANGE
         final Folder oldParent = new Folder("old");
@@ -404,12 +394,10 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws ResourceExistsException
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     * @throws RemoteExceptionSupport If the command fails.
      */
     public void testRename()
-    throws UnlockedException, LockMismatchException, ResourceExistsException {
+    throws RemoteExceptionSupport {
 
         // ARRANGE
         _r.lock(_regularUser);
@@ -455,10 +443,9 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     * @throws RemoteExceptionSupport If the command fails.
      */
-    public void testPublish() throws LockMismatchException, UnlockedException {
+    public void testPublish() throws RemoteExceptionSupport {
 
         // ARRANGE
         _r.lock(_regularUser);
@@ -499,11 +486,10 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     * @throws RemoteExceptionSupport If the command fails.
      */
     public void testUnpublishWithUser()
-    throws LockMismatchException, UnlockedException {
+    throws RemoteExceptionSupport {
 
         // ARRANGE
         _r.lock(_regularUser);
@@ -525,11 +511,10 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     * @throws RemoteExceptionSupport If the command fails.
      */
     public void testUpdateMetadata()
-    throws LockMismatchException, UnlockedException {
+    throws RemoteExceptionSupport {
 
         // ARRANGE
         _r.lock(_regularUser);
@@ -550,11 +535,10 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     * @throws RemoteExceptionSupport If the command fails.
      */
     public void testUpdateCache()
-    throws LockMismatchException, UnlockedException {
+    throws RemoteExceptionSupport {
 
         // ARRANGE
         _r.lock(_regularUser);
@@ -593,7 +577,7 @@ public class ResourceDaoImplTest
 
     /** {@inheritDoc} */
     @Override
-    protected void tearDown() throws Exception {
+    protected void tearDown() {
         _parent = null;
         _r      = null;
         _rdao   = null;

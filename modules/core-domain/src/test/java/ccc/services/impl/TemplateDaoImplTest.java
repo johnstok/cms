@@ -19,9 +19,8 @@ import junit.framework.TestCase;
 import ccc.api.MimeType;
 import ccc.api.TemplateDelta;
 import ccc.commands.UpdateTemplateCommand;
-import ccc.domain.LockMismatchException;
+import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Template;
-import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -38,11 +37,9 @@ public class TemplateDaoImplTest
 
     /**
      * Test.
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     * @throws RemoteExceptionSupport If the command fails.
      */
-    public void testUpdateTemplates()
-    throws LockMismatchException, UnlockedException {
+    public void testUpdateTemplates() throws RemoteExceptionSupport {
 
         // ARRANGE
         final Template foo = new Template(
@@ -73,14 +70,14 @@ public class TemplateDaoImplTest
 
     /** {@inheritDoc} */
     @Override
-    protected void setUp() throws Exception {
+    protected void setUp() {
         _dao = createStrictMock(Dao.class);
         _al = createStrictMock(AuditLog.class);
     }
 
     /** {@inheritDoc} */
     @Override
-    protected void tearDown() throws Exception {
+    protected void tearDown() {
         _al = null;
         _dao = null;
     }

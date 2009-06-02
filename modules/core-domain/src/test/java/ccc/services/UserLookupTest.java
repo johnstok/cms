@@ -76,15 +76,15 @@ public class UserLookupTest
 
     /** {@inheritDoc} */
     @Override
-    protected void setUp() throws Exception {
+    protected void setUp() {
         _dao = createStrictMock(Dao.class);
     }
 
     /** {@inheritDoc} */
     @Override
-    protected void tearDown() throws Exception {
+    protected void tearDown() {
         _dao = null;
     }
 
-    Dao _dao;
+    private Dao _dao;
 }

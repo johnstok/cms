@@ -207,7 +207,8 @@ public class UserTest
 //
 //        // ASSERT
 //        } catch (final IllegalArgumentException e) {
-//            assertEquals("Specified expression must be true.", e.getMessage());
+//            assertEquals(
+//                "Specified expression must be true.", e.getMessage());
 //        }
     }
 

@@ -16,7 +16,6 @@ import static org.easymock.EasyMock.*;
 import java.util.Date;
 
 import junit.framework.TestCase;
-import ccc.commands.UpdateAliasCommand;
 import ccc.domain.Alias;
 import ccc.domain.LockMismatchException;
 import ccc.domain.Page;
@@ -38,11 +37,11 @@ public class UpdateAliasCommandTest
 
     /**
      * Test.
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     * @throws LockMismatchException If the resource is locked by another user.
+     * @throws UnlockedException If the resource is not locked.
      */
-    public void testUpdateAlias()
-                               throws UnlockedException, LockMismatchException {
+    public void testUpdateAlias() throws UnlockedException,
+                                         LockMismatchException {
 
         // ARRANGE
         final Alias alias = new Alias("alias", _resource);
@@ -63,7 +62,7 @@ public class UpdateAliasCommandTest
 
     /** {@inheritDoc} */
     @Override
-    protected void setUp() throws Exception {
+    protected void setUp() {
         _dao = createStrictMock(Dao.class);
         _audit = createStrictMock(AuditLog.class);
         _updateAlias = new UpdateAliasCommand(_dao, _audit);
@@ -71,7 +70,7 @@ public class UpdateAliasCommandTest
 
     /** {@inheritDoc} */
     @Override
-    protected void tearDown() throws Exception {
+    protected void tearDown() {
         _updateAlias = null;
         _audit = null;
         _dao = null;
