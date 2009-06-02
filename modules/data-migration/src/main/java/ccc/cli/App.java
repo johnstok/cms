@@ -14,7 +14,6 @@ import ccc.migration.ServiceLookup;
 
 /**
  * Entry class for the migration application.
- *
  */
 public final class App extends CccApp {
     private static final Logger LOG = Logger.getLogger(App.class);
@@ -35,9 +34,9 @@ public final class App extends CccApp {
 
         options  = parseOptions(args, Options.class);
 
-        login(options._username, options._password);
+        login(options.getUsername(), options.getPassword());
 
-        services = new ServiceLookup(options._app);
+        services = new ServiceLookup(options.getApp());
 
         connectToLegacySystem();
 
@@ -51,9 +50,9 @@ public final class App extends CccApp {
     private static void connectToLegacySystem() {
         final DataSource legacyConnection =
             getOracleDatasource(
-                options._legConString,
-                options._legUsername,
-                options._legPassword);
+                options.getLegConString(),
+                options.getLegUsername(),
+                options.getLegPassword());
         legacyDBQueries = new LegacyDBQueries(new DbUtilsDB(legacyConnection));
         LOG.info("Connected to legacy DB.");
     }
@@ -62,13 +61,13 @@ public final class App extends CccApp {
         final Migrations migrations =
             new Migrations(
                 legacyDBQueries,
-                "/"+options._app+"/",
+                "/"+options.getApp()+"/",
                 services.lookupCommands(),
                 services.lookupQueries(),
                 new FileUploader(
-                    options._ccURL,
-                    options._username,
-                    options._password)
+                    options.getCcURL(),
+                    options.getUsername(),
+                    options.getPassword())
             );
         migrations.migrate();
     }
@@ -81,31 +80,101 @@ public final class App extends CccApp {
     static class Options {
         @Option(
             name="-u", required=true, usage="Username for connecting to CCC.")
-        String _username;
+        private String _username;
 
         @Option(
             name="-p", required=true, usage="Password for connecting to CCC.")
-        String _password;
+        private String _password;
 
         @Option(
             name="-a", required=true, usage="App name.")
-        String _app;
+        private String _app;
 
         @Option(
             name="-cu", required=true, usage="Content-creator URL.")
-        String _ccURL;
+        private String _ccURL;
 
         @Option(
             name="-lu", required=true, usage="Username for legacy DB.")
-        String _legUsername;
+        private String _legUsername;
 
         @Option(
             name="-lp", required=true, usage="Password for legacy DB.")
-        String _legPassword;
+        private String _legPassword;
 
         @Option(
             name="-lc", required=true, usage="Connection string for legacy DB.")
-        String _legConString;
+        private String _legConString;
+
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the username.
+         */
+        String getUsername() {
+            return _username;
+        }
+
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the password.
+         */
+        String getPassword() {
+            return _password;
+        }
+
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the app.
+         */
+        String getApp() {
+            return _app;
+        }
+
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the ccURL.
+         */
+        String getCcURL() {
+            return _ccURL;
+        }
+
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the legUsername.
+         */
+        String getLegUsername() {
+            return _legUsername;
+        }
+
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the legPassword.
+         */
+        String getLegPassword() {
+            return _legPassword;
+        }
+
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the legConString.
+         */
+        String getLegConString() {
+            return _legConString;
+        }
     }
 }
 

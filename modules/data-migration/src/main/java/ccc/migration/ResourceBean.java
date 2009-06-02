@@ -27,7 +27,7 @@ public class ResourceBean {
      * @param displayTemplate displayTemplate of resource
      * @param published published true for published resource
      * @param legacyVersion Legacy version id of the resource
-     * @param isSecure
+     * @param isSecure Does the resource have security roles associated.
      * @param title The title for the resource
      * @param useInIndex The value of use_in_index.
      */
