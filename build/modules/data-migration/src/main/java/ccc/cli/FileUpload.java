@@ -88,22 +88,22 @@ public class FileUpload extends CccApp {
         final Queries queries = services.lookupQueries();
         final Commands commands = services.lookupCommands();
 
-        login(o._username, o._password);
+        login(o.getUsername(), o.getPassword());
 
         server = new CccServer(
-            new ResourcePath(o._remotePath),
+            new ResourcePath(o.getRemotePath()),
             new FileUploader(
                 props.getProperty("targetApplicationURL"),
-                o._username,
-                o._password),
+                o.getUsername(),
+                o.getPassword()),
             commands,
             queries);
 
         recurse(
             server.getRoot(),
-            new File(o._localPath).getCanonicalFile(),
-            o._includeHidden,
-            o._publish);
+            new File(o.getLocalPath()).getCanonicalFile(),
+            o.isIncludeHidden(),
+            o.isPublish());
 
         logout();
 
@@ -119,26 +119,86 @@ public class FileUpload extends CccApp {
     private static class Options {
         @Option(
             name="-u", required=true, usage="Username for connecting to CCC.")
-        String _username;
+        private String _username;
 
         @Option(
             name="-p", required=true, usage="Password for connecting to CCC.")
-        String _password;
+        private String _password;
 
         @Option(
             name="-r", required=true, usage="Remote folder path.")
-        String _remotePath;
+        private String _remotePath;
 
         @Option(
             name="-l", required=true, usage="Local folder path.")
-        String _localPath;
+        private String _localPath;
 
         @Option(
             name="-h", required=false, usage="Include hidden files\folders.")
-        boolean _includeHidden;
+        private boolean _includeHidden;
 
         @Option(
             name="-b", required=false, usage="Publish uploaded files\folders.")
-        boolean _publish;
+        private boolean _publish;
+
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the username.
+         */
+        String getUsername() {
+            return _username;
+        }
+
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the password.
+         */
+        String getPassword() {
+            return _password;
+        }
+
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the remotePath.
+         */
+        String getRemotePath() {
+            return _remotePath;
+        }
+
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the localPath.
+         */
+        String getLocalPath() {
+            return _localPath;
+        }
+
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the includeHidden.
+         */
+        boolean isIncludeHidden() {
+            return _includeHidden;
+        }
+
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the publish.
+         */
+        boolean isPublish() {
+            return _publish;
+        }
     }
 }

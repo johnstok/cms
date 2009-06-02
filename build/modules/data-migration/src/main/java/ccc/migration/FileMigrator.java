@@ -72,8 +72,8 @@ public class FileMigrator {
             _fu.uploadFile(
                 UUID.fromString(filesFolder.getId().toString()),
                 legacyFile.getKey(),
-                legacyFile.getValue()._title,
-                legacyFile.getValue()._description,
+                legacyFile.getValue().getTitle(),
+                legacyFile.getValue().getDescription(),
                 _filesSourcePath);
         }
 
@@ -83,8 +83,8 @@ public class FileMigrator {
             _fu.uploadFile(
                 UUID.fromString(contentImagesFolder.getId().toString()),
                 legacyFile.getKey(),
-                legacyFile.getValue()._title,
-                legacyFile.getValue()._description,
+                legacyFile.getValue().getTitle(),
+                legacyFile.getValue().getDescription(),
                 _imagesSourcePath);
         }
     }

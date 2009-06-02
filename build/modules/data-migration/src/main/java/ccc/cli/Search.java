@@ -29,21 +29,21 @@ public final class Search extends CccApp {
 
         options  = parseOptions(args, Options.class);
 
-        login(options._username, options._password);
+        login(options.getUsername(), options.getPassword());
 
-        services = new ServiceLookup(options._app);
+        services = new ServiceLookup(options.getApp());
 
         final Scheduler s = services.lookupSearchScheduler();
 
-        if ("start".equals(options._action)) {
+        if ("start".equals(options.getAction())) {
             s.start();
             LOG.info("Started.");
 
-        } else if ("stop".equals(options._action)) {
+        } else if ("stop".equals(options.getAction())) {
             s.stop();
             LOG.info("Stopped.");
 
-        } else if ("running".equals(options._action)) {
+        } else if ("running".equals(options.getAction())) {
             final boolean running = s.isRunning();
             LOG.info("Running: "+running+".");
 
@@ -64,18 +64,58 @@ public final class Search extends CccApp {
     static class Options {
         @Option(
             name="-u", required=true, usage="Username for connecting to CCC.")
-        String _username;
+        private String _username;
 
         @Option(
             name="-p", required=true, usage="Password for connecting to CCC.")
-        String _password;
+        private String _password;
 
         @Option(
             name="-a", required=true, usage="App name.")
-        String _app;
+        private String _app;
 
         @Option(
             name="-c", required=true, usage="Action.")
-        String _action;
+        private String _action;
+
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the username.
+         */
+        String getUsername() {
+            return _username;
+        }
+
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the password.
+         */
+        String getPassword() {
+            return _password;
+        }
+
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the app.
+         */
+        String getApp() {
+            return _app;
+        }
+
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the action.
+         */
+        String getAction() {
+            return _action;
+        }
     }
 }

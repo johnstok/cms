@@ -35,6 +35,10 @@ public class NewDBQueries {
     /**
      * Creates migration user.
      *
+     * @param username The username for the new user.
+     * @param email The email for the new user.
+     * @param password The password for the new user.
+     *
      * @return UUID of the created user.
      */
     public UUID insertMigrationUser(final String username,
@@ -49,7 +53,8 @@ public class NewDBQueries {
         try {
             // insert user
             ps = _connection.prepareStatement(
-                "INSERT INTO users (id, email, username, version) VALUES (?,?,?,?)");
+                "INSERT INTO users (id, email, username, version) "
+                + "VALUES (?,?,?,?)");
             ps.setString(1, uid.toString());
             ps.setString(2, email);
             ps.setString(3, username);
@@ -58,21 +63,25 @@ public class NewDBQueries {
 
             // insert role
             ps = _connection.prepareStatement(
-                "INSERT INTO user_roles (user_id, role) VALUES (?, 'ADMINISTRATOR')");
+                "INSERT INTO user_roles (user_id, role) "
+                + "VALUES (?, 'ADMINISTRATOR')");
             ps.setString(1, uid.toString());
             ps.executeUpdate();
             ps = _connection.prepareStatement(
-                "INSERT INTO user_roles (user_id, role) VALUES (?, 'CONTENT_CREATOR')");
+                "INSERT INTO user_roles (user_id, role) "
+                + "VALUES (?, 'CONTENT_CREATOR')");
             ps.setString(1, uid.toString());
             ps.executeUpdate();
             ps = _connection.prepareStatement(
-                "INSERT INTO user_roles (user_id, role) VALUES (?, 'SITE_BUILDER')");
+                "INSERT INTO user_roles (user_id, role) "
+                + "VALUES (?, 'SITE_BUILDER')");
             ps.setString(1, uid.toString());
             ps.executeUpdate();
 
             // insert password
             ps = _connection.prepareStatement(
-                "INSERT INTO passwords (id, version, hash, user_id) VALUES (?, 0, ?, ?)");
+                "INSERT INTO passwords (id, version, hash, user_id) "
+                + "VALUES (?, 0, ?, ?)");
             ps.setString(1, pwId.toString());
             ps.setBytes(2, hash);
             ps.setString(3, uid.toString());

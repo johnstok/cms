@@ -18,10 +18,8 @@ package ccc.migration;
  * @author Civic Computing Ltd.
  */
 public class LegacyFile {
-    /** _title : String. */
-    public final String _title;
-    /** _description : String. */
-    public final String _description;
+    private final String _title;
+    private final String _description;
 
     /**
      * Constructor.
@@ -35,4 +33,22 @@ public class LegacyFile {
     }
 
 
+    /**
+     * Accessor.
+     *
+     * @return Returns the title.
+     */
+    String getTitle() {
+        return _title;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the description.
+     */
+    String getDescription() {
+        return _description;
+    }
 }

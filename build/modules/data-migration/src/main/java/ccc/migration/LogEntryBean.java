@@ -37,7 +37,7 @@ public class LogEntryBean {
      */
     public LogEntryBean(final int actor, final Date happenedOn) {
         _actor = actor;
-        _happenedOn = happenedOn;
+        _happenedOn = new Date(happenedOn.getTime());
     }
 
     /**
@@ -55,7 +55,7 @@ public class LogEntryBean {
      * @return Returns the happenedOn.
      */
     public Date getHappenedOn() {
-        return _happenedOn;
+        return new Date(_happenedOn.getTime());
     }
 
 
