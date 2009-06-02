@@ -20,6 +20,8 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 
+import ccc.search.lucene.CapturingHandler;
+
 
 
 
@@ -42,9 +44,9 @@ public class CapturingHandlerTest
         final CapturingHandler h =
             new CapturingHandler(5, 1){
                 /** {@inheritDoc} */ @Override
-                UUID lookupResourceId(final IndexSearcher searcher,
-                                      final int docId) {
-                    return _resourceIds[docId];
+                protected UUID lookupResourceId(final IndexSearcher searcher,
+                                                final int docId) {
+                    return getResourceIds()[docId];
                 }
             };
 
@@ -70,9 +72,9 @@ public class CapturingHandlerTest
         final CapturingHandler h =
             new CapturingHandler(7, 0){
             /** {@inheritDoc} */ @Override
-            UUID lookupResourceId(final IndexSearcher searcher,
-                                  final int docId) {
-                return _resourceIds[docId];
+            protected UUID lookupResourceId(final IndexSearcher searcher,
+                                            final int docId) {
+                return getResourceIds()[docId];
             }
         };
 
@@ -125,4 +127,11 @@ public class CapturingHandlerTest
         UUID.randomUUID(),
         UUID.randomUUID(),
         UUID.randomUUID()};
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the resourceIds.
+     */
+    UUID[] getResourceIds() { return _resourceIds; }
 }

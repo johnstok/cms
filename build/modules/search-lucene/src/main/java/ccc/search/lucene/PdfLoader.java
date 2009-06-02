@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.ejb3;
+package ccc.search.lucene;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,7 +24,7 @@ import ccc.services.DataManager;
  *
  * @author Civic Computing Ltd.
  */
-class PdfLoader implements DataManager.StreamAction {
+public class PdfLoader implements DataManager.StreamAction {
     private static final Logger LOG = Logger.getLogger(PdfLoader.class);
 
     private PDDocument   _document;
