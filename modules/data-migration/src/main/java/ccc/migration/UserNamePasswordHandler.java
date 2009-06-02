@@ -18,22 +18,19 @@ public class UserNamePasswordHandler implements CallbackHandler {
     /**
      * Constructor.
      *
-     * @param theUsername
-     * @param thePassword
+     * @param theUsername The username.
+     * @param thePassword The password.
      */
     public UserNamePasswordHandler(final String theUsername,
-        final String thePassword) {
+                                   final String thePassword) {
         _username = theUsername;
-      _password = thePassword;
+        _password = thePassword;
     }
 
 
-   /**
-    * @see javax.security.auth.callback.CallbackHandler
-    * #handle(javax.security.auth.callback.Callback[])
-    */
-   public void handle(final Callback[] callbacks)
-   throws UnsupportedCallbackException {
+    /** {@inheritDoc} */
+    public void handle(final Callback[] callbacks)
+    throws UnsupportedCallbackException {
         for(final Callback theCallback : callbacks){
             if (theCallback instanceof NameCallback) {
                 ((NameCallback) theCallback).setName(_username);

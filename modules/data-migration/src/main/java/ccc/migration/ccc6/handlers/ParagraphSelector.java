@@ -8,7 +8,7 @@ import java.util.List;
 import ccc.migration.ParagraphBean;
 
 /**
- * TODO: Add Description for this type.
+ * A SQL query to return the paragraphs for a page.
  *
  * @author Civic Computing Ltd.
  */
@@ -17,7 +17,8 @@ public final class ParagraphSelector
         SqlQuery<List<ParagraphBean>> {
 
     /** {@inheritDoc} */
-    @Override public List<ParagraphBean> handle(final ResultSet rs) throws SQLException {
+    @Override public List<ParagraphBean> handle(final ResultSet rs)
+    throws SQLException {
         final List<ParagraphBean> resultList = new ArrayList<ParagraphBean>();
         while (rs.next()) {
             final String key = rs.getString("para_type");

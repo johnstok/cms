@@ -18,11 +18,21 @@ import org.apache.commons.dbutils.ResultSetHandler;
 
 
 /**
- * TODO: Add Description for this type.
+ * API for a SQL query.
+ *
+ * @param <T> The type of result this query will return.
  *
  * @author Civic Computing Ltd.
  */
 public interface SqlQuery<T> extends ResultSetHandler {
-    public T handle(final ResultSet rs) throws SQLException;
-    public String getSql();
+
+    /** {@inheritDoc} */
+    T handle(final ResultSet rs) throws SQLException;
+
+    /**
+     * Accessor.
+     *
+     * @return The SQL for this query, as a string.
+     */
+    String getSql();
 }

@@ -38,6 +38,7 @@ public final class ResourceRolesSelector
             + "a.type='PROFILE' AND "
             + "to_number(a.owner_id)=p.profile_id AND "
             + "a.attribute=to_char(?) AND "
-            + "(a.permission_name='folder_access' OR a.permission_name='content_view')";
+            + "(a.permission_name='folder_access' "
+            +   "OR a.permission_name='content_view')";
     }
 }

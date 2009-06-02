@@ -22,7 +22,7 @@ import ccc.api.UserSummary;
 
 
 /**
- * TODO: Add a description for this type.
+ * Migrate users from CCC6.
  *
  * @author Civic Computing Ltd.
  */
@@ -39,16 +39,22 @@ public class UserMigration {
     /**
      * Constructor.
      *
-     * @param legacyQueries
-     * @param commands
+     * @param legacyQueries The query API for CCC6.
+     * @param commands The command API for the new system.
      */
-    public UserMigration(final LegacyDBQueries legacyQueries, final Commands commands) {
+    public UserMigration(final LegacyDBQueries legacyQueries,
+                         final Commands commands) {
         _legacyQueries = legacyQueries;
         _commands = commands;
     }
 
 
 
+    /**
+     * Migrate all users.
+     *
+     * @throws CommandFailedException If an error occurs during migration.
+     */
     void migrateUsers() throws CommandFailedException {
         final Map<Integer, ExistingUser> mus = _legacyQueries.selectUsers();
         for (final Map.Entry<Integer, ExistingUser> mu : mus.entrySet()) {
@@ -58,7 +64,8 @@ public class UserMigration {
 
 //                if (null == ud._password) {
 //                    log.warn(
-//                        "User: "+ud._user.getUsername()+" has null password.");
+//                        "User: "+ud._user.getUsername()
+//                        +" has null password.");
 //                } else if (ud._password.equals(
 //                               ud._user.getUsername().toString())) {
 //                    log.warn("User: "+ud._user.getUsername()
@@ -82,12 +89,13 @@ public class UserMigration {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Lookup the new user for a CCC6 user id.
      *
-     * @param actor
-     * @return
+     * @param actor The CCC6 user id.
+     *
+     * @return The corresponding user in the new system.
      */
     UserSummary getUser(final int actor) {
-        return _users.get(actor);
+        return _users.get(Integer.valueOf(actor));
     }
 }
