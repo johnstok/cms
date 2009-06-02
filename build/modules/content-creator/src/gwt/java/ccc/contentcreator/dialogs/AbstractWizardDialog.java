@@ -31,7 +31,7 @@ public abstract class AbstractWizardDialog
     extends
         AbstractBaseDialog {
 
-    private ArrayList<Component> _cards =
+    private final ArrayList<Component> _cards =
         new ArrayList<Component>();
 
     private final Button _save = new Button(
@@ -46,7 +46,7 @@ public abstract class AbstractWizardDialog
         constants().previous(),
         prevAction());
 
-    private CardPanel _cp = new CardPanel();
+    private final CardPanel _cp = new CardPanel();
 
     /**
      * Constructor.
@@ -151,7 +151,6 @@ public abstract class AbstractWizardDialog
                 }
                 if (card != null) {
                     _cp.setActiveItem(card);
-//                    card.layout(); // TODO: Why is this here?
                 }
 
             }
@@ -186,7 +185,6 @@ public abstract class AbstractWizardDialog
                 }
                 if (card != null) {
                     _cp.setActiveItem(card);
-//                    card.layout(); // TODO: Why is this here?
                 }
             }
         };

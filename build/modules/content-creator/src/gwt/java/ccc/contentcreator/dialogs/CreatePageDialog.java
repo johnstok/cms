@@ -158,7 +158,7 @@ public class CreatePageDialog
         _first.setHeaderVisible(false);
         addCard(_first);
 
-        _second.setScrollMode(Style.Scroll.ALWAYS);
+        _second.setScrollMode(Style.Scroll.AUTOY);
         addCard(_second);
 
         _third.setBorders(false);
