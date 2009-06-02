@@ -39,6 +39,7 @@ public class LinkFixer {
         Pattern.compile("(\\d+\\.)(\\d+\\.)*html");
     private static final Pattern FILE_PATTERN =
         Pattern.compile("files/.+");
+    /** HREF_PATTERN : Pattern. */
     static final Pattern HREF_PATTERN =
         Pattern.compile("href\\s*=\\s*\"(.*?)\"");
     private final String _prefix;
@@ -53,6 +54,11 @@ public class LinkFixer {
         // TODO: Warn if prefix is NULL or ZLS?
     }
 
+    /**
+     * Correct all the links in a collection of paragraphs.
+     *
+     * @param map The paragraphs to correct.
+     */
     void extractURLs(final Map<String, StringBuffer> map) {
 
         for (final Map.Entry<String, StringBuffer> para : map.entrySet()) {
@@ -83,6 +89,12 @@ public class LinkFixer {
         }
     }
 
+    /**
+     * Correct a single link.
+     *
+     * @param link The link to correct.
+     * @return The corrected link.
+     */
     String correct(final String link) {
         final Matcher pm = PAGE_PATTERN.matcher(link);
         final Matcher opm = OLDPAGE_PATTERN.matcher(link);

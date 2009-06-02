@@ -29,37 +29,60 @@ public class ServiceLookup {
     private final Registry _registry;
     private final String _appName;
 
+    /**
+     * Constructor.
+     *
+     * @param appName The name of the application.
+     * @param registry The registry to use for look up.
+     */
     public ServiceLookup(final String appName, final Registry registry) {
         _appName = appName;
         _registry = registry;
     }
 
+    /**
+     * Constructor.
+     *
+     * @param appName The name of the application.
+     */
     public ServiceLookup(final String appName) {
         this(appName, new JNDI());
     }
 
+    /**
+     * Look up the commands API.
+     *
+     * @return A commands instance.
+     */
     public Commands lookupCommands() {
         return _registry.<Commands>get(jndiPath(Commands.NAME));
     }
 
+    /**
+     * Look up the query API.
+     *
+     * @return A query instance.
+     */
     public Queries lookupQueries() {
         return _registry.<Queries>get(jndiPath(Queries.NAME));
     }
 
+    /**
+     * Look up the action scheduler.
+     *
+     * @return An action scheduler.
+     */
     public Scheduler lookupActionScheduler() {
         return _registry.<Scheduler>get(jndiPath(ActionDao.NAME));
     }
 
+    /**
+     * Look up the search scheduler.
+     *
+     * @return A search scheduler.
+     */
     public Scheduler lookupSearchScheduler() {
         return _registry.<Scheduler>get(jndiPath(SearchEngine.NAME));
-    }
-
-    public SearchEngine localSearchEngine() {
-        return _registry.<SearchEngine>get(localPath(SearchEngine.NAME));
-    }
-
-    private String localPath(final String serviceName) {
-        return _appName+"/"+serviceName+"/local";
     }
 
     private String jndiPath(final String serviceName) {

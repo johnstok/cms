@@ -25,7 +25,7 @@ import ccc.api.TemplateDelta;
 
 
 /**
- * TODO: Add a description for this type.
+ * Migrate templates from CCC6.
  *
  * @author Civic Computing Ltd.
  */
@@ -39,8 +39,7 @@ public class TemplateMigration {
     /**
      * Constructor.
      *
-     * @param commands
-     * @param templateFolder
+     * @param commands The command API for the new system.
      */
     public TemplateMigration(final Commands commands) {
         _commands = commands;
@@ -48,7 +47,7 @@ public class TemplateMigration {
 
 
     private void createTemplate(final String templateName,
-                                final ResourceSummary _templateFolder) {
+                                final ResourceSummary templateFolder) {
         final TemplateDelta t =
             new TemplateDelta(
                 templateName,
@@ -59,7 +58,7 @@ public class TemplateMigration {
 
         try {
             final ResourceSummary ts = _commands.createTemplate(
-                _templateFolder.getId(), t, templateName);
+                templateFolder.getId(), t, templateName);
 
             _templates.put(templateName, ts);
         } catch (final CommandFailedException e) {
@@ -72,12 +71,13 @@ public class TemplateMigration {
      * Lookup the template for a template name.
      *
      * @param templateName The name.
+     * @param templateFolder The folder in which templates should be created.
      * @return The corresponding template, or null;
      */
     public ID getTemplate(final String templateName,
-                          final ResourceSummary _templateFolder) {
+                          final ResourceSummary templateFolder) {
         if (!_templates.containsKey(templateName)) { // Not yet migrated
-            createTemplate(templateName, _templateFolder);
+            createTemplate(templateName, templateFolder);
         }
         final ResourceSummary template = _templates.get(templateName);
         return (null==template) ? null : template.getId();

@@ -52,6 +52,7 @@ public class DbUtilsDB
             Runtime.getRuntime().addShutdownHook(
                 new Thread(){
                     /** {@inheritDoc} */
+                    @SuppressWarnings("synthetic-access")
                     @Override public void run() {
                         DbUtils.closeQuietly(_c);
                         log.info("Legacy connection closed.");
@@ -80,7 +81,7 @@ public class DbUtilsDB
                 }
 
                 log.debug("Running query.");
-                boolean resultsReturned = s.execute();
+                final boolean resultsReturned = s.execute();
                 log.debug("Running finished.");
 
                 if (!resultsReturned) {

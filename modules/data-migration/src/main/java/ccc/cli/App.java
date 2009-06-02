@@ -20,7 +20,7 @@ public final class App extends CccApp {
     private static final Logger LOG = Logger.getLogger(App.class);
     private static LegacyDBQueries legacyDBQueries;
     private static ServiceLookup services;
-    private static Options _options;
+    private static Options options;
 
     private App() { /* NO-OP */ }
 
@@ -33,11 +33,11 @@ public final class App extends CccApp {
     public static void main(final String[] args) {
         LOG.info("Starting.");
 
-        _options  = parseOptions(args, Options.class);
+        options  = parseOptions(args, Options.class);
 
-        login(_options._username, _options._password);
+        login(options._username, options._password);
 
-        services = new ServiceLookup(_options._app);
+        services = new ServiceLookup(options._app);
 
         connectToLegacySystem();
 
@@ -51,9 +51,9 @@ public final class App extends CccApp {
     private static void connectToLegacySystem() {
         final DataSource legacyConnection =
             getOracleDatasource(
-                _options._legConString,
-                _options._legUsername,
-                _options._legPassword);
+                options._legConString,
+                options._legUsername,
+                options._legPassword);
         legacyDBQueries = new LegacyDBQueries(new DbUtilsDB(legacyConnection));
         LOG.info("Connected to legacy DB.");
     }
@@ -62,17 +62,22 @@ public final class App extends CccApp {
         final Migrations migrations =
             new Migrations(
                 legacyDBQueries,
-                "/"+_options._app+"/",
+                "/"+options._app+"/",
                 services.lookupCommands(),
                 services.lookupQueries(),
                 new FileUploader(
-                    _options._ccURL,
-                    _options._username,
-                    _options._password)
+                    options._ccURL,
+                    options._username,
+                    options._password)
             );
         migrations.migrate();
     }
 
+    /**
+     * Options for the migration tool.
+     *
+     * @author Civic Computing Ltd.
+     */
     static class Options {
         @Option(
             name="-u", required=true, usage="Username for connecting to CCC.")

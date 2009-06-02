@@ -13,7 +13,7 @@ import ccc.migration.ServiceLookup;
 public final class Scheduling extends CccApp {
     private static final Logger LOG = Logger.getLogger(Scheduling.class);
 
-    private static Options _options;
+    private static Options options;
     private static ServiceLookup services;
 
     private Scheduling() { super(); }
@@ -27,23 +27,23 @@ public final class Scheduling extends CccApp {
     public static void main(final String[] args) {
         LOG.info("Starting.");
 
-        _options  = parseOptions(args, Options.class);
+        options  = parseOptions(args, Options.class);
 
-        login(_options._username, _options._password);
+        login(options.getUsername(), options.getPassword());
 
-        services = new ServiceLookup(_options._app);
+        services = new ServiceLookup(options.getApp());
 
         final Scheduler s = services.lookupActionScheduler();
 
-        if ("start".equals(_options._action)) {
+        if ("start".equals(options.getAction())) {
             s.start();
             LOG.info("Started.");
 
-        } else if ("stop".equals(_options._action)) {
+        } else if ("stop".equals(options.getAction())) {
             s.stop();
             LOG.info("Stopped.");
 
-        } else if ("running".equals(_options._action)) {
+        } else if ("running".equals(options.getAction())) {
             final boolean running = s.isRunning();
             LOG.info("Running: "+running+".");
 
@@ -56,21 +56,66 @@ public final class Scheduling extends CccApp {
         report("Finished in ");
     }
 
+    /**
+     * Options for the action scheduler tool.
+     *
+     * @author Civic Computing Ltd.
+     */
     static class Options {
         @Option(
             name="-u", required=true, usage="Username for connecting to CCC.")
-        String _username;
+        private String _username;
 
         @Option(
             name="-p", required=true, usage="Password for connecting to CCC.")
-        String _password;
+        private String _password;
 
         @Option(
             name="-a", required=true, usage="App name.")
-        String _app;
+        private String _app;
 
         @Option(
             name="-c", required=true, usage="Action.")
-        String _action;
+        private String _action;
+
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the username.
+         */
+        String getUsername() {
+            return _username;
+        }
+
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the password.
+         */
+        String getPassword() {
+            return _password;
+        }
+
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the app.
+         */
+        String getApp() {
+            return _app;
+        }
+
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the action.
+         */
+        String getAction() {
+            return _action;
+        }
     }
 }

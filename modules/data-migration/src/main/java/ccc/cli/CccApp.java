@@ -40,7 +40,7 @@ import ccc.migration.UserNamePasswordHandler;
 
 
 /**
- * TODO: Add Description for this type.
+ * Helper methods for the CCC command line tools.
  *
  * @author Civic Computing Ltd.
  */
@@ -53,7 +53,7 @@ class CccApp {
     private static LoginContext ctx;
 
     /** Constructor. */
-    CccApp() { super(); }
+    protected CccApp() { super(); }
 
 
     /**
@@ -67,7 +67,8 @@ class CccApp {
 
         Configuration.setConfiguration(
             new Configuration() {
-                @Override public AppConfigurationEntry[] getAppConfigurationEntry(final String name) {
+                @Override public AppConfigurationEntry[]
+                                   getAppConfigurationEntry(final String name) {
                     final AppConfigurationEntry jBoss =
                         new AppConfigurationEntry(
                             "org.jboss.security.ClientLoginModule",
@@ -118,10 +119,11 @@ class CccApp {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Load settings from the specified path into the specified properties
+     * object.
      *
-     * @param props
-     * @param resourcePath
+     * @param props The object into which the settings will be loaded.
+     * @param resourcePath The path to the properties file on the classpath.
      */
     static void loadSettings(final Properties props,
                              final String resourcePath) {
@@ -187,12 +189,13 @@ class CccApp {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Create an oracle datasource.
      *
-     * @param url
-     * @param username
-     * @param password
-     * @return
+     * @param url The JDBC connection string.
+     * @param username The DB username.
+     * @param password The DB password.
+     *
+     * @return A new oracle datasource.
      */
     static DataSource getOracleDatasource(final String url,
                                           final String username,
@@ -220,6 +223,16 @@ class CccApp {
     }
 
 
+    /**
+     * Parse command line options.
+     *
+     * @param <T> The type of options instance to return.
+     * @param args The arguments as an array of strings.
+     * @param optionsClass The class representing type T.
+     *
+     * @return An instance of type T containing the options from parameter
+     *  'args'.
+     */
     static <T> T parseOptions(final String[] args,
                               final Class<T> optionsClass) {
         T options;

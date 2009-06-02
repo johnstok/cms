@@ -29,7 +29,7 @@ import ccc.migration.NewDBQueries;
 public final class Users extends CccApp {
     private static final Logger LOG = Logger.getLogger(Users.class);
 
-    private static Options _options;
+    private static Options options;
 
     private Users() { super(); }
 
@@ -40,7 +40,7 @@ public final class Users extends CccApp {
      * @param args Command line arguments.
      */
     public static void main(final String[] args) {
-        _options  = parseOptions(args, Options.class);
+        options  = parseOptions(args, Options.class);
         create();
     }
 
@@ -53,24 +53,29 @@ public final class Users extends CccApp {
 
         final Connection newConnection =
             getConnection(
-                getDriverForConnectionString(_options._conString),
-                _options._conString,
-                _options._username,
-                _options._password);
+                getDriverForConnectionString(options._conString),
+                options._conString,
+                options._username,
+                options._password);
         try {
             final NewDBQueries queries = new NewDBQueries(newConnection);
             final UUID userId =
                 queries.insertMigrationUser(
-                    _options._newUsername,
-                    _options._newEmail,
-                    _options._newPassword);
-            LOG.info("Created user: "+_options._newUsername);
+                    options._newUsername,
+                    options._newEmail,
+                    options._newPassword);
+            LOG.info("Created user: "+options._newUsername);
             return userId;
         } finally {
             DbUtils.closeQuietly(newConnection);
         }
     }
 
+    /**
+     * Options for the search scheduler tool.
+     *
+     * @author Civic Computing Ltd.
+     */
     static class Options {
         @Option(
             name="-u", required=true, usage="Username for connecting to CCC.")

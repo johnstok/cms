@@ -39,9 +39,11 @@ public class FileMigrator {
     /**
      * Constructor.
      *
-     * @param fu
-     * @param legacyQueries
-     * @param props
+     * @param fu The file up-loader to use.
+     * @param legacyQueries The query API to use.
+     * @param filesSourcePath The local path for non-image files.
+     * @param imagesSourcePath The local path for image files.
+     * @param cssSourcePath The local path for css files.
      */
     public FileMigrator(final FileUploader fu,
                         final LegacyDBQueries legacyQueries,
@@ -55,25 +57,31 @@ public class FileMigrator {
         _cssSourcePath = cssSourcePath;
     }
 
+    /**
+     * Migrate client files to the new system.
+     *
+     * @param filesFolder The folder that non-images should be uploaded to.
+     * @param contentImagesFolder The folder that images should be uploaded to.
+     */
     void migrateManagedFilesAndImages(
-                                  final ResourceSummary _filesFolder,
-                                  final ResourceSummary _contentImagesFolder) {
-        final Map<String,LegacyFile> files =_legacyQueries.selectFiles();
-        for (final Map.Entry<String, LegacyFile> legacyFile :
-             files.entrySet()) {
+                                  final ResourceSummary filesFolder,
+                                  final ResourceSummary contentImagesFolder) {
+        final Map<String, LegacyFile> files =_legacyQueries.selectFiles();
+        for (final Map.Entry<String, LegacyFile> legacyFile
+            : files.entrySet()) {
             _fu.uploadFile(
-                UUID.fromString(_filesFolder.getId().toString()),
+                UUID.fromString(filesFolder.getId().toString()),
                 legacyFile.getKey(),
                 legacyFile.getValue()._title,
                 legacyFile.getValue()._description,
                 _filesSourcePath);
         }
 
-        final Map<String,LegacyFile> images = _legacyQueries.selectImages();
-        for (final Map.Entry<String, LegacyFile> legacyFile :
-             images.entrySet()) {
+        final Map<String, LegacyFile> images = _legacyQueries.selectImages();
+        for (final Map.Entry<String, LegacyFile> legacyFile
+            : images.entrySet()) {
             _fu.uploadFile(
-                UUID.fromString(_contentImagesFolder.getId().toString()),
+                UUID.fromString(contentImagesFolder.getId().toString()),
                 legacyFile.getKey(),
                 legacyFile.getValue()._title,
                 legacyFile.getValue()._description,
@@ -81,7 +89,12 @@ public class FileMigrator {
         }
     }
 
-    void migrateImages(final ResourceSummary _assetsImagesFolder) {
+    /**
+     * Migrate asset images to the new system.
+     *
+     * @param assetsImagesFolder The folder that files should be uploaded to.
+     */
+    void migrateImages(final ResourceSummary assetsImagesFolder) {
         final Map<String, LegacyFile> managedImages =
             _legacyQueries.selectImages();
         final File imageDir = new File(_imagesSourcePath);
@@ -99,7 +112,7 @@ public class FileMigrator {
                         || file.getName().startsWith(".")
                         || file.getName().startsWith("um")))  {
                     _fu.uploadFile(
-                        UUID.fromString(_assetsImagesFolder.getId().toString()),
+                        UUID.fromString(assetsImagesFolder.getId().toString()),
                         file.getName(),
                         file.getName(),
                         "Migrated file.",
@@ -114,10 +127,9 @@ public class FileMigrator {
 
     private boolean isManaged(final Map<String, LegacyFile> managedImages,
                               final File file) {
-
         boolean managedImage = false;
-        for (final Map.Entry<String, LegacyFile> legacyFile :
-             managedImages.entrySet()) {
+        for (final Map.Entry<String, LegacyFile> legacyFile
+            : managedImages.entrySet()) {
             if (file.getName().equals(legacyFile.getKey())) {
                 managedImage = true;
             }
@@ -125,7 +137,12 @@ public class FileMigrator {
         return managedImage;
     }
 
-    void migrateCss(final ResourceSummary _cssFolder) {
+    /**
+     * Migrate css files to the new system.
+     *
+     * @param cssFolder The folder that css files should be uploaded to.
+     */
+    void migrateCss(final ResourceSummary cssFolder) {
         final String cssPath = _cssSourcePath;
         final File cssDir = new File(cssPath);
         if (!cssDir.exists()) {
@@ -137,7 +154,7 @@ public class FileMigrator {
             for (final File file : css) {
                 if (file.isFile() && file.getName().endsWith(".css"))  {
                     _fu.uploadFile(
-                        UUID.fromString(_cssFolder.getId().toString()),
+                        UUID.fromString(cssFolder.getId().toString()),
                         file.getName(),
                         file.getName(),
                         "",

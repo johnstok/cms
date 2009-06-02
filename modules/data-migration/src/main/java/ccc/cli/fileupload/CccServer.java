@@ -14,8 +14,6 @@ package ccc.cli.fileupload;
 import java.io.File;
 import java.util.UUID;
 
-import org.apache.log4j.Logger;
-
 import ccc.api.CommandFailedException;
 import ccc.api.Commands;
 import ccc.api.ID;
@@ -31,22 +29,22 @@ import ccc.migration.FileUploader;
  * @author Civic Computing Ltd.
  */
 public class CccServer implements Server {
-    private static final Logger LOG = Logger.getLogger(CccServer.class);
 
-    ResourcePath _rootPath;
-    FileUploader _uploader;
-    Commands _commands;
-    Queries _queries;
+    private ResourcePath _rootPath;
+    private FileUploader _uploader;
+    private Commands _commands;
+    private Queries _queries;
 
 
 
     /**
      * Constructor.
      *
-     * @param rootPath
-     * @param uploader
-     * @param commands
-     * @param queries
+     * @param rootPath The absolute path to the folder where files will be
+     *  uploaded.
+     * @param uploader The file up-loader to use.
+     * @param commands The command API.
+     * @param queries The query API.
      */
     public CccServer(final ResourcePath rootPath,
                      final FileUploader uploader,

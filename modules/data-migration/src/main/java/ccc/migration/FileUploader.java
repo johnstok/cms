@@ -12,6 +12,7 @@
 package ccc.migration;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
 
@@ -32,11 +33,14 @@ import ccc.domain.ResourceName;
 
 
 /**
- * TODO: Add Description for this type.
+ * Helper class to upload files to the new system.
  *
  * @author Civic Computing Ltd.
  */
 public class FileUploader {
+    /** CONNECTION_TIMEOUT : int. */
+    private static final int CONNECTION_TIMEOUT = 5000;
+
     private static Logger log = Logger.getLogger(FileUploader.class);
 
     private final HttpClient _client = new HttpClient();
@@ -46,6 +50,13 @@ public class FileUploader {
     private final String _password;
     private MimetypesFileTypeMap _mimemap;
 
+    /**
+     * Constructor.
+     *
+     * @param appURL The url to upload to.
+     * @param username The username to authenticate with.
+     * @param password The password to authenticate with.
+     */
     public FileUploader(final String appURL,
                         final String username,
                         final String password) {
@@ -80,7 +91,7 @@ public class FileUploader {
         get.releaseConnection();
 
         final PostMethod authpost = new PostMethod(_appURL+"/j_security_check");
-//        final authpost.
+
         final NameValuePair userid   =
             new NameValuePair("j_username", _username);
         final NameValuePair password =
@@ -90,13 +101,14 @@ public class FileUploader {
 
         try {
             final int status = _client.executeMethod(authpost);
-            log.debug(status);
-        } catch (final Exception e) {
+            log.debug("Authenticate response code: "+status);
+        } catch (final IOException e) {
             log.error("Authentication failed ", e);
         }
         authpost.releaseConnection();
 
-        // in order to prevent 'not a multi-part post error' for the first upload
+        /* in order to prevent 'not a multi-part
+         * post error' for the first upload      */
         try {
             _client.executeMethod(get);
         } catch (final Exception e) {
@@ -105,10 +117,20 @@ public class FileUploader {
         get.releaseConnection();
     }
 
+    /**
+     * Upload a file.
+     *
+     * @param parentId The folder in which the file should be uploaded.
+     * @param fileName The name of the file.
+     * @param originalTitle The title of the file.
+     * @param originalDescription The file's description.
+     * @param file The local file reference.
+     * @param publish Should the file be published.
+     */
     public void uploadFile(final UUID parentId,
                     final String fileName,
-                    final String title_,
-                    final String description_,
+                    final String originalTitle,
+                    final String originalDescription,
                     final File file,
                     final boolean publish) {
         try {
@@ -123,9 +145,11 @@ public class FileUploader {
             final String name =
                 ResourceName.escape(fileName).toString();
 
-            final String title = (null!=title_) ? title_ : fileName;
+            final String title =
+                (null!=originalTitle) ? originalTitle : fileName;
 
-            final String description = (null!=description_) ? description_ : "";
+            final String description =
+                (null!=originalDescription) ? originalDescription : "";
 
             final FilePart fp = new FilePart("file", file.getName(), file);
             fp.setContentType(_mimemap.getContentType(file));
@@ -142,7 +166,7 @@ public class FileUploader {
             );
 
             _client.getHttpConnectionManager().
-                getParams().setConnectionTimeout(5000);
+                getParams().setConnectionTimeout(CONNECTION_TIMEOUT);
 
 
             final int status = _client.executeMethod(filePost);
@@ -158,23 +182,34 @@ public class FileUploader {
                     + HttpStatus.getStatusText(status)
                 );
             }
-        } catch (final Exception e) {
+        } catch (final RuntimeException e) {
+            log.error("File migration failed ", e);
+        } catch (final IOException e) {
             log.error("File migration failed ", e);
         }
     }
 
 
+    /**
+     * Upload a file.
+     *
+     * @param parentId The folder in which the file should be uploaded.
+     * @param fileName The name of the file.
+     * @param title The title of the file.
+     * @param description The file's description.
+     * @param directory The directory that the local file is stored.
+     */
     void uploadFile(final UUID parentId,
                     final String fileName,
-                    final String title_,
-                    final String description_,
+                    final String title,
+                    final String description,
                     final String directory) {
 
         final File file = new File(directory+fileName);
         if (!file.exists()) {
             log.debug("File not found: "+fileName);
         } else {
-            uploadFile(parentId, fileName, title_, description_, file, false);
+            uploadFile(parentId, fileName, title, description, file, false);
         }
     }
 }
