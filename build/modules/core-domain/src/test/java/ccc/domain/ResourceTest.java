@@ -38,7 +38,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     * @throws ResourceExistsException If the folder contains a resource with
+     *  the same name.
      */
     public void testResourceResourceAccessibilityRespectsParentalRoles()
     throws ResourceExistsException {
@@ -96,7 +97,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     * @throws ResourceExistsException If the folder contains a resource with
+     *  the same name.
      */
     public void testComputeRoles() throws ResourceExistsException {
 
@@ -200,7 +202,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     * @throws ResourceExistsException If the folder contains a resource with
+     *  the same name.
      */
     public void testClearingMetadataDoesNotAffectParents()
     throws ResourceExistsException {
@@ -270,7 +273,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     * @throws ResourceExistsException If the folder contains a resource with
+     *  the same name.
      */
     public void testMetadataIsInheritedFromParents()
     throws ResourceExistsException {
@@ -289,7 +293,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     * @throws ResourceExistsException If the folder contains a resource with
+     *  the same name.
      */
     public void testLocalMetadataIsChosenOverParentMetadata()
     throws ResourceExistsException {
@@ -310,7 +315,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     * @throws ResourceExistsException If the folder contains a resource with
+     *  the same name.
      */
     public void testRootAccessorReturnParent()
     throws ResourceExistsException {
@@ -361,7 +367,7 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws LockMismatchException
+     * @throws LockMismatchException If the resource is locked by another user.
      */
     public void testLockFailsWhenAlreadyLocked() throws LockMismatchException {
 
@@ -382,7 +388,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws InsufficientPrivilegesException
+     * @throws InsufficientPrivilegesException If user is not allowed to perform
+     *  the operation.
      */
     public void testUnlockFailsWhenNotLocked()
     throws InsufficientPrivilegesException {
@@ -406,8 +413,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     * @throws LockMismatchException If the resource is locked by another user.
+     * @throws UnlockedException If the resource is not locked.
      */
     public void testUnlockFailsWhenUserCannotUnlock()
     throws LockMismatchException, UnlockedException {
@@ -434,8 +441,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     * @throws LockMismatchException If the resource is locked by another user.
+     * @throws UnlockedException If the resource is not locked.
      */
     public void testConfirmLockDoesNothingWithCorrectUser()
     throws LockMismatchException, UnlockedException {
@@ -450,9 +457,10 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws LockMismatchException
+     * @throws LockMismatchException If the resource is locked by another user.
      */
-    public void testConfirmLockThrowsUnlockedException() throws LockMismatchException {
+    public void testConfirmLockThrowsUnlockedException()
+    throws LockMismatchException {
 
         // ARRANGE
         final Page p = new Page("myPage");
@@ -470,10 +478,11 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     * @throws LockMismatchException If the resource is locked by another user.
+     * @throws UnlockedException If the resource is not locked.
      */
-    public void testConfirmLockThrowsLockMismatchException() throws LockMismatchException, UnlockedException {
+    public void testConfirmLockThrowsLockMismatchException()
+    throws LockMismatchException, UnlockedException {
 
         // ARRANGE
         final Page p = new Page("myPage");
@@ -600,7 +609,7 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws LockMismatchException
+     * @throws LockMismatchException If the resource is locked by another user.
      */
     public void testLockResource() throws LockMismatchException {
 
@@ -617,7 +626,7 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws LockMismatchException
+     * @throws LockMismatchException If the resource is locked by another user.
      */
     public void testLockResourceRejectsNull() throws LockMismatchException {
         // ACT
@@ -634,9 +643,10 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws LockMismatchException
-     * @throws UnlockedException
-     * @throws InsufficientPrivilegesException
+     * @throws LockMismatchException If the resource is locked by another user.
+     * @throws UnlockedException If the resource is not locked.
+     * @throws InsufficientPrivilegesException If user is not allowed to perform
+     *  the operation.
      */
     public void testUnlockResource() throws LockMismatchException,
                                             InsufficientPrivilegesException,
@@ -655,7 +665,7 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws LockMismatchException
+     * @throws LockMismatchException If the resource is locked by another user.
      */
     public void testQueryForLockedByUser() throws LockMismatchException {
 
@@ -800,7 +810,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     * @throws ResourceExistsException If the folder contains a resource with
+     * the same name.
      */
     public void testAbsolutePath() throws ResourceExistsException {
 
@@ -818,7 +829,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     * @throws ResourceExistsException If the folder contains a resource with
+     *  the same name.
      */
     public void testComputeTemplateReturnsDefaultWhenNoTemplateIsFound()
     throws ResourceExistsException {
@@ -841,7 +853,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     * @throws ResourceExistsException If the folder contains a resource with
+     *  the same name.
      */
     public void testComputeTemplateLooksInCalleeFirst()
     throws ResourceExistsException {
@@ -870,7 +883,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     * @throws ResourceExistsException If the folder contains a resource with
+     *  the same name.
      */
     public void testComputeTemplateRecursesToParent()
     throws ResourceExistsException {
@@ -1026,7 +1040,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     * @throws ResourceExistsException If the folder contains a resource with
+     *  the same name.
      */
     public void testIsVisibleTrue() throws ResourceExistsException {
 
@@ -1055,7 +1070,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     * @throws ResourceExistsException If the folder contains a resource with
+     *  the same name.
      */
     public void testIsVisibleFalse() throws ResourceExistsException {
 
@@ -1083,7 +1099,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     * @throws ResourceExistsException If the folder contains a resource with
+     *  the same name.
      */
     public void testComputeCache() throws ResourceExistsException {
 

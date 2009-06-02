@@ -32,7 +32,8 @@ public class ImageMetadataStreamActionTest
     public void testReadsJpegMetadata() throws Exception {
 
         // ARRANGE
-        final InputStream fis = getClass().getResourceAsStream("/images/flowers.jpg");
+        final InputStream fis =
+            getClass().getResourceAsStream("/images/flowers.jpg");
         final ImageMetadataStreamAction sa = new ImageMetadataStreamAction();
 
         // ACT
@@ -54,7 +55,8 @@ public class ImageMetadataStreamActionTest
     public void testMissingCodecsHandledGracefully() throws Exception {
 
         // ARRANGE
-        final InputStream fis = getClass().getResourceAsStream("/images/bug.tif");
+        final InputStream fis =
+            getClass().getResourceAsStream("/images/bug.tif");
         final ImageMetadataStreamAction sa = new ImageMetadataStreamAction();
 
         // ACT

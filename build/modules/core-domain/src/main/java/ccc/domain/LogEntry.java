@@ -46,13 +46,13 @@ public class LogEntry extends Entity {
     /**
      * Constructor.
      *
-     * @param actor
-     * @param action
-     * @param happenedOn
-     * @param subjectId
-     * @param comment
-     * @param detail
-     * @param isMajorEdit
+     * @param actor The actor that performed the action.
+     * @param action The action performed.
+     * @param happenedOn When the action took place.
+     * @param subjectId The subject of the action.
+     * @param comment A user supplied comment.
+     * @param detail Details of the action.
+     * @param isMajorEdit Was the action a major change.
      */
     public LogEntry(final User actor,
                     final CommandType action,
@@ -68,7 +68,7 @@ public class LogEntry extends Entity {
 
         _actor = actor;
         _action = action;
-        _happenedOn = happenedOn;
+        _happenedOn = new Date(happenedOn.getTime());
         _subjectId = subjectId;
         _comment = (null==comment) ? "" : comment;
         _detail = detail;

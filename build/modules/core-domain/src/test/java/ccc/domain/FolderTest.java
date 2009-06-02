@@ -60,7 +60,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     *
+     * @throws ResourceExistsException If a child of the same name already
+     *  exists.
      */
     public void testFolders() throws ResourceExistsException {
 
@@ -85,7 +87,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     *
+     * @throws ResourceExistsException If a child of the same name already
+     *  exists.
      */
     public void testPages() throws ResourceExistsException {
 
@@ -110,7 +114,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     *
+     * @throws ResourceExistsException If a child of the same name already
+     *  exists.
      */
     public void testFirstPage() throws ResourceExistsException {
 
@@ -130,7 +136,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     *
+     * @throws ResourceExistsException If a child of the same name already
+     *  exists.
      */
     public void testHasPages() throws ResourceExistsException {
 
@@ -154,7 +162,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     *
+     * @throws ResourceExistsException If a child of the same name already
+     *  exists.
      */
     public void testTypedEntries() throws ResourceExistsException {
 
@@ -175,7 +185,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     *
+     * @throws ResourceExistsException If a child of the same name already
+     *  exists.
      */
     public void testFolderCount() throws ResourceExistsException {
 
@@ -195,9 +207,12 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     *
+     * @throws ResourceExistsException If a child of the same name already
+     *  exists.
      */
-    public void testNullContentCannotBeAddedToFolders() throws ResourceExistsException {
+    public void testNullContentCannotBeAddedToFolders()
+    throws ResourceExistsException {
 
         // ARRANGE
         final Folder f = new Folder("foo");
@@ -251,7 +266,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     *
+     * @throws ResourceExistsException If a child of the same name already
+     *  exists.
      */
     public void testAddPageToFolder() throws ResourceExistsException {
 
@@ -270,7 +287,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     *
+     * @throws ResourceExistsException If a child of the same name already
+     *  exists.
      */
     public void testRemovePageFromFolder() throws ResourceExistsException {
 
@@ -290,7 +309,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     *
+     * @throws ResourceExistsException If a child of the same name already
+     *  exists.
      */
     public void testAddFolderToFolder() throws ResourceExistsException {
 
@@ -324,7 +345,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     *
+     * @throws ResourceExistsException If a child of the same name already
+     *  exists.
      */
     public void testFindEntryByUrl() throws ResourceExistsException {
 
@@ -342,7 +365,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     *
+     * @throws ResourceExistsException If a child of the same name already
+     *  exists.
      */
     public void testNavigateToContent() throws ResourceExistsException {
 
@@ -363,7 +388,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     *
+     * @throws ResourceExistsException If a child of the same name already
+     *  exists.
      */
     public void testNavigateToFolder() throws ResourceExistsException {
 
@@ -384,7 +411,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     *
+     * @throws ResourceExistsException If a child of the same name already
+     *  exists.
      */
     public void testNavigateToEmptyPath() throws ResourceExistsException {
 
@@ -405,7 +434,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     *
+     * @throws ResourceExistsException If a child of the same name already
+     *  exists.
      */
     public void testHasEntryWithName() throws ResourceExistsException {
 
@@ -431,7 +462,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     *
+     * @throws ResourceExistsException If a child of the same name already
+     *  exists.
      */
     public void testAddRejectsResourcesWithExistingNames()
     throws ResourceExistsException {
@@ -456,7 +489,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     *
+     * @throws ResourceExistsException If a child of the same name already
+     *  exists.
      */
     public void testHasAliases() throws ResourceExistsException {
 
@@ -479,7 +514,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     *
+     * @throws ResourceExistsException If a child of the same name already
+     *  exists.
      */
     public void testFirstAlias() throws ResourceExistsException {
 
@@ -499,7 +536,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     *
+     * @throws ResourceExistsException If a child of the same name already
+     *  exists.
      */
     public void testReorderWithOriginalOrder() throws ResourceExistsException {
 
@@ -524,7 +563,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     * @throws ResourceExistsException
+     *
+     * @throws ResourceExistsException If a child of the same name already
+     *  exists.
      */
     public void testReorderWithNewOrder() throws ResourceExistsException {
 

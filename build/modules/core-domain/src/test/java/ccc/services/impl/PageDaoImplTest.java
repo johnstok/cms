@@ -20,9 +20,8 @@ import junit.framework.TestCase;
 import ccc.api.PageDelta;
 import ccc.api.Paragraph;
 import ccc.commands.UpdatePageCommand;
-import ccc.domain.LockMismatchException;
 import ccc.domain.Page;
-import ccc.domain.UnlockedException;
+import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -41,11 +40,9 @@ public class PageDaoImplTest
 
     /**
      * Test.
-     * @throws LockMismatchException
-     * @throws UnlockedException
+     * @throws RemoteExceptionSupport If the command fails.
      */
-    public void testUpdatePage()
-    throws LockMismatchException, UnlockedException {
+    public void testUpdatePage() throws RemoteExceptionSupport {
 
         // ARRANGE
         final PageDelta delta =
@@ -85,7 +82,7 @@ public class PageDaoImplTest
 
     /** {@inheritDoc} */
     @Override
-    protected void setUp() throws Exception {
+    protected void setUp() {
         _dao = createStrictMock(Dao.class);
         _al = createStrictMock(AuditLog.class);
         _updatePage = new UpdatePageCommand(_dao, _al);
@@ -93,7 +90,7 @@ public class PageDaoImplTest
 
     /** {@inheritDoc} */
     @Override
-    protected void tearDown() throws Exception {
+    protected void tearDown() {
         _updatePage = null;
         _al = null;
         _dao = null;
