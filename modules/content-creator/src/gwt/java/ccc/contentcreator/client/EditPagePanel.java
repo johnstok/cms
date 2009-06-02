@@ -37,7 +37,6 @@ import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
-import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.form.CheckBoxGroup;
@@ -60,11 +59,12 @@ import com.google.gwt.xml.client.XMLParser;
 
 
 /**
- * TODO: Add Description for this type.
+ * Panel containing fields for page content editing.
  *
  * @author Civic Computing Ltd.
  */
 public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
+    private static final int LABEL_LENGTH = 13;
     private TextField<String> _title = new TextField<String>();
     private TextField<String> _name = new TextField<String>();
     private final List<PageElement> _pageElements =
@@ -129,12 +129,6 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         }
     }
 
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param c
-     * @param para
-     */
     private void populateHtml(final PageElement c, final Paragraph para) {
         int editorIndex = indexOf(c.editor());
         remove(c.editor());
@@ -144,12 +138,6 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         c.editor(fck);
     }
 
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param c
-     * @param para
-     */
     private void populateCheckbox(final PageElement c,
                                   final Paragraph para) {
 
@@ -166,12 +154,6 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         }
     }
 
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param c
-     * @param para
-     */
     private void populateRadio(final PageElement c, final Paragraph para) {
 
         final RadioGroup rg = c.radioGroup();
@@ -187,12 +169,6 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         }
     }
 
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param c
-     * @param para
-     */
     private void populateComboBox(final PageElement c,
                                   final Paragraph para) {
 
@@ -207,12 +183,6 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         }
     }
 
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param c
-     * @param para
-     */
     private void populateList(final PageElement c, final Paragraph para) {
 
         final ListField<BaseModelData> list = c.list();
@@ -235,12 +205,6 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         });
     }
 
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param c
-     * @param para
-     */
     private void populateImage(final PageElement c, final Paragraph para) {
 
         final ImageTriggerField image = c.image();
@@ -264,7 +228,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Helper method for multiple option fields.
      *
      * @param para
      * @return
@@ -427,7 +391,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
 
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor of the name field.
      *
      * @return TextField for name.
      */
@@ -437,21 +401,12 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
 
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor of the title.
      *
      * @return TextField for title.
      */
     public TextField<String> title() {
         return _title;
-    }
-
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @return List of components in definition panel.
-     */
-    public List<Component> definitionItems() {
-        return getItems();
     }
 
     /**
@@ -512,21 +467,21 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
             } else if ("list".equals(type)) {
                 addElementForList(name, field);
             } else if ("image".equals(type)) {
-                addElementForImage(name, field);
+                addElementForImage(name);
             }
         }
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Adds {@link ImageTriggerField} to the panel and to _pageElements list.
      *
-     * @param name
-     * @param field
+     * @param name The name of the field.
      */
-    private void addElementForImage(final String name, final Element field) {
+    private void addElementForImage(final String name) {
         final ImageTriggerField image =
             new ImageTriggerField();
-        image.setFieldLabel(name);
+        image.setFieldLabel(createLabel(name));
+        image.setToolTip(name);
         image.setData("type", FieldType.IMAGE);
         image.setId(name);
         image.setReadOnly(true);
@@ -549,14 +504,15 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Adds {@link ListField} to the panel and to _pageElements list.
      *
-     * @param name
-     * @param field
+     * @param name The name of the field.
+     * @param field The XML of field options.
      */
     private void addElementForList(final String name, final Element field) {
         final ListField<BaseModelData> list = new ListField<BaseModelData>();
-        list.setFieldLabel(name);
+        list.setFieldLabel(createLabel(name));
+        list.setToolTip(name);
         list.setData("type", FieldType.LIST);
         list.setDisplayField("title");
         list.setValueField("value");
@@ -597,14 +553,15 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Adds {@link ComboBox} to the panel and to _pageElements list.
      *
-     * @param name
-     * @param field
+     * @param name The name of the field.
+     * @param field The XML of field options.
      */
     private void addElementForCombobox(final String name, final Element field) {
         final ComboBox<BaseModelData> cb = new ComboBox<BaseModelData>();
-        cb.setFieldLabel(name);
+        cb.setFieldLabel(createLabel(name));
+        cb.setToolTip(name);
         cb.setData("type", FieldType.COMBOBOX);
         cb.setDisplayField("title");
         cb.setValueField("value");
@@ -637,14 +594,15 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Adds {@link CheckBoxGroup} to the panel and to _pageElements list.
      *
-     * @param name
-     * @param field
+     * @param name The name of the field.
+     * @param field The XML of field options.
      */
     private void addElementForCheckbox(final String name, final Element field) {
         final CheckBoxGroup cbg =  new  CheckBoxGroup();
-        cbg.setFieldLabel(name);
+        cbg.setFieldLabel(createLabel(name));
+        cbg.setToolTip(name);
         cbg.setData("type", FieldType.CHECKBOX);
         cbg.setId(name);
         cbg.setOrientation(Orientation.VERTICAL);
@@ -672,14 +630,15 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Adds {@link RadioGroup} to the panel and to _pageElements list.
      *
-     * @param name
-     * @param field
+     * @param name The name of the field.
+     * @param field The XML of field options.
      */
     private void addElementForRadio(final String name, final Element field) {
         final RadioGroup rg =  new  RadioGroup();
-        rg.setFieldLabel(name);
+        rg.setFieldLabel(createLabel(name));
+        rg.setToolTip(name);
         rg.setData("type", FieldType.RADIO);
         rg.setId(name);
         rg.setOrientation(Orientation.VERTICAL);
@@ -707,9 +666,9 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Adds FCKEditor to the panel and to _pageElements list.
      *
-     * @param name
+     * @param name The name of the field.
      */
     private void addElementForHtml(final String name) {
 
@@ -725,14 +684,14 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Adds {@link DateField} to the panel and to _pageElements list.
      *
-     * @param name
+     * @param name The name of the field.
      */
     private void addElementForDate(final String name) {
 
         final DateField df = new DateField();
-        df.setFieldLabel(name);
+        df.setFieldLabel(createLabel(name));
         df.setData("type", FieldType.DATE);
         df.setId(name);
         df.setEditable(false);
@@ -745,17 +704,18 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Adds {@link TextArea} to the panel and to _pageElements list.
      *
-     * @param name
-     * @param regexp
+     * @param name The name of the field.
+     * @param regexp The regexp for field validation.
      */
     private void addElementForTextArea(final String name, final String regexp) {
 
         final TextArea ta = new TextArea();
         ta.setData("type", FieldType.TEXT);
         ta.setId(name);
-        ta.setFieldLabel(name);
+        ta.setFieldLabel(createLabel(name));
+        ta.setToolTip(name);
         if (regexp != null) {
             ta.setRegex(regexp);
         }
@@ -767,10 +727,10 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Adds {@link TextField} to the panel and to _pageElements list.
      *
-     * @param name
-     * @param regexp
+     * @param name The name of the field.
+     * @param regexp The regexp for field validation.
      */
     private void addElementForTextField(final String name,
                                         final String regexp) {
@@ -778,7 +738,9 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         final TextField<String> tf = new TextField<String>();
         tf.setData("type", FieldType.TEXT);
         tf.setId(name);
-        tf.setFieldLabel(name);
+
+        tf.setFieldLabel(createLabel(name));
+        tf.setToolTip(name);
         if (regexp != null) {
             tf.setRegex(regexp);
         }
@@ -788,6 +750,19 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         pe.field(tf);
 
         _pageElements.add(pe);
+    }
+
+    /**
+     * Shortens label string.
+     *
+     * @param name The original string of the label.
+     * @return Label - shortened if necessary.
+     */
+    private String createLabel(final String name) {
+        if (name.length() > LABEL_LENGTH) {
+            return name.substring(0, LABEL_LENGTH) + "...";
+        }
+        return name;
     }
 
     private void addStaticFields() {
