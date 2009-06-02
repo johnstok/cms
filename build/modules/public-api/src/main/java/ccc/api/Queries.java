@@ -186,6 +186,13 @@ public interface Queries {
      */
     Collection<ActionSummary> listCompletedActions();
 
+    /**
+     * List the roles for a resource.
+     *
+     * @param resourceId The resource's id.
+     *
+     * @return The roles, as a collection of strings.
+     */
     Collection<String> roles(ID resourceId);
 
     /**
@@ -205,18 +212,52 @@ public interface Queries {
      */
     TemplateSummary computeTemplate(ID resourceId);
 
+    /**
+     * Retrieve the delta for a template.
+     *
+     * @param templateId The template's id.
+     * @return The corresponding delta.
+     */
     TemplateDelta templateDelta(ID templateId);
+
+    /**
+     * Retrieve the delta for a user.
+     *
+     * @param userId The user's id.
+     * @return The corresponding delta.
+     */
     UserDelta userDelta(ID userId);
+
+    /**
+     * Retrieve the delta for a alias.
+     *
+     * @param aliasId The alias' id.
+     * @return The corresponding delta.
+     */
     AliasDelta aliasDelta(ID aliasId);
+
+    /**
+     * Retrieve the delta for a page.
+     *
+     * @param pageId The page's id.
+     * @return The corresponding delta.
+     */
     PageDelta pageDelta(ID pageId);
+
+    /**
+     * Retrieve the delta for a file.
+     *
+     * @param fileId The file's id.
+     * @return The corresponding delta.
+     */
     FileDelta fileDelta(ID fileId);
 
     /**
-     * TODO: Add a description of this method.
+     * Look up the resource for a specified path.
      *
-     * @param rootPath
-     * @return
+     * @param path The absolute path.
+     * @return A summary of the corresponding resource.
      */
-    ResourceSummary resourceForPath(String rootPath);
+    ResourceSummary resourceForPath(String path);
 
 }

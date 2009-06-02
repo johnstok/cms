@@ -11,20 +11,11 @@
  */
 package ccc.api;
 
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
+import static org.easymock.EasyMock.*;
 
 import java.util.Date;
 
 import junit.framework.TestCase;
-import ccc.api.Decimal;
-import ccc.api.Json;
-import ccc.api.Paragraph;
-import ccc.api.ParagraphType;
 
 
 /**
@@ -147,7 +138,8 @@ public final class ParagraphTest extends TestCase {
 //        // ASSERT
 //        } catch (final IllegalArgumentException e) {
 //            assertEquals(
-//                "Specified string exceeds max length of 256.", e.getMessage());
+//                "Specified string exceeds max length of 256.",
+//                e.getMessage());
 //        }
     }
 

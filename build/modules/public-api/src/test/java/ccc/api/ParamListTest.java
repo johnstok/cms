@@ -11,7 +11,6 @@
  */
 package ccc.api;
 
-import ccc.api.ParamList;
 import junit.framework.TestCase;
 
 

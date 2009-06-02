@@ -36,9 +36,9 @@ public interface Json {
      * Mutator.
      *
      * @param key The key.
-     * @param values The value, as a collection of strings.
+     * @param value The value, as a collection of strings.
      */
-    void setStrings(String roles, Collection<String> value);
+    void setStrings(String key, Collection<String> value);
 
     /**
      * Mutator.

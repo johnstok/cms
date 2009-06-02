@@ -13,12 +13,13 @@ package ccc.api;
 
 
 /**
- * TODO: Add Description for this type.
+ * API for migration.
  *
  * @author Civic Computing Ltd.
  */
 public interface Migration {
 
-    public static final String NAME = "PublicMigration";
+    /** NAME : String. */
+    String NAME = "PublicMigration";
 
 }
