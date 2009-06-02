@@ -6,6 +6,6 @@
         <Class name="~.*Test\$.*" />
     </Match>
     <Match>
-        <Bug code="SnVI"></Bug>
+        <Bug code="SnVI,UPM"></Bug>
     </Match>
 </FindBugsFilter>
