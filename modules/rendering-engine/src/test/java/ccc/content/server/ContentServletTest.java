@@ -19,7 +19,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -154,12 +153,8 @@ public final class ContentServletTest extends TestCase {
 
     /**
      * Test.
-     *
-     * @throws IOException If there is an error writing to the _response.
-     * @throws ServletException If execution of the servlet fails.
      */
-    public void testDoGetHandlesNotFound() throws ServletException,
-                                                      IOException {
+    public void testDoGetHandlesNotFound() {
 
         // ARRANGE
         final RenderResourceAction rr =
@@ -263,7 +258,7 @@ public final class ContentServletTest extends TestCase {
             new ByteArrayOutputStream();
 
         /** {@inheritDoc} */
-        @Override public void write(final int b) throws IOException {
+        @Override public void write(final int b) {
             _baos.write(b);
         }
 

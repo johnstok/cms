@@ -23,12 +23,6 @@ public class DefaultObjectFactoryTest
     extends
         TestCase {
 
-    private static final String DATA_MANAGER_LOCAL =
-        "hello-world/DataManager/local";
-    private static final String SEARCH_ENGINE_LOCAL =
-        "hello-world/Search/local";
-    private static final String STATEFUL_READER =
-        "hello-world/StatefulReader/local";
 //    /**
 //     * Test.
 //     */
