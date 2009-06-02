@@ -204,6 +204,11 @@
                 <configuration>
                     <findbugsXmlOutput>true</findbugsXmlOutput>
                     <xmlOutput>true</xmlOutput>
+                    <effort>Max</effort>
+                    <threshold>Low</threshold>
+                    <excludeFilterFile>
+                        configuration/findbugs-excludes.xml
+                    </excludeFilterFile>
                 </configuration>
             </plugin>
             <plugin>
