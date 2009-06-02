@@ -9,36 +9,35 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.ejb3;
+package ccc.search.lucene;
 
 import java.io.InputStream;
+import java.nio.charset.Charset;
 
-import org.textmining.extraction.TextExtractor;
-import org.textmining.extraction.word.WordTextExtractorFactory;
-
+import ccc.commons.IO;
 import ccc.services.DataManager;
 
 /**
- * A stream action that interprets a stream as a MS Word document.
+ * A stream action that reads a input stream into a string.
  *
  * @author Civic Computing Ltd.
  */
-class WordExtractor implements DataManager.StreamAction {
-    private final WordTextExtractorFactory _factory =
-        new WordTextExtractorFactory();
-    private TextExtractor _extractor;
+public class TxtExtractor implements DataManager.StreamAction {
+
+    private String _content;
 
     /** {@inheritDoc} */
     @Override public void execute(final InputStream is) throws Exception {
-        _extractor = _factory.textExtractor(is);
+        // Assume files have come from windows.
+        _content = IO.toString(is, Charset.forName("windows-1252"));
     }
 
     /**
      * Accessor.
      *
-     * @return The text from a MS Word document, as a text extractor.
+     * @return The contents of the stream, as a string.
      */
-    public TextExtractor getExtractor() {
-        return _extractor;
+    public String getContent() {
+        return _content;
     }
 }

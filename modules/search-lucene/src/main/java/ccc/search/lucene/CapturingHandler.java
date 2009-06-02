@@ -1,4 +1,4 @@
-package ccc.api.ejb3;
+package ccc.search.lucene;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -8,14 +8,13 @@ import java.util.UUID;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.TopDocs;
 
-import ccc.search.lucene.SearchHandler;
 
 /**
  * TODO: Add Description for this type.
  *
  * @author Civic Computing Ltd.
  */
-class CapturingHandler extends SearchHandler {
+public class CapturingHandler extends SearchHandler {
 
     private final Set<UUID> _hits = new HashSet<UUID>();
     private final int       _resultsPerPage;
@@ -59,7 +58,7 @@ class CapturingHandler extends SearchHandler {
      *
      * @throws IOException If an error occurs while reading the index.
      */
-    UUID lookupResourceId(final IndexSearcher searcher,
+    protected UUID lookupResourceId(final IndexSearcher searcher,
                           final int docId) throws IOException {
         return UUID.fromString(
             searcher.doc(docId).getField("id").stringValue()
