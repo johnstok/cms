@@ -229,7 +229,7 @@ public class UserTable extends TablePanel {
                         updatePager(result);
                     }
                 });
-        } else if (UserTree.CONTENT_CREATOR.equals(selectedItem.getText())){
+        } else if (UserTree.CONTENT_CREATOR.equals(selectedItem.getId())){
             qs.listUsersWithRole(
                 "CONTENT_CREATOR",
                 new ErrorReportingCallback<Collection<UserSummary>>(
@@ -239,7 +239,7 @@ public class UserTable extends TablePanel {
                         updatePager(result);
                     }
                 });
-        } else if (UserTree.SITE_BUILDER.equals(selectedItem.getText())) {
+        } else if (UserTree.SITE_BUILDER.equals(selectedItem.getId())) {
             qs.listUsersWithRole(
                 "SITE_BUILDER",
                 new ErrorReportingCallback<Collection<UserSummary>>(
@@ -249,7 +249,7 @@ public class UserTable extends TablePanel {
                         updatePager(result);
                     }
                 });
-        } else if(UserTree.ADMINISTRATOR.equals(selectedItem.getText())) {
+        } else if(UserTree.ADMINISTRATOR.equals(selectedItem.getId())) {
             qs.listUsersWithRole(
                 "ADMINISTRATOR",
                 new ErrorReportingCallback<Collection<UserSummary>>(
