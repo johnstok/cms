@@ -13,10 +13,16 @@ package ccc.api;
 
 
 /**
- * TODO: Add Description for this type.
+ * API for serializing a class to JSON.
  *
  * @author Civic Computing Ltd.
  */
 public interface Jsonable {
+
+    /**
+     * Convert to JSON.
+     *
+     * @param json The JSON object to write to.
+     */
     void toJson(Json json);
 }

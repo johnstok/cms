@@ -11,7 +11,6 @@
  */
 package ccc.api;
 
-import ccc.api.Duration;
 import junit.framework.TestCase;
 
 
