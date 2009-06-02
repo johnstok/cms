@@ -13,7 +13,7 @@ import ccc.migration.ServiceLookup;
 public final class Search extends CccApp {
     private static final Logger LOG = Logger.getLogger(Search.class);
 
-    private static Options _options;
+    private static Options options;
     private static ServiceLookup services;
 
     private Search() { super(); }
@@ -27,23 +27,23 @@ public final class Search extends CccApp {
     public static void main(final String[] args) {
         LOG.info("Starting.");
 
-        _options  = parseOptions(args, Options.class);
+        options  = parseOptions(args, Options.class);
 
-        login(_options._username, _options._password);
+        login(options._username, options._password);
 
-        services = new ServiceLookup(_options._app);
+        services = new ServiceLookup(options._app);
 
         final Scheduler s = services.lookupSearchScheduler();
 
-        if ("start".equals(_options._action)) {
+        if ("start".equals(options._action)) {
             s.start();
             LOG.info("Started.");
 
-        } else if ("stop".equals(_options._action)) {
+        } else if ("stop".equals(options._action)) {
             s.stop();
             LOG.info("Stopped.");
 
-        } else if ("running".equals(_options._action)) {
+        } else if ("running".equals(options._action)) {
             final boolean running = s.isRunning();
             LOG.info("Running: "+running+".");
 
@@ -56,6 +56,11 @@ public final class Search extends CccApp {
         report("Finished in ");
     }
 
+    /**
+     * Options for the search scheduler tool.
+     *
+     * @author Civic Computing Ltd.
+     */
     static class Options {
         @Option(
             name="-u", required=true, usage="Username for connecting to CCC.")

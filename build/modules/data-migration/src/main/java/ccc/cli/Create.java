@@ -18,7 +18,7 @@ import ccc.migration.ServiceLookup;
 public final class Create extends CccApp {
     private static final Logger LOG = Logger.getLogger(Create.class);
 
-    private static Options _options;
+    private static Options options;
     private static ServiceLookup services;
 
     private Create() { /* NO-OP */ }
@@ -32,11 +32,11 @@ public final class Create extends CccApp {
     public static void main(final String[] args) {
         LOG.info("Starting.");
 
-        _options  = parseOptions(args, Options.class);
+        options  = parseOptions(args, Options.class);
 
-        login(_options._username, _options._password);
+        login(options._username, options._password);
 
-        services = new ServiceLookup(_options._app);
+        services = new ServiceLookup(options._app);
 
         createSchemaStructure();
 
@@ -74,6 +74,11 @@ public final class Create extends CccApp {
         }
     }
 
+    /**
+     * Options for the default layout tool.
+     *
+     * @author Civic Computing Ltd.
+     */
     static class Options {
         @Option(
             name="-u", required=true, usage="Username for connecting to CCC.")

@@ -13,19 +13,21 @@ package ccc.migration;
 
 
 /**
- * TODO: Add Description for this type.
+ * A file from CCC6.
  *
  * @author Civic Computing Ltd.
  */
 public class LegacyFile {
+    /** _title : String. */
     public final String _title;
+    /** _description : String. */
     public final String _description;
 
     /**
      * Constructor.
      *
-     * @param title
-     * @param description
+     * @param title The file's title.
+     * @param description The file's description.
      */
     public LegacyFile(final String title, final String description) {
         _title = title;

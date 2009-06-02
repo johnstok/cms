@@ -111,6 +111,11 @@ public class FileUpload extends CccApp {
     }
 
 
+    /**
+     * Options for the file upload tool.
+     *
+     * @author Civic Computing Ltd.
+     */
     private static class Options {
         @Option(
             name="-u", required=true, usage="Username for connecting to CCC.")

@@ -55,8 +55,10 @@ public class LegacyDBQueries {
      * Returns list of all paragraphs with active version for specified
      * page. Sequences are not joined.
      *
-     * @param pageId pageId
-     * @return list of paragraphs found with query
+     * @param pageId The page's id.
+     * @param version The page's version.
+     *
+     * @return A list of paragraph beans.
      */
     public List<ParagraphBean> selectParagraphs(final int pageId,
                                                 final int version) {
@@ -65,10 +67,10 @@ public class LegacyDBQueries {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Determine all the paragraph versions for a page.
      *
-     * @param pageId
-     * @return
+     * @param pageId The page's id.
+     * @return The paragraph versions, as a list of integers.
      */
     public List<Integer> selectParagraphVersions(final int pageId) {
         final ParagraphVersionsSelector rsh = new ParagraphVersionsSelector();
@@ -90,6 +92,8 @@ public class LegacyDBQueries {
      * Sets email for the specified user.
      *
      * @param userId The user ID.
+     *
+     * @return The user's email address, as a string.
      */
     public String selectEmailForUser(final int userId) {
         final UserEmailSelector rsh = new UserEmailSelector();
@@ -100,6 +104,8 @@ public class LegacyDBQueries {
      * Sets roles for the specified user.
      *
      * @param userId The user ID.
+     *
+     * @return The user's roles, as a set of strings.
      */
     public Set<String> selectRolesForUser(final int userId) {
         final UserRolesSelector rsh = new UserRolesSelector();
@@ -137,7 +143,7 @@ public class LegacyDBQueries {
      *
      * @return The files as FileDeltas.
      */
-    public Map<String,LegacyFile> selectFiles() {
+    public Map<String, LegacyFile> selectFiles() {
         final FileSelector query = new FileSelector();
         return _db.select(query, "FILE");
     }
@@ -147,7 +153,7 @@ public class LegacyDBQueries {
      *
      * @return The images as FileDeltas.
      */
-    public Map<String,LegacyFile> selectImages() {
+    public Map<String, LegacyFile> selectImages() {
         final FileSelector query = new FileSelector();
         return _db.select(query, "IMAGE");
     }

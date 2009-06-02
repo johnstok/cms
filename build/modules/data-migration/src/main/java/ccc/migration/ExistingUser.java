@@ -19,17 +19,40 @@ import ccc.api.UserDelta;
  * @author Civic Computing Ltd.
  */
 public class ExistingUser {
-    public final UserDelta _user;
-    public final String    _password;
+    /** _user : UserDelta. */
+    private final UserDelta _user;
+    /** _password : String. */
+    private final String    _password;
 
     /**
      * Constructor.
      *
-     * @param user
-     * @param password
+     * @param user The user details.
+     * @param password The user's password.
      */
-    public ExistingUser(final UserDelta user, final String password) {
+    public ExistingUser(final UserDelta user,
+                        final String password) {
         _user = user;
         _password = password;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the user details.
+     */
+    UserDelta getUser() {
+        return _user;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the user password.
+     */
+    String getPassword() {
+        return _password;
     }
 }

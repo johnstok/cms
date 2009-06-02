@@ -15,19 +15,19 @@ import ccc.migration.ccc6.handlers.SqlQuery;
 
 
 /**
- * TODO: Add Description for this type.
+ * API for CCC6 database operations.
  *
  * @author Civic Computing Ltd.
  */
 public interface DB {
 
     /**
-     * TODO: Add a description of this method.
+     * Execute a SQL query.
      *
-     * @param <T>
-     * @param q
-     * @param param
-     * @return
+     * @param <T> The type of result the select method will return.
+     * @param q The SQL query.
+     * @param param The queries parameters.
+     * @return An instance of type T.
      */
-    public <T> T select(final SqlQuery<T> q, final Object... param);
+    <T> T select(final SqlQuery<T> q, final Object... param);
 }

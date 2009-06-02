@@ -27,6 +27,7 @@ import ccc.api.UserSummary;
  * @author Civic Computing Ltd.
  */
 public class UserMigration {
+    private static final int MIN_PW_LENGTH = 6;
     private static Logger log = Logger.getLogger(Migrations.class);
 
     private final LegacyDBQueries _legacyQueries;
@@ -62,21 +63,21 @@ public class UserMigration {
                 // TODO: improve reporting
                 final ExistingUser ud = mu.getValue();
 
-//                if (null == ud._password) {
-//                    log.warn(
-//                        "User: "+ud._user.getUsername()
-//                        +" has null password.");
-//                } else if (ud._password.equals(
-//                               ud._user.getUsername().toString())) {
-//                    log.warn("User: "+ud._user.getUsername()
-//                        +" has username as a password.");
-//                } else if (ud._password.length() < MIN_PW_LENGTH) {
-//                    log.warn("User: "+ud._user.getUsername()
-//                        +" has password with less than 6 characters.");
-//                }
+                if (null == ud.getPassword()) {
+                    log.warn(
+                        "User: "+ud.getUser().getUsername()
+                        +" has null password.");
+                } else if (ud.getPassword().equals(
+                               ud.getUser().getUsername().toString())) {
+                    log.warn("User: "+ud.getUser().getUsername()
+                        +" has username as a password.");
+                } else if (ud.getPassword().length() < MIN_PW_LENGTH) {
+                    log.warn("User: "+ud.getUser().getUsername()
+                        +" has password with less than 6 characters.");
+                }
 
                 final UserSummary u =
-                    _commands.createUser(ud._user, ud._password);
+                    _commands.createUser(ud.getUser(), ud.getPassword());
                 _users.put(mu.getKey(), u);
             } catch (final RuntimeException e) {
                 log.warn(
