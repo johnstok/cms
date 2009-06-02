@@ -15,7 +15,7 @@ package ccc.contentcreator.dialogs;
 import static ccc.contentcreator.validation.Validations.minLength;
 import static ccc.contentcreator.validation.Validations.notEmpty;
 import static ccc.contentcreator.validation.Validations.notValidEmail;
-import static ccc.contentcreator.validation.Validations.notValidResourceName;
+import static ccc.contentcreator.validation.Validations.notValidUserName;
 import static ccc.contentcreator.validation.Validations.reportErrors;
 
 import java.util.HashSet;
@@ -108,7 +108,7 @@ public class EditUserDialog extends AbstractEditDialog {
                     .check(notEmpty(_email))
                     .stopIfInError()
                     .check(minLength(_username, Globals.MIN_USER_NAME_LENGTH))
-                    .check(notValidResourceName(_username))
+                    .check(notValidUserName(_username))
                     .check(notValidEmail(_email))
                     .check(uniqueUsername(_userDTO,
                         new Username(_username.getValue())))

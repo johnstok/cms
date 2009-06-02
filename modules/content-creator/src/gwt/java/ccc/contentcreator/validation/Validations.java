@@ -45,10 +45,12 @@ public class Validations {
 
     private static final String  VALID_CHARACTERS = "[\\.\\-\\w]+";
 
+    private static final String  VALID_USERNAME_CHARACTERS = "[\\w]+";
+
     private static final String  NO_BRACKETS = "[^<^>]*";
 
     private static final String VALID_EMAIL =
-        "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*"
+        "[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*"
         + "@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*"
         +"[a-z0-9])?";
 
@@ -129,6 +131,26 @@ public class Validations {
     }
 
     /**
+     * Validates user name. Fails if name contains spaces etc.
+     *
+     * @param name User name
+     * @return The Validator
+     */
+    public static Validator notValidUserName(final TextField<String> name) {
+        return new Validator() {
+            public void validate(final Validate validate) {
+                if(!name.getValue().matches(VALID_USERNAME_CHARACTERS)) {
+                    validate.addMessage(
+                        name.getFieldLabel()
+                        + " "+_uiConstants.isNotValidUserName()
+                    );
+                }
+                validate.next();
+            }
+        };
+    }
+
+    /**
      * Checks that the folder does not contain given resource name.
      *
      * @param folder FolderDTO to check
@@ -166,8 +188,7 @@ public class Validations {
     public static Validator notValidEmail(final TextField<String> email) {
         return new Validator() {
             public void validate(final Validate validate) {
-                String lowerCaseEmail = email.getValue().toLowerCase();
-                if(!lowerCaseEmail.matches(VALID_EMAIL)) {
+                if(!email.getValue().matches(VALID_EMAIL)) {
                     validate.addMessage(
                         email.getFieldLabel()
                         + " "+_uiConstants.isNotValid()

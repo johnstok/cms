@@ -79,6 +79,10 @@ public class UserTable extends TablePanel {
     private final Grid<UserSummaryModelData> _grid;
     private final PagingToolBar _pagerBar;
 
+    private static final int PAGING_ROW_COUNT = 20;
+
+    private static final int COLUMN_WIDTH = 400;
+
     /**
      * Constructor.
      */
@@ -119,7 +123,7 @@ public class UserTable extends TablePanel {
         _grid.addPlugin(gp);
         add(_grid);
 
-        _pagerBar = new PagingToolBar(20);
+        _pagerBar = new PagingToolBar(PAGING_ROW_COUNT);
         setBottomComponent(_pagerBar);
     }
 
@@ -193,13 +197,13 @@ public class UserTable extends TablePanel {
         final ColumnConfig usernameColumn = new ColumnConfig();
         usernameColumn.setId(UserSummaryModelData.Property.USERNAME.name());
         usernameColumn.setHeader(_constants.username());
-        usernameColumn.setWidth(400);
+        usernameColumn.setWidth(COLUMN_WIDTH);
         configs.add(usernameColumn);
 
         final ColumnConfig emailColumn = new ColumnConfig();
         emailColumn.setId(UserSummaryModelData.Property.EMAIL.name());
         emailColumn.setHeader(_constants.email());
-        emailColumn.setWidth(400);
+        emailColumn.setWidth(COLUMN_WIDTH);
         configs.add(emailColumn);
 
         return configs;
@@ -311,6 +315,7 @@ public class UserTable extends TablePanel {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void updatePager(final Collection<UserSummary> data){
         final PagingModelMemoryProxy proxy =
             new PagingModelMemoryProxy(DataBinding.bindUserSummary(data));
@@ -318,7 +323,7 @@ public class UserTable extends TablePanel {
         loader.setRemoteSort(true);
         _detailsStore = new ListStore<UserSummaryModelData>(loader);
         _pagerBar.bind(loader);
-        loader.load(0, 20);
+        loader.load(0, PAGING_ROW_COUNT);
         final ColumnModel cm = _grid.getColumnModel();
         _grid.reconfigure(_detailsStore, cm);
     }
