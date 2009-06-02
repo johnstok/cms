@@ -69,7 +69,7 @@
 <tr>
 	<td>type</td>
 	<td>content xml</td>
-	<td>&lt;fields&gt;&lt;field name=&quot;textfield&quot; type=&quot;text_field&quot; regexp=&quot;123&quot;/&gt;&lt;field name=&quot;textarea&quot; type=&quot;text_area&quot;/&gt;&lt;field name=&quot;date&quot; type=&quot;date&quot;/&gt;&lt;/fields&gt;</td>
+	<td>&lt;fields&gt;&lt;field name=&quot;textfield&quot; type=&quot;text_field&quot; regexp=&quot;123&quot;/&gt;&lt;field name=&quot;textarea&quot; type=&quot;text_area&quot;/&gt;&lt;/fields&gt;</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -137,11 +137,6 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertTextPresent</td>
-	<td>date:</td>
-	<td></td>
-</tr>
-<tr>
 	<td>type</td>
 	<td>Name</td>
 	<td>pagenameRegexp</td>
@@ -162,11 +157,6 @@
 	<td>second</td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>//div[@id='date']/input</td>
-	<td>28/05/2009</td>
-</tr>
-<tr>
 	<td>click</td>
 	<td>next</td>
 	<td></td>
@@ -183,7 +173,7 @@
 </tr>
 <tr>
 	<td>assertAlert</td>
-	<td>[Regular expression validation failed for:  textfield, regexp: 123 ]</td>
+	<td>regexp:[Regular expression validation failed for:*textfield, regexp: 123*]</td>
 	<td></td>
 </tr>
 <tr>
@@ -252,11 +242,6 @@
 	<td>second</td>
 </tr>
 <tr>
-	<td>assertValue</td>
-	<td>//div[@id='date']/input</td>
-	<td>28/05/2009</td>
-</tr>
-<tr>
 	<td>type</td>
 	<td>textfield</td>
 	<td>first2</td>
@@ -268,7 +253,7 @@
 </tr>
 <tr>
 	<td>assertAlert</td>
-	<td>[Regular expression validation failed for:  textfield, regexp: 123 ]</td>
+	<td>regexp:[Regular expression validation failed for:*textfield, regexp: 123*]</td>
 	<td></td>
 </tr>
 <tr>
