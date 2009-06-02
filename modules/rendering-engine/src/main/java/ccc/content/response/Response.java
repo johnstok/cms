@@ -108,9 +108,11 @@ public class Response {
                 "Cache-Control", "no-store, must-revalidate, max-age=0"));
             _headers.add(new DateHeader("Expires", new Date(0)));
         } else {
-            // Pragma needs to set to NULL because tomcat is adding "pragma:no-cache"
-            // otherwise. See https://issues.apache.org/bugzilla/show_bug.cgi?id=27122
-            // and  http://www.mail-archive.com/tomcat-user@jakarta.apache.org/msg151294.html
+    /* Pragma needs to be set to NULL because tomcat is adding
+     * "pragma:no-cache" otherwise. See
+     * https://issues.apache.org/bugzilla/show_bug.cgi?id=27122 and
+     * http://www.mail-archive.com/tomcat-user@jakarta.apache.org/msg151294.html
+     */
             _headers.add(new StringHeader("Pragma", null));
             final Date now = new Date();
             final Date expiryDate =
