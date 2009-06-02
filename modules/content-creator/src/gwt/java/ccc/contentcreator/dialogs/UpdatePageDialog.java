@@ -95,7 +95,7 @@ public class UpdatePageDialog
     }
 
     private void drawGUI(final String pageName) {
-        _panel.setScrollMode(Style.Scroll.ALWAYS);
+        _panel.setScrollMode(Style.Scroll.AUTOY);
         _panel.createFields(_template.getDefinition());
         _panel.populateFields(_page, pageName);
         _panel.layout();
