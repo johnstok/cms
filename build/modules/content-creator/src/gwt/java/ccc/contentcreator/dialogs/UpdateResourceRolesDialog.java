@@ -74,7 +74,7 @@ public class UpdateResourceRolesDialog
                     roleString = "";
                 }
                 final String[] roles =
-                    roleString.split("\n"); // FIXME: what about \r?
+                    roleString.split("\n|\r|\r\n");
                 for (final String role : roles) {
                     final String cleanRole = role.trim();
                     if (cleanRole.length() > 0) {

@@ -12,7 +12,11 @@
 package ccc.contentcreator.dialogs;
 
 
-import static ccc.contentcreator.validation.Validations.*;
+import static ccc.contentcreator.validation.Validations.minLength;
+import static ccc.contentcreator.validation.Validations.notEmpty;
+import static ccc.contentcreator.validation.Validations.notValidEmail;
+import static ccc.contentcreator.validation.Validations.notValidResourceName;
+import static ccc.contentcreator.validation.Validations.reportErrors;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -127,7 +131,7 @@ public class EditUserDialog extends AbstractEditDialog {
 
                 final Set<String> validRoles = new HashSet<String>();
                 final String[] roles =
-                    _roles.getValue().split("\n"); // FIXME: what about \r?
+                    _roles.getValue().split("\n|\r|\r\n");
                 for (final String role : roles) {
                     final String cleanRole = role.trim();
                     if (cleanRole.length() > 0) {

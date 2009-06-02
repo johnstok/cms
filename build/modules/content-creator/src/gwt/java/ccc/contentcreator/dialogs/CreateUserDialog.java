@@ -12,7 +12,13 @@
 package ccc.contentcreator.dialogs;
 
 
-import static ccc.contentcreator.validation.Validations.*;
+import static ccc.contentcreator.validation.Validations.matchingPasswords;
+import static ccc.contentcreator.validation.Validations.minLength;
+import static ccc.contentcreator.validation.Validations.notEmpty;
+import static ccc.contentcreator.validation.Validations.notValidEmail;
+import static ccc.contentcreator.validation.Validations.notValidResourceName;
+import static ccc.contentcreator.validation.Validations.passwordStrength;
+import static ccc.contentcreator.validation.Validations.reportErrors;
 
 import java.util.HashSet;
 
@@ -32,7 +38,7 @@ import com.google.gwt.core.client.GWT;
 
 
 /**
- * TODO Add Description for this type.
+ * Dialog for user creation.
  *
  * @author Civic Computing Ltd
  */
