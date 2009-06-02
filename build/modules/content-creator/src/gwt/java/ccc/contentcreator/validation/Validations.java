@@ -166,7 +166,8 @@ public class Validations {
     public static Validator notValidEmail(final TextField<String> email) {
         return new Validator() {
             public void validate(final Validate validate) {
-                if(!email.getValue().matches(VALID_EMAIL)) {
+                String lowerCaseEmail = email.getValue().toLowerCase();
+                if(!lowerCaseEmail.matches(VALID_EMAIL)) {
                     validate.addMessage(
                         email.getFieldLabel()
                         + " "+_uiConstants.isNotValid()
