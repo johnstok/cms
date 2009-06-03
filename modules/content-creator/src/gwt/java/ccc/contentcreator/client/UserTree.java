@@ -47,7 +47,7 @@ public class UserTree extends Tree {
     public static final String SEARCH = "Search";
 
     /**
-     * TODO: Add Description for this type.
+     * Selection listener for {@link UserTree}.
      *
      * @author Civic Computing Ltd.
      */
@@ -106,7 +106,7 @@ public class UserTree extends Tree {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Sets user table to be the content of the right hand pane.
      */
     public void showTable() {
         _view.setRightHandPane(_ut);

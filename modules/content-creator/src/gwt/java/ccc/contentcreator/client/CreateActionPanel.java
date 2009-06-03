@@ -72,7 +72,10 @@ public class CreateActionPanel
                     final DataList l = (DataList) ce.component;
                     _parameters.removeAll();
 
-                    switch (l.getSelectedItem().<CommandType>getData("action-id")) {
+                    CommandType data =
+                        l.getSelectedItem().<CommandType>getData("action-id");
+
+                    switch (data) {
                         case RESOURCE_PUBLISH:
                             _pPanel = new EmptyPanel(
                                 _uiConstants.publish(),

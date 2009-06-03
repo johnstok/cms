@@ -17,7 +17,6 @@ import java.util.List;
 
 import ccc.api.UserDelta;
 import ccc.api.UserSummary;
-import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.UserSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
@@ -52,14 +51,11 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 /**
- * TODO: Add Description for this type.
+ * A panel that displays users using {@link Grid}.
  *
  * @author Civic Computing Ltd.
  */
 public class UserTable extends TablePanel {
-
-    /** _constants : UIConstants. */
-    private final UIConstants _constants = Globals.uiConstants();
 
     private ListStore<UserSummaryModelData> _detailsStore =
         new ListStore<UserSummaryModelData>();
@@ -79,8 +75,6 @@ public class UserTable extends TablePanel {
     private final Grid<UserSummaryModelData> _grid;
     private final PagingToolBar _pagerBar;
 
-    private static final int PAGING_ROW_COUNT = 20;
-
     private static final int COLUMN_WIDTH = 400;
 
     /**
@@ -89,15 +83,15 @@ public class UserTable extends TablePanel {
     UserTable() {
 
         setId("UserDetails");
-        setHeading(_constants.userDetails());
+        setHeading(UI_CONSTANTS.userDetails());
         setLayout(new FitLayout());
 
         _searchString = new TextField<String>();
-        _searchString.setToolTip(_constants.searchToolTip());
+        _searchString.setToolTip(UI_CONSTANTS.searchToolTip());
         _searchString.setId("searchString");
         _ti = new AdapterToolItem(_searchString);
 
-        _searchButton = new TextToolItem(_constants.search());
+        _searchButton = new TextToolItem(UI_CONSTANTS.search());
         _searchButton.setId("searchButton");
 
         _searchButton.addListener(Events.Select, new SearchListener());
@@ -128,7 +122,7 @@ public class UserTable extends TablePanel {
     }
 
     private MenuItem createEditUserMenu(final Grid<UserSummaryModelData> grid) {
-        final MenuItem editUser = new MenuItem(_constants.editUser());
+        final MenuItem editUser = new MenuItem(UI_CONSTANTS.editUser());
         editUser.setId("editUserMenu");
         editUser.addSelectionListener(
             new SelectionListener<MenuEvent>() {
@@ -140,7 +134,7 @@ public class UserTable extends TablePanel {
                         new AsyncCallback<UserDelta>(){
                             public void onFailure(final Throwable arg0) {
                                 Globals.unexpectedError(
-                                    arg0, _constants.editUser());
+                                    arg0, UI_CONSTANTS.editUser());
                             }
                             public void onSuccess(final UserDelta delta) {
                                 new EditUserDialog(
@@ -156,7 +150,7 @@ public class UserTable extends TablePanel {
     }
 
     private MenuItem createEditPwMenu(final Grid<UserSummaryModelData> grid) {
-        final MenuItem editUserPw = new MenuItem(_constants.editUserPw());
+        final MenuItem editUserPw = new MenuItem(UI_CONSTANTS.editUserPw());
         editUserPw.setId("editUserPwMenu");
         editUserPw.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override public void componentSelected(final MenuEvent ce) {
@@ -170,15 +164,15 @@ public class UserTable extends TablePanel {
 
     private void createToolBar() {
         _usernameRadio.setName("Username");
-        _usernameRadio.setBoxLabel(_constants.username());
+        _usernameRadio.setBoxLabel(UI_CONSTANTS.username());
         _usernameRadio.setValue(Boolean.TRUE);
         _usernameRadio.setId("usernameRadio");
 
         _emailRadio.setName("Email");
-        _emailRadio.setBoxLabel(_constants.email());
+        _emailRadio.setBoxLabel(UI_CONSTANTS.email());
         _emailRadio.setId("emailRadio");
 
-        _radioGroup.setFieldLabel(_constants.searchField());
+        _radioGroup.setFieldLabel(UI_CONSTANTS.searchField());
         _radioGroup.add(_usernameRadio);
         _radioGroup.add(_emailRadio);
         _toolBar.add(new AdapterToolItem(_radioGroup));
@@ -190,19 +184,21 @@ public class UserTable extends TablePanel {
         _toolBar.disable();
     }
 
-    private List<ColumnConfig> createColumnConfigs(final ContextActionGridPlugin gp) {
+    private List<ColumnConfig> createColumnConfigs(
+        final ContextActionGridPlugin gp) {
+
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
         configs.add(gp);
 
         final ColumnConfig usernameColumn = new ColumnConfig();
         usernameColumn.setId(UserSummaryModelData.Property.USERNAME.name());
-        usernameColumn.setHeader(_constants.username());
+        usernameColumn.setHeader(UI_CONSTANTS.username());
         usernameColumn.setWidth(COLUMN_WIDTH);
         configs.add(usernameColumn);
 
         final ColumnConfig emailColumn = new ColumnConfig();
         emailColumn.setId(UserSummaryModelData.Property.EMAIL.name());
-        emailColumn.setHeader(_constants.email());
+        emailColumn.setHeader(UI_CONSTANTS.email());
         emailColumn.setWidth(COLUMN_WIDTH);
         configs.add(emailColumn);
 
@@ -210,7 +206,7 @@ public class UserTable extends TablePanel {
     }
 
     /**
-     * TODO: Add a description of this method.
+     *  Displays selection of users based on selected item.
      *
      * @param selectedItem The selected TreeItem.
      */

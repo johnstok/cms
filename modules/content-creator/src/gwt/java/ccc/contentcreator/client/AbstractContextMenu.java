@@ -30,9 +30,12 @@ public class AbstractContextMenu
     extends
         Menu {
 
+    /** USER_ACTIONS : ActionNameConstants. */
     protected static final ActionNameConstants USER_ACTIONS =
         GWT.create(ActionNameConstants.class);
+    /** _constants : UIConstants. */
     protected final UIConstants _constants = Globals.uiConstants();
+    /** _qs : QueriesServiceAsync. */
     protected final QueriesServiceAsync _qs = Globals.queriesService();
 
     private final SingleSelectionModel _ssm;
@@ -77,5 +80,4 @@ public class AbstractContextMenu
         final MenuItem menuItem = createMenuItem(id, text, action);
         add(menuItem);
     }
-
 }
