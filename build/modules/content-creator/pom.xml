@@ -77,32 +77,26 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>gwt-tests</id>
-                        <phase>integration-test</phase>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                        <configuration>
-                            <argLine>-Xmx256M -Xss4M</argLine>
-                            <useSystemClassLoader>false</useSystemClassLoader>
-                            <additionalClasspathElements>
-                                <additionalClasspathElement>${basedir}/src/main/java</additionalClasspathElement>
-                                <additionalClasspathElement>${basedir}/src/main/resources</additionalClasspathElement>
-                                <additionalClasspathElement>${basedir}/src/test/java</additionalClasspathElement>
-                                <additionalClasspathElement>${basedir}/src/test/resources</additionalClasspathElement>
-                                <additionalClasspathElement>${basedir}/../public-api/src/main/java</additionalClasspathElement>
-                            </additionalClasspathElements>
-                            <excludes>
-                                <exclude>**/*$*</exclude>
-                            </excludes>
-                            <includes>
-                                <include>ccc/contentcreator/actions/ClearWorkingCopyActionGwtTest.java</include>
-                            </includes>
-                        </configuration>
-                    </execution>
-                </executions>
+                    <configuration>
+                        <argLine>-Xmx256M -Xss4M</argLine>
+                        <useSystemClassLoader>false</useSystemClassLoader>
+                        <additionalClasspathElements>
+                            <additionalClasspathElement>${basedir}/src/main/java</additionalClasspathElement>
+                            <additionalClasspathElement>${basedir}/src/main/resources</additionalClasspathElement>
+                            <additionalClasspathElement>${basedir}/src/test/java</additionalClasspathElement>
+                            <additionalClasspathElement>${basedir}/src/test/resources</additionalClasspathElement>
+                            <additionalClasspathElement>${basedir}/../public-api/src/main/java</additionalClasspathElement>
+                        </additionalClasspathElements>
+                        <includes>
+                            <!-- Default surefire patterns. -->
+                            <include>**/Test*.java</include>
+                            <include>**/*Test.java</include>
+                            <include>**/*TestCase.java</include>
+                            
+                            <!-- GWT test suites. -->
+                            <include>ccc/contentcreator/ContentCreatorGwtTestSuite.java</include>
+                        </includes>
+                    </configuration>
             </plugin>
         </plugins>
     </build>

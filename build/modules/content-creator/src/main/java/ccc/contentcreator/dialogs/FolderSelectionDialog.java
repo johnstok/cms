@@ -26,11 +26,14 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 
 
 /**
- * TODO: Add Description for this type.
+ * A dialog used to choose a single folder.
  *
  * @author Civic Computing Ltd.
  */
 public class FolderSelectionDialog extends Window {
+
+    private final int _height = 225;
+    private final int _width = 400;
 
     private final FolderResourceTree _tree;
     private final UIConstants _constants = Globals.uiConstants();
@@ -45,8 +48,8 @@ public class FolderSelectionDialog extends Window {
         setBodyStyle("backgroundColor: white;");
         setScrollMode(Scroll.AUTOY);
         setHeading(_constants.selectFolder());
-        setWidth(400);
-        setHeight(225);
+        setWidth(_width);
+        setHeight(_height);
         setLayout(new FitLayout());
         _tree = new FolderResourceTree(root);
         add(_tree);
@@ -56,10 +59,9 @@ public class FolderSelectionDialog extends Window {
                 @Override
                 public void componentSelected(final ComponentEvent ce) {
                     if (null==_tree.getSelectedItem()) {
-                        // Error!
-                    } else {
-                        close();
+                        return; // No selection made.
                     }
+                    close();
                 }});
         save.setId("FolderSelectSave");
         addButton(save);
