@@ -84,6 +84,7 @@
                             <goal>test</goal>
                         </goals>
                         <configuration>
+                            <argLine>-Xmx512m</argLine>
                             <useSystemClassLoader>false</useSystemClassLoader>
                             <additionalClasspathElements>
                                 <additionalClasspathElement>${basedir}/src/main/java</additionalClasspathElement>
