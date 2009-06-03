@@ -11,8 +11,8 @@
  */
 package ccc.migration;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -257,7 +257,9 @@ public class Migrations {
     private List<Integer> determinePageVersions(final ResourceBean r) {
 
         if (DEBUG) {
-            return Collections.singletonList(Integer.valueOf(0));
+            final List<Integer> only0 = new ArrayList<Integer>();
+            only0.add(Integer.valueOf(0));
+            return only0;
         }
 
         final List<Integer> paragraphVersions =
