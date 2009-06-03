@@ -59,6 +59,7 @@
                                     fork="true" failonerror="true">
                                     <jvmarg value="-Xmx256M"/>
                                     <jvmarg value="-Xss4M"/>
+                                    <jvmarg value="-Dgwt.nowarn.legacy.tools"/>
                                     <arg value="-out" />
                                     <arg value="${basedir}/target/www" />
                                     <arg
@@ -84,7 +85,7 @@
                             <goal>test</goal>
                         </goals>
                         <configuration>
-                            <argLine>-Xmx512m</argLine>
+                            <argLine>-Xmx256M -Xss4M</argLine>
                             <useSystemClassLoader>false</useSystemClassLoader>
                             <additionalClasspathElements>
                                 <additionalClasspathElement>${basedir}/src/main/java</additionalClasspathElement>
