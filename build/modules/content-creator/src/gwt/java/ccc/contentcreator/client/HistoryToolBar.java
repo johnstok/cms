@@ -18,7 +18,7 @@ import ccc.contentcreator.dialogs.HistoryDialog;
 
 
 /**
- * TODO: Add Description for this type.
+ * Toolbar for resource history dialog.
  *
  * @author Civic Computing Ltd.
  */
@@ -47,7 +47,8 @@ public class HistoryToolBar
             addButton(
                 "create-historical-wc",
                 _constants.revert(),
-                new CreateWorkingCopyFromHistoricalVersionAction(_historyDialog));
+                new CreateWorkingCopyFromHistoricalVersionAction(
+                    _historyDialog));
             addSeparator();
         }
     }

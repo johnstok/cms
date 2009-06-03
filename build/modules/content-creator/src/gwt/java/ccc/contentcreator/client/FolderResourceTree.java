@@ -43,7 +43,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @author Civic Computing Ltd.
  */
 public class FolderResourceTree extends Tree {
-    private final ActionNameConstants USER_ACTIONS =
+
+    private static final ActionNameConstants USER_ACTIONS =
         GWT.create(ActionNameConstants.class);
 
     /**

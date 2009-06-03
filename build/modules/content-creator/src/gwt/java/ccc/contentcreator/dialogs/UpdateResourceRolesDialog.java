@@ -48,7 +48,6 @@ public class UpdateResourceRolesDialog
 
         setWidth(400);
         setHeight(300);
-//        _panel.setLabelAlign(LabelAlign.TOP);
 
         _roles.setFieldLabel(_constants.roles());
         _roles.setId("resource-roles");

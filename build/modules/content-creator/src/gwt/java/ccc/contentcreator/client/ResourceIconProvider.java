@@ -24,6 +24,7 @@ final class ResourceIconProvider
     implements
         ModelStringProvider<ResourceSummaryModelData> {
 
+    /** {@inheritDoc} */
     public String getStringValue(final ResourceSummaryModelData model,
                                  final String property) {
         switch (model.getType()) {

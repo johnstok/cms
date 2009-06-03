@@ -16,7 +16,6 @@ import java.util.List;
 
 import ccc.api.ResourceSummary;
 import ccc.api.UserSummary;
-import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
@@ -39,7 +38,7 @@ import com.extjs.gxt.ui.client.widget.tree.TreeItem;
 
 
 /**
- * TODO: Add Description for this type.
+ * A panel that displays resources using {@link Grid}.
  *
  * @author Civic Computing Ltd.
  */
@@ -49,7 +48,6 @@ public class ResourceTable
     implements
         SingleSelectionModel {
 
-    private final UIConstants _constants = Globals.uiConstants();
     private ListStore<ResourceSummaryModelData> _detailsStore =
         new ListStore<ResourceSummaryModelData>();
 
@@ -74,7 +72,7 @@ public class ResourceTable
         _tree = tree;
         final ToolBar toolBar = new FolderToolBar(this, user);
         setTopComponent(toolBar);
-        setHeading(_constants.resourceDetails());
+        setHeading(UI_CONSTANTS.resourceDetails());
         setLayout(new FitLayout());
 
         final Menu contextMenu = new ResourceContextMenu(this, user);
@@ -93,7 +91,7 @@ public class ResourceTable
         _grid.addPlugin(gp);
         add(_grid);
 
-        _pagerBar = new PagingToolBar(20);
+        _pagerBar = new PagingToolBar(PAGING_ROW_COUNT);
         setBottomComponent(_pagerBar);
     }
 
@@ -113,13 +111,14 @@ public class ResourceTable
      *
      * @param data A list of records to display in the table.
      */
+    @SuppressWarnings("unchecked")
     public void displayResourcesFor(final List<ResourceSummaryModelData> data) {
         final PagingModelMemoryProxy proxy = new PagingModelMemoryProxy(data);
         final PagingLoader loader = new BasePagingLoader(proxy);
         loader.setRemoteSort(true);
         _detailsStore = new ListStore<ResourceSummaryModelData>(loader);
         _pagerBar.bind(loader);
-        loader.load(0, 20);
+        loader.load(0, PAGING_ROW_COUNT);
         final ColumnModel cm = _grid.getColumnModel();
         _grid.reconfigure(_detailsStore, cm);
     }
@@ -129,49 +128,49 @@ public class ResourceTable
         final ColumnConfig typeColumn =
             new ColumnConfig(
                 ResourceSummaryModelData.Property.TYPE.name(),
-                _constants.type(),
+                UI_CONSTANTS.type(),
                 70);
         configs.add(typeColumn);
 
         final ColumnConfig lockedColumn =
             new ColumnConfig(
                 ResourceSummaryModelData.Property.LOCKED.name(),
-                _constants.lockedBy(),
+                UI_CONSTANTS.lockedBy(),
                 80);
         configs.add(lockedColumn);
 
         final ColumnConfig workingCopyColumn =
             new ColumnConfig(
                 ResourceSummaryModelData.Property.WORKING_COPY.name(),
-                _constants.workingCopy(),
+                UI_CONSTANTS.workingCopy(),
                 75);
         configs.add(workingCopyColumn);
 
         final ColumnConfig mmIncludeColumn =
             new ColumnConfig(
                 ResourceSummaryModelData.Property.MM_INCLUDE.name(),
-                _constants.mainMenu(),
+                UI_CONSTANTS.mainMenu(),
                 70);
         configs.add(mmIncludeColumn);
 
         final ColumnConfig publishedByColumn =
             new ColumnConfig(
                 ResourceSummaryModelData.Property.PUBLISHED.name(),
-                _constants.publishedBy(),
+                UI_CONSTANTS.publishedBy(),
                 80);
         configs.add(publishedByColumn);
 
         final ColumnConfig nameColumn =
             new ColumnConfig(
                 ResourceSummaryModelData.Property.NAME.name(),
-                _constants.name(),
+                UI_CONSTANTS.name(),
                 250);
         configs.add(nameColumn);
 
         final ColumnConfig titleColumn =
             new ColumnConfig(
                 ResourceSummaryModelData.Property.TITLE.name(),
-                _constants.title(),
+                UI_CONSTANTS.title(),
                 250);
         configs.add(titleColumn);
     }

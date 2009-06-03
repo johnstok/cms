@@ -16,7 +16,6 @@ import java.util.Collection;
 import java.util.List;
 
 import ccc.api.ActionSummary;
-import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.ActionSummaryModelData;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
@@ -43,7 +42,6 @@ public class ActionTable extends TablePanel {
     private final ListStore<ActionSummaryModelData> _actionStore =
         new ListStore<ActionSummaryModelData>();
     private final Grid<ActionSummaryModelData> _grid;
-    private final UIConstants _constants = Globals.uiConstants();
 
     /**
      * Constructor.
@@ -52,7 +50,7 @@ public class ActionTable extends TablePanel {
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
         setId("action-details");
-        setHeading(_constants.actionDetails());
+        setHeading(UI_CONSTANTS.actionDetails());
         setLayout(new FitLayout());
 
         setTopComponent(new ActionToolBar(this));
@@ -60,33 +58,33 @@ public class ActionTable extends TablePanel {
         addColumn(
             configs,
             ActionSummaryModelData.Property.LOCALISED_TYPE.name(),
-            _constants.action(),
+            UI_CONSTANTS.action(),
             TYPE_COLUMN);
         addColumn(
             configs,
             ActionSummaryModelData.Property.ACTOR.name(),
-            _constants.scheduledBy(),
+            UI_CONSTANTS.scheduledBy(),
             SMALL_COLUMN);
         addColumn(
             configs,
             ActionSummaryModelData.Property.EXECUTE_AFTER.name(),
-            _constants.scheduledFor(),
+            UI_CONSTANTS.scheduledFor(),
             SMALL_COLUMN)
             .setDateTimeFormat(DateTimeFormat.getShortDateTimeFormat());
         addColumn(
             configs,
             ActionSummaryModelData.Property.LOCALISED_STATUS.name(),
-            _constants.status(),
+            UI_CONSTANTS.status(),
             SMALL_COLUMN);
         addColumn(
             configs,
             ActionSummaryModelData.Property.SUBJECT_TYPE.name(),
-            _constants.resourceType(),
+            UI_CONSTANTS.resourceType(),
             SMALL_COLUMN);
         addColumn(
             configs,
             ActionSummaryModelData.Property.PATH.name(),
-            _constants.resourcePath(),
+            UI_CONSTANTS.resourcePath(),
             MEDIUM_COLUMN);
 
         final ColumnModel cm = new ColumnModel(configs);

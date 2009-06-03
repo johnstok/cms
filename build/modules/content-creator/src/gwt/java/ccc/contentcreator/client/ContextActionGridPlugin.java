@@ -21,20 +21,21 @@ import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ComponentPlugin;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
-import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 
 
 /**
- * TODO: Add Description for this type.
+ * {@link ComponentPlugin} for displaying context menu.
  *
  * @author Civic Computing Ltd.
  */
 public class ContextActionGridPlugin
     extends ColumnConfig implements ComponentPlugin {
 
+    /** COLUMN_WIDTH : int. */
+    private static final int COLUMN_WIDTH = 30;
     private Grid<ModelData> _grid;
-    private Menu _contextMenu;
+    private final Menu _contextMenu;
 
     /**
      * Constructor.
@@ -44,7 +45,7 @@ public class ContextActionGridPlugin
     public ContextActionGridPlugin(final Menu contextMenu) {
         _contextMenu = contextMenu;
         setHeader("");
-        setWidth(30);
+        setWidth(COLUMN_WIDTH);
         setSortable(false);
         setResizable(false);
         setFixed(true);

@@ -212,7 +212,8 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         if (id != null && !id.trim().equals("")) {
             final ID resourceId = new ID(id);
             _qs.getAbsolutePath(resourceId,
-                new ErrorReportingCallback<String>(_constants.updateContent()) { // FIXME: Could also be 'create page'.
+                new ErrorReportingCallback<String>(
+                        _constants.updateContent()) { // FIXME: Could also be 'create page'.
 
                 @Override
                 public void onSuccess(final String path) {

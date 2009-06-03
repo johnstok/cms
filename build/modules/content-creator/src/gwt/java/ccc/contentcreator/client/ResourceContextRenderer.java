@@ -19,11 +19,12 @@ import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 
 
 /**
- * TODO: Add Description for this type.
+ * Renderer for resource contextual menu icon.
  *
  * @author Civic Computing Ltd.
  */
-public class ResourceContextRenderer implements GridCellRenderer<ResourceSummaryModelData> {
+public class ResourceContextRenderer
+    implements GridCellRenderer<ResourceSummaryModelData> {
 
     /** {@inheritDoc} */
     @Override
