@@ -344,10 +344,11 @@ public class Validations {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Create a validator that checks a field contains only numeric characters
+     * (0-9).
      *
-     * @param input
-     * @return
+     * @param input The field to validate.
+     * @return A new validator instance.
      */
     public static Validator emptyOrNumber(final TextField<String> input) {
 
@@ -355,8 +356,8 @@ public class Validations {
             public void validate(final Validate validate) {
                 final String value = input.getValue();
                 if(null != value
-                        && !value.trim().equals("")
-                        && !value.matches("^([0-9]|[1-9][0-9]|[1-9][0-9][0-9])$")) {
+                   && !value.trim().equals("")
+                   && !value.matches("^([0-9]|[1-9][0-9]|[1-9][0-9][0-9])$")) {
                     validate.addMessage(
                         input.getFieldLabel()
                         + " "+_uiConstants.isNotValid()
