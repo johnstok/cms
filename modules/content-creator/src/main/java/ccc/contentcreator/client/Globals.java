@@ -33,9 +33,11 @@ import com.google.gwt.user.client.WindowCloseListener;
 /**
  * Global factory class.
  *
+ * @deprecated Use an implementation of the {@link IGlobals} interface instead.
+ *
  * @author Civic Computing Ltd.
  */
-@SuppressWarnings("deprecation")
+@Deprecated
 public final class Globals {
 
     private static final boolean ENABLE_EXIT_CONFIRMATION =
