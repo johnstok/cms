@@ -31,6 +31,10 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public class PageCommentDialog extends AbstractEditDialog {
 
+    /** DIALOG_HEIGHT : int. */
+    private static final int DIALOG_HEIGHT = 300;
+    /** DIALOG_WIDTH : int. */
+    private static final int DIALOG_WIDTH = 400;
     private final ID _pageId;
     private final PageDelta _page;
     private final UpdatePageDialog _updatePageDialog;
@@ -72,8 +76,8 @@ public class PageCommentDialog extends AbstractEditDialog {
         setModal(true);
         setBodyStyle("backgroundColor: white;");
         setHeading(_constants.editComment());
-        setWidth(400);
-        setHeight(300);
+        setWidth(DIALOG_WIDTH);
+        setHeight(DIALOG_HEIGHT);
 
         _majorEdit.setId("majorEdit");
         _majorEdit.setValue(Boolean.FALSE);

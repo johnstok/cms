@@ -237,7 +237,8 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                 } else {
                     queries().templateNameExists(
                         name.getValue(),
-                        new ErrorReportingCallback<Boolean>(USER_ACTIONS.checkUniqueTemplateName()){
+                        new ErrorReportingCallback<Boolean>(
+                                USER_ACTIONS.checkUniqueTemplateName()){
                             public void onSuccess(final Boolean nameExists) {
                                 if (nameExists.booleanValue()) {
                                     validate.addMessage(
@@ -258,35 +259,38 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
         return new Runnable() {
             public void run() {
                 final TemplateDelta delta = model();
-                    switch (_mode) {
-                        case CREATE:
-                            commands().createTemplate(
+                switch (_mode) {
+                    case CREATE:
+                        commands().createTemplate(
                             _parentFolderId,
                             delta,
                             _name.getValue(),
-                            new ErrorReportingCallback<ResourceSummary>(_constants.createTemplate()){
-                                public void onSuccess(final ResourceSummary arg0) {
+                            new ErrorReportingCallback<ResourceSummary>(
+                                    _constants.createTemplate()){
+                                public void onSuccess(
+                                               final ResourceSummary arg0) {
                                     _ssm.create(
                                         new ResourceSummaryModelData(arg0),
                                         _ssm.treeSelection());
                                     close();
                                 }});
-                            break;
-                        case UPDATE:
-                            commands().updateTemplate(
-                                _id,
-                                delta,
-                                new ErrorReportingCallback<Void>(_constants.editTemplate()){
-                                    public void onSuccess(final Void arg0) {
-                                        _proxy.setTitle(delta.getTitle());
-                                        _ssm.update(_proxy);
-                                        close();
-                                    }});
-                            break;
-                        default:
-                            Globals.alert(constants().error());
-                            break;
-                    }
+                        break;
+                    case UPDATE:
+                        commands().updateTemplate(
+                            _id,
+                            delta,
+                            new ErrorReportingCallback<Void>(
+                                    _constants.editTemplate()){
+                                public void onSuccess(final Void arg0) {
+                                    _proxy.setTitle(delta.getTitle());
+                                    _ssm.update(_proxy);
+                                    close();
+                                }});
+                        break;
+                    default:
+                        Globals.alert(constants().error());
+                    break;
+                }
             }
         };
     }
