@@ -12,29 +12,17 @@
 package ccc.contentcreator.dialogs;
 
 
-import static ccc.contentcreator.validation.Validations.matchingPasswords;
-import static ccc.contentcreator.validation.Validations.minLength;
-import static ccc.contentcreator.validation.Validations.notEmpty;
-import static ccc.contentcreator.validation.Validations.notValidEmail;
-import static ccc.contentcreator.validation.Validations.notValidUserName;
-import static ccc.contentcreator.validation.Validations.passwordStrength;
-import static ccc.contentcreator.validation.Validations.reportErrors;
-
-import java.util.HashSet;
-
-import ccc.api.UserDelta;
-import ccc.api.UserSummary;
-import ccc.api.Username;
-import ccc.contentcreator.api.ActionNameConstants;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
+import ccc.contentcreator.client.EditController;
 import ccc.contentcreator.client.Globals;
-import ccc.contentcreator.validation.Validate;
-import ccc.contentcreator.validation.Validator;
+import ccc.contentcreator.client.IGlobals;
+import ccc.contentcreator.client.IGlobalsImpl;
+import ccc.contentcreator.client.SubmitControllerSelectionListener;
+import ccc.contentcreator.controllers.CreateUserController;
+import ccc.contentcreator.views.ICreateUserDialog;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.TextField;
-import com.google.gwt.core.client.GWT;
 
 
 /**
@@ -42,15 +30,19 @@ import com.google.gwt.core.client.GWT;
  *
  * @author Civic Computing Ltd
  */
-public class CreateUserDialog extends AbstractEditDialog {
-    private static final ActionNameConstants USER_ACTIONS =
-        GWT.create(ActionNameConstants.class);
+public class CreateUserDialog
+    extends
+        AbstractEditDialog
+    implements
+        ICreateUserDialog {
 
     private static final int LABEL_WIDTH = 150;
+    private final IGlobals _globals = new IGlobalsImpl();
     private final TextField<String> _username = new TextField<String>();
     private final TextField<String> _password1 = new TextField<String>();
     private final TextField<String> _password2 = new TextField<String>();
     private final TextField<String> _email = new TextField<String>();
+    private final EditController _controller;
 
     /**
      * Constructor.
@@ -58,11 +50,13 @@ public class CreateUserDialog extends AbstractEditDialog {
     public CreateUserDialog() {
         super(Globals.uiConstants().createUser());
 
+        _controller = new CreateUserController(this, _globals);
+
         setLabelWidth(LABEL_WIDTH); // Long labels, should fit to one line.
 
         _username.setFieldLabel(constants().username());
         _username.setAllowBlank(false);
-        _username.setMinLength(Globals.MIN_USER_NAME_LENGTH);
+        _username.setMinLength(_globals.MIN_USER_NAME_LENGTH);
         _username.setId(constants().username());
         addField(_username);
 
@@ -83,81 +77,29 @@ public class CreateUserDialog extends AbstractEditDialog {
         _password2.setId(constants().confirmPassword());
         addField(_password2);
 
-
         setPanelId("UserPanel");
     }
 
+
     /** {@inheritDoc} */
-    @Override protected SelectionListener<ButtonEvent> saveAction() {
-        return new SelectionListener<ButtonEvent>() {
-            @Override public void componentSelected(final ButtonEvent ce) {
-                Validate.callTo(createUser())
-                    .check(notEmpty(_username))
-                    .check(notEmpty(_email))
-                    .check(notEmpty(_password1))
-                    .check(notEmpty(_password2))
-                    .stopIfInError()
-                    .check(minLength(_username, Globals.MIN_USER_NAME_LENGTH))
-                    .check(notValidUserName(_username))
-                    .check(notValidEmail(_email))
-                    .check(matchingPasswords(
-                        _password1.getValue(), _password2.getValue()))
-                    .check(passwordStrength(_password1.getValue()))
-                    .check(uniqueUsername(new Username(_username.getValue())))
-                    .callMethodOr(reportErrors());
-            }
-        };
+    @Override
+    protected SelectionListener<ButtonEvent> saveAction() {
+        return new SubmitControllerSelectionListener(_controller);
     }
 
-    /**
-     * Factory method for username validators.
-     *
-     * @param username The username to check.
-     * @return A new instance of the username validator.
-     */
-    private Validator uniqueUsername(final Username username) {
-        return new Validator() {
-            public void validate(final Validate validate) {
-                Globals.queriesService().usernameExists(
-                    username,
-                    new ErrorReportingCallback<Boolean>(USER_ACTIONS.checkUniqueUsername()){
-                        public void onSuccess(final Boolean exists) {
-                            if (exists) {
-                                validate.addMessage(
-                                    _messages.userWithUsernameAlreadyExists(username)
-                                );
-                            }
-                            validate.next();
-                        }
-                    }
-                );
-            }
 
-        };
-    }
+    /** {@inheritDoc} */
+    public final TextField<String> getUsername() { return _username; }
 
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @return
-     */
-    private Runnable createUser() {
-        return new Runnable() {
-            public void run() {
-                Globals.commandService().createUser(
-                    new UserDelta(
-                        _email.getValue(),
-                        new Username(_username.getValue()),
-                        new HashSet<String>()),
-                    _password1.getValue(),
-                    new ErrorReportingCallback<UserSummary>(_constants.createUser()) {
-                        public void onSuccess(final UserSummary result) {
-                            // TODO: Refresh the main window.
-                            close();
-                        }
-                    }
-                );
-            }
-        };
-    }
+
+    /** {@inheritDoc} */
+    public final TextField<String> getPassword1() { return _password1; }
+
+
+    /** {@inheritDoc} */
+    public final TextField<String> getPassword2() { return _password2; }
+
+
+    /** {@inheritDoc} */
+    public final TextField<String> getEmail() { return _email; }
 }
