@@ -26,12 +26,16 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 
 
 /**
- * TODO: Add Description for this type.
+ * Dialog for resource selection.
  *
  * @author Civic Computing Ltd.
  */
 public class ResourceSelectionDialog extends Window {
 
+    /** DIALOG_HEIGHT : int. */
+    private static final int DIALOG_HEIGHT = 225;
+    /** DIALOG_WIDTH : int. */
+    private static final int DIALOG_WIDTH = 400;
     private final ResourceTree _tree;
     private final UIConstants _constants = Globals.uiConstants();
 
@@ -45,8 +49,8 @@ public class ResourceSelectionDialog extends Window {
         setBodyStyle("backgroundColor: white;");
         setScrollMode(Scroll.AUTOY);
         setHeading(_constants.selectResource());
-        setWidth(400);
-        setHeight(225);
+        setWidth(DIALOG_WIDTH);
+        setHeight(DIALOG_HEIGHT);
         setLayout(new FitLayout());
 
         _tree = new ResourceTree(targetRoot);

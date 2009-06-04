@@ -35,6 +35,10 @@ public class UpdateResourceRolesDialog
     private final ID _resourceId;
     private final TextArea _roles = new TextArea();
 
+    private static final int DIALOG_WIDTH = 400;
+    private static final int DIALOG_HEIGHT = 300;
+    private static final int ROLES_HEIGHT = 200;
+
     /**
      * Constructor.
      *
@@ -46,12 +50,12 @@ public class UpdateResourceRolesDialog
         super(Globals.uiConstants().updateRoles());
         _resourceId = resourceId;
 
-        setWidth(400);
-        setHeight(300);
+        setWidth(DIALOG_WIDTH);
+        setHeight(DIALOG_HEIGHT);
 
         _roles.setFieldLabel(_constants.roles());
         _roles.setId("resource-roles");
-        _roles.setHeight(200);
+        _roles.setHeight(ROLES_HEIGHT);
         final StringBuilder rolesString = new StringBuilder();
         for (final String role : currentRoles) {
             rolesString.append(role);

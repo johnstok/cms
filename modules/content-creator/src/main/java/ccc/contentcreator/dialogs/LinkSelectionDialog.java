@@ -31,11 +31,17 @@ import com.google.gwt.core.client.GWT;
 
 
 /**
- * TODO: Add Description for this type.
+ * Dialog for FCKEditor link selector.
  *
  * @author Civic Computing Ltd.
  */
 public class LinkSelectionDialog extends LayoutContainer {
+    /** PANEL_HEIGHT : int. */
+    private static final int PANEL_HEIGHT = 460;
+
+    /** PANEL_WIDTH : int. */
+    private static final int PANEL_WIDTH = 620;
+
     private static final ActionNameConstants USER_ACTIONS =
         GWT.create(ActionNameConstants.class);
 
@@ -55,8 +61,8 @@ public class LinkSelectionDialog extends LayoutContainer {
         panel.setBodyStyle("backgroundColor: white;");
         panel.setScrollMode(Scroll.AUTOY);
         panel.setHeaderVisible(false);
-        panel.setWidth(620);
-        panel.setHeight(460);
+        panel.setWidth(PANEL_WIDTH);
+        panel.setHeight(PANEL_HEIGHT);
         panel.setLayout(new FitLayout());
 
         _tree = new ResourceTree(targetRoot);
@@ -73,7 +79,8 @@ public class LinkSelectionDialog extends LayoutContainer {
                     } else {
                         _qs.getAbsolutePath(
                             target.getId(),
-                            new ErrorReportingCallback<String>(USER_ACTIONS.unknownAction()) {
+                            new ErrorReportingCallback<String>(
+                                    USER_ACTIONS.unknownAction()) {
                                 public void onSuccess(final String path) {
                                     jsniSetUrl(path, target.getTitle());
                                     closeWindow();
@@ -101,7 +108,8 @@ public class LinkSelectionDialog extends LayoutContainer {
                 : (ResourceSummaryModelData) _tree.getSelectedItem().getModel();
     }
 
-    private static native String jsniSetUrl(String selectedUrl, String title) /*-{
+    private static native String jsniSetUrl(String selectedUrl,
+                                            String title) /*-{
     $wnd.opener.FCK.InsertHtml("<a href='"+selectedUrl+"'>"+title+"</a>");
     }-*/;
 

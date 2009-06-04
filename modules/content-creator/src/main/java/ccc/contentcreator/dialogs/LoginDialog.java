@@ -30,6 +30,12 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @author Civic Computing Ltd.
  */
 public class LoginDialog extends AbstractEditDialog {
+    /** DIALOG_WIDTH : int. */
+    private static final int DIALOG_WIDTH = 300;
+
+    /** DIALOG_HEIGHT : int. */
+    private static final int DIALOG_HEIGHT = 150;
+
     private static final ActionNameConstants USER_ACTIONS =
         GWT.create(ActionNameConstants.class);
 
@@ -72,8 +78,8 @@ public class LoginDialog extends AbstractEditDialog {
         getButtonBar().remove(_cancel);
         setClosable(false);
         setMaximizable(false);
-        setHeight(150);
-        setWidth(300);
+        setHeight(DIALOG_HEIGHT);
+        setWidth(DIALOG_WIDTH);
     }
 
     /** {@inheritDoc} */

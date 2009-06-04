@@ -54,6 +54,15 @@ public class UpdateFolderSortOrderDialog
 extends
 AbstractEditDialog {
 
+    private static final int GRID_WIDTH = 610;
+    private static final int GRID_HEIGHT = 300;
+    private static final String MANUAL = "MANUAL";
+    private static final String DATE_CREATED_DESC = "DATE_CREATED_DESC";
+    private static final String DATE_CREATED_ASC = "DATE_CREATED_ASC";
+    private static final String DATE_CHANGED_DESC = "DATE_CHANGED_DESC";
+    private static final String DATE_CHANGED_ASC = "DATE_CHANGED_ASC";
+    private static final String NAME_ALPHANUM_ASC = "NAME_ALPHANUM_ASC";
+
     private final CommandServiceAsync _commands = Globals.commandService();
     private final QueriesServiceAsync _queries = Globals.queriesService();
     private final ComboBox<ModelData> _sortOrder = new ComboBox<ModelData>();
@@ -61,12 +70,6 @@ AbstractEditDialog {
     private final SingleSelectionModel _selectionModel;
     private final ListStore<ModelData> _sortStore = new ListStore<ModelData>();
 
-    private static final String MANUAL = "MANUAL";
-    private static final String DATE_CREATED_DESC = "DATE_CREATED_DESC";
-    private static final String DATE_CREATED_ASC = "DATE_CREATED_ASC";
-    private static final String DATE_CHANGED_DESC = "DATE_CHANGED_DESC";
-    private static final String DATE_CHANGED_ASC = "DATE_CHANGED_ASC";
-    private static final String NAME_ALPHANUM_ASC = "NAME_ALPHANUM_ASC";
 
     private final Grid<ResourceSummaryModelData> _grid;
     private final ColumnModel _cm;
@@ -101,47 +104,15 @@ AbstractEditDialog {
         createColumnConfigs(configs);
         _cm = new ColumnModel(configs);
         _grid = new Grid<ResourceSummaryModelData>(_detailsStore, _cm);
-        _grid.setHeight(300);
-        _grid.setWidth(610);
+        _grid.setHeight(GRID_HEIGHT);
+        _grid.setWidth(GRID_WIDTH);
         _grid.setBorders(true);
         addField(_grid);
 
         new GridDragSource(_grid);
         configureDropTarget();
 
-        _sortOrder.addSelectionChangedListener(
-            new SelectionChangedListener<ModelData>() {
-                @Override
-                public void selectionChanged(final SelectionChangedEvent<ModelData> se) {
-                    final ModelData md = se.getSelectedItem();
-                    if (md != null) {
-                        loadDetailStore();
-                        final String order = md.<String>get("value");
-                        if (MANUAL.equals(order)) {
-                            _grid.enable();
-                        } else  {
-                            _grid.disable();
-                            if (NAME_ALPHANUM_ASC.equals(order)) {
-                                _detailsStore.sort(
-                                    Property.NAME.name(), SortDir.ASC);
-                            } else if (DATE_CHANGED_ASC.equals(order)) {
-                                _detailsStore.sort(
-                                    Property.DATE_CHANGED.name(), SortDir.ASC);
-                            } else if (DATE_CHANGED_DESC.equals(order)) {
-                                _detailsStore.sort(
-                                    Property.DATE_CHANGED.name(), SortDir.DESC);
-                            } else if (DATE_CREATED_ASC.equals(order)) {
-                                _detailsStore.sort(
-                                    Property.DATE_CREATED.name(), SortDir.ASC);
-                            } else if (DATE_CREATED_DESC.equals(order)) {
-                                _detailsStore.sort(
-                                    Property.DATE_CREATED.name(), SortDir.DESC);
-                            }
-                        }
-                        configureDropTarget();
-                    }
-                }
-            });
+        _sortOrder.addSelectionChangedListener(new SortChangeListener());
     }
 
     private void loadDetailStore() {
@@ -236,32 +207,16 @@ AbstractEditDialog {
     protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                final ResourceSummaryModelData md = _selectionModel.tableSelection();
+                final ResourceSummaryModelData md =
+                    _selectionModel.tableSelection();
                 final String order = _sortOrder.getValue().<String>get("value");
                 _commands.updateFolderSortOrder(
                     md.getId(),
                     order,
-                    new ErrorReportingCallback<Void>(_constants.folderSortOrder()){
+                    new ErrorReportingCallback<Void>(
+                            _constants.folderSortOrder()){
                         public void onSuccess(final Void result) {
-                            // TODO cleanup
-                            if (order.equals(MANUAL)) {
-                                final List<String> orderList = new ArrayList<String>();
-                                final List<ResourceSummaryModelData> models = _grid.getStore().getModels();
-                                for(final ResourceSummaryModelData m : models) {
-                                    orderList.add(m.getId().toString());
-                                }
-                                _commands.reorder(md.getId(),
-                                    orderList,
-                                    new ErrorReportingCallback<Void>(_constants.folderSortOrder()){
-                                    public void onSuccess(final Void result) {
-                                        close();
-                                        md.setSortOrder(order);
-                                    }
-                                });
-                            } else {
-                                close();
-                                md.setSortOrder(order);
-                            }
+                            reorder(md, order);
                         }
                     }
                 );
@@ -315,5 +270,70 @@ AbstractEditDialog {
         changedColumn.setDateTimeFormat(dateTimeFormat);
         configs.add(changedColumn);
 
+    }
+
+    private void reorder(final ResourceSummaryModelData md,
+                         final String order) {
+
+        if (order.equals(MANUAL)) {
+            final List<String> orderList = new ArrayList<String>();
+            final List<ResourceSummaryModelData> models =
+                _grid.getStore().getModels();
+            for(final ResourceSummaryModelData m : models) {
+                orderList.add(m.getId().toString());
+            }
+            _commands.reorder(md.getId(),
+                orderList,
+                new ErrorReportingCallback<Void>(_constants.folderSortOrder()){
+                public void onSuccess(final Void result) {
+                    close();
+                    md.setSortOrder(order);
+                }
+            });
+        } else {
+            close();
+            md.setSortOrder(order);
+        }
+    }
+
+    /**
+     * Listener for sort order changes.
+     *
+     * @author Civic Computing Ltd.
+     */
+    private final class SortChangeListener
+        extends SelectionChangedListener<ModelData> {
+
+        @Override
+        public void selectionChanged(
+                                 final SelectionChangedEvent<ModelData> se) {
+            final ModelData md = se.getSelectedItem();
+            if (md != null) {
+                loadDetailStore();
+                final String order = md.<String>get("value");
+                if (MANUAL.equals(order)) {
+                    _grid.enable();
+                } else  {
+                    _grid.disable();
+                    if (NAME_ALPHANUM_ASC.equals(order)) {
+                        _detailsStore.sort(
+                            Property.NAME.name(), SortDir.ASC);
+                    } else if (DATE_CHANGED_ASC.equals(order)) {
+                        _detailsStore.sort(
+                            Property.DATE_CHANGED.name(), SortDir.ASC);
+                    } else if (DATE_CHANGED_DESC.equals(order)) {
+                        _detailsStore.sort(
+                            Property.DATE_CHANGED.name(), SortDir.DESC);
+                    } else if (DATE_CREATED_ASC.equals(order)) {
+                        _detailsStore.sort(
+                            Property.DATE_CREATED.name(), SortDir.ASC);
+                    } else if (DATE_CREATED_DESC.equals(order)) {
+                        _detailsStore.sort(
+                            Property.DATE_CREATED.name(), SortDir.DESC);
+                    }
+                }
+                configureDropTarget();
+            }
+        }
     }
 }
