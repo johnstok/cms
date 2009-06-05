@@ -50,6 +50,18 @@ public class ServiceLookup {
     }
 
     /**
+     * Constructor.
+     *
+     * @param appName The name of the application.
+     * @param providerUrl The java naming provider URL
+     */
+    public ServiceLookup(final String appName, final String providerUrl) {
+        final Registry registry = new JNDI(providerUrl);
+        _appName = appName;
+        _registry = registry;
+    }
+
+    /**
      * Look up the commands API.
      *
      * @return A commands instance.

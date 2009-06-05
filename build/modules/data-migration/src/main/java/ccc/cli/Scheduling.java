@@ -31,7 +31,7 @@ public final class Scheduling extends CccApp {
 
         login(options.getUsername(), options.getPassword());
 
-        services = new ServiceLookup(options.getApp());
+        services = new ServiceLookup(options.getApp(), options._providerURL);
 
         final Scheduler s = services.lookupActionScheduler();
 
@@ -78,6 +78,12 @@ public final class Scheduling extends CccApp {
             name="-c", required=true, usage="Action.")
         private String _action;
 
+        @Option(
+            name="-jn",
+            required=false,
+            usage="optional JNDI provider URL, defaults to localhost")
+            private String _providerURL;
+
 
         /**
          * Accessor.
@@ -116,6 +122,16 @@ public final class Scheduling extends CccApp {
          */
         String getAction() {
             return _action;
+        }
+
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the JNDI provider URL.
+         */
+        String getProviderURL() {
+            return _providerURL;
         }
     }
 }
