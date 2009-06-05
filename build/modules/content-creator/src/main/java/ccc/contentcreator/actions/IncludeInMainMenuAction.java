@@ -20,7 +20,7 @@ import ccc.contentcreator.client.SingleSelectionModel;
 
 
 /**
- * TODO: Add Description for this type.
+ * Include a resource in the main menu.
  *
  * @author Civic Computing Ltd.
  */

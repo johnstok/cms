@@ -7,7 +7,7 @@ import com.google.gwt.user.client.Window;
 
 
 /**
- * TODO: Add Description for this type.
+ * Display help window.
  *
  * @author Civic Computing Ltd.
  */

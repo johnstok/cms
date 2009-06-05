@@ -12,7 +12,7 @@ import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.HistoryDialog;
 
 /**
- * TODO: Add Description for this type.
+ * View resource's history.
  *
  * @author Civic Computing Ltd.
  */

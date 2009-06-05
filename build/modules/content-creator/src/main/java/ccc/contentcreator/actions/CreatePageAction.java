@@ -12,7 +12,7 @@ import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.CreatePageDialog;
 
 /**
- * TODO: Add Description for this type.
+ * Create a page.
  *
  * @author Civic Computing Ltd.
  */

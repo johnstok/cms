@@ -6,7 +6,7 @@ import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.RenameDialog;
 
 /**
- * TODO: Add Description for this type.
+ * Rename a resource.
  *
  * @author Civic Computing Ltd.
  */

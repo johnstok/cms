@@ -7,7 +7,7 @@ import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.MoveDialog;
 
 /**
- * TODO: Add Description for this type.
+ * Move resource.
  *
  * @author Civic Computing Ltd.
  */
