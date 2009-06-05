@@ -56,7 +56,7 @@ public class CreateUserDialog
 
         _username.setFieldLabel(constants().username());
         _username.setAllowBlank(false);
-        _username.setMinLength(_globals.MIN_USER_NAME_LENGTH);
+        _username.setMinLength(IGlobals.MIN_USER_NAME_LENGTH);
         _username.setId(constants().username());
         addField(_username);
 
