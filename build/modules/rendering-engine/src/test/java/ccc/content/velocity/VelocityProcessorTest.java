@@ -102,8 +102,8 @@ public class VelocityProcessorTest extends TestCase {
         // ARRANGE
         final Page foo = new Page("foo");
         final String template = "#macro failthis #end";
-        final String expectedMessage =
-            "Encountered \"#end\" at VelocityProcessor[line 1, column 17]";
+        final String expectedMessage = "A macro declaration requires at least "
+            + "a name argumentVelocityProcessor";
         final StringWriter renderedOutput = new StringWriter();
 
         // ACT
