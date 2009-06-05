@@ -22,7 +22,7 @@ import com.extjs.gxt.ui.client.widget.form.TextField;
 
 
 /**
- * TODO: Add Description for this type.
+ * Dialog for updating resource's tags.
  *
  * @author Civic Computing Ltd.
  */

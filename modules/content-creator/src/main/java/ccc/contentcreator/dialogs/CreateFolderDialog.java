@@ -27,7 +27,7 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 
 
 /**
- * TODO: Add Description for this type.
+ * Dialog for folder creation.
  *
  * @author Civic Computing Ltd.
  */
@@ -82,7 +82,8 @@ public class CreateFolderDialog extends AbstractEditDialog {
                 commands().createFolder(
                     _parent.getId(),
                     _text.getValue(),
-                    new ErrorReportingCallback<ResourceSummary>(_constants.createFolder()){
+                    new ErrorReportingCallback<ResourceSummary>(
+                        _constants.createFolder()){
                         public void onSuccess(final ResourceSummary result) {
                             final ResourceSummaryModelData newFolder =
                                 new ResourceSummaryModelData(result);

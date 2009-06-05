@@ -29,12 +29,14 @@ import com.extjs.gxt.ui.client.widget.form.TextField;
 
 
 /**
- * TODO: Add Description for this type.
+ * Dialog for editing resource's caching setting.
  *
  * @author Civic Computing Ltd.
  */
 public class EditCacheDialog extends AbstractEditDialog {
 
+    private static final int DIALOG_HEIGHT = 240;
+    private static final int DIALOG_WIDTH = 350;
     private final ResourceSummaryModelData _item;
     private final TextField<String> _seconds = new TextField<String>();
     private final TextField<String> _minutes = new TextField<String>();
@@ -54,8 +56,8 @@ public class EditCacheDialog extends AbstractEditDialog {
                            final Duration ds) {
         super(Globals.uiConstants().editCacheDuration());
         _item = item;
-        setHeight(240);
-        setWidth(350);
+        setHeight(DIALOG_HEIGHT);
+        setWidth(DIALOG_WIDTH);
 
         _useDefault.setBoxLabel(_constants.yes());
         _useDefault.addListener(Events.Change, checkBoxListener());
@@ -74,13 +76,13 @@ public class EditCacheDialog extends AbstractEditDialog {
         _seconds.setId("cacheDurationSeconds");
 
         if (ds != null) {
-            _useDefault.setValue(false);
+            _useDefault.setValue(Boolean.FALSE);
             _days.setValue(""+ds.dayField());
             _hours.setValue(""+ds.hourField());
             _minutes.setValue(""+ds.minuteField());
             _seconds.setValue(""+ds.secondField());
         } else {
-            _useDefault.setValue(true);
+            _useDefault.setValue(Boolean.TRUE);
         }
         changeFieldVisibility();
 
@@ -125,10 +127,10 @@ public class EditCacheDialog extends AbstractEditDialog {
         return new Runnable() {
             public void run() {
                 boolean isDurationSet = false;
-                Long days = 0L;
-                Long hours = 0L;
-                Long minutes = 0L;
-                Long seconds = 0L;
+                long days = 0L;
+                long hours = 0L;
+                long minutes = 0L;
+                long seconds = 0L;
 
                 if (_days.getValue() != null
                         && !_days.getValue().trim().equals("")) {
@@ -153,14 +155,15 @@ public class EditCacheDialog extends AbstractEditDialog {
 
                 Duration updatedDs = null;
 
-                if (isDurationSet && !_useDefault.getValue()) {
+                if (isDurationSet && !_useDefault.getValue().booleanValue()) {
                     updatedDs = new Duration(days, hours, minutes, seconds);
                 }
 
                 commands().updateCacheDuration(
                     _item.getId(),
                     updatedDs,
-                    new ErrorReportingCallback<Void>(_constants.editCacheDuration()) {
+                    new ErrorReportingCallback<Void>(
+                        _constants.editCacheDuration()) {
                     @Override
                     public void onSuccess(final Void arg0) {
                         close();
@@ -172,7 +175,7 @@ public class EditCacheDialog extends AbstractEditDialog {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Disables fields based on useDefault value.
      *
      */
     private void changeFieldVisibility() {

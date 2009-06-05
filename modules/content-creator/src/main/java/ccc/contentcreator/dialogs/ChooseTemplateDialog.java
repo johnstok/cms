@@ -29,8 +29,7 @@ import com.extjs.gxt.ui.client.widget.form.ComboBox;
 
 
 /**
- * Dialog for resource template chooser. Mostly copied from
- * UpdateOptionsDialog
+ * Dialog for resource template chooser.
  *
  * @author Civic Computing Ltd
  */

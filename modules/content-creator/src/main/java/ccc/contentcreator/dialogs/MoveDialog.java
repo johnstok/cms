@@ -85,7 +85,7 @@ public class MoveDialog extends AbstractEditDialog {
                         new FolderSelectionDialog(root);
                     folderSelect.addListener(Events.Close,
                         new Listener<ComponentEvent>() {
-                        public void handleEvent(final ComponentEvent be) {
+                        public void handleEvent(final ComponentEvent ce) {
                             _parent = folderSelect.selectedFolder();
                             _parentFolder.setValue(_parent.getName());
                         }});
