@@ -38,11 +38,15 @@ import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
- * TODO: Add Description for this type.
+ * Image selection dialog for FCKEditor use.
  *
  * @author Civic Computing Ltd.
  */
 public class ImageSelectionDialog extends LayoutContainer {
+
+    private static final int PANEL_HEIGHT = 460;
+    private static final int PANEL_WIDTH = 620;
+
     private final QueriesServiceAsync _qs = GWT.create(QueriesService.class);
 
 
@@ -90,8 +94,8 @@ public class ImageSelectionDialog extends LayoutContainer {
         panel.setFrame(true);
         panel.setId("images-view");
         panel.setHeaderVisible(false);
-        panel.setWidth(620);
-        panel.setHeight(460);
+        panel.setWidth(PANEL_WIDTH);
+        panel.setHeight(PANEL_HEIGHT);
         panel.setLayout(new FitLayout());
 
         panel.setBodyBorder(false);
@@ -104,19 +108,29 @@ public class ImageSelectionDialog extends LayoutContainer {
         view.setItemSelector("div.thumb-wrap");
         view.getSelectionModel().addListener(
             Events.SelectionChange,
-            new Listener<SelectionChangedEvent<FileSummaryModelData>>() {
-
-            public void handleEvent(final SelectionChangedEvent<FileSummaryModelData> be) {
-                if (null!=be.getSelectedItem()) {
-                    jsniSetUrl(
-                        be.getSelectedItem().getPath(),
-                        be.getSelectedItem().getTitle());
-                }
-            }
-        });
+            new ImageSelectionListener());
 
         panel.add(view);
         add(panel);
+    }
+
+    /**
+     * Listener for image selection.
+     *
+     * @author Civic Computing Ltd.
+     */
+    private static final class ImageSelectionListener
+        implements
+            Listener<SelectionChangedEvent<FileSummaryModelData>> {
+
+        public void handleEvent(
+                        final SelectionChangedEvent<FileSummaryModelData> be) {
+            if (null!=be.getSelectedItem()) {
+                jsniSetUrl(
+                    be.getSelectedItem().getPath(),
+                    be.getSelectedItem().getTitle());
+            }
+        }
     }
 
     // TODO: Property names aren't type safe.

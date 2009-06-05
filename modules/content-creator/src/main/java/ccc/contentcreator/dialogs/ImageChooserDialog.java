@@ -32,7 +32,7 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 
 
 /**
- * TODO: Add Description for this type.
+ * Image chooser for image type paragraph fields.
  *
  * @author Civic Computing Ltd.
  */
@@ -42,6 +42,9 @@ public class ImageChooserDialog extends AbstractBaseDialog {
     private  final ListView<FileSummaryModelData> _view =
         new ListView<FileSummaryModelData>();
     private List<FileSummaryModelData> _models;
+
+    private static final int PANEL_HEIGHT = 460;
+    private static final int PANEL_WIDTH = 620;
 
     /**
      * Constructor.
@@ -57,23 +60,10 @@ public class ImageChooserDialog extends AbstractBaseDialog {
             new ListStore<FileSummaryModelData>();
 
         queries().getAllContentImages(
-            new ErrorReportingCallback<Collection<FileSummary>>(_constants.selectImage()){
+            new ErrorReportingCallback<Collection<FileSummary>>(
+                _constants.selectImage()){
                 public void onSuccess(final Collection<FileSummary> arg0) {
-                    _models = DataBinding.bindFileSummary(arg0);
-                    if (_models != null && _models.size() > 0) {
-                        store.add(_models);
-                        final FileSummaryModelData fs = image.getFSModel();
-                        if (fs != null) {
-                            final List<FileSummaryModelData> selection =
-                                new ArrayList<FileSummaryModelData>();
-                            for (final FileSummaryModelData item :_models) {
-                                if (item.getId().equals(fs.getId())) {
-                                    selection.add(item);
-                                }
-                            }
-                            _view.getSelectionModel().setSelection(selection);
-                        }
-                    }
+                    loadModel(image, store, arg0);
                 }
             });
 
@@ -84,8 +74,8 @@ public class ImageChooserDialog extends AbstractBaseDialog {
         panel.setFrame(true);
         panel.setId("images-view");
         panel.setHeaderVisible(false);
-        panel.setWidth(620);
-        panel.setHeight(460);
+        panel.setWidth(PANEL_WIDTH);
+        panel.setHeight(PANEL_HEIGHT);
         panel.setLayout(new FitLayout());
 
         panel.setBodyBorder(false);
@@ -108,7 +98,8 @@ public class ImageChooserDialog extends AbstractBaseDialog {
         return new SelectionListener<ButtonEvent>(){
             @Override
             public void componentSelected(final ButtonEvent ce) {
-                final FileSummaryModelData md = _view.getSelectionModel().getSelectedItem();
+                final FileSummaryModelData md =
+                    _view.getSelectionModel().getSelectedItem();
                 if (md != null) {
                     _image.setValue(md.getPath());
                 }
@@ -128,4 +119,26 @@ public class ImageChooserDialog extends AbstractBaseDialog {
      '<div class="x-clear"></div>'].join("");
 
      }-*/;
+
+    private void loadModel(final ImageTriggerField image,
+                           final ListStore<FileSummaryModelData> store,
+                           final Collection<FileSummary> arg0) {
+
+        _models = DataBinding.bindFileSummary(arg0);
+        if (_models != null && _models.size() > 0) {
+            store.add(_models);
+            final FileSummaryModelData fs = image.getFSModel();
+
+            if (fs != null) {
+                final List<FileSummaryModelData> selection =
+                    new ArrayList<FileSummaryModelData>();
+                for (final FileSummaryModelData item :_models) {
+                    if (item.getId().equals(fs.getId())) {
+                        selection.add(item);
+                    }
+                }
+                _view.getSelectionModel().setSelection(selection);
+            }
+        }
+    }
 }
