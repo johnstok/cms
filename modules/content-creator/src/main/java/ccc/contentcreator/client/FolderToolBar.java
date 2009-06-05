@@ -53,8 +53,8 @@ public class FolderToolBar
             _constants.createPage(),
             new CreatePageAction(ssm));
         addSeparator();
-        if (user.getRoles().contains(Globals.ADMINISTRATOR)
-                || user.getRoles().contains(Globals.SITE_BUILDER)) {
+        if (user.getRoles().contains(IGlobals.ADMINISTRATOR)
+                || user.getRoles().contains(IGlobals.SITE_BUILDER)) {
             addButton(
                 "Create Template",
                 _constants.createTemplate(),
