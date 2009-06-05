@@ -73,7 +73,7 @@ public class MainMenu
                 new OpenHelpAction())
         );
 
-        if (_user.getRoles().contains(Globals.ADMINISTRATOR)) {
+        if (_user.getRoles().contains(IGlobals.ADMINISTRATOR)) {
             addMenu(
                 "users-menu",
                 _constants.users(),
@@ -84,8 +84,8 @@ public class MainMenu
             );
         }
 
-        if (_user.getRoles().contains(Globals.ADMINISTRATOR)
-                || _user.getRoles().contains(Globals.SITE_BUILDER)) {
+        if (_user.getRoles().contains(IGlobals.ADMINISTRATOR)
+                || _user.getRoles().contains(IGlobals.SITE_BUILDER)) {
             createContentRootMenu();
         }
 
@@ -153,14 +153,15 @@ public class MainMenu
             _constants.viewHistory(),
             new ViewHistoryAction(ssm)));
 
-        if (root.getLockedBy() == null || root.getLockedBy().equals("")) {
+        if (root.getLockedBy() == null
+            || root.getLockedBy().toString().equals("")) {
             _itemMenu.add(createMenuItem(
                 "lock-root",
                 _constants.lock(),
                 new LockAction(ssm)));
         } else {
             if (root.getLockedBy().equals(_user.getUsername())
-                    || _user.getRoles().contains(Globals.ADMINISTRATOR)) {
+                    || _user.getRoles().contains(IGlobals.ADMINISTRATOR)) {
 
                 _itemMenu.add(createMenuItem(
                     "unlock-root",
@@ -169,7 +170,7 @@ public class MainMenu
             }
             if (root.getLockedBy().equals(_user.getUsername())) {
                 if (root.getPublishedBy() == null
-                        || root.getPublishedBy().equals("")) {
+                        || root.getPublishedBy().toString().equals("")) {
                     _itemMenu.add(createMenuItem(
                         "publish-root",
                         _constants.publish(),

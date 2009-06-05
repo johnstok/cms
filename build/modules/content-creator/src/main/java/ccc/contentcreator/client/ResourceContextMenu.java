@@ -147,16 +147,16 @@ public class ResourceContextMenu
         addPreview();
         addViewHistory();
         if (null==item.getLocked()
-            || "".equals(item.getLocked())) {
+            || "".equals(item.getLocked().toString())) {
             addLockResource();
         } else {
             if (item.getLocked().equals(user.getUsername())
-                 || user.getRoles().contains(Globals.ADMINISTRATOR)) {
+                 || user.getRoles().contains(IGlobals.ADMINISTRATOR)) {
                 addUnlockResource();
             }
             if (item.getLocked().equals(user.getUsername())) {
                 if (item.getPublished() == null
-                        || "".equals(item.getPublished())) {
+                        || "".equals(item.getPublished().toString())) {
                     addPublishResource();
                 } else {
                     addUnpublishResource();
@@ -192,8 +192,8 @@ public class ResourceContextMenu
                 addUpdateMetadata();
                 addCreateAlias();
                 addCreateAction();
-                if (user.getRoles().contains(Globals.ADMINISTRATOR)
-                    || user.getRoles().contains(Globals.SITE_BUILDER)) {
+                if (user.getRoles().contains(IGlobals.ADMINISTRATOR)
+                    || user.getRoles().contains(IGlobals.SITE_BUILDER)) {
                     addEditCache();
                 }
 
@@ -369,7 +369,8 @@ public class ResourceContextMenu
         update.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override public void componentSelected(final MenuEvent ce) {
                 final ResourceSummaryModelData item = _table.tableSelection();
-                if (ResourceType.TEMPLATE==item.getType()) { // TODO Change to switch statement.
+                // TODO Change to switch statement.
+                if (ResourceType.TEMPLATE==item.getType()) {
                     updateTemplate(item);
                 } else if (ResourceType.PAGE==item.getType()) {
                     updatePage(item);
@@ -417,7 +418,8 @@ public class ResourceContextMenu
     }
 
     private void updatePage(final ResourceSummaryModelData item) {
-        _qs.computeTemplate( // Get the template for the page.
+        // Get the template for the page.
+        _qs.computeTemplate(
             item.getId(),
             new ErrorReportingCallback<TemplateSummary>(_constants.updateContent()) {
                 @Override public void onSuccess(final TemplateSummary template) {
