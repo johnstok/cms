@@ -96,8 +96,6 @@ public class ResourceContextMenu
      * @param user The UserSummary of the currently logged in user.
      */
     ResourceContextMenu(final ResourceTable tbl, final UserSummary user) {
-        super(tbl);
-
         _table = tbl;
 
         _publishAction = new PublishAction(_table);

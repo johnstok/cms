@@ -32,8 +32,8 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
  */
 public class FolderSelectionDialog extends Window {
 
-    private final int _height = 225;
-    private final int _width = 400;
+    private static final int HEIGHT = 225;
+    private static final int WIDTH = 400;
 
     private final FolderResourceTree _tree;
     private final UIConstants _constants = Globals.uiConstants();
@@ -48,8 +48,8 @@ public class FolderSelectionDialog extends Window {
         setBodyStyle("backgroundColor: white;");
         setScrollMode(Scroll.AUTOY);
         setHeading(_constants.selectFolder());
-        setWidth(_width);
-        setHeight(_height);
+        setWidth(WIDTH);
+        setHeight(HEIGHT);
         setLayout(new FitLayout());
         _tree = new FolderResourceTree(root);
         add(_tree);

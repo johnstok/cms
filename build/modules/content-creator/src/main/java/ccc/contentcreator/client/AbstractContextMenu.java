@@ -22,7 +22,7 @@ import com.google.gwt.core.client.GWT;
 
 
 /**
- * TODO: Add Description for this type.
+ * Abstract class for contextual menus.
  *
  * @author Civic Computing Ltd.
  */
@@ -38,24 +38,13 @@ public class AbstractContextMenu
     /** _qs : QueriesServiceAsync. */
     protected final QueriesServiceAsync _qs = Globals.queriesService();
 
-    private final SingleSelectionModel _ssm;
-
     /**
-     * Constructor.
+     * Creates a new menu item.
      *
-     * @param ssm
-     */
-    public AbstractContextMenu(final SingleSelectionModel ssm) {
-        _ssm = ssm;
-    }
-
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @param id
-     * @param text
-     * @param action
-     * @return
+     * @param id The id of the menu item.
+     * @param text The text of the menu item.
+     * @param action The action  of the menu item.
+     * @return  {@link MenuItem}.
      */
     protected MenuItem createMenuItem(final String id,
                                       final String text,
@@ -68,11 +57,11 @@ public class AbstractContextMenu
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Creates and adds a menu item to the context menu.
      *
-     * @param id
-     * @param text
-     * @param action
+     * @param id The id of the menu item.
+     * @param text The text of the menu item.
+     * @param action The action  of the menu item.
      */
     protected void addMenuItem(final String id,
                                final String text,
