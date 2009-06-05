@@ -19,6 +19,7 @@ import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.binding.TemplateSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.SingleSelectionModel;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -64,7 +65,7 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
                                 final Collection<TemplateSummary> templates,
                                 final SingleSelectionModel ssm) {
         super(Globals.uiConstants().chooseTemplate());
-        setHeight(Globals.DEFAULT_MIN_HEIGHT);
+        setHeight(IGlobals.DEFAULT_MIN_HEIGHT);
 
         _resource = resource;
         _templates = templates;

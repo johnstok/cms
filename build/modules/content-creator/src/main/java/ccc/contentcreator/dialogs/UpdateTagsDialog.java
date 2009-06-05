@@ -14,6 +14,7 @@ package ccc.contentcreator.dialogs;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobals;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -40,7 +41,7 @@ public class UpdateTagsDialog
      */
     public UpdateTagsDialog(final ResourceSummaryModelData resource) {
         super(Globals.uiConstants().updateTags());
-        setHeight(Globals.DEFAULT_MIN_HEIGHT);
+        setHeight(IGlobals.DEFAULT_MIN_HEIGHT);
         _resource = resource;
 
         addTextField(_resource.getTags(),

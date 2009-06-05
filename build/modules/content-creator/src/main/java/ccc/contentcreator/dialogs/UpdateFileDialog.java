@@ -15,6 +15,7 @@ import ccc.api.FileDelta;
 import ccc.api.ID;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
@@ -58,7 +59,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
                             final ID fileId,
                             final SingleSelectionModel rt) {
         super(Globals.uiConstants().updateFile());
-        setHeight(Globals.DEFAULT_UPLOAD_HEIGHT);
+        setHeight(IGlobals.DEFAULT_UPLOAD_HEIGHT);
         // Create a FormPanel and point it at a service.
         _panel.setAction("update_file");
         _panel.setEncoding(FormPanel.Encoding.MULTIPART);

@@ -24,6 +24,7 @@ import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.binding.ResourceSummaryModelData.Property;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.SingleSelectionModel;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
@@ -88,7 +89,7 @@ AbstractEditDialog {
     public UpdateFolderSortOrderDialog(final SingleSelectionModel ssm,
                                        final String currentSortOrder) {
         super(Globals.uiConstants().folderSortOrder());
-        setHeight(Globals.DEFAULT_HEIGHT);
+        setHeight(IGlobals.DEFAULT_HEIGHT);
         _selectionModel = ssm;
 
         populateSortOptions();

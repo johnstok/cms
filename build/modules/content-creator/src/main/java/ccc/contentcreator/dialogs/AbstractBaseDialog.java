@@ -19,6 +19,7 @@ import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
 import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobals;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -53,8 +54,8 @@ public abstract class AbstractBaseDialog
     public AbstractBaseDialog(final String title) {
         super();
         setHeading(title);
-        setWidth(Globals.DEFAULT_WIDTH);
-        setHeight(Globals.DEFAULT_HEIGHT);
+        setWidth(IGlobals.DEFAULT_WIDTH);
+        setHeight(IGlobals.DEFAULT_HEIGHT);
         setLayout(new FitLayout());
         setBodyStyle("backgroundColor: white;");
         setMaximizable(true);
