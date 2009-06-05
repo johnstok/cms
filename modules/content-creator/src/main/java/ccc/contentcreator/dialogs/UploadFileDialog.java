@@ -14,6 +14,7 @@ package ccc.contentcreator.dialogs;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
@@ -62,7 +63,7 @@ public class UploadFileDialog extends AbstractEditDialog {
             Globals.uiConstants().uploadFileTo()+": "+parentFolder.getName());
 
         _parent = parentFolder;
-        setHeight(Globals.DEFAULT_UPLOAD_HEIGHT);
+        setHeight(IGlobals.DEFAULT_UPLOAD_HEIGHT);
 
         // Create a FormPanel and point it at a service.
         _panel.setAction("upload");

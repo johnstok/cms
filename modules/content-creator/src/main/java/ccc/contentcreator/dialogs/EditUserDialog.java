@@ -12,11 +12,7 @@
 package ccc.contentcreator.dialogs;
 
 
-import static ccc.contentcreator.validation.Validations.minLength;
-import static ccc.contentcreator.validation.Validations.notEmpty;
-import static ccc.contentcreator.validation.Validations.notValidEmail;
-import static ccc.contentcreator.validation.Validations.notValidUserName;
-import static ccc.contentcreator.validation.Validations.reportErrors;
+import static ccc.contentcreator.validation.Validations.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,6 +23,7 @@ import ccc.api.Username;
 import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.UserTable;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validator;
@@ -73,7 +70,7 @@ public class EditUserDialog extends AbstractEditDialog {
 
         _username.setFieldLabel(constants().username());
         _username.setAllowBlank(false);
-        _username.setMinLength(Globals.MIN_USER_NAME_LENGTH);
+        _username.setMinLength(IGlobals.MIN_USER_NAME_LENGTH);
         _username.setId(constants().username());
         _username.setValue(_userDTO.getUsername().toString());
         addField(_username);
@@ -107,7 +104,7 @@ public class EditUserDialog extends AbstractEditDialog {
                     .check(notEmpty(_username))
                     .check(notEmpty(_email))
                     .stopIfInError()
-                    .check(minLength(_username, Globals.MIN_USER_NAME_LENGTH))
+                    .check(minLength(_username, IGlobals.MIN_USER_NAME_LENGTH))
                     .check(notValidUserName(_username))
                     .check(notValidEmail(_email))
                     .check(uniqueUsername(_userDTO,

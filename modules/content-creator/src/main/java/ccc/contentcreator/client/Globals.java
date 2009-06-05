@@ -245,19 +245,9 @@ public final class Globals {
             _user = user;
         }
 
-    /** DEFAULT_WIDTH : int. */
-    public static final int DEFAULT_WIDTH = 640;
-    /** DEFAULT_HEIGHT : int. */
-    public static final int DEFAULT_HEIGHT = 480;
-    /** DEFAULT_UPLOAD_HEIGHT : int. */
-    public static final int DEFAULT_UPLOAD_HEIGHT = 250;
-    /** DEFAULT_MIN_HEIGHT : int. */
-    public static final int DEFAULT_MIN_HEIGHT = 150;
     /** APP_URL : String. */
     public static final String APP_URL = "/";
     /** API_URL : String. */
     public static final String API_URL = "api/";
-    /** MIN_USER_NAME_LENGTH : int. */
-    public static final int MIN_USER_NAME_LENGTH = 4;
 
 }
