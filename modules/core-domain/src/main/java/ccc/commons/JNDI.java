@@ -30,6 +30,7 @@ import ccc.domain.CCCException;
 public final class JNDI implements Registry {
 
     private final Logger _log = Logger.getLogger(JNDI.class);
+    private String _providerURL = null;
 
     /**
      * {@inheritDoc}
@@ -48,6 +49,25 @@ public final class JNDI implements Registry {
         }
     }
 
+
+
+    /**
+     * Constructor.
+     *
+     */
+    public JNDI() {
+        super();
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param providerURL The java naming provider URL
+     */
+    public JNDI(final String providerURL) {
+        _providerURL = providerURL;
+    }
+
     /**
      * Create a JNDI context.
      *
@@ -56,6 +76,9 @@ public final class JNDI implements Registry {
      */
     private Context jndiContext() throws NamingException {
         final Context jndiContext = new InitialContext();
+        if (_providerURL != null) {
+            jndiContext.addToEnvironment(Context.PROVIDER_URL, _providerURL);
+        }
         return jndiContext;
     }
 

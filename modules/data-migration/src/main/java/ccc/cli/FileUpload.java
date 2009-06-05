@@ -83,7 +83,8 @@ public class FileUpload extends CccApp {
 
         loadSettings(props, "migration.properties");
 
-        services = new ServiceLookup(props.getProperty("app-name"));
+        services =
+            new ServiceLookup(props.getProperty("app-name"), o._providerURL);
 
         final Queries queries = services.lookupQueries();
         final Commands commands = services.lookupCommands();
@@ -140,6 +141,12 @@ public class FileUpload extends CccApp {
         @Option(
             name="-b", required=false, usage="Publish uploaded files\folders.")
         private boolean _publish;
+
+        @Option(
+            name="-jn",
+            required=false,
+            usage="optional JNDI provider URL, defaults to localhost")
+            private String _providerURL;
 
 
         /**
@@ -199,6 +206,16 @@ public class FileUpload extends CccApp {
          */
         boolean isPublish() {
             return _publish;
+        }
+
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the JNDI provider URL.
+         */
+        String getProviderURL() {
+            return _providerURL;
         }
     }
 }

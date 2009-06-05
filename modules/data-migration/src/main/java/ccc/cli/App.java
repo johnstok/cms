@@ -36,7 +36,8 @@ public final class App extends CccApp {
 
         login(options.getUsername(), options.getPassword());
 
-        services = new ServiceLookup(options.getApp());
+        services =
+            new ServiceLookup(options.getApp(), options.getProviderURL());
 
         connectToLegacySystem();
 
@@ -106,6 +107,11 @@ public final class App extends CccApp {
             name="-lc", required=true, usage="Connection string for legacy DB.")
         private String _legConString;
 
+        @Option(
+            name="-jn",
+            required=false,
+            usage="optional JNDI provider URL, defaults to localhost")
+            private String _providerURL;
 
         /**
          * Accessor.
@@ -174,6 +180,16 @@ public final class App extends CccApp {
          */
         String getLegConString() {
             return _legConString;
+        }
+
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the JNDI provider URL.
+         */
+        String getProviderURL() {
+            return _providerURL;
         }
     }
 }
