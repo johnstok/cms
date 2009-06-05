@@ -22,7 +22,7 @@ import ccc.contentcreator.dialogs.EditCacheDialog;
 
 
 /**
- * TODO: Add Description for this type.
+ * Edit resource's cache setting.
  *
  * @author Civic Computing Ltd.
  */
@@ -46,7 +46,8 @@ public class EditCacheAction implements Action {
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         _queries.cacheDuration(item.getId(),
-            new ErrorReportingCallback<Duration>(UI_CONSTANTS.editCacheDuration()) {
+            new ErrorReportingCallback<Duration>(
+                UI_CONSTANTS.editCacheDuration()) {
                 @Override public void onSuccess(final Duration arg0) {
                     final EditCacheDialog dialog =
                         new EditCacheDialog(item, arg0);

@@ -11,7 +11,7 @@ import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.MetadataDialog;
 
 /**
- * TODO: Add Description for this type.
+ * Update resource's metadata.
  *
  * @author Civic Computing Ltd.
  */
@@ -37,7 +37,8 @@ public final class UpdateMetadataAction
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         _queries.metadata(
             item.getId(),
-            new ErrorReportingCallback<Map<String, String>>(UI_CONSTANTS.updateMetadata()){
+            new ErrorReportingCallback<Map<String, String>>(
+                UI_CONSTANTS.updateMetadata()){
                 public void onSuccess(final Map<String, String> data) {
                     new MetadataDialog(
                         item.getId(),

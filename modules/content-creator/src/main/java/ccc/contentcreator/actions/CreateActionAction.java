@@ -5,7 +5,7 @@ import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.CreateActionDialog;
 
 /**
- * TODO: Add Description for this type.
+ * Create an action.
  *
  * @author Civic Computing Ltd.
  */

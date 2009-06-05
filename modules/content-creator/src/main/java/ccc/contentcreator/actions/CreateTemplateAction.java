@@ -7,7 +7,7 @@ import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.EditTemplateDialog;
 
 /**
- * TODO: Add Description for this type.
+ * Create a template.
  *
  * @author Civic Computing Ltd.
  */

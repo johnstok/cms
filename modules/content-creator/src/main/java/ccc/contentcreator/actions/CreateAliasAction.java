@@ -6,7 +6,7 @@ import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.CreateAliasDialog;
 
 /**
- * TODO: Add Description for this type.
+ * Create an alias.
  *
  * @author Civic Computing Ltd.
  */

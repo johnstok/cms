@@ -47,7 +47,7 @@ public class PageElement {
 
 
     /**
-     * TODO: Add Description for this type.
+     * Possible types of paragraph fields.
      *
      * @author Civic Computing Ltd.
      */

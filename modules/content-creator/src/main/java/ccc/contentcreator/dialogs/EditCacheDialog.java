@@ -92,11 +92,6 @@ public class EditCacheDialog extends AbstractEditDialog {
         _panel.add(_seconds);
     }
 
-    /**
-     * TODO: Add a description of this method.
-     *
-     * @return
-     */
     private Listener<FieldEvent> checkBoxListener() {
 
         return new Listener<FieldEvent>() {

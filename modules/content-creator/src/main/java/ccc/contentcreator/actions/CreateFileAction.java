@@ -7,7 +7,7 @@ import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.UploadFileDialog;
 
 /**
- * TODO: Add Description for this type.
+ * Create a file.
  *
  * @author Civic Computing Ltd.
  */

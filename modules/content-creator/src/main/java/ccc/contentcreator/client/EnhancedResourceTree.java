@@ -118,7 +118,7 @@ public class EnhancedResourceTree extends FolderResourceTree {
 
 
     /**
-     * TODO: Add a description of this method.
+     * Displays {@link ResourceTable} in the right hand pane.
      */
     void showTable() {
         _view.setRightHandPane(_rt);

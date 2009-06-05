@@ -7,7 +7,7 @@ import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.CreateFolderDialog;
 
 /**
- * TODO: Add Description for this type.
+ * Create a folder.
  *
  * @author Civic Computing Ltd.
  */

@@ -14,7 +14,7 @@ import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.ChooseTemplateDialog;
 
 /**
- * TODO: Add Description for this type.
+ * Chooses template for the resource.
  *
  * @author Civic Computing Ltd.
  */

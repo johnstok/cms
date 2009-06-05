@@ -9,7 +9,7 @@ import ccc.contentcreator.dialogs.CreateUserDialog;
 
 
 /**
- * TODO: Add Description for this type.
+ * Create an user.
  *
  * @author Civic Computing Ltd.
  */

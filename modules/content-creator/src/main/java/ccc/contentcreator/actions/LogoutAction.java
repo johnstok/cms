@@ -7,7 +7,7 @@ import ccc.contentcreator.client.Globals;
 
 
 /**
- * TODO: Add Description for this type.
+ * Log current user out.
  *
  * @author Civic Computing Ltd.
  */
