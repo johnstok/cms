@@ -19,7 +19,7 @@ import ccc.contentcreator.actions.CreateTemplateAction;
 
 
 /**
- * TODO: Add Description for this type.
+ * Context menu for folder actions.
  *
  * @author Civic Computing Ltd.
  */
@@ -33,8 +33,6 @@ public class FolderContextMenu
      * @param ssm The selection model to use.
      */
     public FolderContextMenu(final SingleSelectionModel ssm) {
-        super(ssm);
-
         addMenuItem(
             "upload-file",
             Globals.uiConstants().uploadFile(),
