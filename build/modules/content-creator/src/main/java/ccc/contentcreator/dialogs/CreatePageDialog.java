@@ -60,13 +60,17 @@ import com.google.gwt.core.client.GWT;
 
 
 /**
- * TODO: Add Description for this type.
+ * Wizard dialog for page creation.
  *
  * @author Civic Computing Ltd.
  */
 public class CreatePageDialog
     extends
         AbstractWizardDialog {
+
+
+    /** NAME_COLUMN_WIDTH : int. */
+    private static final int NAME_COLUMN_WIDTH = 200;
 
     private final UIConstants _uiConstants = GWT.create(UIConstants.class);
 
@@ -109,8 +113,8 @@ public class CreatePageDialog
         final ColumnConfig nameColumn = new ColumnConfig();
         nameColumn.setId(TemplateSummaryModelData.Property.NAME.name());
         nameColumn.setHeader(_uiConstants.name());
-        nameColumn.setWidth(200);
-        nameColumn.setRenderer(createIdRenderer());
+        nameColumn.setWidth(NAME_COLUMN_WIDTH);
+        nameColumn.setRenderer(new IdRenderer());
         configs.add(nameColumn);
 
         final ColumnModel cm = new ColumnModel(configs);
@@ -182,7 +186,8 @@ public class CreatePageDialog
         cb.setBoxLabel(_uiConstants.useDefaultTemplate());
         cb.setId(_uiConstants.useDefaultTemplate());
         queries().computeTemplate(_parent.getId(),
-            new ErrorReportingCallback<TemplateSummary>(_constants.createPage()) {
+            new ErrorReportingCallback<TemplateSummary>(
+                _constants.createPage()) {
             public void onSuccess(final TemplateSummary result) {
                 if (result == null) {
                     cb.setValue(Boolean.FALSE);
@@ -204,7 +209,8 @@ public class CreatePageDialog
                 if (cb.getValue().booleanValue()) {
                     queries().computeTemplate(
                         _parent.getId(),
-                        new ErrorReportingCallback<TemplateSummary>(_constants.createPage()) {
+                        new ErrorReportingCallback<TemplateSummary>(
+                            _constants.createPage()) {
                         public void onSuccess(final TemplateSummary result) {
                             if (result == null) {
                                 cb.disable();
@@ -228,33 +234,6 @@ public class CreatePageDialog
         return cb;
     }
 
-    private GridCellRenderer<TemplateSummaryModelData> createIdRenderer() {
-
-        return new GridCellRenderer<TemplateSummaryModelData>() {
-            public String render(
-                             final TemplateSummaryModelData model,
-                             final String property,
-                             final ColumnData config,
-                             final int rowIndex,
-                             final int colIndex,
-                             final ListStore<TemplateSummaryModelData> store) {
-
-                String value = "";
-
-                if (null != model) {
-                final StringBuilder html = new StringBuilder();
-                html.append("<div id='");
-                // do not use id for id, otherwise acceptance tests fail.
-                html.append(model.getName());
-                html.append("'>");
-                html.append(model.getName());
-                html.append("</div>");
-                value = html.toString();
-                }
-                return value;
-            }
-        };
-    }
 
     /** {@inheritDoc} */
     @Override
@@ -305,7 +284,8 @@ public class CreatePageDialog
                     _second.name().getValue(),
                     _publish.getValue().booleanValue(),
                     template,
-                    new ErrorReportingCallback<ResourceSummary>(_constants.createPage()) {
+                    new ErrorReportingCallback<ResourceSummary>(
+                        _constants.createPage()) {
                         public void onSuccess(final ResourceSummary result) {
                             _ssm.create(
                                 new ResourceSummaryModelData(result),
@@ -316,5 +296,39 @@ public class CreatePageDialog
                 );
             }
         };
+    }
+
+
+    /**
+     * Renderer for adding resource IDs to the grid.
+     *
+     * @author Civic Computing Ltd.
+     */
+    private static final class IdRenderer
+        implements
+            GridCellRenderer<TemplateSummaryModelData> {
+
+        public String render(
+                         final TemplateSummaryModelData model,
+                         final String property,
+                         final ColumnData config,
+                         final int rowIndex,
+                         final int colIndex,
+                         final ListStore<TemplateSummaryModelData> store) {
+
+            String value = "";
+
+            if (null != model) {
+            final StringBuilder html = new StringBuilder();
+            html.append("<div id='");
+            // do not use id for id, otherwise acceptance tests fail.
+            html.append(model.getName());
+            html.append("'>");
+            html.append(model.getName());
+            html.append("</div>");
+            value = html.toString();
+            }
+            return value;
+        }
     }
 }
