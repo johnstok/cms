@@ -89,7 +89,7 @@
                             </descriptorRefs>
                             <archive>
                                 <manifest>
-                                    <mainClass>ccc.cli.App</mainClass>
+                                    <mainClass>ccc.cli.Migrate</mainClass>
                                 </manifest>
                             </archive>
                         </configuration>

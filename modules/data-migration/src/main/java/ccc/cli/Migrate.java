@@ -15,13 +15,13 @@ import ccc.migration.ServiceLookup;
 /**
  * Entry class for the migration application.
  */
-public final class App extends CccApp {
-    private static final Logger LOG = Logger.getLogger(App.class);
+public final class Migrate extends CccApp {
+    private static final Logger LOG = Logger.getLogger(Migrate.class);
     private static LegacyDBQueries legacyDBQueries;
     private static ServiceLookup services;
     private static Options options;
 
-    private App() { /* NO-OP */ }
+    private Migrate() { /* NO-OP */ }
 
 
     /**
