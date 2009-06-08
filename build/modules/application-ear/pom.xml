@@ -309,7 +309,7 @@
                                         </java>
                                         
                                         <java
-                                            classname="ccc.cli.App"
+                                            classname="ccc.cli.Migrate"
                                             fork="true"
                                             failonerror="true"
                                             classpath="${migration_classpath}">
