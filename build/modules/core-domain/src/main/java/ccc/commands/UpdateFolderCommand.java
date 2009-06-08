@@ -64,7 +64,7 @@ public class UpdateFolderCommand extends UpdateResourceCommand {
         f.sortOrder(order);
 
         // Set folder.dateChanged()?
-        // FIXME: Should this just be 'update folder'?
+        // TODO: Should this just be 'update folder'?
         getAudit().recordUpdateSortOrder(f, actor, happenedOn);
     }
 }
