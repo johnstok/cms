@@ -14,6 +14,7 @@ package ccc.commons;
 import static ccc.commons.Exceptions.*;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -77,16 +78,25 @@ public final class Resources {
      */
     public static Properties readIntoProps(final String resourcePath) {
         final Properties p = new Properties();
-        try {
-            p.load(
-                Thread
-                    .currentThread()
-                    .getContextClassLoader()
-                    .getResourceAsStream(resourcePath));
-            return p;
-        } catch (final IOException e) {
-            throw new CCCException(e);
+        final InputStream is =
+            Thread
+                .currentThread()
+                .getContextClassLoader()
+                .getResourceAsStream(resourcePath);
+        if (null!=is) {
+            try {
+                p.load(is);
+            } catch (final IOException e) {
+                throw new CCCException(e);
+            } finally {
+                try {
+                    is.close();
+                } catch (final IOException e) {
+                    swallow(e);
+                }
+            }
         }
+        return p;
     }
 
     private static final int BUFFER_SIZE = 1024;
