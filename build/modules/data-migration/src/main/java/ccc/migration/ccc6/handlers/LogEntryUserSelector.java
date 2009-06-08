@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import ccc.migration.LogEntryBean;
-import ccc.migration.MigrationException;
 
 
 /**
@@ -29,7 +28,7 @@ public final class LogEntryUserSelector
 
             // Ignore further records - choose the first.
         }
-        throw new MigrationException("User missing.");
+        return null;
     }
 
     /** {@inheritDoc} */
