@@ -154,3 +154,4 @@ locales
 firefox
 closeable
 surefire
+deprecated
