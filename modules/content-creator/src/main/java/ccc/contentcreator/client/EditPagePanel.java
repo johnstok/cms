@@ -130,7 +130,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     }
 
     private void populateHtml(final PageElement c, final Paragraph para) {
-        int editorIndex = indexOf(c.editor());
+        final int editorIndex = indexOf(c.editor());
         remove(c.editor());
         final FCKEditor fck =
             new FCKEditor(para.text(), "250px");
@@ -212,11 +212,8 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         if (id != null && !id.trim().equals("")) {
             final ID resourceId = new ID(id);
             _qs.getAbsolutePath(resourceId,
-                new ErrorReportingCallback<String>(
-                        _constants.updateContent()) { // FIXME: Could also be 'create page'.
-
-                @Override
-                public void onSuccess(final String path) {
+                new ErrorReportingCallback<String>(_constants.selectImage()) {
+                @Override public void onSuccess(final String path) {
                     final FileSummary fs =
                         new FileSummary("image", path, resourceId, "", "");
                     final FileSummaryModelData model =
