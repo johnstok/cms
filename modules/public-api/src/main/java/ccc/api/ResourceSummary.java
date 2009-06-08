@@ -19,7 +19,7 @@ import java.util.Date;
 
 /**
  * A summary of a resource.
- * FIXME: remove all mutators.
+ * TODO: remove all mutators.
  *
  * @author Civic Computing Ltd.
  */

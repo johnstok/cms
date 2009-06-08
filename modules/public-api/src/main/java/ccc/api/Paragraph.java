@@ -11,7 +11,7 @@
  */
 package ccc.api;
 
-import static ccc.api.DBC.require;
+import static ccc.api.DBC.*;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -64,7 +64,7 @@ public final class Paragraph implements Serializable, Jsonable {
                 break;
 
             default:
-                // FIXME: Throw a better exception.
+                // TODO: Throw a better exception.
                 throw new RuntimeException("Paragraph type unsupported.");
         }
     }
