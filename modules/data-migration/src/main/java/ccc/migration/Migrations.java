@@ -502,25 +502,23 @@ public class Migrations {
     private LogEntryBean logEntryForVersion(final int id,
                                             final int version,
                                             final String action) {
-        // TODO Throw LogEntryIncompleteException
-        try {
-            final LogEntryBean le =
-                _legacyQueries.selectUserFromLog(id, version, action);
+        final LogEntryBean le =
+            _legacyQueries.selectUserFromLog(id, version, action);
 
-            log.debug("Actor for "+id+" v."+version+" is "+le.getActor());
-
-            final UserSummary user =_um.getUser(le.getActor());
-            le.setUser(user);
-
-            if (null==user) {
-                // FIXME This error is caught by the outer catch!
-                throw new MigrationException("User missing: "+le.getActor());
-            }
-
-            return le;
-        } catch (final MigrationException e) {
+        if (null==le) {
             throw new MigrationException(
                 "Log entry missing: "+id+" v."+version+", action: "+action);
         }
+
+        log.debug("Actor for "+id+" v."+version+" is "+le.getActor());
+
+        final UserSummary user =_um.getUser(le.getActor());
+        le.setUser(user);
+
+        if (null==user) {
+            throw new MigrationException("User missing: "+le.getActor());
+        }
+
+        return le;
     }
 }
