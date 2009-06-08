@@ -509,7 +509,7 @@ public class CommandsEJB
                     resourceUuid,
                     new Snapshot(le.detail()));
             } else {
-                // FIXME: Throw a command failed exception
+                // TODO: Throw a command failed exception
                 throw new CCCException("Log entry describes another resource.");
             }
 
@@ -746,7 +746,7 @@ public class CommandsEJB
     @Override
     @RolesAllowed({"CONTENT_CREATOR"})
     public void reorder(final ID folderId,
-                        final List<String> order) // FIXME: Should be List<ID>
+                        final List<String> order) // TODO: Should be List<ID>
                                                  throws CommandFailedException {
         try {
             final List<UUID> newOrder = new ArrayList<UUID>();
