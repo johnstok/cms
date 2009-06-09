@@ -8,7 +8,7 @@ return FCK_TRISTATE_OFF; //we dont want the button to be toggled
 }
 ImageSelectCommand.Execute=function() {
 //open a popup window when the button is clicked
-window.open('/ContentCreator.html?browse=image', 'CCC_Image', 'width=640,height=480,scrollbars=no,scrolling=no,location=no,toolbar=no');
+window.open('/ContentCreator.jsp?browse=image', 'CCC_Image', 'width=640,height=480,scrollbars=no,scrolling=no,location=no,toolbar=no');
 }
 FCKCommands.RegisterCommand('CCC_Image', ImageSelectCommand );
         
