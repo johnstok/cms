@@ -44,5 +44,5 @@
         
     </joined-subclass>
     
-    <query name="roots">from ccc.domain.Folder f where f._parent is null</query>
+    <query name="roots">from ccc.domain.Folder f where f._parent is null order by _name asc</query>
 </hibernate-mapping>
