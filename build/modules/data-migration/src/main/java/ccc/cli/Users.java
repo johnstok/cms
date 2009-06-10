@@ -78,11 +78,15 @@ public final class Users extends CccApp {
      */
     static class Options {
         @Option(
-            name="-u", required=true, usage="Username for connecting to CCC.")
+            name="-u",
+            required=true,
+            usage="Username for connecting to CCC DB.")
         private String _username;
 
         @Option(
-            name="-p", required=true, usage="Password for connecting to CCC.")
+            name="-p",
+            required=true,
+            usage="Password for connecting to CCC DB.")
         private String _password;
 
         @Option(
