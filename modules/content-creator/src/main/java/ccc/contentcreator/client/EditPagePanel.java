@@ -147,9 +147,9 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         final List<CheckBox> boxes = cbg.getAll();
         for (final CheckBox box : boxes) {
             if ("true".equals(valueMap.get(box.getId()))) {
-                box.setValue(true);
+                box.setValue(new Boolean(true));
             } else {
-                box.setValue(false);
+                box.setValue(new Boolean(false));
             }
         }
     }
@@ -162,9 +162,9 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         final List<Radio> radios = rg.getAll();
         for (final Radio radio : radios) {
             if (radio.getId().equals(value)) {
-                radio.setValue(true);
+                radio.setValue(new Boolean(true));
             } else {
-                radio.setValue(false);
+                radio.setValue(new Boolean(false));
             }
         }
     }
@@ -615,7 +615,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
             final CheckBox cb = new CheckBox();
             cb.setBoxLabel(title);
             cb.setId(value);
-            cb.setValue("true".equals(def));
+            cb.setValue(new Boolean("true".equals(def)));
 
             cbg.add(cb);
         }
@@ -651,7 +651,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
             final Radio r = new Radio();
             r.setBoxLabel(title);
             r.setId(value);
-            r.setValue("true".equals(def));
+            r.setValue(new Boolean("true".equals(def)));
 
             rg.add(r);
         }
@@ -670,7 +670,8 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      */
     private void addElementForHtml(final String name) {
 
-        final Text fieldName = new Text(name);
+        final Text fieldName = new Text(name+":");
+        fieldName.setStyleName("x-form-item");
         add(fieldName);
         final FCKEditor fck = new FCKEditor("", "250px");
         final PageElement pe = new PageElement(name);
