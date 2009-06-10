@@ -27,13 +27,16 @@ import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.SingleSelectionModel;
 
+import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.dnd.GridDragSource;
 import com.extjs.gxt.ui.client.dnd.GridDropTarget;
 import com.extjs.gxt.ui.client.dnd.DND.Feedback;
+import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -56,7 +59,7 @@ extends
 AbstractEditDialog {
 
     private static final int GRID_WIDTH = 610;
-    private static final int GRID_HEIGHT = 300;
+    private static final int GRID_HEIGHT = 350;
     private static final String MANUAL = "MANUAL";
     private static final String DATE_CREATED_DESC = "DATE_CREATED_DESC";
     private static final String DATE_CREATED_ASC = "DATE_CREATED_ASC";
@@ -94,9 +97,7 @@ AbstractEditDialog {
 
         populateSortOptions();
 
-        configureComboBox(currentSortOrder,
-            "folder-sort-order",
-            false,
+        configureComboBox("folder-sort-order",
             constants().folderSortOrder());
 
         setCurrentValue(currentSortOrder);
@@ -114,6 +115,18 @@ AbstractEditDialog {
         configureDropTarget();
 
         _sortOrder.addSelectionChangedListener(new SortChangeListener());
+
+        addListener(Events.Resize,
+            new Listener<BoxComponentEvent>() {
+            @Override
+            public void handleEvent(final BoxComponentEvent be) {
+                final int height =
+                    be.height - (IGlobals.DEFAULT_HEIGHT - GRID_HEIGHT);
+                if (height > (IGlobals.DEFAULT_HEIGHT - GRID_HEIGHT)) {
+                    _grid.setHeight(height);
+                }
+            }
+        });
     }
 
     private void loadDetailStore() {
@@ -188,12 +201,10 @@ AbstractEditDialog {
         _sortStore.add(dateCreatedDesc);
     }
 
-    private void configureComboBox(final String value,
-                                   final String id,
-                                   final boolean allowBlank,
+    private void configureComboBox(final String id,
                                    final String label) {
         _sortOrder.setFieldLabel(label);
-        _sortOrder.setAllowBlank(allowBlank);
+        _sortOrder.setAllowBlank(false);
         _sortOrder.setId(id);
         _sortOrder.setDisplayField("name");
         _sortOrder.setTemplate("<tpl for=\".\">"
