@@ -597,12 +597,12 @@ public interface UIConstants extends Constants {
     String removeFromMainMenu();
 
     /**
-     * "Main menu".
+     * "Menu".
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Main menu")
-    String mainMenu();
+    @DefaultStringValue("Menu")
+    String menu();
 
     /**
      * "Regular expression validation failed for: ".
@@ -693,12 +693,12 @@ public interface UIConstants extends Constants {
     String isNotValidDate();
 
     /**
-     * "Working copy".
+     * "Draft".
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Working copy")
-    String workingCopy();
+    @DefaultStringValue("Draft")
+    String draft();
 
     /**
      * "Major edit".
