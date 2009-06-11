@@ -130,15 +130,9 @@ public class ResourceTable
                 ResourceSummaryModelData.Property.TYPE.name(),
                 UI_CONSTANTS.type(),
                 40);
-        typeColumn.setRenderer(new ResourceTypeRenderer());
+        typeColumn.setRenderer(
+            ResourceTypeRendererFactory.rendererForResourceSummary());
         configs.add(typeColumn);
-
-        final ColumnConfig lockedColumn =
-            new ColumnConfig(
-                ResourceSummaryModelData.Property.LOCKED.name(),
-                UI_CONSTANTS.lockedBy(),
-                80);
-        configs.add(lockedColumn);
 
         final ColumnConfig workingCopyColumn =
             new ColumnConfig(
@@ -155,6 +149,13 @@ public class ResourceTable
                 40);
         mmIncludeColumn.setRenderer(new ResourceIncludedInMainMenuRenderer());
         configs.add(mmIncludeColumn);
+
+        final ColumnConfig lockedColumn =
+            new ColumnConfig(
+                ResourceSummaryModelData.Property.LOCKED.name(),
+                UI_CONSTANTS.lockedBy(),
+                80);
+        configs.add(lockedColumn);
 
         final ColumnConfig publishedByColumn =
             new ColumnConfig(

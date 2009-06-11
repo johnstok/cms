@@ -20,7 +20,11 @@ import ccc.contentcreator.binding.ActionSummaryModelData;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 
+import com.extjs.gxt.ui.client.data.BasePagingLoader;
+import com.extjs.gxt.ui.client.data.PagingLoader;
+import com.extjs.gxt.ui.client.data.PagingModelMemoryProxy;
 import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.widget.PagingToolBar;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
@@ -39,9 +43,10 @@ public class ActionTable extends TablePanel {
     private static final int MEDIUM_COLUMN = 200;
     private static final int TYPE_COLUMN = 150;
     private static final int SMALL_COLUMN = 100;
-    private final ListStore<ActionSummaryModelData> _actionStore =
+    private ListStore<ActionSummaryModelData> _actionStore =
         new ListStore<ActionSummaryModelData>();
     private final Grid<ActionSummaryModelData> _grid;
+    private final PagingToolBar _pagerBar;
 
     /**
      * Constructor.
@@ -54,6 +59,22 @@ public class ActionTable extends TablePanel {
         setLayout(new FitLayout());
 
         setTopComponent(new ActionToolBar(this));
+
+        createColumnConfigs(configs);
+
+        final ColumnModel cm = new ColumnModel(configs);
+
+        _grid = new Grid<ActionSummaryModelData>(_actionStore, cm);
+        _grid.setAutoExpandColumn(ActionSummaryModelData.Property.PATH.name());
+        _grid.setId("action-grid");
+
+        add(_grid);
+
+        _pagerBar = new PagingToolBar(PAGING_ROW_COUNT);
+        setBottomComponent(_pagerBar);
+    }
+
+    private void createColumnConfigs(final List<ColumnConfig> configs) {
 
         addColumn(
             configs,
@@ -76,25 +97,20 @@ public class ActionTable extends TablePanel {
             ActionSummaryModelData.Property.LOCALISED_STATUS.name(),
             UI_CONSTANTS.status(),
             SMALL_COLUMN);
-        addColumn(
+
+        final ColumnConfig subjectTypeColumn = addColumn(
             configs,
             ActionSummaryModelData.Property.SUBJECT_TYPE.name(),
             UI_CONSTANTS.resourceType(),
             SMALL_COLUMN);
+        subjectTypeColumn.setRenderer(
+            ResourceTypeRendererFactory.rendererForActionSummary());
+
         addColumn(
             configs,
             ActionSummaryModelData.Property.PATH.name(),
             UI_CONSTANTS.resourcePath(),
             MEDIUM_COLUMN);
-
-        final ColumnModel cm = new ColumnModel(configs);
-
-        _grid = new Grid<ActionSummaryModelData>(_actionStore, cm);
-        _grid.setAutoExpandColumn(ActionSummaryModelData.Property.PATH.name());
-        _grid.setLoadMask(true);
-        _grid.setId("action-grid");
-
-        add(_grid);
     }
 
     private ColumnConfig addColumn(final List<ColumnConfig> configs,
@@ -111,29 +127,56 @@ public class ActionTable extends TablePanel {
 
     /**
      * Change the action data that is to be displayed.
-     * TODO: replace with displayPendingActions(), displayCompletedActions()...
      *
      * @param selectedItem The tree item selection.
      */
     public void displayActionsFor(final TreeItem selectedItem) {
         _actionStore.removeAll();
         if (ActionTree.PENDING.equals(selectedItem.getId())) {
-            qs.listPendingActions(
-                new ErrorReportingCallback<Collection<ActionSummary>>(USER_ACTIONS.viewActions()) {
-                    public void onSuccess(final Collection<ActionSummary> result) {
-                        _actionStore.add(DataBinding.bindActionSummary(result));
-                    }
-                }
-            );
+            displayPendingActions();
         } else if (ActionTree.COMPLETED.equals(selectedItem.getText())){
-            qs.listCompletedActions(
-                new ErrorReportingCallback<Collection<ActionSummary>>(USER_ACTIONS.viewActions()) {
-                    public void onSuccess(final Collection<ActionSummary> result) {
-                        _actionStore.add(DataBinding.bindActionSummary(result));
-                    }
-                }
-            );
+            displayCompletedActions();
         }
+    }
+
+    private void displayCompletedActions() {
+
+        qs.listCompletedActions(
+            new ErrorReportingCallback<Collection<ActionSummary>>(
+                USER_ACTIONS.viewActions()) {
+                public void onSuccess(final Collection<ActionSummary> result) {
+                    updatePagingModel(result);
+                }
+            }
+        );
+    }
+
+    private void displayPendingActions() {
+        qs.listPendingActions(
+            new ErrorReportingCallback<Collection<ActionSummary>>(
+                USER_ACTIONS.viewActions()) {
+                public void onSuccess(final Collection<ActionSummary> result) {
+                    updatePagingModel(result);
+                }
+
+            }
+        );
+    }
+
+    @SuppressWarnings("unchecked")
+    private void updatePagingModel(final Collection<ActionSummary> result) {
+
+        final List<ActionSummaryModelData> data =
+            DataBinding.bindActionSummary(result);
+
+        final PagingModelMemoryProxy proxy = new PagingModelMemoryProxy(data);
+        final PagingLoader loader = new BasePagingLoader(proxy);
+        loader.setRemoteSort(true);
+        _actionStore = new ListStore<ActionSummaryModelData>(loader);
+        _pagerBar.bind(loader);
+        loader.load(0, PAGING_ROW_COUNT);
+        final ColumnModel cm = _grid.getColumnModel();
+        _grid.reconfigure(_actionStore, cm);
     }
 
     /**
