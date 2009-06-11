@@ -371,6 +371,7 @@ public final class ResourceSummary implements Serializable, Jsonable {
         json.set(DATE_CHANGED, _dateChanged);
         json.set(TEMPLATE_ID, _templateId);
         json.set(TAGS, _tags);
+        json.set(ABSOLUTE_PATH, _absolutePath);
     }
 
     /**
