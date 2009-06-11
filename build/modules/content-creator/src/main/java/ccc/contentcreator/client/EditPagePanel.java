@@ -147,9 +147,9 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         final List<CheckBox> boxes = cbg.getAll();
         for (final CheckBox box : boxes) {
             if ("true".equals(valueMap.get(box.getId()))) {
-                box.setValue(new Boolean(true));
+                box.setValue(Boolean.valueOf(true));
             } else {
-                box.setValue(new Boolean(false));
+                box.setValue(Boolean.valueOf(false));
             }
         }
     }
@@ -162,9 +162,9 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         final List<Radio> radios = rg.getAll();
         for (final Radio radio : radios) {
             if (radio.getId().equals(value)) {
-                radio.setValue(new Boolean(true));
+                radio.setValue(Boolean.valueOf(true));
             } else {
-                radio.setValue(new Boolean(false));
+                radio.setValue(Boolean.valueOf(false));
             }
         }
     }
