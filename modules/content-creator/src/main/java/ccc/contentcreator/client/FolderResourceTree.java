@@ -48,7 +48,7 @@ public class FolderResourceTree extends Tree {
         GWT.create(ActionNameConstants.class);
 
     /**
-     * TODO: Add Description for this type.
+     * Tree binder for folder trees.
      *
      * @author Civic Computing Ltd.
      */
@@ -62,36 +62,9 @@ public class FolderResourceTree extends Tree {
          * @param tree
          * @param store
          */
-        FolderBinder(final Tree tree, final TreeStore store) {
+        FolderBinder(final Tree tree,
+                     final TreeStore<ResourceSummaryModelData> store) {
             super(tree, store);
-        }
-
-
-
-        /** {@inheritDoc} */
-        @Override
-        protected void createAll() {
-            for (final ResourceSummaryModelData root : store.getRootItems()) {
-                final String path = "/" + root.getName();
-                root.setAbsolutePath(path);
-            }
-            super.createAll();
-        }
-
-
-
-        /** {@inheritDoc} */
-        @Override
-        protected void renderChildren(final ResourceSummaryModelData parent,
-                                      final List<ResourceSummaryModelData> children) {
-            final String parentPath = parent.getAbsolutePath();
-
-            for (final ResourceSummaryModelData child : children) {
-                final String path = parentPath + "/" + child.getName();
-                child.setAbsolutePath(path);
-            }
-
-            super.renderChildren(parent, children);
         }
 
 

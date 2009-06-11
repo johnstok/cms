@@ -41,6 +41,7 @@ public final class ResourceSummary implements Serializable, Jsonable {
     private Date _dateChanged;
     private ID _templateId;
     private String _tags;
+    private String _absolutePath;
 
     @SuppressWarnings("unused") private ResourceSummary() { super(); }
 
@@ -79,7 +80,8 @@ public final class ResourceSummary implements Serializable, Jsonable {
                            final Date dateCreated,
                            final Date dateChanged,
                            final ID templateId,
-                           final String tags) {
+                           final String tags,
+                           final String absolutePath) {
         _id = id;
         _parentId = parentId;
         _name = name;
@@ -96,6 +98,7 @@ public final class ResourceSummary implements Serializable, Jsonable {
         _dateChanged = new Date(dateChanged.getTime());
         _templateId = templateId;
         _tags = tags;
+        _absolutePath = absolutePath;
     }
 
 
@@ -358,8 +361,8 @@ public final class ResourceSummary implements Serializable, Jsonable {
         json.set(TITLE, _title);
         json.set(
             PUBLISHED_BY, (null==_publishedBy)?null:_publishedBy.toString());
-        json.set(CHILD_COUNT, (long) _childCount);
-        json.set(FOLDER_COUNT, (long) _folderCount);
+        json.set(CHILD_COUNT, Long.valueOf(_childCount));
+        json.set(FOLDER_COUNT,Long.valueOf(_folderCount));
         json.set(INCLUDE_IN_MAIN_MENU, Boolean.valueOf(_includeInMainMenu));
         json.set(SORT_ORDER, _sortOrder);
         json.set(HAS_WORKING_COPY, Boolean.valueOf(_hasWorkingCopy));
@@ -367,5 +370,23 @@ public final class ResourceSummary implements Serializable, Jsonable {
         json.set(DATE_CHANGED, _dateChanged);
         json.set(TEMPLATE_ID, _templateId);
         json.set(TAGS, _tags);
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the absolute path.
+     */
+    public String getAbsolutePath() {
+        return _absolutePath;
+    }
+
+    /**
+     * Mutator.
+     *
+     * @param absolutePath The absolutePath to set.
+     */
+    public void setAbsolutePath(final String absolutePath) {
+        _absolutePath = absolutePath;
     }
 }

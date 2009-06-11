@@ -77,4 +77,6 @@ public final class JsonKeys {
     public static final String DEFINITION = "definition";
     /** TARGET : String. */
     public static final String TARGET = "target";
+    /** ABSOLUTE_PATH : String. */
+    public static final String ABSOLUTE_PATH = "absolute_path";
 }

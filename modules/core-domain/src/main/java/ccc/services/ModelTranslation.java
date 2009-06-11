@@ -187,7 +187,8 @@ public class ModelTranslation {
                 r.dateCreated(),
                 r.dateChanged(),
                 (null==r.template()) ? null : toID(r.template().id()),
-                r.tagString()
+                r.tagString(),
+                r.absolutePath().toString()
             );
         return rs;
     }
