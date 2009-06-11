@@ -71,15 +71,16 @@ public class ImageChooserDialog extends AbstractBaseDialog {
         final ContentPanel panel = new ContentPanel();
         panel.setCollapsible(false);
         panel.setAnimCollapse(false);
-        panel.setFrame(true);
         panel.setId("images-view");
         panel.setHeaderVisible(false);
         panel.setWidth(PANEL_WIDTH);
         panel.setHeight(PANEL_HEIGHT);
         panel.setLayout(new FitLayout());
-
+        panel.setBorders(false);
         panel.setBodyBorder(false);
+        panel.setBodyStyleName("backgroundColor: white;");
 
+        _view.setBorders(false);
         _view.setTemplate(getTemplate());
         _view.setStore(store);
         _view.setItemSelector("div.thumb-wrap");
