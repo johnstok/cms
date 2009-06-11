@@ -10,30 +10,19 @@
     <url>http://maven.apache.org</url>
 
     <properties>
+        <!-- Libraries versions should be 'lib.version.{artifactId}' -->
+        <lib.version.junit>3.8.1</lib.version.junit>
+        <lib.version.easymock>2.4</lib.version.easymock>
+        <lib.version.log4j>1.2.14</lib.version.log4j>
         <gxt-version>1.2.4</gxt-version>
         <gwt-version>1.6.4</gwt-version>
         <velocity-version>1.6.2</velocity-version>
         <jboss-version>4.2.2.GA</jboss-version>
         <h2-version>1.1.103</h2-version>
+        
+        <!-- CCC properties should be 'ccc.{prop-name}' -->
         <ccc-version>${project.version}</ccc-version>
-        
-        
-        <application.prefix>ash</application.prefix>
-        <application.name>${application.prefix}</application.name>
-        <filestore.path>/tmp/ccc7/filestore/${application.prefix}</filestore.path>
-        <application.db-dialect>org.hibernate.dialect.H2Dialect</application.db-dialect>
-        <application.db-datasource>h2-ds.xml</application.db-datasource>
-        <application.db-username>CCC</application.db-username>
-        <application.db-password>CCC</application.db-password>
-        <application.lucene-index-path>/tmp/ccc7/lucene/${application.prefix}</application.lucene-index-path>
-        
-        <!-- Alternative dialects:
-        org.hibernate.dialect.SQLServerDialect
-        org.hibernate.dialect.Oracle9Dialect
-        org.hibernate.dialect.MySQL5InnoDBDialect
-         -->
     </properties>
-
 
     <repositories>
         <repository>
@@ -55,13 +44,13 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>3.8.1</version>
+            <version>${lib.version.junit}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.easymock</groupId>
             <artifactId>easymock</artifactId>
-            <version>2.4</version>
+            <version>${lib.version.easymock}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -79,7 +68,7 @@
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
-            <version>1.2.14</version>
+            <version>${lib.version.log4j}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
