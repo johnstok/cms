@@ -21,6 +21,7 @@ import java.util.Set;
 import ccc.api.ActionStatus;
 import ccc.api.ActionSummary;
 import ccc.api.ID;
+import ccc.api.ResourceType;
 import ccc.contentcreator.api.ActionStatusConstants;
 import ccc.contentcreator.api.CommandTypeConstants;
 
@@ -42,7 +43,7 @@ public class ActionSummaryModelData
     /**
      * Constructor.
      *
-     * @param as
+     * @param as The action summary.
      */
     public ActionSummaryModelData(final ActionSummary as) {
         _as = as;
@@ -121,6 +122,11 @@ public class ActionSummaryModelData
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /**
+     * Property names.
+     *
+     * @author Civic Computing Ltd.
+     */
     public enum Property {
         /** ID : Property. */
         ID,
@@ -143,12 +149,21 @@ public class ActionSummaryModelData
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The action status.
      */
     public ActionStatus getStatus() {
         return _as.getStatus();
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return The action's subject type.
+     */
+    public ResourceType getSubjectType() {
+        return _as.getSubjectType();
     }
 
     /**
@@ -157,12 +172,13 @@ public class ActionSummaryModelData
      * @return The localised string or name of the enum if nothing found.
      */
     public String getLocalisedStatus() {
-        ActionStatusConstants types = GWT.create(ActionStatusConstants.class);
+        final ActionStatusConstants types =
+            GWT.create(ActionStatusConstants.class);
 
         String local = null;
         try {
             local = types.getString(_as.getStatus().name());
-        } catch (MissingResourceException e) {
+        } catch (final MissingResourceException e) {
             local = _as.getStatus().name();
         }
         return local;
@@ -174,30 +190,31 @@ public class ActionSummaryModelData
      * @return The localised string or name of the enum if nothing found.
      */
     public String getLocalisedType() {
-        CommandTypeConstants types = GWT.create(CommandTypeConstants.class);
+        final CommandTypeConstants types =
+            GWT.create(CommandTypeConstants.class);
 
         String local = null;
         try {
             local = types.getString(_as.getType().name());
-        } catch (MissingResourceException e) {
+        } catch (final MissingResourceException e) {
             local = _as.getType().name();
         }
         return local;
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The ID.
      */
     public ID getId() {
         return _as.getId();
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Mutator.
      *
-     * @param string
+     * @param status The status.
      */
     public void setStatus(final ActionStatus status) {
         _as.setStatus(status);
