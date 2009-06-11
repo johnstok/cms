@@ -69,13 +69,44 @@ public final class Folder extends Resource {
      * @throws ResourceExistsException If a resource already exists in this
      *  folder with the same name.
      */
-    public void add(final Resource resource) throws ResourceExistsException {
+    public void add(final Resource resource) throws ResourceExistsException,
+                                                    CycleDetectedException {
         DBC.require().notNull(resource);
         if (hasEntryWithName(resource.name())) {
             throw new ResourceExistsException(this, resource.name());
         }
+        if (resource instanceof Folder) {
+            final Folder folder = (Folder) resource;
+            if (folder.isAncestorOf(this)) {
+                throw new CycleDetectedException();
+            }
+        }
+
         _entries.add(resource);
         resource.parent(this);
+    }
+
+    /**
+     * Determine if this folder is an ancestor of the specified resource.
+     * <ul>
+     * <li>Returns false if resource is null.
+     * <li>Returns true if this equals the resource.
+     * <li>Returns true if this equals a parent of the resource.
+     * <li>Otherwise return false.
+     * </ul>
+     *
+     * @param resource The potential child.
+     * @return Returns true if the resource is a child of this folder.
+     */
+    public boolean isAncestorOf(final Resource resource) {
+        if (null==resource) {
+            return false;
+        } else if (equals(resource)) {
+            return true;
+        } else if (isAncestorOf(resource.parent())) {
+            return true;
+        }
+        return false;
     }
 
     /**

@@ -44,8 +44,8 @@ import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.Page;
+import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Resource;
-import ccc.domain.ResourceExistsException;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourceOrder;
 import ccc.domain.Template;
@@ -253,10 +253,10 @@ public class DefaultRendererTest
 
     /**
      * Test.
-     * @throws ResourceExistsException If a folder already contains a resource.
+     * @throws RemoteExceptionSupport If the test fails.
      */
     public void testRenderFolderRedirectsToFirstPage()
-    throws ResourceExistsException {
+    throws RemoteExceptionSupport {
 
         // ARRANGE
         final Folder f = new Folder("folder");
@@ -279,10 +279,10 @@ public class DefaultRendererTest
 
     /**
      * Test.
-     * @throws ResourceExistsException If a folder already contains a resource.
+     * @throws RemoteExceptionSupport If the test fails.
      */
     public void testRenderFolderIgnoresNonVisiblePages()
-    throws ResourceExistsException {
+    throws RemoteExceptionSupport {
 
         // ARRANGE
         final Folder f = new Folder("folder");
@@ -306,10 +306,10 @@ public class DefaultRendererTest
 
     /**
      * Test.
-     * @throws ResourceExistsException If a folder already contains a resource.
+     * @throws RemoteExceptionSupport If the test fails.
      */
     public void testRenderFolderIgnoresNonPageResources()
-    throws ResourceExistsException {
+    throws RemoteExceptionSupport {
 
         // ARRANGE
         final Folder root = new Folder("root");
@@ -339,8 +339,9 @@ public class DefaultRendererTest
 
     /**
      * Test.
+     * @throws RemoteExceptionSupport If the command fails.
      */
-    public void testRenderAlias() {
+    public void testRenderAlias() throws RemoteExceptionSupport {
 
         // ARRANGE
         final Page p = new Page("bar");

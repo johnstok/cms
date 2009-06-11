@@ -14,7 +14,7 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.ResourceExistsException;
+import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Search;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -48,15 +48,14 @@ public class CreateSearchCommand
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
      *
-     * @throws ResourceExistsException If a resource with the same name already
-     *  exists.
+     * @throws RemoteExceptionSupport If the command fails.
      *
      *  @return The new search.
      */
     public Search execute(final User actor,
                           final Date happenedOn,
                           final UUID parentFolder,
-                          final String title) throws ResourceExistsException {
+                          final String title) throws RemoteExceptionSupport {
         final Search s = new Search(title);
 
         create(actor, happenedOn, parentFolder, s);

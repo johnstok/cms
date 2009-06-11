@@ -113,6 +113,8 @@ public class ErrorDialog extends AbstractEditDialog {
                 return ERR_RESOLUTIONS.lockMismatch();
             case Failure.UNEXPECTED:
                 return ERR_RESOLUTIONS.contactSysAdmin();
+            case Failure.CYCLE:
+                return ERR_RESOLUTIONS.cycle();
             default:
                 return ERR_RESOLUTIONS.contactSysAdmin();
         }
@@ -129,6 +131,8 @@ public class ErrorDialog extends AbstractEditDialog {
                 return ERR_DESCRIPTIONS.lockMismatch();
             case Failure.UNEXPECTED:
                 return ERR_DESCRIPTIONS.unknown();
+            case Failure.CYCLE:
+                return ERR_DESCRIPTIONS.cycle();
             default:
                 return ERR_DESCRIPTIONS.unknown();
         }
