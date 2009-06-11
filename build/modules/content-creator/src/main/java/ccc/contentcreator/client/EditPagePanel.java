@@ -615,7 +615,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
             final CheckBox cb = new CheckBox();
             cb.setBoxLabel(title);
             cb.setId(value);
-            cb.setValue(new Boolean("true".equals(def)));
+            cb.setValue(Boolean.valueOf("true".equals(def)));
 
             cbg.add(cb);
         }
@@ -651,7 +651,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
             final Radio r = new Radio();
             r.setBoxLabel(title);
             r.setId(value);
-            r.setValue(new Boolean("true".equals(def)));
+            r.setValue(Boolean.valueOf("true".equals(def)));
 
             rg.add(r);
         }
