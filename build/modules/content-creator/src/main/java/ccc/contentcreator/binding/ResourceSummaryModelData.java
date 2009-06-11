@@ -41,7 +41,6 @@ public class ResourceSummaryModelData
     public static final String DISPLAY_PROPERTY = Property.NAME.name();
 
     private ResourceSummary _rs;
-    private String          _absolutePath; // TODO: Move to ResourceSummary?
 
     /**
      * Constructor.
@@ -87,7 +86,8 @@ public class ResourceSummaryModelData
             (null!=summaryObject.get(TEMPLATE_ID).isNull())
                 ? null
                 : new ID(summaryObject.get(TEMPLATE_ID).isString().stringValue()),
-            summaryObject.get(TAGS).isString().stringValue()
+            summaryObject.get(TAGS).isString().stringValue(),
+            summaryObject.get(ABSOLUTE_PATH).isString().stringValue()
         ));
     }
 
@@ -143,7 +143,7 @@ public class ResourceSummaryModelData
                 return (X) Boolean.valueOf(_rs.isHasWorkingCopy());
 
             case ABSOLUTE_PATH:
-                return (X) _absolutePath;
+                return (X) _rs.getAbsolutePath();
 
             default:
                 throw new UnsupportedOperationException(
@@ -211,216 +211,216 @@ public class ResourceSummaryModelData
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The  ID of the resource.
      */
     public ID getId() {
         return _rs.getId();
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Mutator.
      *
-     * @param b
+     * @param b The boolean value to set.
      */
     public void setWorkingCopy(final boolean b) {
         _rs.setHasWorkingCopy(b);
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The name.
      */
     public String getName() {
         return _rs.getName();
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor
      *
-     * @return
+     * @return The resource type.
      */
     public ResourceType getType() {
         return _rs.getType();
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The folder count.
      */
     public int getFolderCount() {
         return _rs.getFolderCount();
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The child count.
      */
     public int getChildCount() {
         return _rs.getChildCount();
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The user name of the resource locker.
      */
     public Username getLocked() {
         return _rs.getLockedBy();
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Mutator.
      *
-     * @param order
+     * @param order The sort order to set.
      */
     public void setSortOrder(final String order) {
         _rs.setSortOrder(order);
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Mutator.
      *
-     * @param title
+     * @param title The resource title to set.
      */
     public void setTitle(final String title) {
         _rs.setTitle(title);
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The ID of the parent.
      */
     public ID getParent() {
         return _rs.getParentId();
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Mutator.
      *
-     * @param value
+     * @param value The name to set.
      */
     public void setName(final String value) {
         _rs.setName(value);
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Mutator.
      *
-     * @param b
+     * @param b The boolean value to set.
      */
     public void setIncludeInMainMenu(final boolean b) {
         _rs.setIncludeInMainMenu(b);
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor
      *
-     * @return
+     * @return The title of the resource.
      */
     public String getTitle() {
         return _rs.getTitle();
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The sort order of the resource.
      */
     public String getSortOrder() {
         return _rs.getSortOrder();
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return Username of the publisher.
      */
     public Username getPublished() {
         return _rs.getPublishedBy();
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Mutator.
      *
-     * @return
+     * @return true if has a working copy.
      */
     public boolean hasWorkingCopy() {
         return _rs.isHasWorkingCopy();
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return true if included in the main menu.
      */
     public boolean isIncludedInMainMenu() {
         return _rs.isIncludeInMainMenu();
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Mutator.
      *
-     * @param path
+     * @param path The absolute path to set.
      */
-    public void setAbsolutePath(final String path) {
-        _absolutePath = path;
+    public void setAbsolutePath(final String absolutePath) {
+        _rs.setAbsolutePath(absolutePath);
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The absolute path.
      */
     public String getAbsolutePath() {
-        return _absolutePath;
+        return _rs.getAbsolutePath();
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return Template ID.
      */
     public ID getTemplateId() {
         return _rs.getTemplateId();
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The tags.
      */
     public String getTags() {
         return _rs.getTags();
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Mutator.
      *
-     * @param currentUser
+     * @param user The user to set.
      */
     public void setLocked(final Username user) {
         _rs.setLockedBy(user);
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Mutator.
      *
-     * @param currentUser
+     * @param user The user to set.
      */
     public void setPublished(final Username user) {
         _rs.setPublishedBy(user);
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Mutator.
      *
-     * @param id
+     * @param id The id to set.
      */
     public void setTemplateId(final ID id) {
         _rs.setTemplateId(id);
