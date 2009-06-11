@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/data-migration/src/main/java/ccc/cli/Search.java"/>
+<listEntry value="/data-migration/src/main/java/ccc/cli/Users.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
@@ -12,8 +12,7 @@
 <listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.maven.ide.eclipse.launchconfig.classpathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="ccc.cli.Search"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="running"/>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="ccc.cli.Users"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-c jdbc:h2:tcp:localhost/mem:ash&#10;-u CCC&#10;-p CCC&#10;-nu migration&#10;-ne  migration@civicuk.com&#10;-np migration"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="data-migration"/>
-<stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.maven.ide.eclipse.launchconfig.sourcepathProvider"/>
 </launchConfiguration>

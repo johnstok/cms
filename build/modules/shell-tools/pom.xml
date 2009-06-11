@@ -6,8 +6,8 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>CCC7</groupId>
-	<artifactId>data-migration</artifactId>
-	<name>data-migration</name>
+	<artifactId>shell-tools</artifactId>
+	<name>shell-tools</name>
 	<version>7.0.0-SNAPSHOT</version>
 	<url>http://maven.apache.org</url>
     
