@@ -134,7 +134,7 @@ public class ActionTable extends TablePanel {
         _actionStore.removeAll();
         if (ActionTree.PENDING.equals(selectedItem.getId())) {
             displayPendingActions();
-        } else if (ActionTree.COMPLETED.equals(selectedItem.getText())){
+        } else if (ActionTree.COMPLETED.equals(selectedItem.getId())){
             displayCompletedActions();
         }
     }
