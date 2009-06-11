@@ -64,6 +64,7 @@ public final class ResourceSummary implements Serializable, Jsonable {
      * @param dateChanged When was the resource last changed.
      * @param templateId The id of the resource's template.
      * @param tags The resource's tags.
+     * @param absolutePath The resource's absolute path.
      */
     public ResourceSummary(final ID id,
                            final ID parentId,
@@ -362,7 +363,7 @@ public final class ResourceSummary implements Serializable, Jsonable {
         json.set(
             PUBLISHED_BY, (null==_publishedBy)?null:_publishedBy.toString());
         json.set(CHILD_COUNT, Long.valueOf(_childCount));
-        json.set(FOLDER_COUNT,Long.valueOf(_folderCount));
+        json.set(FOLDER_COUNT, Long.valueOf(_folderCount));
         json.set(INCLUDE_IN_MAIN_MENU, Boolean.valueOf(_includeInMainMenu));
         json.set(SORT_ORDER, _sortOrder);
         json.set(HAS_WORKING_COPY, Boolean.valueOf(_hasWorkingCopy));
