@@ -13,7 +13,6 @@ package ccc.cli;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Properties;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
@@ -43,7 +42,6 @@ public class FileUpload extends CccApp {
 
     private static Server        server;
     private static ServiceLookup services;
-    private static Properties    props = new Properties();
 
     private static void recurse(final UUID parentId,
                                 final File localFolder,
@@ -81,10 +79,8 @@ public class FileUpload extends CccApp {
 
         final Options o = parseOptions(args, Options.class);
 
-        loadSettings(props, "migration.properties");
-
         services =
-            new ServiceLookup(props.getProperty("app-name"), o._providerURL);
+            new ServiceLookup(o._appName, o._providerURL);
 
         final Queries queries = services.lookupQueries();
         final Commands commands = services.lookupCommands();
@@ -94,7 +90,7 @@ public class FileUpload extends CccApp {
         server = new CccServer(
             new ResourcePath(o.getRemotePath()),
             new FileUploader(
-                props.getProperty("targetApplicationURL"),
+                o._uploadUrl,
                 o.getUsername(),
                 o.getPassword()),
             commands,
@@ -117,7 +113,7 @@ public class FileUpload extends CccApp {
      *
      * @author Civic Computing Ltd.
      */
-    private static class Options {
+    static class Options {
         @Option(
             name="-u", required=true, usage="Username for connecting to CCC.")
         private String _username;
@@ -135,11 +131,19 @@ public class FileUpload extends CccApp {
         private String _localPath;
 
         @Option(
-            name="-h", required=false, usage="Include hidden files\folders.")
+            name="-a", required=true, usage="The name of the application.")
+        private String _appName;
+
+        @Option(
+            name="-o", required=true, usage="The URL for file upload.")
+        private String _uploadUrl;
+
+        @Option(
+            name="-h", required=false, usage="Include hidden files/folders.")
         private boolean _includeHidden;
 
         @Option(
-            name="-b", required=false, usage="Publish uploaded files\folders.")
+            name="-b", required=false, usage="Publish uploaded files/folders.")
         private boolean _publish;
 
         @Option(
@@ -216,6 +220,28 @@ public class FileUpload extends CccApp {
          */
         String getProviderURL() {
             return _providerURL;
+        }
+
+
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the appName.
+         */
+        public final String getAppName() {
+            return _appName;
+        }
+
+
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the uploadUrl.
+         */
+        public final String getUploadUrl() {
+            return _uploadUrl;
         }
     }
 }
