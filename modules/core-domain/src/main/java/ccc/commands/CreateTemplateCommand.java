@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.TemplateDelta;
-import ccc.domain.ResourceExistsException;
+import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
 import ccc.domain.User;
@@ -50,8 +50,7 @@ public class CreateTemplateCommand extends CreateResourceCommand {
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
      *
-     * @throws ResourceExistsException If a resource with the same name already
-     *  exists.
+     * @throws RemoteExceptionSupport If the command fails.
      *
      *  @return The new template.
      */
@@ -60,7 +59,7 @@ public class CreateTemplateCommand extends CreateResourceCommand {
                             final UUID parentFolder,
                             final TemplateDelta delta,
                             final ResourceName name)
-                                                throws ResourceExistsException {
+                                                throws RemoteExceptionSupport {
         final Template t = new Template(
             name,
             delta.getTitle(),

@@ -53,4 +53,12 @@ public interface ErrorResolutions extends Messages {
      */
     @DefaultMessage("Ask the user who locked the resource to unlock it.")
     String lockMismatch();
+
+    /**
+     * "Choose a different resource.".
+     *
+     * @return The message, in the appropriate locale.
+     */
+    @DefaultMessage("Choose a different resource.")
+    String cycle();
 }

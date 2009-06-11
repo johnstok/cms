@@ -20,8 +20,8 @@ import junit.framework.TestCase;
 import ccc.api.Paragraph;
 import ccc.domain.Folder;
 import ccc.domain.Page;
+import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Resource;
-import ccc.domain.ResourceExistsException;
 
 
 /**
@@ -50,10 +50,9 @@ public class VelocityHelperTest extends TestCase {
 
     /**
      * Test.
-     *
-     * @throws ResourceExistsException If a folder already contains a page.
+     * @throws RemoteExceptionSupport If the test fails.
      */
-    public void testSelectPathElements() throws ResourceExistsException {
+    public void testSelectPathElements() throws RemoteExceptionSupport {
 
         // ARRANGE
         final VelocityHelper helper = new VelocityHelper();
@@ -78,11 +77,9 @@ public class VelocityHelperTest extends TestCase {
 
     /**
      * Test.
-     *
-     * @throws ResourceExistsException If a folder already contains a page.
+     * @throws RemoteExceptionSupport If the test fails.
      */
-    public void testSelectPagesForContentIndex()
-                                                throws ResourceExistsException {
+    public void testSelectPagesForContentIndex() throws RemoteExceptionSupport {
 
         // ARRANGE
         final VelocityHelper helper = new VelocityHelper();
@@ -114,11 +111,10 @@ public class VelocityHelperTest extends TestCase {
 
     /**
      * Test.
-     *
-     * @throws ResourceExistsException If a folder already contains a page.
+     * @throws RemoteExceptionSupport If the test fails.
      */
     public void testSelectPagesForContentIndexNoLimit()
-    throws ResourceExistsException {
+    throws RemoteExceptionSupport {
 
         // ARRANGE
         final VelocityHelper helper = new VelocityHelper();

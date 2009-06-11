@@ -17,7 +17,7 @@ import java.util.UUID;
 import ccc.api.PageDelta;
 import ccc.domain.Page;
 import ccc.domain.PageHelper;
-import ccc.domain.ResourceExistsException;
+import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.ResourceName;
 import ccc.domain.Template;
 import ccc.domain.User;
@@ -56,8 +56,7 @@ public class CreatePageCommand extends CreateResourceCommand {
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
      *
-     * @throws ResourceExistsException If a resource with the same name already
-     *  exists.
+     * @throws RemoteExceptionSupport If the command fails.
      *
      *  @return The new page.
      */
@@ -67,7 +66,7 @@ public class CreatePageCommand extends CreateResourceCommand {
                         final PageDelta delta,
                         final boolean publish,
                         final ResourceName name,
-                        final UUID templateId) throws ResourceExistsException {
+                        final UUID templateId) throws RemoteExceptionSupport {
 
         final Page page = new Page(name, delta.getTitle());
 

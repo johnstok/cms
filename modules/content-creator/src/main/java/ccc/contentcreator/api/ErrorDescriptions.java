@@ -64,4 +64,12 @@ public interface ErrorDescriptions extends Messages {
     @DefaultMessage(
         "The resource you tried to update is locked by another user.")
     String lockMismatch();
+
+    /**
+     * "Creating this relationship would cause a circular dependency.".
+     *
+     * @return The message, in the appropriate locale.
+     */
+    @DefaultMessage("Creating this relationship would cause a circular dependency.")
+    String cycle();
 }

@@ -38,8 +38,11 @@ public class Alias extends Resource {
      *
      * @param title The title for the alias.
      * @param target The target for the alias.
+     * @throws CycleDetectedException If targeting the specified resource would
+     *  cause a circular dependency.
      */
-    public Alias(final String title, final Resource target) {
+    public Alias(final String title,
+                 final Resource target) throws CycleDetectedException {
         super(title);
         target(target);
     }
@@ -55,10 +58,23 @@ public class Alias extends Resource {
      * Mutator for the target field.
      *
      * @param target The new target.
+     * @throws CycleDetectedException If targeting the specified resource would
+     *  cause a circular dependency.
      */
-    public void target(final Resource target) {
+    public void target(final Resource target) throws CycleDetectedException {
         DBC.require().notNull(target);
+        if (equals(target) || isTargetedBy(target)) {
+            throw new CycleDetectedException();
+        }
         _target = target;
+    }
+
+    private boolean isTargetedBy(final Resource target) {
+        if (target instanceof Alias) {
+            final Alias alias = (Alias) target;
+            return equals(alias.target()) || isTargetedBy(alias.target());
+        }
+        return false;
     }
 
     /**

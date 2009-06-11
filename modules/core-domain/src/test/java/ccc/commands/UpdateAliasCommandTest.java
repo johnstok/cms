@@ -17,10 +17,9 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 import ccc.domain.Alias;
-import ccc.domain.LockMismatchException;
 import ccc.domain.Page;
+import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Resource;
-import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -37,11 +36,9 @@ public class UpdateAliasCommandTest
 
     /**
      * Test.
-     * @throws LockMismatchException If the resource is locked by another user.
-     * @throws UnlockedException If the resource is not locked.
+     * @throws RemoteExceptionSupport If the test fails.
      */
-    public void testUpdateAlias() throws UnlockedException,
-                                         LockMismatchException {
+    public void testUpdateAlias() throws RemoteExceptionSupport {
 
         // ARRANGE
         final Alias alias = new Alias("alias", _resource);

@@ -18,7 +18,7 @@ import java.util.UUID;
 import ccc.api.FileDelta;
 import ccc.domain.Data;
 import ccc.domain.File;
-import ccc.domain.ResourceExistsException;
+import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.ResourceName;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -62,8 +62,7 @@ public class CreateFileCommand extends CreateResourceCommand {
      *  should be read.
      * @param name The name of the file to create.
      *
-     * @throws ResourceExistsException If a resource with the specified name
-     *  already exists.
+     * @throws RemoteExceptionSupport If the command fails.
      *
      * @return The file that was created.
      */
@@ -73,7 +72,7 @@ public class CreateFileCommand extends CreateResourceCommand {
                         final FileDelta file,
                         final ResourceName name,
                         final InputStream dataStream)
-                                                throws ResourceExistsException {
+                                                throws RemoteExceptionSupport {
         final Data data = _data.create(dataStream, file.getSize());
         final File f =
             new File(

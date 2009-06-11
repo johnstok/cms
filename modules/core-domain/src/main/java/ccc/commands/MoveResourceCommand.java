@@ -15,10 +15,8 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.domain.Folder;
-import ccc.domain.LockMismatchException;
+import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Resource;
-import ccc.domain.ResourceExistsException;
-import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -54,16 +52,12 @@ public class MoveResourceCommand {
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
      *
-     * @throws LockMismatchException If the resource is locked by another user.
-     * @throws UnlockedException If the resource is unlocked.
-     * @throws ResourceExistsException If a resource with the same name already
-     *  exists.
+     * @throws RemoteExceptionSupport If the command fails.
      */
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID resourceId,
-                        final UUID newParentId)
-      throws UnlockedException, LockMismatchException, ResourceExistsException {
+                        final UUID newParentId) throws RemoteExceptionSupport {
         final Resource resource = _dao.find(Resource.class, resourceId);
         resource.confirmLock(actor);
 

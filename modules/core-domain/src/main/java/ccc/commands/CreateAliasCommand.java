@@ -16,8 +16,8 @@ import java.util.UUID;
 
 import ccc.domain.Alias;
 import ccc.domain.CCCException;
+import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Resource;
-import ccc.domain.ResourceExistsException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -51,8 +51,7 @@ public class CreateAliasCommand
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
      *
-     * @throws ResourceExistsException If a resource with the same name already
-     *  exists.
+     * @throws RemoteExceptionSupport If the command fails.
      *
      *  @return The new alias.
      */
@@ -60,7 +59,7 @@ public class CreateAliasCommand
                          final Date happenedOn,
                          final UUID parentFolder,
                          final UUID targetId,
-                         final String title) throws ResourceExistsException {
+                         final String title) throws RemoteExceptionSupport {
         final Resource target = getDao().find(Resource.class, targetId);
         if (target == null) {
             throw new CCCException("Target does not exists.");

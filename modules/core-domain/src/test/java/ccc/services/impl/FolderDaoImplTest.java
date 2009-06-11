@@ -24,8 +24,8 @@ import ccc.commands.UpdateFolderCommand;
 import ccc.domain.Folder;
 import ccc.domain.LockMismatchException;
 import ccc.domain.Page;
+import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Resource;
-import ccc.domain.ResourceExistsException;
 import ccc.domain.ResourceOrder;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
@@ -71,12 +71,9 @@ public class FolderDaoImplTest
 
     /**
      * Test.
-     * @throws ResourceExistsException If the resource already exists.
-     * @throws LockMismatchException If the resource is locked by another user.
-     * @throws UnlockedException If the resource isn't locked.
+     * @throws RemoteExceptionSupport If the test fails.
      */
-    public void testReorder()
-    throws LockMismatchException, ResourceExistsException, UnlockedException {
+    public void testReorder() throws RemoteExceptionSupport {
 
         // ARRANGE
         _f.lock(_regularUser);

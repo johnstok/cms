@@ -24,7 +24,7 @@ import ccc.domain.Folder;
 import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
-import ccc.domain.ResourceExistsException;
+import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -159,9 +159,9 @@ public class AuditLogImplTest
 
     /**
      * Test.
-     * @throws ResourceExistsException If the resource already exists.
+     * @throws RemoteExceptionSupport If the test fails.
      */
-    public void testRecordMove() throws ResourceExistsException {
+    public void testRecordMove() throws RemoteExceptionSupport {
 
         // ARRANGE
         final Capture<LogEntry> le = new Capture<LogEntry>();

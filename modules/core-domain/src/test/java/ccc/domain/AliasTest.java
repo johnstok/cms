@@ -20,14 +20,80 @@ import ccc.api.ResourceType;
 /**
  * Tests for the {@link Alias} class.
  *
- * @author Civic Computing Ltd
+ * @author Civic Computing Ltd.
  */
 public class AliasTest extends TestCase {
 
     /**
      * Test.
      */
-    public void testSnapshot() {
+    public void testSelfCircularDependency() {
+
+        // ARRANGE
+        final Alias a = new Alias();
+
+        // ACT
+        try {
+            a.target(a);
+            fail();
+
+        // ASSERT
+        } catch (final CycleDetectedException e) {
+            // pass
+        }
+    }
+
+    /**
+     * Test.
+     * @throws CycleDetectedException If the test fails.
+     */
+    public void testDirectCircularDependency() throws CycleDetectedException {
+
+        // ARRANGE
+        final Alias a = new Alias();
+        final Alias b = new Alias();
+        a.target(b);
+
+        // ACT
+        try {
+            b.target(a);
+            fail();
+
+        // ASSERT
+        } catch (final CycleDetectedException e) {
+            // pass
+        }
+    }
+
+    /**
+     * Test.
+     * @throws CycleDetectedException If the test fails.
+     */
+    public void testIndirectCircularDependency() throws CycleDetectedException {
+
+        // ARRANGE
+        final Alias a = new Alias();
+        final Alias b = new Alias();
+        final Alias c = new Alias();
+        a.target(b);
+        b.target(c);
+
+        // ACT
+        try {
+            c.target(a);
+            fail();
+
+        // ASSERT
+        } catch (final CycleDetectedException e) {
+            // pass
+        }
+    }
+
+    /**
+     * Test.
+     * @throws CycleDetectedException If the test fails.
+     */
+    public void testSnapshot() throws CycleDetectedException {
 
         // ARRANGE
         final Page p = new Page("foo");
@@ -43,8 +109,9 @@ public class AliasTest extends TestCase {
 
     /**
      * Test.
+     * @throws CycleDetectedException If the test fails.
      */
-    public void testCreateAliasWithTitle() {
+    public void testCreateAliasWithTitle() throws CycleDetectedException {
 
         // ARRANGE
         final Page p = new Page("foo");
@@ -72,8 +139,9 @@ public class AliasTest extends TestCase {
 
     /**
      * Test.
+     * @throws CycleDetectedException If the test fails.
      */
-    public void testCreateAliasWithName() {
+    public void testCreateAliasWithName() throws CycleDetectedException {
 
         // ARRANGE
         final Page p = new Page("foo");
@@ -87,8 +155,9 @@ public class AliasTest extends TestCase {
 
     /**
      * Test.
+     * @throws CycleDetectedException If the test fails.
      */
-    public void testNullTargetIsRejected() {
+    public void testNullTargetIsRejected() throws CycleDetectedException {
 
         // ACT
         try {

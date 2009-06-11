@@ -30,6 +30,96 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
+     * @throws RemoteExceptionSupport If the test fails.
+     */
+    public void testIsAncestorOrThis() throws RemoteExceptionSupport {
+
+        // ARRANGE
+        final Folder a = new Folder();
+        final Folder b = new Folder();
+        final Folder c = new Folder();
+
+        // ACT
+        a.add(b);
+        b.add(c);
+
+        // ASSERT
+        assertTrue(a.isAncestorOf(a));
+        assertTrue(a.isAncestorOf(b));
+        assertTrue(a.isAncestorOf(c));
+        assertTrue(b.isAncestorOf(c));
+        assertFalse(b.isAncestorOf(a));
+        assertFalse(c.isAncestorOf(a));
+    }
+
+    /**
+     * Test.
+     * @throws RemoteExceptionSupport If the test fails.
+     */
+    public void testDirectCircularDependency() throws RemoteExceptionSupport {
+
+        // ARRANGE
+        final Folder p = new Folder();
+        final Folder c = new Folder();
+        p.add(c);
+
+        // ACT
+        try {
+            c.add(p);
+            fail();
+
+        // ASSERT
+        } catch (final CycleDetectedException e) {
+            // pass
+        }
+    }
+
+    /**
+     * Test.
+     * @throws RemoteExceptionSupport If the test fails.
+     */
+    public void testIndirectCircularDependency() throws RemoteExceptionSupport {
+
+        // ARRANGE
+        final Folder a = new Folder();
+        final Folder b = new Folder();
+        final Folder c = new Folder();
+        a.add(b);
+        b.add(c);
+
+        // ACT
+        try {
+            c.add(a);
+            fail();
+
+            // ASSERT
+        } catch (final CycleDetectedException e) {
+            // pass
+        }
+    }
+
+    /**
+     * Test.
+     * @throws RemoteExceptionSupport If the test fails.
+     */
+    public void testCantAddFolderToSelf() throws RemoteExceptionSupport {
+
+        // ARRANGE
+        final Folder a = new Folder();
+
+        // ACT
+        try {
+            a.add(a);
+            fail();
+
+            // ASSERT
+        } catch (final CycleDetectedException e) {
+            // pass
+        }
+    }
+
+    /**
+     * Test.
      */
     public void testChangeSortOrder() {
 
@@ -61,10 +151,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws ResourceExistsException If a child of the same name already
-     *  exists.
+     * @throws RemoteExceptionSupport If the test fails.
      */
-    public void testFolders() throws ResourceExistsException {
+    public void testFolders() throws RemoteExceptionSupport {
 
             // ARRANGE
             final Folder f = new Folder("f");
@@ -88,10 +177,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws ResourceExistsException If a child of the same name already
-     *  exists.
+     * @throws RemoteExceptionSupport If the test fails.
      */
-    public void testPages() throws ResourceExistsException {
+    public void testPages() throws RemoteExceptionSupport {
 
             // ARRANGE
             final Folder f = new Folder("f");
@@ -115,10 +203,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws ResourceExistsException If a child of the same name already
-     *  exists.
+     * @throws RemoteExceptionSupport If the test fails.
      */
-    public void testFirstPage() throws ResourceExistsException {
+    public void testFirstPage() throws RemoteExceptionSupport {
 
         // ARRANGE
         final Folder pages = new Folder("content");
@@ -137,10 +224,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws ResourceExistsException If a child of the same name already
-     *  exists.
+     * @throws RemoteExceptionSupport If the test fails.
      */
-    public void testHasPages() throws ResourceExistsException {
+    public void testHasPages() throws RemoteExceptionSupport {
 
         // ARRANGE
         final Folder noPages = new Folder("content");
@@ -163,10 +249,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws ResourceExistsException If a child of the same name already
-     *  exists.
+     * @throws RemoteExceptionSupport If the test fails.
      */
-    public void testTypedEntries() throws ResourceExistsException {
+    public void testTypedEntries() throws RemoteExceptionSupport {
 
         // ARRANGE
         final Folder content = new Folder("content");
@@ -186,10 +271,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws ResourceExistsException If a child of the same name already
-     *  exists.
+     * @@throws RemoteExceptionSupport If the test fails.
      */
-    public void testFolderCount() throws ResourceExistsException {
+    public void testFolderCount() throws RemoteExceptionSupport {
 
         // ARRANGE
         final Folder content = new Folder("content");
@@ -208,11 +292,10 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws ResourceExistsException If a child of the same name already
-     *  exists.
+     * @throws RemoteExceptionSupport If the test fails.
      */
     public void testNullContentCannotBeAddedToFolders()
-    throws ResourceExistsException {
+    throws RemoteExceptionSupport {
 
         // ARRANGE
         final Folder f = new Folder("foo");
@@ -267,10 +350,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws ResourceExistsException If a child of the same name already
-     *  exists.
+     * @throws RemoteExceptionSupport If the test fails.
      */
-    public void testAddPageToFolder() throws ResourceExistsException {
+    public void testAddPageToFolder() throws RemoteExceptionSupport {
 
         // ARRANGE
         final Folder folder = new Folder("foo");
@@ -288,10 +370,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws ResourceExistsException If a child of the same name already
-     *  exists.
+     * @throws RemoteExceptionSupport If the test fails.
      */
-    public void testRemovePageFromFolder() throws ResourceExistsException {
+    public void testRemovePageFromFolder() throws RemoteExceptionSupport {
 
         // ARRANGE
         final Folder folder = new Folder("foo");
@@ -310,10 +391,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws ResourceExistsException If a child of the same name already
-     *  exists.
+     * @throws RemoteExceptionSupport If the test fails.
      */
-    public void testAddFolderToFolder() throws ResourceExistsException {
+    public void testAddFolderToFolder() throws RemoteExceptionSupport {
 
         // ARRANGE
         final Folder folder = new Folder("foo");
@@ -346,10 +426,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws ResourceExistsException If a child of the same name already
-     *  exists.
+     * @throws RemoteExceptionSupport If the test fails.
      */
-    public void testFindEntryByUrl() throws ResourceExistsException {
+    public void testFindEntryByUrl() throws RemoteExceptionSupport {
 
         // ARRANGE
         final Folder foo = new Folder("foo");
@@ -366,10 +445,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws ResourceExistsException If a child of the same name already
-     *  exists.
+     * @throws RemoteExceptionSupport If the test fails.
      */
-    public void testNavigateToContent() throws ResourceExistsException {
+    public void testNavigateToContent() throws RemoteExceptionSupport {
 
         // ARRANGE
         final Folder content = new Folder("content");
@@ -389,10 +467,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws ResourceExistsException If a child of the same name already
-     *  exists.
+     * @throws RemoteExceptionSupport If the test fails.
      */
-    public void testNavigateToFolder() throws ResourceExistsException {
+    public void testNavigateToFolder() throws RemoteExceptionSupport {
 
         // ARRANGE
         final Folder content = new Folder("content");
@@ -412,10 +489,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws ResourceExistsException If a child of the same name already
-     *  exists.
+     * @throws RemoteExceptionSupport If the test fails.
      */
-    public void testNavigateToEmptyPath() throws ResourceExistsException {
+    public void testNavigateToEmptyPath() throws RemoteExceptionSupport {
 
         // ARRANGE
         final Folder content = new Folder("content");
@@ -435,10 +511,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws ResourceExistsException If a child of the same name already
-     *  exists.
+     * @throws RemoteExceptionSupport If the test fails.
      */
-    public void testHasEntryWithName() throws ResourceExistsException {
+    public void testHasEntryWithName() throws RemoteExceptionSupport {
 
         // ARRANGE
         final Page p = new Page("page");
@@ -463,11 +538,10 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws ResourceExistsException If a child of the same name already
-     *  exists.
+     * @throws RemoteExceptionSupport If the test fails.
      */
     public void testAddRejectsResourcesWithExistingNames()
-    throws ResourceExistsException {
+    throws RemoteExceptionSupport {
 
         // ARRANGE
         final Page p = new Page("page");
@@ -480,7 +554,7 @@ public final class FolderTest extends TestCase {
             fail("Resources with existing names should be rejected.");
 
         // ASSERT
-        } catch (final ResourceExistsException e) {
+        } catch (final RemoteExceptionSupport e) {
             assertEquals(
                 "Folder already contains a resource with name 'page'.",
                 e.getMessage());
@@ -490,10 +564,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws ResourceExistsException If a child of the same name already
-     *  exists.
+     * @throws RemoteExceptionSupport If the test fails.
      */
-    public void testHasAliases() throws ResourceExistsException {
+    public void testHasAliases() throws RemoteExceptionSupport {
 
         // ARRANGE
         final Folder noAliases = new Folder("content");
@@ -515,10 +588,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws ResourceExistsException If a child of the same name already
-     *  exists.
+     * @throws RemoteExceptionSupport If the test fails.
      */
-    public void testFirstAlias() throws ResourceExistsException {
+    public void testFirstAlias() throws RemoteExceptionSupport {
 
         // ARRANGE
         final Folder pages = new Folder("content");
@@ -537,10 +609,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws ResourceExistsException If a child of the same name already
-     *  exists.
+     * @throws RemoteExceptionSupport If the test fails.
      */
-    public void testReorderWithOriginalOrder() throws ResourceExistsException {
+    public void testReorderWithOriginalOrder() throws RemoteExceptionSupport {
 
         // ARRANGE
         final Folder f = new Folder("testFolder");
@@ -564,10 +635,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws ResourceExistsException If a child of the same name already
-     *  exists.
+     * @throws RemoteExceptionSupport If the test fails.
      */
-    public void testReorderWithNewOrder() throws ResourceExistsException {
+    public void testReorderWithNewOrder() throws RemoteExceptionSupport {
 
         // ARRANGE
         final Folder f = new Folder("testFolder");

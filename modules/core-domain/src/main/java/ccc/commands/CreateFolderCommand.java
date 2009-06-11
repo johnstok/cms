@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.domain.Folder;
-import ccc.domain.ResourceExistsException;
+import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -48,8 +48,7 @@ public class CreateFolderCommand extends CreateResourceCommand {
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
      *
-     * @throws ResourceExistsException If a resource with the same name already
-     *  exists.
+     * @throws RemoteExceptionSupport If the command fails.
      *
      *  @return The new folder.
      */
@@ -57,7 +56,7 @@ public class CreateFolderCommand extends CreateResourceCommand {
                           final Date happenedOn,
                           final UUID parentFolder,
                           final String name,
-                          final String title) throws ResourceExistsException {
+                          final String title) throws RemoteExceptionSupport {
         final Folder f = new Folder(name);
         f.title((null==title)?name:title);
 
