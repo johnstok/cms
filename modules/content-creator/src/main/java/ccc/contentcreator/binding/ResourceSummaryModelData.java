@@ -38,6 +38,7 @@ import com.google.gwt.json.client.JSONValue;
 public class ResourceSummaryModelData
     implements
         ModelData {
+    /** DISPLAY_PROPERTY : String. */
     public static final String DISPLAY_PROPERTY = Property.NAME.name();
 
     private ResourceSummary _rs;
@@ -238,7 +239,7 @@ public class ResourceSummaryModelData
     }
 
     /**
-     * Accessor
+     * Accessor.
      *
      * @return The resource type.
      */
@@ -319,7 +320,7 @@ public class ResourceSummaryModelData
     }
 
     /**
-     * Accessor
+     * Accessor.
      *
      * @return The title of the resource.
      */
@@ -366,7 +367,7 @@ public class ResourceSummaryModelData
     /**
      * Mutator.
      *
-     * @param path The absolute path to set.
+     * @param absolutePath The absolute path to set.
      */
     public void setAbsolutePath(final String absolutePath) {
         _rs.setAbsolutePath(absolutePath);
