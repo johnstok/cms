@@ -3,7 +3,7 @@
 <datasources>
   <local-tx-datasource>
     <jndi-name>${application.prefix}</jndi-name>
-    <connection-url>jdbc:sqlserver://hestia:1260;DatabaseName=${application.prefix}</connection-url>
+    <connection-url>${ccc.db.connection.url}</connection-url>
     <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
     <user-name>${application.db-username}</user-name>
     <password>${application.db-password}</password>

@@ -3,7 +3,7 @@
 <datasources>
   <local-tx-datasource>
     <jndi-name>${application.prefix}</jndi-name>
-    <connection-url>jdbc:oracle:thin:@poseidon:1521:dev</connection-url>
+    <connection-url>${ccc.db.connection.url}</connection-url>
 
     <driver-class>oracle.jdbc.driver.OracleDriver</driver-class>
     <user-name>${application.db-username}</user-name>
