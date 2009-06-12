@@ -56,7 +56,7 @@ public final class Users extends CccApp {
                 getDriverForConnectionString(options.getConString()),
                 options.getConString(),
                 options.getUsername(),
-                options.getUsername());
+                options.getPassword());
         try {
             final NewDBQueries queries = new NewDBQueries(newConnection);
             final UUID userId =
