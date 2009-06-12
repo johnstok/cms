@@ -1,18 +1,18 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
+<project
+    xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
     <parent>
         <artifactId>build</artifactId>
         <groupId>CCC7</groupId>
         <version>7.0.0-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>CCC7</groupId>
+    
     <artifactId>content-creator</artifactId>
     <packaging>war</packaging>
     <name>content-creator</name>
-    <version>7.0.0-SNAPSHOT</version>
-    <url>http://maven.apache.org</url>
     
     <build>
         <plugins>
@@ -105,15 +105,21 @@
         <dependency>
             <groupId>CCC7</groupId>
             <artifactId>rendering-engine</artifactId>
-            <version>7.0.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency><!-- TODO: Why??! -->
             <groupId>CCC7</groupId>
             <artifactId>shell-tools</artifactId>
-            <version>7.0.0-SNAPSHOT</version>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
         
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>1.7</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>com.extjs</groupId>
             <artifactId>gxt</artifactId>
@@ -165,7 +171,6 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-
 
     <profiles>
         <profile>

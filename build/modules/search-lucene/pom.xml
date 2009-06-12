@@ -1,45 +1,44 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
+<project 
+    xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
     <parent>
         <artifactId>build</artifactId>
         <groupId>CCC7</groupId>
         <version>7.0.0-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>CCC7</groupId>
+    
     <artifactId>search-lucene</artifactId>
     <name>search-lucene</name>
-    <version>7.0.0-SNAPSHOT</version>
-    <url>http://maven.apache.org</url>
 
     <dependencies>
         <dependency>
             <groupId>CCC7</groupId>
             <artifactId>core-domain</artifactId>
-            <version>7.0.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         
         <dependency>
             <groupId>org.compass-project</groupId>
             <artifactId>compass</artifactId>
-            <version>2.1.1</version>
+            <version>${lib.version.compass}</version>
         </dependency>
         <dependency>
             <groupId>pdfbox</groupId>
             <artifactId>pdfbox</artifactId>
-            <version>0.7.3</version>
+            <version>${lib.version.pdfbox}</version>
         </dependency> 
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>3.0.1-FINAL</version>
+            <version>${lib.version.poi}</version>
        </dependency>
         <dependency>
             <groupId>org.textmining</groupId>
             <artifactId>tm-extractors</artifactId>
-            <version>1.0</version>
+            <version>${lib.version.tmextractors}</version>
        </dependency>
     </dependencies>
 
