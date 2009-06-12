@@ -14,6 +14,16 @@
         <lib.version.junit>3.8.1</lib.version.junit>
         <lib.version.easymock>2.4</lib.version.easymock>
         <lib.version.log4j>1.2.14</lib.version.log4j>
+        <lib.version.oracle>10.2.0.4.0</lib.version.oracle>
+        <lib.version.mysql>5.1.6</lib.version.mysql>
+        <lib.version.sqlserver>2.0</lib.version.sqlserver>
+        <lib.version.args4j>2.0.12</lib.version.args4j>
+        <lib.version.httpclient>3.1</lib.version.httpclient>
+        <lib.version.dbutils>1.1</lib.version.dbutils>
+        <lib.version.compass>2.1.1</lib.version.compass>
+        <lib.version.pdfbox>0.7.3</lib.version.pdfbox>
+        <lib.version.poi>3.0.1-FINAL</lib.version.poi>
+        <lib.version.tmextractors>1.0</lib.version.tmextractors>
         <gxt-version>1.2.4</gxt-version>
         <gwt-version>1.6.4</gwt-version>
         <velocity-version>1.6.2</velocity-version>
