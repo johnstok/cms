@@ -3,7 +3,7 @@
   <local-tx-datasource>
     <jndi-name>${application.prefix}</jndi-name>
     <driver-class>org.h2.jdbcx.JdbcDataSource</driver-class>
-    <connection-url>jdbc:h2:tcp:localhost/mem:${application.prefix};DB_CLOSE_DELAY=-1</connection-url>
+    <connection-url>${ccc.db.connection.url}</connection-url>
     <user-name>${application.db-username}</user-name>
     <password>${application.db-password}</password>
   </local-tx-datasource>
