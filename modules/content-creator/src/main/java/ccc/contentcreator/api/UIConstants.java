@@ -1364,4 +1364,12 @@ public interface UIConstants extends Constants {
      */
     @DefaultStringValue("is not valid user name - it should contain only alphanumeric characters")
     String isNotValidUserName();
+
+    /**
+     * "Path".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Path")
+    String path();
 }

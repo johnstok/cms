@@ -8,7 +8,7 @@ return FCK_TRISTATE_OFF; //we dont want the button to be toggled
 }
 LinkSelectCommand.Execute=function() {
 //open a popup window when the button is clicked
-window.open('/ContentCreator.jsp?browse=link', 'CCC_Link', 'width=640,height=480,scrollbars=no,scrolling=no,location=no,toolbar=no');
+parent.cccLinkSelector();
 }
 FCKCommands.RegisterCommand('CCC_Link', LinkSelectCommand );
         

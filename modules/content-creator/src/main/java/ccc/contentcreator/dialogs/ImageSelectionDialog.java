@@ -15,138 +15,132 @@ import java.util.Collection;
 import java.util.List;
 
 import ccc.api.FileSummary;
-import ccc.contentcreator.api.QueriesService;
-import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.FileSummaryModelData;
+import ccc.contentcreator.callbacks.ErrorReportingCallback;
+import ccc.contentcreator.client.Globals;
 
-import com.extjs.gxt.ui.client.Events;
-import com.extjs.gxt.ui.client.data.BaseListLoader;
-import com.extjs.gxt.ui.client.data.ListLoader;
-import com.extjs.gxt.ui.client.data.ModelReader;
-import com.extjs.gxt.ui.client.data.RpcProxy;
-import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
+import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
-import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.ListView;
+import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
-import com.extjs.gxt.ui.client.widget.layout.FlowLayout;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
  * Image selection dialog for FCKEditor use.
  *
  * @author Civic Computing Ltd.
  */
-public class ImageSelectionDialog extends LayoutContainer {
+public class ImageSelectionDialog extends AbstractBaseDialog {
 
     private static final int PANEL_HEIGHT = 460;
     private static final int PANEL_WIDTH = 620;
 
-    private final QueriesServiceAsync _qs = GWT.create(QueriesService.class);
+    private  final ListView<FileSummaryModelData> _view =
+        new ListView<FileSummaryModelData>();
+    private List<FileSummaryModelData> _models;
+    private final String _elementid;
 
 
     /**
      * Constructor.
+     *
+     * @param elementid Element ID for FCKEditor
      */
-    public ImageSelectionDialog() {
-        setLayout(new FlowLayout(10));
-    }
+    public ImageSelectionDialog(final String elementid) {
+        super(Globals.uiConstants().selectImage());
+        _elementid = elementid;
 
-    /** {@inheritDoc} */
-    @Override
-    protected void onRender(final Element parent, final int index) {
-        super.onRender(parent, index);
-
-        final RpcProxy<FileSummaryModelData, List<FileSummaryModelData>> proxy =
-            new RpcProxy<FileSummaryModelData, List<FileSummaryModelData>>() {
-            @Override
-            protected void load(final FileSummaryModelData loadConfig,
-                                final AsyncCallback<List<FileSummaryModelData>> callback) {
-
-                _qs.getAllContentImages(
-                    new AsyncCallback<Collection<FileSummary>>(){
-
-                        public void onFailure(final Throwable arg0) {
-                            callback.onFailure(arg0);
-                        }
-                        public void onSuccess(final Collection<FileSummary> arg0) {
-                            callback.onSuccess(
-                                DataBinding.bindFileSummary(arg0));
-                        }
-                    });
-            }
-        };
-
-        final ListLoader loader =
-            new BaseListLoader(proxy, new ModelReader<FileSummaryModelData>());
         final ListStore<FileSummaryModelData> store =
-            new ListStore<FileSummaryModelData>(loader);
-        loader.load();
+            new ListStore<FileSummaryModelData>();
+
+        queries().getAllContentImages(
+            new ErrorReportingCallback<Collection<FileSummary>>(
+                _constants.selectImage()){
+                public void onSuccess(final Collection<FileSummary> arg0) {
+                    loadModel(store, arg0);
+                }
+            });
+
 
         final ContentPanel panel = new ContentPanel();
         panel.setCollapsible(false);
         panel.setAnimCollapse(false);
-        panel.setFrame(true);
         panel.setId("images-view");
         panel.setHeaderVisible(false);
         panel.setWidth(PANEL_WIDTH);
         panel.setHeight(PANEL_HEIGHT);
         panel.setLayout(new FitLayout());
-
+        panel.setBorders(false);
         panel.setBodyBorder(false);
+        panel.setBodyStyleName("backgroundColor: white;");
 
-        final ListView<FileSummaryModelData> view =
-                new ListView<FileSummaryModelData>();
+        _view.setBorders(false);
+        _view.setTemplate(getTemplate());
+        _view.setStore(store);
+        _view.setItemSelector("div.thumb-wrap");
 
-        view.setTemplate(getTemplate());
-        view.setStore(store);
-        view.setItemSelector("div.thumb-wrap");
-        view.getSelectionModel().addListener(
-            Events.SelectionChange,
-            new ImageSelectionListener());
-
-        panel.add(view);
+        panel.add(_view);
         add(panel);
+
+        addButton(_cancel);
+        final Button save = new Button(constants().save(), saveAction());
+        addButton(save);
     }
 
-    /**
-     * Listener for image selection.
-     *
-     * @author Civic Computing Ltd.
-     */
-    private static final class ImageSelectionListener
-        implements
-            Listener<SelectionChangedEvent<FileSummaryModelData>> {
+    /** {@inheritDoc} */
+    protected SelectionListener<ButtonEvent> saveAction() {
+        return new SelectionListener<ButtonEvent>(){
+            @Override
+            public void componentSelected(final ButtonEvent ce) {
+                final FileSummaryModelData md =
+                    _view.getSelectionModel().getSelectedItem();
+                if (md != null) {
+                    jsniSetUrl(
+                        md.getPath(),
+                        md.getTitle(),
+                        _elementid);
+                    close();
+                }
+            }
+        };
+    }
 
-        public void handleEvent(
-                        final SelectionChangedEvent<FileSummaryModelData> be) {
-            if (null!=be.getSelectedItem()) {
-                jsniSetUrl(
-                    be.getSelectedItem().getPath(),
-                    be.getSelectedItem().getTitle());
+
+    private static native String jsniSetUrl(final String selectedUrl,
+                                            final String title,
+                                            final String elementID) /*-{
+     if ($wnd.FCKeditorAPI) {
+            var instance = $wnd.FCKeditorAPI.GetInstance(elementID);
+            if (instance != null) {
+                return instance.InsertHtml("<img title='"+title+"' alt='"
+                +title+"' src='"+selectedUrl+"'/>");
             }
         }
-    }
+        return null;
+    }-*/;
+
 
     // TODO: Property names aren't type safe.
     private native String getTemplate() /*-{
-        return ['<tpl for=".">',
-         '<div class="thumb-wrap" id="{NAME}" style="border: 1px solid white">',
-         '<div class="thumb"><img src="{PATH}" title="{TITLE}"></div>',
-         '<span class="x-editable">{SHORT_NAME}</span></div>',
-         '</tpl>',
-         '<div class="x-clear"></div>'].join("");
+    return ['<tpl for=".">',
+     '<div class="thumb-wrap" id="{NAME}" style="border: 1px solid white">',
+     '<div class="thumb"><img src="{PATH}" title="{TITLE}"></div>',
+     '<span class="x-editable">{SHORT_NAME}</span></div>',
+     '</tpl>',
+     '<div class="x-clear"></div>'].join("");
 
-         }-*/;
+     }-*/;
 
-    private static native String jsniSetUrl(String selectedUrl, String title) /*-{
-    $wnd.opener.FCK.InsertHtml("<img title='"+title+"' alt='"+title+"' src='"+selectedUrl+"'/>");
-    $wnd.close() ;
-    }-*/;
+    private void loadModel(final ListStore<FileSummaryModelData> store,
+                           final Collection<FileSummary> arg0) {
+
+        _models = DataBinding.bindFileSummary(arg0);
+        if (_models != null && _models.size() > 0) {
+            store.add(_models);
+        }
+    }
 
 }

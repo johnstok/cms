@@ -12,22 +12,16 @@
 package ccc.contentcreator.dialogs;
 
 import ccc.api.ResourceSummary;
-import ccc.contentcreator.api.ActionNameConstants;
-import ccc.contentcreator.api.QueriesService;
-import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
-import ccc.contentcreator.client.ResourceTree;
 
-import com.extjs.gxt.ui.client.Style.Scroll;
+import com.extjs.gxt.ui.client.Events;
+import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.widget.ContentPanel;
-import com.extjs.gxt.ui.client.widget.LayoutContainer;
-import com.extjs.gxt.ui.client.widget.button.Button;
-import com.extjs.gxt.ui.client.widget.layout.FitLayout;
-import com.google.gwt.core.client.GWT;
+import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.extjs.gxt.ui.client.widget.form.TriggerField;
 
 
 /**
@@ -35,85 +29,85 @@ import com.google.gwt.core.client.GWT;
  *
  * @author Civic Computing Ltd.
  */
-public class LinkSelectionDialog extends LayoutContainer {
-    /** PANEL_HEIGHT : int. */
-    private static final int PANEL_HEIGHT = 460;
+public class LinkSelectionDialog extends AbstractEditDialog {
 
-    /** PANEL_WIDTH : int. */
-    private static final int PANEL_WIDTH = 620;
 
-    private static final ActionNameConstants USER_ACTIONS =
-        GWT.create(ActionNameConstants.class);
+    private final TriggerField<String> _linkPath =
+        new TriggerField<String>();
+    private final TextField<String> _linkName = new TextField<String>();
 
-    private final ResourceTree _tree;
-    /** _qs : QueriesServiceAsync. */
-    private final QueriesServiceAsync _qs = GWT.create(QueriesService.class);
+    private ResourceSummaryModelData _md = null;
+    private final String _elementid;
 
 
     /**
      * Constructor.
      *
      * @param targetRoot ResourceSummary root
+     * @param elementid Element ID for FCKEditor
      */
-    public LinkSelectionDialog(final ResourceSummary targetRoot) {
-        final ContentPanel panel = new ContentPanel();
+    public LinkSelectionDialog(final ResourceSummary targetRoot,
+                               final String elementid) {
+        super(Globals.uiConstants().selectResource());
+        _elementid = elementid;
 
-        panel.setBodyStyle("backgroundColor: white;");
-        panel.setScrollMode(Scroll.AUTOY);
-        panel.setHeaderVisible(false);
-        panel.setWidth(PANEL_WIDTH);
-        panel.setHeight(PANEL_HEIGHT);
-        panel.setLayout(new FitLayout());
+        _linkName.setFieldLabel(constants().name());
+        _linkName.setId("linkName");
+        _linkName.setAllowBlank(false);
 
-        _tree = new ResourceTree(targetRoot);
-        panel.add(_tree);
+        _linkPath.setFieldLabel(constants().path());
+        _linkPath.setId("linkPath");
+        _linkPath.setAllowBlank(false);
+        _linkPath.addListener(
+            Events.TriggerClick,
+            new Listener<ComponentEvent>(){
+                public void handleEvent(final ComponentEvent be) {
+                    final ResourceSelectionDialog folderSelect =
+                        new ResourceSelectionDialog(targetRoot);
+                    folderSelect.addListener(Events.Close,
+                        new Listener<ComponentEvent>() {
+                        public void handleEvent(final ComponentEvent ce) {
+                            _md = folderSelect.selectedResource();
+                            if (_md != null) {
+                                _linkPath.setValue(_md.getAbsolutePath());
+                                _linkName.setValue(_md.getName());
+                            }
+                        }});
+                    folderSelect.show();
+                }});
+        addField(_linkName);
+        addField(_linkPath);
+    }
 
-        final Button save = new Button(
-            Globals.uiConstants().save(),
-            new SelectionListener<ComponentEvent>() {
-                @Override
-                public void componentSelected(final ComponentEvent ce) {
-                    final ResourceSummaryModelData target = selectedResource();
-                    if (target == null) {
-                        closeWindow();
-                    } else {
-                        _qs.getAbsolutePath(
-                            target.getId(),
-                            new ErrorReportingCallback<String>(
-                                    USER_ACTIONS.unknownAction()) {
-                                public void onSuccess(final String path) {
-                                    jsniSetUrl(path, target.getTitle());
-                                    closeWindow();
-                                }
-                            });
-                    }
+
+    private static native String jsniSetUrl(final String selectedUrl,
+                                            final String title,
+                                            final String elementID) /*-{
+        if ($wnd.FCKeditorAPI) {
+            var instance = $wnd.FCKeditorAPI.GetInstance(elementID);
+            if (instance != null) {
+                return instance.InsertHtml("<a href='"+selectedUrl+"'>"
+                +title+"</a>");
+            }
+        }
+        return null;
+
+    }-*/;
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected SelectionListener<ButtonEvent> saveAction() {
+        return new SelectionListener<ButtonEvent>() {
+            @Override public void componentSelected(final ButtonEvent ce) {
+                if (_linkPath.getValue() != null
+                    && _linkName.getValue() != null) {
+                    jsniSetUrl(_linkPath.getValue(),
+                        _linkName.getValue(),
+                        _elementid);
+                    close();
                 }
             }
-        );
-        save.setId("ResourceSelectSave");
-        panel.addButton(save);
-        add(panel);
-
+        };
     }
-
-    /**
-     * Accessor for selected folder.
-     *
-     * @return Returns the selected folder as {@link FolderDTO}
-     */
-    public ResourceSummaryModelData selectedResource() {
-        return
-            (null==_tree.getSelectedItem())
-                ? null
-                : (ResourceSummaryModelData) _tree.getSelectedItem().getModel();
-    }
-
-    private static native String jsniSetUrl(String selectedUrl,
-                                            String title) /*-{
-    $wnd.opener.FCK.InsertHtml("<a href='"+selectedUrl+"'>"+title+"</a>");
-    }-*/;
-
-    private static native String closeWindow() /*-{
-    $wnd.close() ;
-    }-*/;
 }

@@ -14,6 +14,16 @@
 
 package ccc.contentcreator.client.ui;
 
+import java.util.Collection;
+
+import ccc.api.ResourceSummary;
+import ccc.contentcreator.api.ActionNameConstants;
+import ccc.contentcreator.api.QueriesService;
+import ccc.contentcreator.api.QueriesServiceAsync;
+import ccc.contentcreator.callbacks.ErrorReportingCallback;
+import ccc.contentcreator.dialogs.ImageSelectionDialog;
+import ccc.contentcreator.dialogs.LinkSelectionDialog;
+
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -59,7 +69,9 @@ import com.google.gwt.user.client.ui.Hidden;
 public class FCKEditor extends LayoutContainer {
 
     private final String _elementID;
-
+    private final QueriesServiceAsync _qs = GWT.create(QueriesService.class);
+    private static final ActionNameConstants USER_ACTIONS =
+        GWT.create(ActionNameConstants.class);
     /**
      * Constructor.
      *
@@ -68,6 +80,8 @@ public class FCKEditor extends LayoutContainer {
      */
     public FCKEditor(final String html,
                      final String cssHeight) {
+
+        initJSNI(this);
 
         //Work out an ID
         _elementID =
@@ -130,7 +144,6 @@ public class FCKEditor extends LayoutContainer {
     }
 
 
-
     private String getFckBaseUrl() {
         return GWT.getModuleBaseURL()+"js/fckeditor/";
     }
@@ -141,13 +154,48 @@ public class FCKEditor extends LayoutContainer {
             var instance = $wnd.FCKeditorAPI.GetInstance(elementID);
             if (instance != null) {
                 return instance.GetXHTML(true);
-            } else {
-                //The instance isn't bound yet
-                return null;
             }
-        } else {
-            //We're not bound yet in some way
-            return null;
         }
+        //We're not bound yet in some way
+        return null;
     }-*/;
+
+    private static native String initJSNI(final FCKEditor obj) /*-{
+        $wnd.cccLinkSelector = function() {
+            obj.@ccc.contentcreator.client.ui.FCKEditor::openLinkSelector()();
+        };
+
+        $wnd.cccImageSelector = function() {
+            obj.@ccc.contentcreator.client.ui.FCKEditor::openImageSelector()();
+        };
+    }-*/;
+
+    /**
+     * Displays the FCKEditor specific link selection dialog.
+     *
+     */
+    public void openLinkSelector() {
+        _qs.roots(new ErrorReportingCallback<Collection<ResourceSummary>>(
+            USER_ACTIONS.internalAction()){
+            public void onSuccess(final Collection<ResourceSummary> arg0) {
+                ResourceSummary rs = null;
+                for (final ResourceSummary rr : arg0) {
+                    if (rr.getName().equals("content")) {
+                        rs = rr;
+                    }
+                }
+                new LinkSelectionDialog(rs, _elementID).show();
+
+            }
+        });
+
+    }
+
+    /**
+     * Displays the FCKEditor specific image selection dialog.
+     *
+     */
+    public void openImageSelector() {
+        new ImageSelectionDialog(_elementID).show();
+    }
 }
