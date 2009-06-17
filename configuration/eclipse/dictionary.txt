@@ -155,3 +155,4 @@ firefox
 closeable
 surefire
 deprecated
+apollo
