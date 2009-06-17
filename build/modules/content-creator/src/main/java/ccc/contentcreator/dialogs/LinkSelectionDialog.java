@@ -18,6 +18,7 @@ import ccc.contentcreator.client.Globals;
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
+import com.extjs.gxt.ui.client.event.KeyListener;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.TextField;
@@ -35,9 +36,10 @@ public class LinkSelectionDialog extends AbstractEditDialog {
     private final TriggerField<String> _linkPath =
         new TriggerField<String>();
     private final TextField<String> _linkName = new TextField<String>();
+    private final String _elementid;
 
     private ResourceSummaryModelData _md = null;
-    private final String _elementid;
+    private String _uuid = null;
 
 
     /**
@@ -71,10 +73,18 @@ public class LinkSelectionDialog extends AbstractEditDialog {
                             if (_md != null) {
                                 _linkPath.setValue(_md.getAbsolutePath());
                                 _linkName.setValue(_md.getName());
+                                _uuid =_md.getId().toString();
                             }
                         }});
                     folderSelect.show();
                 }});
+
+        _linkPath.addKeyListener(new KeyListener() {
+            @Override
+            public void componentKeyUp(final ComponentEvent event) {
+                _uuid = null;
+            }
+        });
         addField(_linkName);
         addField(_linkPath);
     }
@@ -82,11 +92,16 @@ public class LinkSelectionDialog extends AbstractEditDialog {
 
     private static native String jsniSetUrl(final String selectedUrl,
                                             final String title,
+                                            final String uuid,
                                             final String elementID) /*-{
         if ($wnd.FCKeditorAPI) {
             var instance = $wnd.FCKeditorAPI.GetInstance(elementID);
-            if (instance != null) {
+            if (instance != null && uuid == null) {
                 return instance.InsertHtml("<a href='"+selectedUrl+"'>"
+                +title+"</a>");
+            } else if (instance != null && uuid != null) {
+                return instance.InsertHtml("<a href='"+selectedUrl
+                +"' class='UUID:"+uuid+"'>"
                 +title+"</a>");
             }
         }
@@ -104,6 +119,7 @@ public class LinkSelectionDialog extends AbstractEditDialog {
                     && _linkName.getValue() != null) {
                     jsniSetUrl(_linkPath.getValue(),
                         _linkName.getValue(),
+                        _uuid,
                         _elementid);
                     close();
                 }
