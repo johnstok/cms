@@ -2,11 +2,11 @@ package ccc.contentcreator.actions;
 
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
-import ccc.contentcreator.dialogs.PreviewContentDialog;
+
+import com.google.gwt.user.client.Window;
 
 /**
  * Open a dialog to preview the selected resource.
@@ -37,13 +37,19 @@ public final class PreviewAction
     /** {@inheritDoc} */
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        _queries.getAbsolutePath(
-            item.getId(),
-            new ErrorReportingCallback<String>(UI_CONSTANTS.preview()) {
-                public void onSuccess(final String path) {
-                    new PreviewContentDialog(path, _useWorkingCopy).show();
-                }
-            }
-        );
+        final String url =
+            Globals.appURL()
+                + item.getAbsolutePath()
+                + ((_useWorkingCopy) ? "?wc" : "");
+
+        Window.open(
+            url,
+            "_blank",
+            "menubar=no,"
+            + "location=yes,"
+            + "toolbar=no,"
+            + "resizable=yes,"
+            + "scrollbars=yes,"
+            + "status=no");
     }
 }
