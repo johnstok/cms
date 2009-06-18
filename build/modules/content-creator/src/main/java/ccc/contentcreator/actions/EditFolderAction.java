@@ -3,14 +3,14 @@ package ccc.contentcreator.actions;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.SingleSelectionModel;
-import ccc.contentcreator.dialogs.UpdateFolderSortOrderDialog;
+import ccc.contentcreator.dialogs.EditFolderDialog;
 
 /**
- * Publish a resource.
+ * Edit a folder.
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateSortOrderAction
+public class EditFolderAction
     implements
         Action {
 
@@ -21,7 +21,7 @@ public class UpdateSortOrderAction
      *
      * @param selectionModel The selectionModel for this action.
      */
-    public UpdateSortOrderAction(final SingleSelectionModel selectionModel) {
+    public EditFolderAction(final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;
     }
 
@@ -29,9 +29,10 @@ public class UpdateSortOrderAction
     public void execute() {
         final ResourceSummaryModelData selectedModel =
             _selectionModel.tableSelection();
-        new UpdateFolderSortOrderDialog(
+        new EditFolderDialog(
             _selectionModel,
-            selectedModel.getSortOrder())
+            selectedModel.getSortOrder(),
+            selectedModel.getIndexPageId())
         .show();
     }
 }

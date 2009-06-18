@@ -665,15 +665,17 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({"CONTENT_CREATOR"})
-    public void updateFolderSortOrder(final ID folderId,
-                                      final String sortOrder)
+    public void updateFolder(final ID folderId,
+                                      final String sortOrder,
+                                      final ID indexPageId)
                                                  throws CommandFailedException {
         try {
             new UpdateFolderCommand(_bdao, _audit).execute(
                 loggedInUser(),
                  new Date(),
                  toUUID(folderId),
-                 ResourceOrder.valueOf(sortOrder));
+                 ResourceOrder.valueOf(sortOrder),
+                 toUUID(indexPageId));
 
         } catch (final RemoteExceptionSupport e) {
             throw fail(e);

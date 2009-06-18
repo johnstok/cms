@@ -113,8 +113,9 @@ public interface CommandServiceAsync {
                         Map<String, String> metadata,
                         AsyncCallback<Void> callback);
 
-    void updateFolderSortOrder(ID folderId,
+    void updateFolder(ID folderId,
                                String sortOrder,
+                               ID indexPageId,
                                AsyncCallback<Void> callback);
 
     public void clearWorkingCopy(ID pageId,

@@ -452,4 +452,16 @@ public class ResourceSummaryModelData
         _rs.setIndexPageId(id);
     }
 
+    /**
+     * Accessor.
+     *
+     * @return The index page.
+     */
+    public ID getIndexPageId() {
+        return _rs.getIndexPageId();
+    }
+
+
+
+
 }

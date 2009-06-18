@@ -669,14 +669,6 @@ public interface UIConstants extends Constants {
     String folderSortOrder();
 
     /**
-     * "Change sort order".
-     *
-     * @return The constant, in the appropriate locale.
-     */
-    @DefaultStringValue("Change sort order")
-    String changeSortOrder();
-
-    /**
      * "Resource Details".
      *
      * @return The constant, in the appropriate locale.
@@ -1372,4 +1364,20 @@ public interface UIConstants extends Constants {
      */
     @DefaultStringValue("Path")
     String path();
+
+    /**
+     * "Index page".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Index page")
+    String indexPage();
+
+    /**
+     * "{none}".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("{none}")
+    String none();
 }
