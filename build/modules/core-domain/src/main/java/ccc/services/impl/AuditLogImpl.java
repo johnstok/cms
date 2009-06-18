@@ -245,7 +245,7 @@ public class AuditLogImpl
                                       final Date happenedOn) {
         DBC.require().notNull(folder);
         final LogEntry le =
-            LogEntry.forUpdateSortOrder(folder, actor, happenedOn);
+            LogEntry.forFolderUpdate(folder, actor, happenedOn);
         record(le);
     }
 

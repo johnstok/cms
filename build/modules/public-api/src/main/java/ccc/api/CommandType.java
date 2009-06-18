@@ -38,8 +38,6 @@ public enum CommandType {
     // Folder
     /** FOLDER_REORDER : CommandType. */
     FOLDER_REORDER,
-    /** FOLDER_UPDATE_SORT_ORDER : CommandType. */
-    FOLDER_UPDATE_SORT_ORDER,
     /** FOLDER_UPDATE : CommandType. */
     FOLDER_UPDATE,
     /** FOLDER_CREATE : CommandType. */

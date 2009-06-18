@@ -238,7 +238,7 @@ public class LogEntryTest
         f.sortOrder(ResourceOrder.MANUAL);
 
         // ACT
-        final LogEntry le = LogEntry.forUpdateSortOrder(f, _actor, _happenedOn);
+        final LogEntry le = LogEntry.forFolderUpdate(f, _actor, _happenedOn);
 
         // ASSERT
         assertEquals(f.id(), le.subjectId());
@@ -247,8 +247,8 @@ public class LogEntryTest
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(CommandType.FOLDER_UPDATE_SORT_ORDER, le.action());
-        assertEquals("{\"sortOrder\":\"MANUAL\"}", le.detail());
+        assertEquals(CommandType.FOLDER_UPDATE, le.action());
+        assertEquals("{\"indexPageId\":null,\"sortOrder\":\"MANUAL\"}", le.detail());
     }
 
     /**
