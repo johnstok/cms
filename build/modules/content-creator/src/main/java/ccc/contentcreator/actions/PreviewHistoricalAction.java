@@ -6,7 +6,8 @@ import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.dialogs.HistoryDialog;
-import ccc.contentcreator.dialogs.PreviewContentDialog;
+
+import com.google.gwt.user.client.Window;
 
 /**
  * Open a dialog to preview the selected resource.
@@ -40,7 +41,20 @@ public final class PreviewHistoricalAction
             item.getId(),
             new ErrorReportingCallback<String>(UI_CONSTANTS.preview()) {
                 public void onSuccess(final String path) {
-                    new PreviewContentDialog(path, item.getIndex()).show();
+                    final String url =
+                        Globals.appURL()
+                        + path
+                        + "?v="
+                        + item.getIndex();
+                    Window.open(
+                        url,
+                        "_blank",
+                        "menubar=no,"
+                        + "location=yes,"
+                        + "toolbar=no,"
+                        + "resizable=yes,"
+                        + "scrollbars=yes,"
+                        + "status=no");
                 }
             }
         );
