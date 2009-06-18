@@ -79,4 +79,6 @@ public final class JsonKeys {
     public static final String TARGET = "target";
     /** ABSOLUTE_PATH : String. */
     public static final String ABSOLUTE_PATH = "absolute_path";
+    /** INDEX_PAGE : String. */
+    public static final String INDEX_PAGE = "index_page";
 }

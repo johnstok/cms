@@ -42,6 +42,13 @@
             <one-to-many class="ccc.domain.Resource" />
         </list>
         
+        
+        <many-to-one
+            name="_indexPage"
+            column="index_page"
+            not-null="false"
+            foreign-key="FK_FOLDER_INDEX_PAGE_ID" />
+        
     </joined-subclass>
     
     <query name="roots">from ccc.domain.Folder f where f._parent is null order by _name asc</query>
