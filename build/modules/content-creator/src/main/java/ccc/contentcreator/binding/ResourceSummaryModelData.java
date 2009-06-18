@@ -89,9 +89,9 @@ public class ResourceSummaryModelData
                 : new ID(summaryObject.get(TEMPLATE_ID).isString().stringValue()),
             summaryObject.get(TAGS).isString().stringValue(),
             summaryObject.get(ABSOLUTE_PATH).isString().stringValue(),
-            (null!=summaryObject.get(INDEX_PAGE).isNull())
+            (null!=summaryObject.get(INDEX_PAGE_ID).isNull())
             ? null
-            : new ID(summaryObject.get(INDEX_PAGE).isString().stringValue())
+            : new ID(summaryObject.get(INDEX_PAGE_ID).isString().stringValue())
         ));
     }
 
