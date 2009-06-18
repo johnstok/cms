@@ -42,6 +42,8 @@ public final class ResourceSummary implements Serializable, Jsonable {
     private ID _templateId;
     private String _tags;
     private String _absolutePath;
+    private ID _indexPageId;
+
 
     @SuppressWarnings("unused") private ResourceSummary() { super(); }
 
@@ -65,6 +67,7 @@ public final class ResourceSummary implements Serializable, Jsonable {
      * @param templateId The id of the resource's template.
      * @param tags The resource's tags.
      * @param absolutePath The resource's absolute path.
+     * @param indexPageId The id of the index page.
      */
     public ResourceSummary(final ID id,
                            final ID parentId,
@@ -82,7 +85,8 @@ public final class ResourceSummary implements Serializable, Jsonable {
                            final Date dateChanged,
                            final ID templateId,
                            final String tags,
-                           final String absolutePath) {
+                           final String absolutePath,
+                           final ID indexPageId) {
         _id = id;
         _parentId = parentId;
         _name = name;
@@ -100,6 +104,7 @@ public final class ResourceSummary implements Serializable, Jsonable {
         _templateId = templateId;
         _tags = tags;
         _absolutePath = absolutePath;
+        _indexPageId = indexPageId;
     }
 
 
@@ -390,5 +395,26 @@ public final class ResourceSummary implements Serializable, Jsonable {
      */
     public void setAbsolutePath(final String absolutePath) {
         _absolutePath = absolutePath;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the indexPageId.
+     */
+    public ID getIndexPageId() {
+
+        return _indexPageId;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param indexPageId The indexPageId to set.
+     */
+    public void setIndexPageId(final ID indexPageId) {
+
+        _indexPageId = indexPageId;
     }
 }

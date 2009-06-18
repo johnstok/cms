@@ -663,4 +663,25 @@ public final class FolderTest extends TestCase {
         assertEquals(foo, pages.get(2));
     }
 
+
+    /**
+     * Test.
+     *
+     * @throws RemoteExceptionSupport If the test fails.
+     */
+    public void testIndexPage() throws RemoteExceptionSupport {
+        // ARRANGE
+        final Folder f = new Folder("testFolder");
+        final Page baz = new Page("baz");
+        final Page foo = new Page("foo");
+
+        f.add(baz);
+        f.add(foo);
+
+        // ACT
+        f.indexPage(foo);
+
+        // ASSERT
+        assertEquals(foo, f.indexPage());
+    }
 }

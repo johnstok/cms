@@ -158,11 +158,14 @@ public class ModelTranslation {
         int childCount = 0;
         int folderCount = 0;
         String sortOrder = null;
+        ID indexPage = null;
         boolean hasWorkingCopy = false;
         if (r.type() == ResourceType.FOLDER) {
             childCount = r.as(Folder.class).entries().size();
             folderCount = r.as(Folder.class).folders().size();
             sortOrder = r.as(Folder.class).sortOrder().name();
+            indexPage = (null==r.as(Folder.class).indexPage())
+                ? null : toID(r.as(Folder.class).indexPage().id());
         } else if (r.type() == ResourceType.PAGE) {
             hasWorkingCopy = (r.as(Page.class).hasWorkingCopy());
         } else if (r.type() == ResourceType.FILE) {
@@ -188,7 +191,8 @@ public class ModelTranslation {
                 r.dateChanged(),
                 (null==r.template()) ? null : toID(r.template().id()),
                 r.tagString(),
-                r.absolutePath().toString()
+                r.absolutePath().toString(),
+                indexPage
             );
         return rs;
     }

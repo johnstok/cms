@@ -88,7 +88,10 @@ public class ResourceSummaryModelData
                 ? null
                 : new ID(summaryObject.get(TEMPLATE_ID).isString().stringValue()),
             summaryObject.get(TAGS).isString().stringValue(),
-            summaryObject.get(ABSOLUTE_PATH).isString().stringValue()
+            summaryObject.get(ABSOLUTE_PATH).isString().stringValue(),
+            (null!=summaryObject.get(INDEX_PAGE).isNull())
+            ? null
+            : new ID(summaryObject.get(INDEX_PAGE).isString().stringValue())
         ));
     }
 
@@ -146,6 +149,9 @@ public class ResourceSummaryModelData
             case ABSOLUTE_PATH:
                 return (X) _rs.getAbsolutePath();
 
+            case INDEX_PAGE_ID:
+                return (X) _rs.getIndexPageId();
+
             default:
                 throw new UnsupportedOperationException(
                     "Key not supported: "+property);
@@ -199,7 +205,8 @@ public class ResourceSummaryModelData
         WORKING_COPY,
         DATE_CHANGED,
         DATE_CREATED,
-        ABSOLUTE_PATH;
+        ABSOLUTE_PATH,
+        INDEX_PAGE_ID;
     }
 
     /**
@@ -435,4 +442,14 @@ public class ResourceSummaryModelData
     public void setTags(final String tags) {
         _rs.setTags(tags);
     }
+
+    /**
+     * Mutator.
+     *
+     * @param id The id to set.
+     */
+    public void setIndexPageId(final ID id) {
+        _rs.setIndexPageId(id);
+    }
+
 }

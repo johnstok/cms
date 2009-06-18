@@ -32,6 +32,7 @@ public final class Folder extends Resource {
 
     private List<Resource> _entries = new ArrayList<Resource>();
     private ResourceOrder  _order = ResourceOrder.MANUAL;
+    private Page _indexPage = null;
 
     /** Constructor: for persistence only. */
     protected Folder() { super(); }
@@ -372,5 +373,23 @@ public final class Folder extends Resource {
                 json.set(JsonKeys.TITLE, title());
             }
         };
+    }
+
+    /**
+     * Accessor for the index page.
+     *
+     * @return The index page of this folder.
+     */
+    public Page indexPage() {
+        return _indexPage;
+    }
+
+    /**
+     * Mutator for the index page.
+     *
+     * @param indexPage The index page to set.
+     */
+    public void indexPage(final Page indexPage) {
+        _indexPage = indexPage;
     }
 }
