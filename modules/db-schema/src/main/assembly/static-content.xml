@@ -1,12 +1,17 @@
 <assembly>
-	<id></id>
+	<id>schemas</id>
 	<formats>
 		<format>zip</format>
 	</formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
 	<fileSets>
 		<fileSet>
-			<directory>src/main/sql</directory>
-			<outputDirectory></outputDirectory>
+			<directory>src/main/sql/version1.0</directory>
+			<outputDirectory>create-scripts</outputDirectory>
 		</fileSet>
-	</fileSets>
+        <fileSet>
+            <directory>src/main/sql/version1.1</directory>
+            <outputDirectory>patch-scripts</outputDirectory>
+        </fileSet>
+    </fileSets>
 </assembly>

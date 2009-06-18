@@ -376,8 +376,10 @@
                     <plugin>
                         <artifactId>maven-assembly-plugin</artifactId>
                         <configuration>
+                            <finalName>ccc7</finalName>
                             <descriptors>
                                 <descriptor>assembly.xml</descriptor>
+                                <descriptor>application.xml</descriptor>
                             </descriptors>
                         </configuration>
                         <executions>
