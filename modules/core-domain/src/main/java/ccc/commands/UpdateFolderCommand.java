@@ -16,6 +16,7 @@ import java.util.UUID;
 
 import ccc.domain.Folder;
 import ccc.domain.LockMismatchException;
+import ccc.domain.Page;
 import ccc.domain.ResourceOrder;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
@@ -48,6 +49,7 @@ public class UpdateFolderCommand extends UpdateResourceCommand {
      * @param order The new sort order.
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
+     * @param indexPageId The index page.
      *
      * @throws LockMismatchException If the resource is locked by another user.
      * @throws UnlockedException If the resource is unlocked.
@@ -55,16 +57,20 @@ public class UpdateFolderCommand extends UpdateResourceCommand {
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID folderId,
-                        final ResourceOrder order)
+                        final ResourceOrder order,
+                        final UUID indexPageId)
                                throws UnlockedException, LockMismatchException {
 
         final Folder f = getDao().find(Folder.class, folderId);
+        Page p = null;
+        if (indexPageId != null) {
+            p = getDao().find(Page.class, indexPageId);
+        }
         f.confirmLock(actor);
-
+        f.indexPage(p);
         f.sortOrder(order);
 
         // Set folder.dateChanged()?
-        // TODO: Should this just be 'update folder'?
-        getAudit().recordUpdateSortOrder(f, actor, happenedOn);
+        getAudit().recordFolderUpdate(f, actor, happenedOn);
     }
 }

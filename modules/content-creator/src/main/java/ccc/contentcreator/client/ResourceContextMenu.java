@@ -36,7 +36,7 @@ import ccc.contentcreator.actions.UnlockAction;
 import ccc.contentcreator.actions.UnpublishAction;
 import ccc.contentcreator.actions.UpdateMetadataAction;
 import ccc.contentcreator.actions.UpdateResourceRolesAction;
-import ccc.contentcreator.actions.UpdateSortOrderAction;
+import ccc.contentcreator.actions.EditFolderAction;
 import ccc.contentcreator.actions.UpdateTagsAction;
 import ccc.contentcreator.actions.ViewHistoryAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
@@ -79,7 +79,7 @@ public class ResourceContextMenu
     private final Action _unlockAction;
     private final Action _lockAction;
     private final Action _previewAction;
-    private final Action _updateSortAction;
+    private final Action _editFolderAction;
     private final Action _clearWorkingCopyAction;
     private final Action _previewWorkingCopyAction;
     private final Action _chooseTemplateAction;
@@ -111,7 +111,7 @@ public class ResourceContextMenu
         _unlockAction = new UnlockAction(_table);
         _lockAction = new LockAction(_table);
         _previewAction = new PreviewAction(_table, false);
-        _updateSortAction = new UpdateSortOrderAction(_table);
+        _editFolderAction = new EditFolderAction(_table);
         _clearWorkingCopyAction = new ClearWorkingCopyAction(_table);
         _previewWorkingCopyAction = new PreviewAction(_table, true);
         _chooseTemplateAction = new ChooseTemplateAction(_table);
@@ -161,8 +161,8 @@ public class ResourceContextMenu
                 }
                 switch (item.getType()) {
                     case FOLDER:
+                        addEditFolder();
                         addChooseTemplate();
-                        addFolderSortOrder();
                         break;
                     case PAGE:
                         addEditResource();
@@ -234,11 +234,11 @@ public class ResourceContextMenu
             _createActionAction);
     }
 
-    private void addFolderSortOrder() {
+    private void addEditFolder() {
         addMenuItem(
-            "sort-folder",
-            _constants.changeSortOrder(),
-            _updateSortAction);
+            "edit-folder",
+            _constants.edit(),
+            _editFolderAction);
     }
 
     private void addPublishResource() {

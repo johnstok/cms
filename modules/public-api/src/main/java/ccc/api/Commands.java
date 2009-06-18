@@ -303,14 +303,15 @@ public interface Commands {
     throws CommandFailedException;
 
     /**
-     * Update the sort order for the specified folder.
+     * Update the specified folder.
      *
      * @param folderId The id of the folder to update.
      * @param sortOrder The new sort order.
+     * @param indexPageId The id of the index page to update.
      *
      * @throws CommandFailedException If the method fails.
      */
-    void updateFolderSortOrder(ID folderId, String sortOrder)
+    void updateFolder(ID folderId, String sortOrder, ID indexPageId)
     throws CommandFailedException;
 
     /**

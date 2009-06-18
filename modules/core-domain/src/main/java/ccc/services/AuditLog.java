@@ -193,13 +193,13 @@ public interface AuditLog {
 
 
     /**
-     * Record that the folder sort order was changed.
+     * Record that the folder was updated.
      *
      * @param folder The folder that was changed.
      * @param actor The actor of the change.
      * @param happenedOn The date of the change.
      */
-    void recordUpdateSortOrder(Folder folder, User actor, Date happenedOn);
+    void recordFolderUpdate(Folder folder, User actor, Date happenedOn);
 
 
     /**

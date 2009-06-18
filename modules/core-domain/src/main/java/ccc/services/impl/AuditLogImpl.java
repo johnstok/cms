@@ -240,7 +240,7 @@ public class AuditLogImpl
 
     /** {@inheritDoc} */
     @Override
-    public void recordUpdateSortOrder(final Folder folder,
+    public void recordFolderUpdate(final Folder folder,
                                       final User actor,
                                       final Date happenedOn) {
         DBC.require().notNull(folder);

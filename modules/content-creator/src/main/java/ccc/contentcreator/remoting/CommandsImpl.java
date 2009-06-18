@@ -229,10 +229,11 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateFolderSortOrder(final ID folderId,
-                                      final String sortOrder)
+    public void updateFolder(final ID folderId,
+                                      final String sortOrder,
+                                      final ID indexPageId)
     throws CommandFailedException {
-        _commands.updateFolderSortOrder(folderId, sortOrder);
+        _commands.updateFolder(folderId, sortOrder, indexPageId);
     }
 
     /** {@inheritDoc} */

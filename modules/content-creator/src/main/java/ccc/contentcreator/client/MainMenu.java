@@ -26,7 +26,7 @@ import ccc.contentcreator.actions.UnlockAction;
 import ccc.contentcreator.actions.UnpublishAction;
 import ccc.contentcreator.actions.UpdateMetadataAction;
 import ccc.contentcreator.actions.UpdateResourceRolesAction;
-import ccc.contentcreator.actions.UpdateSortOrderAction;
+import ccc.contentcreator.actions.EditFolderAction;
 import ccc.contentcreator.actions.UpdateTagsAction;
 import ccc.contentcreator.actions.ViewHistoryAction;
 import ccc.contentcreator.api.ActionNameConstants;
@@ -186,9 +186,9 @@ public class MainMenu
                     _constants.chooseTemplate(),
                     new ChooseTemplateAction(ssm)));
                 _itemMenu.add(createMenuItem(
-                    "changeSortOrder-root",
-                    _constants.changeSortOrder(),
-                    new UpdateSortOrderAction(ssm)));
+                    "editFolder-root",
+                    _constants.edit(),
+                    new EditFolderAction(ssm)));
                 _itemMenu.add(createMenuItem(
                     "updateRoles-root",
                     _constants.updateRoles(),

@@ -17,6 +17,7 @@ import java.util.List;
 
 import ccc.api.ID;
 import ccc.api.ResourceSummary;
+import ccc.api.ResourceType;
 import ccc.contentcreator.api.CommandServiceAsync;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.binding.DataBinding;
@@ -50,16 +51,16 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 /**
- * Updates the sort order for a folder.
+ * Folder edit dialog.
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateFolderSortOrderDialog
+public class EditFolderDialog
 extends
 AbstractEditDialog {
 
     private static final int GRID_WIDTH = 610;
-    private static final int GRID_HEIGHT = 350;
+    private static final int GRID_HEIGHT = 320;
     private static final String MANUAL = "MANUAL";
     private static final String DATE_CREATED_DESC = "DATE_CREATED_DESC";
     private static final String DATE_CREATED_ASC = "DATE_CREATED_ASC";
@@ -69,7 +70,9 @@ AbstractEditDialog {
 
     private final CommandServiceAsync _commands = Globals.commandService();
     private final QueriesServiceAsync _queries = Globals.queriesService();
+
     private final ComboBox<ModelData> _sortOrder = new ComboBox<ModelData>();
+    private final ComboBox<ModelData> _indexPage = new ComboBox<ModelData>();
 
     private final SingleSelectionModel _selectionModel;
     private final ListStore<ModelData> _sortStore = new ListStore<ModelData>();
@@ -79,8 +82,10 @@ AbstractEditDialog {
     private final ColumnModel _cm;
     private ListStore<ResourceSummaryModelData> _detailsStore =
         new ListStore<ResourceSummaryModelData>();
+    private ListStore<ModelData> _indexPageStore = new ListStore<ModelData>();
 
     private GridDropTarget _target;
+    private ModelData _none = new BaseModelData();
 
 
     /**
@@ -88,19 +93,29 @@ AbstractEditDialog {
      *
      * @param ssm The selection model.
      * @param currentSortOrder The current sort order.
+     * @param currentIndexPage The current index page.
      */
-    public UpdateFolderSortOrderDialog(final SingleSelectionModel ssm,
-                                       final String currentSortOrder) {
-        super(Globals.uiConstants().folderSortOrder());
+    public EditFolderDialog(final SingleSelectionModel ssm,
+                                       final String currentSortOrder,
+                                       final ID currentIndexPage) {
+        super(Globals.uiConstants().edit());
+
         setHeight(IGlobals.DEFAULT_HEIGHT);
         _selectionModel = ssm;
+        loadDetailStore(currentIndexPage);
+
+        configureComboBox(_indexPage,
+            _indexPageStore,
+            "folder-index-page",
+            constants().indexPage());
 
         populateSortOptions();
+        configureComboBox(_sortOrder,
+                          _sortStore,
+                          "folder-sort-order",
+                          constants().folderSortOrder());
 
-        configureComboBox("folder-sort-order",
-            constants().folderSortOrder());
-
-        setCurrentValue(currentSortOrder);
+        setCurrentSortValue(currentSortOrder);
 
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
         createColumnConfigs(configs);
@@ -129,16 +144,38 @@ AbstractEditDialog {
         });
     }
 
-    private void loadDetailStore() {
+    private void populateIndexOptions(final Collection<ResourceSummary> arg0) {
+        _indexPageStore.removeAll();
+        final List<ModelData> pagesOnly = new ArrayList<ModelData>();
+
+        _none.set("name", _constants.none());
+        _none.set("value", null);
+        _indexPageStore.add(_none);
+
+        for (final ResourceSummary item : arg0) {
+            if (item.getType() == ResourceType.PAGE) {
+                final ModelData pageModel = new BaseModelData();
+                pageModel.set("name", item.getName());
+                pageModel.set("value", item.getId());
+                pagesOnly.add(pageModel);
+            }
+        }
+        _indexPageStore.add(pagesOnly);
+    }
+
+    private void loadDetailStore(final ID currentIndexPage) {
         _detailsStore =  new ListStore<ResourceSummaryModelData>();
-        final ID id = _selectionModel.tableSelection().getId();
-        _queries.getChildren(id,
+        final ResourceSummaryModelData selection =
+            _selectionModel.tableSelection();
+        _queries.getChildren(selection.getId(),
             new AsyncCallback<Collection<ResourceSummary>>(){
             public void onFailure(final Throwable arg0) {
                 _grid.disable();
             }
             public void onSuccess(final Collection<ResourceSummary> arg0) {
                 _detailsStore.removeAll();
+                populateIndexOptions(arg0);
+                setCurrentIndexPage(currentIndexPage);
                 _detailsStore.add(DataBinding.bindResourceSummary(arg0));
                 _grid.reconfigure(_detailsStore, _cm);
             }
@@ -152,7 +189,7 @@ AbstractEditDialog {
         _target.setAllowSelfAsSource(true);
     }
 
-    private void setCurrentValue(final String currentValue) {
+    private void setCurrentSortValue(final String currentValue) {
         for (final ModelData md : _sortStore.getModels()) {
             if(md.get("value").equals(currentValue)) {
                 _sortOrder.setValue(md);
@@ -160,6 +197,16 @@ AbstractEditDialog {
             }
         }
         throw new RuntimeException("Invalid sort order: "+currentValue);
+    }
+
+    private void setCurrentIndexPage(final ID currentValue) {
+        for (final ModelData md : _indexPageStore.getModels()) {
+            if(currentValue != null && currentValue.equals(md.get("value"))) {
+                _indexPage.setValue(md);
+                return;
+            }
+        }
+        _indexPage.setValue(_none);
     }
 
 
@@ -201,17 +248,19 @@ AbstractEditDialog {
         _sortStore.add(dateCreatedDesc);
     }
 
-    private void configureComboBox(final String id,
+    private void configureComboBox(final ComboBox<ModelData> cb,
+                                   final ListStore<ModelData> store,
+                                   final String id,
                                    final String label) {
-        _sortOrder.setFieldLabel(label);
-        _sortOrder.setAllowBlank(false);
-        _sortOrder.setId(id);
-        _sortOrder.setDisplayField("name");
-        _sortOrder.setTemplate("<tpl for=\".\">"
+        cb.setFieldLabel(label);
+        cb.setAllowBlank(false);
+        cb.setId(id);
+        cb.setDisplayField("name");
+        cb.setTemplate("<tpl for=\".\">"
             +"<div class=x-combo-list-item id=\"{name}\">{name}</div></tpl>");
-        _sortOrder.setEditable(false);
-        _sortOrder.setStore(_sortStore);
-        addField(_sortOrder);
+        cb.setEditable(false);
+        cb.setStore(store);
+        addField(cb);
     }
 
     /** {@inheritDoc} */
@@ -222,12 +271,16 @@ AbstractEditDialog {
                 final ResourceSummaryModelData md =
                     _selectionModel.tableSelection();
                 final String order = _sortOrder.getValue().<String>get("value");
-                _commands.updateFolderSortOrder(
+                final ID indexPageId = _indexPage.getValue().<ID>get("value");
+
+                _commands.updateFolder(
                     md.getId(),
                     order,
+                    indexPageId,
                     new ErrorReportingCallback<Void>(
                             _constants.folderSortOrder()){
                         public void onSuccess(final Void result) {
+                            md.setIndexPageId(indexPageId);
                             reorder(md, order);
                         }
                     }
@@ -321,7 +374,6 @@ AbstractEditDialog {
                                  final SelectionChangedEvent<ModelData> se) {
             final ModelData md = se.getSelectedItem();
             if (md != null) {
-                loadDetailStore();
                 final String order = md.<String>get("value");
                 if (MANUAL.equals(order)) {
                     _grid.enable();

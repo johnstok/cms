@@ -55,14 +55,17 @@ public class FolderDaoImplTest
         _f.lock(_regularUser);
         expect(_dao.find(Folder.class, _f.id()))
             .andReturn(_f);
-        _al.recordUpdateSortOrder(eq(_f), eq(_regularUser), isA(Date.class));
+        _al.recordFolderUpdate(eq(_f), eq(_regularUser), isA(Date.class));
         replayAll();
 
         final UpdateFolderCommand uf = new UpdateFolderCommand(_dao, _al);
 
         // ACT
-        uf.execute(
-            _regularUser, new Date(), _f.id(), ResourceOrder.NAME_ALPHANUM_ASC);
+        uf.execute(_regularUser,
+                    new Date(),
+                    _f.id(),
+                    ResourceOrder.NAME_ALPHANUM_ASC,
+                    null);
 
         // ASSERT
         verifyAll();
