@@ -459,21 +459,23 @@ public class LogEntry extends Entity {
 
 
     /**
-     * Create a log entry for the changing folder's sort order.
+     * Create a log entry for the updating a folder.
      *
      * @param folder The folder that was changed.
      * @param actor The actor that performed the action.
      * @param happenedOn The date that the actor performed the action.
      * @return The log entry representing the action.
      */
-    public static LogEntry forUpdateSortOrder(final Folder folder,
+    public static LogEntry forFolderUpdate(final Folder folder,
                                               final User actor,
                                               final Date happenedOn) {
 
         final LogEntry le = createEntry(folder, actor, happenedOn);
-        le._action = CommandType.FOLDER_UPDATE_SORT_ORDER;
+        le._action = CommandType.FOLDER_UPDATE;
         final Snapshot ss = new Snapshot();
         ss.set(JsonKeys.SORT_ORDER, folder.sortOrder().name());
+        final Page p = folder.indexPage();
+        ss.set(JsonKeys.INDEX_PAGE_ID, (null == p) ? null : p.id().toString());
         le._detail = ss.getDetail();
         return le;
     }
