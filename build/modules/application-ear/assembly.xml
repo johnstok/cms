@@ -1,8 +1,9 @@
 <assembly>
-	<id>jboss</id>
+	<id>containers</id>
 	<formats>
 		<format>zip</format>
 	</formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
 	<fileSets>
 		<fileSet>
 			<directory>../../deploy</directory>
@@ -14,11 +15,6 @@
 				<exclude>jboss-5.0.1.GA-jdk6/server/standard/tmp/**</exclude>
 				<exclude>jboss-5.0.1.GA-jdk6/server/standard/data/**</exclude>
 			</excludes>
-		</fileSet>
-		<fileSet>
-			<directory>../../dbms</directory>
-			<lineEnding>keep</lineEnding>
-			<outputDirectory>db-config</outputDirectory>
 		</fileSet>
 	</fileSets>
 </assembly>
