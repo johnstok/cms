@@ -12,6 +12,7 @@
 package ccc.commons;
 
 import java.nio.charset.Charset;
+import java.util.List;
 
 import junit.framework.TestCase;
 
@@ -56,5 +57,23 @@ public final class ResourcesTest extends TestCase {
 
         // ASSERT
         assertEquals("bar", actual.get("foo"));
+    }
+
+    /**
+     * Test.
+     */
+    public void testReadIntoList() {
+
+        // ARRANGE
+
+        // ACT
+        final List<String> actual =
+            Resources.readIntoList(
+                "ccc/commons/simple.txt", Charset.forName("UTF-8"));
+
+        // ASSERT
+        assertEquals(2, actual.size());
+        assertEquals("hello", actual.get(0));
+        assertEquals("world", actual.get(1));
     }
 }
