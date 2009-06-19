@@ -254,25 +254,4 @@ class CccApp {
             return null; // We can't actually get here.
         }
     }
-
-    /**
-     * Determine the driver class based on connection string.
-     *
-     * @param conString The connection string.
-     * @return The corresponding driver class.
-     */
-    static String getDriverForConnectionString(final String conString) {
-        if (conString.startsWith("jdbc:oracle")) {
-            return "oracle.jdbc.driver.OracleDriver";
-        } else if (conString.startsWith("jdbc:mysql")) {
-            return "com.mysql.jdbc.Driver";
-        } else if (conString.startsWith("jdbc:sqlserver")) {
-            return "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-        } else if (conString.startsWith("jdbc:h2")) {
-            return "org.h2.Driver";
-        } else {
-            throw new MigrationException("Unsupported database");
-        }
-
-    }
 }

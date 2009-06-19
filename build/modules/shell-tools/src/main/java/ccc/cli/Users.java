@@ -50,10 +50,11 @@ public final class Users extends CccApp {
      * @return The UUID of the new user.
      */
     static UUID create() {
-
+        final DatabaseVendor vendor =
+            DatabaseVendor.forConnectionString(options.getConString());
         final Connection newConnection =
             getConnection(
-                getDriverForConnectionString(options.getConString()),
+                vendor.driverClassName(),
                 options.getConString(),
                 options.getUsername(),
                 options.getPassword());
