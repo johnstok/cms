@@ -18,6 +18,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.log4j.Logger;
@@ -57,21 +58,33 @@ public class Schema
         private int _version;
 
     private void create() {
+        final DatabaseVendor vendor =
+            DatabaseVendor.forConnectionString(_conString);
+
         final Connection newConnection =
             getConnection(
-                getDriverForConnectionString(_conString),
+                vendor.driverClassName(),
                 _conString,
                 _username,
                 _password);
-        try {
-            final List<String> statements =
-                Resources.readIntoList(
-                    "version1.0/h2/ccc7-schema.sql",
-                    Charset.forName("UTF-8"));
 
+        try {
+            final String sqlPath =
+                "/create/"
+                +_version+"/"
+                +vendor.name().toLowerCase(Locale.US)
+                +"/ccc7-schema.sql";
+
+            LOG.debug("Executing "+sqlPath);
+            LOG.info("Running create sript.");
+
+            final List<String> statements =
+                Resources.readIntoList(sqlPath, Charset.forName("UTF-8"));
             for (final String statement : statements) {
                 execute(newConnection, statement);
             }
+
+            LOG.info("Finished.");
 
         } finally {
             DbUtils.closeQuietly(newConnection);
