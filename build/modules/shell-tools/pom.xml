@@ -20,6 +20,11 @@
 			<artifactId>services-ejb3</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>CCC7</groupId>
+			<artifactId>db-schema</artifactId>
+			<version>${project.version}</version>
+		</dependency>
         
 		<dependency>
 			<groupId>org.jboss.jbossas</groupId>

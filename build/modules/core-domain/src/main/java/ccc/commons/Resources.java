@@ -13,11 +13,14 @@ package ccc.commons;
 
 import static ccc.commons.Exceptions.*;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import ccc.api.DBC;
@@ -97,6 +100,42 @@ public final class Resources {
             }
         }
         return p;
+    }
+
+    /**
+     * Read a resource path into memory as a list of strings.
+     * <p>One string per line in the resource.
+     *
+     * @param resourcePath The path to the resource.
+     * @param charset The character set to use when reading the resource.
+     * @return The resource as a list of strings.
+     */
+    public static List<String> readIntoList(final String resourcePath,
+                                            final Charset charset) {
+        final List<String> strings = new ArrayList<String>();
+        final InputStream is =
+            Thread
+            .currentThread()
+            .getContextClassLoader()
+            .getResourceAsStream(resourcePath);
+        if (null!=is) {
+            try {
+                final BufferedReader r =
+                    new BufferedReader(new InputStreamReader(is, charset));
+                for (String line = r.readLine(); null!=line; line=r.readLine()) {
+                    strings.add(line);
+                }
+            } catch (final IOException e) {
+                throw new CCCException(e);
+            } finally {
+                try {
+                    is.close();
+                } catch (final IOException e) {
+                    swallow(e);
+                }
+            }
+        }
+        return strings;
     }
 
     private static final int BUFFER_SIZE = 1024;

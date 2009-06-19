@@ -11,33 +11,10 @@
 	</parent>
     
 	<artifactId>db-schema</artifactId>
-	<packaging>pom</packaging>
+	<packaging>jar</packaging>
 	<name>db-schema</name>
 	<description>Database Schema</description>
     
-	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-                    <finalName>ccc7</finalName>
-					<descriptors>
-						<descriptor>
-							src/main/assembly/static-content.xml
-						</descriptor>
-					</descriptors>
-				</configuration>
-				<executions>
-					<execution>
-						<id>make-assembly</id>
-						<phase>package</phase>
-						<goals>
-							<goal>attached</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+	<build/>
 
 </project>
