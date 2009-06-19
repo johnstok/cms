@@ -69,7 +69,7 @@ public final class ResourcesTest extends TestCase {
         // ACT
         final List<String> actual =
             Resources.readIntoList(
-                "ccc/commons/simple.txt", Charset.forName("UTF-8"));
+                "/ccc/commons/simple.txt", Charset.forName("UTF-8"));
 
         // ASSERT
         assertEquals(2, actual.size());
