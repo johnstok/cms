@@ -114,16 +114,13 @@ public final class Resources {
                                             final Charset charset) {
         final List<String> strings = new ArrayList<String>();
         final InputStream is =
-            Thread
-            .currentThread()
-            .getContextClassLoader()
-            .getResourceAsStream(resourcePath);
+            Resources.class.getResourceAsStream(resourcePath);
         if (null!=is) {
             try {
                 final BufferedReader r =
                     new BufferedReader(new InputStreamReader(is, charset));
-                for (String line = r.readLine(); null!=line; line=r.readLine()) {
-                    strings.add(line);
+                for (String l = r.readLine(); null!=l; l=r.readLine()) {
+                    strings.add(l);
                 }
             } catch (final IOException e) {
                 throw new CCCException(e);
