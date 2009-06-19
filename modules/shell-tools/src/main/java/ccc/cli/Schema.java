@@ -76,12 +76,19 @@ public class Schema
                 +"/ccc7-schema.sql";
 
             LOG.debug("Executing "+sqlPath);
-            LOG.info("Running create sript.");
+            LOG.info("Running create script.");
 
             final List<String> statements =
                 Resources.readIntoList(sqlPath, Charset.forName("UTF-8"));
             for (final String statement : statements) {
                 execute(newConnection, statement);
+            }
+
+            try {
+                newConnection.commit();
+                LOG.info("Commited.");
+            } catch (final SQLException e) {
+                LOG.info("Error commiting changes.", e);
             }
 
             LOG.info("Finished.");
