@@ -281,6 +281,34 @@ public class DefaultRendererTest
      * Test.
      * @throws RemoteExceptionSupport If the test fails.
      */
+    public void testRenderFolderRedirectsToIndexPage()
+    throws RemoteExceptionSupport {
+
+        // ARRANGE
+        final Folder f = new Folder("folder");
+        f.sortOrder(ResourceOrder.NAME_ALPHANUM_ASC);
+        final Page a = new Page("aaa");
+        final Page z = new Page("zzz");
+        z.publish(_user); f.add(z);
+        a.publish(_user); f.add(a);
+        f.indexPage(z);
+
+        // ACT
+        try {
+            _renderer.render(f, _noParams);
+            fail("Should throw exception");
+
+        // ASSERT
+        } catch (final RedirectRequiredException e) {
+            assertEquals(z, e.getResource());
+        }
+    }
+
+
+    /**
+     * Test.
+     * @throws RemoteExceptionSupport If the test fails.
+     */
     public void testRenderFolderIgnoresNonVisiblePages()
     throws RemoteExceptionSupport {
 

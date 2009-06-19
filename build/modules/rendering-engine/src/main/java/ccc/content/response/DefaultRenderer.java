@@ -193,6 +193,10 @@ public class DefaultRenderer
 
 
     private Response renderFolder(final Folder folder) {
+        if (folder.indexPage() != null) {
+            throw new RedirectRequiredException(folder.indexPage());
+        }
+
         for (final Resource r : folder.entries()) {
             if (ResourceType.PAGE.equals(r.type())
                 && r.isPublished()) {
