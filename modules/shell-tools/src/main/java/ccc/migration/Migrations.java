@@ -59,6 +59,7 @@ public class Migrations {
     private final Commands _commands;
     private final Queries _queries;
     private final String _linkPrefix;
+    private final boolean _migrateHomepage;
 
     private final FileMigrator _fm;
     private final UserMigration _um;
@@ -76,16 +77,19 @@ public class Migrations {
      * @param commands The available commands for CCC7.
      * @param queries The available queries for CCC7.
      * @param fu The file up-loader to use.
+     * @param migrateHomepage The boolean for home page migration.
      */
     public Migrations(final LegacyDBQueries legacyQueries,
                       final String linkPrefix,
                       final Commands commands,
                       final Queries queries,
-                      final FileUploader fu) {
+                      final FileUploader fu,
+                      final boolean migrateHomepage) {
         _legacyQueries = legacyQueries;
         _queries = queries;
         _commands = commands;
         _linkPrefix = linkPrefix;
+        _migrateHomepage = migrateHomepage;
 
         _contentRoot = _queries.resourceForPath("/content");
         _filesFolder = _queries.resourceForPath("/content/files");
@@ -118,9 +122,29 @@ public class Migrations {
             publishRecursive(_assetsImagesFolder);
             publishRecursive(_filesFolder);
             publishRecursive(_contentImagesFolder);
+            if (_migrateHomepage) {
+                migrateHomepages();
+            }
         } catch (final CommandFailedException e) {
             log.error("Catastrophic failure.", e);
         }
+    }
+
+    private void migrateHomepages() throws CommandFailedException {
+        final Map<Integer, Integer> map = _legacyQueries.homepages();
+        for (final Integer folderId : map.keySet()) {
+            final ResourceSummary f = _queries.resourceForLegacyId(""+folderId);
+            final ResourceSummary hp =
+                _queries.resourceForLegacyId(""+map.get(folderId));
+            if (f != null && hp != null) {
+                _commands.lock(f.getId());
+                _commands.updateFolder(f.getId(),
+                    f.getSortOrder(),
+                    hp.getId());
+                _commands.unlock(f.getId());
+            }
+        }
+        log.info("Migrated home page information of the folders.");
     }
 
 

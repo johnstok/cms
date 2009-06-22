@@ -68,8 +68,8 @@ public final class Migrate extends CccApp {
                 new FileUploader(
                     options.getCcURL(),
                     options.getUsername(),
-                    options.getPassword())
-            );
+                    options.getPassword()),
+            options.isMigrateHomepage());
         migrations.migrate();
     }
 
@@ -110,8 +110,14 @@ public final class Migrate extends CccApp {
         @Option(
             name="-jn",
             required=false,
-            usage="optional JNDI provider URL, defaults to localhost")
+            usage="Optional JNDI provider URL, defaults to localhost")
             private String _providerURL;
+
+        @Option(
+            name="-hp",
+            required=false,
+            usage="Optional homepage migration (post CCC 6.4).")
+        private boolean migrateHomepage;
 
         /**
          * Accessor.
@@ -190,6 +196,15 @@ public final class Migrate extends CccApp {
          */
         String getProviderURL() {
             return _providerURL;
+        }
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the migrateHomepage.
+         */
+        boolean isMigrateHomepage() {
+            return migrateHomepage;
         }
     }
 }

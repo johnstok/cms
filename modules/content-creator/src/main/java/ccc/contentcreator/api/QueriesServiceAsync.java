@@ -111,4 +111,6 @@ public interface QueriesServiceAsync {
     void computeTemplate(ID resourceId, AsyncCallback<TemplateSummary> callback);
 
     void resourceForPath(String rootPath, AsyncCallback<ccc.api.ResourceSummary> callback);
+
+    void resourceForLegacyId(String legacyId, AsyncCallback<ccc.api.ResourceSummary> callback);
 }
