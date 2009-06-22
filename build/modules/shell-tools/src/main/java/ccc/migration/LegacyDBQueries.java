@@ -10,6 +10,7 @@ import java.util.Set;
 import ccc.migration.ccc6.handlers.AllUsersSelector;
 import ccc.migration.ccc6.handlers.FileSelector;
 import ccc.migration.ccc6.handlers.FlaggedSelector;
+import ccc.migration.ccc6.handlers.HomepageSelector;
 import ccc.migration.ccc6.handlers.LogEntryUserSelector;
 import ccc.migration.ccc6.handlers.ParagraphSelector;
 import ccc.migration.ccc6.handlers.ParagraphVersionsSelector;
@@ -188,5 +189,15 @@ public class LegacyDBQueries {
     public String selectFlagged(final int contentId) {
         final FlaggedSelector query = new FlaggedSelector();
         return _db.select(query, contentId);
+    }
+
+    /**
+     * Return map containing legacy id and home page id of the folders.
+     *
+     * @return The map of IDs.
+     */
+    public Map<Integer, Integer> homepages() {
+        final HomepageSelector query = new HomepageSelector();
+        return _db.select(query);
     }
 }

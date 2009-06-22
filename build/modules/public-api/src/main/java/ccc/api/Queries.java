@@ -260,4 +260,12 @@ public interface Queries {
      */
     ResourceSummary resourceForPath(String path);
 
+    /**
+     * Look up the resource for a specified legacy id.
+     *
+     * @param legacyId The legacy id of the resource.
+     * @return A summary of the corresponding resource.
+     */
+    ResourceSummary resourceForLegacyId(String legacyId);
+
 }

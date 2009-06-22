@@ -209,4 +209,10 @@ public class QueriesImpl
     public ResourceSummary resourceForPath(final String rootPath) {
         return _queries.resourceForPath(rootPath);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceSummary resourceForLegacyId(final String legacyId) {
+        return _queries.resourceForLegacyId(legacyId);
+    }
 }

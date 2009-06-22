@@ -325,4 +325,10 @@ public final class QueriesEJB
         return mapResource(
             _resources.lookup(rp.top().toString(), rp.removeTop()));
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceSummary resourceForLegacyId(final String legacyId) {
+        return mapResource(_resources.lookupWithLegacyId(legacyId));
+    }
 }
