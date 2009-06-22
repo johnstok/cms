@@ -102,7 +102,7 @@ public class Schema
                          final String statement) {
         try {
             final PreparedStatement ps =
-                newConnection.prepareStatement(statement);
+                newConnection.prepareStatement(statement.substring(0, statement.length()-1));
 
             try {
                 ps.execute();
