@@ -604,6 +604,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         cbg.setData("type", FieldType.CHECKBOX);
         cbg.setId(name);
         cbg.setOrientation(Orientation.VERTICAL);
+        cbg.setStyleAttribute("overflow", "hidden");
 
         final NodeList nl = field.getElementsByTagName("option");
         for (int i=0; i<nl.getLength(); i++) {
@@ -634,12 +635,13 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      * @param field The XML of field options.
      */
     private void addElementForRadio(final String name, final Element field) {
-        final RadioGroup rg =  new  RadioGroup();
+        final RadioGroup rg = new RadioGroup();
         rg.setFieldLabel(createLabel(name));
         rg.setToolTip(name);
         rg.setData("type", FieldType.RADIO);
         rg.setId(name);
         rg.setOrientation(Orientation.VERTICAL);
+        rg.setStyleAttribute("overflow", "hidden");
 
         final NodeList nl = field.getElementsByTagName("option");
         for (int i=0; i<nl.getLength(); i++) {
