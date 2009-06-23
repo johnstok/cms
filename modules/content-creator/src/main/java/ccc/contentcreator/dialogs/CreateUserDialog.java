@@ -12,7 +12,6 @@
 package ccc.contentcreator.dialogs;
 
 
-import ccc.contentcreator.client.EditController;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
@@ -37,20 +36,16 @@ public class CreateUserDialog
         ICreateUserDialog {
 
     private static final int LABEL_WIDTH = 150;
-    private final IGlobals _globals = new IGlobalsImpl();
     private final TextField<String> _username = new TextField<String>();
     private final TextField<String> _password1 = new TextField<String>();
     private final TextField<String> _password2 = new TextField<String>();
     private final TextField<String> _email = new TextField<String>();
-    private final EditController _controller;
 
     /**
      * Constructor.
      */
     public CreateUserDialog() {
         super(Globals.uiConstants().createUser());
-
-        _controller = new CreateUserController(this, _globals);
 
         setLabelWidth(LABEL_WIDTH); // Long labels, should fit to one line.
 
@@ -84,7 +79,8 @@ public class CreateUserDialog
     /** {@inheritDoc} */
     @Override
     protected SelectionListener<ButtonEvent> saveAction() {
-        return new SubmitControllerSelectionListener(_controller);
+        return new SubmitControllerSelectionListener(
+            new CreateUserController(this, new IGlobalsImpl()));
     }
 
 
