@@ -30,10 +30,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import ccc.api.PageDelta;
 import ccc.api.Paragraph;
 import ccc.api.ParagraphType;
-import ccc.commons.WordCharFixer;
 
 
 /**
@@ -106,30 +104,5 @@ public class PageHelper {
             throw new CCCException("Error with XML parsing ", e);
         }
         return errors;
-    }
-
-
-    /**
-     * Apply the specified delta to a page.
-     * TODO: I think this is duplicated in a method on the page class.
-     *
-     * @param page The page.
-     * @param delta The delta to apply.
-     */
-    public void assignParagraphs(final Page page, final PageDelta delta) {
-
-        page.deleteAllParagraphs();
-
-        for (final Paragraph para : delta.getParagraphs()) {
-
-            if (ParagraphType.TEXT==para.type()) {
-                    final WordCharFixer fixer = new WordCharFixer();
-                    final Paragraph p =
-                        Paragraph.fromText(para.name(), fixer.fix(para.text()));
-                    page.addParagraph(p);
-            } else {
-                page.addParagraph(para);
-            }
-        }
     }
 }

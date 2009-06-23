@@ -1,12 +1,12 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2008 Civic Computing Ltd
+ * Copyright (c) 2008 Civic Computing Ltd.
  * All rights reserved.
  *
  * Revision      $Rev$
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log
+ * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
 
@@ -14,7 +14,10 @@ package ccc.domain;
 
 import static java.util.Collections.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import ccc.api.DBC;
@@ -27,7 +30,7 @@ import ccc.api.ResourceType;
 /**
  * A page resource.
  *
- * @author Civic Computing Ltd
+ * @author Civic Computing Ltd.
  */
 public final class Page
     extends
@@ -35,8 +38,12 @@ public final class Page
     implements
         WCAware<PageDelta> {
 
-    private Set<Paragraph> _content = new HashSet<Paragraph>();
-    private PageDelta      _workingCopy;
+    private List<PageRevision> _history = new ArrayList<PageRevision>();
+    private int                _pageVersion = -1;
+
+    // This is a collection to exploit hibernate's delete-orphan syntax.
+    private List<PageWorkingCopy> _workingCopies =
+        new ArrayList<PageWorkingCopy>();
 
     /** MAXIMUM_PARAGRAPHS : int. */
     public static final int MAXIMUM_PARAGRAPHS = 32;
@@ -52,6 +59,10 @@ public final class Page
      */
     public Page(final String title) {
         super(title);
+        _pageVersion++;
+        _history.add(
+            new PageRevision(
+                _pageVersion, true, "Created.", new HashSet<Paragraph>()));
     }
 
     /**
@@ -62,6 +73,28 @@ public final class Page
      */
     public Page(final ResourceName name, final String title) {
         super(name, title);
+        _pageVersion++;
+        _history.add(
+            new PageRevision(
+                _pageVersion, true, "Created.", new HashSet<Paragraph>()));
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param name The name of the resource.
+     * @param title The title of the resource.
+     */
+    public Page(final ResourceName name,
+                final String title,
+                final Template template,
+                final Paragraph... paragraphs) {
+        super(name, title);
+        template(template);
+        workingCopy(
+            new PageDelta(
+                title, new HashSet<Paragraph>(Arrays.asList(paragraphs))));
+        applySnapshot();
     }
 
 
@@ -74,43 +107,12 @@ public final class Page
     }
 
     /**
-     * Add a new paragraph for this content.
-     *
-     * @param paragraph The paragraph to be added.
-     * @return 'this' - useful for method chaining.
-     */
-    public Page addParagraph(final Paragraph paragraph) {
-        DBC.require().notNull(paragraph);
-        DBC.require().maxValue(_content.size()+1, MAXIMUM_PARAGRAPHS);
-        _content.add(paragraph);
-        return this;
-    }
-
-    /**
      * Accessor for paragraphs.
      *
      * @return A map from unique key to the corresponding paragraph data.
      */
     public Set<Paragraph> paragraphs() {
-        return unmodifiableSet(_content);
-    }
-
-    /**
-     * Remove an existing paragraph.
-     *
-     * @param paragraphKey The key identifying the paragraph to be deleted.
-     */
-    public void deleteParagraph(final String paragraphKey) {
-        DBC.require().notEmpty(paragraphKey);
-        _content.remove(paragraph(paragraphKey));
-    }
-
-    /**
-     * Deletes all paragraphs.
-     *
-     */
-    public void deleteAllParagraphs() {
-        _content.clear();
+        return unmodifiableSet(currentRevision().getContent());
     }
 
     /**
@@ -120,14 +122,13 @@ public final class Page
      * @return The paragraph with the specified name.
      */
     public Paragraph paragraph(final String name) {
-        for (final Paragraph p : _content) {
+        for (final Paragraph p : currentRevision().getContent()) {
             if (p.name().equals(name)) {
                 return p;
             }
         }
         throw new CCCException("No paragraph with name: "+name);
     }
-
 
 
     /* ====================================================================
@@ -137,26 +138,52 @@ public final class Page
     /** {@inheritDoc} */
     @Override
     public void applySnapshot() {
-        DBC.require().notNull(_workingCopy);
+        DBC.require().notNull(wc());
+        DBC.require().maxValue(
+            wc().delta().getParagraphs().size(),
+            MAXIMUM_PARAGRAPHS);
+        DBC.require().notNull(wc().delta().getTitle());
         final PageHelper pageHelper = new PageHelper();
 
-        title(_workingCopy.getTitle());
-        pageHelper.assignParagraphs(this, _workingCopy);
-
-        clearWorkingCopy();
+        title(wc().delta().getTitle());
+//        assignParagraphs(_workingCopy);
 
         final Template template = computeTemplate(null);
         if (null!=template) {
             pageHelper.validateFieldsForPage(
                 paragraphs(), template.definition());
         }
+
+        _pageVersion++;
+        _history.add(
+            new PageRevision(
+                _pageVersion,
+                true,
+                "Updated.",
+                new HashSet<Paragraph>(wc().delta().getParagraphs())));
+
+        clearWorkingCopy();
+    }
+
+    // FIXME: Add char fixing.
+    private void assignParagraphs(final PageDelta delta) {
+//        for (final Paragraph para : delta.getParagraphs()) {
+//
+//            if (ParagraphType.TEXT == para.type()) {
+//                final WordCharFixer fixer = new WordCharFixer();
+//                final Paragraph p = Paragraph.fromText(para.name(), fixer.fix(para.text()));
+//                addParagraph(p);
+//            } else {
+//                addParagraph(para);
+//            }
+//        }
     }
 
     /** {@inheritDoc} */
     @Override
     public PageDelta workingCopy() {
-        if (null!=_workingCopy) {
-            return _workingCopy;
+        if (null!=wc()) {
+            return wc().delta();
         }
         return createSnapshot();
     }
@@ -174,38 +201,66 @@ public final class Page
     }
 
     /** {@inheritDoc} */
-    public void clearWorkingCopy() {
-        DBC.require().notNull(_workingCopy);
-        _workingCopy = null;
-    }
-
-    /** {@inheritDoc} */
     public void workingCopy(final PageDelta snapshot) {
         DBC.require().notNull(snapshot);
-        _workingCopy = snapshot;
+        if (hasWorkingCopy()) {
+            wc().delta(snapshot);
+        } else {
+            wc(new PageWorkingCopy(snapshot));
+        }
+    }
+
+    //--
+
+    /** {@inheritDoc} */
+    public void clearWorkingCopy() {
+        DBC.require().toBeTrue(hasWorkingCopy());
+        _workingCopies.clear();
     }
 
     /** {@inheritDoc} */
     public boolean hasWorkingCopy() {
-        return null!=_workingCopy;
+        return 0!=_workingCopies.size();
     }
 
-    @SuppressWarnings("unused")
-    private String getWorkingCopyString() {
-        if (null==_workingCopy) {
+    private PageWorkingCopy wc() {
+        if (0==_workingCopies.size()) {
             return null;
         }
-        final Snapshot s = new Snapshot();
-        _workingCopy.toJson(s);
-        return s.getDetail();
+        return _workingCopies.get(0);
     }
 
-    @SuppressWarnings("unused")
-    private void setWorkingCopyString(final String wcs) {
-        if (null==wcs) {
-            return;
+    private void wc(final PageWorkingCopy pageWorkingCopy) {
+        DBC.require().toBeFalse(hasWorkingCopy());
+        _workingCopies.add(0, pageWorkingCopy);
+    }
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public PageRevision currentRevision() {
+        for (final PageRevision r : _history) {
+            if (_pageVersion==r.getIndex()) {
+                return r;
+            }
         }
-        final Snapshot s = new Snapshot(wcs);
-        _workingCopy = new PageDelta(s);
+        throw new RuntimeException("No current revision!");
+    }
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param i
+     * @return
+     */
+    public PageRevision revision(final int i) {
+        for (final PageRevision r : _history) {
+            if (i==r.getIndex()) {
+                return r;
+            }
+        }
+        throw new RuntimeException("No current revision!");
     }
 }

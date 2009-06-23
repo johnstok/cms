@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+ 
+<!-- 
+    ========================================================================
+    * Copyright (c) 2008 Civic Computing Ltd
+    * All rights reserved.
+    *
+    * Revision      $Rev$
+    * Modified by   $Author$
+    * Modified on   $Date$
+    *
+    * Changes: see SubVersion log
+    ========================================================================
+-->
+
+<hibernate-mapping default-access="field">
+    
+    <class
+        name="ccc.domain.TemplateRevision"
+        table="template_revisions">
+        
+        <cache usage="transactional"/>
+        
+        <id name="_id" 
+            column="id" 
+            type="ccc.persistence.jpa.UUIDUserType"
+            length="36">
+            <generator class="assigned" />
+        </id>
+		
+        <property name="_body" column="body" not-null="true" type="text" length="65536" />
+        <property name="_definition" column="definition" not-null="true" type="text" length="65536" />
+        
+        <component
+            name="_mimeType"
+            class="ccc.api.MimeType">
+            <property
+                name="_primaryType"
+                not-null="true"
+                column="mime_type_primary"
+                type="string"
+                length="255" />
+            <property
+                name="_subType"
+                not-null="true"
+                column="mime_type_sub"
+                type="string" 
+                length="255"/>
+        </component>
+        
+        <property
+            name="_index"
+            column="index"
+            not-null="true"
+            type="integer" />
+        <property
+            name="_majorChange"
+            column="major_change"
+            not-null="true" />
+        <property
+            name="_comment"
+            column="comment"
+            not-null="false"
+            type="string" />        
+    </class>
+    
+</hibernate-mapping>

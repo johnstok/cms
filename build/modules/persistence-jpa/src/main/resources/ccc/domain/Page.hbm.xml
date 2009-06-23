@@ -27,27 +27,24 @@
         extends="ccc.domain.Resource"
         table="pages">
         <key column="id" foreign-key="FK_PAGE_RESOURCE_ID"/>
-		
-        <set name="_content" table="paragraphs">
-            <cache usage="transactional"/>
-            <key column="page_id" not-null="true" foreign-key="FK_PARAGRAPH_PAGE_ID"/>
-            <composite-element class="ccc.api.Paragraph">
-                <property name="_name" column="name" not-null="true" type="string" length="255" />
-                <property name="_type" column="type" not-null="true" type="ParagraphType" length="255" />
-                <property name="_text" column="value_text" not-null="false" type="text" length="2147483647" />
-                <property name="_boolean" column="value_boolean" not-null="false" type="boolean" />
-                <property name="_date" column="value_date" not-null="false" type="timestamp" />
-                <property name="_number" column="value_number" not-null="false" type="big_decimal" />
-            </composite-element>
-        </set>
         
         <property
-            name="workingCopyString"
-            column="working_copy"
-            not-null="false"
-            access="property"
-            length="2162688"
-            type="text" />
+            name="_pageVersion"
+            column="version"
+            not-null="true"
+            type="integer" />
+		
+        <bag name="_history" cascade="all,delete-orphan">
+            <cache usage="transactional"/>
+            <key column="page_id" not-null="true" foreign-key="FK_REVISION_PAGE_ID"/>
+            <one-to-many class="ccc.domain.PageRevision" />
+        </bag>
+        
+        <bag name="_workingCopies" cascade="all,delete-orphan">
+            <cache usage="transactional"/>
+            <key column="page_id" not-null="true" foreign-key="FK_WCOPY_PAGE_ID"/>
+            <one-to-many class="ccc.domain.PageWorkingCopy" />
+        </bag>
         
     </joined-subclass>
     

@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+ 
+<!-- 
+    ========================================================================
+    * Copyright (c) 2008 Civic Computing Ltd
+    * All rights reserved.
+    *
+    * Revision      $Rev$
+    * Modified by   $Author$
+    * Modified on   $Date$
+    *
+    * Changes: see SubVersion log
+    ========================================================================
+-->
+
+<hibernate-mapping default-access="field">
+
+    <class
+        name="ccc.domain.FileWorkingCopy"
+        table="file_wcopies">
+        
+        <cache usage="transactional"/>
+        
+        <id name="_id" 
+            column="id" 
+            type="ccc.persistence.jpa.UUIDUserType"
+            length="36">
+            <generator class="assigned" />
+        </id>
+        
+        <property
+            name="_size"
+            column="size_in_bytes"
+            not-null="true"
+            type="int" />
+
+        <component
+            name="_data"
+            class="ccc.domain.Data"
+            unique="true">
+            <property
+                name="_id"
+                not-null="true"
+                column="data_id"
+                type="ccc.persistence.jpa.UUIDUserType" 
+                length="36" />
+        </component>
+        
+        <component
+            name="_mimeType"
+            class="ccc.api.MimeType">
+            <property
+                name="_primaryType"
+                not-null="true"
+                column="mime_type_primary"
+                type="string" 
+                 length="255" />
+            <property
+                name="_subType"
+                not-null="true"
+                column="mime_type_sub"
+                type="string" 
+                 length="255" />
+        </component>
+        
+        <property
+            name="_title"
+            column="title"
+            not-null="false"
+            type="string"
+            length="255" />
+            
+        <property
+            name="_description"
+            column="description"
+            not-null="false"
+            type="string"
+            length="1024" />
+
+    </class>
+    
+</hibernate-mapping>

@@ -73,9 +73,13 @@ public class DefaultRendererTest
         final Renderer rr =
             new DefaultRenderer(_dm, _se, _sr, true);
 
-        final Page p = new Page("foo");
+        final Page p =
+            new Page(
+                new ResourceName("foo"),
+                "foo",
+                null,
+                Paragraph.fromText("bar", "baz"));
         p.publish(new User("aaaa"));
-        p.addParagraph(Paragraph.fromText("bar", "baz"));
         final PageDelta delta = p.workingCopy();
         delta.setParagraphs(
             Collections.singleton(Paragraph.fromText("some", "other value")));
@@ -95,8 +99,12 @@ public class DefaultRendererTest
     public void testRenderWorkingCopy() {
 
         // ARRANGE
-        final Page p = new Page("foo");
-        p.addParagraph(Paragraph.fromText("bar", "baz"));
+        final Page p =
+            new Page(
+                new ResourceName("foo"),
+                "foo",
+                null,
+                Paragraph.fromText("bar", "baz"));
         final PageDelta delta = p.workingCopy();
         delta.setParagraphs(
             Collections.singleton(Paragraph.fromText("some", "other value")));

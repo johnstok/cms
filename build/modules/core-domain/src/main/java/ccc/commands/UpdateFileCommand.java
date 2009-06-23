@@ -16,6 +16,8 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.FileDelta;
+import ccc.api.ID;
+import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.LockMismatchException;
 import ccc.domain.UnlockedException;
@@ -71,11 +73,11 @@ public class UpdateFileCommand extends UpdateResourceCommand {
         final File f = getDao().find(File.class, fileId);
         f.confirmLock(actor);
 
-        f.title(fileDelta.getTitle());
-        f.description(fileDelta.getDescription());
-        f.mimeType(fileDelta.getMimeType());
-        f.size(fileDelta.getSize());
-        f.data(_data.create(dataStream, fileDelta.getSize()));
+        final Data d = _data.create(dataStream, fileDelta.getSize());
+        fileDelta.setData(new ID(d.id().toString()));
+
+        f.workingCopy(fileDelta);
+        f.applySnapshot();
 
         if (f.isImage()) {
             new FileHelper().extractImageMetadata(f, _data);

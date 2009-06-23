@@ -19,6 +19,7 @@ import junit.framework.TestCase;
 import ccc.api.Paragraph;
 import ccc.commons.TextProcessor;
 import ccc.domain.Page;
+import ccc.domain.ResourceName;
 
 
 /**
@@ -80,8 +81,12 @@ public class VelocityProcessorTest extends TestCase {
     public void testRenderResource() {
 
         // ARRANGE
-        final Page foo = new Page("foo");
-        foo.addParagraph(Paragraph.fromText("bar", "baz"));
+        final Page foo =
+            new Page(
+                new ResourceName("foo"),
+                "foo",
+                null,
+                Paragraph.fromText("bar", "baz"));
         final String template = "Hello $resource.id()";
 
         // ACT

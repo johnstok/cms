@@ -22,6 +22,7 @@ import ccc.api.Paragraph;
 import ccc.commands.UpdatePageCommand;
 import ccc.domain.Page;
 import ccc.domain.RemoteExceptionSupport;
+import ccc.domain.ResourceName;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -45,11 +46,16 @@ public class PageDaoImplTest
     public void testUpdatePage() throws RemoteExceptionSupport {
 
         // ARRANGE
+        final Page _page =
+            new Page(
+                new ResourceName("test"),
+                "test",
+                null,
+                Paragraph.fromText("abc", "def"));
         final PageDelta delta =
             new PageDelta(
                 "new title",
                 Collections.singleton(Paragraph.fromText("foo", "bar")));
-        _page.addParagraph(Paragraph.fromText("abc", "def"));
         _page.lock(_u);
 
         expect(_dao.find(Page.class, _page.id())).andReturn(_page);
@@ -100,6 +106,5 @@ public class PageDaoImplTest
     private AuditLog _al;
     private UpdatePageCommand _updatePage;
     private final Date _now = new Date();
-    private final Page _page = new Page("test");
     private final User _u = new User("user");
 }

@@ -95,28 +95,6 @@ public class FileTest extends TestCase {
     /**
      * Test.
      */
-    public void testDataPropertyCanBeUpdated() {
-
-        // ARRANGE
-        final Data newData = new Data();
-        final File f =
-            new File(new ResourceName("foo"),
-                "foo",
-                "desc",
-                new Data(),
-                1,
-                new MimeType("foo", "bar"));
-
-        // ACT
-        f.data(newData);
-
-        // ASSERT
-        assertEquals(newData, f.data());
-    }
-
-    /**
-     * Test.
-     */
     public void testMimeTypeProperty() {
 
         // ARRANGE

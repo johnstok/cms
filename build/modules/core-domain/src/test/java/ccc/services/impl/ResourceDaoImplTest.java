@@ -104,9 +104,11 @@ public class ResourceDaoImplTest
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
         final Folder foo = new Folder("foo");
         final Page bar =
-            new Page("bar")
-                .addParagraph(
-                    Paragraph.fromText("default", "<H1>Default</H!>"));
+            new Page(
+                new ResourceName("bar"),
+                "bar",
+                null,
+                Paragraph.fromText("default", "<H1>Default</H!>"));
         contentRoot.add(foo);
         foo.add(bar);
 
@@ -421,9 +423,11 @@ public class ResourceDaoImplTest
 
         // ARRANGE
         final Page bar =
-            new Page("bar")
-                .addParagraph(
-                    Paragraph.fromText("default", "<H1>Default</H1>"));
+            new Page(
+                new ResourceName("bar"),
+                "bar",
+                null,
+                Paragraph.fromText("default", "<H1>Default</H1>"));
 
         expect(_dao.find(Page.class, bar.id())).andReturn(bar);
         replayAll();

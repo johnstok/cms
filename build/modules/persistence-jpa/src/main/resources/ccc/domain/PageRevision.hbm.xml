@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+ 
+<!-- 
+    ========================================================================
+    * Copyright (c) 2008 Civic Computing Ltd
+    * All rights reserved.
+    *
+    * Revision      $Rev$
+    * Modified by   $Author$
+    * Modified on   $Date$
+    *
+    * Changes: see SubVersion log
+    ========================================================================
+-->
+
+<hibernate-mapping default-access="field">
+
+    <typedef class="ccc.persistence.jpa.EnumUserType" name="ParagraphType">
+        <param name="type">ccc.api.ParagraphType</param>
+    </typedef>
+    
+    <class
+        name="ccc.domain.PageRevision"
+        table="page_revisions">
+        
+        <cache usage="transactional"/>
+        
+        <id name="_id" 
+            column="id" 
+            type="ccc.persistence.jpa.UUIDUserType"
+            length="36">
+            <generator class="assigned" />
+        </id>
+		
+        <set name="_content" table="page_revision_paragraphs">
+            <cache usage="transactional"/>
+            <key column="page_revision_id" not-null="true" foreign-key="FK_PARAGRAPH_REVISION_ID"/>
+            <composite-element class="ccc.api.Paragraph">
+                <property name="_name" column="name" not-null="true" type="string" length="255" />
+                <property name="_type" column="type" not-null="true" type="ParagraphType" length="255" />
+                <property name="_text" column="value_text" not-null="false" type="text" length="2147483647" />
+                <property name="_boolean" column="value_boolean" not-null="false" type="boolean" />
+                <property name="_date" column="value_date" not-null="false" type="timestamp" />
+                <property name="_number" column="value_number" not-null="false" type="big_decimal" />
+            </composite-element>
+        </set>
+        
+        <property
+            name="_index"
+            column="index"
+            not-null="true"
+            type="integer" />
+        <property
+            name="_majorChange"
+            column="major_change"
+            not-null="true" />
+        <property
+            name="_comment"
+            column="comment"
+            not-null="false"
+            type="string" />        
+    </class>
+    
+</hibernate-mapping>

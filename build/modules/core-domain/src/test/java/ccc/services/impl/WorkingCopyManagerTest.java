@@ -24,6 +24,7 @@ import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Resource;
+import ccc.domain.ResourceName;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -71,9 +72,13 @@ public class WorkingCopyManagerTest
     public void testUpdateWorkingCopy() throws RemoteExceptionSupport {
 
         // ARRANGE
-        final Page page = new Page("test");
+        final Page page =
+            new Page(
+                new ResourceName("test"),
+                "test",
+                null,
+                Paragraph.fromText("abc", "def"));
         page.lock(_user);
-        page.addParagraph(Paragraph.fromText("abc", "def"));
         final PageDelta before = page.createSnapshot();
 
         expect(_dao.find(Page.class, page.id())).andReturn(page);
