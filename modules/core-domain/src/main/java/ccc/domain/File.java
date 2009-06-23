@@ -11,6 +11,8 @@
  */
 package ccc.domain;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import ccc.api.DBC;
@@ -34,10 +36,12 @@ public class File
     implements
         WCAware<FileDelta> {
 
-    private Data      _data;
-    private int       _size;
-    private MimeType  _mimeType;
-    private FileDelta _workingCopy;
+    private List<FileRevision> _history = new ArrayList<FileRevision>();
+    private int                _pageVersion = -1;
+
+    // This is a collection to exploit hibernate's delete-orphan syntax.
+    private List<FileWorkingCopy> _workingCopies =
+        new ArrayList<FileWorkingCopy>();
 
 
     /** Constructor: for persistence only. */
@@ -78,10 +82,11 @@ public class File
                 final int size,
                 final MimeType mimeType) {
         super(name, title);
-        data(data);
         description(description);
-        _size = size;
-        _mimeType = mimeType; // TODO: Defensive copy???
+        _pageVersion++;
+        _history.add(
+            new FileRevision(
+                _pageVersion, true, "Created.", data, size, mimeType));
     }
 
     /**
@@ -93,21 +98,12 @@ public class File
     }
 
     /**
-     * Accessor for FileData.
-     *
-     * @return A list of data for this file.
-     */
-    public Data fileData() {
-        return _data;
-    }
-
-    /**
      * Accessor for size.
      *
      * @return The size of the file in bytes, as a long.
      */
     public int size() {
-        return _size;
+        return currentRevision().getSize();
     }
 
     /**
@@ -117,17 +113,7 @@ public class File
      * @return The mime type.
      */
     public MimeType mimeType() {
-        return _mimeType;
-    }
-
-    /**
-     * Mutator for the data field.
-     *
-     * @param newData The new data for the file.
-     */
-    public void data(final Data newData) {
-        DBC.require().notNull(newData);
-        _data = newData;
+        return currentRevision().getMimeType();
     }
 
     /**
@@ -136,26 +122,7 @@ public class File
      * @return The Data instance for this file.
      */
     public Data data() {
-        return _data;
-    }
-
-    /**
-     * Mutator for the file's mime type.
-     * TODO: Make defensive copy?
-     *
-     * @param mimeType The new mime type.
-     */
-    public void mimeType(final MimeType mimeType) {
-        _mimeType = mimeType;
-    }
-
-    /**
-     * Mutator for the file's size.
-     *
-     * @param size The new size.
-     */
-    public void size(final int size) {
-        _size = size;
+        return currentRevision().getData();
     }
 
     /**
@@ -164,7 +131,7 @@ public class File
      * @return True if the file is an image, false otherwise.
      */
     public boolean isImage() {
-        return "image".equalsIgnoreCase(mimeType().getPrimaryType());
+        return currentRevision().isImage();
     }
 
 
@@ -176,13 +143,21 @@ public class File
     /** {@inheritDoc} */
     @Override
     public void applySnapshot() {
-        DBC.require().notNull(_workingCopy);
+        DBC.require().notNull(wc());
 
-        description(_workingCopy.getDescription());
-        mimeType(_workingCopy.getMimeType());
-        size(_workingCopy.getSize());
-        title(_workingCopy.getTitle());
-        data(new Data(UUID.fromString(_workingCopy.getData().toString())));
+        description(wc().delta().getDescription());
+        title(wc().delta().getTitle());
+
+        _pageVersion++;
+        _history.add(
+            new FileRevision(
+                _pageVersion,
+                true,
+                "Updated.",
+                new Data(UUID.fromString(wc().delta().getData().toString())),
+                wc().delta().getSize(),
+                wc().delta().getMimeType()));
+
 
         clearWorkingCopy();
     }
@@ -190,8 +165,8 @@ public class File
     /** {@inheritDoc} */
     @Override
     public FileDelta workingCopy() {
-        if (null!=_workingCopy) {
-            return _workingCopy;
+        if (null!=wc()) {
+            return wc().delta();
         }
         return createSnapshot();
     }
@@ -216,38 +191,66 @@ public class File
     }
 
     /** {@inheritDoc} */
-    public final void clearWorkingCopy() {
-        DBC.require().notNull(_workingCopy);
-        _workingCopy = null;
-    }
-
-    /** {@inheritDoc} */
     public final void workingCopy(final FileDelta snapshot) {
         DBC.require().notNull(snapshot);
-        _workingCopy = snapshot;
+        if (hasWorkingCopy()) {
+            wc().delta(snapshot);
+        } else {
+            wc(new FileWorkingCopy(snapshot));
+        }
+    }
+
+    //--
+
+    /** {@inheritDoc} */
+    public final void clearWorkingCopy() {
+        DBC.require().toBeTrue(hasWorkingCopy());
+        _workingCopies.clear();
     }
 
     /** {@inheritDoc} */
     public boolean hasWorkingCopy() {
-        return null!=_workingCopy;
+        return 0!=_workingCopies.size();
     }
 
-    @SuppressWarnings("unused")
-    private String getWorkingCopyString() {
-        if (null==_workingCopy) {
+    private FileWorkingCopy wc() {
+        if (0==_workingCopies.size()) {
             return null;
         }
-        final Snapshot s = new Snapshot();
-        _workingCopy.toJson(s);
-        return s.getDetail();
+        return _workingCopies.get(0);
     }
 
-    @SuppressWarnings("unused")
-    private void setWorkingCopyString(final String wcs) {
-        if (null==wcs) {
-            return;
+    private void wc(final FileWorkingCopy pageWorkingCopy) {
+        DBC.require().toBeFalse(hasWorkingCopy());
+        _workingCopies.add(0, pageWorkingCopy);
+    }
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public FileRevision currentRevision() {
+        for (final FileRevision r : _history) {
+            if (_pageVersion==r.getIndex()) {
+                return r;
+            }
         }
-        final Snapshot s = new Snapshot(wcs);
-        _workingCopy = new FileDelta(s);
+        throw new RuntimeException("No current revision!");
+    }
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param i
+     * @return
+     */
+    public FileRevision revision(final int i) {
+        for (final FileRevision r : _history) {
+            if (i==r.getIndex()) {
+                return r;
+            }
+        }
+        throw new RuntimeException("No current revision!");
     }
 }

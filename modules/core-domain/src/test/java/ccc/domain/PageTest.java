@@ -12,6 +12,7 @@
 
 package ccc.domain;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -29,6 +30,75 @@ import ccc.commons.Exceptions;
  */
 public final class PageTest extends TestCase {
 
+    /**
+     * Test.
+     */
+    public void testNewPageHasNoWorkingCopy() {
+
+        // ARRANGE
+        final Page page = new Page(new ResourceName("foo"), "Title");
+
+        // ACT
+        final boolean hasWC = page.hasWorkingCopy();
+
+        // ASSERT
+        assertFalse(hasWC);
+    }
+
+    /**
+     * Test.
+     */
+    public void testFindSpecificRevision() {
+
+        // ARRANGE
+        final Page page =
+            new Page(
+                new ResourceName("foo"),
+                "Title",
+                null,
+                Paragraph.fromText("header", "Header"));
+        page.workingCopy(
+            new PageDelta(
+                "another title",
+                Collections.singleton(
+                    Paragraph.fromBoolean("meh", Boolean.TRUE))));
+        page.applySnapshot();
+
+        // ACT
+        final PageRevision rev0 = page.revision(0);
+        final PageRevision rev1 = page.revision(1);
+
+        // ASSERT
+        assertEquals(0, rev0.getIndex());
+        assertEquals(1, rev0.getContent().size());
+        assertEquals("Header", rev0.getContent().iterator().next().text());
+        assertEquals(1, rev1.getIndex());
+        assertEquals(1, rev1.getContent().size());
+        assertEquals(Boolean.TRUE, rev1.getContent().iterator().next().bool());
+    }
+
+    /**
+     * Test.
+     */
+    public void testFindCurrentRevision() {
+
+        // ARRANGE
+        final Page page =
+            new Page(
+                new ResourceName("foo"),
+                "Title",
+                null,
+                Paragraph.fromText("header", "Header"));
+
+        // ACT
+        final PageRevision rev = page.currentRevision();
+
+        // ASSERT
+        assertEquals(0, rev.getIndex());
+        assertEquals(1, rev.getContent().size());
+        assertEquals("Header", rev.getContent().iterator().next().text());
+    }
+
 
     /**
      * Test.
@@ -37,8 +107,12 @@ public final class PageTest extends TestCase {
 
         // ARRANGE
         final Date then = new Date();
-        final Page page = new Page(new ResourceName("foo"), "Title");
-        page.addParagraph(Paragraph.fromText("header", "Header"));
+        final Page page =
+            new Page(
+                new ResourceName("foo"),
+                "Title",
+                null,
+                Paragraph.fromText("header", "Header"));
         final PageDelta s = page.createSnapshot();
 
         // ACT
@@ -99,9 +173,13 @@ public final class PageTest extends TestCase {
     public void testTakeSnapshot() {
 
         // ARRANGE
-        final Page page = new Page(new ResourceName("foo"), "Title");
         final Paragraph header = Paragraph.fromText("header", "Header");
-        page.addParagraph(header);
+        final Page page =
+            new Page(
+                new ResourceName("foo"),
+                "Title",
+                null,
+                header);
 
         // ACT
         final PageDelta s = page.createSnapshot();
@@ -135,9 +213,9 @@ public final class PageTest extends TestCase {
     public void testParagraphsCanBeRetrievedByName() {
 
         // ARRANGE
-        final Page page = new Page(new ResourceName("foo"), "Title");
         final Paragraph header = Paragraph.fromText("header", "Header");
-        page.addParagraph(header);
+        final Page page =
+            new Page(new ResourceName("foo"), "Title", null, header);
 
         // ACT
         final Paragraph p = page.paragraph("header");
@@ -152,8 +230,12 @@ public final class PageTest extends TestCase {
     public void testParagraphsAccessorReturnsDefensiveCopy() {
 
         // ARRANGE
-        final Page page = new Page(new ResourceName("foo"), "Title");
-        page.addParagraph(Paragraph.fromText("header", "<H1>Header</H1>"));
+        final Page page =
+            new Page(
+                new ResourceName("foo"),
+                "Title",
+                null,
+                Paragraph.fromText("header", "<H1>Header</H1>"));
 
         // ACT
         try {
@@ -184,34 +266,18 @@ public final class PageTest extends TestCase {
     public void testAddNewParagraph() {
 
         // ARRANGE
-        final Page page = new Page(new ResourceName("foo"), "Title");
 
         // ACT
-        page.addParagraph(Paragraph.fromText("header", "<H1>Header</H1>"));
+        final Page page =
+            new Page(
+                new ResourceName("foo"),
+                "Title",
+                null,
+                Paragraph.fromText("header", "<H1>Header</H1>"));
 
         // Assert
         assertEquals(1, page.paragraphs().size());
 
-    }
-
-    /**
-     * Test.
-     */
-    public void testDeleteParagraph() {
-
-        // ARRANGE
-        final Page page = new Page(new ResourceName("foo"), "Title");
-        page.addParagraph(Paragraph.fromText("header", "<H1>Header</H1>"));
-        page.addParagraph(Paragraph.fromText("footer", "<H1>Footer</H1>"));
-
-        // ACT
-        page.deleteParagraph("header");
-
-        // Assert
-        assertEquals(1, page.paragraphs().size());
-        assertEquals(
-            "<H1>Footer</H1>",
-            page.paragraph("footer").text());
     }
 
     /**
@@ -232,33 +298,18 @@ public final class PageTest extends TestCase {
     /**
      * Test.
      */
-    public void testDeleteAllParagraphs() {
-
-        // ARRANGE
-        final Page page = new Page(new ResourceName("foo"), "Title");
-        page.addParagraph(Paragraph.fromText("header", "<H1>Header</H1>"));
-        page.addParagraph(Paragraph.fromText("footer", "<H1>Footer</H1>"));
-
-        // ACT
-        page.deleteAllParagraphs();
-
-        // ASSERT
-        assertEquals(0, page.paragraphs().size());
-    }
-
-    /**
-     * Test.
-     */
     public void testAdd32NewParagraphs() {
 
         // ARRANGE
-        final Page page = new Page(new ResourceName("foo"), "Title");
+        final Paragraph[] paras = new Paragraph[Page.MAXIMUM_PARAGRAPHS];
+        for (int a=0; a < Page.MAXIMUM_PARAGRAPHS; a++) {
+            paras[a] =
+                Paragraph.fromText("header"+a, "<H1>Header"+a+"</H1>");
+        }
 
         // ACT
-        for (int a=1; a <= Page.MAXIMUM_PARAGRAPHS; a++) {
-            page.addParagraph(
-                Paragraph.fromText("header"+a, "<H1>Header"+a+"</H1>"));
-        }
+        final Page page =
+            new Page(new ResourceName("foo"), "Title", null, paras);
 
         // ASSERT
         assertEquals(Page.MAXIMUM_PARAGRAPHS, page.paragraphs().size());
@@ -271,15 +322,17 @@ public final class PageTest extends TestCase {
     public void testAdd33NewParagraphs() {
 
         // ARRANGE
-        final Page page = new Page(new ResourceName("foo"), "Title");
+        final Paragraph[] paras = new Paragraph[Page.MAXIMUM_PARAGRAPHS+1];
+        for (int a=0; a < Page.MAXIMUM_PARAGRAPHS+1; a++) {
+            paras[a] =
+                Paragraph.fromText("header"+a, "<H1>Header"+a+"</H1>");
+        }
 
         // ACT
         try {
-            for (int a=1; a <= (Page.MAXIMUM_PARAGRAPHS+1); a++) {
-            page.addParagraph(
-                Paragraph.fromText("header"+a, "<H1>Header"+a+"</H1>"));
-        }
-        fail("Resources should reject adding more than 32 paragraphs.");
+            final Page page =
+                new Page(new ResourceName("foo"), "Title", null, paras);
+            fail("Resources should reject adding more than 32 paragraphs.");
 
         // ASSERT
         } catch (final IllegalArgumentException e) {

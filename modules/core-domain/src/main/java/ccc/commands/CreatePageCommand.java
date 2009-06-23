@@ -11,10 +11,12 @@
  */
 package ccc.commands;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.PageDelta;
+import ccc.api.Paragraph;
 import ccc.domain.Page;
 import ccc.domain.PageHelper;
 import ccc.domain.RemoteExceptionSupport;
@@ -68,26 +70,21 @@ public class CreatePageCommand extends CreateResourceCommand {
                         final ResourceName name,
                         final UUID templateId) throws RemoteExceptionSupport {
 
-        final Page page = new Page(name, delta.getTitle());
+        final Template template =
+            (null==templateId)
+                ? null
+                : getDao().find(Template.class, templateId);
+
+        final Page page =
+            new Page(
+                name,
+                delta.getTitle(),
+                template,
+                new ArrayList<Paragraph>(
+                    delta.getParagraphs()).toArray(new Paragraph[0]));
 
         if (publish) {
             page.publish(actor);
-        }
-
-        if (templateId != null) {
-            final Template template =
-                getDao().find(Template.class, templateId);
-            page.template(template);
-        }
-
-        _pageHelper.assignParagraphs(page, delta);
-
-        final Template template = page.computeTemplate(null);
-
-        if (template != null) {
-            _pageHelper.validateFieldsForPage(
-                page.paragraphs(), template.definition());
-
         }
 
         create(actor, happenedOn, parentFolder, page);

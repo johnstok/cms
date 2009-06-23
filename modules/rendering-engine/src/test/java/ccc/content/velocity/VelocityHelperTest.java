@@ -22,6 +22,7 @@ import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Resource;
+import ccc.domain.ResourceName;
 
 
 /**
@@ -83,13 +84,19 @@ public class VelocityHelperTest extends TestCase {
 
         // ARRANGE
         final VelocityHelper helper = new VelocityHelper();
-        final Page page = new Page("page");
-        final Paragraph p1 = Paragraph.fromText("HEADER", "headertext");
-        page.addParagraph(p1);
+        final Page page =
+            new Page(
+                new ResourceName("page"),
+                "page",
+                null,
+                Paragraph.fromText("HEADER", "headertext"));
 
-        final Page page2 = new Page("page2");
-        final Paragraph p2 = Paragraph.fromText("HEADER", "headertext2");
-        page2.addParagraph(p2);
+        final Page page2 =
+            new Page(
+                new ResourceName("page2"),
+                "page2",
+                null,
+                Paragraph.fromText("HEADER", "headertext2"));
 
         final Folder folder = new Folder("folder");
         final Folder root = new Folder("root");
@@ -118,13 +125,19 @@ public class VelocityHelperTest extends TestCase {
 
         // ARRANGE
         final VelocityHelper helper = new VelocityHelper();
-        final Page page = new Page("page");
-        final Paragraph p1 = Paragraph.fromText("HEADER", "headertext");
-        page.addParagraph(p1);
+        final Page page =
+            new Page(
+                new ResourceName("page"),
+                "page",
+                null,
+                Paragraph.fromText("HEADER", "headertext"));
 
-        final Page page2 = new Page("page2");
-        final Paragraph p2 = Paragraph.fromText("HEADER", "headertext2");
-        page2.addParagraph(p2);
+        final Page page2 =
+            new Page(
+                new ResourceName("page2"),
+                "page2",
+                null,
+                Paragraph.fromText("HEADER", "headertext2"));
 
         final Folder folder = new Folder("folder");
         final Folder root = new Folder("root");

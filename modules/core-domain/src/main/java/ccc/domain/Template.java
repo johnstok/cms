@@ -11,6 +11,9 @@
  */
 package ccc.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ccc.api.DBC;
 import ccc.api.MimeType;
 import ccc.api.ResourceType;
@@ -24,9 +27,9 @@ import ccc.api.TemplateDelta;
  */
 public class Template extends Resource {
 
-    private String _body;
-    private String _definition;
-    private MimeType _mimeType;
+    private List<TemplateRevision> _history = new ArrayList<TemplateRevision>();
+    private int                    _pageVersion = -1;
+
 
     /** Constructor: for persistence only. */
     protected Template() { super(); }
@@ -74,14 +77,17 @@ public class Template extends Resource {
 
         super(name, title);
         DBC.require().notNull(description);
-        DBC.require().notNull(body);
-        DBC.require().notNull(definiton);
-        DBC.require().notNull(mimeType);
 
         description(description);
-        _body = body;
-        _definition = definiton;
-        _mimeType = mimeType;
+        _pageVersion++;
+        _history.add(
+            new TemplateRevision(
+                _pageVersion,
+                true,
+                "Created.",
+                body,
+                definiton,
+                mimeType));
     }
 
     /**
@@ -98,7 +104,7 @@ public class Template extends Resource {
      * @return The body as a string.
      */
     public String body() {
-        return _body;
+        return currentRevision().getBody();
     }
 
     /**
@@ -107,27 +113,7 @@ public class Template extends Resource {
      * @return The definition as a String.
      */
     public String definition() {
-        return _definition;
-    }
-
-    /**
-     * Mutator for definition.
-     *
-     * @param definition The new definition.
-     */
-    public void definition(final String definition) {
-        DBC.require().notEmpty(definition);
-        _definition = definition;
-    }
-
-    /**
-     * Mutator for body.
-     *
-     * @param body The new body.
-     */
-    public void body(final String body) {
-        DBC.require().notEmpty(body);
-        _body = body;
+        return currentRevision().getDefinition();
     }
 
     /**
@@ -136,16 +122,7 @@ public class Template extends Resource {
      * @return Returns the mimeType.
      */
     public MimeType mimeType() {
-        return _mimeType;
-    }
-
-    /**
-     * Mutator.
-     *
-     * @param mimeType The mimeType to set.
-     */
-    public void mimeType(final MimeType mimeType) {
-        _mimeType = mimeType;
+        return currentRevision().getMimeType();
     }
 
     /** {@inheritDoc} */
@@ -157,5 +134,51 @@ public class Template extends Resource {
             body(),
             definition(),
             mimeType());
+    }
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public TemplateRevision currentRevision() {
+        for (final TemplateRevision r : _history) {
+            if (_pageVersion==r.getIndex()) {
+                return r;
+            }
+        }
+        throw new RuntimeException("No current revision!");
+    }
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param i
+     * @return
+     */
+    public TemplateRevision revision(final int i) {
+        for (final TemplateRevision r : _history) {
+            if (i==r.getIndex()) {
+                return r;
+            }
+        }
+        throw new RuntimeException("No current revision!");
+    }
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param delta
+     */
+    public void update(final TemplateDelta delta) {
+        _pageVersion++;
+        _history.add(
+            new TemplateRevision(
+                _pageVersion,
+                true,
+                "Updated.",
+                delta.getBody(),
+                delta.getDefinition(),
+                delta.getMimeType()));
     }
 }
