@@ -146,9 +146,6 @@ public final class Page
     @Override
     public void applySnapshot(final RevisionMetadata metadata) {
         DBC.require().notNull(wc());
-        DBC.require().maxValue(
-            wc().delta().getParagraphs().size(),
-            MAXIMUM_PARAGRAPHS);
 
         final PageHelper pageHelper = new PageHelper();
 
@@ -243,6 +240,10 @@ public final class Page
      */
     public void update(final PageDelta delta,
                        final RevisionMetadata metadata) {
+        DBC.require().maxValue(
+            delta.getParagraphs().size(),
+            MAXIMUM_PARAGRAPHS);
+
         incrementVersion();
         addRevision(
             new PageRevision(
