@@ -81,7 +81,9 @@ public class CreateFileCommand extends CreateResourceCommand {
                 file.getDescription(),
                 data,
                 file.getSize(),
-                file.getMimeType());
+                file.getMimeType(),
+                happenedOn,
+                actor);
 
         if (f.isImage()) {
             new FileHelper().extractImageMetadata(f, _data);

@@ -14,6 +14,7 @@ package ccc.persistence.jpa;
 import static org.easymock.EasyMock.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -21,6 +22,9 @@ import javax.persistence.Query;
 import junit.framework.TestCase;
 import ccc.domain.Page;
 import ccc.domain.Resource;
+import ccc.domain.ResourceName;
+import ccc.domain.RevisionMetadata;
+import ccc.domain.User;
 
 
 /**
@@ -33,8 +37,6 @@ import ccc.domain.Resource;
 public class BaseDaoTest
     extends
         TestCase {
-
-    private Resource _r = new Page("foo");
 
     /**
      * Test.
@@ -63,6 +65,7 @@ public class BaseDaoTest
         verify(q, em);
     }
 
+
     /**
      * Test.
      */
@@ -85,4 +88,8 @@ public class BaseDaoTest
         verify(q, em);
     }
 
+
+    private final RevisionMetadata _rm =
+        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
+    private Resource _r = new Page(new ResourceName("foo"), "foo", null, _rm);
 }

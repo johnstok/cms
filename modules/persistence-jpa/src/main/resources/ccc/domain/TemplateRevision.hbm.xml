@@ -64,7 +64,17 @@
             name="_comment"
             column="comment"
             not-null="false"
-            type="string" />        
+            type="string" />
+        <property
+            name="_timestamp"
+            column="timestamp"
+            not-null="true"
+            type="timestamp" />
+        <many-to-one
+            name="_actor"
+            column="actor_id"
+            not-null="true"
+            foreign-key="FK_REVISION_USER_ACTOR_ID" />
     </class>
     
 </hibernate-mapping>

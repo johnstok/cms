@@ -11,7 +11,6 @@
  */
 package ccc.commands;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
@@ -21,6 +20,7 @@ import ccc.domain.Page;
 import ccc.domain.PageHelper;
 import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.ResourceName;
+import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -75,13 +75,16 @@ public class CreatePageCommand extends CreateResourceCommand {
                 ? null
                 : getDao().find(Template.class, templateId);
 
+        final RevisionMetadata rm =
+            new RevisionMetadata(happenedOn, actor, true, "Created.");
+
         final Page page =
             new Page(
                 name,
                 delta.getTitle(),
                 template,
-                new ArrayList<Paragraph>(
-                    delta.getParagraphs()).toArray(new Paragraph[0]));
+                rm,
+                delta.getParagraphs().toArray(new Paragraph[0]));
 
         if (publish) {
             page.publish(actor);

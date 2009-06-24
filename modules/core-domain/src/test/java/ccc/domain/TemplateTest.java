@@ -11,6 +11,8 @@
  */
 package ccc.domain;
 
+import java.util.Date;
+
 import junit.framework.TestCase;
 import ccc.api.MimeType;
 import ccc.api.ResourceType;
@@ -31,7 +33,12 @@ public final class TemplateTest extends TestCase {
 
         // ARRANGE
         final Template t = new Template(
-            "foo!", "bar", "Hello world", "<fields/>", MimeType.HTML);
+            "foo!",
+            "bar",
+            "Hello world",
+            "<fields/>",
+            MimeType.HTML,
+            _rm);
 
         // ACT
         final TemplateDelta o  = t.createSnapshot();
@@ -53,7 +60,12 @@ public final class TemplateTest extends TestCase {
 
         // ACT
         final Template t = new Template(
-            "foo!", "bar", "Hello world", "<fields/>", MimeType.HTML);
+            "foo!",
+            "bar",
+            "Hello world",
+            "<fields/>",
+            MimeType.HTML,
+            _rm);
 
         // ASSERT
         assertEquals(new ResourceName("foo_"), t.name());
@@ -77,7 +89,8 @@ public final class TemplateTest extends TestCase {
             "bar",
             "Hello world",
             "<fields/>",
-            MimeType.HTML);
+            MimeType.HTML,
+            _rm);
 
         // ASSERT
         assertEquals(new ResourceName("testName"), t.name());
@@ -88,4 +101,6 @@ public final class TemplateTest extends TestCase {
         assertEquals(ResourceType.TEMPLATE, t.type());
     }
 
+    private final RevisionMetadata _rm =
+        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
 }

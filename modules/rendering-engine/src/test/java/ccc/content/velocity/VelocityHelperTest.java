@@ -13,6 +13,7 @@ package ccc.content.velocity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,8 @@ import ccc.domain.Page;
 import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
+import ccc.domain.RevisionMetadata;
+import ccc.domain.User;
 
 
 /**
@@ -57,8 +60,10 @@ public class VelocityHelperTest extends TestCase {
 
         // ARRANGE
         final VelocityHelper helper = new VelocityHelper();
-        final Page page = new Page("page");
-        final Page page2 = new Page("page2");
+        final Page page =
+            new Page(new ResourceName("page"), "page", null, _rm);
+        final Page page2 =
+            new Page(new ResourceName("page2"), "page2", null, _rm);
         final Folder folder = new Folder("folder");
         final Folder root = new Folder("root");
         root.add(folder);
@@ -89,6 +94,7 @@ public class VelocityHelperTest extends TestCase {
                 new ResourceName("page"),
                 "page",
                 null,
+                _rm,
                 Paragraph.fromText("HEADER", "headertext"));
 
         final Page page2 =
@@ -96,6 +102,7 @@ public class VelocityHelperTest extends TestCase {
                 new ResourceName("page2"),
                 "page2",
                 null,
+                _rm,
                 Paragraph.fromText("HEADER", "headertext2"));
 
         final Folder folder = new Folder("folder");
@@ -130,6 +137,7 @@ public class VelocityHelperTest extends TestCase {
                 new ResourceName("page"),
                 "page",
                 null,
+                _rm,
                 Paragraph.fromText("HEADER", "headertext"));
 
         final Page page2 =
@@ -137,6 +145,7 @@ public class VelocityHelperTest extends TestCase {
                 new ResourceName("page2"),
                 "page2",
                 null,
+                _rm,
                 Paragraph.fromText("HEADER", "headertext2"));
 
         final Folder folder = new Folder("folder");
@@ -156,4 +165,7 @@ public class VelocityHelperTest extends TestCase {
         assertEquals("headertext", result.get(0).get("HEADER"));
         assertEquals("headertext2", result.get(1).get("HEADER"));
     }
+
+    private final RevisionMetadata _rm =
+        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
 }

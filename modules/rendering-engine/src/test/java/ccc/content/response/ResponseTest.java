@@ -25,6 +25,9 @@ import ccc.api.Duration;
 import ccc.api.MimeType;
 import ccc.commons.Testing;
 import ccc.domain.Page;
+import ccc.domain.ResourceName;
+import ccc.domain.RevisionMetadata;
+import ccc.domain.User;
 import ccc.services.StatefulReader;
 
 
@@ -340,6 +343,12 @@ public class ResponseTest
     }
 
     private Response _r;
-    private Page _p = new Page("my_page");
+    private Page _p =
+        new Page(
+            new ResourceName("my_page"),
+            "my_page",
+            null,
+            new RevisionMetadata(
+                new Date(), User.SYSTEM_USER, true, "Created."));
     private HttpServletResponse _response;
 }

@@ -12,6 +12,7 @@
 package ccc.domain;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,12 +33,9 @@ import ccc.api.ResourceType;
  */
 public class File
     extends
-        Resource
+        HistoricalResource<FileRevision>
     implements
         WCAware<FileDelta> {
-
-    private List<FileRevision> _history = new ArrayList<FileRevision>();
-    private int                _pageVersion = -1;
 
     // This is a collection to exploit hibernate's delete-orphan syntax.
     private List<FileWorkingCopy> _workingCopies =
@@ -60,8 +58,18 @@ public class File
                 final String title,
                 final String description,
                 final Data data,
-                final int size) {
-        this(name, title, description, data, size, MimeType.BINARY_DATA);
+                final int size,
+                final Date timestamp,
+                final User actor) {
+        this(
+            name,
+            title,
+            description,
+            data,
+            size,
+            MimeType.BINARY_DATA,
+            timestamp,
+            actor);
     }
 
 
@@ -80,13 +88,15 @@ public class File
                 final String description,
                 final Data data,
                 final int size,
-                final MimeType mimeType) {
+                final MimeType mimeType,
+                final Date timestamp,
+                final User actor) {
         super(name, title);
+        DBC.require().notNull(data);
         description(description);
-        _pageVersion++;
-        _history.add(
-            new FileRevision(
-                _pageVersion, true, "Created.", data, size, mimeType));
+        update(
+            new RevisionMetadata(timestamp, actor, true, "Created."),
+            new FileDelta(title, description, mimeType, new ID(data.id().toString()), size));
     }
 
     /**
@@ -142,24 +152,29 @@ public class File
 
     /** {@inheritDoc} */
     @Override
-    public void applySnapshot() {
+    public void applySnapshot(final RevisionMetadata metadata) {
         DBC.require().notNull(wc());
 
         description(wc().delta().getDescription());
         title(wc().delta().getTitle());
 
-        _pageVersion++;
-        _history.add(
-            new FileRevision(
-                _pageVersion,
-                true,
-                "Updated.",
-                new Data(UUID.fromString(wc().delta().getData().toString())),
-                wc().delta().getSize(),
-                wc().delta().getMimeType()));
-
+        update(metadata, wc().delta());
 
         clearWorkingCopy();
+    }
+
+    private void update(final RevisionMetadata metadata, final FileDelta delta) {
+        incrementVersion();
+        addRevision(
+            new FileRevision(
+                currentVersion(),
+                metadata.getTimestamp(),
+                metadata.getActor(),
+                metadata.isMajorChange(),
+                metadata.getComment(),
+                new Data(UUID.fromString(delta.getData().toString())),
+                delta.getSize(),
+                delta.getMimeType()));
     }
 
     /** {@inheritDoc} */
@@ -223,34 +238,5 @@ public class File
     private void wc(final FileWorkingCopy pageWorkingCopy) {
         DBC.require().toBeFalse(hasWorkingCopy());
         _workingCopies.add(0, pageWorkingCopy);
-    }
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    public FileRevision currentRevision() {
-        for (final FileRevision r : _history) {
-            if (_pageVersion==r.getIndex()) {
-                return r;
-            }
-        }
-        throw new RuntimeException("No current revision!");
-    }
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param i
-     * @return
-     */
-    public FileRevision revision(final int i) {
-        for (final FileRevision r : _history) {
-            if (i==r.getIndex()) {
-                return r;
-            }
-        }
-        throw new RuntimeException("No current revision!");
     }
 }

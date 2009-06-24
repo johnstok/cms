@@ -25,6 +25,7 @@ import ccc.domain.Page;
 import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
+import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -47,7 +48,7 @@ public class WorkingCopyManagerTest
     public void testClearWorkingCopy() throws RemoteExceptionSupport {
 
         // ARRANGE
-        final Page p = new Page("foo");
+        final Page p = new Page(new ResourceName("foo"), "foo", null, _rm);
         p.lock(_user);
         p.workingCopy(p.createSnapshot());
 
@@ -61,7 +62,7 @@ public class WorkingCopyManagerTest
 
         // ASSERT
         verifyAll();
-//        assertNull(p.workingCopy());
+        assertFalse(p.hasWorkingCopy());
     }
 
 
@@ -77,6 +78,7 @@ public class WorkingCopyManagerTest
                 new ResourceName("test"),
                 "test",
                 null,
+                _rm,
                 Paragraph.fromText("abc", "def"));
         page.lock(_user);
         final PageDelta before = page.createSnapshot();
@@ -123,4 +125,6 @@ public class WorkingCopyManagerTest
     private AuditLog _audit;
     private final User _user = new User("currentUser");
     private final Date _now = new Date();
+    private final RevisionMetadata _rm =
+        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
 }

@@ -46,6 +46,7 @@ import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
+import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -108,6 +109,7 @@ public class ResourceDaoImplTest
                 new ResourceName("bar"),
                 "bar",
                 null,
+                _rm,
                 Paragraph.fromText("default", "<H1>Default</H!>"));
         contentRoot.add(foo);
         foo.add(bar);
@@ -348,7 +350,17 @@ public class ResourceDaoImplTest
 
         // ARRANGE
         final Template defaultTemplate =
-            new Template("foo", "bar", "baz", "<fields/>", MimeType.HTML);
+            new Template(
+                "foo",
+                "bar",
+                "baz",
+                "<fields/>",
+                MimeType.HTML,
+                new RevisionMetadata(
+                    new Date(),
+                    User.SYSTEM_USER,
+                    true,
+                    "Created."));
         _r.lock(_regularUser);
 
         expect(_dao.find(Resource.class, _r.id()))
@@ -427,6 +439,7 @@ public class ResourceDaoImplTest
                 new ResourceName("bar"),
                 "bar",
                 null,
+                _rm,
                 Paragraph.fromText("default", "<H1>Default</H1>"));
 
         expect(_dao.find(Page.class, bar.id())).andReturn(bar);
@@ -574,7 +587,7 @@ public class ResourceDaoImplTest
         _dao = createStrictMock(Dao.class);
         _al = createStrictMock(AuditLog.class);
         _rdao = new ResourceDaoImpl(_dao);
-        _r = new Page("foo");
+        _r = new Page(new ResourceName("foo"), "foo", null, _rm);
         _parent = new Folder("parent");
         _parent.add(_r);
     }
@@ -601,4 +614,6 @@ public class ResourceDaoImplTest
     private final User _adminUser = new User("admin"){{
        addRole(CreatorRoles.ADMINISTRATOR);
     }};
+    private final RevisionMetadata _rm =
+        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
 }

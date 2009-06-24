@@ -16,6 +16,7 @@ import java.util.UUID;
 
 import ccc.domain.LockMismatchException;
 import ccc.domain.Resource;
+import ccc.domain.RevisionMetadata;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.domain.WCAware;
@@ -69,7 +70,9 @@ public class ApplyWorkingCopyCommand extends UpdateResourceCommand {
 
         if (r instanceof WCAware<?>) {
             final WCAware<?> wcAware = (WCAware<?>) r;
-            wcAware.applySnapshot();
+            final RevisionMetadata rm =
+                new RevisionMetadata(happenedOn, actor, isMajorEdit, comment);
+            wcAware.applySnapshot(rm);
         } else {
             throw new WorkingCopyNotSupportedException(r);
         }

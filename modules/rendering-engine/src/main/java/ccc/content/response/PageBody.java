@@ -15,6 +15,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,7 +24,9 @@ import ccc.api.MimeType;
 import ccc.commons.Resources;
 import ccc.content.velocity.VelocityProcessor;
 import ccc.domain.Page;
+import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
+import ccc.domain.User;
 import ccc.services.StatefulReader;
 
 
@@ -90,5 +93,10 @@ public class PageBody
                     "/ccc/content/server/default-page-template.txt"),
                 Charset.forName("UTF-8")),
             "<fields/>",
-            MimeType.HTML);
+            MimeType.HTML,
+            new RevisionMetadata(
+                new Date(),
+                User.SYSTEM_USER,
+                true,
+                "Created."));
 }

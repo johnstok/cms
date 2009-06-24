@@ -23,6 +23,7 @@ import ccc.commands.UpdatePageCommand;
 import ccc.domain.Page;
 import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.ResourceName;
+import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -46,35 +47,36 @@ public class PageDaoImplTest
     public void testUpdatePage() throws RemoteExceptionSupport {
 
         // ARRANGE
-        final Page _page =
+        final Page page =
             new Page(
                 new ResourceName("test"),
                 "test",
                 null,
+                _rm,
                 Paragraph.fromText("abc", "def"));
         final PageDelta delta =
             new PageDelta(
                 "new title",
                 Collections.singleton(Paragraph.fromText("foo", "bar")));
-        _page.lock(_u);
+        page.lock(_u);
 
-        expect(_dao.find(Page.class, _page.id())).andReturn(_page);
-        _al.recordUpdate(_page, _u, _now, "comment text", false);
+        expect(_dao.find(Page.class, page.id())).andReturn(page);
+        _al.recordUpdate(page, _u, _now, "comment text", false);
         replayAll();
 
 
         // ACT
         _updatePage.execute(
-            _u, _now, _page.id(), delta, "comment text", false);
+            _u, _now, page.id(), delta, "comment text", false);
 
 
         // ASSERT
         verifyAll();
-        assertEquals("new title", _page.title());
-        assertEquals(1, _page.paragraphs().size());
-        assertEquals("foo", _page.paragraphs().iterator().next().name());
-        assertEquals("bar", _page.paragraph("foo").text());
-//        assertNull("Page must not have working copy", _page._workingCopy());
+        assertEquals("new title", page.title());
+        assertEquals(1, page.paragraphs().size());
+        assertEquals("foo", page.paragraphs().iterator().next().name());
+        assertEquals("bar", page.paragraph("foo").text());
+        assertFalse("Page must not have working copy", page.hasWorkingCopy());
     }
 
 
@@ -107,4 +109,6 @@ public class PageDaoImplTest
     private UpdatePageCommand _updatePage;
     private final Date _now = new Date();
     private final User _u = new User("user");
+    private final RevisionMetadata _rm =
+        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
 }

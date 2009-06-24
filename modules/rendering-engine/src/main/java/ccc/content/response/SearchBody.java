@@ -15,6 +15,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,8 +23,10 @@ import ccc.api.DBC;
 import ccc.api.MimeType;
 import ccc.commons.SearchResult;
 import ccc.content.velocity.VelocityProcessor;
+import ccc.domain.RevisionMetadata;
 import ccc.domain.Search;
 import ccc.domain.Template;
+import ccc.domain.User;
 import ccc.services.SearchEngine;
 import ccc.services.StatefulReader;
 
@@ -105,5 +108,10 @@ public class SearchBody
             +"</form>Shown Hits: $!result.hits().size() - "
             +"Total: $!result.totalResults()",
             "<fields/>",
-            MimeType.HTML);
+            MimeType.HTML,
+            new RevisionMetadata(
+                new Date(),
+                User.SYSTEM_USER,
+                true,
+                "Created."));
 }

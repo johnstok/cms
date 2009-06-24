@@ -15,6 +15,7 @@ import junit.framework.TestCase;
 import ccc.api.AliasDelta;
 import ccc.api.ID;
 import ccc.api.ResourceType;
+import ccc.commons.Exceptions;
 
 
 /**
@@ -39,7 +40,7 @@ public class AliasTest extends TestCase {
 
         // ASSERT
         } catch (final CycleDetectedException e) {
-            // pass
+            Exceptions.swallow(e);
         }
     }
 
@@ -61,7 +62,7 @@ public class AliasTest extends TestCase {
 
         // ASSERT
         } catch (final CycleDetectedException e) {
-            // pass
+            Exceptions.swallow(e);
         }
     }
 
@@ -85,7 +86,7 @@ public class AliasTest extends TestCase {
 
         // ASSERT
         } catch (final CycleDetectedException e) {
-            // pass
+            Exceptions.swallow(e);
         }
     }
 

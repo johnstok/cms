@@ -20,6 +20,8 @@ import ccc.domain.Alias;
 import ccc.domain.Page;
 import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Resource;
+import ccc.domain.ResourceName;
+import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -78,6 +80,10 @@ public class UpdateAliasCommandTest
     private UpdateAliasCommand _updateAlias;
     private final User _user = new User("currentUser");
     private final Date _now = new Date();
-    private final Page _resource = new Page("foo");
-    private final Page _r2 = new Page("baa");
+    private final RevisionMetadata _rm =
+        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
+    private final Page _resource =
+        new Page(new ResourceName("foo"), "foo", null, _rm);
+    private final Page _r2 =
+        new Page(new ResourceName("baa"), "baa", null, _rm);
 }

@@ -48,6 +48,7 @@ import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourceOrder;
+import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.DataManager;
@@ -78,6 +79,7 @@ public class DefaultRendererTest
                 new ResourceName("foo"),
                 "foo",
                 null,
+                _rm,
                 Paragraph.fromText("bar", "baz"));
         p.publish(new User("aaaa"));
         final PageDelta delta = p.workingCopy();
@@ -104,6 +106,7 @@ public class DefaultRendererTest
                 new ResourceName("foo"),
                 "foo",
                 null,
+                _rm,
                 Paragraph.fromText("bar", "baz"));
         final PageDelta delta = p.workingCopy();
         delta.setParagraphs(
@@ -126,7 +129,17 @@ public class DefaultRendererTest
 
         // ARRANGE
         final Template t =
-            new Template("template", "", "", "<fields/>", MimeType.HTML);
+            new Template(
+                "template",
+                "",
+                "",
+                "<fields/>",
+                MimeType.HTML,
+                new RevisionMetadata(
+                    new Date(),
+                    User.SYSTEM_USER,
+                    true,
+                    "Created."));
 
         // ACT
         try {
@@ -182,7 +195,7 @@ public class DefaultRendererTest
     public void testRenderPage() {
 
         // ARRANGE
-        final Page p = new Page("foo");
+        final Page p = new Page(new ResourceName("foo"), "foo", null, _rm);
 
         // ACT
         final Response r = _renderer.render(p, _noParams);
@@ -214,7 +227,9 @@ public class DefaultRendererTest
                 "meh",
                 new Data(),
                 0,
-                MimeType.HTML);
+                MimeType.HTML,
+                new Date(),
+                User.SYSTEM_USER);
 
         // ACT
         final Response r = _renderer.render(f, _noParams);
@@ -269,8 +284,8 @@ public class DefaultRendererTest
         // ARRANGE
         final Folder f = new Folder("folder");
         f.sortOrder(ResourceOrder.NAME_ALPHANUM_ASC);
-        final Page a = new Page("aaa");
-        final Page z = new Page("zzz");
+        final Page a = new Page(new ResourceName("aaa"), "aaa", null, _rm);
+        final Page z = new Page(new ResourceName("zzz"), "zzz", null, _rm);
         z.publish(_user); f.add(z);
         a.publish(_user); f.add(a);
 
@@ -295,8 +310,8 @@ public class DefaultRendererTest
         // ARRANGE
         final Folder f = new Folder("folder");
         f.sortOrder(ResourceOrder.NAME_ALPHANUM_ASC);
-        final Page a = new Page("aaa");
-        final Page z = new Page("zzz");
+        final Page a = new Page(new ResourceName("aaa"), "aaa", null, _rm);
+        final Page z = new Page(new ResourceName("zzz"), "zzz", null, _rm);
         z.publish(_user); f.add(z);
         a.publish(_user); f.add(a);
         f.indexPage(z);
@@ -322,8 +337,8 @@ public class DefaultRendererTest
 
         // ARRANGE
         final Folder f = new Folder("folder");
-        final Page a = new Page("aaa");
-        final Page z = new Page("zzz");
+        final Page a = new Page(new ResourceName("aaa"), "aaa", null, _rm);
+        final Page z = new Page(new ResourceName("zzz"), "zzz", null, _rm);
         z.publish(_user);
         f.add(a);
         f.add(z);
@@ -350,11 +365,30 @@ public class DefaultRendererTest
         // ARRANGE
         final Folder root = new Folder("root");
 
-        final Template a = new Template("a", "", "", "", MimeType.HTML);
+        final Template a =
+            new Template(
+                "a",
+                "",
+                "",
+                "",
+                MimeType.HTML,
+                new RevisionMetadata(
+                    new Date(),
+                    User.SYSTEM_USER,
+                    true,
+                    "Created."));
         final Folder b = new Folder("b");
-        final File c = new File(new ResourceName("c"), "c", "c", new Data(), 0);
+        final File c =
+            new File(
+                new ResourceName("c"),
+                "c",
+                "c",
+                new Data(),
+                0,
+                new Date(),
+                User.SYSTEM_USER);
         final Alias d = new Alias("d", a);
-        final Page e = new Page("page");
+        final Page e = new Page(new ResourceName("page"), "page", null, _rm);
         a.publish(_user); root.add(a);
         b.publish(_user); root.add(b);
         c.publish(_user); root.add(c);
@@ -380,7 +414,7 @@ public class DefaultRendererTest
     public void testRenderAlias() throws RemoteExceptionSupport {
 
         // ARRANGE
-        final Page p = new Page("bar");
+        final Page p = new Page(new ResourceName("bar"), "bar", null, _rm);
         final Alias a = new Alias("foo", p);
 
         // ACT
@@ -403,7 +437,7 @@ public class DefaultRendererTest
         // ARRANGE
         final Renderer rr =
             new DefaultRenderer(_dm, _se, _sr, true);
-        final Page p = new Page("private page");
+        final Page p = new Page(new ResourceName("zzz"), "zzz", null, _rm);
 
         // ACT
         try {
@@ -439,4 +473,6 @@ public class DefaultRendererTest
     private final User _user = new User("fooo");
     private final Map<String, String[]> _noParams =
         new HashMap<String, String[]>();
+    private final RevisionMetadata _rm =
+        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
 }

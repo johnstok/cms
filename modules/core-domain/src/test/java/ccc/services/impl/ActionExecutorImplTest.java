@@ -25,6 +25,8 @@ import ccc.api.Failure;
 import ccc.api.ID;
 import ccc.domain.Action;
 import ccc.domain.Page;
+import ccc.domain.ResourceName;
+import ccc.domain.RevisionMetadata;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 
@@ -46,7 +48,7 @@ public class ActionExecutorImplTest
                                                  throws CommandFailedException {
 
         // ARRANGE
-        final Page p = new Page("foo");
+        final Page p =  new Page(new ResourceName("foo"), "foo", null, _rm);
         final User u = new User("user");
         final Action a =
             new Action(
@@ -92,4 +94,6 @@ public class ActionExecutorImplTest
 
     private ActionExecutorImpl _ea;
     private Commands _commands;
+    private final RevisionMetadata _rm =
+        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
 }

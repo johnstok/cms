@@ -20,6 +20,7 @@ import ccc.api.MimeType;
 import ccc.api.TemplateDelta;
 import ccc.commands.UpdateTemplateCommand;
 import ccc.domain.RemoteExceptionSupport;
+import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -43,7 +44,16 @@ public class TemplateDaoImplTest
 
         // ARRANGE
         final Template foo = new Template(
-            "title", "description", "body", "<fields/>", MimeType.HTML);
+            "title",
+            "description",
+            "body",
+            "<fields/>",
+            MimeType.HTML,
+            new RevisionMetadata(
+                new Date(),
+                User.SYSTEM_USER,
+                true,
+                "Created."));
         foo.lock(_user);
         final TemplateDelta td = new TemplateDelta(
             "newTitle", "newDesc", "newBody", "newDefn", MimeType.HTML);

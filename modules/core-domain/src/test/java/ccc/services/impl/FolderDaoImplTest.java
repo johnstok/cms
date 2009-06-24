@@ -26,7 +26,9 @@ import ccc.domain.LockMismatchException;
 import ccc.domain.Page;
 import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Resource;
+import ccc.domain.ResourceName;
 import ccc.domain.ResourceOrder;
+import ccc.domain.RevisionMetadata;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -80,9 +82,9 @@ public class FolderDaoImplTest
 
         // ARRANGE
         _f.lock(_regularUser);
-        final Page foo = new Page("foo");
-        final Page bar = new Page("bar");
-        final Page baz = new Page("baz");
+        final Page foo = new Page(new ResourceName("foo"), "foo", null, _rm);
+        final Page bar = new Page(new ResourceName("bar"), "bar", null, _rm);
+        final Page baz = new Page(new ResourceName("baz"), "baz", null, _rm);
         _f.add(foo);
         _f.add(bar);
         _f.add(baz);
@@ -145,4 +147,6 @@ public class FolderDaoImplTest
     private AuditLog _al;
     private ResourceDao _rdao;
     private Dao _dao;
+    private final RevisionMetadata _rm =
+        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
 }

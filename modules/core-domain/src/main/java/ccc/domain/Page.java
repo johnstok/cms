@@ -16,6 +16,7 @@ import static java.util.Collections.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,12 +35,9 @@ import ccc.api.ResourceType;
  */
 public final class Page
     extends
-        Resource
+        HistoricalResource<PageRevision>
     implements
         WCAware<PageDelta> {
-
-    private List<PageRevision> _history = new ArrayList<PageRevision>();
-    private int                _pageVersion = -1;
 
     // This is a collection to exploit hibernate's delete-orphan syntax.
     private List<PageWorkingCopy> _workingCopies =
@@ -57,12 +55,17 @@ public final class Page
      *
      * @param title The title for the resource.
      */
-    public Page(final String title) {
+    Page(final String title) {
         super(title);
-        _pageVersion++;
-        _history.add(
-            new PageRevision(
-                _pageVersion, true, "Created.", new HashSet<Paragraph>()));
+        update(
+            new PageDelta(
+                title,
+                new HashSet<Paragraph>()),
+            new RevisionMetadata(
+                new Date(),
+                User.SYSTEM_USER,
+                true,
+                "Created."));
     }
 
     /**
@@ -71,12 +74,17 @@ public final class Page
      * @param name The name of the resource.
      * @param title The title of the resource.
      */
-    public Page(final ResourceName name, final String title) {
+    Page(final ResourceName name, final String title) {
         super(name, title);
-        _pageVersion++;
-        _history.add(
-            new PageRevision(
-                _pageVersion, true, "Created.", new HashSet<Paragraph>()));
+        update(
+            new PageDelta(
+                title,
+                new HashSet<Paragraph>()),
+            new RevisionMetadata(
+                new Date(),
+                User.SYSTEM_USER,
+                true,
+                "Created."));
     }
 
     /**
@@ -88,13 +96,14 @@ public final class Page
     public Page(final ResourceName name,
                 final String title,
                 final Template template,
+                final RevisionMetadata metadata,
                 final Paragraph... paragraphs) {
         super(name, title);
         template(template);
         workingCopy(
             new PageDelta(
                 title, new HashSet<Paragraph>(Arrays.asList(paragraphs))));
-        applySnapshot();
+        applySnapshot(metadata);
     }
 
 
@@ -137,7 +146,7 @@ public final class Page
 
     /** {@inheritDoc} */
     @Override
-    public void applySnapshot() {
+    public void applySnapshot(final RevisionMetadata metadata) {
         DBC.require().notNull(wc());
         DBC.require().maxValue(
             wc().delta().getParagraphs().size(),
@@ -154,13 +163,7 @@ public final class Page
                 paragraphs(), template.definition());
         }
 
-        _pageVersion++;
-        _history.add(
-            new PageRevision(
-                _pageVersion,
-                true,
-                "Updated.",
-                new HashSet<Paragraph>(wc().delta().getParagraphs())));
+        update(wc().delta(), metadata);
 
         clearWorkingCopy();
     }
@@ -238,29 +241,18 @@ public final class Page
     /**
      * TODO: Add a description for this method.
      *
-     * @return
+     * @param delta
      */
-    public PageRevision currentRevision() {
-        for (final PageRevision r : _history) {
-            if (_pageVersion==r.getIndex()) {
-                return r;
-            }
-        }
-        throw new RuntimeException("No current revision!");
-    }
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param i
-     * @return
-     */
-    public PageRevision revision(final int i) {
-        for (final PageRevision r : _history) {
-            if (i==r.getIndex()) {
-                return r;
-            }
-        }
-        throw new RuntimeException("No current revision!");
+    public void update(final PageDelta delta,
+                       final RevisionMetadata metadata) {
+        incrementVersion();
+        addRevision(
+            new PageRevision(
+                currentVersion(),
+                metadata.getTimestamp(),
+                metadata.getActor(),
+                metadata.isMajorChange(),
+                metadata.getComment(),
+                delta.getParagraphs()));
     }
 }
