@@ -18,6 +18,7 @@ import ccc.api.UserSummary;
 import ccc.contentcreator.actions.ChooseTemplateAction;
 import ccc.contentcreator.actions.CreateUserAction;
 import ccc.contentcreator.actions.EditCacheAction;
+import ccc.contentcreator.actions.EditFolderAction;
 import ccc.contentcreator.actions.LockAction;
 import ccc.contentcreator.actions.LogoutAction;
 import ccc.contentcreator.actions.OpenHelpAction;
@@ -26,7 +27,6 @@ import ccc.contentcreator.actions.UnlockAction;
 import ccc.contentcreator.actions.UnpublishAction;
 import ccc.contentcreator.actions.UpdateMetadataAction;
 import ccc.contentcreator.actions.UpdateResourceRolesAction;
-import ccc.contentcreator.actions.EditFolderAction;
 import ccc.contentcreator.actions.UpdateTagsAction;
 import ccc.contentcreator.actions.ViewHistoryAction;
 import ccc.contentcreator.api.ActionNameConstants;
@@ -39,6 +39,7 @@ import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
+import com.extjs.gxt.ui.client.widget.menu.MenuItem;
 import com.extjs.gxt.ui.client.widget.toolbar.TextToolItem;
 import com.google.gwt.core.client.GWT;
 
@@ -52,10 +53,14 @@ public class MainMenu
     extends
         AbstractToolBar {
 
-    private final UIConstants _constants = Globals.uiConstants();
+    /** CONTENT : String. */
+    private static final String CONTENT = "content";
+    /** ASSETS : String. */
+    private static final String ASSETS = "assets";
     private static final ActionNameConstants USER_ACTIONS =
         GWT.create(ActionNameConstants.class);
-    private final Menu _itemMenu = new Menu();
+
+    private final UIConstants _constants = Globals.uiConstants();
     private final UserSummary _user;
     /**
      * Constructor.
@@ -86,7 +91,8 @@ public class MainMenu
 
         if (_user.getRoles().contains(IGlobals.ADMINISTRATOR)
                 || _user.getRoles().contains(IGlobals.SITE_BUILDER)) {
-            createContentRootMenu();
+            createContentRootMenu(CONTENT, _constants.contentRoot());
+            createContentRootMenu(ASSETS, _constants.assetsRoot());
         }
 
         addMenu(
@@ -99,21 +105,24 @@ public class MainMenu
         );
     }
 
-    private void createContentRootMenu() {
+    private void createContentRootMenu(final String rootName,
+                                       final String label) {
 
-        final TextToolItem item =
-            new TextToolItem(_constants.contentRoot());
-        item.setId("contentRoot-menu");
+        final TextToolItem rootItem =
+            new TextToolItem(label);
+        rootItem.setId(rootName+"Root-menu");
 
-        _itemMenu.addListener(Events.BeforeShow, new Listener<MenuEvent>() {
+        final Menu rootMenu = new Menu();
+        rootMenu.addListener(Events.BeforeShow,
+            new Listener<MenuEvent>() {
             public void handleEvent(final MenuEvent be) {
-                _itemMenu.removeAll();
+                rootMenu.removeAll();
                 final QueriesServiceAsync qs = Globals.queriesService();
-                qs.roots(new ErrorReportingCallback<Collection<ResourceSummary>>(USER_ACTIONS.internalAction()){
-                    public void onSuccess(final Collection<ResourceSummary> roots) {
-                        for (final ResourceSummary root : roots) {
-                            if ("content".equals(root.getName())) {
-                                addRootMenuItems(root);
+                qs.roots(new ErrorReportingCallback<Collection<ResourceSummary>>(USER_ACTIONS.internalAction()) {
+                    public void onSuccess(final Collection<ResourceSummary> c) {
+                        for (final ResourceSummary root : c) {
+                            if (rootName.equals(root.getName())) {
+                                addRootMenuItems(root, rootMenu);
                             }
                         }
                     }
@@ -121,15 +130,86 @@ public class MainMenu
             }
         });
 
-        item.setMenu(_itemMenu);
-        add(item);
+        rootItem.setMenu(rootMenu);
+        add(rootItem);
     }
 
-    private void addRootMenuItems(final ResourceSummary root) {
-        final SingleSelectionModel ssm = createSsm(root);
 
-        _itemMenu.add(createMenuItem(
-            "details-root",
+    private void addRootMenuItems(final ResourceSummary root,
+                                  final Menu rootMenu) {
+        final SingleSelectionModel ssm = createSsm(root);
+        final String name = root.getName();
+
+        rootMenu.add(rootDetailMenuItem(root, name));
+
+        rootMenu.add(createMenuItem(
+            "viewHistory-root-"+name,
+            _constants.viewHistory(),
+            new ViewHistoryAction(ssm)));
+
+        if (root.getLockedBy() == null
+            || root.getLockedBy().toString().equals("")) {
+            rootMenu.add(createMenuItem(
+                "lock-root-"+name,
+                _constants.lock(),
+                new LockAction(ssm)));
+        } else {
+            if (root.getLockedBy().equals(_user.getUsername())
+                    || _user.getRoles().contains(IGlobals.ADMINISTRATOR)) {
+
+                rootMenu.add(createMenuItem(
+                    "unlock-root-"+name,
+                    _constants.unlock(),
+                    new UnlockAction(ssm)));
+            }
+            if (root.getLockedBy().equals(_user.getUsername())) {
+                if (root.getPublishedBy() == null
+                        || root.getPublishedBy().toString().equals("")) {
+                    rootMenu.add(createMenuItem(
+                        "publish-root-"+name,
+                        _constants.publish(),
+                        new PublishAction(ssm)));
+                } else {
+                    rootMenu.add(createMenuItem(
+                        "unpublish-root-"+name,
+                        _constants.unpublish(),
+                        new UnpublishAction(ssm)));
+                }
+                if (CONTENT.equals(root.getName())) {
+                    rootMenu.add(createMenuItem(
+                        "chooseTemplate-root-"+name,
+                        _constants.chooseTemplate(),
+                        new ChooseTemplateAction(ssm)));
+                    rootMenu.add(createMenuItem(
+                        "editFolder-root-"+name,
+                        _constants.edit(),
+                        new EditFolderAction(ssm)));
+                }
+                rootMenu.add(createMenuItem(
+                    "updateRoles-root-"+name,
+                    _constants.updateRoles(),
+                    new UpdateResourceRolesAction(ssm)));
+                rootMenu.add(createMenuItem(
+                    "updateTags-root-"+name,
+                    _constants.updateTags(),
+                    new UpdateTagsAction(ssm)));
+                rootMenu.add(createMenuItem(
+                    "updateMetadata-root-"+name,
+                    _constants.updateMetadata(),
+                    new UpdateMetadataAction(ssm)));
+                rootMenu.add(createMenuItem(
+                    "cacheDuration-root-"+name,
+                    _constants.cacheDuration(),
+                    new EditCacheAction(ssm)));
+            }
+        }
+    }
+
+    private MenuItem rootDetailMenuItem(final ResourceSummary root,
+                                        final String name) {
+
+        return createMenuItem(
+            "details-root-"+name,
             _constants.details(),
             new Action(){
 
@@ -146,69 +226,7 @@ public class MainMenu
                     Globals.alert(sb.toString());
                 }
 
-            }));
-
-        _itemMenu.add(createMenuItem(
-            "viewHistory-root",
-            _constants.viewHistory(),
-            new ViewHistoryAction(ssm)));
-
-        if (root.getLockedBy() == null
-            || root.getLockedBy().toString().equals("")) {
-            _itemMenu.add(createMenuItem(
-                "lock-root",
-                _constants.lock(),
-                new LockAction(ssm)));
-        } else {
-            if (root.getLockedBy().equals(_user.getUsername())
-                    || _user.getRoles().contains(IGlobals.ADMINISTRATOR)) {
-
-                _itemMenu.add(createMenuItem(
-                    "unlock-root",
-                    _constants.unlock(),
-                    new UnlockAction(ssm)));
-            }
-            if (root.getLockedBy().equals(_user.getUsername())) {
-                if (root.getPublishedBy() == null
-                        || root.getPublishedBy().toString().equals("")) {
-                    _itemMenu.add(createMenuItem(
-                        "publish-root",
-                        _constants.publish(),
-                        new PublishAction(ssm)));
-                } else {
-                    _itemMenu.add(createMenuItem(
-                        "unpublish-root",
-                        _constants.unpublish(),
-                        new UnpublishAction(ssm)));
-                }
-                _itemMenu.add(createMenuItem(
-                    "chooseTemplate-root",
-                    _constants.chooseTemplate(),
-                    new ChooseTemplateAction(ssm)));
-                _itemMenu.add(createMenuItem(
-                    "editFolder-root",
-                    _constants.edit(),
-                    new EditFolderAction(ssm)));
-                _itemMenu.add(createMenuItem(
-                    "updateRoles-root",
-                    _constants.updateRoles(),
-                    new UpdateResourceRolesAction(ssm)));
-                _itemMenu.add(createMenuItem(
-                    "updateTags-root",
-                    _constants.updateTags(),
-                    new UpdateTagsAction(ssm)));
-                _itemMenu.add(createMenuItem(
-                    "updateMetadata-root",
-                    _constants.updateMetadata(),
-                    new UpdateMetadataAction(ssm)));
-                _itemMenu.add(createMenuItem(
-                    "cacheDuration-root",
-                    _constants.cacheDuration(),
-                    new EditCacheAction(ssm)));
-
-            }
-        }
-
+            });
     }
 
     private SingleSelectionModel createSsm(final ResourceSummary root) {
