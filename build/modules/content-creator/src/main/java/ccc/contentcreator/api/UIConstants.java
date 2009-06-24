@@ -1380,4 +1380,12 @@ public interface UIConstants extends Constants {
      */
     @DefaultStringValue("{none}")
     String none();
+
+    /**
+     * "Assets root".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Assets root")
+    String assetsRoot();
 }
