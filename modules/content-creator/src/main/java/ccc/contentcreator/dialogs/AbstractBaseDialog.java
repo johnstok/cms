@@ -55,6 +55,7 @@ public abstract class AbstractBaseDialog
         super();
         setHeading(title);
         setWidth(IGlobals.DEFAULT_WIDTH);
+        setMinWidth(IGlobals.MIN_WIDTH);
         setHeight(IGlobals.DEFAULT_HEIGHT);
         setLayout(new FitLayout());
         setBodyStyle("backgroundColor: white;");

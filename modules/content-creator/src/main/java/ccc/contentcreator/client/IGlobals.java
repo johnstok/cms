@@ -152,6 +152,8 @@ public interface IGlobals {
 
     /** DEFAULT_WIDTH : int. */
     int DEFAULT_WIDTH = 640;
+    /** MIN_WIDTH : int. */
+    int MIN_WIDTH = 375;
     /** DEFAULT_HEIGHT : int. */
     int DEFAULT_HEIGHT = 480;
     /** DEFAULT_UPLOAD_HEIGHT : int. */

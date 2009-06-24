@@ -16,6 +16,7 @@ import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.FolderResourceTree;
 import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobals;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
@@ -50,6 +51,7 @@ public class FolderSelectionDialog extends Window {
         setHeading(_constants.selectFolder());
         setWidth(WIDTH);
         setHeight(HEIGHT);
+        setMinWidth(IGlobals.MIN_WIDTH);
         setLayout(new FitLayout());
         _tree = new FolderResourceTree(root);
         add(_tree);

@@ -36,7 +36,7 @@ import com.extjs.gxt.ui.client.widget.form.TextField;
 public class EditCacheDialog extends AbstractEditDialog {
 
     private static final int DIALOG_HEIGHT = 240;
-    private static final int DIALOG_WIDTH = 350;
+    private static final int DIALOG_WIDTH = 375;
     private final ResourceSummaryModelData _item;
     private final TextField<String> _seconds = new TextField<String>();
     private final TextField<String> _minutes = new TextField<String>();

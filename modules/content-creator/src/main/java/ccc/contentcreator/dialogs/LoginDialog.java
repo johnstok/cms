@@ -20,10 +20,8 @@ import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.form.TextField;
-import com.extjs.gxt.ui.client.widget.layout.FormData;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Widget;
 
 
 /**
@@ -33,8 +31,7 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class LoginDialog extends AbstractEditDialog {
     /** DIALOG_WIDTH : int. */
-    private static final int DIALOG_WIDTH = 300;
-
+    private static final int DIALOG_WIDTH = 375;
     /** DIALOG_HEIGHT : int. */
     private static final int DIALOG_HEIGHT = 150;
 
@@ -82,17 +79,6 @@ public class LoginDialog extends AbstractEditDialog {
         setMaximizable(false);
         setHeight(DIALOG_HEIGHT);
         setWidth(DIALOG_WIDTH);
-    }
-
-
-    /**
-     * Add a field to this dialog.
-     *
-     * @param widget The widget to add.
-     */
-    @Override
-    protected void addField(final Widget widget) {
-        _panel.add(widget, new FormData("90%"));
     }
 
     /** {@inheritDoc} */
