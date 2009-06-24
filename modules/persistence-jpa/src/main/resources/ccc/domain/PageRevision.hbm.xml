@@ -24,6 +24,7 @@
     
     <class
         name="ccc.domain.PageRevision"
+        mutable="false"
         table="page_revisions">
         
         <cache usage="transactional"/>
@@ -48,11 +49,6 @@
             </composite-element>
         </set>
         
-        <property
-            name="_index"
-            column="index"
-            not-null="true"
-            type="integer" />
         <property
             name="_majorChange"
             column="major_change"

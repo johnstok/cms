@@ -36,22 +36,20 @@ public class FileRevision
     /**
      * Constructor.
      *
-     * @param index
      * @param majorChange
      * @param comment
      * @param data
      * @param size
      * @param mimeType
      */
-    FileRevision(final int index,
-                 final Date timestamp,
+    FileRevision(final Date timestamp,
                  final User actor,
                  final boolean majorChange,
                  final String comment,
                  final Data data,
                  final int size,
                  final MimeType mimeType) {
-        super(index, timestamp, actor, majorChange, comment);
+        super(timestamp, actor, majorChange, comment);
         DBC.require().notNull(data);
         DBC.require().notNull(mimeType);
         _data = data;

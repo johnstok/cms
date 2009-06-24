@@ -20,6 +20,7 @@
     
     <class
         name="ccc.domain.TemplateRevision"
+        mutable="false"
         table="template_revisions">
         
         <cache usage="transactional"/>
@@ -51,11 +52,6 @@
                 length="255"/>
         </component>
         
-        <property
-            name="_index"
-            column="index"
-            not-null="true"
-            type="integer" />
         <property
             name="_majorChange"
             column="major_change"

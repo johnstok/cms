@@ -14,6 +14,8 @@ package ccc.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import ccc.api.DBC;
+
 
 
 /**
@@ -26,7 +28,6 @@ public abstract class HistoricalResource<T extends Revision>
     extends
         Resource {
 
-    private int _pageVersion = -1;
     private List<T> _history = new ArrayList<T>();
 
     /** Constructor: for persistence only. */
@@ -52,43 +53,29 @@ public abstract class HistoricalResource<T extends Revision>
     }
 
     /**
-     * TODO: Add a description for this method.
+     * Retrieve the current revision.
      *
-     * @return
+     * @return The revision corresponding to the current version.
      */
     public final T currentRevision() {
-        for (final T r : _history) {
-            if (_pageVersion==r.getIndex()) {
-                return r;
-            }
-        }
-        throw new RuntimeException("No current revision!");
+        return revision(_history.size()-1);
     }
 
     /**
-     * TODO: Add a description for this method.
+     * Retrieve the specified revision.
      *
-     * @param i
-     * @return
+     * @return The revision corresponding to the specified version.
      */
     public final T revision(final int i) {
-        for (final T r : _history) {
-            if (i==r.getIndex()) {
-                return r;
-            }
+        final T rev = _history.get(i);
+        if (null==rev) {
+            throw new RuntimeException("No revision!");
         }
-        throw new RuntimeException("No current revision!");
-    }
-
-    protected final int currentVersion() {
-        return _pageVersion;
-    }
-
-    protected final void incrementVersion() {
-        _pageVersion++;
+        return rev;
     }
 
     protected final void addRevision(final T revision) {
+        DBC.require().notNull(revision);
         _history.add(revision);
     }
 }

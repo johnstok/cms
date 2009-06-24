@@ -71,10 +71,8 @@ public final class PageTest extends TestCase {
         final PageRevision rev1 = page.revision(1);
 
         // ASSERT
-        assertEquals(0, rev0.getIndex());
         assertEquals(1, rev0.getContent().size());
         assertEquals("Header", rev0.getContent().iterator().next().text());
-        assertEquals(1, rev1.getIndex());
         assertEquals(1, rev1.getContent().size());
         assertEquals(Boolean.TRUE, rev1.getContent().iterator().next().bool());
     }
@@ -97,7 +95,6 @@ public final class PageTest extends TestCase {
         final PageRevision rev = page.currentRevision();
 
         // ASSERT
-        assertEquals(0, rev.getIndex());
         assertEquals(1, rev.getContent().size());
         assertEquals("Header", rev.getContent().iterator().next().text());
     }

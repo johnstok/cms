@@ -135,10 +135,8 @@ public class Template
      */
     public void update(final TemplateDelta delta,
                        final RevisionMetadata metadata) {
-        incrementVersion();
         addRevision(
             new TemplateRevision(
-                currentVersion(),
                 metadata.getTimestamp(),
                 metadata.getActor(),
                 metadata.isMajorChange(),

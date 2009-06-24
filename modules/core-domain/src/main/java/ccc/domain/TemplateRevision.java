@@ -36,22 +36,20 @@ public class TemplateRevision
     /**
      * Constructor.
      *
-     * @param index
      * @param majorChange
      * @param comment
      * @param body
      * @param definition
      * @param mimeType
      */
-    TemplateRevision(final int index,
-                     final Date timestamp,
+    TemplateRevision(final Date timestamp,
                      final User actor,
                      final boolean majorChange,
                      final String comment,
                      final String body,
                      final String definition,
                      final MimeType mimeType) {
-        super(index, timestamp, actor, majorChange, comment);
+        super(timestamp, actor, majorChange, comment);
 
         DBC.require().notNull(body);
         DBC.require().notNull(definition);

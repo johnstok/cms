@@ -159,10 +159,8 @@ public class File
     }
 
     private void update(final RevisionMetadata metadata, final FileDelta delta) {
-        incrementVersion();
         addRevision(
             new FileRevision(
-                currentVersion(),
                 metadata.getTimestamp(),
                 metadata.getActor(),
                 metadata.isMajorChange(),
