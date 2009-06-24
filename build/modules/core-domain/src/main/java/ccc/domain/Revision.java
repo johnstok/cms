@@ -23,7 +23,6 @@ import java.util.Date;
 public abstract class Revision extends Entity {
     private Date _timestamp;
     private User _actor;
-    private int _index;
     private boolean _majorChange;
     private String _comment;
 
@@ -39,14 +38,12 @@ public abstract class Revision extends Entity {
      * @param majorChange
      * @param comment
      */
-    protected Revision(final int index,
-                    final Date timestamp,
-                    final User actor,
-                    final boolean majorChange,
-                    final String comment) {
+    protected Revision(final Date timestamp,
+                       final User actor,
+                       final boolean majorChange,
+                       final String comment) {
         _timestamp = timestamp;
         _actor = actor;
-        _index = index;
         _majorChange = majorChange;
         _comment = comment;
     }
@@ -69,16 +66,6 @@ public abstract class Revision extends Entity {
      */
     public final User getActor() {
         return _actor;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the index.
-     */
-    public final int getIndex() {
-        return _index;
     }
 
 

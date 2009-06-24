@@ -244,10 +244,8 @@ public final class Page
             delta.getParagraphs().size(),
             MAXIMUM_PARAGRAPHS);
 
-        incrementVersion();
         addRevision(
             new PageRevision(
-                currentVersion(),
                 metadata.getTimestamp(),
                 metadata.getActor(),
                 metadata.isMajorChange(),

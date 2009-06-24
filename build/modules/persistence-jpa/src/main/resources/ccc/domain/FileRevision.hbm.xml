@@ -24,6 +24,7 @@
     
     <class
         name="ccc.domain.FileRevision"
+        mutable="false"
         table="file_revisions">
         
         <cache usage="transactional"/>
@@ -70,11 +71,6 @@
                  length="255" />
         </component>
         
-        <property
-            name="_index"
-            column="index"
-            not-null="true"
-            type="integer" />
         <property
             name="_majorChange"
             column="major_change"

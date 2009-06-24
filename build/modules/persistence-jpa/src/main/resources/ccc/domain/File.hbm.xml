@@ -23,18 +23,13 @@
         table="files">
         
 		<key column="id" foreign-key="FK_FILE_RESOURCE_ID" />
-			
-        <property
-            name="_pageVersion"
-            column="version"
-            not-null="true"
-            type="integer" />
         
-        <bag name="_history" cascade="all,delete-orphan">
+        <list name="_history" cascade="all,delete-orphan">
             <cache usage="transactional"/>
             <key column="page_id" not-null="true" foreign-key="FK_REVISION_FILE_ID"/>
+            <list-index column="index_pos" />
             <one-to-many class="ccc.domain.FileRevision" />
-        </bag>
+        </list>
         
         <bag name="_workingCopies" cascade="all,delete-orphan">
             <cache usage="transactional"/>

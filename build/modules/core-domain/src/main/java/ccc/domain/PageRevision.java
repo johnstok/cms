@@ -35,18 +35,16 @@ public class PageRevision
     /**
      * Constructor.
      *
-     * @param index
      * @param majorChange
      * @param comment
      * @param content
      */
-    PageRevision(final int index,
-                 final Date timestamp,
+    PageRevision(final Date timestamp,
                  final User actor,
                  final boolean majorChange,
                  final String comment,
                  final Set<Paragraph> content) {
-        super(index, timestamp, actor, majorChange, comment);
+        super(timestamp, actor, majorChange, comment);
         _content = content;
     }
 
