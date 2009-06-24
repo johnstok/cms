@@ -26,6 +26,7 @@ import ccc.contentcreator.binding.ResourceSummaryModelData.Property;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.IGlobals;
+import ccc.contentcreator.client.ResourceTypeRendererFactory;
 import ccc.contentcreator.client.SingleSelectionModel;
 
 import com.extjs.gxt.ui.client.Events;
@@ -296,15 +297,17 @@ AbstractEditDialog {
         final ColumnConfig typeColumn = new ColumnConfig(
             Property.TYPE.name(),
             _constants.type(),
-            70);
+            40);
         typeColumn.setSortable(false);
         typeColumn.setMenuDisabled(true);
+        typeColumn.setRenderer(
+            ResourceTypeRendererFactory.rendererForResourceSummary());
         configs.add(typeColumn);
 
         final ColumnConfig nameColumn = new ColumnConfig(
             Property.NAME.name(),
             _constants.name(),
-            170);
+            180);
         nameColumn.setSortable(false);
         nameColumn.setMenuDisabled(true);
         configs.add(nameColumn);
@@ -312,7 +315,7 @@ AbstractEditDialog {
         final ColumnConfig titleColumn = new ColumnConfig(
             Property.TITLE.name(),
             _constants.title(),
-            170);
+            180);
         titleColumn.setSortable(false);
         titleColumn.setMenuDisabled(true);
         configs.add(titleColumn);
@@ -320,7 +323,7 @@ AbstractEditDialog {
         final ColumnConfig createdColumn = new ColumnConfig(
             Property.DATE_CREATED.name(),
             _constants.created(),
-            70);
+            75);
         createdColumn.setSortable(false);
         createdColumn.setMenuDisabled(true);
         createdColumn.setDateTimeFormat(dateTimeFormat);
@@ -329,7 +332,7 @@ AbstractEditDialog {
         final ColumnConfig changedColumn = new ColumnConfig(
             Property.DATE_CHANGED.name(),
             _constants.changed(),
-            70);
+            75);
         changedColumn.setSortable(false);
         changedColumn.setMenuDisabled(true);
         changedColumn.setDateTimeFormat(dateTimeFormat);
