@@ -25,6 +25,8 @@ import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.RemoteExceptionSupport;
+import ccc.domain.ResourceName;
+import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -72,7 +74,7 @@ public class AuditLogImplTest
         replay(_em);
 
         final AuditLog al = new AuditLogImpl(_em);
-        final Page p = new Page("foo");
+        final Page p = new Page(new ResourceName("foo"), "foo", null, _rm);
         p.lock(_actor);
 
         // ACT
@@ -97,7 +99,7 @@ public class AuditLogImplTest
         replay(_em);
 
         final AuditLog al = new AuditLogImpl(_em);
-        final Page p = new Page("foo");
+        final Page p = new Page(new ResourceName("foo"), "foo", null, _rm);
 
         // ACT
         al.recordCreate(p, _actor, _happenedOn);
@@ -120,7 +122,7 @@ public class AuditLogImplTest
         replay(_em);
 
         final AuditLog al = new AuditLogImpl(_em);
-        final Page p = new Page("foo");
+        final Page p = new Page(new ResourceName("foo"), "foo", null, _rm);
 
         // ACT
         al.recordChangeTemplate(p, _actor, _happenedOn);
@@ -144,7 +146,7 @@ public class AuditLogImplTest
         replay(_em);
 
         final AuditLog al = new AuditLogImpl(_em);
-        final Page p = new Page("foo");
+        final Page p = new Page(new ResourceName("foo"), "foo", null, _rm);
 
         // ACT
         al.recordUpdate(p, _actor, _happenedOn, "Updated.", true);
@@ -169,7 +171,7 @@ public class AuditLogImplTest
         replay(_em);
 
         final AuditLog al = new AuditLogImpl(_em);
-        final Page p = new Page("foo");
+        final Page p = new Page(new ResourceName("foo"), "foo", null, _rm);
         final Folder f = new Folder("baz");
         f.add(p);
 
@@ -194,7 +196,7 @@ public class AuditLogImplTest
         replay(_em);
 
         final AuditLog al = new AuditLogImpl(_em);
-        final Page p = new Page("foo");
+        final Page p = new Page(new ResourceName("foo"), "foo", null, _rm);
 
         // ACT
         al.recordRename(p, _actor, _happenedOn);
@@ -223,4 +225,6 @@ public class AuditLogImplTest
     private final User _actor = new User("actor");
     private final Date _happenedOn = new Date();
     private Dao _em;
+    private final RevisionMetadata _rm =
+        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
 }

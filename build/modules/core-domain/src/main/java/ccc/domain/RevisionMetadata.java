@@ -14,39 +14,33 @@ package ccc.domain;
 import java.util.Date;
 
 
-
 /**
  * TODO: Add a description for this type.
  *
  * @author Civic Computing Ltd.
  */
-public abstract class Revision extends Entity {
-    private Date _timestamp;
-    private User _actor;
-    private int _index;
-    private boolean _majorChange;
-    private String _comment;
+public final class RevisionMetadata {
 
-    /** Constructor: for persistence only. */
-    protected Revision() { super(); }
+    private final Date _timestamp;
+    private final User _actor;
+    private final boolean _majorChange;
+    private final String _comment;
+
 
     /**
      * Constructor.
      *
-     * @param index
      * @param timestamp
      * @param actor
      * @param majorChange
      * @param comment
      */
-    protected Revision(final int index,
-                    final Date timestamp,
-                    final User actor,
-                    final boolean majorChange,
-                    final String comment) {
+    public RevisionMetadata(final Date timestamp,
+                            final User actor,
+                            final boolean majorChange,
+                            final String comment) {
         _timestamp = timestamp;
         _actor = actor;
-        _index = index;
         _majorChange = majorChange;
         _comment = comment;
     }
@@ -57,7 +51,7 @@ public abstract class Revision extends Entity {
      *
      * @return Returns the timestamp.
      */
-    public final Date getTimestamp() {
+    public Date getTimestamp() {
         return _timestamp;
     }
 
@@ -67,7 +61,7 @@ public abstract class Revision extends Entity {
      *
      * @return Returns the actor.
      */
-    public final User getActor() {
+    public User getActor() {
         return _actor;
     }
 
@@ -75,19 +69,9 @@ public abstract class Revision extends Entity {
     /**
      * Accessor.
      *
-     * @return Returns the index.
+     * @return Returns the majorChange.
      */
-    public final int getIndex() {
-        return _index;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns true if the version was a major change, false otherwise.
-     */
-    public final boolean isMajorChange() {
+    public boolean isMajorChange() {
         return _majorChange;
     }
 
@@ -97,7 +81,7 @@ public abstract class Revision extends Entity {
      *
      * @return Returns the comment.
      */
-    public final String getComment() {
+    public String getComment() {
         return _comment;
     }
 }

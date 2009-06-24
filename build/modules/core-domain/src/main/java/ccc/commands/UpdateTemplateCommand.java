@@ -16,6 +16,7 @@ import java.util.UUID;
 
 import ccc.api.TemplateDelta;
 import ccc.domain.LockMismatchException;
+import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
@@ -60,9 +61,12 @@ public class UpdateTemplateCommand extends UpdateResourceCommand {
         final Template template = getDao().find(Template.class, templateId);
         template.confirmLock(actor);
 
+        final RevisionMetadata rm =
+            new RevisionMetadata(happenedOn, actor, true, "Created.");
+
         template.title(delta.getTitle());
         template.description(delta.getDescription());
-        template.update(delta);
+        template.update(delta, rm);
 
         update(template, null, false, actor, happenedOn);
     }

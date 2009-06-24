@@ -11,9 +11,6 @@
  */
 package ccc.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ccc.api.DBC;
 import ccc.api.MimeType;
 import ccc.api.ResourceType;
@@ -25,11 +22,9 @@ import ccc.api.TemplateDelta;
  *
  * @author Civic Computing Ltd
  */
-public class Template extends Resource {
-
-    private List<TemplateRevision> _history = new ArrayList<TemplateRevision>();
-    private int                    _pageVersion = -1;
-
+public class Template
+    extends
+        HistoricalResource<TemplateRevision> {
 
     /** Constructor: for persistence only. */
     protected Template() { super(); }
@@ -47,7 +42,8 @@ public class Template extends Resource {
                     final String description,
                     final String body,
                     final String definiton,
-                    final MimeType mimeType) {
+                    final MimeType mimeType,
+                    final RevisionMetadata metadata) {
 
         this(
             ResourceName.escape(title),
@@ -55,7 +51,8 @@ public class Template extends Resource {
             description,
             body,
             definiton,
-            mimeType);
+            mimeType,
+            metadata);
     }
 
     /**
@@ -73,21 +70,16 @@ public class Template extends Resource {
                     final String description,
                     final String body,
                     final String definiton,
-                    final MimeType mimeType) {
+                    final MimeType mimeType,
+                    final RevisionMetadata metadata) {
 
         super(name, title);
         DBC.require().notNull(description);
 
         description(description);
-        _pageVersion++;
-        _history.add(
-            new TemplateRevision(
-                _pageVersion,
-                true,
-                "Created.",
-                body,
-                definiton,
-                mimeType));
+        update(
+            new TemplateDelta(title, description, body, definiton, mimeType),
+            metadata);
     }
 
     /**
@@ -136,47 +128,23 @@ public class Template extends Resource {
             mimeType());
     }
 
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    public TemplateRevision currentRevision() {
-        for (final TemplateRevision r : _history) {
-            if (_pageVersion==r.getIndex()) {
-                return r;
-            }
-        }
-        throw new RuntimeException("No current revision!");
-    }
 
     /**
      * TODO: Add a description for this method.
-     *
-     * @param i
-     * @return
-     */
-    public TemplateRevision revision(final int i) {
-        for (final TemplateRevision r : _history) {
-            if (i==r.getIndex()) {
-                return r;
-            }
-        }
-        throw new RuntimeException("No current revision!");
-    }
-
-    /**
-     * TODO: Add a description for this method.
+     * TODO: Pull version incrementing up to HistoricalResource.
      *
      * @param delta
      */
-    public void update(final TemplateDelta delta) {
-        _pageVersion++;
-        _history.add(
+    public void update(final TemplateDelta delta,
+                       final RevisionMetadata metadata) {
+        incrementVersion();
+        addRevision(
             new TemplateRevision(
-                _pageVersion,
-                true,
-                "Updated.",
+                currentVersion(),
+                metadata.getTimestamp(),
+                metadata.getActor(),
+                metadata.isMajorChange(),
+                metadata.getComment(),
                 delta.getBody(),
                 delta.getDefinition(),
                 delta.getMimeType()));

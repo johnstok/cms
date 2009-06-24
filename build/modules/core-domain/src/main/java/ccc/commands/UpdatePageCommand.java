@@ -17,6 +17,7 @@ import java.util.UUID;
 import ccc.api.PageDelta;
 import ccc.domain.LockMismatchException;
 import ccc.domain.Page;
+import ccc.domain.RevisionMetadata;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -65,8 +66,11 @@ public class UpdatePageCommand extends UpdateResourceCommand{
         final Page page = getDao().find(Page.class, id);
         page.confirmLock(actor);
 
+        final RevisionMetadata rm =
+            new RevisionMetadata(happenedOn, actor, isMajorEdit, comment);
+
         page.workingCopy(delta);
-        page.applySnapshot();
+        page.applySnapshot(rm);
 
         update(page, comment, isMajorEdit, actor, happenedOn);
     }

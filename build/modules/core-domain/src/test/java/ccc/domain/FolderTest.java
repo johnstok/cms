@@ -14,11 +14,13 @@ package ccc.domain;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import junit.framework.TestCase;
 import ccc.api.MimeType;
 import ccc.api.ResourceType;
+import ccc.commons.Exceptions;
 
 
 /**
@@ -70,7 +72,7 @@ public final class FolderTest extends TestCase {
 
         // ASSERT
         } catch (final CycleDetectedException e) {
-            // pass
+            Exceptions.swallow(e);
         }
     }
 
@@ -94,7 +96,7 @@ public final class FolderTest extends TestCase {
 
             // ASSERT
         } catch (final CycleDetectedException e) {
-            // pass
+            Exceptions.swallow(e);
         }
     }
 
@@ -114,7 +116,7 @@ public final class FolderTest extends TestCase {
 
             // ASSERT
         } catch (final CycleDetectedException e) {
-            // pass
+            Exceptions.swallow(e);
         }
     }
 
@@ -160,7 +162,13 @@ public final class FolderTest extends TestCase {
             final Folder p = new Folder("p");
             final Folder q = new Folder("q");
             final Template r =
-                new Template("r", "desc", "body", "<fields/>", MimeType.HTML);
+                new Template(
+                    "r",
+                    "desc",
+                    "body",
+                    "<fields/>",
+                    MimeType.HTML,
+                    _rm);
             f.add(p);
             f.add(q);
             f.add(r);
@@ -186,7 +194,13 @@ public final class FolderTest extends TestCase {
             final Page p = new Page("p");
             final Page q = new Page("q");
             final Template r =
-                new Template("r", "desc", "body", "<fields/>", MimeType.HTML);
+                new Template(
+                    "r",
+                    "desc",
+                    "body",
+                    "<fields/>",
+                    MimeType.HTML,
+                    _rm);
             f.add(p);
             f.add(q);
             f.add(r);
@@ -684,4 +698,7 @@ public final class FolderTest extends TestCase {
         // ASSERT
         assertEquals(foo, f.indexPage());
     }
+
+    private final RevisionMetadata _rm =
+        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
 }

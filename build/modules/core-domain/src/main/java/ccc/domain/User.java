@@ -29,6 +29,8 @@ public class User extends VersionedEntity {
 
     /** VALID_CHARACTERS : String. */
     public static final String  VALID_CHARACTERS = "[\\w]*";
+    /** SYSTEM_USER : User. */
+    public static final User SYSTEM_USER = new User("SYSTEM");
     private static final int USERNAME_MIN_LENGTH = 4;
 
     private String _username;

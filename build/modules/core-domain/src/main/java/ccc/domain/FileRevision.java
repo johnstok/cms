@@ -11,6 +11,8 @@
  */
 package ccc.domain;
 
+import java.util.Date;
+
 import ccc.api.DBC;
 import ccc.api.MimeType;
 
@@ -42,12 +44,14 @@ public class FileRevision
      * @param mimeType
      */
     FileRevision(final int index,
+                 final Date timestamp,
+                 final User actor,
                  final boolean majorChange,
                  final String comment,
                  final Data data,
                  final int size,
                  final MimeType mimeType) {
-        super(index, majorChange, comment);
+        super(index, timestamp, actor, majorChange, comment);
         DBC.require().notNull(data);
         DBC.require().notNull(mimeType);
         _data = data;

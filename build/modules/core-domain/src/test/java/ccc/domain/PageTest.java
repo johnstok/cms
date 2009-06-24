@@ -56,13 +56,16 @@ public final class PageTest extends TestCase {
                 new ResourceName("foo"),
                 "Title",
                 null,
+                _rm,
                 Paragraph.fromText("header", "Header"));
         page.workingCopy(
             new PageDelta(
                 "another title",
                 Collections.singleton(
                     Paragraph.fromBoolean("meh", Boolean.TRUE))));
-        page.applySnapshot();
+        page.applySnapshot(
+            new RevisionMetadata(
+                new Date(), User.SYSTEM_USER, true, "Updated."));
 
         // ACT
         final PageRevision rev0 = page.revision(0);
@@ -88,6 +91,7 @@ public final class PageTest extends TestCase {
                 new ResourceName("foo"),
                 "Title",
                 null,
+                _rm,
                 Paragraph.fromText("header", "Header"));
 
         // ACT
@@ -112,6 +116,7 @@ public final class PageTest extends TestCase {
                 new ResourceName("foo"),
                 "Title",
                 null,
+                _rm,
                 Paragraph.fromText("header", "Header"));
         final PageDelta s = page.createSnapshot();
 
@@ -124,7 +129,9 @@ public final class PageTest extends TestCase {
         s.setParagraphs(paras);
         s.setTitle("new title");
         page.workingCopy(s);
-        page.applySnapshot();
+        page.applySnapshot(
+            new RevisionMetadata(
+                new Date(), User.SYSTEM_USER, true, "Updated."));
 
         // ASSERT
         assertEquals("new title", page.title());
@@ -179,6 +186,7 @@ public final class PageTest extends TestCase {
                 new ResourceName("foo"),
                 "Title",
                 null,
+                _rm,
                 header);
 
         // ACT
@@ -197,7 +205,8 @@ public final class PageTest extends TestCase {
     public void testTakeSnapshotWithNoParagraphs() {
 
         // ARRANGE
-        final Page page = new Page(new ResourceName("foo"), "Title");
+        final Page page =
+            new Page(new ResourceName("foo"), "Title");
 
         // ACT
         final PageDelta s = page.createSnapshot();
@@ -215,7 +224,12 @@ public final class PageTest extends TestCase {
         // ARRANGE
         final Paragraph header = Paragraph.fromText("header", "Header");
         final Page page =
-            new Page(new ResourceName("foo"), "Title", null, header);
+            new Page(
+                new ResourceName("foo"),
+                "Title",
+                null,
+                _rm,
+                header);
 
         // ACT
         final Paragraph p = page.paragraph("header");
@@ -235,6 +249,7 @@ public final class PageTest extends TestCase {
                 new ResourceName("foo"),
                 "Title",
                 null,
+                _rm,
                 Paragraph.fromText("header", "<H1>Header</H1>"));
 
         // ACT
@@ -273,6 +288,7 @@ public final class PageTest extends TestCase {
                 new ResourceName("foo"),
                 "Title",
                 null,
+                _rm,
                 Paragraph.fromText("header", "<H1>Header</H1>"));
 
         // Assert
@@ -309,7 +325,7 @@ public final class PageTest extends TestCase {
 
         // ACT
         final Page page =
-            new Page(new ResourceName("foo"), "Title", null, paras);
+            new Page(new ResourceName("foo"), "Title", null, _rm, paras);
 
         // ASSERT
         assertEquals(Page.MAXIMUM_PARAGRAPHS, page.paragraphs().size());
@@ -330,14 +346,15 @@ public final class PageTest extends TestCase {
 
         // ACT
         try {
-            final Page page =
-                new Page(new ResourceName("foo"), "Title", null, paras);
+            new Page(new ResourceName("foo"), "Title", null, _rm, paras);
             fail("Resources should reject adding more than 32 paragraphs.");
 
         // ASSERT
         } catch (final IllegalArgumentException e) {
             assertEquals("Specified value must be under 32.", e.getMessage());
         }
-
     }
+
+    private final RevisionMetadata _rm =
+        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
 }

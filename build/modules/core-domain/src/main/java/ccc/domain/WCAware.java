@@ -45,7 +45,7 @@ public interface WCAware<T> {
     /**
      * Apply a snapshot to this resource.
      */
-    void applySnapshot(); // Should be applyWorkingCopy()
+    void applySnapshot(final RevisionMetadata metadata); // Should be applyWorkingCopy()
 
     /**
      * Accessor.

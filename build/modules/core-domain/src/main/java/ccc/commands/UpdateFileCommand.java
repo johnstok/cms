@@ -20,6 +20,7 @@ import ccc.api.ID;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.LockMismatchException;
+import ccc.domain.RevisionMetadata;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -76,8 +77,11 @@ public class UpdateFileCommand extends UpdateResourceCommand {
         final Data d = _data.create(dataStream, fileDelta.getSize());
         fileDelta.setData(new ID(d.id().toString()));
 
+        final RevisionMetadata rm =
+            new RevisionMetadata(happenedOn, actor, true, "Updated.");
+
         f.workingCopy(fileDelta);
-        f.applySnapshot();
+        f.applySnapshot(rm);
 
         if (f.isImage()) {
             new FileHelper().extractImageMetadata(f, _data);

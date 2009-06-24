@@ -11,6 +11,7 @@
  */
 package ccc.domain;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -40,10 +41,12 @@ public class PageRevision
      * @param content
      */
     PageRevision(final int index,
+                 final Date timestamp,
+                 final User actor,
                  final boolean majorChange,
                  final String comment,
                  final Set<Paragraph> content) {
-        super(index, majorChange, comment);
+        super(index, timestamp, actor, majorChange, comment);
         _content = content;
     }
 

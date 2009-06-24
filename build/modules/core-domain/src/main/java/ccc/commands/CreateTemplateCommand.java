@@ -17,6 +17,7 @@ import java.util.UUID;
 import ccc.api.TemplateDelta;
 import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.ResourceName;
+import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -60,13 +61,18 @@ public class CreateTemplateCommand extends CreateResourceCommand {
                             final TemplateDelta delta,
                             final ResourceName name)
                                                 throws RemoteExceptionSupport {
-        final Template t = new Template(
-            name,
-            delta.getTitle(),
-            delta.getDescription(),
-            delta.getBody(),
-            delta.getDefinition(),
-            delta.getMimeType());
+        final RevisionMetadata rm =
+            new RevisionMetadata(happenedOn, actor, true, "Created.");
+
+        final Template t =
+            new Template(
+                name,
+                delta.getTitle(),
+                delta.getDescription(),
+                delta.getBody(),
+                delta.getDefinition(),
+                delta.getMimeType(),
+                rm);
 
         create(actor, happenedOn, parentFolder, t);
 

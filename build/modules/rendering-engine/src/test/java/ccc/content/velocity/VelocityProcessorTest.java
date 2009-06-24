@@ -13,6 +13,7 @@ package ccc.content.velocity;
 
 import java.io.StringWriter;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 
 import junit.framework.TestCase;
@@ -20,6 +21,8 @@ import ccc.api.Paragraph;
 import ccc.commons.TextProcessor;
 import ccc.domain.Page;
 import ccc.domain.ResourceName;
+import ccc.domain.RevisionMetadata;
+import ccc.domain.User;
 
 
 /**
@@ -86,6 +89,7 @@ public class VelocityProcessorTest extends TestCase {
                 new ResourceName("foo"),
                 "foo",
                 null,
+                _rm,
                 Paragraph.fromText("bar", "baz"));
         final String template = "Hello $resource.id()";
 
@@ -105,7 +109,7 @@ public class VelocityProcessorTest extends TestCase {
     public void testRenderVelocityError() {
 
         // ARRANGE
-        final Page foo = new Page("foo");
+        final Page foo = new Page(new ResourceName("foo"), "foo", null, _rm);
         final String template = "#macro failthis #end";
         final String expectedMessage = "A macro declaration requires at least "
             + "a name argumentVelocityProcessor";
@@ -128,7 +132,7 @@ public class VelocityProcessorTest extends TestCase {
     public void testRenderVelocityBadPath() {
 
         // ARRANGE
-        final Page foo = new Page("foo");
+        final Page foo = new Page(new ResourceName("foo"), "foo", null, _rm);
         final String template = "$helper.path(\"badpath\")";
         final String expectedMessage =
             "Invocation of method 'path' in  "
@@ -156,7 +160,7 @@ public class VelocityProcessorTest extends TestCase {
     public void testRenderVelocityNullPath() {
 
         // ARRANGE
-        final Page foo = new Page("foo");
+        final Page foo = new Page(new ResourceName("foo"), "foo", null, _rm);
         final String template = "$helper.path(null)";
         final String expectedMessage =
             "Invocation of method 'path' in  "
@@ -191,4 +195,6 @@ public class VelocityProcessorTest extends TestCase {
     }
 
     private TextProcessor _vp;
+    private final RevisionMetadata _rm =
+        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
 }

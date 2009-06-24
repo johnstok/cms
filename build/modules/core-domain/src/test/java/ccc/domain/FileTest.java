@@ -11,6 +11,8 @@
  */
 package ccc.domain;
 
+import java.util.Date;
+
 import junit.framework.TestCase;
 import ccc.api.FileDelta;
 import ccc.api.ID;
@@ -36,7 +38,7 @@ public class FileTest extends TestCase {
             "desc",
             new Data(),
             0,
-            new MimeType("image", "jpeg"));
+            new MimeType("image", "jpeg"), new Date(), User.SYSTEM_USER);
 
         // ACT
         final boolean isImage = f.isImage();
@@ -57,7 +59,7 @@ public class FileTest extends TestCase {
             "desc",
             new Data(),
             0,
-            new MimeType("text", "plain"));
+            new MimeType("text", "plain"), new Date(), User.SYSTEM_USER);
 
         // ACT
         final boolean isImage = f.isImage();
@@ -79,7 +81,7 @@ public class FileTest extends TestCase {
                 "desc",
                 data,
                 1,
-                new MimeType("foo", "bar"));
+                new MimeType("foo", "bar"), new Date(), User.SYSTEM_USER);
 
         // ACT
         final FileDelta o = f.createSnapshot();
@@ -104,7 +106,7 @@ public class FileTest extends TestCase {
                 "desc",
                 new Data(),
                 1,
-                new MimeType("foo", "bar"));
+                new MimeType("foo", "bar"), new Date(), User.SYSTEM_USER);
 
         // ACT
         final MimeType actual = f.mimeType();
@@ -124,7 +126,7 @@ public class FileTest extends TestCase {
                 "foo",
                 "desc",
                 new Data(),
-                1);
+                1, new Date(), User.SYSTEM_USER);
 
         // ACT
         final long actual = f.size();
@@ -144,7 +146,13 @@ public class FileTest extends TestCase {
         // ACT
         try {
             new File(
-                new ResourceName("file"), "title", "desc", data, 0);
+                new ResourceName("file"),
+                "title",
+                "desc",
+                data,
+                0,
+                new Date(),
+                User.SYSTEM_USER);
             fail("The constructor should reject a NULL file data.");
 
         // ASSERT

@@ -12,6 +12,7 @@
 
 package ccc.content.response;
 
+import java.util.Date;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -26,9 +27,11 @@ import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.Resource;
+import ccc.domain.RevisionMetadata;
 import ccc.domain.Search;
 import ccc.domain.Snapshot;
 import ccc.domain.Template;
+import ccc.domain.User;
 import ccc.domain.WCAware;
 import ccc.services.DataManager;
 import ccc.services.SearchEngine;
@@ -120,7 +123,12 @@ public class DefaultRenderer
             if (resource instanceof WCAware) {
                 final WCAware<?> p = (WCAware<?>) resource;
                 if (null!=p.workingCopy()) {
-                    p.applySnapshot();
+                    p.applySnapshot(
+                        new RevisionMetadata(
+                            new Date(),
+                            User.SYSTEM_USER,
+                            true,
+                            "Updated."));
                 } else {
                     LOG.warn("No working copy found for resource: "+resource);
                 }
@@ -159,7 +167,12 @@ public class DefaultRenderer
                             throw new NotFoundException();
                         } else if (resource.id().equals(le.subjectId())) {
                             sa.workingCopy(new Snapshot(le.detail()));
-                            sa.applySnapshot();
+                            sa.applySnapshot(
+                                new RevisionMetadata(
+                                    new Date(),
+                                    User.SYSTEM_USER,
+                                    true,
+                                    "Updated."));
                         } else {
                             throw new NotFoundException();
                         }

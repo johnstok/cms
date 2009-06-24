@@ -138,7 +138,8 @@ public class LogEntryTest
             "desc",
             "body",
             "<fields/>",
-            MimeType.HTML);
+            MimeType.HTML,
+            _rm);
         p.template(t);
 
         // ACT
@@ -248,7 +249,8 @@ public class LogEntryTest
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
         assertEquals(CommandType.FOLDER_UPDATE, le.action());
-        assertEquals("{\"indexPageId\":null,\"sortOrder\":\"MANUAL\"}", le.detail());
+        assertEquals(
+            "{\"indexPageId\":null,\"sortOrder\":\"MANUAL\"}", le.detail());
     }
 
     /**
@@ -302,4 +304,6 @@ public class LogEntryTest
 
     private final User _actor = new User("actor");
     private final Date _happenedOn = new Date();
+    private final RevisionMetadata _rm =
+        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
 }

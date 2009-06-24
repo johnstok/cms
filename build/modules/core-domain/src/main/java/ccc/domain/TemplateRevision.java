@@ -11,6 +11,8 @@
  */
 package ccc.domain;
 
+import java.util.Date;
+
 import ccc.api.DBC;
 import ccc.api.MimeType;
 
@@ -42,12 +44,14 @@ public class TemplateRevision
      * @param mimeType
      */
     TemplateRevision(final int index,
+                     final Date timestamp,
+                     final User actor,
                      final boolean majorChange,
                      final String comment,
                      final String body,
                      final String definition,
                      final MimeType mimeType) {
-        super(index, majorChange, comment);
+        super(index, timestamp, actor, majorChange, comment);
 
         DBC.require().notNull(body);
         DBC.require().notNull(definition);
