@@ -109,7 +109,10 @@ public interface CommandServiceAsync {
                         String definition,
                         AsyncCallback<List <String>> callback);
 
-    void updateMetadata(ID resourceId,
+    void updateFullMetaData(ID resourceId,
+                        String title,
+                        String description,
+                        String tags,
                         Map<String, String> metadata,
                         AsyncCallback<Void> callback);
 
@@ -231,4 +234,7 @@ public interface CommandServiceAsync {
     void updatePage(ccc.api.ID pageId, ccc.api.PageDelta delta, java.lang.String comment, boolean isMajorEdit, ccc.api.ID actorId, java.util.Date happenedOn, com.google.gwt.user.client.rpc.AsyncCallback<java.lang.Void> arg7);
     void updateResourceTemplate(ccc.api.ID resourceId, ccc.api.ID templateId, ccc.api.ID actorId, java.util.Date happenedOn, com.google.gwt.user.client.rpc.AsyncCallback<java.lang.Void> arg5);
 
+    void updateMetadata(ID resourceId,
+                        Map<String, String> metadata,
+                        AsyncCallback<Void> callback);
 }

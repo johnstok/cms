@@ -192,7 +192,8 @@ public class ModelTranslation {
                 (null==r.template()) ? null : toID(r.template().id()),
                 r.tagString(),
                 r.absolutePath().toString(),
-                indexPage
+                indexPage,
+                r.description()
             );
         return rs;
     }

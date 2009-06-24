@@ -76,6 +76,7 @@ import ccc.commands.UpdateFileCommand;
 import ccc.commands.UpdateFolderCommand;
 import ccc.commands.UpdatePageCommand;
 import ccc.commands.UpdatePasswordAction;
+import ccc.commands.UpdateResourceMetadataCommand;
 import ccc.commands.UpdateResourceMetadataRolesCommand;
 import ccc.commands.UpdateResourceRolesCommand;
 import ccc.commands.UpdateTemplateCommand;
@@ -105,7 +106,7 @@ import ccc.services.impl.DataManagerImpl;
 
 
 /**
- * EJB implementation of the {@link Commands} interface.
+ * EJB implementation of the {@link updateMetadata} interface.
  *
  * @author Civic Computing Ltd.
  */
@@ -655,6 +656,27 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
+    public void updateFullMetaData(final ID resourceId,
+                                   final String title,
+                                   final String description,
+                                   final String tags,
+                                   final Map<String, String> metadata)
+    throws CommandFailedException {
+
+        try {
+            final Date happenedOn = new Date();
+            final ID actorId = loggedInUserId();
+
+            new UpdateResourceMetadataCommand(_bdao, _audit).execute(
+                userForId(actorId), happenedOn, toUUID(resourceId), title, description, tags, metadata);
+        } catch (final RemoteExceptionSupport e) {
+            throw fail(e);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
     @RolesAllowed({"ADMINISTRATOR"})
     public void updateMetadata(final ID resourceId,
                                final Map<String, String> metadata,
@@ -669,6 +691,8 @@ public class CommandsEJB
             throw fail(e);
         }
     }
+
+
 
     /** {@inheritDoc} */
     @Override

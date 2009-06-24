@@ -234,6 +234,21 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
+    public void updateFullMetaData(final ID resourceId,
+                                   final String title,
+                                   final String description,
+                                   final String tags,
+                               final Map<String, String> metadata)
+    throws CommandFailedException {
+        _commands.updateFullMetaData(resourceId,
+            title,
+            description,
+            tags,
+            metadata);
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public void updateFolder(final ID folderId,
                                       final String sortOrder,
                                       final ID indexPageId)

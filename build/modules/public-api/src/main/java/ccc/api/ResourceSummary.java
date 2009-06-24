@@ -43,7 +43,7 @@ public final class ResourceSummary implements Serializable, Jsonable {
     private String _tags;
     private String _absolutePath;
     private ID _indexPageId;
-
+    private String _description;
 
     @SuppressWarnings("unused") private ResourceSummary() { super(); }
 
@@ -68,6 +68,7 @@ public final class ResourceSummary implements Serializable, Jsonable {
      * @param tags The resource's tags.
      * @param absolutePath The resource's absolute path.
      * @param indexPageId The id of the index page.
+     * @param description The description of the resource.
      */
     public ResourceSummary(final ID id,
                            final ID parentId,
@@ -86,7 +87,8 @@ public final class ResourceSummary implements Serializable, Jsonable {
                            final ID templateId,
                            final String tags,
                            final String absolutePath,
-                           final ID indexPageId) {
+                           final ID indexPageId,
+                           final String description) {
         _id = id;
         _parentId = parentId;
         _name = name;
@@ -105,6 +107,7 @@ public final class ResourceSummary implements Serializable, Jsonable {
         _tags = tags;
         _absolutePath = absolutePath;
         _indexPageId = indexPageId;
+        _description = description;
     }
 
 
@@ -378,6 +381,7 @@ public final class ResourceSummary implements Serializable, Jsonable {
         json.set(TAGS, _tags);
         json.set(ABSOLUTE_PATH, _absolutePath);
         json.set(INDEX_PAGE_ID, _indexPageId);
+        json.set(DESCRIPTION, _description);
     }
 
     /**
@@ -418,4 +422,26 @@ public final class ResourceSummary implements Serializable, Jsonable {
 
         _indexPageId = indexPageId;
     }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the description.
+     */
+    public String getDescription() {
+
+        return _description;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param description The description to set.
+     */
+    public void setDescription(final String description) {
+
+        _description = description;
+    }
+
 }
