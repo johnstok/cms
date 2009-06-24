@@ -96,7 +96,8 @@ public class UpdateFileDialog extends AbstractEditDialog {
 
                 public void handleEvent(final FormEvent be) {
                     hide();
-                    if (!be.resultHtml.equals(UPDATE_OK)) {
+                    if (!be.resultHtml.equals(UPDATE_OK)
+                       || be.resultHtml.startsWith("<!-- LOGIN_REQUIRED -->")) {
                         Globals.unexpectedError(
                             new Exception(be.resultHtml),
                             _constants.updateFile());
