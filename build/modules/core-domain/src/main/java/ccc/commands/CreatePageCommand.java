@@ -68,6 +68,7 @@ public class CreatePageCommand extends CreateResourceCommand {
                         final PageDelta delta,
                         final boolean publish,
                         final ResourceName name,
+                        final String title,
                         final UUID templateId) throws RemoteExceptionSupport {
 
         final Template template =
@@ -81,7 +82,7 @@ public class CreatePageCommand extends CreateResourceCommand {
         final Page page =
             new Page(
                 name,
-                delta.getTitle(),
+                title,
                 template,
                 rm,
                 delta.getParagraphs().toArray(new Paragraph[0]));

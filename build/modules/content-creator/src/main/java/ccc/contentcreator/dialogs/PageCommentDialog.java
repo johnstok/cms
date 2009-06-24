@@ -49,7 +49,6 @@ public class PageCommentDialog extends AbstractEditDialog {
             public void onSuccess(final Void arg0) {
                 final ResourceSummaryModelData md =
                     _updatePageDialog.rt().tableSelection();
-                md.setTitle(_page.getTitle());
                 md.setWorkingCopy(false);
                 _updatePageDialog.rt().update(md);
                 close();

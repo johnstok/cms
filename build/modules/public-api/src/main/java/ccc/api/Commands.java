@@ -439,7 +439,8 @@ public interface Commands {
                                PageDelta delta,
                                String name,
                                final boolean publish,
-                               ID templateId) throws CommandFailedException;
+                               ID templateId,
+                               String title) throws CommandFailedException;
 
     /**
      * Creates a new page.
@@ -459,6 +460,7 @@ public interface Commands {
                                String name,
                                boolean publish,
                                ID templateId,
+                               String title,
                                ID actorId,
                                Date happenedOn) throws CommandFailedException;
 
@@ -475,6 +477,8 @@ public interface Commands {
      */
     ResourceSummary createTemplate(ID parentId,
                                    TemplateDelta delta,
+                                   String title,
+                                   String description,
                                    String name) throws CommandFailedException;
 
     /**

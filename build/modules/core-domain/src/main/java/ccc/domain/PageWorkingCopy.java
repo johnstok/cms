@@ -28,7 +28,6 @@ public class PageWorkingCopy
         WorkingCopy {
 
     private Set<Paragraph>     _wcContent;
-    private String             _wcTitle;
 
     /** Constructor: for persistence only. */
     protected PageWorkingCopy() { super(); }
@@ -43,11 +42,10 @@ public class PageWorkingCopy
     }
 
     PageDelta delta() {
-        return new PageDelta(_wcTitle, _wcContent);
+        return new PageDelta(_wcContent);
     }
 
     public void delta(final PageDelta snapshot) {
         _wcContent = new HashSet<Paragraph>(snapshot.getParagraphs());
-        _wcTitle = snapshot.getTitle();
     }
 }

@@ -87,8 +87,6 @@ public class FileTest extends TestCase {
         final FileDelta o = f.createSnapshot();
 
         // ASSERT
-        assertEquals("foo", o.getTitle());
-        assertEquals("desc", o.getDescription());
         assertEquals(new MimeType("foo", "bar"), o.getMimeType());
         assertEquals(1, o.getSize());
         assertEquals(new ID(data.id().toString()), o.getData());

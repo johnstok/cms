@@ -94,8 +94,6 @@ public class WorkingCopyManagerTest
         // ASSERT
         verifyAll();
         assertNotNull("Page must have a working copy", page.workingCopy());
-        assertEquals("test", page.workingCopy().getTitle());
-
     }
 
 

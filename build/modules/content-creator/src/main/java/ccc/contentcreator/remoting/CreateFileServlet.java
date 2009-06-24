@@ -70,8 +70,6 @@ public class CreateFileServlet extends HttpServlet {
 
         final FileDelta delta =
             new FileDelta(
-                title.getString(),
-                description.getString(),
                 toMimeType(file.getContentType()),
                 null,
                 (int) file.getSize());
@@ -79,8 +77,15 @@ public class CreateFileServlet extends HttpServlet {
         final InputStream dataStream = file.getInputStream();
 
         try {
-            final ResourceSummary rs = _commands.createFile(
-                parentId, delta, name.getString(), dataStream, p);
+            final ResourceSummary rs =
+                _commands.createFile(
+                    parentId,
+                    delta,
+                    name.getString(),
+                    dataStream,
+                    title.getString(),
+                    description.getString(),
+                    p);
             response.getWriter().write(toJSON(rs));
 
         } catch (final CommandFailedException e) {

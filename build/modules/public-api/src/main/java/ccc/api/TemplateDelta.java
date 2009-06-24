@@ -20,8 +20,6 @@ import java.io.Serializable;
  * @author Civic Computing Ltd.
  */
 public final class TemplateDelta implements Serializable, Jsonable {
-    private String _title;
-    private String _description;
     private String _body;
     private String _definition;
     private MimeType _mimeType;
@@ -31,62 +29,16 @@ public final class TemplateDelta implements Serializable, Jsonable {
     /**
      * Constructor.
      *
-     * @param title The template's title.
-     * @param description The template's description.
      * @param body The template's body.
      * @param definition The template's definition.
      * @param mimeType The template's mime type.
      */
-    public TemplateDelta(final String title,
-                         final String description,
-                         final String body,
+    public TemplateDelta(final String body,
                          final String definition,
                          final MimeType mimeType) {
-        _title = title;
-        _description = description;
         _body = body;
         _definition = definition;
         _mimeType = mimeType;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the title.
-     */
-    public String getTitle() {
-        return _title;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param title The title to set.
-     */
-    public void setTitle(final String title) {
-        _title = title;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the description.
-     */
-    public String getDescription() {
-        return _description;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param description The description to set.
-     */
-    public void setDescription(final String description) {
-        _description = description;
     }
 
 
@@ -153,8 +105,6 @@ public final class TemplateDelta implements Serializable, Jsonable {
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
-        json.set(JsonKeys.TITLE,       getTitle());
-        json.set(JsonKeys.DESCRIPTION, getDescription());
         json.set(JsonKeys.DEFINITION,  getDefinition());
         json.set(JsonKeys.BODY,        getBody());
         json.set(JsonKeys.MIME_TYPE,   getMimeType());

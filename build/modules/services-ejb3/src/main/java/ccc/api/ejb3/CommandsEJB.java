@@ -211,7 +211,8 @@ public class CommandsEJB
                                       final PageDelta delta,
                                       final String name,
                                       final boolean publish,
-                                      final ID templateId)
+                                      final ID templateId,
+                                      final String title)
                                                  throws CommandFailedException {
         return createPage(
             parentId,
@@ -219,6 +220,7 @@ public class CommandsEJB
             name,
             publish,
             templateId,
+            title,
             loggedInUserId(),
             new Date());
     }
@@ -231,6 +233,7 @@ public class CommandsEJB
                                       final String name,
                                       final boolean publish,
                                       final ID templateId,
+                                      final String title,
                                       final ID actorId,
                                       final Date happenedOn)
                                                  throws CommandFailedException {
@@ -242,6 +245,7 @@ public class CommandsEJB
                 delta,
                 publish,
                 ResourceName.escape(name),
+                title,
                 toUUID(templateId));
             return mapResource(p);
 
@@ -255,6 +259,8 @@ public class CommandsEJB
     @RolesAllowed({"CONTENT_CREATOR"})
     public ResourceSummary createTemplate(final ID parentId,
                                           final TemplateDelta delta,
+                                          final String title,
+                                          final String description,
                                           final String name)
                                                  throws CommandFailedException {
         try {
@@ -264,6 +270,8 @@ public class CommandsEJB
                     new Date(),
                     toUUID(parentId),
                     delta,
+                    title,
+                    description,
                     new ResourceName(name)));
 
         } catch (final RemoteExceptionSupport e) {
@@ -857,6 +865,8 @@ public class CommandsEJB
                                       final FileDelta file,
                                       final String resourceName,
                                       final InputStream dataStream,
+                                      final String title,
+                                      final String description,
                                       final boolean publish)
                                                  throws CommandFailedException {
         try {
@@ -868,6 +878,8 @@ public class CommandsEJB
                     new Date(),
                     toUUID(parentFolder),
                     file,
+                    title,
+                    description,
                     new ResourceName(resourceName),
                     dataStream);
 

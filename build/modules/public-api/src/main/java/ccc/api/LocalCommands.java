@@ -38,6 +38,8 @@ public interface LocalCommands extends Commands {
                                FileDelta file,
                                String resourceName,
                                InputStream dataStream,
+                               String title,
+                               String description,
                                boolean publish) throws CommandFailedException;
 
     /**

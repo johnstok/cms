@@ -190,10 +190,13 @@ public interface CommandServiceAsync {
                     String pageName,
                     final boolean publish,
                     ID templateId,
+                    String title,
                     AsyncCallback<ResourceSummary> callback);
 
     void createTemplate(ID parentId,
                         TemplateDelta delta,
+                        String title,
+                        String description,
                         String name,
                         AsyncCallback<ResourceSummary> callback);
 
@@ -209,7 +212,18 @@ public interface CommandServiceAsync {
     // TODO: Clean this up.
     void changeRoles(ccc.api.ID resourceId, java.util.Collection<java.lang.String> roles, ccc.api.ID actorId, java.util.Date happenedOn, com.google.gwt.user.client.rpc.AsyncCallback<java.lang.Void> arg5);
     void createFolder(ccc.api.ID parentId, java.lang.String name, java.lang.String title, boolean publish, ccc.api.ID actorId, java.util.Date happenedOn, com.google.gwt.user.client.rpc.AsyncCallback<ccc.api.ResourceSummary> arg7);
-    void createPage(ccc.api.ID parentId, ccc.api.PageDelta delta, java.lang.String name, boolean publish, ccc.api.ID templateId, ccc.api.ID actorId, java.util.Date happenedOn, com.google.gwt.user.client.rpc.AsyncCallback<ccc.api.ResourceSummary> arg8);
+
+    void createPage(
+        ID parentId,
+        PageDelta delta,
+        String name,
+        boolean publish,
+        ID templateId,
+        String title,
+        ID actorId,
+        Date happenedOn,
+        AsyncCallback<ccc.api.ResourceSummary> callback);
+
     void includeInMainMenu(ccc.api.ID resourceId, boolean include, ccc.api.ID actorId, java.util.Date happenedOn, com.google.gwt.user.client.rpc.AsyncCallback<java.lang.Void> arg5);
     void lock(ccc.api.ID resourceId, ccc.api.ID actorId, java.util.Date happenedOn, com.google.gwt.user.client.rpc.AsyncCallback<java.lang.Void> arg4);
     void unlock(ccc.api.ID resourceId, ccc.api.ID actorId, java.util.Date happenedOn, com.google.gwt.user.client.rpc.AsyncCallback<java.lang.Void> arg4);

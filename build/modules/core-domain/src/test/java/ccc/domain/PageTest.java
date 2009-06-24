@@ -60,7 +60,6 @@ public final class PageTest extends TestCase {
                 Paragraph.fromText("header", "Header"));
         page.workingCopy(
             new PageDelta(
-                "another title",
                 Collections.singleton(
                     Paragraph.fromBoolean("meh", Boolean.TRUE))));
         page.applySnapshot(
@@ -127,14 +126,12 @@ public final class PageTest extends TestCase {
         }};
 
         s.setParagraphs(paras);
-        s.setTitle("new title");
         page.workingCopy(s);
         page.applySnapshot(
             new RevisionMetadata(
                 new Date(), User.SYSTEM_USER, true, "Updated."));
 
         // ASSERT
-        assertEquals("new title", page.title());
         assertEquals(2, page.paragraphs().size());
         assertEquals(Boolean.TRUE, page.paragraph("A boolean").bool());
         final Date now = new Date();
@@ -151,7 +148,7 @@ public final class PageTest extends TestCase {
         final Page page = new Page("foo");
 
         // ACT
-        page.workingCopy(new PageDelta("title", new HashSet<Paragraph>()));
+        page.workingCopy(new PageDelta(new HashSet<Paragraph>()));
 
         // ASSERT
         assertEquals("foo", page.title()); // The page hasn't changed.
@@ -193,7 +190,6 @@ public final class PageTest extends TestCase {
         final PageDelta s = page.createSnapshot();
 
         // ASSERT
-        assertEquals("Title", s.getTitle());
         assertEquals(1, s.getParagraphs().size());
         assertEquals("header", s.getParagraphs().iterator().next().name());
         assertEquals("Header", s.getParagraphs().iterator().next().text());
@@ -212,7 +208,6 @@ public final class PageTest extends TestCase {
         final PageDelta s = page.createSnapshot();
 
         // ASSERT
-        assertEquals("Title", s.getTitle());
         assertEquals(0, s.getParagraphs().size());
     }
 

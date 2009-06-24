@@ -131,12 +131,8 @@ public class UpdatePageDialog
                 final Set<Paragraph> paragraphs = assignParagraphs();
 
                 Validate.callTo(updatePage(paragraphs))
-                    .check(Validations.notEmpty(panel().title()))
-                    .check(Validations.noBrackets(panel().title()))
-                    .stopIfInError()
-                    .stopIfInError()
-                    .check(Validations.validateFields(paragraphs,
-                        _panel.definition()))
+                    .check(Validations.validateFields(
+                        paragraphs, _panel.definition()))
                     .callMethodOr(Validations.reportErrors());
             }
         };
@@ -148,12 +144,8 @@ public class UpdatePageDialog
                 final Set<Paragraph> paragraphs = assignParagraphs();
 
                 Validate.callTo(saveDraft(paragraphs))
-                .check(Validations.notEmpty(panel().title()))
-                .check(Validations.noBrackets(panel().title()))
-                .stopIfInError()
-                .stopIfInError()
-                .check(Validations.validateFields(paragraphs,
-                    _panel.definition()))
+                    .check(Validations.validateFields(
+                        paragraphs, _panel.definition()))
                     .callMethodOr(Validations.reportErrors());
             }
         };
@@ -162,7 +154,6 @@ public class UpdatePageDialog
     private Runnable updatePage(final Set<Paragraph> paragraphs) {
         return new Runnable() {
             public void run() {
-                _page.setTitle(panel().title().getValue());
                 final PageCommentDialog commentDialog =
                     new PageCommentDialog(
                         _pageId, _page, UpdatePageDialog.this);
@@ -174,7 +165,6 @@ public class UpdatePageDialog
     private Runnable saveDraft(final Set<Paragraph> paragraphs) {
         return new Runnable() {
             public void run() {
-                _page.setTitle(panel().title().getValue());
                 commands().updateWorkingCopy(
                     _pageId, _page, saveDraftCompletedCallback());
             }

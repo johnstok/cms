@@ -244,8 +244,6 @@ public class ModelTranslation {
         }
         final TemplateDelta delta =
             new TemplateDelta(
-                template.title(),
-                template.description(),
                 template.body(),
                 template.definition(),
                 template.mimeType()

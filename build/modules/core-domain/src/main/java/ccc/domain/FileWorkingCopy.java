@@ -27,8 +27,6 @@ public class FileWorkingCopy
     extends
         WorkingCopy {
 
-    private String _title;
-    private String _description;
     private MimeType _mimeType;
     private int _size;
     private Data _data;
@@ -51,8 +49,6 @@ public class FileWorkingCopy
      * @param snapshot
      */
     public void delta(final FileDelta snapshot) {
-        _title = snapshot.getTitle();
-        _description = snapshot.getDescription();
         _mimeType = snapshot.getMimeType();
         _size = snapshot.getSize();
         _data = new Data(UUID.fromString(snapshot.getData().toString()));
@@ -65,8 +61,6 @@ public class FileWorkingCopy
      */
     public FileDelta delta() {
         return new FileDelta(
-            _title,
-            _description,
             _mimeType,
             new ID(_data.id().toString()),
             _size);

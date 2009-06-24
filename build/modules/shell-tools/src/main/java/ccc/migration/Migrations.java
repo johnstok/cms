@@ -338,6 +338,7 @@ public class Migrations {
                                                  throws CommandFailedException {
 
         final PageDelta delta = assemblePage(r, version.intValue());
+        final String pageTitle = r.cleanTitle();
 
         ResourceSummary rs;
         try {
@@ -347,6 +348,7 @@ public class Migrations {
                 r.name(),
                 false,
                 null,
+                pageTitle,
                 le.getUser().getId(),
                 le.getHappenedOn());
         } catch (final CommandFailedException e) {
@@ -357,6 +359,7 @@ public class Migrations {
                     r.name()+"1",
                     false,
                     null,
+                    pageTitle,
                     le.getUser().getId(),
                     le.getHappenedOn());
                 log.warn("Renamed page '"+r.name()+"' to '"+r.name()+"1'.");
@@ -456,13 +459,7 @@ public class Migrations {
             }
         }
 
-        final PageDelta delta =
-            new PageDelta(
-                (null==r.title())?r.name():r.title(),
-                paragraphDeltas
-            );
-
-        delta.setTitle(new WordCharFixer().fix(delta.getTitle()));
+        final PageDelta delta = new PageDelta(paragraphDeltas);
 
         return delta;
     }

@@ -56,11 +56,9 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
     private final FormPanel _second = new FormPanel();
     private final FormPanel _third = new FormPanel();
 
-    private final TextField<String> _templateTitle = new TextField<String>();
     private final TextField<String> _name = new TextField<String>();
     private final TextField<String> _mimePrimary = new TextField<String>();
     private final TextField<String> _mimeSub = new TextField<String>();
-    private final TextArea _description = new TextArea();
     private final TextArea _body = new TextArea();
     private final TextArea _definition = new TextArea();
 
@@ -87,8 +85,6 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
         _ssm = ssm;
 
         _name.setId("name");
-        _templateTitle.setId("title");
-        _description.setId("description");
         _mimePrimary.setId("mime-primary");
         _mimeSub.setId("mime-sub");
 
@@ -128,8 +124,6 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
 
         _body.setValue(_model.getBody());
         _definition.setValue(_model.getDefinition());
-        _description.setValue(_model.getDescription());
-        _templateTitle.setValue(_model.getTitle());
         _name.setValue(proxy.getName());
         _mimePrimary.setValue(model.getMimeType().getPrimaryType());
         _mimeSub.setValue(model.getMimeType().getSubType());
@@ -145,16 +139,6 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
         _name.setAllowBlank(false);
         _name.setId(_constants.name());
         _first.add(_name, new FormData("95%"));
-
-        _templateTitle.setFieldLabel(_constants.title());
-        _templateTitle.setAllowBlank(false);
-        _templateTitle.setId(_constants.title());
-        _first.add(_templateTitle, new FormData("95%"));
-
-        _description.setFieldLabel(_constants.description());
-        _description.setAllowBlank(false);
-        _description.setId(_constants.description());
-        _first.add(_description, new FormData("95%"));
 
         _mimePrimary.setFieldLabel(_constants.mimePrimaryType());
         _mimePrimary.setAllowBlank(false);
@@ -196,8 +180,6 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
     private TemplateDelta model() {
         final TemplateDelta delta =
             new TemplateDelta(
-                _templateTitle.getValue(),
-                _description.getValue(),
                 _body.getValue(),
                 _definition.getValue(),
                 new MimeType(_mimePrimary.getValue(), _mimeSub.getValue())
@@ -214,10 +196,6 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                     .check(Validations.notEmpty(_definition))
                     .check(Validations.notEmpty(_name))
                     .check(Validations.notValidResourceName(_name))
-                    .check(Validations.notEmpty(_templateTitle))
-                    .check(Validations.noBrackets(_templateTitle))
-                    .check(Validations.notEmpty(_description))
-                    .check(Validations.noBrackets(_description))
                     .check(Validations.notEmpty(_body))
                     .check(Validations.notEmpty(_mimePrimary))
                     .check(Validations.notEmpty(_mimeSub))
@@ -264,6 +242,8 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                         commands().createTemplate(
                             _parentFolderId,
                             delta,
+                            _name.getValue(), // Title
+                            "",               // Description
                             _name.getValue(),
                             new ErrorReportingCallback<ResourceSummary>(
                                     _constants.createTemplate()){
@@ -282,7 +262,6 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                             new ErrorReportingCallback<Void>(
                                     _constants.editTemplate()){
                                 public void onSuccess(final Void arg0) {
-                                    _proxy.setTitle(delta.getTitle());
                                     _ssm.update(_proxy);
                                     close();
                                 }});

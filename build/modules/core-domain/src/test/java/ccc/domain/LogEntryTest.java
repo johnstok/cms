@@ -95,7 +95,7 @@ public class LogEntryTest
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
         assertEquals(CommandType.PAGE_CREATE, le.action());
-        assertEquals("{\"parentId\":null,\"title\":\"foo\","
+        assertEquals("{\"parentId\":null,"
             + "\"publishedBy\":null,"
             + "\"name\":\"foo\","
             + "\"paragraphs\":[]}", le.detail());

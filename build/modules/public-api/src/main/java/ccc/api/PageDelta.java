@@ -23,7 +23,7 @@ import java.util.Set;
  * @author Civic Computing Ltd.
  */
 public final class PageDelta implements Serializable, Jsonable {
-    private String _title;
+
     private HashSet<Paragraph> _paragraphs = new HashSet<Paragraph>();
 
     @SuppressWarnings("unused") private PageDelta() { super(); }
@@ -31,12 +31,9 @@ public final class PageDelta implements Serializable, Jsonable {
     /**
      * Constructor.
      *
-     * @param title The page's title.
      * @param paragraphs The page's paragraphs.
      */
-    public PageDelta(final String title,
-                     final Set<Paragraph> paragraphs) {
-        _title = title;
+    public PageDelta(final Set<Paragraph> paragraphs) {
         _paragraphs = new HashSet<Paragraph>(paragraphs);
     }
 
@@ -47,7 +44,6 @@ public final class PageDelta implements Serializable, Jsonable {
      * @param json The JSON representation of a page delta.
      */
     public PageDelta(final Json json) {
-        setTitle(json.getString("title"));
         for (final Json jsonPara : json.getCollection("paragraphs")) {
             _paragraphs.add(new Paragraph(jsonPara));
         }
@@ -73,29 +69,9 @@ public final class PageDelta implements Serializable, Jsonable {
     }
 
 
-    /**
-     * Accessor.
-     *
-     * @return Returns the title.
-     */
-    public String getTitle() {
-        return _title;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param title The title to set.
-     */
-    public void setTitle(final String title) {
-        _title = title;
-    }
-
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) { // TODO: Use JsonKeys
-        json.set("title", getTitle());
         json.set("paragraphs", getParagraphs());
     }
 }

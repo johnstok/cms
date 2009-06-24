@@ -57,8 +57,6 @@ public class UpdateFileServlet extends HttpServlet {
 
         final FileDelta delta =
             new FileDelta(
-                form.getFormItem("title").getString(),
-                form.getFormItem("description").getString(),
                 toMimeType(file.getContentType()),
                 null,
                 (int) file.getSize());

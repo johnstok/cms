@@ -55,8 +55,8 @@ public class TemplateDaoImplTest
                 true,
                 "Created."));
         foo.lock(_user);
-        final TemplateDelta td = new TemplateDelta(
-            "newTitle", "newDesc", "newBody", "newDefn", MimeType.HTML);
+        final TemplateDelta td =
+            new TemplateDelta("newBody", "newDefn", MimeType.BINARY_DATA);
 
         expect(_dao.find(Template.class, foo.id())).andReturn(foo);
         _al.recordUpdate(foo, _user, _now, null, false);
@@ -71,10 +71,9 @@ public class TemplateDaoImplTest
 
         // ASSERT
         verify(_dao, _al);
-        assertEquals("newTitle", foo.title());
-        assertEquals("newDesc", foo.description());
         assertEquals("newBody", foo.body());
         assertEquals("newDefn", foo.definition());
+        assertEquals(MimeType.BINARY_DATA, foo.mimeType());
     }
 
 

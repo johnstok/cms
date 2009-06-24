@@ -65,20 +65,6 @@
                 type="string" 
                  length="255" />
         </component>
-        
-        <property
-            name="_title"
-            column="title"
-            not-null="false"
-            type="string"
-            length="255" />
-            
-        <property
-            name="_description"
-            column="description"
-            not-null="false"
-            type="string"
-            length="1024" />
 
     </class>
     

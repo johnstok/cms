@@ -65,7 +65,6 @@ import com.google.gwt.xml.client.XMLParser;
  */
 public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private static final int LABEL_LENGTH = 13;
-    private TextField<String> _title = new TextField<String>();
     private TextField<String> _name = new TextField<String>();
     private final List<PageElement> _pageElements =
         new ArrayList<PageElement>();
@@ -100,7 +99,6 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         _name.setValue(pageName);
         _name.setReadOnly(true);
         _name.disable();
-        _title.setValue(resourceSummary.getTitle());
 
         for (final PageElement c : pageElements()) {
             for (final Paragraph para : resourceSummary.getParagraphs()) {
@@ -395,16 +393,6 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      */
     public TextField<String> name() {
         return _name;
-    }
-
-
-    /**
-     * Accessor of the title.
-     *
-     * @return TextField for title.
-     */
-    public TextField<String> title() {
-        return _title;
     }
 
     /**
@@ -773,11 +761,5 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         _name.setAllowBlank(false);
         _name.setId(_constants.name());
         add(_name, new FormData("95%"));
-
-        _title = new TextField<String>();
-        _title.setFieldLabel(_constants.title());
-        _title.setAllowBlank(false);
-        _title.setId(_constants.title());
-        add(_title, new FormData("95%"));
     }
 }

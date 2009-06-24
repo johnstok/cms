@@ -249,8 +249,6 @@ public class CreatePageDialog
                 Validate.callTo(createPage(paragraphs))
                     .check(Validations.notEmpty(_second.name()))
                     .check(Validations.notValidResourceName(_second.name()))
-                    .check(Validations.notEmpty(_second.title()))
-                    .check(Validations.noBrackets(_second.title()))
                     .stopIfInError()
                     .check(Validations.uniqueResourceName(
                         _parent, _second.name()))
@@ -265,12 +263,7 @@ public class CreatePageDialog
     private Runnable createPage(final Set<Paragraph> paragraphs) {
         return new Runnable() {
             public void run() {
-                final PageDelta page =
-                    new PageDelta(
-                        _second.title().getValue(),
-                        paragraphs
-                    );
-
+                final PageDelta page = new PageDelta(paragraphs);
                 final ID template =
                     (null==_grid.getSelectionModel().getSelectedItem())
                     ? null
@@ -284,6 +277,7 @@ public class CreatePageDialog
                     _second.name().getValue(),
                     _publish.getValue().booleanValue(),
                     template,
+                    _second.name().getValue(), // Title
                     new ErrorReportingCallback<ResourceSummary>(
                         _constants.createPage()) {
                         public void onSuccess(final ResourceSummary result) {
