@@ -1,5 +1,7 @@
 package ccc.migration;
 
+import ccc.commons.WordCharFixer;
+
 
 /**
  * Resource bean for migration.
@@ -132,5 +134,16 @@ public class ResourceBean {
      */
     public String useInIndex() {
         return _useInIndex;
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public String cleanTitle() {
+        final String cleanTitle =  (null==title()) ? name() : title();
+        return new WordCharFixer().fix(cleanTitle);
     }
 }

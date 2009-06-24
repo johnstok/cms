@@ -56,7 +56,6 @@ public class PageDaoImplTest
                 Paragraph.fromText("abc", "def"));
         final PageDelta delta =
             new PageDelta(
-                "new title",
                 Collections.singleton(Paragraph.fromText("foo", "bar")));
         page.lock(_u);
 
@@ -72,7 +71,6 @@ public class PageDaoImplTest
 
         // ASSERT
         verifyAll();
-        assertEquals("new title", page.title());
         assertEquals(1, page.paragraphs().size());
         assertEquals("foo", page.paragraphs().iterator().next().name());
         assertEquals("bar", page.paragraph("foo").text());

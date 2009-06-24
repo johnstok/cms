@@ -70,6 +70,8 @@ public class CreateFileCommand extends CreateResourceCommand {
                         final Date happenedOn,
                         final UUID parentFolder,
                         final FileDelta file,
+                        final String title,
+                        final String description,
                         final ResourceName name,
                         final InputStream dataStream)
                                                 throws RemoteExceptionSupport {
@@ -77,8 +79,8 @@ public class CreateFileCommand extends CreateResourceCommand {
         final File f =
             new File(
                 name,
-                file.getTitle(),
-                file.getDescription(),
+                title,
+                description,
                 data,
                 file.getSize(),
                 file.getMimeType(),

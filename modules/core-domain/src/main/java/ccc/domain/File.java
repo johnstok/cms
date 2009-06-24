@@ -96,7 +96,7 @@ public class File
         description(description);
         update(
             new RevisionMetadata(timestamp, actor, true, "Created."),
-            new FileDelta(title, description, mimeType, new ID(data.id().toString()), size));
+            new FileDelta(mimeType, new ID(data.id().toString()), size));
     }
 
     /**
@@ -154,12 +154,7 @@ public class File
     @Override
     public void applySnapshot(final RevisionMetadata metadata) {
         DBC.require().notNull(wc());
-
-        description(wc().delta().getDescription());
-        title(wc().delta().getTitle());
-
         update(metadata, wc().delta());
-
         clearWorkingCopy();
     }
 
@@ -197,8 +192,6 @@ public class File
     public FileDelta createSnapshot() {
         final FileDelta delta =
             new FileDelta(
-                title(),
-                description(),
                 mimeType(),
                 new ID(data().id().toString()),
                 size());

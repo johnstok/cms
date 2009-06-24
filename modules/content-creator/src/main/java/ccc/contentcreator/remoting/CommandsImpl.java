@@ -78,18 +78,23 @@ public class CommandsImpl
                                       final PageDelta delta,
                                       final String name,
                                       final boolean publish,
-                                      final ID templateId)
+                                      final ID templateId,
+                                      final String title)
     throws CommandFailedException {
-        return _commands.createPage(parentId, delta, name, publish, templateId);
+        return _commands.createPage(
+            parentId, delta, name, publish, templateId, title);
     }
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createTemplate(final ID parentId,
                                           final TemplateDelta delta,
+                                          final String title,
+                                          final String description,
                                           final String name)
     throws CommandFailedException {
-        return _commands.createTemplate(parentId, delta, name);
+        return _commands.createTemplate(
+            parentId, delta, title, description, name);
     }
 
     /** {@inheritDoc} */
@@ -366,6 +371,7 @@ public class CommandsImpl
                                       final String name,
                                       final boolean publish,
                                       final ID templateId,
+                                      final String title,
                                       final ID actorId,
                                       final Date happenedOn) {
         throw new UnsupportedOperationException("Method not implemented.");

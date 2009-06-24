@@ -50,15 +50,18 @@ public class TemplateMigration {
                                 final ResourceSummary templateFolder) {
         final TemplateDelta t =
             new TemplateDelta(
-                templateName,
-                "No description.",
                 "Empty template!",
                 "<fields/>",
                 MimeType.HTML);
 
         try {
-            final ResourceSummary ts = _commands.createTemplate(
-                templateFolder.getId(), t, templateName);
+            final ResourceSummary ts =
+                _commands.createTemplate(
+                    templateFolder.getId(),
+                    t,
+                    templateName,
+                    "No description.",
+                    templateName);
 
             _templates.put(templateName, ts);
         } catch (final CommandFailedException e) {

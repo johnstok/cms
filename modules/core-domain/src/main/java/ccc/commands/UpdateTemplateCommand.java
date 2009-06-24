@@ -64,8 +64,6 @@ public class UpdateTemplateCommand extends UpdateResourceCommand {
         final RevisionMetadata rm =
             new RevisionMetadata(happenedOn, actor, true, "Created.");
 
-        template.title(delta.getTitle());
-        template.description(delta.getDescription());
         template.update(delta, rm);
 
         update(template, null, false, actor, happenedOn);

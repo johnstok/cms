@@ -44,8 +44,6 @@ public final class TemplateTest extends TestCase {
         final TemplateDelta o  = t.createSnapshot();
 
         // ASSERT
-        assertEquals("foo!", o.getTitle());
-        assertEquals("bar", o.getDescription());
         assertEquals("<fields/>", o.getDefinition());
         assertEquals("Hello world", o.getBody());
         assertEquals(MimeType.HTML, o.getMimeType());

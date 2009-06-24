@@ -59,7 +59,6 @@ public final class Page
         super(title);
         update(
             new PageDelta(
-                title,
                 new HashSet<Paragraph>()),
             new RevisionMetadata(
                 new Date(),
@@ -78,7 +77,6 @@ public final class Page
         super(name, title);
         update(
             new PageDelta(
-                title,
                 new HashSet<Paragraph>()),
             new RevisionMetadata(
                 new Date(),
@@ -100,10 +98,10 @@ public final class Page
                 final Paragraph... paragraphs) {
         super(name, title);
         template(template);
-        workingCopy(
+        update(
             new PageDelta(
-                title, new HashSet<Paragraph>(Arrays.asList(paragraphs))));
-        applySnapshot(metadata);
+                new HashSet<Paragraph>(Arrays.asList(paragraphs))),
+                metadata);
     }
 
 
@@ -151,12 +149,12 @@ public final class Page
         DBC.require().maxValue(
             wc().delta().getParagraphs().size(),
             MAXIMUM_PARAGRAPHS);
-        DBC.require().notNull(wc().delta().getTitle());
+
         final PageHelper pageHelper = new PageHelper();
 
-        title(wc().delta().getTitle());
 //        assignParagraphs(_workingCopy);
 
+        // FIXME: Move into update() method.
         final Template template = computeTemplate(null);
         if (null!=template) {
             pageHelper.validateFieldsForPage(
@@ -200,7 +198,7 @@ public final class Page
     /** {@inheritDoc} */
     @Override
     public PageDelta createSnapshot() {
-        return new PageDelta(title(), new HashSet<Paragraph>(paragraphs()));
+        return new PageDelta(new HashSet<Paragraph>(paragraphs()));
     }
 
     /** {@inheritDoc} */

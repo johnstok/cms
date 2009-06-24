@@ -59,6 +59,8 @@ public class CreateTemplateCommand extends CreateResourceCommand {
                             final Date happenedOn,
                             final UUID parentFolder,
                             final TemplateDelta delta,
+                            final String title,
+                            final String description,
                             final ResourceName name)
                                                 throws RemoteExceptionSupport {
         final RevisionMetadata rm =
@@ -67,8 +69,8 @@ public class CreateTemplateCommand extends CreateResourceCommand {
         final Template t =
             new Template(
                 name,
-                delta.getTitle(),
-                delta.getDescription(),
+                title,
+                description,
                 delta.getBody(),
                 delta.getDefinition(),
                 delta.getMimeType(),

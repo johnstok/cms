@@ -78,7 +78,7 @@ public class Template
 
         description(description);
         update(
-            new TemplateDelta(title, description, body, definiton, mimeType),
+            new TemplateDelta(body, definiton, mimeType),
             metadata);
     }
 
@@ -121,8 +121,6 @@ public class Template
     @Override
     public TemplateDelta createSnapshot() {
         return new TemplateDelta(
-            title(),
-            description(),
             body(),
             definition(),
             mimeType());

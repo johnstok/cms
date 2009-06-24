@@ -47,13 +47,6 @@
                 <property name="_number" column="value_number" not-null="false" type="big_decimal" />
             </composite-element>
         </set>
-        
-        <property
-            name="_wcTitle"
-            column="wc_title"
-            not-null="false"
-            type="string"
-            length="255" />
 
     </class>
     
