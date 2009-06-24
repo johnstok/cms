@@ -15,6 +15,7 @@ import ccc.api.ResourceSummary;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.ResourceTree;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
@@ -50,6 +51,7 @@ public class ResourceSelectionDialog extends Window {
         setScrollMode(Scroll.AUTOY);
         setHeading(_constants.selectResource());
         setWidth(DIALOG_WIDTH);
+        setMinWidth(IGlobals.MIN_WIDTH);
         setHeight(DIALOG_HEIGHT);
         setLayout(new FitLayout());
 

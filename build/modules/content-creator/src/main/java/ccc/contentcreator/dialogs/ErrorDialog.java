@@ -30,7 +30,7 @@ import com.google.gwt.user.client.ui.HTML;
  * @author Civic Computing Ltd.
  */
 public class ErrorDialog extends AbstractEditDialog {
-    private static final int DIALOG_WIDTH  = 350;
+    private static final int DIALOG_WIDTH  = 375;
     private static final int DIALOG_HEIGHT = 300;
     private static final ErrorDescriptions ERR_DESCRIPTIONS =
         GWT.create(ErrorDescriptions.class);
