@@ -41,7 +41,7 @@ public final class UpdateMetadataAction
                 UI_CONSTANTS.updateMetadata()){
                 public void onSuccess(final Map<String, String> data) {
                     new MetadataDialog(
-                        item.getId(),
+                        item,
                         data.entrySet())
                     .show();
                 }

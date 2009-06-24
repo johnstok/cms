@@ -303,6 +303,23 @@ public interface Commands {
     throws CommandFailedException;
 
     /**
+     * Update metadata of the resource.
+     *
+     * @param resourceId The id of the resource to update.
+     * @param title The new title to set.
+     * @param description The new description to set.
+     * @param tags The new tags to set.
+     * @param metadata The metadata to update.
+     * @throws  CommandFailedException If the method fails.
+     */
+    void updateFullMetaData(ID resourceId,
+                            String title,
+                            String description,
+                            String tags,
+                            Map<String, String> metadata)
+    throws CommandFailedException;
+
+    /**
      * Update the specified folder.
      *
      * @param folderId The id of the folder to update.

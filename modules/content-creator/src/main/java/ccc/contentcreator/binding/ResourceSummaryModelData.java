@@ -91,7 +91,8 @@ public class ResourceSummaryModelData
             summaryObject.get(ABSOLUTE_PATH).isString().stringValue(),
             (null!=summaryObject.get(INDEX_PAGE_ID).isNull())
             ? null
-            : new ID(summaryObject.get(INDEX_PAGE_ID).isString().stringValue())
+            : new ID(summaryObject.get(INDEX_PAGE_ID).isString().stringValue()),
+            summaryObject.get(DESCRIPTION).isString().stringValue()
         ));
     }
 
@@ -152,6 +153,9 @@ public class ResourceSummaryModelData
             case INDEX_PAGE_ID:
                 return (X) _rs.getIndexPageId();
 
+            case DESCRIPTION:
+                return (X) _rs.getDescription();
+
             default:
                 throw new UnsupportedOperationException(
                     "Key not supported: "+property);
@@ -206,7 +210,8 @@ public class ResourceSummaryModelData
         DATE_CHANGED,
         DATE_CREATED,
         ABSOLUTE_PATH,
-        INDEX_PAGE_ID;
+        INDEX_PAGE_ID,
+        DESCRIPTION;
     }
 
     /**
@@ -461,7 +466,14 @@ public class ResourceSummaryModelData
         return _rs.getIndexPageId();
     }
 
+    /**
+     * Accessor.
+     *
+     * @return Returns the description.
+     */
+    public String getDescription() {
 
-
+        return _rs.getDescription();
+    }
 
 }
