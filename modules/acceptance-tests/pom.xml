@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project 
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
+    <parent>
+        <artifactId>build</artifactId>
+        <groupId>CCC7</groupId>
+        <version>7.0.0-SNAPSHOT</version>
+    </parent>
+    
+    <artifactId>acceptance-tests</artifactId>
+    <name>acceptance-tests</name>
+    
+    <dependencies>
+        <dependency>
+            <groupId>CCC7</groupId>
+            <artifactId>application-ear</artifactId>
+            <type>ear</type>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>CCC7</groupId>
+            <artifactId>public-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+    
+    <profiles>
+        <profile>
+            <id>acceptance</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <excludes>
+                                <exclude>**/*GwtTest.java</exclude>
+                                <exclude>**/*$*</exclude>
+                            </excludes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+    
+</project>
