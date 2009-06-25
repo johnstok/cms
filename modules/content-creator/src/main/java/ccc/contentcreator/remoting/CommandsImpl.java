@@ -182,13 +182,6 @@ public class CommandsImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateTags(final ID resourceId,
-                           final String tags) throws CommandFailedException {
-        _commands.updateTags(resourceId, tags);
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void updateTemplate(final ID templateId,
                                           final TemplateDelta delta)
     throws CommandFailedException {

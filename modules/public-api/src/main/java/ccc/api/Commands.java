@@ -116,16 +116,6 @@ public interface Commands {
     throws CommandFailedException;
 
     /**
-     * Update the tags for a resource.
-     *
-     * @param resourceId The id of the resource to update.
-     * @param tags The new tags to set.
-     *
-     * @throws CommandFailedException If the method fails.
-     */
-    void updateTags(ID resourceId, String tags) throws CommandFailedException;
-
-    /**
      * Changes a resource's parent.
      *
      * @param resourceId The id of the resource to move.

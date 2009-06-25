@@ -27,7 +27,6 @@ import ccc.contentcreator.actions.UnlockAction;
 import ccc.contentcreator.actions.UnpublishAction;
 import ccc.contentcreator.actions.UpdateMetadataAction;
 import ccc.contentcreator.actions.UpdateResourceRolesAction;
-import ccc.contentcreator.actions.UpdateTagsAction;
 import ccc.contentcreator.actions.ViewHistoryAction;
 import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.api.QueriesServiceAsync;
@@ -189,10 +188,6 @@ public class MainMenu
                     "updateRoles-root-"+name,
                     _constants.updateRoles(),
                     new UpdateResourceRolesAction(ssm)));
-                rootMenu.add(createMenuItem(
-                    "updateTags-root-"+name,
-                    _constants.updateTags(),
-                    new UpdateTagsAction(ssm)));
                 rootMenu.add(createMenuItem(
                     "updateMetadata-root-"+name,
                     _constants.updateMetadata(),
