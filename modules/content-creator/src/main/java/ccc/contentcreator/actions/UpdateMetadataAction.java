@@ -42,7 +42,8 @@ public final class UpdateMetadataAction
                 public void onSuccess(final Map<String, String> data) {
                     new MetadataDialog(
                         item,
-                        data.entrySet())
+                        data.entrySet(),
+                        _selectionModel)
                     .show();
                 }
             }

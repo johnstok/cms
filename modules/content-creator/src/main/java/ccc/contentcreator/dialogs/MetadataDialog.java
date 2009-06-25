@@ -17,11 +17,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ccc.api.ID;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.callbacks.DisposingCallback;
+import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.SingleSelectionModel;
 
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
@@ -57,7 +57,8 @@ import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 public class MetadataDialog extends AbstractBaseDialog {
 
     private CheckBoxSelectionModel<ModelData> _sm;
-    private ID _resourceId;
+    private ResourceSummaryModelData _resource;
+    private SingleSelectionModel _ssm;
 
     private FormPanel _fieldsPanel = new FormPanel();
     private ContentPanel _gridPanel = new ContentPanel();
@@ -69,42 +70,21 @@ public class MetadataDialog extends AbstractBaseDialog {
     private final TextField<String> _description = new TextField<String>();
     private final TextField<String> _tags = new TextField<String>();
 
-    private final Button _save = new Button(
-        constants().save(),
-        new SelectionListener<ButtonEvent>(){
-            @Override public void componentSelected(final ButtonEvent ce) {
-                final Map<String, String> metadata = currentMetadata();
-                final String errors = validate(metadata);
-
-                final String tags =
-                    (null==_tags.getValue()) ? "" : _tags.getValue();
-                if (errors.length() == 0) {
-                    commands().updateFullMetaData(
-                        _resourceId,
-                        _title.getValue(),
-                        _description.getValue(),
-                        tags,
-                        metadata,
-                        new DisposingCallback(
-                            MetadataDialog.this, _constants.updateMetadata()));
-                } else {
-                    Globals.alert(errors);
-                }
-            }
-        });
-
 
     /**
      * Constructor.
      *
      * @param resource The model data of the resource.
      * @param data The metadata.
+     * @param ssm The selection model.
      */
     public MetadataDialog(final ResourceSummaryModelData resource,
-                          final Collection<Map.Entry<String, String>> data) {
+                          final Collection<Map.Entry<String, String>> data,
+                          final SingleSelectionModel ssm) {
         super(Globals.uiConstants().metadata());
 
-        _resourceId = resource.getId();
+        _ssm = ssm;
+        _resource = resource;
         setLayout(new BorderLayout());
 
         final BorderLayoutData nb =
@@ -116,10 +96,12 @@ public class MetadataDialog extends AbstractBaseDialog {
 
         _title.setFieldLabel(constants().title());
         _title.setAllowBlank(false);
+        _title.setId("title");
         _title.setValue(resource.getTitle());
 
         _description.setFieldLabel(constants().description());
         _description.setAllowBlank(true);
+        _description.setId("description");
         _description.setValue(resource.getDescription());
 
         _tags.setFieldLabel(constants().tags());
@@ -132,6 +114,7 @@ public class MetadataDialog extends AbstractBaseDialog {
         _fieldsPanel.add(_tags, new FormData("95%"));
         _fieldsPanel.setHeaderVisible(false);
         _fieldsPanel.setBorders(false);
+        _fieldsPanel.setBodyBorder(false);
 
 
         final ColumnModel cm = defineColumnModel();
@@ -141,12 +124,13 @@ public class MetadataDialog extends AbstractBaseDialog {
         _grid.setAutoExpandColumn("value");
         _grid.setSelectionModel(_sm);
         _grid.addPlugin(_sm);
-        _grid.setId("aBc");
         _grid.setBorders(false);
+        _grid.setHeight(270);
         _grid.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
         _gridPanel.setHeaderVisible(false);
         _gridPanel.setBorders(false);
+        _gridPanel.setBodyBorder(false);
         _gridPanel.add(_grid);
         addToolbar();
 
@@ -158,6 +142,39 @@ public class MetadataDialog extends AbstractBaseDialog {
     }
 
 
+    private final Button _save = new Button(
+        constants().save(),
+        new SelectionListener<ButtonEvent>(){
+            @Override public void componentSelected(final ButtonEvent ce) {
+                final Map<String, String> metadata = currentMetadata();
+                final String errors = validate(metadata);
+
+                final String tags =
+                    (null==_tags.getValue()) ? "" : _tags.getValue();
+                final String title = _title.getValue();
+                final String description = _description.getValue();
+
+                if (errors.length() == 0) {
+                    commands().updateFullMetaData(
+                        _resource.getId(),
+                        _title.getValue(),
+                        _description.getValue(),
+                        tags,
+                        metadata,
+                        new ErrorReportingCallback<Void>(_constants.updateTags()){
+                            @Override public void onSuccess(final Void arg0) {
+                                _resource.setTags(tags);
+                                _resource.setTitle(title);
+                                _resource.setDescription(description);
+                                _ssm.update(_resource);
+                                MetadataDialog.this.close();
+                        }
+                        });
+                } else {
+                    Globals.alert(errors);
+                }
+            }
+        });
 
 
     private ColumnModel defineColumnModel() {
