@@ -113,9 +113,9 @@ public interface CommandServiceAsync {
                         AsyncCallback<Void> callback);
 
     void updateFolder(ID folderId,
-                               String sortOrder,
-                               ID indexPageId,
-                               AsyncCallback<Void> callback);
+                      String sortOrder,
+                      ID indexPageId,
+                      AsyncCallback<Void> callback);
 
     public void clearWorkingCopy(ID pageId,
                                  AsyncCallback<Void> callback);
@@ -206,27 +206,67 @@ public interface CommandServiceAsync {
                       String title,
                       AsyncCallback<ResourceSummary> callback);
 
+    void changeRoles(ID resourceId,
+                     java.util.Collection<java.lang.String> roles,
+                     ID actorId,
+                     Date happenedOn,
+                     AsyncCallback<Void> callback);
 
-
-    // TODO: Clean this up.
-    void changeRoles(ccc.api.ID resourceId, java.util.Collection<java.lang.String> roles, ccc.api.ID actorId, java.util.Date happenedOn, com.google.gwt.user.client.rpc.AsyncCallback<java.lang.Void> arg5);
-    void createFolder(ccc.api.ID parentId, java.lang.String name, java.lang.String title, boolean publish, ccc.api.ID actorId, java.util.Date happenedOn, com.google.gwt.user.client.rpc.AsyncCallback<ccc.api.ResourceSummary> arg7);
+    void createFolder(ID parentId, java.lang.String name,
+                      java.lang.String title,
+                      boolean publish,
+                      ID actorId,
+                      Date happenedOn,
+                      AsyncCallback<ResourceSummary> callback);
 
     void createPage(
-        ID parentId,
-        PageDelta delta,
-        String name,
-        boolean publish,
-        ID templateId,
-        String title,
-        ID actorId,
-        Date happenedOn,
-        AsyncCallback<ccc.api.ResourceSummary> callback);
+                    ID parentId,
+                    PageDelta delta,
+                    String name,
+                    boolean publish,
+                    ID templateId,
+                    String title,
+                    ID actorId,
+                    Date happenedOn,
+                    AsyncCallback<ResourceSummary> callback);
 
-    void includeInMainMenu(ccc.api.ID resourceId, boolean include, ccc.api.ID actorId, java.util.Date happenedOn, com.google.gwt.user.client.rpc.AsyncCallback<java.lang.Void> arg5);
-    void lock(ccc.api.ID resourceId, ccc.api.ID actorId, java.util.Date happenedOn, com.google.gwt.user.client.rpc.AsyncCallback<java.lang.Void> arg4);
-    void unlock(ccc.api.ID resourceId, ccc.api.ID actorId, java.util.Date happenedOn, com.google.gwt.user.client.rpc.AsyncCallback<java.lang.Void> arg4);
-    void updateMetadata(ccc.api.ID resourceId, java.lang.String title, java.lang.String description, java.lang.String tags, java.util.Map<java.lang.String, java.lang.String> metadata, ccc.api.ID actorId, java.util.Date happenedOn, com.google.gwt.user.client.rpc.AsyncCallback<java.lang.Void> arg8);
-    void updatePage(ccc.api.ID pageId, ccc.api.PageDelta delta, java.lang.String comment, boolean isMajorEdit, ccc.api.ID actorId, java.util.Date happenedOn, com.google.gwt.user.client.rpc.AsyncCallback<java.lang.Void> arg7);
-    void updateResourceTemplate(ccc.api.ID resourceId, ccc.api.ID templateId, ccc.api.ID actorId, java.util.Date happenedOn, com.google.gwt.user.client.rpc.AsyncCallback<java.lang.Void> arg5);
+    void includeInMainMenu(ccc.api.ID resourceId,
+                           boolean include,
+                           ID actorId,
+                           Date happenedOn,
+                           AsyncCallback<Void> callback);
+
+    void lock(ID resourceId,
+              ID actorId,
+              Date happenedOn,
+              AsyncCallback<Void> callback);
+
+    void unlock(ID resourceId,
+                ID actorId,
+                Date happenedOn,
+                AsyncCallback<Void> callback);
+
+    void updateMetadata(ID resourceId,
+                        String title,
+                        String description,
+                        String tags,
+                        Map<java.lang.String,
+                        String> metadata,
+                        ID actorId,
+                        Date happenedOn,
+                        AsyncCallback<Void> callback);
+
+    void updatePage(ID pageId,
+                    PageDelta delta,
+                    String comment,
+                    boolean isMajorEdit,
+                    ID actorId,
+                    Date happenedOn,
+                    AsyncCallback<Void> callback);
+
+    void updateResourceTemplate(ID resourceId,
+                                ID templateId,
+                                ID actorId,
+                                Date happenedOn,
+                                AsyncCallback<java.lang.Void> callback);
 }
