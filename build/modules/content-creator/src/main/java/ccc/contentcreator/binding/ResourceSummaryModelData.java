@@ -476,4 +476,13 @@ public class ResourceSummaryModelData
         return _rs.getDescription();
     }
 
+    /**
+     * Mutator.
+     *
+     * @param description The description to set.
+     */
+    public void setDescription(final String description) {
+        _rs.setDescription(description);
+    }
+
 }
