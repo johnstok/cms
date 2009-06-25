@@ -35,7 +35,6 @@ import ccc.commands.UnlockResourceCommand;
 import ccc.commands.UnpublishResourceCommand;
 import ccc.commands.UpdateCachingCommand;
 import ccc.commands.UpdateResourceMetadataCommand;
-import ccc.commands.UpdateResourceMetadataRolesCommand;
 import ccc.domain.CreatorRoles;
 import ccc.domain.Folder;
 import ccc.domain.InsufficientPrivilegesException;
@@ -169,8 +168,7 @@ public class ResourceDaoImplTest
         // ARRANGE
         _r.lock(_regularUser);
         expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
-        _al.recordUpdateTags(eq(_r), eq(_regularUser), isA(Date.class));
-        _al.recordUpdateMetadata(eq(_r), eq(_regularUser), isA(Date.class));
+        _al.recordUpdateFullMetadata(eq(_r), eq(_regularUser), isA(Date.class));
         replayAll();
 
         // ACT
@@ -536,30 +534,6 @@ public class ResourceDaoImplTest
         assertEquals(null, _r.publishedBy());
     }
 
-
-    /**
-     * Test.
-     * @throws RemoteExceptionSupport If the command fails.
-     */
-    public void testUpdateMetadata()
-    throws RemoteExceptionSupport {
-
-        // ARRANGE
-        _r.lock(_regularUser);
-        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
-        _al.recordUpdateMetadata(eq(_r), eq(_regularUser), isA(Date.class));
-        replayAll();
-
-        // ACT
-        final Map<String, String> props = new HashMap<String, String>();
-        props.put("bodyId", "example");
-        new UpdateResourceMetadataRolesCommand(_dao, _al).execute(
-            _regularUser, new Date(), _r.id(), props);
-
-        // ASSERT
-        verifyAll();
-        assertEquals("example", _r.getMetadatum("bodyId"));
-    }
 
     /**
      * Test.

@@ -220,20 +220,12 @@ public class CommandsImpl
     /** {@inheritDoc} */
     @Override
     public void updateMetadata(final ID resourceId,
-                                 final Map<String, String> metadata)
-    throws CommandFailedException {
-        _commands.updateMetadata(resourceId, metadata);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void updateFullMetaData(final ID resourceId,
                                    final String title,
                                    final String description,
                                    final String tags,
                                final Map<String, String> metadata)
     throws CommandFailedException {
-        _commands.updateFullMetaData(resourceId,
+        _commands.updateMetadata(resourceId,
             title,
             description,
             tags,
@@ -413,6 +405,9 @@ public class CommandsImpl
     /** {@inheritDoc} */
     @Override
     public void updateMetadata(final ID resourceId,
+                               final String title,
+                               final String description,
+                               final String tags,
                                final Map<String, String> metadata,
                                final ID actorId,
                                final Date happenedOn) {

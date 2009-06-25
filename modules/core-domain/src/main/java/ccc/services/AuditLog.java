@@ -140,26 +140,6 @@ public interface AuditLog {
 
 
     /**
-     * Record that a resource's tags were updated.
-     *
-     * @param resource The resource that was changed.
-     * @param actor The actor of the change.
-     * @param happenedOn The date of the change.
-     */
-    void recordUpdateTags(Resource resource, User actor, Date happenedOn);
-
-
-    /**
-     * Record that a resource's metadata was updated.
-     *
-     * @param resource The resource that was changed.
-     * @param actor The actor of the change.
-     * @param happenedOn The date of the change.
-     */
-    void recordUpdateMetadata(Resource resource, User actor, Date happenedOn);
-
-
-    /**
      * Record that a resource was included in main menu.
      *
      * @param resource The resource that was changed.
@@ -236,4 +216,14 @@ public interface AuditLog {
      * @param le The log entry to record.
      */
     void record(LogEntry le);
+
+
+    /**
+     * Record that a resource's metadata was updated.
+     *
+     * @param resource The resource that was changed.
+     * @param actor The actor of the change.
+     * @param happenedOn The date of the change.
+     */
+    void recordUpdateFullMetadata(Resource r, User actor, Date happenedOn);
 }

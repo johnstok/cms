@@ -209,14 +209,18 @@ public class LogEntryTest
     /**
      * Test.
      */
-    public void testUpdateTagsFactoryMethod() {
+    public void testUpdateMetadataFactoryMethod() {
 
         // ARRANGE
         final Page p = new Page("foo");
         p.tags("foo,bar");
+        p.title("newTitle");
+        p.description("newDesc");
+        p.addMetadatum("bar", "zup");
 
         // ACT
-        final LogEntry le = LogEntry.forUpdateTags(p, _actor, _happenedOn);
+        final LogEntry le =
+            LogEntry.forUpdateMetadata(p, _actor, _happenedOn);
 
         // ASSERT
         assertEquals(p.id(), le.subjectId());
@@ -225,8 +229,10 @@ public class LogEntryTest
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(CommandType.RESOURCE_UPDATE_TAGS, le.action());
-        assertEquals("{\"tags\":[\"foo\",\"bar\"]}", le.detail());
+        assertEquals(CommandType.RESOURCE_UPDATE_METADATA, le.action());
+        assertEquals("{\"tags\":[\"foo\",\"bar\"],\"title\":\"newTitle\","
+        		+ "\"description\":\"newDesc\",\"metadata\":{\"bar\":\"zup\"}}",
+        		le.detail());
     }
 
     /**
@@ -253,28 +259,6 @@ public class LogEntryTest
             "{\"indexPageId\":null,\"sortOrder\":\"MANUAL\"}", le.detail());
     }
 
-    /**
-     * Test.
-     */
-    public void testUpdateMetadataFactoryMethod() {
-
-        // ARRANGE
-        final Page p = new Page("foo");
-        p.addMetadatum("bar", "zup");
-
-        // ACT
-        final LogEntry le = LogEntry.forUpdateMetadata(p, _actor, _happenedOn);
-
-        // ASSERT
-        assertEquals(p.id(), le.subjectId());
-        assertEquals("", le.comment());
-        assertEquals(_happenedOn, le.happenedOn());
-        assertNull("Should be null", le.recordedOn());
-        assertEquals(-1, le.index());
-        assertEquals(_actor, le.actor());
-        assertEquals(CommandType.RESOURCE_UPDATE_METADATA, le.action());
-        assertEquals("{\"metadata\":{\"bar\":\"zup\"}}", le.detail());
-    }
 
     /**
      * Test.

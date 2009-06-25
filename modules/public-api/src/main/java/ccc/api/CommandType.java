@@ -18,8 +18,6 @@ public enum CommandType {
     RESOURCE_UNLOCK,
     /** RESOURCE_CHANGE_TEMPLATE : CommandType. */
     RESOURCE_CHANGE_TEMPLATE,
-    /** RESOURCE_UPDATE_TAGS : CommandType. */
-    RESOURCE_UPDATE_TAGS,
     /** RESOURCE_INCLUDE_IN_MM : CommandType. */
     RESOURCE_INCLUDE_IN_MM,
     /** RESOURCE_REMOVE_FROM_MM : CommandType. */
