@@ -482,12 +482,16 @@ public class Migrations {
                                         final LogEntryBean le)
                                                  throws CommandFailedException {
         final String templateName = r.displayTemplate();
+        final String templateDescription = r.templateDescription();
 
         if (null == templateName) { // Resource has no template
             return;
         }
 
-        final ID templateId = _tm.getTemplate(templateName, _templateFolder);
+        final ID templateId = _tm.getTemplate(
+            templateName,
+            templateDescription,
+            _templateFolder);
         _commands.updateResourceTemplate(
             rs.getId(), templateId, le.getUser().getId(), le.getHappenedOn());
     }

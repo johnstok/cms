@@ -33,6 +33,7 @@ public final class ResourceSelector
             final int legacyVersion = rs.getInt("VERSION_ID");
             final boolean isSecure = (null!=rs.getString("permission_name"));
             final String useInIndex = rs.getString("USE_IN_INDEX");
+            final String description = rs.getString("DESCRIPTION");
 
             resultList.add(new ResourceBean(contentId,
                                             type,
@@ -42,7 +43,8 @@ public final class ResourceSelector
                                             legacyVersion,
                                             isSecure,
                                             title,
-                                            useInIndex));
+                                            useInIndex,
+                                            description));
         }
         return resultList;
     }
@@ -52,7 +54,7 @@ public final class ResourceSelector
     public String getSql() {
         return
             "SELECT content_id, content_type, name, index_title, page, "
-            + " status,version_id, permission_name, use_in_index "
+            + " status,version_id, permission_name, use_in_index, description "
             + "FROM c3_content, c3_display_templates "
             + "WHERE c3_content.parent_id = ? "
             + "AND version_id = 0 "
