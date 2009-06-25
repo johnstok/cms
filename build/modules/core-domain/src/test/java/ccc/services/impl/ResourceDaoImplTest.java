@@ -25,7 +25,6 @@ import ccc.api.Duration;
 import ccc.api.MimeType;
 import ccc.api.Paragraph;
 import ccc.api.ResourceType;
-import ccc.commands.ChangeResourceTagsCommand;
 import ccc.commands.ChangeTemplateForResourceCommand;
 import ccc.commands.IncludeInMainMenuCommand;
 import ccc.commands.LockResourceCommand;
@@ -35,6 +34,7 @@ import ccc.commands.RenameResourceCommand;
 import ccc.commands.UnlockResourceCommand;
 import ccc.commands.UnpublishResourceCommand;
 import ccc.commands.UpdateCachingCommand;
+import ccc.commands.UpdateResourceMetadataCommand;
 import ccc.commands.UpdateResourceMetadataRolesCommand;
 import ccc.domain.CreatorRoles;
 import ccc.domain.Folder;
@@ -163,22 +163,33 @@ public class ResourceDaoImplTest
      * Test.
      * @throws RemoteExceptionSupport If the command fails.
      */
-    public void testUpdateTags()
+    public void testUpdateFullMetadata()
     throws RemoteExceptionSupport {
 
         // ARRANGE
         _r.lock(_regularUser);
         expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
         _al.recordUpdateTags(eq(_r), eq(_regularUser), isA(Date.class));
+        _al.recordUpdateMetadata(eq(_r), eq(_regularUser), isA(Date.class));
         replayAll();
 
         // ACT
-        new ChangeResourceTagsCommand(_dao, _al).execute(
-            _regularUser, new Date(), _r.id(), "foo,bar");
+        final Map<String, String> props = new HashMap<String, String>();
+        props.put("bodyId", "example");
+        new UpdateResourceMetadataCommand(_dao, _al).execute(
+            _regularUser,
+            new Date(),
+            _r.id(),
+            "newTitle",
+            "newDesc",
+            "foo,bar",
+            props);
 
         // ASSERT
         verifyAll();
-        assertEquals(2, _r.tags().size());
+        assertEquals("example", _r.getMetadatum("bodyId"));
+        assertEquals("newTitle", _r.title());
+        assertEquals("newDesc", _r.description());
         assertTrue(_r.tags().contains("foo"));
         assertTrue(_r.tags().contains("bar"));
     }

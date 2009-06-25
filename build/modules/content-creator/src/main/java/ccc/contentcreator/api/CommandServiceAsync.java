@@ -55,10 +55,6 @@ public interface CommandServiceAsync {
                 final String name,
                 AsyncCallback<Void> callback);
 
-    void updateTags(ID resourceId,
-                    String tags,
-                    AsyncCallback<Void> callback);
-
     void move(ID resourceId,
               ID newParentId,
               AsyncCallback<Void> callback);

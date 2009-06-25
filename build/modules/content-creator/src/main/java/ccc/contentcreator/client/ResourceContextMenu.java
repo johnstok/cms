@@ -25,6 +25,7 @@ import ccc.contentcreator.actions.ClearWorkingCopyAction;
 import ccc.contentcreator.actions.CreateActionAction;
 import ccc.contentcreator.actions.CreateAliasAction;
 import ccc.contentcreator.actions.EditCacheAction;
+import ccc.contentcreator.actions.EditFolderAction;
 import ccc.contentcreator.actions.IncludeInMainMenuAction;
 import ccc.contentcreator.actions.LockAction;
 import ccc.contentcreator.actions.MoveAction;
@@ -36,8 +37,6 @@ import ccc.contentcreator.actions.UnlockAction;
 import ccc.contentcreator.actions.UnpublishAction;
 import ccc.contentcreator.actions.UpdateMetadataAction;
 import ccc.contentcreator.actions.UpdateResourceRolesAction;
-import ccc.contentcreator.actions.EditFolderAction;
-import ccc.contentcreator.actions.UpdateTagsAction;
 import ccc.contentcreator.actions.ViewHistoryAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
@@ -73,7 +72,6 @@ public class ResourceContextMenu
     private final Action _createAliasAction;
     private final Action _updateMetadataAction;
     private final Action _viewHistory;
-    private final Action _updateTagsAction;
     private final Action _renameAction;
     private final Action _moveAction;
     private final Action _unlockAction;
@@ -105,7 +103,6 @@ public class ResourceContextMenu
         _createAliasAction = new CreateAliasAction(_table, _table.root());
         _updateMetadataAction = new UpdateMetadataAction(_table);
         _viewHistory = new ViewHistoryAction(_table);
-        _updateTagsAction = new UpdateTagsAction(_table);
         _renameAction = new RenameAction(_table);
         _moveAction = new MoveAction(_table, _table.root());
         _unlockAction = new UnlockAction(_table);
@@ -186,7 +183,6 @@ public class ResourceContextMenu
                 addMove();
                 addRename();
                 addUpdateRolesAction();
-                addUpdateTags();
                 addUpdateMetadata();
                 addCreateAlias();
                 addCreateAction();
@@ -316,13 +312,6 @@ public class ResourceContextMenu
             "rename",
             _constants.rename(),
             _renameAction);
-    }
-
-    private void addUpdateTags() {
-        addMenuItem(
-            "update-tags",
-            _constants.updateTags(),
-            _updateTagsAction);
     }
 
     private void addViewHistory() {

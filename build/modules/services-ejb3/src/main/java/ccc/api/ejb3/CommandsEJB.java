@@ -50,7 +50,6 @@ import ccc.api.UserDelta;
 import ccc.api.UserSummary;
 import ccc.commands.ApplyWorkingCopyCommand;
 import ccc.commands.CancelActionCommand;
-import ccc.commands.ChangeResourceTagsCommand;
 import ccc.commands.ChangeTemplateForResourceCommand;
 import ccc.commands.ClearWorkingCopyCommand;
 import ccc.commands.CreateAliasCommand;
@@ -556,21 +555,6 @@ public class CommandsEJB
         } catch (final RemoteExceptionSupport e) {
             throw fail(e);
         }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
-    public void updateTags(final ID resourceId,
-                           final String tags) throws CommandFailedException {
-        try {
-            new ChangeResourceTagsCommand(_bdao, _audit).execute(
-                loggedInUser(), new Date(), toUUID(resourceId), tags);
-
-        } catch (final RemoteExceptionSupport e) {
-            throw fail(e);
-        }
-
     }
 
     /** {@inheritDoc} */

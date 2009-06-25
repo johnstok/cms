@@ -22,6 +22,9 @@ import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
+import ccc.contentcreator.validation.Validate;
+import ccc.contentcreator.validation.Validations;
+import ccc.contentcreator.validation.Validator;
 
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
@@ -31,8 +34,9 @@ import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.event.ToolBarEvent;
 import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
-import com.extjs.gxt.ui.client.widget.button.Button;
+import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.grid.CellEditor;
@@ -54,7 +58,7 @@ import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
  *
  * @author Civic Computing Ltd.
  */
-public class MetadataDialog extends AbstractBaseDialog {
+public class MetadataDialog extends AbstractEditDialog {
 
     private CheckBoxSelectionModel<ModelData> _sm;
     private ResourceSummaryModelData _resource;
@@ -89,8 +93,10 @@ public class MetadataDialog extends AbstractBaseDialog {
 
         final BorderLayoutData nb =
             new BorderLayoutData(LayoutRegion.NORTH, 100f);
+
         final BorderLayoutData cb =
             new BorderLayoutData(LayoutRegion.CENTER);
+        cb.setMargins(new Margins(10));
 
         _save.setId("save");
 
@@ -116,6 +122,9 @@ public class MetadataDialog extends AbstractBaseDialog {
         _fieldsPanel.setBorders(false);
         _fieldsPanel.setBodyBorder(false);
 
+        final Text fieldName = new Text("Values:");
+        fieldName.setStyleName("x-form-item");
+        _fieldsPanel.add(fieldName);
 
         final ColumnModel cm = defineColumnModel();
         _dataStore.add(DataBinding.bindMetadata(data));
@@ -129,53 +138,16 @@ public class MetadataDialog extends AbstractBaseDialog {
         _grid.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
         _gridPanel.setHeaderVisible(false);
-        _gridPanel.setBorders(false);
+        _gridPanel.setBorders(true);
         _gridPanel.setBodyBorder(false);
+
         _gridPanel.add(_grid);
         addToolbar();
 
         add(_fieldsPanel, nb);
         add(_gridPanel, cb);
 
-        addButton(_cancel);
-        addButton(_save);
     }
-
-
-    private final Button _save = new Button(
-        constants().save(),
-        new SelectionListener<ButtonEvent>(){
-            @Override public void componentSelected(final ButtonEvent ce) {
-                final Map<String, String> metadata = currentMetadata();
-                final String errors = validate(metadata);
-
-                final String tags =
-                    (null==_tags.getValue()) ? "" : _tags.getValue();
-                final String title = _title.getValue();
-                final String description = _description.getValue();
-
-                if (errors.length() == 0) {
-                    commands().updateFullMetaData(
-                        _resource.getId(),
-                        _title.getValue(),
-                        _description.getValue(),
-                        tags,
-                        metadata,
-                        new ErrorReportingCallback<Void>(_constants.updateTags()){
-                            @Override public void onSuccess(final Void arg0) {
-                                _resource.setTags(tags);
-                                _resource.setTitle(title);
-                                _resource.setDescription(description);
-                                _ssm.update(_resource);
-                                MetadataDialog.this.close();
-                        }
-                        });
-                } else {
-                    Globals.alert(errors);
-                }
-            }
-        });
-
 
     private ColumnModel defineColumnModel() {
 
@@ -210,7 +182,6 @@ public class MetadataDialog extends AbstractBaseDialog {
     private void addToolbar() {
 
         final ToolBar toolBar = new ToolBar();
-
         toolBar.add(new SeparatorToolItem());
 
         final TextToolItem add = new TextToolItem(constants().newLabel());
@@ -243,8 +214,7 @@ public class MetadataDialog extends AbstractBaseDialog {
         toolBar.add(remove);
 
         toolBar.add(new SeparatorToolItem());
-
-        _gridPanel.setTopComponent(toolBar);
+        _gridPanel.setBottomComponent(toolBar);
     }
 
     private Map<String, String> currentMetadata() {
@@ -257,24 +227,82 @@ public class MetadataDialog extends AbstractBaseDialog {
         return metadata;
     }
 
-    private String validate(final Map<String, String> metadata) {
-        final StringBuilder sb = new StringBuilder();
-        for (final Map.Entry<String, String> datum : metadata.entrySet()) {
-            if (null==datum.getKey()
-                || datum.getKey().trim().length() < 1) {
-                sb.append(_constants.noEmptyKeysAllowed());
+
+    /** {@inheritDoc} */
+    @Override
+    protected SelectionListener<ButtonEvent> saveAction() {
+        return new SelectionListener<ButtonEvent>() {
+            @Override public void componentSelected(final ButtonEvent ce) {
+                Validate.callTo(updateMetaData())
+                    .check(Validations.notEmpty(_title))
+                    .check(metaDataValues(currentMetadata()))
+                    .stopIfInError()
+                    .callMethodOr(Validations.reportErrors());
             }
-            if (null==datum.getValue()
-                || datum.getValue().trim().length() < 1) {
-                sb.append(_constants.noEmptyValuesAllowed());
+        };
+    }
+
+
+    /**
+     * Factory method for username validators.
+     *
+     * @param metadata The values to validate.
+     * @return A new instance of the metaDataValues validator.
+     */
+    private Validator metaDataValues(final Map<String, String> metadata) {
+        return new Validator() {
+            public void validate(final Validate validate) {
+                final StringBuilder sb = new StringBuilder();
+                for (final Map.Entry<String, String> datum : metadata.entrySet()) {
+                    if (null==datum.getKey()
+                        || datum.getKey().trim().length() < 1) {
+                        sb.append(_constants.noEmptyKeysAllowed());
+                    }
+                    if (null==datum.getValue()
+                        || datum.getValue().trim().length() < 1) {
+                        sb.append(_constants.noEmptyValuesAllowed());
+                    }
+                    if (!datum.getKey().matches("[^<^>]*")) {
+                        sb.append(_constants.keysMustNotContainBrackets());
+                    }
+                    if (!datum.getValue().matches("[^<^>]*")) {
+                        sb.append(_constants.valuesMustNotContainBrackets());
+                    }
+                }
+                if (sb.length() > 0) {
+                    validate.addMessage(sb.toString());
+                }
+                validate.next();
             }
-            if (!datum.getKey().matches("[^<^>]*")) {
-                sb.append(_constants.keysMustNotContainBrackets());
+        };
+    }
+
+    private Runnable updateMetaData() {
+        return new Runnable() {
+
+            public void run() {
+                final Map<String, String> metadata = currentMetadata();
+                final String tags =
+                    (null==_tags.getValue()) ? "" : _tags.getValue();
+                final String title = _title.getValue();
+                final String description = _description.getValue();
+
+                commands().updateFullMetaData(
+                    _resource.getId(),
+                    _title.getValue(),
+                    _description.getValue(),
+                    tags,
+                    metadata,
+                    new ErrorReportingCallback<Void>(_constants.updateTags()){
+                        @Override public void onSuccess(final Void arg0) {
+                            _resource.setTags(tags);
+                            _resource.setTitle(title);
+                            _resource.setDescription(description);
+                            _ssm.update(_resource);
+                            MetadataDialog.this.close();
+                    }
+                    });
             }
-            if (!datum.getValue().matches("[^<^>]*")) {
-                sb.append(_constants.valuesMustNotContainBrackets());
-            }
-        }
-        return sb.toString();
+        };
     }
 }
