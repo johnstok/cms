@@ -101,9 +101,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
                     return;
                 }
                 Validate.callTo(submit())
-                // FIXME: Check a file was selected.
                 .callMethodOr(Validations.reportErrors());
-
             }
         };
     }
