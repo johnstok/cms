@@ -271,22 +271,17 @@ public interface Commands {
      * Update metadata of the resource.
      *
      * @param resourceId The id of the resource to update.
-     * @param metadata The metadata to update.
-     *
-     * @throws CommandFailedException If the method fails.
-     */
-    void updateMetadata(ID resourceId, Map<String, String> metadata)
-    throws CommandFailedException;
-
-    /**
-     * Update metadata of the resource.
-     *
-     * @param resourceId The id of the resource to update.
+     * @param title The new title to set.
+     * @param description The new description to set.
+     * @param tags The new tags to set.
      * @param metadata The metadata to update.
      *
      * @throws CommandFailedException If the method fails.
      */
     void updateMetadata(ID resourceId,
+                        String title,
+                        String description,
+                        String tags,
                         Map<String, String> metadata,
                         ID actorId,
                         Date happenedOn)
@@ -302,7 +297,7 @@ public interface Commands {
      * @param metadata The metadata to update.
      * @throws  CommandFailedException If the method fails.
      */
-    void updateFullMetaData(ID resourceId,
+    void updateMetadata(ID resourceId,
                             String title,
                             String description,
                             String tags,

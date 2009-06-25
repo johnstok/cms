@@ -76,7 +76,6 @@ import ccc.commands.UpdateFolderCommand;
 import ccc.commands.UpdatePageCommand;
 import ccc.commands.UpdatePasswordAction;
 import ccc.commands.UpdateResourceMetadataCommand;
-import ccc.commands.UpdateResourceMetadataRolesCommand;
 import ccc.commands.UpdateResourceRolesCommand;
 import ccc.commands.UpdateTemplateCommand;
 import ccc.commands.UpdateUserCommand;
@@ -633,15 +632,6 @@ public class CommandsEJB
     @Override
     @RolesAllowed({"CONTENT_CREATOR"})
     public void updateMetadata(final ID resourceId,
-                               final Map<String, String> metadata)
-                                                 throws CommandFailedException {
-        updateMetadata(resourceId, metadata, loggedInUserId(), new Date());
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
-    public void updateFullMetaData(final ID resourceId,
                                    final String title,
                                    final String description,
                                    final String tags,
@@ -663,13 +653,22 @@ public class CommandsEJB
     @Override
     @RolesAllowed({"ADMINISTRATOR"})
     public void updateMetadata(final ID resourceId,
+                               final String title,
+                               final String description,
+                               final String tags,
                                final Map<String, String> metadata,
                                final ID actorId,
                                final Date happenedOn)
                                                  throws CommandFailedException {
         try {
-            new UpdateResourceMetadataRolesCommand(_bdao, _audit).execute(
-                userForId(actorId), happenedOn, toUUID(resourceId), metadata);
+            new UpdateResourceMetadataCommand(_bdao, _audit).execute(
+                userForId(actorId),
+                happenedOn,
+                toUUID(resourceId),
+                title,
+                description,
+                tags,
+                metadata);
 
         } catch (final RemoteExceptionSupport e) {
             throw fail(e);

@@ -69,16 +69,14 @@ public class UpdateResourceMetadataCommand {
 
         r.title(title);
         r.description(description);
-
         r.tags(tags);
-        _audit.recordUpdateTags(r, actor,  happenedOn);
 
         r.clearMetadata();
         for (final Map.Entry<String, String> metadatum: metadata.entrySet()) {
             r.addMetadatum(metadatum.getKey(), metadatum.getValue());
         }
 
-        _audit.recordUpdateMetadata(r, actor, happenedOn);
+        _audit.recordUpdateFullMetadata(r, actor, happenedOn);
     }
 
 }

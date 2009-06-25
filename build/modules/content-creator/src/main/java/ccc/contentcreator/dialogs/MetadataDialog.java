@@ -287,7 +287,7 @@ public class MetadataDialog extends AbstractEditDialog {
                 final String title = _title.getValue();
                 final String description = _description.getValue();
 
-                commands().updateFullMetaData(
+                commands().updateMetadata(
                     _resource.getId(),
                     _title.getValue(),
                     _description.getValue(),

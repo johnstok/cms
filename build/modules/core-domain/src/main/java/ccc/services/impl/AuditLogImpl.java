@@ -173,28 +173,6 @@ public class AuditLogImpl
 
     /** {@inheritDoc} */
     @Override
-    public void recordUpdateTags(final Resource resource,
-                                 final User actor,
-                                 final Date happenedOn) {
-        DBC.require().notNull(resource);
-        final LogEntry le =
-            LogEntry.forUpdateTags(resource, actor, happenedOn);
-        record(le);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void recordUpdateMetadata(final Resource resource,
-                                 final User actor,
-                                 final Date happenedOn) {
-        DBC.require().notNull(resource);
-        final LogEntry le =
-            LogEntry.forUpdateMetadata(resource, actor, happenedOn);
-        record(le);
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void recordIncludeInMainMenu(final Resource resource,
                                         final User actor,
                                         final Date happenedOn) {
@@ -268,6 +246,17 @@ public class AuditLogImpl
         DBC.require().notNull(pw);
         final LogEntry le =
             LogEntry.forUserChangePassword(pw, actor, happenedOn);
+        record(le);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void recordUpdateFullMetadata(final Resource resource,
+                                         final User actor,
+                                         final Date happenedOn) {
+        DBC.require().notNull(resource);
+        final LogEntry le =
+            LogEntry.forUpdateMetadata(resource, actor, happenedOn);
         record(le);
     }
 

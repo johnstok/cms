@@ -396,7 +396,13 @@ public class Migrations {
         }
 
         _commands.updateMetadata(
-            rs.getId(), metadata, le.getUser().getId(), le.getHappenedOn());
+            rs.getId(),
+            rs.getTitle(),
+            rs.getDescription(),
+            rs.getTags(),
+            metadata,
+            le.getUser().getId(),
+            le.getHappenedOn());
     }
 
     private void setResourceRoles(final ResourceBean r,

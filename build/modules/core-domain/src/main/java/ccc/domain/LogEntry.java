@@ -337,26 +337,6 @@ public class LogEntry extends Entity {
     }
 
     /**
-     * Create a log entry for the updating tags of a resource.
-     *
-     * @param resource The resource that was changed.
-     * @param actor The actor that performed the action.
-     * @param happenedOn The date that the actor performed the action.
-     * @return The log entry representing the action.
-     */
-    public static LogEntry forUpdateTags(final Resource resource,
-                                         final User actor,
-                                         final Date happenedOn) {
-
-        final LogEntry le = createEntry(resource, actor, happenedOn);
-        le._action = CommandType.RESOURCE_UPDATE_TAGS;
-        final Snapshot ss = new Snapshot();
-        ss.setStrings(JsonKeys.TAGS, resource.tags());
-        le._detail = ss.getDetail();
-        return le;
-    }
-
-    /**
      * Create a log entry for the updating metadata of a resource.
      *
      * @param resource The resource that was changed.
@@ -365,12 +345,15 @@ public class LogEntry extends Entity {
      * @return The log entry representing the action.
      */
     public static LogEntry forUpdateMetadata(final Resource resource,
-                                         final User actor,
-                                         final Date happenedOn) {
+                                             final User actor,
+                                             final Date happenedOn) {
 
         final LogEntry le = createEntry(resource, actor, happenedOn);
         le._action = CommandType.RESOURCE_UPDATE_METADATA;
         final Snapshot ss = new Snapshot();
+        ss.set(JsonKeys.TITLE, resource.title());
+        ss.set(JsonKeys.DESCRIPTION, resource.description());
+        ss.setStrings(JsonKeys.TAGS, resource.tags());
         ss.set(JsonKeys.METADATA, resource.metadata());
         le._detail = ss.getDetail();
         return le;
@@ -624,4 +607,6 @@ public class LogEntry extends Entity {
     public boolean isMajorEdit() {
         return _isMajorEdit;
     }
+
+
 }
