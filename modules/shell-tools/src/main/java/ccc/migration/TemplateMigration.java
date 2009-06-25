@@ -47,6 +47,7 @@ public class TemplateMigration {
 
 
     private void createTemplate(final String templateName,
+                                final String templateDescription,
                                 final ResourceSummary templateFolder) {
         final TemplateDelta t =
             new TemplateDelta(
@@ -60,7 +61,7 @@ public class TemplateMigration {
                     templateFolder.getId(),
                     t,
                     templateName,
-                    "No description.",
+                    templateDescription,
                     templateName);
 
             _templates.put(templateName, ts);
@@ -74,13 +75,15 @@ public class TemplateMigration {
      * Lookup the template for a template name.
      *
      * @param templateName The name.
+     * @param templateDescription The description.
      * @param templateFolder The folder in which templates should be created.
      * @return The corresponding template, or null;
      */
     public ID getTemplate(final String templateName,
+                          final String templateDescription,
                           final ResourceSummary templateFolder) {
         if (!_templates.containsKey(templateName)) { // Not yet migrated
-            createTemplate(templateName, templateFolder);
+            createTemplate(templateName, templateDescription, templateFolder);
         }
         final ResourceSummary template = _templates.get(templateName);
         return (null==template) ? null : template.getId();

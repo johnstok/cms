@@ -19,6 +19,7 @@ public class ResourceBean {
     private final boolean _secure;
     private final String _title;
     private final String _useInIndex;
+    private final String _templateDescription;
 
     /**
      * Constructor.
@@ -32,6 +33,7 @@ public class ResourceBean {
      * @param isSecure Does the resource have security roles associated.
      * @param title The title for the resource
      * @param useInIndex The value of use_in_index.
+     * @param templateDescription The value of templateDescription.
      */
     public ResourceBean(final int contentId,
                         final String type,
@@ -41,7 +43,8 @@ public class ResourceBean {
                         final int legacyVersion,
                         final boolean isSecure,
                         final String title,
-                        final String useInIndex) {
+                        final String useInIndex,
+                        final String templateDescription) {
         _contentId = contentId;
         _displayTemplate = displayTemplate;
         _name = name;
@@ -51,6 +54,7 @@ public class ResourceBean {
         _secure = isSecure;
         _title = title;
         _useInIndex = useInIndex;
+        _templateDescription = templateDescription;
     }
 
 
@@ -145,5 +149,15 @@ public class ResourceBean {
     public String cleanTitle() {
         final String cleanTitle =  (null==title()) ? name() : title();
         return new WordCharFixer().fix(cleanTitle);
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return The template description as a string.
+     */
+    public String templateDescription() {
+        return _templateDescription;
     }
 }

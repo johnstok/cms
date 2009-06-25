@@ -44,7 +44,7 @@ public class ResourceSelectorTest
         final Csv csv = Csv.getInstance();
         final ResultSet rs =
             csv.read(
-                new StringReader(",,,,PUBLISHED,,,,"),
+                new StringReader(",,,,PUBLISHED,,,,,"),
                 new String[]{
                     "CONTENT_ID",
                     "CONTENT_TYPE",
@@ -54,7 +54,8 @@ public class ResourceSelectorTest
                     "VERSION_ID",
                     "PERMISSION_NAME",
                     "INDEX_TITLE",
-                    "USE_IN_INDEX"});
+                    "USE_IN_INDEX",
+                    "DESCRIPTION"});
 
         // ACT
         final List<ResourceBean> result = new ResourceSelector().handle(rs);
@@ -75,7 +76,7 @@ public class ResourceSelectorTest
         final Csv csv = Csv.getInstance();
         final ResultSet rs =
             csv.read(
-                new StringReader(",,,,PUBLISHED,,,TestTitle,"),
+                new StringReader(",,,,PUBLISHED,,,TestTitle,,"),
                 new String[]{
                     "CONTENT_ID",
                     "CONTENT_TYPE",
@@ -85,7 +86,8 @@ public class ResourceSelectorTest
                     "VERSION_ID",
                     "PERMISSION_NAME",
                     "INDEX_TITLE",
-                "USE_IN_INDEX"});
+                "USE_IN_INDEX",
+                "DESCRIPTION"});
 
         // ACT
         final List<ResourceBean> result = new ResourceSelector().handle(rs);
