@@ -21,23 +21,24 @@ import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.contentcreator.validation.Validator;
 
-import com.extjs.gxt.ui.client.Style.LayoutRegion;
+import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;
+import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.event.ToolBarEvent;
 import com.extjs.gxt.ui.client.store.ListStore;
-import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.Text;
-import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.grid.CellEditor;
 import com.extjs.gxt.ui.client.widget.grid.CheckBoxSelectionModel;
@@ -45,9 +46,7 @@ import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.EditorGrid;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
-import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
-import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
-import com.extjs.gxt.ui.client.widget.layout.FormData;
+import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.TextToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
@@ -64,16 +63,16 @@ public class MetadataDialog extends AbstractEditDialog {
     private ResourceSummaryModelData _resource;
     private SingleSelectionModel _ssm;
 
-    private FormPanel _fieldsPanel = new FormPanel();
-    private ContentPanel _gridPanel = new ContentPanel();
-
     private final ListStore<ModelData> _dataStore = new ListStore<ModelData>();
     private final Grid<ModelData> _grid;
+    private final ContentPanel _gridPanel = new ContentPanel();
 
     private final TextField<String> _title = new TextField<String>();
     private final TextField<String> _description = new TextField<String>();
     private final TextField<String> _tags = new TextField<String>();
 
+    private static final int GRID_WIDTH = 610;
+    private static final int GRID_HEIGHT = 270;
 
     /**
      * Constructor.
@@ -89,16 +88,18 @@ public class MetadataDialog extends AbstractEditDialog {
 
         _ssm = ssm;
         _resource = resource;
-        setLayout(new BorderLayout());
 
-        final BorderLayoutData nb =
-            new BorderLayoutData(LayoutRegion.NORTH, 100f);
-
-        final BorderLayoutData cb =
-            new BorderLayoutData(LayoutRegion.CENTER);
-        cb.setMargins(new Margins(10));
-
-        _save.setId("save");
+        addListener(Events.Resize,
+            new Listener<BoxComponentEvent>() {
+            @Override
+            public void handleEvent(final BoxComponentEvent be) {
+                final int height =
+                    be.height - (IGlobals.DEFAULT_HEIGHT - GRID_HEIGHT);
+                if (height > (IGlobals.DEFAULT_HEIGHT - GRID_HEIGHT)) {
+                    _grid.setHeight(height);
+                }
+            }
+        });
 
         _title.setFieldLabel(constants().title());
         _title.setAllowBlank(false);
@@ -115,16 +116,18 @@ public class MetadataDialog extends AbstractEditDialog {
         _tags.setId("tags");
         _tags.setValue(resource.getTags());
 
-        _fieldsPanel.add(_title, new FormData("95%"));
-        _fieldsPanel.add(_description, new FormData("95%"));
-        _fieldsPanel.add(_tags, new FormData("95%"));
-        _fieldsPanel.setHeaderVisible(false);
-        _fieldsPanel.setBorders(false);
-        _fieldsPanel.setBodyBorder(false);
+        addField(_title);
+        addField(_description);
+        addField(_tags);
 
         final Text fieldName = new Text("Values:");
         fieldName.setStyleName("x-form-item");
-        _fieldsPanel.add(fieldName);
+        addField(fieldName);
+
+        _gridPanel.setBodyBorder(false);
+        _gridPanel.setBorders(true);
+        _gridPanel.setHeaderVisible(false);
+        _gridPanel.setLayout(new FitLayout());
 
         final ColumnModel cm = defineColumnModel();
         _dataStore.add(DataBinding.bindMetadata(data));
@@ -134,19 +137,14 @@ public class MetadataDialog extends AbstractEditDialog {
         _grid.setSelectionModel(_sm);
         _grid.addPlugin(_sm);
         _grid.setBorders(false);
-        _grid.setHeight(270);
+        _grid.setHeight(GRID_HEIGHT);
+        _grid.setWidth(GRID_WIDTH);
         _grid.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-        _gridPanel.setHeaderVisible(false);
-        _gridPanel.setBorders(true);
-        _gridPanel.setBodyBorder(false);
-
         _gridPanel.add(_grid);
+
+        addField(_gridPanel);
         addToolbar();
-
-        add(_fieldsPanel, nb);
-        add(_gridPanel, cb);
-
     }
 
     private ColumnModel defineColumnModel() {
@@ -244,16 +242,16 @@ public class MetadataDialog extends AbstractEditDialog {
 
 
     /**
-     * Factory method for username validators.
+     * Factory method for metadata validators.
      *
-     * @param metadata The values to validate.
+     * @param data The values to validate.
      * @return A new instance of the metaDataValues validator.
      */
-    private Validator metaDataValues(final Map<String, String> metadata) {
+    private Validator metaDataValues(final Map<String, String> data) {
         return new Validator() {
             public void validate(final Validate validate) {
                 final StringBuilder sb = new StringBuilder();
-                for (final Map.Entry<String, String> datum : metadata.entrySet()) {
+                for (final Map.Entry<String, String> datum : data.entrySet()) {
                     if (null==datum.getKey()
                         || datum.getKey().trim().length() < 1) {
                         sb.append(_constants.noEmptyKeysAllowed());
