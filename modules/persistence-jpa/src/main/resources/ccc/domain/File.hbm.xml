@@ -23,6 +23,27 @@
         table="files">
         
 		<key column="id" foreign-key="FK_FILE_RESOURCE_ID" />
+
+        <!-- 
+            De-normalise mime type so we can query against it.
+         -->
+        <component
+            name="mimeType"
+            access="property"
+            class="ccc.api.MimeType">
+            <property
+                name="_primaryType"
+                not-null="true"
+                column="mime_type_primary"
+                type="string" 
+                 length="255" />
+            <property
+                name="_subType"
+                not-null="true"
+                column="mime_type_sub"
+                type="string" 
+                 length="255" />
+        </component>
         
         <list name="_history" cascade="all,delete-orphan">
             <cache usage="transactional"/>
@@ -39,7 +60,7 @@
             
 	</joined-subclass>
 	
-	<!-- FIXME: query name="allImages">from ccc.domain.File f where f._mimeType._primaryType = 'image'</query -->
+	<query name="allImages">from ccc.domain.File f where f.mimeType._primaryType = 'image'</query>
 	<query name="allFiles">from ccc.domain.File</query>
 	
 </hibernate-mapping>

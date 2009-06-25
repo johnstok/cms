@@ -209,7 +209,7 @@ public class UserManagerImplTest extends TestCase {
 
         expect(_dao.find("passwordForUser", Password.class, _u.id()))
             .andReturn(pw);
-        _audit.recordUserChangePassword(pw, _u, now); // FIXME: Broken.
+        _audit.recordUserChangePassword(pw, _u, now); // TODO: Broken.
         replayAll();
 
         final UpdatePasswordAction up = new UpdatePasswordAction(_dao, _audit);
