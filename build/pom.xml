@@ -96,6 +96,7 @@
         <module>modules/security-config</module>
         <module>modules/application-ear</module>
         <module>modules/db-schema</module>
+        <module>modules/acceptance-tests</module>
     </modules>
 
     <build>

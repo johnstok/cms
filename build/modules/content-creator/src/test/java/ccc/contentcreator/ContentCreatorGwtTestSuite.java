@@ -13,8 +13,6 @@ package ccc.contentcreator;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import ccc.contentcreator.actions.ClearWorkingCopyActionGwtTest;
-import ccc.contentcreator.callbacks.DisposingCallbackGwtTest;
 
 import com.google.gwt.junit.tools.GWTTestSuite;
 
@@ -35,8 +33,6 @@ public class ContentCreatorGwtTestSuite
      */
     public static Test suite() {
         final TestSuite gwtTestSuite = new GWTTestSuite();
-        gwtTestSuite.addTestSuite(ClearWorkingCopyActionGwtTest.class);
-        gwtTestSuite.addTestSuite(DisposingCallbackGwtTest.class);
         return gwtTestSuite;
     }
 

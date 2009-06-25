@@ -13,11 +13,8 @@ package ccc.ws;
 
 import java.util.Collection;
 
-import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-
-import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.api.Queries;
 import ccc.api.ResourceSummary;
@@ -30,7 +27,7 @@ import ccc.api.ResourceSummary;
  */
 @Path("")
 @Produces("text/html")
-public class RestApi {
+public class RestApi implements IRestApi {
 
     private Queries _queries;
 
@@ -43,13 +40,9 @@ public class RestApi {
         _queries = queries;
     }
 
-    /**
-     * Query: list the root folders available.
-     *
-     * @return The root folders, as a collection of resource summaries.
-     */
-    @GET @Path("/roots") @NoCache
+    /** {@inheritDoc} */
     public Collection<ResourceSummary> roots() {
         return _queries.roots();
     }
 }
+

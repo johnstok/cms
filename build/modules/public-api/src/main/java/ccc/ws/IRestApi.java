@@ -9,9 +9,17 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.actions;
 
-import com.google.gwt.junit.client.GWTTestCase;
+package ccc.ws;
+
+import java.util.Collection;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+
+import org.jboss.resteasy.annotations.cache.NoCache;
+
+import ccc.api.ResourceSummary;
 
 
 /**
@@ -19,27 +27,14 @@ import com.google.gwt.junit.client.GWTTestCase;
  *
  * @author Civic Computing Ltd.
  */
-public class ClearWorkingCopyActionGwtTest
-    extends
-        GWTTestCase {
+public interface IRestApi {
 
     /**
-     * Test.
+     * Query: list the root folders available.
+     *
+     * @return The root folders, as a collection of resource summaries.
      */
-    public void testFoo() {
+    @GET @Path("/roots") @NoCache
+    public abstract Collection<ResourceSummary> roots();
 
-        // ARRANGE
-
-        // ACT
-        new ClearWorkingCopyAction(null);
-
-        // ASSERT
-
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public String getModuleName() {
-        return "ccc.contentcreator.ContentCreator";
-    }
 }
