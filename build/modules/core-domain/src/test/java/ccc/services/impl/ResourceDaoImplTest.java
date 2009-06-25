@@ -489,7 +489,7 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * FIXME: Broken.
+     * TODO: Broken.
      */
     public void testPublishWithUser() {
 //

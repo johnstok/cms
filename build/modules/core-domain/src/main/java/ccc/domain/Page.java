@@ -25,7 +25,9 @@ import ccc.api.DBC;
 import ccc.api.Json;
 import ccc.api.PageDelta;
 import ccc.api.Paragraph;
+import ccc.api.ParagraphType;
 import ccc.api.ResourceType;
+import ccc.commons.WordCharFixer;
 
 
 /**
@@ -147,34 +149,9 @@ public final class Page
     public void applySnapshot(final RevisionMetadata metadata) {
         DBC.require().notNull(wc());
 
-        final PageHelper pageHelper = new PageHelper();
-
-//        assignParagraphs(_workingCopy);
-
-        // FIXME: Move into update() method.
-        final Template template = computeTemplate(null);
-        if (null!=template) {
-            pageHelper.validateFieldsForPage(
-                paragraphs(), template.definition());
-        }
-
         update(wc().delta(), metadata);
 
         clearWorkingCopy();
-    }
-
-    // FIXME: Add char fixing.
-    private void assignParagraphs(final PageDelta delta) {
-//        for (final Paragraph para : delta.getParagraphs()) {
-//
-//            if (ParagraphType.TEXT == para.type()) {
-//                final WordCharFixer fixer = new WordCharFixer();
-//                final Paragraph p = Paragraph.fromText(para.name(), fixer.fix(para.text()));
-//                addParagraph(p);
-//            } else {
-//                addParagraph(para);
-//            }
-//        }
     }
 
     /** {@inheritDoc} */
@@ -244,12 +221,41 @@ public final class Page
             delta.getParagraphs().size(),
             MAXIMUM_PARAGRAPHS);
 
+        final HashSet<Paragraph> paras = cleanParagraphs(delta);
+
+        validateParagraphs(paras);
+
         addRevision(
             new PageRevision(
                 metadata.getTimestamp(),
                 metadata.getActor(),
                 metadata.isMajorChange(),
                 metadata.getComment(),
-                delta.getParagraphs()));
+                paras));
+    }
+
+    private void validateParagraphs(final HashSet<Paragraph> paras) {
+
+        final Template template = computeTemplate(null);
+        if (null != template) {
+            final PageHelper pageHelper = new PageHelper();
+            pageHelper.validateFieldsForPage(paras, template.definition());
+        }
+    }
+
+    private HashSet<Paragraph> cleanParagraphs(final PageDelta delta) {
+
+        final HashSet<Paragraph> paras = new HashSet<Paragraph>();
+        for (final Paragraph para : delta.getParagraphs()) {
+            if (ParagraphType.TEXT == para.type()) {
+                final WordCharFixer fixer = new WordCharFixer();
+                final Paragraph p =
+                    Paragraph.fromText(para.name(), fixer.fix(para.text()));
+                paras.add(p);
+            } else {
+                paras.add(para);
+            }
+        }
+        return paras;
     }
 }

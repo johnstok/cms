@@ -139,7 +139,7 @@ public final class PageTest extends TestCase {
     /**
      * Test.
      */
-    public void testUpdateWorkingCopy() { // FIXME
+    public void testUpdateWorkingCopy() { // TODO
 
         // ARRANGE
         final Page page = new Page("foo");
@@ -155,7 +155,7 @@ public final class PageTest extends TestCase {
     /**
      * Test.
      */
-    public void testClearWorkingCopy() { // FIXME
+    public void testClearWorkingCopy() { // TODO
 
         // ARRANGE
         final Page page = new Page("foo");
@@ -227,7 +227,8 @@ public final class PageTest extends TestCase {
         final Paragraph p = page.paragraph("header");
 
         // ASSERT
-        assertSame(header, p);
+        assertEquals(header.text(), p.text());
+        assertEquals(header, p);
     }
 
     /**
