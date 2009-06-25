@@ -11,7 +11,6 @@
  */
 package ccc.contentcreator.binding;
 
-import static ccc.api.JsonKeys.*;
 
 import java.util.Collection;
 import java.util.Date;
@@ -21,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ccc.api.ID;
+import ccc.api.JsonKeys;
 import ccc.api.ResourceSummary;
 import ccc.api.ResourceType;
 import ccc.api.Username;
@@ -63,36 +63,66 @@ public class ResourceSummaryModelData
         final JSONObject summaryObject = jsonObject.isObject();
 
         return new ResourceSummaryModelData(new ResourceSummary(
-            new ID(summaryObject.get(ID).isString().stringValue()),
-            new ID(summaryObject.get(PARENT_ID).isString().stringValue()),
-            summaryObject.get(NAME).isString().stringValue(),
-            (null!=summaryObject.get(PUBLISHED_BY).isNull())
+            new ID(summaryObject.get(JsonKeys.ID).isString().stringValue()),
+
+            new ID(summaryObject.get(
+                JsonKeys.PARENT_ID).isString().stringValue()),
+
+            summaryObject.get(JsonKeys.NAME).isString().stringValue(),
+
+            (null!=summaryObject.get(JsonKeys.PUBLISHED_BY).isNull())
                 ? null
-                : new Username(summaryObject.get(PUBLISHED_BY).isString().stringValue()),
-            summaryObject.get(TITLE).isString().stringValue(),
-            (null!=summaryObject.get(LOCKED_BY).isNull())
+                : new Username(summaryObject.get(
+                    JsonKeys.PUBLISHED_BY).isString().stringValue()),
+
+            summaryObject.get(JsonKeys.TITLE).isString().stringValue(),
+
+            (null!=summaryObject.get(JsonKeys.LOCKED_BY).isNull())
                 ? null
-                : new Username(summaryObject.get(LOCKED_BY).isString().stringValue()),
+                : new Username(summaryObject.get(
+                    JsonKeys.LOCKED_BY).isString().stringValue()),
+
             ResourceType.valueOf(
-                summaryObject.get(TYPE).isString().stringValue()),
-            (int) summaryObject.get(CHILD_COUNT).isNumber().doubleValue(),
-            (int) summaryObject.get(FOLDER_COUNT).isNumber().doubleValue(),
-            summaryObject.get(INCLUDE_IN_MAIN_MENU).isBoolean().booleanValue(),
-            (null!=summaryObject.get(SORT_ORDER).isNull())
+                summaryObject.get(JsonKeys.TYPE).isString().stringValue()),
+
+            (int) summaryObject.get(
+                JsonKeys.CHILD_COUNT).isNumber().doubleValue(),
+
+            (int) summaryObject.get(
+                JsonKeys.FOLDER_COUNT).isNumber().doubleValue(),
+
+            summaryObject.get(
+                JsonKeys.INCLUDE_IN_MAIN_MENU).isBoolean().booleanValue(),
+
+            (null!=summaryObject.get(JsonKeys.SORT_ORDER).isNull())
                 ? null
-                :summaryObject.get(SORT_ORDER).isString().stringValue(),
-            summaryObject.get(HAS_WORKING_COPY).isBoolean().booleanValue(),
-            new Date((long) summaryObject.get(DATE_CREATED).isNumber().doubleValue()),
-            new Date((long) summaryObject.get(DATE_CHANGED).isNumber().doubleValue()),
-            (null!=summaryObject.get(TEMPLATE_ID).isNull())
+                :summaryObject.get(
+                    JsonKeys.SORT_ORDER).isString().stringValue(),
+
+            summaryObject.get(
+                JsonKeys.HAS_WORKING_COPY).isBoolean().booleanValue(),
+
+            new Date((long) summaryObject.get(
+                JsonKeys.DATE_CREATED).isNumber().doubleValue()),
+
+            new Date((long) summaryObject.get(
+                JsonKeys.DATE_CHANGED).isNumber().doubleValue()),
+
+            (null!=summaryObject.get(JsonKeys.TEMPLATE_ID).isNull())
                 ? null
-                : new ID(summaryObject.get(TEMPLATE_ID).isString().stringValue()),
-            summaryObject.get(TAGS).isString().stringValue(),
-            summaryObject.get(ABSOLUTE_PATH).isString().stringValue(),
-            (null!=summaryObject.get(INDEX_PAGE_ID).isNull())
+                : new ID(summaryObject.get(
+                    JsonKeys.TEMPLATE_ID).isString().stringValue()),
+
+            summaryObject.get(JsonKeys.TAGS).isString().stringValue(),
+
+            summaryObject.get(JsonKeys.ABSOLUTE_PATH).isString().stringValue(),
+
+            (null!=summaryObject.get(JsonKeys.INDEX_PAGE_ID).isNull())
             ? null
-            : new ID(summaryObject.get(INDEX_PAGE_ID).isString().stringValue()),
-            summaryObject.get(DESCRIPTION).isString().stringValue()
+            : new ID(summaryObject.get(
+                JsonKeys.INDEX_PAGE_ID).isString().stringValue()),
+
+            summaryObject.get(JsonKeys.DESCRIPTION).isString().stringValue()
         ));
     }
 
@@ -194,23 +224,45 @@ public class ResourceSummaryModelData
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /**
+     * Property values form model data.
+     *
+     * @author Civic Computing Ltd.
+     */
     public enum Property {
+        /** ID : Property. */
         ID,
+        /** PARENT_ID : Property. */
         PARENT_ID,
+        /** NAME : Property. */
         NAME,
+        /** PUBLISHED : Property. */
         PUBLISHED,
+        /** TITLE : Property. */
         TITLE,
+        /** LOCKED : Property. */
         LOCKED,
+        /** TYPE : Property. */
         TYPE,
+        /** CHILD_COUNT : Property. */
         CHILD_COUNT,
+        /** FOLDER_COUNT : Property. */
         FOLDER_COUNT,
+        /** MM_INCLUDE : Property. */
         MM_INCLUDE,
+        /** SORT_ORDER : Property. */
         SORT_ORDER,
+        /** WORKING_COPY : Property. */
         WORKING_COPY,
+        /** DATE_CHANGED : Property. */
         DATE_CHANGED,
+        /** DATE_CREATED : Property. */
         DATE_CREATED,
+        /** ABSOLUTE_PATH : Property. */
         ABSOLUTE_PATH,
+        /** INDEX_PAGE_ID : Property. */
         INDEX_PAGE_ID,
+        /** DESCRIPTION : Property. */
         DESCRIPTION;
     }
 
