@@ -19,7 +19,6 @@
     
     <display-name>Content Creator</display-name>
     
-    <!--
     <context-param>
         <param-name>resteasy.scan</param-name>
         <param-value>true</param-value>
@@ -41,7 +40,6 @@
             org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher
         </servlet-class>
     </servlet>
-    -->
     <servlet>
         <servlet-name>Queries</servlet-name>
         <servlet-class>
@@ -105,12 +103,10 @@
         <jsp-file>/notfound.jsp</jsp-file>
     </servlet>
     
-    <!--
     <servlet-mapping>
         <servlet-name>Resteasy</servlet-name>
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
-    -->
     <servlet-mapping>
         <servlet-name>Queries</servlet-name>
         <url-pattern>/queries</url-pattern>
@@ -176,9 +172,7 @@
             <url-pattern>/assets/*</url-pattern>
             <url-pattern>/error</url-pattern>
             <url-pattern>/notfound</url-pattern>
-            <!--
             <url-pattern>/api</url-pattern>
-            -->
             <!-- Secure all HTTP Methods -->
         </web-resource-collection>
         <auth-constraint>

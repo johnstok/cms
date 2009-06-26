@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.ws;
+package ccc.acceptance;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,9 +37,7 @@ import ccc.api.ResourceSummary;
 
 /**
  * A {@link MessageBodyWriter} a collection of resource summaries.
- * TODO: Set char encoding?
- * TODO: Use velocity?
- * TODO: eTags?
+ * TODO: Remove this class - it is a duplicate.
  *
  * @author Civic Computing Ltd.
  */
