@@ -43,7 +43,6 @@ import ccc.domain.CCCException;
  * @author Civic Computing Ltd
  */
 public class Migrations {
-    private static final boolean DEBUG = true;
     private static Logger log = Logger.getLogger(Migrations.class);
 
     private final ResourceSummary _contentRoot;
@@ -59,7 +58,10 @@ public class Migrations {
     private final Commands _commands;
     private final Queries _queries;
     private final String _linkPrefix;
+
     private final boolean _migrateHomepage;
+    private final boolean _migrateIsMajorEdit;
+    private final boolean _migrateVersions;
 
     private final FileMigrator _fm;
     private final UserMigration _um;
@@ -78,18 +80,24 @@ public class Migrations {
      * @param queries The available queries for CCC7.
      * @param fu The file up-loader to use.
      * @param migrateHomepage The boolean for home page migration.
+     * @param migrateIsMajorEdit The boolean for is_major_edit migration.
+     * @param migrateVersions The boolean for page versions migration.
      */
     public Migrations(final LegacyDBQueries legacyQueries,
                       final String linkPrefix,
                       final Commands commands,
                       final Queries queries,
                       final FileUploader fu,
-                      final boolean migrateHomepage) {
+                      final boolean migrateHomepage,
+                      final boolean migrateIsMajorEdit,
+                      final boolean migrateVersions) {
         _legacyQueries = legacyQueries;
         _queries = queries;
         _commands = commands;
         _linkPrefix = linkPrefix;
         _migrateHomepage = migrateHomepage;
+        _migrateIsMajorEdit = migrateIsMajorEdit;
+        _migrateVersions = migrateVersions;
 
         _contentRoot = _queries.resourceForPath("/content");
         _filesFolder = _queries.resourceForPath("/content/files");
@@ -98,7 +106,6 @@ public class Migrations {
         _templateFolder = _queries.resourceForPath("/assets/templates");
         _assetsImagesFolder = _queries.resourceForPath("/assets/images");
         _cssFolder = _queries.resourceForPath("/assets/css");
-
 
         _fm = new FileMigrator(fu, _legacyQueries, "files/", "images/", "css/");
         _um = new UserMigration(_legacyQueries, _commands);
@@ -235,16 +242,34 @@ public class Migrations {
             final List<Integer> paragraphVersions = determinePageVersions(r);
 
             // Create the page
-            final Integer createVersion = paragraphVersions.remove(0);
-            LogEntryBean le = logEntryForVersion(
-                r.contentId(), createVersion, "CREATED PAGE");
+            LogEntryBean le = null;
+            Integer createVersion = paragraphVersions.remove(0);
+            while (le == null) {
+                try {
+                    le = logEntryForVersion(
+                        r.contentId(), createVersion, "CREATED PAGE");
+                } catch (final MigrationException e) {
+                    log.warn("Skipped version "+createVersion+" of page "
+                        +r.contentId());
+                    if (paragraphVersions.size() == 0) {
+                        throw e;
+                    }
+                    createVersion = paragraphVersions.remove(0);
+                }
+            }
+
             final ResourceSummary rs =
                 createPage(parentFolderId, r, createVersion, le);
 
             // Apply all updates
             for (final Integer version : paragraphVersions) {
-                le = logEntryForVersion(r.contentId(), version, "UPDATE");
-                updatePage(r, rs, version, le);
+                try {
+                    le = logEntryForVersion(r.contentId(), version, "UPDATE");
+                    updatePage(r, rs, version, le);
+                } catch (final MigrationException e) {
+                    log.warn("Update skipped for version "+version
+                        +" of page "+r.contentId());
+                }
             }
 
             _commands.lock(
@@ -280,7 +305,7 @@ public class Migrations {
 
     private List<Integer> determinePageVersions(final ResourceBean r) {
 
-        if (DEBUG) {
+        if (!_migrateVersions) {
             final List<Integer> only0 = new ArrayList<Integer>();
             only0.add(Integer.valueOf(0));
             return only0;
@@ -318,11 +343,20 @@ public class Migrations {
 
         _commands.lock(rs.getId(), le.getUser().getId(), le.getHappenedOn());
         final PageDelta d = assemblePage(r, version);
+
+        final String userComment =
+            _legacyQueries.selectUserComment(r.contentId(), version);
+
+        Boolean isMajorEdit = Boolean.valueOf(false);
+        if (_migrateIsMajorEdit) {
+            isMajorEdit =
+                _legacyQueries.selectIsMajorEdit(r.contentId(), version);
+        }
         _commands.updatePage(
             rs.getId(),
             d,
-            null,
-            false,
+            userComment,
+            isMajorEdit.booleanValue(),
             le.getUser().getId(),
             le.getHappenedOn());
         _commands.unlock(rs.getId(), le.getUser().getId(), le.getHappenedOn());

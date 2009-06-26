@@ -28,7 +28,7 @@ import ccc.commons.Resources;
 
 
 /**
- * TODO: Add a description for this type.
+ * Entry class for the schema creation application.
  *
  * @author Civic Computing Ltd.
  */
@@ -102,7 +102,8 @@ public class Schema
                          final String statement) {
         try {
             final PreparedStatement ps =
-                newConnection.prepareStatement(statement.substring(0, statement.length()-1));
+                newConnection.prepareStatement(
+                    statement.substring(0, statement.length()-1));
 
             try {
                 ps.execute();
@@ -118,6 +119,11 @@ public class Schema
         }
     }
 
+    /**
+     * Entry point for this application.
+     *
+     * @param args String array of application arguments.
+     */
     public static final void main(final String[] args) {
         parseOptions(args, Schema.class).create();
     }

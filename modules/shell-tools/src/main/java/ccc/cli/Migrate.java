@@ -69,7 +69,9 @@ public final class Migrate extends CccApp {
                     options.getCcURL(),
                     options.getUsername(),
                     options.getPassword()),
-            options.isMigrateHomepage());
+            options.isMigrateHomepage(),
+            options.isMigrateIsMajorEdit(),
+            options.isMigrateVersions());
         migrations.migrate();
     }
 
@@ -117,7 +119,19 @@ public final class Migrate extends CccApp {
             name="-hp",
             required=false,
             usage="Optional homepage migration (post CCC 6.4).")
-        private boolean migrateHomepage;
+        private boolean _migrateHomepage;
+
+        @Option(
+            name="-mj",
+            required=false,
+            usage="Optional migration c3_content.is_major_edit. Requires -v.")
+            private boolean _migrateIsMajorEdit;
+
+        @Option(
+            name="-v",
+            required=false,
+            usage="Optional migration of paragraph versions.")
+            private boolean _migrateVersions;
 
         /**
          * Accessor.
@@ -204,7 +218,25 @@ public final class Migrate extends CccApp {
          * @return Returns the migrateHomepage.
          */
         boolean isMigrateHomepage() {
-            return migrateHomepage;
+            return _migrateHomepage;
+        }
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the migrateIsMajorEdit.
+         */
+        boolean isMigrateIsMajorEdit() {
+            return _migrateIsMajorEdit;
+        }
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the migrateVersions.
+         */
+        boolean isMigrateVersions() {
+            return _migrateVersions;
         }
     }
 }

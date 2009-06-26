@@ -16,7 +16,8 @@ public final class HomepageSelector
 
     /** {@inheritDoc} */
     @Override
-    public Map<Integer, Integer> handle(final ResultSet rs) throws SQLException {
+    public Map<Integer, Integer> handle(final ResultSet rs)
+        throws SQLException {
         final Map<Integer, Integer> resultMap =
             new HashMap<Integer, Integer>();
 
