@@ -57,7 +57,7 @@
                                 <java classname="com.google.gwt.dev.GWTCompiler"
                                     classpath="${gwt_compile_classpath}"
                                     fork="true" failonerror="true">
-                                    <jvmarg value="-Xmx256M"/>
+                                    <jvmarg value="-Xmx512M"/>
                                     <jvmarg value="-Xss4M"/>
                                     <jvmarg value="-Dgwt.nowarn.legacy.tools"/>
                                     <arg value="-out" />
