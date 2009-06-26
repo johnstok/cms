@@ -11,12 +11,12 @@
  */
 package ccc.ws;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import ccc.api.Queries;
 import ccc.api.ResourceSummary;
 
 
@@ -29,20 +29,9 @@ import ccc.api.ResourceSummary;
 @Produces("text/html")
 public class RestApi implements IRestApi {
 
-    private Queries _queries;
-
-    /**
-     * Constructor.
-     *
-     * @param queries The {@link Queries} implementation to use.
-     */
-    public RestApi(final Queries queries) {
-        _queries = queries;
-    }
-
     /** {@inheritDoc} */
     public Collection<ResourceSummary> roots() {
-        return _queries.roots();
+        return new ArrayList<ResourceSummary>();
     }
 }
 
