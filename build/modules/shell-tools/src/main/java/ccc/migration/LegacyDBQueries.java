@@ -11,6 +11,7 @@ import ccc.migration.ccc6.handlers.AllUsersSelector;
 import ccc.migration.ccc6.handlers.FileSelector;
 import ccc.migration.ccc6.handlers.FlaggedSelector;
 import ccc.migration.ccc6.handlers.HomepageSelector;
+import ccc.migration.ccc6.handlers.IsMajorEditSelector;
 import ccc.migration.ccc6.handlers.LogEntryUserSelector;
 import ccc.migration.ccc6.handlers.ParagraphSelector;
 import ccc.migration.ccc6.handlers.ParagraphVersionsSelector;
@@ -18,6 +19,7 @@ import ccc.migration.ccc6.handlers.ResourceRolesSelector;
 import ccc.migration.ccc6.handlers.ResourceSelector;
 import ccc.migration.ccc6.handlers.ShowInMainMenuSelector;
 import ccc.migration.ccc6.handlers.StyleSheetSelector;
+import ccc.migration.ccc6.handlers.UserCommentSelector;
 import ccc.migration.ccc6.handlers.UserEmailSelector;
 import ccc.migration.ccc6.handlers.UserRolesSelector;
 
@@ -199,5 +201,29 @@ public class LegacyDBQueries {
     public Map<Integer, Integer> homepages() {
         final HomepageSelector query = new HomepageSelector();
         return _db.select(query);
+    }
+
+    /**
+     * Return user comment left at the page edit.
+     *
+     * @param contentId The resource's id.
+     * @param version The page's version.
+     * @return The user comment.
+     */
+    public String selectUserComment(final int contentId, final int version) {
+        final UserCommentSelector query = new UserCommentSelector();
+        return _db.select(query, contentId, version);
+    }
+
+    /**
+     * Return value of the c3_content.is_major_edit.
+     *
+     * @param contentId The resource's id.
+     * @param version The page's version.
+     * @return The boolean value of isMajorEdit.
+     */
+    public Boolean selectIsMajorEdit(final int contentId, final int version) {
+        final IsMajorEditSelector query = new IsMajorEditSelector();
+        return _db.select(query, contentId, version);
     }
 }
