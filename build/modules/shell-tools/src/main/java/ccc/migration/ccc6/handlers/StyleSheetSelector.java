@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import ccc.api.DBC;
 
 /**
- * TODO: Add Description for this type.
+ * A SQL query that retrieves CCC6 style sheet code for a resource.
  *
  * @author Civic Computing Ltd.
  */

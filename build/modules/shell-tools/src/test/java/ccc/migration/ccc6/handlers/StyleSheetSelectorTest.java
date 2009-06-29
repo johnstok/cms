@@ -22,7 +22,7 @@ import org.h2.tools.Csv;
 
 
 /**
- * TODO: Add Description for this type.
+ * Tests for the {@link StyleSheetSelector} class.
  *
  * @author Civic Computing Ltd.
  */

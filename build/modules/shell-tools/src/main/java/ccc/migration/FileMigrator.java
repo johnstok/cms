@@ -21,7 +21,7 @@ import ccc.api.ResourceSummary;
 
 
 /**
- * TODO: Add a description for this type.
+ * Migrate files, images and CSS from CCC6.
  *
  * @author Civic Computing Ltd.
  */
