@@ -13,7 +13,6 @@ package ccc.contentcreator.client;
 
 import static ccc.contentcreator.dialogs.AbstractBaseDialog.*;
 import ccc.api.AliasDelta;
-import ccc.api.FileDelta;
 import ccc.api.PageDelta;
 import ccc.api.ResourceType;
 import ccc.api.TemplateDelta;
@@ -366,7 +365,7 @@ public class ResourceContextMenu
                 } else if (ResourceType.FILE==item.getType()) {
                     updateFile(item);
                 } else {
-                    Globals.alert("No editor available for this resource.");
+                    Globals.alert(_constants.noEditorForResource());
                 }
             }
         });
@@ -374,20 +373,11 @@ public class ResourceContextMenu
     }
 
 
-
-
-    // TODO: Factor these methods to actions
     private void updateFile(final ResourceSummaryModelData item) {
-        _qs.fileDelta(
-            item.getId(),
-            new ErrorReportingCallback<FileDelta>(_constants.uploadFile()) {
-                public void onSuccess(final FileDelta result) {
-                    new UpdateFileDialog(result, item.getId(), _table).show();
-                }
-            }
-        );
+        new UpdateFileDialog(item.getId()).show();
     }
 
+    // TODO: Factor these methods to actions
     private void updateAlias(final ResourceSummaryModelData item) {
         _qs.aliasDelta(
             item.getId(),

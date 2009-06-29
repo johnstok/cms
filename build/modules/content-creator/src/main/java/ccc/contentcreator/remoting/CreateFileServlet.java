@@ -14,6 +14,7 @@ package ccc.contentcreator.remoting;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServlet;
@@ -61,6 +62,7 @@ public class CreateFileServlet extends HttpServlet {
         final FileItem description = form.getFormItem("description");
         final FileItem path        = form.getFormItem("path");
         final FileItem publish     = form.getFormItem("publish");
+        final FileItem lastUpdate  = form.getFormItem("lastUpdate");
 
         final ID parentId = new ID(path.getString());
         final boolean p =
@@ -74,6 +76,18 @@ public class CreateFileServlet extends HttpServlet {
                 null,
                 (int) file.getSize());
 
+        final String titleString =
+            (title == null) ? name.getString() : title.getString();
+
+        final String descriptionString =
+                (description == null) ? "" : description.getString();
+
+        Date lastUpdateDate = new Date();
+        if (lastUpdate != null) {
+            lastUpdateDate = new Date(
+                Long.valueOf(lastUpdate.getString()).longValue());
+        }
+
         final InputStream dataStream = file.getInputStream();
 
         try {
@@ -83,8 +97,9 @@ public class CreateFileServlet extends HttpServlet {
                     delta,
                     name.getString(),
                     dataStream,
-                    title.getString(),
-                    description.getString(),
+                    titleString,
+                    descriptionString,
+                    lastUpdateDate,
                     p);
             response.getWriter().write(toJSON(rs));
 

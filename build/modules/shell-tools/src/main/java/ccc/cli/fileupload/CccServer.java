@@ -63,7 +63,7 @@ public class CccServer implements Server {
                            final File f,
                            final boolean publish) {
         _uploader.uploadFile(
-            parentFolder, f.getName(), f.getName(), "", f, publish);
+            parentFolder, f.getName(), f.getName(), "", null, f, publish);
     }
 
 

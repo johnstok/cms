@@ -12,6 +12,7 @@
 package ccc.api;
 
 import java.io.InputStream;
+import java.util.Date;
 
 
 /**
@@ -28,6 +29,9 @@ public interface LocalCommands extends Commands {
      * @param file The details of the file.
      * @param resourceName The name of the file.
      * @param dataStream The content of the file.
+     * @param title The title of the file.
+     * @param description The description of the file.
+     * @param lastUpdated The last updated date of the file.
      * @param publish Should the file be published.
      *
      * @return A summary of the newly created file.
@@ -40,6 +44,7 @@ public interface LocalCommands extends Commands {
                                InputStream dataStream,
                                String title,
                                String description,
+                               Date lastUpdated,
                                boolean publish) throws CommandFailedException;
 
     /**

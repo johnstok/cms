@@ -74,6 +74,7 @@ public class FileMigrator {
                 legacyFile.getKey(),
                 legacyFile.getValue().getTitle(),
                 legacyFile.getValue().getDescription(),
+                legacyFile.getValue().getLastUpdate(),
                 _filesSourcePath);
         }
 
@@ -85,6 +86,7 @@ public class FileMigrator {
                 legacyFile.getKey(),
                 legacyFile.getValue().getTitle(),
                 legacyFile.getValue().getDescription(),
+                legacyFile.getValue().getLastUpdate(),
                 _imagesSourcePath);
         }
     }
@@ -116,6 +118,7 @@ public class FileMigrator {
                         file.getName(),
                         file.getName(),
                         "Migrated file.",
+                        null,
                         file,
                         false);
                 }
@@ -158,6 +161,7 @@ public class FileMigrator {
                         file.getName(),
                         file.getName(),
                         "",
+                        null,
                         file,
                         false);
                 }

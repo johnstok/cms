@@ -157,7 +157,7 @@ public interface IGlobals {
     /** DEFAULT_HEIGHT : int. */
     int DEFAULT_HEIGHT = 480;
     /** DEFAULT_UPLOAD_HEIGHT : int. */
-    int DEFAULT_UPLOAD_HEIGHT = 250;
+    int DEFAULT_UPLOAD_HEIGHT = 200;
     /** DEFAULT_MIN_HEIGHT : int. */
     int DEFAULT_MIN_HEIGHT = 150;
     /** APP_URL : String. */

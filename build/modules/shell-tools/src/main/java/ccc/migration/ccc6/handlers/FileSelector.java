@@ -27,7 +27,8 @@ public final class FileSelector
             final LegacyFile file =
                 new LegacyFile(
                     rs.getString("object_title"),
-                    rs.getString("classification"));
+                    rs.getString("classification"),
+                    rs.getDate("last_update"));
             results.put(rs.getString("object_name"), file);
         }
 
@@ -38,7 +39,7 @@ public final class FileSelector
     @Override
     public String getSql() {
         return
-        "SELECT object_name, object_title, classification "
+        "SELECT object_name, object_title, classification, last_update "
         + "FROM c3_file_objects "
         + "WHERE application_name='CCC' AND object_type= ?";
     }

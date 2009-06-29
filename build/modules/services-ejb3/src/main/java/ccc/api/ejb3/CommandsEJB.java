@@ -874,6 +874,7 @@ public class CommandsEJB
                                       final InputStream dataStream,
                                       final String title,
                                       final String description,
+                                      final Date lastUpdated,
                                       final boolean publish)
                                                  throws CommandFailedException {
         try {
@@ -882,7 +883,7 @@ public class CommandsEJB
             final File f =
                 new CreateFileCommand(_bdao, _audit, _dm).execute(
                     u,
-                    new Date(),
+                    lastUpdated,
                     toUUID(parentFolder),
                     file,
                     title,

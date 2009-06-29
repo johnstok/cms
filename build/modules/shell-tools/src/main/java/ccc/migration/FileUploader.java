@@ -14,6 +14,7 @@ package ccc.migration;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.activation.MimetypesFileTypeMap;
@@ -124,6 +125,7 @@ public class FileUploader {
      * @param fileName The name of the file.
      * @param originalTitle The title of the file.
      * @param originalDescription The file's description.
+     * @param originalLastUpdate The file's last update date.
      * @param file The local file reference.
      * @param publish Should the file be published.
      */
@@ -131,6 +133,7 @@ public class FileUploader {
                     final String fileName,
                     final String originalTitle,
                     final String originalDescription,
+                    final Date originalLastUpdate,
                     final File file,
                     final boolean publish) {
         try {
@@ -151,12 +154,21 @@ public class FileUploader {
             final String description =
                 (null!=originalDescription) ? originalDescription : "";
 
+            final String lastUpdate;
+            if (originalLastUpdate == null) {
+                lastUpdate = ""+new Date().getTime();
+            } else {
+                lastUpdate = ""+originalLastUpdate.getTime();
+            }
+
+
             final FilePart fp = new FilePart("file", file.getName(), file);
             fp.setContentType(_mimemap.getContentType(file));
             final Part[] parts = {
                     new StringPart("fileName", name),
                     new StringPart("title", title),
                     new StringPart("description", description),
+                    new StringPart("lastUpdate", lastUpdate),
                     new StringPart("path", parentId.toString()),
                     new StringPart("publish", String.valueOf(publish)),
                     fp
@@ -196,6 +208,7 @@ public class FileUploader {
      * @param parentId The folder in which the file should be uploaded.
      * @param fileName The name of the file.
      * @param title The title of the file.
+     * @param lastUpdate The last update of the file.
      * @param description The file's description.
      * @param directory The directory that the local file is stored.
      */
@@ -203,13 +216,21 @@ public class FileUploader {
                     final String fileName,
                     final String title,
                     final String description,
-                    final String directory) {
+                    final Date lastUpdate,
+                    final String directory
+                    ) {
 
         final File file = new File(directory+fileName);
         if (!file.exists()) {
             log.debug("File not found: "+fileName);
         } else {
-            uploadFile(parentId, fileName, title, description, file, false);
+            uploadFile(parentId,
+                fileName,
+                title,
+                description,
+                lastUpdate,
+                file,
+                false);
         }
     }
 }
