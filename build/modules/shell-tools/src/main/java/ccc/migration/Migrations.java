@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
@@ -139,10 +140,10 @@ public class Migrations {
 
     private void migrateHomepages() throws CommandFailedException {
         final Map<Integer, Integer> map = _legacyQueries.homepages();
-        for (final Integer folderId : map.keySet()) {
-            final ResourceSummary f = _queries.resourceForLegacyId(""+folderId);
+        for (final Entry<Integer, Integer> e : map.entrySet()) {
+            final ResourceSummary f = _queries.resourceForLegacyId(""+e.getKey());
             final ResourceSummary hp =
-                _queries.resourceForLegacyId(""+map.get(folderId));
+                _queries.resourceForLegacyId(""+map.get(e.getKey()));
             if (f != null && hp != null) {
                 _commands.lock(f.getId());
                 _commands.updateFolder(f.getId(),
