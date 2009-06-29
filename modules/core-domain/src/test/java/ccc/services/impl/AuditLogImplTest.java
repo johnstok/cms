@@ -156,7 +156,6 @@ public class AuditLogImplTest
         assertEquals(CommandType.PAGE_UPDATE, le.getValue().action());
         assertEquals(p.id(), le.getValue().subjectId());
         assertEquals(_actor, le.getValue().actor());
-        assertEquals("Updated.", le.getValue().comment());
     }
 
     /**

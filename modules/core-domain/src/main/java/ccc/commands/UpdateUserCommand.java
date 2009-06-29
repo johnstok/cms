@@ -71,9 +71,7 @@ public class UpdateUserCommand {
                 CommandType.USER_UPDATE,
                 happenedOn,
                 userId,
-                null,
-                new Snapshot(delta).getDetail(),
-                false));
+                new Snapshot(delta).getDetail()));
 
         return current;
     }

@@ -81,8 +81,6 @@ public class ClearWorkingCopyCommand {
                 CommandType.RESOURCE_CLEAR_WC,
                 happenedOn,
                 resourceId,
-                null,
-                "{}",
-                false));
+                "{}"));
     }
 }

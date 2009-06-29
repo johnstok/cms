@@ -61,12 +61,6 @@
             type="ccc.persistence.jpa.UUIDUserType" 
             length="36" />
         <property
-            name="_comment"
-            column="message"
-            not-null="false"
-            type="string"
-            length="1024"/>
-        <property
             name="_detail"
             column="detail"
             not-null="true"
@@ -88,11 +82,6 @@
             update="false"
             insert="false" 
             generated="insert"/>
-        <property
-            name="_isMajorEdit"
-            column="major_change"
-            not-null="true"
-            type="boolean"/>
     </class>
     
     <query name="resourceHistory">from ccc.domain.LogEntry le where le._subjectId=?</query><!-- order by? -->

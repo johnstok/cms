@@ -36,9 +36,7 @@ public class LogEntry extends Entity {
     private CommandType  _action;
     private Date         _happenedOn;
     private UUID         _subjectId;
-    private String       _comment = "";
     private String       _detail;
-    private boolean      _isMajorEdit = false;
 
     /** Constructor: for persistence only. */
     protected LogEntry() { super(); }
@@ -50,17 +48,13 @@ public class LogEntry extends Entity {
      * @param action The action performed.
      * @param happenedOn When the action took place.
      * @param subjectId The subject of the action.
-     * @param comment A user supplied comment.
      * @param detail Details of the action.
-     * @param isMajorEdit Was the action a major change.
      */
     public LogEntry(final User actor,
                     final CommandType action,
                     final Date happenedOn,
                     final UUID subjectId,
-                    final String comment,
-                    final String detail,
-                    final boolean isMajorEdit) {
+                    final String detail) {
         require().notNull(subjectId);
         require().notNull(actor);
         require().notNull(happenedOn);
@@ -70,9 +64,7 @@ public class LogEntry extends Entity {
         _action = action;
         _happenedOn = new Date(happenedOn.getTime());
         _subjectId = subjectId;
-        _comment = (null==comment) ? "" : comment;
         _detail = detail;
-        _isMajorEdit = isMajorEdit;
     }
 
 
@@ -252,10 +244,7 @@ public class LogEntry extends Entity {
             default:
                 throw new UnsupportedOperationException();
         }
-        le._comment = (null==comment) ? "" : comment;
-        require().containsNoBrackets(le._comment);
 
-        le._isMajorEdit = isMajorEdit;
         final Snapshot ss = new Snapshot(resource.createSnapshot());
         le._detail = ss.getDetail();
         return le;
@@ -583,30 +572,9 @@ public class LogEntry extends Entity {
     /**
      * Accessor.
      *
-     * @return A comment of the action that was performed, as a string.
-     */
-    public String comment() {
-        return _comment;
-    }
-
-
-    /**
-     * Accessor.
-     *
      * @return Details of the state of the object after the action took place.
      */
     public String detail() {
         return _detail;
     }
-
-    /**
-     * Accessor.
-     *
-     * @return Is major edit?
-     */
-    public boolean isMajorEdit() {
-        return _isMajorEdit;
-    }
-
-
 }
