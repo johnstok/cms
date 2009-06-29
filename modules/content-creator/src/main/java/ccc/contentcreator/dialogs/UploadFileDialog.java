@@ -11,7 +11,6 @@
  */
 package ccc.contentcreator.dialogs;
 
-import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.IGlobals;
@@ -39,11 +38,7 @@ import com.google.gwt.user.client.ui.Image;
  */
 public class UploadFileDialog extends AbstractEditDialog {
 
-    private final UIConstants       _constants = Globals.uiConstants();
-
     private final TextField<String>   _fileName = new TextField<String>();
-    private final TextField<String>   _title = new TextField<String>();
-    private final TextField<String>   _description = new TextField<String>();
     private final ResourceSummaryModelData _parent;
     private final HiddenField<String> _path = new HiddenField<String>();
     private final FileUploadField           _file = new FileUploadField();
@@ -74,16 +69,6 @@ public class UploadFileDialog extends AbstractEditDialog {
         _fileName.setFieldLabel(_constants.fileName());
         _fileName.setAllowBlank(false);
         addField(_fileName);
-
-        _title.setName("title");
-        _title.setFieldLabel(_constants.title());
-        _title.setAllowBlank(false);
-        addField(_title);
-
-        _description.setName("description");
-        _description.setFieldLabel(_constants.description());
-        _description.setAllowBlank(false);
-        addField(_description);
 
         _file.setName("file");
         _file.setWidth("100%");
@@ -130,10 +115,6 @@ public class UploadFileDialog extends AbstractEditDialog {
                 Validate.callTo(submit())
                 .check(Validations.notEmpty(_fileName))
                 .check(Validations.notValidResourceName(_fileName))
-                .check(Validations.notEmpty(_title))
-                .check(Validations.noBrackets(_title))
-                .check(Validations.notEmpty(_description))
-                .check(Validations.noBrackets(_description))
                 .stopIfInError()
                     .check(Validations.uniqueResourceName(_parent, _fileName))
                 .callMethodOr(Validations.reportErrors());

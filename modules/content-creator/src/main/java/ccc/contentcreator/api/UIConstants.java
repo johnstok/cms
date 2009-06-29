@@ -1388,4 +1388,12 @@ public interface UIConstants extends Constants {
      */
     @DefaultStringValue("Assets root")
     String assetsRoot();
+
+    /**
+     * "No editor available for this resource".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("No editor available for this resource.")
+    String noEditorForResource();
 }
