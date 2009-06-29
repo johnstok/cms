@@ -17,6 +17,7 @@ import static org.easymock.EasyMock.*;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import junit.framework.TestCase;
@@ -237,7 +238,8 @@ public class UserManagerImplTest extends TestCase {
             new UserDelta(
                 "new.email@civicuk.com",
                 new Username("newNameUser"),
-                new HashSet<String>());
+                new HashSet<String>(),
+                new HashMap<String, String>());
         _u.email(new EmailAddress("test@civicuk.com"));
         _p = new Principal(){
             @Override public String getName() {

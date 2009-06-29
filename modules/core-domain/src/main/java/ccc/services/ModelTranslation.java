@@ -264,7 +264,8 @@ public class ModelTranslation {
             new UserDelta(
                 user.email().getText(),
                 new Username(user.username()),
-                user.roles());
+                user.roles(),
+                user.metadata());
         return delta;
     }
 

@@ -18,7 +18,7 @@ import java.util.Set;
 
 
 /**
- * TODO: Add Description for this type.
+ * A delta class, for updating a page.
  *
  * @author Civic Computing Ltd.
  */

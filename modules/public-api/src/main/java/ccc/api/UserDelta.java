@@ -12,12 +12,14 @@
 package ccc.api;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 
 /**
- * A delta class, for updating a user.
+ * A delta class, for updating an user.
  *
  * @author Civic Computing Ltd.
  */
@@ -25,6 +27,8 @@ public final class UserDelta implements Serializable, Jsonable {
     private String _email;
     private Username _username;
     private HashSet<String> _roles;
+    private Map<String, String> _metadata;
+
 
     @SuppressWarnings("unused") private UserDelta() { super(); }
 
@@ -34,13 +38,16 @@ public final class UserDelta implements Serializable, Jsonable {
      * @param email The user's email.
      * @param username The user's username.
      * @param roles The user's roles.
+     * @param metadata The user's metadata.
      */
     public UserDelta(final String email,
                      final Username username,
-                     final Set<String> roles) {
+                     final Set<String> roles,
+                     final Map<String, String> metadata) {
         _email = email;
         _username = username;
         _roles = new HashSet<String>(roles);
+        _metadata = new HashMap<String, String>(metadata);
     }
 
 
@@ -103,6 +110,27 @@ public final class UserDelta implements Serializable, Jsonable {
         _roles = new HashSet<String>(roles);
     }
 
+    /**
+     * Accessor.
+     *
+     * @return Returns the metadata.
+     */
+    public Map<String, String> getMetadata() {
+
+        return _metadata;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param metadata The metadata to set.
+     */
+    public void setMetadata(final Map<String, String> metadata) {
+
+        _metadata = new HashMap<String, String>(metadata);
+    }
+
 
     /** {@inheritDoc} */
     @Override
@@ -110,5 +138,6 @@ public final class UserDelta implements Serializable, Jsonable {
         json.set(JsonKeys.USERNAME, getUsername().toString());
         json.set(JsonKeys.EMAIL, getEmail());
         json.setStrings(JsonKeys.ROLES, getRoles());
+        json.set(JsonKeys.METADATA, getMetadata());
     }
 }

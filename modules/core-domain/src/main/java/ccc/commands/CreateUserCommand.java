@@ -62,6 +62,7 @@ public class CreateUserCommand {
         final User user = new User(delta.getUsername().toString());
         user.email(new EmailAddress(delta.getEmail()));
         user.roles(delta.getRoles());
+        user.addMetadata(delta.getMetadata());
         _dao.create(user);
 
         final Password defaultPassword = new Password(user, password);
