@@ -21,12 +21,18 @@
         name="ccc.domain.Template" extends="ccc.domain.Resource" table="templates">
         <key column="id" foreign-key="FK_TEMPLATE_RESOURCE_ID"/>
         
-        <list name="_history" cascade="all,delete-orphan">
+        <property
+            name="_currentRev"
+            column="current_revision"
+            not-null="true"
+            type="integer" />
+        
+        <map name="_history" cascade="all,delete-orphan">
             <cache usage="transactional"/>
             <key column="template_id" not-null="true" foreign-key="FK_REVISION_TEMPLATE_ID"/>
-            <list-index column="index_pos" />
+            <map-key type="integer" column="revision_no"></map-key>
             <one-to-many class="ccc.domain.TemplateRevision" />
-        </list>
+        </map>
                 
     </joined-subclass>
     
