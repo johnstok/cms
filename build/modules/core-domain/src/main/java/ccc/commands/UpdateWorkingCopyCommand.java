@@ -77,9 +77,7 @@ public class UpdateWorkingCopyCommand {
                 CommandType.RESOURCE_UPDATE_WC,
                 happenedOn,
                 resourceId,
-                null,
-                new Snapshot(delta).getDetail(),
-                false));
+                new Snapshot(delta).getDetail()));
     }
 
     /**
@@ -120,8 +118,6 @@ public class UpdateWorkingCopyCommand {
                 CommandType.RESOURCE_UPDATE_WC,
                 happenedOn,
                 resourceId,
-                null,
-                delta.getDetail(),
-                false));
+                delta.getDetail()));
     }
 }

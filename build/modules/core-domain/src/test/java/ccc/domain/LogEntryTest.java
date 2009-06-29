@@ -43,7 +43,6 @@ public class LogEntryTest
 
         // ASSERT
         assertEquals(p.id(), le.subjectId());
-        assertEquals("", le.comment());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
@@ -66,7 +65,6 @@ public class LogEntryTest
 
         // ASSERT
         assertEquals(p.id(), le.subjectId());
-        assertEquals("", le.comment());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
@@ -89,7 +87,6 @@ public class LogEntryTest
 
         // ASSERT
         assertEquals(p.id(), le.subjectId());
-        assertEquals("", le.comment());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
@@ -115,7 +112,6 @@ public class LogEntryTest
 
         // ASSERT
         assertEquals(p.id(), le.subjectId());
-        assertEquals("Updated.", le.comment());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
@@ -147,7 +143,6 @@ public class LogEntryTest
 
         // ASSERT
         assertEquals(p.id(), le.subjectId());
-        assertEquals("", le.comment());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
@@ -171,7 +166,6 @@ public class LogEntryTest
 
         // ASSERT
         assertEquals(p.id(), le.subjectId());
-        assertEquals("", le.comment());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
@@ -195,7 +189,6 @@ public class LogEntryTest
 
         // ASSERT
         assertEquals(p.id(), le.subjectId());
-        assertEquals("", le.comment());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
@@ -224,7 +217,6 @@ public class LogEntryTest
 
         // ASSERT
         assertEquals(p.id(), le.subjectId());
-        assertEquals("", le.comment());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
@@ -249,7 +241,6 @@ public class LogEntryTest
 
         // ASSERT
         assertEquals(f.id(), le.subjectId());
-        assertEquals("", le.comment());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
@@ -277,7 +268,6 @@ public class LogEntryTest
 
         // ASSERT
         assertEquals(p.id(), le.subjectId());
-        assertEquals("", le.comment());
         assertEquals(_happenedOn, le.happenedOn());
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());

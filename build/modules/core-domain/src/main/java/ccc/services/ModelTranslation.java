@@ -142,8 +142,6 @@ public class ModelTranslation {
                 le.action(),
                 new Username(le.actor().username()),
                 le.happenedOn(),
-                le.comment(),
-                le.isMajorEdit(),
                 le.index());
     }
 

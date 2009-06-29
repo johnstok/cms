@@ -66,7 +66,7 @@ public class LogEntrySummaryModelData
                 return (X) getLocalisedAction();
 
             case COMMENT:
-                return (X) _les.getComment();
+                return (X) "";
 
             case HAPPENED_ON:
                 return (X) _les.getHappenedOn();
@@ -75,7 +75,7 @@ public class LogEntrySummaryModelData
                 return (X) Long.valueOf(_les.getIndex());
 
             case IS_MAJOR_EDIT:
-                return (X) Boolean.valueOf(_les.isMajorEdit());
+                return (X) Boolean.FALSE;
 
             case SUBJECT_ID:
                 return (X) _les.getSubject();
@@ -137,12 +137,12 @@ public class LogEntrySummaryModelData
      * @return The localised string or name of the enum if nothing found.
      */
     public String getLocalisedAction() {
-        CommandTypeConstants types = GWT.create(CommandTypeConstants.class);
+        final CommandTypeConstants types = GWT.create(CommandTypeConstants.class);
 
         String local = null;
         try {
             local = types.getString(_les.getAction().name());
-        } catch (MissingResourceException e) {
+        } catch (final MissingResourceException e) {
             local = _les.getAction().name();
         }
         return local;

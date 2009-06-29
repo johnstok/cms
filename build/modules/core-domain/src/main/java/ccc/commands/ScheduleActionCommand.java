@@ -62,9 +62,7 @@ public class ScheduleActionCommand {
                 CommandType.ACTION_CREATE,
                 happenedOn,
                 action.id(),
-                null,
-                toJson(action),
-                false));
+                toJson(action)));
     }
 
 

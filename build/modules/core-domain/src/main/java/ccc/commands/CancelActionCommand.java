@@ -62,8 +62,6 @@ public class CancelActionCommand {
                 CommandType.ACTION_CANCEL,
                 happenedOn,
                 actionId,
-                null,
-                "{}",
-                false));
+                "{}"));
     }
 }

@@ -25,8 +25,6 @@ public final class LogEntrySummary implements Serializable {
     private CommandType _action;
     private Username _actor;
     private Date _happenedOn;
-    private String _comment;
-    private boolean _isMajorEdit;
     private long _index;
 
     @SuppressWarnings("unused") private LogEntrySummary() { super(); }
@@ -38,23 +36,17 @@ public final class LogEntrySummary implements Serializable {
      * @param action
      * @param actor
      * @param on
-     * @param comment
-     * @param majorEdit
      * @param index
      */
     public LogEntrySummary(final ID      subject,
                            final CommandType  action,
                            final Username  actor,
                            final Date    on,
-                           final String  comment,
-                           final boolean majorEdit,
                            final long    index) {
         _subject = subject;
         _action = action;
         _actor = actor;
         _happenedOn = new Date(on.getTime());
-        _comment = comment;
-        _isMajorEdit = majorEdit;
         _index = index;
     }
 
@@ -96,26 +88,6 @@ public final class LogEntrySummary implements Serializable {
      */
     public Date getHappenedOn() {
         return new Date(_happenedOn.getTime());
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the comment.
-     */
-    public String getComment() {
-        return _comment;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the isMajorEdit.
-     */
-    public boolean isMajorEdit() {
-        return _isMajorEdit;
     }
 
 
