@@ -19,20 +19,15 @@ import java.util.Set;
 
 import ccc.api.ID;
 import ccc.api.UserDelta;
-import ccc.api.Username;
-import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
-import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.UserTable;
 import ccc.contentcreator.validation.Validate;
-import ccc.contentcreator.validation.Validator;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
-import com.google.gwt.core.client.GWT;
 
 
 /**
@@ -41,8 +36,6 @@ import com.google.gwt.core.client.GWT;
  * @author Civic Computing Ltd
  */
 public class EditUserDialog extends AbstractEditDialog {
-    private static final ActionNameConstants USER_ACTIONS =
-        GWT.create(ActionNameConstants.class);
 
     private final TextField<String> _username = new TextField<String>();
     private final TextField<String> _email = new TextField<String>();
@@ -51,6 +44,9 @@ public class EditUserDialog extends AbstractEditDialog {
     private final ID        _userId;
     private final UserDelta _userDTO;
     private final UserTable _userTable;
+
+    /** ROLE_HEIGHT : int. */
+    private static final int ROLE_HEIGHT = 200;
 
     /**
      * Constructor.
@@ -69,8 +65,7 @@ public class EditUserDialog extends AbstractEditDialog {
         _userTable = userTable;
 
         _username.setFieldLabel(constants().username());
-        _username.setAllowBlank(false);
-        _username.setMinLength(IGlobals.MIN_USER_NAME_LENGTH);
+        _username.setReadOnly(true);
         _username.setId(constants().username());
         _username.setValue(_userDTO.getUsername().toString());
         addField(_username);
@@ -83,7 +78,7 @@ public class EditUserDialog extends AbstractEditDialog {
 
         _roles.setFieldLabel(_constants.roles());
         _roles.setId("resource-roles");
-        _roles.setHeight(200);
+        _roles.setHeight(ROLE_HEIGHT);
         final StringBuilder rolesString = new StringBuilder();
         for (final String role : _userDTO.getRoles()) {
             rolesString.append(role);
@@ -101,14 +96,9 @@ public class EditUserDialog extends AbstractEditDialog {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
                 Validate.callTo(updateUser())
-                    .check(notEmpty(_username))
                     .check(notEmpty(_email))
                     .stopIfInError()
-                    .check(minLength(_username, IGlobals.MIN_USER_NAME_LENGTH))
-                    .check(notValidUserName(_username))
                     .check(notValidEmail(_email))
-                    .check(uniqueUsername(_userDTO,
-                        new Username(_username.getValue())))
                     .callMethodOr(reportErrors());
             }
         };
@@ -123,7 +113,6 @@ public class EditUserDialog extends AbstractEditDialog {
     private Runnable updateUser() {
         return new Runnable() {
             public void run() {
-                _userDTO.setUsername(new Username(_username.getValue()));
                 _userDTO.setEmail(_email.getValue());
 
                 final Set<String> validRoles = new HashSet<String>();
@@ -149,38 +138,6 @@ public class EditUserDialog extends AbstractEditDialog {
                         }
                     }
                 );
-            }
-        };
-    }
-
-    /**
-     * Factory method for username validators.
-     *
-     * @param userDTO The original user DTO.
-     * @param username The username to check.
-     * @return A new instance of the username validator.
-     */
-    private Validator uniqueUsername(final UserDelta userDTO,
-                                     final Username username) {
-        return new Validator() {
-            public void validate(final Validate validate) {
-                if (userDTO.getUsername().equals(username)) {
-                    validate.next();
-                } else {
-                    queries().usernameExists(
-                        username,
-                        new ErrorReportingCallback<Boolean>(USER_ACTIONS.checkUniqueUsername()){
-                            public void onSuccess(final Boolean exists) {
-                                if (exists.booleanValue()) {
-                                    validate.addMessage(
-                                        _messages.userWithUsernameAlreadyExists(username)
-                                    );
-                                }
-                                validate.next();
-                            }
-                        }
-                    );
-                }
             }
         };
     }
