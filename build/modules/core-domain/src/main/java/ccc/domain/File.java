@@ -144,12 +144,6 @@ public class File
         return currentRevision().isImage();
     }
 
-    @SuppressWarnings("unused")
-    private MimeType getMimeType() { return mimeType(); }
-    @SuppressWarnings("unused")
-    private void setMimeType(final MimeType mType) { /* No Op */ }
-
-
 
     /* ====================================================================
      * Working copy implementation.

@@ -27,13 +27,19 @@
         extends="ccc.domain.Resource"
         table="pages">
         <key column="id" foreign-key="FK_PAGE_RESOURCE_ID"/>
+        
+        <property
+            name="_currentRev"
+            column="current_revision"
+            not-null="true"
+            type="integer" />
 		
-        <list name="_history" cascade="all,delete-orphan">
+        <map name="_history" cascade="all,delete-orphan">
             <cache usage="transactional"/>
             <key column="page_id" not-null="true" foreign-key="FK_REVISION_PAGE_ID"/>
-            <list-index column="index_pos" />
+            <map-key type="integer" column="revision_no"></map-key>
             <one-to-many class="ccc.domain.PageRevision" />
-        </list>
+        </map>
         
         <bag name="_workingCopies" cascade="all,delete-orphan">
             <cache usage="transactional"/>

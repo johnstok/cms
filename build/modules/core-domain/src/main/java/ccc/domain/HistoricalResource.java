@@ -11,8 +11,8 @@
  */
 package ccc.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import ccc.api.DBC;
 
@@ -27,8 +27,10 @@ import ccc.api.DBC;
 public abstract class HistoricalResource<T extends Revision>
     extends
         Resource {
+    private static final int WC_REV_NO = -1;
 
-    private List<T> _history = new ArrayList<T>();
+    private int _currentRev = -1;
+    private Map<Integer, T> _history = new HashMap<Integer, T>();
 
     /** Constructor: for persistence only. */
     protected HistoricalResource() { super(); }
@@ -58,7 +60,7 @@ public abstract class HistoricalResource<T extends Revision>
      * @return The revision corresponding to the current version.
      */
     public final T currentRevision() {
-        return revision(_history.size()-1);
+        return revision(_currentRev);
     }
 
     /**
@@ -76,6 +78,9 @@ public abstract class HistoricalResource<T extends Revision>
 
     protected final void addRevision(final T revision) {
         DBC.require().notNull(revision);
-        _history.add(revision);
+
+        _currentRev++;
+        DBC.require().toBeNull(_history.get(_currentRev));
+        _history.put(Integer.valueOf(_currentRev), revision);
     }
 }
