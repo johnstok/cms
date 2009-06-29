@@ -18,7 +18,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 
 /**
- * TODO: Add Description for this type.
+ * Queries API.
  *
  * @author Civic Computing Ltd.
  */

@@ -39,7 +39,7 @@ public class UserSummaryModelData
     /**
      * Constructor.
      *
-     * @param us
+     * @param us The User summary.
      */
     public UserSummaryModelData(final UserSummary us) {
         _us = us;
@@ -105,18 +105,18 @@ public class UserSummaryModelData
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The Id.
      */
     public ID getId() {
         return _us.getId();
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The username.
      */
     public Username getUsername() {
         return _us.getUsername();
