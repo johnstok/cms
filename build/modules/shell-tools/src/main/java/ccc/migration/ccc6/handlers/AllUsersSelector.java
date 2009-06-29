@@ -46,15 +46,18 @@ public final class AllUsersSelector
             final String password = rs.getString("user_passwd");
             final int userId = rs.getInt("user_id");
             try {
-                final String email =
-                    _legacyDBQueries.selectEmailForUser(userId);
+                final Map<String, String> metamap =
+                    _legacyDBQueries.selectMetadataForUser(userId);
+
+                final String email = metamap.get("Email");
                 final Set<String> roles =
                     _legacyDBQueries.selectRolesForUser(userId);
                 final UserDelta user =
                     new UserDelta(
                         email,
                         new Username(userName),
-                        roles);
+                        roles,
+                        metamap);
                 final ExistingUser eu = new ExistingUser(user, password);
                 resultList.put(Integer.valueOf(userId), eu);
             } catch (final MigrationException e) {

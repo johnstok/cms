@@ -11,7 +11,11 @@
  */
 package ccc.domain;
 
+import static ccc.api.DBC.*;
+
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import ccc.api.DBC;
@@ -32,10 +36,14 @@ public class User extends VersionedEntity {
     /** SYSTEM_USER : User. */
     public static final User SYSTEM_USER = new User("SYSTEM");
     private static final int USERNAME_MIN_LENGTH = 4;
-
+    private static final int MAXIMUM_DATUM_LENGTH = 1000;
+    private static final int MAXIMUM_DATUM_KEY_LENGTH = 100;
+    
     private String _username;
     private EmailAddress _email;
     private Set<String> _roles = new HashSet<String>();
+
+    private Map<String, String> _metadata = new HashMap<String, String>();
 
     /**
      * Constructor.
@@ -134,5 +142,68 @@ public class User extends VersionedEntity {
      */
     public void roles(final Set<String> roles) {
         _roles = roles;
+    }
+
+
+    /**
+     * Add new metadata for this resource.
+     *
+     * @param key The key by which the datum will be accessed.
+     * @param value The value of the datum. May not be NULL.
+     */
+    public void addMetadatum(final String key, final String value) {
+        require().notEmpty(value);
+        require().maxLength(value, MAXIMUM_DATUM_LENGTH);
+        require().notEmpty(key);
+        require().maxLength(key, MAXIMUM_DATUM_KEY_LENGTH);
+        require().containsNoBrackets(key);
+        require().containsNoBrackets(value);
+        _metadata.put(key, value);
+    }
+
+    /**
+     * Retrieve metadata for this resource.
+     *
+     * @param key The key with which the datum was stored.
+     * @return The value of the datum. NULL if the datum doesn't exist.
+     */
+    public String getMetadatum(final String key) {
+        return _metadata.get(key);
+    }
+
+    /**
+     * Remove the metadatum with the specified key.
+     *
+     * @param key The key with which the datum was stored.
+     */
+    public void clearMetadatum(final String key) {
+        require().notEmpty(key);
+        _metadata.remove(key);
+    }
+
+    /**
+     * Accessor for all metadata.
+     *
+     * @return The metadata as a hash map.
+     */
+    public Map<String, String> metadata() {
+        return new HashMap<String, String>(_metadata);
+    }
+
+    /**
+     * Remove all metadata for this resource.
+     */
+    public void clearMetadata() {
+        _metadata.clear();
+    }
+
+
+    /**
+     * Add metadata to this resource.
+     *
+     * @param metadata The metadata to add, as a hashmap.
+     */
+    public void addMetadata(final Map<String, String> metadata) {
+        _metadata.putAll(metadata);
     }
 }

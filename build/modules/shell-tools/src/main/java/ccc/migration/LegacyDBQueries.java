@@ -20,7 +20,7 @@ import ccc.migration.ccc6.handlers.ResourceSelector;
 import ccc.migration.ccc6.handlers.ShowInMainMenuSelector;
 import ccc.migration.ccc6.handlers.StyleSheetSelector;
 import ccc.migration.ccc6.handlers.UserCommentSelector;
-import ccc.migration.ccc6.handlers.UserEmailSelector;
+import ccc.migration.ccc6.handlers.UserMetadataSelector;
 import ccc.migration.ccc6.handlers.UserRolesSelector;
 
 /**
@@ -92,14 +92,14 @@ public class LegacyDBQueries {
     }
 
     /**
-     * Sets email for the specified user.
+     * Sets metadata for the specified user.
      *
      * @param userId The user ID.
      *
      * @return The user's email address, as a string.
      */
-    public String selectEmailForUser(final int userId) {
-        final UserEmailSelector rsh = new UserEmailSelector();
+    public Map<String, String> selectMetadataForUser(final int userId) {
+        final UserMetadataSelector rsh = new UserMetadataSelector();
         return _db.select(rsh, Integer.valueOf(userId));
     }
 

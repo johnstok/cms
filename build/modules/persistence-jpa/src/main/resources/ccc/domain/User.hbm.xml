@@ -53,7 +53,13 @@
                 not-null="true"
                 length="255" />
         </set>
-
+        
+        <map name="_metadata" table="user_metadata">
+            <cache usage="transactional"/>
+            <key column="user_id" not-null="true" foreign-key="FK_USERMETADATA_RESOURCE_ID"/>
+            <map-key type="string" column="datum_key" length="255" />
+            <element type="string" column="datum_value" length="1024" not-null="true"/>
+        </map>
             
     </class>
     

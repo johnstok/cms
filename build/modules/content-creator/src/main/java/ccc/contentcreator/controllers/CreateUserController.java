@@ -13,6 +13,7 @@ package ccc.contentcreator.controllers;
 
 import static ccc.contentcreator.validation.Validations.*;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 import ccc.api.UserDelta;
@@ -67,7 +68,7 @@ public class CreateUserController implements EditController {
             .check(notEmpty(_dialog.getPassword2()))
             .stopIfInError()
             .check(minLength(
-                _dialog.getUsername(), _globals.MIN_USER_NAME_LENGTH))
+                _dialog.getUsername(), IGlobals.MIN_USER_NAME_LENGTH))
             .check(notValidUserName(_dialog.getUsername()))
             .check(notValidEmail(_dialog.getEmail()))
             .check(matchingPasswords(
@@ -117,7 +118,8 @@ public class CreateUserController implements EditController {
                     new UserDelta(
                         _dialog.getEmail().getValue(),
                         new Username(_dialog.getUsername().getValue()),
-                        new HashSet<String>()),
+                        new HashSet<String>(),
+                        new HashMap<String, String>()),
                         _dialog.getPassword1().getValue(),
                         new ErrorReportingCallback<UserSummary>(
                             _constants.createUser()) {
