@@ -142,9 +142,9 @@ public class ResourceBean {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Creates cleaned version of the title (or name if title is null).
      *
-     * @return
+     * @return The title.
      */
     public String cleanTitle() {
         final String cleanTitle =  (null==title()) ? name() : title();
