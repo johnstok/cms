@@ -20,6 +20,7 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Properties;
+import java.util.Map.Entry;
 
 import javax.security.auth.login.AppConfigurationEntry;
 import javax.security.auth.login.Configuration;
@@ -135,8 +136,8 @@ class CccApp {
             props.load(in);
             in.close();
             LOG.info("Loaded settings.");
-            for (final Object o: props.keySet()) {
-                LOG.debug(o+"\t\t=\t"+props.get(o));
+            for (final Entry<Object, Object> e : props.entrySet()) {
+                LOG.debug(e.getKey()+"\t\t=\t"+e.getValue());
             }
         } catch (final IOException e) {
             throw new CCCException(e);
