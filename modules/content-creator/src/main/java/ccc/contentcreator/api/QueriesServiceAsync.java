@@ -33,7 +33,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 /**
- * TODO: Add Description for this type.
+ * Async version of the {@link QueriesService} interface.
  *
  * @author Civic Computing Ltd.
  */

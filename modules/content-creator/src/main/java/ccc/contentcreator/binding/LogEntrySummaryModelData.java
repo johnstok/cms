@@ -123,9 +123,9 @@ public class LogEntrySummaryModelData
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The action.
      */
     public CommandType getAction() {
         return _les.getAction();
@@ -137,7 +137,8 @@ public class LogEntrySummaryModelData
      * @return The localised string or name of the enum if nothing found.
      */
     public String getLocalisedAction() {
-        final CommandTypeConstants types = GWT.create(CommandTypeConstants.class);
+        final CommandTypeConstants types =
+            GWT.create(CommandTypeConstants.class);
 
         String local = null;
         try {
@@ -149,18 +150,18 @@ public class LogEntrySummaryModelData
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The Id.
      */
     public ID getId() {
         return _les.getSubject();
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The Index.
      */
     public long getIndex() {
         return _les.getIndex();

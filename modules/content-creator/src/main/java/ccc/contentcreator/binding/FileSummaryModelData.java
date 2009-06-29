@@ -39,7 +39,7 @@ public class FileSummaryModelData
     /**
      * Constructor.
      *
-     * @param fs
+     * @param fs The file summary.
      */
     public FileSummaryModelData(final FileSummary fs) {
         _fs = fs;
@@ -114,27 +114,27 @@ public class FileSummaryModelData
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The title.
      */
     public String getTitle() {
         return _fs.getTitle();
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The path.
      */
     public String getPath() {
         return _fs.getPath();
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The ID.
      */
     public ID getId() {
         return _fs.getId();

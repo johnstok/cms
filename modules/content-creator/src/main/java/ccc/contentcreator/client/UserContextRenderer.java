@@ -19,7 +19,7 @@ import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 
 
 /**
- * TODO: Add Description for this type.
+ * Renderer for the contextual menu icon for user table.
  *
  * @author Civic Computing Ltd.
  */

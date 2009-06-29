@@ -276,7 +276,7 @@ public class UserTable extends TablePanel {
     }
 
     /**
-     * TODO: Add Description for this type.
+     * Listener for user search.
      *
      * @author Civic Computing Ltd.
      */

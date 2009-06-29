@@ -112,36 +112,36 @@ public class TemplateSummaryModelData
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The ID.
      */
     public ID getId() {
         return _ts.getId();
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The definition.
      */
     public String getDefinition() {
         return _ts.getDefinition();
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The description.
      */
     public String getDescription() {
         return _ts.getDescription();
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
-     * @return
+     * @return The name.
      */
     public String getName() {
         return _ts.getName();

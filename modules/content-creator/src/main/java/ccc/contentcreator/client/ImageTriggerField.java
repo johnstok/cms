@@ -27,7 +27,7 @@ public class ImageTriggerField extends TriggerField<String> {
     private FileSummaryModelData _md;
 
     /**
-     * TODO: Add a description of this method.
+     * Mutator.
      *
      * @param md FileSummaryModelData to set.
      */
@@ -36,7 +36,7 @@ public class ImageTriggerField extends TriggerField<String> {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Accessor.
      *
      * @return FileSummaryModelData of the field.
      */
