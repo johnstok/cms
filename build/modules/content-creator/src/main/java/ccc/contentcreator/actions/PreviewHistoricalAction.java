@@ -38,7 +38,7 @@ public final class PreviewHistoricalAction
             return;
         }
         _queries.getAbsolutePath(
-            item.getId(),
+            _historyDialog.getResourceId(),
             new ErrorReportingCallback<String>(UI_CONSTANTS.preview()) {
                 public void onSuccess(final String path) {
                     final String url =

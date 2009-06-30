@@ -21,11 +21,12 @@ import java.util.Date;
  * @author Civic Computing Ltd.
  */
 public final class LogEntrySummary implements Serializable {
-    private ID _subject;
     private CommandType _action;
     private Username _actor;
     private Date _happenedOn;
     private long _index;
+    private String _comment;
+    private boolean _isMajor;
 
     @SuppressWarnings("unused") private LogEntrySummary() { super(); }
 
@@ -38,26 +39,18 @@ public final class LogEntrySummary implements Serializable {
      * @param on
      * @param index
      */
-    public LogEntrySummary(final ID      subject,
-                           final CommandType  action,
+    public LogEntrySummary(final CommandType  action,
                            final Username  actor,
                            final Date    on,
-                           final long    index) {
-        _subject = subject;
+                           final long    index,
+                           final String comment,
+                           final boolean isMajorEdit) {
         _action = action;
         _actor = actor;
         _happenedOn = new Date(on.getTime());
         _index = index;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the subject.
-     */
-    public ID getSubject() {
-        return _subject;
+        _comment = comment;
+        _isMajor = isMajorEdit;
     }
 
 
@@ -98,5 +91,25 @@ public final class LogEntrySummary implements Serializable {
      */
     public long getIndex() {
         return _index;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the comment.
+     */
+    public final String getComment() {
+        return _comment;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the isMajor.
+     */
+    public final boolean isMajor() {
+        return _isMajor;
     }
 }

@@ -14,10 +14,12 @@ package ccc.services;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.ActionSummary;
 import ccc.api.AliasDelta;
+import ccc.api.CommandType;
 import ccc.api.FileDelta;
 import ccc.api.FileSummary;
 import ccc.api.ID;
@@ -34,9 +36,9 @@ import ccc.domain.Action;
 import ccc.domain.Alias;
 import ccc.domain.File;
 import ccc.domain.Folder;
-import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.Resource;
+import ccc.domain.Revision;
 import ccc.domain.Template;
 import ccc.domain.User;
 
@@ -100,15 +102,15 @@ public class ModelTranslation {
     /**
      * Create summaries for a collection of log entries.
      *
-     * @param logEntries The log entries.
+     * @param revisions The revisions.
      * @return The corresponding summaries.
      */
     protected Collection<LogEntrySummary> mapLogEntries(
-                                              final List<LogEntry> logEntries) {
+                             final Map<Integer, ? extends Revision> revisions) {
         final Collection<LogEntrySummary> mapped =
             new ArrayList<LogEntrySummary>();
-        for (final LogEntry le : logEntries) {
-            mapped.add(mapLogEntry(le));
+        for (final Map.Entry<Integer, ? extends Revision> rev : revisions.entrySet()) {
+            mapped.add(mapLogEntry(rev));
         }
         return mapped;
     }
@@ -132,17 +134,19 @@ public class ModelTranslation {
     /**
      * Create a summary for a log entry.
      *
-     * @param le The log entry.
+     * @param rev The revision.
      * @return A corresponding summary.
      */
-    protected LogEntrySummary mapLogEntry(final LogEntry le) {
+    protected LogEntrySummary mapLogEntry(
+                             final Map.Entry<Integer, ? extends Revision> rev) {
         return
             new LogEntrySummary(
-                toID(le.subjectId()),
-                le.action(),
-                new Username(le.actor().username()),
-                le.happenedOn(),
-                le.index());
+                CommandType.PAGE_UPDATE,
+                new Username(rev.getValue().getActor().username()),
+                rev.getValue().getTimestamp(),
+                rev.getKey(),
+                rev.getValue().getComment(),
+                rev.getValue().isMajorChange());
     }
 
 

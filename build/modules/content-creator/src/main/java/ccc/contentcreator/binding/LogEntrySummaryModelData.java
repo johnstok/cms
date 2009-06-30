@@ -19,7 +19,6 @@ import java.util.MissingResourceException;
 import java.util.Set;
 
 import ccc.api.CommandType;
-import ccc.api.ID;
 import ccc.api.LogEntrySummary;
 import ccc.contentcreator.api.CommandTypeConstants;
 
@@ -66,7 +65,7 @@ public class LogEntrySummaryModelData
                 return (X) getLocalisedAction();
 
             case COMMENT:
-                return (X) "";
+                return (X) _les.getComment();
 
             case HAPPENED_ON:
                 return (X) _les.getHappenedOn();
@@ -75,10 +74,7 @@ public class LogEntrySummaryModelData
                 return (X) Long.valueOf(_les.getIndex());
 
             case IS_MAJOR_EDIT:
-                return (X) Boolean.FALSE;
-
-            case SUBJECT_ID:
-                return (X) _les.getSubject();
+                return (X) Boolean.valueOf(_les.isMajor());
 
             default:
                 throw new UnsupportedOperationException(
@@ -119,7 +115,7 @@ public class LogEntrySummaryModelData
     }
 
     public enum Property {
-        SUBJECT_ID, ACTION, LOCALISED_ACTION, ACTOR, HAPPENED_ON, COMMENT, IS_MAJOR_EDIT, INDEX;
+        ACTION, LOCALISED_ACTION, ACTOR, HAPPENED_ON, COMMENT, IS_MAJOR_EDIT, INDEX;
     }
 
     /**
@@ -147,15 +143,6 @@ public class LogEntrySummaryModelData
             local = _les.getAction().name();
         }
         return local;
-    }
-
-    /**
-     * Accessor.
-     *
-     * @return The Id.
-     */
-    public ID getId() {
-        return _les.getSubject();
     }
 
     /**

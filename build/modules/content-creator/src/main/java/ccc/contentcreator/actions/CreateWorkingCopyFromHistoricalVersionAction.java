@@ -34,7 +34,7 @@ public class CreateWorkingCopyFromHistoricalVersionAction
         final LogEntrySummaryModelData selected = _dialog.selectedItem();
 
         _commands.createWorkingCopy(
-            selected.getId(),
+            _dialog.getResourceId(),
             selected.getIndex(),
             new ErrorReportingCallback<Void>(UI_CONSTANTS.revert()){
                 public void onSuccess(final Void arg0) {

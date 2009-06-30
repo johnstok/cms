@@ -12,11 +12,12 @@
 package ccc.services;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
-import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
+import ccc.domain.Revision;
 import ccc.domain.User;
 
 
@@ -68,9 +69,9 @@ public interface ResourceDao {
      * Retrieve the history of a resource.
      *
      * @param resourceId The id of the resource whose history we will look up.
-     * @return The list of resources.
+     * @return The revisions for the resource.
      */
-    List<LogEntry> history(UUID resourceId);
+    Map<Integer, ? extends Revision> history(UUID resourceId);
 
     /**
      * Find a resource using its unique id.

@@ -41,7 +41,7 @@ public final class ViewHistoryAction
             new ErrorReportingCallback<Collection<LogEntrySummary>>(
                 UI_CONSTANTS.viewHistory()){
                 public void onSuccess(final Collection<LogEntrySummary> data) {
-                    new HistoryDialog(data, _selectionModel).show();
+                    new HistoryDialog(data, item.getId(), _selectionModel).show();
                 }
             }
         );
