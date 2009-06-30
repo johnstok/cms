@@ -25,7 +25,7 @@ import ccc.services.Dao;
 
 
 /**
- * TODO: Add Description for this type.
+ * Command: updates a folder.
  *
  * @author Civic Computing Ltd.
  */

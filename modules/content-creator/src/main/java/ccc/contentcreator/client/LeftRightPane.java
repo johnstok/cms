@@ -19,7 +19,7 @@ import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 
 
 /**
- * TODO: Add Description for this type.
+ * Layout for dividing the UI screen to a tree and a table.
  *
  * @author Civic Computing Ltd.
  */
@@ -30,7 +30,6 @@ public class LeftRightPane extends LayoutContainer {
     private final BorderLayoutData _leftData =
         new BorderLayoutData(LayoutRegion.WEST, 400);
 
-    // private LayoutContainer _left;
     private LayoutContainer _right;
 
     /**
@@ -58,7 +57,7 @@ public class LeftRightPane extends LayoutContainer {
         }
         _right = pane;
         add(pane, _rightData);
-        this.layout();
+        layout();
     }
 
     /**

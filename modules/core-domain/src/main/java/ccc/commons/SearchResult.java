@@ -17,7 +17,7 @@ import java.util.UUID;
 
 
 /**
- * TODO: Add Description for this type.
+ * Value object for search results.
  *
  * @author Civic Computing Ltd.
  */

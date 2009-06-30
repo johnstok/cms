@@ -25,7 +25,7 @@ import org.apache.commons.fileupload.FileItem;
 
 
 /**
- * TODO: Add Description for this type.
+ * Test for {@link MultipartForm}.
  *
  * @author Civic Computing Ltd.
  */
@@ -50,7 +50,7 @@ public class MultipartFormTest extends TestCase {
     }
 
     /**
-     * TODO: Add Description for this type.
+     * Implementation of {@link FileItem} for testing.
      *
      * @author Civic Computing Ltd.
      */

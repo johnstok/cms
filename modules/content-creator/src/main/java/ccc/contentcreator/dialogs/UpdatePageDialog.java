@@ -38,7 +38,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
  * A dialog box for updating content.
- * TODO: Extend AbstractEditDialog?
  *
  * @author Civic Computing Ltd
  */

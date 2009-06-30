@@ -30,7 +30,6 @@ import com.google.gwt.user.client.ui.Image;
 
 /**
  * Dialog for file update.
- * TODO: Remove code duplicated from File upload form.
  *
  * @author Civic Computing Ltd.
  */
