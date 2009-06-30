@@ -36,7 +36,7 @@ public class LegacyFile {
                       final Date lastUpdate) {
         _title = title;
         _description = description;
-        _lastUpdate = lastUpdate;
+        _lastUpdate = new Date(lastUpdate.getTime());
     }
 
 
