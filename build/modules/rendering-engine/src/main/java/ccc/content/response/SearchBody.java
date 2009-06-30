@@ -24,11 +24,11 @@ import ccc.api.MimeType;
 import ccc.commons.SearchResult;
 import ccc.content.velocity.VelocityProcessor;
 import ccc.domain.RevisionMetadata;
-import ccc.domain.Search;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.SearchEngine;
 import ccc.services.StatefulReader;
+import ccc.snapshots.ResourceSnapshot;
 
 
 /**
@@ -41,7 +41,7 @@ public class SearchBody
     implements
         Body {
 
-    private final Search  _search;
+    private final ResourceSnapshot  _search;
     private final StatefulReader _reader;
     private final SearchEngine _searchEngine;
     private final String  _terms;
@@ -51,26 +51,26 @@ public class SearchBody
     /**
      * Constructor.
      *
-     * @param s The search to render.
+     * @param search The search to render.
      * @param reader A stateful reader to access other resources.
      * @param searchEngine The engine used to perform the search.
      * @param searchTerms The query terms supplied to the request.
      * @param pageNumber The page of results required.
      * @param t The template to use for this body.
      */
-    public SearchBody(final Search s,
+    public SearchBody(final ResourceSnapshot search,
                       final StatefulReader reader,
                       final SearchEngine searchEngine,
                       final String searchTerms,
                       final Template t,
                       final int pageNumber) {
-        DBC.require().notNull(s);
+        DBC.require().notNull(search);
         DBC.require().notNull(reader);
         DBC.require().notNull(searchEngine);
         DBC.require().notNull(searchTerms);
         DBC.require().notNull(t);
 
-        _search = s;
+        _search = search;
         _reader = reader;
         _searchEngine = searchEngine;
         _terms = searchTerms;

@@ -114,11 +114,15 @@ public class DefaultRendererTest
         p.workingCopy(delta);
 
         // ACT
-        _renderer.renderWorkingCopy(p, _noParams);
+        final Response r = _renderer.renderWorkingCopy(p, _noParams);
 
         // ASSERT
-        assertEquals(1, p.paragraphs().size());
-        assertEquals("other value", p.paragraph("some").text());
+        assertEquals(PageBody.class, r.getBody().getClass());
+        final PageBody body = (PageBody) r.getBody();
+        assertEquals(1, body.getPage().getContent().size());
+        assertEquals(
+            "other value",
+            body.getPage().getContent().iterator().next().text());
     }
 
 

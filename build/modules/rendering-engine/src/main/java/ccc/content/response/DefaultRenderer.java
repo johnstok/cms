@@ -12,7 +12,6 @@
 
 package ccc.content.response;
 
-import java.util.Date;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -21,21 +20,16 @@ import ccc.api.DBC;
 import ccc.api.ResourceType;
 import ccc.content.exceptions.NotFoundException;
 import ccc.content.exceptions.RedirectRequiredException;
-import ccc.domain.Alias;
-import ccc.domain.File;
-import ccc.domain.Folder;
-import ccc.domain.LogEntry;
-import ccc.domain.Page;
 import ccc.domain.Resource;
-import ccc.domain.RevisionMetadata;
-import ccc.domain.Search;
-import ccc.domain.Snapshot;
 import ccc.domain.Template;
-import ccc.domain.User;
-import ccc.domain.WCAware;
 import ccc.services.DataManager;
 import ccc.services.SearchEngine;
 import ccc.services.StatefulReader;
+import ccc.snapshots.AliasSnapshot;
+import ccc.snapshots.FileSnapshot;
+import ccc.snapshots.FolderSnapshot;
+import ccc.snapshots.PageSnapshot;
+import ccc.snapshots.ResourceSnapshot;
 
 /**
  * Default implementation of the {@link Renderer} interface.
@@ -83,6 +77,16 @@ public class DefaultRenderer
                            final Map<String, String[]> parameters) {
         if (resource == null) {
             throw new NotFoundException();
+        }
+        return render_(resource.forCurrentRevision(), parameters);
+    }
+
+
+    private Response render_(final ResourceSnapshot resource,
+                             final Map<String, String[]> parameters) {
+
+        if (resource == null) {
+            throw new NotFoundException();
         } else if (_respectVisibility && !resource.isVisible()) {
             throw new NotFoundException();
         }
@@ -90,24 +94,23 @@ public class DefaultRenderer
         switch (resource.type()) {
 
             case ALIAS:
-                final Alias alias = resource.as(Alias.class);
+                final AliasSnapshot alias = (AliasSnapshot) resource;
                 return renderAlias(alias);
 
             case PAGE:
-                final Page page = resource.as(Page.class);
+                final PageSnapshot page = (PageSnapshot) resource;
                 return renderPage(page, parameters);
 
             case FILE:
-                final File f = resource.as(File.class);
+                final FileSnapshot f = (FileSnapshot) resource;
                 return renderFile(f);
 
             case FOLDER:
-                final Folder folder = resource.as(Folder.class);
+                final FolderSnapshot folder = (FolderSnapshot) resource;
                 return renderFolder(folder);
 
             case SEARCH:
-                final Search search = resource.as(Search.class);
-                return renderSearch(search, parameters);
+                return renderSearch(resource, parameters);
 
             default:
                 throw new NotFoundException();
@@ -119,22 +122,16 @@ public class DefaultRenderer
     @Override
     public Response renderWorkingCopy(final Resource resource,
                                       final Map<String, String[]> parameters) {
-        if (!_respectVisibility) {
-            if (resource instanceof WCAware) {
-                final WCAware<?> p = (WCAware<?>) resource;
-                if (null!=p.workingCopy()) {
-                    p.applySnapshot(
-                        new RevisionMetadata(
-                            new Date(),
-                            User.SYSTEM_USER,
-                            true,
-                            "Updated."));
-                } else {
-                    LOG.warn("No working copy found for resource: "+resource);
-                }
-            }
+        if (resource == null) {
+            throw new NotFoundException();
         }
-        return render(resource, parameters);
+
+        final ResourceSnapshot r =
+            (_respectVisibility)
+                ? resource.forCurrentRevision()
+                : resource.forWorkingCopy();
+
+        return render_(r, parameters);
     }
 
 
@@ -143,55 +140,47 @@ public class DefaultRenderer
     public Response renderHistoricalVersion(
                                     final Resource resource,
                                     final Map<String, String[]> parameters) {
+        if (resource == null) {
+            throw new NotFoundException();
+        }
+
+        ResourceSnapshot snapshot = resource.forCurrentRevision();
+
         if (!_respectVisibility) {
-            if (resource instanceof WCAware) {
+            if (!parameters.containsKey("v")) {
+                throw new NotFoundException();
+            }
 
-                final WCAware<?> sa = (WCAware<?>) resource;
-
-                if (!parameters.containsKey("v")) {
-                    throw new NotFoundException();
-                }
-                final String[] vStrings = parameters.get("v");
-                if (null==vStrings) {
-                    throw new NotFoundException();
-                } else if (1 != vStrings.length){
-                    throw new NotFoundException();
-                } else {
-                    try {
-                        final long v = new Long(vStrings[0]).intValue();
-                        if (v<0) {
-                            throw new NotFoundException();
-                        }
-                        final LogEntry le = _reader.lookup(v);
-                        if (null==le) {
-                            throw new NotFoundException();
-                        } else if (resource.id().equals(le.subjectId())) {
-                            sa.workingCopy(new Snapshot(le.detail()));
-                            sa.applySnapshot(
-                                new RevisionMetadata(
-                                    new Date(),
-                                    User.SYSTEM_USER,
-                                    true,
-                                    "Updated."));
-                        } else {
-                            throw new NotFoundException();
-                        }
-                    } catch (final NumberFormatException e) {
+            final String[] vStrings = parameters.get("v");
+            if (null==vStrings) {
+                throw new NotFoundException();
+            } else if (1 != vStrings.length){
+                throw new NotFoundException();
+            } else {
+                try {
+                    final long v = new Long(vStrings[0]).intValue();
+                    if (v<0) {
                         throw new NotFoundException();
                     }
+
+                    snapshot = resource.forSpecificRevision((int) v);
+
+                } catch (final NumberFormatException e) {
+                    throw new NotFoundException();
                 }
             }
         }
-        return render(resource, parameters);
+
+        return render_(snapshot, parameters);
     }
 
 
-    private Response renderAlias(final Alias alias) {
+    private Response renderAlias(final AliasSnapshot alias) {
         throw new RedirectRequiredException(alias.target());
     }
 
 
-    private Response renderFile(final File f) {
+    private Response renderFile(final FileSnapshot f) {
         // Factor into 'FileResponse' class.
 
         final Response r = new Response(new FileBody(f, _dm));
@@ -205,7 +194,7 @@ public class DefaultRenderer
     }
 
 
-    private Response renderFolder(final Folder folder) {
+    private Response renderFolder(final FolderSnapshot folder) {
         if (folder.indexPage() != null) {
             throw new RedirectRequiredException(folder.indexPage());
         }
@@ -220,7 +209,7 @@ public class DefaultRenderer
     }
 
 
-    private Response renderPage(final Page page,
+    private Response renderPage(final PageSnapshot page,
                                 final Map<String, String[]> parameters) {
         // Factor into 'PageResponse' class.
 
@@ -236,7 +225,7 @@ public class DefaultRenderer
     }
 
 
-    private Response renderSearch(final Search search,
+    private Response renderSearch(final ResourceSnapshot search,
                                   final Map<String, String[]> parameters) {
         // Factor into 'SearchResponse' class.
 

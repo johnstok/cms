@@ -17,6 +17,7 @@ import java.nio.charset.Charset;
 import ccc.api.DBC;
 import ccc.domain.File;
 import ccc.services.DataManager;
+import ccc.snapshots.FileSnapshot;
 
 
 /**
@@ -28,7 +29,7 @@ public class FileBody
     implements
         Body {
 
-    private final File _file;
+    private final FileSnapshot _file;
     private final DataManager _dataManager;
 
     /**
@@ -38,7 +39,7 @@ public class FileBody
      * @param dataManager The data manager used to retrieve the file's contents
      *      from the data store.
      */
-    public FileBody(final File f, final DataManager dataManager) {
+    public FileBody(final FileSnapshot f, final DataManager dataManager) {
         DBC.require().notNull(f);
         DBC.require().notNull(dataManager);
 

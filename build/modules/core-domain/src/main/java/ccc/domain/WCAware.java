@@ -12,7 +12,6 @@
 
 package ccc.domain;
 
-import ccc.api.Json;
 
 
 /**
@@ -54,12 +53,4 @@ public interface WCAware<T> {
      *  none exists.
      */
     T workingCopy();
-
-    /**
-     * Mutator.
-     *
-     * @param snapshot The new working copy for this page.
-     */
-    void workingCopy(final Json snapshot);
-
 }

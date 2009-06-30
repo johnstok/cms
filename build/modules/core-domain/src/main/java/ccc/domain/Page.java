@@ -22,12 +22,12 @@ import java.util.List;
 import java.util.Set;
 
 import ccc.api.DBC;
-import ccc.api.Json;
 import ccc.api.PageDelta;
 import ccc.api.Paragraph;
 import ccc.api.ParagraphType;
 import ccc.api.ResourceType;
 import ccc.commons.WordCharFixer;
+import ccc.snapshots.PageSnapshot;
 
 
 /**
@@ -35,11 +35,9 @@ import ccc.commons.WordCharFixer;
  *
  * @author Civic Computing Ltd.
  */
-public final class Page
+public class Page
     extends
-        HistoricalResource<PageRevision>
-    implements
-        WCAware<PageDelta> {
+        WorkingCopySupport<PageDelta, PageRevision> {
 
     // This is a collection to exploit hibernate's delete-orphan syntax.
     private List<PageWorkingCopy> _workingCopies =
@@ -165,12 +163,6 @@ public final class Page
 
     /** {@inheritDoc} */
     @Override
-    public void workingCopy(final Json snapshot) {
-        workingCopy(new PageDelta(snapshot));
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public PageDelta createSnapshot() {
         return new PageDelta(new HashSet<Paragraph>(paragraphs()));
     }
@@ -208,6 +200,15 @@ public final class Page
     private void wc(final PageWorkingCopy pageWorkingCopy) {
         DBC.require().toBeFalse(hasWorkingCopy());
         _workingCopies.add(0, pageWorkingCopy);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void setWorkingCopyFromRevision(final int revisionNumber) {
+        final PageRevision rev = revision(revisionNumber);
+        final PageDelta delta = new PageDelta(rev.getContent());
+        workingCopy(delta);
     }
 
     /**
@@ -257,5 +258,29 @@ public final class Page
             }
         }
         return paras;
+    }
+
+
+
+    /* ====================================================================
+     * Snapshot support.
+     * ================================================================== */
+
+    /** {@inheritDoc} */
+    @Override
+    public final PageSnapshot forWorkingCopy() {
+        return new PageSnapshot(this, wc());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public final PageSnapshot forCurrentRevision() {
+        return new PageSnapshot(this, currentRevision());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public final PageSnapshot forSpecificRevision(final int revNo) {
+        return new PageSnapshot(this, revision(revNo));
     }
 }

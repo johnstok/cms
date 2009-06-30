@@ -24,7 +24,7 @@ import ccc.api.MimeType;
  */
 public class FileRevision
     extends
-        Revision {
+        Revision implements IFile {
 
     private Data      _data;
     private int       _size;
@@ -58,40 +58,24 @@ public class FileRevision
     }
 
 
-    /**
-     * Accessor.
-     *
-     * @return Returns the data.
-     */
+    /** {@inheritDoc} */
     public final Data getData() {
         return _data;
     }
 
 
-    /**
-     * Accessor.
-     *
-     * @return Returns the size.
-     */
+    /** {@inheritDoc} */
     public final int getSize() {
         return _size;
     }
 
 
-    /**
-     * Accessor.
-     *
-     * @return Returns the mimeType.
-     */
+    /** {@inheritDoc} */
     public final MimeType getMimeType() {
         return _mimeType;
     }
 
-    /**
-     * Query if this file is an image.
-     *
-     * @return True if the file is an image, false otherwise.
-     */
+    /** {@inheritDoc} */
     public boolean isImage() {
         return "image".equalsIgnoreCase(getMimeType().getPrimaryType());
     }

@@ -23,11 +23,11 @@ import ccc.api.DBC;
 import ccc.api.MimeType;
 import ccc.commons.Resources;
 import ccc.content.velocity.VelocityProcessor;
-import ccc.domain.Page;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.StatefulReader;
+import ccc.snapshots.PageSnapshot;
 
 
 /**
@@ -40,7 +40,7 @@ public class PageBody
     implements
         Body {
 
-    private final Page    _page;
+    private final PageSnapshot    _page;
     private final Map<String, String[]> _params;
     private final StatefulReader _reader;
     private final Template _template;
@@ -48,21 +48,21 @@ public class PageBody
     /**
      * Constructor.
      *
-     * @param p The page to render.
+     * @param page The page to render.
      * @param reader A stateful reader to access other resources.
      * @param parameters Additional parameters to control rendering.
      * @param t The template to use for this body.
      */
-    public PageBody(final Page p,
+    public PageBody(final PageSnapshot page,
                     final StatefulReader reader,
                     final Template t,
                     final Map<String, String[]> parameters) {
-        DBC.require().notNull(p);
+        DBC.require().notNull(page);
         DBC.require().notNull(reader);
         DBC.require().notNull(parameters);
         DBC.require().notNull(t);
 
-        _page = p;
+        _page = page;
         _reader = reader;
         _params = parameters;
         _template = t;
@@ -99,4 +99,13 @@ public class PageBody
                 User.SYSTEM_USER,
                 true,
                 "Created."));
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public PageSnapshot getPage() {
+        return _page;
+    }
 }

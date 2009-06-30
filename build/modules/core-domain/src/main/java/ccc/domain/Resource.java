@@ -27,6 +27,7 @@ import ccc.api.CommandType;
 import ccc.api.Duration;
 import ccc.api.Jsonable;
 import ccc.api.ResourceType;
+import ccc.snapshots.ResourceSnapshot;
 
 
 /**
@@ -37,7 +38,9 @@ import ccc.api.ResourceType;
  */
 public abstract class Resource
     extends
-        VersionedEntity {
+        VersionedEntity
+    implements
+        SnapshotSupport<ResourceSnapshot> {
 
     private static final int MAXIMUM_TITLE_LENGTH = 256;
     private static final int MAXIMUM_DATUM_LENGTH = 1000;
@@ -645,4 +648,25 @@ public abstract class Resource
      * @return The snapshot as an implementation of {@link Jsonable}.
      */
     public abstract Jsonable createSnapshot();
+
+
+
+    /* ====================================================================
+     * Snapshot support.
+     * ================================================================== */
+
+    /** {@inheritDoc} */
+    public ResourceSnapshot forWorkingCopy() {
+        return new ResourceSnapshot(this);
+    }
+
+    /** {@inheritDoc} */
+    public ResourceSnapshot forCurrentRevision() {
+        return new ResourceSnapshot(this);
+    }
+
+    /** {@inheritDoc} */
+    public ResourceSnapshot forSpecificRevision(final int revNo) {
+        return new ResourceSnapshot(this);
+    }
 }

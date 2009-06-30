@@ -15,6 +15,7 @@ import ccc.api.AliasDelta;
 import ccc.api.DBC;
 import ccc.api.ID;
 import ccc.api.ResourceType;
+import ccc.snapshots.AliasSnapshot;
 
 
 /**
@@ -92,5 +93,29 @@ public class Alias extends Resource {
                 target().name().toString(),
                 new ID(target().id().toString()));
         return delta;
+    }
+
+
+
+    /* ====================================================================
+     * Snapshot support.
+     * ================================================================== */
+
+    /** {@inheritDoc} */
+    @Override
+    public final AliasSnapshot forWorkingCopy() {
+        return new AliasSnapshot(this);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public final AliasSnapshot forCurrentRevision() {
+        return new AliasSnapshot(this);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public final AliasSnapshot forSpecificRevision(final int revNo) {
+        return new AliasSnapshot(this);
     }
 }

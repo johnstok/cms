@@ -163,7 +163,7 @@ public class ResponseTest
         // ARRANGE
         final Body expected =
             new PageBody(
-                _p,
+                _p.forCurrentRevision(),
                 Testing.dummy(StatefulReader.class),
                 PageBody.BUILT_IN_PAGE_TEMPLATE,
                 new HashMap<String, String[]>());
