@@ -72,4 +72,13 @@ public final class QueryNames {
 
     /** RESOURCE_HISTORY : String. */
     public static final String RESOURCE_HISTORY = "resourceHistory";
+
+    /** ALL_TEMPLATES : String. */
+    public static final String ALL_TEMPLATES = "allTemplates";
+
+    /** TEMPLATE_BY_NAME : String. */
+    public static final String TEMPLATE_BY_NAME = "templateByName";
+
+    /** ROOTS : String. */
+    public static final String ROOTS = "roots";
 }

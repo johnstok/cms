@@ -320,7 +320,7 @@ public class ResourceDaoImplTest
     public void testQueryAllLockedResources() {
 
         // ARRANGE
-        expect(_dao.list("lockedResources", Resource.class))
+        expect(_dao.list(QueryNames.LOCKED_RESOURCES, Resource.class))
             .andReturn(Collections.singletonList(_r));
         replayAll();
 
