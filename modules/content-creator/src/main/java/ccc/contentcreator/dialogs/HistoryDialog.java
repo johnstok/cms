@@ -16,6 +16,7 @@ import java.util.Collection;
 import java.util.List;
 
 import ccc.api.CommandType;
+import ccc.api.ID;
 import ccc.api.LogEntrySummary;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.LogEntrySummaryModelData;
@@ -44,6 +45,7 @@ public class HistoryDialog
 
     private final ToolBar _toolBar;
     private final SingleSelectionModel _ssm;
+    private final ID _id;
 
     /**
      * Constructor.
@@ -53,9 +55,11 @@ public class HistoryDialog
      * @param ssm The selection model.
      */
     public HistoryDialog(final Collection<LogEntrySummary> data,
+                         final ID resourceId,
                          final SingleSelectionModel ssm) {
         super(Globals.uiConstants().resourceHistory(), data, false);
 
+        _id = resourceId;
         _ssm = ssm;
         _toolBar = new HistoryToolBar(this);
         _toolBar.disable();
@@ -164,5 +168,15 @@ public class HistoryDialog
      */
     public boolean hasLock() {
         return null!=_ssm.tableSelection().getLocked();
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return The id for the resource.
+     */
+    public ID getResourceId() {
+        return _id;
     }
 }

@@ -83,4 +83,13 @@ public abstract class HistoricalResource<T extends Revision>
         DBC.require().toBeNull(_history.get(_currentRev));
         _history.put(Integer.valueOf(_currentRev), revision);
     }
+
+    /**
+     * Accessor.
+     *
+     * @return The revisions for this resource.
+     */
+    public HashMap<Integer, T> revisions() {
+        return new HashMap<Integer, T>(_history);
+    }
 }

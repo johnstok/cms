@@ -11,15 +11,18 @@
  */
 package ccc.services.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import ccc.domain.CCCException;
 import ccc.domain.Folder;
-import ccc.domain.LogEntry;
+import ccc.domain.HistoricalResource;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
+import ccc.domain.Revision;
 import ccc.domain.User;
 import ccc.services.Dao;
 import ccc.services.QueryNames;
@@ -64,9 +67,11 @@ public class ResourceDaoImpl implements ResourceDao {
 
     /** {@inheritDoc} */
     @Override
-    public List<LogEntry> history(final UUID resourceId) {
-        return
-            _dao.list(QueryNames.RESOURCE_HISTORY, LogEntry.class, resourceId);
+    public Map<Integer, ? extends Revision> history(final UUID resourceId) {
+        final Resource r = _dao.find(Resource.class, resourceId);
+        return (r instanceof HistoricalResource<?>)
+            ? ((HistoricalResource<?>) r).revisions()
+            : new HashMap<Integer, Revision>();
     }
 
 
