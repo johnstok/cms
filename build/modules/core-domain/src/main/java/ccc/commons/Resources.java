@@ -117,13 +117,23 @@ public final class Resources {
             Resources.class.getResourceAsStream(resourcePath);
         if (null!=is) {
             try {
-                final BufferedReader r =
-                    new BufferedReader(new InputStreamReader(is, charset));
-                for (String l = r.readLine(); null!=l; l=r.readLine()) {
-                    strings.add(l);
+                BufferedReader r = null;
+                try {
+                    r = new BufferedReader(new InputStreamReader(is, charset));
+                    for (String l = r.readLine(); null!=l; l=r.readLine()) {
+                        strings.add(l);
+                    }
+                } catch (final IOException e) {
+                    throw new CCCException(e);
+                } finally {
+                    try {
+                        if (r != null) {
+                            r.close();
+                        }
+                    } catch (final IOException e) {
+                        swallow(e);
+                    }
                 }
-            } catch (final IOException e) {
-                throw new CCCException(e);
             } finally {
                 try {
                     is.close();
