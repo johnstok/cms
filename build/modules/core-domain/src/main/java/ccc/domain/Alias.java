@@ -21,8 +21,6 @@ import ccc.api.ResourceType;
  * An alias resource. Models a symbolic link that points to another
  * {@link Resource}.
  *
- * TODO: Add circular reference detection?
- *
  * @author Civic Computing Ltd
  */
 public class Alias extends Resource {
