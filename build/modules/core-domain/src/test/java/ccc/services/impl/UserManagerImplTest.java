@@ -33,6 +33,7 @@ import ccc.domain.Password;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
+import ccc.services.QueryNames;
 
 
 /**
@@ -48,7 +49,7 @@ public class UserManagerImplTest extends TestCase {
     public void testUsernameExistsCanReturnTrue() {
 
         // ARRANGE
-        expect(_dao.exists("usersWithUsername", User.class, "blat"))
+        expect(_dao.exists(QueryNames.USERS_WITH_USERNAME, User.class, "blat"))
             .andReturn(Boolean.TRUE);
         replayAll();
 
@@ -66,7 +67,7 @@ public class UserManagerImplTest extends TestCase {
     public void testUsernameExistsCanReturnFalse() {
 
         // ARRANGE
-        expect(_dao.exists("usersWithUsername", User.class, "blat"))
+        expect(_dao.exists(QueryNames.USERS_WITH_USERNAME, User.class, "blat"))
             .andReturn(Boolean.FALSE);
         replayAll();
 
@@ -108,7 +109,7 @@ public class UserManagerImplTest extends TestCase {
     public void testListUsers() {
 
         // ARRANGE
-        expect(_dao.uniquify("users", User.class))
+        expect(_dao.uniquify(QueryNames.USERS, User.class))
             .andReturn(new ArrayList<User>());
         replayAll();
 
@@ -127,7 +128,7 @@ public class UserManagerImplTest extends TestCase {
     public void testListUsersWithRole() {
 
         // ARRANGE
-        expect(_dao.uniquify("usersWithRole",
+        expect(_dao.uniquify(QueryNames.USERS_WITH_ROLE,
                             User.class,
                             CreatorRoles.ADMINISTRATOR))
             .andReturn(new ArrayList<User>());
@@ -147,7 +148,8 @@ public class UserManagerImplTest extends TestCase {
     public void testListUsersWithUsername() {
 
         // ARRANGE
-        expect(_dao.list("usersWithUsername", User.class, "testname"))
+        expect(_dao.list(QueryNames.USERS_WITH_USERNAME,
+            User.class, "testname"))
             .andReturn(new ArrayList<User>());
         replayAll();
 
@@ -165,7 +167,8 @@ public class UserManagerImplTest extends TestCase {
     public void testListUsersWithEmail() {
 
         // ARRANGE
-        expect(_dao.list("usersWithEmail", User.class, "test@civicuk.com"))
+        expect(_dao.list(QueryNames.USERS_WITH_EMAIL,
+            User.class, "test@civicuk.com"))
             .andReturn(new ArrayList<User>());
         replayAll();
 
@@ -208,7 +211,7 @@ public class UserManagerImplTest extends TestCase {
         final Date now = new Date();
         final Password pw = new Password(_u, "foo");
 
-        expect(_dao.find("passwordForUser", Password.class, _u.id()))
+        expect(_dao.find(QueryNames.PASSWORD_FOR_USER, Password.class, _u.id()))
             .andReturn(pw);
         _audit.recordUserChangePassword(pw, _u, now); // TODO: Broken.
         replayAll();

@@ -155,14 +155,15 @@ public final class QueriesEJB
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> roots() {
-        return mapResources(_resources.list("roots", Folder.class));
+        return mapResources(_resources.list(QueryNames.ROOTS, Folder.class));
     }
 
     /** {@inheritDoc} */
     @Override
     public boolean templateNameExists(final String templateName) {
         return null!=_resources.find(
-            "templateByName", Template.class, new ResourceName(templateName));
+            QueryNames.TEMPLATE_BY_NAME,
+            Template.class, new ResourceName(templateName));
 
 
     }
@@ -170,7 +171,8 @@ public final class QueriesEJB
     /** {@inheritDoc} */
     @Override
     public Collection<TemplateSummary> templates() {
-        return mapTemplates(_resources.list("allTemplates", Template.class));
+        return mapTemplates(_resources.list(
+            QueryNames.ALL_TEMPLATES, Template.class));
     }
 
 
