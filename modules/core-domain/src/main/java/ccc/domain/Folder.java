@@ -21,6 +21,7 @@ import ccc.api.Json;
 import ccc.api.JsonKeys;
 import ccc.api.Jsonable;
 import ccc.api.ResourceType;
+import ccc.snapshots.FolderSnapshot;
 
 
 /**
@@ -391,5 +392,29 @@ public final class Folder extends Resource {
      */
     public void indexPage(final Page indexPage) {
         _indexPage = indexPage;
+    }
+
+
+
+    /* ====================================================================
+     * Snapshot support.
+     * ================================================================== */
+
+    /** {@inheritDoc} */
+    @Override
+    public final FolderSnapshot forWorkingCopy() {
+        return new FolderSnapshot(this);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public final FolderSnapshot forCurrentRevision() {
+        return new FolderSnapshot(this);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public final FolderSnapshot forSpecificRevision(final int revNo) {
+        return new FolderSnapshot(this);
     }
 }

@@ -25,7 +25,7 @@ import ccc.api.Paragraph;
  */
 public class PageRevision
     extends
-        Revision {
+        Revision implements IPage {
 
     private Set<Paragraph> _content = new HashSet<Paragraph>();
 
@@ -49,11 +49,7 @@ public class PageRevision
     }
 
 
-    /**
-     * Accessor.
-     *
-     * @return Returns the content.
-     */
+    /** {@inheritDoc} */
     public final Set<Paragraph> getContent() {
         return _content;
     }

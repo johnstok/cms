@@ -81,10 +81,8 @@ import ccc.commands.UpdateTemplateCommand;
 import ccc.commands.UpdateUserCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.Action;
-import ccc.domain.CCCException;
 import ccc.domain.File;
 import ccc.domain.Folder;
-import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.PageHelper;
 import ccc.domain.RemoteExceptionSupport;
@@ -92,7 +90,6 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceExistsException;
 import ccc.domain.ResourceName;
 import ccc.domain.ResourceOrder;
-import ccc.domain.Snapshot;
 import ccc.domain.User;
 import ccc.persistence.jpa.BaseDao;
 import ccc.persistence.jpa.FsCoreData;
@@ -507,18 +504,12 @@ public class CommandsEJB
                                                  throws CommandFailedException {
         try {
             final UUID resourceUuid = toUUID(resourceId);
-            final LogEntry le = _audit.findEntryForIndex(index);
 
-            if (resourceUuid.equals(le.subjectId())) {
-                new UpdateWorkingCopyCommand(_bdao, _audit).execute(
-                    loggedInUser(),
-                    new Date(),
-                    resourceUuid,
-                    new Snapshot(le.detail()));
-            } else {
-                // TODO: Throw a command failed exception
-                throw new CCCException("Log entry describes another resource.");
-            }
+            new UpdateWorkingCopyCommand(_bdao, _audit).execute(
+                loggedInUser(),
+                new Date(),
+                resourceUuid,
+                index);
 
         } catch (final RemoteExceptionSupport e) {
             throw fail(e);

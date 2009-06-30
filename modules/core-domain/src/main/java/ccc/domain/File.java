@@ -19,9 +19,9 @@ import java.util.UUID;
 import ccc.api.DBC;
 import ccc.api.FileDelta;
 import ccc.api.ID;
-import ccc.api.Json;
 import ccc.api.MimeType;
 import ccc.api.ResourceType;
+import ccc.snapshots.FileSnapshot;
 
 
 /**
@@ -180,12 +180,6 @@ public class File
 
     /** {@inheritDoc} */
     @Override
-    public void workingCopy(final Json snapshot) {
-        workingCopy(new FileDelta(snapshot));
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public FileDelta createSnapshot() {
         final FileDelta delta =
             new FileDelta(
@@ -228,5 +222,27 @@ public class File
     private void wc(final FileWorkingCopy pageWorkingCopy) {
         DBC.require().toBeFalse(hasWorkingCopy());
         _workingCopies.add(0, pageWorkingCopy);
+    }
+
+    /* ====================================================================
+     * Snapshot support.
+     * ================================================================== */
+
+    /** {@inheritDoc} */
+    @Override
+    public final FileSnapshot forWorkingCopy() {
+        return new FileSnapshot(this, wc());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public final FileSnapshot forCurrentRevision() {
+        return new FileSnapshot(this, currentRevision());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public final FileSnapshot forSpecificRevision(final int revNo) {
+        return new FileSnapshot(this, revision(revNo));
     }
 }

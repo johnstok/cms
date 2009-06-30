@@ -25,7 +25,7 @@ import ccc.api.MimeType;
  */
 public class FileWorkingCopy
     extends
-        WorkingCopy {
+        WorkingCopy implements IFile {
 
     private MimeType _mimeType;
     private int _size;
@@ -64,5 +64,30 @@ public class FileWorkingCopy
             _mimeType,
             new ID(_data.id().toString()),
             _size);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Data getData() {
+        return _data;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MimeType getMimeType() {
+        return _mimeType;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int getSize() {
+        return _size;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isImage() {
+        // TODO: Factor into superclass.
+        return "image".equalsIgnoreCase(getMimeType().getPrimaryType());
     }
 }

@@ -23,8 +23,8 @@ import ccc.domain.Resource;
 import ccc.domain.Snapshot;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
-import ccc.domain.WCAware;
 import ccc.domain.WorkingCopyNotSupportedException;
+import ccc.domain.WorkingCopySupport;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
 
@@ -83,7 +83,6 @@ public class UpdateWorkingCopyCommand {
     /**
      * Updates the working copy.
      *
-     * @param delta The resource delta to store in the page.
      * @param resourceId The page's id.
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
@@ -96,7 +95,7 @@ public class UpdateWorkingCopyCommand {
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID resourceId,
-                        final Snapshot delta)
+                        final long revisionNo)
                                        throws UnlockedException,
                                               LockMismatchException,
                                               WorkingCopyNotSupportedException {
@@ -104,13 +103,10 @@ public class UpdateWorkingCopyCommand {
             _dao.find(Resource.class, resourceId);
         r.confirmLock(actor);
 
-
-        if (r instanceof WCAware<?>) {
-            final WCAware<?> wcAware = (WCAware<?>) r;
-            wcAware.workingCopy(delta);
-        } else {
-            throw new WorkingCopyNotSupportedException(r);
-        }
+        if (r instanceof WorkingCopySupport<?, ?>) {
+            final WorkingCopySupport<?, ?> wcAware =
+                (WorkingCopySupport<?, ?>) r;
+            wcAware.setWorkingCopyFromRevision((int) revisionNo);
 
         _audit.record(
             new LogEntry(
@@ -118,6 +114,9 @@ public class UpdateWorkingCopyCommand {
                 CommandType.RESOURCE_UPDATE_WC,
                 happenedOn,
                 resourceId,
-                delta.getDetail()));
+                "{}")); // FIXME: What do we put here?
+        } else {
+            throw new WorkingCopyNotSupportedException(r);
+        }
     }
 }
