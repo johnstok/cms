@@ -281,12 +281,10 @@ public class CommandsImpl
     public void createAction(final ID resourceId,
                              final CommandType action,
                              final Date executeAfter,
-                             final Map<String, String> parameters,
-                             final String comment,
-                             final boolean isMajorEdit)
+                             final Map<String, String> parameters)
     throws CommandFailedException {
         _commands.createAction(
-            resourceId, action, executeAfter, parameters, comment, isMajorEdit);
+            resourceId, action, executeAfter, parameters);
     }
 
     /** {@inheritDoc} */

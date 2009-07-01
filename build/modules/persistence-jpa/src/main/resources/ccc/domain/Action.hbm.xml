@@ -51,17 +51,6 @@
             type="StatusType"
             not-null="true"
             length="255" />
-        <property
-            name="_isMajorEdit"
-            column="major_change"
-            not-null="true"
-            type="boolean"/>
-        <property
-            name="_comment"
-            column="message"
-            not-null="false"
-            type="string"
-            length="1024"/>
         
         <many-to-one
             name="_actor"

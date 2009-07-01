@@ -12,7 +12,6 @@
 package ccc.contentcreator.dialogs;
 
 import java.util.Date;
-import java.util.HashMap;
 
 import ccc.api.ID;
 import ccc.contentcreator.api.CommandServiceAsync;
@@ -80,9 +79,7 @@ public class CreateActionDialog
                     _resourceId,
                     _createAction.commandType(),
                     _dtPicker.getDate(),
-                    new HashMap<String, String>(),
-                    _createAction.getComment(),
-                    _createAction.isMajorEdit(),
+                    _createAction.getParameters(),
                     new ErrorReportingCallback<Void>(_constants.createAction()){
                         public void onSuccess(final Void arg0) {
                             close();
