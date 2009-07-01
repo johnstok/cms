@@ -20,7 +20,6 @@ import org.apache.log4j.Logger;
 import ccc.api.DBC;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
-import ccc.domain.Password;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -133,17 +132,6 @@ public class AuditLogImpl
 
     /** {@inheritDoc} */
     @Override
-    public void recordRename(final Resource resource,
-                             final User actor,
-                             final Date happenedOn) {
-        DBC.require().notNull(resource);
-        final LogEntry le =
-            LogEntry.forRename(resource, actor, happenedOn);
-        record(le);
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void recordPublish(final Resource resource,
                               final User actor,
                               final Date happenedOn) {
@@ -173,79 +161,12 @@ public class AuditLogImpl
 
     /** {@inheritDoc} */
     @Override
-    public void recordIncludeInMainMenu(final Resource resource,
-                                        final User actor,
-                                        final Date happenedOn) {
-        DBC.require().notNull(resource);
-        final LogEntry le =
-            LogEntry.forIncludeInMainMenu(resource, actor, happenedOn);
-        record(le);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void recordRemoveFromMainMenu(final Resource resource,
-                                        final User actor,
-                                        final Date happenedOn) {
-        DBC.require().notNull(resource);
-        final LogEntry le =
-            LogEntry.forRemoveFromMainMenu(resource, actor, happenedOn);
-        record(le);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void recordChangeRoles(final Resource resource,
-                                  final User actor,
-                                  final Date happenedOn) {
-
-        DBC.require().notNull(resource);
-        final LogEntry le =
-            LogEntry.forChangeRoles(resource, actor, happenedOn);
-        record(le);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void recordReorder(final Folder folder,
-                              final User actor,
-                              final Date happenedOn) {
-        DBC.require().notNull(folder);
-        final LogEntry le =
-            LogEntry.forReorder(folder, actor, happenedOn);
-        record(le);
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public void recordFolderUpdate(final Folder folder,
                                       final User actor,
                                       final Date happenedOn) {
         DBC.require().notNull(folder);
         final LogEntry le =
             LogEntry.forFolderUpdate(folder, actor, happenedOn);
-        record(le);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void recordUpdateCache(final Resource resource,
-                                  final User actor,
-                                  final Date happenedOn) {
-        DBC.require().notNull(resource);
-        final LogEntry le =
-            LogEntry.forUpdateCache(resource, actor, happenedOn);
-        record(le);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void recordUserChangePassword(final Password pw,
-                                         final User actor,
-                                         final Date happenedOn) {
-        DBC.require().notNull(pw);
-        final LogEntry le =
-            LogEntry.forUserChangePassword(pw, actor, happenedOn);
         record(le);
     }
 

@@ -23,6 +23,7 @@ import ccc.commands.ReorderFolderContentsCommand;
 import ccc.commands.UpdateFolderCommand;
 import ccc.domain.Folder;
 import ccc.domain.LockMismatchException;
+import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Resource;
@@ -91,7 +92,7 @@ public class FolderDaoImplTest
 
         expect(_dao.find(Folder.class, _f.id()))
             .andReturn(_f);
-        _al.recordReorder(eq(_f), eq(_regularUser), isA(Date.class));
+        _al.record(isA(LogEntry.class));
         replayAll();
 
         final ReorderFolderContentsCommand rf =

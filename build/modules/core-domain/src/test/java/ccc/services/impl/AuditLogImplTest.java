@@ -184,28 +184,28 @@ public class AuditLogImplTest
         assertEquals(_actor, le.getValue().actor());
     }
 
-    /**
-     * Test.
-     */
-    public void testRecordRename() {
-
-        // ARRANGE
-        final Capture<LogEntry> le = new Capture<LogEntry>();
-        _em.create(capture(le));
-        replay(_em);
-
-        final AuditLog al = new AuditLogImpl(_em);
-        final Page p = new Page(new ResourceName("foo"), "foo", null, _rm);
-
-        // ACT
-        al.recordRename(p, _actor, _happenedOn);
-
-        // ASSERT
-        verify(_em);
-        assertEquals(CommandType.RESOURCE_RENAME, le.getValue().action());
-        assertEquals(p.id(), le.getValue().subjectId());
-        assertEquals(_actor, le.getValue().actor());
-    }
+//    /**
+//     * Test.
+//     */
+//    public void testRecordRename() {
+//
+//        // ARRANGE
+//        final Capture<LogEntry> le = new Capture<LogEntry>();
+//        _em.create(capture(le));
+//        replay(_em);
+//
+//        final AuditLog al = new AuditLogImpl(_em);
+//        final Page p = new Page(new ResourceName("foo"), "foo", null, _rm);
+//
+//        // ACT
+//        al.recordRename(p, _actor, _happenedOn);
+//
+//        // ASSERT
+//        verify(_em);
+//        assertEquals(CommandType.RESOURCE_RENAME, le.getValue().action());
+//        assertEquals(p.id(), le.getValue().subjectId());
+//        assertEquals(_actor, le.getValue().actor());
+//    }
 
 
     /** {@inheritDoc} */

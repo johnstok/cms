@@ -17,7 +17,6 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.CommandType;
-import ccc.api.Duration;
 import ccc.api.JsonKeys;
 
 
@@ -66,30 +65,6 @@ public class LogEntry extends Entity {
         _subjectId = subjectId;
         _detail = detail;
     }
-
-
-
-
-    /**
-     * Create a log entry for the rename of a resource.
-     *
-     * @param resource The resource that was renamed.
-     * @param actor The actor that performed the action.
-     * @param happenedOn The date that the actor performed the action.
-     * @return The log entry representing the action.
-     */
-    public static LogEntry forRename(final Resource resource,
-                                     final User actor,
-                                     final Date happenedOn) {
-
-        final LogEntry le = createEntry(resource, actor, happenedOn);
-        le._action = CommandType.RESOURCE_RENAME;
-        final Snapshot ss = new Snapshot();
-        ss.set(JsonKeys.NAME, resource.name().toString());
-        le._detail = ss.getDetail();
-        return le;
-    }
-
 
 
     /**
@@ -349,88 +324,6 @@ public class LogEntry extends Entity {
     }
 
     /**
-     * Create a log entry for the including resource in the main menu.
-     *
-     * @param resource The resource that was changed.
-     * @param actor The actor that performed the action.
-     * @param happenedOn The date that the actor performed the action.
-     * @return The log entry representing the action.
-     */
-    public static LogEntry forIncludeInMainMenu(final Resource resource,
-                                                final User actor,
-                                                final Date happenedOn) {
-        final LogEntry le = createEntry(resource, actor, happenedOn);
-        le._action = CommandType.RESOURCE_INCLUDE_IN_MM;
-        final Snapshot ss = new Snapshot();
-        ss.set(JsonKeys.INCLUDE_IN_MAIN_MENU,
-               Boolean.valueOf(resource.includeInMainMenu()));
-        le._detail = ss.getDetail();
-        return le;
-    }
-
-
-    /**
-     * Create a log entry for the removing a resource from the main menu.
-     *
-     * @param resource The resource that was changed.
-     * @param actor The actor that performed the action.
-     * @param happenedOn The date that the actor performed the action.
-     * @return The log entry representing the action.
-     */
-    public static LogEntry forRemoveFromMainMenu(final Resource resource,
-                                                 final User actor,
-                                                 final Date happenedOn) {
-        final LogEntry le = createEntry(resource, actor, happenedOn);
-        le._action = CommandType.RESOURCE_REMOVE_FROM_MM;
-        final Snapshot ss = new Snapshot();
-        ss.set(JsonKeys.INCLUDE_IN_MAIN_MENU,
-               Boolean.valueOf(resource.includeInMainMenu()));
-        le._detail = ss.getDetail();
-        return le;
-    }
-
-
-    /**
-     * Create a log entry for the removing a resource from the main menu.
-     *
-     * @param resource The resource that was changed.
-     * @param actor The actor that performed the action.
-     * @param happenedOn The date that the actor performed the action.
-     * @return The log entry representing the action.
-     */
-    public static LogEntry forChangeRoles(final Resource resource,
-                                          final User actor,
-                                          final Date happenedOn) {
-        final LogEntry le = createEntry(resource, actor, happenedOn);
-        le._action = CommandType.RESOURCE_CHANGE_ROLES;
-        final Snapshot ss = new Snapshot();
-        ss.setStrings("roles", resource.roles());
-        le._detail = ss.getDetail();
-        return le;
-    }
-
-    /**
-     * Create a log entry for the reordering folder's resources.
-     *
-     * @param folder The folder that was changed.
-     * @param actor The actor that performed the action.
-     * @param happenedOn The date that the actor performed the action.
-     * @return The log entry representing the action.
-     */
-    public static LogEntry forReorder(final Folder folder,
-                                      final User actor,
-                                      final Date happenedOn) {
-
-        final LogEntry le = createEntry(folder, actor, happenedOn);
-        le._action = CommandType.FOLDER_REORDER;
-        final Snapshot ss = new Snapshot();
-        ss.set("reorder", actor.id().toString());
-        le._detail = ss.getDetail();
-        return le;
-    }
-
-
-    /**
      * Create a log entry for the updating a folder.
      *
      * @param folder The folder that was changed.
@@ -448,47 +341,6 @@ public class LogEntry extends Entity {
         ss.set(JsonKeys.SORT_ORDER, folder.sortOrder().name());
         final Page p = folder.indexPage();
         ss.set(JsonKeys.INDEX_PAGE_ID, (null == p) ? null : p.id().toString());
-        le._detail = ss.getDetail();
-        return le;
-    }
-
-    /**
-     * Create a log entry to record a change to the resource's caching policy.
-     *
-     * @param resource The resource that was changed.
-     * @param actor The actor that performed the action.
-     * @param happenedOn The date that the actor performed the action.
-     * @return The log entry representing the action.
-     * @return
-     */
-    public static LogEntry forUpdateCache(final Resource resource,
-                                          final User actor,
-                                          final Date happenedOn) {
-
-        final LogEntry le = createEntry(resource, actor, happenedOn);
-        le._action = CommandType.RESOURCE_UPDATE_CACHE;
-        final Snapshot ss = new Snapshot();
-        final Duration d = resource.cache();
-        ss.set("cache", (null==d) ? (Long) null : Long.valueOf(d.time()));
-        le._detail = ss.getDetail();
-        return le;
-    }
-
-
-    /**
-     * Create a log entry for user password change.
-     *
-     * @param pw The password that changed.
-     * @param actor The user that performed the action.
-     * @param happenedOn When the action took place.
-     * @return The log entry representing the action.
-     */
-    public static LogEntry forUserChangePassword(final Password pw,
-                                                 final User actor,
-                                                 final Date happenedOn) {
-        final LogEntry le = createEntry(pw, actor, happenedOn);
-        le._action = CommandType.USER_CHANGE_PASSWORD;
-        final Snapshot ss = new Snapshot();
         le._detail = ss.getDetail();
         return le;
     }

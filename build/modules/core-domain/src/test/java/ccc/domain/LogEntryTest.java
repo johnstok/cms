@@ -11,8 +11,6 @@
  */
 package ccc.domain;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 
 import junit.framework.TestCase;
@@ -30,25 +28,25 @@ public class LogEntryTest
     extends
         TestCase {
 
-    /**
-     * Test.
-     */
-    public void testRenameFactoryMethod() {
-
-        // ARRANGE
-        final Page p = new Page("foo");
-
-        // ACT
-        final LogEntry le = LogEntry.forRename(p, _actor, _happenedOn);
-
-        // ASSERT
-        assertEquals(p.id(), le.subjectId());
-        assertEquals(_happenedOn, le.happenedOn());
-        assertNull("Should be null", le.recordedOn());
-        assertEquals(-1, le.index());
-        assertEquals(_actor, le.actor());
-        assertEquals(CommandType.RESOURCE_RENAME, le.action());
-    }
+//    /**
+//     * Test.
+//     */
+//    public void testRenameFactoryMethod() {
+//
+//        // ARRANGE
+//        final Page p = new Page("foo");
+//
+//        // ACT
+//        final LogEntry le = LogEntry.forRename(p, _actor, _happenedOn);
+//
+//        // ASSERT
+//        assertEquals(p.id(), le.subjectId());
+//        assertEquals(_happenedOn, le.happenedOn());
+//        assertNull("Should be null", le.recordedOn());
+//        assertEquals(-1, le.index());
+//        assertEquals(_actor, le.actor());
+//        assertEquals(CommandType.RESOURCE_RENAME, le.action());
+//    }
 
     /**
      * Test.
@@ -251,30 +249,30 @@ public class LogEntryTest
     }
 
 
-    /**
-     * Test.
-     */
-    public void testChangeRolesFactoryMethod() {
-
-        // ARRANGE
-        final Page p = new Page("foo");
-        final Collection<String> roles = new ArrayList<String>();
-        roles.add("sup");
-        roles.add("zep");
-        p.roles(roles);
-
-        // ACT
-        final LogEntry le = LogEntry.forChangeRoles(p, _actor, _happenedOn);
-
-        // ASSERT
-        assertEquals(p.id(), le.subjectId());
-        assertEquals(_happenedOn, le.happenedOn());
-        assertNull("Should be null", le.recordedOn());
-        assertEquals(-1, le.index());
-        assertEquals(_actor, le.actor());
-        assertEquals(CommandType.RESOURCE_CHANGE_ROLES, le.action());
-        assertEquals("{\"roles\":[\"sup\",\"zep\"]}", le.detail());
-    }
+//    /**
+//     * Test.
+//     */
+//    public void testChangeRolesFactoryMethod() {
+//
+//        // ARRANGE
+//        final Page p = new Page("foo");
+//        final Collection<String> roles = new ArrayList<String>();
+//        roles.add("sup");
+//        roles.add("zep");
+//        p.roles(roles);
+//
+//        // ACT
+//        final LogEntry le = LogEntry.forChangeRoles(p, _actor, _happenedOn);
+//
+//        // ASSERT
+//        assertEquals(p.id(), le.subjectId());
+//        assertEquals(_happenedOn, le.happenedOn());
+//        assertNull("Should be null", le.recordedOn());
+//        assertEquals(-1, le.index());
+//        assertEquals(_actor, le.actor());
+//        assertEquals(CommandType.RESOURCE_CHANGE_ROLES, le.action());
+//        assertEquals("{\"roles\":[\"sup\",\"zep\"]}", le.detail());
+//    }
 
     private final User _actor = new User("actor");
     private final Date _happenedOn = new Date();

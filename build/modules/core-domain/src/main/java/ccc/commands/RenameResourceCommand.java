@@ -14,10 +14,14 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.CommandType;
+import ccc.api.JsonKeys;
 import ccc.domain.LockMismatchException;
+import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.ResourceExistsException;
 import ccc.domain.ResourceName;
+import ccc.domain.Snapshot;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -71,6 +75,16 @@ public class RenameResourceCommand {
         }
 
         resource.name(new ResourceName(name));
-        _audit.recordRename(resource, actor, happenedOn);
+
+        final Snapshot ss = new Snapshot();
+        ss.set(JsonKeys.NAME, resource.name().toString());
+        final LogEntry le =
+            new LogEntry(
+                actor,
+                CommandType.RESOURCE_RENAME,
+                happenedOn,
+                resource.id(),
+                ss.getDetail());
+        _audit.record(le);
     }
 }

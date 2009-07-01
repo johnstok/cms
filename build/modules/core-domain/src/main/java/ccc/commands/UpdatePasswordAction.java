@@ -16,6 +16,8 @@ import static ccc.services.QueryNames.*;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.CommandType;
+import ccc.domain.LogEntry;
 import ccc.domain.Password;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -60,6 +62,12 @@ public class UpdatePasswordAction {
                 _dao.find(PASSWORD_FOR_USER, Password.class, userId);
         p.password(password);
 
-        _audit.recordUserChangePassword(p, actor, happenedOn);
+        final LogEntry le = new LogEntry(
+            actor,
+            CommandType.USER_CHANGE_PASSWORD,
+            happenedOn,
+            p.id(),
+            "{}");
+        _audit.record(le);
     }
 }
