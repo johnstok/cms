@@ -14,9 +14,12 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.CommandType;
 import ccc.api.Duration;
 import ccc.domain.LockMismatchException;
+import ccc.domain.LogEntry;
 import ccc.domain.Resource;
+import ccc.domain.Snapshot;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -64,7 +67,20 @@ public class UpdateCachingCommand {
         r.confirmLock(actor);
 
         r.cache(duration);
-        _audit.recordUpdateCache(r, actor, happenedOn);
+
+        final Snapshot ss = new Snapshot();
+        ss.set(
+            "cache",
+            (null==duration) ? (Long) null : Long.valueOf(duration.time()));
+
+        final LogEntry le =
+            new LogEntry(
+                actor,
+                CommandType.RESOURCE_UPDATE_CACHE,
+                happenedOn,
+                r.id(),
+                ss.getDetail());
+        _audit.record(le);
     }
 
 }

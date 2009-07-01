@@ -15,8 +15,11 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.CommandType;
 import ccc.domain.LockMismatchException;
+import ccc.domain.LogEntry;
 import ccc.domain.Resource;
+import ccc.domain.Snapshot;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -65,7 +68,15 @@ public class UpdateResourceRolesCommand {
 
         r.roles(roles);
 
-        _audit.recordChangeRoles(r, actor, happenedOn);
+        final Snapshot ss = new Snapshot();
+        ss.setStrings("roles", r.roles());
+        final LogEntry le = new LogEntry(
+            actor,
+            CommandType.RESOURCE_CHANGE_ROLES,
+            happenedOn,
+            id,
+            ss.getDetail());
+        _audit.record(le);
     }
 
 }

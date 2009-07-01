@@ -16,9 +16,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import ccc.api.CommandType;
 import ccc.domain.Folder;
 import ccc.domain.LockMismatchException;
+import ccc.domain.LogEntry;
 import ccc.domain.Resource;
+import ccc.domain.Snapshot;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -66,7 +69,6 @@ public class ReorderFolderContentsCommand {
         final Folder f = _dao.find(Folder.class, folderId);
         f.confirmLock(actor);
 
-        final User u = actor;
         final List<Resource> newOrder = new ArrayList<Resource>();
         final List<Resource> currentOrder = f.entries();
         for (final UUID resourceId : order) {
@@ -78,6 +80,15 @@ public class ReorderFolderContentsCommand {
         }
         f.reorder(newOrder);
 
-        _audit.recordReorder(f, u, happenedOn);
+        final Snapshot ss = new Snapshot();
+        ss.set("reorder", actor.id().toString());
+        final LogEntry le =
+            new LogEntry(
+                actor,
+                CommandType.FOLDER_REORDER,
+                happenedOn,
+                folderId,
+                ss.getDetail());
+        _audit.record(le);
     }
 }

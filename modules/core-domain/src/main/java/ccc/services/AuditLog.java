@@ -15,7 +15,6 @@ import java.util.Date;
 
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
-import ccc.domain.Password;
 import ccc.domain.Resource;
 import ccc.domain.User;
 
@@ -103,15 +102,6 @@ public interface AuditLog {
     void recordMove(Resource resource, User actor, Date happenedOn);
 
     /**
-     * Record that the resource was renamed.
-     *
-     * @param resource The resource that was changed.
-     * @param actor The actor of the change.
-     * @param happenedOn The date of the change.
-     */
-    void recordRename(Resource resource, User actor, Date happenedOn);
-
-    /**
      * Record that a resource was published.
      *
      * @param resource The resource that was published.
@@ -140,39 +130,6 @@ public interface AuditLog {
 
 
     /**
-     * Record that a resource was included in main menu.
-     *
-     * @param resource The resource that was changed.
-     * @param actor The actor of the change.
-     * @param happenedOn The date of the change.
-     */
-    void recordIncludeInMainMenu(Resource resource,
-                                 User actor,
-                                 Date happenedOn);
-
-    /**
-     * Record that a resource was removed from main menu.
-     *
-     * @param resource The resource that was changed.
-     * @param actor The actor of the change.
-     * @param happenedOn The date of the change.
-     */
-    void recordRemoveFromMainMenu(Resource resource,
-                                  User actor, Date
-                                  happenedOn);
-
-
-    /**
-     * Record that a roles of the resource were changed.
-     *
-     * @param resource The resource that was changed.
-     * @param actor The actor of the change.
-     * @param happenedOn The date of the change.
-     */
-    void recordChangeRoles(Resource resource, User actor, Date happenedOn);
-
-
-    /**
      * Record that the folder was updated.
      *
      * @param folder The folder that was changed.
@@ -181,34 +138,6 @@ public interface AuditLog {
      */
     void recordFolderUpdate(Folder folder, User actor, Date happenedOn);
 
-
-    /**
-     * Record that the folder's manual sorting was reordered.
-     *
-     * @param folder The folder that was changed.
-     * @param actor The actor of the change.
-     * @param happenedOn The date of the change.
-     */
-    void recordReorder(Folder folder, User actor, Date happenedOn);
-
-
-    /**
-     * Record that cache setting of the resource was changed.
-     *
-     * @param resource The resource that was changed.
-     * @param actor The actor of the change.
-     * @param happenedOn The date of the change.
-     */
-    void recordUpdateCache(Resource resource, User actor, Date happenedOn);
-
-    /**
-     * Record that a user's password was changed.
-     *
-     * @param pw The password that changed.
-     * @param actor The user that performed the change.
-     * @param happenedOn When the change occurred.
-     */
-    void recordUserChangePassword(Password pw, User actor, Date happenedOn);
 
     /**
      * Record a log entry.

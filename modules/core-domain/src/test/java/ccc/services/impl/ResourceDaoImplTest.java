@@ -39,6 +39,7 @@ import ccc.domain.CreatorRoles;
 import ccc.domain.Folder;
 import ccc.domain.InsufficientPrivilegesException;
 import ccc.domain.LockMismatchException;
+import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.RemoteExceptionSupport;
@@ -145,7 +146,7 @@ public class ResourceDaoImplTest
         // ARRANGE
         _r.lock(_regularUser);
         expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
-        _al.recordIncludeInMainMenu(eq(_r), eq(_regularUser), isA(Date.class));
+        _al.record(isA(LogEntry.class));
         replayAll();
 
         // ACT
@@ -425,7 +426,7 @@ public class ResourceDaoImplTest
         // ARRANGE
         _r.lock(_regularUser);
         expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
-        _al.recordRename(eq(_r), eq(_regularUser), isA(Date.class));
+        _al.record(isA(LogEntry.class));
         replayAll();
 
         // ACT
@@ -545,7 +546,7 @@ public class ResourceDaoImplTest
         // ARRANGE
         _r.lock(_regularUser);
         expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
-        _al.recordUpdateCache(eq(_r), eq(_regularUser), isA(Date.class));
+        _al.record(isA(LogEntry.class));
         replayAll();
 
         // ACT

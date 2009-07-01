@@ -14,7 +14,9 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.CommandType;
 import ccc.domain.LockMismatchException;
+import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
@@ -64,11 +66,11 @@ public class IncludeInMainMenuCommand {
         r.confirmLock(actor);
 
         r.includeInMainMenu(b);
-        if (b) {
-            _audit.recordIncludeInMainMenu(r, actor, happenedOn);
-        } else {
-            _audit.recordRemoveFromMainMenu(r, actor, happenedOn);
-        }
-    }
 
+        final CommandType command =
+            (b) ? CommandType.RESOURCE_INCLUDE_IN_MM
+                : CommandType.RESOURCE_REMOVE_FROM_MM;
+        final LogEntry le = new LogEntry(actor, command, happenedOn, id, "{}");
+        _audit.record(le);
+    }
 }
