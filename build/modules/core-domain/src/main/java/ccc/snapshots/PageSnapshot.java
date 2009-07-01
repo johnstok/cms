@@ -29,7 +29,8 @@ public class PageSnapshot extends ResourceSnapshot implements IPage {
     /**
      * Constructor.
      *
-     * @param page
+     * @param p The page this snapshot wraps.
+     * @param page The revision or working copy.
      */
     public PageSnapshot(final Page p, final IPage page) {
         super(p);
@@ -40,5 +41,17 @@ public class PageSnapshot extends ResourceSnapshot implements IPage {
     @Override
     public Set<Paragraph> getContent() {
         return _delegate.getContent();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Paragraph paragraph(final String name) {
+        return _delegate.paragraph(name);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Set<Paragraph> paragraphs() {
+        return _delegate.paragraphs();
     }
 }

@@ -12,7 +12,6 @@
 
 package ccc.domain;
 
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -190,32 +189,6 @@ public final class Folder extends Resource {
             if (entry.type()==ResourceType.FOLDER) { count++; }
         }
         return count;
-    }
-
-    /**
-     * Pretty print this folder to the specified print writer.
-     *
-     * @param pw The writer to print to.
-     */
-    public void prettyPrint(final PrintWriter pw) {
-        final int indent = 0;
-        pw.println(name());
-        prettyPrint(entries(), pw, indent + 2);
-    }
-
-    private void prettyPrint(final List<Resource> entries,
-                             final PrintWriter pw,
-                             final int indent) {
-
-        for (final Resource entry : entries) {
-            for (int i = 0; i < indent; i++) { // TODO: Move to commons.
-                pw.print(" ");
-            }
-            pw.println(entry.name());
-            if (entry.type() == ResourceType.FOLDER) {
-                prettyPrint(entry.as(Folder.class).entries(), pw, indent + 2);
-            }
-        }
     }
 
     /**

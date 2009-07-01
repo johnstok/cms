@@ -23,10 +23,11 @@ import java.util.Random;
 import ccc.api.Paragraph;
 import ccc.api.ResourceType;
 import ccc.commons.XHTML;
-import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
+import ccc.snapshots.FolderSnapshot;
+import ccc.snapshots.ResourceSnapshot;
 
 
 /**
@@ -95,9 +96,9 @@ public class VelocityHelper {
      * @return A list of maps containing paragraph name and text for each page.
      */
     public List<Map<String, String>> selectPagesForContentIndex(
-        final Resource folder,
-        final int displayLimit,
-        final List<String> contentElements) {
+                                           final ResourceSnapshot folder,
+                                           final int displayLimit,
+                                           final List<String> contentElements) {
         final List<Map<String, String>> elements =
             new ArrayList<Map<String, String>>();
 
@@ -105,13 +106,13 @@ public class VelocityHelper {
             return null;
         }
 
-        final Folder f  = folder.as(Folder.class);
+        final FolderSnapshot f  = (FolderSnapshot) folder;
 
         int c = 0;
         for (final Page page : f.pages()) {
             if (displayLimit == -1 || c < displayLimit) {
                 final Map<String, String> map = new HashMap<String, String>();
-                for (final Paragraph para : page.paragraphs()) {
+                for (final Paragraph para : page.currentRevision().paragraphs()) {
                     if (contentElements.contains(para.name())) {
                         map.put(para.name(), para.text());
                     }

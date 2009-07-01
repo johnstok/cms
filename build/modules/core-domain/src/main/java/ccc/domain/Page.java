@@ -12,8 +12,6 @@
 
 package ccc.domain;
 
-import static java.util.Collections.*;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -114,29 +112,18 @@ public class Page
     }
 
     /**
-     * Accessor for paragraphs.
-     *
-     * @return A map from unique key to the corresponding paragraph data.
+     * @see IPage#paragraphs().
      */
     public Set<Paragraph> paragraphs() {
-        return unmodifiableSet(currentRevision().getContent());
+        return currentRevision().paragraphs();
     }
 
     /**
-     * Look up a paragraph on this page by name.
-     *
-     * @param name The name of the paragraph to retrieve.
-     * @return The paragraph with the specified name.
+     * @see IPage#paragraph(String).
      */
     public Paragraph paragraph(final String name) {
-        for (final Paragraph p : currentRevision().getContent()) {
-            if (p.name().equals(name)) {
-                return p;
-            }
-        }
-        throw new CCCException("No paragraph with name: "+name);
+        return currentRevision().paragraph(name);
     }
-
 
     /* ====================================================================
      * Working copy implementation.
@@ -164,7 +151,8 @@ public class Page
     /** {@inheritDoc} */
     @Override
     public PageDelta createSnapshot() {
-        return new PageDelta(new HashSet<Paragraph>(paragraphs()));
+        return new PageDelta(
+            new HashSet<Paragraph>(currentRevision().paragraphs()));
     }
 
     /** {@inheritDoc} */
