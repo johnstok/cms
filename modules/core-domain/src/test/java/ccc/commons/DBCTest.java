@@ -23,6 +23,44 @@ import junit.framework.TestCase;
  */
 public final class DBCTest extends TestCase {
 
+//    /**
+//     * Test.
+//     */
+//    public void testMaxScale() {
+//
+//        // ARRANGE
+//        final BigDecimal bd = new BigDecimal(new BigInteger("1"), 3);
+//
+//        // ACT
+//        try {
+//            require().maxScale(bd, 2);
+//            fail();
+//
+//        // ASSERT
+//        } catch (final IllegalArgumentException e) {
+//            assertEquals("Scale is too large.", e.getMessage());
+//        }
+//    }
+//
+//    /**
+//     * Test.
+//     */
+//    public void testMaxPrecision() {
+//
+//        // ARRANGE
+//        final BigDecimal bd = BigDecimal.valueOf(1000);
+//
+//        // ACT
+//        try {
+//            require().maxPrecision(bd, 2);
+//            fail();
+//
+//        // ASSERT
+//        } catch (final IllegalArgumentException e) {
+//            assertEquals("Precision is too large.", e.getMessage());
+//        }
+//    }
+
     /**
      * Test.
      */

@@ -90,7 +90,7 @@
                 name="_exceptionId"
                 column="failure_exception_id"
                 type="string" 
-                length="255" />
+                length="36" />
                 
             <!--<map name="_params" table="action_failure_params">
                 <cache usage="transactional"/>
