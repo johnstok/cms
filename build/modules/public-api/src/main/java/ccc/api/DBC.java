@@ -173,4 +173,32 @@ public final class DBC {
                 +maximum+".");
         }
     }
+//
+//    /**
+//     * Assert that the specified decimal has a scale less than or equal to the
+//     * specified scale.
+//     *
+//     * @param bd The big decimal to test.
+//     * @param scale The maximum scale allowed.
+//     */
+//    public void maxScale(final BigDecimal bd, final int scale) {
+//        try {
+//            bd.setScale(scale);
+//        } catch (final ArithmeticException e) {
+//            throw new IllegalArgumentException("Scale is too large.");
+//        }
+//    }
+//
+//    /**
+//     * Assert that the specified decimal has a precision less than or equal to
+//     * the  specified precision.
+//     *
+//     * @param bd The big decimal to test.
+//     * @param precision The maximum precision allowed
+//     */
+//    public void maxPrecision(final BigDecimal bd, final int precision) {
+//        if (bd.precision()>precision) {
+//            throw new IllegalArgumentException("Precision is too large.");
+//        }
+//    }
 }

@@ -77,8 +77,9 @@
             not-null="true" />
         <property
             name="_comment"
-            column="comment"
+            column="actor_comment"
             not-null="false"
+            length="1024"
             type="string" />   
         <property
             name="_timestamp"
