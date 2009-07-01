@@ -13,6 +13,7 @@ package ccc.migration;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -32,27 +33,42 @@ import ccc.api.TemplateDelta;
 public class TemplateMigration {
     private static Logger log = Logger.getLogger(Migrations.class);
 
+    private final LegacyDBQueries _legacyQueries;
     private final Commands _commands;
+
     private final Map<String, ResourceSummary> _templates =
         new HashMap<String, ResourceSummary>();
 
     /**
      * Constructor.
      *
+     * @param legacyQueries The query API for CCC6.
      * @param commands The command API for the new system.
      */
-    public TemplateMigration(final Commands commands) {
+    public TemplateMigration(final LegacyDBQueries legacyQueries,
+                             final Commands commands) {
         _commands = commands;
+        _legacyQueries = legacyQueries;
     }
 
 
     private void createTemplate(final String templateName,
                                 final String templateDescription,
                                 final ResourceSummary templateFolder) {
+
+        final StringBuilder sb = new StringBuilder("<fields>\n");
+
+        final Set<String> fields =
+            _legacyQueries.selectTemplateFields(templateName);
+        for(final String field : fields) {
+            sb.append("    <field name=\""+field+"\" type=\"text_area\"/>\n");
+        }
+        sb.append("</fields>");
+
         final TemplateDelta t =
             new TemplateDelta(
                 "Empty template!",
-                "<fields/>",
+                sb.toString(),
                 MimeType.HTML);
 
         try {

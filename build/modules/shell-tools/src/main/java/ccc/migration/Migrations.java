@@ -110,7 +110,7 @@ public class Migrations {
 
         _fm = new FileMigrator(fu, _legacyQueries, "files/", "images/", "css/");
         _um = new UserMigration(_legacyQueries, _commands);
-        _tm = new TemplateMigration(_commands);
+        _tm = new TemplateMigration(_legacyQueries, _commands);
     }
 
 

@@ -19,6 +19,7 @@ import ccc.migration.ccc6.handlers.ResourceRolesSelector;
 import ccc.migration.ccc6.handlers.ResourceSelector;
 import ccc.migration.ccc6.handlers.ShowInMainMenuSelector;
 import ccc.migration.ccc6.handlers.StyleSheetSelector;
+import ccc.migration.ccc6.handlers.TemplateFieldsSelector;
 import ccc.migration.ccc6.handlers.UserCommentSelector;
 import ccc.migration.ccc6.handlers.UserMetadataSelector;
 import ccc.migration.ccc6.handlers.UserRolesSelector;
@@ -225,5 +226,16 @@ public class LegacyDBQueries {
     public Boolean selectIsMajorEdit(final int contentId, final int version) {
         final IsMajorEditSelector query = new IsMajorEditSelector();
         return _db.select(query, contentId, version);
+    }
+
+    /**
+     * Return a set of field names of the template.
+     *
+     * @param templateName The template name.
+     * @return Set of string containing field names.
+     */
+    public Set<String> selectTemplateFields(final String templateName) {
+        final TemplateFieldsSelector query = new TemplateFieldsSelector();
+        return _db.select(query, templateName);
     }
 }
