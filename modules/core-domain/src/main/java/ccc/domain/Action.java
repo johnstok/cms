@@ -30,8 +30,6 @@ public class Action extends Entity {
     private CommandType         _type;
     private Map<String, String> _parameters;
     private Resource            _subject;
-    private String              _comment = "";
-    private boolean             _isMajorEdit;
 
     private Date                _executeAfter;
     private ActionStatus        _status = ActionStatus.Scheduled;
@@ -48,23 +46,17 @@ public class Action extends Entity {
      * @param actor The user that scheduled the action.
      * @param subject The resource the action will operate on.
      * @param parameters Additional parameters required by the action.
-     * @param comment The user comment describing this action.
-     * @param isMajorEdit Is this action a major edit.
      */
     public Action(final CommandType type,
                   final Date executeAfter,
                   final User actor,
                   final Resource subject,
-                  final Map<String, String> parameters,
-                  final String comment,
-                  final boolean isMajorEdit) {
+                  final Map<String, String> parameters) {
         _type = type;
         _executeAfter = new Date(executeAfter.getTime());
         _actor = actor;
         _subject = subject;
         _parameters = parameters;
-        _comment = comment;
-        _isMajorEdit = isMajorEdit;
     }
 
 
@@ -162,23 +154,5 @@ public class Action extends Entity {
         if (ActionStatus.Scheduled!=_status) {
             throw new IllegalStateException("Status is "+_status);
         }
-    }
-
-    /**
-     * Accessor.
-     *
-     * @return The comment for this action.
-     */
-    public String getComment() {
-        return _comment;
-    }
-
-    /**
-     * Accessor.
-     *
-     * @return True if this action is a major edit, false otherwise.
-     */
-    public boolean isMajorEdit() {
-        return _isMajorEdit;
     }
 }

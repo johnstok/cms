@@ -72,8 +72,6 @@ public class ScheduleActionCommand {
         s.set("type", action.type().name());
         s.set("parameters", action.parameters());
         s.set("subject", action.subject().id().toString());
-        s.set("comment", action.getComment());
-        s.set("major_edit", Boolean.valueOf(action.isMajorEdit()));
         s.set("execute_after", action.executeAfter());
 
         return s.getDetail();

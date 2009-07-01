@@ -92,8 +92,8 @@ public class ActionExecutorImpl implements ActionExecutor {
             new ID(action.subject().id().toString()),
             new ID(action.actor().id().toString()),
             new Date(),
-            action.isMajorEdit(),
-            action.getComment());
+            Boolean.valueOf(action.parameters().get("MAJOR")).booleanValue(),
+            action.parameters().get("COMMENT"));
     }
 
 

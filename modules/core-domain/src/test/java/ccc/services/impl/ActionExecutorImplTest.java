@@ -56,9 +56,10 @@ public class ActionExecutorImplTest
                 new Date(),
                 u,
                 p,
-                new HashMap<String, String>(),
-                "",
-                false);
+                new HashMap<String, String>(){{
+                    put("MAJOR", Boolean.FALSE.toString());
+                    put("COMMENT", "");
+                }});
 
         _commands.publish(
             eq(new ID(p.id().toString())),

@@ -12,6 +12,9 @@
 
 package ccc.contentcreator.client;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import ccc.api.CommandType;
 import ccc.contentcreator.api.UIConstants;
 
@@ -72,7 +75,7 @@ public class CreateActionPanel
                     final DataList l = (DataList) ce.component;
                     _parameters.removeAll();
 
-                    CommandType data =
+                    final CommandType data =
                         l.getSelectedItem().<CommandType>getData("action-id");
 
                     switch (data) {
@@ -141,17 +144,14 @@ public class CreateActionPanel
         return item.<CommandType>getData("action-id");
     }
 
-    public boolean isMajorEdit() {
-        return (null==_pPanel) ? false : _pPanel.isMajorEdit();
-    }
-
-    public String getComment() {
-        return (null==_pPanel) ? "" : _pPanel.getComment();
+    public Map<String, String> getParameters() {
+        return (null==_pPanel)
+            ? new HashMap<String, String>()
+            : _pPanel.getParameters();
     }
 
     private static interface ParameterPanel {
-        boolean isMajorEdit();
-        String getComment();
+        Map<String, String> getParameters();
         void populateForm(final LayoutContainer form);
     }
 
@@ -160,19 +160,20 @@ public class CreateActionPanel
         private final Html _title = new Html();
 
         EmptyPanel(final String title, final String description) {
-            _title.setHtml("<b>"+title+"</b><br><br><i>"+description+"</i><br><br><hr><br>No parameters required.");
+            _title.setHtml(
+                "<b>"+title+"</b><br><br>"
+                + "<i>"+description+"</i><br><br>"
+                + "<hr><br>No parameters required.");
         }
 
         /** {@inheritDoc} */
-        public boolean isMajorEdit() {
-            return false;
-        }
-
-        public String getComment() {
-            return "";
+        @Override
+        public Map<String, String> getParameters() {
+            return new HashMap<String, String>();
         }
 
         /** {@inheritDoc} */
+        @Override
         public void populateForm(final LayoutContainer form) {
             form.add(_title);
         }
@@ -186,13 +187,12 @@ public class CreateActionPanel
         private final TextArea _comment = new TextArea();
 
         /** {@inheritDoc} */
-        public boolean isMajorEdit() {
-            return _majorEdit.getValue().booleanValue();
-        }
-
-        public String getComment() {
-            final String comment = _comment.getValue();
-            return (null==comment) ? "" : comment;
+        @Override
+        public Map<String, String> getParameters() {
+            final Map<String, String> params = new HashMap<String, String>();
+            params.put("MAJOR", _majorEdit.getValue().toString());
+            params.put("COMMENT", _comment.getValue());
+            return params;
         }
 
         /** {@inheritDoc} */

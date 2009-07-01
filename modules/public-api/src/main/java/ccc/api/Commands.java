@@ -525,17 +525,14 @@ public interface Commands {
      * @param executeAfter The earliest date at which the action may be
      *  executed.
      * @param parameters Additional parameters for the action.
-     * @param comment The comment for the action.
-     * @param isMajorEdit Is the action a major change.
      *
      * @throws CommandFailedException If the method fails.
      */
     void createAction(ID resourceId,
                       CommandType action,
                       Date executeAfter,
-                      Map<String, String> parameters,
-                      String comment,
-                      boolean isMajorEdit) throws CommandFailedException;
+                      Map<String, String> parameters)
+    throws CommandFailedException;
 
     /**
      * Change the order of resources in a folder.

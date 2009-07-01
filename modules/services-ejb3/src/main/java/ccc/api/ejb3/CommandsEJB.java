@@ -730,21 +730,19 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({"CONTENT_CREATOR"})
-    public void createAction(final ID resourceId,      // TODO: Use ActionDelta.
+    public void createAction(final ID resourceId,
                              final CommandType action,
                              final Date executeAfter,
-                             final Map<String, String> parameters,
-                             final String comment,
-                             final boolean isMajorEdit) {
+                             final Map<String, String> parameters) {
+      // TODO: Use ActionDelta.
+
       final Action a =
           new Action(
               action,
               executeAfter,
               loggedInUser(),
               _bdao.find(Resource.class, toUUID(resourceId)),
-              parameters,
-              comment,
-              isMajorEdit);
+              parameters);
 
       new ScheduleActionCommand(_bdao, _audit).execute(
           loggedInUser(), new Date(), a);
