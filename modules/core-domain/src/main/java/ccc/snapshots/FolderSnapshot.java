@@ -53,4 +53,12 @@ public class FolderSnapshot extends ResourceSnapshot {
     public List<Resource> entries() {
         return _delegate.entries();
     }
+
+    /**
+     * @return
+     * @see ccc.domain.Folder#pages()
+     */
+    public List<Page> pages() {
+        return _delegate.pages();
+    }
 }

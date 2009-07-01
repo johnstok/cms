@@ -115,7 +115,8 @@ public class VelocityHelperTest extends TestCase {
         final List<String> contentElements = new ArrayList<String>();
         contentElements.add("HEADER");
         final List<Map<String, String>> result =
-            helper.selectPagesForContentIndex(folder, 1, contentElements);
+            helper.selectPagesForContentIndex(
+                folder.forCurrentRevision(), 1, contentElements);
 
         // ASSERT
         assertEquals(1, result.size());
@@ -158,7 +159,8 @@ public class VelocityHelperTest extends TestCase {
         final List<String> contentElements = new ArrayList<String>();
         contentElements.add("HEADER");
         final List<Map<String, String>> result =
-            helper.selectPagesForContentIndex(folder, -1, contentElements);
+            helper.selectPagesForContentIndex(
+                folder.forCurrentRevision(), -1, contentElements);
 
         // ASSERT
         assertEquals(2, result.size());

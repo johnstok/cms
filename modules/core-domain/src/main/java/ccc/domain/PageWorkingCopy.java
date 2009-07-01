@@ -11,6 +11,8 @@
  */
 package ccc.domain;
 
+import static java.util.Collections.*;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -55,5 +57,23 @@ public class PageWorkingCopy
     @Override
     public Set<Paragraph> getContent() {
         return new HashSet<Paragraph>(_wcContent);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Set<Paragraph> paragraphs() { // TODO: Duplicated in PageRevision
+        return unmodifiableSet(_wcContent);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Paragraph paragraph(final String name) { // TODO: Duplicated in PageRevision
+        for (final Paragraph p : _wcContent) {
+            if (p.name().equals(name)) {
+                return p;
+            }
+        }
+        throw new CCCException("No paragraph with name: "+name);
     }
 }

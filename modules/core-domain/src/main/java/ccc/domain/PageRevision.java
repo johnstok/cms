@@ -11,6 +11,8 @@
  */
 package ccc.domain;
 
+import static java.util.Collections.*;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -52,5 +54,24 @@ public class PageRevision
     /** {@inheritDoc} */
     public final Set<Paragraph> getContent() {
         return _content;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Set<Paragraph> paragraphs() {
+        return unmodifiableSet(_content);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Paragraph paragraph(final String name) {
+        for (final Paragraph p : _content) {
+            if (p.name().equals(name)) {
+                return p;
+            }
+        }
+        throw new CCCException("No paragraph with name: "+name);
     }
 }

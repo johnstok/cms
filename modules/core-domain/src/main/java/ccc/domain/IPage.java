@@ -31,4 +31,18 @@ public interface IPage {
      */
     Set<Paragraph> getContent();
 
+    /**
+     * Look up a paragraph on this page by name.
+     *
+     * @param name The name of the paragraph to retrieve.
+     * @return The paragraph with the specified name.
+     */
+    Paragraph paragraph(final String name);
+
+    /**
+     * Accessor for paragraphs.
+     *
+     * @return A map from unique key to the corresponding paragraph data.
+     */
+    Set<Paragraph> paragraphs();
 }

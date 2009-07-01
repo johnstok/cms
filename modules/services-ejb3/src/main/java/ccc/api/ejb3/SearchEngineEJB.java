@@ -219,7 +219,7 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
         final Document d = createDocument(page);
 
         final StringBuilder sb = new StringBuilder(page.title());
-        for (final Paragraph p : page.paragraphs()) {
+        for (final Paragraph p : page.currentRevision().paragraphs()) {
             if (ParagraphType.TEXT == p.type()) {
                 sb.append(" ");
                 final String nohtml =
