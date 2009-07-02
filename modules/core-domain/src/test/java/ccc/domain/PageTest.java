@@ -36,7 +36,7 @@ public final class PageTest extends TestCase {
     public void testNewPageHasNoWorkingCopy() {
 
         // ARRANGE
-        final Page page = new Page(new ResourceName("foo"), "Title");
+        final Page page = new Page("Title", _rm);
 
         // ACT
         final boolean hasWC = page.hasWorkingCopy();
@@ -129,11 +129,14 @@ public final class PageTest extends TestCase {
                 new Date(), User.SYSTEM_USER, true, "Updated."));
 
         // ASSERT
-        assertEquals(2, page.paragraphs().size());
-        assertEquals(Boolean.TRUE, page.paragraph("A boolean").bool());
+        assertEquals(2, page.currentRevision().paragraphs().size());
+        assertEquals(
+            Boolean.TRUE,
+            page.currentRevision().paragraph("A boolean").bool());
         final Date now = new Date();
         assertTrue(
-            page.paragraph("A date").date().compareTo(now) <= 0);
+            page.currentRevision().paragraph("A date").date().compareTo(now)
+            <= 0);
     }
 
     /**
@@ -142,7 +145,7 @@ public final class PageTest extends TestCase {
     public void testUpdateWorkingCopy() { // TODO
 
         // ARRANGE
-        final Page page = new Page("foo");
+        final Page page = new Page("foo", _rm);
 
         // ACT
         page.workingCopy(new PageDelta(new HashSet<Paragraph>()));
@@ -158,7 +161,7 @@ public final class PageTest extends TestCase {
     public void testClearWorkingCopy() { // TODO
 
         // ARRANGE
-        final Page page = new Page("foo");
+        final Page page = new Page("foo", _rm);
         page.workingCopy(page.createSnapshot());
 
         // ACT
@@ -199,7 +202,7 @@ public final class PageTest extends TestCase {
 
         // ARRANGE
         final Page page =
-            new Page(new ResourceName("foo"), "Title");
+            new Page("Title", _rm);
 
         // ACT
         final PageDelta s = page.createSnapshot();
@@ -224,7 +227,7 @@ public final class PageTest extends TestCase {
                 header);
 
         // ACT
-        final Paragraph p = page.paragraph("header");
+        final Paragraph p = page.currentRevision().paragraph("header");
 
         // ASSERT
         assertEquals(header.text(), p.text());
@@ -247,7 +250,8 @@ public final class PageTest extends TestCase {
 
         // ACT
         try {
-            page.paragraphs().add(Paragraph.fromText("foo", "aaa"));
+            page.currentRevision().paragraphs().add(
+                Paragraph.fromText("foo", "aaa"));
             fail("Should be rejected.");
 
         // ASSERT
@@ -261,7 +265,7 @@ public final class PageTest extends TestCase {
      */
     public void testConstructorCanGenerateName() {
         // ACT
-        final Page page = new Page("foo");
+        final Page page = new Page("foo", _rm);
 
         // ASSERT
         assertEquals("foo", page.title());
@@ -285,7 +289,7 @@ public final class PageTest extends TestCase {
                 Paragraph.fromText("header", "<H1>Header</H1>"));
 
         // Assert
-        assertEquals(1, page.paragraphs().size());
+        assertEquals(1, page.currentRevision().paragraphs().size());
 
     }
 
@@ -295,7 +299,7 @@ public final class PageTest extends TestCase {
     public void testConstructorRejectsEmptyTitles() {
         // ACT
         try {
-            new Page(null);
+            new Page(null, _rm);
             fail("Resources should reject NULL for the title parameter.");
 
          // ASSERT
@@ -321,7 +325,9 @@ public final class PageTest extends TestCase {
             new Page(new ResourceName("foo"), "Title", null, _rm, paras);
 
         // ASSERT
-        assertEquals(Page.MAXIMUM_PARAGRAPHS, page.paragraphs().size());
+        assertEquals(
+            Page.MAXIMUM_PARAGRAPHS,
+            page.currentRevision().paragraphs().size());
 
     }
 

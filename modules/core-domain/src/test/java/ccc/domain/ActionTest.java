@@ -46,7 +46,7 @@ public class ActionTest
     public void testFailAnAction() {
 
         // ARRANGE
-        final Page p = new Page("page");
+        final DummyResource p = new DummyResource("page");
         final Action a = new Action();
         final UnlockedException e = new UnlockedException(p);
 

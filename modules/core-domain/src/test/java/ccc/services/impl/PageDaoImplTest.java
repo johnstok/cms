@@ -71,9 +71,13 @@ public class PageDaoImplTest
 
         // ASSERT
         verifyAll();
-        assertEquals(1, page.paragraphs().size());
-        assertEquals("foo", page.paragraphs().iterator().next().name());
-        assertEquals("bar", page.paragraph("foo").text());
+        assertEquals(1, page.currentRevision().paragraphs().size());
+        assertEquals(
+            "foo",
+            page.currentRevision().paragraphs().iterator().next().name());
+        assertEquals(
+            "bar",
+            page.currentRevision().paragraph("foo").text());
         assertFalse("Page must not have working copy", page.hasWorkingCopy());
     }
 

@@ -24,7 +24,7 @@ import ccc.api.TemplateDelta;
  */
 public class Template
     extends
-        HistoricalResource<TemplateRevision> {
+        HistoricalResource<TemplateDelta, TemplateRevision> {
 
     /** Constructor: for persistence only. */
     protected Template() { super(); }

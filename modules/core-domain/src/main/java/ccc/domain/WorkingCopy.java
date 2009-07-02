@@ -13,14 +13,30 @@ package ccc.domain;
 
 
 /**
- * TODO: Add a description for this type.
+ * A working copy for a resource.
+ *
+ * @param <T> The type of deltas this working copy handles.
  *
  * @author Civic Computing Ltd.
  */
-public abstract class WorkingCopy
+public abstract class WorkingCopy<T>
     extends
         Entity {
 
     /** Constructor: for persistence only. */
     protected WorkingCopy() { super(); }
+
+    /**
+     * Retrieve the working copy's state.
+     *
+     * @return A delta describing this working copy's state.
+     */
+    protected abstract T delta();
+
+    /**
+     * Update this working copy.
+     *
+     * @param delta The delta describing this working copy's state.
+     */
+    protected abstract void delta(final T delta);
 }

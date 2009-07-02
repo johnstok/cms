@@ -19,21 +19,24 @@ import ccc.api.DBC;
 
 
 /**
- * TODO: Add a description for this type.
+ * A resource that records each update made over time.
+ *
  * @param <T> The type of revision this class supports.
+ * @param <S> The type of delta the revision supports.
  *
  * @author Civic Computing Ltd.
  */
-public abstract class HistoricalResource<T extends Revision>
+public abstract class HistoricalResource<S, T extends Revision<S>>
     extends
         Resource {
-    private static final int WC_REV_NO = -1;
 
     private int _currentRev = -1;
     private Map<Integer, T> _history = new HashMap<Integer, T>();
 
+
     /** Constructor: for persistence only. */
     protected HistoricalResource() { super(); }
+
 
     /**
      * Constructor.
@@ -45,6 +48,7 @@ public abstract class HistoricalResource<T extends Revision>
         super(name, title);
     }
 
+
     /**
      * Constructor.
      *
@@ -53,6 +57,7 @@ public abstract class HistoricalResource<T extends Revision>
     HistoricalResource(final String title) {
         super(title);
     }
+
 
     /**
      * Retrieve the current revision.
@@ -63,26 +68,36 @@ public abstract class HistoricalResource<T extends Revision>
         return revision(_currentRev);
     }
 
+
     /**
      * Retrieve the specified revision.
+     *
+     * @param i The revision number.
      *
      * @return The revision corresponding to the specified version.
      */
     public final T revision(final int i) {
-        final T rev = _history.get(i);
+        final T rev = _history.get(Integer.valueOf(i));
         if (null==rev) {
             throw new RuntimeException("No revision!");
         }
         return rev;
     }
 
+
+    /**
+     * Add a new revision for this resource.
+     *
+     * @param revision The revision to add.
+     */
     protected final void addRevision(final T revision) {
         DBC.require().notNull(revision);
 
         _currentRev++;
-        DBC.require().toBeNull(_history.get(_currentRev));
+        DBC.require().toBeNull(_history.get(Integer.valueOf(_currentRev)));
         _history.put(Integer.valueOf(_currentRev), revision);
     }
+
 
     /**
      * Accessor.

@@ -91,8 +91,8 @@ public class DefaultRendererTest
         rr.renderWorkingCopy(p, _noParams);
 
         // ASSERT
-        assertEquals(1, p.paragraphs().size());
-        assertEquals("baz", p.paragraph("bar").text());
+        assertEquals(1, p.currentRevision().paragraphs().size());
+        assertEquals("baz", p.currentRevision().paragraph("bar").text());
     }
 
     /**

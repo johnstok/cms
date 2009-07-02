@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import ccc.api.PageDelta;
 import ccc.api.Paragraph;
 
 
@@ -27,16 +28,22 @@ import ccc.api.Paragraph;
  */
 public class PageRevision
     extends
-        Revision implements IPage {
+        Revision<PageDelta>
+    implements
+        IPage {
 
     private Set<Paragraph> _content = new HashSet<Paragraph>();
+
 
     /** Constructor: for persistence only. */
     protected PageRevision() { super(); }
 
+
     /**
      * Constructor.
      *
+     * @param timestamp
+     * @param actor
      * @param majorChange
      * @param comment
      * @param content
@@ -73,5 +80,12 @@ public class PageRevision
             }
         }
         throw new CCCException("No paragraph with name: "+name);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected PageDelta delta() {
+        return new PageDelta(_content);
     }
 }

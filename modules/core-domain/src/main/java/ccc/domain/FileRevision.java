@@ -14,6 +14,8 @@ package ccc.domain;
 import java.util.Date;
 
 import ccc.api.DBC;
+import ccc.api.FileDelta;
+import ccc.api.ID;
 import ccc.api.MimeType;
 
 
@@ -24,7 +26,9 @@ import ccc.api.MimeType;
  */
 public class FileRevision
     extends
-        Revision implements IFile {
+        Revision<FileDelta>
+    implements
+        IFile {
 
     private Data      _data;
     private int       _size;
@@ -78,5 +82,14 @@ public class FileRevision
     /** {@inheritDoc} */
     public boolean isImage() {
         return "image".equalsIgnoreCase(getMimeType().getPrimaryType());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FileDelta delta() {
+        return new FileDelta(
+            _mimeType,
+            new ID(_data.id().toString()),
+            _size);
     }
 }

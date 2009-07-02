@@ -15,6 +15,7 @@ import java.util.Date;
 
 import ccc.api.DBC;
 import ccc.api.MimeType;
+import ccc.api.TemplateDelta;
 
 
 /**
@@ -24,7 +25,7 @@ import ccc.api.MimeType;
  */
 public class TemplateRevision
     extends
-        Revision {
+        Revision<TemplateDelta> {
 
     private String _body;
     private String _definition;
@@ -88,5 +89,11 @@ public class TemplateRevision
      */
     public final MimeType getMimeType() {
         return _mimeType;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected TemplateDelta delta() {
+        return new TemplateDelta(_body, _definition, _mimeType);
     }
 }

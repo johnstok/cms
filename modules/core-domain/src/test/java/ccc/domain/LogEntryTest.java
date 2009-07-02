@@ -55,7 +55,7 @@ public class LogEntryTest
 
         // ARRANGE
         final Folder f = new Folder("bar");
-        final Page p = new Page("foo");
+        final DummyResource p = new DummyResource("foo");
         p.parent(f);
 
         // ACT
@@ -78,7 +78,7 @@ public class LogEntryTest
     public void testCreateFactoryMethod() {
 
         // ARRANGE
-        final Page p = new Page("foo");
+        final DummyResource p = new DummyResource("foo");
 
         // ACT
         final LogEntry le = LogEntry.forCreate(p, _actor, _happenedOn);
@@ -89,11 +89,10 @@ public class LogEntryTest
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(CommandType.PAGE_CREATE, le.action());
+        assertEquals(CommandType.FOLDER_CREATE, le.action());
         assertEquals("{\"parentId\":null,"
             + "\"publishedBy\":null,"
-            + "\"name\":\"foo\","
-            + "\"paragraphs\":[]}", le.detail());
+            + "\"name\":\"foo\"}", le.detail());
     }
 
     /**
@@ -102,7 +101,7 @@ public class LogEntryTest
     public void testUpdateFactoryMethod() {
 
         // ARRANGE
-        final Page p = new Page("foo");
+        final DummyResource p = new DummyResource("foo");
 
         // ACT
         final LogEntry le =
@@ -114,7 +113,7 @@ public class LogEntryTest
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(CommandType.PAGE_UPDATE, le.action());
+        assertEquals(CommandType.FOLDER_UPDATE, le.action());
         final Snapshot s = new Snapshot();
         p.createSnapshot().toJson(s);
         assertEquals(s.getDetail(), le.detail());
@@ -126,7 +125,7 @@ public class LogEntryTest
     public void testChangeTemplateFactoryMethod() {
 
         // ARRANGE
-        final Page p = new Page("foo");
+        final DummyResource p = new DummyResource("foo");
         final Template t = new Template(new ResourceName("newName"),
             "newTitle",
             "desc",
@@ -156,7 +155,7 @@ public class LogEntryTest
 
         // ARRANGE
         final Folder f = new Folder("bar");
-        final Page p = new Page("foo");
+        final DummyResource p = new DummyResource("foo");
         p.parent(f);
 
         // ACT
@@ -179,7 +178,7 @@ public class LogEntryTest
 
         // ARRANGE
         final Folder f = new Folder("bar");
-        final Page p = new Page("foo");
+        final DummyResource p = new DummyResource("foo");
         p.parent(f);
 
         // ACT
@@ -203,7 +202,7 @@ public class LogEntryTest
     public void testUpdateMetadataFactoryMethod() {
 
         // ARRANGE
-        final Page p = new Page("foo");
+        final DummyResource p = new DummyResource("foo");
         p.tags("foo,bar");
         p.title("newTitle");
         p.description("newDesc");

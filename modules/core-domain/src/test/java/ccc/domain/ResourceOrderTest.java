@@ -33,9 +33,9 @@ public class ResourceOrderTest
 
         // ARRANGE
         final List<Resource> resources = new ArrayList<Resource>() {{
-            add(new Page("k"));
-            add(new Page("z"));
-            add(new Page("a"));
+            add(new DummyResource("k"));
+            add(new DummyResource("z"));
+            add(new DummyResource("a"));
         }};
 
         // ACT
@@ -54,8 +54,8 @@ public class ResourceOrderTest
 
         // ARRANGE
         final List<Resource> resources = new ArrayList<Resource>() {{
-            add(new Page("z"));
-            add(new Page("a"));
+            add(new DummyResource("z"));
+            add(new DummyResource("a"));
         }};
 
         // ACT
@@ -72,8 +72,8 @@ public class ResourceOrderTest
 
         // ARRANGE
         final List<Resource> resources = new ArrayList<Resource>() {{
-            add(new Page("z"));
-            add(new Page("a"));
+            add(new DummyResource("z"));
+            add(new DummyResource("a"));
         }};
 
         // ACT
@@ -90,8 +90,8 @@ public class ResourceOrderTest
 
         // ARRANGE
         final List<Resource> resources = new ArrayList<Resource>() {{
-            add(new Page("z"));
-            add(new Page("a"));
+            add(new DummyResource("z"));
+            add(new DummyResource("a"));
         }};
 
         // ACT
