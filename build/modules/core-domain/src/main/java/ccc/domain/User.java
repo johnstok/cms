@@ -29,7 +29,7 @@ import ccc.commons.EmailAddress;
  *
  * @author Civic Computing Ltd.
  */
-public class User extends VersionedEntity {
+public class User extends Entity {
 
     /** VALID_CHARACTERS : String. */
     public static final String  VALID_CHARACTERS = "[\\w]*";
@@ -38,7 +38,7 @@ public class User extends VersionedEntity {
     private static final int USERNAME_MIN_LENGTH = 4;
     private static final int MAXIMUM_DATUM_LENGTH = 1000;
     private static final int MAXIMUM_DATUM_KEY_LENGTH = 100;
-    
+
     private String _username;
     private EmailAddress _email;
     private Set<String> _roles = new HashSet<String>();

@@ -53,7 +53,7 @@ public class NewDBQueries {
         try {
             // insert user
             ps = _connection.prepareStatement(
-                "INSERT INTO users (id, email, username, version) "
+                "INSERT INTO users (id, email, username, vn) "
                 + "VALUES (?,?,?,?)");
             ps.setString(1, uid.toString());
             ps.setString(2, email);
@@ -80,7 +80,7 @@ public class NewDBQueries {
 
             // insert password
             ps = _connection.prepareStatement(
-                "INSERT INTO passwords (id, version, hash, user_id) "
+                "INSERT INTO passwords (id, vn, hash, user_id) "
                 + "VALUES (?, 0, ?, ?)");
             ps.setString(1, pwId.toString());
             ps.setBytes(2, hash);
@@ -111,7 +111,7 @@ public class NewDBQueries {
         try {
             // update password
             ps = _connection.prepareStatement(
-                "UPDATE passwords SET hash=?, version=1 WHERE user_id = ?");
+                "UPDATE passwords SET hash=?, vn=1 WHERE user_id = ?");
             ps.setBytes(1, hash);
             ps.setString(2, muid.toString());
             ps.executeUpdate();

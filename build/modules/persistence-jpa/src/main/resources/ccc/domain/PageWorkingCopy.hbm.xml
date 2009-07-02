@@ -35,6 +35,12 @@
             <generator class="assigned" />
         </id>
         
+        <version
+            name="_version"
+            column="vn"
+            type="long"
+            unsaved-value="negative" />
+        
         <set name="_wcContent" table="page_wcopy_paragraphs">
             <cache usage="transactional"/>
             <key column="page_wcopy_id" not-null="true" foreign-key="FK_PARAGRAPH_WCOPY_ID"/>

@@ -34,6 +34,12 @@
             <generator class="assigned" />
         </id>
         
+        <version
+            name="_version"
+            column="vn"
+            type="long"
+            unsaved-value="negative" />
+        
         <property
             name="_executeAfter"
             column="execute_after"

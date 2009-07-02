@@ -114,7 +114,7 @@
     
     <database-object>
         <create>
-        INSERT INTO SETTINGS (id, version, value, name)
+        INSERT INTO SETTINGS (id, vn, value, name)
         VALUES ('145e827a-0f11-41bf-af0b-ad9a4a982c03', 0, '0', 'DATABASE_VERSION')
         </create>
         <drop/>

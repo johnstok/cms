@@ -25,7 +25,9 @@ import ccc.api.DBC;
  */
 public abstract class Entity implements Serializable {
 
-    private UUID _id = UUID.randomUUID();
+    @SuppressWarnings("unused")
+    private long  _version = -1;
+    private UUID  _id      = UUID.randomUUID();
 
     /** Constructor: for persistence only. */
     protected Entity() { super(); }

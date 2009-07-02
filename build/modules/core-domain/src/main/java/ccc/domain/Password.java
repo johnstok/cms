@@ -24,7 +24,7 @@ import ccc.api.DBC;
  *
  * @author Civic Computing Ltd.
  */
-public class Password extends VersionedEntity {
+public class Password extends Entity {
 
     private User _user;
     private byte[] _hash;

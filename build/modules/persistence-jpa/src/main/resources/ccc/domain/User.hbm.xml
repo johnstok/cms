@@ -29,7 +29,7 @@
         
         <version
             name="_version"
-            column="version"
+            column="vn"
             type="long"
             unsaved-value="negative" />
         

@@ -20,9 +20,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-import ccc.domain.CCCException;
 import ccc.domain.Entity;
-import ccc.domain.VersionedEntity;
 import ccc.services.Dao;
 
 
@@ -49,18 +47,6 @@ public class BaseDao implements Dao {
     public <T extends Entity> T find(final Class<T> type, final UUID id) {
         return _em.find(type, id);
     }
-
-    /** {@inheritDoc} */
-    @Override
-    public <T extends VersionedEntity> T find(final Class<T> type,
-                                                 final UUID id,
-                                                 final long version) {
-          final T current = find(type, id);
-          if (!(current.version()==version)) { // Move to Resource class
-              throw new CCCException("Stale object"); // Use better exception
-          }
-          return current;
-      }
 
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked") // JPA query API isn't type safe.
