@@ -41,7 +41,7 @@
             <one-to-many class="ccc.domain.PageRevision" />
         </map>
         
-        <bag name="_workingCopies" cascade="all,delete-orphan">
+        <bag name="_wc" cascade="all,delete-orphan">
             <cache usage="transactional"/>
             <key column="page_id" not-null="true" foreign-key="FK_WCOPY_PAGE_ID"/>
             <one-to-many class="ccc.domain.PageWorkingCopy" />

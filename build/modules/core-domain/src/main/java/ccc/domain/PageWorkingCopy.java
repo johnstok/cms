@@ -27,7 +27,7 @@ import ccc.api.Paragraph;
  */
 public class PageWorkingCopy
     extends
-        WorkingCopy
+        WorkingCopy<PageDelta>
     implements
         IPage {
 
@@ -45,10 +45,14 @@ public class PageWorkingCopy
         delta(snapshot);
     }
 
-    PageDelta delta() {
+    /** {@inheritDoc} */
+    @Override
+    protected PageDelta delta() {
         return new PageDelta(_wcContent);
     }
 
+    /** {@inheritDoc} */
+    @Override
     public void delta(final PageDelta snapshot) {
         _wcContent = new HashSet<Paragraph>(snapshot.getParagraphs());
     }

@@ -11,9 +11,7 @@
  */
 package ccc.domain;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 import ccc.api.DBC;
@@ -33,17 +31,12 @@ import ccc.snapshots.FileSnapshot;
  */
 public class File
     extends
-        HistoricalResource<FileRevision>
-    implements
-        WCAware<FileDelta> {
-
-    // This is a collection to exploit hibernate's delete-orphan syntax.
-    private List<FileWorkingCopy> _workingCopies =
-        new ArrayList<FileWorkingCopy>();
+        WorkingCopySupport<FileRevision, FileDelta, FileWorkingCopy>  {
 
 
     /** Constructor: for persistence only. */
     protected File() { super(); }
+
 
     /**
      * Constructor. Assumes a mime type of "application/octet-stream".
@@ -95,9 +88,10 @@ public class File
         DBC.require().notNull(data);
         description(description);
         update(
-            new RevisionMetadata(timestamp, actor, true, "Created."),
-            new FileDelta(mimeType, new ID(data.id().toString()), size));
+            new FileDelta(mimeType, new ID(data.id().toString()), size),
+            new RevisionMetadata(timestamp, actor, true, "Created."));
     }
+
 
     /**
      * {@inheritDoc}
@@ -107,6 +101,7 @@ public class File
         return ResourceType.FILE;
     }
 
+
     /**
      * Accessor for size.
      *
@@ -115,6 +110,7 @@ public class File
     public int size() {
         return currentRevision().getSize();
     }
+
 
     /**
      * Accessor for mime type.
@@ -126,6 +122,7 @@ public class File
         return currentRevision().getMimeType();
     }
 
+
     /**
      * Accessor for the data field.
      *
@@ -134,6 +131,7 @@ public class File
     public Data data() {
         return currentRevision().getData();
     }
+
 
     /**
      * Query if this file is an image.
@@ -145,19 +143,16 @@ public class File
     }
 
 
+
+
     /* ====================================================================
      * Working copy implementation.
      * ================================================================== */
 
     /** {@inheritDoc} */
     @Override
-    public void applySnapshot(final RevisionMetadata metadata) {
-        DBC.require().notNull(wc());
-        update(metadata, wc().delta());
-        clearWorkingCopy();
-    }
-
-    private void update(final RevisionMetadata metadata, final FileDelta delta) {
+    protected void update(final FileDelta delta,
+                          final RevisionMetadata metadata) {
         addRevision(
             new FileRevision(
                 metadata.getTimestamp(),
@@ -171,15 +166,6 @@ public class File
 
     /** {@inheritDoc} */
     @Override
-    public FileDelta workingCopy() {
-        if (null!=wc()) {
-            return wc().delta();
-        }
-        return createSnapshot();
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public FileDelta createSnapshot() {
         final FileDelta delta =
             new FileDelta(
@@ -189,40 +175,15 @@ public class File
         return delta;
     }
 
-    /** {@inheritDoc} */
-    public final void workingCopy(final FileDelta snapshot) {
-        DBC.require().notNull(snapshot);
-        if (hasWorkingCopy()) {
-            wc().delta(snapshot);
-        } else {
-            wc(new FileWorkingCopy(snapshot));
-        }
-    }
-
-    //--
 
     /** {@inheritDoc} */
-    public final void clearWorkingCopy() {
-        DBC.require().toBeTrue(hasWorkingCopy());
-        _workingCopies.clear();
+    @Override
+    protected FileWorkingCopy createWorkingCopy(final FileDelta delta) {
+        return new FileWorkingCopy(delta);
     }
 
-    /** {@inheritDoc} */
-    public boolean hasWorkingCopy() {
-        return 0!=_workingCopies.size();
-    }
 
-    private FileWorkingCopy wc() {
-        if (0==_workingCopies.size()) {
-            return null;
-        }
-        return _workingCopies.get(0);
-    }
 
-    private void wc(final FileWorkingCopy pageWorkingCopy) {
-        DBC.require().toBeFalse(hasWorkingCopy());
-        _workingCopies.add(0, pageWorkingCopy);
-    }
 
     /* ====================================================================
      * Snapshot support.

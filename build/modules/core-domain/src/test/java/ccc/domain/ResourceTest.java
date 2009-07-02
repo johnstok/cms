@@ -19,8 +19,6 @@ import java.util.Set;
 import junit.framework.TestCase;
 import ccc.api.CommandType;
 import ccc.api.Duration;
-import ccc.api.Jsonable;
-import ccc.api.ResourceType;
 import ccc.commons.Testing;
 
 
@@ -317,7 +315,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Folder root = new Folder("root");
-        final Resource child = new Page("child");
+        final Resource child = new DummyResource("child");
         root.add(child);
 
         // ACT
@@ -333,7 +331,7 @@ public final class ResourceTest extends TestCase {
     public void testRootAccessorReturnsThisForNullParent() {
 
         // ARRANGE
-        final Resource root = new Page("root");
+        final Resource root = new DummyResource("root");
 
         // ACT
         final Resource actual = root.root();
@@ -348,7 +346,7 @@ public final class ResourceTest extends TestCase {
     public void testIncludeInMainMenu() {
 
         // ARRANGE
-        final Resource p = new Page("myPage");
+        final Resource p = new DummyResource("myPage");
 
         // ACT
         assertEquals(false, p.includeInMainMenu());
@@ -366,7 +364,7 @@ public final class ResourceTest extends TestCase {
     public void testLockFailsWhenAlreadyLocked() throws LockMismatchException {
 
         // ARRANGE
-        final Page p = new Page("myPage");
+        final Resource p = new DummyResource("myPage");
         p.lock(_jack);
 
         // ACT
@@ -389,7 +387,7 @@ public final class ResourceTest extends TestCase {
     throws InsufficientPrivilegesException {
 
         // ARRANGE
-        final Page p = new Page("myPage");
+        final Resource p = new DummyResource("myPage");
 
         // ACT
         try {
@@ -414,7 +412,7 @@ public final class ResourceTest extends TestCase {
     throws LockMismatchException, UnlockedException {
 
         // ARRANGE
-        final Page p = new Page("myPage");
+        final Resource p = new DummyResource("myPage");
         p.lock(_jack);
 
         // ACT
@@ -442,7 +440,7 @@ public final class ResourceTest extends TestCase {
     throws LockMismatchException, UnlockedException {
 
         // ARRANGE
-        final Page p = new Page("myPage");
+        final Resource p = new DummyResource("myPage");
         p.lock(_jill);
 
         // ACT
@@ -457,7 +455,7 @@ public final class ResourceTest extends TestCase {
     throws LockMismatchException {
 
         // ARRANGE
-        final Page p = new Page("myPage");
+        final Resource p = new DummyResource("myPage");
 
         // ACT
         try {
@@ -479,7 +477,7 @@ public final class ResourceTest extends TestCase {
     throws LockMismatchException, UnlockedException {
 
         // ARRANGE
-        final Page p = new Page("myPage");
+        final Resource p = new DummyResource("myPage");
         p.lock(_jack);
 
         // ACT
@@ -500,7 +498,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final String tagString = "foo,bar,baz";
-        final Page p = new Page("myPage");
+        final Resource p = new DummyResource("myPage");
 
         // ACT
         p.tags(tagString);
@@ -520,7 +518,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final String tagString = "foo, bar ,baz";
-        final Page p = new Page("myPage");
+        final Resource p = new DummyResource("myPage");
 
         // ACT
         p.tags(tagString);
@@ -540,7 +538,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final String tagString = "";
-        final Page p = new Page("myPage");
+        final Resource p = new DummyResource("myPage");
 
         // ACT
         p.tags(tagString);
@@ -557,7 +555,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final String tagString = "foo,, ,baz";
-        final Page p = new Page("myPage");
+        final Resource p = new DummyResource("myPage");
 
         // ACT
         p.tags(tagString);
@@ -576,7 +574,7 @@ public final class ResourceTest extends TestCase {
 
         // ACT
         try {
-            final Page p = new Page("myPage");
+            final Resource p = new DummyResource("myPage");
             p.tags(null);
             fail("Null should be rejected.");
 
@@ -680,11 +678,7 @@ public final class ResourceTest extends TestCase {
     public void testNameMutatorRejectsNull() {
         // ACT
         try {
-            final Resource r =
-                new Resource("foo"){
-                    @Override public ResourceType type() { return null; }
-                    @Override public Jsonable createSnapshot() { return null; }
-                };
+            final Resource r = new DummyResource("foo");
             r.name((ResourceName) null);
             fail("Null should be rejected.");
 
@@ -704,10 +698,7 @@ public final class ResourceTest extends TestCase {
 
         // ACT
         try {
-            new Resource(new ResourceName("x"), tooLongTitle) {
-                @Override public ResourceType type() { return null; }
-                @Override public Jsonable createSnapshot() { return null; }
-            };
+            new DummyResource(new ResourceName("x"), tooLongTitle);
             fail("Title should be rejected - too long.");
 
         // ASSERT
@@ -728,10 +719,7 @@ public final class ResourceTest extends TestCase {
 
         // ACT
         try {
-            new Resource(tooLongTitle){
-                @Override public ResourceType type() { return null; }
-                @Override public Jsonable createSnapshot() { return null; }
-            };
+            new DummyResource(tooLongTitle);
             fail("Title should be rejected - too long.");
 
         // ASSERT
@@ -752,11 +740,7 @@ public final class ResourceTest extends TestCase {
 
         // ACT
         try {
-            final Resource r =
-                new Resource("foo"){
-                    @Override public ResourceType type() { return null; }
-                    @Override public Jsonable createSnapshot() { return null; }
-                };
+            final Resource r = new DummyResource("foo");
             r.title(tooLongTitle);
             fail("Title should be rejected - too long.");
 
@@ -772,12 +756,9 @@ public final class ResourceTest extends TestCase {
      * Test.
      */
     public void testTitleOnlyConstructor() {
+
         // ACT
-        final Resource r =
-            new Resource("foo?"){
-                @Override public ResourceType type() { return null; }
-                @Override public Jsonable createSnapshot() { return null; }
-            };
+        final Resource r = new DummyResource("foo?");
 
         // ASSERT
         assertEquals(new ResourceName("foo_"), r.name());
@@ -788,12 +769,10 @@ public final class ResourceTest extends TestCase {
      * Test.
      */
     public void testTitleOnlyConstructorRejectsNull() {
+
         // ACT
         try {
-            new Resource((String) null){
-                @Override public ResourceType type() { return null; }
-                @Override public Jsonable createSnapshot() { return null; }
-            };
+            new DummyResource((String) null);
             fail("Null should be rejected.");
 
         // ASSERT
@@ -810,7 +789,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Folder f = new Folder("foo");
-        final Page p = new Page("bar");
+        final Resource p = new DummyResource("bar");
         f.add(p);
 
         // ACT
@@ -1002,7 +981,7 @@ public final class ResourceTest extends TestCase {
 
         //ARRANGE
         final User u = new User("user");
-        final Page p = new Page("foo");
+        final Resource p = new DummyResource("foo");
 
         // ACT
         p.publish(u);
@@ -1046,7 +1025,7 @@ public final class ResourceTest extends TestCase {
         final Folder f3 = new Folder("parent3");
         f3.publish(u);
 
-        final Page p = new Page("foo");
+        final Resource p = new DummyResource("foo");
         p.publish(u);
 
         f1.add(f2);
@@ -1074,7 +1053,7 @@ public final class ResourceTest extends TestCase {
         final Folder f3 = new Folder("parent2");
         f3.publish(u);
 
-        final Page p = new Page("foo");
+        final Resource p = new DummyResource("foo");
         p.publish(u);
 
         f1.add(f2);
@@ -1113,26 +1092,6 @@ public final class ResourceTest extends TestCase {
         // ASSERT
         assertEquals(d, actual);
         assertEquals(d2, actual2);
-    }
-
-    /**
-     * Dummy resource for testing only.
-     *
-     * @author Civic Computing Ltd
-     */
-    private static final class DummyResource extends Resource {
-
-        /**
-         * Constructor.
-         *
-         * @param string
-         */
-        public DummyResource(final String title) {
-            super(title);
-        }
-
-        @Override public ResourceType type() { return ResourceType.FOLDER; }
-        @Override public Jsonable createSnapshot() { return null; }
     }
 
     private static final int WAIT_LENGTH = 100;

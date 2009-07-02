@@ -37,7 +37,7 @@
             <one-to-many class="ccc.domain.FileRevision" />
         </map>
         
-        <bag name="_workingCopies" cascade="all,delete-orphan">
+        <bag name="_wc" cascade="all,delete-orphan">
             <cache usage="transactional"/>
             <key column="file_id" not-null="true" foreign-key="FK_WCOPY_FILE_ID"/>
             <one-to-many class="ccc.domain.FileWorkingCopy" />

@@ -191,8 +191,8 @@ public final class FolderTest extends TestCase {
 
             // ARRANGE
             final Folder f = new Folder("f");
-            final Page p = new Page("p");
-            final Page q = new Page("q");
+            final Page p = new Page("p", _rm);
+            final Page q = new Page("q", _rm);
             final Template r =
                 new Template(
                     "r",
@@ -223,8 +223,8 @@ public final class FolderTest extends TestCase {
 
         // ARRANGE
         final Folder pages = new Folder("content");
-        final Page ab = new Page("ab");
-        final Page cd = new Page("cd");
+        final Page ab = new Page("ab", _rm);
+        final Page cd = new Page("cd", _rm);
         pages.add(ab);
         pages.add(cd);
 
@@ -245,8 +245,8 @@ public final class FolderTest extends TestCase {
         // ARRANGE
         final Folder noPages = new Folder("content");
         final Folder pages = new Folder("content");
-        final Page ab = new Page("ab");
-        final Page cd = new Page("cd");
+        final Page ab = new Page("ab", _rm);
+        final Page cd = new Page("cd", _rm);
         noPages.add(pages);
         pages.add(ab);
         pages.add(cd);
@@ -269,8 +269,8 @@ public final class FolderTest extends TestCase {
 
         // ARRANGE
         final Folder content = new Folder("content");
-        final Page ab = new Page("ab");
-        final Page cd = new Page("cd");
+        final Page ab = new Page("ab", _rm);
+        final Page cd = new Page("cd", _rm);
         content.add(cd);
         content.add(ab);
 
@@ -292,7 +292,7 @@ public final class FolderTest extends TestCase {
         // ARRANGE
         final Folder content = new Folder("content");
         final Folder ab = new Folder("ab");
-        final Page cd = new Page("cd");
+        final Page cd = new Page("cd", _rm);
         content.add(cd);
         content.add(ab);
 
@@ -370,7 +370,7 @@ public final class FolderTest extends TestCase {
 
         // ARRANGE
         final Folder folder = new Folder("foo");
-        final Page page = new Page("Name");
+        final Page page = new Page("Name", _rm);
 
         // ACT
         folder.add(page);
@@ -390,7 +390,7 @@ public final class FolderTest extends TestCase {
 
         // ARRANGE
         final Folder folder = new Folder("foo");
-        final Page page = new Page("Name");
+        final Page page = new Page("Name", _rm);
         folder.add(page);
 
         // ACT
@@ -431,7 +431,7 @@ public final class FolderTest extends TestCase {
         final Folder foo = new Folder("foo");
 
         // ACT
-        foo.entries().add(new Page("bar"));
+        foo.entries().add(new Page("bar", _rm));
 
          // ASSERT
         assertEquals(0, foo.entries().size());
@@ -466,7 +466,7 @@ public final class FolderTest extends TestCase {
         // ARRANGE
         final Folder content = new Folder("content");
         final Folder ab = new Folder("ab");
-        final Page cd = new Page("cd");
+        final Page cd = new Page("cd", _rm);
         ab.add(cd);
         content.add(ab);
         final ResourcePath path = new ResourcePath("/ab/cd");
@@ -530,7 +530,7 @@ public final class FolderTest extends TestCase {
     public void testHasEntryWithName() throws RemoteExceptionSupport {
 
         // ARRANGE
-        final Page p = new Page("page");
+        final Page p = new Page("page", _rm);
         final Folder f = new Folder("folder");
         f.add(p);
 
@@ -558,13 +558,13 @@ public final class FolderTest extends TestCase {
     throws RemoteExceptionSupport {
 
         // ARRANGE
-        final Page p = new Page("page");
+        final Page p = new Page("page", _rm);
         final Folder f = new Folder("folder");
         f.add(p);
 
         // ACT
         try {
-            f.add(new Page("page"));
+            f.add(new Page("page", _rm));
             fail("Resources with existing names should be rejected.");
 
         // ASSERT
@@ -585,7 +585,7 @@ public final class FolderTest extends TestCase {
         // ARRANGE
         final Folder noAliases = new Folder("content");
         final Folder withAliases = new Folder("content");
-        final Page ab = new Page("ab");
+        final Page ab = new Page("ab", _rm);
         final Alias cd = new Alias("cd", ab);
         noAliases.add(ab);
         withAliases.add(cd);
@@ -608,7 +608,7 @@ public final class FolderTest extends TestCase {
 
         // ARRANGE
         final Folder pages = new Folder("content");
-        final Page ab = new Page("ab");
+        final Page ab = new Page("ab", _rm);
         final Alias cd = new Alias("cd", ab);
         pages.add(ab);
         pages.add(cd);
@@ -629,9 +629,9 @@ public final class FolderTest extends TestCase {
 
         // ARRANGE
         final Folder f = new Folder("testFolder");
-        final Page foo = new Page("foo");
-        final Page bar = new Page("bar");
-        final Page baz = new Page("baz");
+        final Page foo = new Page("foo", _rm);
+        final Page bar = new Page("bar", _rm);
+        final Page baz = new Page("baz", _rm);
         f.add(foo);
         f.add(bar);
         f.add(baz);
@@ -655,9 +655,9 @@ public final class FolderTest extends TestCase {
 
         // ARRANGE
         final Folder f = new Folder("testFolder");
-        final Page foo = new Page("foo");
-        final Page bar = new Page("bar");
-        final Page baz = new Page("baz");
+        final Page foo = new Page("foo", _rm);
+        final Page bar = new Page("bar", _rm);
+        final Page baz = new Page("baz", _rm);
         f.add(foo);
         f.add(bar);
         f.add(baz);
@@ -686,8 +686,8 @@ public final class FolderTest extends TestCase {
     public void testIndexPage() throws RemoteExceptionSupport {
         // ARRANGE
         final Folder f = new Folder("testFolder");
-        final Page baz = new Page("baz");
-        final Page foo = new Page("foo");
+        final Page baz = new Page("baz", _rm);
+        final Page foo = new Page("foo", _rm);
 
         f.add(baz);
         f.add(foo);

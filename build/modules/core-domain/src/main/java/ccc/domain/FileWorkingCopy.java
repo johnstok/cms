@@ -19,13 +19,13 @@ import ccc.api.MimeType;
 
 
 /**
- * TODO: Add a description for this type.
+ * A working copy for file deltas.
  *
  * @author Civic Computing Ltd.
  */
 public class FileWorkingCopy
     extends
-        WorkingCopy implements IFile {
+        WorkingCopy<FileDelta> implements IFile {
 
     private MimeType _mimeType;
     private int _size;
@@ -37,28 +37,22 @@ public class FileWorkingCopy
     /**
      * Constructor.
      *
-     * @param snapshot
+     * @param delta The delta describing this working copy's state.
      */
-    public FileWorkingCopy(final FileDelta snapshot) {
-        delta(snapshot);
+    public FileWorkingCopy(final FileDelta delta) {
+        delta(delta);
     }
 
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param snapshot
-     */
+    /** {@inheritDoc} */
+    @Override
     public void delta(final FileDelta snapshot) {
         _mimeType = snapshot.getMimeType();
         _size = snapshot.getSize();
         _data = new Data(UUID.fromString(snapshot.getData().toString()));
     }
 
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
+    /** {@inheritDoc} */
+    @Override
     public FileDelta delta() {
         return new FileDelta(
             _mimeType,
@@ -87,7 +81,7 @@ public class FileWorkingCopy
     /** {@inheritDoc} */
     @Override
     public boolean isImage() {
-        // TODO: Factor into superclass.
+        // TODO: Factor into superclass?
         return "image".equalsIgnoreCase(getMimeType().getPrimaryType());
     }
 }

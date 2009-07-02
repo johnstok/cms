@@ -133,7 +133,7 @@ public class ResourceDaoImplTest
         verifyAll();
         assertEquals(ResourceType.PAGE, resource.type());
         final Page page = resource.as(Page.class);
-        assertEquals(1, page.paragraphs().size());
+        assertEquals(1, page.currentRevision().paragraphs().size());
     }
 
     /**
@@ -465,7 +465,7 @@ public class ResourceDaoImplTest
         verifyAll();
         assertEquals(ResourceType.PAGE, resource.type());
         final Page page = resource.as(Page.class);
-        assertEquals(1, page.paragraphs().size());
+        assertEquals(1, page.currentRevision().paragraphs().size());
     }
 
     /**

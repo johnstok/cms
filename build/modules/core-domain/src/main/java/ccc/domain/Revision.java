@@ -20,7 +20,7 @@ import java.util.Date;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class Revision extends Entity {
+public abstract class Revision<T> extends Entity {
     private Date _timestamp;
     private User _actor;
     private boolean _majorChange;
@@ -87,4 +87,11 @@ public abstract class Revision extends Entity {
     public final String getComment() {
         return _comment;
     }
+
+    /**
+     * Retrieve the revision's state.
+     *
+     * @return A delta describing this revision's state.
+     */
+    protected abstract T delta();
 }

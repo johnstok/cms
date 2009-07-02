@@ -103,9 +103,9 @@ public class UpdateWorkingCopyCommand {
             _dao.find(Resource.class, resourceId);
         r.confirmLock(actor);
 
-        if (r instanceof WorkingCopySupport<?, ?>) {
-            final WorkingCopySupport<?, ?> wcAware =
-                (WorkingCopySupport<?, ?>) r;
+        if (r instanceof WorkingCopySupport<?, ?, ?>) {
+            final WorkingCopySupport<?, ?, ?> wcAware =
+                (WorkingCopySupport<?, ?, ?>) r;
             wcAware.setWorkingCopyFromRevision((int) revisionNo);
 
         _audit.record(
@@ -114,7 +114,7 @@ public class UpdateWorkingCopyCommand {
                 CommandType.RESOURCE_UPDATE_WC,
                 happenedOn,
                 resourceId,
-                "{}")); // FIXME: What do we put here?
+                "{}")); // FIXME: What do we put here? Revision number.
         } else {
             throw new WorkingCopyNotSupportedException(r);
         }
