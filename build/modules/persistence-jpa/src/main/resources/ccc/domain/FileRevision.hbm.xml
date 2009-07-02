@@ -90,7 +90,7 @@
             name="_actor"
             column="actor_id"
             not-null="true"
-            foreign-key="FK_REVISION_USER_ACTOR_ID" />
+            foreign-key="FK_FILE_REV_USER_ACTOR_ID" />
     </class>
     
 </hibernate-mapping>
