@@ -64,6 +64,6 @@ public class CreateRootCommand extends CreateResourceCommand {
         folder.dateCreated(happenedOn);
         getDao().create(folder);
 
-        getAudit().recordCreate(folder, actor, happenedOn);
+        audit(folder, actor, happenedOn);
     }
 }

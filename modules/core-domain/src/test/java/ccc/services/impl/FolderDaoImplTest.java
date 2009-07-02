@@ -58,7 +58,7 @@ public class FolderDaoImplTest
         _f.lock(_regularUser);
         expect(_dao.find(Folder.class, _f.id()))
             .andReturn(_f);
-        _al.recordFolderUpdate(eq(_f), eq(_regularUser), isA(Date.class));
+        _al.record(isA(LogEntry.class));
         replayAll();
 
         final UpdateFolderCommand uf = new UpdateFolderCommand(_dao, _al);

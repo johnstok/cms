@@ -14,8 +14,12 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.CommandType;
+import ccc.api.JsonKeys;
 import ccc.domain.LockMismatchException;
+import ccc.domain.LogEntry;
 import ccc.domain.Resource;
+import ccc.domain.Snapshot;
 import ccc.domain.Template;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
@@ -71,7 +75,16 @@ public class ChangeTemplateForResourceCommand {
 
         r.template(t);
 
-        _audit.recordChangeTemplate(r, actor, happenedOn);
+        final Snapshot ss = new Snapshot();
+        ss.set(JsonKeys.TEMPLATE_ID, (null==t) ? null : t.id().toString());
+        final LogEntry le =
+            new LogEntry(
+                actor,
+                CommandType.RESOURCE_CHANGE_TEMPLATE,
+                happenedOn,
+                resourceId,
+                ss.getDetail());
+        _audit.record(le);
     }
 
 }

@@ -169,7 +169,7 @@ public class ResourceDaoImplTest
         // ARRANGE
         _r.lock(_regularUser);
         expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
-        _al.recordUpdateFullMetadata(eq(_r), eq(_regularUser), isA(Date.class));
+        _al.record(isA(LogEntry.class));
         replayAll();
 
         // ACT
@@ -202,7 +202,7 @@ public class ResourceDaoImplTest
 
         // ARRANGE
         expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
-        _al.recordUnlock(eq(_r), eq(_regularUser), isA(Date.class));
+        _al.record(isA(LogEntry.class));
         replayAll();
 
         _r.lock(_regularUser);
@@ -255,7 +255,7 @@ public class ResourceDaoImplTest
 
         // ARRANGE
         expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
-        _al.recordUnlock(eq(_r), eq(_adminUser), isA(Date.class));
+        _al.record(isA(LogEntry.class));
         replayAll();
 
         _r.lock(_regularUser);
@@ -278,7 +278,7 @@ public class ResourceDaoImplTest
 
         // ARRANGE
         expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
-        _al.recordLock(eq(_r), eq(_regularUser), isA(Date.class));
+        _al.record(isA(LogEntry.class));
         replayAll();
 
         // ACT
@@ -377,7 +377,7 @@ public class ResourceDaoImplTest
             .andReturn(_r);
         expect(_dao.find(Template.class, defaultTemplate.id()))
             .andReturn(defaultTemplate);
-        _al.recordChangeTemplate(eq(_r), eq(_regularUser), isA(Date.class));
+        _al.record(isA(LogEntry.class));
         replayAll();
 
         // ACT
@@ -404,7 +404,7 @@ public class ResourceDaoImplTest
 
         expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
         expect(_dao.find(Folder.class, newParent.id())).andReturn(newParent);
-        _al.recordMove(eq(_r), eq(_regularUser), isA(Date.class));
+        _al.record(isA(LogEntry.class));
         replayAll();
 
         // ACT
@@ -477,7 +477,7 @@ public class ResourceDaoImplTest
         // ARRANGE
         _r.lock(_regularUser);
 
-        _al.recordPublish(eq(_r), eq(_regularUser), isA(Date.class));
+        _al.record(isA(LogEntry.class));
         replayAll();
 
         // ACT
@@ -523,7 +523,7 @@ public class ResourceDaoImplTest
         _r.publish(_regularUser);
 
         expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
-        _al.recordUnpublish(eq(_r), eq(_regularUser), isA(Date.class));
+        _al.record(isA(LogEntry.class));
         replayAll();
 
         // ACT

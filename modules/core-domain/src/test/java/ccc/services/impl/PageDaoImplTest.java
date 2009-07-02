@@ -20,6 +20,7 @@ import junit.framework.TestCase;
 import ccc.api.PageDelta;
 import ccc.api.Paragraph;
 import ccc.commands.UpdatePageCommand;
+import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.ResourceName;
@@ -60,7 +61,7 @@ public class PageDaoImplTest
         page.lock(_u);
 
         expect(_dao.find(Page.class, page.id())).andReturn(page);
-        _al.recordUpdate(page, _u, _now, "comment text", false);
+        _al.record(isA(LogEntry.class));
         replayAll();
 
 

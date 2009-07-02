@@ -14,8 +14,11 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.CommandType;
 import ccc.domain.InsufficientPrivilegesException;
+import ccc.domain.LogEntry;
 import ccc.domain.Resource;
+import ccc.domain.Snapshot;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -63,6 +66,16 @@ public class UnlockResourceCommand {
       throws UnlockedException, InsufficientPrivilegesException {
         final Resource r = _dao.find(Resource.class, resourceId);
         r.unlock(actor);
-        _audit.recordUnlock(r, actor, happenedOn);
+
+        final Snapshot ss = new Snapshot();
+        ss.set("unlock", actor.id().toString()); // FIXME: Extract key.
+        final LogEntry le =
+            new LogEntry(
+                actor,
+                CommandType.RESOURCE_UNLOCK,
+                happenedOn,
+                resourceId,
+                ss.getDetail());
+        _audit.record(le);
     }
 }
