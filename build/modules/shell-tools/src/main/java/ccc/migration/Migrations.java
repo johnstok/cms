@@ -259,14 +259,16 @@ public class Migrations {
                 }
             }
 
+            PageDelta delta = assemblePage(r, createVersion.intValue());
             final ResourceSummary rs =
-                createPage(parentFolderId, r, createVersion, le);
+                createPage(parentFolderId, r, createVersion, le, delta);
 
             // Apply all updates
             for (final Integer version : paragraphVersions) {
                 try {
                     le = logEntryForVersion(r.contentId(), version, "UPDATE");
-                    updatePage(r, rs, version, le);
+                    delta = assemblePage(r, version);
+                    updatePage(r, rs, version, le, delta);
                 } catch (final MigrationException e) {
                     log.warn("Update skipped for version "+version
                         +" of page "+r.contentId());
@@ -278,6 +280,15 @@ public class Migrations {
             setTemplateForResource(r, rs, le);
             publish(r, rs, le);
             showInMainMenu(r, rs, le);
+
+            for (final Paragraph paragraph : delta.getParagraphs()) {
+                if ("Description_Custom".equals(paragraph.name())) {
+                    rs.setDescription(paragraph.text());
+                } else if ("Keywords_Custom".equals(paragraph.name())) {
+                    rs.setTags(paragraph.text());
+                }
+
+            }
             setMetadata(r, rs, le);
             setResourceRoles(r, rs, le);
             _commands.unlock(
@@ -339,11 +350,11 @@ public class Migrations {
     private void updatePage(final ResourceBean r,
                             final ResourceSummary rs,
                             final int version,
-                            final LogEntryBean le)
+                            final LogEntryBean le,
+                            final PageDelta d)
                                                  throws CommandFailedException {
 
         _commands.lock(rs.getId(), le.getUser().getId(), le.getHappenedOn());
-        final PageDelta d = assemblePage(r, version);
 
         final String userComment =
             _legacyQueries.selectUserComment(r.contentId(), version);
@@ -369,10 +380,10 @@ public class Migrations {
     private ResourceSummary createPage(final ID parentFolderId,
                                        final ResourceBean r,
                                        final Integer version,
-                                       final LogEntryBean le)
+                                       final LogEntryBean le,
+                                       final PageDelta delta)
                                                  throws CommandFailedException {
 
-        final PageDelta delta = assemblePage(r, version.intValue());
         final String pageTitle = r.cleanTitle();
 
         ResourceSummary rs;
