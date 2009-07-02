@@ -38,7 +38,7 @@ import ccc.snapshots.ResourceSnapshot;
  */
 public abstract class Resource
     extends
-        VersionedEntity
+        Entity
     implements
         SnapshotSupport<ResourceSnapshot> {
 

@@ -31,6 +31,12 @@
             <generator class="assigned" />
         </id>
         
+        <version
+            name="_version"
+            column="vn"
+            type="long"
+            unsaved-value="negative" />
+        
         <property
             name="_size"
             column="size_in_bytes"

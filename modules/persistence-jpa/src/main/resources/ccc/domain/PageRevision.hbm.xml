@@ -35,6 +35,12 @@
             length="36">
             <generator class="assigned" />
         </id>
+        
+        <version
+            name="_version"
+            column="vn"
+            type="long"
+            unsaved-value="negative" />
 		
         <set name="_content" table="page_revision_paragraphs">
             <cache usage="transactional"/>

@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.UUID;
 
 import ccc.domain.Entity;
-import ccc.domain.VersionedEntity;
 
 
 /**
@@ -36,19 +35,6 @@ public interface Dao {
      * @return The object with the specified id.
      */
     <T extends Entity> T find(Class<T> type, UUID id);
-
-    /**
-     * Find an object with the specified ID and version.
-     * <p>If an object with the specified ID is found, but the version is
-     * different then an exception will be thrown.
-     *
-     * @param <T> The type of the object to be searched for.
-     * @param type The class representing the type of the object.
-     * @param id The id of the object.
-     * @param version The expected version of the object.
-     * @return The object (of type T) with the specified ID and version.
-     */
-    <T extends VersionedEntity> T find(Class<T> type, UUID id, long version);
 
     /**
      * List zero or more matches for a query - duplicates may be possible.
