@@ -33,10 +33,12 @@ public class AbstractContextMenu
     /** USER_ACTIONS : ActionNameConstants. */
     protected static final ActionNameConstants USER_ACTIONS =
         GWT.create(ActionNameConstants.class);
+
+    protected IGlobals _globals = new IGlobalsImpl();
     /** _constants : UIConstants. */
-    protected final UIConstants _constants = Globals.uiConstants();
+    protected final UIConstants _constants = _globals.uiConstants();
     /** _qs : QueriesServiceAsync. */
-    protected final QueriesServiceAsync _qs = Globals.queriesService();
+    protected final QueriesServiceAsync _qs = _globals.queriesService();
 
     /**
      * Creates a new menu item.

@@ -15,9 +15,10 @@ import java.util.Date;
 
 import ccc.api.ID;
 import ccc.contentcreator.api.CommandServiceAsync;
+import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.CreateActionPanel;
-import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobalsImpl;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -38,9 +39,11 @@ public class CreateActionDialog
     extends
         AbstractWizardDialog {
 
-    private final CommandServiceAsync _commands = Globals.commandService();
+    private final CommandServiceAsync _commands = _globals.commandService();
     private final CreateActionPanel _createAction = new CreateActionPanel();
     private final DateTimePicker _dtPicker = new DateTimePicker();
+    private static final UIConstants UICONSTANTS =
+        new IGlobalsImpl().uiConstants();
 
     private final ID _resourceId;
 
@@ -50,7 +53,7 @@ public class CreateActionDialog
      * @param resourceId The ID of the resource.
      */
     public CreateActionDialog(final ID resourceId) {
-        super(Globals.uiConstants().createAction());
+        super(new IGlobalsImpl().uiConstants().createAction());
 
         _resourceId = resourceId;
 
@@ -68,11 +71,11 @@ public class CreateActionDialog
             public void componentSelected(final ButtonEvent ce) {
 
                 if (null==_createAction.commandType()) {
-                    Globals.alert(constants().pleaseChooseAnAction());
+                    UICONSTANTS.pleaseChooseAnAction();
                     return;
                 }
                 if (null==_dtPicker.getDate()) {
-                    Globals.alert(constants().pleaseSpecifyDateAndTime());
+                    UICONSTANTS.pleaseSpecifyDateAndTime();
                     return;
                 }
                 _commands.createAction(
@@ -80,7 +83,7 @@ public class CreateActionDialog
                     _createAction.commandType(),
                     _dtPicker.getDate(),
                     _createAction.getParameters(),
-                    new ErrorReportingCallback<Void>(_constants.createAction()){
+                    new ErrorReportingCallback<Void>(UICONSTANTS.createAction()){
                         public void onSuccess(final Void arg0) {
                             close();
                         }
@@ -101,10 +104,10 @@ public class CreateActionDialog
 
         DateTimePicker() {
             setLayout(new FormLayout());
-            _date.setFieldLabel(Globals.uiConstants().date());
+            _date.setFieldLabel(UICONSTANTS.date());
             _date.setEditable(false);
             add(_date, new FormData("95%"));
-            _time.setFieldLabel(Globals.uiConstants().time());
+            _time.setFieldLabel(UICONSTANTS.time());
             _time.setEditable(false);
             add(_time, new FormData("95%"));
         }

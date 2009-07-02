@@ -19,7 +19,7 @@ import ccc.api.FileSummary;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.FileSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.ImageTriggerField;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -53,7 +53,7 @@ public class ImageChooserDialog extends AbstractBaseDialog {
      */
     public ImageChooserDialog(final ImageTriggerField image) {
 
-        super(Globals.uiConstants().selectImage());
+        super(new IGlobalsImpl().uiConstants().selectImage());
 
         _image = image;
         final ListStore<FileSummaryModelData> store =

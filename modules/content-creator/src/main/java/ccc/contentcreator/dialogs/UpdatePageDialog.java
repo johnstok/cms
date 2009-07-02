@@ -22,7 +22,7 @@ import ccc.api.Paragraph;
 import ccc.api.TemplateSummary;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.EditPagePanel;
-import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.PageElement;
 import ccc.contentcreator.client.ResourceTable;
 import ccc.contentcreator.validation.Validate;
@@ -56,7 +56,7 @@ public class UpdatePageDialog
         private final AsyncCallback<Void> _saveDraftCompletedCallback =
             new AsyncCallback<Void>() {
             public void onFailure(final Throwable arg0) {
-                Globals.unexpectedError(arg0, _constants.saveDraft());
+                _globals.unexpectedError(arg0, _constants.saveDraft());
             }
             public void onSuccess(final Void arg0) {
                 final ResourceSummaryModelData md = rt().tableSelection();
@@ -82,7 +82,7 @@ public class UpdatePageDialog
                             final String pageName,
                             final TemplateSummary template,
                             final ResourceTable rt) {
-        super(Globals.uiConstants().updateContent());
+        super(new IGlobalsImpl().uiConstants().updateContent());
         _rt = rt;
         _page = page;
         _template = template;

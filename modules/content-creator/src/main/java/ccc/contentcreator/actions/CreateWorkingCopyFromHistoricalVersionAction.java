@@ -1,10 +1,8 @@
 package ccc.contentcreator.actions;
 
-import ccc.contentcreator.api.CommandServiceAsync;
 import ccc.contentcreator.binding.LogEntrySummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
-import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.dialogs.HistoryDialog;
 
 /**
@@ -15,8 +13,6 @@ import ccc.contentcreator.dialogs.HistoryDialog;
 public class CreateWorkingCopyFromHistoricalVersionAction
     implements
         Action {
-
-    private final CommandServiceAsync _commands = Globals.commandService();
 
     private final HistoryDialog _dialog;
 
@@ -33,7 +29,7 @@ public class CreateWorkingCopyFromHistoricalVersionAction
     public void execute() {
         final LogEntrySummaryModelData selected = _dialog.selectedItem();
 
-        _commands.createWorkingCopy(
+        COMMAND_SERVICE.createWorkingCopy(
             _dialog.getResourceId(),
             selected.getIndex(),
             new ErrorReportingCallback<Void>(UI_CONSTANTS.revert()){

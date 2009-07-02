@@ -20,8 +20,8 @@ import java.util.Map;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.IGlobals;
+import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
@@ -84,7 +84,7 @@ public class MetadataDialog extends AbstractEditDialog {
     public MetadataDialog(final ResourceSummaryModelData resource,
                           final Collection<Map.Entry<String, String>> data,
                           final SingleSelectionModel ssm) {
-        super(Globals.uiConstants().metadata());
+        super(new IGlobalsImpl().uiConstants().metadata());
 
         _ssm = ssm;
         _resource = resource;

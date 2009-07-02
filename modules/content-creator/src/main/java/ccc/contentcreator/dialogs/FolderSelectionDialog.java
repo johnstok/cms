@@ -15,8 +15,8 @@ import ccc.api.ResourceSummary;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.FolderResourceTree;
-import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.IGlobals;
+import ccc.contentcreator.client.IGlobalsImpl;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
@@ -37,7 +37,7 @@ public class FolderSelectionDialog extends Window {
     private static final int WIDTH = 400;
 
     private final FolderResourceTree _tree;
-    private final UIConstants _constants = Globals.uiConstants();
+    private final UIConstants _constants = new IGlobalsImpl().uiConstants();
 
     /**
      * Constructor.

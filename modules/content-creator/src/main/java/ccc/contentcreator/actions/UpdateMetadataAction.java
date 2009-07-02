@@ -2,11 +2,9 @@ package ccc.contentcreator.actions;
 
 import java.util.Map;
 
-import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
-import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.MetadataDialog;
 
@@ -18,8 +16,6 @@ import ccc.contentcreator.dialogs.MetadataDialog;
 public final class UpdateMetadataAction
     implements
         Action {
-
-    private final QueriesServiceAsync _queries = Globals.queriesService();
 
     private final SingleSelectionModel _selectionModel;
 
@@ -35,7 +31,7 @@ public final class UpdateMetadataAction
     /** {@inheritDoc} */
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        _queries.metadata(
+        QUERIES_SERVICE.metadata(
             item.getId(),
             new ErrorReportingCallback<Map<String, String>>(
                 UI_CONSTANTS.updateMetadata()){

@@ -30,7 +30,7 @@ import com.extjs.gxt.ui.client.widget.tree.TreeItem;
 public class UserTree extends Tree {
 
     private final UserTable _ut = new UserTable();
-    private final UIConstants _constants = Globals.uiConstants();
+    private final UIConstants _constants = new IGlobalsImpl().uiConstants();
     private final LeftRightPane _view;
 
     /** USERS : String. */

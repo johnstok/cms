@@ -15,7 +15,7 @@ package ccc.contentcreator.dialogs;
 import ccc.api.ResourceSummary;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
@@ -52,7 +52,7 @@ public class CreateAliasDialog extends AbstractEditDialog {
      */
     public CreateAliasDialog(final SingleSelectionModel ssm,
                              final ResourceSummary root) {
-        super(Globals.uiConstants().createAlias());
+        super(new IGlobalsImpl().uiConstants().createAlias());
         setPanelId("AliasPanel");
 
         _ssm = ssm;
@@ -108,7 +108,7 @@ public class CreateAliasDialog extends AbstractEditDialog {
     private Runnable createAlias() {
         return new Runnable() {
             public void run() {
-                Globals.commandService().createAlias(
+                _globals.commandService().createAlias(
                     _parent.getId(),
                     _aliasName.getValue(),
                     _ssm.tableSelection().getId(),

@@ -15,6 +15,7 @@ import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.api.SecurityServiceAsync;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobalsImpl;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -46,14 +47,14 @@ public class LoginDialog extends AbstractEditDialog {
      * Constructor.
      */
     public LoginDialog() {
-        super(Globals.uiConstants().login());
+        super(new IGlobalsImpl().uiConstants().login());
 
         final SecurityServiceAsync ss = Globals.securityService();
         ss.readProperty("application.name",
             new ErrorReportingCallback<String>(USER_ACTIONS.readProperty()){
             @Override
             public void onSuccess(final String value) {
-                setHeading(Globals.uiConstants().login() +" - "+value);
+                setHeading(_constants.login() +" - "+value);
             }
 
         });
@@ -91,7 +92,8 @@ public class LoginDialog extends AbstractEditDialog {
                     _password.getValue(),
                     new AsyncCallback<Boolean>(){
                         public void onFailure(final Throwable caught) {
-                            Globals.unexpectedError(caught, _constants.login());
+                            new IGlobalsImpl().unexpectedError(
+                                caught, _constants.login());
                         }
                         public void onSuccess(final Boolean loginSucceeded) {
                             if (loginSucceeded) {

@@ -13,8 +13,8 @@ package ccc.contentcreator.dialogs;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.IGlobals;
+import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
@@ -45,7 +45,7 @@ public class RenameDialog extends AbstractEditDialog {
     public RenameDialog(
                     final ResourceSummaryModelData item,
                     final SingleSelectionModel ssm) {
-        super(Globals.uiConstants().rename());
+        super(new IGlobalsImpl().uiConstants().rename());
         setHeight(IGlobals.DEFAULT_MIN_HEIGHT);
         _item = item;
         _ssm = ssm;

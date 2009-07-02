@@ -11,7 +11,7 @@
  */
 package ccc.contentcreator.callbacks;
 
-import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobalsImpl;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -41,6 +41,6 @@ public abstract class ErrorReportingCallback<T> implements AsyncCallback<T> {
     /** {@inheritDoc} */
     public final void onFailure(final Throwable caught) {
 //        _e.initCause(caught);
-        Globals.unexpectedError(caught, _action);
+        new IGlobalsImpl().unexpectedError(caught, _action);
     }
 }

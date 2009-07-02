@@ -59,7 +59,8 @@ public class MainMenu
     private static final ActionNameConstants USER_ACTIONS =
         GWT.create(ActionNameConstants.class);
 
-    private final UIConstants _constants = Globals.uiConstants();
+    private IGlobals _globals = new IGlobalsImpl();
+    private final UIConstants _constants = _globals.uiConstants();
     private final UserSummary _user;
     /**
      * Constructor.
@@ -116,7 +117,7 @@ public class MainMenu
             new Listener<MenuEvent>() {
             public void handleEvent(final MenuEvent be) {
                 rootMenu.removeAll();
-                final QueriesServiceAsync qs = Globals.queriesService();
+                final QueriesServiceAsync qs = _globals.queriesService();
                 qs.roots(new ErrorReportingCallback<Collection<ResourceSummary>>(USER_ACTIONS.internalAction()) {
                     public void onSuccess(final Collection<ResourceSummary> c) {
                         for (final ResourceSummary root : c) {
@@ -218,7 +219,7 @@ public class MainMenu
                         sb.append(_constants.publishedBy()
                             +" "+root.getPublishedBy()+"\n");
                     }
-                    Globals.alert(sb.toString());
+                    _globals.alert(sb.toString());
                 }
 
             });

@@ -1,6 +1,5 @@
 package ccc.contentcreator.actions;
 
-import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.Globals;
@@ -16,8 +15,6 @@ import com.google.gwt.user.client.Window;
 public final class PreviewAction
     implements
         Action {
-
-    private final QueriesServiceAsync _queries = Globals.queriesService();
 
     private final SingleSelectionModel _selectionModel;
     private final boolean _useWorkingCopy;

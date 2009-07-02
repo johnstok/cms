@@ -1,10 +1,8 @@
 package ccc.contentcreator.actions;
 
-import ccc.contentcreator.api.CommandServiceAsync;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
-import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
 
 /**
@@ -15,8 +13,6 @@ import ccc.contentcreator.client.SingleSelectionModel;
 public class ClearWorkingCopyAction
     implements
         Action {
-
-    private final CommandServiceAsync _commands = Globals.commandService();
 
     private final SingleSelectionModel _selectionModel;
 
@@ -32,7 +28,7 @@ public class ClearWorkingCopyAction
     /** {@inheritDoc} */
     public void execute() {
         final ResourceSummaryModelData page = _selectionModel.tableSelection();
-        _commands.clearWorkingCopy(
+        COMMAND_SERVICE.clearWorkingCopy(
             page.getId(),
             new ErrorReportingCallback<Void>(UI_CONSTANTS.deleteWorkingCopy()){
                 public void onSuccess(final Void arg0) {

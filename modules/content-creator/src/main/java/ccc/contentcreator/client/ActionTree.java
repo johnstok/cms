@@ -30,7 +30,7 @@ public class ActionTree extends Tree {
 
     private final ActionTable   _at = new ActionTable();
     private final LeftRightPane _view;
-    private final UIConstants _constants = Globals.uiConstants();
+    private final UIConstants _constants = new IGlobalsImpl().uiConstants();
 
     /** ACTIONS : String. */
     public static final String ACTIONS = "actions";

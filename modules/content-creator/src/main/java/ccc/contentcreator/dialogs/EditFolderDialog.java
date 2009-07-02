@@ -24,8 +24,8 @@ import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.binding.ResourceSummaryModelData.Property;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.IGlobals;
+import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.ResourceTypeRendererFactory;
 import ccc.contentcreator.client.SingleSelectionModel;
 
@@ -69,8 +69,8 @@ AbstractEditDialog {
     private static final String DATE_CHANGED_ASC = "DATE_CHANGED_ASC";
     private static final String NAME_ALPHANUM_ASC = "NAME_ALPHANUM_ASC";
 
-    private final CommandServiceAsync _commands = Globals.commandService();
-    private final QueriesServiceAsync _queries = Globals.queriesService();
+    private final CommandServiceAsync _commands = _globals.commandService();
+    private final QueriesServiceAsync _queries = _globals.queriesService();
 
     private final ComboBox<ModelData> _sortOrder = new ComboBox<ModelData>();
     private final ComboBox<ModelData> _indexPage = new ComboBox<ModelData>();
@@ -99,7 +99,7 @@ AbstractEditDialog {
     public EditFolderDialog(final SingleSelectionModel ssm,
                                        final String currentSortOrder,
                                        final ID currentIndexPage) {
-        super(Globals.uiConstants().edit());
+        super(new IGlobalsImpl().uiConstants().edit());
 
         setHeight(IGlobals.DEFAULT_HEIGHT);
         _selectionModel = ssm;

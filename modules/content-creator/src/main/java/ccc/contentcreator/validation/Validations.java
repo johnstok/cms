@@ -17,11 +17,15 @@ import java.util.Set;
 import ccc.api.ID;
 import ccc.api.Paragraph;
 import ccc.contentcreator.api.ActionNameConstants;
+import ccc.contentcreator.api.CommandService;
+import ccc.contentcreator.api.CommandServiceAsync;
+import ccc.contentcreator.api.QueriesService;
+import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobalsImpl;
 
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.core.client.GWT;
@@ -36,12 +40,21 @@ import com.google.gwt.xml.client.impl.DOMParseException;
  */
 public class Validations {
 
-    private final static UIConstants _uiConstants =
+    /** _uiConstants : UIConstants. */
+    private static final UIConstants UI_CONSTANTS =
         GWT.create(UIConstants.class);
-    private final static UIMessages _uiMessages =
+    /** _uiMessages : UIMessages. */
+    private static final UIMessages UI_MESSAGES =
         GWT.create(UIMessages.class);
+    /** USER_ACTIONS : ActionNameConstants. */
     private static final ActionNameConstants USER_ACTIONS =
         GWT.create(ActionNameConstants.class);
+    /** QUERIES_SERVICE : QueriesServiceAsync. */
+    private static final QueriesServiceAsync QUERIES_SERVICE =
+        GWT.create(QueriesService.class);
+    /** COMMAND_SERVICE : CommandServiceAsync. */
+    private static final CommandServiceAsync COMMAND_SERVICE =
+        GWT.create(CommandService.class);
 
     private static final String  VALID_CHARACTERS = "[\\.\\-\\w]+";
 
@@ -65,7 +78,7 @@ public class Validations {
     public static ErrorReporter reportErrors() {
         return new ErrorReporter() {
             public void report(final List<String> errors) {
-                Globals.alert(errors.toString());
+                new IGlobalsImpl().alert(errors.toString());
             }
         };
     }
@@ -83,7 +96,7 @@ public class Validations {
                    || name.getValue().trim().equals("")) {
                     validate.addMessage(
                         name.getFieldLabel()
-                        + " "+_uiConstants.cannotBeEmpty()
+                        + " "+UI_CONSTANTS.cannotBeEmpty()
                     );
                 }
                 validate.next();
@@ -103,7 +116,7 @@ public class Validations {
                 try {
                     XMLParser.parse(definition.getValue());
                 } catch (final DOMParseException e) {
-                    validate.addMessage("XML "+_uiConstants.isNotValid());
+                    validate.addMessage("XML "+UI_CONSTANTS.isNotValid());
                 }
                 validate.next();
             }
@@ -122,7 +135,7 @@ public class Validations {
                 if(!name.getValue().matches(VALID_CHARACTERS)) {
                     validate.addMessage(
                         name.getFieldLabel()
-                        + " "+_uiConstants.isNotValidResourceName()
+                        + " "+UI_CONSTANTS.isNotValidResourceName()
                     );
                 }
                 validate.next();
@@ -142,7 +155,7 @@ public class Validations {
                 if(!name.getValue().matches(VALID_USERNAME_CHARACTERS)) {
                     validate.addMessage(
                         name.getFieldLabel()
-                        + " "+_uiConstants.isNotValidUserName()
+                        + " "+UI_CONSTANTS.isNotValidUserName()
                     );
                 }
                 validate.next();
@@ -163,14 +176,14 @@ public class Validations {
 
         return new Validator() {
             public void validate(final Validate validate) {
-                Globals.queriesService().nameExistsInFolder(
+                QUERIES_SERVICE.nameExistsInFolder(
                     folder.getId(),
                     name.getValue(),
                     new ErrorReportingCallback<Boolean>(USER_ACTIONS.checkUniqueResourceName()){
                         public void onSuccess(final Boolean nameExists) {
                             if (nameExists) {
                                 validate.addMessage(
-                                    _uiMessages.resourceWithNameAlreadyExistsInThisFolder(name.getValue())
+                                    UI_MESSAGES.resourceWithNameAlreadyExistsInThisFolder(name.getValue())
                                 );
                             }
                             validate.next();
@@ -191,7 +204,7 @@ public class Validations {
                 if(!email.getValue().matches(VALID_EMAIL)) {
                     validate.addMessage(
                         email.getFieldLabel()
-                        + " "+_uiConstants.isNotValid()
+                        + " "+UI_CONSTANTS.isNotValid()
                     );
                 }
                 validate.next();
@@ -210,14 +223,14 @@ public class Validations {
                                                final TextField<String> name) {
         return new Validator() {
             public void validate(final Validate validate) {
-                Globals.queriesService().nameExistsInFolder(
+                QUERIES_SERVICE.nameExistsInFolder(
                     id,
                     name.getValue(),
                     new ErrorReportingCallback<Boolean>(USER_ACTIONS.checkUniqueResourceName()){
                         public void onSuccess(final Boolean nameExists) {
                             if (nameExists) {
                                 validate.addMessage(
-                                    _uiMessages.resourceWithNameAlreadyExistsInTheParentFolder(name.getValue())
+                                    UI_MESSAGES.resourceWithNameAlreadyExistsInTheParentFolder(name.getValue())
                                 );
                             }
                             validate.next();
@@ -242,7 +255,7 @@ public class Validations {
                    || input.getValue().length() < min) {
                     validate.addMessage(
                         input.getFieldLabel()
-                        + " "+_uiConstants.isTooShort()
+                        + " "+UI_CONSTANTS.isTooShort()
                     );
                 }
                 validate.next();
@@ -261,7 +274,7 @@ public class Validations {
                                            final String definition) {
         return new Validator() {
             public void validate(final Validate validate) {
-                Globals.commandService().validateFields(
+                COMMAND_SERVICE.validateFields(
                     delta,
                     definition,
                     new ErrorReportingCallback<List <String>>(USER_ACTIONS.validatePageFields()){
@@ -274,7 +287,7 @@ public class Validations {
                                 }
 
                                 validate.addMessage(
-                                    _uiConstants.regexpValidationFailed()
+                                    UI_CONSTANTS.regexpValidationFailed()
                                     +sb.toString()
                                 );
                             }
@@ -297,7 +310,7 @@ public class Validations {
                         && !text.getValue().matches(NO_BRACKETS)) {
                     validate.addMessage(
                         text.getFieldLabel()
-                        + " "+_uiConstants.mustNotContainBrackets()
+                        + " "+UI_CONSTANTS.mustNotContainBrackets()
                     );
                 }
                 validate.next();
@@ -317,7 +330,7 @@ public class Validations {
         return new Validator() {
             public void validate(final Validate validate) {
                 if (pw1 != null && !pw1.equals(pw2)) {
-                    validate.addMessage(_uiConstants.passwordsDidNotMatch());
+                    validate.addMessage(UI_CONSTANTS.passwordsDidNotMatch());
                 }
                 validate.next();
             }
@@ -334,9 +347,9 @@ public class Validations {
         return new Validator() {
             public void validate(final Validate validate) {
                 if (pw != null && pw.length() < 10) {
-                    validate.addMessage(_uiConstants.passwordTooShort());
+                    validate.addMessage(UI_CONSTANTS.passwordTooShort());
                 } else if (!pw.matches(STRONG_PW)) {
-                    validate.addMessage(_uiConstants.passwordTooWeak());
+                    validate.addMessage(UI_CONSTANTS.passwordTooWeak());
                 }
                 validate.next();
             }
@@ -360,7 +373,7 @@ public class Validations {
                    && !value.matches("^([0-9]|[1-9][0-9]|[1-9][0-9][0-9])$")) {
                     validate.addMessage(
                         input.getFieldLabel()
-                        + " "+_uiConstants.isNotValid()
+                        + " "+UI_CONSTANTS.isNotValid()
                     );
                 }
                 validate.next();

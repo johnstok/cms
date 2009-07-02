@@ -14,7 +14,7 @@ package ccc.contentcreator.dialogs;
 import ccc.api.ID;
 import ccc.api.PageDelta;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 
@@ -44,7 +44,8 @@ public class PageCommentDialog extends AbstractEditDialog {
     private final AsyncCallback<Void> _applyNowCompletedCallback =
         new AsyncCallback<Void>() {
             public void onFailure(final Throwable arg0) {
-                Globals.unexpectedError(arg0, _constants.updateContent());
+                new IGlobalsImpl().unexpectedError(
+                    arg0, _constants.updateContent());
             }
             public void onSuccess(final Void arg0) {
                 final ResourceSummaryModelData md =
@@ -68,7 +69,7 @@ public class PageCommentDialog extends AbstractEditDialog {
     public PageCommentDialog(final ID pageId,
                              final PageDelta page,
                              final UpdatePageDialog updatePageDialog) {
-        super(Globals.uiConstants().pageEditComment());
+        super(new IGlobalsImpl().uiConstants().pageEditComment());
         _pageId = pageId;
         _page = page;
         _updatePageDialog = updatePageDialog;

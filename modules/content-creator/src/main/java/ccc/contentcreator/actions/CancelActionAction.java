@@ -12,13 +12,13 @@
 package ccc.contentcreator.actions;
 
 import ccc.api.ActionStatus;
-import ccc.contentcreator.api.CommandServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.ActionSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.ActionTable;
-import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobals;
+import ccc.contentcreator.client.IGlobalsImpl;
 
 
 /**
@@ -30,9 +30,9 @@ public class CancelActionAction
     implements
         Action {
 
-    private final CommandServiceAsync _commands = Globals.commandService();
     private final ActionTable _table;
-    private final UIConstants _constants = Globals.uiConstants();
+    private IGlobals _globals = new IGlobalsImpl();
+    private final UIConstants _constants = _globals.uiConstants();
 
     /**
      * Constructor.
@@ -47,13 +47,13 @@ public class CancelActionAction
     public void execute() {
         final ActionSummaryModelData action = _table.getSelectedItem();
         if (null==action) {
-            Globals.alert(_constants.pleaseChooseAnAction());
+            _globals.alert(_constants.pleaseChooseAnAction());
             return;
         } else if (ActionStatus.Scheduled!=action.getStatus()) {
-            Globals.alert(_constants.thisActionHasAlreadyCompleted());
+            _globals.alert(_constants.thisActionHasAlreadyCompleted());
             return;
         } else {
-            _commands.cancelAction(
+            COMMAND_SERVICE.cancelAction(
                 action.getId(),
                 new ErrorReportingCallback<Void>(UI_CONSTANTS.cancel()){
                     public void onSuccess(final Void arg0) {

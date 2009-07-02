@@ -85,6 +85,7 @@ public class ResourceContextMenu
     private final Action _applyWorkingCopyAction;
     private final Action _editCacheAction;
 
+    private IGlobals _globals = new IGlobalsImpl();
 
     /**
      * Constructor.
@@ -365,7 +366,7 @@ public class ResourceContextMenu
                 } else if (ResourceType.FILE==item.getType()) {
                     updateFile(item);
                 } else {
-                    Globals.alert(_constants.noEditorForResource());
+                    _globals.alert(_constants.noEditorForResource());
                 }
             }
         });
@@ -401,7 +402,7 @@ public class ResourceContextMenu
             new ErrorReportingCallback<TemplateSummary>(_constants.updateContent()) {
                 @Override public void onSuccess(final TemplateSummary template) {
                     if (null==template) {
-                        Globals.alert(_constants.noTemplateFound());
+                        _globals.alert(_constants.noTemplateFound());
                     } else { // Get a delta to edit.
                         _qs.pageDelta(
                             item.getId(),

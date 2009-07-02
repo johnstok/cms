@@ -21,8 +21,8 @@ import ccc.api.LogEntrySummary;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.LogEntrySummaryModelData;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.HistoryToolBar;
+import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
 
 import com.extjs.gxt.ui.client.Events;
@@ -52,12 +52,13 @@ public class HistoryDialog
      *
      * @param data The history to display, as a collection of
      *  {@link LogEntrySummary}.
+     * @param resourceId The ID.
      * @param ssm The selection model.
      */
     public HistoryDialog(final Collection<LogEntrySummary> data,
                          final ID resourceId,
                          final SingleSelectionModel ssm) {
-        super(Globals.uiConstants().resourceHistory(), data, false);
+        super(new IGlobalsImpl().uiConstants().resourceHistory(), data, false);
 
         _id = resourceId;
         _ssm = ssm;

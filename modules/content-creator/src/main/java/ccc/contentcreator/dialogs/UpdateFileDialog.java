@@ -12,8 +12,8 @@
 package ccc.contentcreator.dialogs;
 
 import ccc.api.ID;
-import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.IGlobals;
+import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 
@@ -47,7 +47,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
      * @param fileId The {@link ID} of the file.
      */
     public UpdateFileDialog(final ID fileId) {
-        super(Globals.uiConstants().updateFile());
+        super(new IGlobalsImpl().uiConstants().updateFile());
         setHeight(IGlobals.DEFAULT_UPLOAD_HEIGHT);
         // Create a FormPanel and point it at a service.
         _panel.setAction("update_file");
@@ -75,7 +75,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
                     hide();
                     if (!be.resultHtml.equals(UPDATE_OK)
                        || be.resultHtml.startsWith("<!-- LOGIN_REQUIRED -->")) {
-                        Globals.unexpectedError(
+                        new IGlobalsImpl().unexpectedError(
                             new Exception(be.resultHtml),
                             _constants.updateFile());
                     }

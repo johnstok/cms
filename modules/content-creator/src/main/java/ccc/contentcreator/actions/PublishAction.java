@@ -1,6 +1,5 @@
 package ccc.contentcreator.actions;
 
-import ccc.contentcreator.api.CommandServiceAsync;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
@@ -16,8 +15,6 @@ public class PublishAction
     implements
         Action {
 
-    private final CommandServiceAsync _commands = Globals.commandService();
-
     private final SingleSelectionModel _selectionModel;
 
     /**
@@ -32,7 +29,7 @@ public class PublishAction
     /** {@inheritDoc} */
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        _commands.publish(
+        COMMAND_SERVICE.publish(
             item.getId(),
             new ErrorReportingCallback<Void>(UI_CONSTANTS.publish()){
                 public void onSuccess(final Void arg0) {

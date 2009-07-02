@@ -12,8 +12,8 @@
 package ccc.contentcreator.dialogs;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.IGlobals;
+import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
@@ -54,8 +54,8 @@ public class UploadFileDialog extends AbstractEditDialog {
      */
     public UploadFileDialog(final ResourceSummaryModelData parentFolder,
                             final SingleSelectionModel ssm) {
-        super(
-            Globals.uiConstants().uploadFileTo()+": "+parentFolder.getName());
+        super(new IGlobalsImpl().uiConstants().uploadFileTo()
+            +": "+parentFolder.getName());
 
         _parent = parentFolder;
         setHeight(IGlobals.DEFAULT_UPLOAD_HEIGHT);
@@ -90,7 +90,7 @@ public class UploadFileDialog extends AbstractEditDialog {
                     hide();
                     if (be.resultHtml.startsWith("File Upload failed.")
                       || be.resultHtml.startsWith("<!-- LOGIN_REQUIRED -->")) {
-                      Globals.unexpectedError(
+                        new IGlobalsImpl().unexpectedError(
                           new Exception(be.resultHtml),
                           _constants.updateFile());
                     } else {

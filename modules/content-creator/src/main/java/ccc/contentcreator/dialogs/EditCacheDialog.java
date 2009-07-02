@@ -14,7 +14,7 @@ package ccc.contentcreator.dialogs;
 import ccc.api.Duration;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 
@@ -54,7 +54,7 @@ public class EditCacheDialog extends AbstractEditDialog {
      */
     public EditCacheDialog(final ResourceSummaryModelData item,
                            final Duration ds) {
-        super(Globals.uiConstants().editCacheDuration());
+        super(new IGlobalsImpl().uiConstants().editCacheDuration());
         _item = item;
         setHeight(DIALOG_HEIGHT);
         setWidth(DIALOG_WIDTH);

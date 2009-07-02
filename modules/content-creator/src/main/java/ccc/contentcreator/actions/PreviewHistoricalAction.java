@@ -1,6 +1,5 @@
 package ccc.contentcreator.actions;
 
-import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.binding.LogEntrySummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
@@ -17,8 +16,6 @@ import com.google.gwt.user.client.Window;
 public final class PreviewHistoricalAction
     implements
         Action {
-
-    private final QueriesServiceAsync _queries = Globals.queriesService();
 
     private final HistoryDialog _historyDialog;
 
@@ -37,7 +34,7 @@ public final class PreviewHistoricalAction
         if (null==item) {
             return;
         }
-        _queries.getAbsolutePath(
+        QUERIES_SERVICE.getAbsolutePath(
             _historyDialog.getResourceId(),
             new ErrorReportingCallback<String>(UI_CONSTANTS.preview()) {
                 public void onSuccess(final String path) {

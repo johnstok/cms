@@ -14,8 +14,8 @@ package ccc.contentcreator.dialogs;
 import ccc.api.ResourceSummary;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.IGlobals;
+import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
@@ -45,7 +45,7 @@ public class CreateFolderDialog extends AbstractEditDialog {
      */
     public CreateFolderDialog(final ResourceSummaryModelData parent,
                               final SingleSelectionModel ssm) {
-        super(Globals.uiConstants().createFolder());
+        super(new IGlobalsImpl().uiConstants().createFolder());
 
         _ssm = ssm;
 
