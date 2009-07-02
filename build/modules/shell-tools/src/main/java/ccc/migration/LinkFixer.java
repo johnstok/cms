@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
  */
 public class LinkFixer {
     private static final Logger LOG = Logger.getLogger(LinkFixer.class);
-    private static List<String> links = new ArrayList<String>();
+    private static List<String> uncorrectedLinks = new ArrayList<String>();
     private static final Pattern OLDPAGE_PATTERN =
         Pattern.compile(".*pContentID=(\\d+).*");
     private static final Pattern PAGE_PATTERN =
@@ -114,7 +114,7 @@ public class LinkFixer {
             LOG.debug("Corrected "+link+" to "+corrected);
 
         } else {
-            links.add(link);
+            uncorrectedLinks.add(link);
             LOG.info("Didn't correct "+link);
 
         }
@@ -122,15 +122,15 @@ public class LinkFixer {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Write uncorrected links to a file.
      */
     public static void writeLinks() {
         try {
             final File f = new File("links.txt");
             final PrintWriter pw =
                 new PrintWriter(f, "UTF-8");
-            Collections.sort(links);
-            for (final String link : links) {
+            Collections.sort(uncorrectedLinks);
+            for (final String link : uncorrectedLinks) {
                 pw.println(link);
             }
             pw.close();
