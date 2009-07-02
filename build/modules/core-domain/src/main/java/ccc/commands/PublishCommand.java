@@ -13,11 +13,14 @@ package ccc.commands;
 
 import java.util.Date;
 
+import ccc.api.CommandType;
 import ccc.domain.Action;
 import ccc.domain.Command;
 import ccc.domain.LockMismatchException;
+import ccc.domain.LogEntry;
 import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Resource;
+import ccc.domain.Snapshot;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -74,7 +77,16 @@ public class PublishCommand
         r.publish(publishedBy);
         r.dateChanged(happenedOn);
 
-        _audit.recordPublish(r, publishedBy, happenedOn);
+        final Snapshot ss = new Snapshot();
+        ss.set("publish", publishedBy.id().toString());
+        final LogEntry le =
+            new LogEntry(
+                publishedBy,
+                CommandType.RESOURCE_PUBLISH,
+                happenedOn,
+                r.id(),
+                ss.getDetail());
+        _audit.record(le);
     }
 
 }

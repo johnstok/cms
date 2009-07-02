@@ -11,12 +11,7 @@
  */
 package ccc.services;
 
-import java.util.Date;
-
-import ccc.domain.Folder;
 import ccc.domain.LogEntry;
-import ccc.domain.Resource;
-import ccc.domain.User;
 
 
 /**
@@ -26,133 +21,10 @@ import ccc.domain.User;
  */
 public interface AuditLog {
 
-    /** NAME : String. */
-    String NAME = "AuditLog";
-
-
-    /**
-     * Record that a resource was locked.
-     *
-     * @param resource The resource that was locked.
-     * @param actor The actor of the change.
-     * @param happenedOn The date of the change.
-     */
-    void recordLock(final Resource resource, User actor, Date happenedOn);
-
-
-    /**
-     * Record that a resource was unlocked.
-     *
-     * @param resource The resource that was unlocked.
-     * @param actor The actor of the change.
-     * @param happenedOn The date of the change.
-     */
-    void recordUnlock(final Resource resource, User actor, Date happenedOn);
-
-
-    /**
-     * Record that a resource was created.
-     *
-     * @param resource The resource that was created.
-     * @param actor The actor of the change.
-     * @param happenedOn The date of the change.
-     */
-    void recordCreate(Resource resource, User actor, Date happenedOn);
-
-    /**
-     * Record that a resource was updated.
-     *
-     * @param resource The resource that was updated.
-     * @param actor The actor of the change.
-     * @param happenedOn The date of the change.
-     * @param comment The comment for the update.
-     * @param isMajorEdit The boolean for major edit.
-     */
-    void recordUpdate(Resource resource,
-                      User actor, Date
-                      happenedOn,
-                      final String comment,
-                      final boolean isMajorEdit);
-
-    /**
-     * Record that a resource was updated.
-     *
-     * @param resource The resource that was updated.
-     * @param actor The actor of the change.
-     * @param happenedOn The date of the change.
-     */
-    void recordUpdate(Resource resource, User actor, Date happenedOn);
-
-    /**
-     * Record that the template for a resource was changed.
-     *
-     * @param resource The resource that was changed.
-     * @param actor The actor of the change.
-     * @param happenedOn The date of the change.
-     */
-    void recordChangeTemplate(Resource resource, User actor, Date happenedOn);
-
-    /**
-     * Record that the resource was moved.
-     *
-     * @param resource The resource that was changed.
-     * @param actor The actor of the change.
-     * @param happenedOn The date of the change.
-     */
-    void recordMove(Resource resource, User actor, Date happenedOn);
-
-    /**
-     * Record that a resource was published.
-     *
-     * @param resource The resource that was published.
-     * @param actor The actor of the change.
-     * @param happenedOn The date of the change.
-     */
-    void recordPublish(final Resource resource, User actor, Date happenedOn);
-
-    /**
-     * Record that a resource was unpublished.
-     *
-     * @param resource The resource that was unpublished.
-     * @param actor The actor of the change.
-     * @param happenedOn The date of the change.
-     */
-    void recordUnpublish(final Resource resource, User actor, Date happenedOn);
-
-
-    /**
-     * Find a log entry, given its index number.
-     *
-     * @param index The index number.
-     * @return The log entry with the corresponding index number.
-     */
-    LogEntry findEntryForIndex(long index);
-
-
-    /**
-     * Record that the folder was updated.
-     *
-     * @param folder The folder that was changed.
-     * @param actor The actor of the change.
-     * @param happenedOn The date of the change.
-     */
-    void recordFolderUpdate(Folder folder, User actor, Date happenedOn);
-
-
     /**
      * Record a log entry.
      *
      * @param le The log entry to record.
      */
     void record(LogEntry le);
-
-
-    /**
-     * Record that a resource's metadata was updated.
-     *
-     * @param resource The resource that was changed.
-     * @param actor The actor of the change.
-     * @param happenedOn The date of the change.
-     */
-    void recordUpdateFullMetadata(Resource r, User actor, Date happenedOn);
 }

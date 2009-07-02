@@ -14,9 +14,13 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.CommandType;
+import ccc.api.JsonKeys;
 import ccc.domain.Folder;
+import ccc.domain.LogEntry;
 import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Resource;
+import ccc.domain.Snapshot;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -38,8 +42,7 @@ public class MoveResourceCommand {
      * @param dao The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public MoveResourceCommand(final Dao dao,
-                                              final AuditLog audit) {
+    public MoveResourceCommand(final Dao dao, final AuditLog audit) {
         _dao = dao;
         _audit = audit;
     }
@@ -65,7 +68,17 @@ public class MoveResourceCommand {
         resource.parent().remove(resource);
         newParent.add(resource);
 
-        _audit.recordMove(resource, actor, happenedOn);
+        final Snapshot ss = new Snapshot();
+        ss.set(JsonKeys.PATH, resource.absolutePath().toString());
+        ss.set(JsonKeys.PARENT_ID, resource.parent().id().toString());
+        final LogEntry le =
+            new LogEntry(
+                actor,
+                CommandType.RESOURCE_MOVE,
+                happenedOn,
+                resourceId,
+                ss.getDetail());
+        _audit.record(le);
     }
 
 }

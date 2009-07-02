@@ -11,7 +11,6 @@
  */
 package ccc.services;
 
-import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 
@@ -36,14 +35,6 @@ public interface StatefulReader {
      *  doesn't exist.
      */
     Resource lookup(String rootName, ResourcePath contentPath);
-
-    /**
-     * Lookup a log entry.
-     *
-     * @param index The unique index of the log entry.
-     * @return The log entry with the specified index.
-     */
-    LogEntry lookup(long index);
 
     /**
      * Determine the absolute path of a resource given its legacy id.

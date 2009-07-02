@@ -17,6 +17,7 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 import ccc.domain.Alias;
+import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Resource;
@@ -48,7 +49,7 @@ public class UpdateAliasCommandTest
 
         expect(_dao.find(Alias.class, alias.id())).andReturn(alias);
         expect(_dao.find(Resource.class, _r2.id())).andReturn(_r2);
-        _audit.recordUpdate(alias, _user, _now, null, false);
+        _audit.record(isA(LogEntry.class));
         replay(_dao, _audit);
 
         // ACT

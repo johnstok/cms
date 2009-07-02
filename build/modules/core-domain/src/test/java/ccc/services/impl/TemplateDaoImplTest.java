@@ -19,6 +19,7 @@ import junit.framework.TestCase;
 import ccc.api.MimeType;
 import ccc.api.TemplateDelta;
 import ccc.commands.UpdateTemplateCommand;
+import ccc.domain.LogEntry;
 import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
@@ -59,7 +60,7 @@ public class TemplateDaoImplTest
             new TemplateDelta("newBody", "newDefn", MimeType.BINARY_DATA);
 
         expect(_dao.find(Template.class, foo.id())).andReturn(foo);
-        _al.recordUpdate(foo, _user, _now, null, false);
+        _al.record(isA(LogEntry.class));
         replay(_dao, _al);
 
         final UpdateTemplateCommand ut = new UpdateTemplateCommand(_dao, _al);

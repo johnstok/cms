@@ -15,8 +15,12 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
+import ccc.api.CommandType;
+import ccc.api.JsonKeys;
 import ccc.domain.LockMismatchException;
+import ccc.domain.LogEntry;
 import ccc.domain.Resource;
+import ccc.domain.Snapshot;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -76,7 +80,19 @@ public class UpdateResourceMetadataCommand {
             r.addMetadatum(metadatum.getKey(), metadatum.getValue());
         }
 
-        _audit.recordUpdateFullMetadata(r, actor, happenedOn);
+        final Snapshot ss = new Snapshot();
+        ss.set(JsonKeys.TITLE, r.title());
+        ss.set(JsonKeys.DESCRIPTION, r.description());
+        ss.setStrings(JsonKeys.TAGS, r.tags());
+        ss.set(JsonKeys.METADATA, r.metadata());
+        final LogEntry le =
+            new LogEntry(
+                actor,
+                CommandType.RESOURCE_UPDATE_METADATA,
+                happenedOn,
+                id,
+                ss.getDetail());
+        _audit.record(le);
     }
 
 }

@@ -14,7 +14,6 @@ package ccc.services.impl;
 
 import java.util.UUID;
 
-import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 import ccc.services.AuditLog;
@@ -61,13 +60,6 @@ public final class StatefulReaderImpl
     @Override
     public Resource lookup(final String id) {
         return _resources.find(Resource.class, UUID.fromString(id));
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public LogEntry lookup(final long index) {
-        return _log.findEntryForIndex(index);
     }
 
     /** {@inheritDoc} */

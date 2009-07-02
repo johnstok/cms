@@ -14,10 +14,14 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.CommandType;
+import ccc.api.JsonKeys;
 import ccc.domain.Folder;
 import ccc.domain.LockMismatchException;
+import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.ResourceOrder;
+import ccc.domain.Snapshot;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -71,6 +75,18 @@ public class UpdateFolderCommand extends UpdateResourceCommand {
         f.sortOrder(order);
 
         // Set folder.dateChanged()?
-        getAudit().recordFolderUpdate(f, actor, happenedOn);
+
+        final Snapshot ss = new Snapshot();
+        ss.set(JsonKeys.SORT_ORDER, f.sortOrder().name());
+        ss.set(JsonKeys.INDEX_PAGE_ID, (null == indexPageId) ? null : indexPageId.toString());
+        // FIXME: Folder entry id's?
+        final LogEntry le =
+            new LogEntry(
+                actor,
+                CommandType.FOLDER_UPDATE,
+                happenedOn,
+                folderId,
+                ss.getDetail());
+        getAudit().record(le);
     }
 }
