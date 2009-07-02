@@ -133,7 +133,7 @@ public class UserTable extends TablePanel {
                         userDTO.getId(),
                         new AsyncCallback<UserDelta>(){
                             public void onFailure(final Throwable arg0) {
-                                Globals.unexpectedError(
+                                new IGlobalsImpl().unexpectedError(
                                     arg0, UI_CONSTANTS.editUser());
                             }
                             public void onSuccess(final UserDelta delta) {

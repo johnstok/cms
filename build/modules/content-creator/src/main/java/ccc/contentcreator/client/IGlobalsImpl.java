@@ -11,15 +11,22 @@
  */
 package ccc.contentcreator.client;
 
+import ccc.api.CommandFailedException;
 import ccc.api.UserSummary;
 import ccc.contentcreator.api.ActionNameConstants;
+import ccc.contentcreator.api.CommandService;
 import ccc.contentcreator.api.CommandServiceAsync;
+import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.SecurityServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
+import ccc.contentcreator.dialogs.ErrorDialog;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.WindowCloseListener;
 
 
 /**
@@ -35,7 +42,7 @@ public class IGlobalsImpl
     /** {@inheritDoc} */
     @Override
     public void alert(final String string) {
-        Globals.alert(string);
+        Window.alert(string);
     }
 
     /** {@inheritDoc} */
@@ -53,7 +60,7 @@ public class IGlobalsImpl
     /** {@inheritDoc} */
     @Override
     public CommandServiceAsync commandService() {
-        return Globals.commandService();
+        return GWT.create(CommandService.class);
     }
 
     /** {@inheritDoc} */
@@ -71,13 +78,15 @@ public class IGlobalsImpl
     /** {@inheritDoc} */
     @Override
     public void disableExitConfirmation() {
-        Globals.disableExitConfirmation();
+        Window.removeWindowCloseListener(CLOSE_LISTENER);
     }
 
     /** {@inheritDoc} */
     @Override
     public void enableExitConfirmation() {
-        Globals.enableExitConfirmation();
+        if (ENABLE_EXIT_CONFIRMATION) {
+            Window.addWindowCloseListener(CLOSE_LISTENER);
+        }
     }
 
     /** {@inheritDoc} */
@@ -89,13 +98,19 @@ public class IGlobalsImpl
     /** {@inheritDoc} */
     @Override
     public void installUnexpectedExceptionHandler() {
-        Globals.installUnexpectedExceptionHandler();
+        GWT.setUncaughtExceptionHandler(
+            new UncaughtExceptionHandler(){
+                public void onUncaughtException(final Throwable e) {
+                    unexpectedError(e, USER_ACTIONS.unknownAction());
+                }
+            }
+        );
     }
 
     /** {@inheritDoc} */
     @Override
     public QueriesServiceAsync queriesService() {
-        return Globals.queriesService();
+        return GWT.create(QueriesService.class);
     }
 
     /** {@inheritDoc} */
@@ -119,19 +134,39 @@ public class IGlobalsImpl
     /** {@inheritDoc} */
     @Override
     public UIConstants uiConstants() {
-        return Globals.uiConstants();
+       return GWT.create(UIConstants.class);
     }
 
     /** {@inheritDoc} */
     @Override
     public UIMessages uiMessages() {
-        return Globals.uiMessages();
+        return GWT.create(UIMessages.class);
     }
 
     /** {@inheritDoc} */
     @Override
     public void unexpectedError(final Throwable e, final String action) {
-        Globals.unexpectedError(e, action);
+     // TODO: Add clause for InvocationException
+        // TODO: Add clause for IncompatibleRemoteServiceException
+        if (e instanceof CommandFailedException) {
+            final CommandFailedException re = (CommandFailedException) e;
+            new ErrorDialog(re, action).show();
+        } else if (e instanceof NullPointerException) {
+            new ErrorDialog(e, action).show();
+            GWT.log("An unexpected error occured.", e);
+        } else {
+            final String errorMesssage = e.getMessage();
+            final String causeMessage =
+                (null==e.getCause()) ? "" : e.getCause().getMessage();
+            if (errorMesssage.startsWith("<!-- LOGIN_REQUIRED -->")){
+                alert(uiConstants().sessionTimeOutPleaseRestart());
+            } else if (causeMessage.startsWith("<!-- LOGIN_REQUIRED -->")) {
+                alert(uiConstants().sessionTimeOutPleaseRestart());
+            } else {
+                GWT.log("An unexpected error occured.", e);
+                new ErrorDialog(e, action).show();
+            }
+        }
     }
 
     /** {@inheritDoc} */
@@ -139,4 +174,20 @@ public class IGlobalsImpl
     public ActionNameConstants userActions() {
         return GWT.create(ActionNameConstants.class);
     }
+
+    private static final WindowCloseListener CLOSE_LISTENER =
+        new WindowCloseListener(){
+
+        public void onWindowClosed() { /* No Op */ }
+
+        public String onWindowClosing() {
+            return new IGlobalsImpl().uiConstants().exitWarning();
+        }
+    };
+
+    private static final boolean ENABLE_EXIT_CONFIRMATION =
+        (null == Window.Location.getParameter("dec"));
+
+    private static final ActionNameConstants USER_ACTIONS =
+        GWT.create(ActionNameConstants.class);
 }

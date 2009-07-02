@@ -2,7 +2,8 @@ package ccc.contentcreator.actions;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.Action;
-import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobals;
+import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.EditTemplateDialog;
 
@@ -15,6 +16,7 @@ public final class CreateTemplateAction
     implements
         Action {
 
+    private IGlobals _globals = new IGlobalsImpl();
     private final SingleSelectionModel _selectionModel;
 
     /**
@@ -31,7 +33,7 @@ public final class CreateTemplateAction
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.treeSelection();
         if (item == null) {
-            Globals.alert(Globals.uiConstants().noFolderSelected());
+            _globals.alert(_globals.uiConstants().noFolderSelected());
         } else {
             new EditTemplateDialog(
                 item.getId(),

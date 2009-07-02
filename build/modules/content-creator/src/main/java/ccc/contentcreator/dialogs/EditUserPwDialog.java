@@ -15,7 +15,7 @@ package ccc.contentcreator.dialogs;
 import static ccc.contentcreator.validation.Validations.*;
 import ccc.contentcreator.binding.UserSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.validation.Validate;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -42,7 +42,7 @@ public class EditUserPwDialog extends AbstractEditDialog {
      * @param userDTO The userDTO of the selected user.
      */
     public EditUserPwDialog(final UserSummaryModelData userDTO) {
-        super(Globals.uiConstants().editUserPw());
+        super(new IGlobalsImpl().uiConstants().editUserPw());
 
         _userDTO = userDTO;
 

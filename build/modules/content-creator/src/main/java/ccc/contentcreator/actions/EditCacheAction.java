@@ -12,11 +12,9 @@
 package ccc.contentcreator.actions;
 
 import ccc.api.Duration;
-import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
-import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.EditCacheDialog;
 
@@ -28,7 +26,6 @@ import ccc.contentcreator.dialogs.EditCacheDialog;
  */
 public class EditCacheAction implements Action {
 
-    private final QueriesServiceAsync _queries = Globals.queriesService();
     private final SingleSelectionModel _selectionModel;
 
     /**
@@ -45,7 +42,7 @@ public class EditCacheAction implements Action {
     @Override
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        _queries.cacheDuration(item.getId(),
+        QUERIES_SERVICE.cacheDuration(item.getId(),
             new ErrorReportingCallback<Duration>(
                 UI_CONSTANTS.editCacheDuration()) {
                 @Override public void onSuccess(final Duration arg0) {

@@ -74,7 +74,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private final QueriesServiceAsync _qs = GWT.create(QueriesService.class);
 
     /** _constants : UIConstants. */
-    private final UIConstants _constants = Globals.uiConstants();
+    private final UIConstants _constants = new IGlobalsImpl().uiConstants();
 
     /**
      * Constructor.

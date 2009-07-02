@@ -15,7 +15,7 @@ import ccc.api.CommandFailedException;
 import ccc.api.Failure;
 import ccc.contentcreator.api.ErrorDescriptions;
 import ccc.contentcreator.api.ErrorResolutions;
-import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobalsImpl;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -46,7 +46,7 @@ public class ErrorDialog extends AbstractEditDialog {
     private ErrorDialog(final String action,
                         final String error,
                         final String resolution) {
-        super(Globals.uiConstants().error());
+        super(new IGlobalsImpl().uiConstants().error());
         setPanelId("error-panel");
 
         _panel.add(_message);

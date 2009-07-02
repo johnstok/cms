@@ -11,11 +11,9 @@
  */
 package ccc.contentcreator.actions;
 
-import ccc.contentcreator.api.CommandServiceAsync;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
-import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
 
 
@@ -27,8 +25,6 @@ import ccc.contentcreator.client.SingleSelectionModel;
 public class UnpublishAction
     implements
         Action {
-
-    private final CommandServiceAsync _commands = Globals.commandService();
 
     private final SingleSelectionModel _selectionModel;
 
@@ -44,7 +40,7 @@ public class UnpublishAction
     /** {@inheritDoc} */
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        _commands.unpublish(
+        COMMAND_SERVICE.unpublish(
             item.getId(),
             new ErrorReportingCallback<Void>(UI_CONSTANTS.unpublish()){
                 public void onSuccess(final Void arg0) {

@@ -136,12 +136,14 @@ public class ResourceSummaryProvider
 
     /** {@inheritDoc} */
     @Override
-    public Collection<ResourceSummary> readFrom(final Class<Collection<ResourceSummary>> arg0,
-                                                final Type arg1,
-                                                final Annotation[] arg2,
-                                                final MediaType arg3,
-                                                final MultivaluedMap<String, String> arg4,
-                                                final InputStream arg5) throws IOException, WebApplicationException {
+    public Collection<ResourceSummary> readFrom(
+        final Class<Collection<ResourceSummary>> arg0,
+        final Type arg1,
+        final Annotation[] arg2,
+        final MediaType arg3,
+        final MultivaluedMap<String, String> arg4,
+        final InputStream arg5) throws IOException, WebApplicationException {
+
         return new ArrayList<ResourceSummary>();
     }
 

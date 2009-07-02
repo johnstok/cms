@@ -13,7 +13,7 @@ package ccc.contentcreator.dialogs;
 
 import ccc.api.ResourceSummary;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobalsImpl;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -50,7 +50,7 @@ public class LinkSelectionDialog extends AbstractEditDialog {
      */
     public LinkSelectionDialog(final ResourceSummary targetRoot,
                                final String elementid) {
-        super(Globals.uiConstants().selectResource());
+        super(new IGlobalsImpl().uiConstants().selectResource());
         _elementid = elementid;
 
         _linkName.setFieldLabel(constants().name());

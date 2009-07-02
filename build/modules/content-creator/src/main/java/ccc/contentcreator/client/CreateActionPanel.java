@@ -46,7 +46,9 @@ import com.google.gwt.core.client.GWT;
 public class CreateActionPanel
     extends
         LayoutContainer {
-    private final UIConstants _uiConstants = GWT.create(UIConstants.class);
+
+    private IGlobals _globals = new IGlobalsImpl();
+    private final UIConstants _uiConstants = _globals.uiConstants();
 
     private final DataList _list = new DataList();
     private final LayoutContainer _parameters = new LayoutContainer();
@@ -97,7 +99,7 @@ public class CreateActionPanel
                             break;
 
                         default:
-                            Globals.alert("Unsupported action!");
+                            _globals.alert("Unsupported action!");
                             return;
                     }
 
@@ -115,7 +117,8 @@ public class CreateActionPanel
         unpublish.setData("action-id", CommandType.RESOURCE_UNPUBLISH);
         _list.add(unpublish);
 
-        final DataListItem update = new DataListItem(_uiConstants.updateContent());
+        final DataListItem update =
+            new DataListItem(_uiConstants.updateContent());
         update.setData("action-id", CommandType.PAGE_UPDATE);
         _list.add(update);
 

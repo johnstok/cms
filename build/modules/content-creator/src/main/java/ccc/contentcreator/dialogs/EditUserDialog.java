@@ -20,7 +20,7 @@ import java.util.Set;
 import ccc.api.ID;
 import ccc.api.UserDelta;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.UserTable;
 import ccc.contentcreator.validation.Validate;
 
@@ -58,7 +58,7 @@ public class EditUserDialog extends AbstractEditDialog {
     public EditUserDialog(final ID userId,
                           final UserDelta userDTO,
                           final UserTable userTable) {
-        super(Globals.uiConstants().editUser());
+        super(new IGlobalsImpl().uiConstants().editUser());
 
         _userId    = userId;
         _userDTO   = userDTO;

@@ -19,7 +19,7 @@ import ccc.api.TemplateDelta;
 import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
@@ -77,7 +77,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
      */
     public EditTemplateDialog(final ID parentFolderId,
                               final SingleSelectionModel ssm) {
-        super(Globals.uiConstants().editTemplate());
+        super(new IGlobalsImpl().uiConstants().editTemplate());
         setWidth(DEFAULT_WIDTH);
         setHeight(DEFAULT_HEIGHT);
 
@@ -218,6 +218,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                         new ErrorReportingCallback<Boolean>(
                                 USER_ACTIONS.checkUniqueTemplateName()){
                             public void onSuccess(final Boolean nameExists) {
+                                // FIXME: i18n
                                 if (nameExists.booleanValue()) {
                                     validate.addMessage(
                                         "A template with name '"
@@ -267,7 +268,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                                 }});
                         break;
                     default:
-                        Globals.alert(constants().error());
+                        _globals.alert(constants().error());
                     break;
                 }
             }

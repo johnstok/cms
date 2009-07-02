@@ -79,7 +79,7 @@ public class ResourceTree extends Tree {
 
                     public void onFailure(final Throwable arg0) {
                         callback.onFailure(arg0);
-                        Globals.unexpectedError(
+                        new IGlobalsImpl().unexpectedError(
                             arg0, USER_ACTIONS.loadData());
                     }
 

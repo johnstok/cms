@@ -17,7 +17,7 @@ import ccc.api.ID;
 import ccc.api.ResourceSummary;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.DisposingCallback;
-import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 
@@ -57,7 +57,7 @@ public class UpdateAliasDialog extends AbstractEditDialog {
                              final AliasDelta delta,
                              final String aliasName,
                              final ResourceSummary targetRoot) {
-        super(Globals.uiConstants().updateAlias());
+        super(new IGlobalsImpl().uiConstants().updateAlias());
 
         _aliasId = aliasId;
         _alias = delta;

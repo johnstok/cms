@@ -30,13 +30,15 @@ public final class ContentCreator implements EntryPoint {
     private static final ActionNameConstants USER_ACTIONS =
         GWT.create(ActionNameConstants.class);
 
+    private IGlobals _globals = new IGlobalsImpl();
+
     private final QueriesServiceAsync _qs = GWT.create(QueriesService.class);
 
     /**
      * This is the entry point method.
      */
     public void onModuleLoad() {
-        Globals.installUnexpectedExceptionHandler();
+        _globals.installUnexpectedExceptionHandler();
         Globals.securityService().isLoggedIn(
             new ErrorReportingCallback<Boolean>(USER_ACTIONS.internalAction()){
                 public void onSuccess(final Boolean isLoggedIn) {
@@ -55,7 +57,7 @@ public final class ContentCreator implements EntryPoint {
      *
      */
     public void drawMainWindow() {
-        Globals.enableExitConfirmation();
+        _globals.enableExitConfirmation();
         _qs.loggedInUser(new ErrorReportingCallback<UserSummary>(
             USER_ACTIONS.internalAction()){
             public void onSuccess(final UserSummary user) {

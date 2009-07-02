@@ -16,7 +16,7 @@ import java.util.Collection;
 
 import ccc.api.ID;
 import ccc.contentcreator.callbacks.DisposingCallback;
-import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobalsImpl;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -47,7 +47,7 @@ public class UpdateResourceRolesDialog
      */
     public UpdateResourceRolesDialog(final ID resourceId,
                                      final Collection<String> currentRoles) {
-        super(Globals.uiConstants().updateRoles());
+        super(new IGlobalsImpl().uiConstants().updateRoles());
         _resourceId = resourceId;
 
         setWidth(DIALOG_WIDTH);

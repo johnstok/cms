@@ -28,7 +28,7 @@ import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.binding.TemplateSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.EditPagePanel;
-import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.PageElement;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
@@ -105,7 +105,7 @@ public class CreatePageDialog
                     final Collection<TemplateSummary> list,
                     final ResourceSummaryModelData parent,
                     final SingleSelectionModel ssm) {
-        super(Globals.uiConstants().createPage());
+        super(new IGlobalsImpl().uiConstants().createPage());
         _ssm = ssm;
         _parent = parent;
 

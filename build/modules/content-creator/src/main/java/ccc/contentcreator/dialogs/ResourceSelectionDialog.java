@@ -14,8 +14,8 @@ package ccc.contentcreator.dialogs;
 import ccc.api.ResourceSummary;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.IGlobals;
+import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.ResourceTree;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
@@ -38,7 +38,7 @@ public class ResourceSelectionDialog extends Window {
     /** DIALOG_WIDTH : int. */
     private static final int DIALOG_WIDTH = 400;
     private final ResourceTree _tree;
-    private final UIConstants _constants = Globals.uiConstants();
+    private final UIConstants _constants = new IGlobalsImpl().uiConstants();
 
     /**
      * Constructor.
@@ -59,7 +59,7 @@ public class ResourceSelectionDialog extends Window {
         add(_tree);
 
         final Button save = new Button(
-            Globals.uiConstants().save(),
+            _constants.save(),
             new SelectionListener<ComponentEvent>() {
                 @Override
                 public void componentSelected(final ComponentEvent ce) {

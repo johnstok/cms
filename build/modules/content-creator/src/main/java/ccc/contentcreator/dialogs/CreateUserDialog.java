@@ -12,7 +12,6 @@
 package ccc.contentcreator.dialogs;
 
 
-import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SubmitControllerSelectionListener;
@@ -45,7 +44,7 @@ public class CreateUserDialog
      * Constructor.
      */
     public CreateUserDialog() {
-        super(Globals.uiConstants().createUser());
+        super(new IGlobalsImpl().uiConstants().createUser());
 
         setLabelWidth(LABEL_WIDTH); // Long labels, should fit to one line.
 

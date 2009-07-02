@@ -18,7 +18,7 @@ import ccc.api.FileSummary;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.FileSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobalsImpl;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -50,7 +50,7 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
      * @param elementid Element ID for FCKEditor
      */
     public ImageSelectionDialog(final String elementid) {
-        super(Globals.uiConstants().selectImage());
+        super(new IGlobalsImpl().uiConstants().selectImage());
         _elementid = elementid;
 
         final ListStore<FileSummaryModelData> store =

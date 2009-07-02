@@ -14,8 +14,8 @@ package ccc.contentcreator.dialogs;
 import ccc.api.ResourceSummary;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.IGlobals;
+import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
@@ -58,7 +58,7 @@ public class MoveDialog extends AbstractEditDialog {
     public MoveDialog(final ResourceSummaryModelData item,
                       final SingleSelectionModel ssm,
                       final ResourceSummary root) {
-        super(Globals.uiConstants().move());
+        super(new IGlobalsImpl().uiConstants().move());
         setHeight(IGlobals.DEFAULT_MIN_HEIGHT);
         _ssm = ssm;
 

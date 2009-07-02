@@ -3,11 +3,9 @@ package ccc.contentcreator.actions;
 import java.util.Collection;
 
 import ccc.api.LogEntrySummary;
-import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
-import ccc.contentcreator.client.Globals;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.HistoryDialog;
 
@@ -19,8 +17,6 @@ import ccc.contentcreator.dialogs.HistoryDialog;
 public final class ViewHistoryAction
     implements
         Action {
-
-    private final QueriesServiceAsync _queries = Globals.queriesService();
 
     private final SingleSelectionModel _selectionModel;
 
@@ -36,7 +32,7 @@ public final class ViewHistoryAction
     /** {@inheritDoc} */
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        _queries.history(
+        QUERIES_SERVICE.history(
             item.getId(),
             new ErrorReportingCallback<Collection<LogEntrySummary>>(
                 UI_CONSTANTS.viewHistory()){

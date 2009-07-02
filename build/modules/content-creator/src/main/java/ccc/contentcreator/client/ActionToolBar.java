@@ -24,7 +24,7 @@ public class ActionToolBar
     extends
         AbstractToolBar {
 
-    private final UIConstants _constants = Globals.uiConstants();
+    private final UIConstants _constants = new IGlobalsImpl().uiConstants();
     private final ActionTable _actionTable;
 
     /**
