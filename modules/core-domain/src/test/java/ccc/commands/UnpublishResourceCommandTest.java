@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2008 Civic Computing Ltd.
+ * Copyright (c) 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * Revision      $Rev$
@@ -12,7 +12,6 @@
 package ccc.commands;
 
 import static org.easymock.EasyMock.*;
-import ccc.domain.Alias;
 import ccc.domain.LogEntry;
 import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Resource;
@@ -20,38 +19,39 @@ import ccc.domain.Search;
 
 
 /**
- * Tests for the {@link UpdateAliasCommand} class.
+ * Tests for the {@link UnpublishResourceCommand} class.
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateAliasCommandTest
+public class UnpublishResourceCommandTest
     extends
         AbstractCommandTest {
 
     /**
      * Test.
+     *
      * @throws RemoteExceptionSupport If the test fails.
      */
-    public void testUpdateAlias() throws RemoteExceptionSupport {
+    public void testUnpublishResource() throws RemoteExceptionSupport {
 
         // ARRANGE
-        final Search foo = new Search("foo");
-        final Search bar = new Search("bar");
-        final Alias alias = new Alias("alias", foo);
-        alias.lock(_user);
+        final Search s = new Search("foo");
+        s.lock(_user);
+        s.publish(_user);
 
-        expect(_dao.find(Alias.class, alias.id())).andReturn(alias);
-        expect(_dao.find(Resource.class, bar.id())).andReturn(bar);
+        expect(_dao.find(Resource.class, s.id())).andReturn(s);
         _audit.record(isA(LogEntry.class));
+
         replayAll();
 
-        final UpdateAliasCommand c =  new UpdateAliasCommand(_dao, _audit);
+        final UnpublishResourceCommand c =
+            new UnpublishResourceCommand(_dao, _audit);
 
         // ACT
-        c.execute(_user, _now, bar.id(), alias.id());
+        c.execute(_user, _now, s.id());
 
         // ASSERT
         verifyAll();
-        assertEquals(bar, alias.target());
+        assertFalse(s.isPublished());
     }
 }
