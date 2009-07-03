@@ -1,9 +1,11 @@
 package ccc.contentcreator.actions;
 
+import ccc.contentcreator.api.CommandServiceAsync;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
-import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobals;
+import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
 
 /**
@@ -16,6 +18,8 @@ public class PublishAction
         Action {
 
     private final SingleSelectionModel _selectionModel;
+    private IGlobals _globals = new IGlobalsImpl();
+    private CommandServiceAsync _cs = _globals.commandService();
 
     /**
      * Constructor.
@@ -29,11 +33,12 @@ public class PublishAction
     /** {@inheritDoc} */
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        COMMAND_SERVICE.publish(
+        _cs.publish(
             item.getId(),
             new ErrorReportingCallback<Void>(UI_CONSTANTS.publish()){
                 public void onSuccess(final Void arg0) {
-                    item.setPublished(Globals.currentUser().getUsername());
+                    item.setPublished(
+                        new IGlobalsImpl().currentUser().getUsername());
                     _selectionModel.update(item);
                 }
             }

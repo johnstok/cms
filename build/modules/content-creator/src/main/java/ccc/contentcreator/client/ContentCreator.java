@@ -39,7 +39,7 @@ public final class ContentCreator implements EntryPoint {
      */
     public void onModuleLoad() {
         _globals.installUnexpectedExceptionHandler();
-        Globals.securityService().isLoggedIn(
+        _globals.securityService().isLoggedIn(
             new ErrorReportingCallback<Boolean>(USER_ACTIONS.internalAction()){
                 public void onSuccess(final Boolean isLoggedIn) {
                     if (isLoggedIn) {
@@ -61,7 +61,7 @@ public final class ContentCreator implements EntryPoint {
         _qs.loggedInUser(new ErrorReportingCallback<UserSummary>(
             USER_ACTIONS.internalAction()){
             public void onSuccess(final UserSummary user) {
-                Globals.currentUser(user);
+                _globals.currentUser(user);
                 renderUI(user);
 
             };

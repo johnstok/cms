@@ -18,6 +18,7 @@ import ccc.contentcreator.api.CommandService;
 import ccc.contentcreator.api.CommandServiceAsync;
 import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
+import ccc.contentcreator.api.SecurityService;
 import ccc.contentcreator.api.SecurityServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
@@ -25,19 +26,31 @@ import ccc.contentcreator.dialogs.ErrorDialog;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.WindowCloseListener;
+import com.google.gwt.user.client.Window.ClosingEvent;
+import com.google.gwt.user.client.Window.ClosingHandler;
 
 
 /**
- * {@link IGlobals} implementation that delegates to the deprecated
- * {@link Globals} class.
+ * {@link IGlobals} implementation.
  *
  * @author Civic Computing Ltd.
  */
 public class IGlobalsImpl
     implements
         IGlobals {
+
+    private HandlerRegistration _handlerRegistration = null;
+
+    private static final boolean ENABLE_EXIT_CONFIRMATION =
+        (null == Window.Location.getParameter("dec"));
+
+    private static final ActionNameConstants USER_ACTIONS =
+        GWT.create(ActionNameConstants.class);
+
+    private static UserSummary _user;
+
 
     /** {@inheritDoc} */
     @Override
@@ -48,13 +61,13 @@ public class IGlobalsImpl
     /** {@inheritDoc} */
     @Override
     public String apiURL() {
-        return Globals.apiURL();
+        return GWT.getHostPageBaseURL()+API_URL;
     }
 
     /** {@inheritDoc} */
     @Override
     public String appURL() {
-        return Globals.appURL();
+        return GWT.getHostPageBaseURL();
     }
 
     /** {@inheritDoc} */
@@ -66,33 +79,40 @@ public class IGlobalsImpl
     /** {@inheritDoc} */
     @Override
     public UserSummary currentUser() {
-        return Globals.currentUser();
+        return _user;
     }
 
     /** {@inheritDoc} */
     @Override
     public void currentUser(final UserSummary user) {
-        Globals.currentUser(user);
+        _user = user;
     }
 
     /** {@inheritDoc} */
     @Override
     public void disableExitConfirmation() {
-        Window.removeWindowCloseListener(CLOSE_LISTENER);
+        if (_handlerRegistration != null) {
+            _handlerRegistration.removeHandler();
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public void enableExitConfirmation() {
         if (ENABLE_EXIT_CONFIRMATION) {
-            Window.addWindowCloseListener(CLOSE_LISTENER);
+            _handlerRegistration =
+                Window.addWindowClosingHandler(new ExitHandler());
         }
     }
 
     /** {@inheritDoc} */
     @Override
     public String hostURL() {
-        return Globals.hostURL();
+        return GWT.getHostPageBaseURL()
+        .substring(
+            0,
+            GWT.getHostPageBaseURL()
+               .lastIndexOf(APP_URL));
     }
 
     /** {@inheritDoc} */
@@ -116,19 +136,19 @@ public class IGlobalsImpl
     /** {@inheritDoc} */
     @Override
     public void redirectTo(final String relativeURL) {
-        Globals.redirectTo(relativeURL);
+        redirect(hostURL()+relativeURL);
     }
 
     /** {@inheritDoc} */
     @Override
     public void refresh() {
-        Globals.refresh();
+        Window.Location.reload();
     }
 
     /** {@inheritDoc} */
     @Override
     public SecurityServiceAsync securityService() {
-        return Globals.securityService();
+        return GWT.create(SecurityService.class);
     }
 
     /** {@inheritDoc} */
@@ -175,19 +195,22 @@ public class IGlobalsImpl
         return GWT.create(ActionNameConstants.class);
     }
 
-    private static final WindowCloseListener CLOSE_LISTENER =
-        new WindowCloseListener(){
+    /**
+     * Handler for window closing.
+     *
+     * @author Civic Computing Ltd.
+     */
+    private class ExitHandler implements ClosingHandler {
 
-        public void onWindowClosed() { /* No Op */ }
-
-        public String onWindowClosing() {
-            return new IGlobalsImpl().uiConstants().exitWarning();
+        /** {@inheritDoc} */
+        @Override
+        public void onWindowClosing(final ClosingEvent event) {
+            event.setMessage(uiConstants().exitWarning());
         }
-    };
+    }
 
-    private static final boolean ENABLE_EXIT_CONFIRMATION =
-        (null == Window.Location.getParameter("dec"));
+    private static void redirect(final String url) {
+        Window.Location.assign(url);
+    }
 
-    private static final ActionNameConstants USER_ACTIONS =
-        GWT.create(ActionNameConstants.class);
 }
