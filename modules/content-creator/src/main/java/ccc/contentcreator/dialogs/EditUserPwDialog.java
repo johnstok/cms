@@ -42,7 +42,7 @@ public class EditUserPwDialog extends AbstractEditDialog {
      * @param userDTO The userDTO of the selected user.
      */
     public EditUserPwDialog(final UserSummaryModelData userDTO) {
-        super(new IGlobalsImpl().uiConstants().editUserPw());
+        super(new IGlobalsImpl().uiConstants().editUserPw(), new IGlobalsImpl());
 
         _userDTO = userDTO;
 

@@ -52,7 +52,7 @@ public class CreateAliasDialog extends AbstractEditDialog {
      */
     public CreateAliasDialog(final SingleSelectionModel ssm,
                              final ResourceSummary root) {
-        super(new IGlobalsImpl().uiConstants().createAlias());
+        super(new IGlobalsImpl().uiConstants().createAlias(), new IGlobalsImpl());
         setPanelId("AliasPanel");
 
         _ssm = ssm;

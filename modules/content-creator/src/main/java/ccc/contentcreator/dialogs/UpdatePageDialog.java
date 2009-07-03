@@ -82,7 +82,7 @@ public class UpdatePageDialog
                             final String pageName,
                             final TemplateSummary template,
                             final ResourceTable rt) {
-        super(new IGlobalsImpl().uiConstants().updateContent());
+        super(new IGlobalsImpl().uiConstants().updateContent(), new IGlobalsImpl());
         _rt = rt;
         _page = page;
         _template = template;

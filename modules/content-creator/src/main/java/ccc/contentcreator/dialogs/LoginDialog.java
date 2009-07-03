@@ -41,7 +41,7 @@ public class LoginDialog extends AbstractEditDialog {
      * Constructor.
      */
     public LoginDialog() {
-        super(new IGlobalsImpl().uiConstants().login());
+        super(new IGlobalsImpl().uiConstants().login(), new IGlobalsImpl());
 
         final SecurityServiceAsync ss = _globals.securityService();
         ss.readProperty("application.name",

@@ -99,7 +99,7 @@ AbstractEditDialog {
     public EditFolderDialog(final SingleSelectionModel ssm,
                                        final String currentSortOrder,
                                        final ID currentIndexPage) {
-        super(new IGlobalsImpl().uiConstants().edit());
+        super(new IGlobalsImpl().uiConstants().edit(), new IGlobalsImpl());
 
         setHeight(IGlobals.DEFAULT_HEIGHT);
         _selectionModel = ssm;

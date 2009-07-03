@@ -185,13 +185,13 @@ public class IGlobalsImpl
     /** {@inheritDoc} */
     @Override
     public void unexpectedError(final Throwable e, final String action) {
-     // TODO: Add clause for InvocationException
+        // TODO: Add clause for InvocationException
         // TODO: Add clause for IncompatibleRemoteServiceException
         if (e instanceof CommandFailedException) {
             final CommandFailedException re = (CommandFailedException) e;
-            new ErrorDialog(re, action).show();
+            new ErrorDialog(re, action, this).show();
         } else if (e instanceof NullPointerException) {
-            new ErrorDialog(e, action).show();
+            new ErrorDialog(e, action, this).show();
             GWT.log("An unexpected error occured.", e);
         } else {
             final String errorMesssage = e.getMessage();
@@ -203,7 +203,7 @@ public class IGlobalsImpl
                 alert(uiConstants().sessionTimeOutPleaseRestart());
             } else {
                 GWT.log("An unexpected error occured.", e);
-                new ErrorDialog(e, action).show();
+                new ErrorDialog(e, action, this).show();
             }
         }
     }

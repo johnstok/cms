@@ -45,7 +45,7 @@ public class CreateFolderDialog extends AbstractEditDialog {
      */
     public CreateFolderDialog(final ResourceSummaryModelData parent,
                               final SingleSelectionModel ssm) {
-        super(new IGlobalsImpl().uiConstants().createFolder());
+        super(new IGlobalsImpl().uiConstants().createFolder(), new IGlobalsImpl());
 
         _ssm = ssm;
 

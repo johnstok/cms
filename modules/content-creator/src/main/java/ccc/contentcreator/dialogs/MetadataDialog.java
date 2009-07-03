@@ -84,7 +84,7 @@ public class MetadataDialog extends AbstractEditDialog {
     public MetadataDialog(final ResourceSummaryModelData resource,
                           final Collection<Map.Entry<String, String>> data,
                           final SingleSelectionModel ssm) {
-        super(new IGlobalsImpl().uiConstants().metadata());
+        super(new IGlobalsImpl().uiConstants().metadata(), new IGlobalsImpl());
 
         _ssm = ssm;
         _resource = resource;

@@ -58,7 +58,7 @@ public class EditUserDialog extends AbstractEditDialog {
     public EditUserDialog(final ID userId,
                           final UserDelta userDTO,
                           final UserTable userTable) {
-        super(new IGlobalsImpl().uiConstants().editUser());
+        super(new IGlobalsImpl().uiConstants().editUser(), new IGlobalsImpl());
 
         _userId    = userId;
         _userDTO   = userDTO;

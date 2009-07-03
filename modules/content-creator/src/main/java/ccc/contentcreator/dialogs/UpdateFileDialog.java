@@ -47,7 +47,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
      * @param fileId The {@link ID} of the file.
      */
     public UpdateFileDialog(final ID fileId) {
-        super(new IGlobalsImpl().uiConstants().updateFile());
+        super(new IGlobalsImpl().uiConstants().updateFile(), new IGlobalsImpl());
         setHeight(IGlobals.DEFAULT_UPLOAD_HEIGHT);
         // Create a FormPanel and point it at a service.
         _panel.setAction("update_file");

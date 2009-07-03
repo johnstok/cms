@@ -101,7 +101,7 @@ public class CreatePageDialog
                     final Collection<TemplateSummary> list,
                     final ResourceSummaryModelData parent,
                     final SingleSelectionModel ssm) {
-        super(new IGlobalsImpl().uiConstants().createPage());
+        super(new IGlobalsImpl().uiConstants().createPage(), new IGlobalsImpl());
         _ssm = ssm;
         _parent = parent;
 

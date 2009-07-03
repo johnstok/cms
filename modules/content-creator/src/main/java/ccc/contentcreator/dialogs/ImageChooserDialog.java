@@ -53,7 +53,7 @@ public class ImageChooserDialog extends AbstractBaseDialog {
      */
     public ImageChooserDialog(final ImageTriggerField image) {
 
-        super(new IGlobalsImpl().uiConstants().selectImage());
+        super(new IGlobalsImpl().uiConstants().selectImage(), new IGlobalsImpl());
 
         _image = image;
         final ListStore<FileSummaryModelData> store =

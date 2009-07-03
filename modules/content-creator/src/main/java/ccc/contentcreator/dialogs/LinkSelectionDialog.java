@@ -50,7 +50,7 @@ public class LinkSelectionDialog extends AbstractEditDialog {
      */
     public LinkSelectionDialog(final ResourceSummary targetRoot,
                                final String elementid) {
-        super(new IGlobalsImpl().uiConstants().selectResource());
+        super(new IGlobalsImpl().uiConstants().selectResource(), new IGlobalsImpl());
         _elementid = elementid;
 
         _linkName.setFieldLabel(constants().name());

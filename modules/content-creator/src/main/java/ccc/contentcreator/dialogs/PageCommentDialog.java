@@ -69,7 +69,7 @@ public class PageCommentDialog extends AbstractEditDialog {
     public PageCommentDialog(final ID pageId,
                              final PageDelta page,
                              final UpdatePageDialog updatePageDialog) {
-        super(new IGlobalsImpl().uiConstants().pageEditComment());
+        super(new IGlobalsImpl().uiConstants().pageEditComment(), new IGlobalsImpl());
         _pageId = pageId;
         _page = page;
         _updatePageDialog = updatePageDialog;

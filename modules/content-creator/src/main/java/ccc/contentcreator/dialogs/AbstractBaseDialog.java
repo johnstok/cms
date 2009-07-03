@@ -14,13 +14,10 @@ package ccc.contentcreator.dialogs;
 
 import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.api.CommandServiceAsync;
-import ccc.contentcreator.api.ErrorDescriptions;
-import ccc.contentcreator.api.ErrorResolutions;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
 import ccc.contentcreator.client.IGlobals;
-import ccc.contentcreator.client.IGlobalsImpl;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -38,36 +35,6 @@ public abstract class AbstractBaseDialog
     extends
         Window {
 
-    protected static final IGlobals _globals = new IGlobalsImpl();
-    protected final UIConstants _constants = _globals.uiConstants();
-    protected final UIMessages  _messages  = _globals.uiMessages();
-    protected final UIConstants _uiConstants = _globals.uiConstants();
-    protected final ActionNameConstants USER_ACTIONS = _globals.userActions();
-    protected static final ErrorDescriptions ERR_DESCRIPTIONS = _globals.errorDescriptions();
-    protected static final ErrorResolutions ERR_RESOLUTIONS = _globals.errorResolutions();
-
-    private final QueriesServiceAsync _qs = _globals.queriesService();
-    private final CommandServiceAsync _cs = _globals.commandService();
-
-    protected final Button _cancel = cancelButton();
-
-    /**
-     * Constructor.
-     *
-     * @param title The title of the dialog.
-     */
-    public AbstractBaseDialog(final String title) {
-        super();
-        setHeading(title);
-        setWidth(IGlobals.DEFAULT_WIDTH);
-        setMinWidth(IGlobals.MIN_WIDTH);
-        setHeight(IGlobals.DEFAULT_HEIGHT);
-        setLayout(new FitLayout());
-        setBodyStyle("backgroundColor: white;");
-        setMaximizable(true);
-    }
-
-
     /** CONTEXT_MENU_WIDTH : int. */
     public static final int CONTEXT_MENU_WIDTH = 130;
     /** PERCENT_10 : float. */
@@ -81,6 +48,44 @@ public abstract class AbstractBaseDialog
     /** PERCENT_70 : float. */
     public static final float PERCENT_70 = .7f;
 
+    protected final IGlobals _globals;
+    protected final UIConstants _constants;
+    protected final UIMessages  _messages;
+    protected final UIConstants _uiConstants;
+    protected final ActionNameConstants USER_ACTIONS;
+
+    private final QueriesServiceAsync _qs;
+    private final CommandServiceAsync _cs;
+
+    protected final Button _cancel = cancelButton();
+
+    /**
+     * Constructor.
+     *
+     * @param title The title of the dialog.
+     * @param globals The globals for this dialog.
+     */
+    public AbstractBaseDialog(final String title, final IGlobals globals) {
+        super();
+
+        _globals = globals;
+        _constants = _globals.uiConstants();
+        _messages  = _globals.uiMessages();
+        _uiConstants = _globals.uiConstants();
+        USER_ACTIONS = _globals.userActions();
+
+        _qs = _globals.queriesService();
+        _cs = _globals.commandService();
+
+        setHeading(title);
+        setWidth(IGlobals.DEFAULT_WIDTH);
+        setMinWidth(IGlobals.MIN_WIDTH);
+        setHeight(IGlobals.DEFAULT_HEIGHT);
+        setLayout(new FitLayout());
+        setBodyStyle("backgroundColor: white;");
+        setMaximizable(true);
+    }
+
 
     /**
      * Accessor.
@@ -91,6 +96,7 @@ public abstract class AbstractBaseDialog
         return _constants;
     }
 
+
     /**
      * Accessor.
      *
@@ -99,6 +105,7 @@ public abstract class AbstractBaseDialog
     protected UIMessages messages() {
         return _messages;
     }
+
 
     /**
      * Accessor.
@@ -109,6 +116,7 @@ public abstract class AbstractBaseDialog
         return _qs;
     }
 
+
     /**
      * Accessor.
      *
@@ -117,6 +125,7 @@ public abstract class AbstractBaseDialog
     protected CommandServiceAsync commands() {
         return _cs;
     }
+
 
     /**
      * Creates a cancel button which closes the window on click.

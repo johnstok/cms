@@ -55,7 +55,7 @@ public class UploadFileDialog extends AbstractEditDialog {
     public UploadFileDialog(final ResourceSummaryModelData parentFolder,
                             final SingleSelectionModel ssm) {
         super(new IGlobalsImpl().uiConstants().uploadFileTo()
-            +": "+parentFolder.getName());
+            +": "+parentFolder.getName(), new IGlobalsImpl());
 
         _parent = parentFolder;
         setHeight(IGlobals.DEFAULT_UPLOAD_HEIGHT);

@@ -13,6 +13,8 @@ package ccc.contentcreator.dialogs;
 
 import java.util.Collection;
 
+import ccc.contentcreator.client.IGlobals;
+
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.store.ListStore;
@@ -39,13 +41,15 @@ public abstract class AbstractTableDialog<T,S extends ModelData>
      * Constructor.
      *
      * @param title The title of the dialog.
+     * @param globals The globals for this dialog.
      * @param data The data the dialog should display.
      */
     public AbstractTableDialog(final String title,
+                               final IGlobals globals,
                                final Collection<T> data,
                                final boolean editable) {
 
-        super(title);
+        super(title, globals);
 
         _data = data;
 

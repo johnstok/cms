@@ -44,7 +44,7 @@ public class CreateUserDialog
      * Constructor.
      */
     public CreateUserDialog() {
-        super(new IGlobalsImpl().uiConstants().createUser());
+        super(new IGlobalsImpl().uiConstants().createUser(), new IGlobalsImpl());
 
         setLabelWidth(LABEL_WIDTH); // Long labels, should fit to one line.
 

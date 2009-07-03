@@ -42,8 +42,6 @@ public class CreateActionDialog
     private final CommandServiceAsync _commands = _globals.commandService();
     private final CreateActionPanel _createAction = new CreateActionPanel();
     private final DateTimePicker _dtPicker = new DateTimePicker();
-    private static final UIConstants UICONSTANTS =
-        new IGlobalsImpl().uiConstants();
 
     private final ID _resourceId;
 
@@ -53,7 +51,7 @@ public class CreateActionDialog
      * @param resourceId The ID of the resource.
      */
     public CreateActionDialog(final ID resourceId) {
-        super(new IGlobalsImpl().uiConstants().createAction());
+        super(new IGlobalsImpl().uiConstants().createAction(), new IGlobalsImpl());
 
         _resourceId = resourceId;
 
@@ -71,11 +69,11 @@ public class CreateActionDialog
             public void componentSelected(final ButtonEvent ce) {
 
                 if (null==_createAction.commandType()) {
-                    UICONSTANTS.pleaseChooseAnAction();
+                    _uiConstants.pleaseChooseAnAction();
                     return;
                 }
                 if (null==_dtPicker.getDate()) {
-                    UICONSTANTS.pleaseSpecifyDateAndTime();
+                    _uiConstants.pleaseSpecifyDateAndTime();
                     return;
                 }
                 _commands.createAction(
@@ -83,7 +81,8 @@ public class CreateActionDialog
                     _createAction.commandType(),
                     _dtPicker.getDate(),
                     _createAction.getParameters(),
-                    new ErrorReportingCallback<Void>(UICONSTANTS.createAction()){
+                    new ErrorReportingCallback<Void>(
+                                                   _uiConstants.createAction()){
                         public void onSuccess(final Void arg0) {
                             close();
                         }
@@ -101,6 +100,8 @@ public class CreateActionDialog
     private static class DateTimePicker extends LayoutContainer {
         private final DateField _date = new DateField();
         private final TimeField _time = new TimeField();
+        private static final UIConstants UICONSTANTS =
+            new IGlobalsImpl().uiConstants();
 
         DateTimePicker() {
             setLayout(new FormLayout());
