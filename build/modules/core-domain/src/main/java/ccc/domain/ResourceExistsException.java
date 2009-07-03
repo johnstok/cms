@@ -11,6 +11,8 @@
  */
 package ccc.domain;
 
+import java.util.Collections;
+
 import ccc.api.CommandFailedException;
 import ccc.api.Failure;
 
@@ -24,32 +26,41 @@ public class ResourceExistsException
     extends
         RemoteExceptionSupport {
 
-    private ResourceName _name;
+    private Resource     _resource;
     private Folder       _folder;
 
     /**
      * Constructor.
      *
      * @param folder The folder in which the resource exists.
-     * @param name The name of the resource that exists.
+     * @param resource The existing resource.
      */
     public ResourceExistsException(final Folder folder,
-                                   final ResourceName name) {
+                                   final Resource resource) {
         _folder = folder;
-        _name = name;
+        _resource = resource;
     }
 
 
     /** {@inheritDoc} */
     @Override
     public String getMessage() {
-        return "Folder already contains a resource with name '" + _name + "'.";
+        return
+            "Folder already contains a resource with name '"
+            + _resource.name()
+            + "'.";
     }
 
 
     /** {@inheritDoc} */
     @Override
     public CommandFailedException toRemoteException() {
-        return new CommandFailedException(Failure.EXISTS, getUUID().toString());
+        return
+            new CommandFailedException(
+                new Failure(
+                    Failure.EXISTS,
+                    getUUID().toString(),
+                    Collections.singletonMap(
+                        "existing_id", _resource.id().toString())));
     }
 }

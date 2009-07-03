@@ -16,6 +16,7 @@ import java.util.UUID;
 
 import ccc.api.CommandFailedException;
 import ccc.api.Commands;
+import ccc.api.Failure;
 import ccc.api.ID;
 import ccc.api.Queries;
 import ccc.api.ResourceSummary;
@@ -73,9 +74,17 @@ public class CccServer implements Server {
                              final String name,
                              final boolean publish)
                                                  throws CommandFailedException {
-        final ResourceSummary rs = _commands.createFolder(
-            new ID(parentFolder.toString()), name, name, publish);
-        return UUID.fromString(rs.getId().toString());
+
+        try {
+            final ResourceSummary rs = _commands.createFolder(
+                new ID(parentFolder.toString()), name, name, publish);
+            return UUID.fromString(rs.getId().toString());
+        } catch (final CommandFailedException e) {
+            if (Failure.EXISTS==e.getCode()) {
+                return UUID.fromString(e.getFailure().getParams().get("existing_id"));
+            }
+            throw e;
+        }
     }
 
 

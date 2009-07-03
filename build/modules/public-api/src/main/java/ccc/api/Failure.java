@@ -12,6 +12,8 @@
 package ccc.api;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -38,6 +40,7 @@ public class Failure implements Serializable {
 
     private int                 _code        = 0;
     private String              _exceptionId = "";
+    private Map<String, String> _params      = new HashMap<String, String>();
 
     @SuppressWarnings("unused") private Failure() { super(); }
 
@@ -52,6 +55,22 @@ public class Failure implements Serializable {
                    final String exceptionId) {
         _code = code;
         _exceptionId = exceptionId;
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param code The internal code for this failure.
+     * @param exceptionId The unique id of the exception logged for this
+     *  failure.
+     * @param params Further details describing the failure.
+     */
+    public Failure(final int code,
+                   final String exceptionId,
+                   final Map<String, String> params) {
+        _code = code;
+        _exceptionId = exceptionId;
+        _params.putAll(params);
     }
 
 
@@ -72,5 +91,15 @@ public class Failure implements Serializable {
      */
     public String getExceptionId() {
         return _exceptionId;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the parameters.
+     */
+    public final Map<String, String> getParams() {
+        return _params;
     }
 }

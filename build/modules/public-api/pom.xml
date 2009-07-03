@@ -19,6 +19,60 @@
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-jaxrs</artifactId>
             <version>1.1.GA</version>
+            <exclusions>
+                    <exclusion>
+                        <groupId>javax.servlet</groupId>
+                        <artifactId>servlet-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>javax.annotation</groupId>
+                        <artifactId>jsr250-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>javax.activation</groupId>
+                        <artifactId>activation</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>javax.mail</groupId>
+                        <artifactId>mail</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>tjws</groupId>
+                        <artifactId>webserver</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.jyaml</groupId>
+                        <artifactId>jyaml</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.sun.xml.bind</groupId>
+                        <artifactId>jaxb-impl</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.sun.xml.fastinfoset</groupId>
+                        <artifactId>FastInfoset</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.sun.xml.stream</groupId>
+                        <artifactId>sjsxp</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>commons-httpclient</groupId>
+                        <artifactId>commons-httpclient</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.codehaus.jettison</groupId>
+                        <artifactId>jettison</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>javassist</groupId>
+                        <artifactId>javassist</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-simple</artifactId>
+                    </exclusion>
+                </exclusions>
         </dependency>
     </dependencies>
 

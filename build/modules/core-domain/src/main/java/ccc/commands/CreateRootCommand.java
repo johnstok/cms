@@ -58,7 +58,7 @@ public class CreateRootCommand extends CreateResourceCommand {
         final Resource possibleRoot = getDao().find(
             QueryNames.ROOT_BY_NAME, Resource.class, folder.name());
         if (null!=possibleRoot) {
-            throw new ResourceExistsException(null, folder.name());
+            throw new ResourceExistsException(null, possibleRoot);
         }
 
         folder.dateCreated(happenedOn);
