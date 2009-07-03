@@ -81,4 +81,10 @@ public final class JsonKeys {
     public static final String ABSOLUTE_PATH = "absolute_path";
     /** INDEX_PAGE_ID : String. */
     public static final String INDEX_PAGE_ID = "indexPageId";
+    /** REVISION : String. */
+    public static final String REVISION = "revision";
+    /** UNLOCK : String. */
+    public static final String UNLOCK = "unlock";
+    /** UNPUBLISH : String. */
+    public static final String UNPUBLISH = "unpublish";
 }

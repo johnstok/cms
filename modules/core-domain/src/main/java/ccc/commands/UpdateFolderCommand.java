@@ -74,12 +74,13 @@ public class UpdateFolderCommand extends UpdateResourceCommand {
         f.indexPage(p);
         f.sortOrder(order);
 
-        // Set folder.dateChanged()?
+        // TODO: Set folder.dateChanged()?
 
         final Snapshot ss = new Snapshot();
         ss.set(JsonKeys.SORT_ORDER, f.sortOrder().name());
-        ss.set(JsonKeys.INDEX_PAGE_ID, (null == indexPageId) ? null : indexPageId.toString());
-        // FIXME: Folder entry id's?
+        ss.set(
+            JsonKeys.INDEX_PAGE_ID,
+            (null == indexPageId) ? null : indexPageId.toString());
         final LogEntry le =
             new LogEntry(
                 actor,
