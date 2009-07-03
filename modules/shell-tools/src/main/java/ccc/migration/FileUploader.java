@@ -86,6 +86,7 @@ public class FileUploader {
             new GetMethod(_appURL+"/upload");
         try {
             _client.executeMethod(get);
+            // FIXME: Fail for invalid response code.
         } catch (final Exception e) {
             log.error("initial get method failed ", e);
         }
@@ -103,6 +104,9 @@ public class FileUploader {
         try {
             final int status = _client.executeMethod(authpost);
             log.debug("Authenticate response code: "+status);
+            log.debug(
+                "Authenticate response body:\n"
+                +authpost.getResponseBodyAsString());
         } catch (final IOException e) {
             log.error("Authentication failed ", e);
         }

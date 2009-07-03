@@ -70,8 +70,11 @@ public class RenameResourceCommand {
         resource.confirmLock(actor);
 
         final ResourceName newName = new ResourceName(name);
-        if (resource.parent().hasEntryWithName(newName)) {
-            throw new ResourceExistsException(resource.parent(), newName);
+        final Resource existingResource =
+            resource.parent().entryWithName(newName);
+        if (null!=existingResource) {
+            throw new ResourceExistsException(
+                resource.parent(), existingResource);
         }
 
         resource.name(new ResourceName(name));

@@ -40,6 +40,16 @@ public class CommandFailedException
     }
 
     /**
+     * Constructor.
+     *
+     * @param failure The failure.
+     */
+    public CommandFailedException(final Failure failure) {
+        super("CCC Error: "+failure.getExceptionId());
+        _failure = failure;
+    }
+
+    /**
      * Accessor.
      *
      * @return The failure's code.

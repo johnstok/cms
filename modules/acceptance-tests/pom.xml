@@ -26,6 +26,14 @@
             <artifactId>public-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+        
+        <!-- For testing. -->
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>${lib.version.httpclient}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     
     <profiles>

@@ -73,8 +73,9 @@ public final class Folder extends Resource {
     public void add(final Resource resource) throws ResourceExistsException,
                                                     CycleDetectedException {
         DBC.require().notNull(resource);
-        if (hasEntryWithName(resource.name())) {
-            throw new ResourceExistsException(this, resource.name());
+        final Resource existingEntry = entryWithName(resource.name());
+        if (null!=existingEntry) {
+            throw new ResourceExistsException(this, existingEntry);
         }
         if (resource instanceof Folder) {
             final Folder folder = (Folder) resource;
@@ -204,6 +205,15 @@ public final class Folder extends Resource {
             }
         }
         return false;
+    }
+
+    public Resource entryWithName(final ResourceName resourceName) {
+        for (final Resource entry : _entries) {
+            if (entry.name().equals(resourceName)) {
+                return entry;
+            }
+        }
+        return null;
     }
 
     /**
