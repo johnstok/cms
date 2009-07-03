@@ -57,7 +57,7 @@ public class UpdateAliasDialog extends AbstractEditDialog {
                              final AliasDelta delta,
                              final String aliasName,
                              final ResourceSummary targetRoot) {
-        super(new IGlobalsImpl().uiConstants().updateAlias());
+        super(new IGlobalsImpl().uiConstants().updateAlias(), new IGlobalsImpl());
 
         _aliasId = aliasId;
         _alias = delta;

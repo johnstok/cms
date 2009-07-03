@@ -13,6 +13,8 @@ package ccc.contentcreator.dialogs;
 
 import java.util.ArrayList;
 
+import ccc.contentcreator.client.IGlobals;
+
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.CardPanel;
@@ -52,10 +54,11 @@ public abstract class AbstractWizardDialog
      * Constructor.
      *
      * @param title Title of the dialog.
+     * @param globals The globals for this dialog.
      */
-    public AbstractWizardDialog(final String title) {
+    public AbstractWizardDialog(final String title, final IGlobals globals) {
 
-        super(title);
+        super(title, globals);
 
         _cp.setWidth("100%");
         _cp.setBorders(false);

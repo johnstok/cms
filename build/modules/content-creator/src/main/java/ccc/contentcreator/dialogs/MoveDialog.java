@@ -58,7 +58,7 @@ public class MoveDialog extends AbstractEditDialog {
     public MoveDialog(final ResourceSummaryModelData item,
                       final SingleSelectionModel ssm,
                       final ResourceSummary root) {
-        super(new IGlobalsImpl().uiConstants().move());
+        super(new IGlobalsImpl().uiConstants().move(), new IGlobalsImpl());
         setHeight(IGlobals.DEFAULT_MIN_HEIGHT);
         _ssm = ssm;
 

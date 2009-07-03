@@ -54,7 +54,7 @@ public class EditCacheDialog extends AbstractEditDialog {
      */
     public EditCacheDialog(final ResourceSummaryModelData item,
                            final Duration ds) {
-        super(new IGlobalsImpl().uiConstants().editCacheDuration());
+        super(new IGlobalsImpl().uiConstants().editCacheDuration(), new IGlobalsImpl());
         _item = item;
         setHeight(DIALOG_HEIGHT);
         setWidth(DIALOG_WIDTH);

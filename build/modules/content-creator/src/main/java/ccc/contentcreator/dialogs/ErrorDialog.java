@@ -13,7 +13,7 @@ package ccc.contentcreator.dialogs;
 
 import ccc.api.CommandFailedException;
 import ccc.api.Failure;
-import ccc.contentcreator.client.IGlobalsImpl;
+import ccc.contentcreator.client.IGlobals;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -37,13 +37,16 @@ public class ErrorDialog extends AbstractEditDialog {
 
     private ErrorDialog(final String action,
                         final String error,
-                        final String resolution) {
-        super(new IGlobalsImpl().uiConstants().error());
+                        final String resolution,
+                        final IGlobals globals) {
+        super(globals.uiConstants().error(), globals);
         setPanelId("error-panel");
 
         _panel.add(_message);
         _message.setHTML(
-            ERR_DESCRIPTIONS.couldNotComplete("<b>", "</b><br><br>"));
+            globals
+                .errorDescriptions()
+                .couldNotComplete("<b>", "</b><br><br>"));
 
         _action.setFieldLabel(constants().action());
         _action.setId("error-action");
@@ -74,11 +77,14 @@ public class ErrorDialog extends AbstractEditDialog {
      * @param e The exception to display.
      * @param action The action that was performed.
      */
-    public ErrorDialog(final Throwable e, final String action) {
+    public ErrorDialog(final Throwable e,
+                       final String action,
+                       final IGlobals globals) {
         this(
             action,
             e.getMessage(),
-            ERR_RESOLUTIONS.contactSysAdmin());
+            globals.errorResolutions().contactSysAdmin(),
+            globals);
     }
 
     /**
@@ -87,46 +93,51 @@ public class ErrorDialog extends AbstractEditDialog {
      * @param e The exception to display.
      * @param action The action that was performed.
      */
-    public ErrorDialog(final CommandFailedException e, final String action) {
+    public ErrorDialog(final CommandFailedException e,
+                       final String action,
+                       final IGlobals globals) {
         this(
             action,
-            lookupError(e.getCode()),
-            lookupResolution(e.getCode()));
+            lookupError(e.getCode(), globals),
+            lookupResolution(e.getCode(), globals),
+            globals);
     }
 
 
-    private static String lookupResolution(final int code) {
+    private static String lookupResolution(final int code,
+                                           final IGlobals globals) {
         switch (code) {
             case Failure.UNLOCKED:
-                return ERR_RESOLUTIONS.unlocked();
+                return globals.errorResolutions().unlocked();
             case Failure.EXISTS:
-                return ERR_RESOLUTIONS.exists();
+                return globals.errorResolutions().exists();
             case Failure.LOCK_MISMATCH:
-                return ERR_RESOLUTIONS.lockMismatch();
+                return globals.errorResolutions().lockMismatch();
             case Failure.UNEXPECTED:
-                return ERR_RESOLUTIONS.contactSysAdmin();
+                return globals.errorResolutions().contactSysAdmin();
             case Failure.CYCLE:
-                return ERR_RESOLUTIONS.cycle();
+                return globals.errorResolutions().cycle();
             default:
-                return ERR_RESOLUTIONS.contactSysAdmin();
+                return globals.errorResolutions().contactSysAdmin();
         }
     }
 
 
-    private static String lookupError(final int code) {
+    private static String lookupError(final int code,
+                                      final IGlobals globals) {
         switch (code) {
             case Failure.UNLOCKED:
-                return ERR_DESCRIPTIONS.unlocked();
+                return globals.errorDescriptions().unlocked();
             case Failure.EXISTS:
-                return ERR_DESCRIPTIONS.exists();
+                return globals.errorDescriptions().exists();
             case Failure.LOCK_MISMATCH:
-                return ERR_DESCRIPTIONS.lockMismatch();
+                return globals.errorDescriptions().lockMismatch();
             case Failure.UNEXPECTED:
-                return ERR_DESCRIPTIONS.unknown();
+                return globals.errorDescriptions().unknown();
             case Failure.CYCLE:
-                return ERR_DESCRIPTIONS.cycle();
+                return globals.errorDescriptions().cycle();
             default:
-                return ERR_DESCRIPTIONS.unknown();
+                return globals.errorDescriptions().unknown();
         }
     }
 

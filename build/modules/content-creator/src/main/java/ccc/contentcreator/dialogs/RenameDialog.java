@@ -45,7 +45,7 @@ public class RenameDialog extends AbstractEditDialog {
     public RenameDialog(
                     final ResourceSummaryModelData item,
                     final SingleSelectionModel ssm) {
-        super(new IGlobalsImpl().uiConstants().rename());
+        super(new IGlobalsImpl().uiConstants().rename(), new IGlobalsImpl());
         setHeight(IGlobals.DEFAULT_MIN_HEIGHT);
         _item = item;
         _ssm = ssm;

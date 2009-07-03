@@ -50,7 +50,7 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
      * @param elementid Element ID for FCKEditor
      */
     public ImageSelectionDialog(final String elementid) {
-        super(new IGlobalsImpl().uiConstants().selectImage());
+        super(new IGlobalsImpl().uiConstants().selectImage(), new IGlobalsImpl());
         _elementid = elementid;
 
         final ListStore<FileSummaryModelData> store =
