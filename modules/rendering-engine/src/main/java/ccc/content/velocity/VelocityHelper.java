@@ -24,7 +24,6 @@ import ccc.api.Paragraph;
 import ccc.api.ResourceType;
 import ccc.commons.XHTML;
 import ccc.domain.Page;
-import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 import ccc.snapshots.FolderSnapshot;
 import ccc.snapshots.ResourceSnapshot;
@@ -72,15 +71,17 @@ public class VelocityHelper {
      * @param resource The resource.
      * @return A list of resources.
      */
-    public List<Resource> selectPathElements(final Resource resource) {
+    public List<ResourceSnapshot> selectPathElements(
+        final ResourceSnapshot resource) {
 
-        final List<Resource> elements = new ArrayList<Resource>();
+        final List<ResourceSnapshot> elements =
+            new ArrayList<ResourceSnapshot>();
 
-        Resource current = resource;
+        ResourceSnapshot current = resource;
 
         elements.add(current);
         while (current.parent() != null) {
-            current = current.parent();
+            current = current.parent().forCurrentRevision();
             elements.add(current);
         }
         Collections.reverse(elements);

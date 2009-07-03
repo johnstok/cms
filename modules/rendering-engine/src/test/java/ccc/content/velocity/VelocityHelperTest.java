@@ -22,10 +22,10 @@ import ccc.api.Paragraph;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.RemoteExceptionSupport;
-import ccc.domain.Resource;
 import ccc.domain.ResourceName;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
+import ccc.snapshots.ResourceSnapshot;
 
 
 /**
@@ -71,12 +71,13 @@ public class VelocityHelperTest extends TestCase {
         folder.add(page2);
 
         // ACT
-        final List<Resource> list = helper.selectPathElements(page);
+        final List<ResourceSnapshot> list =
+            helper.selectPathElements(page.forCurrentRevision());
 
         // ASSERT
         assertEquals(3, list.size());
-        assertEquals(root, list.get(0));
-        assertEquals(page, list.get(2));
+        assertEquals(root.id(), list.get(0).id());
+        assertEquals(page.id(), list.get(2).id());
         assertEquals(page2, list.get(2).parent().entries().get(1));
 
     }
