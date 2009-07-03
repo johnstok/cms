@@ -49,7 +49,7 @@ public class IGlobalsImpl
     private static final ActionNameConstants USER_ACTIONS =
         GWT.create(ActionNameConstants.class);
 
-    private static UserSummary _user;
+
 
 
     /** {@inheritDoc} */
@@ -79,13 +79,13 @@ public class IGlobalsImpl
     /** {@inheritDoc} */
     @Override
     public UserSummary currentUser() {
-        return _user;
+        return UserStore.currentUser();
     }
 
     /** {@inheritDoc} */
     @Override
     public void currentUser(final UserSummary user) {
-        _user = user;
+        UserStore.currentUser(user);
     }
 
     /** {@inheritDoc} */
@@ -211,6 +211,27 @@ public class IGlobalsImpl
 
     private static void redirect(final String url) {
         Window.Location.assign(url);
+    }
+
+    /**
+     * User Summary shared by all instances of {@link IGlobalsImpl}.
+     *
+     * @author Civic Computing Ltd.
+     */
+    private static final class UserStore {
+        private static UserSummary _user;
+
+        private UserStore() {
+            // no-op
+        }
+
+        public static UserSummary currentUser() {
+            return _user;
+        }
+
+        public static void currentUser(final UserSummary user) {
+            _user = user;
+        }
     }
 
 }
