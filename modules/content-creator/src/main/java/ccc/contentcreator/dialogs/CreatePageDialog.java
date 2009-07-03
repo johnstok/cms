@@ -22,7 +22,6 @@ import ccc.api.PageDelta;
 import ccc.api.Paragraph;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateSummary;
-import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.binding.TemplateSummaryModelData;
@@ -56,7 +55,6 @@ import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.extjs.gxt.ui.client.widget.layout.RowLayout;
-import com.google.gwt.core.client.GWT;
 
 
 /**
@@ -71,8 +69,6 @@ public class CreatePageDialog
 
     /** NAME_COLUMN_WIDTH : int. */
     private static final int NAME_COLUMN_WIDTH = 200;
-
-    private final UIConstants _uiConstants = GWT.create(UIConstants.class);
 
     private final ContentPanel _first = new ContentPanel();
     private final EditPagePanel _second = new EditPagePanel();

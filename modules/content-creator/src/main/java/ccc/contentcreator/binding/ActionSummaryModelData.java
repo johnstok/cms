@@ -24,9 +24,9 @@ import ccc.api.ID;
 import ccc.api.ResourceType;
 import ccc.contentcreator.api.ActionStatusConstants;
 import ccc.contentcreator.api.CommandTypeConstants;
+import ccc.contentcreator.client.IGlobals;
 
 import com.extjs.gxt.ui.client.data.ModelData;
-import com.google.gwt.core.client.GWT;
 
 
 /**
@@ -39,14 +39,17 @@ public class ActionSummaryModelData
         ModelData {
 
     private final ActionSummary _as;
+    private IGlobals _globals;
 
     /**
      * Constructor.
      *
      * @param as The action summary.
      */
-    public ActionSummaryModelData(final ActionSummary as) {
+    public ActionSummaryModelData(final ActionSummary as,
+                                  final IGlobals globals) {
         _as = as;
+        _globals = globals;
     }
 
     /** {@inheritDoc} */
@@ -172,8 +175,7 @@ public class ActionSummaryModelData
      * @return The localised string or name of the enum if nothing found.
      */
     public String getLocalisedStatus() {
-        final ActionStatusConstants types =
-            GWT.create(ActionStatusConstants.class);
+        final ActionStatusConstants types = _globals.actionStatusConstants();
 
         String local = null;
         try {
@@ -190,8 +192,7 @@ public class ActionSummaryModelData
      * @return The localised string or name of the enum if nothing found.
      */
     public String getLocalisedType() {
-        final CommandTypeConstants types =
-            GWT.create(CommandTypeConstants.class);
+        final CommandTypeConstants types = _globals.commandTypeConstants();
 
         String local = null;
         try {

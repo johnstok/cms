@@ -5,9 +5,6 @@ import java.util.Collection;
 
 import ccc.api.ResourceSummary;
 import ccc.api.UserSummary;
-import ccc.contentcreator.api.ActionNameConstants;
-import ccc.contentcreator.api.QueriesService;
-import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.dialogs.LoginDialog;
 
@@ -19,7 +16,6 @@ import com.extjs.gxt.ui.client.widget.layout.RowData;
 import com.extjs.gxt.ui.client.widget.layout.RowLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.RootPanel;
 
 
@@ -27,12 +23,9 @@ import com.google.gwt.user.client.ui.RootPanel;
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public final class ContentCreator implements EntryPoint {
-    private static final ActionNameConstants USER_ACTIONS =
-        GWT.create(ActionNameConstants.class);
 
     private IGlobals _globals = new IGlobalsImpl();
 
-    private final QueriesServiceAsync _qs = GWT.create(QueriesService.class);
 
     /**
      * This is the entry point method.
@@ -40,7 +33,8 @@ public final class ContentCreator implements EntryPoint {
     public void onModuleLoad() {
         _globals.installUnexpectedExceptionHandler();
         _globals.securityService().isLoggedIn(
-            new ErrorReportingCallback<Boolean>(USER_ACTIONS.internalAction()){
+            new ErrorReportingCallback<Boolean>(
+                                       _globals.userActions().internalAction()){
                 public void onSuccess(final Boolean isLoggedIn) {
                     if (isLoggedIn) {
                         drawMainWindow();
@@ -58,36 +52,37 @@ public final class ContentCreator implements EntryPoint {
      */
     public void drawMainWindow() {
         _globals.enableExitConfirmation();
-        _qs.loggedInUser(new ErrorReportingCallback<UserSummary>(
-            USER_ACTIONS.internalAction()){
-            public void onSuccess(final UserSummary user) {
-                _globals.currentUser(user);
-                renderUI(user);
-
-            };
-        });
+        _globals.queriesService().loggedInUser(
+            new ErrorReportingCallback<UserSummary>(
+                _globals.userActions().internalAction()){
+                public void onSuccess(final UserSummary user) {
+                    _globals.currentUser(user);
+                    renderUI(user);
+                }
+            }
+        );
     }
 
     private void renderUI(final UserSummary user) {
+        _globals.queriesService().roots(
+            new ErrorReportingCallback<Collection<ResourceSummary>>(
+                                      _globals.userActions().internalAction()) {
+                // TODO: refactor
+                public void onSuccess(final Collection<ResourceSummary> arg0) {
+                    final LeftRightPane contentPane = new LeftRightPane();
+                    contentPane.setRightHandPane(new ContentPanel());
+                    contentPane.setLeftHandPane(
+                        new ResourceNavigator(contentPane,
+                            arg0,
+                            user));
 
-        final QueriesServiceAsync qs = GWT.create(QueriesService.class);
-        qs.roots(new ErrorReportingCallback<Collection<ResourceSummary>>(
-            USER_ACTIONS.internalAction()) {
-            // TODO: refactor
-            public void onSuccess(final Collection<ResourceSummary> arg0) {
-                final LeftRightPane contentPane = new LeftRightPane();
-                contentPane.setRightHandPane(new ContentPanel());
-                contentPane.setLeftHandPane(
-                    new ResourceNavigator(contentPane,
-                        arg0,
-                        user));
+                    final Viewport vp =
+                        layoutMainWindow(new MainMenu(user), contentPane);
 
-                final Viewport vp =
-                    layoutMainWindow(new MainMenu(user), contentPane);
-
-                RootPanel.get().add(vp);
+                    RootPanel.get().add(vp);
+                }
             }
-        });
+        );
     }
 
     /**

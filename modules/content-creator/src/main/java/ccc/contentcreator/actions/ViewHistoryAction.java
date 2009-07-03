@@ -3,15 +3,13 @@ package ccc.contentcreator.actions;
 import java.util.Collection;
 
 import ccc.api.LogEntrySummary;
-import ccc.contentcreator.api.QueriesService;
-import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
+import ccc.contentcreator.client.IGlobals;
+import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.HistoryDialog;
-
-import com.google.gwt.core.client.GWT;
 
 /**
  * View resource's history.
@@ -22,8 +20,8 @@ public final class ViewHistoryAction
     implements
         Action {
 
+    private IGlobals _globals = new IGlobalsImpl();
     private final SingleSelectionModel _selectionModel;
-    private QueriesServiceAsync _qs = GWT.create(QueriesService.class);
 
     /**
      * Constructor.
@@ -37,12 +35,13 @@ public final class ViewHistoryAction
     /** {@inheritDoc} */
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        _qs.history(
+        _globals.queriesService().history(
             item.getId(),
             new ErrorReportingCallback<Collection<LogEntrySummary>>(
                 UI_CONSTANTS.viewHistory()){
                 public void onSuccess(final Collection<LogEntrySummary> data) {
-                    new HistoryDialog(data, item.getId(), _selectionModel).show();
+                    new HistoryDialog(
+                        data, item.getId(), _selectionModel).show();
                 }
             }
         );

@@ -11,7 +11,6 @@
  */
 package ccc.contentcreator.dialogs;
 
-import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.api.SecurityServiceAsync;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.IGlobalsImpl;
@@ -20,7 +19,6 @@ import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.form.TextField;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
@@ -34,9 +32,6 @@ public class LoginDialog extends AbstractEditDialog {
     private static final int DIALOG_WIDTH = 375;
     /** DIALOG_HEIGHT : int. */
     private static final int DIALOG_HEIGHT = 150;
-
-    private static final ActionNameConstants USER_ACTIONS =
-        GWT.create(ActionNameConstants.class);
 
     private final TextField<String> _username = new TextField<String>();
     private final TextField<String> _password = new TextField<String>();

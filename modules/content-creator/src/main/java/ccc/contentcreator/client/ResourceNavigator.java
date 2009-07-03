@@ -33,6 +33,7 @@ import com.extjs.gxt.ui.client.widget.layout.AccordionLayout;
  */
 public class ResourceNavigator extends ContentPanel {
 
+    private final IGlobals _globals = new IGlobalsImpl();
     private final LeftRightPane _view;
     private final UserTree _usersTree;
     private final ActionTree _actionTree;
@@ -66,7 +67,7 @@ public class ResourceNavigator extends ContentPanel {
             }
 
             final EnhancedResourceTree tree =
-                new EnhancedResourceTree(root, _view, user);
+                new EnhancedResourceTree(root, _view, user, _globals);
             _rootTrees.add(tree);
 
             final ContentPanel contentPanel = new ContentPanel();

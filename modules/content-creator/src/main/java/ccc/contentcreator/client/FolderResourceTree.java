@@ -18,9 +18,6 @@ import java.util.List;
 
 import ccc.api.ResourceSummary;
 import ccc.api.ResourceType;
-import ccc.contentcreator.api.ActionNameConstants;
-import ccc.contentcreator.api.QueriesService;
-import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 
@@ -33,7 +30,6 @@ import com.extjs.gxt.ui.client.store.TreeStore;
 import com.extjs.gxt.ui.client.store.TreeStoreEvent;
 import com.extjs.gxt.ui.client.widget.tree.Tree;
 import com.extjs.gxt.ui.client.widget.tree.TreeItem;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
@@ -44,8 +40,90 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public class FolderResourceTree extends Tree {
 
-    private static final ActionNameConstants USER_ACTIONS =
-        GWT.create(ActionNameConstants.class);
+    private final ResourceSummary _root;
+    private final IGlobals _globals;
+
+    protected final TreeStore<ResourceSummaryModelData> _store;
+    protected final FolderBinder _binder;
+
+    /**
+     * Constructor.
+     *
+     * @param root The root of the tree.
+     */
+    public FolderResourceTree(final ResourceSummary root, final IGlobals globals) {
+
+        _root = root;
+        _globals = globals;
+
+        setSelectionMode(SelectionMode.SINGLE);
+        setStyleAttribute("background", "white");
+
+
+        final RpcProxy<ResourceSummaryModelData,
+                       List<ResourceSummaryModelData>> proxy =
+            new RpcProxy<ResourceSummaryModelData,
+                         List<ResourceSummaryModelData>>() {
+            @Override
+            protected void load(
+                final ResourceSummaryModelData loadConfig,
+                final AsyncCallback<List<ResourceSummaryModelData>> callback) {
+
+
+                if (null==loadConfig) {
+                    callback.onSuccess(
+                        DataBinding.bindResourceSummary(
+                            Collections.singletonList(_root)));
+                } else {
+                    _globals.queriesService().getChildren(
+                        loadConfig.getId(),
+                        new AsyncCallback<Collection<ResourceSummary>>(){
+
+                            public void onFailure(final Throwable arg0) {
+                                callback.onFailure(arg0);
+                                new IGlobalsImpl().unexpectedError(
+                                    arg0, _globals.userActions().loadData());
+                            }
+
+                            public void onSuccess(
+                                      final Collection<ResourceSummary> arg0) {
+                                callback.onSuccess(
+                                    DataBinding.bindResourceSummary(arg0));
+                            }
+                        }
+                    );
+                }
+            }
+        };
+
+
+        final TreeLoader<ResourceSummaryModelData> loader =
+            new BaseTreeLoader<ResourceSummaryModelData>(proxy) {
+            @Override
+            public boolean hasChildren(final ResourceSummaryModelData parent) {
+                final int folderCount = parent.getFolderCount();
+                return folderCount > 0;
+            }
+        };
+
+        _store = new TreeStore<ResourceSummaryModelData>(loader);
+
+        _binder = new FolderBinder(this, _store);
+        _binder.setCaching(false);
+        _binder.setDisplayProperty(ResourceSummaryModelData.DISPLAY_PROPERTY);
+        _binder.setIconProvider(new ResourceIconProvider());
+
+        loader.load(null);
+    }
+
+    /**
+     * Accessor for this tree's data store.
+     *
+     * @return The internal store.
+     */
+    public TreeStore<ResourceSummaryModelData> store() {
+        return _store;
+    }
 
     /**
      * Tree binder for folder trees.
@@ -93,89 +171,5 @@ public class FolderResourceTree extends Tree {
                 super.onRenderChildren(te);
             }
         }
-    }
-
-    protected final TreeStore<ResourceSummaryModelData> _store;
-    private final ResourceSummary _root;
-
-    final QueriesServiceAsync qs = GWT.create(QueriesService.class);
-    protected final FolderBinder _binder;
-
-    /**
-     * Constructor.
-     *
-     * @param root The root of the tree.
-     */
-    public FolderResourceTree(final ResourceSummary root) {
-
-        _root = root;
-
-        setSelectionMode(SelectionMode.SINGLE);
-        setStyleAttribute("background", "white");
-
-
-        final RpcProxy<ResourceSummaryModelData,
-                       List<ResourceSummaryModelData>> proxy =
-            new RpcProxy<ResourceSummaryModelData,
-                         List<ResourceSummaryModelData>>() {
-            @Override
-            protected void load(
-                final ResourceSummaryModelData loadConfig,
-                final AsyncCallback<List<ResourceSummaryModelData>> callback) {
-
-
-                if (null==loadConfig) {
-                    callback.onSuccess(
-                        DataBinding.bindResourceSummary(
-                            Collections.singletonList(_root)));
-                } else {
-                    qs.getChildren(
-                        loadConfig.getId(),
-                        new AsyncCallback<Collection<ResourceSummary>>(){
-
-                            public void onFailure(final Throwable arg0) {
-                                callback.onFailure(arg0);
-                                new IGlobalsImpl().unexpectedError(
-                                    arg0, USER_ACTIONS.loadData());
-                            }
-
-                            public void onSuccess(
-                                      final Collection<ResourceSummary> arg0) {
-                                callback.onSuccess(
-                                    DataBinding.bindResourceSummary(arg0));
-                            }
-                        }
-                    );
-                }
-            }
-        };
-
-
-        final TreeLoader<ResourceSummaryModelData> loader =
-            new BaseTreeLoader<ResourceSummaryModelData>(proxy) {
-            @Override
-            public boolean hasChildren(final ResourceSummaryModelData parent) {
-                final int folderCount = parent.getFolderCount();
-                return folderCount > 0;
-            }
-        };
-
-        _store = new TreeStore<ResourceSummaryModelData>(loader);
-
-        _binder = new FolderBinder(this, _store);
-        _binder.setCaching(false);
-        _binder.setDisplayProperty(ResourceSummaryModelData.DISPLAY_PROPERTY);
-        _binder.setIconProvider(new ResourceIconProvider());
-
-        loader.load(null);
-    }
-
-    /**
-     * Accessor for this tree's data store.
-     *
-     * @return The internal store.
-     */
-    public TreeStore<ResourceSummaryModelData> store() {
-        return _store;
     }
 }

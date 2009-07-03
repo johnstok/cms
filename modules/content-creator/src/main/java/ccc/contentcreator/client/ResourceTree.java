@@ -17,9 +17,6 @@ import java.util.List;
 
 import ccc.api.ID;
 import ccc.api.ResourceSummary;
-import ccc.contentcreator.api.ActionNameConstants;
-import ccc.contentcreator.api.QueriesService;
-import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 
@@ -31,7 +28,6 @@ import com.extjs.gxt.ui.client.data.TreeLoader;
 import com.extjs.gxt.ui.client.store.TreeStore;
 import com.extjs.gxt.ui.client.widget.tree.Tree;
 import com.extjs.gxt.ui.client.widget.tree.TreeItem;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
@@ -41,21 +37,21 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @author Civic Computing Ltd.
  */
 public class ResourceTree extends Tree {
-    private static final ActionNameConstants USER_ACTIONS =
-        GWT.create(ActionNameConstants.class);
 
+    private final IGlobals _globals;
     private final TreeStore<ResourceSummaryModelData> _store;
     private final ResourceSummary _root;
-    private final QueriesServiceAsync _qs = GWT.create(QueriesService.class);
+
 
     /**
      * Constructor.
      *
      * @param root The root of the tree.
      */
-    public ResourceTree(final ResourceSummary root) {
+    public ResourceTree(final ResourceSummary root, final IGlobals globals) {
 
         _root = root;
+        _globals = globals;
 
         setSelectionMode(SelectionMode.SINGLE);
         setStyleAttribute("background", "white");
@@ -73,14 +69,14 @@ public class ResourceTree extends Tree {
                 final ID parentId =
                   (null==loadConfig) ? _root.getId() : loadConfig.getId();
 
-                _qs.getChildren(
+                _globals.queriesService().getChildren(
                     parentId,
                     new AsyncCallback<Collection<ResourceSummary>>(){
 
                     public void onFailure(final Throwable arg0) {
                         callback.onFailure(arg0);
                         new IGlobalsImpl().unexpectedError(
-                            arg0, USER_ACTIONS.loadData());
+                            arg0, _globals.userActions().loadData());
                     }
 
                     public void onSuccess(

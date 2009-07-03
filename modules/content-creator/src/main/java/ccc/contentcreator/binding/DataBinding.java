@@ -23,6 +23,8 @@ import ccc.api.LogEntrySummary;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateSummary;
 import ccc.api.UserSummary;
+import ccc.contentcreator.client.IGlobals;
+import ccc.contentcreator.client.IGlobalsImpl;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -40,6 +42,8 @@ public final class DataBinding {
     /** KEY : String. */
     public static final String KEY = "key";
 
+    private static IGlobals _globals = new IGlobalsImpl();
+
 
     private DataBinding() { super(); }
 
@@ -55,7 +59,7 @@ public final class DataBinding {
         final List<LogEntrySummaryModelData> boundData =
             new ArrayList<LogEntrySummaryModelData>();
         for (final LogEntrySummary les : arg0) {
-            boundData.add(new LogEntrySummaryModelData(les));
+            boundData.add(new LogEntrySummaryModelData(les, _globals));
         }
         return boundData;
     }
@@ -130,7 +134,7 @@ public final class DataBinding {
         final List<ActionSummaryModelData> boundData =
             new ArrayList<ActionSummaryModelData>();
         for (final ActionSummary as : result) {
-            boundData.add(new ActionSummaryModelData(as));
+            boundData.add(new ActionSummaryModelData(as, _globals));
         }
         return boundData;
     }

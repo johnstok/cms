@@ -18,9 +18,9 @@ import java.util.Collection;
 
 import ccc.api.ResourceSummary;
 import ccc.contentcreator.api.ActionNameConstants;
-import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
+import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.dialogs.ImageSelectionDialog;
 import ccc.contentcreator.dialogs.LinkSelectionDialog;
 
@@ -69,19 +69,25 @@ import com.google.gwt.user.client.ui.Hidden;
 public class FCKEditor extends LayoutContainer {
 
     private final String _elementID;
-    private final QueriesServiceAsync _qs = GWT.create(QueriesService.class);
-    private static final ActionNameConstants USER_ACTIONS =
-        GWT.create(ActionNameConstants.class);
+    private final QueriesServiceAsync _qs;
+    private final ActionNameConstants _userActions;
+
+
     /**
      * Constructor.
      *
      * @param html The html to be edited.
      * @param cssHeight The height of the editor in pixels.
+     * @param globals The globals for this UI control.
      */
     public FCKEditor(final String html,
-                     final String cssHeight) {
+                     final String cssHeight,
+                     final IGlobals globals) {
 
         initJSNI(this);
+
+        _qs = globals.queriesService();
+        _userActions = globals.userActions();
 
         //Work out an ID
         _elementID =
@@ -160,6 +166,7 @@ public class FCKEditor extends LayoutContainer {
         return null;
     }-*/;
 
+
     private static native String initJSNI(final FCKEditor obj) /*-{
         $wnd.cccLinkSelector = function() {
             obj.@ccc.contentcreator.client.ui.FCKEditor::openLinkSelector()();
@@ -170,13 +177,13 @@ public class FCKEditor extends LayoutContainer {
         };
     }-*/;
 
+
     /**
      * Displays the FCKEditor specific link selection dialog.
-     *
      */
     public void openLinkSelector() {
         _qs.roots(new ErrorReportingCallback<Collection<ResourceSummary>>(
-            USER_ACTIONS.internalAction()){
+            _userActions.internalAction()){
             public void onSuccess(final Collection<ResourceSummary> arg0) {
                 ResourceSummary rs = null;
                 for (final ResourceSummary rr : arg0) {
@@ -190,6 +197,7 @@ public class FCKEditor extends LayoutContainer {
         });
 
     }
+
 
     /**
      * Displays the FCKEditor specific image selection dialog.

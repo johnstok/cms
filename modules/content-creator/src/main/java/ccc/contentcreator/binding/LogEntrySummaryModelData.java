@@ -21,9 +21,9 @@ import java.util.Set;
 import ccc.api.CommandType;
 import ccc.api.LogEntrySummary;
 import ccc.contentcreator.api.CommandTypeConstants;
+import ccc.contentcreator.client.IGlobals;
 
 import com.extjs.gxt.ui.client.data.ModelData;
-import com.google.gwt.core.client.GWT;
 
 
 /**
@@ -37,14 +37,17 @@ public class LogEntrySummaryModelData
     public static final String EXPAND_PROPERTY = Property.COMMENT.name();
 
     private final LogEntrySummary _les;
+    private IGlobals _globals;
 
     /**
      * Constructor.
      *
      * @param les The log entry summary to wrap.
      */
-    public LogEntrySummaryModelData(final LogEntrySummary les) {
+    public LogEntrySummaryModelData(final LogEntrySummary les,
+                                    final IGlobals globals) {
         _les = les;
+        _globals = globals;
     }
 
     /** {@inheritDoc} */
@@ -133,8 +136,7 @@ public class LogEntrySummaryModelData
      * @return The localised string or name of the enum if nothing found.
      */
     public String getLocalisedAction() {
-        final CommandTypeConstants types =
-            GWT.create(CommandTypeConstants.class);
+        final CommandTypeConstants types = _globals.commandTypeConstants();
 
         String local = null;
         try {

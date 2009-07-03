@@ -12,7 +12,6 @@
 package ccc.contentcreator.dialogs;
 
 import ccc.api.ResourceSummary;
-import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
@@ -38,7 +37,7 @@ public class ResourceSelectionDialog extends Window {
     /** DIALOG_WIDTH : int. */
     private static final int DIALOG_WIDTH = 400;
     private final ResourceTree _tree;
-    private final UIConstants _constants = new IGlobalsImpl().uiConstants();
+    private final IGlobals _globals = new IGlobalsImpl();
 
     /**
      * Constructor.
@@ -49,17 +48,17 @@ public class ResourceSelectionDialog extends Window {
         setModal(true);
         setBodyStyle("backgroundColor: white;");
         setScrollMode(Scroll.AUTOY);
-        setHeading(_constants.selectResource());
+        setHeading(_globals.uiConstants().selectResource());
         setWidth(DIALOG_WIDTH);
         setMinWidth(IGlobals.MIN_WIDTH);
         setHeight(DIALOG_HEIGHT);
         setLayout(new FitLayout());
 
-        _tree = new ResourceTree(targetRoot);
+        _tree = new ResourceTree(targetRoot, _globals);
         add(_tree);
 
         final Button save = new Button(
-            _constants.save(),
+            _globals.uiConstants().save(),
             new SelectionListener<ComponentEvent>() {
                 @Override
                 public void componentSelected(final ComponentEvent ce) {

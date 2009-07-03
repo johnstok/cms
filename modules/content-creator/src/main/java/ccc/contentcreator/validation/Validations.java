@@ -17,18 +17,16 @@ import java.util.Set;
 import ccc.api.ID;
 import ccc.api.Paragraph;
 import ccc.contentcreator.api.ActionNameConstants;
-import ccc.contentcreator.api.CommandService;
 import ccc.contentcreator.api.CommandServiceAsync;
-import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
+import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
 
 import com.extjs.gxt.ui.client.widget.form.TextField;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.xml.client.XMLParser;
 import com.google.gwt.xml.client.impl.DOMParseException;
 
@@ -40,21 +38,18 @@ import com.google.gwt.xml.client.impl.DOMParseException;
  */
 public class Validations {
 
-    /** _uiConstants : UIConstants. */
+    private static IGlobals GLOBALS = new IGlobalsImpl();
+
     private static final UIConstants UI_CONSTANTS =
-        GWT.create(UIConstants.class);
-    /** _uiMessages : UIMessages. */
+        GLOBALS.uiConstants();
     private static final UIMessages UI_MESSAGES =
-        GWT.create(UIMessages.class);
-    /** USER_ACTIONS : ActionNameConstants. */
+        GLOBALS.uiMessages();
     private static final ActionNameConstants USER_ACTIONS =
-        GWT.create(ActionNameConstants.class);
-    /** QUERIES_SERVICE : QueriesServiceAsync. */
+        GLOBALS.userActions();
     private static final QueriesServiceAsync QUERIES_SERVICE =
-        GWT.create(QueriesService.class);
-    /** COMMAND_SERVICE : CommandServiceAsync. */
+        GLOBALS.queriesService();
     private static final CommandServiceAsync COMMAND_SERVICE =
-        GWT.create(CommandService.class);
+        GLOBALS.commandService();
 
     private static final String  VALID_CHARACTERS = "[\\.\\-\\w]+";
 

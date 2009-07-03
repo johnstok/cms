@@ -13,14 +13,11 @@ package ccc.contentcreator.dialogs;
 
 import ccc.api.CommandFailedException;
 import ccc.api.Failure;
-import ccc.contentcreator.api.ErrorDescriptions;
-import ccc.contentcreator.api.ErrorResolutions;
 import ccc.contentcreator.client.IGlobalsImpl;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.HTML;
 
 
@@ -32,11 +29,6 @@ import com.google.gwt.user.client.ui.HTML;
 public class ErrorDialog extends AbstractEditDialog {
     private static final int DIALOG_WIDTH  = 375;
     private static final int DIALOG_HEIGHT = 300;
-    private static final ErrorDescriptions ERR_DESCRIPTIONS =
-        GWT.create(ErrorDescriptions.class);
-    private static final ErrorResolutions ERR_RESOLUTIONS =
-        GWT.create(ErrorResolutions.class);
-
 
     private final TextArea _action = new TextArea();
     private final TextArea _error = new TextArea();

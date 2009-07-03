@@ -12,9 +12,10 @@
 
 package ccc.contentcreator.dialogs;
 
-import ccc.contentcreator.api.CommandService;
+import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.api.CommandServiceAsync;
-import ccc.contentcreator.api.QueriesService;
+import ccc.contentcreator.api.ErrorDescriptions;
+import ccc.contentcreator.api.ErrorResolutions;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
@@ -26,7 +27,6 @@ import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
-import com.google.gwt.core.client.GWT;
 
 
 /**
@@ -38,12 +38,16 @@ public abstract class AbstractBaseDialog
     extends
         Window {
 
-    protected final IGlobals _globals = new IGlobalsImpl();
+    protected static final IGlobals _globals = new IGlobalsImpl();
     protected final UIConstants _constants = _globals.uiConstants();
     protected final UIMessages  _messages  = _globals.uiMessages();
+    protected final UIConstants _uiConstants = _globals.uiConstants();
+    protected final ActionNameConstants USER_ACTIONS = _globals.userActions();
+    protected static final ErrorDescriptions ERR_DESCRIPTIONS = _globals.errorDescriptions();
+    protected static final ErrorResolutions ERR_RESOLUTIONS = _globals.errorResolutions();
 
-    private final QueriesServiceAsync _qs = GWT.create(QueriesService.class);
-    private final CommandServiceAsync _cs = GWT.create(CommandService.class);
+    private final QueriesServiceAsync _qs = _globals.queriesService();
+    private final CommandServiceAsync _cs = _globals.commandService();
 
     protected final Button _cancel = cancelButton();
 
