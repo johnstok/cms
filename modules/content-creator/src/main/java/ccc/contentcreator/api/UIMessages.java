@@ -49,4 +49,13 @@ public interface UIMessages extends Messages {
      */
     @DefaultMessage("A resource with name ''{0}'' already exists in this folder.")
     String resourceWithNameAlreadyExistsInThisFolder(String name);
+
+    /**
+     * "A template with name ''{0}'' already exists in this folder.".
+     *
+     * @param name The param to display.
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultMessage("A template with name ''{0}'' already exists in this folder.")
+    String templateWithNameAlreadyExistsInThisFolder(String name);
 }

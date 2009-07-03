@@ -218,12 +218,9 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                         new ErrorReportingCallback<Boolean>(
                                 USER_ACTIONS.checkUniqueTemplateName()){
                             public void onSuccess(final Boolean nameExists) {
-                                // FIXME: i18n
                                 if (nameExists.booleanValue()) {
                                     validate.addMessage(
-                                        "A template with name '"
-                                        + name.getValue()
-                                        + "' already exists in this folder."
+            _messages.templateWithNameAlreadyExistsInThisFolder(name.getValue())
                                     );
                                 }
                                 validate.next();

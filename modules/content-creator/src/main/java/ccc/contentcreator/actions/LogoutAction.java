@@ -3,7 +3,7 @@ package ccc.contentcreator.actions;
 
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
-import ccc.contentcreator.client.Globals;
+import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
 
 
@@ -16,14 +16,16 @@ public final class LogoutAction
     implements
         Action {
 
+    private IGlobals _globals = new IGlobalsImpl();
+
     /** {@inheritDoc} */
     public void execute() {
-        Globals.securityService().logout(
+        _globals.securityService().logout(
             new ErrorReportingCallback<Void>(UI_CONSTANTS.logout()) {
                 public void onSuccess(final Void result) {
-                    Globals.currentUser(null);
+                    _globals.currentUser(null);
                     new IGlobalsImpl().disableExitConfirmation();
-                    Globals.redirectTo(Globals.APP_URL);
+                    _globals.redirectTo(IGlobals.APP_URL);
                 }
             }
         );

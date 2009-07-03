@@ -12,10 +12,6 @@
 package ccc.contentcreator.client;
 
 import ccc.contentcreator.api.ActionNameConstants;
-import ccc.contentcreator.api.CommandService;
-import ccc.contentcreator.api.CommandServiceAsync;
-import ccc.contentcreator.api.QueriesService;
-import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 
 import com.google.gwt.core.client.GWT;
@@ -33,12 +29,6 @@ public interface Action {
     /** UI_CONSTANTS : UIConstants. */
     UIConstants UI_CONSTANTS =
         GWT.create(UIConstants.class);
-    /** QUERIES_SERVICE : QueriesServiceAsync. */
-    QueriesServiceAsync QUERIES_SERVICE =
-        GWT.create(QueriesService.class);
-    /** COMMAND_SERVICE : CommandServiceAsync. */
-    CommandServiceAsync COMMAND_SERVICE = GWT.create(CommandService.class);
-
 
     /**
      * Perform the action.

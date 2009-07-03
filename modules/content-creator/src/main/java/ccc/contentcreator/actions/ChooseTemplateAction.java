@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import ccc.api.ResourceType;
 import ccc.api.TemplateSummary;
-import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
@@ -23,7 +23,7 @@ public final class ChooseTemplateAction
         Action {
 
     private IGlobals _globals = new IGlobalsImpl();
-    private final UIConstants _constants = _globals.uiConstants();
+    private QueriesServiceAsync _qs = _globals.queriesService();
 
     private final SingleSelectionModel _selectionModel;
 
@@ -42,14 +42,14 @@ public final class ChooseTemplateAction
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
 
         if (item == null) {
-            _globals.alert(_constants.noFolderSelected());
+            _globals.alert(UI_CONSTANTS.noFolderSelected());
             return;
         }
 
         if (ResourceType.PAGE==item.getType()
             || ResourceType.FOLDER==item.getType()
             || ResourceType.SEARCH==item.getType()) {
-            QUERIES_SERVICE.templates(
+            _qs.templates(
                 new ErrorReportingCallback<Collection<TemplateSummary>>(UI_CONSTANTS.chooseTemplate()) {
                     public void onSuccess(final Collection<TemplateSummary> templates) {
                         new ChooseTemplateDialog(
@@ -61,7 +61,7 @@ public final class ChooseTemplateAction
                 }
             );
         } else {
-            _globals.alert(_constants.templateCannotBeChosen());
+            _globals.alert(UI_CONSTANTS.templateCannotBeChosen());
 
         }
     }
