@@ -41,8 +41,7 @@ public class UnpublishResourceCommand {
      * @param dao The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public UnpublishResourceCommand(final Dao dao,
-                                              final AuditLog audit) {
+    public UnpublishResourceCommand(final Dao dao, final AuditLog audit) {
         _dao = dao;
         _audit = audit;
     }
