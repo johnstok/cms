@@ -2,8 +2,6 @@ package ccc.contentcreator.actions;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.Action;
-import ccc.contentcreator.client.IGlobals;
-import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.UploadFileDialog;
 
@@ -16,7 +14,6 @@ public final class CreateFileAction
     implements
         Action {
 
-    private IGlobals _globals = new IGlobalsImpl();
     private final SingleSelectionModel _selectionModel;
 
     /**
@@ -32,7 +29,7 @@ public final class CreateFileAction
     public void execute() {
         final ResourceSummaryModelData parent = _selectionModel.treeSelection();
         if (parent == null) {
-            _globals.alert(_globals.uiConstants().noFolderSelected());
+            GLOBALS.alert(GLOBALS.uiConstants().noFolderSelected());
         } else {
             new UploadFileDialog(parent, _selectionModel).show();
         }

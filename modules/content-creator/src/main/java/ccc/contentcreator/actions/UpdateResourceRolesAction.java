@@ -2,12 +2,9 @@ package ccc.contentcreator.actions;
 
 import java.util.Collection;
 
-import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
-import ccc.contentcreator.client.IGlobals;
-import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.UpdateResourceRolesDialog;
 
@@ -22,8 +19,6 @@ public final class UpdateResourceRolesAction
 
 
     private final SingleSelectionModel _selectionModel;
-    private IGlobals _globals = new IGlobalsImpl();
-    private QueriesServiceAsync _qs = _globals.queriesService();
 
     /**
      * Constructor.

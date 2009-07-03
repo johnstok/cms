@@ -4,12 +4,9 @@ import java.util.Collection;
 
 import ccc.api.ResourceType;
 import ccc.api.TemplateSummary;
-import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
-import ccc.contentcreator.client.IGlobals;
-import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.ChooseTemplateDialog;
 
@@ -21,9 +18,6 @@ import ccc.contentcreator.dialogs.ChooseTemplateDialog;
 public final class ChooseTemplateAction
     implements
         Action {
-
-    private IGlobals _globals = new IGlobalsImpl();
-    private QueriesServiceAsync _qs = _globals.queriesService();
 
     private final SingleSelectionModel _selectionModel;
 
@@ -42,7 +36,7 @@ public final class ChooseTemplateAction
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
 
         if (item == null) {
-            _globals.alert(UI_CONSTANTS.noFolderSelected());
+            GLOBALS.alert(UI_CONSTANTS.noFolderSelected());
             return;
         }
 
@@ -61,7 +55,7 @@ public final class ChooseTemplateAction
                 }
             );
         } else {
-            _globals.alert(UI_CONSTANTS.templateCannotBeChosen());
+            GLOBALS.alert(UI_CONSTANTS.templateCannotBeChosen());
 
         }
     }

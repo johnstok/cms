@@ -12,13 +12,10 @@
 package ccc.contentcreator.actions;
 
 import ccc.api.ActionStatus;
-import ccc.contentcreator.api.CommandServiceAsync;
 import ccc.contentcreator.binding.ActionSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.ActionTable;
-import ccc.contentcreator.client.IGlobals;
-import ccc.contentcreator.client.IGlobalsImpl;
 
 
 /**
@@ -31,8 +28,6 @@ public class CancelActionAction
         Action {
 
     private final ActionTable _table;
-    private IGlobals _globals = new IGlobalsImpl();
-    private CommandServiceAsync _cs = _globals.commandService();
     /**
      * Constructor.
      *
@@ -46,10 +41,10 @@ public class CancelActionAction
     public void execute() {
         final ActionSummaryModelData action = _table.getSelectedItem();
         if (null==action) {
-            _globals.alert(UI_CONSTANTS.pleaseChooseAnAction());
+            GLOBALS.alert(UI_CONSTANTS.pleaseChooseAnAction());
             return;
         } else if (ActionStatus.Scheduled!=action.getStatus()) {
-            _globals.alert(UI_CONSTANTS.thisActionHasAlreadyCompleted());
+            GLOBALS.alert(UI_CONSTANTS.thisActionHasAlreadyCompleted());
             return;
         } else {
             _cs.cancelAction(

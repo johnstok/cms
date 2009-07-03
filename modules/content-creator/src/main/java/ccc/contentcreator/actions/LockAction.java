@@ -11,12 +11,9 @@
  */
 package ccc.contentcreator.actions;
 
-import ccc.contentcreator.api.CommandServiceAsync;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
-import ccc.contentcreator.client.IGlobals;
-import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
 
 
@@ -30,8 +27,6 @@ public class LockAction
         Action {
 
     private final SingleSelectionModel _selectionModel;
-    private IGlobals _globals = new IGlobalsImpl();
-    private CommandServiceAsync _cs = _globals.commandService();
 
     /**
      * Constructor.
@@ -50,7 +45,7 @@ public class LockAction
             new ErrorReportingCallback<Void>(UI_CONSTANTS.lock()){
                 public void onSuccess(final Void arg0) {
                     item.setLocked(
-                        new IGlobalsImpl().currentUser().getUsername());
+                        GLOBALS.currentUser().getUsername());
                     _selectionModel.update(item);
                 }
             }

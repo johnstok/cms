@@ -12,6 +12,8 @@
 package ccc.contentcreator.client;
 
 import ccc.contentcreator.api.ActionNameConstants;
+import ccc.contentcreator.api.CommandServiceAsync;
+import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 
 
@@ -24,6 +26,8 @@ public interface Action {
     IGlobals GLOBALS = new IGlobalsImpl();
     ActionNameConstants USER_ACTIONS = GLOBALS.userActions();
     UIConstants UI_CONSTANTS = GLOBALS.uiConstants();
+    CommandServiceAsync _cs = GLOBALS.commandService();
+    QueriesServiceAsync _qs = GLOBALS.queriesService();
 
     /**
      * Perform the action.
