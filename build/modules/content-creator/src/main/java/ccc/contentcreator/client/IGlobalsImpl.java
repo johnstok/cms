@@ -14,8 +14,12 @@ package ccc.contentcreator.client;
 import ccc.api.CommandFailedException;
 import ccc.api.UserSummary;
 import ccc.contentcreator.api.ActionNameConstants;
+import ccc.contentcreator.api.ActionStatusConstants;
 import ccc.contentcreator.api.CommandService;
 import ccc.contentcreator.api.CommandServiceAsync;
+import ccc.contentcreator.api.CommandTypeConstants;
+import ccc.contentcreator.api.ErrorDescriptions;
+import ccc.contentcreator.api.ErrorResolutions;
 import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.SecurityService;
@@ -41,15 +45,30 @@ public class IGlobalsImpl
     implements
         IGlobals {
 
-    private HandlerRegistration _handlerRegistration = null;
-
+    private static final CommandServiceAsync COMMAND_SERVICE =
+        GWT.create(CommandService.class);
+    private static final QueriesServiceAsync QUERIES_SERVICE =
+        GWT.create(QueriesService.class);
+    private static final SecurityServiceAsync SECURITY_SERVICE =
+        GWT.create(SecurityService.class);
+    private static final UIConstants UI_CONSTANTS =
+        GWT.create(UIConstants.class);
+    private static final UIMessages UI_MESSAGES =
+        GWT.create(UIMessages.class);
+    private static final ActionStatusConstants ACTION_STATUSES =
+        GWT.create(ActionStatusConstants.class);
+    private static final CommandTypeConstants COMMAND_TYPES =
+        GWT.create(CommandTypeConstants.class);
+    private static final ErrorDescriptions ERROR_DESCRIPTIONS =
+        GWT.create(ErrorDescriptions.class);
+    private static final ErrorResolutions ERROR_RESOLUTIONS =
+        GWT.create(ErrorResolutions.class);
+    private static final ActionNameConstants USER_ACTIONS =
+        GWT.create(ActionNameConstants.class);
     private static final boolean ENABLE_EXIT_CONFIRMATION =
         (null == Window.Location.getParameter("dec"));
 
-    private static final ActionNameConstants USER_ACTIONS =
-        GWT.create(ActionNameConstants.class);
-
-
+    private HandlerRegistration _handlerRegistration = null;
 
 
     /** {@inheritDoc} */
@@ -73,7 +92,7 @@ public class IGlobalsImpl
     /** {@inheritDoc} */
     @Override
     public CommandServiceAsync commandService() {
-        return GWT.create(CommandService.class);
+        return COMMAND_SERVICE;
     }
 
     /** {@inheritDoc} */
@@ -130,7 +149,7 @@ public class IGlobalsImpl
     /** {@inheritDoc} */
     @Override
     public QueriesServiceAsync queriesService() {
-        return GWT.create(QueriesService.class);
+        return QUERIES_SERVICE;
     }
 
     /** {@inheritDoc} */
@@ -148,19 +167,19 @@ public class IGlobalsImpl
     /** {@inheritDoc} */
     @Override
     public SecurityServiceAsync securityService() {
-        return GWT.create(SecurityService.class);
+        return SECURITY_SERVICE;
     }
 
     /** {@inheritDoc} */
     @Override
     public UIConstants uiConstants() {
-       return GWT.create(UIConstants.class);
+       return UI_CONSTANTS;
     }
 
     /** {@inheritDoc} */
     @Override
     public UIMessages uiMessages() {
-        return GWT.create(UIMessages.class);
+        return UI_MESSAGES;
     }
 
     /** {@inheritDoc} */
@@ -192,7 +211,7 @@ public class IGlobalsImpl
     /** {@inheritDoc} */
     @Override
     public ActionNameConstants userActions() {
-        return GWT.create(ActionNameConstants.class);
+        return USER_ACTIONS;
     }
 
     /**
@@ -232,6 +251,30 @@ public class IGlobalsImpl
         public static void currentUser(final UserSummary user) {
             _user = user;
         }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ActionStatusConstants actionStatusConstants() {
+        return ACTION_STATUSES;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CommandTypeConstants commandTypeConstants() {
+        return COMMAND_TYPES;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ErrorDescriptions errorDescriptions() {
+        return ERROR_DESCRIPTIONS;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ErrorResolutions errorResolutions() {
+        return ERROR_RESOLUTIONS;
     }
 
 }

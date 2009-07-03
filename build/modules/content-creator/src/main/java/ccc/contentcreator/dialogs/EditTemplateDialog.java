@@ -16,7 +16,6 @@ import ccc.api.ID;
 import ccc.api.MimeType;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
-import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.IGlobalsImpl;
@@ -31,7 +30,6 @@ import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.layout.FormData;
-import com.google.gwt.core.client.GWT;
 
 
 /**
@@ -40,9 +38,6 @@ import com.google.gwt.core.client.GWT;
  * @author Civic Computing Ltd.
  */
 public class EditTemplateDialog extends AbstractWizardDialog  {
-    private static final ActionNameConstants USER_ACTIONS =
-        GWT.create(ActionNameConstants.class);
-
 
     /** DEFAULT_WIDTH : int. */
     protected static final int DEFAULT_WIDTH = 640;

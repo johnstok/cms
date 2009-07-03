@@ -40,7 +40,6 @@ import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
 import com.extjs.gxt.ui.client.widget.toolbar.TextToolItem;
-import com.google.gwt.core.client.GWT;
 
 
 /**
@@ -52,16 +51,14 @@ public class MainMenu
     extends
         AbstractToolBar {
 
-    /** CONTENT : String. */
     private static final String CONTENT = "content";
-    /** ASSETS : String. */
     private static final String ASSETS = "assets";
-    private static final ActionNameConstants USER_ACTIONS =
-        GWT.create(ActionNameConstants.class);
 
-    private IGlobals _globals = new IGlobalsImpl();
+    private final IGlobals _globals = new IGlobalsImpl();
     private final UIConstants _constants = _globals.uiConstants();
+    private final ActionNameConstants _userActions =_globals.userActions();
     private final UserSummary _user;
+
     /**
      * Constructor.
      *
@@ -113,22 +110,28 @@ public class MainMenu
         rootItem.setId(rootName+"Root-menu");
 
         final Menu rootMenu = new Menu();
-        rootMenu.addListener(Events.BeforeShow,
+        rootMenu.addListener(
+            Events.BeforeShow,
             new Listener<MenuEvent>() {
-            public void handleEvent(final MenuEvent be) {
-                rootMenu.removeAll();
-                final QueriesServiceAsync qs = _globals.queriesService();
-                qs.roots(new ErrorReportingCallback<Collection<ResourceSummary>>(USER_ACTIONS.internalAction()) {
-                    public void onSuccess(final Collection<ResourceSummary> c) {
-                        for (final ResourceSummary root : c) {
-                            if (rootName.equals(root.getName())) {
-                                addRootMenuItems(root, rootMenu);
+                public void handleEvent(final MenuEvent be) {
+                    rootMenu.removeAll();
+                    final QueriesServiceAsync qs = _globals.queriesService();
+                    qs.roots(
+                        new ErrorReportingCallback<Collection<ResourceSummary>>(
+                                                _userActions.internalAction()) {
+                            public void onSuccess(
+                                          final Collection<ResourceSummary> c) {
+                                for (final ResourceSummary root : c) {
+                                    if (rootName.equals(root.getName())) {
+                                        addRootMenuItems(root, rootMenu);
+                                    }
+                                }
                             }
                         }
-                    }
-                });
+                    );
+                }
             }
-        });
+        );
 
         rootItem.setMenu(rootMenu);
         add(rootItem);
@@ -219,7 +222,7 @@ public class MainMenu
                         sb.append(_constants.publishedBy()
                             +" "+root.getPublishedBy()+"\n");
                     }
-                    _globals.alert(sb.toString());
+                    GLOBALS.alert(sb.toString());
                 }
 
             });

@@ -13,7 +13,11 @@ package ccc.contentcreator.client;
 
 import ccc.api.UserSummary;
 import ccc.contentcreator.api.ActionNameConstants;
+import ccc.contentcreator.api.ActionStatusConstants;
 import ccc.contentcreator.api.CommandServiceAsync;
+import ccc.contentcreator.api.CommandTypeConstants;
+import ccc.contentcreator.api.ErrorDescriptions;
+import ccc.contentcreator.api.ErrorResolutions;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.SecurityServiceAsync;
 import ccc.contentcreator.api.UIConstants;
@@ -173,4 +177,32 @@ public interface IGlobals {
     String SITE_BUILDER = "SITE_BUILDER";
     /** CONTENT_CREATOR : String. */
     String CONTENT_CREATOR = "CONTENT_CREATOR";
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    ActionStatusConstants actionStatusConstants();
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    CommandTypeConstants commandTypeConstants();
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    ErrorDescriptions errorDescriptions();
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    ErrorResolutions errorResolutions();
 }

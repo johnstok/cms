@@ -35,7 +35,6 @@ import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.extjs.gxt.ui.client.widget.layout.FormData;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
-import com.google.gwt.core.client.GWT;
 
 
 /**
@@ -47,7 +46,7 @@ public class CreateActionPanel
     extends
         LayoutContainer {
 
-    private IGlobals _globals = new IGlobalsImpl();
+    public IGlobals _globals = new IGlobalsImpl();
     private final UIConstants _uiConstants = _globals.uiConstants();
 
     private final DataList _list = new DataList();
@@ -95,7 +94,7 @@ public class CreateActionPanel
                             break;
 
                         case PAGE_UPDATE:
-                            _pPanel = new UpdatePanel();
+                            _pPanel = new UpdatePanel(_globals);
                             break;
 
                         default:
@@ -188,6 +187,16 @@ public class CreateActionPanel
         private final Html _title = new Html();
         private final CheckBox _majorEdit = new CheckBox();
         private final TextArea _comment = new TextArea();
+        private final IGlobals _globals;
+
+        /**
+         * Constructor.
+         *
+         * @param globals The globals object.
+         */
+        public UpdatePanel(final IGlobals globals) {
+            _globals = globals;
+        }
 
         /** {@inheritDoc} */
         @Override
@@ -200,7 +209,7 @@ public class CreateActionPanel
 
         /** {@inheritDoc} */
         public void populateForm(final LayoutContainer form) {
-            final UIConstants uiConstants = GWT.create(UIConstants.class);
+            final UIConstants uiConstants = _globals.uiConstants();
 
             _title.setHtml("<b>"+uiConstants.update()+"</b><br><br><i>"
                 +uiConstants.appliesTheSelectedResourcesWorkingCopy()

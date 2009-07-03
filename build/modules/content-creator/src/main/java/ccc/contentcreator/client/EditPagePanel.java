@@ -21,9 +21,6 @@ import ccc.api.FileSummary;
 import ccc.api.ID;
 import ccc.api.PageDelta;
 import ccc.api.Paragraph;
-import ccc.contentcreator.api.QueriesService;
-import ccc.contentcreator.api.QueriesServiceAsync;
-import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.FileSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.PageElement.FieldType;
@@ -51,7 +48,6 @@ import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.layout.FormData;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
@@ -69,12 +65,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private final List<PageElement> _pageElements =
         new ArrayList<PageElement>();
     private String _definition;
-
-    // used to retrieve FileSummary for UUID
-    private final QueriesServiceAsync _qs = GWT.create(QueriesService.class);
-
-    /** _constants : UIConstants. */
-    private final UIConstants _constants = new IGlobalsImpl().uiConstants();
+    private final IGlobals _globals = new IGlobalsImpl();
 
     /**
      * Constructor.
@@ -131,7 +122,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         final int editorIndex = indexOf(c.editor());
         remove(c.editor());
         final FCKEditor fck =
-            new FCKEditor(para.text(), "250px");
+            new FCKEditor(para.text(), "250px", _globals);
         insert(fck, editorIndex, new FormData("95%"));
         c.editor(fck);
     }
@@ -209,8 +200,9 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         final String id = para.text();
         if (id != null && !id.trim().equals("")) {
             final ID resourceId = new ID(id);
-            _qs.getAbsolutePath(resourceId,
-                new ErrorReportingCallback<String>(_constants.selectImage()) {
+            _globals.queriesService().getAbsolutePath(resourceId,
+                new ErrorReportingCallback<String>(
+                    _globals.uiConstants().selectImage()) {
                 @Override public void onSuccess(final String path) {
                     final FileSummary fs =
                         new FileSummary("image", path, resourceId, "", "");
@@ -663,7 +655,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         final Text fieldName = new Text(name+":");
         fieldName.setStyleName("x-form-item");
         add(fieldName);
-        final FCKEditor fck = new FCKEditor("", "250px");
+        final FCKEditor fck = new FCKEditor("", "250px", _globals);
         final PageElement pe = new PageElement(name);
         pe.fieldType(FieldType.HTML);
         pe.editorLabel(fieldName);
@@ -757,9 +749,9 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private void addStaticFields() {
 
         _name = new TextField<String>();
-        _name.setFieldLabel(_constants.name());
+        _name.setFieldLabel(_globals.uiConstants().name());
         _name.setAllowBlank(false);
-        _name.setId(_constants.name());
+        _name.setId(_globals.uiConstants().name());
         add(_name, new FormData("95%"));
     }
 }

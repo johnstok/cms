@@ -12,14 +12,11 @@
 package ccc.contentcreator.client;
 
 import ccc.contentcreator.api.ActionNameConstants;
-import ccc.contentcreator.api.CommandService;
 import ccc.contentcreator.api.CommandServiceAsync;
-import ccc.contentcreator.api.QueriesService;
 import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 
 import com.extjs.gxt.ui.client.widget.ContentPanel;
-import com.google.gwt.core.client.GWT;
 
 
 /**
@@ -29,18 +26,16 @@ import com.google.gwt.core.client.GWT;
  */
 public abstract class TablePanel extends ContentPanel {
 
+    private static final IGlobals GLOBALS = new IGlobalsImpl();
+
     /** _cs : CommandServiceAsync. */
-    protected final CommandServiceAsync _cs =
-        GWT.create(CommandService.class);
+    protected final CommandServiceAsync _cs = GLOBALS.commandService();
     /** qs : QueriesServiceAsync. */
-    protected final QueriesServiceAsync qs =
-        GWT.create(QueriesService.class);
+    protected final QueriesServiceAsync qs = GLOBALS.queriesService();
     /** USER_ACTIONS : ActionNameConstants. */
-    protected final ActionNameConstants USER_ACTIONS =
-        GWT.create(ActionNameConstants.class);
+    protected final ActionNameConstants USER_ACTIONS = GLOBALS.userActions();
     /** UI_CONSTANTS : UIConstants. */
-    protected static final UIConstants UI_CONSTANTS =
-        GWT.create(UIConstants.class);
+    protected static final UIConstants UI_CONSTANTS = GLOBALS.uiConstants();
     /** PAGING_ROW_COUNT : int. */
     protected static final int PAGING_ROW_COUNT = 20;
 }

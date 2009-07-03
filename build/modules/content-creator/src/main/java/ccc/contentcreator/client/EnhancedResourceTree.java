@@ -49,9 +49,10 @@ public class EnhancedResourceTree extends FolderResourceTree {
      */
     EnhancedResourceTree(final ResourceSummary root,
                          final LeftRightPane view,
-                         final UserSummary user) {
+                         final UserSummary user,
+                         final IGlobals globals) {
 
-        super(root);
+        super(root, globals);
 
         _rt = new ResourceTable(root, this, user);
         _view = view;

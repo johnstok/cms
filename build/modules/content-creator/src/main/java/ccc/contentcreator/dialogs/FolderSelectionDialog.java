@@ -12,7 +12,6 @@
 package ccc.contentcreator.dialogs;
 
 import ccc.api.ResourceSummary;
-import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.FolderResourceTree;
 import ccc.contentcreator.client.IGlobals;
@@ -37,7 +36,7 @@ public class FolderSelectionDialog extends Window {
     private static final int WIDTH = 400;
 
     private final FolderResourceTree _tree;
-    private final UIConstants _constants = new IGlobalsImpl().uiConstants();
+    private final IGlobals _globals = new IGlobalsImpl();
 
     /**
      * Constructor.
@@ -48,15 +47,15 @@ public class FolderSelectionDialog extends Window {
         setModal(true);
         setBodyStyle("backgroundColor: white;");
         setScrollMode(Scroll.AUTOY);
-        setHeading(_constants.selectFolder());
+        setHeading(_globals.uiConstants().selectFolder());
         setWidth(WIDTH);
         setHeight(HEIGHT);
         setMinWidth(IGlobals.MIN_WIDTH);
         setLayout(new FitLayout());
-        _tree = new FolderResourceTree(root);
+        _tree = new FolderResourceTree(root, _globals);
         add(_tree);
         final Button save = new Button(
-            _constants.ok(),
+            _globals.uiConstants().ok(),
             new SelectionListener<ComponentEvent>() {
                 @Override
                 public void componentSelected(final ComponentEvent ce) {

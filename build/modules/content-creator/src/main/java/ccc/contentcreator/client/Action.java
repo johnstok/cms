@@ -14,8 +14,6 @@ package ccc.contentcreator.client;
 import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.api.UIConstants;
 
-import com.google.gwt.core.client.GWT;
-
 
 /**
  * A GUI action.
@@ -23,12 +21,9 @@ import com.google.gwt.core.client.GWT;
  * @author Civic Computing Ltd.
  */
 public interface Action {
-    /** USER_ACTIONS : ActionNameConstants. */
-    ActionNameConstants USER_ACTIONS =
-        GWT.create(ActionNameConstants.class);
-    /** UI_CONSTANTS : UIConstants. */
-    UIConstants UI_CONSTANTS =
-        GWT.create(UIConstants.class);
+    IGlobals GLOBALS = new IGlobalsImpl();
+    ActionNameConstants USER_ACTIONS = GLOBALS.userActions();
+    UIConstants UI_CONSTANTS = GLOBALS.uiConstants();
 
     /**
      * Perform the action.
