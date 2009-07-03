@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.CommandType;
+import ccc.api.JsonKeys;
 import ccc.domain.InsufficientPrivilegesException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
@@ -68,7 +69,7 @@ public class UnlockResourceCommand {
         r.unlock(actor);
 
         final Snapshot ss = new Snapshot();
-        ss.set("unlock", actor.id().toString()); // FIXME: Extract key.
+        ss.set(JsonKeys.UNLOCK, actor.id().toString());
         final LogEntry le =
             new LogEntry(
                 actor,

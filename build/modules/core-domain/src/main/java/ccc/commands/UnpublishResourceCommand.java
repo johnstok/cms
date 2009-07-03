@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.CommandType;
+import ccc.api.JsonKeys;
 import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
@@ -66,7 +67,7 @@ public class UnpublishResourceCommand {
         r.unpublish();
 
         final Snapshot ss = new Snapshot();
-        ss.set("unpublish", actor.id().toString());
+        ss.set(JsonKeys.UNPUBLISH, actor.id().toString());
         final LogEntry le =
             new LogEntry(
                 actor,
