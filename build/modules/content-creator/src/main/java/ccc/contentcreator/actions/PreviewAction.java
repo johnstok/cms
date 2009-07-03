@@ -2,7 +2,6 @@ package ccc.contentcreator.actions;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.Action;
-import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
 
 import com.google.gwt.user.client.Window;
@@ -35,7 +34,7 @@ public final class PreviewAction
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         final String url =
-            new IGlobalsImpl().appURL()
+            GLOBALS.appURL()
                 + item.getAbsolutePath()
                 + ((_useWorkingCopy) ? "?wc" : "");
 

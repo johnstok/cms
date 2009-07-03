@@ -1,11 +1,8 @@
 package ccc.contentcreator.actions;
 
-import ccc.contentcreator.api.CommandServiceAsync;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
-import ccc.contentcreator.client.IGlobals;
-import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
 
 /**
@@ -18,8 +15,6 @@ public class ClearWorkingCopyAction
         Action {
 
     private final SingleSelectionModel _selectionModel;
-    private IGlobals _globals = new IGlobalsImpl();
-    private CommandServiceAsync _cs = _globals.commandService();
 
     /**
      * Constructor.
