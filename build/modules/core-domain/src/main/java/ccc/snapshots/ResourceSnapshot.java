@@ -21,6 +21,7 @@ import ccc.api.ResourceType;
 import ccc.domain.Folder;
 import ccc.domain.Resource;
 import ccc.domain.ResourceName;
+import ccc.domain.ResourcePath;
 import ccc.domain.Template;
 import ccc.domain.User;
 
@@ -219,5 +220,15 @@ public class ResourceSnapshot {
      */
     public String title() {
         return _delegate.title();
+    }
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     * @see @link ccc.domain.Resource#absolutePath()
+     */
+    ResourcePath absolutePath() {
+        return _delegate.absolutePath();
     }
 }
