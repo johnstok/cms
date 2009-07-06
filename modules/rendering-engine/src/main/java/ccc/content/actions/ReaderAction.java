@@ -62,16 +62,14 @@ public class ReaderAction
         final Principal p = req.getUserPrincipal();
         req.setAttribute(SessionKeys.CURRENT_USER, ul.loggedInUser(p));
 
-        final AuditLog al = new AuditLogImpl(dao);
+        final AuditLog al = new AuditLogImpl(dao); // TODO: Remove - not used.
         req.setAttribute(SessionKeys.AUDIT_KEY, al);
 
         final DataManager dm = new DataManagerImpl(new FsCoreData(), dao);
         req.setAttribute(SessionKeys.DATA_KEY, dm);
 
         final StatefulReader sr =
-            new StatefulReaderImpl(
-                al,
-                new ResourceDaoImpl(dao));
+            new StatefulReaderImpl(new ResourceDaoImpl(dao));
         req.setAttribute(RenderingKeys.READER_KEY, sr);
 
         _delegate.execute(req, resp);

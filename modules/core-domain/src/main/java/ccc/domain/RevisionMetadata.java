@@ -39,7 +39,7 @@ public final class RevisionMetadata {
                             final User actor,
                             final boolean majorChange,
                             final String comment) {
-        _timestamp = timestamp;
+        _timestamp = new Date(timestamp.getTime());
         _actor = actor;
         _majorChange = majorChange;
         _comment = comment;
@@ -52,7 +52,7 @@ public final class RevisionMetadata {
      * @return Returns the timestamp.
      */
     public Date getTimestamp() {
-        return _timestamp;
+        return new Date(_timestamp.getTime());
     }
 
 
