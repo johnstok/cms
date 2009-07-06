@@ -11,11 +11,9 @@
  */
 package ccc.content.velocity;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import junit.framework.TestCase;
 import ccc.api.Paragraph;
@@ -25,6 +23,7 @@ import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.ResourceName;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
+import ccc.snapshots.PageSnapshot;
 import ccc.snapshots.ResourceSnapshot;
 
 
@@ -113,15 +112,14 @@ public class VelocityHelperTest extends TestCase {
         folder.add(page2);
 
         // ACT
-        final List<String> contentElements = new ArrayList<String>();
-        contentElements.add("HEADER");
-        final List<Map<String, String>> result =
+        final List<PageSnapshot> result =
             helper.selectPagesForContentIndex(
-                folder.forCurrentRevision(), 1, contentElements);
+                folder.forCurrentRevision(), 1);
 
         // ASSERT
         assertEquals(1, result.size());
-        assertEquals("headertext", result.get(0).get("HEADER"));
+        assertEquals("headertext",
+            result.get(0).paragraph("HEADER").text());
     }
 
 
@@ -157,16 +155,16 @@ public class VelocityHelperTest extends TestCase {
         folder.add(page2);
 
         // ACT
-        final List<String> contentElements = new ArrayList<String>();
-        contentElements.add("HEADER");
-        final List<Map<String, String>> result =
+        final List<PageSnapshot> result =
             helper.selectPagesForContentIndex(
-                folder.forCurrentRevision(), -1, contentElements);
+                folder.forCurrentRevision(), -1);
 
         // ASSERT
         assertEquals(2, result.size());
-        assertEquals("headertext", result.get(0).get("HEADER"));
-        assertEquals("headertext2", result.get(1).get("HEADER"));
+        assertEquals("headertext",
+            result.get(0).paragraph("HEADER").text());
+        assertEquals("headertext2",
+            result.get(1).paragraph("HEADER").text());
     }
 
     private final RevisionMetadata _rm =
