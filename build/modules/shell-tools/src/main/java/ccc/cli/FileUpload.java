@@ -33,7 +33,7 @@ import ccc.migration.ServiceLookup;
  * A command line tool that allows bulk upload of files into CCC.
  *
  * TODO: Report failure to create a file (currently silently ignored).
- * TODO: Add the ability to overwrite/ignore existing files/folders.
+ * TODO: Add the ability to overwrite existing files.
  *
  * @author Civic Computing Ltd.
  */
@@ -104,7 +104,7 @@ public class FileUpload extends CccApp {
 
         logout();
 
-        report("Migration finished in ");
+        report("Upload finished in ");
     }
 
 

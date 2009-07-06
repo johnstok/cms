@@ -14,12 +14,15 @@ package ccc.cli.fileupload;
 import java.io.File;
 import java.util.UUID;
 
+import org.apache.log4j.Logger;
+
 import ccc.api.CommandFailedException;
 import ccc.api.Commands;
 import ccc.api.Failure;
 import ccc.api.ID;
 import ccc.api.Queries;
 import ccc.api.ResourceSummary;
+import ccc.cli.FileUpload;
 import ccc.domain.ResourcePath;
 import ccc.migration.FileUploader;
 
@@ -30,6 +33,7 @@ import ccc.migration.FileUploader;
  * @author Civic Computing Ltd.
  */
 public class CccServer implements Server {
+    private static final Logger LOG = Logger.getLogger(FileUpload.class);
 
     private ResourcePath _rootPath;
     private FileUploader _uploader;
@@ -81,7 +85,9 @@ public class CccServer implements Server {
             return UUID.fromString(rs.getId().toString());
         } catch (final CommandFailedException e) {
             if (Failure.EXISTS==e.getCode()) {
-                return UUID.fromString(e.getFailure().getParams().get("existing_id"));
+                LOG.warn("Folder already exists: "+name);
+                return UUID.fromString(
+                    e.getFailure().getParams().get("existing_id"));
             }
             throw e;
         }
