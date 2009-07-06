@@ -228,7 +228,7 @@ public class ResourceSnapshot {
      * @return
      * @see @link ccc.domain.Resource#absolutePath()
      */
-    ResourcePath absolutePath() {
+    public ResourcePath absolutePath() {
         return _delegate.absolutePath();
     }
 }
