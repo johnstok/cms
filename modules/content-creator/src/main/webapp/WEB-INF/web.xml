@@ -95,6 +95,10 @@
         </init-param>
     </servlet>
     <servlet>
+        <servlet-name>broken-links</servlet-name>
+        <servlet-class>ccc.contentcreator.remoting.BrokenLinkServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>error</servlet-name>
         <jsp-file>/error.jsp</jsp-file>
     </servlet>
@@ -136,6 +140,10 @@
         <url-pattern>/assets/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>broken-links</servlet-name>
+        <url-pattern>/${application.prefix}/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>error</servlet-name>
         <url-pattern>/error</url-pattern>
     </servlet-mapping>
@@ -170,6 +178,7 @@
             <url-pattern>/update_file</url-pattern>
             <url-pattern>/content/*</url-pattern>
             <url-pattern>/assets/*</url-pattern>
+            <url-pattern>/${application.prefix}/*</url-pattern>
             <url-pattern>/error</url-pattern>
             <url-pattern>/notfound</url-pattern>
             <url-pattern>/api</url-pattern>
