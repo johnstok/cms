@@ -15,17 +15,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
-import ccc.api.Paragraph;
 import ccc.api.ResourceType;
 import ccc.commons.XHTML;
 import ccc.domain.Page;
 import ccc.domain.ResourcePath;
 import ccc.snapshots.FolderSnapshot;
+import ccc.snapshots.PageSnapshot;
 import ccc.snapshots.ResourceSnapshot;
 
 
@@ -93,15 +91,13 @@ public class VelocityHelper {
      *
      * @param folder The folder the get pages from.
      * @param displayLimit Number of pages to display. -1 for no limit.
-     * @param contentElements A list of paragraph names to load.
-     * @return A list of maps containing paragraph name and text for each page.
+     * @return A list of maps containing PageSnapshot of each page.
      */
-    public List<Map<String, String>> selectPagesForContentIndex(
+    public List<PageSnapshot> selectPagesForContentIndex(
                                            final ResourceSnapshot folder,
-                                           final int displayLimit,
-                                           final List<String> contentElements) {
-        final List<Map<String, String>> elements =
-            new ArrayList<Map<String, String>>();
+                                           final int displayLimit) {
+        final List<PageSnapshot> elements =
+            new ArrayList<PageSnapshot>();
 
         if (folder.type() !=  ResourceType.FOLDER) {
             return null;
@@ -112,13 +108,7 @@ public class VelocityHelper {
         int c = 0;
         for (final Page page : f.pages()) {
             if (displayLimit == -1 || c < displayLimit) {
-                final Map<String, String> map = new HashMap<String, String>();
-                for (final Paragraph para : page.currentRevision().paragraphs()) {
-                    if (contentElements.contains(para.name())) {
-                        map.put(para.name(), para.text());
-                    }
-                }
-                elements.add(map);
+                elements.add(page.forCurrentRevision());
                 c++;
             }
         }
