@@ -21,7 +21,6 @@ import ccc.domain.Folder;
 import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
-import ccc.domain.Snapshot;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -80,15 +79,13 @@ public class ReorderFolderContentsCommand {
         }
         f.reorder(newOrder);
 
-        final Snapshot ss = new Snapshot();
-        ss.set("reorder", actor.id().toString());
         final LogEntry le =
             new LogEntry(
                 actor,
                 CommandType.FOLDER_REORDER,
                 happenedOn,
                 folderId,
-                ss.getDetail());
+                "{}");
         _audit.record(le);
     }
 }

@@ -18,7 +18,6 @@ import ccc.api.CommandType;
 import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
-import ccc.domain.Snapshot;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -62,15 +61,13 @@ public class LockResourceCommand {
         final Resource r = _dao.find(Resource.class, resourceId);
         r.lock(actor);
 
-        final Snapshot ss = new Snapshot();
-        ss.set("lock", actor.id().toString());
         final LogEntry le =
             new LogEntry(
                 actor,
                 CommandType.RESOURCE_LOCK,
                 happenedOn,
                 resourceId,
-                ss.getDetail());
+                "{}");
         _audit.record(le);
     }
 }

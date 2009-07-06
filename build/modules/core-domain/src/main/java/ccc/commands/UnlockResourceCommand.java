@@ -15,11 +15,9 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.CommandType;
-import ccc.api.JsonKeys;
 import ccc.domain.InsufficientPrivilegesException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
-import ccc.domain.Snapshot;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -68,15 +66,13 @@ public class UnlockResourceCommand {
         final Resource r = _dao.find(Resource.class, resourceId);
         r.unlock(actor);
 
-        final Snapshot ss = new Snapshot();
-        ss.set(JsonKeys.UNLOCK, actor.id().toString());
         final LogEntry le =
             new LogEntry(
                 actor,
                 CommandType.RESOURCE_UNLOCK,
                 happenedOn,
                 resourceId,
-                ss.getDetail());
+                "{}");
         _audit.record(le);
     }
 }
