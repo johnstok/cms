@@ -64,7 +64,7 @@ public abstract class HistoricalResource<S, T extends Revision<S>>
      *
      * @return The revision corresponding to the current version.
      */
-    public final T currentRevision() {
+    public T currentRevision() {
         return revision(_currentRev);
     }
 
@@ -76,7 +76,7 @@ public abstract class HistoricalResource<S, T extends Revision<S>>
      *
      * @return The revision corresponding to the specified version.
      */
-    public final T revision(final int i) {
+    public T revision(final int i) {
         final T rev = _history.get(Integer.valueOf(i));
         if (null==rev) {
             throw new RuntimeException("No revision!");
@@ -90,7 +90,7 @@ public abstract class HistoricalResource<S, T extends Revision<S>>
      *
      * @param revision The revision to add.
      */
-    protected final void addRevision(final T revision) {
+    protected void addRevision(final T revision) {
         DBC.require().notNull(revision);
 
         _currentRev++;
