@@ -83,7 +83,7 @@
                 type="integer" />
             <property
                 name="_exceptionId"
-                column="failure_exception_id"
+                column="failure_id"
                 type="string" 
                 length="36" />
                 
