@@ -17,7 +17,6 @@ import java.util.UUID;
 import ccc.api.PageDelta;
 import ccc.api.Paragraph;
 import ccc.domain.Page;
-import ccc.domain.PageHelper;
 import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.ResourceName;
 import ccc.domain.RevisionMetadata;
@@ -33,8 +32,6 @@ import ccc.services.Dao;
  * @author Civic Computing Ltd.
  */
 public class CreatePageCommand extends CreateResourceCommand {
-
-    private final PageHelper _pageHelper = new PageHelper();
 
     /**
      * Constructor.

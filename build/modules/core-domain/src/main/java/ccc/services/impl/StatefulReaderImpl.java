@@ -16,7 +16,6 @@ import java.util.UUID;
 
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
-import ccc.services.AuditLog;
 import ccc.services.ResourceDao;
 import ccc.services.StatefulReader;
 
@@ -30,17 +29,14 @@ public final class StatefulReaderImpl
     implements
         StatefulReader {
 
-    private final AuditLog     _log;
     private final ResourceDao  _resources;
 
     /**
      * Constructor.
      *
-     * @param log The audit logger to use.
      * @param resources The DAO to use.
      */
-    public StatefulReaderImpl(final AuditLog log, final ResourceDao resources) {
-        _log = log;
+    public StatefulReaderImpl(final ResourceDao resources) {
         _resources = resources;
     }
 

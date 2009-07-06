@@ -24,6 +24,7 @@ import java.nio.charset.Charset;
  * @author Civic Computing Ltd.
  */
 public final class IO {
+    private static final int BUFFER_SIZE = 8*1024; //8K
 
     private IO() { super(); }
 
@@ -39,8 +40,7 @@ public final class IO {
      */
     public static void copy(final InputStream is,
                             final OutputStream os) throws IOException {
-        final int bufferSize = 8*1024; //8K
-        final byte[] buffer = new byte[bufferSize];
+        final byte[] buffer = new byte[BUFFER_SIZE];
 
         while (true) {
             final int amountRead = is.read(buffer);
