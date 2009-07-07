@@ -272,13 +272,13 @@ public final class Folder extends Resource {
     }
 
     /**
-     * Retrieve a list of all the pages in this folder.
+     * Retrieve a list of all the pages in this folder with sort order applied.
      *
      * @return A list of pages.
      */
     public List<Page> pages() {
         final List<Page> entries = new ArrayList<Page>();
-        for (final Resource entry : _entries) {
+        for (final Resource entry : entries()) {
             if (entry.type()==ResourceType.PAGE) {
                 entries.add(entry.as(Page.class));
             }

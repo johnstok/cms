@@ -219,6 +219,40 @@ public final class FolderTest extends TestCase {
      *
      * @throws RemoteExceptionSupport If the test fails.
      */
+    public void testPagesRespectSortOrder() throws RemoteExceptionSupport {
+
+            // ARRANGE
+            final Folder f = new Folder("f");
+            final Page x = new Page("x", _rm);
+            final Page a = new Page("a", _rm);
+            final Template r =
+                new Template(
+                    "r",
+                    "desc",
+                    "body",
+                    "<fields/>",
+                    MimeType.HTML,
+                    _rm);
+            f.add(x);
+            f.add(a);
+            f.add(r);
+
+            f.sortOrder(ResourceOrder.NAME_ALPHANUM_ASC);
+
+            // ACT
+            final List<Page> actual = f.pages();
+
+            // ASSERT
+            assertEquals(2, actual.size());
+            assertSame(a, actual.get(0));
+            assertSame(x, actual.get(1));
+    }
+
+    /**
+     * Test.
+     *
+     * @throws RemoteExceptionSupport If the test fails.
+     */
     public void testFirstPage() throws RemoteExceptionSupport {
 
         // ARRANGE
