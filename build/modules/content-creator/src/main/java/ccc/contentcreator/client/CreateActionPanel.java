@@ -46,7 +46,7 @@ public class CreateActionPanel
     extends
         LayoutContainer {
 
-    public IGlobals _globals = new IGlobalsImpl();
+    private final IGlobals _globals = new IGlobalsImpl();
     private final UIConstants _uiConstants = _globals.uiConstants();
 
     private final DataList _list = new DataList();

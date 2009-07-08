@@ -47,7 +47,8 @@ public class UpdateResourceRolesDialog
      */
     public UpdateResourceRolesDialog(final ID resourceId,
                                      final Collection<String> currentRoles) {
-        super(new IGlobalsImpl().uiConstants().updateRoles(), new IGlobalsImpl());
+        super(new IGlobalsImpl().uiConstants().updateRoles(),
+              new IGlobalsImpl());
         _resourceId = resourceId;
 
         setWidth(DIALOG_WIDTH);

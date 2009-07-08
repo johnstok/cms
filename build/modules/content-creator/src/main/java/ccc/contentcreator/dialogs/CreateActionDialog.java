@@ -51,7 +51,8 @@ public class CreateActionDialog
      * @param resourceId The ID of the resource.
      */
     public CreateActionDialog(final ID resourceId) {
-        super(new IGlobalsImpl().uiConstants().createAction(), new IGlobalsImpl());
+        super(new IGlobalsImpl().uiConstants().createAction(),
+              new IGlobalsImpl());
 
         _resourceId = resourceId;
 

@@ -63,7 +63,8 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
     public ChooseTemplateDialog(final ResourceSummaryModelData resource,
                                 final Collection<TemplateSummary> templates,
                                 final SingleSelectionModel ssm) {
-        super(new IGlobalsImpl().uiConstants().chooseTemplate(), new IGlobalsImpl());
+        super(new IGlobalsImpl().uiConstants().chooseTemplate(),
+              new IGlobalsImpl());
         setHeight(IGlobals.DEFAULT_MIN_HEIGHT);
 
         _resource = resource;

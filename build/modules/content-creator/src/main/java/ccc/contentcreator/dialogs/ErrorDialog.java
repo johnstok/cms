@@ -76,6 +76,7 @@ public class ErrorDialog extends AbstractEditDialog {
      *
      * @param e The exception to display.
      * @param action The action that was performed.
+     * @param globals IGlobals implementation.
      */
     public ErrorDialog(final Throwable e,
                        final String action,
@@ -92,6 +93,7 @@ public class ErrorDialog extends AbstractEditDialog {
      *
      * @param e The exception to display.
      * @param action The action that was performed.
+     * @param globals IGlobals implementation.
      */
     public ErrorDialog(final CommandFailedException e,
                        final String action,

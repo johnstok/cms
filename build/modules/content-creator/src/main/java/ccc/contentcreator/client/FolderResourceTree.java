@@ -50,8 +50,10 @@ public class FolderResourceTree extends Tree {
      * Constructor.
      *
      * @param root The root of the tree.
+     * @param globals IGlobals globals.
      */
-    public FolderResourceTree(final ResourceSummary root, final IGlobals globals) {
+    public FolderResourceTree(final ResourceSummary root,
+                              final IGlobals globals) {
 
         _root = root;
         _globals = globals;

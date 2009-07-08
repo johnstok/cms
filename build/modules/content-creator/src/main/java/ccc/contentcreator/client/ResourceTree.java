@@ -47,6 +47,7 @@ public class ResourceTree extends Tree {
      * Constructor.
      *
      * @param root The root of the tree.
+     * @param globals IGlobals implementation.
      */
     public ResourceTree(final ResourceSummary root, final IGlobals globals) {
 

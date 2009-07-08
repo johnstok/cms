@@ -72,7 +72,8 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
      */
     public EditTemplateDialog(final ID parentFolderId,
                               final SingleSelectionModel ssm) {
-        super(new IGlobalsImpl().uiConstants().editTemplate(), new IGlobalsImpl());
+        super(new IGlobalsImpl().uiConstants().editTemplate(),
+              new IGlobalsImpl());
         setWidth(DEFAULT_WIDTH);
         setHeight(DEFAULT_HEIGHT);
 
