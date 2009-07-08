@@ -58,7 +58,10 @@ public class HistoryDialog
     public HistoryDialog(final Collection<LogEntrySummary> data,
                          final ID resourceId,
                          final SingleSelectionModel ssm) {
-        super(new IGlobalsImpl().uiConstants().resourceHistory(), new IGlobalsImpl(), data, false);
+        super(new IGlobalsImpl().uiConstants().resourceHistory(),
+              new IGlobalsImpl(),
+              data,
+              false);
 
         _id = resourceId;
         _ssm = ssm;

@@ -85,8 +85,6 @@ public class ResourceContextMenu
     private final Action _applyWorkingCopyAction;
     private final Action _editCacheAction;
 
-    private IGlobals _globals = new IGlobalsImpl();
-
     /**
      * Constructor.
      *

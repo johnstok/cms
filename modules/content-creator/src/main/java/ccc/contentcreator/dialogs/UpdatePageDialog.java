@@ -82,7 +82,8 @@ public class UpdatePageDialog
                             final String pageName,
                             final TemplateSummary template,
                             final ResourceTable rt) {
-        super(new IGlobalsImpl().uiConstants().updateContent(), new IGlobalsImpl());
+        super(new IGlobalsImpl().uiConstants().updateContent(),
+              new IGlobalsImpl());
         _rt = rt;
         _page = page;
         _template = template;
@@ -129,7 +130,7 @@ public class UpdatePageDialog
             @Override public void componentSelected(final ButtonEvent ce) {
                 final Set<Paragraph> paragraphs = assignParagraphs();
 
-                Validate.callTo(updatePage(paragraphs))
+                Validate.callTo(updatePage())
                     .check(Validations.validateFields(
                         paragraphs, _panel.definition()))
                     .callMethodOr(Validations.reportErrors());
@@ -142,7 +143,7 @@ public class UpdatePageDialog
             @Override public void componentSelected(final ButtonEvent ce) {
                 final Set<Paragraph> paragraphs = assignParagraphs();
 
-                Validate.callTo(saveDraft(paragraphs))
+                Validate.callTo(saveDraft())
                     .check(Validations.validateFields(
                         paragraphs, _panel.definition()))
                     .callMethodOr(Validations.reportErrors());
@@ -150,7 +151,7 @@ public class UpdatePageDialog
         };
     }
 
-    private Runnable updatePage(final Set<Paragraph> paragraphs) {
+    private Runnable updatePage() {
         return new Runnable() {
             public void run() {
                 final PageCommentDialog commentDialog =
@@ -161,7 +162,7 @@ public class UpdatePageDialog
         };
     }
 
-    private Runnable saveDraft(final Set<Paragraph> paragraphs) {
+    private Runnable saveDraft() {
         return new Runnable() {
             public void run() {
                 commands().updateWorkingCopy(
