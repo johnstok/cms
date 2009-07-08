@@ -84,15 +84,16 @@ public class FCKEditor extends LayoutContainer {
                      final String cssHeight,
                      final IGlobals globals) {
 
+        //Work out an ID
+        _elementID =
+            "net-sf-jwc-gwt-fckeditor-client-ui-FCKEditor"
+            + System.identityHashCode(this);
+
         initJSNI(this);
 
         _qs = globals.queriesService();
         _userActions = globals.userActions();
 
-        //Work out an ID
-        _elementID =
-            "net-sf-jwc-gwt-fckeditor-client-ui-FCKEditor"
-            + System.identityHashCode(this);
 
         //Create the hidden input box
         final Hidden inputBox = new Hidden();
@@ -168,20 +169,22 @@ public class FCKEditor extends LayoutContainer {
 
 
     private static native String initJSNI(final FCKEditor obj) /*-{
-        $wnd.cccLinkSelector = function() {
-            obj.@ccc.contentcreator.client.ui.FCKEditor::openLinkSelector()();
+        $wnd.cccLinkSelector = function(fckname) {
+            obj.@ccc.contentcreator.client.ui.FCKEditor::openLinkSelector(Ljava/lang/String;)(fckname);
         };
 
-        $wnd.cccImageSelector = function() {
-            obj.@ccc.contentcreator.client.ui.FCKEditor::openImageSelector()();
+        $wnd.cccImageSelector = function(fckname) {
+            obj.@ccc.contentcreator.client.ui.FCKEditor::openImageSelector(Ljava/lang/String;)(fckname);
         };
     }-*/;
 
 
     /**
      * Displays the FCKEditor specific link selection dialog.
+     *
+     * @param elementID The name of the FCKEditor.
      */
-    public void openLinkSelector() {
+    public void openLinkSelector(final String elementID) {
         _qs.roots(new ErrorReportingCallback<Collection<ResourceSummary>>(
             _userActions.internalAction()){
             public void onSuccess(final Collection<ResourceSummary> arg0) {
@@ -191,7 +194,7 @@ public class FCKEditor extends LayoutContainer {
                         rs = rr;
                     }
                 }
-                new LinkSelectionDialog(rs, _elementID).show();
+                new LinkSelectionDialog(rs, elementID).show();
 
             }
         });
@@ -202,8 +205,9 @@ public class FCKEditor extends LayoutContainer {
     /**
      * Displays the FCKEditor specific image selection dialog.
      *
+     * @param elementID The name of the FCKEditor.
      */
-    public void openImageSelector() {
-        new ImageSelectionDialog(_elementID).show();
+    public void openImageSelector(final String elementID) {
+        new ImageSelectionDialog(elementID).show();
     }
 }
