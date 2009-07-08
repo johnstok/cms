@@ -8,7 +8,8 @@ return FCK_TRISTATE_OFF; //we dont want the button to be toggled
 }
 LinkSelectCommand.Execute=function() {
 //open a popup window when the button is clicked
-parent.cccLinkSelector();
+	var fckname = FCKURLParams['InstanceName'] ;
+	parent.cccLinkSelector(fckname);
 }
 FCKCommands.RegisterCommand('CCC_Link', LinkSelectCommand );
         
