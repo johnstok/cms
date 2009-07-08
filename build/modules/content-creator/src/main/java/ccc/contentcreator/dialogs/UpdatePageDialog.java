@@ -50,21 +50,23 @@ public class UpdatePageDialog
     private final TemplateSummary _template;
     private final ResourceTable _rt;
     private final EditPagePanel _panel = new EditPagePanel();
+    private int _fckReadyCount = 0;
 
+    private Button _saveDraftButton;
+    private Button _applyNowButton;
 
-
-        private final AsyncCallback<Void> _saveDraftCompletedCallback =
-            new AsyncCallback<Void>() {
-            public void onFailure(final Throwable arg0) {
-                _globals.unexpectedError(arg0, _constants.saveDraft());
-            }
-            public void onSuccess(final Void arg0) {
-                final ResourceSummaryModelData md = rt().tableSelection();
-                md.setWorkingCopy(true);
-                rt().update(md);
-                close();
-            }
-        };
+    private final AsyncCallback<Void> _saveDraftCompletedCallback =
+        new AsyncCallback<Void>() {
+        public void onFailure(final Throwable arg0) {
+            _globals.unexpectedError(arg0, _constants.saveDraft());
+        }
+        public void onSuccess(final Void arg0) {
+            final ResourceSummaryModelData md = rt().tableSelection();
+            md.setWorkingCopy(true);
+            rt().update(md);
+            close();
+        }
+    };
 
 
 
@@ -92,6 +94,29 @@ public class UpdatePageDialog
         setLayout(new FitLayout());
 
         drawGUI(pageName);
+        // in case of FCKeditors add JS function for ready status checking.
+        if (_panel.getFCKCount()>0) {
+            _applyNowButton.disable();
+            _saveDraftButton.disable();
+            initJSNI(this);
+        }
+    }
+
+    private static native String initJSNI(final UpdatePageDialog obj) /*-{
+        $wnd.FCKeditor_OnComplete = function(editorInstance) {
+            obj.@ccc.contentcreator.dialogs.UpdatePageDialog::checkFCK()();
+        }
+    }-*/;
+
+    /**
+     * Enable save buttons when FCKEditors are ready.
+     */
+    public void checkFCK() {
+        _fckReadyCount++;
+        if (_fckReadyCount == _panel.getFCKCount()) {
+            _saveDraftButton.enable();
+            _applyNowButton.enable();
+        }
     }
 
     private void drawGUI(final String pageName) {
@@ -109,20 +134,20 @@ public class UpdatePageDialog
 
     private Button createApplyNowButton() {
 
-        final Button applyNowButton = new Button(
+        _applyNowButton = new Button(
             _constants.applyNow(),
             applyNowAction());
-        applyNowButton.setId("applyNow");
-        return applyNowButton;
+        _applyNowButton.setId("applyNow");
+        return _applyNowButton;
     }
 
     private Button createSaveDraftButton() {
 
-        final Button saveDraftButton = new Button(
+        _saveDraftButton = new Button(
             _constants.saveDraft(),
             saveDraftAction());
-        saveDraftButton.setId("saveDraft");
-        return saveDraftButton;
+        _saveDraftButton.setId("saveDraft");
+        return _saveDraftButton;
     }
 
     private SelectionListener<ButtonEvent> applyNowAction() {
