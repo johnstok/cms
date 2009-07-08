@@ -57,7 +57,7 @@ public abstract class AbstractBaseDialog
     private final QueriesServiceAsync _qs;
     private final CommandServiceAsync _cs;
 
-    protected final Button _cancel = cancelButton();
+    protected final Button _cancel;
 
     /**
      * Constructor.
@@ -76,6 +76,8 @@ public abstract class AbstractBaseDialog
 
         _qs = _globals.queriesService();
         _cs = _globals.commandService();
+
+        _cancel = cancelButton();
 
         setHeading(title);
         setWidth(IGlobals.DEFAULT_WIDTH);
