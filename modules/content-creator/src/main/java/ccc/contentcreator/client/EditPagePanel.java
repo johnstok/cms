@@ -66,6 +66,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         new ArrayList<PageElement>();
     private String _definition;
     private final IGlobals _globals = new IGlobalsImpl();
+    private int _fckCount = 0;
 
     /**
      * Constructor.
@@ -78,6 +79,17 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         setBodyBorder(false);
         setHeaderVisible(false);
     }
+
+    /**
+     * Return number of FCK editor instances.
+     *
+     * @return Number of instances.
+     */
+    public int getFCKCount() {
+        return _fckCount;
+    }
+
+
 
     /**
      * Populates fields for editing.
@@ -662,6 +674,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         pe.editor(fck);
         add(fck, new FormData("95%"));
         _pageElements.add(pe);
+        _fckCount++;
     }
 
     /**
