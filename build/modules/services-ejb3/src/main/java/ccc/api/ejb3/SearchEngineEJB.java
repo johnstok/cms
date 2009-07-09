@@ -220,7 +220,7 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
 
         final StringBuilder sb = new StringBuilder(page.title());
         for (final Paragraph p : page.currentRevision().paragraphs()) {
-            if (ParagraphType.TEXT == p.type()) {
+            if (ParagraphType.TEXT == p.type() && p.text() != null) {
                 sb.append(" ");
                 final String nohtml =
                     p.text().replaceAll("\\<.*?>", ""); // Scrub HTML
