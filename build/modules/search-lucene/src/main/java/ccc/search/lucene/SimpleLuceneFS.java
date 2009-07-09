@@ -84,9 +84,9 @@ public class SimpleLuceneFS implements SimpleLucene {
                      final String field,
                      final int maxHits,
                      final SearchHandler sh) {
-
+        IndexSearcher searcher = null;
         try {
-            final IndexSearcher searcher =
+            searcher =
                 new IndexSearcher(_indexPath);
 
             final TopDocs docs =
@@ -97,12 +97,18 @@ public class SimpleLuceneFS implements SimpleLucene {
                         maxHits);
 
             sh.handle(searcher, docs);
-
-            searcher.close();
         } catch (final IOException e) {
             LOG.warn("Error performing query.", e);
         } catch (final ParseException e) {
             LOG.warn("Error performing query.", e);
+        } finally {
+            if (searcher != null) {
+                try {
+                    searcher.close();
+                } catch (final IOException e) {
+                    // nothing we can do.
+                }
+            }
         }
     }
 
