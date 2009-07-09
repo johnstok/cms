@@ -110,6 +110,39 @@ public final class ResourceSummary implements Serializable, Jsonable {
         _description = description;
     }
 
+    /**
+     * Constructor.
+     *
+     * @param json The JSON representation of a resource summary.
+     */
+    public ResourceSummary(final Json json) {
+        _id = json.getId(ID);
+        _parentId = json.getId(PARENT_ID);
+        _name = json.getString(NAME);
+        _publishedBy =
+            (null==json.getString(PUBLISHED_BY))
+                ? null
+                : new Username(json.getString(PUBLISHED_BY));
+        _title = json.getString(TITLE);
+        _lockedBy =
+            (null==json.getString(LOCKED_BY))
+                ? null
+                : new Username(json.getString(LOCKED_BY));
+        _type = ResourceType.valueOf(json.getString(TYPE));
+        _childCount = json.getInt(CHILD_COUNT);
+        _folderCount = json.getInt(FOLDER_COUNT);
+        _includeInMainMenu = json.getBool(INCLUDE_IN_MAIN_MENU);
+        _sortOrder = json.getString(SORT_ORDER);
+        _hasWorkingCopy = json.getBool(HAS_WORKING_COPY);
+        _dateCreated = json.getDate(DATE_CREATED);
+        _dateChanged = json.getDate(DATE_CHANGED);
+        _templateId = json.getId(TEMPLATE_ID);
+        _tags = json.getString(TAGS);
+        _absolutePath = json.getString(ABSOLUTE_PATH);
+        _indexPageId = json.getId(INDEX_PAGE_ID);
+        _description = json.getString(DESCRIPTION);
+    }
+
 
     /**
      * Accessor.

@@ -35,6 +35,7 @@ public final class Username implements Serializable {
      * @param value The username, represented as a string.
      */
     public Username(final String value) {
+        DBC.require().notEmpty(value);
         _value = value;
     }
 

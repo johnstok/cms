@@ -36,6 +36,7 @@ public final class ID implements Serializable {
      * @param value The UUID as a string.
      */
     public ID(final String value) {
+        DBC.require().notEmpty(value);
         _value = value;
     }
 

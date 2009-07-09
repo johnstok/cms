@@ -23,7 +23,7 @@
         </dependency>
         <dependency>
             <groupId>CCC7</groupId>
-            <artifactId>public-api</artifactId>
+            <artifactId>core-domain</artifactId>
             <version>${project.version}</version>
         </dependency>
         

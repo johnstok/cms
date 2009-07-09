@@ -167,4 +167,6 @@ public interface Json {
      * @return The value, as a JSON object.
      */
     Json getJson(String key);
+
+    Collection<String> getStrings(final String key);
 }

@@ -19,6 +19,7 @@ import ccc.contentcreator.actions.ChooseTemplateAction;
 import ccc.contentcreator.actions.CreateUserAction;
 import ccc.contentcreator.actions.EditCacheAction;
 import ccc.contentcreator.actions.EditFolderAction;
+import ccc.contentcreator.actions.GetRootsAction;
 import ccc.contentcreator.actions.LockAction;
 import ccc.contentcreator.actions.LogoutAction;
 import ccc.contentcreator.actions.OpenHelpAction;
@@ -29,10 +30,8 @@ import ccc.contentcreator.actions.UpdateMetadataAction;
 import ccc.contentcreator.actions.UpdateResourceRolesAction;
 import ccc.contentcreator.actions.ViewHistoryAction;
 import ccc.contentcreator.api.ActionNameConstants;
-import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
 
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -64,7 +63,7 @@ public class MainMenu
      *
      * @param user UserSummary of the currently logged in user.
      */
-    MainMenu(final UserSummary user) {
+    public MainMenu(final UserSummary user) {
         _user = user;
         addMenu(
             "help-menu",
@@ -105,8 +104,7 @@ public class MainMenu
     private void createContentRootMenu(final String rootName,
                                        final String label) {
 
-        final TextToolItem rootItem =
-            new TextToolItem(label);
+        final TextToolItem rootItem = new TextToolItem(label);
         rootItem.setId(rootName+"Root-menu");
 
         final Menu rootMenu = new Menu();
@@ -115,20 +113,16 @@ public class MainMenu
             new Listener<MenuEvent>() {
                 public void handleEvent(final MenuEvent be) {
                     rootMenu.removeAll();
-                    final QueriesServiceAsync qs = _globals.queriesService();
-                    qs.roots(
-                        new ErrorReportingCallback<Collection<ResourceSummary>>(
-                                                _userActions.internalAction()) {
-                            public void onSuccess(
-                                          final Collection<ResourceSummary> c) {
-                                for (final ResourceSummary root : c) {
-                                    if (rootName.equals(root.getName())) {
-                                        addRootMenuItems(root, rootMenu);
-                                    }
+                    new GetRootsAction() { // TODO: Do we really have to go to the server for this?!
+                        @Override protected void onSuccess(
+                                      final Collection<ResourceSummary> roots) {
+                            for (final ResourceSummary root : roots) {
+                                if (rootName.equals(root.getName())) {
+                                    addRootMenuItems(root, rootMenu);
                                 }
                             }
                         }
-                    );
+                    }.execute();
                 }
             }
         );

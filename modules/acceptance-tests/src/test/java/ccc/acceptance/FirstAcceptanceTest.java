@@ -12,6 +12,7 @@
 package ccc.acceptance;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import junit.framework.TestCase;
 
@@ -19,11 +20,13 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.log4j.Logger;
 import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
-import ccc.ws.IRestApi;
+import ccc.api.Queries;
+import ccc.api.ResourceSummary;
 
 
 /**
@@ -34,6 +37,7 @@ import ccc.ws.IRestApi;
 public class FirstAcceptanceTest
     extends
         TestCase {
+    private static Logger log = Logger.getLogger(FirstAcceptanceTest.class);
 
     static {
         final ResteasyProviderFactory pFactory =
@@ -42,7 +46,8 @@ public class FirstAcceptanceTest
         pFactory.addMessageBodyReader(ResourceSummaryProvider.class);
     }
 
-    private final String _baseUrl = "http://localhost:81/api";
+    private final String _hostUrl = "http://localhost:81";
+    private final String _baseUrl = _hostUrl+"/api";
 
     /**
      * Test.
@@ -50,37 +55,54 @@ public class FirstAcceptanceTest
     public void testFail() {
 
         // ARRANGE
-        final IRestApi api =
-            ProxyFactory.create(IRestApi.class, _baseUrl, login());
+        final Queries api =
+            ProxyFactory.create(Queries.class, _baseUrl, login());
 
         // ACT
-        api.roots();
+        final Collection<ResourceSummary> roots = api.roots();
+        final Collection<ResourceSummary> children = api.getChildren(roots.iterator().next().getId());
+        for (final ResourceSummary s : children) {
+            System.out.println(s.getAbsolutePath());
+        }
 
         // ASSERT
-
+        assertEquals(2, roots.size());
     }
 
     private HttpClient login() {
-        final HttpClient client = new HttpClient();
-        final GetMethod root = new GetMethod(_baseUrl);
-        final PostMethod authpost = new PostMethod(_baseUrl+"/j_security_check");
+        try {
+            final HttpClient client = new HttpClient();
+            get( client, _baseUrl);
+            post(client, _hostUrl+"/j_security_check");
+            get( client, _baseUrl);
+            return client;
+
+        } catch (final IOException e) {
+            throw new RuntimeException("Authentication failed ", e);
+        }
+    }
+
+    private void post(final HttpClient client, final String url) throws IOException {
+        final PostMethod postMethod = new PostMethod(url);
 
         final NameValuePair userid   =
             new NameValuePair("j_username", "super");
         final NameValuePair password =
             new NameValuePair("j_password", "sup3r2008");
-        authpost.setRequestBody(
+        postMethod.setRequestBody(
             new NameValuePair[] {userid, password});
 
-        try {
-            int status = client.executeMethod(root);
-            root.releaseConnection();
-            status = client.executeMethod(authpost);
-            final String body = authpost.getResponseBodyAsString();
-            authpost.releaseConnection();
-            return client;
-        } catch (final IOException e) {
-            throw new RuntimeException("Authentication failed ", e);
-        }
+        final int status = client.executeMethod(postMethod);
+//        final String body = postMethod.getResponseBodyAsString();
+        postMethod.releaseConnection();
+        log.debug("POST "+url+"  ->  "+status+"\n\n");
+    }
+
+    private void get(final HttpClient client, final String url) throws IOException {
+        final GetMethod getMethod = new GetMethod(url);
+        final int status = client.executeMethod(getMethod);
+        final String body = getMethod.getResponseBodyAsString();
+        getMethod.releaseConnection();
+        log.debug("GET "+url+"  ->  "+status+"\n"+body+"\n\n");
     }
 }

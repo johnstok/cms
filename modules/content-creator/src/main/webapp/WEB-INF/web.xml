@@ -181,6 +181,7 @@
             <url-pattern>/${application.prefix}/*</url-pattern>
             <url-pattern>/error</url-pattern>
             <url-pattern>/notfound</url-pattern>
+            <url-pattern>/api/*</url-pattern>
             <url-pattern>/api</url-pattern>
             <!-- Secure all HTTP Methods -->
         </web-resource-collection>
