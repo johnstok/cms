@@ -18,13 +18,17 @@ import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
+import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.contentcreator.validation.Validator;
 
+import com.extjs.gxt.ui.client.Events;
+import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
@@ -44,7 +48,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
     /** DEFAULT_HEIGHT : int. */
     protected static final int DEFAULT_HEIGHT = 480;
     /** TEXT_AREA_HEIGHT : int. */
-    protected static final int TEXT_AREA_HEIGHT = 250;
+    protected static final int TEXT_AREA_HEIGHT = 350;
 
 
     private final FormPanel _first = new FormPanel();
@@ -93,6 +97,19 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
         addCard(_third);
 
         _mode = DialogMode.CREATE;
+
+        addListener(Events.Resize,
+            new Listener<BoxComponentEvent>() {
+            @Override
+            public void handleEvent(final BoxComponentEvent be) {
+                final int height =
+                    be.height - (IGlobals.DEFAULT_HEIGHT - TEXT_AREA_HEIGHT);
+                if (height > (IGlobals.DEFAULT_HEIGHT - TEXT_AREA_HEIGHT)) {
+                    _definition.setHeight(height);
+                    _body.setHeight(height);
+                }
+            }
+        });
 
         refresh();
     }
