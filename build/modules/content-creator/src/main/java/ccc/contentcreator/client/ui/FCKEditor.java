@@ -17,9 +17,9 @@ package ccc.contentcreator.client.ui;
 import java.util.Collection;
 
 import ccc.api.ResourceSummary;
+import ccc.contentcreator.actions.GetRootsAction;
 import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.api.QueriesServiceAsync;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.dialogs.ImageSelectionDialog;
 import ccc.contentcreator.dialogs.LinkSelectionDialog;
@@ -181,24 +181,21 @@ public class FCKEditor extends LayoutContainer {
 
     /**
      * Displays the FCKEditor specific link selection dialog.
-     *
-     * @param elementID The name of the FCKEditor.
      */
     public void openLinkSelector(final String elementID) {
-        _qs.roots(new ErrorReportingCallback<Collection<ResourceSummary>>(
-            _userActions.internalAction()){
-            public void onSuccess(final Collection<ResourceSummary> arg0) {
+        new GetRootsAction() { // TODO: UseGetResourceForPathAction instead.
+            @Override
+            protected void onSuccess(final Collection<ResourceSummary> roots) {
                 ResourceSummary rs = null;
-                for (final ResourceSummary rr : arg0) {
+                for (final ResourceSummary rr : roots) {
                     if (rr.getName().equals("content")) {
                         rs = rr;
                     }
                 }
                 new LinkSelectionDialog(rs, elementID).show();
-
             }
-        });
 
+        }.execute();
     }
 
 

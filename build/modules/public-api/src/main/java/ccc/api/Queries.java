@@ -14,12 +14,22 @@ package ccc.api;
 import java.util.Collection;
 import java.util.Map;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+
+import org.jboss.resteasy.annotations.cache.NoCache;
+
 
 /**
  * Query methods available for CCC.
  *
  * @author Civic Computing Ltd.
  */
+@Consumes("application/json")
+@Produces("application/json")
 public interface Queries {
 
     /** NAME : String. */
@@ -30,6 +40,7 @@ public interface Queries {
      *
      * @return A collection of resource summaries - one for each root folder.
      */
+    @GET @Path("/roots") @NoCache
     Collection<ResourceSummary> roots();
 
     /**
@@ -38,13 +49,15 @@ public interface Queries {
      * @param resourceId The id of the existing resource.
      * @return A summary of the resource.
      */
-    ResourceSummary resource(ID resourceId);
+    @GET @Path("/resource/{id}") @NoCache
+    ResourceSummary resource(@PathParam("id") ID resourceId);
 
     /**
      * List all the templates currently available in CCC.
      *
      * @return A list of templates.
      */
+    @GET @Path("/templates") @NoCache
     Collection<TemplateSummary> templates();
 
     /**
@@ -53,7 +66,8 @@ public interface Queries {
      * @param folderId The id of the folder.
      * @return The list of child folders.
      */
-    Collection<ResourceSummary> getFolderChildren(ID folderId);
+    @GET @Path("/folders/{id}/folder-children") @NoCache
+    Collection<ResourceSummary> getFolderChildren(@PathParam("id") ID folderId);
 
     /**
      * List all of the children of the specified folder.
@@ -61,13 +75,15 @@ public interface Queries {
      * @param folderId The folder.
      * @return The folder's of children.
      */
-    Collection<ResourceSummary> getChildren(ID folderId);
+    @GET @Path("/folders/{id}/children") @NoCache
+    Collection<ResourceSummary> getChildren(@PathParam("id") ID folderId);
 
     /**
      * List all content images.
      *
      * @return The list of images.
      */
+    @GET @Path("/images") @NoCache
     Collection<FileSummary> getAllContentImages();
 
     /**
@@ -76,7 +92,8 @@ public interface Queries {
      * @param resourceId The id of the resource.
      * @return The absolute path as a string.
      */
-    String getAbsolutePath(ID resourceId);
+    @GET @Path("/resource/{id}/path") @NoCache
+    String getAbsolutePath(@PathParam("id") ID resourceId);
 
     /**
      * Query whether given folder has a resource with given name.
@@ -86,13 +103,16 @@ public interface Queries {
      * @return Returns true in case folder has a resource with given name,
      *  false otherwise.
      */
-    boolean nameExistsInFolder(final ID folderId, final String name);
+    @GET @Path("/folders/{id}/{name}/exists") @NoCache
+    boolean nameExistsInFolder(@PathParam("id") final ID folderId,
+                               @PathParam("name") final String name);
 
     /**
      * Query all users.
      *
      * @return Returns list of users.
      */
+    @GET @Path("/users") @NoCache
     Collection<UserSummary> listUsers();
 
     /**
@@ -101,7 +121,8 @@ public interface Queries {
      * @param role The role as a string.
      * @return Returns list of users.
      */
-    Collection<UserSummary> listUsersWithRole(String role);
+    @GET @Path("/users/role/{role}") @NoCache
+    Collection<UserSummary> listUsersWithRole(@PathParam("role") String role);
 
     /**
      * Query users with specified username.
@@ -109,7 +130,8 @@ public interface Queries {
      * @param username The username as a string.
      * @return Returns list of users.
      */
-    Collection<UserSummary> listUsersWithUsername(String username);
+    @GET @Path("/users/username/{uname}") @NoCache
+    Collection<UserSummary> listUsersWithUsername(@PathParam("uname") String username);
 
     /**
      * Query whether the specified username is in use.
@@ -117,7 +139,8 @@ public interface Queries {
      * @param username The username to check
      * @return True if the username is in use, false otherwise.
      */
-    boolean usernameExists(Username username);
+    @GET @Path("/users/{uname}/exists") @NoCache
+    boolean usernameExists(@PathParam("uname") Username username);
 
     /**
      * Query users with specified email.
@@ -125,7 +148,8 @@ public interface Queries {
      * @param email The email as a string.
      * @return Returns list of users.
      */
-    Collection<UserSummary> listUsersWithEmail(String email);
+    @GET @Path("/users/email/{email}") @NoCache
+    Collection<UserSummary> listUsersWithEmail(@PathParam("email") String email);
 
     /**
      * Returns true if template name exists in the template folder.
@@ -133,13 +157,15 @@ public interface Queries {
      * @param templateName The name to look up.
      * @return True if name exists.
      */
-     boolean templateNameExists(final String templateName);
+    @GET @Path("/templates/{name}/exists") @NoCache
+    boolean templateNameExists(@PathParam("name") final String templateName);
 
     /**
      * Returns currently logged in user.
      *
      * @return UserDTO
      */
+    @GET @Path("/users/me") @NoCache
     UserSummary loggedInUser();
 
     /**
@@ -147,6 +173,7 @@ public interface Queries {
      *
      * @return The list of resources.
      */
+    @GET @Path("/resources/locked/me") @NoCache
     Collection<ResourceSummary> lockedByCurrentUser();
 
     /**
@@ -154,6 +181,7 @@ public interface Queries {
      *
      * @return The list of resources.
      */
+    @GET @Path("/resources/locked") @NoCache
     Collection<ResourceSummary> locked();
 
     /**
@@ -162,7 +190,8 @@ public interface Queries {
      * @param resourceId The id of the resource whose history we will look up.
      * @return The list of resources.
      */
-    Collection<LogEntrySummary> history(ID resourceId);
+    @GET @Path("/resources/{id}/revisions") @NoCache
+    Collection<LogEntrySummary> history(@PathParam("id") ID resourceId);
 
     /**
      * Retrieve the metadata for a resource.
@@ -170,13 +199,15 @@ public interface Queries {
      * @param resourceId The id of the resource.
      * @return The metadata in a hashmap.
      */
-    Map<String, String> metadata(ID resourceId);
+    @GET @Path("/resource/{id}/metadata") @NoCache
+    Map<String, String> metadata(@PathParam("id") ID resourceId);
 
     /**
      * List all CCC actions that haven't yet been executed.
      *
      * @return A collection of action summaries, one per outstanding action.
      */
+    @GET @Path("/actions/pending") @NoCache
     Collection<ActionSummary> listPendingActions();
 
     /**
@@ -184,6 +215,7 @@ public interface Queries {
      *
      * @return A collection of action summaries, one per completed action.
      */
+    @GET @Path("/actions/completed") @NoCache
     Collection<ActionSummary> listCompletedActions();
 
     /**
@@ -193,7 +225,8 @@ public interface Queries {
      *
      * @return The roles, as a collection of strings.
      */
-    Collection<String> roles(ID resourceId);
+    @GET @Path("/resources/{id}/roles") @NoCache
+    Collection<String> roles(@PathParam("id") ID resourceId);
 
     /**
      * Retrieve resource's cache duration.
@@ -201,8 +234,8 @@ public interface Queries {
      * @param resourceId The id of the resource.
      * @return Duration.
      */
-    Duration cacheDuration(ID resourceId);
-
+    @GET @Path("/resources/{id}/duration") @NoCache
+    Duration cacheDuration(@PathParam("id") ID resourceId);
 
     /**
      * Returns summary of the template assigned for a resource.
@@ -210,7 +243,8 @@ public interface Queries {
      * @param resourceId Id of the resource.
      * @return TemplateSummary.
      */
-    TemplateSummary computeTemplate(ID resourceId);
+    @GET @Path("/resources/{id}/template") @NoCache
+    TemplateSummary computeTemplate(@PathParam("id") ID resourceId);
 
     /**
      * Retrieve the delta for a template.
@@ -218,7 +252,8 @@ public interface Queries {
      * @param templateId The template's id.
      * @return The corresponding delta.
      */
-    TemplateDelta templateDelta(ID templateId);
+    @GET @Path("/templates/{id}/delta") @NoCache
+    TemplateDelta templateDelta(@PathParam("id") ID templateId);
 
     /**
      * Retrieve the delta for a user.
@@ -226,7 +261,8 @@ public interface Queries {
      * @param userId The user's id.
      * @return The corresponding delta.
      */
-    UserDelta userDelta(ID userId);
+    @GET @Path("/users/{id}/delta") @NoCache
+    UserDelta userDelta(@PathParam("id") ID userId);
 
     /**
      * Retrieve the delta for a alias.
@@ -234,7 +270,8 @@ public interface Queries {
      * @param aliasId The alias' id.
      * @return The corresponding delta.
      */
-    AliasDelta aliasDelta(ID aliasId);
+    @GET @Path("/aliases/{id}/delta") @NoCache
+    AliasDelta aliasDelta(@PathParam("id") ID aliasId);
 
     /**
      * Retrieve the delta for a page.
@@ -242,7 +279,8 @@ public interface Queries {
      * @param pageId The page's id.
      * @return The corresponding delta.
      */
-    PageDelta pageDelta(ID pageId);
+    @GET @Path("/pages/{id}/delta") @NoCache
+    PageDelta pageDelta(@PathParam("id") ID pageId);
 
     /**
      * Retrieve the delta for a file.
@@ -250,7 +288,8 @@ public interface Queries {
      * @param fileId The file's id.
      * @return The corresponding delta.
      */
-    FileDelta fileDelta(ID fileId);
+    @GET @Path("/files/{id}/delta") @NoCache
+    FileDelta fileDelta(@PathParam("id") ID fileId);
 
     /**
      * Look up the resource for a specified path.
@@ -258,7 +297,8 @@ public interface Queries {
      * @param path The absolute path.
      * @return A summary of the corresponding resource.
      */
-    ResourceSummary resourceForPath(String path);
+    @GET @Path("/resources-by-path/{path:.*}") @NoCache
+    ResourceSummary resourceForPath(@PathParam("path") String path);
 
     /**
      * Look up the resource for a specified legacy id.
@@ -266,6 +306,7 @@ public interface Queries {
      * @param legacyId The legacy id of the resource.
      * @return A summary of the corresponding resource.
      */
-    ResourceSummary resourceForLegacyId(String legacyId);
+    @GET @Path("/resources-by-legacy-id/{id}") @NoCache
+    ResourceSummary resourceForLegacyId(@PathParam("id") String legacyId);
 
 }

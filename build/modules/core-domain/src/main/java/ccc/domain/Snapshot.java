@@ -345,4 +345,25 @@ public class Snapshot implements Serializable, Json {
         aOutputStream.defaultWriteObject();
         aOutputStream.writeUTF(getDetail());
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public Collection<String> getStrings(final String key) {
+        try {
+            final JSONArray a =
+                (JSONArray) fixNull(_detail.get(key));
+            if (null==a) {
+                return null;
+            }
+            final Collection<String> strings =
+                new ArrayList<String>(a.length());
+            for (int i=0; i<a.length(); i++) {
+                strings.add((String) fixNull(a.get(i)));
+            }
+            return strings;
+
+        } catch (final JSONException e) {
+            throw new InvalidSnapshotException(e);
+        }
+    }
 }

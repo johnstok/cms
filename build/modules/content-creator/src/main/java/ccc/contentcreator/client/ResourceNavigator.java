@@ -47,7 +47,7 @@ public class ResourceNavigator extends ContentPanel {
      * @param roots Collection of the resource roots.
      * @param user UserSummary of the currently logged in user.
      */
-    ResourceNavigator(final LeftRightPane view,
+    public ResourceNavigator(final LeftRightPane view,
                       final Collection<ResourceSummary> roots,
                       final UserSummary user) {
         setId("resource-navigator");

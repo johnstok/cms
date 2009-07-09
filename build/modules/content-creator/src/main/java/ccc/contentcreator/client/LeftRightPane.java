@@ -35,7 +35,7 @@ public class LeftRightPane extends LayoutContainer {
     /**
      * Constructor.
      */
-    LeftRightPane() {
+    public LeftRightPane() {
 
         setLayout(new BorderLayout());
 

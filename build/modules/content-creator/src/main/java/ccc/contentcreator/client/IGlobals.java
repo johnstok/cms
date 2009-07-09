@@ -167,7 +167,7 @@ public interface IGlobals {
     /** APP_URL : String. */
     String APP_URL = "/";
     /** API_URL : String. */
-    String API_URL = "api/";
+    String API_URL = "api";
     /** MIN_USER_NAME_LENGTH : int. */
     int MIN_USER_NAME_LENGTH = 4;
 
