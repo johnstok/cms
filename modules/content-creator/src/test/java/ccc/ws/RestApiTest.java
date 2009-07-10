@@ -53,7 +53,7 @@ public class RestApiTest
     @Override
     protected void setUp() {
         _queries = createStrictMock(Queries.class);
-        _unit = new RestApi();
+//        _unit = new RestApi();
     }
 
     /** {@inheritDoc} */
