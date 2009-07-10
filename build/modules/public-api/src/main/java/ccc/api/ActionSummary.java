@@ -11,6 +11,8 @@
  */
 package ccc.api;
 
+import static ccc.api.JsonKeys.*;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -20,7 +22,7 @@ import java.util.Date;
  *
  * @author Civic Computing Ltd.
  */
-public final class ActionSummary implements Serializable {
+public final class ActionSummary implements Serializable, Jsonable {
 
     private ID _id;
     private CommandType _type;
@@ -136,5 +138,17 @@ public final class ActionSummary implements Serializable {
      */
     public void setStatus(final ActionStatus status) {
         _status = status;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void toJson(final Json json) {
+        json.set(ID, getId());
+        json.set(TYPE, getType().name());
+        json.set(ACTOR, getActor().toString());
+        json.set(EXECUTE_AFTER, getExecuteAfter());
+        json.set(SUBJECT_TYPE, getSubjectType().name());
+        json.set(SUBJECT_PATH, getSubjectPath());
+        json.set(STATUS, getStatus().name());
     }
 }

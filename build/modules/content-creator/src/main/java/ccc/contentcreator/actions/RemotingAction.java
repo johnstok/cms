@@ -32,18 +32,14 @@ public abstract class RemotingAction
         Action {
 
     private final String _actionName;
-    private final String _path;
 
     /**
      * Constructor.
      *
      * @param actionName The name of this action.
-     * @param path The server path for the resource.
      */
-    public RemotingAction(final String actionName,
-                          final String path) {
+    public RemotingAction(final String actionName) {
         _actionName = actionName;
-        _path = path;
     }
 
     /** {@inheritDoc} */
@@ -52,7 +48,7 @@ public abstract class RemotingAction
     //        new ErrorReportingCallback<Collection<ResourceSummary>>(
     //            _globals.userActions().internalAction())
 
-            final String url = GLOBALS.apiURL() + _path;
+            final String url = GLOBALS.apiURL() + getPath();
             final RequestBuilder builder =
                 new RequestBuilder(RequestBuilder.GET, url);
             builder.setHeader("Accept", "application/json");
@@ -71,17 +67,21 @@ public abstract class RemotingAction
     //                        response.getStatusText());
                         if (SC_OK == response.getStatusCode()) {
                             onOK(response);
+                        } else if (SC_NO_CONTENT == response.getStatusCode()) {
+                            onNoContent(response);
                         } else {
                             GLOBALS.unexpectedError(
-                                new RuntimeException("Invalid response"),
+                                new RuntimeException("Invalid response: "+response.getStatusCode()+" "+response.getStatusText()),
                                 _actionName);
                         }
                     }
+
                 });
             } catch (final RequestException e) {
                 GLOBALS.unexpectedError(e, "Foo");
             }
         }
+
 
     /**
      * Accessor.
@@ -89,6 +89,26 @@ public abstract class RemotingAction
      * @return Returns the actionName.
      */
     public final String getActionName() { return _actionName; }
+
+
+    /**
+     * Determine the server path for this action.
+     *
+     * @return The server path for the resource.
+     */
+    protected abstract String getPath();
+
+    /**
+     * Handle a '204 NO CONTENT' response from the remote server.
+     *
+     * @param response The server response.
+     */
+    protected void onNoContent(final Response response) {
+        throw new RuntimeException(// TODO Add UnsupportedResponseException
+            "Unsupported response: "
+            + response.getStatusCode() + " "
+            + response.getStatusText());
+    }
 
     /**
      * Handle a '200 OK' response from the remote server.

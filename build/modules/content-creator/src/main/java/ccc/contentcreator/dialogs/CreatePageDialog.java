@@ -22,11 +22,13 @@ import ccc.api.PageDelta;
 import ccc.api.Paragraph;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateSummary;
+import ccc.contentcreator.actions.ComputeTemplateAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.binding.TemplateSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.EditPagePanel;
+import ccc.contentcreator.client.GwtJson;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.PageElement;
 import ccc.contentcreator.client.SingleSelectionModel;
@@ -55,6 +57,8 @@ import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.extjs.gxt.ui.client.widget.layout.RowLayout;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.json.client.JSONParser;
 
 
 /**
@@ -182,45 +186,61 @@ public class CreatePageDialog
         final CheckBox cb = new CheckBox();
         cb.setBoxLabel(_uiConstants.useDefaultTemplate());
         cb.setId(_uiConstants.useDefaultTemplate());
-        queries().computeTemplate(_parent.getId(),
-            new ErrorReportingCallback<TemplateSummary>(
-                _constants.createPage()) {
-            public void onSuccess(final TemplateSummary result) {
-                if (result == null) {
-                    cb.setValue(Boolean.FALSE);
-                    cb.disable();
-                    _grid.enable();
-                    _description.setText("");
-                } else {
-                    cb.setValue(Boolean.TRUE);
-                    _grid.disable();
-                    _grid.getSelectionModel().deselectAll();
-                    _second.createFields(result.getDefinition());
-                    _description.setText(result.getDescription());
-                }
+        new ComputeTemplateAction(_constants.createPage(), _parent.getId()) {
+
+            /** {@inheritDoc} */
+            @Override
+            protected void onNoContent(final Response response) {
+                cb.setValue(Boolean.FALSE);
+                cb.disable();
+                _grid.enable();
+                _description.setText("");
             }
-        });
+
+            /** {@inheritDoc} */
+            @Override protected void onOK(final Response response) {
+            final TemplateSummary ts =
+                new TemplateSummary(
+                  new GwtJson(
+                      JSONParser.parse(
+                          response.getText()).isObject()));
+                cb.setValue(Boolean.TRUE);
+                _grid.disable();
+                _grid.getSelectionModel().deselectAll();
+                _second.createFields(ts.getDefinition());
+                _description.setText(ts.getDescription());
+            }
+
+        }.execute();
 
         cb.addListener(Events.Change, new Listener<FieldEvent>() {
             public void handleEvent(final FieldEvent be) {
                 if (cb.getValue().booleanValue()) {
-                    queries().computeTemplate(
-                        _parent.getId(),
-                        new ErrorReportingCallback<TemplateSummary>(
-                            _constants.createPage()) {
-                        public void onSuccess(final TemplateSummary result) {
-                            if (result == null) {
-                                cb.disable();
-                                _grid.enable();
-                                _description.setText("");
-                            } else {
-                                _grid.disable();
-                                _grid.getSelectionModel().deselectAll();
-                                _second.createFields(result.getDefinition());
-                                _description.setText(result.getDescription());
-                            }
+                    new ComputeTemplateAction(_constants.createPage(),
+                                              _parent.getId()) {
+
+                        /** {@inheritDoc} */
+                        @Override
+                        protected void onNoContent(final Response response) {
+                            cb.disable();
+                            _grid.enable();
+                            _description.setText("");
                         }
-                    });
+
+                        /** {@inheritDoc} */
+                        @Override protected void onOK(final Response response) {
+                            final TemplateSummary ts =
+                                new TemplateSummary(
+                                    new GwtJson(
+                                        JSONParser.parse(
+                                            response.getText()).isObject()));
+                            _grid.disable();
+                            _grid.getSelectionModel().deselectAll();
+                            _second.createFields(ts.getDefinition());
+                            _description.setText(ts.getDescription());
+                        }
+
+                    }.execute();
                 } else {
                     _second.removeAll();
                     _grid.enable();
@@ -245,8 +265,8 @@ public class CreatePageDialog
 
                 Validate.callTo(createPage(paragraphs))
                     .check(Validations.notEmpty(_second.name()))
-                    .check(Validations.notValidResourceName(_second.name()))
                     .stopIfInError()
+                    .check(Validations.notValidResourceName(_second.name()))
                     .check(Validations.uniqueResourceName(
                         _parent, _second.name()))
                     .stopIfInError()

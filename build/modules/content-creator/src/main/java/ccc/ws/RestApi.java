@@ -15,7 +15,9 @@ package ccc.ws;
 import java.util.Collection;
 import java.util.Map;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 
 import ccc.api.ActionSummary;
 import ccc.api.AliasDelta;
@@ -43,6 +45,8 @@ import ccc.commons.Registry;
  * @author Civic Computing Ltd.
  */
 @Path("/")
+@Consumes("application/json")
+@Produces("application/json")
 public class RestApi
     implements
         Queries {

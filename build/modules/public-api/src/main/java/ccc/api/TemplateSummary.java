@@ -11,15 +11,17 @@
  */
 package ccc.api;
 
+import static ccc.api.JsonKeys.*;
+
 import java.io.Serializable;
 
 
 /**
- * A delta, for updating templates.
+ * A summary of a template.
  *
  * @author Civic Computing Ltd.
  */
-public final class TemplateSummary implements Serializable {
+public final class TemplateSummary implements Serializable, Jsonable {
     private ID     _id;
     private String _name;
     private String _title;
@@ -53,6 +55,22 @@ public final class TemplateSummary implements Serializable {
         _definition = definition;
     }
 
+
+    /**
+     * Constructor.
+     *
+     * @param json
+     */
+    public TemplateSummary(final Json json) {
+        this(
+            json.getId(ID),
+            json.getString(NAME),
+            json.getString(TITLE),
+            json.getString(DESCRIPTION),
+            json.getString(BODY),
+            json.getString(DEFINITION)
+        );
+    }
 
     /**
      * Accessor.
@@ -111,5 +129,16 @@ public final class TemplateSummary implements Serializable {
      */
     public String getDefinition() {
         return _definition;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void toJson(final Json json) {
+        json.set(ID, getId());
+        json.set(NAME, getName());
+        json.set(TITLE, getTitle());
+        json.set(DESCRIPTION, getDescription());
+        json.set(BODY, getBody());
+        json.set(DEFINITION, getDefinition());
     }
 }

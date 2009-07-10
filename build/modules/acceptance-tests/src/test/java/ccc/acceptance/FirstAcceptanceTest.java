@@ -25,6 +25,7 @@ import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
+import ccc.api.Duration;
 import ccc.api.Queries;
 import ccc.api.ResourceSummary;
 
@@ -60,13 +61,20 @@ public class FirstAcceptanceTest
 
         // ACT
         final Collection<ResourceSummary> roots = api.roots();
-        final Collection<ResourceSummary> children = api.getChildren(roots.iterator().next().getId());
-        for (final ResourceSummary s : children) {
-            System.out.println(s.getAbsolutePath());
-        }
 
         // ASSERT
         assertEquals(2, roots.size());
+        testDuration(api, roots.iterator().next());
+    }
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param next
+     */
+    private void testDuration(final Queries api, final ResourceSummary rs) {
+        final Duration d = api.cacheDuration(rs.getId());
+        assertNull(d);
     }
 
     private HttpClient login() {

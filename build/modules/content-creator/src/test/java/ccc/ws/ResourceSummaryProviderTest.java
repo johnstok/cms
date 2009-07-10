@@ -19,7 +19,7 @@ import junit.framework.TestCase;
 
 
 /**
- * Tests for the {@link ResourceSummaryProvider} class.
+ * Tests for the {@link ResourceSummaryCollectionProvider} class.
  *
  * @author Civic Computing Ltd.
  */
@@ -33,7 +33,8 @@ public class ResourceSummaryProviderTest
     public void testSizeCantBeDetermined() {
 
         // ARRANGE
-        final ResourceSummaryProvider rsp = new ResourceSummaryProvider();
+        final ResourceSummaryCollectionProvider rsp =
+            new ResourceSummaryCollectionProvider();
 
         // ACT
         final long size = rsp.getSize(null, null, null, null, null);
@@ -49,7 +50,8 @@ public class ResourceSummaryProviderTest
     public void testIsCollectionAcceptsExactMatch() {
 
         // ARRANGE
-        final ResourceSummaryProvider rsp = new ResourceSummaryProvider();
+        final ResourceSummaryCollectionProvider rsp =
+            new ResourceSummaryCollectionProvider();
 
         // ACT
         final boolean condition = rsp.isCollectionOfType(Number.class, _type);
@@ -65,7 +67,8 @@ public class ResourceSummaryProviderTest
     public void testIsCollectionRejectsSubtypeMatch() {
 
         // ARRANGE
-        final ResourceSummaryProvider rsp = new ResourceSummaryProvider();
+        final ResourceSummaryCollectionProvider rsp =
+            new ResourceSummaryCollectionProvider();
 
         // ACT
         final boolean condition = rsp.isCollectionOfType(Integer.class, _type);
@@ -81,7 +84,8 @@ public class ResourceSummaryProviderTest
     public void testIsCollectionRejectsRegularClasses() {
 
         // ARRANGE
-        final ResourceSummaryProvider rsp = new ResourceSummaryProvider();
+        final ResourceSummaryCollectionProvider rsp =
+            new ResourceSummaryCollectionProvider();
         final Type type = Object.class;
 
         // ACT

@@ -87,4 +87,26 @@ public final class JsonKeys {
     public static final String UNLOCK = "unlock";
     /** UNPUBLISH : String. */
     public static final String UNPUBLISH = "unpublish";
+    /** DURATION : String. */
+    public static final String DURATION = "duration";
+    /** ACTION : String. */
+    public static final String ACTION = "action";
+    /** ACTOR : String. */
+    public static final String ACTOR = "actor";
+    /** HAPPENED_ON : String. */
+    public static final String HAPPENED_ON = "happened_on";
+    /** MAJOR_CHANGE : String. */
+    public static final String MAJOR_CHANGE = "major_change";
+    /** INDEX : String. */
+    public static final String INDEX = "index";
+    /** COMMENT : String. */
+    public static final String COMMENT = "comment";
+    /** EXECUTE_AFTER : String. */
+    public static final String EXECUTE_AFTER = "execute-after";
+    /** SUBJECT_TYPE : String. */
+    public static final String SUBJECT_TYPE = "subject-type";
+    /** SUBJECT_PATH : String. */
+    public static final String SUBJECT_PATH = "subject-path";
+    /** STATUS : String. */
+    public static final String STATUS = "status";
 }

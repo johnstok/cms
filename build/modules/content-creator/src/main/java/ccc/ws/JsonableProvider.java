@@ -22,7 +22,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import ccc.api.UserSummary;
+import ccc.api.Jsonable;
 import ccc.domain.Snapshot;
 
 
@@ -36,14 +36,14 @@ import ccc.domain.Snapshot;
  */
 @Provider
 @Produces("application/json")
-public class UserSummaryProvider
+public class JsonableProvider
     implements
-        MessageBodyWriter<UserSummary> {
+        MessageBodyWriter<Jsonable> {
 
 
     /** {@inheritDoc} */
     @Override
-    public long getSize(final UserSummary object,
+    public long getSize(final Jsonable object,
                         final Class<?> clazz,
                         final Type type,
                         final Annotation[] annotations,
@@ -57,21 +57,20 @@ public class UserSummaryProvider
                                final Type type,
                                final Annotation[] annotations,
                                final MediaType mediaType) {
-        return UserSummary.class.equals(clazz);
+        return Jsonable.class.isAssignableFrom(clazz);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void writeTo(final UserSummary object,
+    public void writeTo(final Jsonable object,
                         final Class<?> clazz,
                         final Type type,
                         final Annotation[] annotations,
                         final MediaType mediaType,
                         final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream outputStream) {
-
         final PrintWriter pw = new PrintWriter(outputStream);
-        pw.print(new Snapshot(object).getDetail());
+        pw.println(new Snapshot(object).getDetail());
         pw.flush();
     }
 }

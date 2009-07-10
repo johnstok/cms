@@ -105,7 +105,7 @@ public interface QueriesServiceAsync {
     void listCompletedActions(AsyncCallback<Collection<ActionSummary>> asyncCallback);
 
     void roles(final ID resourceId, AsyncCallback<Collection<String>> asyncCallback);
-
+// --MARKER
     void cacheDuration(ID resourceId, AsyncCallback<Duration> asyncCallback);
 
     void computeTemplate(ID resourceId, AsyncCallback<TemplateSummary> callback);

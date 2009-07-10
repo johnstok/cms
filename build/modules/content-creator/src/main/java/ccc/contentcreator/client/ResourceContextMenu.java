@@ -21,6 +21,7 @@ import ccc.api.UserSummary;
 import ccc.contentcreator.actions.ApplyWorkingCopyAction;
 import ccc.contentcreator.actions.ChooseTemplateAction;
 import ccc.contentcreator.actions.ClearWorkingCopyAction;
+import ccc.contentcreator.actions.ComputeTemplateAction;
 import ccc.contentcreator.actions.CreateActionAction;
 import ccc.contentcreator.actions.CreateAliasAction;
 import ccc.contentcreator.actions.EditCacheAction;
@@ -50,6 +51,8 @@ import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
 import com.extjs.gxt.ui.client.widget.menu.SeparatorMenuItem;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.json.client.JSONParser;
 
 
 /**
@@ -395,31 +398,38 @@ public class ResourceContextMenu
 
     private void updatePage(final ResourceSummaryModelData item) {
         // Get the template for the page.
-        _qs.computeTemplate(
-            item.getId(),
-            new ErrorReportingCallback<TemplateSummary>(_constants.updateContent()) {
-                @Override public void onSuccess(final TemplateSummary template) {
-                    if (null==template) {
-                        _globals.alert(_constants.noTemplateFound());
-                    } else { // Get a delta to edit.
-                        _qs.pageDelta(
-                            item.getId(),
-                            new ErrorReportingCallback<PageDelta>(_constants.updateContent()) {
-                                @Override public void onSuccess(final PageDelta page) {
-                                    new UpdatePageDialog(
-                                        item.getId(),
-                                        page,
-                                        item.getName(),
-                                        template,
-                                        _table)
-                                    .show(); // Ok, pop the dialog.
-                                }
-                            }
-                        );
-                    }
-                }
+        new ComputeTemplateAction(_constants.updateContent(), item.getId()) {
+
+            /** {@inheritDoc} */
+            @Override
+            protected void onNoContent(final Response response) {
+                _globals.alert(_constants.noTemplateFound());
             }
-        );
+
+            /** {@inheritDoc} */
+            @Override protected void onOK(final Response response) { // Get a delta to edit.
+            final TemplateSummary ts =
+                new TemplateSummary(
+                  new GwtJson(
+                      JSONParser.parse(
+                          response.getText()).isObject()));
+                _qs.pageDelta(
+                    item.getId(),
+                    new ErrorReportingCallback<PageDelta>(_constants.updateContent()) {
+                        @Override public void onSuccess(final PageDelta page) {
+                            new UpdatePageDialog(
+                                item.getId(),
+                                page,
+                                item.getName(),
+                                ts,
+                                _table)
+                            .show(); // Ok, pop the dialog.
+                        }
+                    }
+                );
+            }
+
+        }.execute();
     }
 
     private void updateTemplate(final ResourceSummaryModelData item) {

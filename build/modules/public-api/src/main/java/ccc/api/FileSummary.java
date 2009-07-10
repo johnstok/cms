@@ -15,11 +15,11 @@ import java.io.Serializable;
 
 
 /**
- * TODO: Add Description for this type.
+ * A summary of a file resource.
  *
  * @author Civic Computing Ltd.
  */
-public final class FileSummary implements Serializable {
+public final class FileSummary implements Serializable, Jsonable {
 
     private String _mimeType;
     private String _path;
@@ -98,5 +98,15 @@ public final class FileSummary implements Serializable {
      */
     public String getTitle() {
         return _title;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override public void toJson(final Json json) {
+        json.set(JsonKeys.MIME_TYPE, getMimeType());
+        json.set(JsonKeys.PATH, getPath());
+        json.set(JsonKeys.ID, getId());
+        json.set(JsonKeys.NAME, getName());
+        json.set(JsonKeys.TITLE, getTitle());
     }
 }
