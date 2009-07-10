@@ -12,11 +12,12 @@
 package ccc.contentcreator.actions;
 
 import ccc.api.Duration;
-import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.Action;
+import ccc.contentcreator.client.GwtJson;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.EditCacheDialog;
+
+import com.google.gwt.http.client.Response;
+import com.google.gwt.json.client.JSONParser;
 
 
 /**
@@ -24,7 +25,9 @@ import ccc.contentcreator.dialogs.EditCacheDialog;
  *
  * @author Civic Computing Ltd.
  */
-public class EditCacheAction implements Action {
+public class EditCacheAction
+    extends
+        RemotingAction {
 
     private final SingleSelectionModel _selectionModel;
 
@@ -33,26 +36,37 @@ public class EditCacheAction implements Action {
      *
      * @param selectionModel The selection model.
      */
-    public EditCacheAction(
-          final SingleSelectionModel selectionModel) {
+    public EditCacheAction(final SingleSelectionModel selectionModel) {
+        super(UI_CONSTANTS.editCacheDuration());
         _selectionModel = selectionModel;
     }
 
     /** {@inheritDoc} */
     @Override
-    public void execute() {
-        final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        _qs.cacheDuration(item.getId(),
-            new ErrorReportingCallback<Duration>(
-                UI_CONSTANTS.editCacheDuration()) {
-                @Override public void onSuccess(final Duration arg0) {
-                    final EditCacheDialog dialog =
-                        new EditCacheDialog(item, arg0);
-                    dialog.show();
-                }
-
-        });
-
+    protected void onOK(final Response response) {
+        final EditCacheDialog dialog =
+            new EditCacheDialog(
+                _selectionModel.tableSelection(),
+                new Duration(
+                    new GwtJson(
+                        JSONParser.parse(response.getText()).isObject())));
+        dialog.show();
     }
 
+    /** {@inheritDoc} */
+    @Override
+    protected void onNoContent(final Response response) {
+        final EditCacheDialog dialog =
+            new EditCacheDialog(
+                _selectionModel.tableSelection(),
+                null);
+        dialog.show();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected String getPath() {
+        return
+            "/resources/"+_selectionModel.tableSelection().getId()+"/duration";
+    }
 }

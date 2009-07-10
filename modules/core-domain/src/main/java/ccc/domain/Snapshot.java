@@ -87,6 +87,18 @@ public class Snapshot implements Serializable, Json {
     }
 
     /**
+     * Constructor.
+     *
+     * @param map The map to convert into a snapshot.
+     */
+    public Snapshot(final Map<String, String> map) {
+        this();
+        for (final Map.Entry<String, String> entry : map.entrySet()) {
+            set(entry.getKey(), entry.getValue());
+        }
+    }
+
+    /**
      * Get the internal state of the snapshot.
      *
      * @return The snapshot's state, as JSON a string.
@@ -362,6 +374,16 @@ public class Snapshot implements Serializable, Json {
             }
             return strings;
 
+        } catch (final JSONException e) {
+            throw new InvalidSnapshotException(e);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Long getLong(final String key) {
+        try {
+            return (Long) fixNull(_detail.get(key));
         } catch (final JSONException e) {
             throw new InvalidSnapshotException(e);
         }

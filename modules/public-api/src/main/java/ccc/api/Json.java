@@ -168,5 +168,19 @@ public interface Json {
      */
     Json getJson(String key);
 
+    /**
+     * Accessor.
+     *
+     * @param key The key for the value.
+     * @return The value, as a collection of strings.
+     */
     Collection<String> getStrings(final String key);
+
+    /**
+     * Accessor.
+     *
+     * @param key The key for the value.
+     * @return The value, as a long.
+     */
+    Long getLong(String key);
 }

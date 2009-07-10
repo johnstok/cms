@@ -31,9 +31,7 @@ public abstract class GetCurrentUserAction
      * Constructor.
      */
     public GetCurrentUserAction() {
-        super(
-            GLOBALS.userActions().internalAction(),
-            "/users/me");
+        super(GLOBALS.userActions().internalAction());
     }
 
     /** {@inheritDoc} */
@@ -44,6 +42,14 @@ public abstract class GetCurrentUserAction
         final UserSummary user = new UserSummary(new GwtJson(result));
         execute(user);
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected String getPath() {
+        return "/users/me";
+    }
+
 
     /**
      * Execute this action.

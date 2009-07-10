@@ -35,9 +35,7 @@ public abstract class GetRootsAction
      * Constructor.
      */
     public GetRootsAction() {
-        super(
-            GLOBALS.userActions().internalAction(),
-            "/roots");
+        super(GLOBALS.userActions().internalAction());
     }
 
 
@@ -54,6 +52,13 @@ public abstract class GetRootsAction
                     new GwtJson(results.get(i).isObject())));
         }
         onSuccess(roots);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected String getPath() {
+        return "/roots";
     }
 
 

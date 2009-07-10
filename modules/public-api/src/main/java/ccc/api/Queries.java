@@ -14,11 +14,9 @@ package ccc.api;
 import java.util.Collection;
 import java.util.Map;
 
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
 
@@ -28,8 +26,6 @@ import org.jboss.resteasy.annotations.cache.NoCache;
  *
  * @author Civic Computing Ltd.
  */
-@Consumes("application/json")
-@Produces("application/json")
 public interface Queries {
 
     /** NAME : String. */
@@ -49,7 +45,7 @@ public interface Queries {
      * @param resourceId The id of the existing resource.
      * @return A summary of the resource.
      */
-    @GET @Path("/resource/{id}") @NoCache
+    @GET @Path("/resources/{id}") @NoCache
     ResourceSummary resource(@PathParam("id") ID resourceId);
 
     /**
@@ -92,7 +88,7 @@ public interface Queries {
      * @param resourceId The id of the resource.
      * @return The absolute path as a string.
      */
-    @GET @Path("/resource/{id}/path") @NoCache
+    @GET @Path("/resources/{id}/path") @NoCache
     String getAbsolutePath(@PathParam("id") ID resourceId);
 
     /**
@@ -199,7 +195,7 @@ public interface Queries {
      * @param resourceId The id of the resource.
      * @return The metadata in a hashmap.
      */
-    @GET @Path("/resource/{id}/metadata") @NoCache
+    @GET @Path("/resources/{id}/metadata") @NoCache
     Map<String, String> metadata(@PathParam("id") ID resourceId);
 
     /**

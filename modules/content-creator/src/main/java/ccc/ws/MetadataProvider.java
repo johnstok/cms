@@ -16,7 +16,7 @@ import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.Collection;
+import java.util.Map;
 
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -24,7 +24,6 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import ccc.api.ResourceSummary;
 import ccc.domain.Snapshot;
 
 
@@ -38,14 +37,14 @@ import ccc.domain.Snapshot;
  */
 @Provider
 @Produces("application/json")
-public class ResourceSummaryProvider
+public class MetadataProvider
     implements
-        MessageBodyWriter<Collection<ResourceSummary>> {
+        MessageBodyWriter<Map<String, String>> {
 
 
     /** {@inheritDoc} */
     @Override
-    public long getSize(final Collection<ResourceSummary> object,
+    public long getSize(final Map<String, String> object,
                         final Class<?> clazz,
                         final Type type,
                         final Annotation[] annotations,
@@ -59,10 +58,7 @@ public class ResourceSummaryProvider
                                final Type type,
                                final Annotation[] annotations,
                                final MediaType mediaType) {
-
-        final boolean isWriteable =
-            isCollectionOfType(ResourceSummary.class, type);
-
+        final boolean isWriteable = isMapOfType(String.class, type);
         return isWriteable;
     }
 
@@ -73,11 +69,12 @@ public class ResourceSummaryProvider
      * @param type The type to check.
      * @return True if 'type' is a collection of type 'clazz', false otherwise.
      */
-    boolean isCollectionOfType(final Class<?> clazz, final Type type) {
+    boolean isMapOfType(final Class<?> clazz, final Type type) {
         if (type instanceof ParameterizedType) {
             final ParameterizedType pType = (ParameterizedType) type;
-            if (Collection.class.isAssignableFrom((Class<?>) pType.getRawType())
-                && pType.getActualTypeArguments()[0].equals(clazz)) {
+            if (Map.class.isAssignableFrom((Class<?>) pType.getRawType())
+                && pType.getActualTypeArguments()[0].equals(clazz)
+                && pType.getActualTypeArguments()[1].equals(clazz)) {
                 return true;
             }
             return false;
@@ -88,21 +85,15 @@ public class ResourceSummaryProvider
 
     /** {@inheritDoc} */
     @Override
-    public void writeTo(final Collection<ResourceSummary> object,
+    public void writeTo(final Map<String, String> object,
                         final Class<?> clazz,
                         final Type type,
                         final Annotation[] annotations,
                         final MediaType mediaType,
                         final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream outputStream) {
-
         final PrintWriter pw = new PrintWriter(outputStream);
-        pw.println("[\n");
-        for (final ResourceSummary rs : object) {
-            pw.println(
-                new Snapshot(rs).getDetail()+",\n");
-        }
-        pw.println("\n]");
+        pw.println(new Snapshot(object).getDetail());
         pw.flush();
     }
 }

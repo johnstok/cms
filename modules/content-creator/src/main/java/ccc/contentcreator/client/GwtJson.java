@@ -218,4 +218,17 @@ public class GwtJson
 
         return strings;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public Long getLong(final String key) {
+        final JSONValue value = _delegate.get(key);
+        if (null==value) {
+            throw new RuntimeException("Missing key: "+key);
+        } else if (null!=value.isNull()) {
+            return null;
+        }
+        // TODO: Handle non integers; handle values larger than maxLong, etc.
+        return Long.valueOf((long) value.isNumber().doubleValue());
+    }
 }

@@ -20,7 +20,7 @@ import java.util.Date;
  *
  * @author Civic Computing Ltd.
  */
-public final class LogEntrySummary implements Serializable {
+public final class LogEntrySummary implements Serializable, Jsonable {
     private CommandType _action;
     private Username _actor;
     private Date _happenedOn;
@@ -111,5 +111,16 @@ public final class LogEntrySummary implements Serializable {
      */
     public final boolean isMajor() {
         return _isMajor;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void toJson(final Json json) {
+        json.set(JsonKeys.ACTION, getAction().name());
+        json.set(JsonKeys.ACTOR, getActor().toString());
+        json.set(JsonKeys.HAPPENED_ON, getHappenedOn());
+        json.set(JsonKeys.MAJOR_CHANGE, isMajor());
+        json.set(JsonKeys.INDEX, getIndex());
+        json.set(JsonKeys.COMMENT, getComment());
     }
 }

@@ -23,7 +23,7 @@ import ccc.annotations.ValueObject;
  * @author Civic Computing Ltd.
  */
 @ValueObject
-public final class Duration implements Serializable {
+public final class Duration implements Serializable, Jsonable {
 
     private static final long SECONDS_IN_MINUTE = 60;
     private static final long SECONDS_IN_HOUR = 3600;
@@ -59,6 +59,15 @@ public final class Duration implements Serializable {
      */
     public Duration(final long time) {
         _time = time;
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param json The JSON representation of a duration.
+     */
+    public Duration(final Json json) {
+        this(json.getLong(JsonKeys.DURATION).longValue());
     }
 
     /**
@@ -136,5 +145,11 @@ public final class Duration implements Serializable {
             return false;
         }
         return true;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void toJson(final Json json) {
+        json.set(JsonKeys.DURATION, _time);
     }
 }
