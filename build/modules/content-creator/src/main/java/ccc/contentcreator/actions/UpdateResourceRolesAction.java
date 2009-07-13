@@ -1,12 +1,15 @@
 package ccc.contentcreator.actions;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.UpdateResourceRolesDialog;
+
+import com.google.gwt.http.client.Response;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONParser;
 
 /**
  * Action to launch the 'update resource roles' dialog.
@@ -14,8 +17,8 @@ import ccc.contentcreator.dialogs.UpdateResourceRolesDialog;
  * @author Civic Computing Ltd.
  */
 public final class UpdateResourceRolesAction
-    implements
-        Action {
+    extends
+        RemotingAction {
 
 
     private final SingleSelectionModel _selectionModel;
@@ -26,23 +29,33 @@ public final class UpdateResourceRolesAction
      * @param ssm The selection model to use.
      */
     public UpdateResourceRolesAction(final SingleSelectionModel ssm) {
+        super(UI_CONSTANTS.updateRoles());
         _selectionModel = ssm;
     }
 
     /** {@inheritDoc} */
-    public void execute() {
+    @Override
+    protected String getPath() {
+        return
+            "/resources/"
+            + _selectionModel.tableSelection().getId()
+            + "/roles";
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onOK(final Response response) {
+        final List<String> data = new ArrayList<String>();
+        final JSONArray rawData =
+            JSONParser.parse(response.getText()).isArray();
+        for (int i=0; i<rawData.size(); i++) {
+            data.add(rawData.get(i).isString().stringValue());
+        }
+
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        _qs.roles(
+        new UpdateResourceRolesDialog(
             item.getId(),
-            new ErrorReportingCallback<Collection<String>>(
-                UI_CONSTANTS.updateRoles()){
-                public void onSuccess(final Collection<String> data) {
-                    new UpdateResourceRolesDialog(
-                        item.getId(),
-                        data)
-                    .show();
-                }
-            }
-        );
+            data)
+        .show();
     }
 }

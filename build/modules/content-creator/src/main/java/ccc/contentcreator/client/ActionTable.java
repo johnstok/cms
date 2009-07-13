@@ -16,9 +16,10 @@ import java.util.Collection;
 import java.util.List;
 
 import ccc.api.ActionSummary;
+import ccc.contentcreator.actions.ListCompletedActionsAction;
+import ccc.contentcreator.actions.ListPendingActionsAction;
 import ccc.contentcreator.binding.ActionSummaryModelData;
 import ccc.contentcreator.binding.DataBinding;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
 
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
 import com.extjs.gxt.ui.client.data.PagingLoader;
@@ -140,27 +141,21 @@ public class ActionTable extends TablePanel {
     }
 
     private void displayCompletedActions() {
-
-        qs.listCompletedActions(
-            new ErrorReportingCallback<Collection<ActionSummary>>(
-                USER_ACTIONS.viewActions()) {
-                public void onSuccess(final Collection<ActionSummary> result) {
-                    updatePagingModel(result);
-                }
+        new ListCompletedActionsAction(USER_ACTIONS.viewActions()) {
+            @Override
+            protected void execute(final Collection<ActionSummary> result) {
+                updatePagingModel(result);
             }
-        );
+        }.execute();
     }
 
     private void displayPendingActions() {
-        qs.listPendingActions(
-            new ErrorReportingCallback<Collection<ActionSummary>>(
-                USER_ACTIONS.viewActions()) {
-                public void onSuccess(final Collection<ActionSummary> result) {
-                    updatePagingModel(result);
-                }
-
+        new ListPendingActionsAction(USER_ACTIONS.viewActions()) {
+            @Override
+            protected void execute(final Collection<ActionSummary> result) {
+                updatePagingModel(result);
             }
-        );
+        }.execute();
     }
 
     @SuppressWarnings("unchecked")

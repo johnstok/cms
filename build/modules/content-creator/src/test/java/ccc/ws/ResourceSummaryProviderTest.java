@@ -54,7 +54,7 @@ public class ResourceSummaryProviderTest
             new ResourceSummaryCollectionProvider();
 
         // ACT
-        final boolean condition = rsp.isCollectionOfType(Number.class, _type);
+        final boolean condition = rsp.isCollectionOfType(Integer.class, _type);
 
         // ASSERT
         assertTrue("Should be true.", condition);
@@ -64,17 +64,17 @@ public class ResourceSummaryProviderTest
     /**
      * Test.
      */
-    public void testIsCollectionRejectsSubtypeMatch() {
+    public void testIsCollectionAcceptsSupertypeMatch() {
 
         // ARRANGE
         final ResourceSummaryCollectionProvider rsp =
             new ResourceSummaryCollectionProvider();
 
         // ACT
-        final boolean condition = rsp.isCollectionOfType(Integer.class, _type);
+        final boolean condition = rsp.isCollectionOfType(Number.class, _type);
 
         // ASSERT
-        assertFalse("Should be false.", condition);
+        assertTrue("Should be true.", condition);
 
     }
 
@@ -124,5 +124,6 @@ public class ResourceSummaryProviderTest
         }
     }
 
-    private Type _type = new TypeReference<ArrayList<Number>>(){/**/}.getType();
+    private Type _type =
+        new TypeReference<ArrayList<Integer>>(){/**/}.getType();
 }
