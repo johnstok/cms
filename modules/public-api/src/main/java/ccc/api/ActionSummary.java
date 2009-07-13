@@ -63,6 +63,23 @@ public final class ActionSummary implements Serializable, Jsonable {
 
 
     /**
+     * Constructor.
+     *
+     * @param json
+     */
+    public ActionSummary(final Json json) {
+        this(
+            json.getId(ID),
+            CommandType.valueOf(json.getString(TYPE)),
+            new Username(json.getString(ACTOR)),
+            json.getDate(EXECUTE_AFTER),
+            ResourceType.valueOf(json.getString(SUBJECT_TYPE)),
+            json.getString(SUBJECT_PATH),
+            ActionStatus.valueOf(json.getString(STATUS))
+        );
+    }
+
+    /**
      * Accessor.
      *
      * @return Returns the id.
