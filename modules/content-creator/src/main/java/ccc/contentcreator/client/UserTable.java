@@ -15,12 +15,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import ccc.api.UserDelta;
 import ccc.api.UserSummary;
+import ccc.contentcreator.actions.ListUsers;
+import ccc.contentcreator.actions.ListUsersWithEmailAction;
+import ccc.contentcreator.actions.ListUsersWithRoleAction;
+import ccc.contentcreator.actions.ListUsersWithUsernameAction;
+import ccc.contentcreator.actions.OpenEditUserDialogAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.UserSummaryModelData;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.dialogs.EditUserDialog;
 import ccc.contentcreator.dialogs.EditUserPwDialog;
 
 import com.extjs.gxt.ui.client.Events;
@@ -47,7 +49,6 @@ import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.TextToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.extjs.gxt.ui.client.widget.tree.TreeItem;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 /**
@@ -129,20 +130,10 @@ public class UserTable extends TablePanel {
                 @Override public void componentSelected(final MenuEvent ce) {
                     final UserSummaryModelData userDTO =
                         grid.getSelectionModel().getSelectedItem();
-                    qs.userDelta(
-                        userDTO.getId(),
-                        new AsyncCallback<UserDelta>(){
-                            public void onFailure(final Throwable arg0) {
-                                new IGlobalsImpl().unexpectedError(
-                                    arg0, UI_CONSTANTS.editUser());
-                            }
-                            public void onSuccess(final UserDelta delta) {
-                                new EditUserDialog(
-                                    userDTO.getId(), delta, UserTable.this)
-                                .show();
-                            }
-                        }
-                    );
+
+                    new OpenEditUserDialogAction(
+                        userDTO.getId(), UserTable.this)
+                    .execute();
                 }
             }
         );
@@ -221,44 +212,29 @@ public class UserTable extends TablePanel {
         }
 
         if (UserTree.ALL.equals(selectedItem.getId())) {
-            qs.listUsers(
-                new ErrorReportingCallback<Collection<UserSummary>>(
-                    USER_ACTIONS.viewUsers()) {
-                    public void onSuccess(
-                                      final Collection<UserSummary> result) {
-                        updatePager(result);
-                    }
-                });
+            new ListUsers(){
+                @Override protected void execute(final Collection<UserSummary> users) {
+                    updatePager(users);
+                }
+            }.execute();
         } else if (UserTree.CONTENT_CREATOR.equals(selectedItem.getId())){
-            qs.listUsersWithRole(
-                "CONTENT_CREATOR",
-                new ErrorReportingCallback<Collection<UserSummary>>(
-                    USER_ACTIONS.viewUsers()) {
-                    public void onSuccess(
-                                      final Collection<UserSummary> result) {
-                        updatePager(result);
-                    }
-                });
+            new ListUsersWithRoleAction("CONTENT_CREATOR"){
+                @Override protected void execute(final Collection<UserSummary> users) {
+                    updatePager(users);
+                }
+            }.execute();
         } else if (UserTree.SITE_BUILDER.equals(selectedItem.getId())) {
-            qs.listUsersWithRole(
-                "SITE_BUILDER",
-                new ErrorReportingCallback<Collection<UserSummary>>(
-                    USER_ACTIONS.viewUsers()) {
-                    public void onSuccess(
-                                      final Collection<UserSummary> result) {
-                        updatePager(result);
-                    }
-                });
+            new ListUsersWithRoleAction("SITE_BUILDER"){
+                @Override protected void execute(final Collection<UserSummary> users) {
+                    updatePager(users);
+                }
+            }.execute();
         } else if(UserTree.ADMINISTRATOR.equals(selectedItem.getId())) {
-            qs.listUsersWithRole(
-                "ADMINISTRATOR",
-                new ErrorReportingCallback<Collection<UserSummary>>(
-                    USER_ACTIONS.viewUsers()) {
-                    public void onSuccess(
-                                      final Collection<UserSummary> result) {
-                        updatePager(result);
-                    }
-                });
+            new ListUsersWithRoleAction("ADMINISTRATOR"){
+                @Override protected void execute(final Collection<UserSummary> users) {
+                    updatePager(users);
+                }
+            }.execute();
         } else {
             updatePager(new ArrayList<UserSummary>());
         }
@@ -288,25 +264,19 @@ public class UserTable extends TablePanel {
             }
             _detailsStore.removeAll();
             if (_radioGroup.getValue() == _usernameRadio) {
-                qs.listUsersWithUsername(
-                    _searchString.getValue().replace('*', '%'),
-                    new ErrorReportingCallback<Collection<UserSummary>>(
-                        USER_ACTIONS.viewUsers()) {
-                        public void onSuccess(
-                                      final Collection<UserSummary> result) {
-                            updatePager(result);
+                new ListUsersWithUsernameAction(
+                    _searchString.getValue().replace('*', '%')){
+                        @Override protected void execute(final Collection<UserSummary> users) {
+                            updatePager(users);
                         }
-                    });
+                }.execute();
             } else if (_radioGroup.getValue() == _emailRadio) {
-                qs.listUsersWithEmail(
-                    _searchString.getValue().replace('*', '%'),
-                    new ErrorReportingCallback<Collection<UserSummary>>(
-                        USER_ACTIONS.viewUsers()) {
-                        public void onSuccess(
-                                      final Collection<UserSummary> result) {
-                            updatePager(result);
+                new ListUsersWithEmailAction(
+                    _searchString.getValue().replace('*', '%')) {
+                        @Override protected void execute(final Collection<UserSummary> users) {
+                            updatePager(users);
                         }
-                    });
+                }.execute();
             }
         }
     }

@@ -19,6 +19,7 @@ import java.util.HashSet;
 import ccc.api.UserDelta;
 import ccc.api.UserSummary;
 import ccc.api.Username;
+import ccc.contentcreator.actions.UniqueUsernameAction;
 import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
@@ -90,23 +91,19 @@ public class CreateUserController implements EditController {
     private Validator uniqueUsername(final Username username) {
         return new Validator() {
             public void validate(final Validate validate) {
-                _globals.queriesService().usernameExists(
-                    username,
-                    new ErrorReportingCallback<Boolean>(
-                        _userActions.checkUniqueUsername()){
-                        public void onSuccess(final Boolean exists) {
-                            if (exists.booleanValue()) {
-                                validate.addMessage(
-                                    _messages.userWithUsernameAlreadyExists(
-                                        username)
-                                );
-                            }
-                            validate.next();
+                new UniqueUsernameAction(username){
+                    @Override
+                    protected void execute(final boolean usernameExists) {
+                        if (usernameExists) {
+                            validate.addMessage(
+                                _messages.userWithUsernameAlreadyExists(
+                                    username)
+                            );
                         }
+                        validate.next();
                     }
-                );
+                }.execute();
             }
-
         };
     }
 

@@ -11,6 +11,8 @@
  */
 package ccc.api;
 
+import static ccc.api.JsonKeys.*;
+
 import java.io.Serializable;
 
 
@@ -50,6 +52,21 @@ public final class FileSummary implements Serializable, Jsonable {
         _title = title;
     }
 
+
+    /**
+     * Constructor.
+     *
+     * @param json
+     */
+    public FileSummary(final Json json) {
+        this(
+            json.getString(MIME_TYPE),
+            json.getString(PATH),
+            json.getId(ID),
+            json.getString(NAME),
+            json.getString(TITLE)
+        );
+    }
 
     /**
      * Accessor.
@@ -103,10 +120,10 @@ public final class FileSummary implements Serializable, Jsonable {
 
     /** {@inheritDoc} */
     @Override public void toJson(final Json json) {
-        json.set(JsonKeys.MIME_TYPE, getMimeType());
-        json.set(JsonKeys.PATH, getPath());
-        json.set(JsonKeys.ID, getId());
-        json.set(JsonKeys.NAME, getName());
-        json.set(JsonKeys.TITLE, getTitle());
+        json.set(MIME_TYPE, getMimeType());
+        json.set(PATH, getPath());
+        json.set(ID, getId());
+        json.set(NAME, getName());
+        json.set(TITLE, getTitle());
     }
 }

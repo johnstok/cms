@@ -16,6 +16,7 @@ import ccc.api.ID;
 import ccc.api.MimeType;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
+import ccc.contentcreator.actions.TemplateNameExistsAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.IGlobals;
@@ -226,21 +227,20 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                 if (_mode == DialogMode.UPDATE) {
                     validate.next();
                 } else {
-                    queries().templateNameExists(
-                        name.getValue(),
-                        new ErrorReportingCallback<Boolean>(
-                                USER_ACTIONS.checkUniqueTemplateName()){
-                            public void onSuccess(final Boolean nameExists) {
-                                if (nameExists.booleanValue()) {
-                                    validate.addMessage(
-            _messages.templateWithNameAlreadyExistsInThisFolder(name.getValue())
-                                    );
-                                }
-                                validate.next();
-                            }});
+                    new TemplateNameExistsAction(name.getValue()){
+
+                        @Override
+                        protected void execute(final boolean nameExists) {
+                            if (nameExists) {
+                                validate.addMessage(
+        _messages.templateWithNameAlreadyExistsInThisFolder(name.getValue())
+                                );
+                            }
+                            validate.next();
+                        }
+                    }.execute();
                 }
             }
-
         };
     }
 

@@ -18,8 +18,8 @@ import java.util.List;
 import ccc.api.ID;
 import ccc.api.ResourceSummary;
 import ccc.api.ResourceType;
+import ccc.contentcreator.actions.GetChildrenAction;
 import ccc.contentcreator.api.CommandServiceAsync;
-import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.binding.ResourceSummaryModelData.Property;
@@ -48,7 +48,6 @@ import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 /**
@@ -70,7 +69,6 @@ AbstractEditDialog {
     private static final String NAME_ALPHANUM_ASC = "NAME_ALPHANUM_ASC";
 
     private final CommandServiceAsync _commands = _globals.commandService();
-    private final QueriesServiceAsync _queries = _globals.queriesService();
 
     private final ComboBox<ModelData> _sortOrder = new ComboBox<ModelData>();
     private final ComboBox<ModelData> _indexPage = new ComboBox<ModelData>();
@@ -168,19 +166,23 @@ AbstractEditDialog {
         _detailsStore =  new ListStore<ResourceSummaryModelData>();
         final ResourceSummaryModelData selection =
             _selectionModel.tableSelection();
-        _queries.getChildren(selection.getId(),
-            new AsyncCallback<Collection<ResourceSummary>>(){
-            public void onFailure(final Throwable arg0) {
-                _grid.disable();
-            }
-            public void onSuccess(final Collection<ResourceSummary> arg0) {
+
+        new GetChildrenAction(_uiConstants.edit(), selection.getId()) {
+
+            // FIXME: Handle failure!
+            /*
+             * _grid.disable();
+             */
+
+            @Override
+            protected void execute(final Collection<ResourceSummary> children) {
                 _detailsStore.removeAll();
-                populateIndexOptions(arg0);
+                populateIndexOptions(children);
                 setCurrentIndexPage(currentIndexPage);
-                _detailsStore.add(DataBinding.bindResourceSummary(arg0));
+                _detailsStore.add(DataBinding.bindResourceSummary(children));
                 _grid.reconfigure(_detailsStore, _cm);
             }
-        });
+        }.execute();
     }
 
     private void configureDropTarget() {

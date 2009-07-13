@@ -39,6 +39,18 @@ public final class AliasDelta implements Serializable, Jsonable {
 
 
     /**
+     * Constructor.
+     *
+     * @param json
+     */
+    public AliasDelta(final Json json) {
+        this(
+            json.getString("target-name"), // TODO: Use JsonKeys
+            json.getId(JsonKeys.TARGET)
+        );
+    }
+
+    /**
      * Accessor.
      *
      * @return Returns the targetName.
@@ -69,8 +81,8 @@ public final class AliasDelta implements Serializable, Jsonable {
 
     /** {@inheritDoc} */
     @Override
-    public void toJson(final Json json) { // TODO: Use JsonKeys
-        json.set("target-name", getTargetName());
+    public void toJson(final Json json) {
+        json.set("target-name", getTargetName()); // TODO: Use JsonKeys
         json.set(JsonKeys.TARGET, getTargetId());
     }
 }

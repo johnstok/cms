@@ -41,12 +41,6 @@
         </servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Queries</servlet-name>
-        <servlet-class>
-            ccc.contentcreator.remoting.QueriesImpl
-        </servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>Commands</servlet-name>
         <servlet-class>
             ccc.contentcreator.remoting.CommandsImpl
@@ -112,10 +106,6 @@
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>Queries</servlet-name>
-        <url-pattern>/queries</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>Commands</servlet-name>
         <url-pattern>/commands</url-pattern>
     </servlet-mapping>
@@ -172,7 +162,6 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Secure Area</web-resource-name>
-            <url-pattern>/queries</url-pattern>
             <url-pattern>/commands</url-pattern>
             <url-pattern>/upload</url-pattern>
             <url-pattern>/update_file</url-pattern>

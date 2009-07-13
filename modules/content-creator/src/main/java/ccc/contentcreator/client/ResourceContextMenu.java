@@ -12,10 +12,8 @@
 package ccc.contentcreator.client;
 
 import static ccc.contentcreator.dialogs.AbstractBaseDialog.*;
-import ccc.api.AliasDelta;
 import ccc.api.PageDelta;
 import ccc.api.ResourceType;
-import ccc.api.TemplateDelta;
 import ccc.api.TemplateSummary;
 import ccc.api.UserSummary;
 import ccc.contentcreator.actions.ApplyWorkingCopyAction;
@@ -29,19 +27,19 @@ import ccc.contentcreator.actions.EditFolderAction;
 import ccc.contentcreator.actions.IncludeInMainMenuAction;
 import ccc.contentcreator.actions.LockAction;
 import ccc.contentcreator.actions.MoveAction;
+import ccc.contentcreator.actions.PageDeltaAction;
 import ccc.contentcreator.actions.PreviewAction;
 import ccc.contentcreator.actions.PublishAction;
 import ccc.contentcreator.actions.RemoveFromMainMenuAction;
 import ccc.contentcreator.actions.RenameAction;
 import ccc.contentcreator.actions.UnlockAction;
 import ccc.contentcreator.actions.UnpublishAction;
+import ccc.contentcreator.actions.UpdateAliasAction;
 import ccc.contentcreator.actions.UpdateMetadataAction;
 import ccc.contentcreator.actions.UpdateResourceRolesAction;
+import ccc.contentcreator.actions.UpdateTemplateAction;
 import ccc.contentcreator.actions.ViewHistoryAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.dialogs.EditTemplateDialog;
-import ccc.contentcreator.dialogs.UpdateAliasDialog;
 import ccc.contentcreator.dialogs.UpdateFileDialog;
 import ccc.contentcreator.dialogs.UpdatePageDialog;
 
@@ -381,19 +379,7 @@ public class ResourceContextMenu
 
     // TODO: Factor these methods to actions
     private void updateAlias(final ResourceSummaryModelData item) {
-        _qs.aliasDelta(
-            item.getId(),
-            new ErrorReportingCallback<AliasDelta>(_constants.updateAlias()) {
-                public void onSuccess(final AliasDelta result) {
-                    new UpdateAliasDialog(
-                        item.getId(),
-                        result,
-                        item.getName(),
-                        _table.root())
-                    .show();
-                }
-            }
-        );
+        new UpdateAliasAction(item, _table.root()).execute();
     }
 
     private void updatePage(final ResourceSummaryModelData item) {
@@ -413,37 +399,26 @@ public class ResourceContextMenu
                   new GwtJson(
                       JSONParser.parse(
                           response.getText()).isObject()));
-                _qs.pageDelta(
-                    item.getId(),
-                    new ErrorReportingCallback<PageDelta>(_constants.updateContent()) {
-                        @Override public void onSuccess(final PageDelta page) {
-                            new UpdatePageDialog(
-                                item.getId(),
-                                page,
-                                item.getName(),
-                                ts,
-                                _table)
-                            .show(); // Ok, pop the dialog.
-                        }
+
+                new PageDeltaAction(_constants.updateContent(), item.getId()){
+                    @Override
+                    protected void execute(final PageDelta delta) {
+                        new UpdatePageDialog(
+                            item.getId(),
+                            delta,
+                            item.getName(),
+                            ts,
+                            _table)
+                        .show(); // Ok, pop the dialog.
                     }
-                );
+
+                }.execute();
             }
 
         }.execute();
     }
 
     private void updateTemplate(final ResourceSummaryModelData item) {
-        _qs.templateDelta(
-            item.getId(),
-            new ErrorReportingCallback<TemplateDelta>(_constants.editTemplate()){
-                public void onSuccess(final TemplateDelta td) {
-                    new EditTemplateDialog(
-                        td,
-                        item,
-                        _table)
-                    .show();
-                }
-            }
-        );
+        new UpdateTemplateAction(item, _table).execute();
     }
 }

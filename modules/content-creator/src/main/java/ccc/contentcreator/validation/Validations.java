@@ -16,9 +16,9 @@ import java.util.Set;
 
 import ccc.api.ID;
 import ccc.api.Paragraph;
+import ccc.contentcreator.actions.ResourceNameExistsAction;
 import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.api.CommandServiceAsync;
-import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
@@ -46,8 +46,6 @@ public class Validations {
         GLOBALS.uiMessages();
     private static final ActionNameConstants USER_ACTIONS =
         GLOBALS.userActions();
-    private static final QueriesServiceAsync QUERIES_SERVICE =
-        GLOBALS.queriesService();
     private static final CommandServiceAsync COMMAND_SERVICE =
         GLOBALS.commandService();
 
@@ -171,18 +169,17 @@ public class Validations {
 
         return new Validator() {
             public void validate(final Validate validate) {
-                QUERIES_SERVICE.nameExistsInFolder(
-                    folder.getId(),
-                    name.getValue(),
-                    new ErrorReportingCallback<Boolean>(USER_ACTIONS.checkUniqueResourceName()){
-                        public void onSuccess(final Boolean nameExists) {
-                            if (nameExists) {
-                                validate.addMessage(
-                                    UI_MESSAGES.resourceWithNameAlreadyExistsInThisFolder(name.getValue())
-                                );
-                            }
-                            validate.next();
-                        }});
+                new ResourceNameExistsAction(folder.getId(),
+                                             name.getValue()){
+                    @Override protected void execute(final boolean nameExists) {
+                        if (nameExists) {
+                            validate.addMessage(
+                                UI_MESSAGES.resourceWithNameAlreadyExistsInThisFolder(name.getValue())
+                            );
+                        }
+                        validate.next();
+                    }
+                }.execute();
             }
         };
     }
@@ -218,18 +215,17 @@ public class Validations {
                                                final TextField<String> name) {
         return new Validator() {
             public void validate(final Validate validate) {
-                QUERIES_SERVICE.nameExistsInFolder(
-                    id,
-                    name.getValue(),
-                    new ErrorReportingCallback<Boolean>(USER_ACTIONS.checkUniqueResourceName()){
-                        public void onSuccess(final Boolean nameExists) {
-                            if (nameExists) {
-                                validate.addMessage(
-                                    UI_MESSAGES.resourceWithNameAlreadyExistsInTheParentFolder(name.getValue())
-                                );
-                            }
-                            validate.next();
-                        }});
+                new ResourceNameExistsAction(id,
+                                             name.getValue()){
+                    @Override protected void execute(final boolean nameExists) {
+                        if (nameExists) {
+                           validate.addMessage(
+                               UI_MESSAGES.resourceWithNameAlreadyExistsInTheParentFolder(name.getValue())
+                           );
+                        }
+                        validate.next();
+                    }
+                }.execute();
             }
         };
     }

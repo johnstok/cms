@@ -4,7 +4,6 @@ import java.util.Collection;
 
 import ccc.api.TemplateSummary;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.CreatePageDialog;
@@ -36,14 +35,11 @@ public final class CreatePageAction
             GLOBALS.alert(UI_CONSTANTS.noFolderSelected());
             return;
         }
-        _qs.templates(
-            new ErrorReportingCallback<Collection<TemplateSummary>>(
-                                                    UI_CONSTANTS.createPage()){
-                public void onSuccess(
-                                      final Collection<TemplateSummary> list) {
-                    new CreatePageDialog(list, item, _selectionModel).show();
-                }
+        new GetTemplatesAction(UI_CONSTANTS.createPage()){
+            @Override protected void execute(final Collection<TemplateSummary> templates) {
+                new CreatePageDialog(templates, item, _selectionModel).show();
             }
-        );
+
+        }.execute();
     }
 }

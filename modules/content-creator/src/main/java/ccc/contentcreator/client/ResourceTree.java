@@ -17,6 +17,7 @@ import java.util.List;
 
 import ccc.api.ID;
 import ccc.api.ResourceSummary;
+import ccc.contentcreator.actions.GetChildrenAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 
@@ -70,22 +71,19 @@ public class ResourceTree extends Tree {
                 final ID parentId =
                   (null==loadConfig) ? _root.getId() : loadConfig.getId();
 
-                _globals.queriesService().getChildren(
-                    parentId,
-                    new AsyncCallback<Collection<ResourceSummary>>(){
+                new GetChildrenAction(_globals.userActions().loadData(),
+                                      parentId) {
 
-                    public void onFailure(final Throwable arg0) {
-                        callback.onFailure(arg0);
-                        new IGlobalsImpl().unexpectedError(
-                            arg0, _globals.userActions().loadData());
-                    }
+                    // FIXME: Handle failure!
+                    /*
+                     * callback.onFailure(throwable);
+                     */
 
-                    public void onSuccess(
-                                      final Collection<ResourceSummary> arg0) {
+                    @Override protected void execute(final Collection<ResourceSummary> children) {
                         callback.onSuccess(
-                            DataBinding.bindResourceSummary(arg0));
+                            DataBinding.bindResourceSummary(children));
                     }
-                });
+                }.execute();
             }
         };
 
