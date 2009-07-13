@@ -14,6 +14,7 @@ package ccc.contentcreator.client;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import ccc.api.Decimal;
@@ -230,5 +231,16 @@ public class GwtJson
         }
         // TODO: Handle non integers; handle values larger than maxLong, etc.
         return Long.valueOf((long) value.isNumber().doubleValue());
+    }
+
+    /** {@inheritDoc} */
+    @Override // FIXME: Doesn't handle NULL
+    public Map<String, String> getStringMap(final String key) {
+        final Map<String, String> value = new HashMap<String, String>();
+        final JSONObject o = _delegate.get(key).isObject();
+        for (final String mapKey : o.keySet()) {
+            value.put(mapKey, o.get(mapKey).isString().stringValue());
+        }
+        return value;
     }
 }

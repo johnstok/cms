@@ -52,6 +52,20 @@ public final class UserDelta implements Serializable, Jsonable {
 
 
     /**
+     * Constructor.
+     *
+     * @param json
+     */
+    public UserDelta(final Json json) {
+        this(
+            json.getString(JsonKeys.EMAIL),
+            new Username(json.getString(JsonKeys.USERNAME)),
+            new HashSet<String>(json.getStrings(JsonKeys.ROLES)),
+            json.getStringMap(JsonKeys.METADATA)
+        );
+    }
+
+    /**
      * Accessor.
      *
      * @return Returns the email.
@@ -116,7 +130,6 @@ public final class UserDelta implements Serializable, Jsonable {
      * @return Returns the metadata.
      */
     public Map<String, String> getMetadata() {
-
         return _metadata;
     }
 
@@ -127,7 +140,6 @@ public final class UserDelta implements Serializable, Jsonable {
      * @param metadata The metadata to set.
      */
     public void setMetadata(final Map<String, String> metadata) {
-
         _metadata = new HashMap<String, String>(metadata);
     }
 

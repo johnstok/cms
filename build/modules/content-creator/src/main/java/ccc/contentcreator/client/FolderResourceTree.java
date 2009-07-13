@@ -18,6 +18,7 @@ import java.util.List;
 
 import ccc.api.ResourceSummary;
 import ccc.api.ResourceType;
+import ccc.contentcreator.actions.GetChildrenAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 
@@ -77,23 +78,19 @@ public class FolderResourceTree extends Tree {
                         DataBinding.bindResourceSummary(
                             Collections.singletonList(_root)));
                 } else {
-                    _globals.queriesService().getChildren(
-                        loadConfig.getId(),
-                        new AsyncCallback<Collection<ResourceSummary>>(){
+                    new GetChildrenAction(_globals.userActions().loadData(),
+                                          loadConfig.getId()) {
 
-                            public void onFailure(final Throwable arg0) {
-                                callback.onFailure(arg0);
-                                new IGlobalsImpl().unexpectedError(
-                                    arg0, _globals.userActions().loadData());
-                            }
+                        // FIXME: Handle failure!
+                        /*
+                         * callback.onFailure(throwable);
+                         */
 
-                            public void onSuccess(
-                                      final Collection<ResourceSummary> arg0) {
-                                callback.onSuccess(
-                                    DataBinding.bindResourceSummary(arg0));
-                            }
+                        @Override protected void execute(final Collection<ResourceSummary> children) {
+                            callback.onSuccess(
+                                DataBinding.bindResourceSummary(children));
                         }
-                    );
+                    }.execute();
                 }
             }
         };

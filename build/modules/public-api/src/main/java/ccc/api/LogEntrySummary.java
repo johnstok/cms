@@ -55,6 +55,22 @@ public final class LogEntrySummary implements Serializable, Jsonable {
 
 
     /**
+     * Constructor.
+     *
+     * @param json
+     */
+    public LogEntrySummary(final Json json) {
+        this(
+            CommandType.valueOf(json.getString(JsonKeys.ACTION)),
+            new Username(json.getString(JsonKeys.ACTOR)),
+            json.getDate(JsonKeys.HAPPENED_ON),
+            json.getLong(JsonKeys.INDEX).longValue(),
+            json.getString(JsonKeys.COMMENT),
+            json.getBool(JsonKeys.MAJOR_CHANGE).booleanValue()
+        );
+    }
+
+    /**
      * Accessor.
      *
      * @return Returns the action.

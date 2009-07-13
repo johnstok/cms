@@ -43,6 +43,19 @@ public final class TemplateDelta implements Serializable, Jsonable {
 
 
     /**
+     * Constructor.
+     *
+     * @param gwtJson
+     */
+    public TemplateDelta(final Json json) {
+        this(
+            json.getString(JsonKeys.BODY),
+            json.getString(JsonKeys.DEFINITION),
+            new MimeType(json.getJson(JsonKeys.MIME_TYPE))
+        );
+    }
+
+    /**
      * Accessor.
      *
      * @return Returns the body.

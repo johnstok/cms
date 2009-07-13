@@ -21,8 +21,8 @@ import ccc.api.FileSummary;
 import ccc.api.ID;
 import ccc.api.PageDelta;
 import ccc.api.Paragraph;
+import ccc.contentcreator.actions.GetAbsolutePathAction;
 import ccc.contentcreator.binding.FileSummaryModelData;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.PageElement.FieldType;
 import ccc.contentcreator.client.ui.FCKEditor;
 import ccc.contentcreator.dialogs.ImageChooserDialog;
@@ -212,10 +212,10 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         final String id = para.text();
         if (id != null && !id.trim().equals("")) {
             final ID resourceId = new ID(id);
-            _globals.queriesService().getAbsolutePath(resourceId,
-                new ErrorReportingCallback<String>(
-                    _globals.uiConstants().selectImage()) {
-                @Override public void onSuccess(final String path) {
+
+            new GetAbsolutePathAction(_globals.uiConstants().selectImage(),
+                                      resourceId) {
+                @Override protected void execute(final String path) {
                     final FileSummary fs =
                         new FileSummary("image", path, resourceId, "", "");
                     final FileSummaryModelData model =
@@ -223,7 +223,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                     image.setValue(path);
                     image.setFSModel(model);
                 }
-            });
+            }.execute();
         }
     }
 

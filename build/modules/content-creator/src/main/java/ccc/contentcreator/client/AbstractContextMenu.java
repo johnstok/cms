@@ -12,7 +12,6 @@
 
 package ccc.contentcreator.client;
 
-import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 
 import com.extjs.gxt.ui.client.widget.menu.Menu;
@@ -31,8 +30,6 @@ public class AbstractContextMenu
     protected IGlobals _globals = new IGlobalsImpl();
     /** _constants : UIConstants. */
     protected final UIConstants _constants = _globals.uiConstants();
-    /** _qs : QueriesServiceAsync. */
-    protected final QueriesServiceAsync _qs = _globals.queriesService();
 
     /**
      * Creates a new menu item.

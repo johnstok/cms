@@ -19,7 +19,6 @@ import java.util.Collection;
 import ccc.api.ResourceSummary;
 import ccc.contentcreator.actions.GetRootsAction;
 import ccc.contentcreator.api.ActionNameConstants;
-import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.dialogs.ImageSelectionDialog;
 import ccc.contentcreator.dialogs.LinkSelectionDialog;
@@ -69,7 +68,6 @@ import com.google.gwt.user.client.ui.Hidden;
 public class FCKEditor extends LayoutContainer {
 
     private final String _elementID;
-    private final QueriesServiceAsync _qs;
     private final ActionNameConstants _userActions;
 
 
@@ -91,7 +89,6 @@ public class FCKEditor extends LayoutContainer {
 
         initJSNI(this);
 
-        _qs = globals.queriesService();
         _userActions = globals.userActions();
 
 

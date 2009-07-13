@@ -183,4 +183,12 @@ public interface Json {
      * @return The value, as a long.
      */
     Long getLong(String key);
+
+    /**
+     * Accessor.
+     *
+     * @param key The key for the value.
+     * @return The value, as a map of strings.
+     */
+    Map<String, String> getStringMap(String key);
 }

@@ -15,9 +15,9 @@ import java.util.Collection;
 import java.util.List;
 
 import ccc.api.FileSummary;
+import ccc.contentcreator.actions.GetContentImagesAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.FileSummaryModelData;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.IGlobalsImpl;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -57,13 +57,12 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
         final ListStore<FileSummaryModelData> store =
             new ListStore<FileSummaryModelData>();
 
-        queries().getAllContentImages(
-            new ErrorReportingCallback<Collection<FileSummary>>(
-                _constants.selectImage()){
-                public void onSuccess(final Collection<FileSummary> arg0) {
-                    loadModel(store, arg0);
-                }
-            });
+        new GetContentImagesAction(_constants.selectImage()){
+            @Override
+            protected void execute(final Collection<FileSummary> images) {
+                loadModel(store, images);
+            }
+        }.execute();
 
 
         final ContentPanel panel = new ContentPanel();

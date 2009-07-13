@@ -14,7 +14,6 @@ package ccc.contentcreator.dialogs;
 
 import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.api.CommandServiceAsync;
-import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
 import ccc.contentcreator.client.IGlobals;
@@ -54,7 +53,6 @@ public abstract class AbstractBaseDialog
     protected final UIConstants _uiConstants;
     protected final ActionNameConstants USER_ACTIONS;
 
-    private final QueriesServiceAsync _qs;
     private final CommandServiceAsync _cs;
 
     protected final Button _cancel;
@@ -74,7 +72,6 @@ public abstract class AbstractBaseDialog
         _uiConstants = _globals.uiConstants();
         USER_ACTIONS = _globals.userActions();
 
-        _qs = _globals.queriesService();
         _cs = _globals.commandService();
 
         _cancel = cancelButton();
@@ -106,16 +103,6 @@ public abstract class AbstractBaseDialog
      */
     protected UIMessages messages() {
         return _messages;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns a query service.
-     */
-    protected QueriesServiceAsync queries() {
-        return _qs;
     }
 
 

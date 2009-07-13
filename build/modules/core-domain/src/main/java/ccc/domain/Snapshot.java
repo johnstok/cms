@@ -20,6 +20,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.json.JSONArray;
@@ -384,6 +386,29 @@ public class Snapshot implements Serializable, Json {
     public Long getLong(final String key) {
         try {
             return (Long) fixNull(_detail.get(key));
+        } catch (final JSONException e) {
+            throw new InvalidSnapshotException(e);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Map<String, String> getStringMap(final String key) {
+        try {
+            final JSONObject o =
+                (JSONObject) fixNull(_detail.get(key));
+            if (null==o) {
+                return null;
+            }
+
+            final Map<String, String> stringMap = new HashMap<String, String>();
+            for (final Iterator<String> mapIterator = o.keys(); mapIterator.hasNext();) {
+                final String mapKey = mapIterator.next();
+                final String mapValue = (String) fixNull(o.get(key));
+                stringMap.put(mapKey, mapValue);
+            }
+            return stringMap;
+
         } catch (final JSONException e) {
             throw new InvalidSnapshotException(e);
         }

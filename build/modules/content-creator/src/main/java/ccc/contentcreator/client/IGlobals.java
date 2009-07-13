@@ -18,7 +18,6 @@ import ccc.contentcreator.api.CommandServiceAsync;
 import ccc.contentcreator.api.CommandTypeConstants;
 import ccc.contentcreator.api.ErrorDescriptions;
 import ccc.contentcreator.api.ErrorResolutions;
-import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.SecurityServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
@@ -50,13 +49,6 @@ public interface IGlobals {
      * @return A new instance of {@link UIMessages}.
      */
     UIMessages uiMessages();
-
-    /**
-     * Factory for {@link QueriesServiceAsync} objects.
-     *
-     * @return A new instance of {@link QueriesServiceAsync}.
-     */
-    QueriesServiceAsync queriesService();
 
     /**
      * Factory for {@link CommandServiceAsync} objects.

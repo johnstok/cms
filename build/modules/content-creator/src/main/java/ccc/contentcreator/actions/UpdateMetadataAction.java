@@ -1,12 +1,14 @@
 package ccc.contentcreator.actions;
 
+import java.util.HashMap;
 import java.util.Map;
 
-import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.MetadataDialog;
+
+import com.google.gwt.http.client.Response;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 
 /**
  * Update resource's metadata.
@@ -14,8 +16,8 @@ import ccc.contentcreator.dialogs.MetadataDialog;
  * @author Civic Computing Ltd.
  */
 public final class UpdateMetadataAction
-    implements
-        Action {
+    extends
+        RemotingAction {
 
     private final SingleSelectionModel _selectionModel;
 
@@ -25,24 +27,33 @@ public final class UpdateMetadataAction
      * @param selectionModel The selection model.
      */
     public UpdateMetadataAction(final SingleSelectionModel selectionModel) {
+        super(UI_CONSTANTS.updateMetadata());
         _selectionModel = selectionModel;
     }
 
     /** {@inheritDoc} */
-    public void execute() {
-        final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        _qs.metadata(
-            item.getId(),
-            new ErrorReportingCallback<Map<String, String>>(
-                UI_CONSTANTS.updateMetadata()){
-                public void onSuccess(final Map<String, String> data) {
-                    new MetadataDialog(
-                        item,
-                        data.entrySet(),
-                        _selectionModel)
-                    .show();
-                }
-            }
-        );
+    @Override
+    protected String getPath() {
+        return
+            "/resources/"
+            + _selectionModel.tableSelection().getId()
+            + "/metadata";
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onOK(final Response response) {
+        final JSONObject result =
+            JSONParser.parse(response.getText()).isObject();
+        final Map<String, String> metadata = new HashMap<String, String>();
+        for (final String key : result.keySet()) {
+            metadata.put(key, result.get(key).isString().stringValue());
+        }
+
+        new MetadataDialog(
+            _selectionModel.tableSelection(),
+            metadata.entrySet(),
+            _selectionModel)
+        .show();
     }
 }

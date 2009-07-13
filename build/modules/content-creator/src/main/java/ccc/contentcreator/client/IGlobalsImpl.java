@@ -20,8 +20,6 @@ import ccc.contentcreator.api.CommandServiceAsync;
 import ccc.contentcreator.api.CommandTypeConstants;
 import ccc.contentcreator.api.ErrorDescriptions;
 import ccc.contentcreator.api.ErrorResolutions;
-import ccc.contentcreator.api.QueriesService;
-import ccc.contentcreator.api.QueriesServiceAsync;
 import ccc.contentcreator.api.SecurityService;
 import ccc.contentcreator.api.SecurityServiceAsync;
 import ccc.contentcreator.api.UIConstants;
@@ -47,8 +45,6 @@ public class IGlobalsImpl
 
     private static final CommandServiceAsync COMMAND_SERVICE =
         GWT.create(CommandService.class);
-    private static final QueriesServiceAsync QUERIES_SERVICE =
-        GWT.create(QueriesService.class);
     private static final SecurityServiceAsync SECURITY_SERVICE =
         GWT.create(SecurityService.class);
     private static final UIConstants UI_CONSTANTS =
@@ -144,12 +140,6 @@ public class IGlobalsImpl
                 }
             }
         );
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public QueriesServiceAsync queriesService() {
-        return QUERIES_SERVICE;
     }
 
     /** {@inheritDoc} */
