@@ -157,3 +157,5 @@ surefire
 deprecated
 apollo
 timestamp
+parameterized
+clazz
