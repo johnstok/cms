@@ -16,7 +16,7 @@ import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.Collection;
+import java.util.Map;
 
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -24,7 +24,6 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import ccc.api.Jsonable;
 import ccc.domain.Snapshot;
 
 
@@ -38,14 +37,14 @@ import ccc.domain.Snapshot;
  */
 @Provider
 @Produces("application/json")
-public class ResourceSummaryCollectionProvider
+public class MetadataWriter
     implements
-        MessageBodyWriter<Collection<Jsonable>> {
+        MessageBodyWriter<Map<String, String>> {
 
 
     /** {@inheritDoc} */
     @Override
-    public long getSize(final Collection<Jsonable> object,
+    public long getSize(final Map<String, String> object,
                         final Class<?> clazz,
                         final Type type,
                         final Annotation[] annotations,
@@ -59,7 +58,7 @@ public class ResourceSummaryCollectionProvider
                                final Type type,
                                final Annotation[] annotations,
                                final MediaType mediaType) {
-        final boolean isWriteable = isCollectionOfType(Jsonable.class, type);
+        final boolean isWriteable = isMapOfType(String.class, type);
         return isWriteable;
     }
 
@@ -70,26 +69,23 @@ public class ResourceSummaryCollectionProvider
      * @param type The type to check.
      * @return True if 'type' is a collection of type 'clazz', false otherwise.
      */
-    boolean isCollectionOfType(final Class<?> clazz, final Type type) {
+    boolean isMapOfType(final Class<?> clazz, final Type type) {
         if (type instanceof ParameterizedType) {
-
             final ParameterizedType pType = (ParameterizedType) type;
-            final Class<?> typeArg =
-                (Class<?>) pType.getActualTypeArguments()[0];
-
-            if (Collection.class.isAssignableFrom((Class<?>) pType.getRawType())
-                && clazz.isAssignableFrom(typeArg)) {
+            if (Map.class.isAssignableFrom((Class<?>) pType.getRawType())
+                && pType.getActualTypeArguments()[0].equals(clazz)
+                && pType.getActualTypeArguments()[1].equals(clazz)) {
                 return true;
             }
-
             return false;
+
         }
         return false;
     }
 
     /** {@inheritDoc} */
     @Override
-    public void writeTo(final Collection<Jsonable> object,
+    public void writeTo(final Map<String, String> object,
                         final Class<?> clazz,
                         final Type type,
                         final Annotation[] annotations,
@@ -97,11 +93,7 @@ public class ResourceSummaryCollectionProvider
                         final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream outputStream) {
         final PrintWriter pw = new PrintWriter(outputStream);
-        pw.println("[\n");
-        for (final Jsonable rs : object) {
-            pw.println(new Snapshot(rs).getDetail()+",\n");
-        }
-        pw.println("\n]");
+        pw.println(new Snapshot(object).getDetail());
         pw.flush();
     }
 }

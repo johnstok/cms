@@ -24,6 +24,7 @@ import ccc.api.Jsonable;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 
 
@@ -42,10 +43,27 @@ public class GwtJson
     /**
      * Constructor.
      *
-     * @param delegate
+     * @param delegate The GWT class will delegate to.
      */
     public GwtJson(final JSONObject delegate) {
         _delegate = delegate;
+    }
+
+    /**
+     * Constructor.
+     *
+     */
+    public GwtJson() {
+        _delegate = new JSONObject();
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the delegate.
+     */
+    private final JSONObject getDelegate() {
+        return _delegate;
     }
 
     /** {@inheritDoc} */
@@ -137,7 +155,7 @@ public class GwtJson
     /** {@inheritDoc} */
     @Override
     public void set(final String key, final String value) {
-        throw new UnsupportedOperationException("Method not implemented.");
+        _delegate.put(key, new JSONString(value));
     }
 
     /** {@inheritDoc} */
@@ -179,20 +197,32 @@ public class GwtJson
 
     /** {@inheritDoc} */
     @Override
-    public void set(final String key, final Map<String, String> value) {
-        throw new UnsupportedOperationException("Method not implemented.");
+    public void set(final String key, final Map<String, String> values) {
+        final JSONObject strings = new JSONObject();
+        for (final Map.Entry<String, String> value : values.entrySet()) {
+            strings.put(value.getKey(), new JSONString(value.getValue()));
+        }
+        _delegate.put(key, strings);
     }
 
     /** {@inheritDoc} */
     @Override
     public void set(final String key, final Jsonable value) {
-        throw new UnsupportedOperationException("Method not implemented.");
+        final GwtJson o = new GwtJson();
+        value.toJson(o);
+        _delegate.put(key, o.getDelegate());
     }
 
     /** {@inheritDoc} */
     @Override
-    public void setStrings(final String key, final Collection<String> value) {
-        throw new UnsupportedOperationException("Method not implemented.");
+    public void setStrings(final String key, final Collection<String> values) {
+        final JSONArray strings = new JSONArray();
+        int i=0;
+        for (final String value : values) {
+            strings.set(i, new JSONString(value));
+            i++;
+        }
+        _delegate.put(key, strings);
     }
 
     /** {@inheritDoc} */
@@ -242,5 +272,11 @@ public class GwtJson
             value.put(mapKey, o.get(mapKey).isString().stringValue());
         }
         return value;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+        return _delegate.toString();
     }
 }

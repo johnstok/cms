@@ -24,6 +24,9 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
+import ccc.api.Jsonable;
+import ccc.domain.Snapshot;
+
 
 /**
  * A {@link MessageBodyWriter} a collection of resource summaries.
@@ -35,14 +38,14 @@ import javax.ws.rs.ext.Provider;
  */
 @Provider
 @Produces("application/json")
-public class StringCollectionProvider
+public class JsonableCollectionWriter
     implements
-        MessageBodyWriter<Collection<String>> {
+        MessageBodyWriter<Collection<Jsonable>> {
 
 
     /** {@inheritDoc} */
     @Override
-    public long getSize(final Collection<String> object,
+    public long getSize(final Collection<Jsonable> object,
                         final Class<?> clazz,
                         final Type type,
                         final Annotation[] annotations,
@@ -56,9 +59,7 @@ public class StringCollectionProvider
                                final Type type,
                                final Annotation[] annotations,
                                final MediaType mediaType) {
-
-        final boolean isWriteable = isCollectionOfType(String.class, type);
-
+        final boolean isWriteable = isCollectionOfType(Jsonable.class, type);
         return isWriteable;
     }
 
@@ -71,33 +72,36 @@ public class StringCollectionProvider
      */
     boolean isCollectionOfType(final Class<?> clazz, final Type type) {
         if (type instanceof ParameterizedType) {
+
             final ParameterizedType pType = (ParameterizedType) type;
+            final Class<?> typeArg =
+                (Class<?>) pType.getActualTypeArguments()[0];
+
             if (Collection.class.isAssignableFrom((Class<?>) pType.getRawType())
-                && pType.getActualTypeArguments()[0].equals(clazz)) {
+                && clazz.isAssignableFrom(typeArg)) {
                 return true;
             }
-            return false;
 
+            return false;
         }
         return false;
     }
 
     /** {@inheritDoc} */
     @Override
-    public void writeTo(final Collection<String> object,
+    public void writeTo(final Collection<Jsonable> object,
                         final Class<?> clazz,
                         final Type type,
                         final Annotation[] annotations,
                         final MediaType mediaType,
                         final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream outputStream) {
-
         final PrintWriter pw = new PrintWriter(outputStream);
-        pw.println("[");
-        for (final String rs : object) {
-            pw.println("\n\""+rs+"\","); // FIXME: Escaping & trailing comma!
+        pw.println("[\n");
+        for (final Jsonable rs : object) {
+            pw.println(new Snapshot(rs).getDetail()+",\n");
         }
-        pw.println("]");
+        pw.println("\n]");
         pw.flush();
     }
 }

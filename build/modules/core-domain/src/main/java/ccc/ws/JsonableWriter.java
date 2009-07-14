@@ -14,9 +14,7 @@ package ccc.ws;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.Map;
 
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -24,6 +22,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
+import ccc.api.Jsonable;
 import ccc.domain.Snapshot;
 
 
@@ -37,14 +36,14 @@ import ccc.domain.Snapshot;
  */
 @Provider
 @Produces("application/json")
-public class MetadataProvider
+public class JsonableWriter
     implements
-        MessageBodyWriter<Map<String, String>> {
+        MessageBodyWriter<Jsonable> {
 
 
     /** {@inheritDoc} */
     @Override
-    public long getSize(final Map<String, String> object,
+    public long getSize(final Jsonable object,
                         final Class<?> clazz,
                         final Type type,
                         final Annotation[] annotations,
@@ -58,34 +57,12 @@ public class MetadataProvider
                                final Type type,
                                final Annotation[] annotations,
                                final MediaType mediaType) {
-        final boolean isWriteable = isMapOfType(String.class, type);
-        return isWriteable;
-    }
-
-    /**
-     * Determine if a type is a collection of the specified class.
-     *
-     * @param clazz The parameterized type of the collection.
-     * @param type The type to check.
-     * @return True if 'type' is a collection of type 'clazz', false otherwise.
-     */
-    boolean isMapOfType(final Class<?> clazz, final Type type) {
-        if (type instanceof ParameterizedType) {
-            final ParameterizedType pType = (ParameterizedType) type;
-            if (Map.class.isAssignableFrom((Class<?>) pType.getRawType())
-                && pType.getActualTypeArguments()[0].equals(clazz)
-                && pType.getActualTypeArguments()[1].equals(clazz)) {
-                return true;
-            }
-            return false;
-
-        }
-        return false;
+        return Jsonable.class.isAssignableFrom(clazz);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void writeTo(final Map<String, String> object,
+    public void writeTo(final Jsonable object,
                         final Class<?> clazz,
                         final Type type,
                         final Annotation[] annotations,

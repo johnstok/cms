@@ -71,7 +71,7 @@ public class Snapshot implements Serializable, Json {
      *
      * @param detail The JSON object this snapshot wraps.
      */
-    private Snapshot(final JSONObject detail) {
+    public Snapshot(final JSONObject detail) {
         DBC.require().notNull(detail);
 
         _detail = detail;
@@ -385,7 +385,8 @@ public class Snapshot implements Serializable, Json {
     @Override
     public Long getLong(final String key) {
         try {
-            return (Long) fixNull(_detail.get(key));
+            final Number n = (Number) fixNull(_detail.get(key));
+            return Long.valueOf(n.longValue());
         } catch (final JSONException e) {
             throw new InvalidSnapshotException(e);
         }

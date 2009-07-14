@@ -19,7 +19,7 @@ import junit.framework.TestCase;
 
 
 /**
- * Tests for the {@link ResourceSummaryCollectionProvider} class.
+ * Tests for the {@link JsonableCollectionWriter} class.
  *
  * @author Civic Computing Ltd.
  */
@@ -33,8 +33,8 @@ public class ResourceSummaryProviderTest
     public void testSizeCantBeDetermined() {
 
         // ARRANGE
-        final ResourceSummaryCollectionProvider rsp =
-            new ResourceSummaryCollectionProvider();
+        final JsonableCollectionWriter rsp =
+            new JsonableCollectionWriter();
 
         // ACT
         final long size = rsp.getSize(null, null, null, null, null);
@@ -50,8 +50,8 @@ public class ResourceSummaryProviderTest
     public void testIsCollectionAcceptsExactMatch() {
 
         // ARRANGE
-        final ResourceSummaryCollectionProvider rsp =
-            new ResourceSummaryCollectionProvider();
+        final JsonableCollectionWriter rsp =
+            new JsonableCollectionWriter();
 
         // ACT
         final boolean condition = rsp.isCollectionOfType(Integer.class, _type);
@@ -67,8 +67,8 @@ public class ResourceSummaryProviderTest
     public void testIsCollectionAcceptsSupertypeMatch() {
 
         // ARRANGE
-        final ResourceSummaryCollectionProvider rsp =
-            new ResourceSummaryCollectionProvider();
+        final JsonableCollectionWriter rsp =
+            new JsonableCollectionWriter();
 
         // ACT
         final boolean condition = rsp.isCollectionOfType(Number.class, _type);
@@ -84,8 +84,8 @@ public class ResourceSummaryProviderTest
     public void testIsCollectionRejectsRegularClasses() {
 
         // ARRANGE
-        final ResourceSummaryCollectionProvider rsp =
-            new ResourceSummaryCollectionProvider();
+        final JsonableCollectionWriter rsp =
+            new JsonableCollectionWriter();
         final Type type = Object.class;
 
         // ACT
