@@ -46,7 +46,7 @@ public class FsCoreData
      * Constructor.
      */
     public FsCoreData() {
-        _root = new File(CCCProperties.get("filestore.path"));
+        _root = new File(CCCProperties.get("filestore.path")); // TODO use constant.
     }
 
     /** {@inheritDoc} */
@@ -116,7 +116,7 @@ public class FsCoreData
 
 
     private void attemptDelete(final File f) {
-        boolean deleted = f.delete();
+        final boolean deleted = f.delete();
         if (!deleted) {
             LOG.error("Failed to delete file "+f.getAbsolutePath());
         }
