@@ -13,13 +13,17 @@
 package ccc.contentcreator.actions;
 
 import static com.google.gwt.http.client.Response.*;
+import ccc.api.ResourceSummary;
 import ccc.contentcreator.client.Action;
+import ccc.contentcreator.client.GwtJson;
 
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
+import com.google.gwt.http.client.RequestBuilder.Method;
+import com.google.gwt.json.client.JSONParser;
 
 
 /**
@@ -32,6 +36,7 @@ public abstract class RemotingAction
         Action {
 
     private final String _actionName;
+    private final Method _method;
 
     /**
      * Constructor.
@@ -40,6 +45,18 @@ public abstract class RemotingAction
      */
     public RemotingAction(final String actionName) {
         _actionName = actionName;
+        _method = RequestBuilder.GET;
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param actionName The name of this action.
+     * @param method The HTTP method to use.
+     */
+    public RemotingAction(final String actionName, final Method method) {
+        _actionName = actionName;
+        _method = method;
     }
 
     /** {@inheritDoc} */
@@ -48,40 +65,57 @@ public abstract class RemotingAction
     //        new ErrorReportingCallback<Collection<ResourceSummary>>(
     //            _globals.userActions().internalAction())
 
-            final String url = GLOBALS.apiURL() + getPath();
-            final RequestBuilder builder =
-                new RequestBuilder(RequestBuilder.GET, url);
-            builder.setHeader("Accept", "application/json");
-            try {
-                builder.sendRequest(null, new RequestCallback() {
-
-                    public void onError(final Request request,
-                                        final Throwable exception) {
-                        GLOBALS.unexpectedError(exception, _actionName);
-                    }
-
-                    public void onResponseReceived(final Request request,
-                                                   final Response response) {
-    //                    GLOBALS.alert(
-    //                        response.getStatusCode()+" "+
-    //                        response.getStatusText());
-                        if (SC_OK == response.getStatusCode()) {
-                            onOK(response);
-                        } else if (SC_NO_CONTENT == response.getStatusCode()) {
-                            onNoContent(response);
-                        } else {
-                            GLOBALS.unexpectedError(
-                                new RuntimeException("Invalid response: "+response.getStatusCode()+" "+response.getStatusText()),
-                                _actionName);
-                        }
-                    }
-
-                });
-            } catch (final RequestException e) {
-                GLOBALS.unexpectedError(e, "Foo");
-            }
+        final String url = GLOBALS.apiURL() + getPath();
+        final RequestBuilder builder = new RequestBuilder(_method, url);
+        builder.setHeader("Accept", "application/json");
+        if (RequestBuilder.POST.equals(_method)) {
+            builder.setHeader("Content-Type", "application/json");
+            final String body = getBody();
+            builder.setRequestData(body);
         }
+        builder.setCallback(new RequestCallback() {
 
+            public void onError(final Request request,
+                                final Throwable exception) {
+                GLOBALS.unexpectedError(exception, _actionName);
+            }
+
+            public void onResponseReceived(final Request request,
+                                           final Response response) {
+//                GLOBALS.alert(
+//                    response.getStatusCode()+" "+
+//                    response.getStatusText());
+                if (SC_OK == response.getStatusCode()) {
+                    onOK(response);
+                } else if (SC_NO_CONTENT == response.getStatusCode()) {
+                    onNoContent(response);
+                } else {
+                    GLOBALS.unexpectedError(
+                        new RuntimeException(
+                            "Invalid response: "
+                            + response.getStatusCode()+" "
+                            + response.getStatusText()),
+                        _actionName);
+                }
+            }
+
+        });
+
+        try {
+            builder.send();
+        } catch (final RequestException e) {
+            GLOBALS.unexpectedError(e, "Foo");
+        }
+    }
+
+
+    /**
+     * Provide a body for this method.
+     * <p><i>Only called for POST requests</i>.
+     *
+     * @return The request body, as a string.
+     */
+    protected String getBody() { return ""; }
 
     /**
      * Accessor.
@@ -117,4 +151,14 @@ public abstract class RemotingAction
      */
     protected abstract void onOK(final Response response);
 
+    protected ResourceSummary parseResourceSummary(final Response response) {
+        return new ResourceSummary(
+            new GwtJson(JSONParser.parse(response.getText()).isObject()));
+    }
+
+    // 405 Method Not Allowed
+    // protected abstract void onMethodNotAllowed(final Response response);
+
+    // 400 Bad Request
+    // protected abstract void onBadRequest(final Response response);
 }

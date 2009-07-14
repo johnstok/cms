@@ -35,16 +35,16 @@ public class RestApiTest
      */
     public void testRootsMethodCallsQueriesService() {
 
-//        // ARRANGE
-////        expect(_queries.roots()).andReturn(_rs);
-//        replay(_queries);
-//
-//        // ACT
-//        final Collection<ResourceSummary> actual = _unit.roots();
-//
-//        // ASSERT
-//        assertEquals(_rs, actual);
-//        verify(_queries);
+        // ARRANGE
+        expect(_queries.roots()).andReturn(_rs);
+        replay(_queries);
+
+        // ACT
+        final Collection<ResourceSummary> actual = _unit.roots();
+
+        // ASSERT
+        assertEquals(_rs, actual);
+        verify(_queries);
     }
 
 
@@ -53,7 +53,8 @@ public class RestApiTest
     @Override
     protected void setUp() {
         _queries = createStrictMock(Queries.class);
-//        _unit = new RestApi();
+        _unit = new RestApi();
+        _unit.setQueries(_queries);
     }
 
     /** {@inheritDoc} */

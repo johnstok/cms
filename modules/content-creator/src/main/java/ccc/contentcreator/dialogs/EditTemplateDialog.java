@@ -16,6 +16,7 @@ import ccc.api.ID;
 import ccc.api.MimeType;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
+import ccc.contentcreator.actions.CreateTemplateAction_;
 import ccc.contentcreator.actions.TemplateNameExistsAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.callbacks.ErrorReportingCallback;
@@ -250,21 +251,17 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                 final TemplateDelta delta = model();
                 switch (_mode) {
                     case CREATE:
-                        commands().createTemplate(
+                        new CreateTemplateAction_(
                             _parentFolderId,
-                            delta,
-                            _name.getValue(), // Title
-                            "",               // Description
                             _name.getValue(),
-                            new ErrorReportingCallback<ResourceSummary>(
-                                    _constants.createTemplate()){
-                                public void onSuccess(
-                                               final ResourceSummary arg0) {
+                            delta){
+                                @Override protected void execute(final ResourceSummary template) {
                                     _ssm.create(
-                                        new ResourceSummaryModelData(arg0),
+                                        new ResourceSummaryModelData(template),
                                         _ssm.treeSelection());
                                     close();
-                                }});
+                                }
+                            }.execute();
                         break;
                     case UPDATE:
                         commands().updateTemplate(

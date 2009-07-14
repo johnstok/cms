@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.acceptance;
+package ccc.ws;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -49,7 +49,7 @@ import ccc.commons.IO;
  */
 @Provider
 @Consumes("application/json")
-public class ResourceSummaryProvider
+public class ResourceSummaryCollectionReader
     implements
         MessageBodyReader<Collection<ResourceSummary>> {
 

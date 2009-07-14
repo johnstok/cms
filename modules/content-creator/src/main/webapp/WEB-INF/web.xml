@@ -20,8 +20,22 @@
     <display-name>Content Creator</display-name>
     
     <context-param>
-        <param-name>resteasy.scan</param-name>
+        <param-name>resteasy.scan.resources</param-name>
         <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>resteasy.providers</param-name>
+        <param-value>
+            ccc.ws.DurationReader,
+            ccc.ws.TemplateDeltaReader,
+            ccc.ws.UserDeltaReader,
+            ccc.ws.BooleanProvider,
+            ccc.ws.JsonableWriter,
+            ccc.ws.MetadataWriter,
+            ccc.ws.JsonableCollectionWriter,
+            ccc.ws.ResourceSummaryCollectionReader,
+            ccc.ws.StringCollectionWriter
+        </param-value>
     </context-param>
     <context-param>
        <param-name>resteasy.servlet.mapping.prefix</param-name>

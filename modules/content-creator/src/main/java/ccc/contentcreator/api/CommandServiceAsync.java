@@ -172,6 +172,22 @@ public interface CommandServiceAsync {
                       String name,
                       AsyncCallback<ResourceSummary> callback);
 
+    void createPage(ID parentId,
+                    PageDelta delta,
+                    String pageName,
+                    final boolean publish,
+                    ID templateId,
+                    String title,
+                    AsyncCallback<ResourceSummary> callback);
+
+    //-- Marker
+    void createTemplate(ID parentId,
+                        TemplateDelta delta,
+                        String title,
+                        String description,
+                        String name,
+                        AsyncCallback<ResourceSummary> callback);
+
     void createFolder(ID parentId,
                       String name,
                       String title,
@@ -181,21 +197,6 @@ public interface CommandServiceAsync {
     void createUser(UserDelta delta,
                     String password,
                     AsyncCallback<UserSummary> callback);
-
-    void createPage(ID parentId,
-                    PageDelta delta,
-                    String pageName,
-                    final boolean publish,
-                    ID templateId,
-                    String title,
-                    AsyncCallback<ResourceSummary> callback);
-
-    void createTemplate(ID parentId,
-                        TemplateDelta delta,
-                        String title,
-                        String description,
-                        String name,
-                        AsyncCallback<ResourceSummary> callback);
 
     void createRoot(String name,
                     AsyncCallback<ResourceSummary> callback);

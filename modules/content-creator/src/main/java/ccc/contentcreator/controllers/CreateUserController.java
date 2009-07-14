@@ -17,18 +17,19 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import ccc.api.UserDelta;
-import ccc.api.UserSummary;
 import ccc.api.Username;
+import ccc.contentcreator.actions.CreateUserAction_;
 import ccc.contentcreator.actions.UniqueUsernameAction;
 import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.EditController;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validator;
 import ccc.contentcreator.views.ICreateUserDialog;
+
+import com.google.gwt.http.client.Response;
 
 /**
  * A controller for user creation.
@@ -111,21 +112,19 @@ public class CreateUserController implements EditController {
     private Runnable createUser() {
         return new Runnable() {
             public void run() {
-                _globals.commandService().createUser(
-                    new UserDelta(
-                        _dialog.getEmail().getValue(),
-                        new Username(_dialog.getUsername().getValue()),
-                        new HashSet<String>(),
-                        new HashMap<String, String>()),
-                        _dialog.getPassword1().getValue(),
-                        new ErrorReportingCallback<UserSummary>(
-                            _constants.createUser()) {
-                        public void onSuccess(final UserSummary result) {
-                            // TODO: Refresh the main window.
-                            _dialog.close();
-                        }
+                final UserDelta d = new UserDelta(
+                    _dialog.getEmail().getValue(),
+                    new Username(_dialog.getUsername().getValue()),
+                    new HashSet<String>(),
+                    new HashMap<String, String>());
+                final String p = _dialog.getPassword1().getValue();
+
+                new CreateUserAction_(d, p){
+                    @Override protected void onOK(final Response response) {
+                        // TODO: Refresh the main window.
+                        _dialog.close();
                     }
-                );
+                }.execute();
             }
         };
     }
