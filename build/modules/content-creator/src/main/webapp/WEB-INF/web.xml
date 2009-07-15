@@ -28,6 +28,7 @@
         <param-value>
             ccc.ws.DurationReader,
             ccc.ws.TemplateDeltaReader,
+            ccc.ws.PageDeltaReader,
             ccc.ws.UserDeltaReader,
             ccc.ws.BooleanProvider,
             ccc.ws.JsonableWriter,

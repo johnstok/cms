@@ -165,6 +165,7 @@ public interface CommandServiceAsync {
 
 
 
+    //-- Marker
     /*
      * Create methods.
      */
@@ -180,7 +181,6 @@ public interface CommandServiceAsync {
                     String title,
                     AsyncCallback<ResourceSummary> callback);
 
-    //-- Marker
     void createTemplate(ID parentId,
                         TemplateDelta delta,
                         String title,

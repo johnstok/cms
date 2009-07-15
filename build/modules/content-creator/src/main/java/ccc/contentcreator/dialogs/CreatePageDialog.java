@@ -23,10 +23,10 @@ import ccc.api.Paragraph;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateSummary;
 import ccc.contentcreator.actions.ComputeTemplateAction;
+import ccc.contentcreator.actions.CreatePageAction_;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.binding.TemplateSummaryModelData;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.EditPagePanel;
 import ccc.contentcreator.client.GwtJson;
 import ccc.contentcreator.client.IGlobalsImpl;
@@ -288,23 +288,21 @@ public class CreatePageDialog
                            .getSelectedItem()
                            .getId();
 
-                commands().createPage(
+                new CreatePageAction_(
                     _parent.getId(),
                     page,
                     _second.name().getValue(),
                     _publish.getValue().booleanValue(),
                     template,
-                    _second.name().getValue(), // Title
-                    new ErrorReportingCallback<ResourceSummary>(
-                        _constants.createPage()) {
-                        public void onSuccess(final ResourceSummary result) {
-                            _ssm.create(
-                                new ResourceSummaryModelData(result),
-                                _parent);
-                            close();
-                        }
+                    _second.name().getValue() // Title
+                ){
+                    @Override protected void execute(final ResourceSummary rs) {
+                        _ssm.create(
+                            new ResourceSummaryModelData(rs),
+                            _parent);
+                        close();
                     }
-                );
+                }.execute();
             }
         };
     }
