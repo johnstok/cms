@@ -29,13 +29,18 @@ import javax.ws.rs.QueryParam;
 public interface RestCommands {
 
     @POST @Path("/resources/{id}/duration")
-    void updateCacheDuration(@PathParam("id") ID resourceId, Duration duration) throws CommandFailedException;
+    void updateCacheDuration(
+        @PathParam("id") ID resourceId,
+        Duration duration) throws CommandFailedException;
 
     @POST @Path("/resources/{id}/lock")
-    void lock(@PathParam("id") ID resourceId) throws CommandFailedException;
+    void lock(
+        @PathParam("id") ID resourceId) throws CommandFailedException;
 
     @POST @Path("/users")
-    UserSummary createUser(UserDelta delta, @QueryParam("pw") String password) throws CommandFailedException;
+    UserSummary createUser(
+        UserDelta delta,
+        @QueryParam("pw") String password) throws CommandFailedException;
 
     @POST @Path("/templates")
     ResourceSummary createTemplate(
@@ -43,5 +48,19 @@ public interface RestCommands {
         TemplateDelta delta,
         @QueryParam("t") String title,
         @QueryParam("d") String description,
+        @QueryParam("n") String name) throws CommandFailedException;
+
+    @POST @Path("/pages")
+    ResourceSummary createPage(
+        @QueryParam("id") ID parentId,
+        PageDelta delta,
+        @QueryParam("n") String name,
+        @QueryParam("p") boolean publish,
+        @QueryParam("m") ID templateId,
+        @QueryParam("t") String title) throws CommandFailedException;
+
+    @POST @Path("/folders")
+    ResourceSummary createFolder(
+        @QueryParam("id") ID parentId,
         @QueryParam("n") String name) throws CommandFailedException;
 }

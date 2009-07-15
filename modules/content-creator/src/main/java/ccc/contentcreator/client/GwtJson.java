@@ -23,6 +23,9 @@ import ccc.api.Json;
 import ccc.api.Jsonable;
 
 import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONBoolean;
+import com.google.gwt.json.client.JSONNull;
+import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
@@ -81,7 +84,12 @@ public class GwtJson
     /** {@inheritDoc} */
     @Override
     public Collection<Json> getCollection(final String key) {
-        throw new UnsupportedOperationException("Method not implemented.");
+        final Collection<Json> value = new ArrayList<Json>();
+        final JSONArray a = _delegate.get(key).isArray();
+        for (int i=0; i<a.size(); i++) {
+            value.add(new GwtJson(a.get(i).isObject()));
+        }
+        return value;
     }
 
     /** {@inheritDoc} */
@@ -162,19 +170,35 @@ public class GwtJson
     @Override
     public void set(final String key,
                     final Collection<? extends Jsonable> values) {
-        throw new UnsupportedOperationException("Method not implemented.");
+        final JSONArray value = new JSONArray();
+        int i=0;
+        for (final Jsonable j : values) {
+            final GwtJson tmp = new GwtJson();
+            j.toJson(tmp);
+            value.set(i, tmp.getDelegate());
+            i++;
+        }
+        _delegate.put(key, value);
     }
 
     /** {@inheritDoc} */
     @Override
     public void set(final String key, final Boolean bool) {
-        throw new UnsupportedOperationException("Method not implemented.");
+        _delegate.put(
+            key,
+            (null==bool)
+                ? JSONNull.getInstance()
+                : JSONBoolean.getInstance(bool.booleanValue()));
     }
 
     /** {@inheritDoc} */
     @Override
     public void set(final String key, final Date date) {
-        throw new UnsupportedOperationException("Method not implemented.");
+        _delegate.put(
+            key,
+            (null==date)
+                ? JSONNull.getInstance()
+                : new JSONNumber(date.getTime()));
     }
 
     /** {@inheritDoc} */
@@ -192,7 +216,11 @@ public class GwtJson
     /** {@inheritDoc} */
     @Override
     public void set(final String key, final Decimal value) {
-        throw new UnsupportedOperationException("Method not implemented.");
+        _delegate.put(
+            key,
+            (null==value)
+                ? JSONNull.getInstance()
+                : new JSONString(value.toString()));
     }
 
     /** {@inheritDoc} */

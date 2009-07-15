@@ -356,4 +356,24 @@ public class RestApi
                                           final String name) throws CommandFailedException {
         return getCommands().createTemplate(parentId, delta, title, description, name);
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceSummary createPage(final ID parentId,
+                                      final PageDelta delta,
+                                      final String name,
+                                      final boolean publish,
+                                      final ID templateId,
+                                      final String title) throws CommandFailedException {
+        return getCommands().createPage(parentId, delta, name, publish, templateId, title);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceSummary createFolder(final ID parentId,
+                                        final String name) throws CommandFailedException {
+        return getCommands().createFolder(parentId, name);
+    }
 }

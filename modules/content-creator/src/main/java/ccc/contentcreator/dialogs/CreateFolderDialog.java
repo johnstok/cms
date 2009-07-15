@@ -12,8 +12,8 @@
 package ccc.contentcreator.dialogs;
 
 import ccc.api.ResourceSummary;
+import ccc.contentcreator.actions.CreateFolderAction_;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
@@ -80,19 +80,17 @@ public class CreateFolderDialog extends AbstractEditDialog {
     private Runnable createFolder() {
         return new Runnable() {
             public void run() {
-                commands().createFolder(
+                new CreateFolderAction_(
                     _parent.getId(),
-                    _text.getValue(),
-                    new ErrorReportingCallback<ResourceSummary>(
-                        _constants.createFolder()){
-                        public void onSuccess(final ResourceSummary result) {
-                            final ResourceSummaryModelData newFolder =
-                                new ResourceSummaryModelData(result);
-                            _ssm.create(newFolder, _parent);
-                            close();
-                        }
+                    _text.getValue()
+                ){
+                    @Override protected void execute(final ResourceSummary folder) {
+                        final ResourceSummaryModelData newFolder =
+                            new ResourceSummaryModelData(folder);
+                        _ssm.create(newFolder, _parent);
+                        close();
                     }
-                );
+                }.execute();
             }
         };
     }
