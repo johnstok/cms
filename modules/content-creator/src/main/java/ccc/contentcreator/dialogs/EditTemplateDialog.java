@@ -18,8 +18,8 @@ import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
 import ccc.contentcreator.actions.CreateTemplateAction_;
 import ccc.contentcreator.actions.TemplateNameExistsAction;
+import ccc.contentcreator.actions.UpdateTemplateAction_;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
@@ -36,6 +36,7 @@ import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.layout.FormData;
+import com.google.gwt.http.client.Response;
 
 
 /**
@@ -264,15 +265,13 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                             }.execute();
                         break;
                     case UPDATE:
-                        commands().updateTemplate(
-                            _id,
-                            delta,
-                            new ErrorReportingCallback<Void>(
-                                    _constants.editTemplate()){
-                                public void onSuccess(final Void arg0) {
-                                    _ssm.update(_proxy);
-                                    close();
-                                }});
+                        new UpdateTemplateAction_(_id, delta) {
+                            /** {@inheritDoc} */
+                            @Override protected void onNoContent(final Response response) {
+                                _ssm.update(_proxy);
+                                close();
+                            }
+                        }.execute();
                         break;
                     default:
                         _globals.alert(constants().error());

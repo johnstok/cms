@@ -13,8 +13,9 @@ package ccc.contentcreator.dialogs;
 
 
 import ccc.api.ResourceSummary;
+import ccc.contentcreator.actions.CreateAliasAction_;
+import ccc.contentcreator.actions.RemotingAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
@@ -27,6 +28,7 @@ import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.form.TriggerField;
+import com.google.gwt.http.client.Response;
 
 
 /**
@@ -109,19 +111,20 @@ public class CreateAliasDialog extends AbstractEditDialog {
     private Runnable createAlias() {
         return new Runnable() {
             public void run() {
-                _globals.commandService().createAlias(
+                final RemotingAction a = new CreateAliasAction_(
                     _parent.getId(),
                     _aliasName.getValue(),
-                    _ssm.tableSelection().getId(),
-                    new ErrorReportingCallback<ResourceSummary>(
-                        _constants.createAlias()){
-                        public void onSuccess(final ResourceSummary result) {
-                            final ResourceSummaryModelData newAlias =
-                                new ResourceSummaryModelData(result);
-                            _ssm.create(newAlias, _parent);
-                            close();
-                        }
-                    });
+                    _ssm.tableSelection().getId()
+                ){
+                    /** {@inheritDoc} */
+                    @Override protected void onOK(final Response response) {
+                        final ResourceSummary rs = parseResourceSummary(response);
+                        final ResourceSummaryModelData newAlias =
+                            new ResourceSummaryModelData(rs);
+                        _ssm.create(newAlias, _parent);
+                        close();
+                    }
+                };
             }
         };
     }

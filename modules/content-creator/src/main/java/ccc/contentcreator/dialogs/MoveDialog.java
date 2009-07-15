@@ -12,8 +12,8 @@
 package ccc.contentcreator.dialogs;
 
 import ccc.api.ResourceSummary;
+import ccc.contentcreator.actions.MoveResourceAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
@@ -28,6 +28,7 @@ import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.form.TriggerField;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+import com.google.gwt.http.client.Response;
 
 
 /**
@@ -113,17 +114,14 @@ public class MoveDialog extends AbstractEditDialog {
     private Runnable move() {
         return new Runnable() {
             public void run() {
-                commands().move(
-                    _target.getId(),
-                    _parent.getId(),
-                    new ErrorReportingCallback<Void>(_constants.move()) {
-                        public void onSuccess(final Void result) {
-                            _ssm.move(_target, _parent, _ssm.treeSelection());
-                            close();
-                        }
-                    });
+                new MoveResourceAction(_target.getId(), _parent.getId()){
+                    /** {@inheritDoc} */
+                    @Override protected void onNoContent(final Response response) {
+                        _ssm.move(_target, _parent, _ssm.treeSelection());
+                        close();
+                    }
+                }.execute();
             }
         };
     }
-
 }

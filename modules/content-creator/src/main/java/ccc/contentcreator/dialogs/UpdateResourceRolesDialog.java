@@ -13,14 +13,16 @@ package ccc.contentcreator.dialogs;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import ccc.api.ID;
-import ccc.contentcreator.callbacks.DisposingCallback;
+import ccc.contentcreator.actions.UpdateResourceRolesAction_;
 import ccc.contentcreator.client.IGlobalsImpl;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
+import com.google.gwt.http.client.Response;
 
 
 /**
@@ -72,7 +74,7 @@ public class UpdateResourceRolesDialog
         return new SelectionListener<ButtonEvent>() {
             @Override
             public void componentSelected(final ButtonEvent ce) {
-                final Collection<String> validRoles = new ArrayList<String>();
+                final List<String> validRoles = new ArrayList<String>();
                 String roleString = _roles.getValue();
                 if (null==roleString) {
                     roleString = "";
@@ -85,15 +87,15 @@ public class UpdateResourceRolesDialog
                         validRoles.add(cleanRole);
                     }
                 }
-                commands().changeRoles(
-                    _resourceId,
-                    validRoles,
-                    new DisposingCallback(
-                        UpdateResourceRolesDialog.this,
-                        _constants.updateRoles())
-                );
+
+                new UpdateResourceRolesAction_(_resourceId, validRoles) {
+                    /** {@inheritDoc} */
+                    @Override
+                    protected void onNoContent(final Response response) {
+                        close();
+                    }
+                }.execute();
             }
         };
     }
-
 }

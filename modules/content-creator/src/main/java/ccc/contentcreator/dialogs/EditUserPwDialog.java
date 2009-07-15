@@ -13,14 +13,15 @@ package ccc.contentcreator.dialogs;
 
 
 import static ccc.contentcreator.validation.Validations.*;
+import ccc.contentcreator.actions.UpdateUserPasswordAction;
 import ccc.contentcreator.binding.UserSummaryModelData;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.validation.Validate;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.google.gwt.http.client.Response;
 
 
 /**
@@ -88,15 +89,14 @@ public class EditUserPwDialog extends AbstractEditDialog {
     private Runnable updateUser() {
         return new Runnable() {
             public void run() {
-                commands().updateUserPassword(
+                new UpdateUserPasswordAction(
                     _userDTO.getId(),
-                    _password1.getValue(),
-                    new ErrorReportingCallback<Void>(_constants.editUserPw()) {
-                        public void onSuccess(final Void result) {
-                            close();
-                        }
+                    _password1.getValue()
+                ) {
+                    @Override protected void onNoContent(final Response response) {
+                        close();
                     }
-                );
+                }.execute();
             }
         };
     }

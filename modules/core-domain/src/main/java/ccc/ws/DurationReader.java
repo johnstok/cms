@@ -63,6 +63,10 @@ public class DurationReader
         IO.copy(arg5, baos);
         final String s = new String(baos.toByteArray());
 
+        if (0==s.trim().length()) {
+            return null;
+        }
+
         final Snapshot sn = new Snapshot(s);
         final Duration d = new Duration(sn);
 

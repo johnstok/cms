@@ -138,6 +138,36 @@ public class FirstAcceptanceTest
         assertEquals("t-name", ts.getName());
         assertEquals("t-title", ts.getTitle());
     }
+//
+//    /**
+//     * Test.
+//     * @throws CommandFailedException If the test fails.
+//     */
+//    public void testUpdateDuration() throws CommandFailedException {
+//
+//        // ARRANGE
+//        final Queries queries =
+//            ProxyFactory.create(Queries.class, _baseUrl, login());
+//        final RestCommands commands =
+//            ProxyFactory.create(RestCommands.class, _baseUrl, login());
+//
+//        final ResourceSummary contentFolder =
+//            queries.resourceForPath("/content");
+//        final ResourceSummary durationFolder =
+//            commands.createFolder(contentFolder.getId(), "duration");
+//        commands.lock(durationFolder.getId());
+//        assertNull(queries.cacheDuration(durationFolder.getId()));
+//
+//        // ACT
+//        commands.updateCacheDuration(durationFolder.getId(), new Duration(1));
+//        assertEquals(
+//            new Duration(1), queries.cacheDuration(durationFolder.getId()));
+//
+//        commands.updateCacheDuration(durationFolder.getId(), null);
+//
+//        // ASSERT
+//        assertNull(queries.cacheDuration(durationFolder.getId()));
+//    }
 
     /**
      * Test.
@@ -180,16 +210,6 @@ public class FirstAcceptanceTest
         } catch (final CommandFailedException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param next
-     */
-    private void testDuration(final Queries api, final ResourceSummary rs) {
-        final Duration d = api.cacheDuration(rs.getId());
-        assertNull(d);
     }
 
     private HttpClient login() {

@@ -12,8 +12,8 @@
 package ccc.contentcreator.dialogs;
 
 import ccc.api.Duration;
+import ccc.contentcreator.actions.UpdateCacheDurationAction_;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
@@ -26,6 +26,7 @@ import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.form.CheckBoxGroup;
 import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.google.gwt.http.client.Response;
 
 
 /**
@@ -155,17 +156,14 @@ public class EditCacheDialog extends AbstractEditDialog {
                     updatedDs = new Duration(days, hours, minutes, seconds);
                 }
 
-                commands().updateCacheDuration(
+                new UpdateCacheDurationAction_(
                     _item.getId(),
-                    updatedDs,
-                    new ErrorReportingCallback<Void>(
-                        _constants.editCacheDuration()) {
-                    @Override
-                    public void onSuccess(final Void arg0) {
+                    updatedDs
+                ){
+                    @Override protected void onNoContent(final Response response) {
                         close();
                     }
-                }
-                );
+                }.execute();
             }
         };
     }

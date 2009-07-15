@@ -15,8 +15,8 @@ package ccc.contentcreator.dialogs;
 import ccc.api.AliasDelta;
 import ccc.api.ID;
 import ccc.api.ResourceSummary;
+import ccc.contentcreator.actions.UpdateAliasAction_;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.callbacks.DisposingCallback;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
@@ -29,6 +29,7 @@ import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.form.TriggerField;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+import com.google.gwt.http.client.Response;
 
 /**
  * Dialog for creating a new {@link Alias}.
@@ -117,14 +118,13 @@ public class UpdateAliasDialog extends AbstractEditDialog {
 
     private Runnable createAlias() {
         return new Runnable() {
-
             public void run() {
-                commands().updateAlias(
-                    _aliasId,
-                    _alias,
-                    new DisposingCallback(
-                        UpdateAliasDialog.this, _constants.updateAlias())
-                );
+                new UpdateAliasAction_(_aliasId, _alias){
+                    /** {@inheritDoc} */
+                    @Override protected void onNoContent(final Response response) {
+                        close();
+                    }
+                }.execute();
             }
         };
     }

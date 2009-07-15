@@ -12,9 +12,10 @@
 package ccc.contentcreator.actions;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.SingleSelectionModel;
+
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.Response;
 
 
 /**
@@ -23,10 +24,11 @@ import ccc.contentcreator.client.SingleSelectionModel;
  * @author Civic Computing Ltd.
  */
 public class IncludeInMainMenuAction
-    implements
-        Action {
+    extends
+        RemotingAction {
 
     private final SingleSelectionModel _selectionModel;
+
 
     /**
      * Constructor.
@@ -35,21 +37,26 @@ public class IncludeInMainMenuAction
      */
     public IncludeInMainMenuAction(
           final SingleSelectionModel selectionModel) {
+        super(UI_CONSTANTS.addToMainMenu(), RequestBuilder.POST);
         _selectionModel = selectionModel;
     }
 
+
     /** {@inheritDoc} */
-    public void execute() {
+    @Override
+    protected String getPath() {
+        return
+            "/resources/"
+            + _selectionModel.tableSelection().getId()
+            + "/include-mm";
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onNoContent(final Response response) {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        _cs.includeInMainMenu(
-            item.getId(),
-            true,
-            new ErrorReportingCallback<Void>(UI_CONSTANTS.addToMainMenu()){
-                public void onSuccess(final Void arg0) {
-                    item.setIncludeInMainMenu(true);
-                    _selectionModel.update(item);
-                }
-            }
-        );
+        item.setIncludeInMainMenu(true);
+        _selectionModel.update(item);
     }
 }

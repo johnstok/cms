@@ -63,4 +63,13 @@ public interface RestCommands {
     ResourceSummary createFolder(
         @QueryParam("id") ID parentId,
         @QueryParam("n") String name) throws CommandFailedException;
+
+    @POST @Path("/users/{id}/password")
+    void updateUserPassword(
+        @PathParam("id") ID userId,
+        String password) throws CommandFailedException;
+
+    @POST @Path("/resources/{id}/wc-apply")
+    void applyWorkingCopy(
+        @PathParam("id") ID resourceId) throws CommandFailedException;
 }

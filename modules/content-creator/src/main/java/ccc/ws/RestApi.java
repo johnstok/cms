@@ -376,4 +376,19 @@ public class RestApi
                                         final String name) throws CommandFailedException {
         return getCommands().createFolder(parentId, name);
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateUserPassword(final ID userId,
+                                   final String password) throws CommandFailedException {
+        getCommands().updateUserPassword(userId, password);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void applyWorkingCopy(final ID resourceId) throws CommandFailedException {
+        getCommands().applyWorkingCopy(resourceId);
+    }
 }
