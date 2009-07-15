@@ -20,6 +20,7 @@ import ccc.api.ID;
 import ccc.api.PageDelta;
 import ccc.api.Paragraph;
 import ccc.api.TemplateSummary;
+import ccc.contentcreator.actions.UpdateWorkingCopyAction_;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.EditPagePanel;
 import ccc.contentcreator.client.IGlobalsImpl;
@@ -33,7 +34,7 @@ import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
-import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.http.client.Response;
 
 
 /**
@@ -54,20 +55,6 @@ public class UpdatePageDialog
 
     private Button _saveDraftButton;
     private Button _applyNowButton;
-
-    private final AsyncCallback<Void> _saveDraftCompletedCallback =
-        new AsyncCallback<Void>() {
-        public void onFailure(final Throwable arg0) {
-            _globals.unexpectedError(arg0, _constants.saveDraft());
-        }
-        public void onSuccess(final Void arg0) {
-            final ResourceSummaryModelData md = rt().tableSelection();
-            md.setWorkingCopy(true);
-            rt().update(md);
-            close();
-        }
-    };
-
 
 
     /**
@@ -190,8 +177,16 @@ public class UpdatePageDialog
     private Runnable saveDraft() {
         return new Runnable() {
             public void run() {
-                commands().updateWorkingCopy(
-                    _pageId, _page, saveDraftCompletedCallback());
+                new UpdateWorkingCopyAction_(_pageId, _page) {
+                    /** {@inheritDoc} */
+                    @Override protected void onNoContent(final Response response) {
+                        final ResourceSummaryModelData md = rt().tableSelection();
+                        md.setWorkingCopy(true);
+                        rt().update(md);
+                        close();
+                    }
+
+                }.execute();
             }
         };
     }
@@ -225,15 +220,6 @@ public class UpdatePageDialog
         return _panel;
     }
 
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the _saveDraftCompletedCallback.
-     */
-    protected AsyncCallback<Void> saveDraftCompletedCallback() {
-        return _saveDraftCompletedCallback;
-    }
 
     private Set<Paragraph> assignParagraphs() {
 

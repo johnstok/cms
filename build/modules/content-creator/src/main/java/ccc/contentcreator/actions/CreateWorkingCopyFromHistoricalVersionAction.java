@@ -1,9 +1,9 @@
 package ccc.contentcreator.actions;
 
-import ccc.contentcreator.binding.LogEntrySummaryModelData;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.Action;
 import ccc.contentcreator.dialogs.HistoryDialog;
+
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.Response;
 
 /**
  * Publish a resource.
@@ -11,10 +11,11 @@ import ccc.contentcreator.dialogs.HistoryDialog;
  * @author Civic Computing Ltd.
  */
 public class CreateWorkingCopyFromHistoricalVersionAction
-    implements
-        Action {
+    extends
+        RemotingAction {
 
     private final HistoryDialog _dialog;
+
 
     /**
      * Constructor.
@@ -23,22 +24,26 @@ public class CreateWorkingCopyFromHistoricalVersionAction
      */
     public CreateWorkingCopyFromHistoricalVersionAction(
                                                   final HistoryDialog dialog) {
+        super(UI_CONSTANTS.revert(), RequestBuilder.POST);
         _dialog = dialog;
     }
 
-    /** {@inheritDoc} */
-    public void execute() {
-        final LogEntrySummaryModelData selected = _dialog.selectedItem();
 
-        _cs.createWorkingCopy(
-            _dialog.getResourceId(),
-            selected.getIndex(),
-            new ErrorReportingCallback<Void>(UI_CONSTANTS.revert()){
-                public void onSuccess(final Void arg0) {
-                    _dialog.workingCopyCreated();
-                    _dialog.close();
-                }
-            }
-        );
+    /** {@inheritDoc} */
+    @Override
+    protected String getPath() {
+        return
+            "/resources/"
+            + _dialog.getResourceId()
+            + "/wc-create?v="
+            + _dialog.selectedItem().getIndex();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onNoContent(final Response response) {
+        _dialog.workingCopyCreated();
+        _dialog.close();
     }
 }

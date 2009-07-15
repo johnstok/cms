@@ -149,7 +149,13 @@ public abstract class RemotingAction
      *
      * @param response The server response.
      */
-    protected abstract void onOK(final Response response);
+    protected void onOK(final Response response) {
+        throw new RuntimeException(// TODO Add UnsupportedResponseException
+            "Unsupported response: "
+            + response.getStatusCode() + " "
+            + response.getStatusText());
+    }
+
 
     protected ResourceSummary parseResourceSummary(final Response response) {
         return new ResourceSummary(

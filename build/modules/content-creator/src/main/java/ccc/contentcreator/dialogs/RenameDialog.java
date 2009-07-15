@@ -11,8 +11,8 @@
  */
 package ccc.contentcreator.dialogs;
 
+import ccc.contentcreator.actions.RenameAction_;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
@@ -22,6 +22,7 @@ import ccc.contentcreator.validation.Validations;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.google.gwt.http.client.Response;
 
 
 /**
@@ -87,16 +88,17 @@ public class RenameDialog extends AbstractEditDialog {
     private Runnable rename() {
         return new Runnable() {
             public void run() {
-                commands().rename(
+                new RenameAction_(
                     _item.getId(),
-                    _newName.getValue(),
-                    new ErrorReportingCallback<Void>(_constants.rename()) {
-                        public void onSuccess(final Void result) {
-                            _item.setName(_newName.getValue());
-                            _ssm.update(_item);
-                            close();
-                        }
-                    });
+                    _newName.getValue()
+                ){
+                    /** {@inheritDoc} */
+                    @Override protected void onNoContent(final Response response) {
+                        _item.setName(_newName.getValue());
+                        _ssm.update(_item);
+                        close();
+                    }
+                }.execute();
             }
         };
     }

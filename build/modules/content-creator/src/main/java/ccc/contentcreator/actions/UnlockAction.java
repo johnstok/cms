@@ -12,9 +12,10 @@
 package ccc.contentcreator.actions;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.SingleSelectionModel;
+
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.Response;
 
 
 /**
@@ -23,10 +24,11 @@ import ccc.contentcreator.client.SingleSelectionModel;
  * @author Civic Computing Ltd.
  */
 public class UnlockAction
-    implements
-        Action {
+    extends
+        RemotingAction {
 
     private final SingleSelectionModel _selectionModel;
+
 
     /**
      * Constructor.
@@ -34,21 +36,22 @@ public class UnlockAction
      * @param selectionModel The selection model.
      */
     public UnlockAction(final SingleSelectionModel selectionModel) {
+        super(UI_CONSTANTS.unlock(), RequestBuilder.POST);
         _selectionModel = selectionModel;
     }
 
     /** {@inheritDoc} */
-    public void execute() {
-        final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        _cs.unlock(
-            item.getId(),
-            new ErrorReportingCallback<Void>(UI_CONSTANTS.unlock()){
-                public void onSuccess(final Void arg0) {
-                    item.setLocked(null);
-                    _selectionModel.update(item);
-                }
-            }
-        );
+    @Override
+    protected String getPath() {
+        return "/resources/"+_selectionModel.tableSelection().getId()+"/unlock";
     }
 
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onNoContent(final Response response) {
+        final ResourceSummaryModelData item = _selectionModel.tableSelection();
+        item.setLocked(null);
+        _selectionModel.update(item);
+    }
 }

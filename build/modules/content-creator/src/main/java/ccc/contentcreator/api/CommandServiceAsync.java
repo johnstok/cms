@@ -47,6 +47,47 @@ public interface CommandServiceAsync {
                     boolean isMajorEdit,
                     AsyncCallback<Void> callback);
 
+    void updateResourceTemplate(ID resourceId,
+                                ID templateId,
+                                AsyncCallback<Void> callback);
+
+    void validateFields(Set<Paragraph> delta,
+                        String definition,
+                        AsyncCallback<List <String>> callback);
+
+    void updateMetadata(ID resourceId,
+                        String title,
+                        String description,
+                        String tags,
+                        Map<String, String> metadata,
+                        AsyncCallback<Void> callback);
+
+    void updateFolder(ID folderId,
+                      String sortOrder,
+                      ID indexPageId,
+                      AsyncCallback<Void> callback);
+
+
+    void createAction(ID resourceId,
+                      CommandType action,
+                      Date executeAfter,
+                      final Map<String, String> parameters,
+                      AsyncCallback<Void> callback);
+
+    //-- Marker
+
+    void updateTemplate(ID templateId,
+                        TemplateDelta delta,
+                        AsyncCallback<Void> callback);
+
+    void updateAlias(ID aliasId,
+                     AliasDelta delta,
+                     AsyncCallback<Void> callback);
+
+    void move(ID resourceId,
+              ID newParentId,
+              AsyncCallback<Void> callback);
+
     void updateWorkingCopy(ID pageId,
                            PageDelta delta,
                            AsyncCallback<Void> callback);
@@ -55,25 +96,20 @@ public interface CommandServiceAsync {
                 final String name,
                 AsyncCallback<Void> callback);
 
-    void move(ID resourceId,
-              ID newParentId,
-              AsyncCallback<Void> callback);
-
-    void updateAlias(ID aliasId,
-                     AliasDelta delta,
-                     AsyncCallback<Void> callback);
-
     void updateUser(ID userId,
                     UserDelta delta,
                     AsyncCallback<Void> callback);
 
-    void updateResourceTemplate(ID resourceId,
-                                ID templateId,
-                                AsyncCallback<Void> callback);
+    void includeInMainMenu(ID resourceId,
+                           boolean include,
+                           AsyncCallback<Void> callback);
 
-    void updateTemplate(ID templateId,
-                        TemplateDelta delta,
-                        AsyncCallback<Void> callback);
+    void createWorkingCopy(ID resourceId,
+                           long index,
+                           AsyncCallback<Void> callback);
+
+    public void clearWorkingCopy(ID pageId,
+                                 AsyncCallback<Void> callback);
 
     void lock(ID resourceId,
               AsyncCallback<Void> callback);
@@ -97,40 +133,7 @@ public interface CommandServiceAsync {
                    final Date publishDate,
                    AsyncCallback<Void> callback);
 
-    void includeInMainMenu(ID resourceId,
-                           boolean include,
-                           AsyncCallback<Void> callback);
-
-    void validateFields(Set<Paragraph> delta,
-                        String definition,
-                        AsyncCallback<List <String>> callback);
-
-    void updateMetadata(ID resourceId,
-                        String title,
-                        String description,
-                        String tags,
-                        Map<String, String> metadata,
-                        AsyncCallback<Void> callback);
-
-    void updateFolder(ID folderId,
-                      String sortOrder,
-                      ID indexPageId,
-                      AsyncCallback<Void> callback);
-
-    public void clearWorkingCopy(ID pageId,
-                                 AsyncCallback<Void> callback);
-
-    void createWorkingCopy(ID resourceId,
-                           long index,
-                           AsyncCallback<Void> callback);
-
     void cancelAction(ID actionId,
-                      AsyncCallback<Void> callback);
-
-    void createAction(ID resourceId,
-                      CommandType action,
-                      Date executeAfter,
-                      final Map<String, String> parameters,
                       AsyncCallback<Void> callback);
 
     void createAlias(ID parentId,
@@ -165,7 +168,6 @@ public interface CommandServiceAsync {
 
 
 
-    //-- Marker
     /*
      * Create methods.
      */

@@ -1,9 +1,10 @@
 package ccc.contentcreator.actions;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.SingleSelectionModel;
+
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.Response;
 
 /**
  * Publish a resource.
@@ -11,10 +12,11 @@ import ccc.contentcreator.client.SingleSelectionModel;
  * @author Civic Computing Ltd.
  */
 public class ClearWorkingCopyAction
-    implements
-        Action {
+    extends
+        RemotingAction {
 
     private final SingleSelectionModel _selectionModel;
+
 
     /**
      * Constructor.
@@ -22,20 +24,24 @@ public class ClearWorkingCopyAction
      * @param selectionModel The selection model for this action.
      */
     public ClearWorkingCopyAction(final SingleSelectionModel selectionModel) {
+        super(UI_CONSTANTS.deleteWorkingCopy(), RequestBuilder.POST);
         _selectionModel = selectionModel;
     }
 
+
     /** {@inheritDoc} */
-    public void execute() {
+    @Override
+    protected String getPath() {
+        return
+            "/resources/"+_selectionModel.tableSelection().getId()+"/wc-clear";
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onOK(final Response response) {
         final ResourceSummaryModelData page = _selectionModel.tableSelection();
-        _cs.clearWorkingCopy(
-            page.getId(),
-            new ErrorReportingCallback<Void>(UI_CONSTANTS.deleteWorkingCopy()){
-                public void onSuccess(final Void arg0) {
-                    _selectionModel.tableSelection().setWorkingCopy(false);
-                    _selectionModel.update(page);
-                }
-            }
-        );
+        _selectionModel.tableSelection().setWorkingCopy(false);
+        _selectionModel.update(page);
     }
 }

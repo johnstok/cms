@@ -19,7 +19,7 @@ import java.util.Set;
 
 import ccc.api.ID;
 import ccc.api.UserDelta;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
+import ccc.contentcreator.actions.UpdateUserAction_;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.UserTable;
 import ccc.contentcreator.validation.Validate;
@@ -28,6 +28,7 @@ import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.google.gwt.http.client.Response;
 
 
 /**
@@ -126,18 +127,18 @@ public class EditUserDialog extends AbstractEditDialog {
                 }
                 _userDTO.setRoles(validRoles);
 
-
-                commands().updateUser(
+                new UpdateUserAction_(
                     _userId,
-                    _userDTO,
-                    new ErrorReportingCallback<Void>(_constants.editUser()) {
-                        public void onSuccess(final Void result) {
-                            // TODO: Just update the edited row model data.
-                            _userTable.refreshUsers();
-                            close();
-                        }
+                    _userDTO
+                ){
+                    /** {@inheritDoc} */
+                    @Override protected void onNoContent(final Response response) {
+                        // TODO: Just update the edited row model data.
+                        _userTable.refreshUsers();
+                        close();
                     }
-                );
+
+                }.execute();
             }
         };
     }

@@ -13,9 +13,10 @@ package ccc.contentcreator.actions;
 
 import ccc.api.ActionStatus;
 import ccc.contentcreator.binding.ActionSummaryModelData;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.ActionTable;
+
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.Response;
 
 
 /**
@@ -24,21 +25,25 @@ import ccc.contentcreator.client.ActionTable;
  * @author Civic Computing Ltd.
  */
 public class CancelActionAction
-    implements
-        Action {
+    extends
+        RemotingAction {
 
     private final ActionTable _table;
+
+
     /**
      * Constructor.
      *
      * @param table The action table to work with.
      */
     public CancelActionAction(final ActionTable table) {
+        super(UI_CONSTANTS.cancel(), RequestBuilder.POST);
         _table = table;
     }
 
+
     /** {@inheritDoc} */
-    public void execute() {
+    @Override public void execute() {
         final ActionSummaryModelData action = _table.getSelectedItem();
         if (null==action) {
             GLOBALS.alert(UI_CONSTANTS.pleaseChooseAnAction());
@@ -47,15 +52,23 @@ public class CancelActionAction
             GLOBALS.alert(UI_CONSTANTS.thisActionHasAlreadyCompleted());
             return;
         } else {
-            _cs.cancelAction(
-                action.getId(),
-                new ErrorReportingCallback<Void>(UI_CONSTANTS.cancel()){
-                    public void onSuccess(final Void arg0) {
-                        action.setStatus(ActionStatus.Cancelled);
-                        _table.update(action);
-                    }
-                }
-            );
+            super.execute();
         }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected String getPath() {
+        return "/actions/"+_table.getSelectedItem().getId()+"/cancel";
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onNoContent(final Response response) {
+        final ActionSummaryModelData action = _table.getSelectedItem();
+        action.setStatus(ActionStatus.Cancelled);
+        _table.update(action);
     }
 }

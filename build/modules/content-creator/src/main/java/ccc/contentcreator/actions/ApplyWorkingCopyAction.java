@@ -12,9 +12,10 @@
 package ccc.contentcreator.actions;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.SingleSelectionModel;
+
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.Response;
 
 
 /**
@@ -23,8 +24,8 @@ import ccc.contentcreator.client.SingleSelectionModel;
  * @author Civic Computing Ltd.
  */
 public class ApplyWorkingCopyAction
-    implements
-        Action {
+    extends
+        RemotingAction {
 
     private final SingleSelectionModel _selectionModel;
 
@@ -35,21 +36,24 @@ public class ApplyWorkingCopyAction
      */
     public ApplyWorkingCopyAction(
           final SingleSelectionModel selectionModel) {
+        super(UI_CONSTANTS.applyWorkingCopy(), RequestBuilder.POST);
         _selectionModel = selectionModel;
     }
 
     /** {@inheritDoc} */
-    public void execute() {
-        final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        _cs.applyWorkingCopy(
-            item.getId(),
-            new ErrorReportingCallback<Void>(UI_CONSTANTS.applyWorkingCopy()){
-                public void onSuccess(final Void arg0) {
-                    item.setWorkingCopy(false);
-                    _selectionModel.update(item);
-                }
-            }
-        );
+    @Override
+    protected String getPath() {
+        return
+            "/resources/"
+            +_selectionModel.tableSelection().getId()
+            +"/wc-apply";
     }
 
+    /** {@inheritDoc} */
+    @Override
+    protected void onNoContent(final Response response) {
+        final ResourceSummaryModelData item = _selectionModel.tableSelection();
+        item.setWorkingCopy(false);
+        _selectionModel.update(item);
+    }
 }

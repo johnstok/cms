@@ -210,7 +210,11 @@ public class GwtJson
     /** {@inheritDoc} */
     @Override
     public void set(final String key, final Long value) {
-        throw new UnsupportedOperationException("Method not implemented.");
+        _delegate.put(
+            key,
+            (null==value)
+                ? JSONNull.getInstance()
+                : new JSONNumber(value.doubleValue()));
     }
 
     /** {@inheritDoc} */

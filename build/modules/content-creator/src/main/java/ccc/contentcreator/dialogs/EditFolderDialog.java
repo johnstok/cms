@@ -19,6 +19,7 @@ import ccc.api.ID;
 import ccc.api.ResourceSummary;
 import ccc.api.ResourceType;
 import ccc.contentcreator.actions.GetChildrenAction;
+import ccc.contentcreator.actions.ReorderFolderAction;
 import ccc.contentcreator.api.CommandServiceAsync;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
@@ -47,6 +48,7 @@ import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
+import com.google.gwt.http.client.Response;
 import com.google.gwt.i18n.client.DateTimeFormat;
 
 
@@ -352,14 +354,17 @@ AbstractEditDialog {
             for(final ResourceSummaryModelData m : models) {
                 orderList.add(m.getId().toString());
             }
-            _commands.reorder(md.getId(),
-                orderList,
-                new ErrorReportingCallback<Void>(_constants.folderSortOrder()){
-                public void onSuccess(final Void result) {
+
+            new ReorderFolderAction(
+                md.getId(),
+                orderList
+            ){
+                /** {@inheritDoc} */
+                @Override protected void onNoContent(final Response response) {
                     close();
                     md.setSortOrder(order);
                 }
-            });
+            }.execute();
         } else {
             close();
             md.setSortOrder(order);
