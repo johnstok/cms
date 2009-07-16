@@ -13,6 +13,10 @@
 package ccc.contentcreator.actions;
 
 import static com.google.gwt.http.client.Response.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import ccc.api.ResourceSummary;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.GwtJson;
@@ -23,6 +27,7 @@ import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.RequestBuilder.Method;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONParser;
 
 
@@ -160,6 +165,15 @@ public abstract class RemotingAction
     protected ResourceSummary parseResourceSummary(final Response response) {
         return new ResourceSummary(
             new GwtJson(JSONParser.parse(response.getText()).isObject()));
+    }
+
+    protected List<String> parseListString(final Response response) {
+        final List<String> strings = new ArrayList<String>();
+        final JSONArray result = JSONParser.parse(response.getText()).isArray();
+        for (int i=0; i<result.size(); i++) {
+            strings.add(result.get(i).isString().stringValue());
+        }
+        return strings;
     }
 
     // 405 Method Not Allowed

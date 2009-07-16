@@ -17,16 +17,16 @@ import java.util.Set;
 import ccc.api.ID;
 import ccc.api.Paragraph;
 import ccc.contentcreator.actions.ResourceNameExistsAction;
+import ccc.contentcreator.actions.ValidateFieldAction_;
 import ccc.contentcreator.api.ActionNameConstants;
-import ccc.contentcreator.api.CommandServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
 
 import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.google.gwt.http.client.Response;
 import com.google.gwt.xml.client.XMLParser;
 import com.google.gwt.xml.client.impl.DOMParseException;
 
@@ -46,8 +46,6 @@ public class Validations {
         GLOBALS.uiMessages();
     private static final ActionNameConstants USER_ACTIONS =
         GLOBALS.userActions();
-    private static final CommandServiceAsync COMMAND_SERVICE =
-        GLOBALS.commandService();
 
     private static final String  VALID_CHARACTERS = "[\\.\\-\\w]+";
 
@@ -265,25 +263,27 @@ public class Validations {
                                            final String definition) {
         return new Validator() {
             public void validate(final Validate validate) {
-                COMMAND_SERVICE.validateFields(
-                    delta,
-                    definition,
-                    new ErrorReportingCallback<List <String>>(USER_ACTIONS.validatePageFields()){
-                        public void onSuccess(final List<String> errors) {
-                            if (!errors.isEmpty()) {
-                                final StringBuffer sb = new StringBuffer();
-                                for (final String error : errors) {
-                                    sb.append(error);
-                                    sb.append(" ");
-                                }
+                new ValidateFieldAction_(delta, definition) {
+                    /** {@inheritDoc} */
+                    @Override
+                    protected void onOK(final Response response) {
+                        final List<String> errors = parseListString(response);
 
-                                validate.addMessage(
-                                    UI_CONSTANTS.regexpValidationFailed()
-                                    +sb.toString()
-                                );
+                        if (!errors.isEmpty()) {
+                            final StringBuffer sb = new StringBuffer();
+                            for (final String error : errors) {
+                                sb.append(error);
+                                sb.append(" ");
                             }
-                            validate.next();
-                        }});
+
+                            validate.addMessage(
+                                UI_CONSTANTS.regexpValidationFailed()
+                                +sb.toString()
+                            );
+                        }
+                        validate.next();
+                    }
+                }.execute();
             }
         };
     }

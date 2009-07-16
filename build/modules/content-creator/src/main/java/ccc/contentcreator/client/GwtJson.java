@@ -61,6 +61,18 @@ public class GwtJson
     }
 
     /**
+     * Constructor.
+     *
+     * @param properties A map of properties for this JSON object.
+     */
+    public GwtJson(final Map<String, String> properties) {
+        this();
+        for (final Map.Entry<String, String> prop : properties.entrySet()) {
+            _delegate.put(prop.getKey(), new JSONString(prop.getValue()));
+        }
+    }
+
+    /**
      * Accessor.
      *
      * @return Returns the delegate.

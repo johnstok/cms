@@ -14,9 +14,8 @@ package ccc.contentcreator.dialogs;
 import java.util.Date;
 
 import ccc.api.ID;
-import ccc.contentcreator.api.CommandServiceAsync;
+import ccc.contentcreator.actions.CreateActionAction_;
 import ccc.contentcreator.api.UIConstants;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.CreateActionPanel;
 import ccc.contentcreator.client.IGlobalsImpl;
 
@@ -28,6 +27,7 @@ import com.extjs.gxt.ui.client.widget.form.Time;
 import com.extjs.gxt.ui.client.widget.form.TimeField;
 import com.extjs.gxt.ui.client.widget.layout.FormData;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
+import com.google.gwt.http.client.Response;
 
 
 /**
@@ -39,7 +39,6 @@ public class CreateActionDialog
     extends
         AbstractWizardDialog {
 
-    private final CommandServiceAsync _commands = _globals.commandService();
     private final CreateActionPanel _createAction = new CreateActionPanel();
     private final DateTimePicker _dtPicker = new DateTimePicker();
 
@@ -77,18 +76,17 @@ public class CreateActionDialog
                     _uiConstants.pleaseSpecifyDateAndTime();
                     return;
                 }
-                _commands.createAction(
+
+                new CreateActionAction_(
                     _resourceId,
                     _createAction.commandType(),
                     _dtPicker.getDate(),
-                    _createAction.getParameters(),
-                    new ErrorReportingCallback<Void>(
-                                                   _uiConstants.createAction()){
-                        public void onSuccess(final Void arg0) {
+                    _createAction.getParameters()) {
+                        /** {@inheritDoc} */
+                        @Override protected void onNoContent(final Response response) {
                             close();
                         }
-                    }
-                );
+                }.execute();
             }
         };
     }

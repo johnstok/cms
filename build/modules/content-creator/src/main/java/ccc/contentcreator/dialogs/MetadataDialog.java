@@ -17,9 +17,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ccc.contentcreator.actions.UpdateMetadataAction_;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
@@ -50,6 +50,7 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.TextToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
+import com.google.gwt.http.client.Response;
 
 
 /**
@@ -285,21 +286,21 @@ public class MetadataDialog extends AbstractEditDialog {
                 final String title = _title.getValue();
                 final String description = _description.getValue();
 
-                commands().updateMetadata(
+                new UpdateMetadataAction_(
                     _resource.getId(),
                     _title.getValue(),
                     _description.getValue(),
                     tags,
-                    metadata,
-                    new ErrorReportingCallback<Void>(_constants.updateTags()){
-                        @Override public void onSuccess(final Void arg0) {
+                    metadata) {
+                        /** {@inheritDoc} */
+                        @Override protected void onNoContent(final Response response) {
                             _resource.setTags(tags);
                             _resource.setTitle(title);
                             _resource.setDescription(description);
                             _ssm.update(_resource);
                             MetadataDialog.this.close();
-                    }
-                    });
+                        }
+                }.execute();
             }
         };
     }

@@ -14,10 +14,10 @@ package ccc.contentcreator.dialogs;
 import java.util.Collection;
 
 import ccc.api.TemplateSummary;
+import ccc.contentcreator.actions.UpdateResourceTemplateAction_;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.binding.TemplateSummaryModelData;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
@@ -26,6 +26,7 @@ import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
+import com.google.gwt.http.client.Response;
 
 
 /**
@@ -115,17 +116,15 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
                 final TemplateSummaryModelData selected =
                     _selectedTemplate.getValue();
 
-                commands().updateResourceTemplate(
-                    _resource.getId(),
-                    selected.getId(),
-                    new ErrorReportingCallback<Void>(_constants.chooseTemplate()){
-                        @Override public void onSuccess(final Void x) {
+                new UpdateResourceTemplateAction_(
+                    _resource.getId(), selected.getId()) {
+                        /** {@inheritDoc} */
+                        @Override protected void onNoContent(final Response response) {
                             ChooseTemplateDialog.this.close();
                             _resource.setTemplateId(selected.getId());
                             _ssm.update(_resource);
                         }
-                    }
-                );
+                }.execute();
             }
         };
     }

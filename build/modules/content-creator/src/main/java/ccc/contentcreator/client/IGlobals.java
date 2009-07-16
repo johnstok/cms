@@ -14,7 +14,6 @@ package ccc.contentcreator.client;
 import ccc.api.UserSummary;
 import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.api.ActionStatusConstants;
-import ccc.contentcreator.api.CommandServiceAsync;
 import ccc.contentcreator.api.CommandTypeConstants;
 import ccc.contentcreator.api.ErrorDescriptions;
 import ccc.contentcreator.api.ErrorResolutions;
@@ -49,13 +48,6 @@ public interface IGlobals {
      * @return A new instance of {@link UIMessages}.
      */
     UIMessages uiMessages();
-
-    /**
-     * Factory for {@link CommandServiceAsync} objects.
-     *
-     * @return A new instance of {@link CommandServiceAsync}.
-     */
-    CommandServiceAsync commandService();
 
     /**
      * Factory for {@link SecurityServiceAsync} objects.

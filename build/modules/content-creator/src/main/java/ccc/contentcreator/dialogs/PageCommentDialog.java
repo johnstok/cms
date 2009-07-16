@@ -13,6 +13,7 @@ package ccc.contentcreator.dialogs;
 
 import ccc.api.ID;
 import ccc.api.PageDelta;
+import ccc.contentcreator.actions.UpdatePageAction_;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.validation.Validate;
@@ -22,7 +23,7 @@ import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
-import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.http.client.Response;
 
 /**
  * Dialog for capturing the page edit metadata.
@@ -40,22 +41,6 @@ public class PageCommentDialog extends AbstractEditDialog {
     private final UpdatePageDialog _updatePageDialog;
     private final CheckBox _majorEdit = new CheckBox();
     private final TextArea _comment = new TextArea();
-
-    private final AsyncCallback<Void> _applyNowCompletedCallback =
-        new AsyncCallback<Void>() {
-            public void onFailure(final Throwable arg0) {
-                new IGlobalsImpl().unexpectedError(
-                    arg0, _constants.updateContent());
-            }
-            public void onSuccess(final Void arg0) {
-                final ResourceSummaryModelData md =
-                    _updatePageDialog.rt().tableSelection();
-                md.setWorkingCopy(false);
-                _updatePageDialog.rt().update(md);
-                close();
-                _updatePageDialog.close();
-            }
-        };
 
 
     /**
@@ -108,23 +93,23 @@ public class PageCommentDialog extends AbstractEditDialog {
     private Runnable savePage() {
         return new Runnable() {
             public void run() {
-                commands().updatePage(
+                new UpdatePageAction_(
                     _pageId,
                     _page,
                     _comment.getValue(),
-                    _majorEdit.getValue().booleanValue(),
-                    applyNowCompletedCallback());
-                      close();
+                    _majorEdit.getValue().booleanValue()) {
+                        /** {@inheritDoc} */
+                        @Override protected void onNoContent(final Response response) {
+                            final ResourceSummaryModelData md =
+                                _updatePageDialog.rt().tableSelection();
+                            md.setWorkingCopy(false);
+                            _updatePageDialog.rt().update(md);
+                            close();
+                            _updatePageDialog.close();
+                        }
+                }.execute();
+                close(); // TODO: Why is this here?
             }
         };
-    }
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the _applyNowCompletedCallback.
-     */
-    protected AsyncCallback<Void> applyNowCompletedCallback() {
-        return _applyNowCompletedCallback;
     }
 }
