@@ -27,6 +27,9 @@
         <param-name>resteasy.providers</param-name>
         <param-value>
             ccc.ws.DurationReader,
+            ccc.ws.IdReader,
+            ccc.ws.AliasDeltaReader,
+            ccc.ws.JsonReader,
             ccc.ws.TemplateDeltaReader,
             ccc.ws.PageDeltaReader,
             ccc.ws.UserDeltaReader,

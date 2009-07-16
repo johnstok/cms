@@ -14,7 +14,6 @@ package ccc.contentcreator.dialogs;
 
 import ccc.api.ResourceSummary;
 import ccc.contentcreator.actions.CreateAliasAction_;
-import ccc.contentcreator.actions.RemotingAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
@@ -111,7 +110,7 @@ public class CreateAliasDialog extends AbstractEditDialog {
     private Runnable createAlias() {
         return new Runnable() {
             public void run() {
-                final RemotingAction a = new CreateAliasAction_(
+                new CreateAliasAction_(
                     _parent.getId(),
                     _aliasName.getValue(),
                     _ssm.tableSelection().getId()
@@ -124,7 +123,7 @@ public class CreateAliasDialog extends AbstractEditDialog {
                         _ssm.create(newAlias, _parent);
                         close();
                     }
-                };
+                }.execute();
             }
         };
     }

@@ -39,7 +39,7 @@ public class ClearWorkingCopyAction
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
+    protected void onNoContent(final Response response) {
         final ResourceSummaryModelData page = _selectionModel.tableSelection();
         _selectionModel.tableSelection().setWorkingCopy(false);
         _selectionModel.update(page);

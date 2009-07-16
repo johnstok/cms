@@ -13,7 +13,11 @@
 package ccc.ws;
 
 import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
@@ -22,13 +26,17 @@ import javax.ws.rs.Produces;
 import ccc.api.ActionSummary;
 import ccc.api.AliasDelta;
 import ccc.api.CommandFailedException;
+import ccc.api.CommandType;
 import ccc.api.Commands;
 import ccc.api.Duration;
 import ccc.api.FileDelta;
 import ccc.api.FileSummary;
 import ccc.api.ID;
+import ccc.api.Json;
+import ccc.api.JsonKeys;
 import ccc.api.LogEntrySummary;
 import ccc.api.PageDelta;
+import ccc.api.Paragraph;
 import ccc.api.Queries;
 import ccc.api.ResourceSummary;
 import ccc.api.RestCommands;
@@ -390,5 +398,189 @@ public class RestApi
     @Override
     public void applyWorkingCopy(final ID resourceId) throws CommandFailedException {
         getCommands().applyWorkingCopy(resourceId);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateResourceTemplate(final ID resourceId, final ID templateId) throws CommandFailedException {
+        getCommands().updateResourceTemplate(resourceId, templateId);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void changeRoles(final ID resourceId, final Collection<String> roles) throws CommandFailedException {
+        getCommands().changeRoles(resourceId, roles);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void move(final ID resourceId, final ID newParentId) throws CommandFailedException {
+        getCommands().move(resourceId, newParentId);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void publish(final ID resourceId) throws CommandFailedException {
+        getCommands().publish(resourceId);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void rename(final ID resourceId, final String name) throws CommandFailedException {
+        getCommands().rename(resourceId, name);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void unlock(final ID resourceId) throws CommandFailedException {
+        getCommands().unlock(resourceId);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void unpublish(final ID resourceId) throws CommandFailedException {
+        getCommands().unpublish(resourceId);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void createAction(final ID resourceId,
+                             final CommandType action,
+                             final long executeAfter,
+                             final Map<String, String> parameters) throws CommandFailedException {
+        getCommands().createAction(
+            resourceId, action, new Date(executeAfter), parameters);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void excludeFromMainMenu(final ID resourceId) throws CommandFailedException {
+        getCommands().includeInMainMenu(resourceId, false);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void includeInMainMenu(final ID resourceId) throws CommandFailedException {
+        getCommands().includeInMainMenu(resourceId, true);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateMetadata(final ID resourceId, final Json json) throws CommandFailedException {
+        final String title = json.getString("title");
+        final String description = json.getString("description");
+        final String tags = json.getString("tags");
+        final Map<String, String> metadata = json.getStringMap("metadata");
+        getCommands().updateMetadata(resourceId, title, description, tags, metadata);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public List<String> validateFields(final Json json) {
+        final String def = json.getString("definition");
+        final Set<Paragraph> p = new HashSet<Paragraph>();
+        for (final Json j : json.getCollection("paragraphs")) {
+            p.add(new Paragraph(j));
+        }
+        return getCommands().validateFields(p, def);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateWorkingCopy(final ID pageId, final PageDelta delta) throws CommandFailedException {
+        getCommands().updateWorkingCopy(pageId, delta);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void clearWorkingCopy(final ID pageId) throws CommandFailedException {
+        getCommands().clearWorkingCopy(pageId);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void cancelAction(final ID actionId) throws CommandFailedException {
+        getCommands().cancelAction(actionId);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceSummary createAlias(final ID parentId, final String name, final ID targetId) throws CommandFailedException {
+        return getCommands().createAlias(parentId, name, targetId);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void createWorkingCopy(final ID resourceId, final long index) throws CommandFailedException {
+        getCommands().createWorkingCopy(resourceId, index);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateTemplate(final ID templateId, final TemplateDelta delta) throws CommandFailedException {
+        getCommands().updateTemplate(templateId, delta);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateAlias(final ID aliasId, final AliasDelta delta) throws CommandFailedException {
+        getCommands().updateAlias(aliasId, delta);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void updatePage(final ID pageId, final Json json) throws CommandFailedException {
+        final boolean majorEdit = json.getBool(JsonKeys.MAJOR_CHANGE).booleanValue();
+        final String comment = json.getString(JsonKeys.COMMENT);
+        final PageDelta delta = new PageDelta(json.getJson(JsonKeys.DELTA));
+        getCommands().updatePage(pageId, delta, comment, majorEdit);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateFolder(final ID folderId, final String sortOrder, final ID indexPageId) throws CommandFailedException {
+        getCommands().updateFolder(folderId, sortOrder, indexPageId);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateUser(final ID userId, final UserDelta delta) throws CommandFailedException {
+        getCommands().updateUser(userId, delta);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void reorder(final ID folderId, final List<String> order) throws CommandFailedException {
+        getCommands().reorder(folderId, order);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void deleteCacheDuration(final ID id) throws CommandFailedException {
+        getCommands().updateCacheDuration(id, null);
     }
 }

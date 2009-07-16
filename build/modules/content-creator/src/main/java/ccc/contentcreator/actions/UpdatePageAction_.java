@@ -66,7 +66,7 @@ public class UpdatePageAction_
         final GwtJson json = new GwtJson();
         json.set(JsonKeys.MAJOR_CHANGE, _majorChange);
         json.set(JsonKeys.COMMENT, _comment);
-        json.set("delta", _details);
+        json.set(JsonKeys.DELTA, _details);
         return json.toString();
     }
 }
