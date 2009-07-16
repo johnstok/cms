@@ -18,6 +18,8 @@ import ccc.api.CommandType;
 import ccc.api.ID;
 import ccc.contentcreator.client.GwtJson;
 
+import com.google.gwt.http.client.RequestBuilder;
+
 
 /**
  * TODO: Add a description for this type.
@@ -45,7 +47,7 @@ public class CreateActionAction_
                                final CommandType command,
                                final Date executeAfter,
                                final Map<String, String> actionParameters) {
-        super(UI_CONSTANTS.createAction());
+        super(UI_CONSTANTS.createAction(), RequestBuilder.POST);
         _resourceId = resourceId;
         _command = command;
         _executeAfter = executeAfter;

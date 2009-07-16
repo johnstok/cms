@@ -49,8 +49,7 @@ public class OpenEditUserDialogAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-
-        throw new UnsupportedOperationException("Method not implemented.");
+        return "/users/"+_userId+"/delta";
     }
 
     /** {@inheritDoc} */

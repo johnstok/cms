@@ -157,7 +157,7 @@ public class GwtJson
     /** {@inheritDoc} */
     @Override
     public Json getJson(final String key) {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return new GwtJson(_delegate.get(key).isObject());
     }
 
     /** {@inheritDoc} */
@@ -175,7 +175,9 @@ public class GwtJson
     /** {@inheritDoc} */
     @Override
     public void set(final String key, final String value) {
-        _delegate.put(key, new JSONString(value));
+        _delegate.put(
+            key,
+            (null==value) ? JSONNull.getInstance() : new JSONString(value));
     }
 
     /** {@inheritDoc} */
@@ -216,7 +218,7 @@ public class GwtJson
     /** {@inheritDoc} */
     @Override
     public void set(final String key, final ID value) {
-        throw new UnsupportedOperationException("Method not implemented.");
+        _delegate.put(key, new JSONString(value.toString()));
     }
 
     /** {@inheritDoc} */

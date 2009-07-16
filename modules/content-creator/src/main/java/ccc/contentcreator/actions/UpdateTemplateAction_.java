@@ -15,6 +15,8 @@ import ccc.api.ID;
 import ccc.api.TemplateDelta;
 import ccc.contentcreator.client.GwtJson;
 
+import com.google.gwt.http.client.RequestBuilder;
+
 
 /**
  * TODO: Add a description for this type.
@@ -37,7 +39,7 @@ public class UpdateTemplateAction_
      */
     public UpdateTemplateAction_(final ID template,
                                  final TemplateDelta details) {
-        super(UI_CONSTANTS.editTemplate());
+        super(UI_CONSTANTS.editTemplate(), RequestBuilder.POST);
         _template = template;
         _details = details;
     }

@@ -298,10 +298,10 @@ public interface Commands {
      * @throws  CommandFailedException If the method fails.
      */
     void updateMetadata(ID resourceId,
-                            String title,
-                            String description,
-                            String tags,
-                            Map<String, String> metadata)
+                        String title,
+                        String description,
+                        String tags,
+                        Map<String, String> metadata)
     throws CommandFailedException;
 
     /**
