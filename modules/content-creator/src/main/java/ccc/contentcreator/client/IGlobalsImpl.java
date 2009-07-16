@@ -15,8 +15,6 @@ import ccc.api.CommandFailedException;
 import ccc.api.UserSummary;
 import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.api.ActionStatusConstants;
-import ccc.contentcreator.api.CommandService;
-import ccc.contentcreator.api.CommandServiceAsync;
 import ccc.contentcreator.api.CommandTypeConstants;
 import ccc.contentcreator.api.ErrorDescriptions;
 import ccc.contentcreator.api.ErrorResolutions;
@@ -43,8 +41,6 @@ public class IGlobalsImpl
     implements
         IGlobals {
 
-    private static final CommandServiceAsync COMMAND_SERVICE =
-        GWT.create(CommandService.class);
     private static final SecurityServiceAsync SECURITY_SERVICE =
         GWT.create(SecurityService.class);
     private static final UIConstants UI_CONSTANTS =
@@ -83,12 +79,6 @@ public class IGlobalsImpl
     @Override
     public String appURL() {
         return GWT.getHostPageBaseURL();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public CommandServiceAsync commandService() {
-        return COMMAND_SERVICE;
     }
 
     /** {@inheritDoc} */

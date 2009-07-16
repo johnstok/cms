@@ -12,7 +12,6 @@
 package ccc.contentcreator.client;
 
 import ccc.contentcreator.api.ActionNameConstants;
-import ccc.contentcreator.api.CommandServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 
 import com.extjs.gxt.ui.client.widget.ContentPanel;
@@ -27,8 +26,6 @@ public abstract class TablePanel extends ContentPanel {
 
     private static final IGlobals GLOBALS = new IGlobalsImpl();
 
-    /** _cs : CommandServiceAsync. */
-    protected final CommandServiceAsync _cs = GLOBALS.commandService();
     /** USER_ACTIONS : ActionNameConstants. */
     protected final ActionNameConstants USER_ACTIONS = GLOBALS.userActions();
     /** UI_CONSTANTS : UIConstants. */

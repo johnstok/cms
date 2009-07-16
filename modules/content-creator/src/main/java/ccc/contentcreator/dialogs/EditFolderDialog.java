@@ -20,11 +20,10 @@ import ccc.api.ResourceSummary;
 import ccc.api.ResourceType;
 import ccc.contentcreator.actions.GetChildrenAction;
 import ccc.contentcreator.actions.ReorderFolderAction;
-import ccc.contentcreator.api.CommandServiceAsync;
+import ccc.contentcreator.actions.UpdateFolderAction_;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.binding.ResourceSummaryModelData.Property;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.ResourceTypeRendererFactory;
@@ -69,8 +68,6 @@ AbstractEditDialog {
     private static final String DATE_CHANGED_DESC = "DATE_CHANGED_DESC";
     private static final String DATE_CHANGED_ASC = "DATE_CHANGED_ASC";
     private static final String NAME_ALPHANUM_ASC = "NAME_ALPHANUM_ASC";
-
-    private final CommandServiceAsync _commands = _globals.commandService();
 
     private final ComboBox<ModelData> _sortOrder = new ComboBox<ModelData>();
     private final ComboBox<ModelData> _indexPage = new ComboBox<ModelData>();
@@ -278,18 +275,13 @@ AbstractEditDialog {
                 final String order = _sortOrder.getValue().<String>get("value");
                 final ID indexPageId = _indexPage.getValue().<ID>get("value");
 
-                _commands.updateFolder(
-                    md.getId(),
-                    order,
-                    indexPageId,
-                    new ErrorReportingCallback<Void>(
-                            _constants.folderSortOrder()){
-                        public void onSuccess(final Void result) {
-                            md.setIndexPageId(indexPageId);
-                            reorder(md, order);
-                        }
+                new UpdateFolderAction_(md.getId(), order, indexPageId) {
+                    /** {@inheritDoc} */
+                    @Override protected void onNoContent(final Response response) {
+                        md.setIndexPageId(indexPageId);
+                        reorder(md, order);
                     }
-                );
+                }.execute();
             }
         };
     }
