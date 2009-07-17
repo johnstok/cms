@@ -1,9 +1,10 @@
 
 package ccc.contentcreator.actions;
 
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
-import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.IGlobals;
+
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.Response;
 
 
 /**
@@ -12,20 +13,30 @@ import ccc.contentcreator.client.IGlobals;
  * @author Civic Computing Ltd.
  */
 public final class LogoutAction
-    implements
-        Action {
+    extends
+        RemotingAction {
+
+
+    /**
+     * Constructor.
+     */
+    public LogoutAction() {
+        super(UI_CONSTANTS.logout(), RequestBuilder.POST);
+    }
 
 
     /** {@inheritDoc} */
-    public void execute() {
-        GLOBALS.securityService().logout(
-            new ErrorReportingCallback<Void>(UI_CONSTANTS.logout()) {
-                public void onSuccess(final Void result) {
-                    GLOBALS.currentUser(null);
-                    GLOBALS.disableExitConfirmation();
-                    GLOBALS.redirectTo(IGlobals.APP_URL);
-                }
-            }
-        );
+    @Override
+    protected void onNoContent(final Response response) {
+        GLOBALS.currentUser(null);
+        GLOBALS.disableExitConfirmation();
+        GLOBALS.redirectTo(IGlobals.APP_URL);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected String getPath() {
+        return "/sessions/current";
     }
 }
