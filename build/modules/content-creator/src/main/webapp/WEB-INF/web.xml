@@ -26,7 +26,9 @@
     <context-param>
         <param-name>resteasy.providers</param-name>
         <param-value>
+            ccc.ws.CommandFailedExceptionMapper,
             ccc.ws.DurationReader,
+            ccc.ws.FailureWriter,
             ccc.ws.IdReader,
             ccc.ws.AliasDeltaReader,
             ccc.ws.JsonReader,
@@ -56,12 +58,6 @@
         <servlet-name>Resteasy</servlet-name>
         <servlet-class>
             org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher
-        </servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Commands</servlet-name>
-        <servlet-class>
-            ccc.contentcreator.remoting.CommandsImpl
         </servlet-class>
     </servlet>
     <servlet>
@@ -122,10 +118,6 @@
     <servlet-mapping>
         <servlet-name>Resteasy</servlet-name>
         <url-pattern>/api/*</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Commands</servlet-name>
-        <url-pattern>/commands</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Security</servlet-name>

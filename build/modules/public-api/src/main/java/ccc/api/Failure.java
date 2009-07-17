@@ -21,7 +21,7 @@ import java.util.Map;
  *
  * @author Civic Computing Ltd.
  */
-public class Failure implements Serializable {
+public class Failure implements Serializable, Jsonable {
 
     /** UNEXPECTED : int. */
     public static final int UNEXPECTED    = 0;
@@ -101,5 +101,12 @@ public class Failure implements Serializable {
      */
     public final Map<String, String> getParams() {
         return _params;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void toJson(final Json json) {
+        json.set(JsonKeys.CODE, Long.valueOf(getCode()));
+        json.set(JsonKeys.ID, getExceptionId());
     }
 }
