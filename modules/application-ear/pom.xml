@@ -101,6 +101,11 @@
             <artifactId>rendering-engine</artifactId>
             <version>7.0.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>CCC7</groupId>
+            <artifactId>client-gwt</artifactId>
+            <version>7.0.0-SNAPSHOT</version>
+        </dependency>
 
         <!-- For rest-api (exclude dependencies). -->
         <dependency>
