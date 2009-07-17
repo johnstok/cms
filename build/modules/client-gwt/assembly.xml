@@ -1,5 +1,5 @@
 <assembly>
-	<id>gwt</id>
+	<id>js</id>
 	<formats>
 		<format>zip</format>
 	</formats>

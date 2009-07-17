@@ -23,84 +23,13 @@
                     <webResources>
                         <resource>
                             <directory>
-                                ${basedir}/target/www/ccc.contentcreator.ContentCreator
+                                ${basedir}/target/client-gwt/ccc.contentcreator.ContentCreator
                             </directory>
                         </resource>
                     </webResources>
                 </configuration>
             </plugin>
             <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>gwt-compile</id>
-                        <phase>compile</phase>
-                        <configuration>
-                            <tasks>
-
-                                <property name="compile_classpath"
-                                    refid="maven.compile.classpath" />
-                                <path id="gwt.compile.classpath">
-                                    <pathelement
-                                        location="${basedir}/src/main/java" />
-                                    <pathelement
-                                        location="${basedir}/src/main/resources" />
-                                    <pathelement
-                                        location="${basedir}/../public-api/src/main/java" />
-                                    <pathelement path="${compile_classpath}" />
-                                </path>
-                                <property name="gwt_compile_classpath"
-                                    refid="gwt.compile.classpath" />
-                                <!-- echo message="gwt compile classpath: ${gwt_compile_classpath}"/ -->
-
-                                <echo message="Running GWT compiler" />
-                                <java classname="com.google.gwt.dev.GWTCompiler"
-                                    classpath="${gwt_compile_classpath}"
-                                    fork="true" failonerror="true">
-                                    <jvmarg value="-Xms512M"/>
-                                    <jvmarg value="-Xmx512M"/>
-                                    <jvmarg value="-Xss4M"/>
-                                    <jvmarg value="-Dgwt.nowarn.legacy.tools"/>
-                                    <arg value="-out" />
-                                    <arg value="${basedir}/target/www" />
-                                    <arg
-                                        value="ccc.contentcreator.ContentCreator" />
-                                </java>
-
-                            </tasks>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                    <configuration>
-                        <argLine>-Xms512M -Xmx512M -Xss4M</argLine>
-                        <useSystemClassLoader>false</useSystemClassLoader>
-                        <additionalClasspathElements>
-                            <additionalClasspathElement>${basedir}/src/main/java</additionalClasspathElement>
-                            <additionalClasspathElement>${basedir}/src/main/resources</additionalClasspathElement>
-                            <additionalClasspathElement>${basedir}/src/test/java</additionalClasspathElement>
-                            <additionalClasspathElement>${basedir}/src/test/resources</additionalClasspathElement>
-                            <additionalClasspathElement>${basedir}/../public-api/src/main/java</additionalClasspathElement>
-                        </additionalClasspathElements>
-                        <includes>
-                            <!-- Default surefire patterns. -->
-                            <include>**/Test*.java</include>
-                            <include>**/*Test.java</include>
-                            <include>**/*TestCase.java</include>
-                            
-                            <!-- GWT test suites.
-                            <include>ccc/contentcreator/ContentCreatorGwtTestSuite.java</include>
-                            -->
-                        </includes>
-                    </configuration>
-            </plugin>
-            <!-- plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
@@ -113,35 +42,18 @@
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>CCC7</groupId>
-                                    <artifactId>content-creator</artifactId>
+                                    <artifactId>client-gwt</artifactId>
                                     <version>${project.version}</version>
                                     <type>zip</type>
-                                    <classifier>gwt</classifier>
+                                    <classifier>js</classifier>
                                 </artifactItem>
                             </artifactItems>
                             <includes>**/*</includes>
-                            <outputDirectory>${basedir}/target/foo</outputDirectory>
+                            <outputDirectory>${basedir}/target/client-gwt</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <descriptors>
-                        <descriptor>assembly.xml</descriptor>
-                    </descriptors>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>bundle-gwt</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin -->
         </plugins>
     </build>
     
@@ -149,6 +61,11 @@
         <dependency>
             <groupId>CCC7</groupId>
             <artifactId>rendering-engine</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>CCC7</groupId>
+            <artifactId>client-gwt</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency><!-- TODO: Why??! -->
@@ -165,11 +82,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.extjs</groupId>
-            <artifactId>gxt</artifactId>
-            <version>${gxt-version}</version>
-        </dependency>
-        <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
             <version>1.2.1</version>
@@ -178,11 +90,6 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>1.3.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-servlet</artifactId>
-            <version>${gwt-version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.gwt</groupId>
@@ -215,58 +122,4 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-
-    <profiles>
-        <profile>
-            <id>windows</id>
-            <activation>
-                <os>
-                    <family>Windows</family>
-                </os>
-            </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>com.google.gwt</groupId>
-                    <artifactId>gwt-dev</artifactId>
-                    <version>${gwt-version}</version>
-                    <classifier>windows</classifier>
-                    <scope>provided</scope>
-                </dependency>
-                <dependency>
-                    <groupId>com.google.gwt</groupId>
-                    <artifactId>gwt-dev</artifactId>
-                    <version>${gwt-version}</version>
-                    <type>zip</type>
-                    <classifier>windows-libs</classifier>
-                    <scope>provided</scope>
-                </dependency>
-            </dependencies>
-        </profile>
-        <profile>
-            <id>unix</id>
-            <activation>
-                <os>
-                    <family>unix</family>
-                </os>
-            </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>com.google.gwt</groupId>
-                    <artifactId>gwt-dev</artifactId>
-                    <version>${gwt-version}</version>
-                    <classifier>linux</classifier>
-                    <scope>provided</scope>
-                </dependency>
-                <dependency>
-                    <groupId>com.google.gwt</groupId>
-                    <artifactId>gwt-dev</artifactId>
-                    <version>${gwt-version}</version>
-                    <type>zip</type>
-                    <classifier>linux-libs</classifier>
-                    <scope>provided</scope>
-                </dependency>
-            </dependencies>
-        </profile>
-    </profiles>
-
 </project>
