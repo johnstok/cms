@@ -1,0 +1,14 @@
+<assembly>
+	<id>gwt</id>
+	<formats>
+		<format>zip</format>
+	</formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+	<fileSets>
+		<fileSet>
+			<directory>target/www/ccc.contentcreator.ContentCreator</directory>
+			<lineEnding>keep</lineEnding>
+			<outputDirectory>ccc.contentcreator.ContentCreator</outputDirectory>
+		</fileSet>
+	</fileSets>
+</assembly>
