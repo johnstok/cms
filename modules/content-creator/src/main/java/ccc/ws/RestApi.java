@@ -29,6 +29,7 @@ import ccc.api.CommandFailedException;
 import ccc.api.CommandType;
 import ccc.api.Commands;
 import ccc.api.Duration;
+import ccc.api.Failure;
 import ccc.api.FileDelta;
 import ccc.api.FileSummary;
 import ccc.api.ID;
@@ -582,5 +583,12 @@ public class RestApi
     @Override
     public void deleteCacheDuration(final ID id) throws CommandFailedException {
         getCommands().updateCacheDuration(id, null);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void fail() throws CommandFailedException {
+        throw new CommandFailedException(new Failure(Failure.PRIVILEGES, "a"));
     }
 }
