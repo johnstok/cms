@@ -18,8 +18,6 @@ import ccc.contentcreator.api.ActionStatusConstants;
 import ccc.contentcreator.api.CommandTypeConstants;
 import ccc.contentcreator.api.ErrorDescriptions;
 import ccc.contentcreator.api.ErrorResolutions;
-import ccc.contentcreator.api.SecurityService;
-import ccc.contentcreator.api.SecurityServiceAsync;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
 import ccc.contentcreator.dialogs.ErrorDialog;
@@ -41,8 +39,6 @@ public class IGlobalsImpl
     implements
         IGlobals {
 
-    private static final SecurityServiceAsync SECURITY_SERVICE =
-        GWT.create(SecurityService.class);
     private static final UIConstants UI_CONSTANTS =
         GWT.create(UIConstants.class);
     private static final UIMessages UI_MESSAGES =
@@ -142,12 +138,6 @@ public class IGlobalsImpl
     @Override
     public void refresh() {
         Window.Location.reload();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public SecurityServiceAsync securityService() {
-        return SECURITY_SERVICE;
     }
 
     /** {@inheritDoc} */

@@ -61,12 +61,6 @@
         </servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Security</servlet-name>
-        <servlet-class>
-            ccc.contentcreator.remoting.SecurityImpl
-        </servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>FileUploadServlet</servlet-name>
         <servlet-class>
             ccc.contentcreator.remoting.CreateFileServlet
@@ -118,10 +112,6 @@
     <servlet-mapping>
         <servlet-name>Resteasy</servlet-name>
         <url-pattern>/api/*</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Security</servlet-name>
-        <url-pattern>/security</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>FileUploadServlet</servlet-name>
@@ -180,8 +170,7 @@
             <url-pattern>/${application.prefix}/*</url-pattern>
             <url-pattern>/error</url-pattern>
             <url-pattern>/notfound</url-pattern>
-            <url-pattern>/api/*</url-pattern>
-            <url-pattern>/api</url-pattern>
+            <!-- url-pattern>/api/*</url-pattern -->
             <!-- Secure all HTTP Methods -->
         </web-resource-collection>
         <auth-constraint>
@@ -189,6 +178,13 @@
             <role-name>CONTENT_CREATOR</role-name>
             <role-name>SITE_BUILDER</role-name>
         </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Public Area</web-resource-name>
+            <url-pattern>/api/*</url-pattern>
+        </web-resource-collection>
     </security-constraint>
 
     <login-config>

@@ -195,4 +195,19 @@ public interface RestCommands {
 
     @GET @Path("/fail")
     void fail() throws CommandFailedException;
+
+    @POST @Path("/sessions")
+    public Boolean login(
+          @QueryParam("u") final String username,
+          @QueryParam("p") final String password);
+
+    @GET @Path("/sessions/current")
+    public Boolean isLoggedIn();
+
+    @GET @Path("/sessions/properties")
+    public String readProperty(
+          @QueryParam("key") final String key);
+
+    @POST @Path("/sessions/current")
+    public void logout();
 }

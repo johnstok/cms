@@ -11,15 +11,15 @@
  */
 package ccc.contentcreator.dialogs;
 
-import ccc.contentcreator.api.SecurityServiceAsync;
-import ccc.contentcreator.callbacks.ErrorReportingCallback;
+import ccc.contentcreator.actions.GetPropertyAction;
+import ccc.contentcreator.actions.LoginAction;
 import ccc.contentcreator.client.IGlobalsImpl;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.form.TextField;
-import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.http.client.Response;
 
 
 /**
@@ -43,15 +43,12 @@ public class LoginDialog extends AbstractEditDialog {
     public LoginDialog() {
         super(new IGlobalsImpl().uiConstants().login(), new IGlobalsImpl());
 
-        final SecurityServiceAsync ss = _globals.securityService();
-        ss.readProperty("application.name",
-            new ErrorReportingCallback<String>(USER_ACTIONS.readProperty()){
-            @Override
-            public void onSuccess(final String value) {
-                setHeading(_constants.login() +" - "+value);
+        new GetPropertyAction("application.name") {
+            /** {@inheritDoc} */
+            @Override protected void onOK(final Response response) {
+                setHeading(_constants.login() +" - "+response.getText());
             }
-
-        });
+        }.execute();
 
         setPanelId("LoginPanel");
 
@@ -81,22 +78,17 @@ public class LoginDialog extends AbstractEditDialog {
     protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                _globals.securityService().login(
-                    _username.getValue(),
-                    _password.getValue(),
-                    new AsyncCallback<Boolean>(){
-                        public void onFailure(final Throwable caught) {
-                            _globals.unexpectedError(
-                                caught, _constants.login());
+                new LoginAction(_username.getValue(), _password.getValue()) {
+                    /** {@inheritDoc} */
+                    @Override protected void onOK(final Response response) {
+                        final boolean success = parseBoolean(response);
+                        if (success) {
+                            _globals.refresh();
+                        } else {
+                            _message.setText(constants().loginFailed());
                         }
-                        public void onSuccess(final Boolean loginSucceeded) {
-                            if (loginSucceeded) {
-                                _globals.refresh();
-                            } else {
-                                _message.setText(constants().loginFailed());
-                            }
-                        }
-                });
+                    }
+                }.execute();
             }
         };
     }

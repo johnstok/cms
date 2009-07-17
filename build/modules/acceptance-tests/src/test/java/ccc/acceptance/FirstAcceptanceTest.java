@@ -37,6 +37,7 @@ import ccc.api.TemplateDelta;
 import ccc.api.UserDelta;
 import ccc.api.UserSummary;
 import ccc.api.Username;
+import ccc.ws.BooleanProvider;
 import ccc.ws.DurationReader;
 import ccc.ws.JsonableWriter;
 import ccc.ws.ResSummaryReader;
@@ -65,6 +66,7 @@ public class FirstAcceptanceTest
         pFactory.addMessageBodyReader(UserSummaryCollectionReader.class);
         pFactory.addMessageBodyReader(UserSummaryReader.class);
         pFactory.addMessageBodyWriter(JsonableWriter.class);
+        pFactory.addMessageBodyReader(BooleanProvider.class);
     }
 
     private final String _hostUrl = "http://localhost:81";
@@ -198,31 +200,41 @@ public class FirstAcceptanceTest
     }
 
     /**
-     * TODO: Add a description for this method.
-     *
-     * @param commands
-     * @param next
+     * Test.
      */
-    private void testLock(final RestCommands commands, final ResourceSummary next) {
-        try {
-            commands.lock(next.getId());
-            commands.updateCacheDuration(next.getId(), new Duration(1));
-        } catch (final CommandFailedException e) {
-            throw new RuntimeException(e);
-        }
+    public void testRestLogin() {
+
+        // ARRANGE
+        final RestCommands commands =
+            ProxyFactory.create(RestCommands.class, _baseUrl, new HttpClient());
+
+        // ACT
+        commands.login("super", "sup3r2008");
+
+        // ASSERT
+        assertTrue(commands.isLoggedIn());
     }
 
     private HttpClient login() {
-        try {
-            final HttpClient client = new HttpClient();
-            get( client, _baseUrl);
-            post(client, _hostUrl+"/j_security_check");
-            get( client, _baseUrl);
-            return client;
+        final HttpClient client = new HttpClient();
+        final RestCommands commands =
+            ProxyFactory.create(RestCommands.class, _baseUrl, client);
 
-        } catch (final IOException e) {
-            throw new RuntimeException("Authentication failed ", e);
-        }
+        // ACT
+        commands.login("super", "sup3r2008");
+        return client;
+
+
+//        try {
+//            final HttpClient client = new HttpClient();
+//            get( client, _baseUrl);
+//            post(client, _hostUrl+"/j_security_check");
+//            get( client, _baseUrl);
+//            return client;
+//
+//        } catch (final IOException e) {
+//            throw new RuntimeException("Authentication failed ", e);
+//        }
     }
 
     private void post(final HttpClient client, final String url) throws IOException {

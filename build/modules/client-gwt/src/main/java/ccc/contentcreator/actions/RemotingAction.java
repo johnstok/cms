@@ -28,6 +28,7 @@ import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.RequestBuilder.Method;
 import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONBoolean;
 import com.google.gwt.json.client.JSONParser;
 
 
@@ -167,6 +168,7 @@ public abstract class RemotingAction
             new GwtJson(JSONParser.parse(response.getText()).isObject()));
     }
 
+
     protected List<String> parseListString(final Response response) {
         final List<String> strings = new ArrayList<String>();
         final JSONArray result = JSONParser.parse(response.getText()).isArray();
@@ -174,6 +176,12 @@ public abstract class RemotingAction
             strings.add(result.get(i).isString().stringValue());
         }
         return strings;
+    }
+
+
+    protected boolean parseBoolean(final Response response) {
+        final JSONBoolean b = JSONParser.parse(response.getText()).isBoolean();
+        return b.booleanValue();
     }
 
     // 405 Method Not Allowed

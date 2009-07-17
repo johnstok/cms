@@ -64,7 +64,7 @@ public class BooleanProvider
                              final InputStream arg5) throws IOException, WebApplicationException {
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         IO.copy(arg5, baos);
-        final String s = new String(baos.toByteArray());
+        final String s = new String(baos.toByteArray()).trim();
 
         if ("true".equals(s)) {
             return Boolean.TRUE;
@@ -105,7 +105,7 @@ public class BooleanProvider
                         final MultivaluedMap<String, Object> arg5,
                         final OutputStream outputStream) throws IOException, WebApplicationException {
         final PrintWriter pw = new PrintWriter(outputStream);
-        pw.println(arg0);
+        pw.print(arg0);
         pw.flush();
     }
 }
