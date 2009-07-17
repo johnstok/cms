@@ -35,13 +35,13 @@ import javax.persistence.PersistenceContext;
 import org.apache.log4j.Logger;
 
 import ccc.api.Commands;
-import ccc.api.LocalCommands;
 import ccc.api.Scheduler;
 import ccc.domain.Action;
 import ccc.persistence.jpa.BaseDao;
 import ccc.services.ActionDao;
 import ccc.services.ActionExecutor;
 import ccc.services.Dao;
+import ccc.services.LocalCommands;
 import ccc.services.QueryNames;
 import ccc.services.impl.ActionExecutorImpl;
 

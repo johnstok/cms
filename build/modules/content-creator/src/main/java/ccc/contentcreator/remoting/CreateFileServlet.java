@@ -28,10 +28,10 @@ import ccc.api.CommandFailedException;
 import ccc.api.Commands;
 import ccc.api.FileDelta;
 import ccc.api.ID;
-import ccc.api.LocalCommands;
 import ccc.api.MimeType;
 import ccc.api.ResourceSummary;
 import ccc.domain.Snapshot;
+import ccc.services.LocalCommands;
 
 
 /**
