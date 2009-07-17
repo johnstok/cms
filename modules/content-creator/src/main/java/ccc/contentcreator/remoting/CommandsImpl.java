@@ -25,7 +25,6 @@ import ccc.api.CommandType;
 import ccc.api.Commands;
 import ccc.api.Duration;
 import ccc.api.ID;
-import ccc.api.LocalCommands;
 import ccc.api.PageDelta;
 import ccc.api.Paragraph;
 import ccc.api.ResourceSummary;
@@ -33,6 +32,7 @@ import ccc.api.TemplateDelta;
 import ccc.api.UserDelta;
 import ccc.api.UserSummary;
 import ccc.contentcreator.api.CommandService;
+import ccc.services.LocalCommands;
 
 
 /**
