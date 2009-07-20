@@ -20,11 +20,11 @@ import ccc.api.CommandFailedException;
 import ccc.api.Commands;
 import ccc.api.Failure;
 import ccc.api.ID;
-import ccc.api.Queries;
 import ccc.api.ResourceSummary;
 import ccc.cli.FileUpload;
 import ccc.domain.ResourcePath;
 import ccc.migration.FileUploader;
+import ccc.services.Queries;
 
 
 /**

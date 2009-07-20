@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api;
+package ccc.ws;
 
 import java.util.Collection;
 import java.util.List;
@@ -23,6 +23,18 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+
+import ccc.api.AliasDelta;
+import ccc.api.CommandFailedException;
+import ccc.api.CommandType;
+import ccc.api.Duration;
+import ccc.api.ID;
+import ccc.api.Json;
+import ccc.api.PageDelta;
+import ccc.api.ResourceSummary;
+import ccc.api.TemplateDelta;
+import ccc.api.UserDelta;
+import ccc.api.UserSummary;
 
 
 /**

@@ -42,9 +42,7 @@ import ccc.api.JsonKeys;
 import ccc.api.LogEntrySummary;
 import ccc.api.PageDelta;
 import ccc.api.Paragraph;
-import ccc.api.Queries;
 import ccc.api.ResourceSummary;
-import ccc.api.RestCommands;
 import ccc.api.TemplateDelta;
 import ccc.api.TemplateSummary;
 import ccc.api.UserDelta;
@@ -53,6 +51,7 @@ import ccc.api.Username;
 import ccc.commons.CCCProperties;
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
+import ccc.services.Queries;
 
 
 /**
