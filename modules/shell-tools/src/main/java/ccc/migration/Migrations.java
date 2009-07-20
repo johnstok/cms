@@ -31,12 +31,12 @@ import ccc.api.ID;
 import ccc.api.PageDelta;
 import ccc.api.Paragraph;
 import ccc.api.ParagraphType;
-import ccc.api.Queries;
 import ccc.api.ResourceSummary;
 import ccc.api.UserSummary;
 import ccc.commons.Resources;
 import ccc.commons.WordCharFixer;
 import ccc.domain.CCCException;
+import ccc.services.Queries;
 
 /**
  * Data migration from CCC6 to CCC7.

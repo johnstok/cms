@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api;
+package ccc.services;
 
 import java.util.Collection;
 import java.util.Map;
@@ -19,6 +19,21 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
+
+import ccc.api.ActionSummary;
+import ccc.api.AliasDelta;
+import ccc.api.Duration;
+import ccc.api.FileDelta;
+import ccc.api.FileSummary;
+import ccc.api.ID;
+import ccc.api.LogEntrySummary;
+import ccc.api.PageDelta;
+import ccc.api.ResourceSummary;
+import ccc.api.TemplateDelta;
+import ccc.api.TemplateSummary;
+import ccc.api.UserDelta;
+import ccc.api.UserSummary;
+import ccc.api.Username;
 
 
 /**
