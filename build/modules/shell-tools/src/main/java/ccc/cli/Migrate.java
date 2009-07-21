@@ -62,7 +62,7 @@ public final class Migrate extends CccApp {
         final Migrations migrations =
             new Migrations(
                 legacyDBQueries,
-                "/"+options.getApp()+"/",
+                options.getApp()+"/",
                 services.lookupCommands(),
                 services.lookupQueries(),
                 new FileUploader(

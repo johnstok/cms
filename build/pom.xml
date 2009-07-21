@@ -93,7 +93,7 @@
         <module>modules/services-ejb3</module>
         <module>modules/shell-tools</module>
         <module>modules/content-creator</module>
-        <module>modules/content-server</module>
+        <!-- module>modules/content-server</module -->
         <module>modules/security-config</module>
         <module>modules/application-ear</module>
         <module>modules/db-schema</module>

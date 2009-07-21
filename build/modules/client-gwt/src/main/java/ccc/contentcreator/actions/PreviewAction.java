@@ -35,6 +35,7 @@ public final class PreviewAction
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         final String url =
             GLOBALS.appURL()
+                + "preview"
                 + item.getAbsolutePath()
                 + ((_useWorkingCopy) ? "?wc" : "");
 

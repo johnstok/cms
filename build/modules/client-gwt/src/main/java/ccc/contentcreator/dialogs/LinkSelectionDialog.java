@@ -72,7 +72,8 @@ public class LinkSelectionDialog extends AbstractEditDialog {
                         public void handleEvent(final ComponentEvent ce) {
                             _md = folderSelect.selectedResource();
                             if (_md != null) {
-                                _linkPath.setValue(_md.getAbsolutePath());
+                                _linkPath.setValue(
+                                    _md.getAbsolutePath().substring(1));
                                 _linkName.setValue(_md.getName());
                                 _uuid =_md.getId().toString();
                             }
@@ -102,7 +103,7 @@ public class LinkSelectionDialog extends AbstractEditDialog {
                 +title+"</a>");
             } else if (instance != null && uuid != null) {
                 return instance.InsertHtml("<a href='"+selectedUrl
-                +"' class='UUID:"+uuid+"'>"
+                +"' class='ccc:"+uuid+"'>"
                 +title+"</a>");
             }
         }

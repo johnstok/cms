@@ -10,7 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>Error</title>
-        <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/advanced.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/error.css" type="text/css" media="screen" />
     </head>
 
     <body id="errorPage">

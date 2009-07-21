@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.content.server;
+package ccc.contentcreator.remoting;
 
 import java.io.IOException;
 

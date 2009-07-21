@@ -33,7 +33,7 @@ public class LinkFixerTest
     public void testFixParagraph() {
 
         // ARRANGE
-        final LinkFixer lf = new LinkFixer("/ash/");
+        final LinkFixer lf = new LinkFixer("ash/");
         final Map<String, StringBuffer> paras =
             new HashMap<String, StringBuffer>();
         paras.put(
@@ -48,7 +48,7 @@ public class LinkFixerTest
         // ASSERT
         assertEquals(
             "<a href =\"mailto:kwj@civic.com\">kwj</a>"
-            + "< href=\"/ash/1234.html\" />",
+            + "< href=\"ash/1234.html\" />",
             paras.get("foo").toString());
     }
 
@@ -58,7 +58,7 @@ public class LinkFixerTest
     public void testFixFileUrls() {
 
         // ARRANGE
-        final LinkFixer lf = new LinkFixer("/ash/");
+        final LinkFixer lf = new LinkFixer("ash/");
         final Map<String, StringBuffer> paras =
             new HashMap<String, StringBuffer>();
         paras.put(
@@ -70,7 +70,7 @@ public class LinkFixerTest
 
         // ASSERT
         assertEquals(
-            "< href=\"/ash/files/fo$o.pdf\" />", paras.get("foo").toString());
+            "< href=\"ash/files/fo$o.pdf\" />", paras.get("foo").toString());
     }
 
     /**
@@ -96,17 +96,39 @@ public class LinkFixerTest
     /**
      * Test.
      */
+    public void testFixAbsoluteUrls() {
+
+        // ARRANGE
+        final LinkFixer lf = new LinkFixer("ash/");
+        final Map<String, StringBuffer> paras =
+            new HashMap<String, StringBuffer>();
+        paras.put(
+            "foo",
+            new StringBuffer("<a href=\"/ash/1234.html\">kwj</a>"));
+
+        // ACT
+        lf.extractURLs(paras);
+
+        // ASSERT
+        assertEquals(
+            "<a href=\"ash/1234.html\">kwj</a>",
+            paras.get("foo").toString());
+    }
+
+    /**
+     * Test.
+     */
     public void testCorrectHandlesOldPageLinksA() {
 
         // ARRANGE
-        final LinkFixer lf = new LinkFixer("/ash/");
+        final LinkFixer lf = new LinkFixer("ash/");
 
         // ACT
         final String corrected =
             lf.correct("ash_display.jsp?pContentID=4782&amp;p_applic=CCC");
 
         // ASSERT
-        assertEquals("/ash/4782.html", corrected);
+        assertEquals("ash/4782.html", corrected);
     }
 
     /**
@@ -115,14 +137,14 @@ public class LinkFixerTest
     public void testCorrectHandlesOldPageLinksB() {
 
         // ARRANGE
-        final LinkFixer lf = new LinkFixer("/ash/");
+        final LinkFixer lf = new LinkFixer("ash/");
 
         // ACT
         final String corrected =
             lf.correct("servlet/controller?pContentID=4264&amp;p_applic=CCC");
 
         // ASSERT
-        assertEquals("/ash/4264.html", corrected);
+        assertEquals("ash/4264.html", corrected);
     }
 
     /**
@@ -131,13 +153,13 @@ public class LinkFixerTest
     public void testCorrectHandlesPageLinks() {
 
         // ARRANGE
-        final LinkFixer lf = new LinkFixer("/ash/");
+        final LinkFixer lf = new LinkFixer("ash/");
 
         // ACT
         final String corrected = lf.correct("3481.html");
 
         // ASSERT
-        assertEquals("/ash/3481.html", corrected);
+        assertEquals("ash/3481.html", corrected);
     }
 
     /**
@@ -146,12 +168,12 @@ public class LinkFixerTest
     public void testCorrectHandlesComplexPageLinks() {
 
         // ARRANGE
-        final LinkFixer lf = new LinkFixer("/ash/");
+        final LinkFixer lf = new LinkFixer("ash/");
 
         // ACT
         final String corrected = lf.correct("3481.7.1071.html");
 
         // ASSERT
-        assertEquals("/ash/3481.html", corrected);
+        assertEquals("ash/3481.html", corrected);
     }
 }
