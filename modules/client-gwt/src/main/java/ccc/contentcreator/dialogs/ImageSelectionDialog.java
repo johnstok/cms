@@ -99,7 +99,7 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
                     _view.getSelectionModel().getSelectedItem();
                 if (md != null) {
                     jsniSetUrl(
-                        md.getPath(),
+                        md.getPath().substring(1),
                         md.getTitle(),
                         md.getId().toString(),
                         _elementid);
@@ -118,7 +118,7 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
             var instance = $wnd.FCKeditorAPI.GetInstance(elementID);
             if (instance != null) {
                 return instance.InsertHtml("<img title='"+title+"' alt='"
-                +title+"' class='UUID:"+uuid+"' src='"+selectedUrl+"'/>");
+                +title+"' class='ccc:"+uuid+"' src='"+selectedUrl+"'/>");
             }
         }
         return null;

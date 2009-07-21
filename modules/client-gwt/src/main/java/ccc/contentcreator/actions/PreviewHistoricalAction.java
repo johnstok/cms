@@ -39,6 +39,7 @@ public final class PreviewHistoricalAction
             @Override protected void execute(final String path) {
                 final String url =
                     GLOBALS.appURL()
+                    + "preview"
                     + path
                     + "?v="
                     + item.getIndex();

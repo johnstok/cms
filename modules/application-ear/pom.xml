@@ -32,11 +32,11 @@
                         ${basedir}/target/descriptors
                     </generatedDescriptorLocation>
                     <modules>
-                        <webModule>
+                        <!-- webModule>
                             <groupId>CCC7</groupId>
                             <artifactId>content-server</artifactId>
                             <contextRoot>/${application.prefix}/server</contextRoot>
-                        </webModule>
+                        </webModule -->
                         <webModule>
                             <groupId>CCC7</groupId>
                             <artifactId>content-creator</artifactId>
@@ -70,12 +70,12 @@
     <dependencies>
 
         <!-- Modules -->
-        <dependency>
+        <!-- dependency>
             <groupId>CCC7</groupId>
             <artifactId>content-server</artifactId>
             <type>war</type>
             <version>7.0.0-SNAPSHOT</version>
-        </dependency>
+        </dependency -->
         <dependency>
             <groupId>CCC7</groupId>
             <artifactId>content-creator</artifactId>
