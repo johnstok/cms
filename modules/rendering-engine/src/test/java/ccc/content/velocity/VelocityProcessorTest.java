@@ -12,12 +12,11 @@
 package ccc.content.velocity;
 
 import java.io.StringWriter;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 
 import junit.framework.TestCase;
 import ccc.api.Paragraph;
+import ccc.commons.Context;
 import ccc.commons.TextProcessor;
 import ccc.domain.Page;
 import ccc.domain.ResourceName;
@@ -31,6 +30,8 @@ import ccc.domain.User;
  * @author Civic Computing Ltd.
  */
 public class VelocityProcessorTest extends TestCase {
+    private static final Context EMPTY_CONTEXT = new Context(null, null, null);
+
 
     /**
      * Test.
@@ -42,7 +43,7 @@ public class VelocityProcessorTest extends TestCase {
 
         // ACT
         final String actual =
-            vp.render("#hello()", new HashMap<String, Object>());
+            vp.render("#hello()", EMPTY_CONTEXT);
 
 
         // ASSERT
@@ -58,7 +59,7 @@ public class VelocityProcessorTest extends TestCase {
         final StringWriter output = new StringWriter();
 
         // ACT
-        _vp.render("foo", output, new HashMap<String, Object>());
+        _vp.render("foo", output, EMPTY_CONTEXT);
 
         // ASSERT
         assertEquals("foo", output.toString());
@@ -72,7 +73,7 @@ public class VelocityProcessorTest extends TestCase {
         // ARRANGE
 
         // ACT
-        final String output = _vp.render("foo", new HashMap<String, Object>());
+        final String output = _vp.render("foo", EMPTY_CONTEXT);
 
         // ASSERT
         assertEquals("foo", output);
@@ -97,7 +98,7 @@ public class VelocityProcessorTest extends TestCase {
         final String html =
             _vp.render(
                 template,
-                Collections.<String, Object>singletonMap("resource", foo));
+                new Context(null, foo, null));
 
         // ASSERT
         assertEquals("Hello "+foo.id(), html);
@@ -119,7 +120,7 @@ public class VelocityProcessorTest extends TestCase {
         _vp.render(
             template,
             renderedOutput,
-            Collections.<String, Object>singletonMap("resource", foo));
+            new Context(null, foo, null));
 
         // ASSERT
         final String html = renderedOutput.toString();
@@ -146,7 +147,7 @@ public class VelocityProcessorTest extends TestCase {
         _vp.render(
             template,
             renderedOutput,
-            Collections.<String, Object>singletonMap("resource", foo));
+            new Context(null, foo, null));
 
         // ASSERT
         final String html = renderedOutput.toString();
@@ -173,7 +174,7 @@ public class VelocityProcessorTest extends TestCase {
         _vp.render(
             template,
             renderedOutput,
-            Collections.<String, Object>singletonMap("resource", foo));
+            new Context(null, foo, null));
 
         // ASSERT
         final String html = renderedOutput.toString();

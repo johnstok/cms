@@ -25,7 +25,29 @@ public class SearchResult {
 
     private Set<UUID> _hits = new HashSet<UUID>();
     private int _totalResults = 0;
+    private String _terms = "";
+    private int _pageNo;
 
+
+
+
+    /**
+     * Constructor.
+     *
+     * @param hits
+     * @param totalResults
+     * @param terms
+     * @param pageNo
+     */
+    public SearchResult(final Set<UUID> hits,
+                        final int totalResults,
+                        final String terms,
+                        final int pageNo) {
+        _hits = hits;
+        _totalResults = totalResults;
+        _terms = terms;
+        _pageNo = pageNo;
+    }
 
     /**
      * Accessor.
@@ -65,4 +87,23 @@ public class SearchResult {
         _hits = hits;
     }
 
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the terms.
+     */
+    public final String getTerms() {
+        return _terms;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the pageNo.
+     */
+    public final int getPageNo() {
+        return _pageNo;
+    }
 }

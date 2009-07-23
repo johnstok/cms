@@ -15,8 +15,10 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Calendar;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Random;
 
 import org.apache.log4j.Logger;
 import org.apache.velocity.VelocityContext;
@@ -26,6 +28,7 @@ import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeConstants;
 
+import ccc.commons.Context;
 import ccc.commons.TextProcessor;
 import ccc.domain.CCCException;
 
@@ -58,12 +61,14 @@ public class VelocityProcessor implements TextProcessor {
         + "classpath.resource.loader.modificationCheckInterval = -1\n"
         + "velocimacro.library = ccc.vm\n";
 
+    private final Random _random = new Random();
+
 
     /** {@inheritDoc} */
     public String render(final String template,
-                         final Map<String, Object> contextValues) {
+                         final Context context) {
         final StringWriter renderedOutput = new StringWriter();
-        render(template, renderedOutput, contextValues);
+        render(template, renderedOutput, context);
         return renderedOutput.toString();
     }
 
@@ -71,7 +76,7 @@ public class VelocityProcessor implements TextProcessor {
     /** {@inheritDoc} */
     public void render(final String template,
                        final Writer output,
-                       final Map<String, Object> contextValues) {
+                       final Context ctxt) {
 
         final Properties velocityProperties = new Properties();
         try {
@@ -90,13 +95,17 @@ public class VelocityProcessor implements TextProcessor {
             final VelocityEngine ve = new VelocityEngine(velocityProperties);
             ve.init();
             final VelocityContext context = new VelocityContext();
-            final VelocityHelper helper = new VelocityHelper();
-            context.put("helper", helper);
 
-            for (final Map.Entry<String, Object> contextValue
-                : contextValues.entrySet()) {
-                context.put(contextValue.getKey(), contextValue.getValue());
+            for (final Map.Entry<String, Object> extra : ctxt.getExtras().entrySet()) {
+                context.put(extra.getKey(), extra.getValue());
             }
+            context.put("helper", new VelocityHelper());
+            context.put("reader", ctxt.getReader());
+            context.put("resource", ctxt.getResource());
+            context.put("parameters", ctxt.getParams());
+            context.put("random", _random);
+            context.put("math", Math.class);
+            context.put("calendar", Calendar.class);
 
             ve.evaluate(context, output, "VelocityProcessor", template);
 

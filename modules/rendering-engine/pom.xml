@@ -27,6 +27,11 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>${velocity-version}</version>
+        </dependency>
+        <dependency>
             <groupId>jboss</groupId>
             <artifactId>jboss-j2ee</artifactId>
             <version>${jboss-version}</version>

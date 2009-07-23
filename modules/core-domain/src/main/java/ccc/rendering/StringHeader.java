@@ -9,24 +9,21 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.content.response;
-
-import java.text.DateFormat;
-import java.util.Date;
+package ccc.rendering;
 
 import javax.servlet.http.HttpServletResponse;
 
 
 /**
- * A response header with a date value.
+ * A response header with a string value.
  *
  * @author Civic Computing Ltd.
  */
-public class DateHeader
+public class StringHeader
     implements
         Header {
     private final String _name;
-    private final Date _value;
+    private final String _value;
 
     /**
      * Constructor.
@@ -34,26 +31,15 @@ public class DateHeader
      * @param name The name of the header.
      * @param value The value of the header.
      */
-    public DateHeader(final String name, final Date value) {
+    public StringHeader(final String name, final String value) {
         _name = name;
-        _value = new Date(value.getTime());
+        _value = value;
     }
 
     /** {@inheritDoc} */
     @Override
     public void writeTo(final HttpServletResponse response) {
-        response.setDateHeader(_name, _value.getTime());
-    }
-
-
-
-    /** {@inheritDoc} */
-    @Override
-    public String toString() {
-        return
-            _name
-            + ": "
-            + DateFormat.getDateTimeInstance().format(_value);
+        response.setHeader(_name, _value);
     }
 
     /** {@inheritDoc} */
@@ -78,7 +64,7 @@ public class DateHeader
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final DateHeader other = (DateHeader) obj;
+        final StringHeader other = (StringHeader) obj;
         if (_name == null) {
             if (other._name != null) {
                 return false;

@@ -24,6 +24,11 @@ import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.Template;
 import ccc.domain.User;
+import ccc.rendering.NotFoundException;
+import ccc.rendering.Response;
+import ccc.services.DataManager;
+import ccc.services.SearchEngine;
+import ccc.services.StatefulReader;
 
 
 /**
@@ -230,5 +235,21 @@ public class ResourceSnapshot {
      */
     public ResourcePath absolutePath() {
         return _delegate.absolutePath();
+    }
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param parameters
+     * @param _search
+     * @param reader
+     * @param _dm
+     * @return
+     */
+    public Response render(final Map<String, String[]> parameters,
+                           final SearchEngine search,
+                           final StatefulReader reader,
+                           final DataManager dm) {
+        throw new NotFoundException();
     }
 }

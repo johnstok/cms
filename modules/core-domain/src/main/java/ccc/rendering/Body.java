@@ -9,11 +9,13 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.content.response;
+package ccc.rendering;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+
+import ccc.commons.TextProcessor;
 
 
 /**
@@ -28,7 +30,11 @@ public interface Body {
      *
      * @param os The stream to which the body will be written.
      * @param charset The character set for the output stream.
+     * @param processor A text processor for generating markup, etc.
+     *
      * @throws IOException - if writing to the output stream fails.
      */
-    void write(OutputStream os, Charset charset) throws IOException;
+    void write(OutputStream os,
+               Charset charset,
+               TextProcessor processor) throws IOException;
 }

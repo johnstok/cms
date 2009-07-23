@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.content.response;
+package ccc.rendering;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 import ccc.api.DBC;
 import ccc.api.Duration;
 import ccc.api.MimeType;
+import ccc.commons.TextProcessor;
 
 
 /**
@@ -161,12 +162,13 @@ public class Response {
      * @param httpResponse The servlet response.
      * @throws IOException Thrown if writing fails.
      */
-    public void write(final HttpServletResponse httpResponse)
-                                                            throws IOException {
+    public void write(final HttpServletResponse httpResponse,
+                      final TextProcessor processor) throws IOException {
         writeHeaders(httpResponse);
         writeBody(
             httpResponse.getOutputStream(),
-            httpResponse.getCharacterEncoding());
+            httpResponse.getCharacterEncoding(),
+            processor);
     }
 
 
@@ -175,17 +177,19 @@ public class Response {
      *
      * @param os The output stream.
      * @param charsetName The character set to use.
+     *
      * @throws IOException If the output stream encounters an error.
      */
     void writeBody(final OutputStream os,
-                           final String charsetName) throws IOException {
+                   final String charsetName,
+                   final TextProcessor processor) throws IOException {
         Charset charset = Charset.defaultCharset();
         try {
             charset = Charset.forName(charsetName);
         } catch (final RuntimeException e) {
             LOG.warn("Ignoring invalid charset: "+charset);
         }
-        _body.write(os, charset);
+        _body.write(os, charset, processor);
     }
 
 
