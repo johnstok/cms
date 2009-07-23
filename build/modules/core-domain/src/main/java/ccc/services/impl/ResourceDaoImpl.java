@@ -67,11 +67,11 @@ public class ResourceDaoImpl implements ResourceDao {
 
     /** {@inheritDoc} */
     @Override
-    public Map<Integer, ? extends Revision> history(final UUID resourceId) {
+    public Map<Integer, ? extends Revision<?>> history(final UUID resourceId) {
         final Resource r = _dao.find(Resource.class, resourceId);
         return (r instanceof HistoricalResource<?, ?>)
             ? ((HistoricalResource<?, ?>) r).revisions()
-            : new HashMap<Integer, Revision>();
+            : new HashMap<Integer, Revision<?>>();
     }
 
 

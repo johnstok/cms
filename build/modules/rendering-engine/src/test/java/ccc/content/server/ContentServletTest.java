@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
-import ccc.commons.TextProcessor;
 import ccc.content.actions.RenderResourceAction;
 import ccc.content.response.Renderer;
 import ccc.content.velocity.VelocityProcessor;
@@ -32,7 +31,8 @@ import ccc.domain.ResourcePath;
 import ccc.rendering.Body;
 import ccc.rendering.NotFoundException;
 import ccc.rendering.Response;
-import ccc.services.StatefulReader;
+import ccc.rendering.TextProcessor;
+import ccc.services.ResourceDao;
 
 /**
  * Tests for the {@link RenderResourceAction} class.
@@ -163,13 +163,13 @@ public final class ContentServletTest extends TestCase {
         final RenderResourceAction rr =
             new RenderResourceAction(true, "root", "/login", null);
 
-        expect(_reader.lookup("root", new ResourcePath("/foo")))
+        expect(_rdao.lookup("root", new ResourcePath("/foo")))
             .andThrow(new NotFoundException());
         replayAll();
 
         // ACT
         try {
-            rr.lookupResource(new ResourcePath("/foo"), _reader);
+            rr.lookupResource(new ResourcePath("/foo"), _rdao);
             fail();
 
         } catch (final NotFoundException e) {
@@ -225,7 +225,7 @@ public final class ContentServletTest extends TestCase {
         _response = createStrictMock(HttpServletResponse.class);
         _request = createStrictMock(HttpServletRequest.class);
         _renderer = createStrictMock(Renderer.class);
-        _reader = createStrictMock(StatefulReader.class);
+        _rdao = createStrictMock(ResourceDao.class);
     }
 
     /**
@@ -237,15 +237,15 @@ public final class ContentServletTest extends TestCase {
         _response = null;
         _request = null;
         _renderer = null;
-        _reader = null;
+        _rdao = null;
     }
 
     private void verifyAll() {
-        verify(_response, _request, _renderer, _reader);
+        verify(_response, _request, _renderer, _rdao);
     }
 
     private void replayAll() {
-        replay(_response, _request, _renderer, _reader);
+        replay(_response, _request, _renderer, _rdao);
     }
 
     /**
@@ -274,5 +274,5 @@ public final class ContentServletTest extends TestCase {
     private HttpServletResponse _response;
     private HttpServletRequest  _request;
     private Renderer _renderer;
-    private StatefulReader _reader;
+    private ResourceDao _rdao;
 }

@@ -16,12 +16,12 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 import ccc.api.Paragraph;
-import ccc.commons.Context;
-import ccc.commons.TextProcessor;
 import ccc.domain.Page;
 import ccc.domain.ResourceName;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
+import ccc.rendering.Context;
+import ccc.rendering.TextProcessor;
 
 
 /**

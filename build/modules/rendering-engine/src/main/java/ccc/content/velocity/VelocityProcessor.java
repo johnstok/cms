@@ -28,9 +28,9 @@ import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeConstants;
 
-import ccc.commons.Context;
-import ccc.commons.TextProcessor;
 import ccc.domain.CCCException;
+import ccc.rendering.Context;
+import ccc.rendering.TextProcessor;
 
 
 /**

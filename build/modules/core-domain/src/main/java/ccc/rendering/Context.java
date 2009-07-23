@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.commons;
+package ccc.rendering;
 
 import java.util.HashMap;
 import java.util.Map;

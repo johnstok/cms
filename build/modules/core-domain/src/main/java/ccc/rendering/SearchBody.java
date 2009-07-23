@@ -20,9 +20,7 @@ import java.util.Map;
 
 import ccc.api.DBC;
 import ccc.api.MimeType;
-import ccc.commons.Context;
 import ccc.commons.SearchResult;
-import ccc.commons.TextProcessor;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;

@@ -143,6 +143,16 @@ public class File
     }
 
 
+    /**
+     * Query if this file is a text file.
+     *
+     * @return True if the file is a text file, false otherwise.
+     */
+    public boolean isText() {
+        return currentRevision().isText();
+    }
+
+
 
 
     /* ====================================================================

@@ -10,7 +10,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.commons;
+package ccc.rendering;
 
 import java.io.Writer;
 

@@ -12,7 +12,7 @@
 package ccc.services;
 
 import ccc.domain.Resource;
-import ccc.domain.ResourcePath;
+
 
 
 /**
@@ -23,26 +23,14 @@ import ccc.domain.ResourcePath;
  */
 public interface StatefulReader {
 
-    /** NAME : String. */
-    String NAME = "StatefulReader";
-
     /**
      * Look up a resource from its absolute path.
      *
-     * @param contentPath ResourcePath The path to the resource.
-     * @param rootName The name of the root folder in which the resource exists.
+     * @param absolutePath The absolute path to the resource.
      * @return Resource The resource at the specified path, or NULL if it
      *  doesn't exist.
      */
-    Resource lookup(String rootName, ResourcePath contentPath);
-
-    /**
-     * Determine the absolute path of a resource given its legacy id.
-     *
-     * @param legacyId The resource's id in CCC6.
-     * @return The absolute path as a string.
-     */
-    String absolutePath(String legacyId);
+    Resource resourceFromPath(String absolutePath);
 
     /**
      * Look up a resource from its UUID.
@@ -51,5 +39,15 @@ public interface StatefulReader {
      * @return Resource The resource at the specified path, or NULL if it
      *  doesn't exist.
      */
-    Resource lookup(String id);
+    Resource resourceFromId(String id);
+
+    /**
+     * Look up the contents of a file as a String.
+     *
+     * @param absolutePath The absolute path to the resource.
+     * @param charset The character set for the file.
+     *
+     * @return The contents as a string.
+     */
+    String fileContentsFromPath(String absolutePath, String charset);
 }

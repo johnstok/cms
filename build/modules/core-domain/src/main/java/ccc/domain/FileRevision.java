@@ -85,6 +85,11 @@ public class FileRevision
     }
 
     /** {@inheritDoc} */
+    public boolean isText() {
+        return "text".equalsIgnoreCase(getMimeType().getPrimaryType());
+    }
+
+    /** {@inheritDoc} */
     @Override
     public FileDelta delta() {
         return new FileDelta(

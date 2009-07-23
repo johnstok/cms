@@ -69,7 +69,7 @@ public class ReaderAction
         req.setAttribute(SessionKeys.DATA_KEY, dm);
 
         final StatefulReader sr =
-            new StatefulReaderImpl(new ResourceDaoImpl(dao));
+            new StatefulReaderImpl(new ResourceDaoImpl(dao), dm);
         req.setAttribute(RenderingKeys.READER_KEY, sr);
 
         _delegate.execute(req, resp);
