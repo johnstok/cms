@@ -14,6 +14,7 @@ package ccc.content.response;
 import java.util.Map;
 
 import ccc.domain.Resource;
+import ccc.rendering.Response;
 
 
 /**

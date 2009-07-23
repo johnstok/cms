@@ -13,10 +13,10 @@ package ccc.snapshots;
 
 import java.util.Map;
 
-import ccc.domain.Alias;
 import ccc.domain.Resource;
-import ccc.rendering.RedirectRequiredException;
+import ccc.domain.Template;
 import ccc.rendering.Response;
+import ccc.rendering.SearchBody;
 import ccc.services.DataManager;
 import ccc.services.SearchEngine;
 import ccc.services.StatefulReader;
@@ -27,26 +27,17 @@ import ccc.services.StatefulReader;
  *
  * @author Civic Computing Ltd.
  */
-public class AliasSnapshot extends ResourceSnapshot {
-    private final Alias _delegate;
+public class SearchSnapshot
+    extends
+        ResourceSnapshot {
 
     /**
      * Constructor.
      *
-     * @param page
+     * @param delegate
      */
-    public AliasSnapshot(final Alias a) {
-        super(a);
-        _delegate = a;
-    }
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    public Resource target() {
-        return _delegate.target();
+    public SearchSnapshot(final Resource delegate) {
+        super(delegate);
     }
 
     /** {@inheritDoc} */
@@ -55,7 +46,20 @@ public class AliasSnapshot extends ResourceSnapshot {
                            final SearchEngine search,
                            final StatefulReader reader,
                            final DataManager dm) {
-        throw new RedirectRequiredException(target());
+        final Template t =
+            computeTemplate(SearchBody.BUILT_IN_SEARCH_TEMPLATE);
+        final Response r =
+            new Response(
+                new SearchBody(
+                    reader,
+                    search,
+                    t,
+                    parameters));
+        r.setCharSet("UTF-8");
+        r.setMimeType(t.mimeType().getPrimaryType(), t.mimeType().getSubType());
+        r.setExpiry(computeCache());
+
+        return r;
     }
 
 }

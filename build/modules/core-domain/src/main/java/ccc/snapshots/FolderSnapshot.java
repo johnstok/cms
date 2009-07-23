@@ -12,10 +12,18 @@
 package ccc.snapshots;
 
 import java.util.List;
+import java.util.Map;
 
+import ccc.api.ResourceType;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Resource;
+import ccc.rendering.NotFoundException;
+import ccc.rendering.RedirectRequiredException;
+import ccc.rendering.Response;
+import ccc.services.DataManager;
+import ccc.services.SearchEngine;
+import ccc.services.StatefulReader;
 
 
 /**
@@ -60,5 +68,24 @@ public class FolderSnapshot extends ResourceSnapshot {
      */
     public List<Page> pages() {
         return _delegate.pages();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Response render(final Map<String, String[]> parameters,
+                           final SearchEngine search,
+                           final StatefulReader reader,
+                           final DataManager dm) {
+        if (indexPage() != null) {
+            throw new RedirectRequiredException(indexPage());
+        }
+
+        for (final Resource r : entries()) {
+            if (ResourceType.PAGE.equals(r.type())
+                && r.isPublished()) {
+                throw new RedirectRequiredException(r);
+            }
+        }
+        throw new NotFoundException();
     }
 }

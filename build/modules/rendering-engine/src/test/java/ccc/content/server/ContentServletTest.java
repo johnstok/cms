@@ -24,12 +24,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
+import ccc.commons.TextProcessor;
 import ccc.content.actions.RenderResourceAction;
-import ccc.content.exceptions.NotFoundException;
-import ccc.content.response.Body;
 import ccc.content.response.Renderer;
-import ccc.content.response.Response;
+import ccc.content.velocity.VelocityProcessor;
 import ccc.domain.ResourcePath;
+import ccc.rendering.Body;
+import ccc.rendering.NotFoundException;
+import ccc.rendering.Response;
 import ccc.services.StatefulReader;
 
 /**
@@ -73,6 +75,7 @@ public final class ContentServletTest extends TestCase {
     public void testHandleResponseWritesTheBody() throws IOException {
 
         // ARRANGE
+        final TextProcessor tp = new VelocityProcessor();
         final ByteArrayServletOutputStream os =
             new ByteArrayServletOutputStream();
 
@@ -81,11 +84,11 @@ public final class ContentServletTest extends TestCase {
 
         expect(_response.getOutputStream()).andReturn(os);
         expect(_response.getCharacterEncoding()).andReturn("UTF-8");
-        b.write(os, null);
+        b.write(os, null, tp);
         replayAll();
 
         // ACT
-        r.write(_response);
+        r.write(_response, tp);
 
         // ASSERT
         verifyAll();

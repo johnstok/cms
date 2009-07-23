@@ -15,7 +15,9 @@ import static javax.ejb.TransactionAttributeType.*;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.security.PermitAll;
@@ -109,12 +111,10 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
     @Override
     @PermitAll
     public SearchResult find(final String searchTerms,
-                          final int resultCount,
-                          final int page) {
-
-        final SearchResult sr = new SearchResult();
+                             final int resultCount,
+                             final int page) {
         if (searchTerms == null || searchTerms.trim().equals("")) {
-            return sr;
+            return new SearchResult(new HashSet<UUID>(), 0, searchTerms, page);
         }
 
         final String field = "content";
@@ -122,10 +122,9 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
         final CapturingHandler sh = new CapturingHandler(resultCount, page);
 
         _lucene.find(searchTerms, field, maxHits, sh);
-        sr.totalResults(sh.getResultCount());
-        sr.hits(sh.getHits());
 
-        return sr;
+        return new SearchResult(
+            sh.getHits(), sh.getResultCount(), searchTerms, page);
     }
 
 

@@ -9,26 +9,25 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.content.response;
+package ccc.rendering;
 
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import ccc.api.DBC;
 import ccc.api.MimeType;
+import ccc.commons.Context;
 import ccc.commons.SearchResult;
-import ccc.content.velocity.VelocityProcessor;
+import ccc.commons.TextProcessor;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.SearchEngine;
 import ccc.services.StatefulReader;
-import ccc.snapshots.ResourceSnapshot;
 
 
 /**
@@ -41,64 +40,70 @@ public class SearchBody
     implements
         Body {
 
-    private final ResourceSnapshot  _search;
     private final StatefulReader _reader;
     private final SearchEngine _searchEngine;
-    private final String  _terms;
-    private final int _pageNumber;
     private final Template _template;
+    private final Map<String, String[]> _parameters;
 
     /**
      * Constructor.
      *
-     * @param search The search to render.
      * @param reader A stateful reader to access other resources.
      * @param searchEngine The engine used to perform the search.
-     * @param searchTerms The query terms supplied to the request.
-     * @param pageNumber The page of results required.
+     * @param parameters The request parameters.
      * @param t The template to use for this body.
      */
-    public SearchBody(final ResourceSnapshot search,
-                      final StatefulReader reader,
+    public SearchBody(final StatefulReader reader,
                       final SearchEngine searchEngine,
-                      final String searchTerms,
                       final Template t,
-                      final int pageNumber) {
-        DBC.require().notNull(search);
+                      final Map<String, String[]> parameters) {
         DBC.require().notNull(reader);
         DBC.require().notNull(searchEngine);
-        DBC.require().notNull(searchTerms);
+        DBC.require().notNull(parameters);
         DBC.require().notNull(t);
 
-        _search = search;
         _reader = reader;
         _searchEngine = searchEngine;
-        _terms = searchTerms;
-        _pageNumber = pageNumber;
+        _parameters = parameters;
         _template = t;
     }
 
     /** {@inheritDoc} */
     @Override
     public void write(final OutputStream os,
-                      final Charset charset) {
+                      final Charset charset,
+                      final TextProcessor processor) {
 
-        final SearchResult result = _searchEngine.find(_terms, 10, _pageNumber);
+        String searchQuery = "";
+        final String[] qParams = _parameters.get("q");
+        if (qParams != null && qParams.length != 0) {
+            searchQuery = qParams[0];
+        }
+
+        int pageNumber = 0;
+        final String[] pParams = _parameters.get("p");
+        if (pParams != null && pParams.length != 0) {
+            try {
+                pageNumber = Integer.parseInt(pParams[0]);
+            } catch (final NumberFormatException e) {
+//                LOG.debug("Not a number");
+            }
+        }
+
+        final SearchResult result =
+            _searchEngine.find(searchQuery, 10, pageNumber);
 
         final String templateString = _template.body();
         final Writer w = new OutputStreamWriter(os, charset);
-        final Map<String, Object> values = new HashMap<String, Object>();
-        values.put("reader", _reader);
-        values.put("result", result);
-        values.put("pageNumber", Integer.valueOf(_pageNumber));
-        values.put("resource", _search);
-        values.put("terms", _terms);
-        new VelocityProcessor().render(templateString, w, values);
+        final Context context = new Context(_reader, this, _parameters);
+        context.add("result", result);
+
+        processor.render(templateString, w, context);
     }
 
 
     /** BUILT_IN_SEARCH_TEMPLATE : Template. */
-    static final Template BUILT_IN_SEARCH_TEMPLATE =
+    public static final Template BUILT_IN_SEARCH_TEMPLATE =
         new Template(
             "BUILT_IN_SEARCH_TEMPLATE",
             "BUILT_IN_SEARCH_TEMPLATE",

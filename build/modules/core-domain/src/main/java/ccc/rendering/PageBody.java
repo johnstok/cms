@@ -9,20 +9,20 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.content.response;
+package ccc.rendering;
 
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import ccc.api.DBC;
 import ccc.api.MimeType;
+import ccc.commons.Context;
 import ccc.commons.Resources;
-import ccc.content.velocity.VelocityProcessor;
+import ccc.commons.TextProcessor;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
@@ -71,20 +71,18 @@ public class PageBody
     /** {@inheritDoc} */
     @Override
     public void write(final OutputStream os,
-                      final Charset charset) {
+                      final Charset charset,
+                      final TextProcessor processor) {
         final String t = _template.body();
         final Writer w = new OutputStreamWriter(os, charset);
-        final Map<String, Object> values = new HashMap<String, Object>();
-        values.put("reader", _reader);
-        values.put("resource", _page);
-        values.put("parameters", _params);
+        final Context context = new Context(_reader, _page, _params);
 
-        new VelocityProcessor().render(t, w, values);
+        processor.render(t, w, context);
     }
 
 
     /** BUILT_IN_PAGE_TEMPLATE : Template. */
-    static final Template BUILT_IN_PAGE_TEMPLATE =
+    public static final Template BUILT_IN_PAGE_TEMPLATE =
         new Template(
             "BUILT_IN_PAGE_TEMPLATE",
             "BUILT_IN_PAGE_TEMPLATE",

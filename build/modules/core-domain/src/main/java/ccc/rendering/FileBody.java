@@ -9,12 +9,13 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.content.response;
+package ccc.rendering;
 
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
 import ccc.api.DBC;
+import ccc.commons.TextProcessor;
 import ccc.domain.File;
 import ccc.services.DataManager;
 import ccc.snapshots.FileSnapshot;
@@ -50,7 +51,8 @@ public class FileBody
     /** {@inheritDoc} */
     @Override
     public void write(final OutputStream os,
-                      final Charset charset) {
+                      final Charset charset,
+                      final TextProcessor processor) {
         _dataManager.retrieve(_file.data(), os);
     }
 }

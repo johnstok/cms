@@ -9,10 +9,12 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.content.response;
+package ccc.rendering;
 
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+
+import ccc.commons.TextProcessor;
 
 
 
@@ -28,7 +30,8 @@ public class EmptyBody
     /** {@inheritDoc} */
     @Override
     public void write(final OutputStream os,
-                      final Charset charset) {
+                      final Charset charset,
+                      final TextProcessor processor) {
         // No Op
     }
 

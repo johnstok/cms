@@ -23,15 +23,16 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import ccc.content.exceptions.AuthenticationRequiredException;
-import ccc.content.exceptions.NotFoundException;
-import ccc.content.exceptions.RedirectRequiredException;
 import ccc.content.response.DefaultRenderer;
 import ccc.content.response.Renderer;
-import ccc.content.response.Response;
+import ccc.content.velocity.VelocityProcessor;
 import ccc.domain.CCCException;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 import ccc.domain.User;
+import ccc.rendering.NotFoundException;
+import ccc.rendering.RedirectRequiredException;
+import ccc.rendering.Response;
 import ccc.services.DataManager;
 import ccc.services.SearchEngine;
 import ccc.services.StatefulReader;
@@ -97,7 +98,7 @@ public class RenderResourceAction
                 r.setExpiry(null); // Dont'cache secure pages.
             }
 
-            r.write(response);
+            r.write(response, new VelocityProcessor());
 
         } catch (final NotFoundException e) {
             dispatchNotFound(request, response);

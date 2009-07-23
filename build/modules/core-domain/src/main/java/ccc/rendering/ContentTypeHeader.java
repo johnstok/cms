@@ -9,37 +9,34 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.content.response;
+package ccc.rendering;
 
 import javax.servlet.http.HttpServletResponse;
 
+import ccc.api.MimeType;
+
 
 /**
- * A response header with a string value.
+ * A content-type header.
  *
  * @author Civic Computing Ltd.
  */
-public class StringHeader
-    implements
-        Header {
-    private final String _name;
+public class ContentTypeHeader implements Header {
     private final String _value;
 
     /**
      * Constructor.
      *
-     * @param name The name of the header.
      * @param value The value of the header.
      */
-    public StringHeader(final String name, final String value) {
-        _name = name;
-        _value = value;
+    public ContentTypeHeader(final MimeType value) {
+        _value = value.toString();
     }
 
     /** {@inheritDoc} */
     @Override
     public void writeTo(final HttpServletResponse response) {
-        response.setHeader(_name, _value);
+        response.setContentType(_value);
     }
 
     /** {@inheritDoc} */
@@ -47,7 +44,6 @@ public class StringHeader
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((_name == null) ? 0 : _name.hashCode());
         result = prime * result + ((_value == null) ? 0 : _value.hashCode());
         return result;
     }
@@ -64,14 +60,7 @@ public class StringHeader
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final StringHeader other = (StringHeader) obj;
-        if (_name == null) {
-            if (other._name != null) {
-                return false;
-            }
-        } else if (!_name.equals(other._name)) {
-            return false;
-        }
+        final ContentTypeHeader other = (ContentTypeHeader) obj;
         if (_value == null) {
             if (other._value != null) {
                 return false;

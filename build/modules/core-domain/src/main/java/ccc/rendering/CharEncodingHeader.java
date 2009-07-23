@@ -9,34 +9,37 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.content.response;
+package ccc.rendering;
+
+import java.nio.charset.Charset;
 
 import javax.servlet.http.HttpServletResponse;
 
-import ccc.api.MimeType;
-
 
 /**
- * A content-type header.
+ * A character encoding header.
  *
  * @author Civic Computing Ltd.
  */
-public class ContentTypeHeader implements Header {
-    private final String _value;
+public class CharEncodingHeader
+    implements
+        Header {
+
+    private final Charset _value;
 
     /**
      * Constructor.
      *
      * @param value The value of the header.
      */
-    public ContentTypeHeader(final MimeType value) {
-        _value = value.toString();
+    public CharEncodingHeader(final Charset value) {
+        _value = value;
     }
 
     /** {@inheritDoc} */
     @Override
     public void writeTo(final HttpServletResponse response) {
-        response.setContentType(_value);
+        response.setCharacterEncoding(_value.toString());
     }
 
     /** {@inheritDoc} */
@@ -60,7 +63,7 @@ public class ContentTypeHeader implements Header {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final ContentTypeHeader other = (ContentTypeHeader) obj;
+        final CharEncodingHeader other = (CharEncodingHeader) obj;
         if (_value == null) {
             if (other._value != null) {
                 return false;

@@ -9,12 +9,14 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.content.response;
+package ccc.rendering;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+
+import ccc.commons.TextProcessor;
 
 
 /**
@@ -40,7 +42,8 @@ public class ByteArrayBody
     /** {@inheritDoc} */
     @Override
     public void write(final OutputStream os,
-                      final Charset charset) throws IOException {
+                      final Charset charset,
+                      final TextProcessor processor) throws IOException {
         os.write(_bytes);
     }
 }
