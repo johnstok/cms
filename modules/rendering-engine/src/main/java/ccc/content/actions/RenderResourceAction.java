@@ -33,9 +33,12 @@ import ccc.domain.User;
 import ccc.rendering.NotFoundException;
 import ccc.rendering.RedirectRequiredException;
 import ccc.rendering.Response;
+import ccc.services.Dao;
 import ccc.services.DataManager;
+import ccc.services.ResourceDao;
 import ccc.services.SearchEngine;
 import ccc.services.StatefulReader;
+import ccc.services.impl.ResourceDaoImpl;
 
 
 /**
@@ -80,22 +83,23 @@ public class RenderResourceAction
                         final HttpServletResponse response)
                                           throws ServletException, IOException {
         try {
-            final DataManager data =
-                (DataManager) request.getAttribute(SessionKeys.DATA_KEY);
+            final DataManager data = getDataManager(request);
+            final StatefulReader reader = getStatefulReader(request);
+            final ResourceDao rdao = getResourceDao(request);
+            final User currentUser = getCurrentUser(request);
 
             final ResourcePath contentPath = determineResourcePath(request);
 
-            final StatefulReader reader =
-                (StatefulReader) request.getAttribute(RenderingKeys.READER_KEY);
 
-            final Resource rs = lookupResource(contentPath, reader);
-            checkSecurity(
-                rs, (User) request.getAttribute(SessionKeys.CURRENT_USER));
+            final Resource rs = lookupResource(contentPath, rdao);
+
+            checkSecurity(rs, currentUser);
+
             final Response r =
                 prepareResponse(request, reader, data, _search, rs);
 
-            if (rs.roles().size()>0) {
-                r.setExpiry(null); // Dont'cache secure pages.
+            if (rs.roles().size()>0) { // Dont'cache secure pages.
+                r.setExpiry(null);
             }
 
             r.write(response, new VelocityProcessor());
@@ -125,13 +129,12 @@ public class RenderResourceAction
      * Look up a resource given its path.
      *
      * @param contentPath The resource path.
-     * @param reader The reader to perform the lookup.
      *
      * @return The corresponding resource.
      */
     public Resource lookupResource(final ResourcePath contentPath,
-                                   final StatefulReader reader) {
-        final Resource rs = reader.lookup(_rootName, contentPath);
+                                   final ResourceDao rdao) {
+        final Resource rs = rdao.lookup(_rootName, contentPath);
         if (null==rs) {
             throw new NotFoundException();
         }
@@ -187,5 +190,25 @@ public class RenderResourceAction
             r = renderer.render(rs, parameters);
         }
         return r;
+    }
+
+
+    private ResourceDao getResourceDao(final HttpServletRequest req) {
+        return new ResourceDaoImpl((Dao) req.getAttribute(SessionKeys.DAO_KEY));
+    }
+
+
+    private User getCurrentUser(final HttpServletRequest request) {
+        return (User) request.getAttribute(SessionKeys.CURRENT_USER);
+    }
+
+
+    private DataManager getDataManager(final HttpServletRequest request) {
+        return (DataManager) request.getAttribute(SessionKeys.DATA_KEY);
+    }
+
+
+    private StatefulReader getStatefulReader(final HttpServletRequest request) {
+        return (StatefulReader) request.getAttribute(RenderingKeys.READER_KEY);
     }
 }

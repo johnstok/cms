@@ -25,7 +25,6 @@ import org.apache.log4j.Logger;
 import ccc.api.DBC;
 import ccc.api.Duration;
 import ccc.api.MimeType;
-import ccc.commons.TextProcessor;
 
 
 /**

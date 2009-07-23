@@ -19,12 +19,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ccc.domain.Resource;
 import ccc.domain.ResourceName;
-import ccc.services.StatefulReader;
+import ccc.services.Dao;
+import ccc.services.ResourceDao;
+import ccc.services.impl.ResourceDaoImpl;
 
 
 /**
- * TODO: Add Description for this type.
+ * An action that redirects CCC6 style URLs to the corresponding CCC7 URL.
  *
  * @author Civic Computing Ltd.
  */
@@ -40,31 +43,52 @@ public class FixLinkAction
                                                                IOException {
 
         final String path = req.getPathInfo();
-        final StatefulReader r =
-                (StatefulReader) req.getAttribute(RenderingKeys.READER_KEY);
+        final ResourceDao rdao = getResourceDao(req);
 
         final Matcher pageMatcher = PAGE_PATTERN.matcher(path);
         final Matcher fileMatcher = FILE_PATTERN.matcher(path);
 
         if (pageMatcher.matches()) {
-            final String resourcePath =
-                r.absolutePath(pageMatcher.group(1));
-            if (null==resourcePath) {
-                dispatchNotFound(req, resp);
-            } else {
-                // TODO: Should be sending a permanent redirect here.
-                dispatchRedirect(req, resp, resourcePath);
-            }
-
+            redirectToPage(req, resp, rdao, pageMatcher);
         } else if (fileMatcher.matches()) {
-            final String fixedUrl =
-                "/content/files/"
-                + ResourceName.escape(fileMatcher.group(1));
-            dispatchRedirect(req, resp, fixedUrl);
-
+            redirectToFile(req, resp, fileMatcher);
         } else {
             dispatchNotFound(req, resp);
         }
+    }
+
+
+    private void redirectToFile(final HttpServletRequest req,
+                                final HttpServletResponse resp,
+                                final Matcher fileMatcher) throws IOException {
+        final String fixedUrl =
+            "/content/files/"
+            + ResourceName.escape(fileMatcher.group(1));
+        dispatchRedirect(req, resp, fixedUrl);
+    }
+
+
+    private void redirectToPage(final HttpServletRequest req,
+                                final HttpServletResponse resp,
+                                final ResourceDao rdao,
+                                final Matcher pageMatcher)
+                                          throws ServletException, IOException {
+        final String legacyId = pageMatcher.group(1);
+        final Resource r = rdao.lookupWithLegacyId(legacyId);
+        final String resourcePath =
+            (null==r) ? null : r.absolutePath().toString();
+
+        if (null==resourcePath) {
+            dispatchNotFound(req, resp);
+        } else {
+            // TODO: Should be sending a permanent redirect here.
+            dispatchRedirect(req, resp, resourcePath);
+        }
+    }
+
+
+    private ResourceDao getResourceDao(final HttpServletRequest req) {
+        return new ResourceDaoImpl((Dao) req.getAttribute(SessionKeys.DAO_KEY));
     }
 
 
