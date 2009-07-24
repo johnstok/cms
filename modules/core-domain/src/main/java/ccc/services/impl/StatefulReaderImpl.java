@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.UUID;
 
+import ccc.api.template.IResourceSnapshot;
 import ccc.commons.IO;
 import ccc.domain.File;
 import ccc.domain.Resource;
@@ -92,9 +93,8 @@ public final class StatefulReaderImpl
      * {@inheritDoc}
      */
     @Override
-    public Resource resourceFromPath(final String absolutePath) {
-        final ResourcePath rp = new ResourcePath(absolutePath);
-        return _resources.lookup(rp.top().toString(), rp.removeTop());
+    public IResourceSnapshot resourceFromPath(final String absolutePath) {
+        return continuityForPath(absolutePath).forCurrentRevision();
     }
 
 
@@ -102,8 +102,9 @@ public final class StatefulReaderImpl
      * {@inheritDoc}
      */
     @Override
-    public Resource resourceFromId(final String id) {
-        return _resources.find(Resource.class, UUID.fromString(id));
+    public IResourceSnapshot resourceFromId(final String id) {
+        return _resources.find(
+            Resource.class, UUID.fromString(id)).forCurrentRevision();
     }
 
 
@@ -112,7 +113,7 @@ public final class StatefulReaderImpl
     public String fileContentsFromPath(final String absolutePath,
                                        final String charset) {
         final StringBuilder sb = new StringBuilder();
-        final Resource r = resourceFromPath(absolutePath);
+        final Resource r = continuityForPath(absolutePath);
         if (r instanceof File) {
             final File f = (File) r;
             if (f.isText()) {
@@ -123,5 +124,11 @@ public final class StatefulReaderImpl
             }
         }
         return sb.toString();
+    }
+
+
+    private Resource continuityForPath(final String absolutePath) {
+        final ResourcePath rp = new ResourcePath(absolutePath);
+        return _resources.lookup(rp.top().toString(), rp.removeTop());
     }
 }

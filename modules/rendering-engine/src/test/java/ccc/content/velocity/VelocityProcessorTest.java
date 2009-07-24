@@ -11,6 +11,8 @@
  */
 package ccc.content.velocity;
 
+import static org.easymock.EasyMock.*;
+
 import java.io.StringWriter;
 import java.util.Date;
 
@@ -22,6 +24,7 @@ import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.rendering.Context;
 import ccc.rendering.TextProcessor;
+import ccc.services.StatefulReader;
 
 
 /**
@@ -36,18 +39,44 @@ public class VelocityProcessorTest extends TestCase {
     /**
      * Test.
      */
-    public void testMacroLoading() {
+    public void testFileParsing() {
 
         // ARRANGE
+        expect(_reader.fileContentsFromPath("/a/b/c", "UTF8"))
+            .andReturn("#macro(foo)foo!#end");
+        replay(_reader);
         final TextProcessor vp = new VelocityProcessor();
 
         // ACT
         final String actual =
-            vp.render("#hello()", EMPTY_CONTEXT);
-
+            vp.render(
+                "#parse('/a/b/c')\n#foo()", new Context(_reader, null, null));
 
         // ASSERT
-        assertEquals("hello!", actual);
+        verify(_reader);
+        assertEquals("foo!", actual);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testFileInclude() {
+
+        // ARRANGE
+        expect(_reader.fileContentsFromPath("/a/b/c", "UTF8"))
+            .andReturn("#macro(foo)foo!#end");
+        replay(_reader);
+        final TextProcessor vp = new VelocityProcessor();
+
+        // ACT
+        final String actual =
+            vp.render(
+                "#include('/a/b/c')\n#foo()", new Context(_reader, null, null));
+
+        // ASSERT
+        verify(_reader);
+        assertEquals("#macro(foo)foo!#end#foo()", actual);
     }
 
     /**
@@ -187,15 +216,18 @@ public class VelocityProcessorTest extends TestCase {
     @Override
     protected void setUp() {
         _vp = new VelocityProcessor();
+        _reader = createStrictMock(StatefulReader.class);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void tearDown() {
+        _reader = null;
         _vp = null;
     }
 
     private TextProcessor _vp;
     private final RevisionMetadata _rm =
         new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
+    private StatefulReader _reader;
 }

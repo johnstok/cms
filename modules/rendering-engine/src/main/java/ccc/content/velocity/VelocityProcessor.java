@@ -52,14 +52,12 @@ public class VelocityProcessor implements TextProcessor {
      * velocimacro.library.autoreload = false
      */
     private static final String VELOCITY_CONFIG =
-        "resource.loader = classpath\n"
-        + "classpath.resource.loader.class = "
-            + "org.apache.velocity.runtime.resource.loader."
-            + "ClasspathResourceLoader\n"
-        + "classpath.resource.loader.description = Classpath resource loader\n"
-        + "classpath.resource.loader.cache = true\n"
-        + "classpath.resource.loader.modificationCheckInterval = -1\n"
-        + "velocimacro.library = ccc.vm\n";
+        "input.encoding = UTF-8\n"
+        + "resource.loader = ccc\n"
+        + "ccc.resource.loader.class = ccc.content.velocity.CCCResourceLoader\n"
+        + "ccc.resource.loader.description = CCC resource loader\n"
+        + "ccc.resource.loader.cache = true\n"
+        + "ccc.resource.loader.modificationCheckInterval = -1\n";
 
     private final Random _random = new Random();
 
@@ -92,11 +90,10 @@ public class VelocityProcessor implements TextProcessor {
             getClass().getName());
 
         try {
-            final VelocityEngine ve = new VelocityEngine(velocityProperties);
-            ve.init();
             final VelocityContext context = new VelocityContext();
 
-            for (final Map.Entry<String, Object> extra : ctxt.getExtras().entrySet()) {
+            for (final Map.Entry<String, Object> extra :
+                                                  ctxt.getExtras().entrySet()) {
                 context.put(extra.getKey(), extra.getValue());
             }
             context.put("helper", new VelocityHelper());
@@ -106,6 +103,10 @@ public class VelocityProcessor implements TextProcessor {
             context.put("random", _random);
             context.put("math", Math.class);
             context.put("calendar", Calendar.class);
+
+            final VelocityEngine ve = new VelocityEngine(velocityProperties);
+            ve.setApplicationAttribute("ccc-reader", ctxt.getReader());
+            ve.init();
 
             ve.evaluate(context, output, "VelocityProcessor", template);
 
