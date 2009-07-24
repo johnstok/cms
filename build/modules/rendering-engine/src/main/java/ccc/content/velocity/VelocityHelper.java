@@ -13,7 +13,6 @@ package ccc.content.velocity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -61,29 +60,6 @@ public class VelocityHelper {
     public String currentYear() {
        final Calendar cal = Calendar.getInstance();
        return ""+cal.get(Calendar.YEAR);
-    }
-
-    /**
-     * Creates a list of resources from root till given resource.
-     *
-     * @param resource The resource.
-     * @return A list of resources.
-     */
-    public List<ResourceSnapshot> selectPathElements(
-        final ResourceSnapshot resource) {
-
-        final List<ResourceSnapshot> elements =
-            new ArrayList<ResourceSnapshot>();
-
-        ResourceSnapshot current = resource;
-
-        elements.add(current);
-        while (current.parent() != null) {
-            current = current.parent().forCurrentRevision();
-            elements.add(current);
-        }
-        Collections.reverse(elements);
-        return elements;
     }
 
     /**

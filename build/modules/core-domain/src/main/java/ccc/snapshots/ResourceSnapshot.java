@@ -11,16 +11,19 @@
  */
 package ccc.snapshots;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.Duration;
 import ccc.api.ResourceType;
+import ccc.api.template.IResourceSnapshot;
 import ccc.domain.Folder;
 import ccc.domain.Resource;
-import ccc.domain.ResourceName;
 import ccc.domain.ResourcePath;
 import ccc.domain.Template;
 import ccc.domain.User;
@@ -36,7 +39,7 @@ import ccc.services.StatefulReader;
  *
  * @author Civic Computing Ltd.
  */
-public class ResourceSnapshot {
+public class ResourceSnapshot implements IResourceSnapshot {
     private final Resource _delegate;
 
     /**
@@ -77,23 +80,15 @@ public class ResourceSnapshot {
     }
 
 
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
+    /** {@inheritDoc} */
     public String description() {
         return _delegate.description();
     }
 
 
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    public ResourceName name() {
-        return _delegate.name();
+    /** {@inheritDoc} */
+    public String name() {
+        return _delegate.name().toString();
     }
 
 
@@ -106,27 +101,17 @@ public class ResourceSnapshot {
         return _delegate.computeCache();
     }
 
-    /**
-     * @return
-     * @see ccc.domain.Resource#dateChanged()
-     */
+    /** {@inheritDoc} */
     public Date dateChanged() {
         return _delegate.dateChanged();
     }
 
-    /**
-     * @return
-     * @see ccc.domain.Resource#dateCreated()
-     */
+    /** {@inheritDoc} */
     public Date dateCreated() {
         return _delegate.dateCreated();
     }
 
-    /**
-     * @param key
-     * @return
-     * @see ccc.domain.Resource#getMetadatum(java.lang.String)
-     */
+    /** {@inheritDoc} */
     public String getMetadatum(final String key) {
         return _delegate.getMetadatum(key);
     }
@@ -139,10 +124,7 @@ public class ResourceSnapshot {
         return _delegate.id();
     }
 
-    /**
-     * @return
-     * @see ccc.domain.Resource#includeInMainMenu()
-     */
+    /** {@inheritDoc} */
     public boolean includeInMainMenu() {
         return _delegate.includeInMainMenu();
     }
@@ -203,10 +185,7 @@ public class ResourceSnapshot {
         return _delegate.root();
     }
 
-    /**
-     * @return
-     * @see ccc.domain.Resource#tags()
-     */
+    /** {@inheritDoc} */
     public Set<String> tags() {
         return _delegate.tags();
     }
@@ -219,10 +198,7 @@ public class ResourceSnapshot {
         return _delegate.tagString();
     }
 
-    /**
-     * @return
-     * @see ccc.domain.Resource#title()
-     */
+    /** {@inheritDoc} */
     public String title() {
         return _delegate.title();
     }
@@ -251,5 +227,23 @@ public class ResourceSnapshot {
                            final StatefulReader reader,
                            final DataManager dm) {
         throw new NotFoundException();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<IResourceSnapshot> selectPathElements() {
+
+            final List<IResourceSnapshot> elements =
+                new ArrayList<IResourceSnapshot>();
+
+            ResourceSnapshot current = this;
+
+            elements.add(current);
+            while (current.parent() != null) {
+                current = current.parent().forCurrentRevision();
+                elements.add(current);
+            }
+            Collections.reverse(elements);
+            return elements;
     }
 }
