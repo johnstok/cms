@@ -22,6 +22,7 @@ import java.util.UUID;
 import ccc.api.Duration;
 import ccc.api.ResourceType;
 import ccc.api.template.IResourceSnapshot;
+import ccc.api.template.StatefulReader;
 import ccc.domain.Folder;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
@@ -31,7 +32,6 @@ import ccc.rendering.NotFoundException;
 import ccc.rendering.Response;
 import ccc.services.DataManager;
 import ccc.services.SearchEngine;
-import ccc.services.StatefulReader;
 
 
 /**

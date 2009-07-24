@@ -1,6 +1,0 @@
-#macro(hello)hello!#end
-#macro(echo $msg)$msg#end
-
-#macro(cccinclude $path)
-#evaluate($reader.fileContentsFromPath($path,'UTF8'))
-#end

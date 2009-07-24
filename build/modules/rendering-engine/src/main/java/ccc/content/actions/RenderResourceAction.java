@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.template.StatefulReader;
 import ccc.content.exceptions.AuthenticationRequiredException;
 import ccc.content.response.DefaultRenderer;
 import ccc.content.response.Renderer;
@@ -37,7 +38,6 @@ import ccc.services.Dao;
 import ccc.services.DataManager;
 import ccc.services.ResourceDao;
 import ccc.services.SearchEngine;
-import ccc.services.StatefulReader;
 import ccc.services.impl.ResourceDaoImpl;
 
 

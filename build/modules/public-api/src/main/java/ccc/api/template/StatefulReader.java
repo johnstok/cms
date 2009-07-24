@@ -9,9 +9,8 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services;
+package ccc.api.template;
 
-import ccc.api.template.IResourceSnapshot;
 
 
 
