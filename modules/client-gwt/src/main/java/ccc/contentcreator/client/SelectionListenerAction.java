@@ -11,17 +11,17 @@
  */
 package ccc.contentcreator.client;
 
-import com.extjs.gxt.ui.client.event.MenuEvent;
+import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 
 /**
- * TODO: Add Description for this type.
+ * Adapter class - wires an action to a GWT selection listener.
  *
  * @author Civic Computing Ltd.
  */
-final class SelectionListenerAction
+public final class SelectionListenerAction
     extends
-        SelectionListener<MenuEvent> {
+        SelectionListener<ComponentEvent> {
 
     private final Action _action;
 
@@ -30,12 +30,12 @@ final class SelectionListenerAction
      *
      * @param action The Action.
      */
-    SelectionListenerAction(final Action action) {
+    public SelectionListenerAction(final Action action) {
         _action = action;
     }
 
     /** {@inheritDoc} */
-    @Override public void componentSelected(final MenuEvent ce) {
+    @Override public void componentSelected(final ComponentEvent ce) {
         _action.execute();
     }
 }

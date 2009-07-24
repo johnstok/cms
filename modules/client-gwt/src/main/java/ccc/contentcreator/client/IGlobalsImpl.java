@@ -67,8 +67,11 @@ public class IGlobalsImpl
 
     /** {@inheritDoc} */
     @Override
-    public String apiURL() {
-        return GWT.getHostPageBaseURL()+API_URL;
+    public String apiURL(final boolean secure) {
+        return
+            GWT.getHostPageBaseURL()
+            + API_URL
+            + ((secure) ? "/secure" : "/public");
     }
 
     /** {@inheritDoc} */
@@ -109,11 +112,7 @@ public class IGlobalsImpl
     /** {@inheritDoc} */
     @Override
     public String hostURL() {
-        return GWT.getHostPageBaseURL()
-        .substring(
-            0,
-            GWT.getHostPageBaseURL()
-               .lastIndexOf(APP_URL));
+        return GWT.getHostPageBaseURL();
     }
 
     /** {@inheritDoc} */
@@ -198,7 +197,7 @@ public class IGlobalsImpl
         }
     }
 
-    private static void redirect(final String url) {
+    private void redirect(final String url) {
         Window.Location.assign(url);
     }
 

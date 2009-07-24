@@ -141,28 +141,23 @@ public class ActionTable extends TablePanel {
     }
 
     private void displayCompletedActions() {
-        new ListCompletedActionsAction(USER_ACTIONS.viewActions()) {
-            @Override
-            protected void execute(final Collection<ActionSummary> result) {
-                updatePagingModel(result);
-            }
-        }.execute();
+        new ListCompletedActionsAction(this).execute();
     }
 
     private void displayPendingActions() {
-        new ListPendingActionsAction(USER_ACTIONS.viewActions()) {
-            @Override
-            protected void execute(final Collection<ActionSummary> result) {
-                updatePagingModel(result);
-            }
-        }.execute();
+        new ListPendingActionsAction(this).execute();
     }
 
+    /**
+     * Update the data display by the table.
+     *
+     * @param actions The actions to display.
+     */
     @SuppressWarnings("unchecked")
-    private void updatePagingModel(final Collection<ActionSummary> result) {
+    public void updatePagingModel(final Collection<ActionSummary> actions) {
 
         final List<ActionSummaryModelData> data =
-            DataBinding.bindActionSummary(result);
+            DataBinding.bindActionSummary(actions);
 
         final PagingModelMemoryProxy proxy = new PagingModelMemoryProxy(data);
         final PagingLoader loader = new BasePagingLoader(proxy);

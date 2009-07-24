@@ -24,7 +24,7 @@ import com.google.gwt.json.client.JSONParser;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class GetCurrentUserAction
+public class GetCurrentUserAction
     extends RemotingAction {
 
     /**
@@ -34,13 +34,15 @@ public abstract class GetCurrentUserAction
         super(GLOBALS.userActions().internalAction());
     }
 
+
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
         final JSONObject result =
             JSONParser.parse(response.getText()).isObject();
         final UserSummary user = new UserSummary(new GwtJson(result));
-        execute(user);
+        GLOBALS.currentUser(user);
+        new DrawMainWindowAction(user).execute();
     }
 
 
@@ -49,12 +51,4 @@ public abstract class GetCurrentUserAction
     protected String getPath() {
         return "/users/me";
     }
-
-
-    /**
-     * Execute this action.
-     *
-     * @param user The user returned by the server.
-     */
-    protected abstract void execute(final UserSummary user);
 }

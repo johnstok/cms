@@ -14,12 +14,12 @@ package ccc.contentcreator.dialogs;
 import ccc.contentcreator.actions.GetPropertyAction;
 import ccc.contentcreator.actions.LoginAction;
 import ccc.contentcreator.client.IGlobalsImpl;
+import ccc.contentcreator.client.SelectionListenerAction;
 
-import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.form.TextField;
-import com.google.gwt.http.client.Response;
 
 
 /**
@@ -28,9 +28,7 @@ import com.google.gwt.http.client.Response;
  * @author Civic Computing Ltd.
  */
 public class LoginDialog extends AbstractEditDialog {
-    /** DIALOG_WIDTH : int. */
     private static final int DIALOG_WIDTH = 375;
-    /** DIALOG_HEIGHT : int. */
     private static final int DIALOG_HEIGHT = 150;
 
     private final TextField<String> _username = new TextField<String>();
@@ -43,12 +41,7 @@ public class LoginDialog extends AbstractEditDialog {
     public LoginDialog() {
         super(new IGlobalsImpl().uiConstants().login(), new IGlobalsImpl());
 
-        new GetPropertyAction("application.name") {
-            /** {@inheritDoc} */
-            @Override protected void onOK(final Response response) {
-                setHeading(_constants.login() +" - "+response.getText());
-            }
-        }.execute();
+        new GetPropertyAction("application.name", this).execute();
 
         setPanelId("LoginPanel");
 
@@ -75,21 +68,19 @@ public class LoginDialog extends AbstractEditDialog {
 
     /** {@inheritDoc} */
     @Override
-    protected SelectionListener<ButtonEvent> saveAction() {
-        return new SelectionListener<ButtonEvent>() {
-            @Override public void componentSelected(final ButtonEvent ce) {
-                new LoginAction(_username.getValue(), _password.getValue()) {
-                    /** {@inheritDoc} */
-                    @Override protected void onOK(final Response response) {
-                        final boolean success = parseBoolean(response);
-                        if (success) {
-                            _globals.refresh();
-                        } else {
-                            _message.setText(constants().loginFailed());
-                        }
-                    }
-                }.execute();
-            }
-        };
+    protected SelectionListener<ComponentEvent> saveAction() {
+        return new SelectionListenerAction(new LoginAction(LoginDialog.this));
+    }
+
+    public void loginFailed() {
+        _message.setText(_constants.loginFailed());
+    }
+
+    public String getUsername() {
+        return _username.getValue();
+    }
+
+    public String getPassword() {
+        return _password.getValue();
     }
 }

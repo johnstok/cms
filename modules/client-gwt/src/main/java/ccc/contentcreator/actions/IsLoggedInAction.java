@@ -11,6 +11,11 @@
  */
 package ccc.contentcreator.actions;
 
+import ccc.contentcreator.dialogs.LoginDialog;
+
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.Response;
+
 
 /**
  * TODO: Add a description for this type.
@@ -25,7 +30,7 @@ public class IsLoggedInAction
      * Constructor.
      */
     public IsLoggedInAction() {
-        super(USER_ACTIONS.internalAction());
+        super(USER_ACTIONS.internalAction(), RequestBuilder.GET, false);
     }
 
 
@@ -33,5 +38,17 @@ public class IsLoggedInAction
     @Override
     protected String getPath() {
         return "/sessions/current";
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onOK(final Response response) {
+        if (parseBoolean(response)) {
+            GLOBALS.enableExitConfirmation();
+            new GetCurrentUserAction().execute();
+        } else {
+            new LoginDialog().show();
+        }
     }
 }

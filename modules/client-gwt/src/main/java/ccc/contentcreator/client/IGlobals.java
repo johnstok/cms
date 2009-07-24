@@ -67,7 +67,7 @@ public interface IGlobals {
      *
      * @return The host url as a string.
      */
-    String apiURL();
+    String apiURL(boolean secure);
 
     /**
      * Determine the URL for the application.
@@ -141,7 +141,7 @@ public interface IGlobals {
     /** DEFAULT_MIN_HEIGHT : int. */
     int DEFAULT_MIN_HEIGHT = 150;
     /** APP_URL : String. */
-    String APP_URL = "/";
+    String APP_URL = "ContentCreator.jsp";
     /** API_URL : String. */
     String API_URL = "api";
     /** MIN_USER_NAME_LENGTH : int. */

@@ -35,10 +35,7 @@ public final class ViewHistoryAction
 
     /** {@inheritDoc} */
     @Override protected String getPath() {
-        return
-            "/resources/"
-            + _selectionModel.tableSelection().getId()
-            + "/revisions";
+        return _selectionModel.tableSelection().revisionsPath();
 
     }
 
