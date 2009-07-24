@@ -42,6 +42,7 @@ import ccc.ws.JsonableWriter;
 import ccc.ws.ResSummaryReader;
 import ccc.ws.ResourceSummaryCollectionReader;
 import ccc.ws.RestCommands;
+import ccc.ws.SecurityAPI;
 import ccc.ws.UserSummaryCollectionReader;
 import ccc.ws.UserSummaryReader;
 
@@ -69,8 +70,9 @@ public class FirstAcceptanceTest
         pFactory.addMessageBodyReader(BooleanProvider.class);
     }
 
-    private final String _hostUrl = "http://localhost:81";
-    private final String _baseUrl = _hostUrl+"/api";
+    private final String _hostUrl = "http://localhost:81/api";
+    private final String _secure = _hostUrl+"/secure";
+    private final String _public = _hostUrl+"/public";
 
     /**
      * Test.
@@ -79,7 +81,7 @@ public class FirstAcceptanceTest
 
         // ARRANGE
         final Queries api =
-            ProxyFactory.create(Queries.class, _baseUrl, login());
+            ProxyFactory.create(Queries.class, _secure, login());
 
         // ACT
         final ResourceSummary contentRoot = api.resourceForPath("/content");
@@ -96,10 +98,11 @@ public class FirstAcceptanceTest
     public void testLockResource() throws CommandFailedException {
 
         // ARRANGE
+        final HttpClient c = login();
         final Queries queries =
-            ProxyFactory.create(Queries.class, _baseUrl, login());
+            ProxyFactory.create(Queries.class, _secure, c);
         final RestCommands commands =
-            ProxyFactory.create(RestCommands.class, _baseUrl, login());
+            ProxyFactory.create(RestCommands.class, _secure, c);
 
         final ResourceSummary contentRoot = queries.resourceForPath("/content");
 
@@ -119,10 +122,11 @@ public class FirstAcceptanceTest
     public void testCreateTemplate() throws CommandFailedException {
 
         // ARRANGE
+        final HttpClient c = login();
         final Queries queries =
-            ProxyFactory.create(Queries.class, _baseUrl, login());
+            ProxyFactory.create(Queries.class, _secure, c);
         final RestCommands commands =
-            ProxyFactory.create(RestCommands.class, _baseUrl, login());
+            ProxyFactory.create(RestCommands.class, _secure, c);
 
         final ResourceSummary templateFolder =
             queries.resourceForPath("/assets/templates");
@@ -148,10 +152,11 @@ public class FirstAcceptanceTest
     public void testUpdateDuration() throws CommandFailedException {
 
         // ARRANGE
+        final HttpClient c = login();
         final Queries queries =
-            ProxyFactory.create(Queries.class, _baseUrl, login());
+            ProxyFactory.create(Queries.class, _secure, c);
         final RestCommands commands =
-            ProxyFactory.create(RestCommands.class, _baseUrl, login());
+            ProxyFactory.create(RestCommands.class, _secure, c);
 
         final ResourceSummary contentFolder =
             queries.resourceForPath("/content");
@@ -178,10 +183,11 @@ public class FirstAcceptanceTest
     public void testCreateUser() throws CommandFailedException {
 
         // ARRANGE
+        final HttpClient c = login();
         final Queries queries =
-            ProxyFactory.create(Queries.class, _baseUrl, login());
+            ProxyFactory.create(Queries.class, _secure, c);
         final RestCommands commands =
-            ProxyFactory.create(RestCommands.class, _baseUrl, login());
+            ProxyFactory.create(RestCommands.class, _secure, c);
 
         final UserDelta d =
             new UserDelta(
@@ -205,33 +211,30 @@ public class FirstAcceptanceTest
     public void testRestLogin() {
 
         // ARRANGE
-        final RestCommands commands =
-            ProxyFactory.create(RestCommands.class, _baseUrl, new HttpClient());
+        final SecurityAPI security =
+            ProxyFactory.create(SecurityAPI.class, _public, new HttpClient());
 
         // ACT
-        commands.login("super", "sup3r2008");
+        security.login("super", "sup3r2008");
 
         // ASSERT
-        assertTrue(commands.isLoggedIn());
+        assertTrue(security.isLoggedIn());
     }
 
     private HttpClient login() {
         final HttpClient client = new HttpClient();
-        final RestCommands commands =
-            ProxyFactory.create(RestCommands.class, _baseUrl, client);
-
-        // ACT
-        commands.login("super", "sup3r2008");
-        return client;
-
 
 //        try {
-//            final HttpClient client = new HttpClient();
-//            get( client, _baseUrl);
+            final SecurityAPI security =
+                ProxyFactory.create(SecurityAPI.class, _public, client);
+            security.login("super", "sup3r2008");
+
+//            get( client, _secure);
 //            post(client, _hostUrl+"/j_security_check");
-//            get( client, _baseUrl);
-//            return client;
-//
+//            get( client, _secure);
+
+            return client;
+
 //        } catch (final IOException e) {
 //            throw new RuntimeException("Authentication failed ", e);
 //        }

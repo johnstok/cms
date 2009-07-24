@@ -11,33 +11,33 @@
  */
 package ccc.contentcreator.actions;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import ccc.api.ActionSummary;
-import ccc.contentcreator.client.GwtJson;
+import ccc.contentcreator.client.ActionTable;
 
 import com.google.gwt.http.client.Response;
-import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONParser;
 
 
 /**
- * TODO: Add a description for this type.
+ * Display the list of completed actions.
  *
  * @author Civic Computing Ltd.
  */
-public abstract class ListCompletedActionsAction
+public class ListCompletedActionsAction
     extends
         RemotingAction {
+
+    private final ActionTable _actionTable;
 
     /**
      * Constructor.
      *
-     * @param actionName
+     * @param actionTable The table to update.
      */
-    public ListCompletedActionsAction(final String actionName) {
-        super(actionName);
+    public ListCompletedActionsAction(final ActionTable actionTable) {
+        super(USER_ACTIONS.viewActions());
+        _actionTable = actionTable;
     }
 
     /** {@inheritDoc} */
@@ -46,15 +46,8 @@ public abstract class ListCompletedActionsAction
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final JSONArray result = JSONParser.parse(response.getText()).isArray();
         final Collection<ActionSummary> actions =
-            new ArrayList<ActionSummary>();
-        for (int i=0; i<result.size(); i++) {
-            actions.add(
-                new ActionSummary(new GwtJson(result.get(i).isObject())));
-        }
-        execute(actions);
+            parseActionSummaryCollection(response);
+        _actionTable.updatePagingModel(actions);
     }
-
-    protected abstract void execute(Collection<ActionSummary> result);
 }

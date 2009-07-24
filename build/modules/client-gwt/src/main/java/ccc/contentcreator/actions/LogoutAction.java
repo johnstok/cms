@@ -21,7 +21,7 @@ public final class LogoutAction
      * Constructor.
      */
     public LogoutAction() {
-        super(UI_CONSTANTS.logout(), RequestBuilder.POST);
+        super(UI_CONSTANTS.logout(), RequestBuilder.POST, false);
     }
 
 

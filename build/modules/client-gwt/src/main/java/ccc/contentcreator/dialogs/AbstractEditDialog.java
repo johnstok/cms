@@ -15,7 +15,7 @@ package ccc.contentcreator.dialogs;
 
 import ccc.contentcreator.client.IGlobals;
 
-import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
@@ -97,5 +97,5 @@ public abstract class AbstractEditDialog
      *
      * @return A selection listener for use by the save button.
      */
-    protected abstract SelectionListener<ButtonEvent> saveAction();
+    protected abstract SelectionListener<? extends ComponentEvent> saveAction();
 }

@@ -15,8 +15,10 @@ package ccc.contentcreator.actions;
 import static com.google.gwt.http.client.Response.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import ccc.api.ActionSummary;
 import ccc.api.ResourceSummary;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.GwtJson;
@@ -33,7 +35,7 @@ import com.google.gwt.json.client.JSONParser;
 
 
 /**
- * TODO: Add a description for this type.
+ * An action that makes a server-side call.
  *
  * @author Civic Computing Ltd.
  */
@@ -43,6 +45,7 @@ public abstract class RemotingAction
 
     private final String _actionName;
     private final Method _method;
+    private final boolean _isSecure;
 
     /**
      * Constructor.
@@ -52,6 +55,7 @@ public abstract class RemotingAction
     public RemotingAction(final String actionName) {
         _actionName = actionName;
         _method = RequestBuilder.GET;
+        _isSecure = true;
     }
 
     /**
@@ -63,15 +67,28 @@ public abstract class RemotingAction
     public RemotingAction(final String actionName, final Method method) {
         _actionName = actionName;
         _method = method;
+        _isSecure = true;
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param actionName The name of this action.
+     * @param method The HTTP method to use.
+     * @param isSecure Can this method only be called with a valid user session.
+     */
+    public RemotingAction(final String actionName,
+                          final Method method,
+                          final boolean isSecure) {
+        _actionName = actionName;
+        _method = method;
+        _isSecure = isSecure;
     }
 
     /** {@inheritDoc} */
     @Override
     public void execute() {
-    //        new ErrorReportingCallback<Collection<ResourceSummary>>(
-    //            _globals.userActions().internalAction())
-
-        final String url = GLOBALS.apiURL() + getPath();
+        final String url = GLOBALS.apiURL(_isSecure) + getPath();
         final RequestBuilder builder = new RequestBuilder(_method, url);
         builder.setHeader("Accept", "application/json");
         if (RequestBuilder.POST.equals(_method)) {
@@ -88,10 +105,11 @@ public abstract class RemotingAction
 
             public void onResponseReceived(final Request request,
                                            final Response response) {
-//                GLOBALS.alert(
-//                    response.getStatusCode()+" "+
-//                    response.getStatusText());
-                if (SC_OK == response.getStatusCode()) {
+                if (response.getText().startsWith("<!-- LOGIN_REQUIRED -->")) {
+                    GLOBALS.unexpectedError(
+                        new RuntimeException(response.getText()),
+                        _actionName);
+                } else if (SC_OK == response.getStatusCode()) {
                     onOK(response);
                 } else if (SC_NO_CONTENT == response.getStatusCode()) {
                     onNoContent(response);
@@ -163,12 +181,34 @@ public abstract class RemotingAction
     }
 
 
+    // 405 Method Not Allowed
+    // protected abstract void onMethodNotAllowed(final Response response);
+
+
+    // 400 Bad Request
+    // protected abstract void onBadRequest(final Response response);
+
+
+    /**
+     * Parse the response as a resource summary.
+     *
+     * @param response The response to parse.
+     *
+     * @return The resource summary.
+     */
     protected ResourceSummary parseResourceSummary(final Response response) {
         return new ResourceSummary(
             new GwtJson(JSONParser.parse(response.getText()).isObject()));
     }
 
 
+    /**
+     * Parse the response as a list of strings.
+     *
+     * @param response The response to parse.
+     *
+     * @return The list of strings.
+     */
     protected List<String> parseListString(final Response response) {
         final List<String> strings = new ArrayList<String>();
         final JSONArray result = JSONParser.parse(response.getText()).isArray();
@@ -179,14 +219,35 @@ public abstract class RemotingAction
     }
 
 
+    /**
+     * Parse the response as a boolean.
+     *
+     * @param response The response to parse.
+     *
+     * @return A boolean.
+     */
     protected boolean parseBoolean(final Response response) {
         final JSONBoolean b = JSONParser.parse(response.getText()).isBoolean();
         return b.booleanValue();
     }
 
-    // 405 Method Not Allowed
-    // protected abstract void onMethodNotAllowed(final Response response);
 
-    // 400 Bad Request
-    // protected abstract void onBadRequest(final Response response);
+    /**
+     * Parse the response as a collection of action summaries.
+     *
+     * @param response The response to parse.
+     *
+     * @return A collection of action summaries.
+     */
+    protected Collection<ActionSummary> parseActionSummaryCollection(
+                                                      final Response response) {
+        final JSONArray result = JSONParser.parse(response.getText()).isArray();
+        final Collection<ActionSummary> actions =
+            new ArrayList<ActionSummary>();
+        for (int i=0; i<result.size(); i++) {
+            actions.add(
+                new ActionSummary(new GwtJson(result.get(i).isObject())));
+        }
+        return actions;
+    }
 }

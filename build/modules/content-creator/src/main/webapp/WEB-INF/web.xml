@@ -205,6 +205,7 @@
             <url-pattern>/upload</url-pattern>
             <url-pattern>/update_file</url-pattern>
             <url-pattern>/preview/*</url-pattern>
+            <url-pattern>/api/secure/*</url-pattern>
             <!-- Secure all HTTP Methods -->
         </web-resource-collection>
         <auth-constraint>
@@ -217,7 +218,7 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Public Area</web-resource-name>
-            <url-pattern>/api/*</url-pattern><!-- FIXME: Should be in secure area. -->
+            <url-pattern>/api/public/*</url-pattern>
             <url-pattern>/content/*</url-pattern>
             <url-pattern>/assets/*</url-pattern>
             <url-pattern>/${application.prefix}/*</url-pattern>

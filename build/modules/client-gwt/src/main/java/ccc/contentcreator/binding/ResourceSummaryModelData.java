@@ -537,4 +537,12 @@ public class ResourceSummaryModelData
         _rs.setDescription(description);
     }
 
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public String revisionsPath() {
+        return "/resources/"+getId()+"/revisions";
+    }
 }

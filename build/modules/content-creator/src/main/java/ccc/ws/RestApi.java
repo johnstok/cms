@@ -25,8 +25,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
-import org.jboss.web.tomcat.security.login.WebAuthentication;
-
 import ccc.api.ActionSummary;
 import ccc.api.AliasDelta;
 import ccc.api.CommandFailedException;
@@ -59,7 +57,7 @@ import ccc.services.Queries;
  *
  * @author Civic Computing Ltd.
  */
-@Path("/")
+@Path("/secure")
 @Consumes("application/json")
 @Produces("application/json")
 public class RestApi
@@ -594,51 +592,5 @@ public class RestApi
     @Override
     public void fail() throws CommandFailedException {
         throw new CommandFailedException(new Failure(Failure.PRIVILEGES, "a"));
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Boolean isLoggedIn() {
-        return null!=_request.getUserPrincipal();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Boolean login(final String username, final String password) {
-        _request.getSession(true);
-        final WebAuthentication pwl = new WebAuthentication();
-        final boolean authenticated = pwl.login(username, password);
-
-        // Credentials are bad.
-        if (!authenticated) {
-            return false;
-        }
-
-        // Has necessary roles.
-        if (_request.isUserInRole("ADMINISTRATOR")
-            || _request.isUserInRole("CONTENT_CREATOR")
-            || _request.isUserInRole("SITE_BUILDER")) {
-            return true;
-        }
-
-        // Missing necessary roles.
-        _request.getSession().invalidate();
-        return false;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void logout() {
-        _request.getSession().invalidate();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public String readProperty(final String key) {
-        return CCCProperties.get(key);
     }
 }
