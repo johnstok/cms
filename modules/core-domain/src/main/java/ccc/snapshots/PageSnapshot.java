@@ -16,6 +16,7 @@ import java.util.Set;
 
 import ccc.api.Paragraph;
 import ccc.api.template.IPageSnapshot;
+import ccc.api.template.StatefulReader;
 import ccc.domain.IPage;
 import ccc.domain.Page;
 import ccc.domain.Template;
@@ -23,7 +24,6 @@ import ccc.rendering.PageBody;
 import ccc.rendering.Response;
 import ccc.services.DataManager;
 import ccc.services.SearchEngine;
-import ccc.services.StatefulReader;
 
 
 /**

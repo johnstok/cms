@@ -17,12 +17,12 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import ccc.api.DBC;
+import ccc.api.template.StatefulReader;
 import ccc.domain.Resource;
 import ccc.rendering.NotFoundException;
 import ccc.rendering.Response;
 import ccc.services.DataManager;
 import ccc.services.SearchEngine;
-import ccc.services.StatefulReader;
 import ccc.snapshots.ResourceSnapshot;
 
 /**

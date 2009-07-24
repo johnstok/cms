@@ -20,7 +20,7 @@ import org.apache.commons.collections.ExtendedProperties;
 import org.apache.velocity.runtime.resource.Resource;
 import org.apache.velocity.runtime.resource.loader.ResourceLoader;
 
-import ccc.services.StatefulReader;
+import ccc.api.template.StatefulReader;
 
 
 /**

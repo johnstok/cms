@@ -25,6 +25,7 @@ import junit.framework.TestCase;
 import ccc.api.MimeType;
 import ccc.api.PageDelta;
 import ccc.api.Paragraph;
+import ccc.api.template.StatefulReader;
 import ccc.commons.Testing;
 import ccc.content.response.DefaultRenderer;
 import ccc.content.response.Renderer;
@@ -53,7 +54,6 @@ import ccc.rendering.Response;
 import ccc.rendering.StringHeader;
 import ccc.services.DataManager;
 import ccc.services.SearchEngine;
-import ccc.services.StatefulReader;
 
 
 /**

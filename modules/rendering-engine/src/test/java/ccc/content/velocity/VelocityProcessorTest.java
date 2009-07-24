@@ -18,13 +18,13 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 import ccc.api.Paragraph;
+import ccc.api.template.StatefulReader;
 import ccc.domain.Page;
 import ccc.domain.ResourceName;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.rendering.Context;
 import ccc.rendering.TextProcessor;
-import ccc.services.StatefulReader;
 
 
 /**
@@ -162,48 +162,19 @@ public class VelocityProcessorTest extends TestCase {
     public void testRenderVelocityBadPath() {
 
         // ARRANGE
-        final Page foo = new Page(new ResourceName("foo"), "foo", null, _rm);
-        final String template = "$helper.path(\"badpath\")";
+        final String template = "$resource.failingMethod()";
         final String expectedMessage =
-            "Invocation of method 'path' in  "
-            +"class ccc.content.velocity.VelocityHelper "
-            +"threw exception ccc.domain.CCCException: badpath does not match "
-            +"the regular expression: (/[\\.\\-\\w]+)* at VelocityProcessor"
-            +"[line 1, column 9]";
+            "Invocation of method 'failingMethod' in  "
+            + "class ccc.content.velocity.VelocityProcessorTest "
+            + "threw exception java.lang.RuntimeException: Fail. "
+            + "at VelocityProcessor[line 1, column 11]";
         final StringWriter renderedOutput = new StringWriter();
 
         // ACT
         _vp.render(
             template,
             renderedOutput,
-            new Context(null, foo, null));
-
-        // ASSERT
-        final String html = renderedOutput.toString();
-        assertEquals(expectedMessage, html);
-
-    }
-
-    /**
-     * Test.
-     */
-    public void testRenderVelocityNullPath() {
-
-        // ARRANGE
-        final Page foo = new Page(new ResourceName("foo"), "foo", null, _rm);
-        final String template = "$helper.path(null)";
-        final String expectedMessage =
-            "Invocation of method 'path' in  "
-            +"class ccc.content.velocity.VelocityHelper "
-            + "threw exception java.lang.IllegalArgumentException: Specified "
-            + "value may not be NULL. at VelocityProcessor[line 1, column 9]";
-        final StringWriter renderedOutput = new StringWriter();
-
-        // ACT
-        _vp.render(
-            template,
-            renderedOutput,
-            new Context(null, foo, null));
+            new Context(null, this, null));
 
         // ASSERT
         final String html = renderedOutput.toString();
@@ -224,6 +195,10 @@ public class VelocityProcessorTest extends TestCase {
     protected void tearDown() {
         _reader = null;
         _vp = null;
+    }
+
+    public void failingMethod() {
+        throw new RuntimeException("Fail.");
     }
 
     private TextProcessor _vp;

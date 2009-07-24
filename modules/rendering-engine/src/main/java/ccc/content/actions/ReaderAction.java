@@ -18,11 +18,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ccc.api.template.StatefulReader;
 import ccc.persistence.jpa.FsCoreData;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
 import ccc.services.DataManager;
-import ccc.services.StatefulReader;
 import ccc.services.UserLookup;
 import ccc.services.impl.AuditLogImpl;
 import ccc.services.impl.DataManagerImpl;

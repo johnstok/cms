@@ -28,6 +28,7 @@ import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeConstants;
 
+import ccc.commons.XHTML;
 import ccc.domain.CCCException;
 import ccc.rendering.Context;
 import ccc.rendering.TextProcessor;
@@ -92,17 +93,17 @@ public class VelocityProcessor implements TextProcessor {
         try {
             final VelocityContext context = new VelocityContext();
 
-            for (final Map.Entry<String, Object> extra :
-                                                  ctxt.getExtras().entrySet()) {
+            for (final Map.Entry<String, Object> extra
+                                                : ctxt.getExtras().entrySet()) {
                 context.put(extra.getKey(), extra.getValue());
             }
-            context.put("helper", new VelocityHelper());
             context.put("reader", ctxt.getReader());
             context.put("resource", ctxt.getResource());
             context.put("parameters", ctxt.getParams());
             context.put("random", _random);
             context.put("math", Math.class);
             context.put("calendar", Calendar.class);
+            context.put("html", XHTML.class);
 
             final VelocityEngine ve = new VelocityEngine(velocityProperties);
             ve.setApplicationAttribute("ccc-reader", ctxt.getReader());
