@@ -11,6 +11,9 @@
  */
 package ccc.ws;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
@@ -19,10 +22,12 @@ import java.lang.reflect.Type;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
 import ccc.api.Failure;
+import ccc.commons.IO;
 import ccc.domain.Snapshot;
 
 
@@ -36,7 +41,8 @@ import ccc.domain.Snapshot;
 @Produces("application/json")
 public class FailureWriter
     implements
-        MessageBodyWriter<Failure> {
+        MessageBodyWriter<Failure>,
+        MessageBodyReader<Failure> {
 
 
     /** {@inheritDoc} */
@@ -71,5 +77,29 @@ public class FailureWriter
         final Snapshot sn = new Snapshot(object);
         pw.println(sn.getDetail());
         pw.flush();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isReadable(final Class<?> clazz,
+                              final Type type,
+                              final Annotation[] annotations,
+                              final MediaType mediaType) {
+        return Failure.class.equals(clazz);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Failure readFrom(final Class<Failure> arg0,
+                            final Type arg1,
+                            final Annotation[] arg2,
+                            final MediaType arg3,
+                            final MultivaluedMap<String, String> arg4,
+                            final InputStream arg5) throws IOException  {
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        IO.copy(arg5, baos);
+        final String s = new String(baos.toByteArray()).trim();
+
+        return new Failure(new Snapshot(s));
     }
 }

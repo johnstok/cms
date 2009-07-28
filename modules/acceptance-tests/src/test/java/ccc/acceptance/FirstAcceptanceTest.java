@@ -23,12 +23,14 @@ import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.log4j.Logger;
+import org.jboss.resteasy.client.ClientResponseFailure;
 import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
 import ccc.api.CommandFailedException;
 import ccc.api.Duration;
+import ccc.api.Failure;
 import ccc.api.MimeType;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
@@ -38,6 +40,7 @@ import ccc.api.Username;
 import ccc.services.Queries;
 import ccc.ws.BooleanProvider;
 import ccc.ws.DurationReader;
+import ccc.ws.FailureWriter;
 import ccc.ws.JsonableWriter;
 import ccc.ws.ResSummaryReader;
 import ccc.ws.ResourceSummaryCollectionReader;
@@ -68,6 +71,7 @@ public class FirstAcceptanceTest
         pFactory.addMessageBodyReader(UserSummaryReader.class);
         pFactory.addMessageBodyWriter(JsonableWriter.class);
         pFactory.addMessageBodyReader(BooleanProvider.class);
+        pFactory.addMessageBodyReader(FailureWriter.class);
     }
 
     private final String _hostUrl = "http://localhost:81/api";
@@ -203,6 +207,29 @@ public class FirstAcceptanceTest
 
         // ASSERT
         assertEquals(1, users.size());
+    }
+
+    /**
+     * Test.
+     * @throws CommandFailedException If the test fails.
+     */
+    public void testFail() throws CommandFailedException {
+
+        // ARRANGE
+        final HttpClient c = login();
+        final RestCommands commands =
+            ProxyFactory.create(RestCommands.class, _secure, c);
+
+        // ACT
+        try {
+            commands.fail();
+            fail();
+
+        // ASSERT
+        } catch (final ClientResponseFailure e) {
+            final Failure f = e.getResponse().getEntity(Failure.class);
+            assertEquals(Failure.PRIVILEGES, f.getCode());
+        }
     }
 
     /**
