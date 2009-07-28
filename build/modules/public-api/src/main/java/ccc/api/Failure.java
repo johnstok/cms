@@ -75,6 +75,19 @@ public class Failure implements Serializable, Jsonable {
 
 
     /**
+     * Constructor.
+     *
+     * @param json JSON representation of a failure.
+     */
+    public Failure(final Json json) {
+        this(
+            json.getInt(JsonKeys.CODE).intValue(),
+            json.getString(JsonKeys.ID),
+            json.getStringMap("params")
+        );
+    }
+
+    /**
      * Accessor.
      *
      * @return Returns the errorCode.
@@ -108,5 +121,6 @@ public class Failure implements Serializable, Jsonable {
     public void toJson(final Json json) {
         json.set(JsonKeys.CODE, Long.valueOf(getCode()));
         json.set(JsonKeys.ID, getExceptionId());
+        json.set("params", getParams());
     }
 }
