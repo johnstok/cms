@@ -1396,4 +1396,12 @@ public interface UIConstants extends Constants {
      */
     @DefaultStringValue("No editor available for this resource.")
     String noEditorForResource();
+
+    /**
+     * "must not contain , character".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("must not contain , character")
+    String mustNotContainComma();
 }

@@ -12,9 +12,7 @@
 package ccc.contentcreator.client;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import ccc.api.FileSummary;
@@ -143,11 +141,11 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                                   final Paragraph para) {
 
         final CheckBoxGroup cbg = c.checkBoxGroup();
-        final Map<String, String> valueMap = fillValueMap(para);
+        final List<String> valueList = fillValueList(para);
 
         final List<CheckBox> boxes = cbg.getAll();
         for (final CheckBox box : boxes) {
-            if ("true".equals(valueMap.get(box.getId()))) {
+            if (valueList.contains(box.getId())) {
                 box.setValue(Boolean.valueOf(true));
             } else {
                 box.setValue(Boolean.valueOf(false));
@@ -187,13 +185,13 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private void populateList(final PageElement c, final Paragraph para) {
 
         final ListField<BaseModelData> list = c.list();
-        final Map<String, String> valueMap = fillValueMap(para);
+        final List<String> valueList = fillValueList(para);
         final List<BaseModelData> selection =
             new ArrayList<BaseModelData>();
 
         final ListStore<BaseModelData> items = list.getStore();
         for (final BaseModelData item : items.getModels()) {
-            if (valueMap.containsKey(item.get("value"))) {
+            if (valueList.contains(item.get("value"))) {
                 selection.add(item);
             }
         }
@@ -233,18 +231,16 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      * @param para
      * @return
      */
-    private Map<String, String> fillValueMap(final Paragraph para) {
+    private List<String> fillValueList(final Paragraph para) {
 
         final String text = para.text();
 
-        final Map<String, String> valueMap = new HashMap<String, String>();
+        final List<String> valueMap = new ArrayList<String>();
 
-        final String[] lines = text.split("\n");
-        for (final String line : lines) {
-            if (line.trim().length() > 0) {
-                final String key = line.substring(0, line.indexOf("="));
-                final String value = line.substring(line.indexOf("=")+1);
-                valueMap.put(key, value);
+        final String[] values = text.split(",");
+        for (final String value : values) {
+            if (value.trim().length() > 0) {
+                valueMap.add(value);
             }
         }
         return valueMap;
@@ -306,11 +302,9 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         final StringBuilder sb = new StringBuilder();
         for (final BaseModelData item : list.getSelection()) {
             if (sb.length() > 0) {
-                sb.append("\n");
+                sb.append(",");
             }
             sb.append(item.get("value"));
-            sb.append("=");
-            sb.append(item.get("title"));
         }
 
         final Paragraph p =
@@ -348,13 +342,11 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private Paragraph extractCheckBox(final PageElement c) {
         final CheckBoxGroup cbg = c.checkBoxGroup();
         final StringBuilder sb = new StringBuilder();
-        for (final CheckBox cb : cbg.getAll()) {
+        for (final CheckBox cb : cbg.getValues()) {
             if (sb.length() > 0) {
-                sb.append("\n");
+                sb.append(",");
             }
             sb.append(cb.getId());
-            sb.append("=");
-            sb.append(cb.getValue().toString());
         }
 
         final Paragraph p =
