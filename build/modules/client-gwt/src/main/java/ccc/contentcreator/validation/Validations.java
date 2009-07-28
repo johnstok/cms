@@ -27,6 +27,10 @@ import ccc.contentcreator.client.IGlobalsImpl;
 
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.http.client.Response;
+import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.NamedNodeMap;
+import com.google.gwt.xml.client.Node;
+import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
 import com.google.gwt.xml.client.impl.DOMParseException;
 
@@ -105,7 +109,17 @@ public class Validations {
         return new Validator() {
             public void validate(final Validate validate) {
                 try {
-                    XMLParser.parse(definition.getValue());
+                    final Document d = XMLParser.parse(definition.getValue());
+                    final NodeList l = d.getElementsByTagName("option");
+                    for (int n=0 ; n<l.getLength() ; n++) {
+                        final NamedNodeMap al = l.item(n).getAttributes();
+                        final Node value = al.getNamedItem("value");
+                        if (value != null
+                            && value.getNodeValue().indexOf(',') != -1) {
+                            validate.addMessage("XML option value "+
+                                UI_CONSTANTS.mustNotContainComma());
+                        }
+                    }
                 } catch (final DOMParseException e) {
                     validate.addMessage("XML "+UI_CONSTANTS.isNotValid());
                 }
