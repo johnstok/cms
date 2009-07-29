@@ -25,7 +25,7 @@
         <lib.version.poi>3.0.1-FINAL</lib.version.poi>
         <lib.version.tmextractors>1.0</lib.version.tmextractors>
         <gxt-version>1.2.4</gxt-version>
-        <gwt-version>1.6.4</gwt-version>
+        <gwt-version>1.7.0</gwt-version>
         <velocity-version>1.6.2</velocity-version>
         <jboss-version>4.2.2.GA</jboss-version>
         <h2-version>1.1.103</h2-version>
