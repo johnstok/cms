@@ -267,6 +267,7 @@ public class CreatePageDialog
                     .check(Validations.notEmpty(_second.name()))
                     .stopIfInError()
                     .check(Validations.notValidResourceName(_second.name()))
+                    .stopIfInError()
                     .check(Validations.uniqueResourceName(
                         _parent, _second.name()))
                     .stopIfInError()
