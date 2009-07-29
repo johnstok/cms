@@ -64,6 +64,7 @@ public class UpdateFileServlet extends HttpServlet {
 
         try {
             _commands.updateFile(fileId, delta, dataStream);
+            response.getWriter().write("File was updated successfully.");
 
         } catch (final CommandFailedException e) {
             handleException(response, e);
@@ -75,8 +76,6 @@ public class UpdateFileServlet extends HttpServlet {
                 LOG.error("DataStream closing failed "+e.getMessage(), e);
             }
         }
-
-        response.getWriter().write("File was updated successfully.");
     }
 
 
