@@ -106,8 +106,15 @@ public class StringCollectionWriter
 
         final PrintWriter pw = new PrintWriter(outputStream);
         pw.println("[");
+        int a = 0;
         for (final String rs : object) {
-            pw.println("\n\""+rs+"\","); // FIXME: Escaping & trailing comma!
+            a++;
+            // FIXME: Escaping
+            if (a == object.size()) {
+                pw.println("\n\""+rs+"\"");
+            } else {
+                pw.println("\n\""+rs+"\",");
+            }
         }
         pw.println("]");
         pw.flush();
