@@ -15,6 +15,7 @@ package ccc.contentcreator.remoting;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServlet;
@@ -74,7 +75,8 @@ public class CreateFileServlet extends HttpServlet {
             new FileDelta(
                 toMimeType(file.getContentType()),
                 null,
-                (int) file.getSize());
+                (int) file.getSize(),
+                new HashMap<String, String>());
 
         final String titleString =
             (title == null) ? name.getString() : title.getString();

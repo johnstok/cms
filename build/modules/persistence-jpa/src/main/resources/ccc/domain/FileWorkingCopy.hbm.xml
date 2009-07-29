@@ -71,6 +71,13 @@
                 type="string" 
                  length="255" />
         </component>
+                        
+        <map name="_properties" table="file_wc_properties">
+            <cache usage="transactional"/>
+            <key column="file_wc_id" not-null="true" foreign-key="FK_FILEWCPROPS_FILEWC_ID"/>
+            <map-key type="string" column="prop_key" length="255" />
+            <element type="string" column="prop_value" length="1024" not-null="true"/>
+        </map>
 
     </class>
     

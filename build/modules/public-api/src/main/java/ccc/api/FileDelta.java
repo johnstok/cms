@@ -12,6 +12,8 @@
 package ccc.api;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -23,6 +25,7 @@ public final class FileDelta implements Serializable, Jsonable {
     private MimeType _mimeType;
     private int _size;
     private ID _data;
+    private Map<String, String> _properties;
 
     @SuppressWarnings("unused") private FileDelta() { super(); }
 
@@ -32,13 +35,16 @@ public final class FileDelta implements Serializable, Jsonable {
      * @param mimeType The file's mime type.
      * @param size The file's size.
      * @param data A reference to the files data.
+     * @param properties The file's properties.
      */
     public FileDelta(final MimeType mimeType,
                      final ID data,
-                     final int size) {
+                     final int size,
+                     final Map<String, String> properties) {
         _mimeType = mimeType;
         _data = data;
         _size = size;
+        _properties = new HashMap<String, String>(properties);
     }
 
 
@@ -51,7 +57,8 @@ public final class FileDelta implements Serializable, Jsonable {
         this(
             new MimeType(json.getJson(JsonKeys.MIME_TYPE)),
             json.getId(JsonKeys.DATA),
-            json.getInt(JsonKeys.SIZE));
+            json.getInt(JsonKeys.SIZE).intValue(),
+            json.getStringMap("properties"));
     }
 
 
@@ -95,11 +102,21 @@ public final class FileDelta implements Serializable, Jsonable {
     }
 
 
+    /**
+     * Accessor.
+     *
+     * @return Returns the properties.
+     */
+    public final Map<String, String> getProperties() {
+        return _properties;
+    }
+
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
         json.set(JsonKeys.MIME_TYPE, getMimeType());
         json.set(JsonKeys.SIZE, (long) getSize());
         json.set(JsonKeys.DATA, getData());
+        json.set("properties", getProperties());
     }
 }

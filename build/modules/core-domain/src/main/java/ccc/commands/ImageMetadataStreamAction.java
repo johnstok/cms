@@ -18,6 +18,7 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import ccc.domain.File;
 import ccc.services.DataManager;
 
 /**
@@ -41,8 +42,8 @@ final class ImageMetadataStreamAction
         }
 
         _metadata.clear();
-        _metadata.put("image.height", String.valueOf(image.getHeight()));
-        _metadata.put("image.width", String.valueOf(image.getWidth()));
+        _metadata.put(File.HEIGHT, String.valueOf(image.getHeight()));
+        _metadata.put(File.WIDTH, String.valueOf(image.getWidth()));
     }
 
 

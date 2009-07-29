@@ -12,6 +12,8 @@
 package ccc.domain;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import ccc.api.DBC;
 import ccc.api.FileDelta;
@@ -33,6 +35,7 @@ public class FileRevision
     private Data      _data;
     private int       _size;
     private MimeType  _mimeType;
+    private Map<String, String> _properties;
 
     /** Constructor: for persistence only. */
     protected FileRevision() { super(); }
@@ -45,6 +48,7 @@ public class FileRevision
      * @param data
      * @param size
      * @param mimeType
+     * @param properties
      */
     FileRevision(final Date timestamp,
                  final User actor,
@@ -52,13 +56,15 @@ public class FileRevision
                  final String comment,
                  final Data data,
                  final int size,
-                 final MimeType mimeType) {
+                 final MimeType mimeType,
+                 final Map<String, String> properties) {
         super(timestamp, actor, majorChange, comment);
         DBC.require().notNull(data);
         DBC.require().notNull(mimeType);
         _data = data;
         _size = size;
         _mimeType = mimeType; // TODO: Make defensive copy?
+        _properties = properties;
     }
 
 
@@ -95,6 +101,11 @@ public class FileRevision
         return new FileDelta(
             _mimeType,
             new ID(_data.id().toString()),
-            _size);
+            _size,
+            _properties);
+    }
+
+    public Map<String, String> getProperties() {
+        return new HashMap<String, String>(_properties);
     }
 }

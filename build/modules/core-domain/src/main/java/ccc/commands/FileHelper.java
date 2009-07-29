@@ -11,7 +11,9 @@
  */
 package ccc.commands;
 
-import ccc.domain.File;
+import java.util.Map;
+
+import ccc.domain.Data;
 import ccc.services.DataManager;
 
 
@@ -25,12 +27,14 @@ public class FileHelper {
     /**
      * Extract the image metadata for a file.
      *
-     * @param f The file to read.
-     * @param data The data manager for reading the data.
+     * @param props The file properties.
+     * @param dm The data manager for reading the data.
      */
-    protected void extractImageMetadata(final File f, final DataManager data) {
+    protected void extractImageMetadata(final Data data,
+                                        final Map<String, String> props,
+                                        final DataManager dm) {
         final ImageMetadataStreamAction img = new ImageMetadataStreamAction();
-        data.retrieve(f.data(), img);
-        f.addMetadata(img.getMetadata());
+        dm.retrieve(data, img);
+        props.putAll(img.getMetadata());
     }
 }

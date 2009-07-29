@@ -232,6 +232,7 @@ public class DefaultRendererTest
                 new Data(),
                 0,
                 MimeType.HTML,
+                new HashMap<String, String>(),
                 new Date(),
                 User.SYSTEM_USER);
 
