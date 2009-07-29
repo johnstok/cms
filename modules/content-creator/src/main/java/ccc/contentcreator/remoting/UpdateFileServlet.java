@@ -15,7 +15,9 @@ package ccc.contentcreator.remoting;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.Map;
 
+import javax.activation.MimeTypeParseException;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +31,7 @@ import ccc.api.Commands;
 import ccc.api.FileDelta;
 import ccc.api.ID;
 import ccc.api.MimeType;
+import ccc.domain.File;
 import ccc.services.LocalCommands;
 
 
@@ -56,12 +59,15 @@ public class UpdateFileServlet extends HttpServlet {
         final ID fileId = new ID(form.getFormItem("id").getString());
         final FileItem file = form.getFileItem();
 
+        final Map<String, String> props = new HashMap<String, String>();
+        props.put(File.CHARSET, toCharset(file.getContentType()));
+
         final FileDelta delta =
             new FileDelta(
                 toMimeType(file.getContentType()),
                 null,
                 (int) file.getSize(),
-                new HashMap<String, String>());
+                props);
         final InputStream dataStream = file.getInputStream();
 
         try {
@@ -82,12 +88,25 @@ public class UpdateFileServlet extends HttpServlet {
 
 
     private MimeType toMimeType(final String contentType) {
-        final String[] parts = contentType.split("/");
-        if (2!=parts.length) {
+        try {
+            final javax.activation.MimeType mt =
+                new javax.activation.MimeType(contentType);
+            return new MimeType(mt.getPrimaryType(), mt.getSubType());
+        } catch (final MimeTypeParseException e) {
             LOG.warn("Ignored invalid mime type: "+contentType);
             return MimeType.BINARY_DATA;
         }
-        return new MimeType(parts[0], parts[1]);
+    }
+
+
+    private String toCharset(final String contentType) {
+        try {
+            final javax.activation.MimeType mt =
+                new javax.activation.MimeType(contentType);
+            return mt.getParameter("charset");
+        } catch (final MimeTypeParseException e) {
+            return null;
+        }
     }
 
 
