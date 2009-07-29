@@ -15,6 +15,7 @@ import ccc.api.UserDelta;
 import ccc.contentcreator.client.GwtJson;
 
 import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.URL;
 
 
 /**
@@ -44,7 +45,9 @@ public abstract class CreateUserAction_
 
     /** {@inheritDoc} */
     @Override
-    protected String getPath() { return "/users?pw="+_password; } // FIXME: encode password
+    protected String getPath() {
+        return "/users?pw="+URL.encodeComponent(_password);
+    }
 
     /** {@inheritDoc} */
     @Override
