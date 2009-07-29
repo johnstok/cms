@@ -11,6 +11,7 @@
  */
 package ccc.domain;
 
+import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.FileDelta;
@@ -30,6 +31,7 @@ public class FileWorkingCopy
     private MimeType _mimeType;
     private int _size;
     private Data _data;
+    private Map<String, String> _properties;
 
     /** Constructor: for persistence only. */
     protected FileWorkingCopy() { super(); }
@@ -49,6 +51,7 @@ public class FileWorkingCopy
         _mimeType = snapshot.getMimeType();
         _size = snapshot.getSize();
         _data = new Data(UUID.fromString(snapshot.getData().toString()));
+        _properties = snapshot.getProperties();
     }
 
     /** {@inheritDoc} */
@@ -57,7 +60,8 @@ public class FileWorkingCopy
         return new FileDelta(
             _mimeType,
             new ID(_data.id().toString()),
-            _size);
+            _size,
+            _properties);
     }
 
     /** {@inheritDoc} */

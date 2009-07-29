@@ -12,6 +12,8 @@
 package ccc.domain;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.DBC;
@@ -32,6 +34,12 @@ import ccc.snapshots.FileSnapshot;
 public class File
     extends
         WorkingCopySupport<FileRevision, FileDelta, FileWorkingCopy>  {
+
+
+    // FIXME: Move these constants into public-api - they cannot change!
+    public static final String CHARSET = "text.charset";
+    public static final String WIDTH = "image.width";
+    public static final String HEIGHT = "image.height";
 
 
     /** Constructor: for persistence only. */
@@ -61,6 +69,7 @@ public class File
             data,
             size,
             MimeType.BINARY_DATA,
+            new HashMap<String, String>(),
             timestamp,
             actor);
     }
@@ -82,13 +91,14 @@ public class File
                 final Data data,
                 final int size,
                 final MimeType mimeType,
+                final Map<String, String> properties,
                 final Date timestamp,
                 final User actor) {
         super(name, title);
         DBC.require().notNull(data);
         description(description);
         update(
-            new FileDelta(mimeType, new ID(data.id().toString()), size),
+            new FileDelta(mimeType, new ID(data.id().toString()), size, properties),
             new RevisionMetadata(timestamp, actor, true, "Created."));
     }
 
@@ -134,6 +144,31 @@ public class File
 
 
     /**
+     * Accessor for the properties field.
+     *
+     * @return The Data instance for this file.
+     */
+    public Map<String, String> properties() {
+        return currentRevision().getProperties();
+    }
+
+
+    public String charset() {
+        return properties().get(CHARSET);
+    }
+
+
+    public String width() {
+        return properties().get(WIDTH);
+    }
+
+
+    public String height() {
+        return properties().get(HEIGHT);
+    }
+
+
+    /**
      * Query if this file is an image.
      *
      * @return True if the file is an image, false otherwise.
@@ -171,7 +206,8 @@ public class File
                 metadata.getComment(),
                 new Data(UUID.fromString(delta.getData().toString())),
                 delta.getSize(),
-                delta.getMimeType()));
+                delta.getMimeType(),
+                delta.getProperties()));
     }
 
     /** {@inheritDoc} */
@@ -181,7 +217,8 @@ public class File
             new FileDelta(
                 mimeType(),
                 new ID(data().id().toString()),
-                size());
+                size(),
+                properties());
         return delta;
     }
 

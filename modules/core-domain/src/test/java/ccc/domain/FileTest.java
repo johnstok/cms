@@ -12,6 +12,7 @@
 package ccc.domain;
 
 import java.util.Date;
+import java.util.HashMap;
 
 import junit.framework.TestCase;
 import ccc.api.FileDelta;
@@ -29,6 +30,30 @@ public class FileTest extends TestCase {
     /**
      * Test.
      */
+    public void testGetProperty() {
+
+        // ACT
+        final File f = new File(
+            new ResourceName("name"),
+            "title",
+            "",
+            new Data(),
+            0,
+            MimeType.HTML,
+            new HashMap<String, String>(){{
+                put(File.CHARSET, "UTF-8");
+            }},
+            new Date(),
+            User.SYSTEM_USER);
+
+
+        // ASSERT
+        assertEquals("UTF-8", f.charset());
+    }
+
+    /**
+     * Test.
+     */
     public void testImageFilesAreDetected() {
 
         // ARRANGE
@@ -38,7 +63,11 @@ public class FileTest extends TestCase {
             "desc",
             new Data(),
             0,
-            new MimeType("image", "jpeg"), new Date(), User.SYSTEM_USER);
+            new MimeType("image", "jpeg"),
+            new HashMap<String, String>(),
+            new Date(),
+            User.SYSTEM_USER);
+
 
         // ACT
         final boolean isImage = f.isImage();
@@ -59,7 +88,10 @@ public class FileTest extends TestCase {
             "desc",
             new Data(),
             0,
-            new MimeType("text", "plain"), new Date(), User.SYSTEM_USER);
+            new MimeType("text", "plain"),
+            new HashMap<String, String>(),
+            new Date(),
+            User.SYSTEM_USER);
 
         // ACT
         final boolean isImage = f.isImage();
@@ -76,12 +108,16 @@ public class FileTest extends TestCase {
         // ARRANGE
         final Data data = new Data();
         final File f =
-            new File(new ResourceName("foo"),
+            new File(
+                new ResourceName("foo"),
                 "foo",
                 "desc",
                 data,
                 1,
-                new MimeType("foo", "bar"), new Date(), User.SYSTEM_USER);
+                new MimeType("foo", "bar"),
+                new HashMap<String, String>(),
+                new Date(),
+                User.SYSTEM_USER);
 
         // ACT
         final FileDelta o = f.createSnapshot();
@@ -99,12 +135,16 @@ public class FileTest extends TestCase {
 
         // ARRANGE
         final File f =
-            new File(new ResourceName("foo"),
+            new File(
+                new ResourceName("foo"),
                 "foo",
                 "desc",
                 new Data(),
                 1,
-                new MimeType("foo", "bar"), new Date(), User.SYSTEM_USER);
+                new MimeType("foo", "bar"),
+                new HashMap<String, String>(),
+                new Date(),
+                User.SYSTEM_USER);
 
         // ACT
         final MimeType actual = f.mimeType();

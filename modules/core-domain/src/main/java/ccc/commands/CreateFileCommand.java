@@ -76,6 +76,12 @@ public class CreateFileCommand extends CreateResourceCommand {
                         final InputStream dataStream)
                                                 throws RemoteExceptionSupport {
         final Data data = _data.create(dataStream, file.getSize());
+
+        if ("image".equals(file.getMimeType().getPrimaryType())) {
+            new FileHelper().extractImageMetadata(
+                data, file.getProperties(), _data);
+        }
+
         final File f =
             new File(
                 name,
@@ -84,12 +90,10 @@ public class CreateFileCommand extends CreateResourceCommand {
                 data,
                 file.getSize(),
                 file.getMimeType(),
+                file.getProperties(),
                 happenedOn,
                 actor);
 
-        if (f.isImage()) {
-            new FileHelper().extractImageMetadata(f, _data);
-        }
 
         create(actor, happenedOn, parentFolder, f);
 

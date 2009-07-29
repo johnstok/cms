@@ -77,15 +77,16 @@ public class UpdateFileCommand extends UpdateResourceCommand {
         final Data d = _data.create(dataStream, fileDelta.getSize());
         fileDelta.setData(new ID(d.id().toString()));
 
+        if ("image".equals(fileDelta.getMimeType().getPrimaryType())) {
+            new FileHelper().extractImageMetadata(
+                d, fileDelta.getProperties(), _data);
+        }
+
         final RevisionMetadata rm =
             new RevisionMetadata(happenedOn, actor, true, "Updated.");
 
         f.workingCopy(fileDelta);
         f.applySnapshot(rm);
-
-        if (f.isImage()) {
-            new FileHelper().extractImageMetadata(f, _data);
-        }
 
         update(f, null, false, actor, happenedOn);
     }
