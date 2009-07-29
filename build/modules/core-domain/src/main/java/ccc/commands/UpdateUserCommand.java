@@ -61,7 +61,7 @@ public class UpdateUserCommand {
                         final UUID userId,
                         final UserDelta delta) {
         final User current = _dao.find(User.class, userId);
-        current.username(delta.getUsername().toString());
+        // current.username(delta.getUsername().toString()); #571
         current.email(new EmailAddress(delta.getEmail()));
         current.roles(delta.getRoles());
 
