@@ -98,8 +98,14 @@ public class JsonableCollectionWriter
                         final OutputStream outputStream) {
         final PrintWriter pw = new PrintWriter(outputStream);
         pw.println("[\n");
+        int a = 0;
         for (final Jsonable rs : object) {
-            pw.println(new Snapshot(rs).getDetail()+",\n");
+            a++;
+            if (a == object.size()) {
+                pw.println(new Snapshot(rs).getDetail()+"\n");
+            } else {
+                pw.println(new Snapshot(rs).getDetail()+",\n");
+            }
         }
         pw.println("\n]");
         pw.flush();
