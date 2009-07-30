@@ -22,6 +22,7 @@ import ccc.api.ActionSummary;
 import ccc.api.ResourceSummary;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.GwtJson;
+import ccc.contentcreator.client.SessionTimeoutException;
 
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -105,9 +106,10 @@ public abstract class RemotingAction
 
             public void onResponseReceived(final Request request,
                                            final Response response) {
-                if (response.getText().startsWith("<!-- LOGIN_REQUIRED -->")) {
+                if (SessionTimeoutException
+                                        .isTimeoutMessage(response.getText())) {
                     GLOBALS.unexpectedError(
-                        new RuntimeException(response.getText()),
+                        new SessionTimeoutException(response.getText()),
                         _actionName);
                 } else if (SC_OK == response.getStatusCode()) {
                     onOK(response);
@@ -115,7 +117,7 @@ public abstract class RemotingAction
                     onNoContent(response);
                 } else {
                     GLOBALS.unexpectedError(
-                        new RuntimeException(
+                        new Exception(// TODO: Use a subclass of exception.
                             "Invalid response: "
                             + response.getStatusCode()+" "
                             + response.getStatusText()),
@@ -128,7 +130,7 @@ public abstract class RemotingAction
         try {
             builder.send();
         } catch (final RequestException e) {
-            GLOBALS.unexpectedError(e, "Foo");
+            GLOBALS.unexpectedError(e, getActionName());
         }
     }
 
