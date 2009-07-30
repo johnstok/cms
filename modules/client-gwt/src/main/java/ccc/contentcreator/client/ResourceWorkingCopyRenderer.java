@@ -15,6 +15,7 @@ import ccc.contentcreator.binding.ResourceSummaryModelData;
 
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
+import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 
 
@@ -28,12 +29,13 @@ public class ResourceWorkingCopyRenderer
 
     /** {@inheritDoc} */
     @Override
-    public String render(final ResourceSummaryModelData model,
+    public Object render(final ResourceSummaryModelData model,
                          final String property,
                          final ColumnData config,
                          final int rowIndex,
                          final int colIndex,
-                         final ListStore<ResourceSummaryModelData> store) {
+                         final ListStore<ResourceSummaryModelData> store,
+                         final Grid<ResourceSummaryModelData> grid) {
 
         if (model.hasWorkingCopy()) {
             return "<img src='images/icons/tick.png'/>&#160;";

@@ -29,7 +29,6 @@ import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.ResourceTypeRendererFactory;
 import ccc.contentcreator.client.SingleSelectionModel;
 
-import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -38,6 +37,7 @@ import com.extjs.gxt.ui.client.dnd.GridDropTarget;
 import com.extjs.gxt.ui.client.dnd.DND.Feedback;
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
@@ -134,7 +134,7 @@ AbstractEditDialog {
             @Override
             public void handleEvent(final BoxComponentEvent be) {
                 final int height =
-                    be.height - (IGlobals.DEFAULT_HEIGHT - GRID_HEIGHT);
+                    be.getHeight() - (IGlobals.DEFAULT_HEIGHT - GRID_HEIGHT);
                 if (height > (IGlobals.DEFAULT_HEIGHT - GRID_HEIGHT)) {
                     _grid.setHeight(height);
                 }
@@ -353,12 +353,12 @@ AbstractEditDialog {
             ){
                 /** {@inheritDoc} */
                 @Override protected void onNoContent(final Response response) {
-                    close();
+                    hide();
                     md.setSortOrder(order);
                 }
             }.execute();
         } else {
-            close();
+            hide();
             md.setSortOrder(order);
         }
     }

@@ -35,10 +35,10 @@ import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 
-import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -121,15 +121,16 @@ public class CreatePageDialog
         final ColumnModel cm = new ColumnModel(configs);
 
         _grid = new Grid<TemplateSummaryModelData>(_templatesStore, cm);
-        _grid.setLoadMask(true);
+//      _grid.setLoadMask(true);
         _grid.setId("TemplateGrid");
+        _grid.setHeight(280);
 
         final Listener<GridEvent> listener =
             new Listener<GridEvent>() {
             public void handleEvent(final GridEvent ge) {
                 final TemplateSummaryModelData template =
                     (TemplateSummaryModelData)
-                        ge.grid.getSelectionModel().getSelectedItem();
+                        ge.getGrid().getSelectionModel().getSelectedItem();
                 _second.createFields(template.getDefinition());
                 _description.setText(template.getDescription());
             }
@@ -301,7 +302,7 @@ public class CreatePageDialog
                         _ssm.create(
                             new ResourceSummaryModelData(rs),
                             _parent);
-                        close();
+                        hide();
                     }
                 }.execute();
             }
@@ -318,13 +319,15 @@ public class CreatePageDialog
         implements
             GridCellRenderer<TemplateSummaryModelData> {
 
-        public String render(
-                         final TemplateSummaryModelData model,
-                         final String property,
-                         final ColumnData config,
-                         final int rowIndex,
-                         final int colIndex,
-                         final ListStore<TemplateSummaryModelData> store) {
+        /** {@inheritDoc} */
+        @Override
+        public Object render(final TemplateSummaryModelData model,
+                             final String property,
+                             final ColumnData config,
+                             final int rowIndex,
+                             final int colIndex,
+                             final ListStore<TemplateSummaryModelData> store,
+                             final Grid<TemplateSummaryModelData> grid) {
 
             String value = "";
 

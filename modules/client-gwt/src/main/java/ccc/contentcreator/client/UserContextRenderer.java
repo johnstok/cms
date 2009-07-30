@@ -15,6 +15,7 @@ import ccc.contentcreator.binding.UserSummaryModelData;
 
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
+import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 
 
@@ -26,14 +27,17 @@ import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 public class UserContextRenderer implements
     GridCellRenderer<UserSummaryModelData> {
 
+
     /** {@inheritDoc} */
     @Override
-    public String render(final UserSummaryModelData model,
+    public Object render(final UserSummaryModelData model,
                          final String property,
                          final ColumnData d,
                          final int rowIndex,
                          final int colIndex,
-                         final ListStore<UserSummaryModelData> store) {
+                         final ListStore<UserSummaryModelData> store,
+                         final Grid<UserSummaryModelData> grid) {
+
         d.cellAttr = "rowspan='2'";
         final StringBuilder html = new StringBuilder();
         html.append("<img class='action' id='");

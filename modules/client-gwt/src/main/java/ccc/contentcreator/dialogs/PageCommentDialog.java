@@ -104,11 +104,11 @@ public class PageCommentDialog extends AbstractEditDialog {
                                 _updatePageDialog.rt().tableSelection();
                             md.setWorkingCopy(false);
                             _updatePageDialog.rt().update(md);
-                            close();
-                            _updatePageDialog.close();
+                            hide();
+                            _updatePageDialog.hide();
                         }
                 }.execute();
-                close(); // TODO: Why is this here?
+                hide(); // TODO: Why is this here?
             }
         };
     }

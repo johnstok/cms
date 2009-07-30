@@ -59,31 +59,30 @@ public class ResourceTree extends Tree {
         setStyleAttribute("background", "white");
 
 
-        final RpcProxy<ResourceSummaryModelData,
-                       List<ResourceSummaryModelData>> proxy =
-            new RpcProxy<ResourceSummaryModelData,
-                         List<ResourceSummaryModelData>>() {
+        final RpcProxy<List<ResourceSummaryModelData>> proxy =
+            new RpcProxy<List<ResourceSummaryModelData>>() {
+
             @Override
-            protected void load(
-                final ResourceSummaryModelData loadConfig,
-                final AsyncCallback<List<ResourceSummaryModelData>> callback) {
+            protected void load(final Object loadConfig,
+                                final AsyncCallback<List<ResourceSummaryModelData>> callback) {
 
                 final ID parentId =
-                  (null==loadConfig) ? _root.getId() : loadConfig.getId();
+                    (null==loadConfig || !(loadConfig instanceof ResourceSummaryModelData))
+                    ? _root.getId() : ((ResourceSummaryModelData)loadConfig).getId();
 
-                new GetChildrenAction(_globals.userActions().loadData(),
-                                      parentId) {
+                    new GetChildrenAction(_globals.userActions().loadData(),
+                        parentId) {
 
-                    // FIXME: Handle failure!
-                    /*
-                     * callback.onFailure(throwable);
-                     */
+                        // FIXME: Handle failure!
+                        /*
+                         * callback.onFailure(throwable);
+                         */
 
-                    @Override protected void execute(final Collection<ResourceSummary> children) {
-                        callback.onSuccess(
-                            DataBinding.bindResourceSummary(children));
-                    }
-                }.execute();
+                        @Override protected void execute(final Collection<ResourceSummary> children) {
+                            callback.onSuccess(
+                                DataBinding.bindResourceSummary(children));
+                        }
+                    }.execute();
             }
         };
 

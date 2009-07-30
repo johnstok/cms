@@ -19,8 +19,8 @@ import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 
-import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FormEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -88,19 +88,19 @@ public class UploadFileDialog extends AbstractEditDialog {
             Events.Submit,
             new Listener<FormEvent>() {
                 public void handleEvent(final FormEvent be) {
-                    if (be.resultHtml.startsWith("File Upload failed.")) {
+                    if (be.getResultHtml().startsWith("File Upload failed.")) {
                         _globals.unexpectedError(
-                            new Exception(be.resultHtml),
+                            new Exception(be.getResultHtml()),
                             _constants.uploadFile());
-                    } else if (SessionTimeoutException.isTimeoutMessage(be.resultHtml)) {
+                    } else if (SessionTimeoutException.isTimeoutMessage(be.getResultHtml())) {
                         _globals.unexpectedError(
-                            new SessionTimeoutException(be.resultHtml),
+                            new SessionTimeoutException(be.getResultHtml()),
                             _constants.uploadFile());
                     } else {
                         close();
                         ssm.create(
                             ResourceSummaryModelData.create(
-                                JSONParser.parse(be.resultHtml)), _parent);
+                                JSONParser.parse(be.getResultHtml())), _parent);
                     }
                 }
             }

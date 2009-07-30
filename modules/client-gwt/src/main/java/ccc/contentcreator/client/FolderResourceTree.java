@@ -63,23 +63,20 @@ public class FolderResourceTree extends Tree {
         setStyleAttribute("background", "white");
 
 
-        final RpcProxy<ResourceSummaryModelData,
-                       List<ResourceSummaryModelData>> proxy =
-            new RpcProxy<ResourceSummaryModelData,
-                         List<ResourceSummaryModelData>>() {
+        final RpcProxy<List<ResourceSummaryModelData>> proxy =
+            new RpcProxy<List<ResourceSummaryModelData>>() {
+
             @Override
-            protected void load(
-                final ResourceSummaryModelData loadConfig,
-                final AsyncCallback<List<ResourceSummaryModelData>> callback) {
+            protected void load(final Object loadConfig,
+                                final AsyncCallback<List<ResourceSummaryModelData>> callback) {
 
-
-                if (null==loadConfig) {
+                if (null==loadConfig || !(loadConfig instanceof ResourceSummaryModelData)) {
                     callback.onSuccess(
                         DataBinding.bindResourceSummary(
                             Collections.singletonList(_root)));
                 } else {
                     new GetChildrenAction(_globals.userActions().loadData(),
-                                          loadConfig.getId()) {
+                        ((ResourceSummaryModelData)loadConfig).getId()) {
 
                         // FIXME: Handle failure!
                         /*
@@ -160,13 +157,13 @@ public class FolderResourceTree extends Tree {
         }
 
         protected void loadChildren(final TreeItem item) {
-            loader.loadChildren(item.getModel());
+            loader.loadChildren((ResourceSummaryModelData) item.getModel());
         }
 
         /** {@inheritDoc} */
         @Override
-        protected void onRenderChildren(final TreeStoreEvent te) {
-            if (loader.hasChildren(te.parent)) {
+        protected void onRenderChildren(final TreeStoreEvent<ResourceSummaryModelData> te) {
+            if (loader.hasChildren(te.getParent())) {
                 super.onRenderChildren(te);
             }
         }

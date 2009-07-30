@@ -84,7 +84,7 @@ public class CreateActionDialog
                     _createAction.getParameters()) {
                         /** {@inheritDoc} */
                         @Override protected void onNoContent(final Response response) {
-                            close();
+                            hide();
                         }
                 }.execute();
             }

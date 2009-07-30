@@ -12,9 +12,9 @@
 package ccc.contentcreator.client;
 
 
-import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.core.El;
 import com.extjs.gxt.ui.client.data.ModelData;
+import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.Component;
@@ -76,7 +76,7 @@ public class ContextActionGridPlugin
             e.stopEvent();
             final El row = e.getTarget(".x-grid3-row", 15);
             final int idx = row.dom.getPropertyInt("rowIndex");
-            _grid.getSelectionModel().select(idx);
+            _grid.getSelectionModel().select(idx, false);
 
             _contextMenu.showAt(e.getTarget().getAbsoluteLeft()+7 ,
                 e.getTarget().getAbsoluteTop()+7);

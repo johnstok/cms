@@ -13,8 +13,8 @@ package ccc.contentcreator.client;
 
 import ccc.contentcreator.api.UIConstants;
 
-import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
+import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.TreeEvent;
 import com.extjs.gxt.ui.client.widget.tree.Tree;
@@ -84,7 +84,7 @@ public class ActionTree extends Tree {
 
         /** {@inheritDoc} */
         public void handleEvent(final TreeEvent te) {
-            _at.displayActionsFor(te.tree.getSelectedItem());
+            _at.displayActionsFor(te.getTree().getSelectedItem());
         }
     }
 }

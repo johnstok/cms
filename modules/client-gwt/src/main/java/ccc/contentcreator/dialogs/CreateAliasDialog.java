@@ -20,9 +20,9 @@ import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 
-import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
+import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.TextField;
@@ -31,7 +31,7 @@ import com.google.gwt.http.client.Response;
 
 
 /**
- * Dialog for creating a new {@link Alias}.
+ * Dialog for creating a new Alias.
  *
  * @author Civic Computing Ltd
  */
@@ -80,9 +80,9 @@ public class CreateAliasDialog extends AbstractEditDialog {
                 public void handleEvent(final ComponentEvent be) {
                     final FolderSelectionDialog folderSelect =
                         new FolderSelectionDialog(root);
-                    folderSelect.addListener(Events.Close,
+                    folderSelect.addListener(Events.Hide,
                         new Listener<ComponentEvent>() {
-                        public void handleEvent(final ComponentEvent be) {
+                        public void handleEvent(final ComponentEvent be2) {
                             _parent = folderSelect.selectedFolder();
                             _parentFolder.setValue(_parent.getName());
                         }});
@@ -121,7 +121,7 @@ public class CreateAliasDialog extends AbstractEditDialog {
                         final ResourceSummaryModelData newAlias =
                             new ResourceSummaryModelData(rs);
                         _ssm.create(newAlias, _parent);
-                        close();
+                        hide();
                     }
                 }.execute();
             }

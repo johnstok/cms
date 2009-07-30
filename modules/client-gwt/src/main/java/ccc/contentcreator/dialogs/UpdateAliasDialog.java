@@ -12,6 +12,7 @@
 package ccc.contentcreator.dialogs;
 
 
+
 import ccc.api.AliasDelta;
 import ccc.api.ID;
 import ccc.api.ResourceSummary;
@@ -21,9 +22,9 @@ import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 
-import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
+import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.TextField;
@@ -32,7 +33,7 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.http.client.Response;
 
 /**
- * Dialog for creating a new {@link Alias}.
+ * Dialog for creating a new Alias.
  *
  * @author Civic Computing Ltd
  */
@@ -78,7 +79,7 @@ public class UpdateAliasDialog extends AbstractEditDialog {
         _targetName.setFieldLabel(constants().target());
         _targetName.setValue("");
         _targetName.setValue(_alias.getTargetName());
-        _targetName.setId(constants().target());
+        _targetName.setId("target");
         _targetName.setReadOnly(true);
         _targetName.addListener(
             Events.TriggerClick,
@@ -86,7 +87,7 @@ public class UpdateAliasDialog extends AbstractEditDialog {
                 public void handleEvent(final ComponentEvent be1) {
                     final ResourceSelectionDialog resourceSelect =
                         new ResourceSelectionDialog(_targetRoot);
-                    resourceSelect.addListener(Events.Close,
+                    resourceSelect.addListener(Events.Hide,
                         new Listener<ComponentEvent>() {
                         public void handleEvent(final ComponentEvent be2) {
                             final ResourceSummaryModelData target =
@@ -122,7 +123,7 @@ public class UpdateAliasDialog extends AbstractEditDialog {
                 new UpdateAliasAction_(_aliasId, _alias){
                     /** {@inheritDoc} */
                     @Override protected void onNoContent(final Response response) {
-                        close();
+                        hide();
                     }
                 }.execute();
             }

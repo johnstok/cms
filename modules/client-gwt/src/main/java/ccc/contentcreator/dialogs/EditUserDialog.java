@@ -67,13 +67,13 @@ public class EditUserDialog extends AbstractEditDialog {
 
         _username.setFieldLabel(constants().username());
         _username.setReadOnly(true);
-        _username.setId(constants().username());
+        _username.setId("username");
         _username.setValue(_userDTO.getUsername().toString());
         addField(_username);
 
         _email.setFieldLabel(constants().email());
         _email.setAllowBlank(false);
-        _email.setId(constants().email());
+        _email.setId("useremail");
         _email.setValue(_userDTO.getEmail());
         addField(_email);
 
@@ -135,7 +135,7 @@ public class EditUserDialog extends AbstractEditDialog {
                     @Override protected void onNoContent(final Response response) {
                         // TODO: Just update the edited row model data.
                         _userTable.refreshUsers();
-                        close();
+                        hide();
                     }
 
                 }.execute();

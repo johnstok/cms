@@ -12,12 +12,12 @@
 
 package ccc.contentcreator.client;
 
-import com.extjs.gxt.ui.client.Events;
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
 import com.extjs.gxt.ui.client.widget.toolbar.LabelToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
-import com.extjs.gxt.ui.client.widget.toolbar.TextToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 
 
@@ -57,7 +57,7 @@ public class AbstractToolBar
     protected void addButton(final String id,
                              final String text,
                              final Action action) {
-        final TextToolItem toolItem = new TextToolItem(text);
+        final Button toolItem = new Button(text);
         toolItem.setId(id);
         toolItem.addListener(Events.Select, new ListenerAction(action));
         add(toolItem);
@@ -73,7 +73,7 @@ public class AbstractToolBar
     protected void addMenu(final String id,
                            final String text,
                            final MenuItem... children) {
-        final TextToolItem item = new TextToolItem(text);
+        final Button item = new Button(text);
         item.setId(id);
         final Menu itemMenu = new Menu();
         for (final MenuItem child : children) {
@@ -97,7 +97,7 @@ public class AbstractToolBar
         final MenuItem item = new MenuItem();
         item.setId(id);
         item.setText(text);
-        item.addSelectionListener(new SelectionListenerAction(action));
+        item.addSelectionListener(new MenuSelectionListenerAction(action));
         return item;
     }
 }

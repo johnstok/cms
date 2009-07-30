@@ -25,11 +25,11 @@ import ccc.contentcreator.client.PageElement.FieldType;
 import ccc.contentcreator.client.ui.FCKEditor;
 import ccc.contentcreator.dialogs.ImageChooserDialog;
 
-import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
+import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.Text;
@@ -143,27 +143,33 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         final CheckBoxGroup cbg = c.checkBoxGroup();
         final List<String> valueList = fillValueList(para);
 
-        final List<CheckBox> boxes = cbg.getAll();
-        for (final CheckBox box : boxes) {
-            if (valueList.contains(box.getId())) {
-                box.setValue(Boolean.valueOf(true));
-            } else {
-                box.setValue(Boolean.valueOf(false));
+        for (final Field<?> f : cbg.getAll()) {
+            if (f instanceof CheckBox) {
+                final CheckBox box = (CheckBox) f;
+                if (valueList.contains(box.getId())) {
+                    box.setValue(Boolean.valueOf(true));
+                } else {
+                    box.setValue(Boolean.valueOf(false));
+                }
             }
         }
     }
+
+
 
     private void populateRadio(final PageElement c, final Paragraph para) {
 
         final RadioGroup rg = c.radioGroup();
         final String value = para.text();
 
-        final List<Radio> radios = rg.getAll();
-        for (final Radio radio : radios) {
-            if (radio.getId().equals(value)) {
-                radio.setValue(Boolean.valueOf(true));
-            } else {
-                radio.setValue(Boolean.valueOf(false));
+        for (final Field<?> f : rg.getAll()) {
+            if (f instanceof Radio) {
+                final Radio radio = (Radio) f;
+                if (radio.getId().equals(value)) {
+                    radio.setValue(Boolean.valueOf(true));
+                } else {
+                    radio.setValue(Boolean.valueOf(false));
+                }
             }
         }
     }

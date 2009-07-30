@@ -18,8 +18,8 @@ import ccc.contentcreator.client.SessionTimeoutException;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 
-import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FormEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -73,15 +73,15 @@ public class UpdateFileDialog extends AbstractEditDialog {
             Events.Submit,
             new Listener<FormEvent>() {
                 public void handleEvent(final FormEvent be) {
-                    if (be.resultHtml.equals(UPDATE_OK)) {
-                        close();
-                    } else if (SessionTimeoutException.isTimeoutMessage(be.resultHtml)) {
+                    if (be.getResultHtml().equals(UPDATE_OK)) {
+                        hide();
+                    } else if (SessionTimeoutException.isTimeoutMessage(be.getResultHtml())) {
                         _globals.unexpectedError(
-                            new SessionTimeoutException(be.resultHtml),
+                            new SessionTimeoutException(be.getResultHtml()),
                             _constants.updateFile());
                     } else {
                         _globals.unexpectedError(
-                            new Exception(be.resultHtml),
+                            new Exception(be.getResultHtml()),
                             _constants.updateFile());
                     }
                 }
