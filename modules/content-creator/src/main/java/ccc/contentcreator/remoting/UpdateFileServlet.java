@@ -17,9 +17,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.activation.MimeTypeParseException;
-import javax.ejb.EJB;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -27,12 +24,9 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
 
 import ccc.api.CommandFailedException;
-import ccc.api.Commands;
 import ccc.api.FileDelta;
 import ccc.api.ID;
-import ccc.api.MimeType;
 import ccc.domain.File;
-import ccc.services.LocalCommands;
 
 
 /**
@@ -40,19 +34,21 @@ import ccc.services.LocalCommands;
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateFileServlet extends HttpServlet {
+public class UpdateFileServlet extends MultipartServlet {
     private static final Logger LOG = Logger.getLogger(UpdateFileServlet.class);
-
-    @EJB(name=Commands.NAME) private LocalCommands _commands;
 
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void service(final HttpServletRequest request,
-                        final HttpServletResponse response) throws IOException {
+    public void doPost(final HttpServletRequest request,
+                       final HttpServletResponse response) throws IOException {
 
+
+        /* ====================================================================
+         * Parse the request payload.
+         * ================================================================== */
         response.setContentType("text/html");
 
         final MultipartForm form = new MultipartForm(request);
@@ -68,10 +64,15 @@ public class UpdateFileServlet extends HttpServlet {
                 null,
                 (int) file.getSize(),
                 props);
+
+
+        /* ====================================================================
+         * Perform the update.
+         * ================================================================== */
         final InputStream dataStream = file.getInputStream();
 
         try {
-            _commands.updateFile(fileId, delta, dataStream);
+            getCommands().updateFile(fileId, delta, dataStream);
             response.getWriter().write("File was updated successfully.");
 
         } catch (final CommandFailedException e) {
@@ -84,35 +85,5 @@ public class UpdateFileServlet extends HttpServlet {
                 LOG.error("DataStream closing failed "+e.getMessage(), e);
             }
         }
-    }
-
-
-    private MimeType toMimeType(final String contentType) {
-        try {
-            final javax.activation.MimeType mt =
-                new javax.activation.MimeType(contentType);
-            return new MimeType(mt.getPrimaryType(), mt.getSubType());
-        } catch (final MimeTypeParseException e) {
-            LOG.warn("Ignored invalid mime type: "+contentType);
-            return MimeType.BINARY_DATA;
-        }
-    }
-
-
-    private String toCharset(final String contentType) {
-        try {
-            final javax.activation.MimeType mt =
-                new javax.activation.MimeType(contentType);
-            return mt.getParameter("charset");
-        } catch (final MimeTypeParseException e) {
-            return null;
-        }
-    }
-
-
-    private void handleException(final HttpServletResponse response,
-                                 final Exception e) throws IOException {
-        response.getWriter().write("File update failed. "+e.getMessage());
-        LOG.error("File update failed "+e.getMessage(), e);
     }
 }

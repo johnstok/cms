@@ -18,9 +18,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.activation.MimeTypeParseException;
-import javax.ejb.EJB;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -28,14 +25,10 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
 
 import ccc.api.CommandFailedException;
-import ccc.api.Commands;
 import ccc.api.FileDelta;
 import ccc.api.ID;
-import ccc.api.MimeType;
 import ccc.api.ResourceSummary;
 import ccc.domain.File;
-import ccc.domain.Snapshot;
-import ccc.services.LocalCommands;
 
 
 /**
@@ -43,19 +36,23 @@ import ccc.services.LocalCommands;
  *
  * @author Civic Computing Ltd.
  */
-public class CreateFileServlet extends HttpServlet {
+public class CreateFileServlet
+    extends
+        MultipartServlet {
     private static final Logger LOG = Logger.getLogger(CreateFileServlet.class);
-
-    @EJB(name=Commands.NAME) private LocalCommands _commands;
 
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void service(final HttpServletRequest request,
-                        final HttpServletResponse response) throws IOException {
+    public void doPost(final HttpServletRequest request,
+                      final HttpServletResponse response) throws IOException {
 
+
+        /* ====================================================================
+         * Parse the request payload.
+         * ================================================================== */
         response.setContentType("text/html");
 
         final MultipartForm form = new MultipartForm(request);
@@ -96,11 +93,15 @@ public class CreateFileServlet extends HttpServlet {
                 Long.valueOf(lastUpdate.getString()).longValue());
         }
 
+
+        /* ====================================================================
+         * Perform the create.
+         * ================================================================== */
         final InputStream dataStream = file.getInputStream();
 
         try {
             final ResourceSummary rs =
-                _commands.createFile(
+                getCommands().createFile(
                     parentId,
                     delta,
                     name.getString(),
@@ -121,48 +122,5 @@ public class CreateFileServlet extends HttpServlet {
                 LOG.error("DataStream closing failed "+e.getMessage(), e);
             }
         }
-    }
-
-
-    private MimeType toMimeType(final String contentType) {
-        try {
-            final javax.activation.MimeType mt =
-                new javax.activation.MimeType(contentType);
-            return new MimeType(mt.getPrimaryType(), mt.getSubType());
-        } catch (final MimeTypeParseException e) {
-            LOG.warn("Ignored invalid mime type: "+contentType);
-            return MimeType.BINARY_DATA;
-        }
-    }
-
-
-    private String toCharset(final String contentType) {
-        try {
-            final javax.activation.MimeType mt =
-                new javax.activation.MimeType(contentType);
-            return mt.getParameter("charset");
-        } catch (final MimeTypeParseException e) {
-            return null;
-        }
-    }
-
-
-    private void handleException(final HttpServletResponse response,
-                                 final Exception e) throws IOException {
-        response.getWriter().write("File Upload failed. "+e.getMessage());
-        LOG.error("File Upload failed "+e.getMessage(), e);
-    }
-
-
-    /**
-     * Convert a {@link ResourceSummary} to JSON.
-     *
-     * @param rs The {@link ResourceSummary} to convert.
-     * @return The JSON representation,as a string.
-     */
-    public String toJSON(final ResourceSummary rs) {
-        final Snapshot s = new Snapshot();
-        rs.toJson(s);
-        return s.getDetail();
     }
 }
