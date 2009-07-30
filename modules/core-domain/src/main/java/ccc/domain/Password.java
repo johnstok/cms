@@ -90,12 +90,19 @@ public class Password extends Entity {
             final byte[] salt = saltString.getBytes(utf8);
             final byte[] password = passwordString.getBytes(utf8);
 
-            // Compute
+            // Compute initial hash
             digest.reset();
             digest.update(salt);
             digest.update(password);
+            byte[] hash = digest.digest();
 
-            return digest.digest();
+            // Perform 1000 repetitions
+            for (int i = 0; i < 1000; i++) {
+                digest.reset();
+                hash = digest.digest(hash);
+            }
+
+            return hash;
 
         } catch (final NoSuchAlgorithmException e) {
             throw new CCCException("Failed to compute password digest.", e);

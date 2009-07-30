@@ -76,8 +76,14 @@ public class PasswordTest extends TestCase {
             digest.reset();
             digest.update(salt);
             digest.update(password);
+            byte[] hash = digest.digest();
 
-            return digest.digest();
+            for (int i = 0; i < 1000; i++) {
+                digest.reset();
+                hash = digest.digest(hash);
+            }
+
+            return hash;
 
         } catch (final NoSuchAlgorithmException e) {
             throw new CCCException("Failed to compute password digest.", e);

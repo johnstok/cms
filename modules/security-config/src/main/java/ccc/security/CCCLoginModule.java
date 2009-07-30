@@ -101,6 +101,12 @@ public class CCCLoginModule implements LoginModule {
     /** {@inheritDoc} */
     @Override
     public boolean login() throws LoginException {
+        try { // 50ms wait impedes brute force password attacks.
+            Thread.sleep(50);
+        } catch (final InterruptedException e) {
+            return false;
+        }
+
         try {
             final NameCallback nc = new NameCallback("Name");
             final PasswordCallback pc = new PasswordCallback("Password", false);
