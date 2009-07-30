@@ -159,3 +159,5 @@ apollo
 timestamp
 parameterized
 clazz
+multipart
+payload
