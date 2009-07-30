@@ -154,26 +154,14 @@ public class IGlobalsImpl
     /** {@inheritDoc} */
     @Override
     public void unexpectedError(final Throwable e, final String action) {
-        // TODO: Add clause for InvocationException
-        // TODO: Add clause for IncompatibleRemoteServiceException
         if (e instanceof CommandFailedException) {
             final CommandFailedException re = (CommandFailedException) e;
             new ErrorDialog(re, action, this).show();
-        } else if (e instanceof NullPointerException) {
-            new ErrorDialog(e, action, this).show();
-            GWT.log("An unexpected error occured.", e);
+        } else if (e instanceof SessionTimeoutException) {
+            alert(uiConstants().sessionTimeOutPleaseRestart());
         } else {
-            final String errorMesssage = e.getMessage();
-            final String causeMessage =
-                (null==e.getCause()) ? "" : e.getCause().getMessage();
-            if (errorMesssage.startsWith("<!-- LOGIN_REQUIRED -->")){
-                alert(uiConstants().sessionTimeOutPleaseRestart());
-            } else if (causeMessage.startsWith("<!-- LOGIN_REQUIRED -->")) {
-                alert(uiConstants().sessionTimeOutPleaseRestart());
-            } else {
-                GWT.log("An unexpected error occured.", e);
-                new ErrorDialog(e, action, this).show();
-            }
+            GWT.log("An unexpected error occured.", e);
+            new ErrorDialog(e, action, this).show();
         }
     }
 

@@ -29,11 +29,11 @@ public interface ActionNameConstants extends Constants {
     String unknownAction();
 
     /**
-     * "Check unique username".
+     * "Check unique resource name".
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Check unique username")
+    @DefaultStringValue("Check unique resource name")
     String checkUniqueResourceName();
 
     /**

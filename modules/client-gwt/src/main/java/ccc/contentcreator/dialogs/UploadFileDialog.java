@@ -14,6 +14,7 @@ package ccc.contentcreator.dialogs;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
+import ccc.contentcreator.client.SessionTimeoutException;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
@@ -87,13 +88,16 @@ public class UploadFileDialog extends AbstractEditDialog {
             Events.Submit,
             new Listener<FormEvent>() {
                 public void handleEvent(final FormEvent be) {
-                    hide();
-                    if (be.resultHtml.startsWith("File Upload failed.")
-                      || be.resultHtml.startsWith("<!-- LOGIN_REQUIRED -->")) {
-                        new IGlobalsImpl().unexpectedError(
-                          new Exception(be.resultHtml),
-                          _constants.updateFile());
+                    if (be.resultHtml.startsWith("File Upload failed.")) {
+                        _globals.unexpectedError(
+                            new Exception(be.resultHtml),
+                            _constants.uploadFile());
+                    } else if (SessionTimeoutException.isTimeoutMessage(be.resultHtml)) {
+                        _globals.unexpectedError(
+                            new SessionTimeoutException(be.resultHtml),
+                            _constants.uploadFile());
                     } else {
+                        close();
                         ssm.create(
                             ResourceSummaryModelData.create(
                                 JSONParser.parse(be.resultHtml)), _parent);

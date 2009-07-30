@@ -128,7 +128,7 @@ public class FileUploadAcceptanceTest
         final String body = updateTextFile(c, "Update!", rs);
 
         // ASSERT
-        assertEquals("File was updated successfully.", body);
+        assertEquals("NULL", body);
         assertEquals("Update!", previewContent(rs, c));
     }
 

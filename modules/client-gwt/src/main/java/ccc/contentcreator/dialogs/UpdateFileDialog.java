@@ -14,6 +14,7 @@ package ccc.contentcreator.dialogs;
 import ccc.api.ID;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
+import ccc.contentcreator.client.SessionTimeoutException;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 
@@ -40,7 +41,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
     private final Image _image =
         new Image("images/gxt/shared/large-loading.gif");
 
-    private static final String UPDATE_OK = "File was updated successfully.";
+    private static final String UPDATE_OK = "NULL";
     /**
      * Constructor.
      *
@@ -71,12 +72,15 @@ public class UpdateFileDialog extends AbstractEditDialog {
         _panel.addListener(
             Events.Submit,
             new Listener<FormEvent>() {
-
                 public void handleEvent(final FormEvent be) {
-                    hide();
-                    if (!be.resultHtml.equals(UPDATE_OK)
-                       || be.resultHtml.startsWith("<!-- LOGIN_REQUIRED -->")) {
-                        new IGlobalsImpl().unexpectedError(
+                    if (be.resultHtml.equals(UPDATE_OK)) {
+                        close();
+                    } else if (SessionTimeoutException.isTimeoutMessage(be.resultHtml)) {
+                        _globals.unexpectedError(
+                            new SessionTimeoutException(be.resultHtml),
+                            _constants.updateFile());
+                    } else {
+                        _globals.unexpectedError(
                             new Exception(be.resultHtml),
                             _constants.updateFile());
                     }

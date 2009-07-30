@@ -73,7 +73,7 @@ public class UpdateFileServlet extends MultipartServlet {
 
         try {
             getCommands().updateFile(fileId, delta, dataStream);
-            response.getWriter().write("File was updated successfully.");
+            response.getWriter().write("NULL");
 
         } catch (final CommandFailedException e) {
             handleException(response, e);
