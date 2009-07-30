@@ -33,12 +33,12 @@ import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 
-import com.extjs.gxt.ui.client.Events;
+import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
+import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
-import com.extjs.gxt.ui.client.widget.toolbar.TextToolItem;
 
 
 /**
@@ -104,10 +104,12 @@ public class MainMenu
     private void createContentRootMenu(final String rootName,
                                        final String label) {
 
-        final TextToolItem rootItem = new TextToolItem(label);
+        final Button rootItem = new Button(label);
         rootItem.setId(rootName+"Root-menu");
 
         final Menu rootMenu = new Menu();
+        rootMenu.setEnableScrolling(false);
+        rootMenu.setAutoWidth(true);
         rootMenu.addListener(
             Events.BeforeShow,
             new Listener<MenuEvent>() {

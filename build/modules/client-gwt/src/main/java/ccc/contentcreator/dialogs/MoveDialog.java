@@ -20,9 +20,9 @@ import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 
-import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
+import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.TextField;
@@ -84,7 +84,7 @@ public class MoveDialog extends AbstractEditDialog {
                 public void handleEvent(final ComponentEvent be) {
                     final FolderSelectionDialog folderSelect =
                         new FolderSelectionDialog(root);
-                    folderSelect.addListener(Events.Close,
+                    folderSelect.addListener(Events.Hide,
                         new Listener<ComponentEvent>() {
                         public void handleEvent(final ComponentEvent ce) {
                             _parent = folderSelect.selectedFolder();
@@ -118,7 +118,7 @@ public class MoveDialog extends AbstractEditDialog {
                     /** {@inheritDoc} */
                     @Override protected void onNoContent(final Response response) {
                         _ssm.move(_target, _parent, _ssm.treeSelection());
-                        close();
+                        hide();
                     }
                 }.execute();
             }

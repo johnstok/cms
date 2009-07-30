@@ -43,7 +43,7 @@ import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.dialogs.UpdateFileDialog;
 import ccc.contentcreator.dialogs.UpdatePageDialog;
 
-import com.extjs.gxt.ui.client.Events;
+import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -134,7 +134,7 @@ public class ResourceContextMenu
         removeAll();
         final ResourceSummaryModelData item = _table.tableSelection();
         if (item == null) { // don't display menu if no item is selected.
-            be.doit = false;
+            be.setCancelled(false);
             return;
         }
 

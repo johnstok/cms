@@ -18,7 +18,7 @@ import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.ResourceTree;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
-import com.extjs.gxt.ui.client.event.ComponentEvent;
+import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.button.Button;
@@ -59,10 +59,10 @@ public class ResourceSelectionDialog extends Window {
 
         final Button save = new Button(
             _globals.uiConstants().save(),
-            new SelectionListener<ComponentEvent>() {
+            new SelectionListener<ButtonEvent>() {
                 @Override
-                public void componentSelected(final ComponentEvent ce) {
-                    close();
+                public void componentSelected(final ButtonEvent ce) {
+                    hide();
                 }
             }
         );

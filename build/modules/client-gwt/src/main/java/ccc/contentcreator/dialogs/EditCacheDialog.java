@@ -18,8 +18,8 @@ import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 
-import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -161,7 +161,7 @@ public class EditCacheDialog extends AbstractEditDialog {
                     updatedDs
                 ){
                     @Override protected void onNoContent(final Response response) {
-                        close();
+                        hide();
                     }
                 }.execute();
             }

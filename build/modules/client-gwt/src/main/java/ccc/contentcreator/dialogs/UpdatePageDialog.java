@@ -183,7 +183,7 @@ public class UpdatePageDialog
                         final ResourceSummaryModelData md = rt().tableSelection();
                         md.setWorkingCopy(true);
                         rt().update(md);
-                        close();
+                        hide();
                     }
 
                 }.execute();

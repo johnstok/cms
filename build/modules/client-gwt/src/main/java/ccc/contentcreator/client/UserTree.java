@@ -14,8 +14,8 @@ package ccc.contentcreator.client;
 
 import ccc.contentcreator.api.UIConstants;
 
-import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
+import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.TreeEvent;
 import com.extjs.gxt.ui.client.widget.tree.Tree;
@@ -55,7 +55,7 @@ public class UserTree extends Tree {
 
         /** {@inheritDoc} */
         public void handleEvent(final TreeEvent te) {
-            _ut.displayUsersFor(te.tree.getSelectedItem());
+            _ut.displayUsersFor(te.getTree().getSelectedItem());
         }
 
     }

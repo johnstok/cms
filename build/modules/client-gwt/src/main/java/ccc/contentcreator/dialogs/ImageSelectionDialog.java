@@ -103,7 +103,7 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
                         md.getTitle(),
                         md.getId().toString(),
                         _elementid);
-                    close();
+                    hide();
                 }
             }
         };

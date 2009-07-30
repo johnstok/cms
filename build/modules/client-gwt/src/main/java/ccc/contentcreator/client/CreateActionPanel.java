@@ -18,10 +18,10 @@ import java.util.Map;
 import ccc.api.CommandType;
 import ccc.contentcreator.api.UIConstants;
 
-import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
+import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.DataList;
@@ -73,7 +73,7 @@ public class CreateActionPanel
             Events.SelectionChange,
             new Listener<ComponentEvent>() {
                 public void handleEvent(final ComponentEvent ce) {
-                    final DataList l = (DataList) ce.component;
+                    final DataList l = (DataList) ce.getComponent();
                     _parameters.removeAll();
 
                     final CommandType data =

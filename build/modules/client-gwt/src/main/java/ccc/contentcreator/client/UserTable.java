@@ -25,16 +25,16 @@ import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.UserSummaryModelData;
 import ccc.contentcreator.dialogs.EditUserPwDialog;
 
-import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
 import com.extjs.gxt.ui.client.data.PagingLoader;
 import com.extjs.gxt.ui.client.data.PagingModelMemoryProxy;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
+import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
-import com.extjs.gxt.ui.client.widget.PagingToolBar;
+import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.Radio;
 import com.extjs.gxt.ui.client.widget.form.RadioGroup;
 import com.extjs.gxt.ui.client.widget.form.TextField;
@@ -44,9 +44,8 @@ import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
-import com.extjs.gxt.ui.client.widget.toolbar.AdapterToolItem;
+import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
 import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
-import com.extjs.gxt.ui.client.widget.toolbar.TextToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.extjs.gxt.ui.client.widget.tree.TreeItem;
 
@@ -63,8 +62,7 @@ public class UserTable extends TablePanel {
 
     private final RadioGroup _radioGroup = new RadioGroup("searchField");
     private final ToolBar _toolBar = new ToolBar();
-    private final TextToolItem _searchButton;
-    private final AdapterToolItem _ti;
+    private final Button _searchButton;
 
     private final Radio _usernameRadio = new Radio();
     private final Radio _emailRadio = new Radio();
@@ -90,9 +88,8 @@ public class UserTable extends TablePanel {
         _searchString = new TextField<String>();
         _searchString.setToolTip(UI_CONSTANTS.searchToolTip());
         _searchString.setId("searchString");
-        _ti = new AdapterToolItem(_searchString);
 
-        _searchButton = new TextToolItem(UI_CONSTANTS.search());
+        _searchButton = new Button(UI_CONSTANTS.search());
         _searchButton.setId("searchButton");
 
         _searchButton.addListener(Events.Select, new SearchListener());
@@ -166,9 +163,9 @@ public class UserTable extends TablePanel {
         _radioGroup.setFieldLabel(UI_CONSTANTS.searchField());
         _radioGroup.add(_usernameRadio);
         _radioGroup.add(_emailRadio);
-        _toolBar.add(new AdapterToolItem(_radioGroup));
+        _toolBar.add(_radioGroup);
         _toolBar.add(new SeparatorToolItem());
-        _toolBar.add(_ti);
+        _toolBar.add(_searchString);
         _toolBar.add(new SeparatorToolItem());
         _toolBar.add(_searchButton);
         _toolBar.setId("toolbar");

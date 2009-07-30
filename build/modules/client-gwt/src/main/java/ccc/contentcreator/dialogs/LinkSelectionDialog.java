@@ -15,9 +15,9 @@ import ccc.api.ResourceSummary;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.IGlobalsImpl;
 
-import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
+import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.KeyListener;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -67,7 +67,7 @@ public class LinkSelectionDialog extends AbstractEditDialog {
                 public void handleEvent(final ComponentEvent be) {
                     final ResourceSelectionDialog folderSelect =
                         new ResourceSelectionDialog(targetRoot);
-                    folderSelect.addListener(Events.Close,
+                    folderSelect.addListener(Events.Hide,
                         new Listener<ComponentEvent>() {
                         public void handleEvent(final ComponentEvent ce) {
                             _md = folderSelect.selectedResource();
@@ -123,7 +123,7 @@ public class LinkSelectionDialog extends AbstractEditDialog {
                         _linkName.getValue(),
                         _uuid,
                         _elementid);
-                    close();
+                    hide();
                 }
             }
         };

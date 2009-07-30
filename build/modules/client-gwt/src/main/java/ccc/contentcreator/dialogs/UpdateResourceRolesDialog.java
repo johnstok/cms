@@ -92,7 +92,7 @@ public class UpdateResourceRolesDialog
                     /** {@inheritDoc} */
                     @Override
                     protected void onNoContent(final Response response) {
-                        close();
+                        hide();
                     }
                 }.execute();
             }

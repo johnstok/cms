@@ -88,7 +88,7 @@ public class CreateFolderDialog extends AbstractEditDialog {
                         final ResourceSummaryModelData newFolder =
                             new ResourceSummaryModelData(folder);
                         _ssm.create(newFolder, _parent);
-                        close();
+                        hide();
                     }
                 }.execute();
             }

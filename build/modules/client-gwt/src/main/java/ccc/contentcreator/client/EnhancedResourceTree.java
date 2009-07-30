@@ -18,7 +18,7 @@ import ccc.api.ResourceSummary;
 import ccc.api.UserSummary;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 
-import com.extjs.gxt.ui.client.Events;
+import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.TreeEvent;
 import com.extjs.gxt.ui.client.store.StoreEvent;
@@ -69,8 +69,8 @@ public class EnhancedResourceTree extends FolderResourceTree {
                         (TreeStoreEvent<ResourceSummaryModelData>) se;
                     final boolean itemSelected = null!=getSelectedItem();
                      if (itemSelected
-                         && te.parent == getSelectedItem().getModel()) {
-                         _rt.displayResourcesFor(te.children);
+                         && te.getParent() == getSelectedItem().getModel()) {
+                         _rt.displayResourcesFor(te.getChildren());
                      }
                 }
 

@@ -29,7 +29,7 @@ final class ResourceIconProvider
                                  final String property) {
         switch (model.getType()) {
             case FOLDER:
-                return "images/gxt/icons/folder.gif";
+                return "gxt/2.0.1/resources/images/gxt/icons/folder.gif";
             case PAGE:
                 return "images/icons/page.png";
             case TEMPLATE:

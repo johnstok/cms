@@ -52,24 +52,24 @@ public class CreateUserDialog
         _username.setFieldLabel(constants().username());
         _username.setAllowBlank(false);
         _username.setMinLength(IGlobals.MIN_USER_NAME_LENGTH);
-        _username.setId(constants().username());
+        _username.setId("username");
         addField(_username);
 
         _email.setFieldLabel(constants().email());
         _email.setAllowBlank(false);
-        _email.setId(constants().email());
+        _email.setId("user_email");
         addField(_email);
 
         _password1.setPassword(true);
         _password1.setFieldLabel(constants().password());
         _password1.setAllowBlank(false);
-        _password1.setId(constants().password());
+        _password1.setId("user_password");
         addField(_password1);
 
         _password2.setPassword(true);
         _password2.setFieldLabel(constants().confirmPassword());
         _password2.setAllowBlank(false);
-        _password2.setId(constants().confirmPassword());
+        _password2.setId("user_confirmPassword");
         addField(_password2);
 
         setPanelId("UserPanel");

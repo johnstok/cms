@@ -17,6 +17,7 @@ import ccc.contentcreator.binding.ResourceSummaryModelData;
 
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
+import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 
 
@@ -36,13 +37,15 @@ public final class ResourceTypeRendererFactory  {
         implements
             GridCellRenderer<ActionSummaryModelData> {
 
+        /** {@inheritDoc} */
         @Override
-        public String render(final ActionSummaryModelData model,
+        public Object render(final ActionSummaryModelData model,
                              final String property,
                              final ColumnData config,
                              final int rowIndex,
                              final int colIndex,
-                             final ListStore<ActionSummaryModelData> store) {
+                             final ListStore<ActionSummaryModelData> store,
+                             final Grid<ActionSummaryModelData> grid) {
 
             return resolveIcon(model.getSubjectType());
         }
@@ -57,13 +60,16 @@ public final class ResourceTypeRendererFactory  {
         implements
             GridCellRenderer<ResourceSummaryModelData> {
 
+
+        /** {@inheritDoc} */
         @Override
         public String render(final ResourceSummaryModelData model,
                              final String property,
                              final ColumnData config,
                              final int rowIndex,
                              final int colIndex,
-                             final ListStore<ResourceSummaryModelData> store) {
+                             final ListStore<ResourceSummaryModelData> store,
+                             final Grid<ResourceSummaryModelData> grid) {
 
             return resolveIcon(model.getType());
         }

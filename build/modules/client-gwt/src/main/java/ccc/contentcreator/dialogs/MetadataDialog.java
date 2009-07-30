@@ -27,18 +27,18 @@ import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.contentcreator.validation.Validator;
 
-import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.event.ToolBarEvent;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.Text;
+import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.grid.CellEditor;
 import com.extjs.gxt.ui.client.widget.grid.CheckBoxSelectionModel;
@@ -48,7 +48,6 @@ import com.extjs.gxt.ui.client.widget.grid.EditorGrid;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
-import com.extjs.gxt.ui.client.widget.toolbar.TextToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.http.client.Response;
 
@@ -95,7 +94,7 @@ public class MetadataDialog extends AbstractEditDialog {
             @Override
             public void handleEvent(final BoxComponentEvent be) {
                 final int height =
-                    be.height - (IGlobals.DEFAULT_HEIGHT - GRID_HEIGHT);
+                    be.getHeight() - (IGlobals.DEFAULT_HEIGHT - GRID_HEIGHT);
                 if (height > (IGlobals.DEFAULT_HEIGHT - GRID_HEIGHT)) {
                     _grid.setHeight(height);
                 }
@@ -183,10 +182,10 @@ public class MetadataDialog extends AbstractEditDialog {
         final ToolBar toolBar = new ToolBar();
         toolBar.add(new SeparatorToolItem());
 
-        final TextToolItem add = new TextToolItem(constants().newLabel());
+        final Button add = new Button(constants().newLabel());
         add.setId("new-metadatum");
-        add.addSelectionListener(new SelectionListener<ToolBarEvent>() {
-            @Override public void componentSelected(final ToolBarEvent ce) {
+        add.addSelectionListener(new SelectionListener<ButtonEvent>() {
+            @Override public void componentSelected(final ButtonEvent ce) {
                 final ModelData datum = new BaseModelData();
                 datum.set("key", "");
                 datum.set("value", "");
@@ -199,10 +198,10 @@ public class MetadataDialog extends AbstractEditDialog {
 
         toolBar.add(new SeparatorToolItem());
 
-        final TextToolItem remove = new TextToolItem(constants().remove());
+        final Button remove = new Button(constants().remove());
         remove.setId("remove-metadatum");
-        remove.addSelectionListener(new SelectionListener<ToolBarEvent>() {
-            @Override public void componentSelected(final ToolBarEvent ce) {
+        remove.addSelectionListener(new SelectionListener<ButtonEvent>() {
+            @Override public void componentSelected(final ButtonEvent ce) {
                 ((EditorGrid<ModelData>) _grid).stopEditing();
                 for (final ModelData item
                         : _grid.getSelectionModel().getSelectedItems()) {
@@ -298,7 +297,7 @@ public class MetadataDialog extends AbstractEditDialog {
                             _resource.setTitle(title);
                             _resource.setDescription(description);
                             _ssm.update(_resource);
-                            MetadataDialog.this.close();
+                            MetadataDialog.this.hide();
                         }
                 }.execute();
             }

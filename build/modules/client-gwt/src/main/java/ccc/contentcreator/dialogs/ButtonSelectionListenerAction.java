@@ -9,9 +9,11 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.client;
+package ccc.contentcreator.dialogs;
 
-import com.extjs.gxt.ui.client.event.ComponentEvent;
+import ccc.contentcreator.client.Action;
+
+import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 
 /**
@@ -19,9 +21,9 @@ import com.extjs.gxt.ui.client.event.SelectionListener;
  *
  * @author Civic Computing Ltd.
  */
-public final class SelectionListenerAction
-    extends
-        SelectionListener<ComponentEvent> {
+final class ButtonSelectionListenerAction
+extends
+SelectionListener<ButtonEvent> {
 
     private final Action _action;
 
@@ -30,12 +32,12 @@ public final class SelectionListenerAction
      *
      * @param action The Action.
      */
-    public SelectionListenerAction(final Action action) {
+    ButtonSelectionListenerAction(final Action action) {
         _action = action;
     }
 
     /** {@inheritDoc} */
-    @Override public void componentSelected(final ComponentEvent ce) {
+    @Override public void componentSelected(final ButtonEvent ce) {
         _action.execute();
     }
 }

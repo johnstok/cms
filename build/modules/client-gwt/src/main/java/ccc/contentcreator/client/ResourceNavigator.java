@@ -18,9 +18,9 @@ import java.util.List;
 import ccc.api.ResourceSummary;
 import ccc.api.UserSummary;
 
-import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
+import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.layout.AccordionLayout;
@@ -72,6 +72,7 @@ public class ResourceNavigator extends ContentPanel {
 
             final ContentPanel contentPanel = new ContentPanel();
             contentPanel.getHeader().setId(root.getName()+"-navigator");
+            contentPanel.setAnimCollapse(false);
             contentPanel.setScrollMode(Scroll.AUTO);
             contentPanel.setHeading(root.getName());
             contentPanel.add(tree);
@@ -90,6 +91,7 @@ public class ResourceNavigator extends ContentPanel {
         _usersTree = new UserTree(_view);
         if (user.getRoles().contains(IGlobals.ADMINISTRATOR)) {
             final ContentPanel usersPanel = new ContentPanel();
+            usersPanel.setAnimCollapse(false);
             usersPanel.getHeader().setId("user-navigator");
             usersPanel.setScrollMode(Scroll.AUTO);
             usersPanel.setHeading("Users");
@@ -108,6 +110,7 @@ public class ResourceNavigator extends ContentPanel {
         _actionTree = new ActionTree(_view);
         final ContentPanel actionPanel = new ContentPanel();
         actionPanel.getHeader().setId("action-navigator");
+        actionPanel.setAnimCollapse(false);
         actionPanel.setScrollMode(Scroll.AUTO);
         actionPanel.setHeading("Actions");
         actionPanel.add(_actionTree);

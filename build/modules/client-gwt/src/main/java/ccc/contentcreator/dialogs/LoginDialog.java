@@ -14,9 +14,8 @@ package ccc.contentcreator.dialogs;
 import ccc.contentcreator.actions.GetPropertyAction;
 import ccc.contentcreator.actions.LoginAction;
 import ccc.contentcreator.client.IGlobalsImpl;
-import ccc.contentcreator.client.SelectionListenerAction;
 
-import com.extjs.gxt.ui.client.event.ComponentEvent;
+import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.form.TextField;
@@ -46,12 +45,12 @@ public class LoginDialog extends AbstractEditDialog {
         setPanelId("LoginPanel");
 
         _username.setFieldLabel(constants().username());
-        _username.setId(constants().username());
+        _username.setId("username");
         _username.setAllowBlank(false);
         addField(_username);
 
         _password.setFieldLabel(constants().password());
-        _password.setId(constants().password());
+        _password.setId("password");
         _password.setPassword(true);
         _password.setAllowBlank(false);
         addField(_password);
@@ -68,8 +67,8 @@ public class LoginDialog extends AbstractEditDialog {
 
     /** {@inheritDoc} */
     @Override
-    protected SelectionListener<ComponentEvent> saveAction() {
-        return new SelectionListenerAction(new LoginAction(LoginDialog.this));
+    protected SelectionListener<ButtonEvent> saveAction() {
+        return new ButtonSelectionListenerAction(new LoginAction(LoginDialog.this));
     }
 
     public void loginFailed() {

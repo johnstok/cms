@@ -18,7 +18,7 @@ import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
-import com.extjs.gxt.ui.client.event.ComponentEvent;
+import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.button.Button;
@@ -56,13 +56,13 @@ public class FolderSelectionDialog extends Window {
         add(_tree);
         final Button save = new Button(
             _globals.uiConstants().ok(),
-            new SelectionListener<ComponentEvent>() {
+            new SelectionListener<ButtonEvent>() {
                 @Override
-                public void componentSelected(final ComponentEvent ce) {
+                public void componentSelected(final ButtonEvent ce) {
                     if (null==_tree.getSelectedItem()) {
                         return; // No selection made.
                     }
-                    close();
+                    hide();
                 }});
         save.setId("FolderSelectSave");
         addButton(save);

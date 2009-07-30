@@ -27,9 +27,9 @@ import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.contentcreator.validation.Validator;
 
-import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
@@ -106,7 +106,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
             @Override
             public void handleEvent(final BoxComponentEvent be) {
                 final int height =
-                    be.height - (IGlobals.DEFAULT_HEIGHT - TEXT_AREA_HEIGHT);
+                    be.getHeight() - (IGlobals.DEFAULT_HEIGHT - TEXT_AREA_HEIGHT);
                 if (height > (IGlobals.DEFAULT_HEIGHT - TEXT_AREA_HEIGHT)) {
                     _definition.setHeight(height);
                     _body.setHeight(height);
@@ -153,7 +153,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
 
         _name.setFieldLabel(_constants.name());
         _name.setAllowBlank(false);
-        _name.setId(_constants.name());
+        _name.setId("name");
         _first.add(_name, new FormData("95%"));
 
         _mimePrimary.setFieldLabel(_constants.mimePrimaryType());
@@ -173,7 +173,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
 
         _definition.setFieldLabel("content xml");
         _definition.setAllowBlank(false);
-        _definition.setId("content xml");
+        _definition.setId("content_xml");
         _definition.setHeight(TEXT_AREA_HEIGHT);
 
         _second.add(_definition, new FormData("95%"));
@@ -187,7 +187,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
 
         _body.setFieldLabel(_constants.body());
         _body.setAllowBlank(false);
-        _body.setId(_constants.body());
+        _body.setId("body");
         _body.setHeight(TEXT_AREA_HEIGHT);
 
         _third.add(_body, new FormData("95%"));
@@ -260,7 +260,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                                     _ssm.create(
                                         new ResourceSummaryModelData(template),
                                         _ssm.treeSelection());
-                                    close();
+                                    hide();
                                 }
                             }.execute();
                         break;
@@ -269,7 +269,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                             /** {@inheritDoc} */
                             @Override protected void onNoContent(final Response response) {
                                 _ssm.update(_proxy);
-                                close();
+                                hide();
                             }
                         }.execute();
                         break;

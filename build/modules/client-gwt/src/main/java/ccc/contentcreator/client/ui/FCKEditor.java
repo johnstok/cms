@@ -23,8 +23,8 @@ import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.dialogs.ImageSelectionDialog;
 import ccc.contentcreator.dialogs.LinkSelectionDialog;
 
-import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
+import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
@@ -128,7 +128,7 @@ public class FCKEditor extends LayoutContainer {
             Events.Resize,
             new Listener<BoxComponentEvent>() {
                 public void handleEvent(final BoxComponentEvent be) {
-                    final String frameWidth = String.valueOf(be.width);
+                    final String frameWidth = String.valueOf(be.getWidth());
                     editorFrame.setWidth(frameWidth);
                     DOM.setElementProperty(
                         editorFrame.getElement(), "width", frameWidth);

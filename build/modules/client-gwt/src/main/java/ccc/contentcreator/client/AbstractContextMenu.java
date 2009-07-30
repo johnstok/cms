@@ -45,7 +45,7 @@ public class AbstractContextMenu
         final MenuItem item = new MenuItem();
         item.setId(id);
         item.setText(text);
-        item.addSelectionListener(new SelectionListenerAction(action));
+        item.addSelectionListener(new MenuSelectionListenerAction(action));
         return item;
     }
 
