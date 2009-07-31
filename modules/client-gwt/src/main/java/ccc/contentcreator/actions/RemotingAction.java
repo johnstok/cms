@@ -47,6 +47,7 @@ public abstract class RemotingAction
     private final String _actionName;
     private final Method _method;
     private final boolean _isSecure;
+    private final static int MS_IE6_1223 = 1223;
 
     /**
      * Constructor.
@@ -113,7 +114,8 @@ public abstract class RemotingAction
                         _actionName);
                 } else if (SC_OK == response.getStatusCode()) {
                     onOK(response);
-                } else if (SC_NO_CONTENT == response.getStatusCode()) {
+                } else if (SC_NO_CONTENT == response.getStatusCode()
+                           || MS_IE6_1223 == response.getStatusCode()) {
                     onNoContent(response);
                 } else {
                     GLOBALS.unexpectedError(
