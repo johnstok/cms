@@ -101,13 +101,6 @@ public class HistoryDialog
 
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
-        final ColumnConfig actionColumn =
-            new ColumnConfig(
-                LogEntrySummaryModelData.Property.LOCALISED_ACTION.name(),
-                _constants.action(),
-                150);
-        configs.add(actionColumn);
-
         final ColumnConfig userColumn =
             new ColumnConfig(
                 LogEntrySummaryModelData.Property.ACTOR.name(),
