@@ -11,7 +11,11 @@
  */
 package ccc.contentcreator.dialogs;
 
+import ccc.api.CommandFailedException;
+import ccc.api.Failure;
+import ccc.api.JsonKeys;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
+import ccc.contentcreator.client.GwtJson;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SessionTimeoutException;
@@ -28,6 +32,7 @@ import com.extjs.gxt.ui.client.widget.form.FileUploadField;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.HiddenField;
 import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.Image;
 
@@ -88,19 +93,26 @@ public class UploadFileDialog extends AbstractEditDialog {
             Events.Submit,
             new Listener<FormEvent>() {
                 public void handleEvent(final FormEvent be) {
-                    if (be.getResultHtml().startsWith("File Upload failed.")) {
-                        _globals.unexpectedError(
-                            new Exception(be.getResultHtml()),
-                            _constants.uploadFile());
-                    } else if (SessionTimeoutException.isTimeoutMessage(be.getResultHtml())) {
+                    if (SessionTimeoutException.isTimeoutMessage(be.getResultHtml())) {
                         _globals.unexpectedError(
                             new SessionTimeoutException(be.getResultHtml()),
                             _constants.uploadFile());
                     } else {
-                        close();
-                        ssm.create(
-                            ResourceSummaryModelData.create(
-                                JSONParser.parse(be.getResultHtml())), _parent);
+
+                        final JSONObject o =
+                            JSONParser.parse(be.getResultHtml()).isObject();
+
+                        if (o.containsKey(JsonKeys.CODE)) { // CommandFailedEx
+                            _globals.unexpectedError(
+                                new CommandFailedException(
+                                    new Failure(new GwtJson(o))),
+                                _constants.uploadFile());
+                        } else {
+                            close();
+                            ssm.create(
+                                ResourceSummaryModelData.create(
+                                    JSONParser.parse(be.getResultHtml())), _parent);
+                        }
                     }
                 }
             }

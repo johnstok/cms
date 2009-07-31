@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.CommandFailedException;
 import ccc.api.Commands;
 import ccc.api.MimeType;
 import ccc.api.ResourceSummary;
@@ -89,9 +90,10 @@ public abstract class MultipartServlet
      * @throws IOException If writing to the response fails.
      */
     protected void handleException(final HttpServletResponse response,
-                                   final Exception e) throws IOException {
-        response.getWriter().write("File Upload failed. "+e.getMessage());
-        LOG.error("File Upload failed "+e.getMessage(), e);
+                                   final CommandFailedException e)
+    throws IOException {
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        response.getWriter().write(new Snapshot(e.getFailure()).getDetail());
     }
 
 

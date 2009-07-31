@@ -26,12 +26,12 @@ import org.apache.commons.httpclient.methods.multipart.FilePart;
 import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
-import org.apache.log4j.Logger;
 import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
 import ccc.api.CommandFailedException;
+import ccc.api.Failure;
 import ccc.api.ResourceSummary;
 import ccc.domain.Snapshot;
 import ccc.services.Queries;
@@ -48,14 +48,13 @@ import ccc.ws.UserSummaryReader;
 
 
 /**
- * TODO: Add a description for this type.
+ * Tests for file upload.
  *
  * @author Civic Computing Ltd.
  */
 public class FileUploadAcceptanceTest
     extends
         TestCase {
-    private static Logger log = Logger.getLogger(FileUploadAcceptanceTest.class);
 
     static {
         final ResteasyProviderFactory pFactory =
@@ -81,8 +80,9 @@ public class FileUploadAcceptanceTest
     /**
      * Test.
      * @throws IOException If the test fails.
+     * @throws CommandFailedException If the test fails.
      */
-    public void testCreateFile() throws IOException {
+    public void testCreateFile() throws IOException, CommandFailedException {
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
@@ -95,6 +95,39 @@ public class FileUploadAcceptanceTest
 
         // ACT
         final ResourceSummary rs = createFile(fName, "Hello!", c, filesFolder);
+
+
+        // ASSERT
+        assertEquals(fName, rs.getName());
+        assertEquals("/content/files/"+fName, rs.getAbsolutePath());
+        assertEquals("Hello!", previewContent(rs, c));
+    }
+
+
+    /**
+     * Test.
+     * @throws IOException If the test fails.
+     * @throws CommandFailedException If the test fails.
+     */
+    public void testCreateFileRejectsDuplicateNames()
+    throws IOException, CommandFailedException {
+
+        // ARRANGE
+        final String fName = UUID.randomUUID().toString();
+        final HttpClient c = login();
+        final Queries queries =
+            ProxyFactory.create(Queries.class, _secure, c);
+
+        final ResourceSummary filesFolder =
+            queries.resourceForPath("/content/files");
+        final ResourceSummary rs = createFile(fName, "Hello!", c, filesFolder);
+
+        // ACT
+        try {
+            createFile(fName, "Hello!", c, filesFolder);
+        } catch (final CommandFailedException e) {
+            assertEquals(Failure.EXISTS, e.getCode());
+        }
 
 
         // ASSERT
@@ -133,13 +166,43 @@ public class FileUploadAcceptanceTest
     }
 
 
+    /**
+     * Test.
+     * @throws IOException If the test fails.
+     * @throws CommandFailedException If the test fails.
+     */
+    public void testUpdateFileRequiresLock() throws IOException,
+                                                    CommandFailedException {
+
+        // ARRANGE
+        final String fName = UUID.randomUUID().toString();
+        final HttpClient c = login();
+        final Queries queries =
+            ProxyFactory.create(Queries.class, _secure, c);
+
+        final ResourceSummary filesFolder =
+            queries.resourceForPath("/content/files");
+        final ResourceSummary rs = createFile(fName, "Hello!", c, filesFolder);
+
+        // ACT
+        try {
+            updateTextFile(c, "Update!", rs);
+
+        // ASSERT
+        } catch (final CommandFailedException e) {
+            assertEquals(Failure.UNLOCKED, e.getCode());
+        }
+        assertEquals("Hello!", previewContent(rs, c));
+    }
+
+
     /*
      * TODO: Merge into ccc.migration.FileUploader class.
      */
     private String updateTextFile(final HttpClient c,
                                   final String fText,
-                                  final ResourceSummary rs) throws IOException, HttpException {
-
+                                  final ResourceSummary rs)
+    throws IOException, HttpException, CommandFailedException {
         final PostMethod postMethod = new PostMethod(_updateFileUrl);
         final Part[] parts = {
             new StringPart("id", rs.getId().toString()),
@@ -160,7 +223,7 @@ public class FileUploadAcceptanceTest
         if (200==postMethod.getStatusCode()) {
             return body;
         }
-        throw new RuntimeException(body);
+        throw new CommandFailedException(new Failure(new Snapshot(body)));
     }
 
 
@@ -202,7 +265,8 @@ public class FileUploadAcceptanceTest
     private ResourceSummary createFile(final String fName,
                                        final String fText,
                                        final HttpClient c,
-                                       final ResourceSummary filesFolder) throws IOException {
+                                       final ResourceSummary filesFolder)
+    throws IOException, CommandFailedException {
 
         final PostMethod postMethod = new PostMethod(_createFileUrl);
 
@@ -227,7 +291,7 @@ public class FileUploadAcceptanceTest
             if (200==status) {
                 return new ResourceSummary(new Snapshot(body));
             }
-            throw new RuntimeException(status+": "+body);
+            throw new CommandFailedException(new Failure(new Snapshot(body)));
 
         } finally {
             postMethod.releaseConnection();

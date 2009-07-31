@@ -11,7 +11,10 @@
  */
 package ccc.contentcreator.dialogs;
 
+import ccc.api.CommandFailedException;
+import ccc.api.Failure;
 import ccc.api.ID;
+import ccc.contentcreator.client.GwtJson;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SessionTimeoutException;
@@ -26,6 +29,7 @@ import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.FileUploadField;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.HiddenField;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.Image;
 
 
@@ -74,14 +78,17 @@ public class UpdateFileDialog extends AbstractEditDialog {
             new Listener<FormEvent>() {
                 public void handleEvent(final FormEvent be) {
                     if (be.getResultHtml().equals(UPDATE_OK)) {
-                        hide();
+                        close();
                     } else if (SessionTimeoutException.isTimeoutMessage(be.getResultHtml())) {
                         _globals.unexpectedError(
                             new SessionTimeoutException(be.getResultHtml()),
                             _constants.updateFile());
                     } else {
                         _globals.unexpectedError(
-                            new Exception(be.getResultHtml()),
+                            new CommandFailedException(
+                            new Failure(
+                            new GwtJson(
+                                JSONParser.parse(be.getResultHtml()).isObject()))),
                             _constants.updateFile());
                     }
                 }
