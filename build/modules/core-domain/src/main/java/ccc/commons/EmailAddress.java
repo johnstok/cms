@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
  *
  * @version http://www.leshazlewood.com/?p=23 on 29th September 2008.
  *
- * @author Les Hazlewood
+ * @author Les Hazlewood, Civic Computing Ltd.
  */
 public class EmailAddress implements Serializable {
 
