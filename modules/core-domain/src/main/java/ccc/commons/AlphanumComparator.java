@@ -38,14 +38,18 @@ import java.util.Comparator;
  * To use this class:
  *   Use the static "sort" method from the java.util.Collections class:
  *   Collections.sort(your list, new AlphanumComparator());
+ *
+ * @version http://www.davekoelle.com/files/AlphanumComparator.java on 08th August 2008.
+ *
+ * @author Daniel Migowski, Andre Bogus, David Koelle, Civic Computing Ltd.
  */
 public class AlphanumComparator implements Comparator<String>, Serializable {
 
-    private final int _zeroChar = 48;
-    private final int _nineChar = 57;
+    private static final int ZERO_CHAR = 48;
+    private static final int NINE_CHAR = 57;
 
     private boolean isDigit(final char ch) {
-        return ch >= _zeroChar && ch <= _nineChar;
+        return ch >= ZERO_CHAR && ch <= NINE_CHAR;
     }
 
     /**
