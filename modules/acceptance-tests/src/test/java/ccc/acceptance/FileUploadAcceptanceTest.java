@@ -30,10 +30,10 @@ import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
-import ccc.api.CommandFailedException;
-import ccc.api.Failure;
 import ccc.api.FailureCodes;
 import ccc.api.ResourceSummary;
+import ccc.commands.CommandFailedException;
+import ccc.domain.Failure;
 import ccc.domain.Snapshot;
 import ccc.services.Queries;
 import ccc.ws.BooleanProvider;

@@ -15,9 +15,8 @@ import java.util.Date;
 import java.util.Map;
 
 import ccc.api.ActionStatus;
-import ccc.api.CommandFailedException;
 import ccc.api.CommandType;
-import ccc.api.Failure;
+import ccc.commands.CommandFailedException;
 
 
 /**

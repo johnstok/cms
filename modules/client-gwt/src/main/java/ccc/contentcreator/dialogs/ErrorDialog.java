@@ -11,9 +11,9 @@
  */
 package ccc.contentcreator.dialogs;
 
-import ccc.api.CommandFailedException;
 import ccc.api.FailureCodes;
 import ccc.contentcreator.client.IGlobals;
+import ccc.contentcreator.client.RemoteException;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -95,7 +95,7 @@ public class ErrorDialog extends AbstractEditDialog {
      * @param action The action that was performed.
      * @param globals IGlobals implementation.
      */
-    public ErrorDialog(final CommandFailedException e,
+    public ErrorDialog(final RemoteException e,
                        final String action,
                        final IGlobals globals) {
         this(
@@ -106,18 +106,18 @@ public class ErrorDialog extends AbstractEditDialog {
     }
 
 
-    private static String lookupResolution(final int code,
+    private static String lookupResolution(final FailureCodes code,
                                            final IGlobals globals) {
         switch (code) {
-            case FailureCodes.UNLOCKED:
+            case UNLOCKED:
                 return globals.errorResolutions().unlocked();
-            case FailureCodes.EXISTS:
+            case EXISTS:
                 return globals.errorResolutions().exists();
-            case FailureCodes.LOCK_MISMATCH:
+            case LOCK_MISMATCH:
                 return globals.errorResolutions().lockMismatch();
-            case FailureCodes.UNEXPECTED:
+            case UNEXPECTED:
                 return globals.errorResolutions().contactSysAdmin();
-            case FailureCodes.CYCLE:
+            case CYCLE:
                 return globals.errorResolutions().cycle();
             default:
                 return globals.errorResolutions().contactSysAdmin();
@@ -125,18 +125,18 @@ public class ErrorDialog extends AbstractEditDialog {
     }
 
 
-    private static String lookupError(final int code,
+    private static String lookupError(final FailureCodes code,
                                       final IGlobals globals) {
         switch (code) {
-            case FailureCodes.UNLOCKED:
+            case UNLOCKED:
                 return globals.errorDescriptions().unlocked();
-            case FailureCodes.EXISTS:
+            case EXISTS:
                 return globals.errorDescriptions().exists();
-            case FailureCodes.LOCK_MISMATCH:
+            case LOCK_MISMATCH:
                 return globals.errorDescriptions().lockMismatch();
-            case FailureCodes.UNEXPECTED:
+            case UNEXPECTED:
                 return globals.errorDescriptions().unknown();
-            case FailureCodes.CYCLE:
+            case CYCLE:
                 return globals.errorDescriptions().cycle();
             default:
                 return globals.errorDescriptions().unknown();

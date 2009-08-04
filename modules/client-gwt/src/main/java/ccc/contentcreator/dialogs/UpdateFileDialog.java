@@ -11,13 +11,12 @@
  */
 package ccc.contentcreator.dialogs;
 
-import ccc.api.CommandFailedException;
-import ccc.api.Failure;
 import ccc.api.ID;
-import ccc.contentcreator.client.GwtJson;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
+import ccc.contentcreator.client.RemoteException;
 import ccc.contentcreator.client.SessionTimeoutException;
+import ccc.contentcreator.overlays.FailureOverlay;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 
@@ -29,7 +28,6 @@ import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.FileUploadField;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.HiddenField;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.Image;
 
 
@@ -85,10 +83,8 @@ public class UpdateFileDialog extends AbstractEditDialog {
                             _constants.updateFile());
                     } else {
                         _globals.unexpectedError(
-                            new CommandFailedException(
-                            new Failure(
-                            new GwtJson(
-                                JSONParser.parse(be.getResultHtml()).isObject()))),
+                            new RemoteException(
+                                FailureOverlay.fromJson(be.getResultHtml())),
                             _constants.updateFile());
                     }
                 }

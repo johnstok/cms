@@ -16,9 +16,9 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.CommandFailedException;
-import ccc.api.Commands;
 import ccc.api.UserSummary;
+import ccc.commands.CommandFailedException;
+import ccc.services.Commands;
 
 
 /**

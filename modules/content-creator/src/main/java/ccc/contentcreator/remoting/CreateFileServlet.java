@@ -24,10 +24,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
 
-import ccc.api.CommandFailedException;
 import ccc.api.FileDelta;
 import ccc.api.ID;
 import ccc.api.ResourceSummary;
+import ccc.commands.CommandFailedException;
 import ccc.domain.File;
 
 

@@ -7,10 +7,10 @@ import static ccc.domain.PredefinedResourceNames.*;
 import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;
 
-import ccc.api.CommandFailedException;
-import ccc.api.Commands;
 import ccc.api.ResourceSummary;
+import ccc.commands.CommandFailedException;
 import ccc.migration.ServiceLookup;
+import ccc.services.Commands;
 
 /**
  * Entry class for the 'create' application.

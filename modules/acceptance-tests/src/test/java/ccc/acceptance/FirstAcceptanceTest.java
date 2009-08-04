@@ -28,9 +28,7 @@ import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
-import ccc.api.CommandFailedException;
 import ccc.api.Duration;
-import ccc.api.Failure;
 import ccc.api.FailureCodes;
 import ccc.api.MimeType;
 import ccc.api.ResourceSummary;
@@ -38,6 +36,8 @@ import ccc.api.TemplateDelta;
 import ccc.api.UserDelta;
 import ccc.api.UserSummary;
 import ccc.api.Username;
+import ccc.commands.CommandFailedException;
+import ccc.domain.Failure;
 import ccc.services.Queries;
 import ccc.ws.BooleanProvider;
 import ccc.ws.DurationReader;

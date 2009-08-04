@@ -12,6 +12,7 @@
 
 package ccc.contentcreator.tests;
 
+import ccc.api.FailureCodes;
 import ccc.contentcreator.overlays.FailureOverlay;
 
 import com.google.gwt.junit.client.GWTTestCase;
@@ -38,7 +39,7 @@ public class FailureOverlayGwtTest
 
         // ASSERT
         assertEquals("f4c9925b-6d2b-4fb3-902e-6c0d7ad82e28", failure.getId());
-        assertEquals(0, failure.getCode());
+        assertEquals(FailureCodes.UNEXPECTED, failure.getCode());
     }
 
     /** {@inheritDoc} */
@@ -50,6 +51,6 @@ public class FailureOverlayGwtTest
     private static final String EXAMPLE =
           "{"
         +     "\"id\":\"f4c9925b-6d2b-4fb3-902e-6c0d7ad82e28\","
-        +     "\"code\":0"
+        +     "\"code\":\""+FailureCodes.UNEXPECTED.name()+"\""
         + "}";
 }
