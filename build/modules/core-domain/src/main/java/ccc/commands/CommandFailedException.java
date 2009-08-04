@@ -9,7 +9,10 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api;
+package ccc.commands;
+
+import ccc.api.FailureCodes;
+import ccc.domain.Failure;
 
 
 
@@ -33,7 +36,7 @@ public class CommandFailedException
      * @param errorCode
      * @param localExceptionId
      */
-    public CommandFailedException(final int errorCode,
+    public CommandFailedException(final FailureCodes errorCode,
                                   final String localExceptionId) {
         super("CCC Error: "+localExceptionId);
         _failure = new Failure(errorCode, localExceptionId);
@@ -54,7 +57,7 @@ public class CommandFailedException
      *
      * @return The failure's code.
      */
-    public int getCode() {
+    public FailureCodes getCode() {
         return _failure.getCode();
     }
 

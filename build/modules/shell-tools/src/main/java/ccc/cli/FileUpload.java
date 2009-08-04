@@ -18,13 +18,13 @@ import java.util.UUID;
 import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;
 
-import ccc.api.CommandFailedException;
-import ccc.api.Commands;
 import ccc.cli.fileupload.CccServer;
 import ccc.cli.fileupload.Server;
+import ccc.commands.CommandFailedException;
 import ccc.domain.ResourcePath;
 import ccc.migration.FileUploader;
 import ccc.migration.ServiceLookup;
+import ccc.services.Commands;
 import ccc.services.Queries;
 
 

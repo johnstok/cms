@@ -76,7 +76,7 @@
             <element type="string" column="param_value" length="1024"  not-null="true"/>
         </map>
         
-        <component name="_failure" class="ccc.api.Failure">
+        <component name="_failure" class="ccc.domain.Failure">
             <property
                 name="_code"
                 column="failure_code"

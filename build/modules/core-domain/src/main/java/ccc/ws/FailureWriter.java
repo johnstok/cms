@@ -26,8 +26,8 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import ccc.api.Failure;
 import ccc.commons.IO;
+import ccc.domain.Failure;
 import ccc.domain.Snapshot;
 
 

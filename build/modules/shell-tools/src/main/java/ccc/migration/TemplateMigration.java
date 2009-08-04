@@ -17,12 +17,12 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.CommandFailedException;
-import ccc.api.Commands;
 import ccc.api.ID;
 import ccc.api.MimeType;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
+import ccc.commands.CommandFailedException;
+import ccc.services.Commands;
 
 
 /**

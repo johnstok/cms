@@ -9,13 +9,25 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api;
+package ccc.services;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import ccc.api.AliasDelta;
+import ccc.api.CommandType;
+import ccc.api.Duration;
+import ccc.api.ID;
+import ccc.api.PageDelta;
+import ccc.api.Paragraph;
+import ccc.api.ResourceSummary;
+import ccc.api.TemplateDelta;
+import ccc.api.UserDelta;
+import ccc.api.UserSummary;
+import ccc.commands.CommandFailedException;
 
 
 /**

@@ -23,8 +23,6 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.CommandFailedException;
-import ccc.api.Commands;
 import ccc.api.Decimal;
 import ccc.api.FailureCodes;
 import ccc.api.ID;
@@ -33,9 +31,11 @@ import ccc.api.Paragraph;
 import ccc.api.ParagraphType;
 import ccc.api.ResourceSummary;
 import ccc.api.UserSummary;
+import ccc.commands.CommandFailedException;
 import ccc.commons.Resources;
 import ccc.commons.WordCharFixer;
 import ccc.domain.CCCException;
+import ccc.services.Commands;
 import ccc.services.Queries;
 
 /**

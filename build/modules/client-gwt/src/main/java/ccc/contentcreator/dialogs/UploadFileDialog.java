@@ -11,15 +11,14 @@
  */
 package ccc.contentcreator.dialogs;
 
-import ccc.api.CommandFailedException;
-import ccc.api.Failure;
 import ccc.api.JsonKeys;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.client.GwtJson;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
+import ccc.contentcreator.client.RemoteException;
 import ccc.contentcreator.client.SessionTimeoutException;
 import ccc.contentcreator.client.SingleSelectionModel;
+import ccc.contentcreator.overlays.FailureOverlay;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 
@@ -104,8 +103,8 @@ public class UploadFileDialog extends AbstractEditDialog {
 
                         if (o.containsKey(JsonKeys.CODE)) { // CommandFailedEx
                             _globals.unexpectedError(
-                                new CommandFailedException(
-                                    new Failure(new GwtJson(o))),
+                                new RemoteException(
+                                    FailureOverlay.fromJson(be.getResultHtml())),
                                 _constants.uploadFile());
                         } else {
                             close();

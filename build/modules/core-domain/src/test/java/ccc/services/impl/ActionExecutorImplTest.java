@@ -18,17 +18,17 @@ import java.util.HashMap;
 
 import junit.framework.TestCase;
 import ccc.api.ActionStatus;
-import ccc.api.CommandFailedException;
 import ccc.api.CommandType;
-import ccc.api.Commands;
 import ccc.api.FailureCodes;
 import ccc.api.ID;
+import ccc.commands.CommandFailedException;
 import ccc.domain.Action;
 import ccc.domain.Page;
 import ccc.domain.ResourceName;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
+import ccc.services.Commands;
 
 
 /**

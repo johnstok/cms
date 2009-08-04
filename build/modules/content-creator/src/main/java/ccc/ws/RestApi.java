@@ -27,11 +27,8 @@ import javax.ws.rs.core.Context;
 
 import ccc.api.ActionSummary;
 import ccc.api.AliasDelta;
-import ccc.api.CommandFailedException;
 import ccc.api.CommandType;
-import ccc.api.Commands;
 import ccc.api.Duration;
-import ccc.api.Failure;
 import ccc.api.FailureCodes;
 import ccc.api.FileDelta;
 import ccc.api.FileSummary;
@@ -47,9 +44,12 @@ import ccc.api.TemplateSummary;
 import ccc.api.UserDelta;
 import ccc.api.UserSummary;
 import ccc.api.Username;
+import ccc.commands.CommandFailedException;
 import ccc.commons.CCCProperties;
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
+import ccc.domain.Failure;
+import ccc.services.Commands;
 import ccc.services.Queries;
 
 

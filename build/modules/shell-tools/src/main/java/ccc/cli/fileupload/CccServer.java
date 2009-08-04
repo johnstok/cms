@@ -16,14 +16,14 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.CommandFailedException;
-import ccc.api.Commands;
 import ccc.api.FailureCodes;
 import ccc.api.ID;
 import ccc.api.ResourceSummary;
 import ccc.cli.FileUpload;
+import ccc.commands.CommandFailedException;
 import ccc.domain.ResourcePath;
 import ccc.migration.FileUploader;
+import ccc.services.Commands;
 import ccc.services.Queries;
 
 

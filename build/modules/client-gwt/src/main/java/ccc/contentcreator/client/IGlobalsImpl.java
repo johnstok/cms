@@ -11,7 +11,6 @@
  */
 package ccc.contentcreator.client;
 
-import ccc.api.CommandFailedException;
 import ccc.api.UserSummary;
 import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.api.ActionStatusConstants;
@@ -154,8 +153,8 @@ public class IGlobalsImpl
     /** {@inheritDoc} */
     @Override
     public void unexpectedError(final Throwable e, final String action) {
-        if (e instanceof CommandFailedException) {
-            final CommandFailedException re = (CommandFailedException) e;
+        if (e instanceof RemoteException) {
+            final RemoteException re = (RemoteException) e;
             new ErrorDialog(re, action, this).show();
         } else if (e instanceof SessionTimeoutException) {
             alert(uiConstants().sessionTimeOutPleaseRestart());

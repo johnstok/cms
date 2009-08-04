@@ -14,11 +14,10 @@ package ccc.services;
 import java.io.InputStream;
 import java.util.Date;
 
-import ccc.api.CommandFailedException;
-import ccc.api.Commands;
 import ccc.api.FileDelta;
 import ccc.api.ID;
 import ccc.api.ResourceSummary;
+import ccc.commands.CommandFailedException;
 
 
 /**

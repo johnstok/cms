@@ -9,11 +9,16 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api;
+package ccc.domain;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+
+import ccc.api.FailureCodes;
+import ccc.api.Json;
+import ccc.api.JsonKeys;
+import ccc.api.Jsonable;
 
 
 /**
@@ -23,7 +28,7 @@ import java.util.Map;
  */
 public class Failure implements Serializable, Jsonable {
 
-    private int                 _code        = 0;
+    private FailureCodes        _code        = FailureCodes.UNEXPECTED;
     private String              _exceptionId = "";
     private Map<String, String> _params      = new HashMap<String, String>();
 
@@ -36,7 +41,7 @@ public class Failure implements Serializable, Jsonable {
      * @param exceptionId The unique id of the exception logged for this
      *  failure.
      */
-    public Failure(final int code,
+    public Failure(final FailureCodes code,
                    final String exceptionId) {
         _code = code;
         _exceptionId = exceptionId;
@@ -50,7 +55,7 @@ public class Failure implements Serializable, Jsonable {
      *  failure.
      * @param params Further details describing the failure.
      */
-    public Failure(final int code,
+    public Failure(final FailureCodes code,
                    final String exceptionId,
                    final Map<String, String> params) {
         _code = code;
@@ -66,7 +71,7 @@ public class Failure implements Serializable, Jsonable {
      */
     public Failure(final Json json) {
         this(
-            json.getInt(JsonKeys.CODE).intValue(),
+            FailureCodes.valueOf(json.getString(JsonKeys.CODE)),
             json.getString(JsonKeys.ID),
             json.getStringMap("params")
         );
@@ -77,7 +82,7 @@ public class Failure implements Serializable, Jsonable {
      *
      * @return Returns the errorCode.
      */
-    public int getCode() {
+    public FailureCodes getCode() {
         return _code;
     }
 
@@ -104,7 +109,7 @@ public class Failure implements Serializable, Jsonable {
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
-        json.set(JsonKeys.CODE, Long.valueOf(getCode()));
+        json.set(JsonKeys.CODE,getCode().name());
         json.set(JsonKeys.ID, getExceptionId());
         json.set("params", getParams());
     }
