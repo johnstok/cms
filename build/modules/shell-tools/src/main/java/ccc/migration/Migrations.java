@@ -26,7 +26,7 @@ import org.apache.log4j.Logger;
 import ccc.api.CommandFailedException;
 import ccc.api.Commands;
 import ccc.api.Decimal;
-import ccc.api.Failure;
+import ccc.api.FailureCodes;
 import ccc.api.ID;
 import ccc.api.PageDelta;
 import ccc.api.Paragraph;
@@ -398,7 +398,7 @@ public class Migrations {
                 le.getUser().getId(),
                 le.getHappenedOn());
         } catch (final CommandFailedException e) {
-            if (Failure.EXISTS ==e.getCode()) {
+            if (FailureCodes.EXISTS ==e.getCode()) {
                 rs = _commands.createPage(
                     parentFolderId,
                     delta,

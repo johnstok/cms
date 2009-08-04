@@ -12,7 +12,7 @@
 package ccc.domain;
 
 import ccc.api.CommandFailedException;
-import ccc.api.Failure;
+import ccc.api.FailureCodes;
 
 
 /**
@@ -31,6 +31,6 @@ public class CycleDetectedException
     @Override
     public CommandFailedException toRemoteException() {
         return new CommandFailedException(
-            Failure.CYCLE, getUUID().toString());
+            FailureCodes.CYCLE, getUUID().toString());
     }
 }

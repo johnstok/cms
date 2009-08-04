@@ -14,7 +14,7 @@ package ccc.domain;
 import ccc.api.CommandFailedException;
 import ccc.api.CommandType;
 import ccc.api.DBC;
-import ccc.api.Failure;
+import ccc.api.FailureCodes;
 
 
 
@@ -60,6 +60,6 @@ public class InsufficientPrivilegesException
     @Override
     public CommandFailedException toRemoteException() {
         return new CommandFailedException(
-            Failure.PRIVILEGES, getUUID().toString());
+            FailureCodes.PRIVILEGES, getUUID().toString());
     }
 }

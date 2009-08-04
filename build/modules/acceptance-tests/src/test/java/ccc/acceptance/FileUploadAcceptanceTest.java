@@ -32,6 +32,7 @@ import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
 import ccc.api.CommandFailedException;
 import ccc.api.Failure;
+import ccc.api.FailureCodes;
 import ccc.api.ResourceSummary;
 import ccc.domain.Snapshot;
 import ccc.services.Queries;
@@ -126,7 +127,7 @@ public class FileUploadAcceptanceTest
         try {
             createFile(fName, "Hello!", c, filesFolder);
         } catch (final CommandFailedException e) {
-            assertEquals(Failure.EXISTS, e.getCode());
+            assertEquals(FailureCodes.EXISTS, e.getCode());
         }
 
 
@@ -190,7 +191,7 @@ public class FileUploadAcceptanceTest
 
         // ASSERT
         } catch (final CommandFailedException e) {
-            assertEquals(Failure.UNLOCKED, e.getCode());
+            assertEquals(FailureCodes.UNLOCKED, e.getCode());
         }
         assertEquals("Hello!", previewContent(rs, c));
     }

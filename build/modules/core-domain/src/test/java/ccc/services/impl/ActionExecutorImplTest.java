@@ -21,7 +21,7 @@ import ccc.api.ActionStatus;
 import ccc.api.CommandFailedException;
 import ccc.api.CommandType;
 import ccc.api.Commands;
-import ccc.api.Failure;
+import ccc.api.FailureCodes;
 import ccc.api.ID;
 import ccc.domain.Action;
 import ccc.domain.Page;
@@ -75,7 +75,7 @@ public class ActionExecutorImplTest
         verify(_commands);
         assertEquals(ActionStatus.Failed, a.status());
         assertEquals(
-            Failure.UNLOCKED,
+            FailureCodes.UNLOCKED,
             a.failure().getCode());
     }
 

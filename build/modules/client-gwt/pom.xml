@@ -82,8 +82,8 @@
                             <include>**/*TestCase.java</include>
                             
                             <!-- GWT test suites.
-                            <include>ccc/contentcreator/ContentCreatorGwtTestSuite.java</include>
                             -->
+                            <include>ccc/contentcreator/ContentCreatorGwtTestSuite.java</include>
                         </includes>
                     </configuration>
             </plugin>
