@@ -31,6 +31,7 @@ import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import ccc.api.CommandFailedException;
 import ccc.api.Duration;
 import ccc.api.Failure;
+import ccc.api.FailureCodes;
 import ccc.api.MimeType;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
@@ -228,7 +229,7 @@ public class FirstAcceptanceTest
         // ASSERT
         } catch (final ClientResponseFailure e) {
             final Failure f = e.getResponse().getEntity(Failure.class);
-            assertEquals(Failure.PRIVILEGES, f.getCode());
+            assertEquals(FailureCodes.PRIVILEGES, f.getCode());
         }
     }
 

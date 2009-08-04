@@ -12,7 +12,7 @@
 package ccc.contentcreator.dialogs;
 
 import ccc.api.CommandFailedException;
-import ccc.api.Failure;
+import ccc.api.FailureCodes;
 import ccc.contentcreator.client.IGlobals;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -109,15 +109,15 @@ public class ErrorDialog extends AbstractEditDialog {
     private static String lookupResolution(final int code,
                                            final IGlobals globals) {
         switch (code) {
-            case Failure.UNLOCKED:
+            case FailureCodes.UNLOCKED:
                 return globals.errorResolutions().unlocked();
-            case Failure.EXISTS:
+            case FailureCodes.EXISTS:
                 return globals.errorResolutions().exists();
-            case Failure.LOCK_MISMATCH:
+            case FailureCodes.LOCK_MISMATCH:
                 return globals.errorResolutions().lockMismatch();
-            case Failure.UNEXPECTED:
+            case FailureCodes.UNEXPECTED:
                 return globals.errorResolutions().contactSysAdmin();
-            case Failure.CYCLE:
+            case FailureCodes.CYCLE:
                 return globals.errorResolutions().cycle();
             default:
                 return globals.errorResolutions().contactSysAdmin();
@@ -128,15 +128,15 @@ public class ErrorDialog extends AbstractEditDialog {
     private static String lookupError(final int code,
                                       final IGlobals globals) {
         switch (code) {
-            case Failure.UNLOCKED:
+            case FailureCodes.UNLOCKED:
                 return globals.errorDescriptions().unlocked();
-            case Failure.EXISTS:
+            case FailureCodes.EXISTS:
                 return globals.errorDescriptions().exists();
-            case Failure.LOCK_MISMATCH:
+            case FailureCodes.LOCK_MISMATCH:
                 return globals.errorDescriptions().lockMismatch();
-            case Failure.UNEXPECTED:
+            case FailureCodes.UNEXPECTED:
                 return globals.errorDescriptions().unknown();
-            case Failure.CYCLE:
+            case FailureCodes.CYCLE:
                 return globals.errorDescriptions().cycle();
             default:
                 return globals.errorDescriptions().unknown();

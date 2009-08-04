@@ -14,6 +14,8 @@ package ccc.contentcreator;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+import ccc.contentcreator.tests.FailureOverlayGwtTest;
+
 import com.google.gwt.junit.tools.GWTTestSuite;
 
 
@@ -33,7 +35,7 @@ public class ContentCreatorGwtTestSuite
      */
     public static Test suite() {
         final TestSuite gwtTestSuite = new GWTTestSuite();
+        gwtTestSuite.addTestSuite(FailureOverlayGwtTest.class);
         return gwtTestSuite;
     }
-
 }

@@ -15,6 +15,7 @@ import java.util.Collections;
 
 import ccc.api.CommandFailedException;
 import ccc.api.Failure;
+import ccc.api.FailureCodes;
 
 
 /**
@@ -58,7 +59,7 @@ public class ResourceExistsException
         return
             new CommandFailedException(
                 new Failure(
-                    Failure.EXISTS,
+                    FailureCodes.EXISTS,
                     getUUID().toString(),
                     Collections.singletonMap(
                         "existing_id", _resource.id().toString())));
