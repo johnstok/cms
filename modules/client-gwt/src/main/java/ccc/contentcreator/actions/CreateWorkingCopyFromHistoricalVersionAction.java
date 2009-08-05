@@ -44,6 +44,6 @@ public class CreateWorkingCopyFromHistoricalVersionAction
     @Override
     protected void onNoContent(final Response response) {
         _dialog.workingCopyCreated();
-        _dialog.close();
+        _dialog.hide();
     }
 }

@@ -107,7 +107,7 @@ public class UploadFileDialog extends AbstractEditDialog {
                                     FailureOverlay.fromJson(be.getResultHtml())),
                                 _constants.uploadFile());
                         } else {
-                            close();
+                            hide();
                             ssm.create(
                                 ResourceSummaryModelData.create(
                                     JSONParser.parse(be.getResultHtml())), _parent);
