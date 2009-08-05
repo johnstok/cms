@@ -113,4 +113,6 @@ public final class JsonKeys {
     public static final String DELTA = "delta";
     /** CODE : String. */
     public static final String CODE = "code";
+    /** VERSION : String. */
+    public static final String VERSION = "version";
 }

@@ -59,7 +59,6 @@ public class ResourceExistsException
             new CommandFailedException(
                 new Failure(
                     FailureCode.EXISTS,
-                    getUUID().toString(),
                     Collections.singletonMap(
                         "existing_id", _resource.id().toString())));
     }

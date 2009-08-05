@@ -592,6 +592,6 @@ public class RestApi
     /** {@inheritDoc} */
     @Override
     public void fail() throws CommandFailedException {
-        throw new CommandFailedException(new Failure(FailureCode.PRIVILEGES, "a"));
+        throw new CommandFailedException(new Failure(FailureCode.PRIVILEGES));
     }
 }

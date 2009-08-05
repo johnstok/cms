@@ -59,7 +59,6 @@ public class InsufficientPrivilegesException
     /** {@inheritDoc} */
     @Override
     public CommandFailedException toRemoteException() {
-        return new CommandFailedException(
-            FailureCode.PRIVILEGES, getUUID().toString());
+        return new CommandFailedException(new Failure(FailureCode.PRIVILEGES));
     }
 }
