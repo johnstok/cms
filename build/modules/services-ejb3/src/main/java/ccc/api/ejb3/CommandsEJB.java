@@ -941,7 +941,9 @@ public class CommandsEJB
 
     private CommandFailedException fail(final RemoteExceptionSupport e) {
         _context.setRollbackOnly();  // CRITICAL
-        LOG.info("Handled local exception: "+e.getUUID(), e);
-        return e.toRemoteException();
+        final CommandFailedException cfe = e.toRemoteException();
+        LOG.info(
+            "Handled local exception: "+cfe.getFailure().getExceptionId(), e);
+        return cfe;
     }
 }

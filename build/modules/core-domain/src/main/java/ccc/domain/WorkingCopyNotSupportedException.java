@@ -63,6 +63,6 @@ public class WorkingCopyNotSupportedException
     @Override
     public CommandFailedException toRemoteException() {
         return new CommandFailedException(
-            FailureCode.WC_UNSUPPORTED, getUUID().toString());
+            new Failure(FailureCode.WC_UNSUPPORTED));
     }
 }

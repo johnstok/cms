@@ -30,7 +30,6 @@ public class CycleDetectedException
     /** {@inheritDoc} */
     @Override
     public CommandFailedException toRemoteException() {
-        return new CommandFailedException(
-            FailureCode.CYCLE, getUUID().toString());
+        return new CommandFailedException(new Failure(FailureCode.CYCLE));
     }
 }

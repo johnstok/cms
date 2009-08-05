@@ -11,9 +11,9 @@
  */
 package ccc.domain;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import ccc.api.FailureCode;
 import ccc.api.Json;
@@ -26,40 +26,35 @@ import ccc.api.Jsonable;
  *
  * @author Civic Computing Ltd.
  */
-public class Failure implements Serializable, Jsonable {
+public class Failure
+    extends Entity
+    implements Jsonable {
 
-    private FailureCode        _code        = FailureCode.UNEXPECTED;
-    private String              _exceptionId = "";
+    private FailureCode         _code        = FailureCode.UNEXPECTED;
     private Map<String, String> _params      = new HashMap<String, String>();
 
     @SuppressWarnings("unused") private Failure() { super(); }
 
-    /**
-     * Constructor.
-     *
-     * @param code The internal code for this failure.
-     * @param exceptionId The unique id of the exception logged for this
-     *  failure.
-     */
-    public Failure(final FailureCode code,
-                   final String exceptionId) {
-        _code = code;
-        _exceptionId = exceptionId;
-    }
 
     /**
      * Constructor.
      *
      * @param code The internal code for this failure.
-     * @param exceptionId The unique id of the exception logged for this
-     *  failure.
+     */
+    public Failure(final FailureCode code) {
+        _code = code;
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param code The internal code for this failure.
      * @param params Further details describing the failure.
      */
     public Failure(final FailureCode code,
-                   final String exceptionId,
                    final Map<String, String> params) {
         _code = code;
-        _exceptionId = exceptionId;
         _params.putAll(params);
     }
 
@@ -70,12 +65,13 @@ public class Failure implements Serializable, Jsonable {
      * @param json JSON representation of a failure.
      */
     public Failure(final Json json) {
-        this(
-            FailureCode.valueOf(json.getString(JsonKeys.CODE)),
-            json.getString(JsonKeys.ID),
-            json.getStringMap("params")
-        );
+        super(
+            UUID.fromString(json.getString(JsonKeys.ID)),
+            json.getLong(JsonKeys.VERSION).longValue());
+        _code = FailureCode.valueOf(json.getString(JsonKeys.CODE));
+        _params = json.getStringMap("params");
     }
+
 
     /**
      * Accessor.
@@ -93,7 +89,7 @@ public class Failure implements Serializable, Jsonable {
      * @return Returns the exceptionId.
      */
     public String getExceptionId() {
-        return _exceptionId;
+        return id().toString();
     }
 
 
@@ -106,11 +102,13 @@ public class Failure implements Serializable, Jsonable {
         return _params;
     }
 
+
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
-        json.set(JsonKeys.CODE,getCode().name());
+        json.set(JsonKeys.CODE, getCode().name());
         json.set(JsonKeys.ID, getExceptionId());
+        json.set(JsonKeys.VERSION, Long.valueOf(version()));
         json.set("params", getParams());
     }
 }

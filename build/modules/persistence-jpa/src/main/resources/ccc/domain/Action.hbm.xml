@@ -69,31 +69,19 @@
             not-null="true"
             foreign-key="FK_ACTION_RESOURCE_SUBJECT_ID" />
         
+        <many-to-one
+            name="_failure"
+            column="failure_id"
+            not-null="false"
+            cascade="persist"
+            foreign-key="FK_ACTION_FAILURE_ID"/>
+        
         <map name="_parameters" table="action_params">
             <cache usage="transactional"/>
             <key column="action_id" not-null="true" foreign-key="FK_ACTION_PARAM_ACTION_ID"/>
             <map-key type="string" column="param_key" length="255"/>
             <element type="string" column="param_value" length="1024"  not-null="true"/>
         </map>
-        
-        <component name="_failure" class="ccc.domain.Failure">
-            <property
-                name="_code"
-                column="failure_code"
-                type="integer" />
-            <property
-                name="_exceptionId"
-                column="failure_id"
-                type="string" 
-                length="36" />
-                
-            <!--<map name="_params" table="action_failure_params">
-                <cache usage="transactional"/>
-                <key column="action_id" not-null="true" foreign-key="FK_ACTION_FAILURE_ACTION_ID"/>
-                <map-key type="string" column="param_key" length="255"/>
-                <element type="string" column="param_value" length="2048"  not-null="true"/>
-            </map>-->
-        </component>
         
     </class>
     

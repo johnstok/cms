@@ -38,6 +38,6 @@ public class UnexpectedException
     @Override
     public CommandFailedException toRemoteException() {
         return new CommandFailedException(
-            FailureCode.UNEXPECTED, getUUID().toString());
+            new Failure(FailureCode.UNEXPECTED));
     }
 }

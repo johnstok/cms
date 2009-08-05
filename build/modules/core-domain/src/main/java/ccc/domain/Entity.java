@@ -33,6 +33,18 @@ public abstract class Entity implements Serializable {
     protected Entity() { super(); }
 
     /**
+     * Constructor.
+     *
+     * @param id The entity's ID.
+     * @param version The entity's version.
+     */
+    protected Entity(final UUID id, final long version) {
+        DBC.require().notNull(id);
+        _id = id;
+        _version = version;
+    }
+
+    /**
      * Accessor for the id field.
      *
      * @return This entity's id as a {@link UUID}.
@@ -49,6 +61,15 @@ public abstract class Entity implements Serializable {
     public void id(final UUID id) {
         DBC.require().notNull(id);
         _id = id;
+    }
+
+    /**
+     * Accessor for the version field.
+     *
+     * @return This entity's version as a long.
+     */
+    public long version() {
+        return _version;
     }
 
     /**

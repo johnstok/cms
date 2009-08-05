@@ -11,8 +11,6 @@
  */
 package ccc.domain;
 
-import java.util.UUID;
-
 import ccc.commands.CommandFailedException;
 
 
@@ -23,8 +21,6 @@ import ccc.commands.CommandFailedException;
  * @author Civic Computing Ltd.
  */
 public abstract class RemoteExceptionSupport extends Exception {
-
-    private UUID _id = UUID.randomUUID();
 
     /**
      * Constructor.
@@ -67,13 +63,4 @@ public abstract class RemoteExceptionSupport extends Exception {
      * @return The corresponding remote exception.
      */
     public abstract CommandFailedException toRemoteException();
-
-    /**
-     * Accessor for this exception's unique identifier.
-     *
-     * @return The unique identifier as a UUID.
-     */
-    public UUID getUUID() {
-        return _id;
-    }
 }

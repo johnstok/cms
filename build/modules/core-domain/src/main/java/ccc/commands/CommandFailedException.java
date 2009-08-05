@@ -30,17 +30,6 @@ public class CommandFailedException
 
     @SuppressWarnings("unused") private CommandFailedException() { super(); }
 
-    /**
-     * Constructor.
-     *
-     * @param errorCode
-     * @param localExceptionId
-     */
-    public CommandFailedException(final FailureCode errorCode,
-                                  final String localExceptionId) {
-        super("CCC Error: "+localExceptionId);
-        _failure = new Failure(errorCode, localExceptionId);
-    }
 
     /**
      * Constructor.

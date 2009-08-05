@@ -59,8 +59,6 @@ public class UnlockedException
     @Override
     public CommandFailedException toRemoteException() {
         return new CommandFailedException(
-            FailureCode.UNLOCKED,
-            getUUID().toString()
-        );
+            new Failure(FailureCode.UNLOCKED));
     }
 }

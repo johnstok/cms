@@ -14,6 +14,7 @@ package ccc.domain;
 import junit.framework.TestCase;
 import ccc.api.ActionStatus;
 import ccc.api.FailureCode;
+import ccc.commands.CommandFailedException;
 
 
 /**
@@ -48,15 +49,16 @@ public class ActionTest
         // ARRANGE
         final DummyResource p = new DummyResource("page");
         final Action a = new Action();
-        final UnlockedException e = new UnlockedException(p);
+        final CommandFailedException e =
+            new UnlockedException(p).toRemoteException();
 
         // ACT
-        a.fail(e.toRemoteException());
+        a.fail(e);
 
         // ASSERT
         assertEquals(ActionStatus.Failed, a.status());
         assertEquals(FailureCode.UNLOCKED, a.failure().getCode());
-        assertEquals(e.getUUID().toString(), a.failure().getExceptionId());
+        assertEquals(e.getFailure().getExceptionId(), a.failure().getExceptionId());
     }
 
     /**

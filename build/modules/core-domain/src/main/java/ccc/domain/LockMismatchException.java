@@ -57,6 +57,6 @@ public class LockMismatchException
     @Override
     public CommandFailedException toRemoteException() {
         return new CommandFailedException(
-            FailureCode.LOCK_MISMATCH, getUUID().toString());
+            new Failure(FailureCode.LOCK_MISMATCH));
     }
 }

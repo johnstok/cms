@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+ 
+<!-- 
+    ========================================================================
+    * Copyright (c) 2008 Civic Computing Ltd
+    * All rights reserved.
+    *
+    * Revision      $Rev$
+    * Modified by   $Author$
+    * Modified on   $Date$
+    *
+    * Changes: see SubVersion log
+    ========================================================================
+-->
+
+<hibernate-mapping default-access="field">
+
+    <typedef class="ccc.persistence.jpa.EnumUserType" name="FailureCode">
+        <param name="type">ccc.api.FailureCode</param>
+    </typedef>
+    
+    <class name="ccc.domain.Failure" table="failures" mutable="false">
+        
+        <id name="_id" 
+        	column="id" 
+        	type="ccc.persistence.jpa.UUIDUserType" 
+        	length="36">
+            <generator class="assigned" />
+        </id>
+        
+        <version
+            name="_version"
+            column="vn"
+            type="long"
+            unsaved-value="negative" />
+        
+        <property
+            name="_code"
+            column="failure_code"
+            type="FailureCode" />
+            
+        <map name="_params" table="failure_params">
+            <cache usage="transactional"/>
+            <key column="failure_id" not-null="true" foreign-key="FK_FPARAM_FAILURE_ID"/>
+            <map-key type="string" column="param_key" length="255"/>
+            <element type="string" column="param_value" length="2048"  not-null="true"/>
+        </map>
+        
+    </class>
+    
+</hibernate-mapping>
