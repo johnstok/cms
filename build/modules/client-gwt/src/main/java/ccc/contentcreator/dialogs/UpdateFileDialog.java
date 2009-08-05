@@ -76,7 +76,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
             new Listener<FormEvent>() {
                 public void handleEvent(final FormEvent be) {
                     if (be.getResultHtml().equals(UPDATE_OK)) {
-                        close();
+                        hide();
                     } else if (SessionTimeoutException.isTimeoutMessage(be.getResultHtml())) {
                         _globals.unexpectedError(
                             new SessionTimeoutException(be.getResultHtml()),
