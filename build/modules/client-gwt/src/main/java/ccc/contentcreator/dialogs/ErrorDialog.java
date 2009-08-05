@@ -15,7 +15,10 @@ import ccc.api.FailureCodes;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.RemoteException;
 
+import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.google.gwt.user.client.ui.HTML;
@@ -69,6 +72,18 @@ public class ErrorDialog extends AbstractEditDialog {
         getButtonBar().remove(_save);
         setHeight(DIALOG_HEIGHT);
         setWidth(DIALOG_WIDTH);
+
+        addListener(Events.Resize, new Listener<BoxComponentEvent>() {
+            @Override
+            public void handleEvent(final BoxComponentEvent be) {
+                final int height = be.getHeight()-140;
+                if (height > 100) {
+                    _action.setHeight(height/3);
+                    _error.setHeight(height/3);
+                    _resolution.setHeight(height/3);
+                }
+            }
+        });
     }
 
     /**
