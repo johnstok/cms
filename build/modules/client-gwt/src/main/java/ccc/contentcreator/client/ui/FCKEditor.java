@@ -27,11 +27,11 @@ import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
+import com.extjs.gxt.ui.client.widget.form.HiddenField;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Frame;
-import com.google.gwt.user.client.ui.Hidden;
 
 /**
  * Implements the <a href="http://www.fckeditor.net">FCKEditor</a> editor
@@ -93,14 +93,14 @@ public class FCKEditor extends LayoutContainer {
 
 
         //Create the hidden input box
-        final Hidden inputBox = new Hidden();
-        inputBox.setID(_elementID);
+        final HiddenField<String> inputBox = new HiddenField<String>();
+        inputBox.setId(_elementID);
         inputBox.setVisible(false);
         inputBox.setValue(html == null || html.equals("") ? " " : html);
 
         //Create the configuration input box
-        final Hidden configBox = new Hidden();
-        configBox.setID(_elementID + "___Config");
+        final HiddenField<String>  configBox = new HiddenField<String>();
+        configBox.setId(_elementID + "___Config");
         configBox.setVisible(false);
         configBox.setValue("");
 
