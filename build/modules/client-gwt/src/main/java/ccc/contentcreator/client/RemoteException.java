@@ -12,7 +12,7 @@
 package ccc.contentcreator.client;
 
 import ccc.api.DBC;
-import ccc.api.FailureCodes;
+import ccc.api.FailureCode;
 import ccc.contentcreator.overlays.FailureOverlay;
 
 
@@ -51,7 +51,7 @@ public class RemoteException
      *
      * @return The failure code.
      */
-    public FailureCodes getCode() {
+    public FailureCode getCode() {
         return _failure.getCode();
     }
 }

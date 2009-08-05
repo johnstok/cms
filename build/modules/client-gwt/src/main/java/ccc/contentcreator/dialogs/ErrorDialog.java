@@ -11,7 +11,7 @@
  */
 package ccc.contentcreator.dialogs;
 
-import ccc.api.FailureCodes;
+import ccc.api.FailureCode;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.RemoteException;
 
@@ -121,7 +121,7 @@ public class ErrorDialog extends AbstractEditDialog {
     }
 
 
-    private static String lookupResolution(final FailureCodes code,
+    private static String lookupResolution(final FailureCode code,
                                            final IGlobals globals) {
         switch (code) {
             case UNLOCKED:
@@ -140,7 +140,7 @@ public class ErrorDialog extends AbstractEditDialog {
     }
 
 
-    private static String lookupError(final FailureCodes code,
+    private static String lookupError(final FailureCode code,
                                       final IGlobals globals) {
         switch (code) {
             case UNLOCKED:

@@ -16,7 +16,7 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.FailureCodes;
+import ccc.api.FailureCode;
 import ccc.api.ID;
 import ccc.api.ResourceSummary;
 import ccc.cli.FileUpload;
@@ -84,7 +84,7 @@ public class CccServer implements Server {
                 new ID(parentFolder.toString()), name, name, publish);
             return UUID.fromString(rs.getId().toString());
         } catch (final CommandFailedException e) {
-            if (FailureCodes.EXISTS==e.getCode()) {
+            if (FailureCode.EXISTS==e.getCode()) {
                 LOG.warn("Folder already exists: "+name);
                 return UUID.fromString(
                     e.getFailure().getParams().get("existing_id"));

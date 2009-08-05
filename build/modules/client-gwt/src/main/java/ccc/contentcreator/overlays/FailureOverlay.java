@@ -11,7 +11,7 @@
  */
 package ccc.contentcreator.overlays;
 
-import ccc.api.FailureCodes;
+import ccc.api.FailureCode;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
@@ -44,8 +44,8 @@ public class FailureOverlay
      *
      * @return The code as an integer.
      */
-    public final FailureCodes getCode() {
-        return FailureCodes.valueOf(getCodeString());
+    public final FailureCode getCode() {
+        return FailureCode.valueOf(getCodeString());
     }
 
 

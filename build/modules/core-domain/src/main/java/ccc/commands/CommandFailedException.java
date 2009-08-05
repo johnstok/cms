@@ -11,7 +11,7 @@
  */
 package ccc.commands;
 
-import ccc.api.FailureCodes;
+import ccc.api.FailureCode;
 import ccc.domain.Failure;
 
 
@@ -36,7 +36,7 @@ public class CommandFailedException
      * @param errorCode
      * @param localExceptionId
      */
-    public CommandFailedException(final FailureCodes errorCode,
+    public CommandFailedException(final FailureCode errorCode,
                                   final String localExceptionId) {
         super("CCC Error: "+localExceptionId);
         _failure = new Failure(errorCode, localExceptionId);
@@ -57,7 +57,7 @@ public class CommandFailedException
      *
      * @return The failure's code.
      */
-    public FailureCodes getCode() {
+    public FailureCode getCode() {
         return _failure.getCode();
     }
 

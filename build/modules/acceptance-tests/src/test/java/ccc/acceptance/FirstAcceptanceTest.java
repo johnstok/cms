@@ -29,7 +29,7 @@ import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
 import ccc.api.Duration;
-import ccc.api.FailureCodes;
+import ccc.api.FailureCode;
 import ccc.api.MimeType;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
@@ -229,7 +229,7 @@ public class FirstAcceptanceTest
         // ASSERT
         } catch (final ClientResponseFailure e) {
             final Failure f = e.getResponse().getEntity(Failure.class);
-            assertEquals(FailureCodes.PRIVILEGES, f.getCode());
+            assertEquals(FailureCode.PRIVILEGES, f.getCode());
         }
     }
 

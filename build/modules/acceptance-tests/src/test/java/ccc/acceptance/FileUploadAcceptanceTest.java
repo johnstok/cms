@@ -30,7 +30,7 @@ import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
-import ccc.api.FailureCodes;
+import ccc.api.FailureCode;
 import ccc.api.ResourceSummary;
 import ccc.commands.CommandFailedException;
 import ccc.domain.Failure;
@@ -127,7 +127,7 @@ public class FileUploadAcceptanceTest
         try {
             createFile(fName, "Hello!", c, filesFolder);
         } catch (final CommandFailedException e) {
-            assertEquals(FailureCodes.EXISTS, e.getCode());
+            assertEquals(FailureCode.EXISTS, e.getCode());
         }
 
 
@@ -191,7 +191,7 @@ public class FileUploadAcceptanceTest
 
         // ASSERT
         } catch (final CommandFailedException e) {
-            assertEquals(FailureCodes.UNLOCKED, e.getCode());
+            assertEquals(FailureCode.UNLOCKED, e.getCode());
         }
         assertEquals("Hello!", previewContent(rs, c));
     }

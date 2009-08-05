@@ -13,7 +13,7 @@ package ccc.domain;
 
 import junit.framework.TestCase;
 import ccc.api.ActionStatus;
-import ccc.api.FailureCodes;
+import ccc.api.FailureCode;
 
 
 /**
@@ -55,7 +55,7 @@ public class ActionTest
 
         // ASSERT
         assertEquals(ActionStatus.Failed, a.status());
-        assertEquals(FailureCodes.UNLOCKED, a.failure().getCode());
+        assertEquals(FailureCode.UNLOCKED, a.failure().getCode());
         assertEquals(e.getUUID().toString(), a.failure().getExceptionId());
     }
 

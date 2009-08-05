@@ -17,7 +17,7 @@ package ccc.api;
  *
  * @author Civic Computing Ltd.
  */
-public enum  FailureCodes {
+public enum  FailureCode {
     UNEXPECTED,
     UNLOCKED,
     LOCK_MISMATCH,

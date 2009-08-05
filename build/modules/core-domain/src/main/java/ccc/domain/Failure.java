@@ -15,7 +15,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.api.FailureCodes;
+import ccc.api.FailureCode;
 import ccc.api.Json;
 import ccc.api.JsonKeys;
 import ccc.api.Jsonable;
@@ -28,7 +28,7 @@ import ccc.api.Jsonable;
  */
 public class Failure implements Serializable, Jsonable {
 
-    private FailureCodes        _code        = FailureCodes.UNEXPECTED;
+    private FailureCode        _code        = FailureCode.UNEXPECTED;
     private String              _exceptionId = "";
     private Map<String, String> _params      = new HashMap<String, String>();
 
@@ -41,7 +41,7 @@ public class Failure implements Serializable, Jsonable {
      * @param exceptionId The unique id of the exception logged for this
      *  failure.
      */
-    public Failure(final FailureCodes code,
+    public Failure(final FailureCode code,
                    final String exceptionId) {
         _code = code;
         _exceptionId = exceptionId;
@@ -55,7 +55,7 @@ public class Failure implements Serializable, Jsonable {
      *  failure.
      * @param params Further details describing the failure.
      */
-    public Failure(final FailureCodes code,
+    public Failure(final FailureCode code,
                    final String exceptionId,
                    final Map<String, String> params) {
         _code = code;
@@ -71,7 +71,7 @@ public class Failure implements Serializable, Jsonable {
      */
     public Failure(final Json json) {
         this(
-            FailureCodes.valueOf(json.getString(JsonKeys.CODE)),
+            FailureCode.valueOf(json.getString(JsonKeys.CODE)),
             json.getString(JsonKeys.ID),
             json.getStringMap("params")
         );
@@ -82,7 +82,7 @@ public class Failure implements Serializable, Jsonable {
      *
      * @return Returns the errorCode.
      */
-    public FailureCodes getCode() {
+    public FailureCode getCode() {
         return _code;
     }
 
