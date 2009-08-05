@@ -49,7 +49,7 @@ public class UploadFileDialog extends AbstractEditDialog {
     private final FileUploadField           _file = new FileUploadField();
 
     private final Image _image =
-        new Image("images/gxt/shared/large-loading.gif");
+        new Image("images/icons/large-loading.gif");
 
     /**
      * Constructor.

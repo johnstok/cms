@@ -41,7 +41,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
     private final HiddenField<String> _id = new HiddenField<String>();
     private final FileUploadField           _file = new FileUploadField();
     private final Image _image =
-        new Image("images/gxt/shared/large-loading.gif");
+        new Image("images/icons/large-loading.gif");
 
     private static final String UPDATE_OK = "NULL";
     /**
