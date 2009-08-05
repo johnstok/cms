@@ -77,19 +77,19 @@
         <dependency>
             <groupId>jboss</groupId>
             <artifactId>jbossweb-service</artifactId>
-            <version>${jboss-version}</version>
+            <version>4.2.2.GA</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>jboss</groupId>
             <artifactId>jboss-ejb3x</artifactId>
-            <version>${jboss-version}</version>
+            <version>4.2.2.GA</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>jboss</groupId>
             <artifactId>jboss-j2ee</artifactId>
-            <version>${jboss-version}</version>
+            <version>4.2.2.GA</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
