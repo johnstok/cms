@@ -228,6 +228,7 @@ public class FirstAcceptanceTest
 
         // ASSERT
         } catch (final ClientResponseFailure e) {
+            assertEquals(418, e.getResponse().getStatus());
             final Failure f = e.getResponse().getEntity(Failure.class);
             assertEquals(FailureCode.PRIVILEGES, f.getCode());
         }
