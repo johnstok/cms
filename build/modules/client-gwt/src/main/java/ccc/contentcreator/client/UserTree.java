@@ -74,20 +74,20 @@ public class UserTree extends Tree {
         final TreeItem all = new TreeItem(_constants.all());
         all.setId(ALL);
         final TreeItem creator = new TreeItem(_constants.contentCreator());
-        creator.setIconStyle("images/icons/user.png");
+        creator.setIconStyle("images/icons/user.gif");
         creator.setId(CONTENT_CREATOR);
 
         final TreeItem builder = new TreeItem(_constants.siteBuilder());
-        builder.setIconStyle("images/icons/user.png");
+        builder.setIconStyle("images/icons/user.gif");
         builder.setId(SITE_BUILDER);
 
         final TreeItem admin = new TreeItem(_constants.administrator());
         admin.setId(ADMINISTRATOR);
-        admin.setIconStyle("images/icons/user_gray.png");
+        admin.setIconStyle("images/icons/user_gray.gif");
 
         final TreeItem search = new TreeItem(_constants.search());
         search.setId(SEARCH);
-        search.setIconStyle("images/icons/magnifier.png");
+        search.setIconStyle("images/icons/magnifier.gif");
 
         getRootItem().add(users);
         users.add(all);
