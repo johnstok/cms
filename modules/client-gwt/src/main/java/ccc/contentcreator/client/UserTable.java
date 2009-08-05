@@ -26,6 +26,7 @@ import ccc.contentcreator.binding.UserSummaryModelData;
 import ccc.contentcreator.dialogs.EditUserPwDialog;
 
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoader;
 import com.extjs.gxt.ui.client.data.PagingModelMemoryProxy;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
@@ -47,7 +48,6 @@ import com.extjs.gxt.ui.client.widget.menu.MenuItem;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
 import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
-import com.extjs.gxt.ui.client.widget.tree.TreeItem;
 
 
 /**
@@ -67,7 +67,7 @@ public class UserTable extends TablePanel {
     private final Radio _usernameRadio = new Radio();
     private final Radio _emailRadio = new Radio();
 
-    private TreeItem _lastSelected = null;
+    private ModelData _lastSelected = null;
 
     private final TextField<String> _searchString;
 
@@ -198,35 +198,35 @@ public class UserTable extends TablePanel {
      *
      * @param selectedItem The selected TreeItem.
      */
-    public void displayUsersFor(final TreeItem selectedItem) {
+    public void displayUsersFor(final ModelData selectedItem) {
         _lastSelected = selectedItem;
         _detailsStore.removeAll();
 
-        if (UserTree.SEARCH.equals(selectedItem.getId())) {
+        if (UserTree.SEARCH.equals(selectedItem.get("id"))) {
             _toolBar.enable();
         } else {
             _toolBar.disable();
         }
 
-        if (UserTree.ALL.equals(selectedItem.getId())) {
+        if (UserTree.ALL.equals(selectedItem.get("id"))) {
             new ListUsers(){
                 @Override protected void execute(final Collection<UserSummary> users) {
                     updatePager(users);
                 }
             }.execute();
-        } else if (UserTree.CONTENT_CREATOR.equals(selectedItem.getId())){
+        } else if (UserTree.CONTENT_CREATOR.equals(selectedItem.get("id"))){
             new ListUsersWithRoleAction("CONTENT_CREATOR"){
                 @Override protected void execute(final Collection<UserSummary> users) {
                     updatePager(users);
                 }
             }.execute();
-        } else if (UserTree.SITE_BUILDER.equals(selectedItem.getId())) {
+        } else if (UserTree.SITE_BUILDER.equals(selectedItem.get("id"))) {
             new ListUsersWithRoleAction("SITE_BUILDER"){
                 @Override protected void execute(final Collection<UserSummary> users) {
                     updatePager(users);
                 }
             }.execute();
-        } else if(UserTree.ADMINISTRATOR.equals(selectedItem.getId())) {
+        } else if(UserTree.ADMINISTRATOR.equals(selectedItem.get("id"))) {
             new ListUsersWithRoleAction("ADMINISTRATOR"){
                 @Override protected void execute(final Collection<UserSummary> users) {
                     updatePager(users);
@@ -243,7 +243,7 @@ public class UserTable extends TablePanel {
      */
     public void refreshUsers() {
         if (_lastSelected != null
-                && !"Search".equals(_lastSelected.getText())) {
+                && !UserTree.SEARCH.equals(_lastSelected.get("id"))) {
             displayUsersFor(_lastSelected);
         }
     }
