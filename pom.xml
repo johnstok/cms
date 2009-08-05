@@ -24,11 +24,12 @@
         <lib.version.pdfbox>0.7.3</lib.version.pdfbox>
         <lib.version.poi>3.0.1-FINAL</lib.version.poi>
         <lib.version.tmextractors>1.0</lib.version.tmextractors>
-        <gxt-version>2.0.1</gxt-version>
-        <gwt-version>1.7.0</gwt-version>
-        <velocity-version>1.6.2</velocity-version>
-        <jboss-version>4.2.2.GA</jboss-version>
-        <h2-version>1.1.103</h2-version>
+        <lib.version.gxt>2.0.1</lib.version.gxt>
+        <lib.version.gwt>1.7.0</lib.version.gwt>
+        <lib.version.velocity>1.6.2</lib.version.velocity>
+        <lib.version.jboss>5.1.0.GA</lib.version.jboss>
+        <lib.version.h2>1.1.103</lib.version.h2>
+        <lib.version.selenium>1.0-beta-1</lib.version.selenium>
         
         <!-- CCC properties should be 'ccc.{prop-name}' -->
         <ccc-version>${project.version}</ccc-version>
@@ -66,13 +67,13 @@
         <dependency>
             <groupId>org.openqa.selenium.client-drivers</groupId>
             <artifactId>selenium-java-client-driver</artifactId>
-            <version>1.0-beta-1</version>
+            <version>${lib.version.selenium}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>${h2-version}</version>
+            <version>${lib.version.h2}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -93,7 +94,6 @@
         <module>modules/services-ejb3</module>
         <module>modules/shell-tools</module>
         <module>modules/content-creator</module>
-        <!-- module>modules/content-server</module -->
         <module>modules/security-config</module>
         <module>modules/application-ear</module>
         <module>modules/db-schema</module>

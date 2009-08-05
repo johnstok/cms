@@ -35,7 +35,7 @@
         <dependency>
             <groupId>jboss</groupId>
             <artifactId>jbosssx</artifactId>
-            <version>${jboss-version}</version>
+            <version>4.2.2.GA</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

@@ -30,7 +30,7 @@
 			<groupId>org.jboss.jbossas</groupId>
 			<artifactId>jboss-as-client</artifactId>
             <type>pom</type>
-			<version>5.0.1.GA</version>
+			<version>${lib.version.jboss}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-dbutils</groupId>
@@ -52,7 +52,7 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>${h2-version}</version>
+            <version>${lib.version.h2}</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
