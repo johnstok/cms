@@ -15,11 +15,15 @@ package ccc.contentcreator.client;
 import ccc.contentcreator.api.UIConstants;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
-import com.extjs.gxt.ui.client.event.Events;
-import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.event.TreeEvent;
-import com.extjs.gxt.ui.client.widget.tree.Tree;
-import com.extjs.gxt.ui.client.widget.tree.TreeItem;
+import com.extjs.gxt.ui.client.data.BaseModelData;
+import com.extjs.gxt.ui.client.data.ModelData;
+import com.extjs.gxt.ui.client.data.ModelIconProvider;
+import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
+import com.extjs.gxt.ui.client.event.SelectionChangedListener;
+import com.extjs.gxt.ui.client.store.TreeStore;
+import com.extjs.gxt.ui.client.util.IconHelper;
+import com.extjs.gxt.ui.client.widget.treepanel.TreePanel;
+import com.google.gwt.user.client.ui.AbstractImagePrototype;
 
 
 /**
@@ -27,7 +31,7 @@ import com.extjs.gxt.ui.client.widget.tree.TreeItem;
  *
  * @author Civic Computing Ltd.
  */
-public class UserTree extends Tree {
+public class UserTree {
 
     private final UserTable _ut = new UserTable();
     private final UIConstants _constants = new IGlobalsImpl().uiConstants();
@@ -46,18 +50,37 @@ public class UserTree extends Tree {
     /** SEARCH : String. */
     public static final String SEARCH = "Search";
 
+    private final TreeStore<ModelData> _store = new TreeStore<ModelData>();
+    private final TreePanel<ModelData> _tree = new TreePanel<ModelData>(_store);
     /**
      * Selection listener for {@link UserTree}.
      *
      * @author Civic Computing Ltd.
      */
-    public class UserSelectedListener implements Listener<TreeEvent> {
+    public class UserSelectedListener extends SelectionChangedListener<ModelData> {
 
         /** {@inheritDoc} */
-        public void handleEvent(final TreeEvent te) {
-            _ut.displayUsersFor(te.getTree().getSelectedItem());
+        @Override
+        public void selectionChanged(final SelectionChangedEvent<ModelData> se) {
+            final ModelData objItem = se.getSelectedItem();
+            _ut.displayUsersFor(objItem);
         }
+    }
 
+    private ModelData getNewItem(final String name, final String id) {
+        return getNewItem(name, id, null);
+    }
+
+    private ModelData getNewItem(final String name,
+                                 final String id,
+                                 final String iconPath) {
+        final ModelData objItem = new BaseModelData();
+        objItem.set("name", name);
+        objItem.set("id", id);
+        if (iconPath != null) {
+            objItem.set("icon", iconPath);
+        }
+        return objItem;
     }
 
     /**
@@ -66,43 +89,67 @@ public class UserTree extends Tree {
      * @param view LeftRightPane of the surrounding view.
      */
     UserTree(final LeftRightPane view) {
-
         _view = view;
+        _tree.setDisplayProperty("name");
 
-        final TreeItem users = new TreeItem(_constants.users());
-        users.setId(USERS);
-        final TreeItem all = new TreeItem(_constants.all());
-        all.setId(ALL);
-        final TreeItem creator = new TreeItem(_constants.contentCreator());
-        creator.setIconStyle("images/icons/user.gif");
-        creator.setId(CONTENT_CREATOR);
+        _tree.setIconProvider(new ModelIconProvider<ModelData>() {
+            public AbstractImagePrototype getIcon(final ModelData model) {
+                if (model.get("icon") != null) {
+                    return IconHelper.createPath((String) model.get("icon"));
+                }
+                return null;
+            }
+        });
 
-        final TreeItem builder = new TreeItem(_constants.siteBuilder());
-        builder.setIconStyle("images/icons/user.gif");
-        builder.setId(SITE_BUILDER);
+        _tree.setHeight(300);
 
-        final TreeItem admin = new TreeItem(_constants.administrator());
-        admin.setId(ADMINISTRATOR);
-        admin.setIconStyle("images/icons/user_gray.gif");
+        final ModelData users = getNewItem(_constants.users(), USERS);
+        _store.add(users, true);
+        _tree.setLeaf(users, false);
+        _tree.setExpanded(users, true);
 
-        final TreeItem search = new TreeItem(_constants.search());
-        search.setId(SEARCH);
-        search.setIconStyle("images/icons/magnifier.gif");
+        final ModelData all = getNewItem(_constants.all(), ALL);
+        _store.add(users, all, false);
+        _tree.setLeaf(all, false);
 
-        getRootItem().add(users);
-        users.add(all);
-        users.add(search);
-        all.add(creator);
-        all.add(builder);
-        all.add(admin);
+        final ModelData creator = getNewItem(
+            _constants.contentCreator(),
+            CONTENT_CREATOR,
+            "images/icons/user.gif");
+        _store.add(all, creator, false);
+        _tree.setLeaf(creator, true);
 
+        final ModelData builder = getNewItem(
+            _constants.siteBuilder(),
+            SITE_BUILDER,
+            "images/icons/user.gif");
+        _store.add(all, builder, false);
+        _tree.setLeaf(builder, true);
 
-        setSelectionMode(SelectionMode.SINGLE);
-        setStyleAttribute("background", "white");
+        final ModelData admin = getNewItem(
+            _constants.administrator(),
+            ADMINISTRATOR,
+            "images/icons/user_gray.gif");
+        _store.add(all, admin, false);
+        _tree.setLeaf(admin, true);
 
-        addListener(
-            Events.SelectionChange,
+        final ModelData search = getNewItem(
+            _constants.search(),
+            SEARCH,
+            "images/icons/magnifier.gif");
+        _store.add(users, search, false);
+        _tree.setLeaf(all, false);
+
+        _tree.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        _tree.setStyleAttribute("background", "white");
+
+        _tree.getSelectionModel().addSelectionChangedListener(
             new UserSelectedListener());
+
+    }
+
+    public TreePanel<ModelData> getTree() {
+        return _tree;
     }
 
     /**

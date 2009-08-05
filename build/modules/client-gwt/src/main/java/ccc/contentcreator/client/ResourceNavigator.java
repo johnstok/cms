@@ -95,7 +95,7 @@ public class ResourceNavigator extends ContentPanel {
             usersPanel.getHeader().setId("user-navigator");
             usersPanel.setScrollMode(Scroll.AUTO);
             usersPanel.setHeading("Users");
-            usersPanel.add(_usersTree);
+            usersPanel.add(_usersTree.getTree());
             add(usersPanel);
             usersPanel.addListener(
                 Events.Expand,
