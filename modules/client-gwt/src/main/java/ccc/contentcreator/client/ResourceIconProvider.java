@@ -31,15 +31,15 @@ final class ResourceIconProvider
             case FOLDER:
                 return "gxt/2.0.1/resources/images/gxt/icons/folder.gif";
             case PAGE:
-                return "images/icons/page.png";
+                return "images/icons/page.gif";
             case TEMPLATE:
-                return "images/icons/page_code.png";
+                return "images/icons/page_code.gif";
             case ALIAS:
-                return "images/icons/link.png";
+                return "images/icons/link.gif";
             case FILE:
-                return "images/icons/image.png";
+                return "images/icons/image.gif";
             case SEARCH:
-                return "images/icons/magnifier.png";
+                return "images/icons/magnifier.gif";
             default:
                 return null;
         }
