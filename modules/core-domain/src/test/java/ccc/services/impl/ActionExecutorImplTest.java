@@ -19,7 +19,7 @@ import java.util.HashMap;
 import junit.framework.TestCase;
 import ccc.api.ActionStatus;
 import ccc.api.CommandType;
-import ccc.api.FailureCodes;
+import ccc.api.FailureCode;
 import ccc.api.ID;
 import ccc.commands.CommandFailedException;
 import ccc.domain.Action;
@@ -75,7 +75,7 @@ public class ActionExecutorImplTest
         verify(_commands);
         assertEquals(ActionStatus.Failed, a.status());
         assertEquals(
-            FailureCodes.UNLOCKED,
+            FailureCode.UNLOCKED,
             a.failure().getCode());
     }
 

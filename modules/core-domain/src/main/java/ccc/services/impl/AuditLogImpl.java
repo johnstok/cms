@@ -55,7 +55,6 @@ public class AuditLogImpl
         LOG.info(
             "Action: " + le.action()
             + " for " + le.subjectId()
-            + ", " + le.actor().username()
-            + " on " + df.format(le.happenedOn()));
+            + " by " + le.actor().username());
     }
 }

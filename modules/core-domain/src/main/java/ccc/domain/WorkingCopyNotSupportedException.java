@@ -12,7 +12,7 @@
 package ccc.domain;
 
 import ccc.api.DBC;
-import ccc.api.FailureCodes;
+import ccc.api.FailureCode;
 import ccc.commands.CommandFailedException;
 
 
@@ -63,6 +63,6 @@ public class WorkingCopyNotSupportedException
     @Override
     public CommandFailedException toRemoteException() {
         return new CommandFailedException(
-            FailureCodes.WC_UNSUPPORTED, getUUID().toString());
+            FailureCode.WC_UNSUPPORTED, getUUID().toString());
     }
 }

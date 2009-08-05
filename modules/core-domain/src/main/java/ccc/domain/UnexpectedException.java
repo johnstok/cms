@@ -11,7 +11,7 @@
  */
 package ccc.domain;
 
-import ccc.api.FailureCodes;
+import ccc.api.FailureCode;
 import ccc.commands.CommandFailedException;
 
 
@@ -38,6 +38,6 @@ public class UnexpectedException
     @Override
     public CommandFailedException toRemoteException() {
         return new CommandFailedException(
-            FailureCodes.UNEXPECTED, getUUID().toString());
+            FailureCode.UNEXPECTED, getUUID().toString());
     }
 }

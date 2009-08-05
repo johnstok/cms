@@ -13,7 +13,7 @@ package ccc.domain;
 
 import java.util.Collections;
 
-import ccc.api.FailureCodes;
+import ccc.api.FailureCode;
 import ccc.commands.CommandFailedException;
 
 
@@ -58,7 +58,7 @@ public class ResourceExistsException
         return
             new CommandFailedException(
                 new Failure(
-                    FailureCodes.EXISTS,
+                    FailureCode.EXISTS,
                     getUUID().toString(),
                     Collections.singletonMap(
                         "existing_id", _resource.id().toString())));

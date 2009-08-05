@@ -29,7 +29,7 @@ import ccc.api.ActionSummary;
 import ccc.api.AliasDelta;
 import ccc.api.CommandType;
 import ccc.api.Duration;
-import ccc.api.FailureCodes;
+import ccc.api.FailureCode;
 import ccc.api.FileDelta;
 import ccc.api.FileSummary;
 import ccc.api.ID;
@@ -592,6 +592,6 @@ public class RestApi
     /** {@inheritDoc} */
     @Override
     public void fail() throws CommandFailedException {
-        throw new CommandFailedException(new Failure(FailureCodes.PRIVILEGES, "a"));
+        throw new CommandFailedException(new Failure(FailureCode.PRIVILEGES, "a"));
     }
 }

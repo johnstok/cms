@@ -12,7 +12,7 @@
 package ccc.domain;
 
 import ccc.api.DBC;
-import ccc.api.FailureCodes;
+import ccc.api.FailureCode;
 import ccc.commands.CommandFailedException;
 
 
@@ -59,7 +59,7 @@ public class UnlockedException
     @Override
     public CommandFailedException toRemoteException() {
         return new CommandFailedException(
-            FailureCodes.UNLOCKED,
+            FailureCode.UNLOCKED,
             getUUID().toString()
         );
     }
