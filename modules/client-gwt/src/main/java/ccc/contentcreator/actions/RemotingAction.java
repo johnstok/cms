@@ -22,7 +22,9 @@ import ccc.api.ActionSummary;
 import ccc.api.ResourceSummary;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.GwtJson;
+import ccc.contentcreator.client.RemoteException;
 import ccc.contentcreator.client.SessionTimeoutException;
+import ccc.contentcreator.overlays.FailureOverlay;
 
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -47,7 +49,8 @@ public abstract class RemotingAction
     private final String _actionName;
     private final Method _method;
     private final boolean _isSecure;
-    private final static int MS_IE6_1223 = 1223;
+    private static final int MS_IE6_1223 = 1223;
+    private static final int SC_IM_A_TEAPOT = 418;
 
     /**
      * Constructor.
@@ -112,6 +115,8 @@ public abstract class RemotingAction
                     GLOBALS.unexpectedError(
                         new SessionTimeoutException(response.getText()),
                         _actionName);
+                } else if (SC_IM_A_TEAPOT == response.getStatusCode()) {
+                    onCccException(response);
                 } else if (SC_OK == response.getStatusCode()) {
                     onOK(response);
                 } else if (SC_NO_CONTENT == response.getStatusCode()
@@ -134,6 +139,13 @@ public abstract class RemotingAction
         } catch (final RequestException e) {
             GLOBALS.unexpectedError(e, getActionName());
         }
+    }
+
+
+    private void onCccException(final Response response) {
+        GLOBALS.unexpectedError(
+            new RemoteException(FailureOverlay.fromJson(response.getText())),
+            _actionName);
     }
 
 

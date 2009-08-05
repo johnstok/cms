@@ -12,7 +12,6 @@
 package ccc.ws;
 
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
 
 import ccc.commands.CommandFailedException;
@@ -31,7 +30,7 @@ public class CommandFailedExceptionMapper
     @Override
     public Response toResponse(final CommandFailedException e) {
         return
-            Response.status(Status.INTERNAL_SERVER_ERROR)
+            Response.status(418)
                     .type("application/json")
                     .entity(e.getFailure())
                     .build();
