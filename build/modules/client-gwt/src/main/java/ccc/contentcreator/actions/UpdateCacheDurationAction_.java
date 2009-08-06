@@ -13,6 +13,7 @@ package ccc.contentcreator.actions;
 
 import ccc.api.Duration;
 import ccc.api.ID;
+import ccc.api.JsonKeys;
 import ccc.contentcreator.client.GwtJson;
 
 import com.google.gwt.http.client.RequestBuilder;
@@ -53,11 +54,8 @@ public abstract class UpdateCacheDurationAction_
     /** {@inheritDoc} */
     @Override
     protected String getBody() {
-        if (null==_duration) {
-            return "";
-        }
         final GwtJson json = new GwtJson();
-        _duration.toJson(json);
+        json.set(JsonKeys.CACHE_DURATION, _duration);
         return json.toString();
     }
 }

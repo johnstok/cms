@@ -42,6 +42,7 @@
             ccc.ws.ResourceSummaryCollectionReader,
             ccc.ws.StringCollectionWriter,
             ccc.ws.ResourceTemplatePUProvider,
+            ccc.ws.ResourceCacheDurationPUReader,
             ccc.ws.FolderDeltaReader
         </param-value>
     </context-param>

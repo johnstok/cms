@@ -87,8 +87,10 @@ public final class JsonKeys {
     public static final String UNLOCK = "unlock";
     /** UNPUBLISH : String. */
     public static final String UNPUBLISH = "unpublish";
-    /** DURATION : String. */
-    public static final String DURATION = "duration";
+    /** CACHE_DURATION : String. */
+    public static final String CACHE_DURATION = "cache-duration";
+    /** SECONDS : String. */
+    public static final String SECONDS = "seconds";
     /** ACTION : String. */
     public static final String ACTION = "action";
     /** ACTOR : String. */

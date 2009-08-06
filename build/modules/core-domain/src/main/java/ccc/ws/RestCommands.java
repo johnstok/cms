@@ -26,7 +26,6 @@ import javax.ws.rs.QueryParam;
 
 import ccc.api.AliasDelta;
 import ccc.api.CommandType;
-import ccc.api.Duration;
 import ccc.api.ID;
 import ccc.api.Json;
 import ccc.api.PageDelta;
@@ -35,6 +34,7 @@ import ccc.api.TemplateDelta;
 import ccc.api.UserDelta;
 import ccc.api.UserSummary;
 import ccc.api.rest.FolderDelta;
+import ccc.api.rest.ResourceCacheDurationPU;
 import ccc.api.rest.ResourceTemplatePU;
 import ccc.commands.CommandFailedException;
 
@@ -51,7 +51,7 @@ public interface RestCommands {
     @POST @Path("/resources/{id}/duration")
     void updateCacheDuration(
         @PathParam("id") ID resourceId,
-        Duration duration) throws CommandFailedException;
+        ResourceCacheDurationPU duration) throws CommandFailedException;
 
     @POST @Path("/resources/{id}/lock")
     void lock(
