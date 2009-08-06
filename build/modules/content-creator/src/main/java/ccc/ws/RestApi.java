@@ -19,15 +19,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 
 import ccc.api.ActionSummary;
 import ccc.api.AliasDelta;
-import ccc.api.CommandType;
 import ccc.api.Duration;
 import ccc.api.FailureCode;
 import ccc.api.FileDelta;
@@ -44,9 +41,17 @@ import ccc.api.TemplateSummary;
 import ccc.api.UserDelta;
 import ccc.api.UserSummary;
 import ccc.api.Username;
+import ccc.api.rest.ActionNew;
+import ccc.api.rest.AliasNew;
 import ccc.api.rest.FolderDelta;
+import ccc.api.rest.FolderNew;
+import ccc.api.rest.PageNew;
 import ccc.api.rest.ResourceCacheDurationPU;
+import ccc.api.rest.ResourceRevisionPU;
 import ccc.api.rest.ResourceTemplatePU;
+import ccc.api.rest.TemplateNew;
+import ccc.api.rest.UserNew;
+import ccc.api.rest.UserPasswordPU;
 import ccc.commands.CommandFailedException;
 import ccc.commons.CCCProperties;
 import ccc.commons.JNDI;
@@ -71,7 +76,6 @@ public class RestApi
     private final Registry _reg = new JNDI();
     private final String _appName = CCCProperties.get("application.name"); // TODO: Refactor constant
 
-    private @Context HttpServletRequest _request;
     private Queries _queries;
     private Commands _commands;
 
@@ -356,48 +360,48 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public UserSummary createUser(final UserDelta delta,
-                                  final String password) throws CommandFailedException {
-        return getCommands().createUser(delta, password);
+    public UserSummary createUser(final UserNew user) throws CommandFailedException {
+        return getCommands().createUser(user.getDelta(), user.getPassword());
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createTemplate(final ID parentId,
-                                          final TemplateDelta delta,
-                                          final String title,
-                                          final String description,
-                                          final String name) throws CommandFailedException {
-        return getCommands().createTemplate(parentId, delta, title, description, name);
+    public ResourceSummary createTemplate(final TemplateNew template) throws CommandFailedException {
+        return getCommands().createTemplate(
+            template.getParentId(),
+            template.getDelta(),
+            template.getTitle(),
+            template.getDescription(),
+            template.getName());
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createPage(final ID parentId,
-                                      final PageDelta delta,
-                                      final String name,
-                                      final boolean publish,
-                                      final ID templateId,
-                                      final String title) throws CommandFailedException {
-        return getCommands().createPage(parentId, delta, name, publish, templateId, title);
+    public ResourceSummary createPage(final PageNew page) throws CommandFailedException {
+        return getCommands().createPage(
+            page.getParentId(),
+            page.getDelta(),
+            page.getName(),
+            false,
+            page.getTemplateId(),
+            page.getTitle());
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createFolder(final ID parentId,
-                                        final String name) throws CommandFailedException {
-        return getCommands().createFolder(parentId, name);
+    public ResourceSummary createFolder(final FolderNew folder) throws CommandFailedException {
+        return getCommands().createFolder(folder.getParentId(), folder.getName());
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void updateUserPassword(final ID userId,
-                                   final String password) throws CommandFailedException {
-        getCommands().updateUserPassword(userId, password);
+                                   final UserPasswordPU pu) throws CommandFailedException {
+        getCommands().updateUserPassword(userId, pu.getPassword());
     }
 
 
@@ -460,12 +464,12 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public void createAction(final ID resourceId,
-                             final CommandType action,
-                             final long executeAfter,
-                             final Map<String, String> parameters) throws CommandFailedException {
+    public void createAction(final ActionNew action) throws CommandFailedException {
         getCommands().createAction(
-            resourceId, action, new Date(executeAfter), parameters);
+            action.getResourceId(),
+            action.getAction(),
+            new Date(action.getExecuteAfter()),
+            action.getParameters());
     }
 
 
@@ -529,15 +533,16 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createAlias(final ID parentId, final String name, final ID targetId) throws CommandFailedException {
-        return getCommands().createAlias(parentId, name, targetId);
+    public ResourceSummary createAlias(final AliasNew alias) throws CommandFailedException {
+        return getCommands().createAlias(
+            alias.getParentId(), alias.getName(), alias.getTargetId());
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void createWorkingCopy(final ID resourceId, final long index) throws CommandFailedException {
-        getCommands().createWorkingCopy(resourceId, index);
+    public void createWorkingCopy(final ID resourceId, final ResourceRevisionPU pu) throws CommandFailedException {
+        getCommands().createWorkingCopy(resourceId, pu.getRevision());
     }
 
 

@@ -13,7 +13,6 @@ package ccc.ws;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -22,10 +21,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 
 import ccc.api.AliasDelta;
-import ccc.api.CommandType;
 import ccc.api.ID;
 import ccc.api.Json;
 import ccc.api.PageDelta;
@@ -33,9 +30,17 @@ import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
 import ccc.api.UserDelta;
 import ccc.api.UserSummary;
+import ccc.api.rest.ActionNew;
+import ccc.api.rest.AliasNew;
 import ccc.api.rest.FolderDelta;
+import ccc.api.rest.FolderNew;
+import ccc.api.rest.PageNew;
 import ccc.api.rest.ResourceCacheDurationPU;
+import ccc.api.rest.ResourceRevisionPU;
 import ccc.api.rest.ResourceTemplatePU;
+import ccc.api.rest.TemplateNew;
+import ccc.api.rest.UserNew;
+import ccc.api.rest.UserPasswordPU;
 import ccc.commands.CommandFailedException;
 
 
@@ -58,36 +63,21 @@ public interface RestCommands {
         @PathParam("id") ID resourceId) throws CommandFailedException;
 
     @POST @Path("/users")
-    UserSummary createUser(
-        UserDelta delta,
-        @QueryParam("pw") String password) throws CommandFailedException;
+    UserSummary createUser(UserNew user) throws CommandFailedException;
 
     @POST @Path("/templates")
-    ResourceSummary createTemplate(
-        @QueryParam("id") ID parentId,
-        TemplateDelta delta,
-        @QueryParam("t") String title,
-        @QueryParam("d") String description,
-        @QueryParam("n") String name) throws CommandFailedException;
+    ResourceSummary createTemplate(TemplateNew template) throws CommandFailedException;
 
     @POST @Path("/pages")
-    ResourceSummary createPage(
-        @QueryParam("id") ID parentId,
-        PageDelta delta,
-        @QueryParam("n") String name,
-        @QueryParam("p") boolean publish,
-        @QueryParam("m") ID templateId,
-        @QueryParam("t") String title) throws CommandFailedException;
+    ResourceSummary createPage(PageNew page) throws CommandFailedException;
 
     @POST @Path("/folders")
-    ResourceSummary createFolder(
-        @QueryParam("id") ID parentId,
-        @QueryParam("n") String name) throws CommandFailedException;
+    ResourceSummary createFolder(FolderNew folder) throws CommandFailedException;
 
     @POST @Path("/users/{id}/password")
     void updateUserPassword(
         @PathParam("id") ID userId,
-        String password) throws CommandFailedException;
+        UserPasswordPU pu) throws CommandFailedException;
 
     @POST @Path("/resources/{id}/wc-apply")
     void applyWorkingCopy(
@@ -137,11 +127,7 @@ public interface RestCommands {
         @PathParam("id") ID resourceId) throws CommandFailedException;
 
     @POST @Path("/actions")
-    void createAction(
-        @QueryParam("r") ID resourceId,
-        @QueryParam("c") CommandType action,
-        @QueryParam("x") long executeAfter,
-        Map<String, String> parameters) throws CommandFailedException;
+    void createAction(ActionNew action) throws CommandFailedException;
 
     @POST @Path("/resources/{id}/metadata")
     void updateMetadata(
@@ -164,13 +150,10 @@ public interface RestCommands {
     @POST @Path("/resources/{id}/wc-create")
     void createWorkingCopy(
         @PathParam("id") ID resourceId,
-        @QueryParam("v") long index) throws CommandFailedException;
+        ResourceRevisionPU pu) throws CommandFailedException;
 
     @POST @Path("/aliases")
-    ResourceSummary createAlias(
-        @QueryParam("id") ID parentId,
-        @QueryParam("n") String name,
-        @QueryParam("g") ID targetId) throws CommandFailedException;
+    ResourceSummary createAlias(AliasNew alias) throws CommandFailedException;
 
     @POST @Path("/templates/{id}")
     void updateTemplate(

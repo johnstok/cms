@@ -11,15 +11,15 @@
  */
 package ccc.contentcreator.actions;
 
+import ccc.api.JsonKeys;
 import ccc.api.UserDelta;
 import ccc.contentcreator.client.GwtJson;
 
 import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.URL;
 
 
 /**
- * TODO: Add a description for this type.
+ * Create a new user.
  *
  * @author Civic Computing Ltd.
  */
@@ -32,10 +32,9 @@ public abstract class CreateUserAction_
 
     /**
      * Constructor.
+     *
      * @param password The user's password.
      * @param userDelta The user's details.
-     *
-     * @param actionName
      */
     public CreateUserAction_(final UserDelta userDelta, final String password) {
         super(GLOBALS.uiConstants().createUser(), RequestBuilder.POST);
@@ -46,14 +45,15 @@ public abstract class CreateUserAction_
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/users?pw="+URL.encodeComponent(_password);
+        return "/users";
     }
 
     /** {@inheritDoc} */
     @Override
     protected String getBody() {
         final GwtJson json = new GwtJson();
-        _userDelta.toJson(json);
+        json.set(JsonKeys.DELTA, _userDelta);
+        json.set(JsonKeys.PASSWORD, _password);
         return json.toString();
     }
 }

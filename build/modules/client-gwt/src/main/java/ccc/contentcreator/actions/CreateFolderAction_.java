@@ -12,14 +12,16 @@
 package ccc.contentcreator.actions;
 
 import ccc.api.ID;
+import ccc.api.JsonKeys;
 import ccc.api.ResourceSummary;
+import ccc.contentcreator.client.GwtJson;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;
 
 
 /**
- * TODO: Add a description for this type.
+ * Create a folder.
  *
  * @author Civic Computing Ltd.
  */
@@ -44,10 +46,17 @@ public abstract class CreateFolderAction_
 
     /** {@inheritDoc} */
     @Override
-    protected String getPath() { // FIXME: Escape!!
-        return "/folders"
-        + "?id="+_parentFolder
-        + "&n="+_name;
+    protected String getPath() {
+        return "/folders";
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected String getBody() {
+        final GwtJson json = new GwtJson();
+        json.set(JsonKeys.PARENT_ID, _parentFolder);
+        json.set(JsonKeys.NAME, _name);
+        return json.toString();
     }
 
     /** {@inheritDoc} */

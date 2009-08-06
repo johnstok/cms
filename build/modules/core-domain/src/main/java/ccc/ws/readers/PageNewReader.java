@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.ws;
+package ccc.ws.readers;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -18,7 +18,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
@@ -26,22 +25,22 @@ import javax.ws.rs.ext.Provider;
 
 import ccc.api.Json;
 import ccc.api.JsonKeys;
-import ccc.api.rest.FolderDelta;
+import ccc.api.PageDelta;
+import ccc.api.rest.PageNew;
 import ccc.commons.IO;
 import ccc.domain.Snapshot;
 
 
 /**
- * A reader for folder deltas.
- * TODO: Remove this class - it is a duplicate.
+ * A reader for templates.
  *
  * @author Civic Computing Ltd.
  */
 @Provider
 @Consumes("application/json")
-public class FolderDeltaReader
+public class PageNewReader
     implements
-        MessageBodyReader<FolderDelta> {
+        MessageBodyReader<PageNew> {
 
     /** {@inheritDoc} */
     @Override
@@ -49,26 +48,28 @@ public class FolderDeltaReader
                               final Type type,
                               final Annotation[] annotations,
                               final MediaType mediaType) {
-        return FolderDelta.class.equals(clazz);
+        return PageNew.class.equals(clazz);
     }
 
     /** {@inheritDoc} */
     @Override
-    public FolderDelta readFrom(final Class<FolderDelta> arg0,
-                              final Type arg1,
-                              final Annotation[] arg2,
-                              final MediaType arg3,
-                              final MultivaluedMap<String, String> arg4,
-                              final InputStream arg5) throws IOException, WebApplicationException {
+    public PageNew readFrom(final Class<PageNew> clazz,
+                            final Type type,
+                            final Annotation[] annotations,
+                            final MediaType mimetype,
+                            final MultivaluedMap<String, String> httpHeaders,
+                            final InputStream is) throws IOException {
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        IO.copy(arg5, baos);
+        IO.copy(is, baos);
         final String s = new String(baos.toByteArray());
+
         final Json json = new Snapshot(s);
-        final FolderDelta d =
-            new FolderDelta(
-                json.getString(JsonKeys.SORT_ORDER),
-                json.getId(JsonKeys.INDEX_PAGE_ID)
-            );
-        return d;
+        final PageDelta d = new PageDelta(json.getJson(JsonKeys.DELTA));
+        return new PageNew(
+            json.getId(JsonKeys.PARENT_ID),
+            d,
+            json.getString(JsonKeys.NAME),
+            json.getId(JsonKeys.TEMPLATE_ID),
+            json.getString(JsonKeys.TITLE));
     }
 }

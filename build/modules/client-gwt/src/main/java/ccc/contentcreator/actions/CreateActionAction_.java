@@ -16,13 +16,14 @@ import java.util.Map;
 
 import ccc.api.CommandType;
 import ccc.api.ID;
+import ccc.api.JsonKeys;
 import ccc.contentcreator.client.GwtJson;
 
 import com.google.gwt.http.client.RequestBuilder;
 
 
 /**
- * TODO: Add a description for this type.
+ * Create a scheduled action.
  *
  * @author Civic Computing Ltd.
  */
@@ -58,16 +59,18 @@ public class CreateActionAction_
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return
-            "/actions?r="+_resourceId
-            + "&x="+_executeAfter.getTime()
-            + "&c="+_command;
+        return "/actions";
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected String getBody() {
-        return new GwtJson(_actionParameters).toString();
+        final GwtJson json = new GwtJson();
+        json.set(JsonKeys.SUBJECT_ID, _resourceId);
+        json.set(JsonKeys.ACTION, _command.name());
+        json.set(JsonKeys.EXECUTE_AFTER, _executeAfter);
+        json.set(JsonKeys.PARAMETERS, _actionParameters);
+        return json.toString();
     }
 }

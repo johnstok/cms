@@ -13,7 +13,16 @@ package ccc.api;
 
 
 /**
- * Key names used for serializing to JSON.
+ * Key names used for serializing CCC data types.
+ *
+ * <p><strong>
+ * It is STRONGLY recommended that the values of keys be named conservatively.
+ * This will maximise their portability across different serialisation formats,
+ * such as JSON, XML, etc.</strong>
+ *
+ * <p>
+ * Ideally, the existing style should be maintained, limiting keys to the
+ * lower case a Latin alphabet and the hyphen. Always begin a key with a letter.
  *
  * @author Civic Computing Ltd.
  */
@@ -24,31 +33,31 @@ public final class JsonKeys {
     /** TAGS : String. */
     public static final String TAGS = "tags";
     /** TEMPLATE_ID : String. */
-    public static final String TEMPLATE_ID = "templateId";
+    public static final String TEMPLATE_ID = "template-id";
     /** DATE_CHANGED : String. */
-    public static final String DATE_CHANGED = "dateChanged";
+    public static final String DATE_CHANGED = "date-changed";
     /** DATE_CREATED : String. */
-    public static final String DATE_CREATED = "dateCreated";
+    public static final String DATE_CREATED = "date-created";
     /** HAS_WORKING_COPY : String. */
-    public static final String HAS_WORKING_COPY = "hasWorkingCopy";
+    public static final String HAS_WORKING_COPY = "has-working-copy";
     /** SORT_ORDER : String. */
-    public static final String SORT_ORDER = "sortOrder";
+    public static final String SORT_ORDER = "sort-order";
     /** INCLUDE_IN_MAIN_MENU : String. */
-    public static final String INCLUDE_IN_MAIN_MENU = "includeInMainMenu";
+    public static final String INCLUDE_IN_MAIN_MENU = "include-in-main-menu";
     /** FOLDER_COUNT : String. */
-    public static final String FOLDER_COUNT = "folderCount";
+    public static final String FOLDER_COUNT = "folder-count";
     /** CHILD_COUNT : String. */
-    public static final String CHILD_COUNT = "childCount";
+    public static final String CHILD_COUNT = "child-count";
     /** PUBLISHED_BY : String. */
-    public static final String PUBLISHED_BY = "publishedBy";
+    public static final String PUBLISHED_BY = "published-by";
     /** TITLE : String. */
     public static final String TITLE = "title";
     /** LOCKED_BY : String. */
-    public static final String LOCKED_BY = "lockedBy";
+    public static final String LOCKED_BY = "locked-by";
     /** TYPE : String. */
     public static final String TYPE = "type";
     /** PARENT_ID : String. */
-    public static final String PARENT_ID = "parentId";
+    public static final String PARENT_ID = "parent-id";
     /** NAME : String. */
     public static final String NAME = "name";
     /** ID : String. */
@@ -76,11 +85,11 @@ public final class JsonKeys {
     /** DEFINITION : String. */
     public static final String DEFINITION = "definition";
     /** TARGET : String. */
-    public static final String TARGET = "target";
+    public static final String TARGET = "target"; // FIXME: Should be 'target-id'?
     /** ABSOLUTE_PATH : String. */
-    public static final String ABSOLUTE_PATH = "absolute_path";
+    public static final String ABSOLUTE_PATH = "absolute-path";
     /** INDEX_PAGE_ID : String. */
-    public static final String INDEX_PAGE_ID = "indexPageId";
+    public static final String INDEX_PAGE_ID = "index-page-id";
     /** REVISION : String. */
     public static final String REVISION = "revision";
     /** UNLOCK : String. */
@@ -92,13 +101,13 @@ public final class JsonKeys {
     /** SECONDS : String. */
     public static final String SECONDS = "seconds";
     /** ACTION : String. */
-    public static final String ACTION = "action";
+    public static final String ACTION = "action"; // FIXME: Should be 'command'.
     /** ACTOR : String. */
     public static final String ACTOR = "actor";
     /** HAPPENED_ON : String. */
-    public static final String HAPPENED_ON = "happened_on";
+    public static final String HAPPENED_ON = "happened-on";
     /** MAJOR_CHANGE : String. */
-    public static final String MAJOR_CHANGE = "major_change";
+    public static final String MAJOR_CHANGE = "major-change";
     /** INDEX : String. */
     public static final String INDEX = "index";
     /** COMMENT : String. */
@@ -117,4 +126,10 @@ public final class JsonKeys {
     public static final String CODE = "code";
     /** VERSION : String. */
     public static final String VERSION = "version";
+    /** PASSWORD : String. */
+    public static final String PASSWORD = "password";
+    /** SUBJECT_ID : String. */
+    public static final String SUBJECT_ID = "subject-id";
+    /** PARAMETERS : String. */
+    public static final String PARAMETERS = "parameters";
 }

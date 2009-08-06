@@ -12,6 +12,8 @@
 package ccc.contentcreator.actions;
 
 import ccc.api.ID;
+import ccc.api.JsonKeys;
+import ccc.contentcreator.client.GwtJson;
 
 import com.google.gwt.http.client.RequestBuilder;
 
@@ -48,5 +50,9 @@ public abstract class UpdateUserPasswordAction
 
 
     /** {@inheritDoc} */
-    @Override protected String getBody() { return _newPassword; }
+    @Override protected String getBody() {
+        final GwtJson json = new GwtJson();
+        json.set(JsonKeys.PASSWORD, _newPassword);
+        return json.toString();
+    }
 }
