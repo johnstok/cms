@@ -49,7 +49,6 @@ public class CreatePageCommand extends CreateResourceCommand {
      *
      * @param parentFolder The folder in which the page will be created.
      * @param delta The contents of the new page.
-     * @param publish Should the new page be published.
      * @param name The new page's name.
      * @param templateId The new page's template.
      * @param actor The user who performed the command.
@@ -63,7 +62,6 @@ public class CreatePageCommand extends CreateResourceCommand {
                         final Date happenedOn,
                         final UUID parentFolder,
                         final PageDelta delta,
-                        final boolean publish,
                         final ResourceName name,
                         final String title,
                         final UUID templateId) throws RemoteExceptionSupport {
@@ -83,10 +81,6 @@ public class CreatePageCommand extends CreateResourceCommand {
                 template,
                 rm,
                 delta.getParagraphs().toArray(new Paragraph[0]));
-
-        if (publish) {
-            page.publish(actor);
-        }
 
         create(actor, happenedOn, parentFolder, page);
 

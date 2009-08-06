@@ -189,7 +189,7 @@ public class CommandsEJB
 
             if (publish) {
                 f.lock(u);
-                new PublishCommand(_audit).execute(new Date(), u, f);
+                new PublishCommand(_audit).execute(happenedOn, u, f);
                 f.unlock(u);
             }
 
@@ -234,15 +234,23 @@ public class CommandsEJB
                                       final Date happenedOn)
                                                  throws CommandFailedException {
         try {
+            final User u = userForId(actorId);
+
             final Page p = new CreatePageCommand(_bdao, _audit).execute(
-                userForId(actorId),
+                u,
                 happenedOn,
                 toUUID(parentId),
                 delta,
-                publish,
                 ResourceName.escape(name),
                 title,
                 toUUID(templateId));
+
+            if (publish) {
+                p.lock(u);
+                new PublishCommand(_audit).execute(happenedOn, u, p);
+                p.unlock(u);
+            }
+
             return mapResource(p);
 
         } catch (final RemoteExceptionSupport e) {
@@ -882,7 +890,7 @@ public class CommandsEJB
 
             if (publish) {
                 f.lock(u);
-                new PublishCommand(_audit).execute(new Date(), u, f);
+                new PublishCommand(_audit).execute(lastUpdated, u, f);
                 f.unlock(u);
             }
 
