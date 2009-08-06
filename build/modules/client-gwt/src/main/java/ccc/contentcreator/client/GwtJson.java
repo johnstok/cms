@@ -218,7 +218,7 @@ public class GwtJson
     /** {@inheritDoc} */
     @Override
     public void set(final String key, final ID value) {
-        _delegate.put(key, new JSONString(value.toString()));
+        _delegate.put(key, (null==value) ? JSONNull.getInstance() : new JSONString(value.toString()));
     }
 
     /** {@inheritDoc} */

@@ -34,6 +34,7 @@ import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
 import ccc.api.UserDelta;
 import ccc.api.UserSummary;
+import ccc.api.rest.ResourceTemplatePU;
 import ccc.commands.CommandFailedException;
 
 
@@ -94,7 +95,7 @@ public interface RestCommands {
     @POST @Path("/resources/{id}/template")
     void updateResourceTemplate(
         @PathParam("id") ID resourceId,
-        @QueryParam("t") ID templateId) throws CommandFailedException;
+        ResourceTemplatePU template) throws CommandFailedException;
 
     @POST @Path("/resources/{id}/unlock")
     void unlock(

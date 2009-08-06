@@ -44,6 +44,7 @@ import ccc.api.TemplateSummary;
 import ccc.api.UserDelta;
 import ccc.api.UserSummary;
 import ccc.api.Username;
+import ccc.api.rest.ResourceTemplatePU;
 import ccc.commands.CommandFailedException;
 import ccc.commons.CCCProperties;
 import ccc.commons.JNDI;
@@ -407,8 +408,9 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public void updateResourceTemplate(final ID resourceId, final ID templateId) throws CommandFailedException {
-        getCommands().updateResourceTemplate(resourceId, templateId);
+    public void updateResourceTemplate(final ID resourceId,
+                                       final ResourceTemplatePU pu) throws CommandFailedException {
+        getCommands().updateResourceTemplate(resourceId, pu.getTemplateId());
     }
 
 
