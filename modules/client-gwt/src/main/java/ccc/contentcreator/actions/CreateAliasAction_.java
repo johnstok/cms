@@ -12,12 +12,14 @@
 package ccc.contentcreator.actions;
 
 import ccc.api.ID;
+import ccc.api.JsonKeys;
+import ccc.contentcreator.client.GwtJson;
 
 import com.google.gwt.http.client.RequestBuilder;
 
 
 /**
- * TODO: Add a description for this type.
+ * Create an alias.
  *
  * @author Civic Computing Ltd.
  */
@@ -47,11 +49,17 @@ public class CreateAliasAction_
 
     /** {@inheritDoc} */
     @Override
-    protected String getPath() { // FIXME: Encoding!!
-        return
-            "/aliases"
-            + "?id="+_parentId
-            + "&n="+_aliasName
-            + "&g="+_targetId;
+    protected String getPath() {
+        return "/aliases";
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected String getBody() {
+        final GwtJson json = new GwtJson();
+        json.set(JsonKeys.PARENT_ID, _parentId);
+        json.set(JsonKeys.NAME, _aliasName);
+        json.set(JsonKeys.TARGET, _targetId);
+        return json.toString();
     }
 }

@@ -13,6 +13,7 @@ package ccc.contentcreator.actions;
 
 import ccc.api.ID;
 import ccc.api.Json;
+import ccc.api.JsonKeys;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
 import ccc.contentcreator.client.GwtJson;
@@ -22,7 +23,7 @@ import com.google.gwt.http.client.Response;
 
 
 /**
- * TODO: Add a description for this type.
+ * Create a template.
  *
  * @author Civic Computing Ltd.
  */
@@ -52,13 +53,8 @@ public abstract class CreateTemplateAction_
 
     /** {@inheritDoc} */
     @Override
-    protected String getPath() { // FIXME: Escape!
-        return
-            "/templates?"
-            + "id="+_parentFolder
-            +"&n="+_resourceName
-            +"&t="+_resourceName
-            +"&d=";
+    protected String getPath() {
+        return "/templates";
     }
 
     /** {@inheritDoc} */
@@ -72,7 +68,11 @@ public abstract class CreateTemplateAction_
     @Override
     protected String getBody() {
         final Json json = new GwtJson();
-        _delta.toJson(json);
+        json.set(JsonKeys.PARENT_ID, _parentFolder);
+        json.set(JsonKeys.DELTA, _delta);
+        json.set(JsonKeys.TITLE, _resourceName);
+        json.set(JsonKeys.DESCRIPTION, "");
+        json.set(JsonKeys.NAME, _resourceName);
         return json.toString();
     }
 

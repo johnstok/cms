@@ -41,9 +41,17 @@
             ccc.ws.JsonableCollectionWriter,
             ccc.ws.ResourceSummaryCollectionReader,
             ccc.ws.StringCollectionWriter,
-            ccc.ws.ResourceTemplatePUProvider,
-            ccc.ws.ResourceCacheDurationPUReader,
-            ccc.ws.FolderDeltaReader
+            ccc.ws.readers.ResourceTemplatePUProvider,
+            ccc.ws.readers.UserPasswordPUReader,
+            ccc.ws.readers.ResourceCacheDurationPUReader,
+            ccc.ws.readers.FolderDeltaReader,
+            ccc.ws.readers.ResourceRevisionPUReader,
+            ccc.ws.readers.PageNewReader,
+            ccc.ws.readers.ActionNewReader,
+            ccc.ws.readers.AliasNewReader,
+            ccc.ws.readers.UserNewReader,
+            ccc.ws.readers.FolderNewReader,
+            ccc.ws.readers.TemplateNewReader
         </param-value>
     </context-param>
     <context-param>

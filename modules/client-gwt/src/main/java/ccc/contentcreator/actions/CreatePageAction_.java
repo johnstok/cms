@@ -12,6 +12,7 @@
 package ccc.contentcreator.actions;
 
 import ccc.api.ID;
+import ccc.api.JsonKeys;
 import ccc.api.PageDelta;
 import ccc.api.ResourceSummary;
 import ccc.contentcreator.client.GwtJson;
@@ -21,7 +22,7 @@ import com.google.gwt.http.client.Response;
 
 
 /**
- * TODO: Add a description for this type.
+ * Create a page.
  *
  * @author Civic Computing Ltd.
  */
@@ -39,6 +40,7 @@ public abstract class CreatePageAction_
 
     /**
      * Constructor.
+     *
      * @param title The page's title.
      * @param template
      * @param publish
@@ -64,13 +66,8 @@ public abstract class CreatePageAction_
 
     /** {@inheritDoc} */
     @Override
-    protected String getPath() { // FIXME: Escape!!
-        return "/pages"
-            + "?id="+_parentFolder
-            + "&n="+_name
-            + "&p="+_publish
-            + "&m="+_template
-            + "&t="+_title;
+    protected String getPath() {
+        return "/pages";
     }
 
 
@@ -86,7 +83,11 @@ public abstract class CreatePageAction_
     @Override
     protected String getBody() {
         final GwtJson json = new GwtJson();
-        _page.toJson(json);
+        json.set(JsonKeys.PARENT_ID, _parentFolder);
+        json.set(JsonKeys.DELTA, _page);
+        json.set(JsonKeys.NAME, _name);
+        json.set(JsonKeys.TEMPLATE_ID, _template);
+        json.set(JsonKeys.TITLE, _title);
         return json.toString();
     }
 

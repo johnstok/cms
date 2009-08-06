@@ -37,8 +37,11 @@ import ccc.api.TemplateDelta;
 import ccc.api.UserDelta;
 import ccc.api.UserSummary;
 import ccc.api.Username;
+import ccc.api.rest.FolderNew;
 import ccc.api.rest.ResourceCacheDurationPU;
 import ccc.api.rest.ResourceTemplatePU;
+import ccc.api.rest.TemplateNew;
+import ccc.api.rest.UserNew;
 import ccc.commands.CommandFailedException;
 import ccc.domain.Failure;
 import ccc.services.Queries;
@@ -166,11 +169,12 @@ public class FirstAcceptanceTest
             new TemplateDelta("body", "<fields/>", MimeType.HTML);
         final ResourceSummary ts =
             commands.createTemplate(
-                folder.getId(),
-                newTemplate,
-                templateName,
-                templateName,
-                templateName);
+                new TemplateNew(
+                    folder.getId(),
+                    newTemplate,
+                    templateName,
+                    templateName,
+                    templateName));
         return ts;
     }
 
@@ -193,7 +197,12 @@ public class FirstAcceptanceTest
             new TemplateDelta("body", "<fields/>", MimeType.HTML);
         final ResourceSummary ts =
             commands.createTemplate(
-                templateFolder.getId(), newTemplate, "t-title", "t-desc", "t-name");
+                new TemplateNew(
+                    templateFolder.getId(),
+                    newTemplate,
+                    "t-title",
+                    "t-desc",
+                    "t-name"));
 
         // ASSERT
         assertEquals("/assets/templates/t-name", ts.getAbsolutePath());
@@ -218,7 +227,7 @@ public class FirstAcceptanceTest
         final ResourceSummary contentFolder =
             queries.resourceForPath("/content");
         final ResourceSummary durationFolder =
-            commands.createFolder(contentFolder.getId(), "duration");
+            commands.createFolder(new FolderNew(contentFolder.getId(), "duration"));
         commands.lock(durationFolder.getId());
         assertNull(queries.cacheDuration(durationFolder.getId()));
 
@@ -256,7 +265,7 @@ public class FirstAcceptanceTest
                 new HashMap<String, String>());
 
         // ACT
-        commands.createUser(d, "Testtest00-");
+        commands.createUser(new UserNew(d, "Testtest00-"));
         final Collection<UserSummary> users =
             queries.listUsersWithUsername(d.getUsername().toString());
 
