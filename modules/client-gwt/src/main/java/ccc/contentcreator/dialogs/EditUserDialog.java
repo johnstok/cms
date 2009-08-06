@@ -117,8 +117,11 @@ public class EditUserDialog extends AbstractEditDialog {
                 _userDTO.setEmail(_email.getValue());
 
                 final Set<String> validRoles = new HashSet<String>();
+                final String roleValue = _roles.getValue();
                 final String[] roles =
-                    _roles.getValue().split("\n|\r|\r\n");
+                    (null==roleValue)
+                        ? new String[]{}
+                        : roleValue.split("\n|\r|\r\n");
                 for (final String role : roles) {
                     final String cleanRole = role.trim();
                     if (cleanRole.length() > 0) {
