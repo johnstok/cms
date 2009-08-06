@@ -108,9 +108,6 @@ public abstract class CreateResourceCommand {
 
         ss.set(JsonKeys.NAME, resource.name().toString());
 
-        final User pBy = resource.publishedBy();
-        ss.set(JsonKeys.PUBLISHED_BY, (null==pBy)?null:pBy.id().toString());
-
         final Resource parent = resource.parent();
         ss.set(JsonKeys.PARENT_ID, (null==parent)?null:parent.id().toString());
 
