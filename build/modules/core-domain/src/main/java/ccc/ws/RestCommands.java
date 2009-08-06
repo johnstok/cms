@@ -34,6 +34,7 @@ import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
 import ccc.api.UserDelta;
 import ccc.api.UserSummary;
+import ccc.api.rest.FolderDelta;
 import ccc.api.rest.ResourceTemplatePU;
 import ccc.commands.CommandFailedException;
 
@@ -189,8 +190,7 @@ public interface RestCommands {
     @POST @Path("/folders/{id}")
     void updateFolder(
         @PathParam("id") ID folderId,
-        @QueryParam("s") String sortOrder,
-        @QueryParam("i") ID indexPageId) throws CommandFailedException;
+        FolderDelta delta) throws CommandFailedException;
 
     @POST @Path("/users/{id}")
     void updateUser(
