@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.UUID;
 
 import junit.framework.TestCase;
 
@@ -36,6 +37,7 @@ import ccc.api.TemplateDelta;
 import ccc.api.UserDelta;
 import ccc.api.UserSummary;
 import ccc.api.Username;
+import ccc.api.rest.ResourceTemplatePU;
 import ccc.commands.CommandFailedException;
 import ccc.domain.Failure;
 import ccc.services.Queries;
@@ -118,6 +120,57 @@ public class FirstAcceptanceTest
         final UserSummary currentUser = queries.loggedInUser();
         final ResourceSummary updatedRoot = queries.resource(contentRoot.getId());
         assertEquals(currentUser.getUsername(), updatedRoot.getLockedBy());
+        commands.unlock(contentRoot.getId());
+    }
+
+    /**
+     * Test.
+     * @throws CommandFailedException If the test fails.
+     */
+    public void testChangeResourceTemplate() throws CommandFailedException {
+
+        // ARRANGE
+        final HttpClient c = login();
+        final Queries queries =
+            ProxyFactory.create(Queries.class, _secure, c);
+        final RestCommands commands =
+            ProxyFactory.create(RestCommands.class, _secure, c);
+
+        final ResourceSummary folder = queries.resourceForPath("/content");
+        final ResourceSummary ts = dummyTemplate(commands, folder);
+        commands.lock(folder.getId());
+
+        // ACT
+        try {
+            commands.updateResourceTemplate(
+                folder.getId(), new ResourceTemplatePU(ts.getId()));
+        } finally {
+            try {
+                commands.unlock(folder.getId());
+            } catch (final Exception e) {
+                log.warn("Failed to unlock resource.", e);
+            }
+        }
+
+        // ASSERT
+        final ResourceSummary updatedFolder = queries.resource(folder.getId());
+        assertEquals(ts.getId(), updatedFolder.getTemplateId());
+    }
+
+
+    private ResourceSummary dummyTemplate(final RestCommands commands,
+                                          final ResourceSummary folder) throws CommandFailedException {
+        final String templateName = UUID.randomUUID().toString();
+        final TemplateDelta newTemplate =
+            new TemplateDelta("body", "<fields/>", MimeType.HTML);
+        final ResourceSummary ts =
+            commands.createTemplate(
+                folder.getId(),
+                newTemplate,
+                templateName,
+                templateName,
+                templateName);
+        return ts;
     }
 
     /**
@@ -137,8 +190,6 @@ public class FirstAcceptanceTest
             queries.resourceForPath("/assets/templates");
         final TemplateDelta newTemplate =
             new TemplateDelta("body", "<fields/>", MimeType.HTML);
-
-        // ACT
         final ResourceSummary ts =
             commands.createTemplate(
                 templateFolder.getId(), newTemplate, "t-title", "t-desc", "t-name");

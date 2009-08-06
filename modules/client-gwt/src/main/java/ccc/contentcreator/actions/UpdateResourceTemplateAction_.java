@@ -12,6 +12,9 @@
 package ccc.contentcreator.actions;
 
 import ccc.api.ID;
+import ccc.api.Json;
+import ccc.api.JsonKeys;
+import ccc.contentcreator.client.GwtJson;
 
 import com.google.gwt.http.client.RequestBuilder;
 
@@ -45,6 +48,15 @@ public class UpdateResourceTemplateAction_
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/resources/"+_resourceId+"/template?t="+_templateId;
+        return "/resources/"+_resourceId+"/template";
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected String getBody() {
+        final Json json = new GwtJson();
+        json.set(JsonKeys.TEMPLATE_ID, _templateId);
+        return json.toString();
     }
 }
