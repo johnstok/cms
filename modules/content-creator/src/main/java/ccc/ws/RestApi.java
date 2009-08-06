@@ -44,6 +44,7 @@ import ccc.api.TemplateSummary;
 import ccc.api.UserDelta;
 import ccc.api.UserSummary;
 import ccc.api.Username;
+import ccc.api.rest.FolderDelta;
 import ccc.api.rest.ResourceTemplatePU;
 import ccc.commands.CommandFailedException;
 import ccc.commons.CCCProperties;
@@ -565,8 +566,9 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public void updateFolder(final ID folderId, final String sortOrder, final ID indexPageId) throws CommandFailedException {
-        getCommands().updateFolder(folderId, sortOrder, indexPageId);
+    public void updateFolder(final ID folderId,
+                             final FolderDelta delta) throws CommandFailedException {
+        getCommands().updateFolder(folderId, delta.getSortOrder(), delta.getIndexPage());
     }
 
 

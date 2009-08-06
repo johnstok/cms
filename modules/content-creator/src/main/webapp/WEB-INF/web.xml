@@ -41,7 +41,8 @@
             ccc.ws.JsonableCollectionWriter,
             ccc.ws.ResourceSummaryCollectionReader,
             ccc.ws.StringCollectionWriter,
-            ccc.ws.ResourceTemplatePUProvider
+            ccc.ws.ResourceTemplatePUProvider,
+            ccc.ws.FolderDeltaReader
         </param-value>
     </context-param>
     <context-param>

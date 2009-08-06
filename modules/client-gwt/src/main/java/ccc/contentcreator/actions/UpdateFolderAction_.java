@@ -12,12 +12,15 @@
 package ccc.contentcreator.actions;
 
 import ccc.api.ID;
+import ccc.api.Json;
+import ccc.api.JsonKeys;
+import ccc.contentcreator.client.GwtJson;
 
 import com.google.gwt.http.client.RequestBuilder;
 
 
 /**
- * TODO: Add a description for this type.
+ * Updates a folder.
  *
  * @author Civic Computing Ltd.
  */
@@ -49,7 +52,17 @@ public class UpdateFolderAction_
 
     /** {@inheritDoc} */
     @Override
-    protected String getPath() { // FIXME: Escape!!
-        return "/folders/"+_id+"?s="+_sortOrder+"&i="+_indexPageId;
+    protected String getPath() {
+        return "/folders/"+_id;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected String getBody() {
+        final Json json = new GwtJson();
+        json.set(JsonKeys.SORT_ORDER, _sortOrder);
+        json.set(JsonKeys.INDEX_PAGE_ID, _indexPageId);
+        return json.toString();
     }
 }
