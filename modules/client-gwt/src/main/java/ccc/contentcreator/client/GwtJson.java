@@ -254,9 +254,13 @@ public class GwtJson
     /** {@inheritDoc} */
     @Override
     public void set(final String key, final Jsonable value) {
-        final GwtJson o = new GwtJson();
-        value.toJson(o);
-        _delegate.put(key, o.getDelegate());
+        if (null==value) {
+            _delegate.put(key, JSONNull.getInstance());
+        } else {
+            final GwtJson o = new GwtJson();
+            value.toJson(o);
+            _delegate.put(key, o.getDelegate());
+        }
     }
 
     /** {@inheritDoc} */

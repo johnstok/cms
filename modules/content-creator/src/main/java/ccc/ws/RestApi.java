@@ -45,6 +45,7 @@ import ccc.api.UserDelta;
 import ccc.api.UserSummary;
 import ccc.api.Username;
 import ccc.api.rest.FolderDelta;
+import ccc.api.rest.ResourceCacheDurationPU;
 import ccc.api.rest.ResourceTemplatePU;
 import ccc.commands.CommandFailedException;
 import ccc.commons.CCCProperties;
@@ -341,8 +342,8 @@ public class RestApi
     /** {@inheritDoc} */
     @Override
     public void updateCacheDuration(final ID resourceId,
-                                    final Duration duration) throws CommandFailedException {
-        getCommands().updateCacheDuration(resourceId, duration);
+                                    final ResourceCacheDurationPU pu) throws CommandFailedException {
+        getCommands().updateCacheDuration(resourceId, pu.getCacheDuration());
     }
 
 

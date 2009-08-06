@@ -67,7 +67,7 @@ public final class Duration implements Serializable, Jsonable {
      * @param json The JSON representation of a duration.
      */
     public Duration(final Json json) {
-        this(json.getLong(JsonKeys.DURATION).longValue());
+        this(json.getLong(JsonKeys.SECONDS).longValue());
     }
 
     /**
@@ -150,6 +150,6 @@ public final class Duration implements Serializable, Jsonable {
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
-        json.set(JsonKeys.DURATION, _time);
+        json.set(JsonKeys.SECONDS, _time);
     }
 }

@@ -37,6 +37,7 @@ import ccc.api.TemplateDelta;
 import ccc.api.UserDelta;
 import ccc.api.UserSummary;
 import ccc.api.Username;
+import ccc.api.rest.ResourceCacheDurationPU;
 import ccc.api.rest.ResourceTemplatePU;
 import ccc.commands.CommandFailedException;
 import ccc.domain.Failure;
@@ -222,7 +223,9 @@ public class FirstAcceptanceTest
         assertNull(queries.cacheDuration(durationFolder.getId()));
 
         // ACT
-        commands.updateCacheDuration(durationFolder.getId(), new Duration(1));
+        commands.updateCacheDuration(
+            durationFolder.getId(),
+            new ResourceCacheDurationPU(new Duration(1)));
         assertEquals(
             new Duration(1), queries.cacheDuration(durationFolder.getId()));
 
