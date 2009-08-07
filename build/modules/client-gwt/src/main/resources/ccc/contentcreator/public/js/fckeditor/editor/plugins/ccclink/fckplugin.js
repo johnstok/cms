@@ -19,7 +19,7 @@ LinkSelectCommand.Execute=function() {
 	
 	if (selection.HasAncestorNode('A')) {
 		var oldLink = selection.MoveToAncestorNode( 'A' ) ;
-		url =  oldLink.getAttribute( 'href' , 0 ) || '' ;
+		url =  oldLink.getAttribute( 'href' , 2 ) || '' ;
 		title =  oldLink.innerHTML;
 	}
 	
