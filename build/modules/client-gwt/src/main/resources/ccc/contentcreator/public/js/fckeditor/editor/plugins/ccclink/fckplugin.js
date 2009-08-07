@@ -7,9 +7,23 @@ LinkSelectCommand.GetState=function() {
 return FCK_TRISTATE_OFF; //we dont want the button to be toggled
 }
 LinkSelectCommand.Execute=function() {
-//open a popup window when the button is clicked
+// open a popup window when the button is clicked
+	
 	var fckname = FCKURLParams['InstanceName'] ;
-	parent.cccLinkSelector(fckname);
+	var editor = FCKeditorAPI.GetInstance(fckname) ;
+
+	var selection = editor.Selection;
+	
+	var url = "";
+	var title = "";
+	
+	if (selection.HasAncestorNode('A')) {
+		var oldLink = selection.MoveToAncestorNode( 'A' ) ;
+		url =  oldLink.getAttribute( 'href' , 0 ) || '' ;
+		title =  oldLink.innerHTML;
+	}
+	
+	parent.cccLinkSelector(fckname, url, title);
 }
 FCKCommands.RegisterCommand('CCC_Link', LinkSelectCommand );
         

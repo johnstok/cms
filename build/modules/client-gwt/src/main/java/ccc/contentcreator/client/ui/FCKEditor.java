@@ -84,7 +84,7 @@ public class FCKEditor extends LayoutContainer {
 
         //Work out an ID
         _elementID =
-            "net-sf-jwc-gwt-fckeditor-client-ui-FCKEditor"
+            "ccc-contentcreator-client-ui-FCKEditor"
             + System.identityHashCode(this);
 
         initJSNI(this);
@@ -166,8 +166,8 @@ public class FCKEditor extends LayoutContainer {
 
 
     private static native String initJSNI(final FCKEditor obj) /*-{
-        $wnd.cccLinkSelector = function(fckname) {
-            obj.@ccc.contentcreator.client.ui.FCKEditor::openLinkSelector(Ljava/lang/String;)(fckname);
+        $wnd.cccLinkSelector = function(fckname, url, title) {
+            obj.@ccc.contentcreator.client.ui.FCKEditor::openLinkSelector(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(fckname,url,title);
         };
 
         $wnd.cccImageSelector = function(fckname) {
@@ -179,7 +179,9 @@ public class FCKEditor extends LayoutContainer {
     /**
      * Displays the FCKEditor specific link selection dialog.
      */
-    public void openLinkSelector(final String elementID) {
+    public void openLinkSelector(final String elementID,
+                                 final String url,
+                                 final String title) {
         new GetRootsAction() { // TODO: UseGetResourceForPathAction instead.
             @Override
             protected void onSuccess(final Collection<ResourceSummary> roots) {
@@ -189,7 +191,7 @@ public class FCKEditor extends LayoutContainer {
                         rs = rr;
                     }
                 }
-                new LinkSelectionDialog(rs, elementID).show();
+                new LinkSelectionDialog(rs, elementID, url, title).show();
             }
 
         }.execute();

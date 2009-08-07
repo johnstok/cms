@@ -49,10 +49,19 @@ public class LinkSelectionDialog extends AbstractEditDialog {
      * @param elementid Element ID for FCKEditor
      */
     public LinkSelectionDialog(final ResourceSummary targetRoot,
-                               final String elementid) {
+                               final String elementid,
+                               final String url,
+                               final String title) {
         super(new IGlobalsImpl().uiConstants().selectResource(),
               new IGlobalsImpl());
         _elementid = elementid;
+
+        if (title != null && !title.trim().isEmpty()) {
+            _linkName.setValue(title);
+        }
+        if (url != null && !url.trim().isEmpty()) {
+            _linkPath.setValue(url);
+        }
 
         _linkName.setFieldLabel(constants().name());
         _linkName.setId("linkName");
@@ -98,13 +107,29 @@ public class LinkSelectionDialog extends AbstractEditDialog {
                                             final String elementID) /*-{
         if ($wnd.FCKeditorAPI) {
             var instance = $wnd.FCKeditorAPI.GetInstance(elementID);
-            if (instance != null && uuid == null) {
-                return instance.InsertHtml("<a href='"+selectedUrl+"'>"
-                +title+"</a>");
-            } else if (instance != null && uuid != null) {
-                return instance.InsertHtml("<a href='"+selectedUrl
-                +"' class='ccc:"+uuid+"'>"
-                +title+"</a>");
+            if (instance == null) {
+                return null;
+            }
+
+            var selection = instance.Selection;
+
+            if (selection.HasAncestorNode('A')) {
+                var link = selection.MoveToAncestorNode( 'A' ) ;
+                if ( link )
+                    selection.SelectNode( link ) ;
+                link.href = selectedUrl;
+                link.setAttribute('_fcksavedurl', selectedUrl);
+                link.innerHTML = title;
+                link.setAttribute( 'class', "ccc:"+uuid) ;
+            } else {
+                if (uuid == null) {
+                    return instance.InsertHtml("<a href='"+selectedUrl+"'>"
+                    +title+"</a>");
+                } else {
+                    return instance.InsertHtml("<a href='"+selectedUrl
+                    +"' class='ccc:"+uuid+"'>"
+                    +title+"</a>");
+                }
             }
         }
         return null;
