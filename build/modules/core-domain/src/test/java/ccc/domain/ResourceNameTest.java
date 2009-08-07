@@ -12,6 +12,7 @@
 
 package ccc.domain;
 
+import ccc.entities.ResourceName;
 import junit.framework.TestCase;
 
 /**

@@ -21,6 +21,7 @@ import ccc.api.Paragraph;
 import ccc.api.ParagraphType;
 import ccc.api.ResourceType;
 import ccc.commons.WordCharFixer;
+import ccc.entities.ResourceName;
 import ccc.snapshots.PageSnapshot;
 
 

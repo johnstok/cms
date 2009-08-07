@@ -52,6 +52,6 @@ public class FileBody
     public void write(final OutputStream os,
                       final Charset charset,
                       final TextProcessor processor) {
-        _dataManager.retrieve(_file.data(), os);
+        _dataManager.retrieve(_file.getData(), os);
     }
 }

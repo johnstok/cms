@@ -14,6 +14,7 @@ package ccc.domain;
 import ccc.api.Json;
 import ccc.api.Jsonable;
 import ccc.api.ResourceType;
+import ccc.entities.ResourceName;
 
 /**
  * Dummy resource for testing only.

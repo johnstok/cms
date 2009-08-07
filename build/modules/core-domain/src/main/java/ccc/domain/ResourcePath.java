@@ -19,6 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ccc.api.DBC;
+import ccc.entities.ResourceName;
 
 
 /**

@@ -14,6 +14,8 @@ package ccc.domain;
 
 import java.util.List;
 
+import ccc.entities.ResourceName;
+
 import junit.framework.TestCase;
 
 

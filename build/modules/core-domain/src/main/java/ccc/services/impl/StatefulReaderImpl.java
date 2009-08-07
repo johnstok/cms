@@ -17,12 +17,12 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.UUID;
 
-import ccc.api.template.IResourceSnapshot;
 import ccc.api.template.StatefulReader;
 import ccc.commons.IO;
 import ccc.domain.File;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
+import ccc.entities.IResource;
 import ccc.services.DataManager;
 import ccc.services.ResourceDao;
 
@@ -93,7 +93,7 @@ public final class StatefulReaderImpl
      * {@inheritDoc}
      */
     @Override
-    public IResourceSnapshot resourceFromPath(final String absolutePath) {
+    public IResource resourceFromPath(final String absolutePath) {
         return continuityForPath(absolutePath).forCurrentRevision();
     }
 
@@ -102,7 +102,7 @@ public final class StatefulReaderImpl
      * {@inheritDoc}
      */
     @Override
-    public IResourceSnapshot resourceFromId(final String id) {
+    public IResource resourceFromId(final String id) {
         return _resources.find(
             Resource.class, UUID.fromString(id)).forCurrentRevision();
     }

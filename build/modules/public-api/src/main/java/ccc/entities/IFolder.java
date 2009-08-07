@@ -1,20 +1,18 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * Revision      $Rev$
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
 
-package ccc.api.template;
+package ccc.entities;
 
-import java.util.Set;
-
-import ccc.api.Paragraph;
+import java.util.List;
 
 
 /**
@@ -22,9 +20,13 @@ import ccc.api.Paragraph;
  *
  * @author Civic Computing Ltd.
  */
-public interface IPageSnapshot extends IResourceSnapshot {
+public interface IFolder {
 
-    Paragraph paragraph(final String name);
+    /**
+     * Accessor for entries.
+     *
+     * @return A list of all the resources in this folder.
+     */
+    List<? extends IResource> entries();
 
-    Set<Paragraph> paragraphs();
 }

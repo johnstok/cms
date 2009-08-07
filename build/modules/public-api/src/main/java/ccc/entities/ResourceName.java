@@ -10,7 +10,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.domain;
+package ccc.entities;
 
 import java.io.Serializable;
 import java.util.UUID;

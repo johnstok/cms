@@ -11,6 +11,8 @@
  */
 package ccc.api.template;
 
+import ccc.entities.IResource;
+
 
 
 
@@ -29,7 +31,7 @@ public interface StatefulReader {
      * @return Resource The resource at the specified path, or NULL if it
      *  doesn't exist.
      */
-    IResourceSnapshot resourceFromPath(String absolutePath);
+    IResource resourceFromPath(String absolutePath);
 
     /**
      * Look up a resource from its UUID.
@@ -38,7 +40,7 @@ public interface StatefulReader {
      * @return Resource The resource at the specified path, or NULL if it
      *  doesn't exist.
      */
-    IResourceSnapshot resourceFromId(String id);
+    IResource resourceFromId(String id);
 
     /**
      * Look up the contents of a file as a String.

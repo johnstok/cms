@@ -15,11 +15,10 @@ import java.util.Map;
 import java.util.Set;
 
 import ccc.api.Paragraph;
-import ccc.api.template.IPageSnapshot;
 import ccc.api.template.StatefulReader;
-import ccc.domain.IPage;
 import ccc.domain.Page;
 import ccc.domain.Template;
+import ccc.entities.IPage;
 import ccc.rendering.PageBody;
 import ccc.rendering.Response;
 import ccc.services.DataManager;
@@ -31,7 +30,7 @@ import ccc.services.SearchEngine;
  *
  * @author Civic Computing Ltd.
  */
-public class PageSnapshot extends ResourceSnapshot implements IPage, IPageSnapshot {
+public class PageSnapshot extends ResourceSnapshot implements IPage {
     private final IPage _delegate;
 
     /**
