@@ -123,6 +123,7 @@
                 <configuration>
                     <excludes>
                         <exclude>**/*AcceptanceTest.java</exclude>
+                        <exclude>**/*SeleniumTest.java</exclude>
                         <exclude>**/*GwtTest.java</exclude>
                         <exclude>**/*$*</exclude>
                     </excludes>
