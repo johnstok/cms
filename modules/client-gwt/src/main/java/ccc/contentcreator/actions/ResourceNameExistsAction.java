@@ -44,7 +44,12 @@ public abstract class ResourceNameExistsAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/folders/"+_folderId+"/"+_resourceName+"/exists";
+        return
+            "/folders/"
+            + encode(_folderId.toString())
+            +"/"
+            + encode(_resourceName)
+            +"/exists";
     }
 
     /** {@inheritDoc} */

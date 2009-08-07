@@ -18,7 +18,6 @@ import ccc.api.UserSummary;
 import ccc.contentcreator.client.GwtJson;
 
 import com.google.gwt.http.client.Response;
-import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONParser;
 
@@ -47,7 +46,9 @@ public abstract class ListUsersWithUsernameAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/users/username/"+URL.encodeComponent(_username);
+        return
+            "/users/username/"
+            + encode(_username);
     }
 
     /** {@inheritDoc} */
