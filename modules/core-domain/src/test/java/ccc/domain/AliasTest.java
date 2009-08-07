@@ -16,6 +16,7 @@ import ccc.api.AliasDelta;
 import ccc.api.ID;
 import ccc.api.ResourceType;
 import ccc.commons.Exceptions;
+import ccc.entities.ResourceName;
 
 
 /**

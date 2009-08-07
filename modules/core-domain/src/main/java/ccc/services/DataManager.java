@@ -18,6 +18,7 @@ import java.util.List;
 
 import ccc.domain.Data;
 import ccc.domain.File;
+import ccc.entities.IData;
 
 
 /**
@@ -48,7 +49,7 @@ public interface DataManager {
      * @param data The identifier for the existing data.
      * @param dataStream The output stream to which the data should be written.
      */
-    void retrieve(Data data, OutputStream dataStream);
+    void retrieve(IData data, OutputStream dataStream);
 
     /**
      * Retrieve an existing item of binary data and write it to an output

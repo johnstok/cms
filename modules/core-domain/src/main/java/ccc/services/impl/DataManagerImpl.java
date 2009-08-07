@@ -19,6 +19,7 @@ import java.util.List;
 import ccc.api.DBC;
 import ccc.domain.Data;
 import ccc.domain.File;
+import ccc.entities.IData;
 import ccc.services.CoreData;
 import ccc.services.Dao;
 import ccc.services.DataManager;
@@ -72,9 +73,9 @@ public class DataManagerImpl implements DataManager {
 
     /** {@inheritDoc} */
     @Override
-    public void retrieve(final Data data, final OutputStream dataStream) {
+    public void retrieve(final IData data, final OutputStream dataStream) {
         retrieve(
-            data,
+            (Data) data, // FIXME!!!!
             new CopyAction(dataStream)
         );
     }

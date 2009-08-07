@@ -19,6 +19,7 @@ import ccc.api.template.StatefulReader;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Resource;
+import ccc.entities.IFolder;
 import ccc.rendering.NotFoundException;
 import ccc.rendering.RedirectRequiredException;
 import ccc.rendering.Response;
@@ -31,7 +32,7 @@ import ccc.services.SearchEngine;
  *
  * @author Civic Computing Ltd.
  */
-public class FolderSnapshot extends ResourceSnapshot {
+public class FolderSnapshot extends ResourceSnapshot implements IFolder {
     private final Folder _delegate;
 
     /**
@@ -50,24 +51,15 @@ public class FolderSnapshot extends ResourceSnapshot {
      * @return
      */
     public Page indexPage() {
-        return _delegate.indexPage();
+        return _delegate.indexPage();  // FIXME: wrap page in snapshot.
     }
 
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
     public List<Resource> entries() {
-        return _delegate.entries();
+        return _delegate.entries(); // FIXME: wrap entries in snapshots.
     }
 
-    /**
-     * @return
-     * @see ccc.domain.Folder#pages()
-     */
     public List<Page> pages() {
-        return _delegate.pages();
+        return _delegate.pages(); // FIXME: wrap pages in snapshots.
     }
 
     /** {@inheritDoc} */

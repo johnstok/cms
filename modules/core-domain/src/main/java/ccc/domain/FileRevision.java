@@ -19,6 +19,7 @@ import ccc.api.DBC;
 import ccc.api.FileDelta;
 import ccc.api.ID;
 import ccc.api.MimeType;
+import ccc.entities.IFile;
 
 
 /**

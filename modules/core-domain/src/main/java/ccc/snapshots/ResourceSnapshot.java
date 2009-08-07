@@ -21,13 +21,14 @@ import java.util.UUID;
 
 import ccc.api.Duration;
 import ccc.api.ResourceType;
-import ccc.api.template.IResourceSnapshot;
 import ccc.api.template.StatefulReader;
 import ccc.domain.Folder;
 import ccc.domain.Resource;
 import ccc.domain.ResourcePath;
 import ccc.domain.Template;
 import ccc.domain.User;
+import ccc.entities.IResource;
+import ccc.entities.ResourceName;
 import ccc.rendering.NotFoundException;
 import ccc.rendering.Response;
 import ccc.services.DataManager;
@@ -39,7 +40,7 @@ import ccc.services.SearchEngine;
  *
  * @author Civic Computing Ltd.
  */
-public class ResourceSnapshot implements IResourceSnapshot {
+public class ResourceSnapshot implements IResource {
     private final Resource _delegate;
 
     /**
@@ -87,8 +88,8 @@ public class ResourceSnapshot implements IResourceSnapshot {
 
 
     /** {@inheritDoc} */
-    public String name() {
-        return _delegate.name().toString();
+    public ResourceName name() {
+        return _delegate.name();
     }
 
 
@@ -203,25 +204,10 @@ public class ResourceSnapshot implements IResourceSnapshot {
         return _delegate.title();
     }
 
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     * @see @link ccc.domain.Resource#absolutePath()
-     */
     public ResourcePath absolutePath() {
         return _delegate.absolutePath();
     }
 
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param parameters
-     * @param _search
-     * @param reader
-     * @param _dm
-     * @return
-     */
     public Response render(final Map<String, String[]> parameters,
                            final SearchEngine search,
                            final StatefulReader reader,
@@ -229,12 +215,10 @@ public class ResourceSnapshot implements IResourceSnapshot {
         throw new NotFoundException();
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public List<IResourceSnapshot> selectPathElements() {
+    public List<IResource> selectPathElements() {
 
-            final List<IResourceSnapshot> elements =
-                new ArrayList<IResourceSnapshot>();
+            final List<IResource> elements =
+                new ArrayList<IResource>();
 
             ResourceSnapshot current = this;
 

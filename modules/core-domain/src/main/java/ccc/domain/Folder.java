@@ -20,6 +20,8 @@ import ccc.api.Json;
 import ccc.api.JsonKeys;
 import ccc.api.Jsonable;
 import ccc.api.ResourceType;
+import ccc.entities.IFolder;
+import ccc.entities.ResourceName;
 import ccc.snapshots.FolderSnapshot;
 
 
@@ -28,7 +30,7 @@ import ccc.snapshots.FolderSnapshot;
  *
  * @author Civic Computing Ltd
  */
-public final class Folder extends Resource {
+public final class Folder extends Resource implements IFolder {
 
     private List<Resource> _entries = new ArrayList<Resource>();
     private ResourceOrder  _order = ResourceOrder.MANUAL;
@@ -123,11 +125,7 @@ public final class Folder extends Resource {
         _entries = resources;
     }
 
-    /**
-     * Accessor for entries.
-     *
-     * @return A list of all the resources in this folder.
-     */
+    /** {@inheritDoc} */
     public List<Resource> entries() {
         final List<Resource> entries = new ArrayList<Resource>(_entries);
         _order.sort(entries);

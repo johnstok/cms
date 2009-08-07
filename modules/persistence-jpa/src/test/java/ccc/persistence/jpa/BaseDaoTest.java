@@ -22,9 +22,9 @@ import javax.persistence.Query;
 import junit.framework.TestCase;
 import ccc.domain.Page;
 import ccc.domain.Resource;
-import ccc.domain.ResourceName;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
+import ccc.entities.ResourceName;
 
 
 /**

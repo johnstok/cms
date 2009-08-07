@@ -10,11 +10,9 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.domain;
+package ccc.entities;
 
-import java.util.Set;
-
-import ccc.api.Paragraph;
+import ccc.api.MimeType;
 
 
 /**
@@ -22,27 +20,34 @@ import ccc.api.Paragraph;
  *
  * @author Civic Computing Ltd.
  */
-public interface IPage {
+public interface IFile {
 
     /**
      * Accessor.
      *
-     * @return Returns the content.
+     * @return Returns the data.
      */
-    Set<Paragraph> getContent();
+    IData getData();
 
     /**
-     * Look up a paragraph on this page by name.
+     * Accessor.
      *
-     * @param name The name of the paragraph to retrieve.
-     * @return The paragraph with the specified name.
+     * @return Returns the size.
      */
-    Paragraph paragraph(final String name);
+    int getSize();
 
     /**
-     * Accessor for paragraphs.
+     * Accessor.
      *
-     * @return A map from unique key to the corresponding paragraph data.
+     * @return Returns the mimeType.
      */
-    Set<Paragraph> paragraphs();
+    MimeType getMimeType();
+
+    /**
+     * Query if this file is an image.
+     *
+     * @return True if the file is an image, false otherwise.
+     */
+    boolean isImage();
+
 }

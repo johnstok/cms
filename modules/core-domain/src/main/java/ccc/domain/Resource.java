@@ -27,6 +27,8 @@ import ccc.api.CommandType;
 import ccc.api.Duration;
 import ccc.api.Jsonable;
 import ccc.api.ResourceType;
+import ccc.entities.IResource;
+import ccc.entities.ResourceName;
 import ccc.snapshots.ResourceSnapshot;
 
 
@@ -40,7 +42,7 @@ public abstract class Resource
     extends
         Entity
     implements
-        SnapshotSupport<ResourceSnapshot> {
+        SnapshotSupport<ResourceSnapshot>, IResource {
 
     private static final int MAXIMUM_TITLE_LENGTH = 256;
     private static final int MAXIMUM_DATUM_LENGTH = 1000;
@@ -140,11 +142,7 @@ public abstract class Resource
         : parent().absolutePath().append(name());
     }
 
-    /**
-     * Accessor for name.
-     *
-     * @return The name for this resource, as a {@link ResourceName}.
-     */
+    /** {@inheritDoc} */
     public ResourceName name() {
         return _name;
     }
@@ -159,11 +157,7 @@ public abstract class Resource
         _name = resourceName;
     }
 
-    /**
-     * Accessor for the title.
-     *
-     * @return The content's title, as a string.
-     */
+    /** {@inheritDoc} */
     public String title() {
         return _title;
     }
@@ -305,11 +299,7 @@ public abstract class Resource
         }
     }
 
-    /**
-     * Accessor for a resource's tags.
-     *
-     * @return The tags for this resource as a list.
-     */
+    /** {@inheritDoc} */
     public Set<String> tags() {
         return Collections.unmodifiableSet(_tags);
     }
@@ -402,11 +392,7 @@ public abstract class Resource
         }
     }
 
-    /**
-     * Accessor for 'include in main menu' property.
-     *
-     * @return True if the resource should be included, false otherwise.
-     */
+    /** {@inheritDoc} */
     public boolean includeInMainMenu() {
         return _includeInMainMenu;
     }
@@ -448,14 +434,7 @@ public abstract class Resource
         _metadata.put(key, value);
     }
 
-    /**
-     * Retrieve metadata for this resource. If this resource does not contain
-     * an entry for the specified key parent resources will be recursively
-     * checked.
-     *
-     * @param key The key with which the datum was stored.
-     * @return The value of the datum. NULL if the datum doesn't exist.
-     */
+    /** {@inheritDoc} */
     public String getMetadatum(final String key) {
         String datum = _metadata.get(key);
         if (null==datum && null!=_parent) {
@@ -490,11 +469,7 @@ public abstract class Resource
         _metadata.clear();
     }
 
-    /**
-     * Accessor for the date the resource was created.
-     *
-     * @return The date of creation.
-     */
+    /** {@inheritDoc} */
     public Date dateCreated() {
         return new Date(_dateCreated.getTime());
     }
@@ -510,11 +485,7 @@ public abstract class Resource
         _dateCreated = new Date(createdOn.getTime());
     }
 
-    /**
-     * Accessor for the date the resource last changed.
-     *
-     * @return The date the resource last changed.
-     */
+    /** {@inheritDoc} */
     public Date dateChanged() {
         return new Date(_dateChanged.getTime());
     }
@@ -615,11 +586,7 @@ public abstract class Resource
         return parent().computeCache();
     }
 
-    /**
-     * Accessor for the file's description.
-     *
-     * @return The description as a string.
-     */
+    /** {@inheritDoc} */
     public final String description() {
         return _description;
     }

@@ -20,6 +20,7 @@ import junit.framework.TestCase;
 import ccc.api.CommandType;
 import ccc.api.Duration;
 import ccc.commons.Testing;
+import ccc.entities.ResourceName;
 
 
 /**

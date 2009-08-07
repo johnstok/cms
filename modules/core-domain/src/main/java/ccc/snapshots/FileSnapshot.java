@@ -15,9 +15,9 @@ import java.util.Map;
 
 import ccc.api.MimeType;
 import ccc.api.template.StatefulReader;
-import ccc.domain.Data;
 import ccc.domain.File;
-import ccc.domain.IFile;
+import ccc.entities.IData;
+import ccc.entities.IFile;
 import ccc.rendering.FileBody;
 import ccc.rendering.Response;
 import ccc.services.DataManager;
@@ -29,7 +29,7 @@ import ccc.services.SearchEngine;
  *
  * @author Civic Computing Ltd.
  */
-public class FileSnapshot extends ResourceSnapshot {
+public class FileSnapshot extends ResourceSnapshot implements IFile {
     private final IFile _delegate;
 
     /**
@@ -42,11 +42,9 @@ public class FileSnapshot extends ResourceSnapshot {
         _delegate = delegate;
     }
 
-    /**
-     * @return
-     * @see ccc.domain.File#data()
-     */
-    public Data data() {
+    /** {@inheritDoc} */
+    @Override
+    public IData getData() {
         return _delegate.getData();
     }
 
@@ -58,19 +56,15 @@ public class FileSnapshot extends ResourceSnapshot {
         return _delegate.isImage();
     }
 
-    /**
-     * @return
-     * @see ccc.domain.File#mimeType()
-     */
-    public MimeType mimeType() {
+    /** {@inheritDoc} */
+    @Override
+    public MimeType getMimeType() {
         return _delegate.getMimeType();
     }
 
-    /**
-     * @return
-     * @see ccc.domain.File#size()
-     */
-    public int size() {
+    /** {@inheritDoc} */
+    @Override
+    public int getSize() {
         return _delegate.getSize();
     }
 
@@ -83,8 +77,8 @@ public class FileSnapshot extends ResourceSnapshot {
         final Response r = new Response(new FileBody(this, dm));
         r.setDescription(description());
         r.setDisposition("inline; filename=\""+name()+"\"");
-        r.setMimeType(mimeType().getPrimaryType(), mimeType().getSubType());
-        r.setLength(size());
+        r.setMimeType(getMimeType().getPrimaryType(), getMimeType().getSubType());
+        r.setLength(getSize());
         r.setExpiry(computeCache());
 
         return r;

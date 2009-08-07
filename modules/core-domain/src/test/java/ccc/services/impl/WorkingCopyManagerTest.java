@@ -24,9 +24,9 @@ import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Resource;
-import ccc.domain.ResourceName;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
+import ccc.entities.ResourceName;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
 
