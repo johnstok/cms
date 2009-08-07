@@ -11,23 +11,16 @@
  */
 package ccc.acceptance;
 
-import java.io.IOException;
+import static ccc.api.HttpStatusCodes.*;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.UUID;
-
-import junit.framework.TestCase;
 
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.NameValuePair;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.log4j.Logger;
 import org.jboss.resteasy.client.ClientResponseFailure;
 import org.jboss.resteasy.client.ProxyFactory;
-import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
-import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
 import ccc.api.Duration;
 import ccc.api.FailureCode;
@@ -44,46 +37,20 @@ import ccc.api.rest.TemplateNew;
 import ccc.api.rest.UserNew;
 import ccc.commands.CommandFailedException;
 import ccc.domain.Failure;
-import ccc.services.Queries;
-import ccc.ws.BooleanProvider;
-import ccc.ws.DurationReader;
-import ccc.ws.FailureWriter;
-import ccc.ws.JsonableWriter;
-import ccc.ws.ResSummaryReader;
-import ccc.ws.ResourceSummaryCollectionReader;
-import ccc.ws.RestCommands;
 import ccc.ws.SecurityAPI;
-import ccc.ws.UserSummaryCollectionReader;
-import ccc.ws.UserSummaryReader;
 
 
 /**
- * TODO: Add a description for this type.
+ * Initial acceptance tests.
  *
  * @author Civic Computing Ltd.
  */
 public class FirstAcceptanceTest
     extends
-        TestCase {
-    private static Logger log = Logger.getLogger(FirstAcceptanceTest.class);
+        AbstractAcceptanceTest {
 
-    static {
-        final ResteasyProviderFactory pFactory =
-            ResteasyProviderFactory.getInstance();
-        RegisterBuiltin.register(pFactory);
-        pFactory.addMessageBodyReader(ResourceSummaryCollectionReader.class);
-        pFactory.addMessageBodyReader(ResSummaryReader.class);
-        pFactory.addMessageBodyReader(DurationReader.class);
-        pFactory.addMessageBodyReader(UserSummaryCollectionReader.class);
-        pFactory.addMessageBodyReader(UserSummaryReader.class);
-        pFactory.addMessageBodyWriter(JsonableWriter.class);
-        pFactory.addMessageBodyReader(BooleanProvider.class);
-        pFactory.addMessageBodyReader(FailureWriter.class);
-    }
-
-    private final String _hostUrl = "http://localhost:81/api";
-    private final String _secure = _hostUrl+"/secure";
-    private final String _public = _hostUrl+"/public";
+    private static final Logger LOG =
+        Logger.getLogger(FirstAcceptanceTest.class);
 
     /**
      * Test.
@@ -91,11 +58,10 @@ public class FirstAcceptanceTest
     public void testLookupResourceForPath() {
 
         // ARRANGE
-        final Queries api =
-            ProxyFactory.create(Queries.class, _secure, login());
 
         // ACT
-        final ResourceSummary contentRoot = api.resourceForPath("/content");
+        final ResourceSummary contentRoot =
+            _queries.resourceForPath("/content");
 
         // ASSERT
         assertEquals("content", contentRoot.getName());
@@ -109,22 +75,19 @@ public class FirstAcceptanceTest
     public void testLockResource() throws CommandFailedException {
 
         // ARRANGE
-        final HttpClient c = login();
-        final Queries queries =
-            ProxyFactory.create(Queries.class, _secure, c);
-        final RestCommands commands =
-            ProxyFactory.create(RestCommands.class, _secure, c);
 
-        final ResourceSummary contentRoot = queries.resourceForPath("/content");
+        final ResourceSummary contentRoot =
+            _queries.resourceForPath("/content");
 
         // ACT
-        commands.lock(contentRoot.getId());
+        _commands.lock(contentRoot.getId());
 
         // ASSERT
-        final UserSummary currentUser = queries.loggedInUser();
-        final ResourceSummary updatedRoot = queries.resource(contentRoot.getId());
+        final UserSummary currentUser = _queries.loggedInUser();
+        final ResourceSummary updatedRoot =
+            _queries.resource(contentRoot.getId());
         assertEquals(currentUser.getUsername(), updatedRoot.getLockedBy());
-        commands.unlock(contentRoot.getId());
+        _commands.unlock(contentRoot.getId());
     }
 
     /**
@@ -134,49 +97,28 @@ public class FirstAcceptanceTest
     public void testChangeResourceTemplate() throws CommandFailedException {
 
         // ARRANGE
-        final HttpClient c = login();
-        final Queries queries =
-            ProxyFactory.create(Queries.class, _secure, c);
-        final RestCommands commands =
-            ProxyFactory.create(RestCommands.class, _secure, c);
 
-        final ResourceSummary folder = queries.resourceForPath("/content");
-        final ResourceSummary ts = dummyTemplate(commands, folder);
-        commands.lock(folder.getId());
+        final ResourceSummary folder = _queries.resourceForPath("/content");
+        final ResourceSummary ts = dummyTemplate(folder);
+        _commands.lock(folder.getId());
 
         // ACT
         try {
-            commands.updateResourceTemplate(
+            _commands.updateResourceTemplate(
                 folder.getId(), new ResourceTemplatePU(ts.getId()));
         } finally {
             try {
-                commands.unlock(folder.getId());
+                _commands.unlock(folder.getId());
             } catch (final Exception e) {
-                log.warn("Failed to unlock resource.", e);
+                LOG.warn("Failed to unlock resource.", e);
             }
         }
 
         // ASSERT
-        final ResourceSummary updatedFolder = queries.resource(folder.getId());
+        final ResourceSummary updatedFolder = _queries.resource(folder.getId());
         assertEquals(ts.getId(), updatedFolder.getTemplateId());
     }
 
-
-    private ResourceSummary dummyTemplate(final RestCommands commands,
-                                          final ResourceSummary folder) throws CommandFailedException {
-        final String templateName = UUID.randomUUID().toString();
-        final TemplateDelta newTemplate =
-            new TemplateDelta("body", "<fields/>", MimeType.HTML);
-        final ResourceSummary ts =
-            commands.createTemplate(
-                new TemplateNew(
-                    folder.getId(),
-                    newTemplate,
-                    templateName,
-                    templateName,
-                    templateName));
-        return ts;
-    }
 
     /**
      * Test.
@@ -185,18 +127,14 @@ public class FirstAcceptanceTest
     public void testCreateTemplate() throws CommandFailedException {
 
         // ARRANGE
-        final HttpClient c = login();
-        final Queries queries =
-            ProxyFactory.create(Queries.class, _secure, c);
-        final RestCommands commands =
-            ProxyFactory.create(RestCommands.class, _secure, c);
-
         final ResourceSummary templateFolder =
-            queries.resourceForPath("/assets/templates");
+            _queries.resourceForPath("/assets/templates");
         final TemplateDelta newTemplate =
             new TemplateDelta("body", "<fields/>", MimeType.HTML);
+
+        // ACT
         final ResourceSummary ts =
-            commands.createTemplate(
+            _commands.createTemplate(
                 new TemplateNew(
                     templateFolder.getId(),
                     newTemplate,
@@ -218,30 +156,25 @@ public class FirstAcceptanceTest
     public void testUpdateDuration() throws CommandFailedException {
 
         // ARRANGE
-        final HttpClient c = login();
-        final Queries queries =
-            ProxyFactory.create(Queries.class, _secure, c);
-        final RestCommands commands =
-            ProxyFactory.create(RestCommands.class, _secure, c);
-
         final ResourceSummary contentFolder =
-            queries.resourceForPath("/content");
+            _queries.resourceForPath("/content");
         final ResourceSummary durationFolder =
-            commands.createFolder(new FolderNew(contentFolder.getId(), "duration"));
-        commands.lock(durationFolder.getId());
-        assertNull(queries.cacheDuration(durationFolder.getId()));
+            _commands.createFolder(
+                new FolderNew(contentFolder.getId(), "duration"));
+        _commands.lock(durationFolder.getId());
+        assertNull(_queries.cacheDuration(durationFolder.getId()));
 
         // ACT
-        commands.updateCacheDuration(
+        _commands.updateCacheDuration(
             durationFolder.getId(),
             new ResourceCacheDurationPU(new Duration(1)));
         assertEquals(
-            new Duration(1), queries.cacheDuration(durationFolder.getId()));
+            new Duration(1), _queries.cacheDuration(durationFolder.getId()));
 
-        commands.deleteCacheDuration(durationFolder.getId());
+        _commands.deleteCacheDuration(durationFolder.getId());
 
         // ASSERT
-        assertNull(queries.cacheDuration(durationFolder.getId()));
+        assertNull(_queries.cacheDuration(durationFolder.getId()));
     }
 
     /**
@@ -251,12 +184,6 @@ public class FirstAcceptanceTest
     public void testCreateUser() throws CommandFailedException {
 
         // ARRANGE
-        final HttpClient c = login();
-        final Queries queries =
-            ProxyFactory.create(Queries.class, _secure, c);
-        final RestCommands commands =
-            ProxyFactory.create(RestCommands.class, _secure, c);
-
         final UserDelta d =
             new UserDelta(
                 "abc@def.com",
@@ -265,9 +192,9 @@ public class FirstAcceptanceTest
                 new HashMap<String, String>());
 
         // ACT
-        commands.createUser(new UserNew(d, "Testtest00-"));
+        _commands.createUser(new UserNew(d, "Testtest00-"));
         final Collection<UserSummary> users =
-            queries.listUsersWithUsername(d.getUsername().toString());
+            _queries.listUsersWithUsername(d.getUsername().toString());
 
         // ASSERT
         assertEquals(1, users.size());
@@ -280,18 +207,15 @@ public class FirstAcceptanceTest
     public void testFail() throws CommandFailedException {
 
         // ARRANGE
-        final HttpClient c = login();
-        final RestCommands commands =
-            ProxyFactory.create(RestCommands.class, _secure, c);
 
         // ACT
         try {
-            commands.fail();
+            _commands.fail();
             fail();
 
         // ASSERT
         } catch (final ClientResponseFailure e) {
-            assertEquals(418, e.getResponse().getStatus());
+            assertEquals(IM_A_TEAPOT, e.getResponse().getStatus());
             final Failure f = e.getResponse().getEntity(Failure.class);
             assertEquals(FailureCode.PRIVILEGES, f.getCode());
         }
@@ -310,49 +234,6 @@ public class FirstAcceptanceTest
         security.login("super", "sup3r2008");
 
         // ASSERT
-        assertTrue(security.isLoggedIn());
-    }
-
-    private HttpClient login() {
-        final HttpClient client = new HttpClient();
-
-//        try {
-            final SecurityAPI security =
-                ProxyFactory.create(SecurityAPI.class, _public, client);
-            security.login("super", "sup3r2008");
-
-//            get( client, _secure);
-//            post(client, _hostUrl+"/j_security_check");
-//            get( client, _secure);
-
-            return client;
-
-//        } catch (final IOException e) {
-//            throw new RuntimeException("Authentication failed ", e);
-//        }
-    }
-
-    private void post(final HttpClient client, final String url) throws IOException {
-        final PostMethod postMethod = new PostMethod(url);
-
-        final NameValuePair userid   =
-            new NameValuePair("j_username", "super");
-        final NameValuePair password =
-            new NameValuePair("j_password", "sup3r2008");
-        postMethod.setRequestBody(
-            new NameValuePair[] {userid, password});
-
-        final int status = client.executeMethod(postMethod);
-//        final String body = postMethod.getResponseBodyAsString();
-        postMethod.releaseConnection();
-        log.debug("POST "+url+"  ->  "+status+"\n\n");
-    }
-
-    private void get(final HttpClient client, final String url) throws IOException {
-        final GetMethod getMethod = new GetMethod(url);
-        final int status = client.executeMethod(getMethod);
-        final String body = getMethod.getResponseBodyAsString();
-        getMethod.releaseConnection();
-        log.debug("GET "+url+"  ->  "+status+"\n"+body+"\n\n");
+        assertTrue(security.isLoggedIn().booleanValue());
     }
 }
