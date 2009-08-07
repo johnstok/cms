@@ -20,6 +20,7 @@ import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.entities.IFolder;
+import ccc.entities.IResource;
 import ccc.rendering.NotFoundException;
 import ccc.rendering.RedirectRequiredException;
 import ccc.rendering.Response;
@@ -28,38 +29,39 @@ import ccc.services.SearchEngine;
 
 
 /**
- * TODO: Add a description for this type.
+ * A read-only view of a folder.
  *
  * @author Civic Computing Ltd.
  */
 public class FolderSnapshot extends ResourceSnapshot implements IFolder {
+
     private final Folder _delegate;
+
 
     /**
      * Constructor.
      *
-     * @param page
+     * @param f The Folder to wrap.
      */
     public FolderSnapshot(final Folder f) {
         super(f);
         _delegate = f;
     }
 
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    public Page indexPage() {
-        return _delegate.indexPage();  // FIXME: wrap page in snapshot.
-    }
 
+    /** {@inheritDoc} */
+    @Override
     public List<Resource> entries() {
         return _delegate.entries(); // FIXME: wrap entries in snapshots.
     }
 
-    public List<Page> pages() {
-        return _delegate.pages(); // FIXME: wrap pages in snapshots.
+
+    /** {@inheritDoc} */
+    @Override
+    public List<? extends IResource> entries(final int count,
+                                             final int page,
+                                             final String sortOrder) {
+        return _delegate.entries(count, page, sortOrder); // FIXME: wrap entries in snapshots.
     }
 
     /** {@inheritDoc} */
@@ -79,5 +81,10 @@ public class FolderSnapshot extends ResourceSnapshot implements IFolder {
             }
         }
         throw new NotFoundException();
+    }
+
+
+    private Page indexPage() {
+        return _delegate.indexPage();
     }
 }

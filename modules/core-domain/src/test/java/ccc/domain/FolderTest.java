@@ -33,6 +33,59 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
+     *
+     * @throws RemoteExceptionSupport If the test fails.
+     */
+    public void testEntrySorting() throws RemoteExceptionSupport {
+
+        // ARRANGE
+        final Folder f = new Folder();
+        f.add(new Page("k", _rm));
+        f.add(new Page("a", _rm));
+        f.add(new Page("z", _rm));
+
+        // ACT
+
+        // ASSERT
+        assertEquals("k", f.entries(3, 1, "MANUAL").get(0).title());
+        assertEquals("a", f.entries(3, 1, "MANUAL").get(1).title());
+        assertEquals("z", f.entries(3, 1, "MANUAL").get(2).title());
+
+        assertEquals("a", f.entries(3, 1, "NAME_ALPHANUM_ASC").get(0).title());
+        assertEquals("k", f.entries(3, 1, "NAME_ALPHANUM_ASC").get(1).title());
+        assertEquals("z", f.entries(3, 1, "NAME_ALPHANUM_ASC").get(2).title());
+
+    }
+
+    /**
+     * Test.
+     *
+     * @throws RemoteExceptionSupport If the test fails.
+     */
+    public void testEntryPaging() throws RemoteExceptionSupport {
+
+        // ARRANGE
+        final Folder f = new Folder();
+        f.add(new Page("a", _rm));
+        f.add(new Page("b", _rm));
+        f.add(new Page("c", _rm));
+        f.add(new Page("d", _rm));
+        f.add(new Page("e", _rm));
+
+        // ACT
+
+        // ASSERT
+        assertEquals(1,   f.entries(1, 1, "MANUAL").size());
+        assertEquals(5,   f.entries(9, 1, "MANUAL").size());
+        assertEquals(1,   f.entries(4, 2, "MANUAL").size());
+        assertEquals(0,   f.entries(5, 2, "MANUAL").size());
+        assertEquals("a", f.entries(1, 1, "MANUAL").get(0).title());
+        assertEquals("e", f.entries(5, 1, "MANUAL").get(4).title());
+
+    }
+
+    /**
+     * Test.
      * @throws RemoteExceptionSupport If the test fails.
      */
     public void testIsAncestorOrThis() throws RemoteExceptionSupport {
