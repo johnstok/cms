@@ -126,10 +126,29 @@ public final class Folder extends Resource implements IFolder {
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<Resource> entries() {
         final List<Resource> entries = new ArrayList<Resource>(_entries);
         _order.sort(entries);
         return entries;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<Resource> entries(final int count,
+                                  final int page,
+                                  final String sortOrder) {
+        DBC.require().greaterThan(0, count);
+        DBC.require().greaterThan(0, page);
+
+        final int from = count * (page-1);
+        int to = from + count;
+        to = (to>_entries.size()) ? _entries.size() : to;
+
+        final List<Resource> entries = new ArrayList<Resource>(_entries);
+        ResourceOrder.valueOf(sortOrder).sort(entries);
+
+        return entries.subList(from, to);
     }
 
     /**

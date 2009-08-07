@@ -173,7 +173,23 @@ public final class DBC {
                 +maximum+".");
         }
     }
-//
+
+
+    /**
+     * Assert that the specified value is greater than the criteria.
+     *
+     * @param criteria The lower bound.
+     * @param value    The value to test.
+     */
+    public void greaterThan(final int criteria, final int value) {
+        if (value<=criteria) {
+            throw new IllegalArgumentException(
+                "Specified value must be greater than "
+                +criteria+".");
+        }
+    }
+
+
 //    /**
 //     * Assert that the specified decimal has a scale less than or equal to the
 //     * specified scale.
