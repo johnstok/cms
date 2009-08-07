@@ -29,7 +29,7 @@
         <lib.version.velocity>1.6.2</lib.version.velocity>
         <lib.version.jboss>5.1.0.GA</lib.version.jboss>
         <lib.version.h2>1.1.103</lib.version.h2>
-        <lib.version.selenium>1.0-beta-1</lib.version.selenium>
+        <lib.version.selenium>1.0.1</lib.version.selenium>
         
         <!-- CCC properties should be 'ccc.{prop-name}' -->
         <ccc-version>${project.version}</ccc-version>
@@ -64,12 +64,7 @@
             <version>${lib.version.easymock}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.openqa.selenium.client-drivers</groupId>
-            <artifactId>selenium-java-client-driver</artifactId>
-            <version>${lib.version.selenium}</version>
-            <scope>test</scope>
-        </dependency>
+
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
