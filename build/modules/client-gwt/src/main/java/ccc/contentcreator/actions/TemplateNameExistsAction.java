@@ -39,7 +39,10 @@ public abstract class TemplateNameExistsAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/templates/"+_name+"/exists";
+        return
+            "/templates/"
+            +  encode(_name)
+            + "/exists";
     }
 
     /** {@inheritDoc} */

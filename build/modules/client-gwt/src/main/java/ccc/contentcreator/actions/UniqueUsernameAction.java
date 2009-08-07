@@ -40,7 +40,10 @@ public abstract class UniqueUsernameAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/users/"+_username+"/exists";
+        return
+            "/users/"
+            + encode(_username.toString())
+            + "/exists";
     }
 
     /** {@inheritDoc} */

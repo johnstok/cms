@@ -46,7 +46,9 @@ public abstract class ListUsersWithRoleAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/users/role/"+_role; // FIXME: Escape _role.
+        return
+            "/users/role/"
+            + encode(_role);
     }
 
     /** {@inheritDoc} */

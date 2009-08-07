@@ -31,6 +31,7 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.http.client.RequestBuilder.Method;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONBoolean;
@@ -194,6 +195,17 @@ public abstract class RemotingAction
             "Unsupported response: "
             + response.getStatusCode() + " "
             + response.getStatusText());
+    }
+
+    /**
+     * URL encode a string.
+     *
+     * @param string The string to encode.
+     *
+     * @return The encoded string.
+     */
+    protected String encode(final String string) {
+        return URL.encodeComponent(string);
     }
 
 
