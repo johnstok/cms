@@ -55,7 +55,6 @@ import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
-import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.extjs.gxt.ui.client.widget.layout.RowLayout;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONParser;
@@ -76,7 +75,6 @@ public class CreatePageDialog
 
     private final ContentPanel _first = new ContentPanel();
     private final EditPagePanel _second = new EditPagePanel();
-    private final ContentPanel _third = new ContentPanel();
 
     private final ListStore<TemplateSummaryModelData> _templatesStore =
         new ListStore<TemplateSummaryModelData>();
@@ -88,9 +86,6 @@ public class CreatePageDialog
 
     private final SingleSelectionModel _ssm;
     private final ResourceSummaryModelData _parent;
-
-    private final CheckBox _publish = new CheckBox();
-
 
     private final Text _description = new Text("");
 
@@ -166,18 +161,6 @@ public class CreatePageDialog
 
         _second.setScrollMode(Style.Scroll.AUTOY);
         addCard(_second);
-
-        _third.setBorders(false);
-        _third.setBodyBorder(false);
-        _third.setLayout(new FormLayout());
-        _third.setHeaderVisible(false);
-
-        _publish.setId(_uiConstants.publish());
-        _publish.setValue(Boolean.FALSE);
-        _publish.setBoxLabel(_uiConstants.yes());
-        _publish.setFieldLabel(_uiConstants.publish());
-        _third.add(_publish);
-        addCard(_third);
 
         refresh();
     }
@@ -294,7 +277,6 @@ public class CreatePageDialog
                     _parent.getId(),
                     page,
                     _second.name().getValue(),
-                    _publish.getValue().booleanValue(),
                     template,
                     _second.name().getValue() // Title
                 ){

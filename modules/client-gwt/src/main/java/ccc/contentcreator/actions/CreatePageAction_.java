@@ -33,7 +33,6 @@ public abstract class CreatePageAction_
     private final ID _parentFolder;
     private final PageDelta _page;
     private final String _name;
-    private final boolean _publish;
     private final ID _template;
     private final String _title;
 
@@ -43,7 +42,6 @@ public abstract class CreatePageAction_
      *
      * @param title The page's title.
      * @param template
-     * @param publish
      * @param name
      * @param page
      * @param parentFolder
@@ -51,14 +49,12 @@ public abstract class CreatePageAction_
     public CreatePageAction_(final ID parentFolder,
                              final PageDelta page,
                              final String name,
-                             final boolean publish,
                              final ID template,
                              final String title) {
         super(GLOBALS.uiConstants().createPage(), RequestBuilder.POST);
         _parentFolder = parentFolder;
         _page = page;
         _name = name;
-        _publish = publish;
         _template = template;
         _title = title;
     }
