@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta name="gwt:property" content="locale=<%= request.getLocale() %>" />
     
-    <link rel="stylesheet" type="text/css" href="css/ext-all.css" />
+    <link rel="stylesheet" type="text/css" href="gxt/2.0.1/resources/css/gxt-all.css" />
     <!--                                           -->
     <!-- Any title is fine                         -->
     <!--                                           -->
