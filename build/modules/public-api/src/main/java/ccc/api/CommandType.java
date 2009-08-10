@@ -34,8 +34,6 @@ public enum CommandType {
     RESOURCE_UPDATE_WC,
 
     // Folder
-    /** FOLDER_REORDER : CommandType. */
-    FOLDER_REORDER,
     /** FOLDER_UPDATE : CommandType. */
     FOLDER_UPDATE,
     /** FOLDER_CREATE : CommandType. */
