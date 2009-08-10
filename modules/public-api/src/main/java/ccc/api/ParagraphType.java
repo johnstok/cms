@@ -27,5 +27,8 @@ public enum ParagraphType {
     DATE,
 
     /** NUMBER : ParagraphType. */
-    NUMBER
+    NUMBER,
+
+    /** LIST : ParagraphType. */
+    LIST
 }

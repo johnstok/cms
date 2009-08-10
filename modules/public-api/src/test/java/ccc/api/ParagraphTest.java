@@ -13,7 +13,9 @@ package ccc.api;
 
 import static org.easymock.EasyMock.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import junit.framework.TestCase;
 
@@ -25,6 +27,26 @@ import junit.framework.TestCase;
  */
 public final class ParagraphTest extends TestCase {
 
+
+    /**
+     * Test.
+     */
+    public void testListConstructor() {
+
+        // ARRANGE
+        final List<String> strings = new ArrayList<String>();
+        strings.add("one");
+        strings.add("two");
+        strings.add("three");
+
+        // ACT
+        final Paragraph p = Paragraph.fromList("foo", strings);
+
+        // ASSERT
+        assertEquals("one,two,three", p.text());
+        assertEquals(strings, p.list());
+        assertEquals(ParagraphType.LIST, p.type());
+    }
 
 
     /**

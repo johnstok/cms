@@ -141,7 +141,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                                   final Paragraph para) {
 
         final CheckBoxGroup cbg = c.checkBoxGroup();
-        final List<String> valueList = fillValueList(para);
+        final List<String> valueList = para.list();
 
         for (final Field<?> f : cbg.getAll()) {
             if (f instanceof CheckBox) {
@@ -191,7 +191,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private void populateList(final PageElement c, final Paragraph para) {
 
         final ListField<BaseModelData> list = c.list();
-        final List<String> valueList = fillValueList(para);
+        final List<String> valueList = para.list();
         final List<BaseModelData> selection =
             new ArrayList<BaseModelData>();
 
@@ -229,27 +229,6 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                 }
             }.execute();
         }
-    }
-
-    /**
-     * Helper method for multiple option fields.
-     *
-     * @param para
-     * @return
-     */
-    private List<String> fillValueList(final Paragraph para) {
-
-        final String text = para.text();
-
-        final List<String> valueMap = new ArrayList<String>();
-
-        final String[] values = text.split(",");
-        for (final String value : values) {
-            if (value.trim().length() > 0) {
-                valueMap.add(value);
-            }
-        }
-        return valueMap;
     }
 
 
@@ -305,17 +284,13 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
 
     private Paragraph extractList(final PageElement c) {
         final ListField<BaseModelData> list = c.list();
-        final StringBuilder sb = new StringBuilder();
+        final List<String> strings = new ArrayList<String>();
+
         for (final BaseModelData item : list.getSelection()) {
-            if (sb.length() > 0) {
-                sb.append(",");
-            }
-            sb.append(item.get("value"));
+            strings.add((String) item.get("value"));
         }
 
-        final Paragraph p =
-            Paragraph.fromText(c.id(), sb.toString());
-        return p;
+        return Paragraph.fromList(c.id(), strings);
     }
 
 
@@ -347,17 +322,13 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
 
     private Paragraph extractCheckBox(final PageElement c) {
         final CheckBoxGroup cbg = c.checkBoxGroup();
-        final StringBuilder sb = new StringBuilder();
+        final List<String> strings = new ArrayList<String>();
+
         for (final CheckBox cb : cbg.getValues()) {
-            if (sb.length() > 0) {
-                sb.append(",");
-            }
-            sb.append(cb.getId());
+            strings.add(cb.getId());
         }
 
-        final Paragraph p =
-            Paragraph.fromText(c.id(), sb.toString());
-        return p;
+        return Paragraph.fromList(c.id(), strings);
     }
 
 
