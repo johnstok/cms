@@ -11,7 +11,9 @@
  */
 package ccc.commands;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import ccc.api.CommandType;
@@ -20,6 +22,7 @@ import ccc.domain.Folder;
 import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
+import ccc.domain.Resource;
 import ccc.domain.ResourceOrder;
 import ccc.domain.Snapshot;
 import ccc.domain.UnlockedException;
@@ -62,7 +65,8 @@ public class UpdateFolderCommand extends UpdateResourceCommand {
                         final Date happenedOn,
                         final UUID folderId,
                         final ResourceOrder order,
-                        final UUID indexPageId)
+                        final UUID indexPageId,
+                        final List<UUID> orderList)
                                throws UnlockedException, LockMismatchException {
 
         final Folder f = getDao().find(Folder.class, folderId);
@@ -73,6 +77,19 @@ public class UpdateFolderCommand extends UpdateResourceCommand {
         f.confirmLock(actor);
         f.indexPage(p);
         f.sortOrder(order);
+
+        if (orderList != null && !orderList.isEmpty()) {
+            final List<Resource> newOrder = new ArrayList<Resource>();
+            final List<Resource> currentOrder = f.entries();
+            for (final UUID resourceId : orderList) {
+                for (final Resource r : currentOrder) {
+                    if (r.id().equals(resourceId)) {
+                        newOrder.add(r);
+                    }
+                }
+            }
+            f.reorder(newOrder);
+        }
 
         // TODO: Set folder.dateChanged()?
 

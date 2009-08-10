@@ -63,7 +63,6 @@ import ccc.commands.LockResourceCommand;
 import ccc.commands.MoveResourceCommand;
 import ccc.commands.PublishCommand;
 import ccc.commands.RenameResourceCommand;
-import ccc.commands.ReorderFolderContentsCommand;
 import ccc.commands.ScheduleActionCommand;
 import ccc.commands.UnlockResourceCommand;
 import ccc.commands.UnpublishResourceCommand;
@@ -680,16 +679,24 @@ public class CommandsEJB
     @Override
     @RolesAllowed({"CONTENT_CREATOR"})
     public void updateFolder(final ID folderId,
-                                      final String sortOrder,
-                                      final ID indexPageId)
+                             final String sortOrder,
+                             final ID indexPageId,
+                             final Collection<String> sortList)
                                                  throws CommandFailedException {
         try {
+            final List<UUID> list = new ArrayList<UUID>();
+
+            for (final String item : sortList) {
+                list.add(UUID.fromString(item));
+            }
+
             new UpdateFolderCommand(_bdao, _audit).execute(
                 loggedInUser(),
                  new Date(),
                  toUUID(folderId),
                  ResourceOrder.valueOf(sortOrder),
-                 toUUID(indexPageId));
+                 toUUID(indexPageId),
+                 list);
 
         } catch (final RemoteExceptionSupport e) {
             throw fail(e);
@@ -754,26 +761,6 @@ public class CommandsEJB
 
       new ScheduleActionCommand(_bdao, _audit).execute(
           loggedInUser(), new Date(), a);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
-    public void reorder(final ID folderId,
-                        final List<String> order) // TODO: Should be List<ID>
-                                                 throws CommandFailedException {
-        try {
-            final List<UUID> newOrder = new ArrayList<UUID>();
-            for (final String entry : order) {
-                newOrder.add(UUID.fromString(entry));
-            }
-            new ReorderFolderContentsCommand(_bdao, _audit).execute(
-                loggedInUser(), new Date(), toUUID(folderId), newOrder);
-
-
-        } catch (final RemoteExceptionSupport e) {
-            throw fail(e);
-        }
     }
 
     /** {@inheritDoc} */

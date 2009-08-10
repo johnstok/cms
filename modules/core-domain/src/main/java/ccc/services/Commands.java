@@ -322,10 +322,14 @@ public interface Commands {
      * @param folderId The id of the folder to update.
      * @param sortOrder The new sort order.
      * @param indexPageId The id of the index page to update.
+     * @param sortList The new order of folder's items.
      *
      * @throws CommandFailedException If the method fails.
      */
-    void updateFolder(ID folderId, String sortOrder, ID indexPageId)
+    void updateFolder(ID folderId,
+                      String sortOrder,
+                      ID indexPageId,
+                      Collection<String> sortList)
     throws CommandFailedException;
 
     /**
@@ -545,16 +549,6 @@ public interface Commands {
                       Date executeAfter,
                       Map<String, String> parameters)
     throws CommandFailedException;
-
-    /**
-     * Change the order of resources in a folder.
-     *
-     * @param folderId The id of the folder to update.
-     * @param order The new order of the resources.
-     *
-     * @throws CommandFailedException If the method fails.
-     */
-    void reorder(ID folderId, List<String> order) throws CommandFailedException;
 
     /**
      * Change the security roles for a resource.

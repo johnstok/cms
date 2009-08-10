@@ -148,7 +148,8 @@ public class Migrations {
                 _commands.lock(f.getId());
                 _commands.updateFolder(f.getId(),
                     f.getSortOrder(),
-                    hp.getId());
+                    hp.getId(),
+                    null);
                 _commands.unlock(f.getId());
             }
         }

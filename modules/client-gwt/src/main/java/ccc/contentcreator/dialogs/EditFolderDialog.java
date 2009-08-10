@@ -19,7 +19,6 @@ import ccc.api.ID;
 import ccc.api.ResourceSummary;
 import ccc.api.ResourceType;
 import ccc.contentcreator.actions.GetChildrenAction;
-import ccc.contentcreator.actions.ReorderFolderAction;
 import ccc.contentcreator.actions.UpdateFolderAction_;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
@@ -274,17 +273,32 @@ AbstractEditDialog {
                     _selectionModel.tableSelection();
                 final String order = _sortOrder.getValue().<String>get("value");
                 final ID indexPageId = _indexPage.getValue().<ID>get("value");
+                final List<String> orderList = new ArrayList<String>();
 
-                new UpdateFolderAction_(md.getId(), order, indexPageId) {
+                if (order.equals(MANUAL)) {
+                    final List<ResourceSummaryModelData> models =
+                        _grid.getStore().getModels();
+                    for(final ResourceSummaryModelData m : models) {
+                        orderList.add(m.getId().toString());
+                    }
+                }
+
+                new UpdateFolderAction_(
+                    md.getId(),
+                    order,
+                    indexPageId,
+                    orderList) {
                     /** {@inheritDoc} */
                     @Override protected void onNoContent(final Response response) {
                         md.setIndexPageId(indexPageId);
-                        reorder(md, order);
+                        md.setSortOrder(order);
+                        hide();
                     }
                 }.execute();
             }
         };
     }
+
 
     private void createColumnConfigs(final List<ColumnConfig> configs) {
         final DateTimeFormat dateTimeFormat =
@@ -334,33 +348,6 @@ AbstractEditDialog {
         changedColumn.setDateTimeFormat(dateTimeFormat);
         configs.add(changedColumn);
 
-    }
-
-    private void reorder(final ResourceSummaryModelData md,
-                         final String order) {
-
-        if (order.equals(MANUAL)) {
-            final List<String> orderList = new ArrayList<String>();
-            final List<ResourceSummaryModelData> models =
-                _grid.getStore().getModels();
-            for(final ResourceSummaryModelData m : models) {
-                orderList.add(m.getId().toString());
-            }
-
-            new ReorderFolderAction(
-                md.getId(),
-                orderList
-            ){
-                /** {@inheritDoc} */
-                @Override protected void onNoContent(final Response response) {
-                    hide();
-                    md.setSortOrder(order);
-                }
-            }.execute();
-        } else {
-            hide();
-            md.setSortOrder(order);
-        }
     }
 
     /**

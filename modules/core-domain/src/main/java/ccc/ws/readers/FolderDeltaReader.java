@@ -67,7 +67,8 @@ public class FolderDeltaReader
         final FolderDelta d =
             new FolderDelta(
                 json.getString(JsonKeys.SORT_ORDER),
-                json.getId(JsonKeys.INDEX_PAGE_ID)
+                json.getId(JsonKeys.INDEX_PAGE_ID),
+                json.getStrings(JsonKeys.SORT_LIST)
             );
         return d;
     }
