@@ -1404,4 +1404,12 @@ public interface UIConstants extends Constants {
      */
     @DefaultStringValue("must not contain , character")
     String mustNotContainComma();
+
+    /**
+     * "About".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("About")
+    String about();
 }

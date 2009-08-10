@@ -11,6 +11,8 @@
  */
 package ccc.commons;
 
+import java.util.Map;
+
 import junit.framework.TestCase;
 
 
@@ -49,5 +51,19 @@ public class CCCPropertiesTest
 
         // ASSERT
         assertNull(value);
+    }
+
+    /**
+     * Test.
+     */
+    public void testGetAllProperties() {
+
+        // ARRANGE
+
+        // ACT
+        final Map<String, String> map = CCCProperties.getAll();
+
+        // ASSERT
+        assertEquals("hello world!", map.get("test.prop"));
     }
 }

@@ -45,12 +45,12 @@ public interface ActionNameConstants extends Constants {
     String validatePageFields();
 
     /**
-     * "Read property".
+     * "Read properties".
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Read property")
-    String readProperty();
+    @DefaultStringValue("Read properties")
+    String readProperties();
 
     /**
      * "Check unique username".

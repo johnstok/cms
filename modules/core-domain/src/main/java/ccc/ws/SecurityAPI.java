@@ -42,4 +42,7 @@ public interface SecurityAPI {
     @GET @Path("/sessions/properties")
     public String readProperty(
           @QueryParam("key") final String key);
+
+    @GET @Path("/sessions/allproperties")
+    public String readAllProperties();
 }

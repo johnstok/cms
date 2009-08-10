@@ -11,24 +11,22 @@
  */
 package ccc.contentcreator.actions;
 
+import ccc.contentcreator.dialogs.AboutDialog;
 import ccc.contentcreator.dialogs.LoginDialog;
 
 import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
 
 
 
 /**
- * TODO: Add a description for this type.
+ * Abstract action for property loading. Implement onOK method for accessing
+ * map values. See {@link LoginDialog} or {@link AboutDialog}.
  *
  * @author Civic Computing Ltd.
  */
-public class GetPropertyAction
+public abstract class GetPropertyAction
     extends
         RemotingAction {
-
-    private final String _key;
-    private LoginDialog _dialog;
 
 
     /**
@@ -37,21 +35,15 @@ public class GetPropertyAction
      * @param key The name of the property to look up.
      * @param dialog The dialog to act on.
      */
-    public GetPropertyAction(final String key, final LoginDialog dialog) {
-        super(USER_ACTIONS.readProperty(), RequestBuilder.GET, false);
-        _key = key;
-        _dialog = dialog;
+    public GetPropertyAction() {
+        super(USER_ACTIONS.readProperties(), RequestBuilder.GET, false);
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/sessions/properties?key="+_key; // FIXME: Escape!
+        return "/sessions/allproperties";
     }
 
-    /** {@inheritDoc} */
-    @Override protected void onOK(final Response response) {
-        _dialog.setHeading(UI_CONSTANTS.login() +" - "+response.getText());
-    }
 }

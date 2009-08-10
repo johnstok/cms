@@ -13,6 +13,8 @@ package ccc.commons;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
@@ -51,5 +53,18 @@ public final class CCCProperties {
      */
     public static String get(final String key) {
         return PROPS.getProperty(key);
+    }
+
+    /**
+     * Return a map containing all properties.
+     *
+     * @return The map of properties.
+     */
+    public static Map<String, String> getAll() {
+        final Map<String, String> map = new HashMap<String, String>();
+        for (final String key : PROPS.stringPropertyNames()) {
+            map.put(key, PROPS.getProperty(key));
+        }
+        return map;
     }
 }

@@ -11,6 +11,8 @@
  */
 package ccc.contentcreator.dialogs;
 
+import java.util.Map;
+
 import ccc.contentcreator.actions.GetPropertyAction;
 import ccc.contentcreator.actions.LoginAction;
 import ccc.contentcreator.client.IGlobalsImpl;
@@ -19,6 +21,7 @@ import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.google.gwt.http.client.Response;
 
 
 /**
@@ -40,7 +43,17 @@ public class LoginDialog extends AbstractEditDialog {
     public LoginDialog() {
         super(new IGlobalsImpl().uiConstants().login(), new IGlobalsImpl());
 
-        new GetPropertyAction("application.name", this).execute();
+        final GetPropertyAction action = new GetPropertyAction() {
+            /** {@inheritDoc} */
+            @Override
+            protected void onOK(final Response response) {
+                final Map<String, String> map = parseMapString(response);
+
+                LoginDialog.this.setHeading(
+                    constants().login() +" - "+map.get("application.name"));
+            }
+        };
+        action.execute();
 
         setPanelId("LoginPanel");
 
