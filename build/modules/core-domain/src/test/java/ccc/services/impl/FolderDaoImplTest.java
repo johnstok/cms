@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.UUID;
 
 import junit.framework.TestCase;
-import ccc.commands.ReorderFolderContentsCommand;
 import ccc.commands.UpdateFolderCommand;
 import ccc.domain.Folder;
 import ccc.domain.LockMismatchException;
@@ -68,6 +67,7 @@ public class FolderDaoImplTest
                     new Date(),
                     _f.id(),
                     ResourceOrder.NAME_ALPHANUM_ASC,
+                    null,
                     null);
 
         // ASSERT
@@ -95,8 +95,7 @@ public class FolderDaoImplTest
         _al.record(isA(LogEntry.class));
         replayAll();
 
-        final ReorderFolderContentsCommand rf =
-            new ReorderFolderContentsCommand(_dao, _al);
+        final UpdateFolderCommand uf = new UpdateFolderCommand(_dao, _al);
 
         // ACT
         final List<UUID> order = new ArrayList<UUID>();
@@ -104,7 +103,12 @@ public class FolderDaoImplTest
         order.add(foo.id());
         order.add(bar.id());
 
-        rf.execute(_regularUser, new Date(), _f.id(), order);
+        uf.execute(_regularUser,
+            new Date(),
+            _f.id(),
+            ResourceOrder.MANUAL,
+            null,
+            order);
 
         // ASSERT
         verifyAll();

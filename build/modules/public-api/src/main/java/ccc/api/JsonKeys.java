@@ -42,6 +42,8 @@ public final class JsonKeys {
     public static final String HAS_WORKING_COPY = "has-working-copy";
     /** SORT_ORDER : String. */
     public static final String SORT_ORDER = "sort-order";
+    /** SORT_LIST : String. */
+    public static final String SORT_LIST = "sort-list";
     /** INCLUDE_IN_MAIN_MENU : String. */
     public static final String INCLUDE_IN_MAIN_MENU = "include-in-main-menu";
     /** FOLDER_COUNT : String. */

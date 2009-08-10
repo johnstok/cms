@@ -574,7 +574,10 @@ public class RestApi
     @Override
     public void updateFolder(final ID folderId,
                              final FolderDelta delta) throws CommandFailedException {
-        getCommands().updateFolder(folderId, delta.getSortOrder(), delta.getIndexPage());
+        getCommands().updateFolder(folderId,
+                                   delta.getSortOrder(),
+                                   delta.getIndexPage(),
+                                   delta.getSortList());
     }
 
 
@@ -582,13 +585,6 @@ public class RestApi
     @Override
     public void updateUser(final ID userId, final UserDelta delta) throws CommandFailedException {
         getCommands().updateUser(userId, delta);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void reorder(final ID folderId, final List<String> order) throws CommandFailedException {
-        getCommands().reorder(folderId, order);
     }
 
 

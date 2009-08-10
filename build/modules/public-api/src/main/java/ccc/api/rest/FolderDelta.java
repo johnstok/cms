@@ -11,6 +11,8 @@
  */
 package ccc.api.rest;
 
+import java.util.Collection;
+
 import ccc.api.DBC;
 import ccc.api.ID;
 import ccc.api.Json;
@@ -27,6 +29,7 @@ public class FolderDelta implements Jsonable {
 
     private final String _sortOrder;
     private final ID     _indexPage;
+    private final Collection<String> _sortList;
 
 
     /**
@@ -35,10 +38,13 @@ public class FolderDelta implements Jsonable {
      * @param sortOrder The sort order for the folder's children.
      * @param indexPage The folder index page (may be NULL).
      */
-    public FolderDelta(final String sortOrder, final ID indexPage) {
+    public FolderDelta(final String sortOrder,
+                       final ID indexPage,
+                       final Collection<String> sortList) {
         DBC.require().notNull(sortOrder);
         _sortOrder = sortOrder;
         _indexPage = indexPage;
+        _sortList = sortList;
     }
 
 
@@ -62,10 +68,21 @@ public class FolderDelta implements Jsonable {
     }
 
 
+    /**
+     * Accessor.
+     *
+     * @return Returns the sort list.
+     */
+    public final Collection<String> getSortList() {
+        return _sortList;
+    }
+
+
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
         json.set(JsonKeys.SORT_ORDER, _sortOrder);
         json.set(JsonKeys.INDEX_PAGE_ID, _indexPage);
+        json.setStrings(JsonKeys.SORT_LIST, _sortList);
     }
 }

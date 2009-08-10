@@ -11,6 +11,8 @@
  */
 package ccc.contentcreator.actions;
 
+import java.util.List;
+
 import ccc.api.ID;
 import ccc.api.Json;
 import ccc.api.JsonKeys;
@@ -31,6 +33,7 @@ public class UpdateFolderAction_
     private final ID _id;
     private final String _sortOrder;
     private final ID _indexPageId;
+    private final List<String> _sortList;
 
 
     /**
@@ -42,11 +45,13 @@ public class UpdateFolderAction_
      */
     public UpdateFolderAction_(final ID id,
                                final String sortOrder,
-                               final ID indexPageId) {
+                               final ID indexPageId,
+                               final List<String> sortList) {
         super(UI_CONSTANTS.folderSortOrder(), RequestBuilder.POST);
         _id = id;
         _sortOrder = sortOrder;
         _indexPageId = indexPageId;
+        _sortList = sortList;
     }
 
 
@@ -63,6 +68,7 @@ public class UpdateFolderAction_
         final Json json = new GwtJson();
         json.set(JsonKeys.SORT_ORDER, _sortOrder);
         json.set(JsonKeys.INDEX_PAGE_ID, _indexPageId);
+        json.setStrings(JsonKeys.SORT_LIST, _sortList);
         return json.toString();
     }
 }

@@ -180,11 +180,6 @@ public interface RestCommands {
         @PathParam("id") ID userId,
         UserDelta delta) throws CommandFailedException;
 
-    @POST @Path("/folders/{id}/order")
-    void reorder(
-        @PathParam("id") ID folderId,
-        List<String> order) throws CommandFailedException;
-
     @DELETE  @Path("/resources/{id}/duration")
     void deleteCacheDuration(
         @PathParam("id") ID id) throws CommandFailedException;
