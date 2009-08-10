@@ -33,7 +33,8 @@ public class Failure
     private FailureCode         _code        = FailureCode.UNEXPECTED;
     private Map<String, String> _params      = new HashMap<String, String>();
 
-    @SuppressWarnings("unused") private Failure() { super(); }
+    /** Constructor: for persistence only. */
+    protected Failure() { super(); }
 
 
     /**

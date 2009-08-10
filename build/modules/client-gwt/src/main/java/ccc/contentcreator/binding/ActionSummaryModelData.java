@@ -20,6 +20,7 @@ import java.util.Set;
 
 import ccc.api.ActionStatus;
 import ccc.api.ActionSummary;
+import ccc.api.CommandType;
 import ccc.api.ID;
 import ccc.api.ResourceType;
 import ccc.contentcreator.api.ActionStatusConstants;
@@ -74,6 +75,9 @@ public class ActionSummaryModelData
 
             case STATUS:
                 return (X) _as.getStatus();
+
+            case FAILURE_CODE:
+                return (X) _as.getFailureCode();
 
             case LOCALISED_STATUS:
                 return (X) getLocalisedStatus();
@@ -147,6 +151,8 @@ public class ActionSummaryModelData
         SUBJECT_TYPE,
         /** STATUS : Property. */
         STATUS,
+        /** FAILURE : Property. */
+        FAILURE_CODE,
         /** LOCALISED_STATUS : Property. */
         LOCALISED_STATUS;
     }
