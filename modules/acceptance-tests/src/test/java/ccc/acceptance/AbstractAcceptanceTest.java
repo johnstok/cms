@@ -50,6 +50,7 @@ import ccc.ws.ResSummaryReader;
 import ccc.ws.ResourceSummaryCollectionReader;
 import ccc.ws.RestCommands;
 import ccc.ws.SecurityAPI;
+import ccc.ws.UserDeltaReader;
 import ccc.ws.UserSummaryCollectionReader;
 import ccc.ws.UserSummaryReader;
 
@@ -81,6 +82,7 @@ public abstract class AbstractAcceptanceTest
         pFactory.addMessageBodyReader(UserSummaryReader.class);
         pFactory.addMessageBodyReader(BooleanProvider.class);
         pFactory.addMessageBodyReader(FailureWriter.class);
+        pFactory.addMessageBodyReader(UserDeltaReader.class);
     }
 
     private final String _hostUrl =         "http://localhost:81";
