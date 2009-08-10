@@ -14,7 +14,9 @@ package ccc.api;
 import static ccc.api.DBC.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -56,6 +58,7 @@ public final class Paragraph implements Serializable, Jsonable {
                 break;
 
             case TEXT:
+            case LIST:
                 _text = json.getString("text");
                 break;
 
@@ -80,6 +83,12 @@ public final class Paragraph implements Serializable, Jsonable {
         require().notNull(text);
         _text = text;
         _type = ParagraphType.TEXT;
+    }
+
+    private void list(final String text) {
+        require().notNull(text);
+        _text = text;
+        _type = ParagraphType.LIST;
     }
 
     private void bool(final Boolean b) {
@@ -197,6 +206,23 @@ public final class Paragraph implements Serializable, Jsonable {
     }
 
     /**
+     * Factory method. Creates a paragraph representing a list of strings.
+     *
+     * @param name The name of the paragraph.
+     * @param list The list for the paragraph.
+     * @return A paragraph with list content.
+     */
+    public static Paragraph fromList(final String name,
+                                     final List<String> list) {
+        final Paragraph p = new Paragraph();
+
+        p.name(name);
+        p.list(listToText(list));
+
+        return p;
+    }
+
+    /**
      * Accessor.
      *
      * @return The numerical representation of this paragraph.
@@ -239,6 +265,15 @@ public final class Paragraph implements Serializable, Jsonable {
      */
     public Date date() {
         return (null==_date) ? null : new Date(_date.getTime());
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return The list representation of this paragraph.
+     */
+    public List<String> list() {
+        return testToList(text());
     }
 
     /**
@@ -305,5 +340,31 @@ public final class Paragraph implements Serializable, Jsonable {
         json.set("number",
             (null==_number) ? null : new Decimal(_number.toString()));
 
+    }
+
+
+    private static String listToText(final List<String> list) {
+        final StringBuilder sb = new StringBuilder();
+        for (final String cb : list) {
+            if (sb.length() > 0) {
+                sb.append(",");
+            }
+            DBC.require().notEmpty(cb);
+            if (cb.contains(",")) {
+                throw new RuntimeException("The ',' char is not allowed.");
+            }
+            sb.append(cb);
+        }
+        return sb.toString();
+    }
+
+    private List<String> testToList(final String text) {
+        final List<String> list = new ArrayList<String>();
+        for (final String value : text.split(",")) {
+            if (value.trim().length() > 0) {
+                list.add(value);
+            }
+        }
+        return list;
     }
 }
