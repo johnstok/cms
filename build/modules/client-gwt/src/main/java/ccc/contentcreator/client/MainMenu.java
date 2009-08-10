@@ -24,6 +24,7 @@ import ccc.contentcreator.actions.LockAction;
 import ccc.contentcreator.actions.LogoutAction;
 import ccc.contentcreator.actions.OpenHelpAction;
 import ccc.contentcreator.actions.PublishAction;
+import ccc.contentcreator.actions.ShowAboutAction;
 import ccc.contentcreator.actions.UnlockAction;
 import ccc.contentcreator.actions.UnpublishAction;
 import ccc.contentcreator.actions.UpdateMetadataAction;
@@ -68,6 +69,10 @@ public class MainMenu
         addMenu(
             "help-menu",
             _constants.help(),
+            createMenuItem(
+                "about-dialog",
+                _constants.about(),
+                new ShowAboutAction()),
             createMenuItem(
                 "open-manual",
                 _constants.manual(),

@@ -21,6 +21,7 @@ import javax.ws.rs.core.Context;
 import org.jboss.web.tomcat.security.login.WebAuthentication;
 
 import ccc.commons.CCCProperties;
+import ccc.domain.Snapshot;
 
 
 /**
@@ -81,4 +82,15 @@ public class Security
     public String readProperty(final String key) {
         return CCCProperties.get(key);
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public String readAllProperties() {
+        final Snapshot ss = new Snapshot();
+        ss.set("properties", CCCProperties.getAll());
+        return ss.getDetail();
+    }
+
+
 }

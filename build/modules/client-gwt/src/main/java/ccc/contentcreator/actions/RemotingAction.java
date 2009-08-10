@@ -17,8 +17,10 @@ import static com.google.gwt.http.client.Response.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import ccc.api.ActionSummary;
+import ccc.api.Json;
 import ccc.api.ResourceSummary;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.GwtJson;
@@ -35,7 +37,9 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.http.client.RequestBuilder.Method;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONBoolean;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONValue;
 
 
 /**
@@ -278,4 +282,19 @@ public abstract class RemotingAction
         }
         return actions;
     }
+
+    /**
+     * Parse the response as a map.
+     *
+     * @param response The response to parse.
+     * @return A map.
+     */
+    protected Map<String, String> parseMapString(final Response response) {
+        final JSONValue value = JSONParser.parse(response.getText());
+        final JSONObject result = value.isObject();
+        final Json json = new GwtJson(result);
+
+        return json.getStringMap("properties");
+    }
+
 }

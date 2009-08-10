@@ -54,4 +54,11 @@ public interface SecurityService
      */
     String readProperty(final String key);
 
+    /**
+     * Reads all property strings.
+     *
+     * @return Map as a JSON object.
+     */
+    String readAllProperties();
+
 }
