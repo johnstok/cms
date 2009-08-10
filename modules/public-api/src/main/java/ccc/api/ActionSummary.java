@@ -31,6 +31,7 @@ public final class ActionSummary implements Serializable, Jsonable {
     private ResourceType _subjectType;
     private String _subjectPath;
     private ActionStatus _status;
+    private FailureCode _fCode;
 
     @SuppressWarnings("unused") private ActionSummary() { super(); }
 
@@ -44,6 +45,7 @@ public final class ActionSummary implements Serializable, Jsonable {
      * @param after The date after which the action should be executed.
      * @param path The absolute path of the action's subject.
      * @param status The action's status.
+     * @param fCode The action's failure code.
      */
     public ActionSummary(final ID     id,
                          final CommandType type,
@@ -51,7 +53,8 @@ public final class ActionSummary implements Serializable, Jsonable {
                          final Date   after,
                          final ResourceType subjectType,
                          final String path,
-                         final ActionStatus status) {
+                         final ActionStatus status,
+                         final FailureCode fCode) {
         _id = id;
         _type = type;
         _actor = actor;
@@ -59,13 +62,14 @@ public final class ActionSummary implements Serializable, Jsonable {
         _subjectType = subjectType;
         _subjectPath = path;
         _status = status;
+        _fCode = fCode;
     }
 
 
     /**
      * Constructor.
      *
-     * @param json
+     * @param json The JSON representation of an action summary.
      */
     public ActionSummary(final Json json) {
         this(
@@ -75,7 +79,9 @@ public final class ActionSummary implements Serializable, Jsonable {
             json.getDate(EXECUTE_AFTER),
             ResourceType.valueOf(json.getString(SUBJECT_TYPE)),
             json.getString(SUBJECT_PATH),
-            ActionStatus.valueOf(json.getString(STATUS))
+            ActionStatus.valueOf(json.getString(STATUS)),
+            (null==json.getString(CODE))
+                ?null : FailureCode.valueOf(json.getString(CODE))
         );
     }
 
@@ -142,11 +148,22 @@ public final class ActionSummary implements Serializable, Jsonable {
     /**
      * Accessor.
      *
+     * @return Returns the failure code.
+     */
+    public FailureCode getFailureCode() {
+        return _fCode;
+    }
+
+
+    /**
+     * Accessor.
+     *
      * @return Returns the status.
      */
     public ActionStatus getStatus() {
         return _status;
     }
+
 
     /**
      * Mutator.
@@ -156,6 +173,7 @@ public final class ActionSummary implements Serializable, Jsonable {
     public void setStatus(final ActionStatus status) {
         _status = status;
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -167,5 +185,6 @@ public final class ActionSummary implements Serializable, Jsonable {
         json.set(SUBJECT_TYPE, getSubjectType().name());
         json.set(SUBJECT_PATH, getSubjectPath());
         json.set(STATUS, getStatus().name());
+        json.set(CODE, (null==_fCode)?null:_fCode.name());
     }
 }

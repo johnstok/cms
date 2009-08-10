@@ -98,6 +98,11 @@ public class ActionTable extends TablePanel {
             ActionSummaryModelData.Property.LOCALISED_STATUS.name(),
             UI_CONSTANTS.status(),
             SMALL_COLUMN);
+        addColumn(
+            configs,
+            ActionSummaryModelData.Property.FAILURE_CODE.name(),
+            UI_CONSTANTS.failureCode(),
+            SMALL_COLUMN);
 
         final ColumnConfig subjectTypeColumn = addColumn(
             configs,
