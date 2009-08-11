@@ -18,6 +18,7 @@ import ccc.api.CommandType;
 import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
+import ccc.domain.Snapshot;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -67,7 +68,7 @@ public class LockResourceCommand {
                 CommandType.RESOURCE_LOCK,
                 happenedOn,
                 resourceId,
-                "{}");
+                new Snapshot(r).getDetail());
         _audit.record(le);
     }
 }

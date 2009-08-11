@@ -394,6 +394,16 @@ public final class Folder extends Resource implements IFolder {
         _indexPage = indexPage;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public void toJson(final Json json) {
+        super.toJson(json);
+        json.set(JsonKeys.SORT_ORDER, sortOrder().name());
+        json.set(JsonKeys.INDEX_PAGE_ID, (null==indexPage()) ? null : indexPage().id().toString());
+        // Index folder entries?
+    }
+
+
 
 
     /* ====================================================================

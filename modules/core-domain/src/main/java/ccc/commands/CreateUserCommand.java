@@ -74,7 +74,7 @@ public class CreateUserCommand {
                 CommandType.USER_CREATE,
                 happenedOn,
                 user.id(),
-                new Snapshot(delta).getDetail()));
+                new Snapshot(user).getDetail()));
 
         return user;
     }

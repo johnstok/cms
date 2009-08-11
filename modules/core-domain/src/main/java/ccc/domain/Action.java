@@ -16,6 +16,8 @@ import java.util.Map;
 
 import ccc.api.ActionStatus;
 import ccc.api.CommandType;
+import ccc.api.Json;
+import ccc.api.JsonKeys;
 import ccc.commands.CommandFailedException;
 
 
@@ -153,5 +155,18 @@ public class Action extends Entity {
         if (ActionStatus.Scheduled!=_status) {
             throw new IllegalStateException("Status is "+_status);
         }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void toJson(final Json json) {
+        super.toJson(json);
+        json.set(JsonKeys.ACTOR, actor().id().toString());
+        json.set(JsonKeys.TYPE, type().name());
+        json.set(JsonKeys.PARAMETERS, parameters());
+        json.set(JsonKeys.SUBJECT_ID, subject().id().toString());
+        json.set(JsonKeys.EXECUTE_AFTER, executeAfter());
+        json.set(JsonKeys.STATUS, status().name());
+        json.set(JsonKeys.FAILURE, failure());
     }
 }

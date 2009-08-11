@@ -68,14 +68,12 @@ public class UpdateResourceRolesCommand {
 
         r.roles(roles);
 
-        final Snapshot ss = new Snapshot();
-        ss.setStrings("roles", r.roles());
         final LogEntry le = new LogEntry(
             actor,
             CommandType.RESOURCE_CHANGE_ROLES,
             happenedOn,
             id,
-            ss.getDetail());
+            new Snapshot(r).getDetail());
         _audit.record(le);
     }
 

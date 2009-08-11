@@ -89,7 +89,7 @@ class UpdateResourceCommand {
                 throw new UnsupportedOperationException();
         }
 
-        final Snapshot ss = new Snapshot(resource.createSnapshot());
+        final Snapshot ss = new Snapshot(resource);
 
         final LogEntry le =
             new LogEntry(

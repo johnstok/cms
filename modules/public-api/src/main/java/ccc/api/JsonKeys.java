@@ -105,7 +105,7 @@ public final class JsonKeys {
     /** ACTION : String. */
     public static final String ACTION = "action"; // FIXME: Should be 'command'.
     /** ACTOR : String. */
-    public static final String ACTOR = "actor";
+    public static final String ACTOR = "actor"; // FIXME: Should be 'actor-id'?
     /** HAPPENED_ON : String. */
     public static final String HAPPENED_ON = "happened-on";
     /** MAJOR_CHANGE : String. */
@@ -134,4 +134,6 @@ public final class JsonKeys {
     public static final String SUBJECT_ID = "subject-id";
     /** PARAMETERS : String. */
     public static final String PARAMETERS = "parameters";
+    /** FAILURE : String. */
+    public static final String FAILURE = "failure";
 }

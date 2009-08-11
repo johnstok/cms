@@ -68,18 +68,13 @@ public class UpdateCachingCommand {
 
         r.cache(duration);
 
-        final Snapshot ss = new Snapshot();
-        ss.set(
-            "cache",
-            (null==duration) ? (Long) null : Long.valueOf(duration.time()));
-
         final LogEntry le =
             new LogEntry(
                 actor,
                 CommandType.RESOURCE_UPDATE_CACHE,
                 happenedOn,
                 r.id(),
-                ss.getDetail());
+                new Snapshot(r).getDetail());
         _audit.record(le);
     }
 

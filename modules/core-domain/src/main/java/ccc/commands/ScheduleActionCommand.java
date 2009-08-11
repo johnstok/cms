@@ -62,18 +62,6 @@ public class ScheduleActionCommand {
                 CommandType.ACTION_CREATE,
                 happenedOn,
                 action.id(),
-                toJson(action)));
-    }
-
-
-    private String toJson(final Action action) {
-        final Snapshot s = new Snapshot();
-        s.set("actor", action.actor().id().toString());
-        s.set("type", action.type().name());
-        s.set("parameters", action.parameters());
-        s.set("subject", action.subject().id().toString());
-        s.set("execute_after", action.executeAfter());
-
-        return s.getDetail();
+                new Snapshot(action).getDetail()));
     }
 }

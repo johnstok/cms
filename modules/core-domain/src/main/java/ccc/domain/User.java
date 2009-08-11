@@ -13,12 +13,15 @@ package ccc.domain;
 
 import static ccc.api.DBC.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import ccc.api.DBC;
+import ccc.api.Json;
+import ccc.api.JsonKeys;
 import ccc.commons.EmailAddress;
 
 
@@ -42,7 +45,6 @@ public class User extends Entity {
     private String _username;
     private EmailAddress _email;
     private Set<String> _roles = new HashSet<String>();
-
     private Map<String, String> _metadata = new HashMap<String, String>();
 
     /**
@@ -205,5 +207,16 @@ public class User extends Entity {
      */
     public void addMetadata(final Map<String, String> metadata) {
         _metadata.putAll(metadata);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void toJson(final Json json) {
+        super.toJson(json);
+        json.set(JsonKeys.USERNAME, username());
+        json.set(JsonKeys.EMAIL, (null==email()) ? null : email().toString());
+        json.setStrings(JsonKeys.ROLES, new ArrayList<String>(roles()));
+        json.set(JsonKeys.METADATA, metadata());
     }
 }

@@ -15,7 +15,6 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.CommandType;
-import ccc.api.JsonKeys;
 import ccc.api.PageDelta;
 import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
@@ -78,7 +77,7 @@ public class UpdateWorkingCopyCommand {
                 CommandType.RESOURCE_UPDATE_WC,
                 happenedOn,
                 resourceId,
-                new Snapshot(delta).getDetail()));
+                new Snapshot(r).getDetail()));
     }
 
     /**
@@ -109,15 +108,13 @@ public class UpdateWorkingCopyCommand {
                 (WorkingCopySupport<?, ?, ?>) r;
             wcAware.setWorkingCopyFromRevision((int) revisionNo);
 
-            final Snapshot ss = new Snapshot();
-            ss.set(JsonKeys.REVISION, Long.valueOf(revisionNo));
             _audit.record(
                 new LogEntry(
                     actor,
                     CommandType.RESOURCE_UPDATE_WC,
                     happenedOn,
                     resourceId,
-                    ss.getDetail()));
+                    new Snapshot(r).getDetail()));
         } else {
             throw new WorkingCopyNotSupportedException(r);
         }

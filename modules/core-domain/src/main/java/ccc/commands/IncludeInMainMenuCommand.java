@@ -18,6 +18,7 @@ import ccc.api.CommandType;
 import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
+import ccc.domain.Snapshot;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -70,7 +71,10 @@ public class IncludeInMainMenuCommand {
         final CommandType command =
             (b) ? CommandType.RESOURCE_INCLUDE_IN_MM
                 : CommandType.RESOURCE_REMOVE_FROM_MM;
-        final LogEntry le = new LogEntry(actor, command, happenedOn, id, "{}");
+
+        final LogEntry le =
+            new LogEntry(
+                actor, command, happenedOn, id, new Snapshot(r).getDetail());
         _audit.record(le);
     }
 }

@@ -15,7 +15,6 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.CommandType;
-import ccc.api.JsonKeys;
 import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
@@ -79,15 +78,13 @@ public class RenameResourceCommand {
 
         resource.name(new ResourceName(name));
 
-        final Snapshot ss = new Snapshot();
-        ss.set(JsonKeys.NAME, resource.name().toString());
         final LogEntry le =
             new LogEntry(
                 actor,
                 CommandType.RESOURCE_RENAME,
                 happenedOn,
                 resource.id(),
-                ss.getDetail());
+                new Snapshot(resource).getDetail());
         _audit.record(le);
     }
 }

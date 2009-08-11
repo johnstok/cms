@@ -15,7 +15,6 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.CommandType;
-import ccc.api.JsonKeys;
 import ccc.domain.CCCException;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
@@ -64,6 +63,7 @@ public abstract class CreateResourceCommand {
                           final Resource newResource)
                                                 throws RemoteExceptionSupport {
         newResource.dateCreated(happenedOn);
+        newResource.dateChanged(happenedOn);
 
         final Folder folder = _dao.find(Folder.class, folderId);
         if (null==folder) {
@@ -104,12 +104,7 @@ public abstract class CreateResourceCommand {
                 throw new UnsupportedOperationException();
         }
 
-        final Snapshot ss = new Snapshot(resource.createSnapshot());
-
-        ss.set(JsonKeys.NAME, resource.name().toString());
-
-        final Resource parent = resource.parent();
-        ss.set(JsonKeys.PARENT_ID, (null==parent)?null:parent.id().toString());
+        final Snapshot ss = new Snapshot(resource);
 
         final LogEntry le =
             new LogEntry(
