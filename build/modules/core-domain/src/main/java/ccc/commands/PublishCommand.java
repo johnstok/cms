@@ -20,6 +20,7 @@ import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Resource;
+import ccc.domain.Snapshot;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -82,7 +83,7 @@ public class PublishCommand
                 CommandType.RESOURCE_PUBLISH,
                 happenedOn,
                 r.id(),
-                "{}");
+                new Snapshot(r).getDetail());
         _audit.record(le);
     }
 

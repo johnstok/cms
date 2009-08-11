@@ -17,6 +17,7 @@ import java.util.UUID;
 import ccc.api.CommandType;
 import ccc.domain.Action;
 import ccc.domain.LogEntry;
+import ccc.domain.Snapshot;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -54,7 +55,8 @@ public class CancelActionCommand {
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID actionId) {
-        _dao.find(Action.class, actionId).cancel();
+        final Action a = _dao.find(Action.class, actionId);
+        a.cancel();
 
         _audit.record(
             new LogEntry(
@@ -62,6 +64,6 @@ public class CancelActionCommand {
                 CommandType.ACTION_CANCEL,
                 happenedOn,
                 actionId,
-                "{}"));
+                new Snapshot(a).getDetail()));
     }
 }

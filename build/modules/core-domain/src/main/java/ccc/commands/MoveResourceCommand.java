@@ -15,7 +15,6 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.CommandType;
-import ccc.api.JsonKeys;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.RemoteExceptionSupport;
@@ -68,16 +67,13 @@ public class MoveResourceCommand {
         resource.parent().remove(resource);
         newParent.add(resource);
 
-        final Snapshot ss = new Snapshot();
-        ss.set(JsonKeys.PATH, resource.absolutePath().toString());
-        ss.set(JsonKeys.PARENT_ID, resource.parent().id().toString());
         final LogEntry le =
             new LogEntry(
                 actor,
                 CommandType.RESOURCE_MOVE,
                 happenedOn,
                 resourceId,
-                ss.getDetail());
+                new Snapshot(resource).getDetail());
         _audit.record(le);
     }
 

@@ -18,6 +18,7 @@ import ccc.api.CommandType;
 import ccc.domain.InsufficientPrivilegesException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
+import ccc.domain.Snapshot;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -72,7 +73,7 @@ public class UnlockResourceCommand {
                 CommandType.RESOURCE_UNLOCK,
                 happenedOn,
                 resourceId,
-                "{}");
+                new Snapshot(r).getDetail());
         _audit.record(le);
     }
 }

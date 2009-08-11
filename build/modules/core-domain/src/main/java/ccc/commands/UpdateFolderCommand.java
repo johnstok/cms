@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.UUID;
 
 import ccc.api.CommandType;
-import ccc.api.JsonKeys;
 import ccc.domain.Folder;
 import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
@@ -91,20 +90,15 @@ public class UpdateFolderCommand extends UpdateResourceCommand {
             f.reorder(newOrder);
         }
 
-        // TODO: Set folder.dateChanged()?
+        f.dateChanged(happenedOn);
 
-        final Snapshot ss = new Snapshot();
-        ss.set(JsonKeys.SORT_ORDER, f.sortOrder().name());
-        ss.set(
-            JsonKeys.INDEX_PAGE_ID,
-            (null == indexPageId) ? null : indexPageId.toString());
         final LogEntry le =
             new LogEntry(
                 actor,
                 CommandType.FOLDER_UPDATE,
                 happenedOn,
                 folderId,
-                ss.getDetail());
+                new Snapshot(f).getDetail());
         getAudit().record(le);
     }
 }

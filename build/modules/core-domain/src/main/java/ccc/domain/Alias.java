@@ -14,6 +14,8 @@ package ccc.domain;
 import ccc.api.AliasDelta;
 import ccc.api.DBC;
 import ccc.api.ID;
+import ccc.api.Json;
+import ccc.api.JsonKeys;
 import ccc.api.ResourceType;
 import ccc.snapshots.AliasSnapshot;
 
@@ -94,6 +96,14 @@ public class Alias extends Resource {
                 new ID(target().id().toString()));
         return delta;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public void toJson(final Json json) {
+        super.toJson(json);
+        json.set(JsonKeys.TARGET, target().id().toString());
+    }
+
 
 
 

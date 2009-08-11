@@ -11,9 +11,6 @@
  */
 package ccc.services.impl;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
 import org.apache.log4j.Logger;
 
 import ccc.api.DBC;
@@ -51,7 +48,6 @@ public class AuditLogImpl
     }
 
     private void log(final LogEntry le) {
-        final DateFormat df = new SimpleDateFormat("yyyy.MM.dd-HH:mm:ss z");
         LOG.info(
             "Action: " + le.action()
             + " for " + le.subjectId()

@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ccc.api.DBC;
+import ccc.api.Json;
+import ccc.api.JsonKeys;
 import ccc.entities.ResourceName;
 
 
@@ -107,5 +109,13 @@ public abstract class HistoricalResource<S, T extends Revision<S>>
      */
     public HashMap<Integer, T> revisions() {
         return new HashMap<Integer, T>(_history);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void toJson(final Json json) {
+        super.toJson(json);
+        json.set(JsonKeys.REVISION, Long.valueOf(_currentRev));
     }
 }
