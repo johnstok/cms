@@ -84,6 +84,8 @@ AbstractEditDialog {
     private GridDropTarget _target;
     private ModelData _none = new BaseModelData();
 
+    private final ID _currentIndexPage;
+
 
     /**
      * Constructor.
@@ -97,9 +99,10 @@ AbstractEditDialog {
                                        final ID currentIndexPage) {
         super(new IGlobalsImpl().uiConstants().edit(), new IGlobalsImpl());
 
+        _currentIndexPage = currentIndexPage;
         setHeight(IGlobals.DEFAULT_HEIGHT);
         _selectionModel = ssm;
-        loadDetailStore(currentIndexPage);
+        loadDetailStore(_currentIndexPage);
 
         configureComboBox(_indexPage,
             _indexPageStore,
@@ -166,6 +169,11 @@ AbstractEditDialog {
             _selectionModel.tableSelection();
 
         new GetChildrenAction(_uiConstants.edit(), selection.getId()) {
+
+            @Override
+            protected String getPath() {
+                return "/folders/"+selection.getId()+"/children-manual-order";
+            }
 
             // FIXME: Handle failure!
             /*
@@ -366,6 +374,8 @@ AbstractEditDialog {
                 final String order = md.<String>get("value");
                 if (MANUAL.equals(order)) {
                     _grid.enable();
+                    // reload original manual order - otherwise DnD fails.
+                    loadDetailStore(_currentIndexPage);
                 } else  {
                     _grid.disable();
                     if (NAME_ALPHANUM_ASC.equals(order)) {

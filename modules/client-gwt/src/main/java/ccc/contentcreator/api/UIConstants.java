@@ -237,11 +237,11 @@ public interface UIConstants extends Constants {
     String template();
 
     /**
-     * "Create Alias".
+     * "Create alias".
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Create Alias")
+    @DefaultStringValue("Create alias")
     String createAlias();
 
     /**
@@ -585,7 +585,7 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Add to main menu")
+    @DefaultStringValue("Add to menu")
     String addToMainMenu();
 
     /**
@@ -593,7 +593,7 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Remove from main menu")
+    @DefaultStringValue("Remove from menu")
     String removeFromMainMenu();
 
     /**

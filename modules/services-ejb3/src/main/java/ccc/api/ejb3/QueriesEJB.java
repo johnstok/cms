@@ -48,6 +48,7 @@ import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
+import ccc.domain.ResourceOrder;
 import ccc.domain.ResourcePath;
 import ccc.domain.Template;
 import ccc.domain.User;
@@ -107,6 +108,15 @@ public final class QueriesEJB
     public Collection<ResourceSummary> getChildren(final ID folderId) {
         final Folder f =
             _resources.find(Folder.class, toUUID(folderId));
+        return mapResources(f.entries());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Collection<ResourceSummary> getChildrenManualOrder(final ID folderId) {
+        final Folder f =
+            _resources.find(Folder.class, toUUID(folderId));
+        f.sortOrder(ResourceOrder.MANUAL);
         return mapResources(f.entries());
     }
 

@@ -174,6 +174,12 @@ public class RestApi
         return getQueries().getChildren(folderId);
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public Collection<ResourceSummary> getChildrenManualOrder(final ID folderId) {
+        return getQueries().getChildrenManualOrder(folderId);
+    }
+
 
     /** {@inheritDoc} */
     @Override

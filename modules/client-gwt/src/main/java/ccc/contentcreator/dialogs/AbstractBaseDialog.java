@@ -34,7 +34,7 @@ public abstract class AbstractBaseDialog
         Window {
 
     /** CONTEXT_MENU_WIDTH : int. */
-    public static final int CONTEXT_MENU_WIDTH = 130;
+    public static final int CONTEXT_MENU_WIDTH = 150;
     /** PERCENT_10 : float. */
     public static final float PERCENT_10 = .1f;
     /** PERCENT_30 : float. */

@@ -90,6 +90,15 @@ public interface Queries {
     Collection<ResourceSummary> getChildren(@PathParam("id") ID folderId);
 
     /**
+     * List all of the children of the specified folder in manual order.
+     *
+     * @param folderId The folder.
+     * @return The folder's of children.
+     */
+    @GET @Path("/folders/{id}/children-manual-order") @NoCache
+    Collection<ResourceSummary> getChildrenManualOrder(@PathParam("id") ID folderId);
+
+    /**
      * List all content images.
      *
      * @return The list of images.
