@@ -76,14 +76,6 @@ public class Security
         _request.getSession().invalidate();
     }
 
-
-    /** {@inheritDoc} */
-    @Override
-    public String readProperty(final String key) {
-        return CCCProperties.get(key);
-    }
-
-
     /** {@inheritDoc} */
     @Override
     public String readAllProperties() {

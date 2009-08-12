@@ -39,10 +39,6 @@ public interface SecurityAPI {
     @POST @Path("/sessions/current")
     public void logout();
 
-    @GET @Path("/sessions/properties")
-    public String readProperty(
-          @QueryParam("key") final String key);
-
     @GET @Path("/sessions/allproperties")
     public String readAllProperties();
 }
