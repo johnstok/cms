@@ -24,7 +24,6 @@ import ccc.api.Duration;
 import ccc.api.JsonKeys;
 import ccc.api.ResourceSummary;
 import ccc.api.UserSummary;
-import ccc.api.rest.FolderNew;
 import ccc.api.rest.ResourceCacheDurationPU;
 import ccc.api.rest.ResourceTemplatePU;
 import ccc.commands.CommandFailedException;
@@ -336,12 +335,5 @@ public class ResourceAcceptanceTests
         assertNotNull(published.getLockedBy());
         assertNull(unpublished.getPublishedBy());
         assertNotNull(unpublished.getLockedBy());
-    }
-
-
-    private ResourceSummary tempFolder() throws CommandFailedException {
-        final String fName = UUID.randomUUID().toString();
-        final ResourceSummary content = _queries.resourceForPath("/content");
-        return _commands.createFolder(new FolderNew(content.getId(), fName));
     }
 }

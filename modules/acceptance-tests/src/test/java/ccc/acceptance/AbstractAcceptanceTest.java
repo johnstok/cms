@@ -37,11 +37,14 @@ import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import ccc.api.MimeType;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
+import ccc.api.rest.AliasNew;
+import ccc.api.rest.FolderNew;
 import ccc.api.rest.TemplateNew;
 import ccc.commands.CommandFailedException;
 import ccc.domain.Failure;
 import ccc.domain.Snapshot;
 import ccc.services.Queries;
+import ccc.ws.AliasDeltaReader;
 import ccc.ws.BooleanProvider;
 import ccc.ws.DurationReader;
 import ccc.ws.FailureWriter;
@@ -57,6 +60,7 @@ import ccc.ws.StringCollectionWriter;
 import ccc.ws.UserDeltaReader;
 import ccc.ws.UserSummaryCollectionReader;
 import ccc.ws.UserSummaryReader;
+import ccc.ws.readers.ActionNewCollectionReader;
 
 
 /**
@@ -93,6 +97,8 @@ public abstract class AbstractAcceptanceTest
         pFactory.addMessageBodyReader(UserDeltaReader.class);
         pFactory.addMessageBodyReader(StringCollectionWriter.class);
         pFactory.addMessageBodyReader(MetadataWriter.class);
+        pFactory.addMessageBodyReader(ActionNewCollectionReader.class);
+        pFactory.addMessageBodyReader(AliasDeltaReader.class);
     }
 
     private final String _hostUrl =         "http://localhost:81";
@@ -132,6 +138,22 @@ public abstract class AbstractAcceptanceTest
         return ts;
     }
 
+
+
+    protected ResourceSummary tempFolder() throws CommandFailedException {
+        final String fName = UUID.randomUUID().toString();
+        final ResourceSummary content = _queries.resourceForPath("/content");
+        return _commands.createFolder(new FolderNew(content.getId(), fName));
+    }
+
+
+    protected ResourceSummary tempAlias() throws CommandFailedException {
+        final String name = UUID.randomUUID().toString();
+        final ResourceSummary folder = _queries.resourceForPath("/content");
+        final AliasNew alias =
+            new AliasNew(folder.getId(), name, folder.getId());
+        return _commands.createAlias(alias);
+    }
 
 
     /*
