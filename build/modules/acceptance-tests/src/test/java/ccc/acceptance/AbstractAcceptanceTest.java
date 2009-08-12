@@ -45,11 +45,14 @@ import ccc.services.Queries;
 import ccc.ws.BooleanProvider;
 import ccc.ws.DurationReader;
 import ccc.ws.FailureWriter;
+import ccc.ws.JsonReader;
 import ccc.ws.JsonableWriter;
+import ccc.ws.MetadataWriter;
 import ccc.ws.ResSummaryReader;
 import ccc.ws.ResourceSummaryCollectionReader;
 import ccc.ws.RestCommands;
 import ccc.ws.SecurityAPI;
+import ccc.ws.StringCollectionWriter;
 import ccc.ws.UserDeltaReader;
 import ccc.ws.UserSummaryCollectionReader;
 import ccc.ws.UserSummaryReader;
@@ -73,6 +76,9 @@ public abstract class AbstractAcceptanceTest
 
         // Writers
         pFactory.addMessageBodyWriter(JsonableWriter.class);
+        pFactory.addMessageBodyWriter(StringCollectionWriter.class);
+        pFactory.addMessageBodyWriter(MetadataWriter.class);
+        pFactory.addMessageBodyWriter(JsonReader.class);
 
         // Readers
         pFactory.addMessageBodyReader(ResourceSummaryCollectionReader.class);
@@ -83,6 +89,8 @@ public abstract class AbstractAcceptanceTest
         pFactory.addMessageBodyReader(BooleanProvider.class);
         pFactory.addMessageBodyReader(FailureWriter.class);
         pFactory.addMessageBodyReader(UserDeltaReader.class);
+        pFactory.addMessageBodyReader(StringCollectionWriter.class);
+        pFactory.addMessageBodyReader(MetadataWriter.class);
     }
 
     private final String _hostUrl =         "http://localhost:81";
