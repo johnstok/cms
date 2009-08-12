@@ -65,6 +65,12 @@ public class CreateFileServlet
         final FileItem publish     = form.getFormItem("publish");
         final FileItem lastUpdate  = form.getFormItem("lastUpdate");
 
+        final FileItem cItem = form.getFormItem("comment");
+        final String comment = cItem==null ? null : cItem.getString();
+
+        final FileItem bItem = form.getFormItem("majorEdit");
+        final boolean isMajorEdit = bItem == null ? false : true;
+
         final ID parentId = new ID(path.getString());
         final boolean p =
             (null==publish)
@@ -109,7 +115,9 @@ public class CreateFileServlet
                     titleString,
                     descriptionString,
                     lastUpdateDate,
-                    p);
+                    p,
+                    comment,
+                    isMajorEdit);
             response.getWriter().write(toJSON(rs));
 
         } catch (final CommandFailedException e) {

@@ -53,6 +53,13 @@ public class UpdateFileServlet extends MultipartServlet {
 
         final MultipartForm form = new MultipartForm(request);
         final ID fileId = new ID(form.getFormItem("id").getString());
+
+        final FileItem cItem = form.getFormItem("comment");
+        final String comment = cItem==null ? null : cItem.getString();
+
+        final FileItem bItem = form.getFormItem("majorEdit");
+        final boolean isMajorEdit = bItem == null ? false : true;
+
         final FileItem file = form.getFileItem();
 
         final Map<String, String> props = new HashMap<String, String>();
@@ -72,7 +79,12 @@ public class UpdateFileServlet extends MultipartServlet {
         final InputStream dataStream = file.getInputStream();
 
         try {
-            getCommands().updateFile(fileId, delta, dataStream);
+            getCommands().updateFile(
+                                    fileId,
+                                    delta,
+                                    comment,
+                                    isMajorEdit,
+                                    dataStream);
             response.getWriter().write("NULL");
 
         } catch (final CommandFailedException e) {

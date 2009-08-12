@@ -38,6 +38,8 @@ public interface LocalCommands extends Commands {
      * @param description The description of the file.
      * @param lastUpdated The last updated date of the file.
      * @param publish Should the file be published.
+     * @param comment A comment describing the changes.
+     * @param isMajorEdit Is this a major change.
      *
      * @return A summary of the newly created file.
      *
@@ -50,18 +52,24 @@ public interface LocalCommands extends Commands {
                                String title,
                                String description,
                                Date lastUpdated,
-                               boolean publish) throws CommandFailedException;
+                               boolean publish,
+                               String comment,
+                               boolean isMajorEdit) throws CommandFailedException;
 
     /**
      * Update an existing CCC file.
      *
      * @param fileId The id of the file to update.
      * @param fileDelta The changes to apply.
+     * @param comment A comment describing the changes.
+     * @param isMajorEdit Is this a major change.
      * @param dataStream The new content for the file.
      *
      * @throws CommandFailedException If an error occurs updating the file.
      */
     void updateFile(ID fileId,
                     FileDelta fileDelta,
+                    String comment,
+                    boolean isMajorEdit,
                     InputStream dataStream) throws CommandFailedException;
 }

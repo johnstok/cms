@@ -19,6 +19,7 @@ import ccc.api.FileDelta;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.RemoteExceptionSupport;
+import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.entities.ResourceName;
 import ccc.services.AuditLog;
@@ -73,6 +74,8 @@ public class CreateFileCommand extends CreateResourceCommand {
                         final String title,
                         final String description,
                         final ResourceName name,
+                        final String comment,
+                        final boolean isMajorEdit,
                         final InputStream dataStream)
                                                 throws RemoteExceptionSupport {
         final Data data = _data.create(dataStream, file.getSize());
@@ -81,6 +84,13 @@ public class CreateFileCommand extends CreateResourceCommand {
             new FileHelper().extractImageMetadata(
                 data, file.getProperties(), _data);
         }
+
+        final RevisionMetadata rm =
+            new RevisionMetadata(
+                happenedOn,
+                actor,
+                isMajorEdit,
+                comment == null || comment.isEmpty() ? "Created." : comment);
 
         final File f =
             new File(
@@ -91,9 +101,7 @@ public class CreateFileCommand extends CreateResourceCommand {
                 file.getSize(),
                 file.getMimeType(),
                 file.getProperties(),
-                happenedOn,
-                actor);
-
+                rm);
 
         create(actor, happenedOn, parentFolder, f);
 
