@@ -35,28 +35,37 @@ public abstract class CreatePageAction_
     private final String _name;
     private final ID _template;
     private final String _title;
+    private final String _comment;
+    private final boolean _majorChange;
 
 
     /**
      * Constructor.
      *
-     * @param title The page's title.
-     * @param template
-     * @param name
-     * @param page
      * @param parentFolder
+     * @param page
+     * @param name
+     * @param template
+     * @param title The page's title.
+     * @param comment A comment describing the update.
+     * @param majorChange Is this update a major change.
+     *
      */
     public CreatePageAction_(final ID parentFolder,
                              final PageDelta page,
                              final String name,
                              final ID template,
-                             final String title) {
+                             final String title,
+                             final String comment,
+                             final boolean majorChange) {
         super(GLOBALS.uiConstants().createPage(), RequestBuilder.POST);
         _parentFolder = parentFolder;
         _page = page;
         _name = name;
         _template = template;
         _title = title;
+        _comment = comment;
+        _majorChange = majorChange;
     }
 
 
@@ -84,6 +93,8 @@ public abstract class CreatePageAction_
         json.set(JsonKeys.NAME, _name);
         json.set(JsonKeys.TEMPLATE_ID, _template);
         json.set(JsonKeys.TITLE, _title);
+        json.set(JsonKeys.COMMENT, _comment);
+        json.set(JsonKeys.MAJOR_CHANGE, _majorChange);
         return json.toString();
     }
 

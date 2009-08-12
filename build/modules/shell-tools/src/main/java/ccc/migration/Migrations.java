@@ -397,7 +397,9 @@ public class Migrations {
                 null,
                 pageTitle,
                 le.getUser().getId(),
-                le.getHappenedOn());
+                le.getHappenedOn(),
+                null,
+                true);
         } catch (final CommandFailedException e) {
             if (FailureCode.EXISTS ==e.getCode()) {
                 rs = _commands.createPage(
@@ -408,7 +410,9 @@ public class Migrations {
                     null,
                     pageTitle,
                     le.getUser().getId(),
-                    le.getHappenedOn());
+                    le.getHappenedOn(),
+                    null,
+                    true);
                 log.warn("Renamed page '"+r.name()+"' to '"+r.name()+"1'.");
             } else {
                 throw e;

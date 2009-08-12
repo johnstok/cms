@@ -207,7 +207,9 @@ public class CommandsEJB
                                       final String name,
                                       final boolean publish,
                                       final ID templateId,
-                                      final String title)
+                                      final String title,
+                                      final String comment,
+                                      final boolean majorChange)
                                                  throws CommandFailedException {
         return createPage(
             parentId,
@@ -217,7 +219,9 @@ public class CommandsEJB
             templateId,
             title,
             loggedInUserId(),
-            new Date());
+            new Date(),
+            comment,
+            majorChange);
     }
 
     /** {@inheritDoc} */
@@ -230,7 +234,9 @@ public class CommandsEJB
                                       final ID templateId,
                                       final String title,
                                       final ID actorId,
-                                      final Date happenedOn)
+                                      final Date happenedOn,
+                                      final String comment,
+                                      final boolean majorChange)
                                                  throws CommandFailedException {
         try {
             final User u = userForId(actorId);
@@ -242,7 +248,9 @@ public class CommandsEJB
                 delta,
                 ResourceName.escape(name),
                 title,
-                toUUID(templateId));
+                toUUID(templateId),
+                comment,
+                majorChange);
 
             if (publish) {
                 p.lock(u);

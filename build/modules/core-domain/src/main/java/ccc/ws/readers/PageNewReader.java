@@ -70,6 +70,8 @@ public class PageNewReader
             d,
             json.getString(JsonKeys.NAME),
             json.getId(JsonKeys.TEMPLATE_ID),
-            json.getString(JsonKeys.TITLE));
+            json.getString(JsonKeys.TITLE),
+            json.getString(JsonKeys.COMMENT),
+            json.getBool(JsonKeys.MAJOR_CHANGE).booleanValue());
     }
 }
