@@ -11,7 +11,6 @@
  */
 package ccc.domain;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -55,14 +54,14 @@ public class File
      * @param description The description of the file.
      * @param data A token representing the binary content of the file.
      * @param size The size of the file in bytes.
+     * @param metadata The metadata for the revision.
      */
     public File(final ResourceName name,
                 final String title,
                 final String description,
                 final Data data,
                 final int size,
-                final Date timestamp,
-                final User actor) {
+                final RevisionMetadata metadata) {
         this(
             name,
             title,
@@ -71,8 +70,7 @@ public class File
             size,
             MimeType.BINARY_DATA,
             new HashMap<String, String>(),
-            timestamp,
-            actor);
+            metadata);
     }
 
 
@@ -85,6 +83,7 @@ public class File
      * @param data A token representing the binary content of the file.
      * @param size The size of the file in bytes.
      * @param mimeType The mime type for the file.
+     * @param metadata The metadata for the revision.
      */
     public File(final ResourceName name,
                 final String title,
@@ -93,14 +92,13 @@ public class File
                 final int size,
                 final MimeType mimeType,
                 final Map<String, String> properties,
-                final Date timestamp,
-                final User actor) {
+                final RevisionMetadata metadata) {
         super(name, title);
         DBC.require().notNull(data);
         description(description);
         update(
             new FileDelta(mimeType, new ID(data.id().toString()), size, properties),
-            new RevisionMetadata(timestamp, actor, true, "Created."));
+            metadata);
     }
 
 

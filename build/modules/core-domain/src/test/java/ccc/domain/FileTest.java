@@ -44,8 +44,7 @@ public class FileTest extends TestCase {
             new HashMap<String, String>(){{
                 put(File.CHARSET, "UTF-8");
             }},
-            new Date(),
-            User.SYSTEM_USER);
+            _rm);
 
 
         // ASSERT
@@ -66,8 +65,7 @@ public class FileTest extends TestCase {
             0,
             new MimeType("image", "jpeg"),
             new HashMap<String, String>(),
-            new Date(),
-            User.SYSTEM_USER);
+            _rm);
 
 
         // ACT
@@ -91,8 +89,7 @@ public class FileTest extends TestCase {
             0,
             new MimeType("text", "plain"),
             new HashMap<String, String>(),
-            new Date(),
-            User.SYSTEM_USER);
+            _rm);
 
         // ACT
         final boolean isImage = f.isImage();
@@ -117,8 +114,7 @@ public class FileTest extends TestCase {
                 1,
                 new MimeType("foo", "bar"),
                 new HashMap<String, String>(),
-                new Date(),
-                User.SYSTEM_USER);
+                _rm);
 
         // ACT
         final FileDelta o = f.createSnapshot();
@@ -144,8 +140,7 @@ public class FileTest extends TestCase {
                 1,
                 new MimeType("foo", "bar"),
                 new HashMap<String, String>(),
-                new Date(),
-                User.SYSTEM_USER);
+                _rm);
 
         // ACT
         final MimeType actual = f.mimeType();
@@ -165,7 +160,8 @@ public class FileTest extends TestCase {
                 "foo",
                 "desc",
                 new Data(),
-                1, new Date(), User.SYSTEM_USER);
+                1,
+                _rm);
 
         // ACT
         final long actual = f.size();
@@ -190,8 +186,7 @@ public class FileTest extends TestCase {
                 "desc",
                 data,
                 0,
-                new Date(),
-                User.SYSTEM_USER);
+                _rm);
             fail("The constructor should reject a NULL file data.");
 
         // ASSERT
@@ -199,4 +194,7 @@ public class FileTest extends TestCase {
             assertEquals("Specified value may not be NULL.", e.getMessage());
         }
     }
+
+    private final RevisionMetadata _rm =
+        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
 }

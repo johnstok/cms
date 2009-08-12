@@ -69,6 +69,8 @@ public class UpdateFileCommand extends UpdateResourceCommand {
                         final Date happenedOn,
                         final UUID fileId,
                         final FileDelta fileDelta,
+                        final String comment,
+                        final boolean isMajorEdit,
                         final InputStream dataStream)
        throws UnlockedException, LockMismatchException {
         final File f = getDao().find(File.class, fileId);
@@ -82,8 +84,11 @@ public class UpdateFileCommand extends UpdateResourceCommand {
                 d, fileDelta.getProperties(), _data);
         }
 
-        final RevisionMetadata rm =
-            new RevisionMetadata(happenedOn, actor, true, "Updated.");
+        final RevisionMetadata rm = new RevisionMetadata(
+            happenedOn,
+            actor,
+            isMajorEdit,
+            comment == null || comment.isEmpty() ? "Updated." : comment);
 
         f.workingCopy(fileDelta);
         f.applySnapshot(rm);

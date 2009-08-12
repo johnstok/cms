@@ -233,8 +233,7 @@ public class DefaultRendererTest
                 0,
                 MimeType.HTML,
                 new HashMap<String, String>(),
-                new Date(),
-                User.SYSTEM_USER);
+                _rm);
 
         // ACT
         final Response r = _renderer.render(f, _noParams);
@@ -390,8 +389,7 @@ public class DefaultRendererTest
                 "c",
                 new Data(),
                 0,
-                new Date(),
-                User.SYSTEM_USER);
+                _rm);
         final Alias d = new Alias("d", a);
         final Page e = new Page(new ResourceName("page"), "page", null, _rm);
         a.publish(_user); root.add(a);

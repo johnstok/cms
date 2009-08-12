@@ -859,7 +859,9 @@ public class CommandsEJB
                                       final String title,
                                       final String description,
                                       final Date lastUpdated,
-                                      final boolean publish)
+                                      final boolean publish,
+                                      final String comment,
+                                      final boolean isMajorEdit)
                                                  throws CommandFailedException {
         try {
             final User u = loggedInUser();
@@ -873,6 +875,8 @@ public class CommandsEJB
                     title,
                     description,
                     new ResourceName(resourceName),
+                    comment,
+                    isMajorEdit,
                     dataStream);
 
             if (publish) {
@@ -892,6 +896,8 @@ public class CommandsEJB
     @RolesAllowed({"CONTENT_CREATOR"})
     public void updateFile(final ID fileId,
                            final FileDelta fileDelta,
+                           final String comment,
+                           final boolean isMajorEdit,
                            final InputStream dataStream)
                                                  throws CommandFailedException {
 
@@ -901,6 +907,8 @@ public class CommandsEJB
                 new Date(),
                 UUID.fromString(fileId.toString()),
                 fileDelta,
+                comment,
+                isMajorEdit,
                 dataStream);
 
         } catch (final RemoteExceptionSupport e) {

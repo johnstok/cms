@@ -27,9 +27,11 @@ import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FormEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.form.FileUploadField;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.HiddenField;
+import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -47,6 +49,9 @@ public class UploadFileDialog extends AbstractEditDialog {
     private final ResourceSummaryModelData _parent;
     private final HiddenField<String> _path = new HiddenField<String>();
     private final FileUploadField           _file = new FileUploadField();
+
+    private final CheckBox _majorEdit = new CheckBox();
+    private final TextArea _comment = new TextArea();
 
     private final Image _image =
         new Image("images/icons/large-loading.gif");
@@ -84,6 +89,16 @@ public class UploadFileDialog extends AbstractEditDialog {
         _path.setName("path");
         _path.setValue(_parent.getId().toString());
         addField(_path);
+
+        _majorEdit.setName("majorEdit");
+        _majorEdit.setValue(Boolean.TRUE);
+        _majorEdit.setBoxLabel(_constants.yes());
+        _majorEdit.setFieldLabel(_constants.majorEdit());
+        addField(_majorEdit);
+
+        _comment.setFieldLabel(_constants.comment());
+        _comment.setName("comment");
+        addField(_comment);
 
         _image.setVisible(false);
         _panel.add(_image);
