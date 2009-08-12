@@ -61,6 +61,8 @@ public class UpdateFileCommand extends UpdateResourceCommand {
      * @param dataStream The input stream from which the bytes for the new file
      *        should be read.
      * @param fileDelta The delta describing changes to the file's metadata.
+     * @param comment Comment describing the change.
+     * @param isMajorEdit Is this a major change.
      *
      * @throws LockMismatchException If the file is locked by another user.
      * @throws UnlockedException If the file is unlocked.

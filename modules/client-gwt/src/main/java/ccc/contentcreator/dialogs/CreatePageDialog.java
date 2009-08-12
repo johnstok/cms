@@ -48,6 +48,7 @@ import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
+import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
@@ -55,6 +56,7 @@ import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
+import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.extjs.gxt.ui.client.widget.layout.RowLayout;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONParser;
@@ -75,6 +77,7 @@ public class CreatePageDialog
 
     private final ContentPanel _first = new ContentPanel();
     private final EditPagePanel _second = new EditPagePanel();
+    private final ContentPanel _third = new ContentPanel();
 
     private final ListStore<TemplateSummaryModelData> _templatesStore =
         new ListStore<TemplateSummaryModelData>();
@@ -88,6 +91,8 @@ public class CreatePageDialog
     private final ResourceSummaryModelData _parent;
 
     private final Text _description = new Text("");
+    private final CheckBox _majorEdit = new CheckBox();
+    private final TextArea _comment = new TextArea();
 
     /**
      * Constructor.
@@ -161,6 +166,22 @@ public class CreatePageDialog
 
         _second.setScrollMode(Style.Scroll.AUTOY);
         addCard(_second);
+
+        _third.setBorders(false);
+        _third.setBodyBorder(false);
+        _third.setLayout(new FormLayout());
+        _third.setHeaderVisible(false);
+
+        _majorEdit.setName("majorEdit");
+        _majorEdit.setValue(Boolean.TRUE);
+        _majorEdit.setBoxLabel(_constants.yes());
+        _majorEdit.setFieldLabel(_constants.majorEdit());
+        _third.add(_majorEdit);
+
+        _comment.setFieldLabel(_constants.comment());
+        _comment.setName("comment");
+        _third.add(_comment);
+        addCard(_third);
 
         refresh();
     }
@@ -278,7 +299,9 @@ public class CreatePageDialog
                     page,
                     _second.name().getValue(),
                     template,
-                    _second.name().getValue() // Title
+                    _second.name().getValue(), // Title
+                    _comment.getValue(),
+                    _majorEdit.getValue().booleanValue()
                 ){
                     @Override protected void execute(final ResourceSummary rs) {
                         _ssm.create(

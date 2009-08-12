@@ -53,6 +53,8 @@ public class CreatePageCommand extends CreateResourceCommand {
      * @param templateId The new page's template.
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
+     * @param comment Comment describing the change.
+     * @param isMajorEdit Is this a major change.
      *
      * @throws RemoteExceptionSupport If the command fails.
      *
@@ -64,7 +66,9 @@ public class CreatePageCommand extends CreateResourceCommand {
                         final PageDelta delta,
                         final ResourceName name,
                         final String title,
-                        final UUID templateId) throws RemoteExceptionSupport {
+                        final UUID templateId,
+                        final String comment,
+                        final boolean majorChange) throws RemoteExceptionSupport {
 
         final Template template =
             (null==templateId)
@@ -72,7 +76,10 @@ public class CreatePageCommand extends CreateResourceCommand {
                 : getDao().find(Template.class, templateId);
 
         final RevisionMetadata rm =
-            new RevisionMetadata(happenedOn, actor, true, "Created.");
+            new RevisionMetadata(happenedOn,
+                actor,
+                majorChange,
+                comment == null || comment.isEmpty() ? "Created." : comment);
 
         final Page page =
             new Page(

@@ -392,7 +392,9 @@ public class RestApi
             page.getName(),
             false,
             page.getTemplateId(),
-            page.getTitle());
+            page.getTitle(),
+            page.getComment(),
+            page.getMajorChange());
     }
 
 

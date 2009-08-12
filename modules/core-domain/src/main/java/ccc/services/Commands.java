@@ -458,7 +458,9 @@ public interface Commands {
                                String name,
                                final boolean publish,
                                ID templateId,
-                               String title) throws CommandFailedException;
+                               String title,
+                               String comment,
+                               boolean majorChange) throws CommandFailedException;
 
     /**
      * Creates a new page.
@@ -480,7 +482,9 @@ public interface Commands {
                                ID templateId,
                                String title,
                                ID actorId,
-                               Date happenedOn) throws CommandFailedException;
+                               Date happenedOn,
+                               String comment,
+                               boolean majorChange) throws CommandFailedException;
 
     /**
      * Create a new template in CCC.
