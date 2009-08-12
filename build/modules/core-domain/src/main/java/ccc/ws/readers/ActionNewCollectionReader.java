@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.ws;
+package ccc.ws.readers;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -24,31 +24,30 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
-import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import ccc.api.ResourceSummary;
+import ccc.api.ActionSummary;
+import ccc.api.Json;
 import ccc.commons.IO;
 import ccc.domain.Snapshot;
+import ccc.ws.AbstractProvider;
 
 
 /**
- * A {@link MessageBodyWriter} a collection of resource summaries.
- * TODO: Remove this class - it is a duplicate.
+ * A reader for folders.
  *
  * @author Civic Computing Ltd.
  */
 @Provider
 @Consumes("application/json")
-public class ResourceSummaryCollectionReader
+public class ActionNewCollectionReader
     extends
         AbstractProvider
     implements
-        MessageBodyReader<Collection<ResourceSummary>> {
+        MessageBodyReader<Collection<ActionSummary>> {
 
     /** {@inheritDoc} */
     @Override
@@ -56,33 +55,32 @@ public class ResourceSummaryCollectionReader
                               final Type type,
                               final Annotation[] annotations,
                               final MediaType mediaType) {
-        return isCollectionOfType(ResourceSummary.class, type);
+        return isCollectionOfType(ActionSummary.class, type);
     }
 
     /** {@inheritDoc} */
     @Override
-    public Collection<ResourceSummary> readFrom(
-                                final Class<Collection<ResourceSummary>> arg0,
-                                final Type arg1,
-                                final Annotation[] arg2,
-                                final MediaType arg3,
-                                final MultivaluedMap<String, String> arg4,
-                                final InputStream arg5) throws IOException {
+    public Collection<ActionSummary> readFrom(
+                              final Class<Collection<ActionSummary>> clazz,
+                              final Type type,
+                              final Annotation[] annotations,
+                              final MediaType mimetype,
+                              final MultivaluedMap<String, String> httpHeaders,
+                              final InputStream is) throws IOException {
         try {
             final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            IO.copy(arg5, baos);
+            IO.copy(is, baos);
             final String s = new String(baos.toByteArray());
+
             final JSONArray result = new JSONArray(s);
-            final Collection<ResourceSummary> rs =
-                new ArrayList<ResourceSummary>();
+            final Collection<ActionSummary> rs = new ArrayList<ActionSummary>();
             for (int i=0; i<result.length(); i++) {
-                final JSONObject o = result.getJSONObject(i);
-                rs.add(new ResourceSummary(new Snapshot(o)));
+                final Json o = new Snapshot(result.getJSONObject(i));
+                rs.add(new ActionSummary(o));
             }
             return rs;
         } catch (final JSONException e) {
             throw new WebApplicationException(e);
         }
     }
-
 }
