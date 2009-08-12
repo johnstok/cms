@@ -14,11 +14,12 @@ package ccc.ws;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
@@ -39,7 +40,8 @@ import ccc.domain.Snapshot;
 @Consumes("application/json")
 public class JsonReader
     implements
-        MessageBodyReader<Json> {
+        MessageBodyReader<Json>,
+        MessageBodyWriter<Json> {
 
     /** {@inheritDoc} */
     @Override
@@ -57,7 +59,7 @@ public class JsonReader
                          final Annotation[] arg2,
                          final MediaType arg3,
                          final MultivaluedMap<String, String> arg4,
-                         final InputStream arg5) throws IOException, WebApplicationException {
+                         final InputStream arg5) throws IOException {
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         IO.copy(arg5, baos);
         final String s = new String(baos.toByteArray());
@@ -69,5 +71,38 @@ public class JsonReader
         final Snapshot sn = new Snapshot(s);
 
         return sn;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public long getSize(final Json t,
+                        final Class<?> type,
+                        final Type genericType,
+                        final Annotation[] annotations,
+                        final MediaType mediaType) {
+        return -1;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isWriteable(final Class<?> type,
+                               final Type genericType,
+                               final Annotation[] annotations,
+                               final MediaType mediaType) {
+        return Json.class.equals(type);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void writeTo(final Json t,
+                        final Class<?> type,
+                        final Type genericType,
+                        final Annotation[] annotations,
+                        final MediaType mediaType,
+                        final MultivaluedMap<String, Object> httpHeaders,
+                        final OutputStream entityStream) {
+        final PrintWriter pw = new PrintWriter(entityStream);
+        pw.println(((Snapshot) t).getDetail());
+        pw.flush();
     }
 }
