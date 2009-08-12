@@ -13,14 +13,13 @@ package ccc.acceptance;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.UUID;
 
 import ccc.api.UserDelta;
 import ccc.api.UserSummary;
 import ccc.api.Username;
 import ccc.api.rest.UserNew;
+import ccc.api.rest.UserPasswordPU;
 import ccc.commands.CommandFailedException;
 
 
@@ -32,6 +31,28 @@ import ccc.commands.CommandFailedException;
 public class UserManagementAcceptanceTest
     extends
         AbstractAcceptanceTest {
+
+
+    /**
+     * Test.
+     *
+     * @throws CommandFailedException If the test fails.
+     */
+    public void testUpdatePassword() throws CommandFailedException {
+
+        // ARRANGE
+        final UserSummary us = tempUser();
+
+        // ACT
+        _commands.updateUserPassword(
+            us.getId(), new UserPasswordPU("Another00-"));
+
+        // ASSERT
+        assertFalse(
+            _security.login(us.getUsername().toString(), "Testtest00-"));
+        assertTrue(
+            _security.login(us.getUsername().toString(), "Another00-"));
+    }
 
 
     /**
@@ -54,7 +75,7 @@ public class UserManagementAcceptanceTest
         assertEquals(us.getUsername(), uq.getUsername());
         assertEquals(us.getEmail(), uq.getEmail());
         assertEquals(1, uq.getRoles().size());
-        assertTrue(uq.getRoles().contains("a"));
+        assertTrue(uq.getRoles().contains("CONTENT_CREATOR"));
         // TODO: Test metadata set correctly.
     }
 
@@ -79,7 +100,7 @@ public class UserManagementAcceptanceTest
         assertEquals(us.getUsername(), uq.getUsername());
         assertEquals(us.getEmail(), uq.getEmail());
         assertEquals(1, uq.getRoles().size());
-        assertTrue(uq.getRoles().contains("a"));
+        assertTrue(uq.getRoles().contains("CONTENT_CREATOR"));
         // TODO: Test metadata set correctly.
     }
 
@@ -146,31 +167,6 @@ public class UserManagementAcceptanceTest
     }
 
 
-    /**
-     * Test.
-     *
-     * @throws CommandFailedException If the test fails.
-     */
-    public void testCreateUser2() throws CommandFailedException {
-
-        // ARRANGE
-        final UserDelta d =
-            new UserDelta(
-                "abc@def.com",
-                new Username("qwerty"),
-                new HashSet<String>(),
-                new HashMap<String, String>());
-
-        // ACT
-        _commands.createUser(new UserNew(d, "Testtest00-"));
-        final Collection<UserSummary> users =
-            _queries.listUsersWithUsername(d.getUsername().toString());
-
-        // ASSERT
-        assertEquals(1, users.size());
-    }
-
-
     private UserSummary tempUser() throws CommandFailedException {
 
         final Username username = new Username(UUID.randomUUID().toString());
@@ -182,7 +178,7 @@ public class UserManagementAcceptanceTest
                 new UserDelta(
                     email,
                     username,
-                    Collections.singleton("a"),
+                    Collections.singleton("CONTENT_CREATOR"),
                     Collections.singletonMap("key", "value")),
                 "Testtest00-");
 

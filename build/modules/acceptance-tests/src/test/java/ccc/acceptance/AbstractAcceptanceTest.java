@@ -45,6 +45,7 @@ import ccc.services.Queries;
 import ccc.ws.BooleanProvider;
 import ccc.ws.DurationReader;
 import ccc.ws.FailureWriter;
+import ccc.ws.IdReader;
 import ccc.ws.JsonReader;
 import ccc.ws.JsonableWriter;
 import ccc.ws.MetadataWriter;
@@ -79,6 +80,7 @@ public abstract class AbstractAcceptanceTest
         pFactory.addMessageBodyWriter(StringCollectionWriter.class);
         pFactory.addMessageBodyWriter(MetadataWriter.class);
         pFactory.addMessageBodyWriter(JsonReader.class);
+        pFactory.addMessageBodyWriter(IdReader.class);
 
         // Readers
         pFactory.addMessageBodyReader(ResourceSummaryCollectionReader.class);
@@ -246,6 +248,11 @@ public abstract class AbstractAcceptanceTest
     /** {@inheritDoc} */
     @Override
     protected void tearDown() {
+        try {
+            _security.logout();
+        } catch (final Exception e) {
+            LOG.warn("Logout failed.", e);
+        }
         _http     = null;
         _queries  = null;
         _commands = null;

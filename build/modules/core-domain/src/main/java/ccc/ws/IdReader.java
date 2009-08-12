@@ -14,11 +14,12 @@ package ccc.ws;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
@@ -38,7 +39,8 @@ import ccc.commons.IO;
 @Consumes({"application/json"})
 public class IdReader
     implements
-        MessageBodyReader<ID> {
+        MessageBodyReader<ID>,
+        MessageBodyWriter<ID> {
 
     /** {@inheritDoc} */
     @Override
@@ -56,7 +58,7 @@ public class IdReader
                        final Annotation[] arg2,
                        final MediaType arg3,
                        final MultivaluedMap<String, String> arg4,
-                       final InputStream arg5) throws IOException, WebApplicationException {
+                       final InputStream arg5) throws IOException {
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         IO.copy(arg5, baos);
         final String s = new String(baos.toByteArray());
@@ -68,5 +70,38 @@ public class IdReader
         final ID id = new ID(s);
 
         return id;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public long getSize(final ID t,
+                        final Class<?> type,
+                        final Type genericType,
+                        final Annotation[] annotations,
+                        final MediaType mediaType) {
+        return -1;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isWriteable(final Class<?> type,
+                               final Type genericType,
+                               final Annotation[] annotations,
+                               final MediaType mediaType) {
+        return ID.class.equals(type);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void writeTo(final ID t,
+                        final Class<?> type,
+                        final Type genericType,
+                        final Annotation[] annotations,
+                        final MediaType mediaType,
+                        final MultivaluedMap<String, Object> httpHeaders,
+                        final OutputStream entityStream) {
+        final PrintWriter pw = new PrintWriter(entityStream);
+        pw.print(t.toString());
+        pw.flush();
     }
 }

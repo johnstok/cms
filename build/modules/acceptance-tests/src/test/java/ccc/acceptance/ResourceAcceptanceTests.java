@@ -48,6 +48,51 @@ public class ResourceAcceptanceTests
      * Test.
      * @throws CommandFailedException If the test fails.
      */
+    public void testUnlockResource() throws CommandFailedException {
+
+        // ARRANGE
+        final ResourceSummary folder = tempFolder();
+        final UserSummary us = _queries.loggedInUser();
+
+        // ACT
+        _commands.lock(folder.getId());
+        final ResourceSummary locked = _queries.resource(folder.getId());
+
+        _commands.unlock(folder.getId());
+        final ResourceSummary unlocked = _queries.resource(folder.getId());
+
+        // ASSERT
+        assertNull(folder.getLockedBy());
+        assertEquals(us.getUsername(), locked.getLockedBy());
+        assertNull(unlocked.getLockedBy());
+    }
+
+
+    /**
+     * Test.
+     * @throws CommandFailedException If the test fails.
+     */
+    public void testMoveResource() throws CommandFailedException {
+
+        // ARRANGE
+        final ResourceSummary folder = tempFolder();
+        final ResourceSummary assets = _queries.resourceForPath("/assets");
+
+        // ACT
+        _commands.lock(folder.getId());
+        _commands.move(folder.getId(), assets.getId());
+        final ResourceSummary moved = _queries.resource(folder.getId());
+
+        // ASSERT
+        assertEquals("/content/"+folder.getName(), folder.getAbsolutePath());
+        assertEquals(assets.getId(), moved.getParentId());
+    }
+
+
+    /**
+     * Test.
+     * @throws CommandFailedException If the test fails.
+     */
     public void testUpdateResourceMetadata() throws CommandFailedException {
 
         // ARRANGE
