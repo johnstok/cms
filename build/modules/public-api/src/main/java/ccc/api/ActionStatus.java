@@ -16,7 +16,7 @@ package ccc.api;
  *
  * @author Civic Computing Ltd.
  */
-public enum ActionStatus {
+public enum ActionStatus { // FIXME: Capitalise these enums?
     /** Scheduled : ActionStatus. */
     Scheduled,
     /** Complete : ActionStatus. */
