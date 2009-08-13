@@ -38,7 +38,7 @@ public class LinkFixer {
     private static final Pattern PAGE_PATTERN =
         Pattern.compile("(\\d+\\.)(\\d+\\.)*html");
     private static final Pattern FILE_PATTERN =
-        Pattern.compile("files/.+");
+        Pattern.compile("(files|images)/.+");
     /** HREF_PATTERN : Pattern. */
     static final Pattern HREF_PATTERN =
         Pattern.compile("href\\s*=\\s*\"(.*?)\"");
