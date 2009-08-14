@@ -11,7 +11,6 @@
  */
 package ccc.ws.readers;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
@@ -27,8 +26,8 @@ import ccc.api.Duration;
 import ccc.api.Json;
 import ccc.api.JsonKeys;
 import ccc.api.rest.ResourceCacheDurationPU;
-import ccc.commons.IO;
 import ccc.domain.Snapshot;
+import ccc.ws.AbstractProvider;
 
 
 /**
@@ -39,6 +38,8 @@ import ccc.domain.Snapshot;
 @Provider
 @Consumes("application/json")
 public class ResourceCacheDurationPUReader
+    extends
+        AbstractProvider
     implements
         MessageBodyReader<ResourceCacheDurationPU> {
 
@@ -60,12 +61,8 @@ public class ResourceCacheDurationPUReader
                              final MediaType arg3,
                              final MultivaluedMap<String, String> arg4,
                              final InputStream arg5) throws IOException {
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        IO.copy(arg5, baos);
-        final String s = new String(baos.toByteArray());
-
+        final String s = readString(arg3, arg5);
         final Json json = new Snapshot(s).getJson(JsonKeys.CACHE_DURATION);
-
         return new ResourceCacheDurationPU(
             (null==json) ? null : new Duration(json));
     }

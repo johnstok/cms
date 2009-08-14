@@ -11,7 +11,6 @@
  */
 package ccc.ws;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -27,17 +26,18 @@ import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
 import ccc.api.ID;
-import ccc.commons.IO;
 
 
 /**
- * A {@link MessageBodyWriter} a collection of resource summaries.
+ * A provider for IDs.
  *
  * @author Civic Computing Ltd.
  */
 @Provider
 @Consumes({"application/json"})
 public class IdReader
+    extends
+        AbstractProvider
     implements
         MessageBodyReader<ID>,
         MessageBodyWriter<ID> {
@@ -59,17 +59,11 @@ public class IdReader
                        final MediaType arg3,
                        final MultivaluedMap<String, String> arg4,
                        final InputStream arg5) throws IOException {
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        IO.copy(arg5, baos);
-        final String s = new String(baos.toByteArray());
-
+        final String s = readString(arg3, arg5);
         if (0==s.trim().length()) {
             return null;
         }
-
-        final ID id = new ID(s);
-
-        return id;
+        return new ID(s);
     }
 
     /** {@inheritDoc} */

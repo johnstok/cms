@@ -11,14 +11,12 @@
  */
 package ccc.ws.readers;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
@@ -27,19 +25,19 @@ import javax.ws.rs.ext.Provider;
 import ccc.api.Json;
 import ccc.api.JsonKeys;
 import ccc.api.rest.FolderDelta;
-import ccc.commons.IO;
-import ccc.domain.Snapshot;
+import ccc.ws.AbstractProvider;
 
 
 /**
  * A reader for folder deltas.
- * TODO: Remove this class - it is a duplicate.
  *
  * @author Civic Computing Ltd.
  */
 @Provider
 @Consumes("application/json")
 public class FolderDeltaReader
+    extends
+        AbstractProvider
     implements
         MessageBodyReader<FolderDelta> {
 
@@ -59,11 +57,8 @@ public class FolderDeltaReader
                               final Annotation[] arg2,
                               final MediaType arg3,
                               final MultivaluedMap<String, String> arg4,
-                              final InputStream arg5) throws IOException, WebApplicationException {
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        IO.copy(arg5, baos);
-        final String s = new String(baos.toByteArray());
-        final Json json = new Snapshot(s);
+                              final InputStream arg5) throws IOException {
+        final Json json = readJson(arg3, arg5);
         final FolderDelta d =
             new FolderDelta(
                 json.getString(JsonKeys.SORT_ORDER),

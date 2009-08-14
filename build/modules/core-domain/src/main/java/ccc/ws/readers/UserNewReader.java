@@ -11,7 +11,6 @@
  */
 package ccc.ws.readers;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
@@ -27,8 +26,7 @@ import ccc.api.Json;
 import ccc.api.JsonKeys;
 import ccc.api.UserDelta;
 import ccc.api.rest.UserNew;
-import ccc.commons.IO;
-import ccc.domain.Snapshot;
+import ccc.ws.AbstractProvider;
 
 
 /**
@@ -39,6 +37,8 @@ import ccc.domain.Snapshot;
 @Provider
 @Consumes("application/json")
 public class UserNewReader
+    extends
+        AbstractProvider
     implements
         MessageBodyReader<UserNew> {
 
@@ -59,11 +59,7 @@ public class UserNewReader
                             final MediaType mimetype,
                             final MultivaluedMap<String, String> httpHeaders,
                             final InputStream is) throws IOException {
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        IO.copy(is, baos);
-        final String s = new String(baos.toByteArray());
-
-        final Json json = new Snapshot(s);
+        final Json json = readJson(mimetype, is);
         final UserDelta d = new UserDelta(json.getJson(JsonKeys.DELTA));
         return new UserNew(d, json.getString(JsonKeys.PASSWORD));
     }

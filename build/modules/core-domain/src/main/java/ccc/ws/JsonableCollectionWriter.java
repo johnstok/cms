@@ -14,7 +14,6 @@ package ccc.ws;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
@@ -29,16 +28,15 @@ import ccc.domain.Snapshot;
 
 
 /**
- * A {@link MessageBodyWriter} a collection of resource summaries.
- * TODO: Set char encoding?
- * TODO: Use velocity?
- * TODO: eTags?
+ * A {@link MessageBodyWriter} a collection of jsonable objects.
  *
  * @author Civic Computing Ltd.
  */
 @Provider
 @Produces("application/json")
 public class JsonableCollectionWriter
+    extends
+        AbstractProvider
     implements
         MessageBodyWriter<Collection<Jsonable>> {
 
@@ -59,33 +57,9 @@ public class JsonableCollectionWriter
                                final Type type,
                                final Annotation[] annotations,
                                final MediaType mediaType) {
-        final boolean isWriteable = isCollectionOfType(Jsonable.class, type);
-        return isWriteable;
+        return isCollectionOfType(Jsonable.class, type);
     }
 
-    /**
-     * Determine if a type is a collection of the specified class.
-     *
-     * @param clazz The parameterized type of the collection.
-     * @param type The type to check.
-     * @return True if 'type' is a collection of type 'clazz', false otherwise.
-     */
-    boolean isCollectionOfType(final Class<?> clazz, final Type type) {
-        if (type instanceof ParameterizedType) {
-
-            final ParameterizedType pType = (ParameterizedType) type;
-            final Class<?> typeArg =
-                (Class<?>) pType.getActualTypeArguments()[0];
-
-            if (Collection.class.isAssignableFrom((Class<?>) pType.getRawType())
-                && clazz.isAssignableFrom(typeArg)) {
-                return true;
-            }
-
-            return false;
-        }
-        return false;
-    }
 
     /** {@inheritDoc} */
     @Override

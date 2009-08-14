@@ -11,7 +11,6 @@
  */
 package ccc.ws;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -27,18 +26,19 @@ import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
 import ccc.api.Json;
-import ccc.commons.IO;
 import ccc.domain.Snapshot;
 
 
 /**
- * A {@link MessageBodyWriter} a collection of resource summaries.
+ * A provider for JSON objects.
  *
  * @author Civic Computing Ltd.
  */
 @Provider
 @Consumes("application/json")
 public class JsonReader
+    extends
+        AbstractProvider
     implements
         MessageBodyReader<Json>,
         MessageBodyWriter<Json> {
@@ -60,17 +60,11 @@ public class JsonReader
                          final MediaType arg3,
                          final MultivaluedMap<String, String> arg4,
                          final InputStream arg5) throws IOException {
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        IO.copy(arg5, baos);
-        final String s = new String(baos.toByteArray());
-
+        final String s = readString(arg3, arg5);
         if (0==s.trim().length()) {
             return null;
         }
-
-        final Snapshot sn = new Snapshot(s);
-
-        return sn;
+        return new Snapshot(s);
     }
 
     /** {@inheritDoc} */

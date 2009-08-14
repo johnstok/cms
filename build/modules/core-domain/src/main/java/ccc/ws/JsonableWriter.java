@@ -27,10 +27,7 @@ import ccc.domain.Snapshot;
 
 
 /**
- * A {@link MessageBodyWriter} a collection of resource summaries.
- * TODO: Set char encoding?
- * TODO: Use velocity?
- * TODO: eTags?
+ * A {@link MessageBodyWriter} for jsonable objects.
  *
  * @author Civic Computing Ltd.
  */

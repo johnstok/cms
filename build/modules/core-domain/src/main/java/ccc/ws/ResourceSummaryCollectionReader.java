@@ -11,7 +11,6 @@
  */
 package ccc.ws;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
@@ -24,7 +23,6 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
-import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
 import org.json.JSONArray;
@@ -32,12 +30,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import ccc.api.ResourceSummary;
-import ccc.commons.IO;
 import ccc.domain.Snapshot;
 
 
 /**
- * A {@link MessageBodyWriter} a collection of resource summaries.
+ * A {@link MessageBodyReader} a collection of resource summaries.
  * TODO: Remove this class - it is a duplicate.
  *
  * @author Civic Computing Ltd.
@@ -69,9 +66,7 @@ public class ResourceSummaryCollectionReader
                                 final MultivaluedMap<String, String> arg4,
                                 final InputStream arg5) throws IOException {
         try {
-            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            IO.copy(arg5, baos);
-            final String s = new String(baos.toByteArray());
+            final String s = readString(arg3, arg5);
             final JSONArray result = new JSONArray(s);
             final Collection<ResourceSummary> rs =
                 new ArrayList<ResourceSummary>();

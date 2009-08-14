@@ -11,7 +11,6 @@
  */
 package ccc.ws.readers;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
@@ -31,19 +30,18 @@ import org.json.JSONException;
 
 import ccc.api.ActionSummary;
 import ccc.api.Json;
-import ccc.commons.IO;
 import ccc.domain.Snapshot;
 import ccc.ws.AbstractProvider;
 
 
 /**
- * A reader for folders.
+ * A reader for a collection of action summaries.
  *
  * @author Civic Computing Ltd.
  */
 @Provider
 @Consumes("application/json")
-public class ActionNewCollectionReader
+public class ActionSummaryCollectionReader
     extends
         AbstractProvider
     implements
@@ -68,9 +66,7 @@ public class ActionNewCollectionReader
                               final MultivaluedMap<String, String> httpHeaders,
                               final InputStream is) throws IOException {
         try {
-            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            IO.copy(is, baos);
-            final String s = new String(baos.toByteArray());
+            final String s = readString(mimetype, is);
 
             final JSONArray result = new JSONArray(s);
             final Collection<ActionSummary> rs = new ArrayList<ActionSummary>();

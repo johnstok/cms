@@ -11,7 +11,6 @@
  */
 package ccc.ws;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -28,12 +27,9 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import ccc.commons.IO;
-
 
 /**
- * A {@link MessageBodyWriter} a collection of resource summaries.
- * TODO: Remove this class - it is a duplicate.
+ * A JAX-RS provider for boolean values.
  *
  * @author Civic Computing Ltd.
  */
@@ -41,6 +37,8 @@ import ccc.commons.IO;
 @Consumes("application/json")
 @Produces("application/json")
 public class BooleanProvider
+    extends
+        AbstractProvider
     implements
         MessageBodyReader<Boolean>,
         MessageBodyWriter<Boolean> {
@@ -61,10 +59,8 @@ public class BooleanProvider
                              final Annotation[] arg2,
                              final MediaType arg3,
                              final MultivaluedMap<String, String> arg4,
-                             final InputStream arg5) throws IOException, WebApplicationException {
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        IO.copy(arg5, baos);
-        final String s = new String(baos.toByteArray()).trim();
+                             final InputStream arg5) throws IOException {
+        final String s = readString(arg3, arg5);
 
         if ("true".equals(s)) {
             return Boolean.TRUE;
@@ -103,7 +99,7 @@ public class BooleanProvider
                         final Annotation[] arg3,
                         final MediaType arg4,
                         final MultivaluedMap<String, Object> arg5,
-                        final OutputStream outputStream) throws IOException, WebApplicationException {
+                        final OutputStream outputStream) {
         final PrintWriter pw = new PrintWriter(outputStream);
         pw.print(arg0);
         pw.flush();
