@@ -47,11 +47,14 @@ public class FixLinkAction
 
         final Matcher pageMatcher = PAGE_PATTERN.matcher(path);
         final Matcher fileMatcher = FILE_PATTERN.matcher(path);
+        final Matcher imageMatcher = IMAGE_PATTERN.matcher(path);
 
         if (pageMatcher.matches()) {
             redirectToPage(req, resp, rdao, pageMatcher);
         } else if (fileMatcher.matches()) {
             redirectToFile(req, resp, fileMatcher);
+        } else if (imageMatcher.matches()) {
+            redirectToImage(req, resp, fileMatcher);
         } else {
             dispatchNotFound(req, resp);
         }
@@ -63,6 +66,16 @@ public class FixLinkAction
                                 final Matcher fileMatcher) throws IOException {
         final String fixedUrl =
             "/content/files/"
+            + ResourceName.escape(fileMatcher.group(1));
+        dispatchRedirect(req, resp, fixedUrl);
+    }
+
+
+    private void redirectToImage(final HttpServletRequest req,
+                                 final HttpServletResponse resp,
+                                 final Matcher fileMatcher) throws IOException {
+        final String fixedUrl =
+            "/content/images/"
             + ResourceName.escape(fileMatcher.group(1));
         dispatchRedirect(req, resp, fixedUrl);
     }
@@ -99,4 +112,8 @@ public class FixLinkAction
     /** FILE_PATTERN : Pattern. */
     public static final Pattern FILE_PATTERN =
         Pattern.compile("/files/(.+)");
+
+    /** IMAGE_PATTERN : Pattern. */
+    public static final Pattern IMAGE_PATTERN =
+        Pattern.compile("/image/(.+)");
 }
