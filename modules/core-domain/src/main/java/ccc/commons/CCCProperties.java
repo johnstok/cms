@@ -56,14 +56,18 @@ public final class CCCProperties {
     }
 
     /**
-     * Return a map containing all properties.
+     * Return a map containing all properties allowed to client.
      *
      * @return The map of properties.
      */
     public static Map<String, String> getAll() {
         final Map<String, String> map = new HashMap<String, String>();
         for (final String key : PROPS.stringPropertyNames()) {
-            map.put(key, PROPS.getProperty(key));
+            if (key.equals("ccc-version")
+                || key.equals("buildNumber")
+                || key.equals("application.name")) {
+                map.put(key, PROPS.getProperty(key));
+            }
         }
         return map;
     }
