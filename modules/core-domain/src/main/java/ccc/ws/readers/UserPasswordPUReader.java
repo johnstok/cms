@@ -11,7 +11,6 @@
  */
 package ccc.ws.readers;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
@@ -26,8 +25,7 @@ import javax.ws.rs.ext.Provider;
 import ccc.api.Json;
 import ccc.api.JsonKeys;
 import ccc.api.rest.UserPasswordPU;
-import ccc.commons.IO;
-import ccc.domain.Snapshot;
+import ccc.ws.AbstractProvider;
 
 
 /**
@@ -38,6 +36,8 @@ import ccc.domain.Snapshot;
 @Provider
 @Consumes("application/json")
 public class UserPasswordPUReader
+    extends
+        AbstractProvider
     implements
         MessageBodyReader<UserPasswordPU> {
 
@@ -58,11 +58,7 @@ public class UserPasswordPUReader
                               final MediaType mimetype,
                               final MultivaluedMap<String, String> httpHeaders,
                               final InputStream is) throws IOException {
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        IO.copy(is, baos);
-        final String s = new String(baos.toByteArray());
-
-        final Json json = new Snapshot(s);
+        final Json json = readJson(mimetype, is);
         return new UserPasswordPU(json.getString(JsonKeys.PASSWORD));
     }
 }

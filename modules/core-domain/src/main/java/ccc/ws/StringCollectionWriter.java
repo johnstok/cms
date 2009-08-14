@@ -11,13 +11,11 @@
  */
 package ccc.ws;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,14 +32,9 @@ import javax.ws.rs.ext.Provider;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import ccc.commons.IO;
-
 
 /**
- * A {@link MessageBodyWriter} a collection of resource summaries.
- * TODO: Set char encoding?
- * TODO: Use velocity?
- * TODO: eTags?
+ * A provider for a collection of strings.
  *
  * @author Civic Computing Ltd.
  */
@@ -49,6 +42,8 @@ import ccc.commons.IO;
 @Produces("application/json")
 @Consumes("application/json")
 public class StringCollectionWriter
+    extends
+        AbstractProvider
     implements
         MessageBodyWriter<Collection<String>>,
         MessageBodyReader<Collection<String>> {
@@ -72,26 +67,6 @@ public class StringCollectionWriter
                                final MediaType mediaType) {
         final boolean isWriteable = isCollectionOfType(String.class, type);
         return isWriteable;
-    }
-
-    /**
-     * Determine if a type is a collection of the specified class.
-     *
-     * @param clazz The parameterized type of the collection.
-     * @param type The type to check.
-     * @return True if 'type' is a collection of type 'clazz', false otherwise.
-     */
-    boolean isCollectionOfType(final Class<?> clazz, final Type type) {
-        if (type instanceof ParameterizedType) {
-            final ParameterizedType pType = (ParameterizedType) type;
-            if (Collection.class.isAssignableFrom((Class<?>) pType.getRawType())
-                && pType.getActualTypeArguments()[0].equals(clazz)) {
-                return true;
-            }
-            return false;
-
-        }
-        return false;
     }
 
     /** {@inheritDoc} */
@@ -132,15 +107,14 @@ public class StringCollectionWriter
 
     /** {@inheritDoc} */
     @Override
-    public Collection<String> readFrom(final Class<Collection<String>> arg0,
-                                       final Type arg1,
-                                       final Annotation[] arg2,
-                                       final MediaType arg3,
-                                       final MultivaluedMap<String, String> arg4,
-                                       final InputStream arg5) throws IOException, WebApplicationException {
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        IO.copy(arg5, baos);
-        final String s = new String(baos.toByteArray());
+    public Collection<String> readFrom(
+                                    final Class<Collection<String>> arg0,
+                                    final Type arg1,
+                                    final Annotation[] arg2,
+                                    final MediaType arg3,
+                                    final MultivaluedMap<String, String> arg4,
+                                    final InputStream arg5) throws IOException {
+        final String s = readString(arg3, arg5);
 
         try {
             final JSONArray a = new JSONArray(s);

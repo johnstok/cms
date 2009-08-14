@@ -11,34 +11,30 @@
  */
 package ccc.ws;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
-import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
 import ccc.api.UserDelta;
-import ccc.commons.IO;
-import ccc.domain.Snapshot;
 
 
 /**
- * A {@link MessageBodyWriter} a collection of resource summaries.
- * TODO: Remove this class - it is a duplicate.
+ * A {@link MessageBodyReader} for user deltas.
  *
  * @author Civic Computing Ltd.
  */
 @Provider
 @Consumes("application/json")
 public class UserDeltaReader
+    extends
+        AbstractProvider
     implements
         MessageBodyReader<UserDelta> {
 
@@ -58,11 +54,7 @@ public class UserDeltaReader
                               final Annotation[] arg2,
                               final MediaType arg3,
                               final MultivaluedMap<String, String> arg4,
-                              final InputStream arg5) throws IOException, WebApplicationException {
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        IO.copy(arg5, baos);
-        final String s = new String(baos.toByteArray());
-        final UserDelta d = new UserDelta(new Snapshot(s));
-        return d;
+                              final InputStream arg5) throws IOException {
+        return new UserDelta(readJson(arg3, arg5));
     }
 }

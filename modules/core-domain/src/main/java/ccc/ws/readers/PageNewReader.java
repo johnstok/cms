@@ -11,7 +11,6 @@
  */
 package ccc.ws.readers;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
@@ -27,8 +26,7 @@ import ccc.api.Json;
 import ccc.api.JsonKeys;
 import ccc.api.PageDelta;
 import ccc.api.rest.PageNew;
-import ccc.commons.IO;
-import ccc.domain.Snapshot;
+import ccc.ws.AbstractProvider;
 
 
 /**
@@ -39,6 +37,8 @@ import ccc.domain.Snapshot;
 @Provider
 @Consumes("application/json")
 public class PageNewReader
+    extends
+        AbstractProvider
     implements
         MessageBodyReader<PageNew> {
 
@@ -59,11 +59,7 @@ public class PageNewReader
                             final MediaType mimetype,
                             final MultivaluedMap<String, String> httpHeaders,
                             final InputStream is) throws IOException {
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        IO.copy(is, baos);
-        final String s = new String(baos.toByteArray());
-
-        final Json json = new Snapshot(s);
+        final Json json = readJson(mimetype, is);
         final PageDelta d = new PageDelta(json.getJson(JsonKeys.DELTA));
         return new PageNew(
             json.getId(JsonKeys.PARENT_ID),

@@ -14,11 +14,12 @@ package ccc.ws;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
+import ccc.api.HttpStatusCodes;
 import ccc.commands.CommandFailedException;
 
 
 /**
- * TODO: Add a description for this type.
+ * An mapper for 'command failed' exceptions.
  *
  * @author Civic Computing Ltd.
  */
@@ -30,7 +31,7 @@ public class CommandFailedExceptionMapper
     @Override
     public Response toResponse(final CommandFailedException e) {
         return
-            Response.status(418)
+            Response.status(HttpStatusCodes.IM_A_TEAPOT)
                     .type("application/json")
                     .entity(e.getFailure())
                     .build();

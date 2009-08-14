@@ -11,7 +11,6 @@
  */
 package ccc.ws;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -26,20 +25,20 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import ccc.commons.IO;
 import ccc.domain.Failure;
 import ccc.domain.Snapshot;
 
 
 /**
- * Writes failure objects for JAX-RS.
- * TODO: Set char encoding.
+ * A provider for failures.
  *
  * @author Civic Computing Ltd.
  */
 @Provider
 @Produces("application/json")
 public class FailureWriter
+    extends
+        AbstractProvider
     implements
         MessageBodyWriter<Failure>,
         MessageBodyReader<Failure> {
@@ -96,10 +95,6 @@ public class FailureWriter
                             final MediaType arg3,
                             final MultivaluedMap<String, String> arg4,
                             final InputStream arg5) throws IOException  {
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        IO.copy(arg5, baos);
-        final String s = new String(baos.toByteArray()).trim();
-
-        return new Failure(new Snapshot(s));
+        return new Failure(readJson(arg3, arg5));
     }
 }

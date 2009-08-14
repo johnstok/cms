@@ -11,7 +11,6 @@
  */
 package ccc.ws.readers;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
@@ -26,18 +25,19 @@ import javax.ws.rs.ext.Provider;
 import ccc.api.Json;
 import ccc.api.JsonKeys;
 import ccc.api.rest.AliasNew;
-import ccc.commons.IO;
-import ccc.domain.Snapshot;
+import ccc.ws.AbstractProvider;
 
 
 /**
- * A reader for folders.
+ * A reader for aliases.
  *
  * @author Civic Computing Ltd.
  */
 @Provider
 @Consumes("application/json")
 public class AliasNewReader
+    extends
+        AbstractProvider
     implements
         MessageBodyReader<AliasNew> {
 
@@ -58,11 +58,7 @@ public class AliasNewReader
                               final MediaType mimetype,
                               final MultivaluedMap<String, String> httpHeaders,
                               final InputStream is) throws IOException {
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        IO.copy(is, baos);
-        final String s = new String(baos.toByteArray());
-
-        final Json json = new Snapshot(s);
+        final Json json = readJson(mimetype, is);
         return new AliasNew(
             json.getId(JsonKeys.PARENT_ID),
             json.getString(JsonKeys.NAME),

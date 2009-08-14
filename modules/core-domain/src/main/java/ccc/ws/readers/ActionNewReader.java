@@ -11,7 +11,6 @@
  */
 package ccc.ws.readers;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
@@ -27,18 +26,19 @@ import ccc.api.CommandType;
 import ccc.api.Json;
 import ccc.api.JsonKeys;
 import ccc.api.rest.ActionNew;
-import ccc.commons.IO;
-import ccc.domain.Snapshot;
+import ccc.ws.AbstractProvider;
 
 
 /**
- * A reader for folders.
+ * A reader for actions.
  *
  * @author Civic Computing Ltd.
  */
 @Provider
 @Consumes("application/json")
 public class ActionNewReader
+    extends
+        AbstractProvider
     implements
         MessageBodyReader<ActionNew> {
 
@@ -59,11 +59,7 @@ public class ActionNewReader
                               final MediaType mimetype,
                               final MultivaluedMap<String, String> httpHeaders,
                               final InputStream is) throws IOException {
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        IO.copy(is, baos);
-        final String s = new String(baos.toByteArray());
-
-        final Json json = new Snapshot(s);
+        final Json json = readJson(mimetype, is);
         return new ActionNew(
             json.getId(JsonKeys.SUBJECT_ID),
             CommandType.valueOf(json.getString(JsonKeys.ACTION)),

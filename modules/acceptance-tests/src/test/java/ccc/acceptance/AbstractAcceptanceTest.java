@@ -60,7 +60,7 @@ import ccc.ws.StringCollectionWriter;
 import ccc.ws.UserDeltaReader;
 import ccc.ws.UserSummaryCollectionReader;
 import ccc.ws.UserSummaryReader;
-import ccc.ws.readers.ActionNewCollectionReader;
+import ccc.ws.readers.ActionSummaryCollectionReader;
 
 
 /**
@@ -97,7 +97,7 @@ public abstract class AbstractAcceptanceTest
         pFactory.addMessageBodyReader(UserDeltaReader.class);
         pFactory.addMessageBodyReader(StringCollectionWriter.class);
         pFactory.addMessageBodyReader(MetadataWriter.class);
-        pFactory.addMessageBodyReader(ActionNewCollectionReader.class);
+        pFactory.addMessageBodyReader(ActionSummaryCollectionReader.class);
         pFactory.addMessageBodyReader(AliasDeltaReader.class);
     }
 
