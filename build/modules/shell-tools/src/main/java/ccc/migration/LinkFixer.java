@@ -42,6 +42,8 @@ public class LinkFixer {
     /** HREF_PATTERN : Pattern. */
     static final Pattern HREF_PATTERN =
         Pattern.compile("href\\s*=\\s*\"(.*?)\"");
+    static final Pattern SRC_PATTERN =
+        Pattern.compile("src\\s*=\\s*\"(.*?)\"");
     private final String _prefix;
 
     /**
@@ -62,36 +64,43 @@ public class LinkFixer {
     void extractURLs(final Map<String, StringBuffer> map) {
 
         for (final Map.Entry<String, StringBuffer> para : map.entrySet()) {
-            final StringBuffer correctedPara = new StringBuffer();
-            final Matcher hrefMatcher = HREF_PATTERN.matcher(para.getValue());
-
-            while (hrefMatcher.find()) { // search for href attributes
-                final String url = hrefMatcher.group(1);
-
-                if (url.startsWith("mailto:")    // net URL
-                    || url.startsWith("http://") // net URL
-                    || url.startsWith("#")) {     // link on the same page
-                    hrefMatcher.appendReplacement(// no correction
-                        correctedPara,
-                        Matcher.quoteReplacement(hrefMatcher.group()));
-
-                } else if (url.startsWith("/")) { // absolute URL
-                    final String correctedUrl =
-                        url.substring(1); // Trim leading /
-                    hrefMatcher.appendReplacement(
-                        correctedPara,
-                        Matcher.quoteReplacement("href=\""+correctedUrl+"\""));
-                } else {
-                    final String correctedHref = "href=\""+correct(url)+"\"";
-                    hrefMatcher.appendReplacement(
-                        correctedPara,
-                        Matcher.quoteReplacement(correctedHref));
-
-                }
-            }
-            hrefMatcher.appendTail(correctedPara);
+            StringBuffer correctedPara =
+                correct(HREF_PATTERN.matcher(para.getValue()), "href");
+            correctedPara =
+                correct(SRC_PATTERN.matcher(correctedPara), "src");
             para.setValue(correctedPara);
         }
+    }
+
+    private StringBuffer correct(final Matcher hrefMatcher, final String attName) {
+
+        final StringBuffer correctedPara = new StringBuffer();
+        while (hrefMatcher.find()) { // search for href attributes
+            final String url = hrefMatcher.group(1);
+
+            if (url.startsWith("mailto:")    // net URL
+                || url.startsWith("http://") // net URL
+                || url.startsWith("#")) {     // link on the same page
+                hrefMatcher.appendReplacement(// no correction
+                    correctedPara,
+                    Matcher.quoteReplacement(hrefMatcher.group()));
+
+            } else if (url.startsWith("/")) { // absolute URL
+                final String correctedUrl =
+                    url.substring(1); // Trim leading /
+                hrefMatcher.appendReplacement(
+                    correctedPara,
+                    Matcher.quoteReplacement(attName+"=\""+correctedUrl+"\""));
+            } else {
+                final String correctedHref = attName+"=\""+correct(url)+"\"";
+                hrefMatcher.appendReplacement(
+                    correctedPara,
+                    Matcher.quoteReplacement(correctedHref));
+
+            }
+        }
+        hrefMatcher.appendTail(correctedPara);
+        return correctedPara;
     }
 
     /**

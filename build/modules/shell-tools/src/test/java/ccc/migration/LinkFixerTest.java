@@ -63,14 +63,14 @@ public class LinkFixerTest
             new HashMap<String, StringBuffer>();
         paras.put(
             "foo",
-            new StringBuffer("< href= \"images/new.gif\" />"));
+            new StringBuffer("< src= \"images/new.gif\" />"));
 
         // ACT
         lf.extractURLs(paras);
 
         // ASSERT
         assertEquals(
-            "< href=\"ash/images/new.gif\" />", paras.get("foo").toString());
+            "< src=\"ash/images/new.gif\" />", paras.get("foo").toString());
     }
 
     /**
