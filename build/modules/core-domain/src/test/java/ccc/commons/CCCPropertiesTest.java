@@ -64,6 +64,7 @@ public class CCCPropertiesTest
         final Map<String, String> map = CCCProperties.getAll();
 
         // ASSERT
-        assertEquals("hello world!", map.get("test.prop"));
+        assertNull("Should contain only client side properties",
+            map.get("test.prop"));
     }
 }
