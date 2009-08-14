@@ -55,6 +55,7 @@ import ccc.ws.MetadataWriter;
 import ccc.ws.ResSummaryReader;
 import ccc.ws.ResourceSummaryCollectionReader;
 import ccc.ws.RestCommands;
+import ccc.ws.RevisionSummaryCollectionReader;
 import ccc.ws.SecurityAPI;
 import ccc.ws.StringCollectionWriter;
 import ccc.ws.UserDeltaReader;
@@ -99,6 +100,7 @@ public abstract class AbstractAcceptanceTest
         pFactory.addMessageBodyReader(MetadataWriter.class);
         pFactory.addMessageBodyReader(ActionSummaryCollectionReader.class);
         pFactory.addMessageBodyReader(AliasDeltaReader.class);
+        pFactory.addMessageBodyReader(RevisionSummaryCollectionReader.class);
     }
 
     private final String _hostUrl =         "http://localhost:81";
@@ -189,10 +191,13 @@ public abstract class AbstractAcceptanceTest
     /*
      * TODO: Merge into client library.
      */
-    protected String previewContent(final ResourceSummary rs)
+    protected String previewContent(final ResourceSummary rs, final boolean wc)
     throws IOException {
         final GetMethod get =
-            new GetMethod("http://localhost:81/preview"+rs.getAbsolutePath());
+            new GetMethod(
+                "http://localhost:81/preview"
+                + rs.getAbsolutePath()
+                + ((wc) ? "?wc=" : ""));
         try {
             _http.executeMethod(get);
             final int status = get.getStatusCode();
