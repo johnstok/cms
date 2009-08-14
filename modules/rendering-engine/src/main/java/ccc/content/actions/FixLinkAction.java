@@ -54,7 +54,7 @@ public class FixLinkAction
         } else if (fileMatcher.matches()) {
             redirectToFile(req, resp, fileMatcher);
         } else if (imageMatcher.matches()) {
-            redirectToImage(req, resp, fileMatcher);
+            redirectToImage(req, resp, imageMatcher);
         } else {
             dispatchNotFound(req, resp);
         }
@@ -115,5 +115,5 @@ public class FixLinkAction
 
     /** IMAGE_PATTERN : Pattern. */
     public static final Pattern IMAGE_PATTERN =
-        Pattern.compile("/image/(.+)");
+        Pattern.compile("/images/(.+)");
 }
