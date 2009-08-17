@@ -626,5 +626,15 @@ public interface Commands {
      */
     void updateUserPassword(ID userId, String password)
     throws CommandFailedException;
+
+    /**
+     * Update the email and/or password for the current user.
+     *
+     * @param userId The user's id.
+     * @param email The new email to set.
+     * @param password The new password to set.
+     */
+    void updateYourUser(ID userId, String email, String password)
+    throws CommandFailedException;
 }
 

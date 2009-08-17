@@ -77,6 +77,7 @@ import ccc.commands.UpdateResourceRolesCommand;
 import ccc.commands.UpdateTemplateCommand;
 import ccc.commands.UpdateUserCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
+import ccc.commands.UpdateCurrentUserAction;
 import ccc.domain.Action;
 import ccc.domain.File;
 import ccc.domain.Folder;
@@ -924,6 +925,19 @@ public class CommandsEJB
         }
     }
 
+
+    /** {@inheritDoc}
+     * @throws CommandFailedException */
+    @Override
+    @RolesAllowed({"CONTENT_CREATOR"})
+    public void updateYourUser(final ID userId, final String email, final String password) throws CommandFailedException {
+        try {
+        new UpdateCurrentUserAction(_bdao, _audit).execute(
+        loggedInUser(), new Date(), toUUID(userId), email, password);
+        } catch (final RemoteExceptionSupport e) {
+            throw fail(e);
+        }
+    }
 
     /* ==============
      * Helper methods

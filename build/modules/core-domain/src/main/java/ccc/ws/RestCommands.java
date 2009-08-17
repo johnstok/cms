@@ -40,6 +40,7 @@ import ccc.api.rest.ResourceRevisionPU;
 import ccc.api.rest.ResourceTemplatePU;
 import ccc.api.rest.TemplateNew;
 import ccc.api.rest.UserNew;
+import ccc.api.rest.UserOwn;
 import ccc.api.rest.UserPasswordPU;
 import ccc.commands.CommandFailedException;
 
@@ -186,4 +187,10 @@ public interface RestCommands {
 
     @GET @Path("/fail")
     void fail() throws CommandFailedException;
+
+
+    @POST @Path("/users/{id}/currentuser")
+    void updateYourUser(
+        @PathParam("id") ID userId,
+        UserOwn user) throws CommandFailedException;
 }
