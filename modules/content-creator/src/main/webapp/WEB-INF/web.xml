@@ -50,6 +50,7 @@
             ccc.ws.readers.ActionNewReader,
             ccc.ws.readers.AliasNewReader,
             ccc.ws.readers.UserNewReader,
+            ccc.ws.readers.UserOwnReader,
             ccc.ws.readers.FolderNewReader,
             ccc.ws.readers.TemplateNewReader
         </param-value>

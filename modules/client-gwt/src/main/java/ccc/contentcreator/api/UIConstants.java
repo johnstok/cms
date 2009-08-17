@@ -1420,4 +1420,12 @@ public interface UIConstants extends Constants {
      */
     @DefaultStringValue("Failure code")
     String failureCode();
+
+    /**
+     * "Your details".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Your details")
+    String yourDetails();
 }

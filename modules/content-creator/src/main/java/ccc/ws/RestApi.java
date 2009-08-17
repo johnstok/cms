@@ -51,6 +51,7 @@ import ccc.api.rest.ResourceRevisionPU;
 import ccc.api.rest.ResourceTemplatePU;
 import ccc.api.rest.TemplateNew;
 import ccc.api.rest.UserNew;
+import ccc.api.rest.UserOwn;
 import ccc.api.rest.UserPasswordPU;
 import ccc.commands.CommandFailedException;
 import ccc.commons.CCCProperties;
@@ -607,5 +608,11 @@ public class RestApi
     @Override
     public void fail() throws CommandFailedException {
         throw new CommandFailedException(new Failure(FailureCode.PRIVILEGES));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateYourUser(final ID userId, final UserOwn user) throws CommandFailedException {
+        getCommands().updateYourUser(userId, user.getEmail(), user.getPassword());
     }
 }

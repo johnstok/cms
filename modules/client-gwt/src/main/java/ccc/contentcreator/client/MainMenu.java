@@ -19,6 +19,7 @@ import ccc.contentcreator.actions.ChooseTemplateAction;
 import ccc.contentcreator.actions.CreateUserAction;
 import ccc.contentcreator.actions.EditCacheAction;
 import ccc.contentcreator.actions.EditFolderAction;
+import ccc.contentcreator.actions.ShowUpdateCurrentUserAction;
 import ccc.contentcreator.actions.GetRootsAction;
 import ccc.contentcreator.actions.LockAction;
 import ccc.contentcreator.actions.LogoutAction;
@@ -30,7 +31,6 @@ import ccc.contentcreator.actions.UnpublishAction;
 import ccc.contentcreator.actions.UpdateMetadataAction;
 import ccc.contentcreator.actions.UpdateResourceRolesAction;
 import ccc.contentcreator.actions.ViewHistoryAction;
-import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 
@@ -56,7 +56,6 @@ public class MainMenu
 
     private final IGlobals _globals = new IGlobalsImpl();
     private final UIConstants _constants = _globals.uiConstants();
-    private final ActionNameConstants _userActions =_globals.userActions();
     private final UserSummary _user;
 
     /**
@@ -66,19 +65,6 @@ public class MainMenu
      */
     public MainMenu(final UserSummary user) {
         _user = user;
-        addMenu(
-            "help-menu",
-            _constants.help(),
-            createMenuItem(
-                "about-dialog",
-                _constants.about(),
-                new ShowAboutAction()),
-            createMenuItem(
-                "open-manual",
-                _constants.manual(),
-                new OpenHelpAction())
-        );
-
         if (_user.getRoles().contains(IGlobals.ADMINISTRATOR)) {
             addMenu(
                 "users-menu",
@@ -100,9 +86,26 @@ public class MainMenu
             "tools-menu",
             _constants.tools(),
             createMenuItem(
+                "update-account-details",
+                _constants.yourDetails(),
+                new ShowUpdateCurrentUserAction()),
+            createMenuItem(
                 "logout-menu-item",
                 _constants.logout(),
                 new LogoutAction())
+        );
+
+        addMenu(
+            "help-menu",
+            _constants.help(),
+            createMenuItem(
+                "about-dialog",
+                _constants.about(),
+                new ShowAboutAction()),
+            createMenuItem(
+                "open-manual",
+                _constants.manual(),
+                new OpenHelpAction())
         );
     }
 
