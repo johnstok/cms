@@ -34,8 +34,8 @@ public abstract class PageDeltaAction
     /**
      * Constructor.
      *
-     * @param actionName
-     * @param id
+     * @param actionName Name of the action.
+     * @param id The ID.
      */
     public PageDeltaAction(final String actionName, final ID id) {
         super(actionName);

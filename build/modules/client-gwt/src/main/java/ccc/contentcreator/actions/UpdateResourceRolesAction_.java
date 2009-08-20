@@ -21,7 +21,7 @@ import com.google.gwt.json.client.JSONString;
 
 
 /**
- * TODO: Add a description for this type.
+ * Remote action for resource's roles updating.
  *
  * @author Civic Computing Ltd.
  */
