@@ -297,7 +297,7 @@ AbstractEditDialog {
                     indexPageId,
                     orderList) {
                     /** {@inheritDoc} */
-                    @Override protected void onNoContent(final Response response) {
+                    @Override protected void onNoContent(final Response r) {
                         md.setIndexPageId(indexPageId);
                         md.setSortOrder(order);
                         hide();

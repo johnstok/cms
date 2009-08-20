@@ -77,7 +77,7 @@ public class GwtJson
      *
      * @return Returns the delegate.
      */
-    private final JSONObject getDelegate() {
+    private JSONObject getDelegate() {
         return _delegate;
     }
 

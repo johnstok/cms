@@ -160,7 +160,7 @@ public class EditCacheDialog extends AbstractEditDialog {
                     _item.getId(),
                     updatedDs
                 ){
-                    @Override protected void onNoContent(final Response response) {
+                    @Override protected void onNoContent(final Response r) {
                         hide();
                     }
                 }.execute();

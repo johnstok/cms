@@ -47,6 +47,8 @@ public class LinkSelectionDialog extends AbstractEditDialog {
      *
      * @param targetRoot ResourceSummary root
      * @param elementid Element ID for FCKEditor
+     * @param url URL of selected link
+     * @param title Title of the link
      */
     public LinkSelectionDialog(final ResourceSummary targetRoot,
                                final String elementid,
