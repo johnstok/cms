@@ -1095,5 +1095,24 @@ public final class ResourceTest extends TestCase {
         assertEquals(d2, actual2);
     }
 
+    /**
+     * Test.
+     */
+    public void testTitleContainsNoBadChars() {
+
+        // ARRANGE
+        final StringBuffer bad =
+            new StringBuffer("before\u0096middle\u0092end\u0086");
+
+        // ACT
+        final Resource resource = new Page();
+        resource.title(bad.toString());
+
+        // ASSERT
+        assertFalse("Title must no contain bad characters",
+            resource.title().equals(bad.toString()));
+        assertEquals("before–middle’end†", resource.title());
+    }
+
     private static final int WAIT_LENGTH = 100;
 }
