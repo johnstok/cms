@@ -108,7 +108,7 @@ public final class QueriesEJB
     public Collection<ResourceSummary> getChildren(final ID folderId) {
         final Folder f =
             _resources.find(Folder.class, toUUID(folderId));
-        return mapResources(f.entries());
+        return mapResources(f != null ? f.entries() : new ArrayList<Resource>());
     }
 
     /** {@inheritDoc} */
@@ -116,8 +116,11 @@ public final class QueriesEJB
     public Collection<ResourceSummary> getChildrenManualOrder(final ID folderId) {
         final Folder f =
             _resources.find(Folder.class, toUUID(folderId));
-        f.sortOrder(ResourceOrder.MANUAL);
-        return mapResources(f.entries());
+        if (f != null) {
+            f.sortOrder(ResourceOrder.MANUAL);
+            return mapResources(f.entries());
+        }
+        return mapResources(new ArrayList<Resource>());
     }
 
     /** {@inheritDoc} */
@@ -125,7 +128,7 @@ public final class QueriesEJB
     public Collection<ResourceSummary> getFolderChildren(final ID folderId) {
         final Folder f =
             _resources.find(Folder.class, toUUID(folderId));
-        return mapResources(f.folders());
+        return mapResources(f != null ? f.folders() : new ArrayList<Folder>());
     }
 
     /** {@inheritDoc} */
