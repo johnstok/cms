@@ -148,6 +148,11 @@ public class UserTree {
 
     }
 
+    /**
+     * Accessor.
+     *
+     * @return The tree.
+     */
     public TreePanel<ModelData> getTree() {
         return _tree;
     }

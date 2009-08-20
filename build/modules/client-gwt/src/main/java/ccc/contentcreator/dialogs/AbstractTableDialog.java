@@ -43,6 +43,7 @@ public abstract class AbstractTableDialog<T,S extends ModelData>
      * @param title The title of the dialog.
      * @param globals The globals for this dialog.
      * @param data The data the dialog should display.
+     * @param editable EditorGrid is used if editable is true.
      */
     public AbstractTableDialog(final String title,
                                final IGlobals globals,

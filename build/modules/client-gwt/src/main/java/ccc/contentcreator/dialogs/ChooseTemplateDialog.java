@@ -119,7 +119,7 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
                 new UpdateResourceTemplateAction_(
                     _resource.getId(), selected.getId()) {
                         /** {@inheritDoc} */
-                        @Override protected void onNoContent(final Response response) {
+                        @Override protected void onNoContent(final Response r) {
                             ChooseTemplateDialog.this.hide();
                             _resource.setTemplateId(selected.getId());
                             _ssm.update(_resource);

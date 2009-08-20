@@ -106,7 +106,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
             @Override
             public void handleEvent(final BoxComponentEvent be) {
                 final int height =
-                    be.getHeight() - (IGlobals.DEFAULT_HEIGHT - TEXT_AREA_HEIGHT);
+                    be.getHeight()-(IGlobals.DEFAULT_HEIGHT - TEXT_AREA_HEIGHT);
                 if (height > (IGlobals.DEFAULT_HEIGHT - TEXT_AREA_HEIGHT)) {
                     _definition.setHeight(height);
                     _body.setHeight(height);

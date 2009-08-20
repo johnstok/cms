@@ -93,7 +93,7 @@ public class EditUserPwDialog extends AbstractEditDialog {
                     _userDTO.getId(),
                     _password1.getValue()
                 ) {
-                    @Override protected void onNoContent(final Response response) {
+                    @Override protected void onNoContent(final Response r) {
                         hide();
                     }
                 }.execute();

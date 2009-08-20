@@ -32,6 +32,8 @@ import com.google.gwt.user.client.ui.HTML;
 public class ErrorDialog extends AbstractEditDialog {
     private static final int DIALOG_WIDTH  = 375;
     private static final int DIALOG_HEIGHT = 300;
+    private static final int DIALOG_MIN_HEIGHT = 100;
+    private static final int PANEL_HEIGHT = 140;
 
     private final TextArea _action = new TextArea();
     private final TextArea _error = new TextArea();
@@ -76,8 +78,8 @@ public class ErrorDialog extends AbstractEditDialog {
         addListener(Events.Resize, new Listener<BoxComponentEvent>() {
             @Override
             public void handleEvent(final BoxComponentEvent be) {
-                final int height = be.getHeight()-140;
-                if (height > 100) {
+                final int height = be.getHeight()-PANEL_HEIGHT;
+                if (height > DIALOG_MIN_HEIGHT) {
                     _action.setHeight(height/3);
                     _error.setHeight(height/3);
                     _resolution.setHeight(height/3);

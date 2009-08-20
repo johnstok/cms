@@ -26,6 +26,9 @@ import com.google.gwt.http.client.Response;
  */
 public class AboutDialog extends AbstractBaseDialog{
 
+    /** ABOUT_WIDTH : int. */
+    private static final int ABOUT_WIDTH = 220;
+    private static final int ABOUT_HEIGHT = 150;
     private String _version = "unknown";
     private String _build = "unknown";
     private String _application = "unknown";
@@ -38,9 +41,9 @@ public class AboutDialog extends AbstractBaseDialog{
         super(new IGlobalsImpl().uiConstants().about(),
             new IGlobalsImpl());
 
-        setWidth(220);
-        setMinWidth(220);
-        setHeight(150);
+        setWidth(ABOUT_WIDTH);
+        setMinWidth(ABOUT_WIDTH);
+        setHeight(ABOUT_HEIGHT);
 
         final GetPropertyAction action = new GetPropertyAction() {
             /** {@inheritDoc} */

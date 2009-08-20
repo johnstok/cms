@@ -117,7 +117,8 @@ public class CreateAliasDialog extends AbstractEditDialog {
                 ){
                     /** {@inheritDoc} */
                     @Override protected void onOK(final Response response) {
-                        final ResourceSummary rs = parseResourceSummary(response);
+                        final ResourceSummary rs =
+                            parseResourceSummary(response);
                         final ResourceSummaryModelData newAlias =
                             new ResourceSummaryModelData(rs);
                         _ssm.create(newAlias, _parent);

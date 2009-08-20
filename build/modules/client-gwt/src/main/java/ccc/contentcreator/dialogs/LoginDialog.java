@@ -81,7 +81,8 @@ public class LoginDialog extends AbstractEditDialog {
     /** {@inheritDoc} */
     @Override
     protected SelectionListener<ButtonEvent> saveAction() {
-        return new ButtonSelectionListenerAction(new LoginAction(LoginDialog.this));
+        return new ButtonSelectionListenerAction(
+            new LoginAction(LoginDialog.this));
     }
 
     public void loginFailed() {
