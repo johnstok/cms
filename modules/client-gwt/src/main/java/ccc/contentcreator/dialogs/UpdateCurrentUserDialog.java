@@ -59,12 +59,12 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
         addField(_email);
 
         _password1.setPassword(true);
-        _password1.setFieldLabel(constants().password());
+        _password1.setFieldLabel(constants().newPassword());
         _password1.setId("user_password");
         addField(_password1);
 
         _password2.setPassword(true);
-        _password2.setFieldLabel(constants().confirmPassword());
+        _password2.setFieldLabel(constants().confirmNewPassword());
         _password2.setId("user_confirmPassword");
         addField(_password2);
 
