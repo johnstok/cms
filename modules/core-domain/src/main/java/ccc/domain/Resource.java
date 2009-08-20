@@ -29,6 +29,7 @@ import ccc.api.Json;
 import ccc.api.JsonKeys;
 import ccc.api.Jsonable;
 import ccc.api.ResourceType;
+import ccc.commons.WordCharFixer;
 import ccc.entities.IResource;
 import ccc.entities.ResourceName;
 import ccc.snapshots.ResourceSnapshot;
@@ -173,7 +174,8 @@ public abstract class Resource
         require().notEmpty(titleString);
         require().maxLength(titleString, MAXIMUM_TITLE_LENGTH);
         require().containsNoBrackets(titleString);
-        _title = titleString;
+        final WordCharFixer fixer = new WordCharFixer();
+        _title = fixer.fix(titleString);
     }
 
     /**

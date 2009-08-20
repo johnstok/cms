@@ -273,7 +273,7 @@ public final class Paragraph implements Serializable, Jsonable {
      * @return The list representation of this paragraph.
      */
     public List<String> list() {
-        return testToList(text());
+        return textToList(text());
     }
 
     /**
@@ -358,7 +358,7 @@ public final class Paragraph implements Serializable, Jsonable {
         return sb.toString();
     }
 
-    private List<String> testToList(final String text) {
+    private List<String> textToList(final String text) {
         final List<String> list = new ArrayList<String>();
         for (final String value : text.split(",")) {
             if (value.trim().length() > 0) {
