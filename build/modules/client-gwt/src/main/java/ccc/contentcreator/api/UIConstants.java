@@ -413,12 +413,28 @@ public interface UIConstants extends Constants {
     String password();
 
     /**
+     * "New password".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("New password")
+    String newPassword();
+
+    /**
      * "Confirm Password".
      *
      * @return The constant, in the appropriate locale.
      */
     @DefaultStringValue("Confirm Password")
     String confirmPassword();
+
+    /**
+     * "Confirm new password".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Confirm new password")
+    String confirmNewPassword();
 
     /**
      * "Not allowed action".
