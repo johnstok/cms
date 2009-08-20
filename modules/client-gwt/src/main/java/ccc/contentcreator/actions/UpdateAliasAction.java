@@ -37,7 +37,7 @@ public class UpdateAliasAction
     /**
      * Constructor.
      * @param alias The alias to update.
-     * @param targetRoot
+     * @param targetRoot The target root of the alias.
      */
     public UpdateAliasAction(final ResourceSummaryModelData alias,
                              final ResourceSummary targetRoot) {
@@ -55,7 +55,8 @@ public class UpdateAliasAction
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final JSONObject result = JSONParser.parse(response.getText()).isObject();
+        final JSONObject result =
+            JSONParser.parse(response.getText()).isObject();
         final AliasDelta delta = new AliasDelta(new GwtJson(result));
         new UpdateAliasDialog(
             _alias.getId(), delta, _alias.getName(), _targetRoot)

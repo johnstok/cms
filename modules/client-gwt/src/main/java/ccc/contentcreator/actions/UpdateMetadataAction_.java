@@ -21,7 +21,7 @@ import com.google.gwt.http.client.RequestBuilder;
 
 
 /**
- * TODO: Add a description for this type.
+ * Remote action for metadata updating.
  *
  * @author Civic Computing Ltd.
  */

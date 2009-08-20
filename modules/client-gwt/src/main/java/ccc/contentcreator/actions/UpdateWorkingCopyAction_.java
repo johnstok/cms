@@ -19,7 +19,7 @@ import com.google.gwt.http.client.RequestBuilder;
 
 
 /**
- * TODO: Add a description for this type.
+ * Remote action for working copy updating.
  *
  * @author Civic Computing Ltd.
  */

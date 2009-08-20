@@ -22,7 +22,7 @@ import com.google.gwt.http.client.RequestBuilder;
 
 
 /**
- * Updates a folder.
+ * Remote action for folder updating.
  *
  * @author Civic Computing Ltd.
  */
