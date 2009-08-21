@@ -19,6 +19,7 @@ import ccc.api.UserDelta;
 import ccc.api.UserSummary;
 import ccc.api.Username;
 import ccc.api.rest.UserNew;
+import ccc.api.rest.UserOwn;
 import ccc.api.rest.UserPasswordPU;
 import ccc.commands.CommandFailedException;
 
@@ -164,6 +165,33 @@ public class UserManagementAcceptanceTest
         assertEquals(1, us.getRoles().size());
         assertTrue(us.getRoles().contains("a"));
         // TODO: Test metadata set correctly.
+    }
+
+    /**
+     * Test.
+     *
+     * @throws CommandFailedException If the test fails.
+     */
+    public void testUpdateYourUser() throws CommandFailedException {
+
+        // ARRANGE
+        final Username username = new Username(UUID.randomUUID().toString());
+        final String email = username+"@abc.def";
+        final String password = "test Test00-"+username;
+
+        UserSummary user = _queries.loggedInUser();
+        final UserOwn uo =new UserOwn(email, "test Test00-"+username);
+
+        // ACT
+        _commands.updateYourUser(user.getId(), uo);
+        user = _queries.loggedInUser();
+
+        // ASSERT
+        assertEquals(user.getEmail(), uo.getEmail());
+        assertFalse(
+            _security.login(user.getUsername().toString(), "Testtest00-"));
+        assertTrue(
+            _security.login(user.getUsername().toString(), password));
     }
 
 
