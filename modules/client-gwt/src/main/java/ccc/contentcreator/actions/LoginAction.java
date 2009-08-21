@@ -18,7 +18,7 @@ import com.google.gwt.http.client.Response;
 
 
 /**
- * TODO: Add a description for this type.
+ * Remote action for user login.
  *
  * @author Civic Computing Ltd.
  */
@@ -45,8 +45,8 @@ public class LoginAction
     protected String getPath() {
         return
             "/sessions?u="
-            +_dialog.getUsername()+"&p="
-            +_dialog.getPassword(); // FIXME: Escaping!!
+            +encode(_dialog.getUsername())+"&p="
+            +encode(_dialog.getPassword());
     }
 
     /** {@inheritDoc} */
