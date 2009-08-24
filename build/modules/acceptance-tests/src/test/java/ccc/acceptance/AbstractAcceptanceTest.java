@@ -12,7 +12,7 @@
 
 package ccc.acceptance;
 
-import static ccc.types.HttpStatusCodes.*;
+import static ccc.types.HttpStatusCode.*;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

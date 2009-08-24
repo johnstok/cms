@@ -17,7 +17,7 @@ package ccc.types;
  *
  * @author Civic Computing Ltd.
  */
-public final class HttpStatusCodes {
+public final class HttpStatusCode {
 
 
     /** OK : int. */
@@ -31,7 +31,7 @@ public final class HttpStatusCodes {
     /**
      * Constructor.
      */
-    private HttpStatusCodes() {
+    private HttpStatusCode() {
         super();
     }
 }

@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
 import ccc.commands.CommandFailedException;
-import ccc.types.HttpStatusCodes;
+import ccc.types.HttpStatusCode;
 
 
 /**
@@ -31,7 +31,7 @@ public class CommandFailedExceptionMapper
     @Override
     public Response toResponse(final CommandFailedException e) {
         return
-            Response.status(HttpStatusCodes.IM_A_TEAPOT)
+            Response.status(HttpStatusCode.IM_A_TEAPOT)
                     .type("application/json")
                     .entity(e.getFailure())
                     .build();

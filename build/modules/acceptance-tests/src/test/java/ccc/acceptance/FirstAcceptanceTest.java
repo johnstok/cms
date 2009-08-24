@@ -11,7 +11,7 @@
  */
 package ccc.acceptance;
 
-import static ccc.types.HttpStatusCodes.*;
+import static ccc.types.HttpStatusCode.*;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.jboss.resteasy.client.ClientResponseFailure;
