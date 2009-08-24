@@ -73,12 +73,14 @@ public class ResourceTree extends Tree {
                     new GetChildrenAction(_globals.userActions().loadData(),
                         parentId) {
 
-                        // FIXME: Handle failure!
-                        /*
-                         * callback.onFailure(throwable);
-                         */
+                        /** {@inheritDoc} */
+                        @Override protected void onFailure(final Throwable t) {
+                            callback.onFailure(t);
+                        }
 
-                        @Override protected void execute(final Collection<ResourceSummary> children) {
+                        /** {@inheritDoc} */
+                        @Override protected void execute(
+                                   final Collection<ResourceSummary> children) {
                             callback.onSuccess(
                                 DataBinding.bindResourceSummary(children));
                         }

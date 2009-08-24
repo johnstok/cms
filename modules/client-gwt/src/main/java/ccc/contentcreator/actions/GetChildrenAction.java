@@ -24,7 +24,7 @@ import com.google.gwt.json.client.JSONParser;
 
 
 /**
- * TODO: Add a description for this type.
+ * Remote action for children resource fetching.
  *
  * @author Civic Computing Ltd.
  */
@@ -37,7 +37,7 @@ public abstract class GetChildrenAction
     /**
      * Constructor.
      *
-     * @param actionName
+     * @param actionName The name of the action.
      * @param parentId The id of the parent folder.
      */
     public GetChildrenAction(final String actionName, final ID parentId) {
