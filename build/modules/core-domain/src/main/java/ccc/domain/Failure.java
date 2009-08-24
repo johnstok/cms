@@ -15,10 +15,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.api.FailureCode;
 import ccc.api.Json;
 import ccc.api.JsonKeys;
 import ccc.api.Jsonable;
+import ccc.types.FailureCode;
 
 
 /**

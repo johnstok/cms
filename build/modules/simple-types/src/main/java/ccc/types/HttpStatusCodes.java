@@ -9,7 +9,7 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api;
+package ccc.types;
 
 
 /**

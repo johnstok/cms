@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import ccc.types.ParagraphType;
+
 
 /**
  * A paragraph of HTML.

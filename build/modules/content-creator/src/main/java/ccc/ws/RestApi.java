@@ -26,7 +26,6 @@ import javax.ws.rs.Produces;
 import ccc.api.ActionSummary;
 import ccc.api.AliasDelta;
 import ccc.api.Duration;
-import ccc.api.FailureCode;
 import ccc.api.FileDelta;
 import ccc.api.FileSummary;
 import ccc.api.ID;
@@ -59,6 +58,7 @@ import ccc.commons.Registry;
 import ccc.domain.Failure;
 import ccc.services.Commands;
 import ccc.services.Queries;
+import ccc.types.FailureCode;
 import ccc.types.Username;
 
 

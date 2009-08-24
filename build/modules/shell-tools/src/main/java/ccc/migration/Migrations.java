@@ -24,11 +24,9 @@ import java.util.Map.Entry;
 import org.apache.log4j.Logger;
 
 import ccc.api.Decimal;
-import ccc.api.FailureCode;
 import ccc.api.ID;
 import ccc.api.PageDelta;
 import ccc.api.Paragraph;
-import ccc.api.ParagraphType;
 import ccc.api.ResourceSummary;
 import ccc.api.UserSummary;
 import ccc.commands.CommandFailedException;
@@ -37,6 +35,8 @@ import ccc.commons.WordCharFixer;
 import ccc.domain.CCCException;
 import ccc.services.Commands;
 import ccc.services.Queries;
+import ccc.types.FailureCode;
+import ccc.types.ParagraphType;
 
 /**
  * Data migration from CCC6 to CCC7.

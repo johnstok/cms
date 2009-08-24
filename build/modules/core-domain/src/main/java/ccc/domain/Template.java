@@ -13,9 +13,9 @@ package ccc.domain;
 
 import ccc.api.DBC;
 import ccc.api.MimeType;
-import ccc.api.ResourceType;
 import ccc.api.TemplateDelta;
 import ccc.entities.ResourceName;
+import ccc.types.ResourceType;
 
 
 /**

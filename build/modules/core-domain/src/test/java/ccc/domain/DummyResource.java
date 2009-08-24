@@ -13,8 +13,8 @@ package ccc.domain;
 
 import ccc.api.Json;
 import ccc.api.Jsonable;
-import ccc.api.ResourceType;
 import ccc.entities.ResourceName;
+import ccc.types.ResourceType;
 
 /**
  * Dummy resource for testing only.

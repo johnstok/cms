@@ -2,12 +2,12 @@ package ccc.contentcreator.actions;
 
 import java.util.Collection;
 
-import ccc.api.ResourceType;
 import ccc.api.TemplateSummary;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.ChooseTemplateDialog;
+import ccc.types.ResourceType;
 
 /**
  * Chooses template for the resource.

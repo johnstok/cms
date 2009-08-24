@@ -14,6 +14,7 @@ package ccc.api;
 import java.io.Serializable;
 import java.util.Date;
 
+import ccc.types.CommandType;
 import ccc.types.Username;
 
 

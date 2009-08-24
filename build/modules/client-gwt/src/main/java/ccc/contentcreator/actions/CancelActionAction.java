@@ -11,9 +11,9 @@
  */
 package ccc.contentcreator.actions;
 
-import ccc.api.ActionStatus;
 import ccc.contentcreator.binding.ActionSummaryModelData;
 import ccc.contentcreator.client.ActionTable;
+import ccc.types.ActionStatus;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;

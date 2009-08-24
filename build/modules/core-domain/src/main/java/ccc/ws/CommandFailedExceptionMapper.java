@@ -14,8 +14,8 @@ package ccc.ws;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
-import ccc.api.HttpStatusCodes;
 import ccc.commands.CommandFailedException;
+import ccc.types.HttpStatusCodes;
 
 
 /**

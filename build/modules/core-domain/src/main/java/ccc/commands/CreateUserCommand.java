@@ -13,7 +13,6 @@ package ccc.commands;
 
 import java.util.Date;
 
-import ccc.api.CommandType;
 import ccc.api.UserDelta;
 import ccc.domain.LogEntry;
 import ccc.domain.Password;
@@ -21,6 +20,7 @@ import ccc.domain.Snapshot;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
+import ccc.types.CommandType;
 import ccc.types.EmailAddress;
 
 

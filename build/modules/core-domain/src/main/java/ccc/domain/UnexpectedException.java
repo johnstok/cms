@@ -11,8 +11,8 @@
  */
 package ccc.domain;
 
-import ccc.api.FailureCode;
 import ccc.commands.CommandFailedException;
+import ccc.types.FailureCode;
 
 
 /**

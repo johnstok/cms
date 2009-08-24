@@ -11,19 +11,19 @@
  */
 package ccc.acceptance;
 
-import static ccc.api.HttpStatusCodes.*;
+import static ccc.types.HttpStatusCodes.*;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.jboss.resteasy.client.ClientResponseFailure;
 import org.jboss.resteasy.client.ProxyFactory;
 
-import ccc.api.FailureCode;
 import ccc.api.MimeType;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
 import ccc.api.rest.TemplateNew;
 import ccc.commands.CommandFailedException;
 import ccc.domain.Failure;
+import ccc.types.FailureCode;
 import ccc.ws.SecurityAPI;
 
 

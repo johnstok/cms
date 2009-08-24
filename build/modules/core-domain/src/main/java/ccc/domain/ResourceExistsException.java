@@ -13,8 +13,8 @@ package ccc.domain;
 
 import java.util.Collections;
 
-import ccc.api.FailureCode;
 import ccc.commands.CommandFailedException;
+import ccc.types.FailureCode;
 
 
 /**

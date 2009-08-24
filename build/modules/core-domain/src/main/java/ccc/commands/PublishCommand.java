@@ -13,7 +13,6 @@ package ccc.commands;
 
 import java.util.Date;
 
-import ccc.api.CommandType;
 import ccc.domain.Action;
 import ccc.domain.Command;
 import ccc.domain.LockMismatchException;
@@ -24,6 +23,7 @@ import ccc.domain.Snapshot;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
+import ccc.types.CommandType;
 
 
 /**

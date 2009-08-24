@@ -15,10 +15,10 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import ccc.api.ActionSummary;
-import ccc.api.CommandType;
 import ccc.api.ResourceSummary;
 import ccc.api.rest.ActionNew;
 import ccc.commands.CommandFailedException;
+import ccc.types.CommandType;
 
 
 /**

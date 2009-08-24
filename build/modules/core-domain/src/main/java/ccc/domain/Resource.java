@@ -23,16 +23,16 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import ccc.api.CommandType;
 import ccc.api.Duration;
 import ccc.api.Json;
 import ccc.api.JsonKeys;
 import ccc.api.Jsonable;
-import ccc.api.ResourceType;
 import ccc.commons.WordCharFixer;
 import ccc.entities.IResource;
 import ccc.entities.ResourceName;
 import ccc.snapshots.ResourceSnapshot;
+import ccc.types.CommandType;
+import ccc.types.ResourceType;
 
 
 /**

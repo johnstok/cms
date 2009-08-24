@@ -19,9 +19,9 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import ccc.api.MimeType;
-import ccc.api.ResourceType;
 import ccc.commons.Exceptions;
 import ccc.entities.ResourceName;
+import ccc.types.ResourceType;
 
 
 /**

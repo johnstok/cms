@@ -14,7 +14,6 @@ package ccc.snapshots;
 import java.util.List;
 import java.util.Map;
 
-import ccc.api.ResourceType;
 import ccc.api.template.StatefulReader;
 import ccc.domain.Folder;
 import ccc.domain.Page;
@@ -26,6 +25,7 @@ import ccc.rendering.RedirectRequiredException;
 import ccc.rendering.Response;
 import ccc.services.DataManager;
 import ccc.services.SearchEngine;
+import ccc.types.ResourceType;
 
 
 /**

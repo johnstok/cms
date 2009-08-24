@@ -11,9 +11,9 @@
  */
 package ccc.contentcreator.client;
 
-import ccc.api.ResourceType;
 import ccc.contentcreator.binding.ActionSummaryModelData;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
+import ccc.types.ResourceType;
 
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;

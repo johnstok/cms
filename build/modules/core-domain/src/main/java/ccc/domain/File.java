@@ -19,9 +19,9 @@ import ccc.api.DBC;
 import ccc.api.FileDelta;
 import ccc.api.ID;
 import ccc.api.MimeType;
-import ccc.api.ResourceType;
 import ccc.entities.ResourceName;
 import ccc.snapshots.FileSnapshot;
+import ccc.types.ResourceType;
 
 
 /**

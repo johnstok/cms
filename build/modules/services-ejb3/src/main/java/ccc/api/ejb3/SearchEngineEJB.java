@@ -39,7 +39,6 @@ import org.pdfbox.pdmodel.PDDocument;
 import org.pdfbox.util.PDFTextStripper;
 
 import ccc.api.Paragraph;
-import ccc.api.ParagraphType;
 import ccc.api.Scheduler;
 import ccc.commons.SearchResult;
 import ccc.domain.File;
@@ -61,6 +60,7 @@ import ccc.services.ResourceDao;
 import ccc.services.SearchEngine;
 import ccc.services.impl.DataManagerImpl;
 import ccc.services.impl.ResourceDaoImpl;
+import ccc.types.ParagraphType;
 
 
 /**

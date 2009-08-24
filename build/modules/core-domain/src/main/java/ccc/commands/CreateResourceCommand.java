@@ -14,7 +14,6 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.api.CommandType;
 import ccc.domain.CCCException;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
@@ -24,6 +23,7 @@ import ccc.domain.Snapshot;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
+import ccc.types.CommandType;
 
 
 /**

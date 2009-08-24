@@ -1,4 +1,4 @@
-package ccc.api;
+package ccc.types;
 
 /** Valid actions for a log entry. */
 public enum CommandType {

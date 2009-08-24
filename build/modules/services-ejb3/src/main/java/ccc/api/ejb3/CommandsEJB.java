@@ -35,7 +35,6 @@ import javax.persistence.PersistenceContext;
 import org.apache.log4j.Logger;
 
 import ccc.api.AliasDelta;
-import ccc.api.CommandType;
 import ccc.api.Duration;
 import ccc.api.FileDelta;
 import ccc.api.ID;
@@ -68,6 +67,7 @@ import ccc.commands.UnlockResourceCommand;
 import ccc.commands.UnpublishResourceCommand;
 import ccc.commands.UpdateAliasCommand;
 import ccc.commands.UpdateCachingCommand;
+import ccc.commands.UpdateCurrentUserAction;
 import ccc.commands.UpdateFileCommand;
 import ccc.commands.UpdateFolderCommand;
 import ccc.commands.UpdatePageCommand;
@@ -77,7 +77,6 @@ import ccc.commands.UpdateResourceRolesCommand;
 import ccc.commands.UpdateTemplateCommand;
 import ccc.commands.UpdateUserCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
-import ccc.commands.UpdateCurrentUserAction;
 import ccc.domain.Action;
 import ccc.domain.File;
 import ccc.domain.Folder;
@@ -98,6 +97,7 @@ import ccc.services.ModelTranslation;
 import ccc.services.UserLookup;
 import ccc.services.impl.AuditLogImpl;
 import ccc.services.impl.DataManagerImpl;
+import ccc.types.CommandType;
 
 
 /**
