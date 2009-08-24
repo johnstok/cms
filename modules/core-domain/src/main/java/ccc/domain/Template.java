@@ -65,6 +65,7 @@ public class Template
      * @param body A valid velocity template for rendering a page.
      * @param definiton An xml definition of the fields that the body requires.
      * @param mimeType The mime type this template will produce.
+     * @param metadata The metadata of the template.
      */
     public Template(final ResourceName name,
                     final String title,

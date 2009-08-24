@@ -17,7 +17,6 @@ import java.util.UUID;
 
 import ccc.api.Json;
 import ccc.api.JsonKeys;
-import ccc.api.Jsonable;
 import ccc.types.FailureCode;
 
 
@@ -27,8 +26,7 @@ import ccc.types.FailureCode;
  * @author Civic Computing Ltd.
  */
 public class Failure
-    extends Entity
-    implements Jsonable {
+    extends Entity {
 
     private FailureCode         _code        = FailureCode.UNEXPECTED;
     private Map<String, String> _params      = new HashMap<String, String>();
