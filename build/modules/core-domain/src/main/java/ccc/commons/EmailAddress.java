@@ -162,17 +162,14 @@ public class EmailAddress implements Serializable {
 
     //class attributes
     private String _text;
-    private boolean _bouncing = true;
-    private boolean _verified = false;
-    private String _label;
 
     /**
      * Constructor.
-     *
      */
     public EmailAddress() {
         super();
     }
+
 
     /**
      * Constructor.
@@ -184,6 +181,7 @@ public class EmailAddress implements Serializable {
         setText(newText);
     }
 
+
     /**
      * Returns the actual email address string, e.g.
      * <tt>someone@somewhere.com</tt>
@@ -194,6 +192,7 @@ public class EmailAddress implements Serializable {
         return _text;
     }
 
+
     /**
      * Set the text for this email address.
      *
@@ -203,76 +202,6 @@ public class EmailAddress implements Serializable {
         _text = text;
     }
 
-    /**
-     * Returns whether or not any emails sent to this email address come back as
-     * bounced (undeliverable).
-     *
-     * <p>Default is <tt>false</tt> for convenience's sake - if a bounced
-     * message is ever received for this address, this value should be set to
-     * <tt>true</tt> until verification can made.
-     *
-     * @return whether or not any emails sent to this email address come back as
-     * bounced (undeliverable).
-     */
-    public boolean isBouncing() {
-        return _bouncing;
-    }
-
-    /**
-     * Mutator for the bounced property.
-     *
-     * @param bouncing True if emails to this address are bouncing, false
-     *  otherwise.
-     */
-    public void setBouncing(final boolean bouncing) {
-        _bouncing = bouncing;
-    }
-
-    /**
-     * Returns whether or not the party associated with this email has verified
-     * that it is their email address.
-     *
-     * <p>Verification is usually done by sending an email to this
-     * address and waiting for the party to respond or click a specific link in
-     * the email.
-     *
-     * <p>Default is <tt>false</tt>.
-     *
-     * @return whether or not the party associated with this email has verified
-     * that it is their email address.
-     */
-    public boolean isVerified() {
-        return _verified;
-    }
-
-    /**
-     * Set whether the email address has been verified.
-     *
-     * @param verified True if verification was successful, false otherwise.
-     */
-    public void setVerified(final boolean verified) {
-        _verified = verified;
-    }
-
-    /**
-     * Party label associated with this address, for example, 'Home', 'Work',
-     * etc.
-     *
-     * @return a label associated with this address, for example 'Home', 'Work',
-     * etc.
-     */
-    public String getLabel() {
-        return _label;
-    }
-
-    /**
-     * Set the label for this address.
-     *
-     * @param label The label as a string.
-     */
-    public void setLabel(final String label) {
-        _label = label;
-    }
 
     /**
      * Returns whether or not the text represented by this object instance is
@@ -284,6 +213,7 @@ public class EmailAddress implements Serializable {
     public boolean isValid() {
         return isValidText(getText());
     }
+
 
     /**
      * Utility method that checks to see if the specified string is a valid
@@ -297,6 +227,7 @@ public class EmailAddress implements Serializable {
         return (email != null) && VALID_PATTERN.matcher(email).matches();
     }
 
+
     /** {@inheritDoc} */
     @Override public boolean equals(final Object o) {
         if (o instanceof EmailAddress) {
@@ -306,10 +237,12 @@ public class EmailAddress implements Serializable {
         return false;
     }
 
+
     /** {@inheritDoc} */
     @Override public int hashCode() {
         return getText().hashCode();
     }
+
 
     /** {@inheritDoc} */
     @Override public String toString() {
