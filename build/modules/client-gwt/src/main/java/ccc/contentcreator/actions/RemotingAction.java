@@ -110,16 +110,15 @@ public abstract class RemotingAction
 
             public void onError(final Request request,
                                 final Throwable exception) {
-                GLOBALS.unexpectedError(exception, _actionName);
+                onFailure(exception);
             }
 
             public void onResponseReceived(final Request request,
                                            final Response response) {
                 if (SessionTimeoutException
                                         .isTimeoutMessage(response.getText())) {
-                    GLOBALS.unexpectedError(
-                        new SessionTimeoutException(response.getText()),
-                        _actionName);
+                    onFailure(
+                        new SessionTimeoutException(response.getText()));
                 } else if (SC_IM_A_TEAPOT == response.getStatusCode()) {
                     onCccException(response);
                 } else if (SC_OK == response.getStatusCode()) {
@@ -128,12 +127,11 @@ public abstract class RemotingAction
                            || MS_IE6_1223 == response.getStatusCode()) {
                     onNoContent(response);
                 } else {
-                    GLOBALS.unexpectedError(
+                    onFailure(
                         new Exception(// TODO: Use a subclass of exception.
                             "Invalid response: "
                             + response.getStatusCode()+" "
-                            + response.getStatusText()),
-                        _actionName);
+                            + response.getStatusText()));
                 }
             }
 
@@ -147,10 +145,23 @@ public abstract class RemotingAction
     }
 
 
+    protected void onFailure(final Throwable t) {
+        GLOBALS.unexpectedError(t, getActionName());
+    }
+
+
+    private void onUnsupported(final Response response) {
+        onFailure(
+            new RuntimeException(// TODO Add UnsupportedResponseException
+                "Unsupported response: "
+                + response.getStatusCode() + " "
+                + response.getStatusText()));
+    }
+
+
     private void onCccException(final Response response) {
-        GLOBALS.unexpectedError(
-            new RemoteException(FailureOverlay.fromJson(response.getText())),
-            _actionName);
+        onFailure(
+            new RemoteException(FailureOverlay.fromJson(response.getText())));
     }
 
 
@@ -183,10 +194,7 @@ public abstract class RemotingAction
      * @param response The server response.
      */
     protected void onNoContent(final Response response) {
-        throw new RuntimeException(// TODO Add UnsupportedResponseException
-            "Unsupported response: "
-            + response.getStatusCode() + " "
-            + response.getStatusText());
+        onUnsupported(response);
     }
 
     /**
@@ -195,10 +203,7 @@ public abstract class RemotingAction
      * @param response The server response.
      */
     protected void onOK(final Response response) {
-        throw new RuntimeException(// TODO Add UnsupportedResponseException
-            "Unsupported response: "
-            + response.getStatusCode() + " "
-            + response.getStatusText());
+        onUnsupported(response);
     }
 
     /**

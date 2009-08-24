@@ -175,11 +175,12 @@ AbstractEditDialog {
                 return "/folders/"+selection.getId()+"/children-manual-order";
             }
 
-            // FIXME: Handle failure!
-            /*
-             * _grid.disable();
-             */
+            /** {@inheritDoc} */
+            @Override protected void onFailure(final Throwable t) {
+                _grid.disable();
+            }
 
+            /** {@inheritDoc} */
             @Override
             protected void execute(final Collection<ResourceSummary> children) {
                 _detailsStore.removeAll();

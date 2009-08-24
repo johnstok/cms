@@ -76,14 +76,18 @@ public class FolderResourceTree extends Tree {
                             Collections.singletonList(_root)));
                 } else {
                     new GetChildrenAction(_globals.userActions().loadData(),
-                        ((ResourceSummaryModelData)loadConfig).getId()) {
+                        ((ResourceSummaryModelData) loadConfig).getId()) {
 
-                        // FIXME: Handle failure!
-                        /*
-                         * callback.onFailure(throwable);
-                         */
 
-                        @Override protected void execute(final Collection<ResourceSummary> children) {
+                        /** {@inheritDoc} */
+                        @Override protected void onFailure(final Throwable t) {
+                            callback.onFailure(t);
+                        }
+
+
+                        /** {@inheritDoc} */
+                        @Override protected void execute(
+                                 final Collection<ResourceSummary> children) {
                             callback.onSuccess(
                                 DataBinding.bindResourceSummary(children));
                         }
