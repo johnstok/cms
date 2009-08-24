@@ -145,8 +145,13 @@ public abstract class RemotingAction
     }
 
 
-    protected void onFailure(final Throwable t) {
-        GLOBALS.unexpectedError(t, getActionName());
+    /**
+     * Handle failure.
+     *
+     * @param throwable The throwable.
+     */
+    protected void onFailure(final Throwable throwable) {
+        GLOBALS.unexpectedError(throwable, getActionName());
     }
 
 
@@ -301,5 +306,4 @@ public abstract class RemotingAction
 
         return json.getStringMap("properties");
     }
-
 }

@@ -17,7 +17,7 @@ import junit.framework.TestCase;
 
 
 /**
- * TODO: Add Description for this type.
+ * Tests for the {@link CCCProperties} class.
  *
  * @author Civic Computing Ltd.
  */
