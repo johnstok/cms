@@ -18,7 +18,7 @@ import junit.framework.TestCase;
 
 
 /**
- * TODO: Add Description for this type.
+ * Tests for the {@link WordCharFixer}.
  *
  * @author Civic Computing Ltd.
  */

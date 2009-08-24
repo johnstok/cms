@@ -29,7 +29,7 @@ import ccc.services.Dao;
 
 
 /**
- * TODO: Add Description for this type.
+ * Tests for the {@link TemplateDelta} and {@link Template} class.
  *
  * @author Civic Computing Ltd.
  */

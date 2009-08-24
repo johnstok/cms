@@ -18,7 +18,7 @@ import junit.framework.TestCase;
 
 
 /**
- * TODO: Add Description for this type.
+ * Tests for the resource ordering.
  *
  * @author Civic Computing Ltd.
  */
