@@ -16,6 +16,7 @@ import static ccc.api.JsonKeys.*;
 import java.io.Serializable;
 import java.util.Date;
 
+import ccc.types.ResourceType;
 import ccc.types.Username;
 
 

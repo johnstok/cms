@@ -18,10 +18,10 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Set;
 
-import ccc.api.CommandType;
 import ccc.api.LogEntrySummary;
 import ccc.contentcreator.api.CommandTypeConstants;
 import ccc.contentcreator.client.IGlobals;
+import ccc.types.CommandType;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 

@@ -14,8 +14,8 @@ package ccc.domain;
 import ccc.api.Json;
 import ccc.api.JsonKeys;
 import ccc.api.Jsonable;
-import ccc.api.ResourceType;
 import ccc.snapshots.SearchSnapshot;
+import ccc.types.ResourceType;
 
 
 /**

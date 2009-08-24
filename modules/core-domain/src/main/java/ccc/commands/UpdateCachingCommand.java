@@ -14,7 +14,6 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.api.CommandType;
 import ccc.api.Duration;
 import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
@@ -24,6 +23,7 @@ import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
+import ccc.types.CommandType;
 
 
 /**

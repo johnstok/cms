@@ -17,9 +17,6 @@ import java.util.Date;
 import java.util.HashMap;
 
 import junit.framework.TestCase;
-import ccc.api.ActionStatus;
-import ccc.api.CommandType;
-import ccc.api.FailureCode;
 import ccc.api.ID;
 import ccc.commands.CommandFailedException;
 import ccc.domain.Action;
@@ -29,6 +26,9 @@ import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.entities.ResourceName;
 import ccc.services.Commands;
+import ccc.types.ActionStatus;
+import ccc.types.CommandType;
+import ccc.types.FailureCode;
 
 
 /**

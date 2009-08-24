@@ -9,20 +9,20 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api;
+package ccc.types;
+
 
 /**
- * Supported statuses for an action.
+ * Failure codes for the public API.
  *
  * @author Civic Computing Ltd.
  */
-public enum ActionStatus { // FIXME: Capitalise these enums?
-    /** Scheduled : ActionStatus. */
-    Scheduled,
-    /** Complete : ActionStatus. */
-    Complete,
-    /** Failed : ActionStatus. */
-    Failed,
-    /** Cancelled : ActionStatus. */
-    Cancelled;
+public enum  FailureCode {
+    UNEXPECTED,
+    UNLOCKED,
+    LOCK_MISMATCH,
+    EXISTS,
+    PRIVILEGES,
+    WC_UNSUPPORTED,
+    CYCLE;
 }

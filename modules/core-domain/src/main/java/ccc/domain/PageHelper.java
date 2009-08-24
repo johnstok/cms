@@ -31,7 +31,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import ccc.api.Paragraph;
-import ccc.api.ParagraphType;
+import ccc.types.ParagraphType;
 
 
 /**

@@ -22,7 +22,7 @@ import java.util.Set;
 import ccc.api.ID;
 import ccc.api.JsonKeys;
 import ccc.api.ResourceSummary;
-import ccc.api.ResourceType;
+import ccc.types.ResourceType;
 import ccc.types.Username;
 
 import com.extjs.gxt.ui.client.data.ModelData;

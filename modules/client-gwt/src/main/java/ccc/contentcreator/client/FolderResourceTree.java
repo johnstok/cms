@@ -17,10 +17,10 @@ import java.util.Collections;
 import java.util.List;
 
 import ccc.api.ResourceSummary;
-import ccc.api.ResourceType;
 import ccc.contentcreator.actions.GetChildrenAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
+import ccc.types.ResourceType;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.binder.TreeBinder;

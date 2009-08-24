@@ -11,7 +11,7 @@
  */
 package ccc.contentcreator.overlays;
 
-import ccc.api.FailureCode;
+import ccc.types.FailureCode;
 
 import com.google.gwt.core.client.JavaScriptObject;
 

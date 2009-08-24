@@ -13,7 +13,6 @@ package ccc.contentcreator.client;
 
 import static ccc.contentcreator.dialogs.AbstractBaseDialog.*;
 import ccc.api.PageDelta;
-import ccc.api.ResourceType;
 import ccc.api.TemplateSummary;
 import ccc.api.UserSummary;
 import ccc.contentcreator.actions.ApplyWorkingCopyAction;
@@ -42,6 +41,7 @@ import ccc.contentcreator.actions.ViewHistoryAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.dialogs.UpdateFileDialog;
 import ccc.contentcreator.dialogs.UpdatePageDialog;
+import ccc.types.ResourceType;
 
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;

@@ -15,8 +15,8 @@ package ccc.contentcreator.client;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.api.CommandType;
 import ccc.contentcreator.api.UIConstants;
+import ccc.types.CommandType;
 
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.Style.SelectionMode;

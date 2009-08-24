@@ -19,10 +19,10 @@
 <hibernate-mapping default-access="field">
 
     <typedef class="ccc.persistence.jpa.EnumUserType" name="ActionType">
-        <param name="type">ccc.api.CommandType</param>
+        <param name="type">ccc.types.CommandType</param>
     </typedef>
     <typedef class="ccc.persistence.jpa.EnumUserType" name="StatusType">
-        <param name="type">ccc.api.ActionStatus</param>
+        <param name="type">ccc.types.ActionStatus</param>
     </typedef>
     
     <class name="ccc.domain.Action" table="actions">

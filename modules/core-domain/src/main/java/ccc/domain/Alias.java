@@ -16,8 +16,8 @@ import ccc.api.DBC;
 import ccc.api.ID;
 import ccc.api.Json;
 import ccc.api.JsonKeys;
-import ccc.api.ResourceType;
 import ccc.snapshots.AliasSnapshot;
+import ccc.types.ResourceType;
 
 
 /**

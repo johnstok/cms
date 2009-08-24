@@ -19,7 +19,7 @@
 <hibernate-mapping default-access="field">
 
     <typedef class="ccc.persistence.jpa.EnumUserType" name="FailureCode">
-        <param name="type">ccc.api.FailureCode</param>
+        <param name="type">ccc.types.FailureCode</param>
     </typedef>
     
     <class name="ccc.domain.Failure" table="failures" mutable="false">

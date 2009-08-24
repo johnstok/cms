@@ -19,10 +19,10 @@
 <hibernate-mapping default-access="field">
 
     <typedef class="ccc.persistence.jpa.EnumUserType" name="LogEntryAction">
-        <param name="type">ccc.api.CommandType</param>
+        <param name="type">ccc.types.CommandType</param>
     </typedef>
     <typedef class="ccc.persistence.jpa.EnumUserType" name="ResourceType">
-        <param name="type">ccc.api.ResourceType</param>
+        <param name="type">ccc.types.ResourceType</param>
     </typedef>
     
     <class

@@ -10,7 +10,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.api;
+package ccc.types;
 
 /**
  * An enumeration of the valid types of a resource.

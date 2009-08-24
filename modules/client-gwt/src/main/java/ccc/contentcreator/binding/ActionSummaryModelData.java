@@ -18,14 +18,14 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Set;
 
-import ccc.api.ActionStatus;
 import ccc.api.ActionSummary;
-import ccc.api.CommandType;
 import ccc.api.ID;
-import ccc.api.ResourceType;
 import ccc.contentcreator.api.ActionStatusConstants;
 import ccc.contentcreator.api.CommandTypeConstants;
 import ccc.contentcreator.client.IGlobals;
+import ccc.types.ActionStatus;
+import ccc.types.CommandType;
+import ccc.types.ResourceType;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 

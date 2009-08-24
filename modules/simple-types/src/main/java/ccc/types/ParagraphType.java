@@ -9,7 +9,7 @@
  * Changes: see subversion log
  *-----------------------------------------------------------------------------
  */
-package ccc.api;
+package ccc.types;
 
 /**
  * The types of paragraph available.

@@ -11,9 +11,9 @@
  */
 package ccc.contentcreator.dialogs;
 
-import ccc.api.FailureCode;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.RemoteException;
+import ccc.types.FailureCode;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;

@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.Set;
 
 import ccc.api.AliasDelta;
-import ccc.api.CommandType;
 import ccc.api.Duration;
 import ccc.api.ID;
 import ccc.api.PageDelta;
@@ -28,6 +27,7 @@ import ccc.api.TemplateDelta;
 import ccc.api.UserDelta;
 import ccc.api.UserSummary;
 import ccc.commands.CommandFailedException;
+import ccc.types.CommandType;
 
 
 /**
