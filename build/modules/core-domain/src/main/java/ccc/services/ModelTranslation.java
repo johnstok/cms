@@ -31,7 +31,6 @@ import ccc.api.TemplateDelta;
 import ccc.api.TemplateSummary;
 import ccc.api.UserDelta;
 import ccc.api.UserSummary;
-import ccc.api.Username;
 import ccc.domain.Action;
 import ccc.domain.Alias;
 import ccc.domain.File;
@@ -41,6 +40,7 @@ import ccc.domain.Resource;
 import ccc.domain.Revision;
 import ccc.domain.Template;
 import ccc.domain.User;
+import ccc.types.Username;
 
 
 /**

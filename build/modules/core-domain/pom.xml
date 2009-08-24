@@ -57,6 +57,11 @@
             <artifactId>public-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>CCC7</groupId>
+            <artifactId>simple-types</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         
         <dependency>
             <groupId>javax.servlet</groupId>

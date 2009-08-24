@@ -14,6 +14,8 @@ package ccc.api;
 import java.io.Serializable;
 import java.util.Date;
 
+import ccc.types.Username;
+
 
 /**
  * A summary of a log entry.

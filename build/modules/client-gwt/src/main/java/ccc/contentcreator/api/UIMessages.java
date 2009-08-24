@@ -11,7 +11,7 @@
  */
 package ccc.contentcreator.api;
 
-import ccc.api.Username;
+import ccc.types.Username;
 
 import com.google.gwt.i18n.client.Messages;
 

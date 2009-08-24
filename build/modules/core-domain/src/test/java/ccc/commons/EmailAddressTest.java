@@ -11,6 +11,7 @@
  */
 package ccc.commons;
 
+import ccc.types.EmailAddress;
 import junit.framework.TestCase;
 
 

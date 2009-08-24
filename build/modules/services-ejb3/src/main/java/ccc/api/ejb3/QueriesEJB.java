@@ -41,7 +41,6 @@ import ccc.api.TemplateDelta;
 import ccc.api.TemplateSummary;
 import ccc.api.UserDelta;
 import ccc.api.UserSummary;
-import ccc.api.Username;
 import ccc.domain.Alias;
 import ccc.domain.File;
 import ccc.domain.Folder;
@@ -63,6 +62,7 @@ import ccc.services.UserLookup;
 import ccc.services.UserManager;
 import ccc.services.impl.ResourceDaoImpl;
 import ccc.services.impl.UserManagerImpl;
+import ccc.types.Username;
 
 
 /**

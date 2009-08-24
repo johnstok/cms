@@ -16,6 +16,8 @@ import static ccc.api.JsonKeys.*;
 import java.io.Serializable;
 import java.util.Date;
 
+import ccc.types.Username;
+
 
 /**
  * Summary of a CCC scheduled action.

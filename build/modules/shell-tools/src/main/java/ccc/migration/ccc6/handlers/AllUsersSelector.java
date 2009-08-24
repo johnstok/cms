@@ -9,10 +9,10 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import ccc.api.UserDelta;
-import ccc.api.Username;
 import ccc.migration.ExistingUser;
 import ccc.migration.LegacyDBQueries;
 import ccc.migration.MigrationException;
+import ccc.types.Username;
 
 /**
  * A SQL query to export all users from CCC6.

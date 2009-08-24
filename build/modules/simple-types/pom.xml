@@ -11,15 +11,7 @@
         <version>7.0.0-SNAPSHOT</version>
     </parent>
     
-    <artifactId>public-api</artifactId>
-    <name>public-api</name>
+    <artifactId>simple-types</artifactId>
+    <name>simple-types</name>
 
-    <dependencies>
-        <dependency>
-            <groupId>CCC7</groupId>
-            <artifactId>simple-types</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
-    
 </project>

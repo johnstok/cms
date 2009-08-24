@@ -17,11 +17,11 @@ import java.util.UUID;
 
 import ccc.api.UserDelta;
 import ccc.api.UserSummary;
-import ccc.api.Username;
 import ccc.api.rest.UserNew;
 import ccc.api.rest.UserOwn;
 import ccc.api.rest.UserPasswordPU;
 import ccc.commands.CommandFailedException;
+import ccc.types.Username;
 
 
 /**

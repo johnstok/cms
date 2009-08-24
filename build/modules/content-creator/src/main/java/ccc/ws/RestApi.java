@@ -40,7 +40,6 @@ import ccc.api.TemplateDelta;
 import ccc.api.TemplateSummary;
 import ccc.api.UserDelta;
 import ccc.api.UserSummary;
-import ccc.api.Username;
 import ccc.api.rest.ActionNew;
 import ccc.api.rest.AliasNew;
 import ccc.api.rest.FolderDelta;
@@ -60,6 +59,7 @@ import ccc.commons.Registry;
 import ccc.domain.Failure;
 import ccc.services.Commands;
 import ccc.services.Queries;
+import ccc.types.Username;
 
 
 /**

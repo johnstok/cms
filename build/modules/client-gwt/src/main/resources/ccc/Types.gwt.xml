@@ -1,0 +1,3 @@
+<module>
+    <source path="types" excludes="EmailAddress.java" />
+</module>

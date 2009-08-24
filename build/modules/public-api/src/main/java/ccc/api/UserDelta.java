@@ -17,6 +17,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import ccc.types.Username;
+
 
 /**
  * A delta class, for updating an user.
