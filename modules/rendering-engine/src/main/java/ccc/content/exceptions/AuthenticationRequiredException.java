@@ -11,9 +11,9 @@
  */
 package ccc.content.exceptions;
 
-import ccc.api.DBC;
 import ccc.domain.CCCException;
 import ccc.domain.Resource;
+import ccc.types.DBC;
 
 
 /**

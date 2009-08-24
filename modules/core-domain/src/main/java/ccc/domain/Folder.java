@@ -15,13 +15,13 @@ package ccc.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import ccc.api.DBC;
 import ccc.api.Json;
 import ccc.api.JsonKeys;
 import ccc.api.Jsonable;
 import ccc.entities.IFolder;
 import ccc.entities.ResourceName;
 import ccc.snapshots.FolderSnapshot;
+import ccc.types.DBC;
 import ccc.types.ResourceType;
 
 

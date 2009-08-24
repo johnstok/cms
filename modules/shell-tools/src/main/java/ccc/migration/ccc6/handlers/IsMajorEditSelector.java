@@ -11,7 +11,7 @@
  */
 package ccc.migration.ccc6.handlers;
 
-import static ccc.api.DBC.*;
+import static ccc.types.DBC.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

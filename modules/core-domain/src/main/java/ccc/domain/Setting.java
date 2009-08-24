@@ -11,7 +11,7 @@
  */
 package ccc.domain;
 
-import ccc.api.DBC;
+import ccc.types.DBC;
 
 
 /**

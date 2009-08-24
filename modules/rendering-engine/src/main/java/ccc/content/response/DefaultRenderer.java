@@ -14,7 +14,6 @@ package ccc.content.response;
 
 import java.util.Map;
 
-import ccc.api.DBC;
 import ccc.api.template.StatefulReader;
 import ccc.domain.Resource;
 import ccc.rendering.NotFoundException;
@@ -22,6 +21,7 @@ import ccc.rendering.Response;
 import ccc.services.DataManager;
 import ccc.services.SearchEngine;
 import ccc.snapshots.ResourceSnapshot;
+import ccc.types.DBC;
 
 /**
  * Default implementation of the {@link Renderer} interface.

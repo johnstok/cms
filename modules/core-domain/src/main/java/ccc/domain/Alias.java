@@ -12,11 +12,11 @@
 package ccc.domain;
 
 import ccc.api.AliasDelta;
-import ccc.api.DBC;
 import ccc.api.ID;
 import ccc.api.Json;
 import ccc.api.JsonKeys;
 import ccc.snapshots.AliasSnapshot;
+import ccc.types.DBC;
 import ccc.types.ResourceType;
 
 

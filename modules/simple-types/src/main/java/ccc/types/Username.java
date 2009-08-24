@@ -16,12 +16,14 @@ import java.io.Serializable;
 
 /**
  * A username.
- * <p>
- * TODO: Add validation in constructor.
  *
  * @author Civic Computing Ltd.
  */
 public final class Username implements Serializable {
+
+    public static final String  VALID_CHARACTERS = "[\\w]*";
+    public static final int     MIN_LENGTH = 4;
+
     private String _value;
 
     @SuppressWarnings("unused") private Username() { super(); }
@@ -32,7 +34,9 @@ public final class Username implements Serializable {
      * @param value The username, represented as a string.
      */
     public Username(final String value) {
-//        DBC.require().notEmpty(value);
+        DBC.require().notEmpty(value);
+//        DBC.require().minLength(value, MIN_LENGTH);
+//        DBC.require().toMatch(VALID_CHARACTERS, value);
         _value = value;
     }
 

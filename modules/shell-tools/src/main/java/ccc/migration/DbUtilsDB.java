@@ -11,7 +11,7 @@
  */
 package ccc.migration;
 
-import static ccc.api.DBC.*;
+import static ccc.types.DBC.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

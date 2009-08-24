@@ -11,10 +11,10 @@
  */
 package ccc.api.rest;
 
-import ccc.api.DBC;
 import ccc.api.Json;
 import ccc.api.JsonKeys;
 import ccc.api.Jsonable;
+import ccc.types.DBC;
 
 
 

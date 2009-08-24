@@ -179,6 +179,7 @@ public class EmailAddress implements Serializable {
     public EmailAddress(final String newText) {
         super();
         setText(newText);
+//      DBC.require().toBeTrue(this.isValid());
     }
 
 

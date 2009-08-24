@@ -12,7 +12,7 @@
 
 package ccc.domain;
 
-import static ccc.api.DBC.*;
+import static ccc.types.DBC.*;
 
 import java.util.ArrayList;
 import java.util.Collection;

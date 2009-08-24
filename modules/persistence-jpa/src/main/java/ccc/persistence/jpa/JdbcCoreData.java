@@ -21,11 +21,11 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import ccc.api.DBC;
 import ccc.domain.CCCException;
 import ccc.domain.Data;
 import ccc.services.CoreData;
 import ccc.services.DataManager.StreamAction;
+import ccc.types.DBC;
 
 
 /**

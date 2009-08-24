@@ -11,9 +11,9 @@
  */
 package ccc.rendering;
 
-import ccc.api.DBC;
 import ccc.domain.CCCException;
 import ccc.domain.Resource;
+import ccc.types.DBC;
 
 
 /**

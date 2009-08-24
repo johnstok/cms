@@ -15,12 +15,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.api.DBC;
 import ccc.api.FileDelta;
 import ccc.api.ID;
 import ccc.api.MimeType;
 import ccc.entities.ResourceName;
 import ccc.snapshots.FileSnapshot;
+import ccc.types.DBC;
 import ccc.types.ResourceType;
 
 

@@ -11,10 +11,10 @@
  */
 package ccc.domain;
 
-import ccc.api.DBC;
 import ccc.api.MimeType;
 import ccc.api.TemplateDelta;
 import ccc.entities.ResourceName;
+import ccc.types.DBC;
 import ccc.types.ResourceType;
 
 

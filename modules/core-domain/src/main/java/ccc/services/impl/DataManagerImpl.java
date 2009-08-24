@@ -16,7 +16,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
-import ccc.api.DBC;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.entities.IData;
@@ -24,6 +23,7 @@ import ccc.services.CoreData;
 import ccc.services.Dao;
 import ccc.services.DataManager;
 import ccc.services.QueryNames;
+import ccc.types.DBC;
 
 
 /**

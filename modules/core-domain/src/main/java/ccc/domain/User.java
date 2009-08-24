@@ -11,7 +11,7 @@
  */
 package ccc.domain;
 
-import static ccc.api.DBC.*;
+import static ccc.types.DBC.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,9 +19,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import ccc.api.DBC;
 import ccc.api.Json;
 import ccc.api.JsonKeys;
+import ccc.types.DBC;
 import ccc.types.EmailAddress;
 
 
@@ -34,17 +34,14 @@ import ccc.types.EmailAddress;
  */
 public class User extends Entity {
 
-    /** VALID_CHARACTERS : String. */
-    public static final String  VALID_CHARACTERS = "[\\w]*";
     /** SYSTEM_USER : User. */
     public static final User SYSTEM_USER = new User("SYSTEM");
-    private static final int USERNAME_MIN_LENGTH = 4;
     private static final int MAXIMUM_DATUM_LENGTH = 1000;
     private static final int MAXIMUM_DATUM_KEY_LENGTH = 100;
 
-    private String _username;
+    private String _username; // FIXME: Use the Username class.
     private EmailAddress _email;
-    private Set<String> _roles = new HashSet<String>();
+    private Set<String> _roles = new HashSet<String>(); // FIXME: Use the Role class.
     private Map<String, String> _metadata = new HashMap<String, String>();
 
     /**
@@ -60,9 +57,6 @@ public class User extends Entity {
      */
     public User(final String username) {
         DBC.require().notEmpty(username);
-//        DBC.require().minLength(username, USERNAME_MIN_LENGTH);
-//        DBC.require().toMatch(VALID_CHARACTERS, username);
-
         _username = username;
     }
 
@@ -81,10 +75,6 @@ public class User extends Entity {
      * @param username The username.
      */
     public void username(final String username) {
-        DBC.require().notEmpty(username);
-        DBC.require().minLength(username, USERNAME_MIN_LENGTH);
-        DBC.require().toMatch(VALID_CHARACTERS, username);
-
         _username = username;
     }
 
@@ -96,7 +86,6 @@ public class User extends Entity {
      */
     public void email(final EmailAddress email) {
         DBC.require().notNull(email);
-//        DBC.require().toBeTrue(email.isValid());
         _email = email;
     }
 

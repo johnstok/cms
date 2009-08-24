@@ -13,10 +13,10 @@ package ccc.services.impl;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.DBC;
 import ccc.domain.LogEntry;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
+import ccc.types.DBC;
 
 
 /**

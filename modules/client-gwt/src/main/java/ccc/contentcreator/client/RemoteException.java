@@ -11,8 +11,8 @@
  */
 package ccc.contentcreator.client;
 
-import ccc.api.DBC;
 import ccc.contentcreator.overlays.FailureOverlay;
+import ccc.types.DBC;
 import ccc.types.FailureCode;
 
 
