@@ -14,8 +14,6 @@ package ccc.content.response;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 import ccc.api.DBC;
 import ccc.api.template.StatefulReader;
 import ccc.domain.Resource;
@@ -33,9 +31,6 @@ import ccc.snapshots.ResourceSnapshot;
 public class DefaultRenderer
     implements
         Renderer {
-
-    private static final Logger LOG =
-        Logger.getLogger(DefaultRenderer.class.getName());
 
     private final DataManager _dm;
     private final SearchEngine _search;
@@ -72,11 +67,11 @@ public class DefaultRenderer
         if (resource == null) {
             throw new NotFoundException();
         }
-        return render_(resource.forCurrentRevision(), parameters);
+        return renderResourceSnaphot(resource.forCurrentRevision(), parameters);
     }
 
 
-    private Response render_(final ResourceSnapshot resource,
+    private Response renderResourceSnaphot(final ResourceSnapshot resource,
                              final Map<String, String[]> parameters) {
 
         if (resource == null) {
@@ -102,7 +97,7 @@ public class DefaultRenderer
                 ? resource.forCurrentRevision()
                 : resource.forWorkingCopy();
 
-        return render_(r, parameters);
+        return renderResourceSnaphot(r, parameters);
     }
 
 
@@ -142,6 +137,6 @@ public class DefaultRenderer
             }
         }
 
-        return render_(snapshot, parameters);
+        return renderResourceSnaphot(snapshot, parameters);
     }
 }

@@ -129,6 +129,7 @@ public class RenderResourceAction
      * Look up a resource given its path.
      *
      * @param contentPath The resource path.
+     * @param rdao The resource DAO.
      *
      * @return The corresponding resource.
      */
