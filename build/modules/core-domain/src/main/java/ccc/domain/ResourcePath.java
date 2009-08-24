@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import ccc.api.DBC;
 import ccc.entities.ResourceName;
+import ccc.types.DBC;
 
 
 /**

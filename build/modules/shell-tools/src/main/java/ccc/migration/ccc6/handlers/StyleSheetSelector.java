@@ -3,7 +3,7 @@ package ccc.migration.ccc6.handlers;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import ccc.api.DBC;
+import ccc.types.DBC;
 
 /**
  * A SQL query that retrieves CCC6 style sheet code for a resource.

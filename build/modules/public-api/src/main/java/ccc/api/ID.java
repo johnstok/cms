@@ -14,6 +14,7 @@ package ccc.api;
 import java.io.Serializable;
 
 import ccc.annotations.ValueObject;
+import ccc.types.DBC;
 
 
 /**

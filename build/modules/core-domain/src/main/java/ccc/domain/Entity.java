@@ -15,10 +15,10 @@ package ccc.domain;
 import java.io.Serializable;
 import java.util.UUID;
 
-import ccc.api.DBC;
 import ccc.api.Json;
 import ccc.api.JsonKeys;
 import ccc.api.Jsonable;
+import ccc.types.DBC;
 
 
 /**

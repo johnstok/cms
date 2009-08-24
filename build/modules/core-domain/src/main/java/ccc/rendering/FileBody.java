@@ -14,10 +14,10 @@ package ccc.rendering;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
-import ccc.api.DBC;
 import ccc.domain.File;
 import ccc.services.DataManager;
 import ccc.snapshots.FileSnapshot;
+import ccc.types.DBC;
 
 
 /**

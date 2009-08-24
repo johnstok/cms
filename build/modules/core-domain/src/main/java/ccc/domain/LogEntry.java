@@ -11,7 +11,7 @@
  */
 package ccc.domain;
 
-import static ccc.api.DBC.*;
+import static ccc.types.DBC.*;
 
 import java.util.Date;
 import java.util.UUID;

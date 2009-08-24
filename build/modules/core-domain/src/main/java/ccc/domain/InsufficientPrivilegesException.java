@@ -11,9 +11,9 @@
  */
 package ccc.domain;
 
-import ccc.api.DBC;
 import ccc.commands.CommandFailedException;
 import ccc.types.CommandType;
+import ccc.types.DBC;
 import ccc.types.FailureCode;
 
 

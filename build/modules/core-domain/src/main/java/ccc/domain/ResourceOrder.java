@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import ccc.api.DBC;
+import ccc.types.DBC;
 
 
 /**

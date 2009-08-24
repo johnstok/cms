@@ -15,7 +15,7 @@ package ccc.entities;
 import java.io.Serializable;
 import java.util.UUID;
 
-import ccc.api.DBC;
+import ccc.types.DBC;
 
 
 /**

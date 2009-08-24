@@ -11,13 +11,14 @@
  */
 package ccc.api;
 
-import static ccc.api.DBC.*;
+import static ccc.types.DBC.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import ccc.types.DBC;
 import ccc.types.ParagraphType;
 
 

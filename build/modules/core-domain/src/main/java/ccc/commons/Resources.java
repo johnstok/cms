@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import ccc.api.DBC;
 import ccc.domain.CCCException;
+import ccc.types.DBC;
 
 
 /**

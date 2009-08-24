@@ -14,10 +14,10 @@ package ccc.domain;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.api.DBC;
 import ccc.api.Json;
 import ccc.api.JsonKeys;
 import ccc.entities.ResourceName;
+import ccc.types.DBC;
 
 
 

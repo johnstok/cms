@@ -15,12 +15,12 @@ package ccc.domain;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import ccc.api.DBC;
 import ccc.api.PageDelta;
 import ccc.api.Paragraph;
 import ccc.commons.WordCharFixer;
 import ccc.entities.ResourceName;
 import ccc.snapshots.PageSnapshot;
+import ccc.types.DBC;
 import ccc.types.ParagraphType;
 import ccc.types.ResourceType;
 

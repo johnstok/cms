@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.commons;
+package ccc.types;
 
 import ccc.types.EmailAddress;
 import junit.framework.TestCase;

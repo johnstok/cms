@@ -13,7 +13,7 @@ package ccc.commons;
 
 import java.util.HashMap;
 
-import ccc.api.DBC;
+import ccc.types.DBC;
 
 
 /**

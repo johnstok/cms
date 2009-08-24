@@ -13,11 +13,11 @@ package ccc.api.rest;
 
 import java.util.Collection;
 
-import ccc.api.DBC;
 import ccc.api.ID;
 import ccc.api.Json;
 import ccc.api.JsonKeys;
 import ccc.api.Jsonable;
+import ccc.types.DBC;
 
 
 /**
