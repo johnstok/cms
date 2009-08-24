@@ -22,7 +22,7 @@ import java.util.Set;
 import ccc.api.DBC;
 import ccc.api.Json;
 import ccc.api.JsonKeys;
-import ccc.commons.EmailAddress;
+import ccc.types.EmailAddress;
 
 
 /**

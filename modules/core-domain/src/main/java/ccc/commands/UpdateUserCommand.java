@@ -16,12 +16,12 @@ import java.util.UUID;
 
 import ccc.api.CommandType;
 import ccc.api.UserDelta;
-import ccc.commons.EmailAddress;
 import ccc.domain.LogEntry;
 import ccc.domain.Snapshot;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
+import ccc.types.EmailAddress;
 
 
 /**

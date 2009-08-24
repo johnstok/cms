@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import junit.framework.TestCase;
-import ccc.commons.EmailAddress;
+import ccc.types.EmailAddress;
 
 
 /**

@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import ccc.api.UserDelta;
-import ccc.api.Username;
 import ccc.contentcreator.actions.CreateUserAction_;
 import ccc.contentcreator.actions.UniqueUsernameAction;
 import ccc.contentcreator.api.ActionNameConstants;
@@ -28,6 +27,7 @@ import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validator;
 import ccc.contentcreator.views.ICreateUserDialog;
+import ccc.types.Username;
 
 import com.google.gwt.http.client.Response;
 

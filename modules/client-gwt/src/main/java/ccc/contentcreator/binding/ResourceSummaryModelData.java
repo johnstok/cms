@@ -23,7 +23,7 @@ import ccc.api.ID;
 import ccc.api.JsonKeys;
 import ccc.api.ResourceSummary;
 import ccc.api.ResourceType;
-import ccc.api.Username;
+import ccc.types.Username;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.google.gwt.json.client.JSONObject;

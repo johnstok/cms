@@ -9,11 +9,9 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api;
+package ccc.types;
 
 import java.io.Serializable;
-
-import ccc.annotations.ValueObject;
 
 
 /**
@@ -23,7 +21,6 @@ import ccc.annotations.ValueObject;
  *
  * @author Civic Computing Ltd.
  */
-@ValueObject
 public final class Username implements Serializable {
     private String _value;
 
@@ -35,7 +32,7 @@ public final class Username implements Serializable {
      * @param value The username, represented as a string.
      */
     public Username(final String value) {
-        DBC.require().notEmpty(value);
+//        DBC.require().notEmpty(value);
         _value = value;
     }
 

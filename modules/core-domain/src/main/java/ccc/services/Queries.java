@@ -33,7 +33,7 @@ import ccc.api.TemplateDelta;
 import ccc.api.TemplateSummary;
 import ccc.api.UserDelta;
 import ccc.api.UserSummary;
-import ccc.api.Username;
+import ccc.types.Username;
 
 
 /**

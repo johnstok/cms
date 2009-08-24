@@ -41,7 +41,7 @@
             type="string"
             length="255" />
         
-        <component name="_email" class="ccc.commons.EmailAddress">
+        <component name="_email" class="ccc.types.EmailAddress">
             <property name="_text" column="email" not-null="true" type="string" length="512" />
         </component>
             
