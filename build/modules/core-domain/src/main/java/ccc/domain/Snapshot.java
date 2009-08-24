@@ -403,8 +403,8 @@ public class Snapshot implements Serializable, Json {
             }
 
             final Map<String, String> stringMap = new HashMap<String, String>();
-            for (final Iterator<String> mapIterator = o.keys(); mapIterator.hasNext();) {
-                final String mapKey = mapIterator.next();
+            for (final Iterator<String> i = o.keys(); i.hasNext();) {
+                final String mapKey = i.next();
                 final String mapValue = (String) fixNull(o.get(mapKey));
                 stringMap.put(mapKey, mapValue);
             }

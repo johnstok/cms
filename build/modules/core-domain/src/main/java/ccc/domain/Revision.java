@@ -19,6 +19,7 @@ import java.util.Date;
  * TODO: Add a description for this type.
  *
  * @author Civic Computing Ltd.
+ * @param <T>
  */
 public abstract class Revision<T> extends Entity {
     private Date _timestamp;
@@ -32,11 +33,10 @@ public abstract class Revision<T> extends Entity {
     /**
      * Constructor.
      *
-     * @param index
-     * @param timestamp
-     * @param actor
-     * @param majorChange
-     * @param comment
+     * @param timestamp The timestamp of the revision.
+     * @param actor The user causing the change.
+     * @param majorChange The boolean flag of the major change.
+     * @param comment The comment of the revision.
      */
     protected Revision(final Date timestamp,
                        final User actor,

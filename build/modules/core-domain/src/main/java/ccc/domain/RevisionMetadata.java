@@ -30,10 +30,10 @@ public final class RevisionMetadata {
     /**
      * Constructor.
      *
-     * @param timestamp
-     * @param actor
-     * @param majorChange
-     * @param comment
+     * @param timestamp The timestamp of the revision.
+     * @param actor The user causing the change.
+     * @param majorChange The boolean flag of the major change.
+     * @param comment The comment of the revision.
      */
     public RevisionMetadata(final Date timestamp,
                             final User actor,

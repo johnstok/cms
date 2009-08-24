@@ -37,11 +37,13 @@ public class TemplateRevision
     /**
      * Constructor.
      *
-     * @param majorChange
-     * @param comment
-     * @param body
-     * @param definition
-     * @param mimeType
+     * @param timestamp The timestamp of the revision.
+     * @param actor The user causing the change.
+     * @param majorChange The boolean flag of the major change.
+     * @param comment The comment of the revision.
+     * @param body The body of the template.
+     * @param definition The XML definition of the template.
+     * @param mimeType The mime type for the template.
      */
     TemplateRevision(final Date timestamp,
                      final User actor,
