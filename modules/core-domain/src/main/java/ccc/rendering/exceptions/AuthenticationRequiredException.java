@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.content.exceptions;
+package ccc.rendering.exceptions;
 
 import ccc.domain.CCCException;
 import ccc.domain.Resource;
