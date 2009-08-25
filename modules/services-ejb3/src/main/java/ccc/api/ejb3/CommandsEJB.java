@@ -83,7 +83,6 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceExistsException;
 import ccc.domain.ResourceOrder;
 import ccc.domain.User;
-import ccc.entities.ResourceName;
 import ccc.persistence.jpa.BaseDao;
 import ccc.persistence.jpa.FsCoreData;
 import ccc.services.AuditLog;
@@ -97,6 +96,7 @@ import ccc.types.CommandType;
 import ccc.types.Duration;
 import ccc.types.ID;
 import ccc.types.Paragraph;
+import ccc.types.ResourceName;
 
 
 /**

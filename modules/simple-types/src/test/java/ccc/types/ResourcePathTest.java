@@ -10,11 +10,12 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.domain;
+package ccc.types;
 
 import java.util.List;
 
-import ccc.entities.ResourceName;
+import ccc.types.ResourceName;
+import ccc.types.ResourcePath;
 
 import junit.framework.TestCase;
 

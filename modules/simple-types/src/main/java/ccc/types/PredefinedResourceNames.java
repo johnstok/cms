@@ -10,7 +10,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.domain;
+package ccc.types;
 
 /**
  * A list of resource names for predefined resources.

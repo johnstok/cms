@@ -2,7 +2,7 @@ package ccc.cli;
 
 
 
-import static ccc.domain.PredefinedResourceNames.*;
+import static ccc.types.PredefinedResourceNames.*;
 
 import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;

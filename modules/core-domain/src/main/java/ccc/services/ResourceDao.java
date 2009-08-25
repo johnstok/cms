@@ -16,9 +16,9 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.domain.Resource;
-import ccc.domain.ResourcePath;
 import ccc.domain.Revision;
 import ccc.domain.User;
+import ccc.types.ResourcePath;
 
 
 /**

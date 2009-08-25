@@ -24,10 +24,10 @@ import ccc.domain.Page;
 import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
-import ccc.entities.ResourceName;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
 import ccc.types.Paragraph;
+import ccc.types.ResourceName;
 
 
 /**

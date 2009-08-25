@@ -11,9 +11,9 @@
  */
 package ccc.domain;
 
-import ccc.entities.ResourceName;
 import ccc.serialization.Json;
 import ccc.serialization.Jsonable;
+import ccc.types.ResourceName;
 import ccc.types.ResourceType;
 
 /**

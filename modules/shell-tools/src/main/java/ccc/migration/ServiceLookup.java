@@ -11,12 +11,12 @@
  */
 package ccc.migration;
 
-import ccc.api.Scheduler;
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
 import ccc.services.ActionDao;
 import ccc.services.Commands;
 import ccc.services.Queries;
+import ccc.services.Scheduler;
 import ccc.services.SearchEngine;
 
 

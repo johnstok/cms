@@ -16,11 +16,11 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.FileDelta;
-import ccc.entities.ResourceName;
 import ccc.snapshots.FileSnapshot;
 import ccc.types.DBC;
 import ccc.types.ID;
 import ccc.types.MimeType;
+import ccc.types.ResourceName;
 import ccc.types.ResourceType;
 
 

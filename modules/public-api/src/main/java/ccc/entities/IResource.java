@@ -15,6 +15,8 @@ package ccc.entities;
 import java.util.Date;
 import java.util.Set;
 
+import ccc.types.ResourceName;
+
 
 /**
  * TODO: Add a description for this type.

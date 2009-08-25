@@ -14,9 +14,9 @@ package ccc.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import ccc.entities.ResourceName;
 import ccc.serialization.Jsonable;
 import ccc.types.DBC;
+import ccc.types.ResourceName;
 
 
 

@@ -17,11 +17,11 @@ import java.util.HashSet;
 
 import ccc.api.PageDelta;
 import ccc.commons.WordCharFixer;
-import ccc.entities.ResourceName;
 import ccc.snapshots.PageSnapshot;
 import ccc.types.DBC;
 import ccc.types.Paragraph;
 import ccc.types.ParagraphType;
+import ccc.types.ResourceName;
 import ccc.types.ResourceType;
 
 

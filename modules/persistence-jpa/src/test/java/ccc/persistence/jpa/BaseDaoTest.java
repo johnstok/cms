@@ -24,7 +24,7 @@ import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
-import ccc.entities.ResourceName;
+import ccc.types.ResourceName;
 
 
 /**

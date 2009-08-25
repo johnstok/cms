@@ -38,11 +38,9 @@ import org.apache.lucene.document.Field;
 import org.pdfbox.pdmodel.PDDocument;
 import org.pdfbox.util.PDFTextStripper;
 
-import ccc.api.Scheduler;
 import ccc.commons.SearchResult;
 import ccc.domain.File;
 import ccc.domain.Page;
-import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
 import ccc.persistence.jpa.BaseDao;
 import ccc.persistence.jpa.FsCoreData;
@@ -56,11 +54,13 @@ import ccc.services.Dao;
 import ccc.services.DataManager;
 import ccc.services.QueryNames;
 import ccc.services.ResourceDao;
+import ccc.services.Scheduler;
 import ccc.services.SearchEngine;
 import ccc.services.impl.DataManagerImpl;
 import ccc.services.impl.ResourceDaoImpl;
 import ccc.types.Paragraph;
 import ccc.types.ParagraphType;
+import ccc.types.PredefinedResourceNames;
 
 
 /**

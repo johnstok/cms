@@ -16,9 +16,9 @@ import java.util.HashMap;
 
 import junit.framework.TestCase;
 import ccc.api.FileDelta;
-import ccc.entities.ResourceName;
 import ccc.types.ID;
 import ccc.types.MimeType;
+import ccc.types.ResourceName;
 
 
 /**

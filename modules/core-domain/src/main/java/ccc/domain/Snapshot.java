@@ -38,6 +38,7 @@ import ccc.types.ID;
 /**
  * A snapshot is used to represent relevant details of a resource at a given
  * point in time.
+ * FIXME: Rename and describe correctly.
  *
  * @author Civic Computing Ltd.
  */

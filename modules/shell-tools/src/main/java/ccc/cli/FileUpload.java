@@ -21,11 +21,11 @@ import org.kohsuke.args4j.Option;
 import ccc.cli.fileupload.CccServer;
 import ccc.cli.fileupload.Server;
 import ccc.commands.CommandFailedException;
-import ccc.domain.ResourcePath;
 import ccc.migration.FileUploader;
 import ccc.migration.ServiceLookup;
 import ccc.services.Commands;
 import ccc.services.Queries;
+import ccc.types.ResourcePath;
 
 
 

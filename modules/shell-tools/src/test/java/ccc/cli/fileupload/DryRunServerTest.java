@@ -15,7 +15,7 @@ import java.io.File;
 import java.util.UUID;
 
 import junit.framework.TestCase;
-import ccc.domain.ResourcePath;
+import ccc.types.ResourcePath;
 
 
 /**

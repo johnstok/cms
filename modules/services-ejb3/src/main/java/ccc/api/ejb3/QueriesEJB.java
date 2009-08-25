@@ -42,13 +42,10 @@ import ccc.domain.Alias;
 import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.Page;
-import ccc.domain.PredefinedResourceNames;
 import ccc.domain.Resource;
 import ccc.domain.ResourceOrder;
-import ccc.domain.ResourcePath;
 import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.entities.ResourceName;
 import ccc.persistence.jpa.BaseDao;
 import ccc.services.ActionDao;
 import ccc.services.ModelTranslation;
@@ -61,6 +58,9 @@ import ccc.services.impl.ResourceDaoImpl;
 import ccc.services.impl.UserManagerImpl;
 import ccc.types.Duration;
 import ccc.types.ID;
+import ccc.types.PredefinedResourceNames;
+import ccc.types.ResourceName;
+import ccc.types.ResourcePath;
 import ccc.types.Username;
 
 

@@ -29,8 +29,8 @@ import javax.sql.DataSource;
 import junit.framework.TestCase;
 import ccc.commons.MapRegistry;
 import ccc.commons.Registry;
-import ccc.domain.CreatorRoles;
 import ccc.domain.User;
+import ccc.types.CreatorRoles;
 
 
 /**

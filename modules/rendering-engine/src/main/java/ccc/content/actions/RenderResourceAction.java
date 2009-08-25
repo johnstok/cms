@@ -29,7 +29,6 @@ import ccc.content.response.Renderer;
 import ccc.content.velocity.VelocityProcessor;
 import ccc.domain.CCCException;
 import ccc.domain.Resource;
-import ccc.domain.ResourcePath;
 import ccc.domain.User;
 import ccc.rendering.NotFoundException;
 import ccc.rendering.RedirectRequiredException;
@@ -39,6 +38,7 @@ import ccc.services.DataManager;
 import ccc.services.ResourceDao;
 import ccc.services.SearchEngine;
 import ccc.services.impl.ResourceDaoImpl;
+import ccc.types.ResourcePath;
 
 
 /**

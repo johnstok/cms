@@ -27,12 +27,12 @@ import junit.framework.TestCase;
 import ccc.content.actions.RenderResourceAction;
 import ccc.content.response.Renderer;
 import ccc.content.velocity.VelocityProcessor;
-import ccc.domain.ResourcePath;
 import ccc.rendering.Body;
 import ccc.rendering.NotFoundException;
 import ccc.rendering.Response;
 import ccc.rendering.TextProcessor;
 import ccc.services.ResourceDao;
+import ccc.types.ResourcePath;
 
 /**
  * Tests for the {@link RenderResourceAction} class.
@@ -60,7 +60,7 @@ public final class ContentServletTest extends TestCase {
             fail("Should throw exception.");
 
         // ASSERT
-        } catch (final NotFoundException e) {
+        } catch (final IllegalArgumentException e) {
             swallow(e);
         }
         verifyAll();

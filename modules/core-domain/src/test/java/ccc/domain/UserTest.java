@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import junit.framework.TestCase;
+import ccc.types.CreatorRoles;
 import ccc.types.EmailAddress;
 
 

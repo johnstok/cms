@@ -12,9 +12,9 @@
 package ccc.domain;
 
 import ccc.api.TemplateDelta;
-import ccc.entities.ResourceName;
 import ccc.types.DBC;
 import ccc.types.MimeType;
+import ccc.types.ResourceName;
 import ccc.types.ResourceType;
 
 

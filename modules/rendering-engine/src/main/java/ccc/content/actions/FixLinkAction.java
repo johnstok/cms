@@ -20,10 +20,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ccc.domain.Resource;
-import ccc.entities.ResourceName;
 import ccc.services.Dao;
 import ccc.services.ResourceDao;
 import ccc.services.impl.ResourceDaoImpl;
+import ccc.types.ResourceName;
 
 
 /**

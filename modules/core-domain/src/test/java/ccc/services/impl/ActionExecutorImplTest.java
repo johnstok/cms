@@ -23,12 +23,12 @@ import ccc.domain.Page;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
-import ccc.entities.ResourceName;
 import ccc.services.Commands;
 import ccc.types.ActionStatus;
 import ccc.types.CommandType;
 import ccc.types.FailureCode;
 import ccc.types.ID;
+import ccc.types.ResourceName;
 
 
 /**

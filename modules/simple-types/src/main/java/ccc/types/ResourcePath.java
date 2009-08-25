@@ -9,7 +9,7 @@
  * Changes: see subversion log
  *-----------------------------------------------------------------------------
  */
-package ccc.domain;
+package ccc.types;
 
 import static java.util.Collections.*;
 
@@ -17,9 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import ccc.entities.ResourceName;
-import ccc.types.DBC;
 
 
 /**
@@ -52,7 +49,7 @@ public final class ResourcePath {
         Matcher m = PATH_PATTERN.matcher(pathString);
 
         if (!m.matches()) {
-            throw new CCCException(
+            throw new IllegalArgumentException(
                 pathString
                 +" does not match the regular expression: "
                 +PATH_PATTERN);
