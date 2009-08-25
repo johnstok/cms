@@ -15,11 +15,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
 
-import ccc.api.UserDelta;
 import ccc.api.UserSummary;
-import ccc.api.rest.UserNew;
-import ccc.api.rest.UserOwn;
-import ccc.api.rest.UserPasswordPU;
 import ccc.commands.CommandFailedException;
 import ccc.types.Username;
 
@@ -46,7 +42,7 @@ public class UserManagementAcceptanceTest
 
         // ACT
         _commands.updateUserPassword(
-            us.getId(), new UserPasswordPU("Another00-"));
+            us.getId(), new UserSummary("Another00-"));
 
         // ASSERT
         assertFalse(
@@ -122,14 +118,14 @@ public class UserManagementAcceptanceTest
         // ACT
         _commands.updateUser(
             us.getId(),
-            new UserDelta(
+            new UserSummary(
                 email,
                 username,
                 Collections.singleton("a2"),
                 Collections.singletonMap("key2", "value2")));
 
         // ASSERT
-        final UserDelta ud = _queries.userDelta(us.getId());
+        final UserSummary ud = _queries.userDelta(us.getId());
 //        assertEquals(username, ud.getUsername());
         assertEquals(email, ud.getEmail());
         assertEquals(1, ud.getRoles().size());
@@ -149,13 +145,12 @@ public class UserManagementAcceptanceTest
         final String email = username+"@abc.def";
 
         // Create the user
-        final UserNew u =
-            new UserNew(
-                new UserDelta(
-                    email,
-                    username,
-                    Collections.singleton("a"),
-                    Collections.singletonMap("key", "value")),
+        final UserSummary u =
+            new UserSummary(
+                email,
+                username,
+                Collections.singleton("a"),
+                Collections.singletonMap("key", "value"),
                 "Testtest00-");
 
 
@@ -180,7 +175,7 @@ public class UserManagementAcceptanceTest
         final String password = "test Test00-"+username;
 
         UserSummary user = _queries.loggedInUser();
-        final UserOwn uo =new UserOwn(email, "test Test00-"+username);
+        final UserSummary uo =new UserSummary(email, "test Test00-"+username);
 
         // ACT
         _commands.updateYourUser(user.getId(), uo);
@@ -201,13 +196,12 @@ public class UserManagementAcceptanceTest
         final String email = username+"@abc.def";
 
         // Create the user
-        final UserNew u =
-            new UserNew(
-                new UserDelta(
-                    email,
-                    username,
-                    Collections.singleton("CONTENT_CREATOR"),
-                    Collections.singletonMap("key", "value")),
+        final UserSummary u =
+            new UserSummary(
+                email,
+                username,
+                Collections.singleton("CONTENT_CREATOR"),
+                Collections.singletonMap("key", "value"),
                 "Testtest00-");
 
         return _commands.createUser(u);

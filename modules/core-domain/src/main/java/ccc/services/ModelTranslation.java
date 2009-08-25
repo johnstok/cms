@@ -27,7 +27,6 @@ import ccc.api.PageDelta;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
 import ccc.api.TemplateSummary;
-import ccc.api.UserDelta;
 import ccc.api.UserSummary;
 import ccc.domain.Action;
 import ccc.domain.Alias;
@@ -261,9 +260,9 @@ public class ModelTranslation {
      * @param user The user.
      * @return A corresponding summary.
      */
-    protected UserDelta deltaUser(final User user) {
-        final UserDelta delta =
-            new UserDelta(
+    protected UserSummary deltaUser(final User user) {
+        final UserSummary delta =
+            new UserSummary(
                 user.email().getText(),
                 new Username(user.username()),
                 user.roles(),

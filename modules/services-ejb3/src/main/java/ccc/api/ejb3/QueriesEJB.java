@@ -39,7 +39,6 @@ import ccc.api.PageDelta;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
 import ccc.api.TemplateSummary;
-import ccc.api.UserDelta;
 import ccc.api.UserSummary;
 import ccc.domain.Alias;
 import ccc.domain.File;
@@ -238,7 +237,7 @@ public final class QueriesEJB
 
     /** {@inheritDoc} */
     @Override
-    public UserDelta userDelta(final ID userId) {
+    public UserSummary userDelta(final ID userId) {
         return
             deltaUser(_users.find(toUUID(userId)));
     }

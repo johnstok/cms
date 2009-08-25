@@ -163,9 +163,13 @@ public class Snapshot implements Serializable, Json {
     public void setStrings(final String key,
                            final Collection<String> value) {
         try {
-            _detail.put(key, new JSONArray());
-            for (final String o : value) {
-                _detail.append(key, o);
+            if (null==value) {
+                _detail.put(key, NULL);
+            } else {
+                _detail.put(key, new JSONArray());
+                for (final String o : value) {
+                    _detail.append(key, o);
+                }
             }
         } catch (final JSONException e) {
             throw new InvalidSnapshotException(e);

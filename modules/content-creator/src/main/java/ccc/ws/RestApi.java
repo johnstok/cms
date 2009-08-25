@@ -37,7 +37,6 @@ import ccc.api.Paragraph;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
 import ccc.api.TemplateSummary;
-import ccc.api.UserDelta;
 import ccc.api.UserSummary;
 import ccc.api.rest.ActionNew;
 import ccc.api.rest.AliasNew;
@@ -48,9 +47,6 @@ import ccc.api.rest.ResourceCacheDurationPU;
 import ccc.api.rest.ResourceRevisionPU;
 import ccc.api.rest.ResourceTemplatePU;
 import ccc.api.rest.TemplateNew;
-import ccc.api.rest.UserNew;
-import ccc.api.rest.UserOwn;
-import ccc.api.rest.UserPasswordPU;
 import ccc.commands.CommandFailedException;
 import ccc.commons.CCCProperties;
 import ccc.commons.JNDI;
@@ -338,7 +334,7 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public UserDelta userDelta(final ID userId) {
+    public UserSummary userDelta(final ID userId) {
         return getQueries().userDelta(userId);
     }
 
@@ -367,8 +363,8 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public UserSummary createUser(final UserNew user) throws CommandFailedException {
-        return getCommands().createUser(user.getDelta(), user.getPassword());
+    public UserSummary createUser(final UserSummary user) throws CommandFailedException {
+        return getCommands().createUser(user);
     }
 
 
@@ -409,7 +405,7 @@ public class RestApi
     /** {@inheritDoc} */
     @Override
     public void updateUserPassword(final ID userId,
-                                   final UserPasswordPU pu) throws CommandFailedException {
+                                   final UserSummary pu) throws CommandFailedException {
         getCommands().updateUserPassword(userId, pu.getPassword());
     }
 
@@ -592,7 +588,7 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public void updateUser(final ID userId, final UserDelta delta) throws CommandFailedException {
+    public void updateUser(final ID userId, final UserSummary delta) throws CommandFailedException {
         getCommands().updateUser(userId, delta);
     }
 
@@ -612,7 +608,7 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public void updateYourUser(final ID userId, final UserOwn user) throws CommandFailedException {
+    public void updateYourUser(final ID userId, final UserSummary user) throws CommandFailedException {
         getCommands().updateYourUser(userId, user.getEmail(), user.getPassword());
     }
 }

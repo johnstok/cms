@@ -13,7 +13,7 @@ package ccc.commands;
 
 import java.util.Date;
 
-import ccc.api.UserDelta;
+import ccc.api.UserSummary;
 import ccc.domain.LogEntry;
 import ccc.domain.Password;
 import ccc.domain.Snapshot;
@@ -57,15 +57,15 @@ public class CreateUserCommand {
      */
     public User execute(final User actor,
                         final Date happenedOn,
-                        final UserDelta delta,
-                        final String password) {
+                        final UserSummary delta) {
         final User user = new User(delta.getUsername().toString());
         user.email(new EmailAddress(delta.getEmail()));
         user.roles(delta.getRoles());
         user.addMetadata(delta.getMetadata());
         _dao.create(user);
 
-        final Password defaultPassword = new Password(user, password);
+        final Password defaultPassword =
+            new Password(user, delta.getPassword());
         _dao.create(defaultPassword);
 
         _audit.record(

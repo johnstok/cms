@@ -57,27 +57,26 @@ public class UserMigration {
      * @throws CommandFailedException If an error occurs during migration.
      */
     void migrateUsers() throws CommandFailedException {
-        final Map<Integer, ExistingUser> mus = _legacyQueries.selectUsers();
-        for (final Map.Entry<Integer, ExistingUser> mu : mus.entrySet()) {
+        final Map<Integer, UserSummary> mus = _legacyQueries.selectUsers();
+        for (final Map.Entry<Integer, UserSummary> mu : mus.entrySet()) {
             try {
                 // TODO: improve reporting
-                final ExistingUser ud = mu.getValue();
+                final UserSummary ud = mu.getValue();
 
                 if (null == ud.getPassword()) {
                     log.warn(
-                        "User: "+ud.getUser().getUsername()
-                        +" has null password.");
+                        "User: "+ud.getUsername() + " has null password.");
                 } else if (ud.getPassword().equals(
-                               ud.getUser().getUsername().toString())) {
-                    log.warn("User: "+ud.getUser().getUsername()
+                               ud.getUsername().toString())) {
+                    log.warn("User: "+ud.getUsername()
                         +" has username as a password.");
                 } else if (ud.getPassword().length() < MIN_PW_LENGTH) {
-                    log.warn("User: "+ud.getUser().getUsername()
+                    log.warn("User: "+ud.getUsername()
                         +" has password with less than 6 characters.");
                 }
 
                 final UserSummary u =
-                    _commands.createUser(ud.getUser(), ud.getPassword());
+                    _commands.createUser(ud);
                 _users.put(mu.getKey(), u);
             } catch (final RuntimeException e) {
                 log.warn(

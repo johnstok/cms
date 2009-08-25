@@ -15,7 +15,10 @@ package ccc.api;
 import static ccc.api.JsonKeys.*;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import ccc.types.Username;
@@ -31,6 +34,8 @@ public final class UserSummary implements Serializable, Jsonable {
     private ID _id;
     private Username _username;
     private HashSet<String> _roles;
+    private Map<String, String> _metadata;
+    private String _password;
 
     @SuppressWarnings("unused") private UserSummary() { super(); }
 
@@ -61,9 +66,75 @@ public final class UserSummary implements Serializable, Jsonable {
     public UserSummary(final Json json) {
         _id = json.getId(ID);
         _email = json.getString(EMAIL);
-        _username = new Username(json.getString(USERNAME));
-        _roles = new HashSet<String>(json.getStrings(ROLES));
+        _password = json.getString(PASSWORD);
+
+        final String un = json.getString(USERNAME);
+        _username = (null==un) ? null : new Username(un);
+
+        final Collection<String> r = json.getStrings(ROLES);
+        _roles = (null==r) ? null : new HashSet<String>(r);
+
+        final Map<String, String> md = json.getStringMap(METADATA);
+        _metadata =
+            (null==md)
+                ? new HashMap<String, String>()
+                : new HashMap<String, String>(md);
     }
+
+
+    /**
+     * Constructor.
+     *
+     * @param email The user's email.
+     * @param username The user's username.
+     * @param roles The user's roles.
+     * @param metadata The user's metadata.
+     */
+    public UserSummary(final String email,
+                       final Username username,
+                       final Set<String> roles,
+                       final Map<String, String> metadata) {
+        _email = email;
+        _username = username;
+        _roles = new HashSet<String>(roles);
+        _metadata = new HashMap<String, String>(metadata);
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param password The user's password.
+     */
+    public UserSummary(final String password) {
+        _password = password;
+    }
+
+
+    /**
+     * Constructor.
+     */
+    public UserSummary(final String email,
+                       final Username username,
+                       final Set<String> roles,
+                       final Map<String, String> metadata,
+                       final String password) {
+        _email = email;
+        _username = username;
+        _roles = new HashSet<String>(roles);
+        _metadata = metadata;
+        _password = password;
+    }
+
+
+    /**
+     * Constructor.
+     */
+    public UserSummary(final String email, final String password) {
+        _email = email;
+        _password = password;
+    }
+
 
     /**
      * Accessor.
@@ -104,12 +175,94 @@ public final class UserSummary implements Serializable, Jsonable {
         return _roles;
     }
 
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the metadata.
+     */
+    public Map<String, String> getMetadata() {
+        return _metadata;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param metadata The metadata to set.
+     */
+    public void setMetadata(final Map<String, String> metadata) {
+        _metadata = new HashMap<String, String>(metadata);
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param email The email to set.
+     */
+    public void setEmail(final String email) {
+        _email = email;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param id The id to set.
+     */
+    public void setId(final ID id) {
+        _id = id;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param username The username to set.
+     */
+    public void setUsername(final Username username) {
+        _username = username;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param roles The roles to set.
+     */
+    public void setRoles(final Set<String> roles) {
+        _roles = new HashSet<String>(roles);
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the password.
+     */
+    public String getPassword() {
+        return _password;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param password The password to set.
+     */
+    public void setPassword(final String password) {
+        _password = password;
+    }
+
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
         json.set(ID, getId());
         json.set(EMAIL, getEmail());
-        json.set(USERNAME, getUsername().toString());
+        json.set(
+            USERNAME, (null==getUsername()) ? null : getUsername().toString());
         json.setStrings(ROLES, getRoles());
+        json.set(METADATA, _metadata);
+        json.set(PASSWORD, _password);
     }
 }

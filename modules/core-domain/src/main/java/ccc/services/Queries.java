@@ -31,7 +31,6 @@ import ccc.api.PageDelta;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
 import ccc.api.TemplateSummary;
-import ccc.api.UserDelta;
 import ccc.api.UserSummary;
 import ccc.types.Username;
 
@@ -282,7 +281,7 @@ public interface Queries {
      * @return The corresponding delta.
      */
     @GET @Path("/users/{id}/delta") @NoCache
-    UserDelta userDelta(@PathParam("id") ID userId);
+    UserSummary userDelta(@PathParam("id") ID userId);
 
     /**
      * Retrieve the delta for a alias.

@@ -12,7 +12,7 @@
 package ccc.contentcreator.actions;
 
 import ccc.api.ID;
-import ccc.api.UserDelta;
+import ccc.api.UserSummary;
 import ccc.contentcreator.client.GwtJson;
 
 import com.google.gwt.http.client.RequestBuilder;
@@ -28,7 +28,7 @@ public class UpdateUserAction_
         RemotingAction {
 
     private final ID _userId;
-    private final UserDelta _userDetails;
+    private final UserSummary _userDetails;
 
 
     /**
@@ -36,7 +36,7 @@ public class UpdateUserAction_
      * @param userDetails The updated user details.
      * @param userId The user's id.
      */
-    public UpdateUserAction_(final ID userId, final UserDelta userDetails) {
+    public UpdateUserAction_(final ID userId, final UserSummary userDetails) {
         super(UI_CONSTANTS.editUser(), RequestBuilder.POST);
         _userId = userId;
         _userDetails = userDetails;

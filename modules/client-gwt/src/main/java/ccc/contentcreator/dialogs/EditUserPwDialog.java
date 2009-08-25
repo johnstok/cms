@@ -13,6 +13,7 @@ package ccc.contentcreator.dialogs;
 
 
 import static ccc.contentcreator.validation.Validations.*;
+import ccc.api.UserSummary;
 import ccc.contentcreator.actions.UpdateUserPasswordAction;
 import ccc.contentcreator.binding.UserSummaryModelData;
 import ccc.contentcreator.client.IGlobalsImpl;
@@ -91,7 +92,7 @@ public class EditUserPwDialog extends AbstractEditDialog {
             public void run() {
                 new UpdateUserPasswordAction(
                     _userDTO.getId(),
-                    _password1.getValue()
+                    new UserSummary(_password1.getValue())
                 ) {
                     @Override protected void onNoContent(final Response r) {
                         hide();

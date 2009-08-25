@@ -24,7 +24,6 @@ import ccc.api.PageDelta;
 import ccc.api.Paragraph;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
-import ccc.api.UserDelta;
 import ccc.api.UserSummary;
 import ccc.commands.CommandFailedException;
 import ccc.types.CommandType;
@@ -103,7 +102,7 @@ public interface Commands {
      *
      * @throws CommandFailedException If the method fails.
      */
-    void updateUser(ID userId, UserDelta delta) throws CommandFailedException;
+    void updateUser(ID userId, UserSummary delta) throws CommandFailedException;
 
     /**
      * Update the specified template on the server.
@@ -431,13 +430,12 @@ public interface Commands {
      * Create a new user in the system.
      *
      * @param delta The new user details.
-     * @param password The new user's password.
      *
      * @throws CommandFailedException If the method fails.
      *
      * @return A user summary describing the new user.
      */
-    UserSummary createUser(UserDelta delta, String password)
+    UserSummary createUser(UserSummary delta)
     throws CommandFailedException;
 
     /**

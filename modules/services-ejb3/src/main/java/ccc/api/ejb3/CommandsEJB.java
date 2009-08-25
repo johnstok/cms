@@ -42,7 +42,6 @@ import ccc.api.PageDelta;
 import ccc.api.Paragraph;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
-import ccc.api.UserDelta;
 import ccc.api.UserSummary;
 import ccc.commands.ApplyWorkingCopyCommand;
 import ccc.commands.CancelActionCommand;
@@ -295,11 +294,10 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({"ADMINISTRATOR"})
-    public UserSummary createUser(final UserDelta delta,
-                                  final String password) {
+    public UserSummary createUser(final UserSummary delta) {
         return mapUser(
             new CreateUserCommand(_bdao, _audit).execute(
-                loggedInUser(), new Date(), delta, password));
+                loggedInUser(), new Date(), delta));
     }
 
     /** {@inheritDoc} */
@@ -581,7 +579,7 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({"ADMINISTRATOR"})
-    public void updateUser(final ID userId, final UserDelta delta) {
+    public void updateUser(final ID userId, final UserSummary delta) {
         new UpdateUserCommand(_bdao, _audit).execute(
             loggedInUser(), new Date(), toUUID(userId), delta);
     }

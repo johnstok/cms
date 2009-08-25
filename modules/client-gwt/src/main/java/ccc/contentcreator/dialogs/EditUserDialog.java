@@ -18,7 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ccc.api.ID;
-import ccc.api.UserDelta;
+import ccc.api.UserSummary;
 import ccc.contentcreator.actions.UpdateUserAction_;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.UserTable;
@@ -42,9 +42,9 @@ public class EditUserDialog extends AbstractEditDialog {
     private final TextField<String> _email = new TextField<String>();
     private final TextArea          _roles = new TextArea();
 
-    private final ID        _userId;
-    private final UserDelta _userDTO;
-    private final UserTable _userTable;
+    private final ID          _userId;
+    private final UserSummary _userDTO;
+    private final UserTable   _userTable;
 
     /** ROLE_HEIGHT : int. */
     private static final int ROLE_HEIGHT = 200;
@@ -57,7 +57,7 @@ public class EditUserDialog extends AbstractEditDialog {
      * @param userTable The user table.
      */
     public EditUserDialog(final ID userId,
-                          final UserDelta userDTO,
+                          final UserSummary userDTO,
                           final UserTable userTable) {
         super(new IGlobalsImpl().uiConstants().editUser(), new IGlobalsImpl());
 
