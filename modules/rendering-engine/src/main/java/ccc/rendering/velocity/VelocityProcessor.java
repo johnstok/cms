@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.content.velocity;
+package ccc.rendering.velocity;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -55,7 +55,8 @@ public class VelocityProcessor implements TextProcessor {
     private static final String VELOCITY_CONFIG =
         "input.encoding = UTF-8\n"
         + "resource.loader = ccc\n"
-        + "ccc.resource.loader.class = ccc.content.velocity.CCCResourceLoader\n"
+        + "ccc.resource.loader.class = "
+            + CCCResourceLoader.class.getName() + "\n"
         + "ccc.resource.loader.description = CCC resource loader\n"
         + "ccc.resource.loader.cache = true\n"
         + "ccc.resource.loader.modificationCheckInterval = -1\n";

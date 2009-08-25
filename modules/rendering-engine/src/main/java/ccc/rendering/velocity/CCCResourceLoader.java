@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.content.velocity;
+package ccc.rendering.velocity;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
