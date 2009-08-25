@@ -16,7 +16,7 @@ import static ccc.contentcreator.validation.Validations.*;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import ccc.api.UserDelta;
+import ccc.api.UserSummary;
 import ccc.contentcreator.actions.CreateUserAction_;
 import ccc.contentcreator.actions.UniqueUsernameAction;
 import ccc.contentcreator.api.ActionNameConstants;
@@ -112,14 +112,15 @@ public class CreateUserController implements EditController {
     private Runnable createUser() {
         return new Runnable() {
             public void run() {
-                final UserDelta d = new UserDelta(
+                final String p = _dialog.getPassword1().getValue();
+                final UserSummary d = new UserSummary(
                     _dialog.getEmail().getValue(),
                     new Username(_dialog.getUsername().getValue()),
                     new HashSet<String>(),
-                    new HashMap<String, String>());
-                final String p = _dialog.getPassword1().getValue();
+                    new HashMap<String, String>(),
+                    p);
 
-                new CreateUserAction_(d, p){
+                new CreateUserAction_(d){
                     @Override protected void onOK(final Response response) {
                         // TODO: Refresh the main window.
                         _dialog.close();

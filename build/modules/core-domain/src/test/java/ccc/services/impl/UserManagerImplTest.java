@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import junit.framework.TestCase;
-import ccc.api.UserDelta;
+import ccc.api.UserSummary;
 import ccc.commands.CreateUserCommand;
 import ccc.commands.UpdatePasswordAction;
 import ccc.commands.UpdateUserCommand;
@@ -96,7 +96,7 @@ public class UserManagerImplTest extends TestCase {
         final CreateUserCommand cu = new CreateUserCommand(_dao, _audit);
 
         // ACT
-        final User u = cu.execute(_u, now, _uDelta, "foopass");
+        final User u = cu.execute(_u, now, _uDelta);
 
         // ASSERT
         verifyAll();
@@ -228,7 +228,7 @@ public class UserManagerImplTest extends TestCase {
 
     private User _u;
     private AuditLog _audit;
-    private UserDelta _uDelta;
+    private UserSummary _uDelta;
     private Dao _dao;
     private Principal _p;
     private UserManagerImpl _um;
@@ -238,11 +238,12 @@ public class UserManagerImplTest extends TestCase {
     protected void setUp() throws Exception {
         _u = new User("testUser");
         _uDelta =
-            new UserDelta(
+            new UserSummary(
                 "new.email@civicuk.com",
                 new Username("newNameUser"),
                 new HashSet<String>(),
-                new HashMap<String, String>());
+                new HashMap<String, String>(),
+                "foopass");
         _u.email(new EmailAddress("test@civicuk.com"));
         _p = new Principal(){
             @Override public String getName() {

@@ -12,7 +12,7 @@
 package ccc.contentcreator.actions;
 
 import ccc.api.ID;
-import ccc.api.JsonKeys;
+import ccc.api.UserSummary;
 import ccc.contentcreator.client.GwtJson;
 
 import com.google.gwt.http.client.RequestBuilder;
@@ -27,7 +27,7 @@ public abstract class UpdateUserPasswordAction
     extends
         RemotingAction {
 
-    private final String _newPassword;
+    private final UserSummary _newPassword;
     private final ID _userId;
 
 
@@ -36,7 +36,7 @@ public abstract class UpdateUserPasswordAction
      * @param newPassword The user's new password.
      * @param userId The user's id.
      */
-    public UpdateUserPasswordAction(final ID userId, final String newPassword) {
+    public UpdateUserPasswordAction(final ID userId, final UserSummary newPassword) {
         super(GLOBALS.uiConstants().editUserPw(), RequestBuilder.POST);
         _userId = userId;
         _newPassword = newPassword;
@@ -52,7 +52,7 @@ public abstract class UpdateUserPasswordAction
     /** {@inheritDoc} */
     @Override protected String getBody() {
         final GwtJson json = new GwtJson();
-        json.set(JsonKeys.PASSWORD, _newPassword);
+        _newPassword.toJson(json);
         return json.toString();
     }
 }

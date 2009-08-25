@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ccc.api.UserSummary;
 import ccc.migration.ccc6.handlers.AllUsersSelector;
 import ccc.migration.ccc6.handlers.FileSelector;
 import ccc.migration.ccc6.handlers.FlaggedSelector;
@@ -87,7 +88,7 @@ public class LegacyDBQueries {
      *
      * @return The list of users.
      */
-    public Map<Integer, ExistingUser> selectUsers() {
+    public Map<Integer, UserSummary> selectUsers() {
         final AllUsersSelector rsh = new AllUsersSelector(this);
         return _db.select(rsh);
     }

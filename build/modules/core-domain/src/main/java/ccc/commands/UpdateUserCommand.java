@@ -14,7 +14,7 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.api.UserDelta;
+import ccc.api.UserSummary;
 import ccc.domain.LogEntry;
 import ccc.domain.Snapshot;
 import ccc.domain.User;
@@ -59,7 +59,7 @@ public class UpdateUserCommand {
     public User execute(final User actor,
                         final Date happenedOn,
                         final UUID userId,
-                        final UserDelta delta) {
+                        final UserSummary delta) {
         final User current = _dao.find(User.class, userId);
         // current.username(delta.getUsername().toString()); #571
         current.email(new EmailAddress(delta.getEmail()));

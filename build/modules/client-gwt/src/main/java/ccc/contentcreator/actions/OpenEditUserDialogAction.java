@@ -12,7 +12,7 @@
 package ccc.contentcreator.actions;
 
 import ccc.api.ID;
-import ccc.api.UserDelta;
+import ccc.api.UserSummary;
 import ccc.contentcreator.client.GwtJson;
 import ccc.contentcreator.client.UserTable;
 import ccc.contentcreator.dialogs.EditUserDialog;
@@ -57,7 +57,7 @@ public class OpenEditUserDialogAction
     protected void onOK(final Response response) {
         final JSONObject result =
             JSONParser.parse(response.getText()).isObject();
-        final UserDelta delta = new UserDelta(new GwtJson(result));
+        final UserSummary delta = new UserSummary(new GwtJson(result));
         new EditUserDialog(_userId, delta, _userTable).show();
     }
 }

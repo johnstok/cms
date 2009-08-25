@@ -58,7 +58,6 @@ import ccc.ws.RestCommands;
 import ccc.ws.RevisionSummaryCollectionReader;
 import ccc.ws.SecurityAPI;
 import ccc.ws.StringCollectionWriter;
-import ccc.ws.UserDeltaReader;
 import ccc.ws.UserSummaryCollectionReader;
 import ccc.ws.UserSummaryReader;
 import ccc.ws.readers.ActionSummaryCollectionReader;
@@ -95,7 +94,6 @@ public abstract class AbstractAcceptanceTest
         pFactory.addMessageBodyReader(UserSummaryReader.class);
         pFactory.addMessageBodyReader(BooleanProvider.class);
         pFactory.addMessageBodyReader(FailureWriter.class);
-        pFactory.addMessageBodyReader(UserDeltaReader.class);
         pFactory.addMessageBodyReader(StringCollectionWriter.class);
         pFactory.addMessageBodyReader(MetadataWriter.class);
         pFactory.addMessageBodyReader(ActionSummaryCollectionReader.class);

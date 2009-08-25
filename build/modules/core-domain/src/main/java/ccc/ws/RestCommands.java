@@ -28,7 +28,6 @@ import ccc.api.Json;
 import ccc.api.PageDelta;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
-import ccc.api.UserDelta;
 import ccc.api.UserSummary;
 import ccc.api.rest.ActionNew;
 import ccc.api.rest.AliasNew;
@@ -39,9 +38,6 @@ import ccc.api.rest.ResourceCacheDurationPU;
 import ccc.api.rest.ResourceRevisionPU;
 import ccc.api.rest.ResourceTemplatePU;
 import ccc.api.rest.TemplateNew;
-import ccc.api.rest.UserNew;
-import ccc.api.rest.UserOwn;
-import ccc.api.rest.UserPasswordPU;
 import ccc.commands.CommandFailedException;
 
 
@@ -64,7 +60,7 @@ public interface RestCommands {
         @PathParam("id") ID resourceId) throws CommandFailedException;
 
     @POST @Path("/users")
-    UserSummary createUser(UserNew user) throws CommandFailedException;
+    UserSummary createUser(UserSummary user) throws CommandFailedException;
 
     @POST @Path("/templates")
     ResourceSummary createTemplate(TemplateNew template) throws CommandFailedException;
@@ -78,7 +74,7 @@ public interface RestCommands {
     @POST @Path("/users/{id}/password")
     void updateUserPassword(
         @PathParam("id") ID userId,
-        UserPasswordPU pu) throws CommandFailedException;
+        UserSummary pu) throws CommandFailedException;
 
     @POST @Path("/resources/{id}/wc-apply")
     void applyWorkingCopy(
@@ -179,7 +175,7 @@ public interface RestCommands {
     @POST @Path("/users/{id}")
     void updateUser(
         @PathParam("id") ID userId,
-        UserDelta delta) throws CommandFailedException;
+        UserSummary delta) throws CommandFailedException;
 
     @DELETE  @Path("/resources/{id}/duration")
     void deleteCacheDuration(
@@ -192,5 +188,5 @@ public interface RestCommands {
     @POST @Path("/users/{id}/currentuser")
     void updateYourUser(
         @PathParam("id") ID userId,
-        UserOwn user) throws CommandFailedException;
+        UserSummary user) throws CommandFailedException;
 }

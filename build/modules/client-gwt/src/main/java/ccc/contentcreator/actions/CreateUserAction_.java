@@ -11,8 +11,7 @@
  */
 package ccc.contentcreator.actions;
 
-import ccc.api.JsonKeys;
-import ccc.api.UserDelta;
+import ccc.api.UserSummary;
 import ccc.contentcreator.client.GwtJson;
 
 import com.google.gwt.http.client.RequestBuilder;
@@ -27,19 +26,16 @@ public abstract class CreateUserAction_
     extends
         RemotingAction {
 
-    private final UserDelta _userDelta;
-    private final String _password;
+    private final UserSummary _userDelta;
 
     /**
      * Constructor.
      *
-     * @param password The user's password.
      * @param userDelta The user's details.
      */
-    public CreateUserAction_(final UserDelta userDelta, final String password) {
+    public CreateUserAction_(final UserSummary userDelta) {
         super(GLOBALS.uiConstants().createUser(), RequestBuilder.POST);
         _userDelta = userDelta;
-        _password = password;
     }
 
     /** {@inheritDoc} */
@@ -52,8 +48,7 @@ public abstract class CreateUserAction_
     @Override
     protected String getBody() {
         final GwtJson json = new GwtJson();
-        json.set(JsonKeys.DELTA, _userDelta);
-        json.set(JsonKeys.PASSWORD, _password);
+        _userDelta.toJson(json);
         return json.toString();
     }
 }

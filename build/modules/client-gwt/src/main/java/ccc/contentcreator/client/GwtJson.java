@@ -32,7 +32,7 @@ import com.google.gwt.json.client.JSONValue;
 
 
 /**
- * TODO: Add a description for this type.
+ * Client side implementation of the {@link Json} interface.
  *
  * @author Civic Computing Ltd.
  */
@@ -218,7 +218,11 @@ public class GwtJson
     /** {@inheritDoc} */
     @Override
     public void set(final String key, final ID value) {
-        _delegate.put(key, (null==value) ? JSONNull.getInstance() : new JSONString(value.toString()));
+        _delegate.put(
+            key,
+            (null==value)
+                ? JSONNull.getInstance()
+                : new JSONString(value.toString()));
     }
 
     /** {@inheritDoc} */
@@ -244,11 +248,15 @@ public class GwtJson
     /** {@inheritDoc} */
     @Override
     public void set(final String key, final Map<String, String> values) {
-        final JSONObject strings = new JSONObject();
-        for (final Map.Entry<String, String> value : values.entrySet()) {
-            strings.put(value.getKey(), new JSONString(value.getValue()));
+        if (null==values) {
+            _delegate.put(key, JSONNull.getInstance());
+        } else {
+            final JSONObject strings = new JSONObject();
+            for (final Map.Entry<String, String> value : values.entrySet()) {
+                strings.put(value.getKey(), new JSONString(value.getValue()));
+            }
+            _delegate.put(key, strings);
         }
-        _delegate.put(key, strings);
     }
 
     /** {@inheritDoc} */
@@ -266,13 +274,17 @@ public class GwtJson
     /** {@inheritDoc} */
     @Override
     public void setStrings(final String key, final Collection<String> values) {
-        final JSONArray strings = new JSONArray();
-        int i=0;
-        for (final String value : values) {
-            strings.set(i, new JSONString(value));
-            i++;
+        if (null==values) {
+            _delegate.put(key, JSONNull.getInstance());
+        } else {
+            final JSONArray strings = new JSONArray();
+            int i=0;
+            for (final String value : values) {
+                strings.set(i, new JSONString(value));
+                i++;
+            }
+            _delegate.put(key, strings);
         }
-        _delegate.put(key, strings);
     }
 
     /** {@inheritDoc} */
@@ -314,10 +326,14 @@ public class GwtJson
     }
 
     /** {@inheritDoc} */
-    @Override // FIXME: Doesn't handle NULL
+    @Override
     public Map<String, String> getStringMap(final String key) {
         final Map<String, String> value = new HashMap<String, String>();
-        final JSONObject o = _delegate.get(key).isObject();
+        final JSONValue v = _delegate.get(key);
+        if (null!=v.isNull()) {
+            return null;
+        }
+        final JSONObject o = v.isObject();
         for (final String mapKey : o.keySet()) {
             value.put(mapKey, o.get(mapKey).isString().stringValue());
         }
