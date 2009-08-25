@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
-import ccc.content.response.Renderer;
+import ccc.rendering.response.Renderer;
 import ccc.services.ResourceDao;
 
 /**
