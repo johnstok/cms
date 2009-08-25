@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.content.server;
+package ccc.rendering.server;
 
 import static ccc.commons.Exceptions.*;
 
