@@ -10,7 +10,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.rendering.server;
+package ccc.content.actions;
 
 import static org.easymock.EasyMock.*;
 
