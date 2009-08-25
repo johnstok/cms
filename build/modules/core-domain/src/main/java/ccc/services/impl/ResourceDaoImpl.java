@@ -20,13 +20,13 @@ import ccc.domain.CCCException;
 import ccc.domain.Folder;
 import ccc.domain.HistoricalResource;
 import ccc.domain.Resource;
-import ccc.domain.ResourcePath;
 import ccc.domain.Revision;
 import ccc.domain.User;
-import ccc.entities.ResourceName;
 import ccc.services.Dao;
 import ccc.services.QueryNames;
 import ccc.services.ResourceDao;
+import ccc.types.ResourceName;
+import ccc.types.ResourcePath;
 
 
 /**

@@ -10,12 +10,11 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.entities;
+package ccc.types;
 
 import java.io.Serializable;
 import java.util.UUID;
 
-import ccc.types.DBC;
 
 
 /**

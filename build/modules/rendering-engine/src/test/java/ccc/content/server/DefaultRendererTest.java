@@ -38,7 +38,6 @@ import ccc.domain.ResourceOrder;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.entities.ResourceName;
 import ccc.rendering.CharEncodingHeader;
 import ccc.rendering.ContentTypeHeader;
 import ccc.rendering.DateHeader;
@@ -54,6 +53,7 @@ import ccc.services.DataManager;
 import ccc.services.SearchEngine;
 import ccc.types.MimeType;
 import ccc.types.Paragraph;
+import ccc.types.ResourceName;
 
 
 /**

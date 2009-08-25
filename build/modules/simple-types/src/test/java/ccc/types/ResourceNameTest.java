@@ -10,9 +10,9 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.domain;
+package ccc.types;
 
-import ccc.entities.ResourceName;
+import ccc.types.ResourceName;
 import junit.framework.TestCase;
 
 /**

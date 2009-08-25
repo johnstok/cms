@@ -19,12 +19,12 @@ import org.apache.log4j.Logger;
 import ccc.api.ResourceSummary;
 import ccc.cli.FileUpload;
 import ccc.commands.CommandFailedException;
-import ccc.domain.ResourcePath;
 import ccc.migration.FileUploader;
 import ccc.services.Commands;
 import ccc.services.Queries;
 import ccc.types.FailureCode;
 import ccc.types.ID;
+import ccc.types.ResourcePath;
 
 
 /**

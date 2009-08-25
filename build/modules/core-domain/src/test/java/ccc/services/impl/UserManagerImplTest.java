@@ -25,13 +25,13 @@ import ccc.api.UserSummary;
 import ccc.commands.CreateUserCommand;
 import ccc.commands.UpdatePasswordAction;
 import ccc.commands.UpdateUserCommand;
-import ccc.domain.CreatorRoles;
 import ccc.domain.LogEntry;
 import ccc.domain.Password;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
 import ccc.services.QueryNames;
+import ccc.types.CreatorRoles;
 import ccc.types.EmailAddress;
 import ccc.types.Username;
 

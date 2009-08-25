@@ -15,8 +15,8 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 import ccc.api.TemplateDelta;
-import ccc.entities.ResourceName;
 import ccc.types.MimeType;
+import ccc.types.ResourceName;
 import ccc.types.ResourceType;
 
 

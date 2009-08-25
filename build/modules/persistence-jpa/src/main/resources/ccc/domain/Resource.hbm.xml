@@ -77,7 +77,7 @@
             not-null="false" 
             foreign-key="FK_RESOURCE_USER_PUBLISHED_ID"/>
 
-		<component name="_name" class="ccc.entities.ResourceName">
+		<component name="_name" class="ccc.types.ResourceName">
 			<property
                 name="_representation"
                 not-null="true"

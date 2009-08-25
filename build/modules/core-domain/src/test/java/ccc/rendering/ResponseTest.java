@@ -26,9 +26,9 @@ import ccc.commons.Testing;
 import ccc.domain.Page;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
-import ccc.entities.ResourceName;
 import ccc.types.Duration;
 import ccc.types.MimeType;
+import ccc.types.ResourceName;
 
 
 /**

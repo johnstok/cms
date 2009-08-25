@@ -18,9 +18,10 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 import ccc.commons.Testing;
-import ccc.entities.ResourceName;
 import ccc.types.CommandType;
 import ccc.types.Duration;
+import ccc.types.ResourceName;
+import ccc.types.ResourcePath;
 
 
 /**

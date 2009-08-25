@@ -21,10 +21,10 @@ import ccc.domain.ResourceExistsException;
 import ccc.domain.Snapshot;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
-import ccc.entities.ResourceName;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
 import ccc.types.CommandType;
+import ccc.types.ResourceName;
 
 
 /**

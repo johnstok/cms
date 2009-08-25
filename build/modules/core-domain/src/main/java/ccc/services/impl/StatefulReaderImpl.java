@@ -21,10 +21,10 @@ import ccc.api.template.StatefulReader;
 import ccc.commons.IO;
 import ccc.domain.File;
 import ccc.domain.Resource;
-import ccc.domain.ResourcePath;
 import ccc.entities.IResource;
 import ccc.services.DataManager;
 import ccc.services.ResourceDao;
+import ccc.types.ResourcePath;
 
 
 /**

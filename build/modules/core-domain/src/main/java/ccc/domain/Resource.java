@@ -25,13 +25,15 @@ import java.util.Set;
 
 import ccc.commons.WordCharFixer;
 import ccc.entities.IResource;
-import ccc.entities.ResourceName;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
 import ccc.snapshots.ResourceSnapshot;
 import ccc.types.CommandType;
+import ccc.types.CreatorRoles;
 import ccc.types.Duration;
+import ccc.types.ResourceName;
+import ccc.types.ResourcePath;
 import ccc.types.ResourceType;
 
 

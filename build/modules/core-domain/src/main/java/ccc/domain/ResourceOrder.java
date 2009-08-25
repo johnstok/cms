@@ -21,6 +21,7 @@ import ccc.types.DBC;
 
 /**
  * Support sort orders for resource lists.
+ * TODO: Move to simple-types.
  *
  * @author Civic Computing Ltd.
  */

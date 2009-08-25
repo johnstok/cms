@@ -20,8 +20,8 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
-import ccc.domain.ResourcePath;
-import ccc.entities.ResourceName;
+import ccc.types.ResourceName;
+import ccc.types.ResourcePath;
 
 
 /**

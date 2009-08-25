@@ -16,12 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ccc.entities.IFolder;
-import ccc.entities.ResourceName;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
 import ccc.snapshots.FolderSnapshot;
 import ccc.types.DBC;
+import ccc.types.ResourceName;
+import ccc.types.ResourcePath;
 import ccc.types.ResourceType;
 
 
