@@ -17,13 +17,13 @@ import org.apache.commons.httpclient.HttpClient;
 import org.jboss.resteasy.client.ClientResponseFailure;
 import org.jboss.resteasy.client.ProxyFactory;
 
-import ccc.api.MimeType;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
 import ccc.api.rest.TemplateNew;
 import ccc.commands.CommandFailedException;
 import ccc.domain.Failure;
 import ccc.types.FailureCode;
+import ccc.types.MimeType;
 import ccc.ws.SecurityAPI;
 
 

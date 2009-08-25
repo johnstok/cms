@@ -14,9 +14,9 @@ package ccc.domain;
 import java.util.Date;
 
 import junit.framework.TestCase;
-import ccc.api.MimeType;
 import ccc.api.TemplateDelta;
 import ccc.entities.ResourceName;
+import ccc.types.MimeType;
 import ccc.types.ResourceType;
 
 

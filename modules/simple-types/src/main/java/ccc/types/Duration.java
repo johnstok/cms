@@ -9,11 +9,10 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api;
+package ccc.types;
 
 import java.io.Serializable;
 
-import ccc.annotations.ValueObject;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
@@ -25,7 +24,6 @@ import ccc.serialization.Jsonable;
  *
  * @author Civic Computing Ltd.
  */
-@ValueObject
 public final class Duration implements Serializable, Jsonable {
 
     private static final long SECONDS_IN_MINUTE = 60;

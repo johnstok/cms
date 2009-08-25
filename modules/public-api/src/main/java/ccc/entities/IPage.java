@@ -14,7 +14,7 @@ package ccc.entities;
 
 import java.util.Set;
 
-import ccc.api.Paragraph;
+import ccc.types.Paragraph;
 
 
 /**

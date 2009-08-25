@@ -13,7 +13,7 @@ package ccc.rendering;
 
 import javax.servlet.http.HttpServletResponse;
 
-import ccc.api.MimeType;
+import ccc.types.MimeType;
 
 
 /**

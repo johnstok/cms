@@ -16,7 +16,6 @@ import static org.easymock.EasyMock.*;
 import java.util.Date;
 
 import junit.framework.TestCase;
-import ccc.api.MimeType;
 import ccc.api.TemplateDelta;
 import ccc.commands.UpdateTemplateCommand;
 import ccc.domain.LogEntry;
@@ -26,6 +25,7 @@ import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
+import ccc.types.MimeType;
 
 
 /**

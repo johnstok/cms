@@ -25,12 +25,10 @@ import javax.ws.rs.Produces;
 
 import ccc.api.ActionSummary;
 import ccc.api.AliasDelta;
-import ccc.api.Duration;
 import ccc.api.FileDelta;
 import ccc.api.FileSummary;
 import ccc.api.LogEntrySummary;
 import ccc.api.PageDelta;
-import ccc.api.Paragraph;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
 import ccc.api.TemplateSummary;
@@ -53,8 +51,10 @@ import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.services.Commands;
 import ccc.services.Queries;
+import ccc.types.Duration;
 import ccc.types.FailureCode;
 import ccc.types.ID;
+import ccc.types.Paragraph;
 import ccc.types.Username;
 
 

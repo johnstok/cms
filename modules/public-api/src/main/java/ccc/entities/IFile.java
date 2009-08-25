@@ -12,7 +12,7 @@
 
 package ccc.entities;
 
-import ccc.api.MimeType;
+import ccc.types.MimeType;
 
 
 /**

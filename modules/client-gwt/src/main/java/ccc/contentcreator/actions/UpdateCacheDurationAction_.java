@@ -11,9 +11,9 @@
  */
 package ccc.contentcreator.actions;
 
-import ccc.api.Duration;
 import ccc.contentcreator.client.GwtJson;
 import ccc.serialization.JsonKeys;
+import ccc.types.Duration;
 import ccc.types.ID;
 
 import com.google.gwt.http.client.RequestBuilder;

@@ -11,10 +11,10 @@
  */
 package ccc.api.rest;
 
-import ccc.api.Duration;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
+import ccc.types.Duration;
 
 
 

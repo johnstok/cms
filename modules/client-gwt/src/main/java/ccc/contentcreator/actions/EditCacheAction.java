@@ -11,10 +11,10 @@
  */
 package ccc.contentcreator.actions;
 
-import ccc.api.Duration;
 import ccc.contentcreator.client.GwtJson;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.EditCacheDialog;
+import ccc.types.Duration;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONParser;

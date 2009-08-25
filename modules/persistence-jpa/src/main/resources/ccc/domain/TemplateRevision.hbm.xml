@@ -43,7 +43,7 @@
         
         <component
             name="_mimeType"
-            class="ccc.api.MimeType">
+            class="ccc.types.MimeType">
             <property
                 name="_primaryType"
                 not-null="true"

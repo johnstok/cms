@@ -14,7 +14,6 @@ package ccc.contentcreator.validation;
 import java.util.List;
 import java.util.Set;
 
-import ccc.api.Paragraph;
 import ccc.contentcreator.actions.ResourceNameExistsAction;
 import ccc.contentcreator.actions.ValidateFieldAction_;
 import ccc.contentcreator.api.ActionNameConstants;
@@ -24,6 +23,7 @@ import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.types.ID;
+import ccc.types.Paragraph;
 
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.http.client.Response;

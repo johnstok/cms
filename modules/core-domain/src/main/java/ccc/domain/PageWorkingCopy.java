@@ -17,8 +17,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ccc.api.PageDelta;
-import ccc.api.Paragraph;
 import ccc.entities.IPage;
+import ccc.types.Paragraph;
 
 
 /**

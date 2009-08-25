@@ -13,9 +13,9 @@ package ccc.domain;
 
 import java.util.Date;
 
-import ccc.api.MimeType;
 import ccc.api.TemplateDelta;
 import ccc.types.DBC;
+import ccc.types.MimeType;
 
 
 /**

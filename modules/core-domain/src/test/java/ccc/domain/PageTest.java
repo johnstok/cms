@@ -19,9 +19,9 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 import ccc.api.PageDelta;
-import ccc.api.Paragraph;
 import ccc.commons.Exceptions;
 import ccc.entities.ResourceName;
+import ccc.types.Paragraph;
 
 
 /**

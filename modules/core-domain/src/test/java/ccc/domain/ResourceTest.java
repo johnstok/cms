@@ -17,10 +17,10 @@ import java.util.Date;
 import java.util.Set;
 
 import junit.framework.TestCase;
-import ccc.api.Duration;
 import ccc.commons.Testing;
 import ccc.entities.ResourceName;
 import ccc.types.CommandType;
+import ccc.types.Duration;
 
 
 /**

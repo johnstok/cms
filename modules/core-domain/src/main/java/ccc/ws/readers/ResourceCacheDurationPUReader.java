@@ -22,11 +22,11 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
-import ccc.api.Duration;
 import ccc.api.rest.ResourceCacheDurationPU;
 import ccc.domain.Snapshot;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
+import ccc.types.Duration;
 import ccc.ws.AbstractProvider;
 
 
