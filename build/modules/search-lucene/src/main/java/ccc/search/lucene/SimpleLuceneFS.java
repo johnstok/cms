@@ -11,19 +11,24 @@
  */
 package ccc.search.lucene;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.UUID;
 
 import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.TopDocs;
+
+import ccc.search.AbstractIndexer;
+import ccc.search.SearchException;
+import ccc.services.DataManager;
 
 
 /**
@@ -31,19 +36,24 @@ import org.apache.lucene.search.TopDocs;
  *
  * @author Civic Computing Ltd.
  */
-public class SimpleLuceneFS implements SimpleLucene {
+public class SimpleLuceneFS
+    extends
+        AbstractIndexer
+    implements
+        SimpleLucene {
+
     private static final Logger LOG =
         Logger.getLogger(SimpleLuceneFS.class.getName());
 
-    private Properties _properties = new Properties();
-    private String _indexPath;
-
+    private final Properties _properties = new Properties();
+    private final String _indexPath;
     private IndexWriter _writer;
 
     /**
      * Constructor.
      */
-    public SimpleLuceneFS()  {
+    public SimpleLuceneFS(final DataManager dm)  {
+        super(dm);
         try {
             final InputStream inputStream =
                 this.getClass().getClassLoader().
@@ -55,20 +65,9 @@ public class SimpleLuceneFS implements SimpleLucene {
         _indexPath = _properties.getProperty("indexPath");
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public void add(final Document document) {
-        try {
-            _writer.addDocument(document);
-            LOG.info("Added document.");
-        } catch (final IOException e) {
-            LOG.warn("Error adding document.", e);
-        }
-    }
-
 
     private IndexWriter createWriter() throws IOException {
-        final File f = new File(_indexPath);
+        final java.io.File f = new java.io.File(_indexPath);
         final IndexWriter writer =
             new IndexWriter(
                 f,
@@ -113,9 +112,13 @@ public class SimpleLuceneFS implements SimpleLucene {
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    public void clearIndex() throws IOException, ParseException {
+    /**
+     * Removes all entries from the lucene index.
+     *
+     * @throws ParseException If the document query fails.
+     * @throws IOException If index writing fails.
+     */
+    private void clearIndex() throws IOException, ParseException {
         _writer.deleteDocuments(
             new QueryParser(
                 "*",
@@ -127,11 +130,19 @@ public class SimpleLuceneFS implements SimpleLucene {
 
     /** {@inheritDoc} */
     @Override
-    public void commitUpdate() throws IOException {
-        _writer.optimize();
-        _writer.close();
+    public void commitUpdate() {
+        try {
+            _writer.optimize();
+        } catch (final IOException e) {
+            LOG.error("Failed to optimize index.", e);
+        }
+        try {
+            _writer.close();
+            LOG.info("Commited index update.");
+        } catch (final IOException e) {
+            LOG.error("Failed to close index writer.", e);
+        }
         _writer = null;
-        LOG.info("Commited index update.");
     }
 
     /** {@inheritDoc} */
@@ -148,8 +159,40 @@ public class SimpleLuceneFS implements SimpleLucene {
 
     /** {@inheritDoc}*/
     @Override
-    public void startUpdate() throws IOException {
-        _writer = createWriter();
-        LOG.info("Staring index update.");
+    public void startUpdate() throws SearchException {
+        try {
+            _writer = createWriter();
+            clearIndex();
+            LOG.info("Staring index update.");
+        } catch (final IOException e) {
+            throw new SearchException(e);
+        } catch (final ParseException e) {
+            throw new SearchException(e);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected void createDocument(final UUID id, final String content) {
+        try {
+            final Document d = new Document();
+            d.add(
+                new Field(
+                    "id",
+                    id.toString(),
+                    Field.Store.YES,
+                    Field.Index.NOT_ANALYZED));
+            d.add(
+                new Field(
+                    "content",
+                    content,
+                    Field.Store.NO,
+                    Field.Index.ANALYZED));
+            _writer.addDocument(d);
+            LOG.info("Added document.");
+
+        } catch (final IOException e) {
+            LOG.warn("Error adding document.", e);
+        }
     }
 }

@@ -75,6 +75,21 @@
             <version>20080701</version>
         </dependency>
         <dependency>
+            <groupId>pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>${lib.version.pdfbox}</version>
+        </dependency> 
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>${lib.version.poi}</version>
+       </dependency>
+        <dependency>
+            <groupId>org.textmining</groupId>
+            <artifactId>tm-extractors</artifactId>
+            <version>${lib.version.tmextractors}</version>
+       </dependency>
+        <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-jaxrs</artifactId>
             <version>1.1.GA</version>

@@ -19,10 +19,10 @@ import java.util.Date;
 import java.util.Map;
 
 import ccc.api.template.StatefulReader;
-import ccc.commons.SearchResult;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
+import ccc.search.SearchResult;
 import ccc.services.SearchEngine;
 import ccc.types.DBC;
 import ccc.types.MimeType;

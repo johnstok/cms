@@ -25,21 +25,6 @@
             <artifactId>compass</artifactId>
             <version>${lib.version.compass}</version>
         </dependency>
-        <dependency>
-            <groupId>pdfbox</groupId>
-            <artifactId>pdfbox</artifactId>
-            <version>${lib.version.pdfbox}</version>
-        </dependency> 
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>${lib.version.poi}</version>
-       </dependency>
-        <dependency>
-            <groupId>org.textmining</groupId>
-            <artifactId>tm-extractors</artifactId>
-            <version>${lib.version.tmextractors}</version>
-       </dependency>
     </dependencies>
 
 </project>
