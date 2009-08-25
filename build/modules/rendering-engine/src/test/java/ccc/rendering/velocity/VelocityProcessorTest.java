@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.content.velocity;
+package ccc.rendering.velocity;
 
 import static org.easymock.EasyMock.*;
 
@@ -165,7 +165,7 @@ public class VelocityProcessorTest extends TestCase {
         final String template = "$resource.failingMethod()";
         final String expectedMessage =
             "Invocation of method 'failingMethod' in  "
-            + "class ccc.content.velocity.VelocityProcessorTest "
+            + "class ccc.rendering.velocity.VelocityProcessorTest "
             + "threw exception java.lang.RuntimeException: Fail. "
             + "at VelocityProcessor[line 1, column 11]";
         final StringWriter renderedOutput = new StringWriter();
