@@ -13,7 +13,7 @@ package ccc.contentcreator.actions;
 
 import java.util.List;
 
-import ccc.api.ID;
+import ccc.types.ID;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.json.client.JSONArray;

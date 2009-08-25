@@ -21,7 +21,6 @@ import ccc.api.ActionSummary;
 import ccc.api.AliasDelta;
 import ccc.api.FileDelta;
 import ccc.api.FileSummary;
-import ccc.api.ID;
 import ccc.api.LogEntrySummary;
 import ccc.api.PageDelta;
 import ccc.api.ResourceSummary;
@@ -38,6 +37,7 @@ import ccc.domain.Revision;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.types.CommandType;
+import ccc.types.ID;
 import ccc.types.ResourceType;
 import ccc.types.Username;
 

@@ -23,9 +23,9 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
-import ccc.api.Json;
-import ccc.api.JsonKeys;
 import ccc.api.rest.ResourceTemplatePU;
+import ccc.serialization.Json;
+import ccc.serialization.JsonKeys;
 import ccc.ws.AbstractProvider;
 
 

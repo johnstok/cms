@@ -15,12 +15,12 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.ID;
 import ccc.commands.CommandFailedException;
 import ccc.domain.Action;
 import ccc.services.ActionExecutor;
 import ccc.services.Commands;
 import ccc.types.DBC;
+import ccc.types.ID;
 
 
 /**

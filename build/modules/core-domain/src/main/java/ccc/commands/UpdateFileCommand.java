@@ -16,7 +16,6 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.FileDelta;
-import ccc.api.ID;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.LockMismatchException;
@@ -26,6 +25,7 @@ import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
 import ccc.services.DataManager;
+import ccc.types.ID;
 
 
 /**

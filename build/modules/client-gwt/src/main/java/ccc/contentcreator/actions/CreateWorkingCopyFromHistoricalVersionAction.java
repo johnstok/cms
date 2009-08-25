@@ -1,8 +1,8 @@
 package ccc.contentcreator.actions;
 
-import ccc.api.JsonKeys;
 import ccc.contentcreator.client.GwtJson;
 import ccc.contentcreator.dialogs.HistoryDialog;
+import ccc.serialization.JsonKeys;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;

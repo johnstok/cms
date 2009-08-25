@@ -13,11 +13,11 @@ package ccc.contentcreator.dialogs;
 
 import java.util.Date;
 
-import ccc.api.ID;
 import ccc.contentcreator.actions.CreateActionAction_;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.client.CreateActionPanel;
 import ccc.contentcreator.client.IGlobalsImpl;
+import ccc.types.ID;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;

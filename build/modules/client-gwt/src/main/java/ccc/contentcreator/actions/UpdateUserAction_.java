@@ -11,9 +11,9 @@
  */
 package ccc.contentcreator.actions;
 
-import ccc.api.ID;
 import ccc.api.UserSummary;
 import ccc.contentcreator.client.GwtJson;
+import ccc.types.ID;
 
 import com.google.gwt.http.client.RequestBuilder;
 

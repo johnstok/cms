@@ -25,13 +25,13 @@ import ccc.api.AliasDelta;
 import ccc.api.Duration;
 import ccc.api.FileDelta;
 import ccc.api.FileSummary;
-import ccc.api.ID;
 import ccc.api.LogEntrySummary;
 import ccc.api.PageDelta;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
 import ccc.api.TemplateSummary;
 import ccc.api.UserSummary;
+import ccc.types.ID;
 import ccc.types.Username;
 
 

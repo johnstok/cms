@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import ccc.serialization.Json;
+import ccc.types.Decimal;
 import ccc.types.ParagraphType;
 
 import junit.framework.TestCase;

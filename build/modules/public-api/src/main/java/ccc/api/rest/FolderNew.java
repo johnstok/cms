@@ -11,10 +11,10 @@
  */
 package ccc.api.rest;
 
-import ccc.api.ID;
-import ccc.api.Json;
-import ccc.api.JsonKeys;
-import ccc.api.Jsonable;
+import ccc.serialization.Json;
+import ccc.serialization.JsonKeys;
+import ccc.serialization.Jsonable;
+import ccc.types.ID;
 
 
 /**

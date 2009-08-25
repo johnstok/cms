@@ -19,7 +19,6 @@ import java.util.Set;
 
 import ccc.api.AliasDelta;
 import ccc.api.Duration;
-import ccc.api.ID;
 import ccc.api.PageDelta;
 import ccc.api.Paragraph;
 import ccc.api.ResourceSummary;
@@ -27,6 +26,7 @@ import ccc.api.TemplateDelta;
 import ccc.api.UserSummary;
 import ccc.commands.CommandFailedException;
 import ccc.types.CommandType;
+import ccc.types.ID;
 
 
 /**

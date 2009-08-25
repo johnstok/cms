@@ -23,10 +23,10 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
 import ccc.api.Duration;
-import ccc.api.Json;
-import ccc.api.JsonKeys;
 import ccc.api.rest.ResourceCacheDurationPU;
 import ccc.domain.Snapshot;
+import ccc.serialization.Json;
+import ccc.serialization.JsonKeys;
 import ccc.ws.AbstractProvider;
 
 

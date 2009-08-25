@@ -18,8 +18,8 @@ import java.util.Map;
 import java.util.Set;
 
 import ccc.api.ActionSummary;
-import ccc.api.ID;
 import ccc.api.UserSummary;
+import ccc.types.ID;
 import ccc.types.Username;
 
 import com.extjs.gxt.ui.client.data.ModelData;

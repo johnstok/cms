@@ -28,11 +28,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ccc.api.Decimal;
-import ccc.api.ID;
-import ccc.api.Json;
-import ccc.api.Jsonable;
+import ccc.serialization.Json;
+import ccc.serialization.Jsonable;
 import ccc.types.DBC;
+import ccc.types.Decimal;
+import ccc.types.ID;
 
 
 /**

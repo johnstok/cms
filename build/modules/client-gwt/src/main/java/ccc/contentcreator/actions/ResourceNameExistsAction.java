@@ -11,7 +11,7 @@
  */
 package ccc.contentcreator.actions;
 
-import ccc.api.ID;
+import ccc.types.ID;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONParser;

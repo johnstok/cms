@@ -16,7 +16,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import ccc.api.ID;
 import ccc.api.PageDelta;
 import ccc.api.Paragraph;
 import ccc.api.TemplateSummary;
@@ -28,6 +27,7 @@ import ccc.contentcreator.client.PageElement;
 import ccc.contentcreator.client.ResourceTable;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
+import ccc.types.ID;
 
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.event.ButtonEvent;

@@ -18,9 +18,9 @@ import java.util.Collection;
 import java.util.Date;
 
 import junit.framework.TestCase;
-import ccc.api.Decimal;
-import ccc.api.Json;
-import ccc.api.Jsonable;
+import ccc.serialization.Json;
+import ccc.serialization.Jsonable;
+import ccc.types.Decimal;
 
 
 /**

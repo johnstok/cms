@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import ccc.api.ID;
 import ccc.api.ResourceSummary;
 import ccc.contentcreator.actions.GetChildrenAction;
 import ccc.contentcreator.actions.UpdateFolderAction_;
@@ -26,6 +25,7 @@ import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.ResourceTypeRendererFactory;
 import ccc.contentcreator.client.SingleSelectionModel;
+import ccc.types.ID;
 import ccc.types.ResourceType;
 
 import com.extjs.gxt.ui.client.Style.SortDir;

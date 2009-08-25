@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Set;
 
 import ccc.api.FileSummary;
-import ccc.api.ID;
 import ccc.api.PageDelta;
 import ccc.api.Paragraph;
 import ccc.contentcreator.actions.GetAbsolutePathAction;
@@ -24,6 +23,7 @@ import ccc.contentcreator.binding.FileSummaryModelData;
 import ccc.contentcreator.client.PageElement.FieldType;
 import ccc.contentcreator.client.ui.FCKEditor;
 import ccc.contentcreator.dialogs.ImageChooserDialog;
+import ccc.types.ID;
 
 import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.data.BaseModelData;

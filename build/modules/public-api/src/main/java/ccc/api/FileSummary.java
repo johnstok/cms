@@ -11,9 +11,13 @@
  */
 package ccc.api;
 
-import static ccc.api.JsonKeys.*;
+import static ccc.serialization.JsonKeys.*;
 
 import java.io.Serializable;
+
+import ccc.serialization.Json;
+import ccc.serialization.Jsonable;
+import ccc.types.ID;
 
 
 /**

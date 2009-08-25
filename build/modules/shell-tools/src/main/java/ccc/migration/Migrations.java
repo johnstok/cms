@@ -23,8 +23,6 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.Decimal;
-import ccc.api.ID;
 import ccc.api.PageDelta;
 import ccc.api.Paragraph;
 import ccc.api.ResourceSummary;
@@ -35,7 +33,9 @@ import ccc.commons.WordCharFixer;
 import ccc.domain.CCCException;
 import ccc.services.Commands;
 import ccc.services.Queries;
+import ccc.types.Decimal;
 import ccc.types.FailureCode;
+import ccc.types.ID;
 import ccc.types.ParagraphType;
 
 /**

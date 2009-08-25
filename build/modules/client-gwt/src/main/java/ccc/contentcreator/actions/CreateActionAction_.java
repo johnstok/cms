@@ -14,10 +14,10 @@ package ccc.contentcreator.actions;
 import java.util.Date;
 import java.util.Map;
 
-import ccc.api.ID;
-import ccc.api.JsonKeys;
 import ccc.contentcreator.client.GwtJson;
+import ccc.serialization.JsonKeys;
 import ccc.types.CommandType;
+import ccc.types.ID;
 
 import com.google.gwt.http.client.RequestBuilder;
 

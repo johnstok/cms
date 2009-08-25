@@ -1,3 +1,4 @@
 <module>
     <source path="types" excludes="EmailAddress.java" />
+    <source path="serialization" />
 </module>

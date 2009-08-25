@@ -13,6 +13,9 @@ package ccc.api;
 
 import java.io.Serializable;
 
+import ccc.serialization.Json;
+import ccc.serialization.Jsonable;
+
 
 /**
  * A class representing a mime type. Mime types are defined in the following

@@ -15,11 +15,11 @@ package ccc.contentcreator.client;
 import java.util.Collection;
 import java.util.List;
 
-import ccc.api.ID;
 import ccc.api.ResourceSummary;
 import ccc.contentcreator.actions.GetChildrenAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
+import ccc.types.ID;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.binder.TreeBinder;

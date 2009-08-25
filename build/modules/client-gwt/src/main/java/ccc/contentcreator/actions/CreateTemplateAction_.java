@@ -11,12 +11,12 @@
  */
 package ccc.contentcreator.actions;
 
-import ccc.api.ID;
-import ccc.api.Json;
-import ccc.api.JsonKeys;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
 import ccc.contentcreator.client.GwtJson;
+import ccc.serialization.Json;
+import ccc.serialization.JsonKeys;
+import ccc.types.ID;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;

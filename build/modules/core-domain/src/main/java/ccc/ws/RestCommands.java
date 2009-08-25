@@ -23,8 +23,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import ccc.api.AliasDelta;
-import ccc.api.ID;
-import ccc.api.Json;
 import ccc.api.PageDelta;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
@@ -39,6 +37,8 @@ import ccc.api.rest.ResourceRevisionPU;
 import ccc.api.rest.ResourceTemplatePU;
 import ccc.api.rest.TemplateNew;
 import ccc.commands.CommandFailedException;
+import ccc.serialization.Json;
+import ccc.types.ID;
 
 
 /**

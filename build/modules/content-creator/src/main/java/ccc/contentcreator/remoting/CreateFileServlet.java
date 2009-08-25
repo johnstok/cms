@@ -25,10 +25,10 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
 
 import ccc.api.FileDelta;
-import ccc.api.ID;
 import ccc.api.ResourceSummary;
 import ccc.commands.CommandFailedException;
 import ccc.domain.File;
+import ccc.types.ID;
 
 
 /**
