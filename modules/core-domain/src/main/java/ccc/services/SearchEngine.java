@@ -11,7 +11,7 @@
  */
 package ccc.services;
 
-import ccc.commons.SearchResult;
+import ccc.search.SearchResult;
 
 
 

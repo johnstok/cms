@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.search.lucene;
+package ccc.search;
 
 import java.io.IOException;
 import java.io.InputStream;
