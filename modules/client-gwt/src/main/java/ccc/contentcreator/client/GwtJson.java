@@ -17,10 +17,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.api.Decimal;
-import ccc.api.ID;
-import ccc.api.Json;
-import ccc.api.Jsonable;
+import ccc.serialization.Json;
+import ccc.serialization.Jsonable;
+import ccc.types.Decimal;
+import ccc.types.ID;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONBoolean;

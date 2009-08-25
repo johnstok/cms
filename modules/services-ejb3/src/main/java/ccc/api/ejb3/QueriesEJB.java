@@ -33,7 +33,6 @@ import ccc.api.AliasDelta;
 import ccc.api.Duration;
 import ccc.api.FileDelta;
 import ccc.api.FileSummary;
-import ccc.api.ID;
 import ccc.api.LogEntrySummary;
 import ccc.api.PageDelta;
 import ccc.api.ResourceSummary;
@@ -61,6 +60,7 @@ import ccc.services.UserLookup;
 import ccc.services.UserManager;
 import ccc.services.impl.ResourceDaoImpl;
 import ccc.services.impl.UserManagerImpl;
+import ccc.types.ID;
 import ccc.types.Username;
 
 

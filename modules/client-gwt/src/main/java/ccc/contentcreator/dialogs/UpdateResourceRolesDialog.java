@@ -15,9 +15,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import ccc.api.ID;
 import ccc.contentcreator.actions.UpdateResourceRolesAction_;
 import ccc.contentcreator.client.IGlobalsImpl;
+import ccc.types.ID;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;

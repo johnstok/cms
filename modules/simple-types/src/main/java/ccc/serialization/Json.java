@@ -10,11 +10,14 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.api;
+package ccc.serialization;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
+
+import ccc.types.Decimal;
+import ccc.types.ID;
 
 
 /**

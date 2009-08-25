@@ -12,7 +12,7 @@
  */
 package ccc.api;
 
-import static ccc.api.JsonKeys.*;
+import static ccc.serialization.JsonKeys.*;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -21,6 +21,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import ccc.serialization.Json;
+import ccc.serialization.Jsonable;
+import ccc.types.ID;
 import ccc.types.Username;
 
 

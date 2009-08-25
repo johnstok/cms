@@ -19,9 +19,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import ccc.api.ID;
-import ccc.api.JsonKeys;
 import ccc.api.ResourceSummary;
+import ccc.serialization.JsonKeys;
+import ccc.types.ID;
 import ccc.types.ResourceType;
 import ccc.types.Username;
 

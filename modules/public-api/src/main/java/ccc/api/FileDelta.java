@@ -15,6 +15,11 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import ccc.serialization.Json;
+import ccc.serialization.JsonKeys;
+import ccc.serialization.Jsonable;
+import ccc.types.ID;
+
 
 /**
  * Delta class representing changes to a file.

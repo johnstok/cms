@@ -19,7 +19,7 @@ import java.util.Set;
 
 import ccc.api.ActionSummary;
 import ccc.api.FileSummary;
-import ccc.api.ID;
+import ccc.types.ID;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 

@@ -22,9 +22,9 @@ import java.util.Map;
 
 import javax.ws.rs.core.MediaType;
 
-import ccc.api.Json;
 import ccc.commons.IO;
 import ccc.domain.Snapshot;
+import ccc.serialization.Json;
 
 
 /**

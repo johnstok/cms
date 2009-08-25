@@ -14,9 +14,9 @@ package ccc.domain;
 import java.util.Date;
 import java.util.Map;
 
-import ccc.api.Json;
-import ccc.api.JsonKeys;
 import ccc.commands.CommandFailedException;
+import ccc.serialization.Json;
+import ccc.serialization.JsonKeys;
 import ccc.types.ActionStatus;
 import ccc.types.CommandType;
 

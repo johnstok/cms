@@ -19,8 +19,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import ccc.api.Json;
-import ccc.api.JsonKeys;
+import ccc.serialization.Json;
+import ccc.serialization.JsonKeys;
 import ccc.types.DBC;
 import ccc.types.EmailAddress;
 

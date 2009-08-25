@@ -29,8 +29,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import ccc.api.ActionSummary;
-import ccc.api.Json;
 import ccc.domain.Snapshot;
+import ccc.serialization.Json;
 import ccc.ws.AbstractProvider;
 
 

@@ -13,8 +13,8 @@ package ccc.contentcreator.actions;
 
 import java.util.Map;
 
-import ccc.api.ID;
 import ccc.contentcreator.client.GwtJson;
+import ccc.types.ID;
 
 import com.google.gwt.http.client.RequestBuilder;
 

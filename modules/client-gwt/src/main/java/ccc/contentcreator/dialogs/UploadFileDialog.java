@@ -11,7 +11,6 @@
  */
 package ccc.contentcreator.dialogs;
 
-import ccc.api.JsonKeys;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
@@ -21,6 +20,7 @@ import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.overlays.FailureOverlay;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
+import ccc.serialization.JsonKeys;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;

@@ -9,12 +9,9 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api;
+package ccc.types;
 
 import java.io.Serializable;
-
-import ccc.annotations.ValueObject;
-import ccc.types.DBC;
 
 
 /**
@@ -25,7 +22,6 @@ import ccc.types.DBC;
  *
  * @author Civic Computing Ltd.
  */
-@ValueObject
 public final class ID implements Serializable {
     private String _value;
 

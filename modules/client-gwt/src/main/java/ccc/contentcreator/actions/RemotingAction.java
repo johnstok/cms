@@ -20,13 +20,13 @@ import java.util.List;
 import java.util.Map;
 
 import ccc.api.ActionSummary;
-import ccc.api.Json;
 import ccc.api.ResourceSummary;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.GwtJson;
 import ccc.contentcreator.client.RemoteException;
 import ccc.contentcreator.client.SessionTimeoutException;
 import ccc.contentcreator.overlays.FailureOverlay;
+import ccc.serialization.Json;
 
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;

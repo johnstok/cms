@@ -25,8 +25,8 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import ccc.api.Json;
 import ccc.domain.Snapshot;
+import ccc.serialization.Json;
 
 
 /**

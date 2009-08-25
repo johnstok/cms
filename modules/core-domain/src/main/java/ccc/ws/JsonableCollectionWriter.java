@@ -23,8 +23,8 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import ccc.api.Jsonable;
 import ccc.domain.Snapshot;
+import ccc.serialization.Jsonable;
 
 
 /**

@@ -28,9 +28,6 @@ import ccc.api.AliasDelta;
 import ccc.api.Duration;
 import ccc.api.FileDelta;
 import ccc.api.FileSummary;
-import ccc.api.ID;
-import ccc.api.Json;
-import ccc.api.JsonKeys;
 import ccc.api.LogEntrySummary;
 import ccc.api.PageDelta;
 import ccc.api.Paragraph;
@@ -52,9 +49,12 @@ import ccc.commons.CCCProperties;
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
 import ccc.domain.Failure;
+import ccc.serialization.Json;
+import ccc.serialization.JsonKeys;
 import ccc.services.Commands;
 import ccc.services.Queries;
 import ccc.types.FailureCode;
+import ccc.types.ID;
 import ccc.types.Username;
 
 

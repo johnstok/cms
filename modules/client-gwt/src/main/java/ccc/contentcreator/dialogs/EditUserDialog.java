@@ -17,12 +17,12 @@ import static ccc.contentcreator.validation.Validations.*;
 import java.util.HashSet;
 import java.util.Set;
 
-import ccc.api.ID;
 import ccc.api.UserSummary;
 import ccc.contentcreator.actions.UpdateUserAction_;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.UserTable;
 import ccc.contentcreator.validation.Validate;
+import ccc.types.ID;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;

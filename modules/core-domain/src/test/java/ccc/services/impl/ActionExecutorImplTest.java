@@ -17,7 +17,6 @@ import java.util.Date;
 import java.util.HashMap;
 
 import junit.framework.TestCase;
-import ccc.api.ID;
 import ccc.commands.CommandFailedException;
 import ccc.domain.Action;
 import ccc.domain.Page;
@@ -29,6 +28,7 @@ import ccc.services.Commands;
 import ccc.types.ActionStatus;
 import ccc.types.CommandType;
 import ccc.types.FailureCode;
+import ccc.types.ID;
 
 
 /**

@@ -19,12 +19,12 @@ import java.util.MissingResourceException;
 import java.util.Set;
 
 import ccc.api.ActionSummary;
-import ccc.api.ID;
 import ccc.contentcreator.api.ActionStatusConstants;
 import ccc.contentcreator.api.CommandTypeConstants;
 import ccc.contentcreator.client.IGlobals;
 import ccc.types.ActionStatus;
 import ccc.types.CommandType;
+import ccc.types.ID;
 import ccc.types.ResourceType;
 
 import com.extjs.gxt.ui.client.data.ModelData;
