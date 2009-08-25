@@ -30,7 +30,6 @@ import javax.persistence.PersistenceContext;
 
 import ccc.api.ActionSummary;
 import ccc.api.AliasDelta;
-import ccc.api.Duration;
 import ccc.api.FileDelta;
 import ccc.api.FileSummary;
 import ccc.api.LogEntrySummary;
@@ -60,6 +59,7 @@ import ccc.services.UserLookup;
 import ccc.services.UserManager;
 import ccc.services.impl.ResourceDaoImpl;
 import ccc.services.impl.UserManagerImpl;
+import ccc.types.Duration;
 import ccc.types.ID;
 import ccc.types.Username;
 

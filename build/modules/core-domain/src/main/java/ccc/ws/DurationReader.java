@@ -22,8 +22,8 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
-import ccc.api.Duration;
 import ccc.domain.Snapshot;
+import ccc.types.Duration;
 
 
 /**

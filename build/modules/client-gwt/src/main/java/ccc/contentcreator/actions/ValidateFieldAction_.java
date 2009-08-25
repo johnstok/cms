@@ -13,8 +13,8 @@ package ccc.contentcreator.actions;
 
 import java.util.Set;
 
-import ccc.api.Paragraph;
 import ccc.contentcreator.client.GwtJson;
+import ccc.types.Paragraph;
 
 import com.google.gwt.http.client.RequestBuilder;
 

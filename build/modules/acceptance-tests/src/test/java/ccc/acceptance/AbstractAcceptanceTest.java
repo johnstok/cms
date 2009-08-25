@@ -34,7 +34,6 @@ import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
-import ccc.api.MimeType;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
 import ccc.api.rest.AliasNew;
@@ -44,6 +43,7 @@ import ccc.commands.CommandFailedException;
 import ccc.domain.Failure;
 import ccc.domain.Snapshot;
 import ccc.services.Queries;
+import ccc.types.MimeType;
 import ccc.ws.AliasDeltaReader;
 import ccc.ws.BooleanProvider;
 import ccc.ws.DurationReader;

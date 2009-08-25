@@ -15,7 +15,6 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.PageDelta;
-import ccc.api.Paragraph;
 import ccc.domain.Page;
 import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.RevisionMetadata;
@@ -24,6 +23,7 @@ import ccc.domain.User;
 import ccc.entities.ResourceName;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
+import ccc.types.Paragraph;
 
 
 /**

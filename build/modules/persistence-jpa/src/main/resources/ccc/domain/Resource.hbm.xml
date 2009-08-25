@@ -128,7 +128,7 @@
             <element type="string" column="datum_value" length="1024" not-null="true"/>
         </map>
         
-        <component name="_cache" class="ccc.api.Duration">
+        <component name="_cache" class="ccc.types.Duration">
 			<property
                 name="_time"
                 not-null="false"

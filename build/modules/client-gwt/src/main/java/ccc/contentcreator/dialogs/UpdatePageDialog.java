@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Set;
 
 import ccc.api.PageDelta;
-import ccc.api.Paragraph;
 import ccc.api.TemplateSummary;
 import ccc.contentcreator.actions.UpdateWorkingCopyAction_;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
@@ -28,6 +27,7 @@ import ccc.contentcreator.client.ResourceTable;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.types.ID;
+import ccc.types.Paragraph;
 
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.event.ButtonEvent;

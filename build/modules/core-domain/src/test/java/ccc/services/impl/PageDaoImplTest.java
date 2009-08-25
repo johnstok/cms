@@ -18,7 +18,6 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 import ccc.api.PageDelta;
-import ccc.api.Paragraph;
 import ccc.commands.UpdatePageCommand;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
@@ -28,6 +27,7 @@ import ccc.domain.User;
 import ccc.entities.ResourceName;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
+import ccc.types.Paragraph;
 
 
 /**

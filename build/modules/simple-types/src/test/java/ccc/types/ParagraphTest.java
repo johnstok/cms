@@ -9,7 +9,7 @@
  * Changes: see subversion log
  *-----------------------------------------------------------------------------
  */
-package ccc.api;
+package ccc.types;
 
 import static org.easymock.EasyMock.*;
 
@@ -19,6 +19,7 @@ import java.util.List;
 
 import ccc.serialization.Json;
 import ccc.types.Decimal;
+import ccc.types.Paragraph;
 import ccc.types.ParagraphType;
 
 import junit.framework.TestCase;

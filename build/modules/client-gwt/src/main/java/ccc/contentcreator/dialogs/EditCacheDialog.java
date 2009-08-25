@@ -11,12 +11,12 @@
  */
 package ccc.contentcreator.dialogs;
 
-import ccc.api.Duration;
 import ccc.contentcreator.actions.UpdateCacheDurationAction_;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
+import ccc.types.Duration;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;

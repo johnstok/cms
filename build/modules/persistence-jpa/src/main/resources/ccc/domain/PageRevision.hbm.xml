@@ -45,7 +45,7 @@
         <set name="_content" table="page_revision_paragraphs">
             <cache usage="transactional"/>
             <key column="page_revision_id" not-null="true" foreign-key="FK_PARAGRAPH_REVISION_ID"/>
-            <composite-element class="ccc.api.Paragraph">
+            <composite-element class="ccc.types.Paragraph">
                 <property name="_name" column="name" not-null="true" type="string" length="255" />
                 <property name="_type" column="type" not-null="true" type="ParagraphType" length="255" />
                 <property name="_text" column="value_text" not-null="false" type="text" length="2147483647" />

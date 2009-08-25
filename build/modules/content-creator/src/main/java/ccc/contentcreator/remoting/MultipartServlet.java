@@ -21,12 +21,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.MimeType;
 import ccc.api.ResourceSummary;
 import ccc.commands.CommandFailedException;
 import ccc.domain.Snapshot;
 import ccc.services.Commands;
 import ccc.services.LocalCommands;
+import ccc.types.MimeType;
 
 
 /**

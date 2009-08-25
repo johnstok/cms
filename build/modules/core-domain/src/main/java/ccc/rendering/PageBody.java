@@ -18,7 +18,6 @@ import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Map;
 
-import ccc.api.MimeType;
 import ccc.api.template.StatefulReader;
 import ccc.commons.Resources;
 import ccc.domain.RevisionMetadata;
@@ -26,6 +25,7 @@ import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.snapshots.PageSnapshot;
 import ccc.types.DBC;
+import ccc.types.MimeType;
 
 
 /**

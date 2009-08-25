@@ -35,10 +35,8 @@ import javax.persistence.PersistenceContext;
 import org.apache.log4j.Logger;
 
 import ccc.api.AliasDelta;
-import ccc.api.Duration;
 import ccc.api.FileDelta;
 import ccc.api.PageDelta;
-import ccc.api.Paragraph;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
 import ccc.api.UserSummary;
@@ -96,7 +94,9 @@ import ccc.services.UserLookup;
 import ccc.services.impl.AuditLogImpl;
 import ccc.services.impl.DataManagerImpl;
 import ccc.types.CommandType;
+import ccc.types.Duration;
 import ccc.types.ID;
+import ccc.types.Paragraph;
 
 
 /**

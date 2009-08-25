@@ -19,6 +19,7 @@ import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
 import ccc.types.ID;
+import ccc.types.MimeType;
 
 
 /**

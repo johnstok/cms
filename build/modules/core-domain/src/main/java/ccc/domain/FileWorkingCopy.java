@@ -15,9 +15,9 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.FileDelta;
-import ccc.api.MimeType;
 import ccc.entities.IFile;
 import ccc.types.ID;
+import ccc.types.MimeType;
 
 
 /**

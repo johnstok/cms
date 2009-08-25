@@ -13,7 +13,6 @@ package ccc.snapshots;
 
 import java.util.Map;
 
-import ccc.api.MimeType;
 import ccc.api.template.StatefulReader;
 import ccc.domain.File;
 import ccc.entities.IData;
@@ -22,6 +21,7 @@ import ccc.rendering.FileBody;
 import ccc.rendering.Response;
 import ccc.services.DataManager;
 import ccc.services.SearchEngine;
+import ccc.types.MimeType;
 
 
 /**

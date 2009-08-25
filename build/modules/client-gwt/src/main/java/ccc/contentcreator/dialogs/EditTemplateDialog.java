@@ -12,7 +12,6 @@
 
 package ccc.contentcreator.dialogs;
 
-import ccc.api.MimeType;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
 import ccc.contentcreator.actions.CreateTemplateAction_;
@@ -26,6 +25,7 @@ import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.contentcreator.validation.Validator;
 import ccc.types.ID;
+import ccc.types.MimeType;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;

@@ -24,7 +24,6 @@ import java.util.Map.Entry;
 import org.apache.log4j.Logger;
 
 import ccc.api.PageDelta;
-import ccc.api.Paragraph;
 import ccc.api.ResourceSummary;
 import ccc.api.UserSummary;
 import ccc.commands.CommandFailedException;
@@ -36,6 +35,7 @@ import ccc.services.Queries;
 import ccc.types.Decimal;
 import ccc.types.FailureCode;
 import ccc.types.ID;
+import ccc.types.Paragraph;
 import ccc.types.ParagraphType;
 
 /**

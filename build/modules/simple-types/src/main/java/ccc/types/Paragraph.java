@@ -9,7 +9,7 @@
  * Changes: see subversion log
  *-----------------------------------------------------------------------------
  */
-package ccc.api;
+package ccc.types;
 
 import static ccc.types.DBC.*;
 
@@ -20,9 +20,6 @@ import java.util.List;
 
 import ccc.serialization.Json;
 import ccc.serialization.Jsonable;
-import ccc.types.DBC;
-import ccc.types.Decimal;
-import ccc.types.ParagraphType;
 
 
 /**

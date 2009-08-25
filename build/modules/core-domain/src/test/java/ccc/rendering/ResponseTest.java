@@ -21,14 +21,14 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
-import ccc.api.Duration;
-import ccc.api.MimeType;
 import ccc.api.template.StatefulReader;
 import ccc.commons.Testing;
 import ccc.domain.Page;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.entities.ResourceName;
+import ccc.types.Duration;
+import ccc.types.MimeType;
 
 
 /**

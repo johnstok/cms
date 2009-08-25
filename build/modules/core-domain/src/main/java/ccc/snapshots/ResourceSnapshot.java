@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.Duration;
 import ccc.api.template.StatefulReader;
 import ccc.domain.Folder;
 import ccc.domain.Resource;
@@ -32,6 +31,7 @@ import ccc.rendering.NotFoundException;
 import ccc.rendering.Response;
 import ccc.services.DataManager;
 import ccc.services.SearchEngine;
+import ccc.types.Duration;
 import ccc.types.ResourceType;
 
 

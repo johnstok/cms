@@ -17,7 +17,6 @@ import java.io.StringWriter;
 import java.util.Date;
 
 import junit.framework.TestCase;
-import ccc.api.Paragraph;
 import ccc.api.template.StatefulReader;
 import ccc.domain.Page;
 import ccc.domain.RevisionMetadata;
@@ -25,6 +24,7 @@ import ccc.domain.User;
 import ccc.entities.ResourceName;
 import ccc.rendering.Context;
 import ccc.rendering.TextProcessor;
+import ccc.types.Paragraph;
 
 
 /**

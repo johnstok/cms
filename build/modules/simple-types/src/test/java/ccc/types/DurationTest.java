@@ -9,8 +9,9 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api;
+package ccc.types;
 
+import ccc.types.Duration;
 import junit.framework.TestCase;
 
 
