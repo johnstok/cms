@@ -16,7 +16,7 @@ import java.util.UUID;
 
 import ccc.api.UserSummary;
 import ccc.domain.LogEntry;
-import ccc.domain.Snapshot;
+import ccc.domain.JsonImpl;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -71,7 +71,7 @@ public class UpdateUserCommand {
                 CommandType.USER_UPDATE,
                 happenedOn,
                 userId,
-                new Snapshot(current).getDetail()));
+                new JsonImpl(current).getDetail()));
 
         return current;
     }

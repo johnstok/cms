@@ -16,7 +16,7 @@ import java.util.Date;
 import ccc.api.UserSummary;
 import ccc.domain.LogEntry;
 import ccc.domain.Password;
-import ccc.domain.Snapshot;
+import ccc.domain.JsonImpl;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -74,7 +74,7 @@ public class CreateUserCommand {
                 CommandType.USER_CREATE,
                 happenedOn,
                 user.id(),
-                new Snapshot(user).getDetail()));
+                new JsonImpl(user).getDetail()));
 
         return user;
     }

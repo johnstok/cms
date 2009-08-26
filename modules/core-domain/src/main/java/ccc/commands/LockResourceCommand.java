@@ -17,7 +17,7 @@ import java.util.UUID;
 import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
-import ccc.domain.Snapshot;
+import ccc.domain.JsonImpl;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -68,7 +68,7 @@ public class LockResourceCommand {
                 CommandType.RESOURCE_LOCK,
                 happenedOn,
                 resourceId,
-                new Snapshot(r).getDetail());
+                new JsonImpl(r).getDetail());
         _audit.record(le);
     }
 }

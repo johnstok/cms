@@ -30,7 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import ccc.api.UserSummary;
-import ccc.domain.Snapshot;
+import ccc.domain.JsonImpl;
 
 
 /**
@@ -69,7 +69,7 @@ public class UserSummaryCollectionReader
             final Collection<UserSummary> us = new ArrayList<UserSummary>();
             for (int i=0; i<result.length(); i++) {
                 final JSONObject o = result.getJSONObject(i);
-                us.add(new UserSummary(new Snapshot(o)));
+                us.add(new UserSummary(new JsonImpl(o)));
             }
             return us;
         } catch (final JSONException e) {

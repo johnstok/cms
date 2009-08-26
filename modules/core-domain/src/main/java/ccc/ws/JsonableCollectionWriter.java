@@ -23,7 +23,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import ccc.domain.Snapshot;
+import ccc.domain.JsonImpl;
 import ccc.serialization.Jsonable;
 
 
@@ -76,9 +76,9 @@ public class JsonableCollectionWriter
         for (final Jsonable rs : object) {
             a++;
             if (a == object.size()) {
-                pw.println(new Snapshot(rs).getDetail()+"\n");
+                pw.println(new JsonImpl(rs).getDetail()+"\n");
             } else {
-                pw.println(new Snapshot(rs).getDetail()+",\n");
+                pw.println(new JsonImpl(rs).getDetail()+",\n");
             }
         }
         pw.println("\n]");

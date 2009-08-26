@@ -30,7 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import ccc.api.LogEntrySummary;
-import ccc.domain.Snapshot;
+import ccc.domain.JsonImpl;
 
 
 /**
@@ -72,7 +72,7 @@ public class RevisionSummaryCollectionReader
                 new ArrayList<LogEntrySummary>();
             for (int i=0; i<result.length(); i++) {
                 final JSONObject o = result.getJSONObject(i);
-                rs.add(new LogEntrySummary(new Snapshot(o)));
+                rs.add(new LogEntrySummary(new JsonImpl(o)));
             }
             return rs;
         } catch (final JSONException e) {

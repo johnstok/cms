@@ -15,7 +15,7 @@ import java.util.Date;
 
 import ccc.domain.Action;
 import ccc.domain.LogEntry;
-import ccc.domain.Snapshot;
+import ccc.domain.JsonImpl;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -62,6 +62,6 @@ public class ScheduleActionCommand {
                 CommandType.ACTION_CREATE,
                 happenedOn,
                 action.id(),
-                new Snapshot(action).getDetail()));
+                new JsonImpl(action).getDetail()));
     }
 }

@@ -22,7 +22,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
-import ccc.domain.Snapshot;
+import ccc.domain.JsonImpl;
 import ccc.types.Duration;
 
 
@@ -62,7 +62,7 @@ public class DurationReader
             return null;
         }
 
-        final Snapshot sn = new Snapshot(s);
+        final JsonImpl sn = new JsonImpl(s);
         final Duration d = new Duration(sn);
 
         return d;

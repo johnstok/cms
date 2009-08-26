@@ -17,7 +17,7 @@ import java.util.UUID;
 import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
-import ccc.domain.Snapshot;
+import ccc.domain.JsonImpl;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -74,7 +74,7 @@ public class UpdateCachingCommand {
                 CommandType.RESOURCE_UPDATE_CACHE,
                 happenedOn,
                 r.id(),
-                new Snapshot(r).getDetail());
+                new JsonImpl(r).getDetail());
         _audit.record(le);
     }
 

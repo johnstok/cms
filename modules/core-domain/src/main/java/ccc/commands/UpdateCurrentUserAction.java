@@ -19,7 +19,7 @@ import java.util.UUID;
 import ccc.domain.InsufficientPrivilegesException;
 import ccc.domain.LogEntry;
 import ccc.domain.Password;
-import ccc.domain.Snapshot;
+import ccc.domain.JsonImpl;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -83,6 +83,6 @@ public class UpdateCurrentUserAction {
                 CommandType.USER_UPDATE,
                 happenedOn,
                 userId,
-                new Snapshot(current).getDetail()));
+                new JsonImpl(current).getDetail()));
     }
 }

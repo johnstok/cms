@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
 
 import ccc.api.ResourceSummary;
 import ccc.commands.CommandFailedException;
-import ccc.domain.Snapshot;
+import ccc.domain.JsonImpl;
 import ccc.services.Commands;
 import ccc.services.LocalCommands;
 import ccc.types.MimeType;
@@ -93,7 +93,7 @@ public abstract class MultipartServlet
                                    final CommandFailedException e)
     throws IOException {
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        response.getWriter().write(new Snapshot(e.getFailure()).getDetail());
+        response.getWriter().write(new JsonImpl(e.getFailure()).getDetail());
     }
 
 
@@ -105,7 +105,7 @@ public abstract class MultipartServlet
      * @return The JSON representation,as a string.
      */
     protected String toJSON(final ResourceSummary rs) {
-        final Snapshot s = new Snapshot();
+        final JsonImpl s = new JsonImpl();
         rs.toJson(s);
         return s.getDetail();
     }

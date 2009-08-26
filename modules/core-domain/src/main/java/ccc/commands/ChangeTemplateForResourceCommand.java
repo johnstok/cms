@@ -17,7 +17,7 @@ import java.util.UUID;
 import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
-import ccc.domain.Snapshot;
+import ccc.domain.JsonImpl;
 import ccc.domain.Template;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
@@ -80,7 +80,7 @@ public class ChangeTemplateForResourceCommand {
                 CommandType.RESOURCE_CHANGE_TEMPLATE,
                 happenedOn,
                 resourceId,
-                new Snapshot(r).getDetail());
+                new JsonImpl(r).getDetail());
         _audit.record(le);
     }
 

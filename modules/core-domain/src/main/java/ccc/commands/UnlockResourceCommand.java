@@ -17,7 +17,7 @@ import java.util.UUID;
 import ccc.domain.InsufficientPrivilegesException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
-import ccc.domain.Snapshot;
+import ccc.domain.JsonImpl;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -73,7 +73,7 @@ public class UnlockResourceCommand {
                 CommandType.RESOURCE_UNLOCK,
                 happenedOn,
                 resourceId,
-                new Snapshot(r).getDetail());
+                new JsonImpl(r).getDetail());
         _audit.record(le);
     }
 }

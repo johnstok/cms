@@ -18,7 +18,7 @@ import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.ResourceExistsException;
-import ccc.domain.Snapshot;
+import ccc.domain.JsonImpl;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -84,7 +84,7 @@ public class RenameResourceCommand {
                 CommandType.RESOURCE_RENAME,
                 happenedOn,
                 resource.id(),
-                new Snapshot(resource).getDetail());
+                new JsonImpl(resource).getDetail());
         _audit.record(le);
     }
 }
