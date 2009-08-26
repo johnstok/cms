@@ -113,7 +113,7 @@
     <dependencies>
         <dependency>
             <groupId>CCC7</groupId>
-            <artifactId>public-api</artifactId>
+            <artifactId>api-rest</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
