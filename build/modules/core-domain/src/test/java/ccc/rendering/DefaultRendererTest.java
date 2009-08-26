@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.rendering.server;
+package ccc.rendering;
 
 import static ccc.commons.Exceptions.*;
 
@@ -38,17 +38,17 @@ import ccc.domain.User;
 import ccc.rendering.CharEncodingHeader;
 import ccc.rendering.ContentTypeHeader;
 import ccc.rendering.DateHeader;
+import ccc.rendering.DefaultRenderer;
 import ccc.rendering.FileBody;
 import ccc.rendering.Header;
 import ccc.rendering.IntHeader;
 import ccc.rendering.NotFoundException;
 import ccc.rendering.PageBody;
 import ccc.rendering.RedirectRequiredException;
+import ccc.rendering.Renderer;
 import ccc.rendering.Response;
 import ccc.rendering.StatefulReader;
 import ccc.rendering.StringHeader;
-import ccc.rendering.response.DefaultRenderer;
-import ccc.rendering.response.Renderer;
 import ccc.services.DataManager;
 import ccc.services.SearchEngine;
 import ccc.types.MimeType;

@@ -9,12 +9,11 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.rendering.response;
+package ccc.rendering;
 
 import java.util.Map;
 
 import ccc.domain.Resource;
-import ccc.rendering.Response;
 
 
 /**
