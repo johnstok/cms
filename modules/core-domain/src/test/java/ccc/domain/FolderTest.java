@@ -374,7 +374,7 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @@throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
     public void testFolderCount() throws CccCheckedException {
 
