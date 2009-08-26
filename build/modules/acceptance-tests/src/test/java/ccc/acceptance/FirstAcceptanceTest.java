@@ -20,7 +20,7 @@ import org.jboss.resteasy.client.ProxyFactory;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
 import ccc.api.rest.TemplateNew;
-import ccc.commands.CommandFailedException;
+import ccc.domain.CommandFailedException;
 import ccc.domain.Failure;
 import ccc.rest.SecurityAPI;
 import ccc.types.FailureCode;

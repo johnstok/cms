@@ -22,7 +22,7 @@ import ccc.api.PageDelta;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
 import ccc.api.UserSummary;
-import ccc.commands.CommandFailedException;
+import ccc.domain.CommandFailedException;
 import ccc.types.CommandType;
 import ccc.types.Duration;
 import ccc.types.ID;

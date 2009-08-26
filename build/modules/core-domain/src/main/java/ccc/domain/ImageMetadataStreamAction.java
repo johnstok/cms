@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.commands;
+package ccc.domain;
 
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
@@ -18,7 +18,6 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import ccc.domain.File;
 import ccc.services.DataManager;
 
 /**

@@ -26,7 +26,7 @@ import org.apache.log4j.Logger;
 
 import ccc.api.FileDelta;
 import ccc.api.ResourceSummary;
-import ccc.commands.CommandFailedException;
+import ccc.domain.CommandFailedException;
 import ccc.domain.File;
 import ccc.types.ID;
 

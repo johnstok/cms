@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.UUID;
 
 import ccc.api.UserSummary;
-import ccc.commands.CommandFailedException;
+import ccc.domain.CommandFailedException;
 import ccc.types.Username;
 
 

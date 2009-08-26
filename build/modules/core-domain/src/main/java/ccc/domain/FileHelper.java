@@ -9,11 +9,10 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.commands;
+package ccc.domain;
 
 import java.util.Map;
 
-import ccc.domain.Data;
 import ccc.services.DataManager;
 
 
@@ -30,7 +29,7 @@ public class FileHelper {
      * @param props The file properties.
      * @param dm The data manager for reading the data.
      */
-    protected void extractImageMetadata(final Data data,
+    public void extractImageMetadata(final Data data,
                                         final Map<String, String> props,
                                         final DataManager dm) {
         final ImageMetadataStreamAction img = new ImageMetadataStreamAction();

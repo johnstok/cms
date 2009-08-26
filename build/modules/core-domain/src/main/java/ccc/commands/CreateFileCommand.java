@@ -18,6 +18,7 @@ import java.util.UUID;
 import ccc.api.FileDelta;
 import ccc.domain.Data;
 import ccc.domain.File;
+import ccc.domain.FileHelper;
 import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;

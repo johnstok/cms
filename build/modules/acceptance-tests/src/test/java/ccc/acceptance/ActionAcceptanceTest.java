@@ -17,7 +17,7 @@ import java.util.HashMap;
 import ccc.api.ActionSummary;
 import ccc.api.ResourceSummary;
 import ccc.api.rest.ActionNew;
-import ccc.commands.CommandFailedException;
+import ccc.domain.CommandFailedException;
 import ccc.types.CommandType;
 
 

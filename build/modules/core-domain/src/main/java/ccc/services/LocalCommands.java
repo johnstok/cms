@@ -16,7 +16,7 @@ import java.util.Date;
 
 import ccc.api.FileDelta;
 import ccc.api.ResourceSummary;
-import ccc.commands.CommandFailedException;
+import ccc.domain.CommandFailedException;
 import ccc.types.ID;
 
 

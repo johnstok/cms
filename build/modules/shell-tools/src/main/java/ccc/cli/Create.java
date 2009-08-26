@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;
 
 import ccc.api.ResourceSummary;
-import ccc.commands.CommandFailedException;
+import ccc.domain.CommandFailedException;
 import ccc.migration.ServiceLookup;
 import ccc.services.Commands;
 

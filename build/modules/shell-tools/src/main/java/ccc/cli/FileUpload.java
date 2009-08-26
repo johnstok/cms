@@ -20,7 +20,7 @@ import org.kohsuke.args4j.Option;
 
 import ccc.cli.fileupload.CccServer;
 import ccc.cli.fileupload.Server;
-import ccc.commands.CommandFailedException;
+import ccc.domain.CommandFailedException;
 import ccc.migration.FileUploader;
 import ccc.migration.ServiceLookup;
 import ccc.rest.Queries;

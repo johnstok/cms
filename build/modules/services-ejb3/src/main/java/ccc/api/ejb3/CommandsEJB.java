@@ -44,7 +44,6 @@ import ccc.commands.ApplyWorkingCopyCommand;
 import ccc.commands.CancelActionCommand;
 import ccc.commands.ChangeTemplateForResourceCommand;
 import ccc.commands.ClearWorkingCopyCommand;
-import ccc.commands.CommandFailedException;
 import ccc.commands.CreateAliasCommand;
 import ccc.commands.CreateFileCommand;
 import ccc.commands.CreateFolderCommand;
@@ -63,7 +62,7 @@ import ccc.commands.UnlockResourceCommand;
 import ccc.commands.UnpublishResourceCommand;
 import ccc.commands.UpdateAliasCommand;
 import ccc.commands.UpdateCachingCommand;
-import ccc.commands.UpdateCurrentUserAction;
+import ccc.commands.UpdateCurrentUserCommand;
 import ccc.commands.UpdateFileCommand;
 import ccc.commands.UpdateFolderCommand;
 import ccc.commands.UpdatePageCommand;
@@ -74,6 +73,7 @@ import ccc.commands.UpdateTemplateCommand;
 import ccc.commands.UpdateUserCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.Action;
+import ccc.domain.CommandFailedException;
 import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.Page;
@@ -930,7 +930,7 @@ public class CommandsEJB
     @RolesAllowed({"CONTENT_CREATOR"})
     public void updateYourUser(final ID userId, final String email, final String password) throws CommandFailedException {
         try {
-        new UpdateCurrentUserAction(_bdao, _audit).execute(
+        new UpdateCurrentUserCommand(_bdao, _audit).execute(
         loggedInUser(), new Date(), toUUID(userId), email, password);
         } catch (final RemoteExceptionSupport e) {
             throw fail(e);
