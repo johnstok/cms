@@ -32,7 +32,7 @@ import ccc.types.EmailAddress;
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateCurrentUserAction {
+public class UpdateCurrentUserCommand {
 
     private final Dao      _dao;
     private final AuditLog _audit;
@@ -43,7 +43,7 @@ public class UpdateCurrentUserAction {
      * @param dao The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public UpdateCurrentUserAction(final Dao dao, final AuditLog audit) {
+    public UpdateCurrentUserCommand(final Dao dao, final AuditLog audit) {
         _dao = dao;
         _audit = audit;
     }

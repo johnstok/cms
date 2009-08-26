@@ -24,7 +24,7 @@ import ccc.api.ResourceSummary;
 import ccc.api.UserSummary;
 import ccc.api.rest.ResourceCacheDurationPU;
 import ccc.api.rest.ResourceTemplatePU;
-import ccc.commands.CommandFailedException;
+import ccc.domain.CommandFailedException;
 import ccc.domain.JsonImpl;
 import ccc.serialization.JsonKeys;
 import ccc.types.Duration;

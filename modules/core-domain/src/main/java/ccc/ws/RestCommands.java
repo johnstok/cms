@@ -36,7 +36,7 @@ import ccc.api.rest.ResourceCacheDurationPU;
 import ccc.api.rest.ResourceRevisionPU;
 import ccc.api.rest.ResourceTemplatePU;
 import ccc.api.rest.TemplateNew;
-import ccc.commands.CommandFailedException;
+import ccc.domain.CommandFailedException;
 import ccc.serialization.Json;
 import ccc.types.ID;
 

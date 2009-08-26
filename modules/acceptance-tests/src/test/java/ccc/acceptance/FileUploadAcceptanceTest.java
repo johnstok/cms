@@ -19,7 +19,7 @@ import java.util.UUID;
 import ccc.api.LogEntrySummary;
 import ccc.api.ResourceSummary;
 import ccc.api.rest.ResourceRevisionPU;
-import ccc.commands.CommandFailedException;
+import ccc.domain.CommandFailedException;
 import ccc.types.FailureCode;
 
 

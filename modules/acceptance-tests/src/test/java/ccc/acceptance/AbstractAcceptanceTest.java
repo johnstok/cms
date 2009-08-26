@@ -39,7 +39,7 @@ import ccc.api.TemplateDelta;
 import ccc.api.rest.AliasNew;
 import ccc.api.rest.FolderNew;
 import ccc.api.rest.TemplateNew;
-import ccc.commands.CommandFailedException;
+import ccc.domain.CommandFailedException;
 import ccc.domain.Failure;
 import ccc.domain.JsonImpl;
 import ccc.rest.Queries;

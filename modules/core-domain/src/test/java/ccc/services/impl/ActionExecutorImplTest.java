@@ -17,8 +17,8 @@ import java.util.Date;
 import java.util.HashMap;
 
 import junit.framework.TestCase;
-import ccc.commands.CommandFailedException;
 import ccc.domain.Action;
+import ccc.domain.CommandFailedException;
 import ccc.domain.Page;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.UnlockedException;

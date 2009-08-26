@@ -16,7 +16,7 @@ import java.util.UUID;
 import ccc.api.AliasDelta;
 import ccc.api.ResourceSummary;
 import ccc.api.rest.AliasNew;
-import ccc.commands.CommandFailedException;
+import ccc.domain.CommandFailedException;
 
 
 /**

@@ -15,8 +15,8 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 
-import ccc.commands.CommandFailedException;
 import ccc.domain.Action;
+import ccc.domain.CommandFailedException;
 import ccc.services.ActionExecutor;
 import ccc.services.Commands;
 import ccc.types.DBC;

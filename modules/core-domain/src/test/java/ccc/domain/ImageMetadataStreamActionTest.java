@@ -9,9 +9,11 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.commands;
+package ccc.domain;
 
 import java.io.InputStream;
+
+import ccc.domain.ImageMetadataStreamAction;
 
 import junit.framework.TestCase;
 
