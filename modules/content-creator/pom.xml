@@ -60,7 +60,12 @@
     <dependencies>
         <dependency>
             <groupId>CCC7</groupId>
-            <artifactId>rendering-engine</artifactId>
+            <artifactId>rendering-velocity</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>CCC7</groupId>
+            <artifactId>persistence-jpa</artifactId>
             <version>${project.version}</version>
         </dependency>
         
