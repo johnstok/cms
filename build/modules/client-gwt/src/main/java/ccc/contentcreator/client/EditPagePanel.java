@@ -20,7 +20,6 @@ import ccc.api.PageDelta;
 import ccc.contentcreator.actions.GetAbsolutePathAction;
 import ccc.contentcreator.binding.FileSummaryModelData;
 import ccc.contentcreator.client.PageElement.FieldType;
-import ccc.contentcreator.client.ui.FCKEditor;
 import ccc.contentcreator.dialogs.ImageChooserDialog;
 import ccc.types.ID;
 import ccc.types.Paragraph;

@@ -12,14 +12,13 @@
  * the License.
  */
 
-package ccc.contentcreator.client.ui;
+package ccc.contentcreator.client;
 
 import java.util.Collection;
 
 import ccc.api.ResourceSummary;
 import ccc.contentcreator.actions.GetRootsAction;
 import ccc.contentcreator.api.ActionNameConstants;
-import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.dialogs.ImageSelectionDialog;
 import ccc.contentcreator.dialogs.LinkSelectionDialog;
 
@@ -167,11 +166,11 @@ public class FCKEditor extends LayoutContainer {
 
     private static native String initJSNI(final FCKEditor obj) /*-{
         $wnd.cccLinkSelector = function(fckname, url, title) {
-            obj.@ccc.contentcreator.client.ui.FCKEditor::openLinkSelector(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(fckname,url,title);
+            obj.@ccc.contentcreator.client.FCKEditor::openLinkSelector(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(fckname,url,title);
         };
 
         $wnd.cccImageSelector = function(fckname) {
-            obj.@ccc.contentcreator.client.ui.FCKEditor::openImageSelector(Ljava/lang/String;)(fckname);
+            obj.@ccc.contentcreator.client.FCKEditor::openImageSelector(Ljava/lang/String;)(fckname);
         };
     }-*/;
 

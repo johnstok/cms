@@ -12,7 +12,6 @@
 package ccc.contentcreator.client;
 
 
-import ccc.contentcreator.client.ui.FCKEditor;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.widget.Text;
