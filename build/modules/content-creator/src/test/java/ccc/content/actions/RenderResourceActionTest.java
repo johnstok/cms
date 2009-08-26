@@ -24,12 +24,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
-import ccc.content.velocity.VelocityProcessor;
 import ccc.rendering.Body;
 import ccc.rendering.NotFoundException;
 import ccc.rendering.Renderer;
 import ccc.rendering.Response;
 import ccc.rendering.TextProcessor;
+import ccc.rendering.velocity.VelocityProcessor;
 import ccc.services.ResourceDao;
 import ccc.types.ResourcePath;
 
