@@ -13,6 +13,7 @@ package ccc.search.lucene;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashSet;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -28,6 +29,7 @@ import org.apache.lucene.search.TopDocs;
 
 import ccc.search.AbstractIndexer;
 import ccc.search.SearchException;
+import ccc.search.SearchResult;
 import ccc.services.DataManager;
 
 
@@ -48,6 +50,7 @@ public class SimpleLuceneFS
     private final Properties _properties = new Properties();
     private final String _indexPath;
     private IndexWriter _writer;
+
 
     /**
      * Constructor.
@@ -79,10 +82,28 @@ public class SimpleLuceneFS
 
     /** {@inheritDoc} */
     @Override
-    public void find(final String searchTerms,
-                     final String field,
-                     final int maxHits,
-                     final SearchHandler sh) {
+    public SearchResult find(final String searchTerms,
+                             final int resultCount,
+                             final int page) {
+        if (searchTerms == null || searchTerms.trim().equals("")) {
+            return new SearchResult(new HashSet<UUID>(), 0, searchTerms, page);
+        }
+
+        final String field = "content";
+        final int maxHits = (page+1)*resultCount;
+        final CapturingHandler sh = new CapturingHandler(resultCount, page);
+
+        find(searchTerms, field, maxHits, sh);
+
+        return new SearchResult(
+            sh.getHits(), sh.getResultCount(), searchTerms, page);
+    }
+
+
+    private void find(final String searchTerms,
+                      final String field,
+                      final int maxHits,
+                      final CapturingHandler sh) {
         IndexSearcher searcher = null;
         try {
             searcher =

@@ -11,26 +11,15 @@
  */
 package ccc.search.lucene;
 
+import ccc.search.Index;
 import ccc.search.Indexer;
 
 
 /**
- * Simple API to lucene.
+ * Lucene implementation of the search API.
  *
  * @author Civic Computing Ltd.
  */
-public interface SimpleLucene extends Indexer {
-
-    /**
-     * Search a lucene index.
-     *
-     * @param searchTerms The terms to match.
-     * @param field The field to check.
-     * @param maxHits The maximum number of results to retrieve.
-     * @param sh The handler used to process the results.
-     */
-    void find(final String searchTerms,
-              final String field,
-              final int maxHits,
-              final SearchHandler sh);
+public interface SimpleLucene extends Indexer, Index {
+    // No additional methods.
 }

@@ -14,9 +14,7 @@ package ccc.api.ejb3;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.security.PermitAll;
@@ -38,7 +36,6 @@ import ccc.domain.Page;
 import ccc.persistence.jpa.BaseDao;
 import ccc.persistence.jpa.FsCoreData;
 import ccc.search.SearchResult;
-import ccc.search.lucene.CapturingHandler;
 import ccc.search.lucene.SimpleLucene;
 import ccc.search.lucene.SimpleLuceneFS;
 import ccc.services.Dao;
@@ -97,18 +94,7 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
     public SearchResult find(final String searchTerms,
                              final int resultCount,
                              final int page) {
-        if (searchTerms == null || searchTerms.trim().equals("")) {
-            return new SearchResult(new HashSet<UUID>(), 0, searchTerms, page);
-        }
-
-        final String field = "content";
-        final int maxHits = (page+1)*resultCount;
-        final CapturingHandler sh = new CapturingHandler(resultCount, page);
-
-        _lucene.find(searchTerms, field, maxHits, sh);
-
-        return new SearchResult(
-            sh.getHits(), sh.getResultCount(), searchTerms, page);
+        return _lucene.find(searchTerms, resultCount, page);
     }
 
 

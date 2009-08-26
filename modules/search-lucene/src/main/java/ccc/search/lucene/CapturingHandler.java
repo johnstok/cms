@@ -14,7 +14,7 @@ import org.apache.lucene.search.TopDocs;
  *
  * @author Civic Computing Ltd.
  */
-public class CapturingHandler extends SearchHandler {
+public class CapturingHandler {
 
     private final Set<UUID> _hits = new HashSet<UUID>();
     private final int       _resultsPerPage;
@@ -32,8 +32,13 @@ public class CapturingHandler extends SearchHandler {
         _page = page;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Process the results of a search.
+     *
+     * @param searcher The lucene index searcher used for the search.
+     * @param docs The results from the search.
+     * @throws IOException If an error occurs accessing the index.
+     */
     public void handle(final IndexSearcher searcher,
                        final TopDocs docs) throws IOException {
         final int firstResultIndex = _page*_resultsPerPage;
