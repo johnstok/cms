@@ -24,7 +24,7 @@ import ccc.types.FailureCode;
  */
 public class CycleDetectedException
     extends
-        RemoteExceptionSupport {
+        CccCheckedException {
 
     /** {@inheritDoc} */
     @Override

@@ -16,13 +16,13 @@ import ccc.types.FailureCode;
 
 /**
  * Wrapper class for converting third party exceptions to use
- * {@link RemoteExceptionSupport}.
+ * {@link CccCheckedException}.
  *
  * @author Civic Computing Ltd.
  */
 public class UnexpectedException
     extends
-        RemoteExceptionSupport {
+        CccCheckedException {
 
     /**
      * Constructor.

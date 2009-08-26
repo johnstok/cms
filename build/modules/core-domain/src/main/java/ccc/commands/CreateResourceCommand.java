@@ -17,7 +17,7 @@ import java.util.UUID;
 import ccc.domain.CCCException;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
-import ccc.domain.RemoteExceptionSupport;
+import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.domain.JsonImpl;
 import ccc.domain.User;
@@ -55,13 +55,13 @@ public abstract class CreateResourceCommand {
      * @param folderId The folder in which the resource will be created.
      * @param newResource The new resource.
      *
-     * @throws RemoteExceptionSupport If the command fails.
+     * @throws CccCheckedException If the command fails.
      */
     protected void create(final User actor,
                           final Date happenedOn,
                           final UUID folderId,
                           final Resource newResource)
-                                                throws RemoteExceptionSupport {
+                                                throws CccCheckedException {
         newResource.dateCreated(happenedOn);
         newResource.dateChanged(happenedOn);
 

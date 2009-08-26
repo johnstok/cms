@@ -23,7 +23,7 @@ import ccc.types.FailureCode;
  */
 public class WorkingCopyNotSupportedException
     extends
-        RemoteExceptionSupport {
+        CccCheckedException {
 
     private final Resource _resource;
 

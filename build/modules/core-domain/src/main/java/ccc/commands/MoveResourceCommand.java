@@ -16,7 +16,7 @@ import java.util.UUID;
 
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
-import ccc.domain.RemoteExceptionSupport;
+import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.domain.JsonImpl;
 import ccc.domain.User;
@@ -54,12 +54,12 @@ public class MoveResourceCommand {
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
      *
-     * @throws RemoteExceptionSupport If the command fails.
+     * @throws CccCheckedException If the command fails.
      */
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID resourceId,
-                        final UUID newParentId) throws RemoteExceptionSupport {
+                        final UUID newParentId) throws CccCheckedException {
         final Resource resource = _dao.find(Resource.class, resourceId);
         resource.confirmLock(actor);
 

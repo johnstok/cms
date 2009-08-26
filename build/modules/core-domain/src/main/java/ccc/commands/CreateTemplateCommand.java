@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.TemplateDelta;
-import ccc.domain.RemoteExceptionSupport;
+import ccc.domain.CccCheckedException;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
@@ -51,7 +51,7 @@ public class CreateTemplateCommand extends CreateResourceCommand {
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
      *
-     * @throws RemoteExceptionSupport If the command fails.
+     * @throws CccCheckedException If the command fails.
      *
      *  @return The new template.
      */
@@ -62,7 +62,7 @@ public class CreateTemplateCommand extends CreateResourceCommand {
                             final String title,
                             final String description,
                             final ResourceName name)
-                                                throws RemoteExceptionSupport {
+                                                throws CccCheckedException {
         final RevisionMetadata rm =
             new RevisionMetadata(happenedOn, actor, true, "Created.");
 

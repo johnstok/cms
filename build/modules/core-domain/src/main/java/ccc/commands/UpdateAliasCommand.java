@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.domain.Alias;
-import ccc.domain.RemoteExceptionSupport;
+import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -48,12 +48,12 @@ public class UpdateAliasCommand extends UpdateResourceCommand {
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
      *
-     * @throws RemoteExceptionSupport If the command fails.
+     * @throws CccCheckedException If the command fails.
      */
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID targetId,
-                        final UUID aliasId) throws RemoteExceptionSupport {
+                        final UUID aliasId) throws CccCheckedException {
         final Alias alias = getDao().find(Alias.class, aliasId);
         alias.confirmLock(actor);
 

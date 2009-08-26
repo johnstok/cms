@@ -13,7 +13,7 @@ package ccc.commands;
 
 import static org.easymock.EasyMock.*;
 import ccc.domain.LogEntry;
-import ccc.domain.RemoteExceptionSupport;
+import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.domain.Search;
 
@@ -30,9 +30,9 @@ public class UnpublishResourceCommandTest
     /**
      * Test.
      *
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testUnpublishResource() throws RemoteExceptionSupport {
+    public void testUnpublishResource() throws CccCheckedException {
 
         // ARRANGE
         final Search s = new Search("foo");

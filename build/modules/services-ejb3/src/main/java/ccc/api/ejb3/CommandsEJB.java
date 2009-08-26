@@ -78,7 +78,7 @@ import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.PageHelper;
-import ccc.domain.RemoteExceptionSupport;
+import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.domain.ResourceExistsException;
 import ccc.domain.ResourceOrder;
@@ -141,7 +141,7 @@ public class CommandsEJB
                     toUUID(targetId),
                     name));
 
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
@@ -194,7 +194,7 @@ public class CommandsEJB
 
             return mapResource(f);
 
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
@@ -260,7 +260,7 @@ public class CommandsEJB
 
             return mapResource(p);
 
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
@@ -285,7 +285,7 @@ public class CommandsEJB
                     description,
                     new ResourceName(name)));
 
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
 
@@ -317,7 +317,7 @@ public class CommandsEJB
             new LockResourceCommand(_bdao, _audit).execute(
                 userForId(actorId), happenedOn, toUUID(resourceId));
 
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
@@ -334,7 +334,7 @@ public class CommandsEJB
                 toUUID(resourceId),
                 toUUID(newParentId));
 
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
@@ -349,7 +349,7 @@ public class CommandsEJB
                 loggedInUser(),
                 _bdao.find(Resource.class, toUUID(resourceId)));
 
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
@@ -366,7 +366,7 @@ public class CommandsEJB
                 userForId(userId),
                 _bdao.find(Resource.class, toUUID(resourceId)));
 
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
@@ -380,7 +380,7 @@ public class CommandsEJB
                 new RenameResourceCommand(_bdao, _audit).rename(
                     loggedInUser(), new Date(), toUUID(resourceId), name);
 
-            } catch (final RemoteExceptionSupport e) {
+            } catch (final CccCheckedException e) {
                 throw fail(e);
             }
     }
@@ -402,7 +402,7 @@ public class CommandsEJB
             new UnlockResourceCommand(_bdao, _audit).execute(
                 userForId(actorId), happenedOn, toUUID(resourceId));
 
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
@@ -415,7 +415,7 @@ public class CommandsEJB
             new UnpublishResourceCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), toUUID(resourceId));
 
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
@@ -433,7 +433,7 @@ public class CommandsEJB
                 publishDate,
                 toUUID(resourceId));
 
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
@@ -451,7 +451,7 @@ public class CommandsEJB
                 toUUID(delta.getTargetId()),
                 toUUID(aliasId));
 
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
@@ -488,7 +488,7 @@ public class CommandsEJB
                 comment,
                 isMajorEdit);
 
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
@@ -506,7 +506,7 @@ public class CommandsEJB
                 toUUID(pageId),
                 delta);
 
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
@@ -525,7 +525,7 @@ public class CommandsEJB
                 resourceUuid,
                 index);
 
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
@@ -556,7 +556,7 @@ public class CommandsEJB
                 toUUID(resourceId),
                 toUUID(templateId));
 
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
@@ -571,7 +571,7 @@ public class CommandsEJB
             new UpdateTemplateCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), toUUID(templateId), delta);
 
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
@@ -620,7 +620,7 @@ public class CommandsEJB
             new IncludeInMainMenuCommand(_bdao, _audit).execute(
                 userForId(actorId), happenedOn, toUUID(resourceId), include);
 
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
@@ -649,7 +649,7 @@ public class CommandsEJB
 
             new UpdateResourceMetadataCommand(_bdao, _audit).execute(
                 userForId(actorId), happenedOn, toUUID(resourceId), title, description, tags, metadata);
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
@@ -675,7 +675,7 @@ public class CommandsEJB
                 tags,
                 metadata);
 
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
@@ -705,7 +705,7 @@ public class CommandsEJB
                  toUUID(indexPageId),
                  list);
 
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
@@ -719,7 +719,7 @@ public class CommandsEJB
             new ClearWorkingCopyCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), toUUID(resourceId));
 
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
@@ -736,7 +736,7 @@ public class CommandsEJB
                     loggedInUser(), new Date(), toUUID(parentId), title)
             );
 
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
@@ -792,7 +792,7 @@ public class CommandsEJB
             new UpdateResourceRolesCommand(_bdao, _audit).execute(
                 userForId(actorId), happenedOn, toUUID(resourceId), roles);
 
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
@@ -806,7 +806,7 @@ public class CommandsEJB
             new ApplyWorkingCopyCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), toUUID(resourceId), null, false);
 
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
@@ -828,7 +828,7 @@ public class CommandsEJB
                 comment,
                 isMajorEdit);
 
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
@@ -843,7 +843,7 @@ public class CommandsEJB
             new UpdateCachingCommand(_bdao, _audit).execute(
                 loggedInUser(), new Date(), toUUID(resourceId), duration);
 
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
@@ -893,7 +893,7 @@ public class CommandsEJB
             }
 
             return mapResource(f);
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
@@ -918,7 +918,7 @@ public class CommandsEJB
                 isMajorEdit,
                 dataStream);
 
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
@@ -932,7 +932,7 @@ public class CommandsEJB
         try {
         new UpdateCurrentUserCommand(_bdao, _audit).execute(
         loggedInUser(), new Date(), toUUID(userId), email, password);
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
@@ -962,7 +962,7 @@ public class CommandsEJB
         return new ID(loggedInUser().id().toString());
     }
 
-    private CommandFailedException fail(final RemoteExceptionSupport e) {
+    private CommandFailedException fail(final CccCheckedException e) {
         _context.setRollbackOnly();  // CRITICAL
         final CommandFailedException cfe = e.toRemoteException();
         LOG.info(

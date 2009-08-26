@@ -38,10 +38,10 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
     public void testResourceResourceAccessibilityRespectsParentalRoles()
-    throws RemoteExceptionSupport {
+    throws CccCheckedException {
 
         // ARRANGE
         final Folder f = new Folder();
@@ -96,9 +96,9 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testComputeRoles() throws RemoteExceptionSupport {
+    public void testComputeRoles() throws CccCheckedException {
 
         // ARRANGE
         final Folder f = new Folder();
@@ -200,10 +200,10 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
     public void testClearingMetadataDoesNotAffectParents()
-    throws RemoteExceptionSupport {
+    throws CccCheckedException {
 
         // ARRANGE
         final Folder f = new Folder();
@@ -270,10 +270,10 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
     public void testMetadataIsInheritedFromParents()
-    throws RemoteExceptionSupport {
+    throws CccCheckedException {
 
         // ARRANGE
         final Folder f = new Folder();
@@ -289,10 +289,10 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
     public void testLocalMetadataIsChosenOverParentMetadata()
-    throws RemoteExceptionSupport {
+    throws CccCheckedException {
 
         // ARRANGE
         final Folder f = new Folder();
@@ -310,10 +310,10 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
     public void testRootAccessorReturnParent()
-    throws RemoteExceptionSupport {
+    throws CccCheckedException {
 
         // ARRANGE
         final Folder root = new Folder("root");
@@ -785,9 +785,9 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testAbsolutePath() throws RemoteExceptionSupport {
+    public void testAbsolutePath() throws CccCheckedException {
 
         // ARRANGE
         final Folder f = new Folder("foo");
@@ -803,10 +803,10 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
     public void testComputeTemplateReturnsDefaultWhenNoTemplateIsFound()
-    throws RemoteExceptionSupport {
+    throws CccCheckedException {
 
         // ARRANGE
         final Folder f1 = new Folder();
@@ -826,10 +826,10 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
     public void testComputeTemplateLooksInCalleeFirst()
-    throws RemoteExceptionSupport {
+    throws CccCheckedException {
 
         // ARRANGE
         final Template t1 = new Template();
@@ -855,10 +855,10 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
     public void testComputeTemplateRecursesToParent()
-    throws RemoteExceptionSupport {
+    throws CccCheckedException {
 
         // ARRANGE
         final Template t = new Template();
@@ -1011,9 +1011,9 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testIsVisibleTrue() throws RemoteExceptionSupport {
+    public void testIsVisibleTrue() throws CccCheckedException {
 
         //ARRANGE
         final User u = new User("user");
@@ -1040,9 +1040,9 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testIsVisibleFalse() throws RemoteExceptionSupport {
+    public void testIsVisibleFalse() throws CccCheckedException {
 
         //ARRANGE
         final User u = new User("user");
@@ -1068,9 +1068,9 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testComputeCache() throws RemoteExceptionSupport {
+    public void testComputeCache() throws CccCheckedException {
 
         // ARRANGE
         final Duration d = new Duration(650);

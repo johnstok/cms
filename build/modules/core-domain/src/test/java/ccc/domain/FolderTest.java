@@ -35,9 +35,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testEntrySorting() throws RemoteExceptionSupport {
+    public void testEntrySorting() throws CccCheckedException {
 
         // ARRANGE
         final Folder f = new Folder();
@@ -61,9 +61,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testEntryPaging() throws RemoteExceptionSupport {
+    public void testEntryPaging() throws CccCheckedException {
 
         // ARRANGE
         final Folder f = new Folder();
@@ -87,9 +87,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testIsAncestorOrThis() throws RemoteExceptionSupport {
+    public void testIsAncestorOrThis() throws CccCheckedException {
 
         // ARRANGE
         final Folder a = new Folder();
@@ -111,9 +111,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testDirectCircularDependency() throws RemoteExceptionSupport {
+    public void testDirectCircularDependency() throws CccCheckedException {
 
         // ARRANGE
         final Folder p = new Folder();
@@ -133,9 +133,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testIndirectCircularDependency() throws RemoteExceptionSupport {
+    public void testIndirectCircularDependency() throws CccCheckedException {
 
         // ARRANGE
         final Folder a = new Folder();
@@ -157,9 +157,9 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testCantAddFolderToSelf() throws RemoteExceptionSupport {
+    public void testCantAddFolderToSelf() throws CccCheckedException {
 
         // ARRANGE
         final Folder a = new Folder();
@@ -208,9 +208,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testFolders() throws RemoteExceptionSupport {
+    public void testFolders() throws CccCheckedException {
 
             // ARRANGE
             final Folder f = new Folder("f");
@@ -240,9 +240,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testPages() throws RemoteExceptionSupport {
+    public void testPages() throws CccCheckedException {
 
             // ARRANGE
             final Folder f = new Folder("f");
@@ -272,9 +272,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testPagesRespectSortOrder() throws RemoteExceptionSupport {
+    public void testPagesRespectSortOrder() throws CccCheckedException {
 
             // ARRANGE
             final Folder f = new Folder("f");
@@ -306,9 +306,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testFirstPage() throws RemoteExceptionSupport {
+    public void testFirstPage() throws CccCheckedException {
 
         // ARRANGE
         final Folder pages = new Folder("content");
@@ -327,9 +327,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testHasPages() throws RemoteExceptionSupport {
+    public void testHasPages() throws CccCheckedException {
 
         // ARRANGE
         final Folder noPages = new Folder("content");
@@ -352,9 +352,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testTypedEntries() throws RemoteExceptionSupport {
+    public void testTypedEntries() throws CccCheckedException {
 
         // ARRANGE
         final Folder content = new Folder("content");
@@ -376,7 +376,7 @@ public final class FolderTest extends TestCase {
      *
      * @@throws RemoteExceptionSupport If the test fails.
      */
-    public void testFolderCount() throws RemoteExceptionSupport {
+    public void testFolderCount() throws CccCheckedException {
 
         // ARRANGE
         final Folder content = new Folder("content");
@@ -395,10 +395,10 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
     public void testNullContentCannotBeAddedToFolders()
-    throws RemoteExceptionSupport {
+    throws CccCheckedException {
 
         // ARRANGE
         final Folder f = new Folder("foo");
@@ -453,9 +453,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testAddPageToFolder() throws RemoteExceptionSupport {
+    public void testAddPageToFolder() throws CccCheckedException {
 
         // ARRANGE
         final Folder folder = new Folder("foo");
@@ -473,9 +473,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testRemovePageFromFolder() throws RemoteExceptionSupport {
+    public void testRemovePageFromFolder() throws CccCheckedException {
 
         // ARRANGE
         final Folder folder = new Folder("foo");
@@ -494,9 +494,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testAddFolderToFolder() throws RemoteExceptionSupport {
+    public void testAddFolderToFolder() throws CccCheckedException {
 
         // ARRANGE
         final Folder folder = new Folder("foo");
@@ -529,9 +529,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testFindEntryByUrl() throws RemoteExceptionSupport {
+    public void testFindEntryByUrl() throws CccCheckedException {
 
         // ARRANGE
         final Folder foo = new Folder("foo");
@@ -548,9 +548,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testNavigateToContent() throws RemoteExceptionSupport {
+    public void testNavigateToContent() throws CccCheckedException {
 
         // ARRANGE
         final Folder content = new Folder("content");
@@ -570,9 +570,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testNavigateToFolder() throws RemoteExceptionSupport {
+    public void testNavigateToFolder() throws CccCheckedException {
 
         // ARRANGE
         final Folder content = new Folder("content");
@@ -592,9 +592,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testNavigateToEmptyPath() throws RemoteExceptionSupport {
+    public void testNavigateToEmptyPath() throws CccCheckedException {
 
         // ARRANGE
         final Folder content = new Folder("content");
@@ -614,9 +614,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testHasEntryWithName() throws RemoteExceptionSupport {
+    public void testHasEntryWithName() throws CccCheckedException {
 
         // ARRANGE
         final Page p = new Page("page", _rm);
@@ -641,10 +641,10 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
     public void testAddRejectsResourcesWithExistingNames()
-    throws RemoteExceptionSupport {
+    throws CccCheckedException {
 
         // ARRANGE
         final Page p = new Page("page", _rm);
@@ -657,7 +657,7 @@ public final class FolderTest extends TestCase {
             fail("Resources with existing names should be rejected.");
 
         // ASSERT
-        } catch (final RemoteExceptionSupport e) {
+        } catch (final CccCheckedException e) {
             assertEquals(
                 "Folder already contains a resource with name 'page'.",
                 e.getMessage());
@@ -667,9 +667,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testHasAliases() throws RemoteExceptionSupport {
+    public void testHasAliases() throws CccCheckedException {
 
         // ARRANGE
         final Folder noAliases = new Folder("content");
@@ -691,9 +691,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testFirstAlias() throws RemoteExceptionSupport {
+    public void testFirstAlias() throws CccCheckedException {
 
         // ARRANGE
         final Folder pages = new Folder("content");
@@ -712,9 +712,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testReorderWithOriginalOrder() throws RemoteExceptionSupport {
+    public void testReorderWithOriginalOrder() throws CccCheckedException {
 
         // ARRANGE
         final Folder f = new Folder("testFolder");
@@ -738,9 +738,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testReorderWithNewOrder() throws RemoteExceptionSupport {
+    public void testReorderWithNewOrder() throws CccCheckedException {
 
         // ARRANGE
         final Folder f = new Folder("testFolder");
@@ -770,9 +770,9 @@ public final class FolderTest extends TestCase {
     /**
      * Test.
      *
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testIndexPage() throws RemoteExceptionSupport {
+    public void testIndexPage() throws CccCheckedException {
         // ARRANGE
         final Folder f = new Folder("testFolder");
         final Page baz = new Page("baz", _rm);

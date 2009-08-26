@@ -25,7 +25,7 @@ import ccc.types.FailureCode;
  */
 public class InsufficientPrivilegesException
     extends
-        RemoteExceptionSupport {
+        CccCheckedException {
 
     private final CommandType _action;
     private final User _user;

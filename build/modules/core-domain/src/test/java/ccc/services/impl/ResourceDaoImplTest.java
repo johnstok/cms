@@ -35,7 +35,7 @@ import ccc.domain.InsufficientPrivilegesException;
 import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
-import ccc.domain.RemoteExceptionSupport;
+import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
@@ -97,9 +97,9 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the command fails.
+     * @throws CccCheckedException If the command fails.
      */
-    public void testLookup() throws RemoteExceptionSupport {
+    public void testLookup() throws CccCheckedException {
 
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
@@ -138,10 +138,10 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the command fails.
+     * @throws CccCheckedException If the command fails.
      */
     public void testIncludeInMainMenu()
-    throws RemoteExceptionSupport {
+    throws CccCheckedException {
 
         // ARRANGE
         _r.lock(_regularUser);
@@ -161,10 +161,10 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the command fails.
+     * @throws CccCheckedException If the command fails.
      */
     public void testUpdateFullMetadata()
-    throws RemoteExceptionSupport {
+    throws CccCheckedException {
 
         // ARRANGE
         _r.lock(_regularUser);
@@ -195,10 +195,10 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the command fails.
+     * @throws CccCheckedException If the command fails.
      */
     public void testResourceCanBeUnlockedByLockerNonadmin()
-    throws RemoteExceptionSupport {
+    throws CccCheckedException {
 
         // ARRANGE
         expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
@@ -218,10 +218,10 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the command fails.
+     * @throws CccCheckedException If the command fails.
      */
     public void testResourceCannotBeUnlockedByNonlockerNonAdmin()
-    throws RemoteExceptionSupport {
+    throws CccCheckedException {
 
         // ARRANGE
         expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
@@ -248,10 +248,10 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the command fails.
+     * @throws CccCheckedException If the command fails.
      */
     public void testResourceCanBeUnlockedByNonlockerAdmin()
-    throws RemoteExceptionSupport {
+    throws CccCheckedException {
 
         // ARRANGE
         expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
@@ -271,10 +271,10 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the command fails.
+     * @throws CccCheckedException If the command fails.
      */
     public void testUnlockedResourceCanBeLocked()
-    throws RemoteExceptionSupport {
+    throws CccCheckedException {
 
         // ARRANGE
         expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
@@ -292,10 +292,10 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the command fails.
+     * @throws CccCheckedException If the command fails.
      */
     public void testLockedResourceCannotBeRelockedBySomeoneElse()
-    throws RemoteExceptionSupport {
+    throws CccCheckedException {
 
         // ARRANGE
         expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
@@ -353,10 +353,10 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the command fails.
+     * @throws CccCheckedException If the command fails.
      */
     public void testSetDefaultTemplate()
-    throws RemoteExceptionSupport {
+    throws CccCheckedException {
 
         // ARRANGE
         final Template defaultTemplate =
@@ -391,10 +391,10 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the command fails.
+     * @throws CccCheckedException If the command fails.
      */
     public void testMove()
-    throws RemoteExceptionSupport {
+    throws CccCheckedException {
 
         // ARRANGE
         final Folder oldParent = new Folder("old");
@@ -418,10 +418,10 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the command fails.
+     * @throws CccCheckedException If the command fails.
      */
     public void testRename()
-    throws RemoteExceptionSupport {
+    throws CccCheckedException {
 
         // ARRANGE
         _r.lock(_regularUser);
@@ -470,9 +470,9 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the command fails.
+     * @throws CccCheckedException If the command fails.
      */
-    public void testPublish() throws RemoteExceptionSupport {
+    public void testPublish() throws CccCheckedException {
 
         // ARRANGE
         _r.lock(_regularUser);
@@ -513,10 +513,10 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the command fails.
+     * @throws CccCheckedException If the command fails.
      */
     public void testUnpublishWithUser()
-    throws RemoteExceptionSupport {
+    throws CccCheckedException {
 
         // ARRANGE
         _r.lock(_regularUser);
@@ -538,10 +538,10 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the command fails.
+     * @throws CccCheckedException If the command fails.
      */
     public void testUpdateCache()
-    throws RemoteExceptionSupport {
+    throws CccCheckedException {
 
         // ARRANGE
         _r.lock(_regularUser);
