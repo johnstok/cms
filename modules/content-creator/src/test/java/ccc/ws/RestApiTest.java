@@ -18,7 +18,7 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 import ccc.api.ResourceSummary;
-import ccc.services.Queries;
+import ccc.rest.Queries;
 
 
 /**

@@ -22,6 +22,7 @@ import org.jboss.web.tomcat.security.login.WebAuthentication;
 
 import ccc.commons.CCCProperties;
 import ccc.domain.Snapshot;
+import ccc.rest.SecurityAPI;
 
 
 /**

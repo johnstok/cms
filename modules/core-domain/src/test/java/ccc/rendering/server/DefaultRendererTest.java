@@ -23,7 +23,6 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 import ccc.api.PageDelta;
-import ccc.api.template.StatefulReader;
 import ccc.commons.Testing;
 import ccc.domain.Alias;
 import ccc.domain.Data;
@@ -46,6 +45,7 @@ import ccc.rendering.NotFoundException;
 import ccc.rendering.PageBody;
 import ccc.rendering.RedirectRequiredException;
 import ccc.rendering.Response;
+import ccc.rendering.StatefulReader;
 import ccc.rendering.StringHeader;
 import ccc.rendering.response.DefaultRenderer;
 import ccc.rendering.response.Renderer;

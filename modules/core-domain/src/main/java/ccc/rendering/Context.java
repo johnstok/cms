@@ -14,7 +14,6 @@ package ccc.rendering;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.api.template.StatefulReader;
 
 
 /**

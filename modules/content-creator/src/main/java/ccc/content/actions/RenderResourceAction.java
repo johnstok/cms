@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.template.StatefulReader;
 import ccc.content.velocity.VelocityProcessor;
 import ccc.domain.CCCException;
 import ccc.domain.Resource;
@@ -30,6 +29,7 @@ import ccc.domain.User;
 import ccc.rendering.NotFoundException;
 import ccc.rendering.RedirectRequiredException;
 import ccc.rendering.Response;
+import ccc.rendering.StatefulReader;
 import ccc.rendering.exceptions.AuthenticationRequiredException;
 import ccc.rendering.response.DefaultRenderer;
 import ccc.rendering.response.Renderer;

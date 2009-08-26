@@ -23,8 +23,8 @@ import ccc.cli.fileupload.Server;
 import ccc.commands.CommandFailedException;
 import ccc.migration.FileUploader;
 import ccc.migration.ServiceLookup;
+import ccc.rest.Queries;
 import ccc.services.Commands;
-import ccc.services.Queries;
 import ccc.types.ResourcePath;
 
 
