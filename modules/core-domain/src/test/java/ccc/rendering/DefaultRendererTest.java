@@ -29,7 +29,7 @@ import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.Page;
-import ccc.domain.RemoteExceptionSupport;
+import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.domain.ResourceOrder;
 import ccc.domain.RevisionMetadata;
@@ -280,10 +280,10 @@ public class DefaultRendererTest
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
     public void testRenderFolderRedirectsToFirstPage()
-    throws RemoteExceptionSupport {
+    throws CccCheckedException {
 
         // ARRANGE
         final Folder f = new Folder("folder");
@@ -306,10 +306,10 @@ public class DefaultRendererTest
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
     public void testRenderFolderRedirectsToIndexPage()
-    throws RemoteExceptionSupport {
+    throws CccCheckedException {
 
         // ARRANGE
         final Folder f = new Folder("folder");
@@ -334,10 +334,10 @@ public class DefaultRendererTest
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
     public void testRenderFolderIgnoresNonVisiblePages()
-    throws RemoteExceptionSupport {
+    throws CccCheckedException {
 
         // ARRANGE
         final Folder f = new Folder("folder");
@@ -361,10 +361,10 @@ public class DefaultRendererTest
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
     public void testRenderFolderIgnoresNonPageResources()
-    throws RemoteExceptionSupport {
+    throws CccCheckedException {
 
         // ARRANGE
         final Folder root = new Folder("root");
@@ -412,9 +412,9 @@ public class DefaultRendererTest
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the command fails.
+     * @throws CccCheckedException If the command fails.
      */
-    public void testRenderAlias() throws RemoteExceptionSupport {
+    public void testRenderAlias() throws CccCheckedException {
 
         // ARRANGE
         final Page p = new Page(new ResourceName("bar"), "bar", null, _rm);

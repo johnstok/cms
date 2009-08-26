@@ -19,7 +19,7 @@ import junit.framework.TestCase;
 import ccc.api.TemplateDelta;
 import ccc.commands.UpdateTemplateCommand;
 import ccc.domain.LogEntry;
-import ccc.domain.RemoteExceptionSupport;
+import ccc.domain.CccCheckedException;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
@@ -39,9 +39,9 @@ public class TemplateDaoImplTest
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the command fails.
+     * @throws CccCheckedException If the command fails.
      */
-    public void testUpdateTemplates() throws RemoteExceptionSupport {
+    public void testUpdateTemplates() throws CccCheckedException {
 
         // ARRANGE
         final Template foo = new Template(

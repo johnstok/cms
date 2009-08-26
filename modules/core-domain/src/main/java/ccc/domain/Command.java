@@ -30,7 +30,7 @@ public interface Command<T> {
      * @param action The action that supplies the command parameters.
      * @param happenedOn When the command took place.
      * @return A command specific result of type T.
-     * @throws RemoteExceptionSupport If the command fails.
+     * @throws CccCheckedException If the command fails.
      */
-    T execute(Action action, Date happenedOn) throws RemoteExceptionSupport;
+    T execute(Action action, Date happenedOn) throws CccCheckedException;
 }

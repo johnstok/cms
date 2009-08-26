@@ -14,7 +14,7 @@ package ccc.commands;
 import static org.easymock.EasyMock.*;
 import ccc.domain.Alias;
 import ccc.domain.LogEntry;
-import ccc.domain.RemoteExceptionSupport;
+import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.domain.Search;
 
@@ -30,9 +30,9 @@ public class UpdateAliasCommandTest
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testUpdateAlias() throws RemoteExceptionSupport {
+    public void testUpdateAlias() throws CccCheckedException {
 
         // ARRANGE
         final Search foo = new Search("foo");

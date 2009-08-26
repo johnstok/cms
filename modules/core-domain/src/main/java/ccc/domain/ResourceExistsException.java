@@ -23,7 +23,7 @@ import ccc.types.FailureCode;
  */
 public class ResourceExistsException
     extends
-        RemoteExceptionSupport {
+        CccCheckedException {
 
     private Resource     _resource;
     private Folder       _folder;

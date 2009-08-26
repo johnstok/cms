@@ -19,7 +19,7 @@ import ccc.api.FileDelta;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.FileHelper;
-import ccc.domain.RemoteExceptionSupport;
+import ccc.domain.CccCheckedException;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -64,7 +64,7 @@ public class CreateFileCommand extends CreateResourceCommand {
      *  should be read.
      * @param name The name of the file to create.
      *
-     * @throws RemoteExceptionSupport If the command fails.
+     * @throws CccCheckedException If the command fails.
      *
      * @return The file that was created.
      */
@@ -78,7 +78,7 @@ public class CreateFileCommand extends CreateResourceCommand {
                         final String comment,
                         final boolean isMajorEdit,
                         final InputStream dataStream)
-                                                throws RemoteExceptionSupport {
+                                                throws CccCheckedException {
         final Data data = _data.create(dataStream, file.getSize());
 
         if ("image".equals(file.getMimeType().getPrimaryType())) {

@@ -24,7 +24,7 @@ import ccc.domain.Folder;
 import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
-import ccc.domain.RemoteExceptionSupport;
+import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.domain.ResourceOrder;
 import ccc.domain.RevisionMetadata;
@@ -77,9 +77,9 @@ public class FolderDaoImplTest
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the test fails.
+     * @throws CccCheckedException If the test fails.
      */
-    public void testReorder() throws RemoteExceptionSupport {
+    public void testReorder() throws CccCheckedException {
 
         // ARRANGE
         _f.lock(_regularUser);

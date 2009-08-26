@@ -16,7 +16,7 @@ import java.util.UUID;
 
 import ccc.api.PageDelta;
 import ccc.domain.Page;
-import ccc.domain.RemoteExceptionSupport;
+import ccc.domain.CccCheckedException;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
@@ -56,7 +56,7 @@ public class CreatePageCommand extends CreateResourceCommand {
      * @param comment Comment describing the change.
      * @param isMajorEdit Is this a major change.
      *
-     * @throws RemoteExceptionSupport If the command fails.
+     * @throws CccCheckedException If the command fails.
      *
      *  @return The new page.
      */
@@ -68,7 +68,7 @@ public class CreatePageCommand extends CreateResourceCommand {
                         final String title,
                         final UUID templateId,
                         final String comment,
-                        final boolean majorChange) throws RemoteExceptionSupport {
+                        final boolean majorChange) throws CccCheckedException {
 
         final Template template =
             (null==templateId)

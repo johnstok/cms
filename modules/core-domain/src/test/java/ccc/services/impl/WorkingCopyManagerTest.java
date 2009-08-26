@@ -21,7 +21,7 @@ import ccc.commands.ClearWorkingCopyCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
-import ccc.domain.RemoteExceptionSupport;
+import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
@@ -43,9 +43,9 @@ public class WorkingCopyManagerTest
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the command fails.
+     * @throws CccCheckedException If the command fails.
      */
-    public void testClearWorkingCopy() throws RemoteExceptionSupport {
+    public void testClearWorkingCopy() throws CccCheckedException {
 
         // ARRANGE
         final Page p = new Page(new ResourceName("foo"), "foo", null, _rm);
@@ -68,9 +68,9 @@ public class WorkingCopyManagerTest
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the command fails.
+     * @throws CccCheckedException If the command fails.
      */
-    public void testUpdateWorkingCopy() throws RemoteExceptionSupport {
+    public void testUpdateWorkingCopy() throws CccCheckedException {
 
         // ARRANGE
         final Page page =

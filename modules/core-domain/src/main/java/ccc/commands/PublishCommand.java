@@ -17,7 +17,7 @@ import ccc.domain.Action;
 import ccc.domain.Command;
 import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
-import ccc.domain.RemoteExceptionSupport;
+import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.domain.JsonImpl;
 import ccc.domain.UnlockedException;
@@ -48,7 +48,7 @@ public class PublishCommand
 
     /** {@inheritDoc} */
     @Override public Void execute(final Action a, final Date happenedOn)
-                                                 throws RemoteExceptionSupport {
+                                                 throws CccCheckedException {
         final User publishedBy = a.actor();
         final Resource r = a.subject();
 

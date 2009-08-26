@@ -22,7 +22,7 @@ import ccc.types.FailureCode;
  */
 public class LockMismatchException
     extends
-        RemoteExceptionSupport {
+        CccCheckedException {
 
     private final Resource _resource;
 

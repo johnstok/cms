@@ -21,7 +21,7 @@ import ccc.api.PageDelta;
 import ccc.commands.UpdatePageCommand;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
-import ccc.domain.RemoteExceptionSupport;
+import ccc.domain.CccCheckedException;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -43,9 +43,9 @@ public class PageDaoImplTest
 
     /**
      * Test.
-     * @throws RemoteExceptionSupport If the command fails.
+     * @throws CccCheckedException If the command fails.
      */
-    public void testUpdatePage() throws RemoteExceptionSupport {
+    public void testUpdatePage() throws CccCheckedException {
 
         // ARRANGE
         final Page page =
