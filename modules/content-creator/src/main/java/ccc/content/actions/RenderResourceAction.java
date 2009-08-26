@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import ccc.content.velocity.VelocityProcessor;
 import ccc.domain.CCCException;
 import ccc.domain.Resource;
 import ccc.domain.User;
@@ -33,6 +32,7 @@ import ccc.rendering.RedirectRequiredException;
 import ccc.rendering.Renderer;
 import ccc.rendering.Response;
 import ccc.rendering.StatefulReader;
+import ccc.rendering.velocity.VelocityProcessor;
 import ccc.services.Dao;
 import ccc.services.DataManager;
 import ccc.services.ResourceDao;
