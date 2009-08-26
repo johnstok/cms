@@ -13,12 +13,12 @@ package ccc.snapshots;
 
 import java.util.Map;
 
-import ccc.api.template.StatefulReader;
 import ccc.domain.File;
 import ccc.entities.IData;
 import ccc.entities.IFile;
 import ccc.rendering.FileBody;
 import ccc.rendering.Response;
+import ccc.rendering.StatefulReader;
 import ccc.services.DataManager;
 import ccc.services.SearchEngine;
 import ccc.types.MimeType;

@@ -21,7 +21,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
-import ccc.api.template.StatefulReader;
 import ccc.commons.Testing;
 import ccc.domain.Page;
 import ccc.domain.RevisionMetadata;

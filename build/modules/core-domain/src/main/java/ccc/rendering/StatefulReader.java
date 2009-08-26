@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.template;
+package ccc.rendering;
 
 import ccc.entities.IResource;
 

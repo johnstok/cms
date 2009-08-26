@@ -22,9 +22,9 @@ import ccc.api.TemplateDelta;
 import ccc.api.rest.TemplateNew;
 import ccc.commands.CommandFailedException;
 import ccc.domain.Failure;
+import ccc.rest.SecurityAPI;
 import ccc.types.FailureCode;
 import ccc.types.MimeType;
-import ccc.ws.SecurityAPI;
 
 
 /**

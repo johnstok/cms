@@ -18,7 +18,6 @@ import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Map;
 
-import ccc.api.template.StatefulReader;
 import ccc.commons.Resources;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;

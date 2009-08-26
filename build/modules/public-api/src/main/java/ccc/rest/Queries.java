@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services;
+package ccc.rest;
 
 import java.util.Collection;
 import java.util.Map;
