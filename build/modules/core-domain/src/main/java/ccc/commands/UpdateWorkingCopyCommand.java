@@ -19,7 +19,7 @@ import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.Resource;
-import ccc.domain.Snapshot;
+import ccc.domain.JsonImpl;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.domain.WorkingCopyNotSupportedException;
@@ -77,7 +77,7 @@ public class UpdateWorkingCopyCommand {
                 CommandType.RESOURCE_UPDATE_WC,
                 happenedOn,
                 resourceId,
-                new Snapshot(r).getDetail()));
+                new JsonImpl(r).getDetail()));
     }
 
     /**
@@ -114,7 +114,7 @@ public class UpdateWorkingCopyCommand {
                     CommandType.RESOURCE_UPDATE_WC,
                     happenedOn,
                     resourceId,
-                    new Snapshot(r).getDetail()));
+                    new JsonImpl(r).getDetail()));
         } else {
             throw new WorkingCopyNotSupportedException(r);
         }

@@ -26,7 +26,7 @@ import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
 import ccc.domain.Failure;
-import ccc.domain.Snapshot;
+import ccc.domain.JsonImpl;
 
 
 /**
@@ -73,7 +73,7 @@ public class FailureWriter
                         final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream outputStream) {
         final PrintWriter pw = new PrintWriter(outputStream);
-        final Snapshot sn = new Snapshot(object);
+        final JsonImpl sn = new JsonImpl(object);
         pw.println(sn.getDetail());
         pw.flush();
     }

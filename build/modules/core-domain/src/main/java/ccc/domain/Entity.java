@@ -115,7 +115,7 @@ public abstract class Entity implements Serializable, Jsonable {
     /** {@inheritDoc} */
     @Override
     public String toString() {
-        return new Snapshot(this).getDetail();
+        return new JsonImpl(this).getDetail();
     }
 
     /** {@inheritDoc} */

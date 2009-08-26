@@ -19,7 +19,7 @@ import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.RemoteExceptionSupport;
 import ccc.domain.Resource;
-import ccc.domain.Snapshot;
+import ccc.domain.JsonImpl;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -104,7 +104,7 @@ public abstract class CreateResourceCommand {
                 throw new UnsupportedOperationException();
         }
 
-        final Snapshot ss = new Snapshot(resource);
+        final JsonImpl ss = new JsonImpl(resource);
 
         final LogEntry le =
             new LogEntry(

@@ -29,7 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import ccc.api.ActionSummary;
-import ccc.domain.Snapshot;
+import ccc.domain.JsonImpl;
 import ccc.serialization.Json;
 import ccc.ws.AbstractProvider;
 
@@ -71,7 +71,7 @@ public class ActionSummaryCollectionReader
             final JSONArray result = new JSONArray(s);
             final Collection<ActionSummary> rs = new ArrayList<ActionSummary>();
             for (int i=0; i<result.length(); i++) {
-                final Json o = new Snapshot(result.getJSONObject(i));
+                final Json o = new JsonImpl(result.getJSONObject(i));
                 rs.add(new ActionSummary(o));
             }
             return rs;

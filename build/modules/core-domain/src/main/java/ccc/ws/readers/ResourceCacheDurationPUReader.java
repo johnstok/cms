@@ -23,7 +23,7 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
 import ccc.api.rest.ResourceCacheDurationPU;
-import ccc.domain.Snapshot;
+import ccc.domain.JsonImpl;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.types.Duration;
@@ -62,7 +62,7 @@ public class ResourceCacheDurationPUReader
                              final MultivaluedMap<String, String> arg4,
                              final InputStream arg5) throws IOException {
         final String s = readString(arg3, arg5);
-        final Json json = new Snapshot(s).getJson(JsonKeys.CACHE_DURATION);
+        final Json json = new JsonImpl(s).getJson(JsonKeys.CACHE_DURATION);
         return new ResourceCacheDurationPU(
             (null==json) ? null : new Duration(json));
     }

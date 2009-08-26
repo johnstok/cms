@@ -23,7 +23,7 @@ import java.util.Map;
 import javax.ws.rs.core.MediaType;
 
 import ccc.commons.IO;
-import ccc.domain.Snapshot;
+import ccc.domain.JsonImpl;
 import ccc.serialization.Json;
 
 
@@ -98,7 +98,7 @@ public class AbstractProvider {
     protected Json readJson(final MediaType mediaType,
                             final InputStream entityStream) throws IOException {
         final String body = readString(mediaType, entityStream);
-        final Json json = new Snapshot(body);
+        final Json json = new JsonImpl(body);
         return json;
     }
 }

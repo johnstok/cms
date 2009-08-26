@@ -25,7 +25,7 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import ccc.domain.Snapshot;
+import ccc.domain.JsonImpl;
 import ccc.serialization.Json;
 
 
@@ -64,7 +64,7 @@ public class JsonReader
         if (0==s.trim().length()) {
             return null;
         }
-        return new Snapshot(s);
+        return new JsonImpl(s);
     }
 
     /** {@inheritDoc} */
@@ -96,7 +96,7 @@ public class JsonReader
                         final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream entityStream) {
         final PrintWriter pw = new PrintWriter(entityStream);
-        pw.println(((Snapshot) t).getDetail());
+        pw.println(((JsonImpl) t).getDetail());
         pw.flush();
     }
 }

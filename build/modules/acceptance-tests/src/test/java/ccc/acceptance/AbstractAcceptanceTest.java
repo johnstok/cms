@@ -41,7 +41,7 @@ import ccc.api.rest.FolderNew;
 import ccc.api.rest.TemplateNew;
 import ccc.commands.CommandFailedException;
 import ccc.domain.Failure;
-import ccc.domain.Snapshot;
+import ccc.domain.JsonImpl;
 import ccc.rest.Queries;
 import ccc.rest.SecurityAPI;
 import ccc.types.MimeType;
@@ -182,7 +182,7 @@ public abstract class AbstractAcceptanceTest
         if (OK==postMethod.getStatusCode()) {
             return body;
         }
-        throw new CommandFailedException(new Failure(new Snapshot(body)));
+        throw new CommandFailedException(new Failure(new JsonImpl(body)));
     }
 
 
@@ -239,9 +239,9 @@ public abstract class AbstractAcceptanceTest
             final String body = postMethod.getResponseBodyAsString();
 
             if (OK==status) {
-                return new ResourceSummary(new Snapshot(body));
+                return new ResourceSummary(new JsonImpl(body));
             }
-            throw new CommandFailedException(new Failure(new Snapshot(body)));
+            throw new CommandFailedException(new Failure(new JsonImpl(body)));
 
         } finally {
             postMethod.releaseConnection();

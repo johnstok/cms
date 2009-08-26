@@ -22,7 +22,7 @@ import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.ResourceOrder;
-import ccc.domain.Snapshot;
+import ccc.domain.JsonImpl;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
@@ -98,7 +98,7 @@ public class UpdateFolderCommand extends UpdateResourceCommand {
                 CommandType.FOLDER_UPDATE,
                 happenedOn,
                 folderId,
-                new Snapshot(f).getDetail());
+                new JsonImpl(f).getDetail());
         getAudit().record(le);
     }
 }

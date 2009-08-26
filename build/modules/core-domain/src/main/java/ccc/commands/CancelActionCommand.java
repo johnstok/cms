@@ -16,7 +16,7 @@ import java.util.UUID;
 
 import ccc.domain.Action;
 import ccc.domain.LogEntry;
-import ccc.domain.Snapshot;
+import ccc.domain.JsonImpl;
 import ccc.domain.User;
 import ccc.services.AuditLog;
 import ccc.services.Dao;
@@ -64,6 +64,6 @@ public class CancelActionCommand {
                 CommandType.ACTION_CANCEL,
                 happenedOn,
                 actionId,
-                new Snapshot(a).getDetail()));
+                new JsonImpl(a).getDetail()));
     }
 }

@@ -32,7 +32,7 @@ import javax.ws.rs.ext.Provider;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ccc.domain.Snapshot;
+import ccc.domain.JsonImpl;
 
 
 /**
@@ -80,7 +80,7 @@ public class MetadataWriter
                         final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream outputStream) {
         final PrintWriter pw = new PrintWriter(outputStream);
-        pw.println(new Snapshot(object).getDetail());
+        pw.println(new JsonImpl(object).getDetail());
         pw.flush();
     }
 

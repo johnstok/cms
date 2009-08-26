@@ -22,7 +22,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import ccc.domain.Snapshot;
+import ccc.domain.JsonImpl;
 import ccc.serialization.Jsonable;
 
 
@@ -67,7 +67,7 @@ public class JsonableWriter
                         final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream outputStream) {
         final PrintWriter pw = new PrintWriter(outputStream);
-        pw.println(new Snapshot(object).getDetail());
+        pw.println(new JsonImpl(object).getDetail());
         pw.flush();
     }
 }

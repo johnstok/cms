@@ -25,7 +25,7 @@ import ccc.api.UserSummary;
 import ccc.api.rest.ResourceCacheDurationPU;
 import ccc.api.rest.ResourceTemplatePU;
 import ccc.commands.CommandFailedException;
-import ccc.domain.Snapshot;
+import ccc.domain.JsonImpl;
 import ccc.serialization.JsonKeys;
 import ccc.types.Duration;
 
@@ -99,7 +99,7 @@ public class ResourceAcceptanceTests
         final Map<String, String> origData = _queries.metadata(folder.getId());
 
         final String newTitle = UUID.randomUUID().toString();
-        final Snapshot md = new Snapshot();
+        final JsonImpl md = new JsonImpl();
         md.set(JsonKeys.TITLE, newTitle);
         md.set(JsonKeys.DESCRIPTION, newTitle);
         md.set(JsonKeys.TAGS, newTitle);

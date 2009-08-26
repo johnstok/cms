@@ -24,11 +24,11 @@ import ccc.types.Decimal;
 
 
 /**
- * Tests for the snapshot class.
+ * Tests for the {@link JsonImpl} class.
  *
  * @author Civic Computing Ltd.
  */
-public class SnapshotTest
+public class JsonImplTest
     extends
         TestCase {
 
@@ -39,7 +39,7 @@ public class SnapshotTest
 
         // ARRANGE
         final Date d = new Date();
-        final Snapshot s = new Snapshot("{\"d\"="+d.getTime()+"}");
+        final JsonImpl s = new JsonImpl("{\"d\"="+d.getTime()+"}");
 
         // ACT
         final Date i = s.getDate("d");
@@ -54,7 +54,7 @@ public class SnapshotTest
     public void testGetSmallDate() {
 
         // ARRANGE
-        final Snapshot s = new Snapshot("{\"d\"=3}");
+        final JsonImpl s = new JsonImpl("{\"d\"=3}");
 
         // ACT
         final Date i = s.getDate("d");
@@ -69,7 +69,7 @@ public class SnapshotTest
     public void testGetBoolean() {
 
         // ARRANGE
-        final Snapshot s = new Snapshot("{\"bool\"=true}");
+        final JsonImpl s = new JsonImpl("{\"bool\"=true}");
 
         // ACT
         final Boolean b = s.getBool("bool");
@@ -84,7 +84,7 @@ public class SnapshotTest
     public void testGetInteger() {
 
         // ARRANGE
-        final Snapshot s = new Snapshot("{\"num\"=3}");
+        final JsonImpl s = new JsonImpl("{\"num\"=3}");
 
         // ACT
         final Integer i = s.getInt("num");
@@ -99,7 +99,7 @@ public class SnapshotTest
     public void testMutatorsAddKeyForNullValue() {
 
         // ARRANGE
-        final Snapshot s = new Snapshot();
+        final JsonImpl s = new JsonImpl();
 
         // ACT
         s.set("null", (String) null);
@@ -121,7 +121,7 @@ public class SnapshotTest
     public void testMissingKeyGivesException() {
 
         // ARRANGE
-        final Snapshot s = new Snapshot();
+        final JsonImpl s = new JsonImpl();
 
 
         // ACT
@@ -202,7 +202,7 @@ public class SnapshotTest
     public void testAddEmptyCollection() {
 
         // ARRANGE
-        final Snapshot s = new Snapshot();
+        final JsonImpl s = new JsonImpl();
         final Collection<Jsonable> children = new ArrayList<Jsonable>();
 
         // ACT
@@ -218,7 +218,7 @@ public class SnapshotTest
     public void testAddCollection() {
 
         // ARRANGE
-        final Snapshot s = new Snapshot();
+        final JsonImpl s = new JsonImpl();
         final Collection<Jsonable> children = new ArrayList<Jsonable>();
         children.add(
             new Jsonable(){
@@ -237,7 +237,7 @@ public class SnapshotTest
     public void testAddString() {
 
         // ARRANGE
-        final Snapshot s = new Snapshot();
+        final JsonImpl s = new JsonImpl();
 
         // ACT
         s.set("key", "value");
@@ -252,7 +252,7 @@ public class SnapshotTest
     public void testAddDecimal() {
 
         // ARRANGE
-        final Snapshot s = new Snapshot();
+        final JsonImpl s = new JsonImpl();
 
         // ACT
         s.set("key", new Decimal("10"));
@@ -269,7 +269,7 @@ public class SnapshotTest
         // ARRANGE
 
         // ACT
-        final Snapshot s = new Snapshot("{\"foo\":\"bar\"}");
+        final JsonImpl s = new JsonImpl("{\"foo\":\"bar\"}");
 
         // ASSERT
         assertEquals("{\"foo\":\"bar\"}", s.getDetail());
@@ -285,7 +285,7 @@ public class SnapshotTest
 
         // ACT
         try {
-            new Snapshot((String) null);
+            new JsonImpl((String) null);
 
         // ASSERT
         } catch (final IllegalArgumentException e) {
@@ -301,7 +301,7 @@ public class SnapshotTest
         // ARRANGE
 
         // ACT
-        final Snapshot s = new Snapshot();
+        final JsonImpl s = new JsonImpl();
 
         // ASSERT
         assertEquals("{}", s.getDetail());

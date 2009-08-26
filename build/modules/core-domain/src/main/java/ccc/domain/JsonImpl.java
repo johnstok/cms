@@ -42,7 +42,7 @@ import ccc.types.ID;
  *
  * @author Civic Computing Ltd.
  */
-public class Snapshot implements Serializable, Json {
+public class JsonImpl implements Serializable, Json {
 
     private transient JSONObject _detail;
 
@@ -51,7 +51,7 @@ public class Snapshot implements Serializable, Json {
      *
      * @param detail The snapshot's detail.
      */
-    public Snapshot(final String detail) {
+    public JsonImpl(final String detail) {
         DBC.require().notNull(detail);
         try {
             _detail = new JSONObject(detail);
@@ -63,7 +63,7 @@ public class Snapshot implements Serializable, Json {
     /**
      * Constructor.
      */
-    public Snapshot() {
+    public JsonImpl() {
         _detail = new JSONObject();
     }
 
@@ -72,7 +72,7 @@ public class Snapshot implements Serializable, Json {
      *
      * @param detail The JSON object this snapshot wraps.
      */
-    public Snapshot(final JSONObject detail) {
+    public JsonImpl(final JSONObject detail) {
         DBC.require().notNull(detail);
 
         _detail = detail;
@@ -83,7 +83,7 @@ public class Snapshot implements Serializable, Json {
      *
      * @param jsonable The object to convert to JSON.
      */
-    public Snapshot(final Jsonable jsonable) {
+    public JsonImpl(final Jsonable jsonable) {
         this();
         DBC.require().notNull(jsonable);
         jsonable.toJson(this);
@@ -94,7 +94,7 @@ public class Snapshot implements Serializable, Json {
      *
      * @param map The map to convert into a snapshot.
      */
-    public Snapshot(final Map<String, String> map) {
+    public JsonImpl(final Map<String, String> map) {
         this();
         for (final Map.Entry<String, String> entry : map.entrySet()) {
             set(entry.getKey(), entry.getValue());
@@ -151,7 +151,7 @@ public class Snapshot implements Serializable, Json {
         try {
             _detail.put(key, new JSONArray());
             for (final Jsonable o : snapshots) {
-                final Snapshot s = new Snapshot();
+                final JsonImpl s = new JsonImpl();
                 o.toJson(s);
                 _detail.append(key, s._detail);
             }
@@ -242,7 +242,7 @@ public class Snapshot implements Serializable, Json {
             if (null==value) {
                 _detail.put(key, NULL);
             } else {
-                final Snapshot s = new Snapshot();
+                final JsonImpl s = new JsonImpl();
                 value.toJson(s);
                 _detail.put(key, s._detail);
             }
@@ -276,7 +276,7 @@ public class Snapshot implements Serializable, Json {
             final Collection<Json> snapshots =
                 new ArrayList<Json>(a.length());
             for (int i=0; i<a.length(); i++) {
-                snapshots.add(new Snapshot(a.getJSONObject(i)));
+                snapshots.add(new JsonImpl(a.getJSONObject(i)));
             }
             return snapshots;
 
@@ -342,7 +342,7 @@ public class Snapshot implements Serializable, Json {
             if (null==o) {
                 return null;
             }
-            return new Snapshot(o);
+            return new JsonImpl(o);
         } catch (final JSONException e) {
             throw new InvalidSnapshotException(e);
         }
