@@ -16,7 +16,7 @@ import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
 import ccc.contentcreator.actions.CreateTemplateAction_;
 import ccc.contentcreator.actions.TemplateNameExistsAction;
-import ccc.contentcreator.actions.UpdateTemplateAction_;
+import ccc.contentcreator.actions.UpdateTemplateAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
@@ -265,7 +265,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                             }.execute();
                         break;
                     case UPDATE:
-                        new UpdateTemplateAction_(_id, delta) {
+                        new UpdateTemplateAction(_id, delta) {
                             /** {@inheritDoc} */
                             @Override protected void onNoContent(final Response response) {
                                 _ssm.update(_proxy);

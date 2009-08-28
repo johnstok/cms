@@ -10,7 +10,7 @@ import ccc.contentcreator.dialogs.AboutDialog;
  *
  * @author Civic Computing Ltd.
  */
-public final class ShowAboutAction
+public final class OpenAboutAction
     implements
         Action {
 

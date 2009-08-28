@@ -17,7 +17,7 @@ import java.util.List;
 
 import ccc.api.ResourceSummary;
 import ccc.contentcreator.actions.GetChildrenAction;
-import ccc.contentcreator.actions.UpdateFolderAction_;
+import ccc.contentcreator.actions.UpdateFolderAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.binding.ResourceSummaryModelData.Property;
@@ -292,7 +292,7 @@ AbstractEditDialog {
                     }
                 }
 
-                new UpdateFolderAction_(
+                new UpdateFolderAction(
                     md.getId(),
                     order,
                     indexPageId,

@@ -11,7 +11,7 @@
  */
 package ccc.contentcreator.actions;
 
-import ccc.api.TemplateDelta;
+import ccc.api.UserSummary;
 import ccc.contentcreator.client.GwtJson;
 import ccc.types.ID;
 
@@ -19,36 +19,34 @@ import com.google.gwt.http.client.RequestBuilder;
 
 
 /**
- * Remote action for template updating.
+ * Remote action for user updating.
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateTemplateAction_
+public class UpdateUserAction
     extends
         RemotingAction {
 
-    private final ID _template;
-    private final TemplateDelta _details;
+    private final ID _userId;
+    private final UserSummary _userDetails;
 
 
     /**
      * Constructor.
-     *
-     * @param details The new details for the template.
-     * @param template The template to update.
+     * @param userDetails The updated user details.
+     * @param userId The user's id.
      */
-    public UpdateTemplateAction_(final ID template,
-                                 final TemplateDelta details) {
-        super(UI_CONSTANTS.editTemplate(), RequestBuilder.POST);
-        _template = template;
-        _details = details;
+    public UpdateUserAction(final ID userId, final UserSummary userDetails) {
+        super(UI_CONSTANTS.editUser(), RequestBuilder.POST);
+        _userId = userId;
+        _userDetails = userDetails;
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/templates/"+_template;
+        return "/users/"+_userId;
     }
 
 
@@ -56,7 +54,7 @@ public class UpdateTemplateAction_
     @Override
     protected String getBody() {
         final GwtJson json = new GwtJson();
-        _details.toJson(json);
+        _userDetails.toJson(json);
         return json.toString();
     }
 }

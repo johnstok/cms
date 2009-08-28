@@ -24,7 +24,7 @@ import com.google.gwt.http.client.RequestBuilder;
  *
  * @author Civic Computing Ltd.
  */
-public class UpdatePageAction_
+public class UpdatePageAction
     extends
         RemotingAction {
 
@@ -41,7 +41,7 @@ public class UpdatePageAction_
      * @param details Details of the update.
      * @param pageId The id of the page to update.
      */
-    public UpdatePageAction_(final ID pageId,
+    public UpdatePageAction(final ID pageId,
                              final PageDelta details,
                              final String comment,
                              final boolean majorChange) {

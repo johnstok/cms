@@ -13,7 +13,7 @@ package ccc.contentcreator.dialogs;
 
 import java.util.Date;
 
-import ccc.contentcreator.actions.CreateActionAction_;
+import ccc.contentcreator.actions.CreateActionAction;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.client.CreateActionPanel;
 import ccc.contentcreator.client.IGlobalsImpl;
@@ -77,7 +77,7 @@ public class CreateActionDialog
                     return;
                 }
 
-                new CreateActionAction_(
+                new CreateActionAction(
                     _resourceId,
                     _createAction.commandType(),
                     _dtPicker.getDate(),

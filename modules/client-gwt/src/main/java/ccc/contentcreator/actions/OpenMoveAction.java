@@ -11,7 +11,7 @@ import ccc.contentcreator.dialogs.MoveDialog;
  *
  * @author Civic Computing Ltd.
  */
-public final class MoveAction
+public final class OpenMoveAction
     implements
         Action {
 
@@ -24,7 +24,7 @@ public final class MoveAction
      * @param selectionModel The selection model.
      * @param root The root of current resource tree.
      */
-    public MoveAction(final SingleSelectionModel selectionModel,
+    public OpenMoveAction(final SingleSelectionModel selectionModel,
                       final ResourceSummary root) {
         _selectionModel = selectionModel;
         _root = root;

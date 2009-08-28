@@ -1,59 +1,79 @@
+/*-----------------------------------------------------------------------------
+ * Copyright (c) 2009 Civic Computing Ltd.
+ * All rights reserved.
+ *
+ * Revision      $Rev$
+ * Modified by   $Author$
+ * Modified on   $Date$
+ *
+ * Changes: see subversion log.
+ *-----------------------------------------------------------------------------
+ */
 package ccc.contentcreator.actions;
 
-import java.util.HashMap;
 import java.util.Map;
 
-import ccc.contentcreator.client.SingleSelectionModel;
-import ccc.contentcreator.dialogs.MetadataDialog;
+import ccc.contentcreator.client.GwtJson;
+import ccc.types.ID;
 
-import com.google.gwt.http.client.Response;
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.http.client.RequestBuilder;
+
+
 
 /**
- * Update resource's metadata.
+ * Remote action for metadata updating.
  *
  * @author Civic Computing Ltd.
  */
-public final class UpdateMetadataAction
+public class UpdateMetadataAction
     extends
         RemotingAction {
 
-    private final SingleSelectionModel _selectionModel;
+    private final ID _resourceId;
+    private final String _title;
+    private final String _description;
+    private final String _tags;
+    private final Map<String, String> _metadata;
+
 
     /**
      * Constructor.
      *
-     * @param selectionModel The selection model.
+     * @param metadata Key value pairs.
+     * @param tags Tags for a resource.
+     * @param description The resource's description.
+     * @param title The resource's title.
+     * @param resourceId The resource's id.
      */
-    public UpdateMetadataAction(final SingleSelectionModel selectionModel) {
-        super(UI_CONSTANTS.updateMetadata());
-        _selectionModel = selectionModel;
+    public UpdateMetadataAction(final ID resourceId,
+                                 final String title,
+                                 final String description,
+                                 final String tags,
+                                 final Map<String, String> metadata) {
+        super(UI_CONSTANTS.updateTags(), RequestBuilder.POST);
+        _resourceId = resourceId;
+        _title = title;
+        _description = description;
+        _tags = tags;
+        _metadata = metadata;
     }
+
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return
-            "/resources/"
-            + _selectionModel.tableSelection().getId()
-            + "/metadata";
+        return "/resources/"+_resourceId+"/metadata";
     }
+
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-        final JSONObject result =
-            JSONParser.parse(response.getText()).isObject();
-        final Map<String, String> metadata = new HashMap<String, String>();
-        for (final String key : result.keySet()) {
-            metadata.put(key, result.get(key).isString().stringValue());
-        }
-
-        new MetadataDialog(
-            _selectionModel.tableSelection(),
-            metadata.entrySet(),
-            _selectionModel)
-        .show();
+    protected String getBody() {
+        final GwtJson json = new GwtJson();
+        json.set("title", _title);
+        json.set("description", _description);
+        json.set("tags", _tags);
+        json.set("metadata", _metadata);
+        return json.toString();
     }
 }

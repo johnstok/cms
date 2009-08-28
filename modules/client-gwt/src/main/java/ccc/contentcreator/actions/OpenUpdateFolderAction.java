@@ -10,7 +10,7 @@ import ccc.contentcreator.dialogs.EditFolderDialog;
  *
  * @author Civic Computing Ltd.
  */
-public class EditFolderAction
+public class OpenUpdateFolderAction
     implements
         Action {
 
@@ -21,7 +21,7 @@ public class EditFolderAction
      *
      * @param selectionModel The selectionModel for this action.
      */
-    public EditFolderAction(final SingleSelectionModel selectionModel) {
+    public OpenUpdateFolderAction(final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;
     }
 

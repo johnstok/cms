@@ -21,7 +21,7 @@ import ccc.api.PageDelta;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateSummary;
 import ccc.contentcreator.actions.ComputeTemplateAction;
-import ccc.contentcreator.actions.CreatePageAction_;
+import ccc.contentcreator.actions.CreatePageAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.binding.TemplateSummaryModelData;
@@ -294,7 +294,7 @@ public class CreatePageDialog
                            .getSelectedItem()
                            .getId();
 
-                new CreatePageAction_(
+                new CreatePageAction(
                     _parent.getId(),
                     page,
                     _second.name().getValue(),

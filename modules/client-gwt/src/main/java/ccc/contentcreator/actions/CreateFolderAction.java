@@ -1,37 +1,70 @@
+/*-----------------------------------------------------------------------------
+ * Copyright (c) 2009 Civic Computing Ltd.
+ * All rights reserved.
+ *
+ * Revision      $Rev$
+ * Modified by   $Author$
+ * Modified on   $Date$
+ *
+ * Changes: see subversion log.
+ *-----------------------------------------------------------------------------
+ */
 package ccc.contentcreator.actions;
 
-import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.client.Action;
-import ccc.contentcreator.client.SingleSelectionModel;
-import ccc.contentcreator.dialogs.CreateFolderDialog;
+import ccc.api.ResourceSummary;
+import ccc.contentcreator.client.GwtJson;
+import ccc.serialization.JsonKeys;
+import ccc.types.ID;
+
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.Response;
+
 
 /**
  * Create a folder.
  *
  * @author Civic Computing Ltd.
  */
-public final class CreateFolderAction
-    implements
-        Action {
+public abstract class CreateFolderAction
+    extends
+        RemotingAction {
 
-    private final SingleSelectionModel _selectionModel;
+    private final String _name;
+    private final ID _parentFolder;
 
     /**
      * Constructor.
      *
-     * @param selectionModel The selection model to use.
+     * @param name The folder's name.
+     * @param parentFolder The folder's parent folder.
      */
-    public CreateFolderAction(final SingleSelectionModel selectionModel) {
-        _selectionModel = selectionModel;
+    public CreateFolderAction(final ID parentFolder, final String name) {
+        super(GLOBALS.uiConstants().createFolder(), RequestBuilder.POST);
+        _parentFolder = parentFolder;
+        _name = name;
     }
 
     /** {@inheritDoc} */
-    public void execute() {
-        final ResourceSummaryModelData item = _selectionModel.treeSelection();
-        if (item == null) {
-            GLOBALS.alert(GLOBALS.uiConstants().noFolderSelected());
-        } else {
-            new CreateFolderDialog(item, _selectionModel).show();
-        }
+    @Override
+    protected String getPath() {
+        return "/folders";
     }
+
+    /** {@inheritDoc} */
+    @Override
+    protected String getBody() {
+        final GwtJson json = new GwtJson();
+        json.set(JsonKeys.PARENT_ID, _parentFolder);
+        json.set(JsonKeys.NAME, _name);
+        return json.toString();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onOK(final Response response) {
+        final ResourceSummary rs = parseResourceSummary(response);
+        execute(rs);
+    }
+
+    protected abstract void execute(ResourceSummary folder);
 }

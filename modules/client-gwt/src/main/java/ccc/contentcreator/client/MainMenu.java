@@ -16,20 +16,20 @@ import java.util.Collection;
 import ccc.api.ResourceSummary;
 import ccc.api.UserSummary;
 import ccc.contentcreator.actions.ChooseTemplateAction;
-import ccc.contentcreator.actions.CreateUserAction;
-import ccc.contentcreator.actions.EditCacheAction;
-import ccc.contentcreator.actions.EditFolderAction;
-import ccc.contentcreator.actions.ShowUpdateCurrentUserAction;
 import ccc.contentcreator.actions.GetRootsAction;
 import ccc.contentcreator.actions.LockAction;
 import ccc.contentcreator.actions.LogoutAction;
+import ccc.contentcreator.actions.OpenAboutAction;
+import ccc.contentcreator.actions.OpenCreateUserAction;
+import ccc.contentcreator.actions.OpenEditCacheAction;
 import ccc.contentcreator.actions.OpenHelpAction;
+import ccc.contentcreator.actions.OpenUpdateCurrentUserAction;
+import ccc.contentcreator.actions.OpenUpdateFolderAction;
+import ccc.contentcreator.actions.OpenUpdateMetadataAction;
+import ccc.contentcreator.actions.OpenUpdateResourceRolesAction;
 import ccc.contentcreator.actions.PublishAction;
-import ccc.contentcreator.actions.ShowAboutAction;
 import ccc.contentcreator.actions.UnlockAction;
 import ccc.contentcreator.actions.UnpublishAction;
-import ccc.contentcreator.actions.UpdateMetadataAction;
-import ccc.contentcreator.actions.UpdateResourceRolesAction;
 import ccc.contentcreator.actions.ViewHistoryAction;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
@@ -72,7 +72,7 @@ public class MainMenu
                 createMenuItem(
                     "create-user-menu-item",
                     _constants.createUser(),
-                    new CreateUserAction())
+                    new OpenCreateUserAction())
             );
         }
 
@@ -88,7 +88,7 @@ public class MainMenu
             createMenuItem(
                 "update-account-details",
                 _constants.yourDetails(),
-                new ShowUpdateCurrentUserAction()),
+                new OpenUpdateCurrentUserAction()),
             createMenuItem(
                 "logout-menu-item",
                 _constants.logout(),
@@ -101,7 +101,7 @@ public class MainMenu
             createMenuItem(
                 "about-dialog",
                 _constants.about(),
-                new ShowAboutAction()),
+                new OpenAboutAction()),
             createMenuItem(
                 "open-manual",
                 _constants.manual(),
@@ -190,20 +190,20 @@ public class MainMenu
                     rootMenu.add(createMenuItem(
                         "editFolder-root-"+name,
                         _constants.edit(),
-                        new EditFolderAction(ssm)));
+                        new OpenUpdateFolderAction(ssm)));
                 }
                 rootMenu.add(createMenuItem(
                     "updateRoles-root-"+name,
                     _constants.updateRoles(),
-                    new UpdateResourceRolesAction(ssm)));
+                    new OpenUpdateResourceRolesAction(ssm)));
                 rootMenu.add(createMenuItem(
                     "updateMetadata-root-"+name,
                     _constants.updateMetadata(),
-                    new UpdateMetadataAction(ssm)));
+                    new OpenUpdateMetadataAction(ssm)));
                 rootMenu.add(createMenuItem(
                     "cacheDuration-root-"+name,
                     _constants.cacheDuration(),
-                    new EditCacheAction(ssm)));
+                    new OpenEditCacheAction(ssm)));
             }
         }
     }

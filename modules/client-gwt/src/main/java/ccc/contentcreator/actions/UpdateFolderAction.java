@@ -26,7 +26,7 @@ import com.google.gwt.http.client.RequestBuilder;
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateFolderAction_
+public class UpdateFolderAction
     extends
         RemotingAction {
 
@@ -43,7 +43,7 @@ public class UpdateFolderAction_
      * @param sortOrder The sort order for the folder.
      * @param id The folder's id.
      */
-    public UpdateFolderAction_(final ID id,
+    public UpdateFolderAction(final ID id,
                                final String sortOrder,
                                final ID indexPageId,
                                final List<String> sortList) {

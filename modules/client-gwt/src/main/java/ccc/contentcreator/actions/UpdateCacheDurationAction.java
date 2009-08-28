@@ -11,42 +11,43 @@
  */
 package ccc.contentcreator.actions;
 
-import ccc.api.UserSummary;
 import ccc.contentcreator.client.GwtJson;
+import ccc.serialization.JsonKeys;
+import ccc.types.Duration;
 import ccc.types.ID;
 
 import com.google.gwt.http.client.RequestBuilder;
 
 
 /**
- * Remote action for user updating.
+ * Remote action for cache duration updating.
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateUserAction_
+public abstract class UpdateCacheDurationAction
     extends
         RemotingAction {
 
-    private final ID _userId;
-    private final UserSummary _userDetails;
+    private final ID _resourceId;
+    private final Duration _duration;
 
 
     /**
      * Constructor.
-     * @param userDetails The updated user details.
-     * @param userId The user's id.
+     * @param duration The new cache duration.
+     * @param resourceId The resource to update.
      */
-    public UpdateUserAction_(final ID userId, final UserSummary userDetails) {
-        super(UI_CONSTANTS.editUser(), RequestBuilder.POST);
-        _userId = userId;
-        _userDetails = userDetails;
+    public UpdateCacheDurationAction(final ID resourceId,
+                                      final Duration duration) {
+        super(GLOBALS.uiConstants().editCacheDuration(), RequestBuilder.POST);
+        _resourceId = resourceId;
+        _duration = duration;
     }
 
 
     /** {@inheritDoc} */
-    @Override
-    protected String getPath() {
-        return "/users/"+_userId;
+    @Override protected String getPath() {
+        return "/resources/"+_resourceId+"/duration";
     }
 
 
@@ -54,7 +55,7 @@ public class UpdateUserAction_
     @Override
     protected String getBody() {
         final GwtJson json = new GwtJson();
-        _userDetails.toJson(json);
+        json.set(JsonKeys.CACHE_DURATION, _duration);
         return json.toString();
     }
 }

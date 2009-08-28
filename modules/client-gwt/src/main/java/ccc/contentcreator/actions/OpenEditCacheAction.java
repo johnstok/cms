@@ -25,7 +25,7 @@ import com.google.gwt.json.client.JSONParser;
  *
  * @author Civic Computing Ltd.
  */
-public class EditCacheAction
+public class OpenEditCacheAction
     extends
         RemotingAction {
 
@@ -36,7 +36,7 @@ public class EditCacheAction
      *
      * @param selectionModel The selection model.
      */
-    public EditCacheAction(final SingleSelectionModel selectionModel) {
+    public OpenEditCacheAction(final SingleSelectionModel selectionModel) {
         super(UI_CONSTANTS.editCacheDuration());
         _selectionModel = selectionModel;
     }

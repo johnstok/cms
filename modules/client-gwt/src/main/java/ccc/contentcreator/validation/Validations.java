@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 import ccc.contentcreator.actions.ResourceNameExistsAction;
-import ccc.contentcreator.actions.ValidateFieldAction_;
+import ccc.contentcreator.actions.ValidateFieldAction;
 import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
@@ -277,7 +277,7 @@ public class Validations {
                                            final String definition) {
         return new Validator() {
             public void validate(final Validate validate) {
-                new ValidateFieldAction_(delta, definition) {
+                new ValidateFieldAction(delta, definition) {
                     /** {@inheritDoc} */
                     @Override
                     protected void onOK(final Response response) {

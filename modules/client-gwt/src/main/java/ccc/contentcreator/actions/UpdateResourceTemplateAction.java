@@ -12,6 +12,7 @@
 package ccc.contentcreator.actions;
 
 import ccc.contentcreator.client.GwtJson;
+import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.types.ID;
 
@@ -19,47 +20,43 @@ import com.google.gwt.http.client.RequestBuilder;
 
 
 /**
- * Create an alias.
+ * Remote action for resource's template updating.
  *
  * @author Civic Computing Ltd.
  */
-public class CreateAliasAction_
+public class UpdateResourceTemplateAction
     extends
         RemotingAction {
 
-    private final ID _parentId;
-    private final String _aliasName;
-    private final ID _targetId;
+    private final ID _resourceId;
+    private final ID _templateId;
+
 
     /**
      * Constructor.
-     *
-     * @param targetId The id of the target resource.
-     * @param aliasName The name of the alias.
-     * @param parentId The id of the alias' parent folder.
+     * @param templateId The template to set.
+     * @param resourceId The resource to update.
      */
-    public CreateAliasAction_(final ID parentId,
-                              final String aliasName,
-                              final ID targetId) {
-        super(UI_CONSTANTS.createAlias(), RequestBuilder.POST);
-        _parentId = parentId;
-        _aliasName = aliasName;
-        _targetId = targetId;
+    public UpdateResourceTemplateAction(final ID resourceId,
+                                         final ID templateId) {
+        super(UI_CONSTANTS.chooseTemplate(), RequestBuilder.POST);
+        _resourceId = resourceId;
+        _templateId = templateId;
     }
+
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/aliases";
+        return "/resources/"+_resourceId+"/template";
     }
+
 
     /** {@inheritDoc} */
     @Override
     protected String getBody() {
-        final GwtJson json = new GwtJson();
-        json.set(JsonKeys.PARENT_ID, _parentId);
-        json.set(JsonKeys.NAME, _aliasName);
-        json.set(JsonKeys.TARGET, _targetId);
+        final Json json = new GwtJson();
+        json.set(JsonKeys.TEMPLATE_ID, _templateId);
         return json.toString();
     }
 }

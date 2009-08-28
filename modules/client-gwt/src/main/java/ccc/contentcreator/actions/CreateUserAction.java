@@ -1,19 +1,54 @@
-
+/*-----------------------------------------------------------------------------
+ * Copyright (c) 2009 Civic Computing Ltd.
+ * All rights reserved.
+ *
+ * Revision      $Rev$
+ * Modified by   $Author$
+ * Modified on   $Date$
+ *
+ * Changes: see subversion log.
+ *-----------------------------------------------------------------------------
+ */
 package ccc.contentcreator.actions;
 
-import ccc.contentcreator.client.Action;
-import ccc.contentcreator.dialogs.CreateUserDialog;
+import ccc.api.UserSummary;
+import ccc.contentcreator.client.GwtJson;
+
+import com.google.gwt.http.client.RequestBuilder;
 
 
 /**
- * Create an user.
+ * Create a new user.
  *
  * @author Civic Computing Ltd.
  */
-public final class CreateUserAction
-    implements
-        Action {
+public abstract class CreateUserAction
+    extends
+        RemotingAction {
+
+    private final UserSummary _userDelta;
+
+    /**
+     * Constructor.
+     *
+     * @param userDelta The user's details.
+     */
+    public CreateUserAction(final UserSummary userDelta) {
+        super(GLOBALS.uiConstants().createUser(), RequestBuilder.POST);
+        _userDelta = userDelta;
+    }
 
     /** {@inheritDoc} */
-    @Override public void execute() { new CreateUserDialog().show(); }
+    @Override
+    protected String getPath() {
+        return "/users";
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected String getBody() {
+        final GwtJson json = new GwtJson();
+        _userDelta.toJson(json);
+        return json.toString();
+    }
 }

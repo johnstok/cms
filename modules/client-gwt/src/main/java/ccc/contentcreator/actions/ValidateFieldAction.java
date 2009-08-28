@@ -11,44 +11,53 @@
  */
 package ccc.contentcreator.actions;
 
-import ccc.api.UserSummary;
+import java.util.Set;
+
 import ccc.contentcreator.client.GwtJson;
+import ccc.types.Paragraph;
 
 import com.google.gwt.http.client.RequestBuilder;
 
 
 /**
- * Create a new user.
+ * Remote action for field validation.
  *
  * @author Civic Computing Ltd.
  */
-public abstract class CreateUserAction_
+public class ValidateFieldAction
     extends
         RemotingAction {
 
-    private final UserSummary _userDelta;
+    private final String _definition;
+    private final Set<Paragraph> _paragraphs;
+
 
     /**
      * Constructor.
-     *
-     * @param userDelta The user's details.
+     * @param definition Template definition used to validate the paragraphs.
+     * @param paragraphs The paragraphs to validate.
      */
-    public CreateUserAction_(final UserSummary userDelta) {
-        super(GLOBALS.uiConstants().createUser(), RequestBuilder.POST);
-        _userDelta = userDelta;
+    public ValidateFieldAction(final Set<Paragraph> paragraphs,
+                                final String definition) {
+        super(USER_ACTIONS.validatePageFields(), RequestBuilder.POST);
+        _definition = definition;
+        _paragraphs = paragraphs;
     }
+
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/users";
+        return "/page-validator";
     }
+
 
     /** {@inheritDoc} */
     @Override
     protected String getBody() {
         final GwtJson json = new GwtJson();
-        _userDelta.toJson(json);
+        json.set("definition", _definition);
+        json.set("paragraphs", _paragraphs);
         return json.toString();
     }
 }

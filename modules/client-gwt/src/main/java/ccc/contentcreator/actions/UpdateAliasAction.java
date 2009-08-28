@@ -12,14 +12,11 @@
 package ccc.contentcreator.actions;
 
 import ccc.api.AliasDelta;
-import ccc.api.ResourceSummary;
-import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.GwtJson;
-import ccc.contentcreator.dialogs.UpdateAliasDialog;
+import ccc.types.ID;
 
-import com.google.gwt.http.client.Response;
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.http.client.RequestBuilder;
+
 
 
 /**
@@ -31,36 +28,34 @@ public class UpdateAliasAction
     extends
         RemotingAction {
 
-    private final ResourceSummaryModelData _alias;
-    private final ResourceSummary _targetRoot;
+    private final ID _alias;
+    private final AliasDelta _details;
+
 
     /**
      * Constructor.
+     * @param details The new alias details.
      * @param alias The alias to update.
-     * @param targetRoot The target root of the alias.
      */
-    public UpdateAliasAction(final ResourceSummaryModelData alias,
-                             final ResourceSummary targetRoot) {
-        super(GLOBALS.uiConstants().updateAlias());
+    public UpdateAliasAction(final ID alias, final AliasDelta details) {
+        super(UI_CONSTANTS.updateAlias(), RequestBuilder.POST);
         _alias = alias;
-        _targetRoot = targetRoot;
+        _details = details;
     }
+
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/aliases/" + _alias.getId() + "/delta";
+        return "/aliases/"+_alias;
     }
+
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-        final JSONObject result =
-            JSONParser.parse(response.getText()).isObject();
-        final AliasDelta delta = new AliasDelta(new GwtJson(result));
-        new UpdateAliasDialog(
-            _alias.getId(), delta, _alias.getName(), _targetRoot)
-        .show();
+    protected String getBody() {
+        final GwtJson json = new GwtJson();
+        _details.toJson(json);
+        return json.toString();
     }
-
 }
