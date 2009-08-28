@@ -21,7 +21,7 @@ import ccc.cli.FileUpload;
 import ccc.domain.CommandFailedException;
 import ccc.migration.FileUploader;
 import ccc.rest.Queries;
-import ccc.services.Commands;
+import ccc.services.FolderCommands;
 import ccc.types.FailureCode;
 import ccc.types.ID;
 import ccc.types.ResourcePath;
@@ -37,7 +37,7 @@ public class CccServer implements Server {
 
     private ResourcePath _rootPath;
     private FileUploader _uploader;
-    private Commands _commands;
+    private FolderCommands _folderCommands;
     private Queries _queries;
 
 
@@ -53,11 +53,11 @@ public class CccServer implements Server {
      */
     public CccServer(final ResourcePath rootPath,
                      final FileUploader uploader,
-                     final Commands commands,
+                     final FolderCommands folderCommands,
                      final Queries queries) {
         _rootPath = rootPath;
         _uploader = uploader;
-        _commands = commands;
+        _folderCommands = folderCommands;
         _queries = queries;
     }
 
@@ -80,7 +80,7 @@ public class CccServer implements Server {
                                                  throws CommandFailedException {
 
         try {
-            final ResourceSummary rs = _commands.createFolder(
+            final ResourceSummary rs = _folderCommands.createFolder(
                 new ID(parentFolder.toString()), name, name, publish);
             return UUID.fromString(rs.getId().toString());
         } catch (final CommandFailedException e) {

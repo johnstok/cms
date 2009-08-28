@@ -64,6 +64,9 @@ public final class Migrate extends CccApp {
                 legacyDBQueries,
                 options.getApp()+"/",
                 services.lookupCommands(),
+                services.lookupPageCommands(),
+                services.lookupFolderCommands(),
+                services.lookupUserCommands(),
                 services.lookupQueries(),
                 new FileUploader(
                     options.getCcURL(),

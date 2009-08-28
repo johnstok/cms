@@ -14,7 +14,6 @@ package ccc.api.ejb3;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -32,26 +31,17 @@ import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.apache.log4j.Logger;
-
 import ccc.api.AliasDelta;
 import ccc.api.FileDelta;
-import ccc.api.PageDelta;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
-import ccc.api.UserSummary;
 import ccc.commands.ApplyWorkingCopyCommand;
 import ccc.commands.CancelActionCommand;
 import ccc.commands.ChangeTemplateForResourceCommand;
-import ccc.commands.ClearWorkingCopyCommand;
 import ccc.commands.CreateAliasCommand;
 import ccc.commands.CreateFileCommand;
-import ccc.commands.CreateFolderCommand;
-import ccc.commands.CreatePageCommand;
-import ccc.commands.CreateRootCommand;
 import ccc.commands.CreateSearchCommand;
 import ccc.commands.CreateTemplateCommand;
-import ccc.commands.CreateUserCommand;
 import ccc.commands.IncludeInMainMenuCommand;
 import ccc.commands.LockResourceCommand;
 import ccc.commands.MoveResourceCommand;
@@ -62,33 +52,23 @@ import ccc.commands.UnlockResourceCommand;
 import ccc.commands.UnpublishResourceCommand;
 import ccc.commands.UpdateAliasCommand;
 import ccc.commands.UpdateCachingCommand;
-import ccc.commands.UpdateCurrentUserCommand;
 import ccc.commands.UpdateFileCommand;
-import ccc.commands.UpdateFolderCommand;
-import ccc.commands.UpdatePageCommand;
-import ccc.commands.UpdatePasswordAction;
 import ccc.commands.UpdateResourceMetadataCommand;
 import ccc.commands.UpdateResourceRolesCommand;
 import ccc.commands.UpdateTemplateCommand;
-import ccc.commands.UpdateUserCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.Action;
+import ccc.domain.CccCheckedException;
 import ccc.domain.CommandFailedException;
 import ccc.domain.File;
-import ccc.domain.Folder;
-import ccc.domain.Page;
 import ccc.domain.PageHelper;
-import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
-import ccc.domain.ResourceExistsException;
-import ccc.domain.ResourceOrder;
 import ccc.domain.User;
 import ccc.persistence.jpa.BaseDao;
 import ccc.persistence.jpa.FsCoreData;
 import ccc.services.AuditLog;
 import ccc.services.Commands;
 import ccc.services.LocalCommands;
-import ccc.services.ModelTranslation;
 import ccc.services.UserLookup;
 import ccc.services.impl.AuditLogImpl;
 import ccc.services.impl.DataManagerImpl;
@@ -100,7 +80,7 @@ import ccc.types.ResourceName;
 
 
 /**
- * EJB implementation of the {@link updateMetadata} interface.
+ * EJB implementation of the {@link Commands} interface.
  *
  * @author Civic Computing Ltd.
  */
@@ -111,18 +91,14 @@ import ccc.types.ResourceName;
 @RolesAllowed({}) // "ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"
 public class CommandsEJB
     extends
-        ModelTranslation
+   		BaseCommands
     implements
         Commands, LocalCommands {
-    private static final Logger LOG = Logger.getLogger(CommandsEJB.class);
 
     @PersistenceContext private EntityManager _em;
     @javax.annotation.Resource private EJBContext _context;
 
     private AuditLog           _audit;
-    private UserLookup         _userLookup;
-    private BaseDao            _bdao;
-
     private DataManagerImpl _dm;
 
     /** {@inheritDoc} */
@@ -146,124 +122,6 @@ public class CommandsEJB
         }
     }
 
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
-    public ResourceSummary createFolder(final ID parentId,
-                                        final String name)
-                                                 throws CommandFailedException {
-        return createFolder(parentId, name, null, false);
-
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
-    public ResourceSummary createFolder(final ID parentId,
-                                        final String name,
-                                        final String title,
-                                        final boolean publish)
-                                                 throws CommandFailedException {
-        return createFolder(
-            parentId, name, title, publish, loggedInUserId(), new Date());
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({"ADMINISTRATOR"})
-    public ResourceSummary createFolder(final ID parentId,
-                                        final String name,
-                                        final String title,
-                                        final boolean publish,
-                                        final ID actorId,
-                                        final Date happenedOn)
-                                                 throws CommandFailedException {
-        try {
-            final User u = userForId(actorId);
-
-            final Folder f =
-                new CreateFolderCommand(_bdao, _audit).execute(
-                    u, happenedOn, toUUID(parentId), name, title);
-
-            if (publish) {
-                f.lock(u);
-                new PublishCommand(_audit).execute(happenedOn, u, f);
-                f.unlock(u);
-            }
-
-            return mapResource(f);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
-    public ResourceSummary createPage(final ID parentId,
-                                      final PageDelta delta,
-                                      final String name,
-                                      final boolean publish,
-                                      final ID templateId,
-                                      final String title,
-                                      final String comment,
-                                      final boolean majorChange)
-                                                 throws CommandFailedException {
-        return createPage(
-            parentId,
-            delta,
-            name,
-            publish,
-            templateId,
-            title,
-            loggedInUserId(),
-            new Date(),
-            comment,
-            majorChange);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({"ADMINISTRATOR"})
-    public ResourceSummary createPage(final ID parentId,
-                                      final PageDelta delta,
-                                      final String name,
-                                      final boolean publish,
-                                      final ID templateId,
-                                      final String title,
-                                      final ID actorId,
-                                      final Date happenedOn,
-                                      final String comment,
-                                      final boolean majorChange)
-                                                 throws CommandFailedException {
-        try {
-            final User u = userForId(actorId);
-
-            final Page p = new CreatePageCommand(_bdao, _audit).execute(
-                u,
-                happenedOn,
-                toUUID(parentId),
-                delta,
-                ResourceName.escape(name),
-                title,
-                toUUID(templateId),
-                comment,
-                majorChange);
-
-            if (publish) {
-                p.lock(u);
-                new PublishCommand(_audit).execute(happenedOn, u, p);
-                p.unlock(u);
-            }
-
-            return mapResource(p);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
 
     /** {@inheritDoc} */
     @Override
@@ -289,15 +147,6 @@ public class CommandsEJB
             throw fail(e);
         }
 
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({"ADMINISTRATOR"})
-    public UserSummary createUser(final UserSummary delta) {
-        return mapUser(
-            new CreateUserCommand(_bdao, _audit).execute(
-                loggedInUser(), new Date(), delta));
     }
 
     /** {@inheritDoc} */
@@ -456,60 +305,7 @@ public class CommandsEJB
         }
     }
 
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
-    public void updatePage(final ID pageId,
-                           final PageDelta delta,
-                           final String comment,
-                           final boolean isMajorEdit)
-                                                 throws CommandFailedException {
-        updatePage(
-            pageId, delta, comment, isMajorEdit, loggedInUserId(), new Date());
-    }
 
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({"ADMINISTRATOR"})
-    public void updatePage(final ID pageId,
-                           final PageDelta delta,
-                           final String comment,
-                           final boolean isMajorEdit,
-                           final ID actorId,
-                           final Date happenedOn)
-                                                 throws CommandFailedException {
-        try {
-            new UpdatePageCommand(_bdao, _audit).execute(
-                userForId(actorId),
-                happenedOn,
-                toUUID(pageId),
-                delta,
-                comment,
-                isMajorEdit);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
-    public void updateWorkingCopy(final ID pageId,
-                                  final PageDelta delta)
-                                                 throws CommandFailedException {
-        try {
-            new UpdateWorkingCopyCommand(_bdao, _audit).execute(
-                loggedInUser(),
-                new Date(),
-                toUUID(pageId),
-                delta);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
 
     /** {@inheritDoc} */
     @Override
@@ -572,29 +368,6 @@ public class CommandsEJB
                 loggedInUser(), new Date(), toUUID(templateId), delta);
 
         } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({"ADMINISTRATOR"})
-    public void updateUser(final ID userId, final UserSummary delta) {
-        new UpdateUserCommand(_bdao, _audit).execute(
-            loggedInUser(), new Date(), toUUID(userId), delta);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({"ADMINISTRATOR"})
-    public ResourceSummary createRoot(final String name)
-                                                 throws CommandFailedException {
-        try {
-            final Folder f = new Folder(name);
-            new CreateRootCommand(_bdao, _audit).execute(
-                loggedInUser(), new Date(), f);
-            return mapResource(f);
-        } catch (final ResourceExistsException e) {
             throw fail(e);
         }
     }
@@ -681,48 +454,6 @@ public class CommandsEJB
     }
 
 
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
-    public void updateFolder(final ID folderId,
-                             final String sortOrder,
-                             final ID indexPageId,
-                             final Collection<String> sortList)
-                                                 throws CommandFailedException {
-        try {
-            final List<UUID> list = new ArrayList<UUID>();
-
-            for (final String item : sortList) {
-                list.add(UUID.fromString(item));
-            }
-
-            new UpdateFolderCommand(_bdao, _audit).execute(
-                loggedInUser(),
-                 new Date(),
-                 toUUID(folderId),
-                 ResourceOrder.valueOf(sortOrder),
-                 toUUID(indexPageId),
-                 list);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
-    public void clearWorkingCopy(final ID resourceId)
-                                                 throws CommandFailedException {
-        try {
-            new ClearWorkingCopyCommand(_bdao, _audit).execute(
-                loggedInUser(), new Date(), toUUID(resourceId));
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
 
     /** {@inheritDoc} */
     @Override
@@ -850,14 +581,6 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR"})
-    public void updateUserPassword(final ID userId, final String password) {
-        new UpdatePasswordAction(_bdao, _audit).execute(
-            loggedInUser(), new Date(), toUUID(userId), password);
-    }
-
-    /** {@inheritDoc} */
-    @Override
     @RolesAllowed({"CONTENT_CREATOR"})
     public ResourceSummary createFile(final ID parentFolder,
                                       final FileDelta file,
@@ -924,19 +647,6 @@ public class CommandsEJB
     }
 
 
-    /** {@inheritDoc}
-     * @throws CommandFailedException */
-    @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
-    public void updateYourUser(final ID userId, final String email, final String password) throws CommandFailedException {
-        try {
-        new UpdateCurrentUserCommand(_bdao, _audit).execute(
-        loggedInUser(), new Date(), toUUID(userId), email, password);
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
-
     /* ==============
      * Helper methods
      * ============== */
@@ -948,25 +658,32 @@ public class CommandsEJB
         _dm = new DataManagerImpl(new FsCoreData(), _bdao);
     }
 
-
-    private User userForId(final ID userId) {
-        final User u = _bdao.find(User.class, toUUID(userId));
-        return u;
-    }
-
-    private User loggedInUser() {
-        return _userLookup.loggedInUser(_context.getCallerPrincipal());
-    }
-
-    private ID loggedInUserId() {
-        return new ID(loggedInUser().id().toString());
-    }
-
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param e
+     * @return
+     */
     private CommandFailedException fail(final CccCheckedException e) {
-        _context.setRollbackOnly();  // CRITICAL
-        final CommandFailedException cfe = e.toRemoteException();
-        LOG.info(
-            "Handled local exception: "+cfe.getFailure().getExceptionId(), e);
-        return cfe;
+        return fail(_context, e);
+    }
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    private User loggedInUser() {
+        return loggedInUser(_context);
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    private ID loggedInUserId() {
+        return loggedInUserId(_context);
     }
 }

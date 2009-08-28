@@ -18,10 +18,8 @@ import java.util.Map;
 import java.util.Set;
 
 import ccc.api.AliasDelta;
-import ccc.api.PageDelta;
 import ccc.api.ResourceSummary;
 import ccc.api.TemplateDelta;
-import ccc.api.UserSummary;
 import ccc.domain.CommandFailedException;
 import ccc.types.CommandType;
 import ccc.types.Duration;
@@ -39,50 +37,6 @@ public interface Commands {
     /** NAME : String. */
     String NAME = "PublicCommands";
 
-
-    /**
-     * Update the specified page on the server.
-     *
-     * @param pageId The id of the page to update.
-     * @param delta The changes to apply.
-     * @param comment A comment describing the changes.
-     * @param isMajorEdit Is this a major change.
-     *
-     * @throws CommandFailedException If the method fails.
-     */
-    void updatePage(ID pageId,
-                    PageDelta delta,
-                    String comment,
-                    boolean isMajorEdit) throws CommandFailedException;
-
-    /**
-     * Update the specified page on the server.
-     *
-     * @param pageId The id of the page to update.
-     * @param delta The changes to apply.
-     * @param comment A comment describing the changes.
-     * @param isMajorEdit Is this a major change.
-     *
-     * @throws CommandFailedException If the method fails.
-     */
-    void updatePage(ID pageId,
-                    PageDelta delta,
-                    String comment,
-                    boolean isMajorEdit,
-                    ID actorId,
-                    Date happenedOn) throws CommandFailedException;
-
-    /**
-     * Update the working copy of the specified page.
-     *
-     * @param pageId The id of the page to update.
-     * @param delta The changes to apply.
-     *
-     * @throws CommandFailedException If the method fails.
-     */
-    void updateWorkingCopy(ID pageId, PageDelta delta)
-    throws CommandFailedException;
-
     /**
      * Update an alias.
      *
@@ -93,16 +47,6 @@ public interface Commands {
      */
     void updateAlias(ID aliasId, AliasDelta delta)
     throws CommandFailedException;
-
-    /**
-     * Updates the user in the system.
-     *
-     * @param userId The id of the user to update.
-     * @param delta The changes to apply.
-     *
-     * @throws CommandFailedException If the method fails.
-     */
-    void updateUser(ID userId, UserSummary delta) throws CommandFailedException;
 
     /**
      * Update the specified template on the server.
@@ -315,21 +259,6 @@ public interface Commands {
                         Map<String, String> metadata)
     throws CommandFailedException;
 
-    /**
-     * Update the specified folder.
-     *
-     * @param folderId The id of the folder to update.
-     * @param sortOrder The new sort order.
-     * @param indexPageId The id of the index page to update.
-     * @param sortList The new order of folder's items.
-     *
-     * @throws CommandFailedException If the method fails.
-     */
-    void updateFolder(ID folderId,
-                      String sortOrder,
-                      ID indexPageId,
-                      Collection<String> sortList)
-    throws CommandFailedException;
 
     /**
      * Validate a set of paragraphs against a given definition.
@@ -340,15 +269,6 @@ public interface Commands {
      */
     List<String> validateFields(final Set<Paragraph> delta,
                                 final String definition);
-
-    /**
-     * Delete the working copy for a page.
-     *
-     * @param pageId The id of the page with a working copy.
-     *
-     * @throws CommandFailedException If the method fails.
-     */
-    void clearWorkingCopy(ID pageId) throws CommandFailedException;
 
     /**
      * Create a new alias in CCC.
@@ -364,125 +284,6 @@ public interface Commands {
     ResourceSummary createAlias(ID parentId, String name, ID targetId)
     throws CommandFailedException;
 
-    /**
-     * Create a folder with the specified name.
-     *
-     * @param parentId The folder in which the new folder should be created.
-     * @param name The name of the new folder.
-     *
-     * @throws CommandFailedException If the method fails.
-     *
-     * @return A resource summary describing the new folder.
-     */
-    ResourceSummary createFolder(ID parentId, String name)
-    throws CommandFailedException;
-
-    /**
-     * Create a folder with the specified name and title.
-     *
-     * @param parentId The folder in which the new folder should be created.
-     * @param name The name of the new folder.
-     * @param title The title of the folder.
-     * @param publish True if the title should be published, false otherwise.
-     *
-     * @throws CommandFailedException If the method fails.
-     *
-     * @return A resource summary describing the new folder.
-     */
-    ResourceSummary createFolder(ID parentId,
-                                 String name,
-                                 String title,
-                                 boolean publish) throws CommandFailedException;
-
-    /**
-     * Create a folder with the specified name and title.
-     *
-     * @param parentId The folder in which the new folder should be created.
-     * @param name The name of the new folder.
-     * @param title The title of the folder.
-     * @param publish True if the title should be published, false otherwise.
-     *
-     * @throws CommandFailedException If the method fails.
-     *
-     * @return A resource summary describing the new folder.
-     */
-    ResourceSummary createFolder(ID parentId,
-                                 String name,
-                                 String title,
-                                 boolean publish,
-                                 ID actorId,
-                                 Date happenedOn)
-    throws CommandFailedException;
-
-    /**
-     * Create a root folder with the specified name.
-     *
-     * @param name The name of the root folder.
-     *
-     * @throws CommandFailedException If the method fails.
-     *
-     * @return A resource summary describing the new root.
-     */
-    ResourceSummary createRoot(String name)
-    throws CommandFailedException;
-
-    /**
-     * Create a new user in the system.
-     *
-     * @param delta The new user details.
-     *
-     * @throws CommandFailedException If the method fails.
-     *
-     * @return A user summary describing the new user.
-     */
-    UserSummary createUser(UserSummary delta)
-    throws CommandFailedException;
-
-    /**
-     * Creates a new page.
-     *
-     * @param parentId The folder in which the page will be created.
-     * @param delta The page's details.
-     * @param name The page's name.
-     * @param publish True if the folder should be published, false otherwise.
-     * @param templateId The page's template.
-     *
-     * @throws CommandFailedException If the method fails.
-     *
-     * @return A resource summary describing the new page.
-     */
-    ResourceSummary createPage(ID parentId,
-                               PageDelta delta,
-                               String name,
-                               final boolean publish,
-                               ID templateId,
-                               String title,
-                               String comment,
-                               boolean majorChange) throws CommandFailedException;
-
-    /**
-     * Creates a new page.
-     *
-     * @param parentId The folder in which the page will be created.
-     * @param delta The page's details.
-     * @param name The page's name.
-     * @param publish True if the folder should be published, false otherwise.
-     * @param templateId The page's template.
-     *
-     * @throws CommandFailedException If the method fails.
-     *
-     * @return A resource summary describing the new page.
-     */
-    ResourceSummary createPage(ID parentId,
-                               PageDelta delta,
-                               String name,
-                               boolean publish,
-                               ID templateId,
-                               String title,
-                               ID actorId,
-                               Date happenedOn,
-                               String comment,
-                               boolean majorChange) throws CommandFailedException;
 
     /**
      * Create a new template in CCC.
@@ -614,25 +415,4 @@ public interface Commands {
     void updateCacheDuration(ID resourceId, Duration duration)
     throws CommandFailedException;
 
-    /**
-     * Update the password for the specified user.
-     *
-     * @param userId The user's id.
-     * @param password The new password to set.
-     *
-     * @throws CommandFailedException If the method fails.
-     */
-    void updateUserPassword(ID userId, String password)
-    throws CommandFailedException;
-
-    /**
-     * Update the email and/or password for the current user.
-     *
-     * @param userId The user's id.
-     * @param email The new email to set.
-     * @param password The new password to set.
-     */
-    void updateYourUser(ID userId, String email, String password)
-    throws CommandFailedException;
 }
-

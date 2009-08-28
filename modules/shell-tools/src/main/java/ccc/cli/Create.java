@@ -11,6 +11,7 @@ import ccc.api.ResourceSummary;
 import ccc.domain.CommandFailedException;
 import ccc.migration.ServiceLookup;
 import ccc.services.Commands;
+import ccc.services.FolderCommands;
 
 /**
  * Entry class for the 'create' application.
@@ -49,16 +50,17 @@ public final class Create extends CccApp {
     private static void createSchemaStructure() {
         try {
             final Commands commands = services.lookupCommands();
+            final FolderCommands folderCommands = services.lookupFolderCommands();
 
-            final ResourceSummary assets = commands.createRoot(ASSETS);
-            final ResourceSummary content = commands.createRoot(CONTENT);
+            final ResourceSummary assets = folderCommands.createRoot(ASSETS);
+            final ResourceSummary content = folderCommands.createRoot(CONTENT);
 
-            commands.createFolder(assets.getId(), TEMPLATES);
-            commands.createFolder(assets.getId(), CSS);
-            commands.createFolder(assets.getId(), IMAGES);
+            folderCommands.createFolder(assets.getId(), TEMPLATES);
+            folderCommands.createFolder(assets.getId(), CSS);
+            folderCommands.createFolder(assets.getId(), IMAGES);
 
-            commands.createFolder(content.getId(), FILES);
-            commands.createFolder(content.getId(), IMAGES);
+            folderCommands.createFolder(content.getId(), FILES);
+            folderCommands.createFolder(content.getId(), IMAGES);
             commands.createSearch(content.getId(), "search");
 
             // TODO: Remove. Should set 'publish' root via UI
