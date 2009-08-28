@@ -18,7 +18,7 @@ import org.apache.log4j.Logger;
 
 import ccc.api.UserSummary;
 import ccc.domain.CommandFailedException;
-import ccc.services.Commands;
+import ccc.services.UserCommands;
 
 
 /**
@@ -31,7 +31,7 @@ public class UserMigration {
     private static Logger log = Logger.getLogger(Migrations.class);
 
     private final LegacyDBQueries _legacyQueries;
-    private final Commands _commands;
+    private final UserCommands _userCommands;
     private final Map<Integer, UserSummary> _users =
         new HashMap<Integer, UserSummary>();
 
@@ -44,9 +44,9 @@ public class UserMigration {
      * @param commands The command API for the new system.
      */
     public UserMigration(final LegacyDBQueries legacyQueries,
-                         final Commands commands) {
+                         final UserCommands userCommands) {
         _legacyQueries = legacyQueries;
-        _commands = commands;
+        _userCommands = userCommands;
     }
 
 
@@ -76,7 +76,7 @@ public class UserMigration {
                 }
 
                 final UserSummary u =
-                    _commands.createUser(ud);
+                    _userCommands.createUser(ud);
                 _users.put(mu.getKey(), u);
             } catch (final RuntimeException e) {
                 log.warn(

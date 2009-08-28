@@ -51,6 +51,9 @@ import ccc.rest.Queries;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.services.Commands;
+import ccc.services.FolderCommands;
+import ccc.services.PageCommands;
+import ccc.services.UserCommands;
 import ccc.types.Duration;
 import ccc.types.FailureCode;
 import ccc.types.ID;
@@ -75,6 +78,9 @@ public class RestApi
 
     private Queries _queries;
     private Commands _commands;
+    private PageCommands _pageCommands;
+    private FolderCommands _folderCommands;
+    private UserCommands _userCommands;
 
 
     /**
@@ -112,6 +118,42 @@ public class RestApi
                 : _commands;
     }
 
+    /**
+     * Accessor.
+     *
+     * @return Returns the commands.
+     */
+    public final PageCommands getPageCommands() {
+        return
+        (null==_pageCommands)
+        ? (PageCommands) _reg.get(_appName+"/"+PageCommands.NAME+"/remote")
+            : _pageCommands;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the commands.
+     */
+    public final FolderCommands getFolderCommands() {
+        return
+        (null==_folderCommands)
+        ? (FolderCommands) _reg.get(_appName+"/"+FolderCommands.NAME+"/remote")
+            : _folderCommands;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the commands.
+     */
+    public final UserCommands getUserCommands() {
+        return
+        (null==_userCommands)
+        ? (UserCommands) _reg.get(_appName+"/"+UserCommands.NAME+"/remote")
+            : _userCommands;
+    }
+
 
     /**
      * Mutator.
@@ -120,6 +162,33 @@ public class RestApi
      */
     public final void setCommands(final Commands commands) {
         _commands = commands;
+    }
+
+    /**
+     * Mutator.
+     *
+     * @param commands The commands to set.
+     */
+    public final void setPageCommands(final PageCommands pageCommands) {
+        _pageCommands = pageCommands;
+    }
+
+    /**
+     * Mutator.
+     *
+     * @param commands The commands to set.
+     */
+    public final void setFolderCommands(final FolderCommands folderCommands) {
+        _folderCommands = folderCommands;
+    }
+
+    /**
+     * Mutator.
+     *
+     * @param commands The commands to set.
+     */
+    public final void setUserCommands(final UserCommands userCommands) {
+        _userCommands = userCommands;
     }
 
 
@@ -364,7 +433,7 @@ public class RestApi
     /** {@inheritDoc} */
     @Override
     public UserSummary createUser(final UserSummary user) throws CommandFailedException {
-        return getCommands().createUser(user);
+        return getUserCommands().createUser(user);
     }
 
 
@@ -383,7 +452,7 @@ public class RestApi
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createPage(final PageNew page) throws CommandFailedException {
-        return getCommands().createPage(
+        return getPageCommands().createPage(
             page.getParentId(),
             page.getDelta(),
             page.getName(),
@@ -398,7 +467,7 @@ public class RestApi
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createFolder(final FolderNew folder) throws CommandFailedException {
-        return getCommands().createFolder(folder.getParentId(), folder.getName());
+        return getFolderCommands().createFolder(folder.getParentId(), folder.getName());
     }
 
 
@@ -406,7 +475,7 @@ public class RestApi
     @Override
     public void updateUserPassword(final ID userId,
                                    final UserSummary pu) throws CommandFailedException {
-        getCommands().updateUserPassword(userId, pu.getPassword());
+        getUserCommands().updateUserPassword(userId, pu.getPassword());
     }
 
 
@@ -518,14 +587,14 @@ public class RestApi
     /** {@inheritDoc} */
     @Override
     public void updateWorkingCopy(final ID pageId, final PageDelta delta) throws CommandFailedException {
-        getCommands().updateWorkingCopy(pageId, delta);
+        getPageCommands().updateWorkingCopy(pageId, delta);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void clearWorkingCopy(final ID pageId) throws CommandFailedException {
-        getCommands().clearWorkingCopy(pageId);
+        getPageCommands().clearWorkingCopy(pageId);
     }
 
 
@@ -571,7 +640,7 @@ public class RestApi
         final boolean majorEdit = json.getBool(JsonKeys.MAJOR_CHANGE).booleanValue();
         final String comment = json.getString(JsonKeys.COMMENT);
         final PageDelta delta = new PageDelta(json.getJson(JsonKeys.DELTA));
-        getCommands().updatePage(pageId, delta, comment, majorEdit);
+        getPageCommands().updatePage(pageId, delta, comment, majorEdit);
     }
 
 
@@ -579,7 +648,7 @@ public class RestApi
     @Override
     public void updateFolder(final ID folderId,
                              final FolderDelta delta) throws CommandFailedException {
-        getCommands().updateFolder(folderId,
+        getFolderCommands().updateFolder(folderId,
                                    delta.getSortOrder(),
                                    delta.getIndexPage(),
                                    delta.getSortList());
@@ -589,7 +658,7 @@ public class RestApi
     /** {@inheritDoc} */
     @Override
     public void updateUser(final ID userId, final UserSummary delta) throws CommandFailedException {
-        getCommands().updateUser(userId, delta);
+        getUserCommands().updateUser(userId, delta);
     }
 
 
@@ -609,6 +678,6 @@ public class RestApi
     /** {@inheritDoc} */
     @Override
     public void updateYourUser(final ID userId, final UserSummary user) throws CommandFailedException {
-        getCommands().updateYourUser(userId, user.getEmail(), user.getPassword());
+        getUserCommands().updateYourUser(userId, user.getEmail(), user.getPassword());
     }
 }

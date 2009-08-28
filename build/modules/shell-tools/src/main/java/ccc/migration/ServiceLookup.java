@@ -16,8 +16,11 @@ import ccc.commons.Registry;
 import ccc.rest.Queries;
 import ccc.services.ActionDao;
 import ccc.services.Commands;
+import ccc.services.FolderCommands;
+import ccc.services.PageCommands;
 import ccc.services.Scheduler;
 import ccc.services.SearchEngine;
+import ccc.services.UserCommands;
 
 
 /**
@@ -68,6 +71,33 @@ public class ServiceLookup {
      */
     public Commands lookupCommands() {
         return _registry.<Commands>get(jndiPath(Commands.NAME));
+    }
+
+    /**
+     * Look up the page commands API.
+     *
+     * @return A page commands instance.
+     */
+    public PageCommands lookupPageCommands() {
+        return _registry.<PageCommands>get(jndiPath(PageCommands.NAME));
+    }
+
+    /**
+     * Look up the folder commands API.
+     *
+     * @return A folder commands instance.
+     */
+    public FolderCommands lookupFolderCommands() {
+        return _registry.<FolderCommands>get(jndiPath(FolderCommands.NAME));
+    }
+
+    /**
+     * Look up the user commands API.
+     *
+     * @return A user commands instance.
+     */
+    public UserCommands lookupUserCommands() {
+        return _registry.<UserCommands>get(jndiPath(UserCommands.NAME));
     }
 
     /**
