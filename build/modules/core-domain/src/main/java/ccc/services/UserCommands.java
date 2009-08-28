@@ -67,6 +67,8 @@ public interface UserCommands {
      * @param userId The user's id.
      * @param email The new email to set.
      * @param password The new password to set.
+     *
+     * @throws CommandFailedException If the method fails.
      */
     void updateYourUser(ID userId, String email, String password)
     throws CommandFailedException;

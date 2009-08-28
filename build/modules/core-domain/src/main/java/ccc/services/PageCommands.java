@@ -62,6 +62,8 @@ public interface PageCommands {
      * @param delta The changes to apply.
      * @param comment A comment describing the changes.
      * @param isMajorEdit Is this a major change.
+     * @param actorId The user id of the actor.
+     * @param happenedOn When the command happened.
      *
      * @throws CommandFailedException If the method fails.
      */
@@ -91,6 +93,11 @@ public interface PageCommands {
      * @param name The page's name.
      * @param publish True if the folder should be published, false otherwise.
      * @param templateId The page's template.
+     * @param title The page's title.
+     * @param actorId The user id of the actor.
+     * @param happenedOn When the command happened.
+     * @param comment The comment of the page creation.
+     * @param majorChange The boolean for major change.
      *
      * @throws CommandFailedException If the method fails.
      *
@@ -116,6 +123,9 @@ public interface PageCommands {
      * @param name The page's name.
      * @param publish True if the folder should be published, false otherwise.
      * @param templateId The page's template.
+     * @param title The page's title.
+     * @param comment The comment of the page creation.
+     * @param majorChange The boolean for major change.
      *
      * @throws CommandFailedException If the method fails.
      *
