@@ -98,6 +98,8 @@ public interface Commands {
      *
      * @param resourceId The id of the resource to update.
      * @param templateId The new template to set for the resource.
+     * @param actorId The user id of the actor.
+     * @param happenedOn When the command happened.
      *
      * @throws CommandFailedException If the method fails.
      */
@@ -124,6 +126,8 @@ public interface Commands {
      * If the resource is already locked a CCCException will be thrown.
      *
      * @param resourceId The uuid of the resource to lock.
+     * @param actorId The user id of the actor.
+     * @param happenedOn When the command happened.
      *
      * @throws CommandFailedException If the method fails.
      */
@@ -149,6 +153,8 @@ public interface Commands {
      * Unlocking an unlocked resource has no effect.
      *
      * @param resourceId The resource to unlock.
+     * @param actorId The user id of the actor.
+     * @param happenedOn When the command happened.
      *
      * @throws CommandFailedException If the method fails.
      */
@@ -213,6 +219,8 @@ public interface Commands {
      *
      * @param resourceId The id of the resource to update.
      * @param include True if the resource should be included, false otherwise.
+     * @param actorId The user id of the actor.
+     * @param happenedOn When the command happened.
      *
      * @throws CommandFailedException If the method fails.
      */
@@ -230,6 +238,8 @@ public interface Commands {
      * @param description The new description to set.
      * @param tags The new tags to set.
      * @param metadata The metadata to update.
+     * @param actorId The user id of the actor.
+     * @param happenedOn When the command happened.
      *
      * @throws CommandFailedException If the method fails.
      */
@@ -290,6 +300,8 @@ public interface Commands {
      *
      * @param parentId The folder in which the template should be created.
      * @param delta The template's details.
+     * @param title The template's title.
+     * @param description The template's description.
      * @param name The template's name.
      *
      * @throws CommandFailedException If the method fails.
@@ -369,6 +381,8 @@ public interface Commands {
      *
      * @param resourceId The resource to update.
      * @param roles The new set of roles.
+     * @param actorId The user id of the actor.
+     * @param happenedOn When the command happened.
      *
      * @throws CommandFailedException If the method fails.
      */
