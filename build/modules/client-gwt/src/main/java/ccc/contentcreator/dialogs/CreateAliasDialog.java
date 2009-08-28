@@ -13,7 +13,7 @@ package ccc.contentcreator.dialogs;
 
 
 import ccc.api.ResourceSummary;
-import ccc.contentcreator.actions.CreateAliasAction_;
+import ccc.contentcreator.actions.CreateAliasAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
@@ -110,7 +110,7 @@ public class CreateAliasDialog extends AbstractEditDialog {
     private Runnable createAlias() {
         return new Runnable() {
             public void run() {
-                new CreateAliasAction_(
+                new CreateAliasAction(
                     _parent.getId(),
                     _aliasName.getValue(),
                     _ssm.tableSelection().getId()

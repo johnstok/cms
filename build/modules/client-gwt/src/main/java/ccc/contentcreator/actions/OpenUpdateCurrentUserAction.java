@@ -10,7 +10,7 @@ import ccc.contentcreator.dialogs.UpdateCurrentUserDialog;
  *
  * @author Civic Computing Ltd.
  */
-public final class ShowUpdateCurrentUserAction
+public final class OpenUpdateCurrentUserAction
     implements
         Action {
 

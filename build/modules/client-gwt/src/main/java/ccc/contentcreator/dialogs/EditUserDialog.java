@@ -18,7 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ccc.api.UserSummary;
-import ccc.contentcreator.actions.UpdateUserAction_;
+import ccc.contentcreator.actions.UpdateUserAction;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.UserTable;
 import ccc.contentcreator.validation.Validate;
@@ -130,7 +130,7 @@ public class EditUserDialog extends AbstractEditDialog {
                 }
                 _userDTO.setRoles(validRoles);
 
-                new UpdateUserAction_(
+                new UpdateUserAction(
                     _userId,
                     _userDTO
                 ){

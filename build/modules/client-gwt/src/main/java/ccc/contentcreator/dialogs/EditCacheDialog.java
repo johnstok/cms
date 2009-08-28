@@ -11,7 +11,7 @@
  */
 package ccc.contentcreator.dialogs;
 
-import ccc.contentcreator.actions.UpdateCacheDurationAction_;
+import ccc.contentcreator.actions.UpdateCacheDurationAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.validation.Validate;
@@ -156,7 +156,7 @@ public class EditCacheDialog extends AbstractEditDialog {
                     updatedDs = new Duration(days, hours, minutes, seconds);
                 }
 
-                new UpdateCacheDurationAction_(
+                new UpdateCacheDurationAction(
                     _item.getId(),
                     updatedDs
                 ){

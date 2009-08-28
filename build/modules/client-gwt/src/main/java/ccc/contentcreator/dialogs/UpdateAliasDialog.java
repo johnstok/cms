@@ -15,7 +15,7 @@ package ccc.contentcreator.dialogs;
 
 import ccc.api.AliasDelta;
 import ccc.api.ResourceSummary;
-import ccc.contentcreator.actions.UpdateAliasAction_;
+import ccc.contentcreator.actions.UpdateAliasAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.validation.Validate;
@@ -120,7 +120,7 @@ public class UpdateAliasDialog extends AbstractEditDialog {
     private Runnable createAlias() {
         return new Runnable() {
             public void run() {
-                new UpdateAliasAction_(_aliasId, _alias){
+                new UpdateAliasAction(_aliasId, _alias){
                     /** {@inheritDoc} */
                     @Override protected void onNoContent(final Response response) {
                         hide();

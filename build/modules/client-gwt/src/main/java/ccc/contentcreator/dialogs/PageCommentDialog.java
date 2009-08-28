@@ -12,7 +12,7 @@
 package ccc.contentcreator.dialogs;
 
 import ccc.api.PageDelta;
-import ccc.contentcreator.actions.UpdatePageAction_;
+import ccc.contentcreator.actions.UpdatePageAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.validation.Validate;
@@ -93,7 +93,7 @@ public class PageCommentDialog extends AbstractEditDialog {
     private Runnable savePage() {
         return new Runnable() {
             public void run() {
-                new UpdatePageAction_(
+                new UpdatePageAction(
                     _pageId,
                     _page,
                     _comment.getValue(),

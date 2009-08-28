@@ -14,7 +14,7 @@ package ccc.contentcreator.dialogs;
 import java.util.Collection;
 
 import ccc.api.TemplateSummary;
-import ccc.contentcreator.actions.UpdateResourceTemplateAction_;
+import ccc.contentcreator.actions.UpdateResourceTemplateAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.binding.TemplateSummaryModelData;
@@ -116,7 +116,7 @@ public class ChooseTemplateDialog extends AbstractEditDialog {
                 final TemplateSummaryModelData selected =
                     _selectedTemplate.getValue();
 
-                new UpdateResourceTemplateAction_(
+                new UpdateResourceTemplateAction(
                     _resource.getId(), selected.getId()) {
                         /** {@inheritDoc} */
                         @Override protected void onNoContent(final Response r) {

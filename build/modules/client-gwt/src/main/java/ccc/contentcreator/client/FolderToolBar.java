@@ -12,10 +12,10 @@
 package ccc.contentcreator.client;
 
 import ccc.api.UserSummary;
-import ccc.contentcreator.actions.CreateFileAction;
-import ccc.contentcreator.actions.CreateFolderAction;
-import ccc.contentcreator.actions.CreatePageAction;
-import ccc.contentcreator.actions.CreateTemplateAction;
+import ccc.contentcreator.actions.OpenCreateFileAction;
+import ccc.contentcreator.actions.OpenCreateFolderAction;
+import ccc.contentcreator.actions.OpenCreatePageAction;
+import ccc.contentcreator.actions.OpenCreateTemplateAction;
 import ccc.contentcreator.api.UIConstants;
 
 
@@ -41,24 +41,24 @@ public class FolderToolBar
         addButton(
             "uploadFile",
             _constants.uploadFile(),
-            new CreateFileAction(ssm));
+            new OpenCreateFileAction(ssm));
         addSeparator();
         addButton(
             "Create Folder",
             _constants.createFolder(),
-            new CreateFolderAction(ssm));
+            new OpenCreateFolderAction(ssm));
         addSeparator();
         addButton(
             "Create Page",
             _constants.createPage(),
-            new CreatePageAction(ssm));
+            new OpenCreatePageAction(ssm));
         addSeparator();
         if (user.getRoles().contains(IGlobals.ADMINISTRATOR)
                 || user.getRoles().contains(IGlobals.SITE_BUILDER)) {
             addButton(
                 "Create Template",
                 _constants.createTemplate(),
-                new CreateTemplateAction(ssm));
+                new OpenCreateTemplateAction(ssm));
             addSeparator();
         }
     }

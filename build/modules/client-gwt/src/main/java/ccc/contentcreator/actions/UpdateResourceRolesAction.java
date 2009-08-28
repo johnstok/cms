@@ -1,61 +1,66 @@
+/*-----------------------------------------------------------------------------
+ * Copyright (c) 2009 Civic Computing Ltd.
+ * All rights reserved.
+ *
+ * Revision      $Rev$
+ * Modified by   $Author$
+ * Modified on   $Date$
+ *
+ * Changes: see subversion log.
+ *-----------------------------------------------------------------------------
+ */
 package ccc.contentcreator.actions;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.client.SingleSelectionModel;
-import ccc.contentcreator.dialogs.UpdateResourceRolesDialog;
+import ccc.types.ID;
 
-import com.google.gwt.http.client.Response;
+import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONString;
+
 
 /**
- * Action to launch the 'update resource roles' dialog.
+ * Remote action for resource's roles updating.
  *
  * @author Civic Computing Ltd.
  */
-public final class UpdateResourceRolesAction
+public class UpdateResourceRolesAction
     extends
         RemotingAction {
 
+    private final ID _resource;
+    private final List<String> _roles;
 
-    private final SingleSelectionModel _selectionModel;
 
     /**
      * Constructor.
      *
-     * @param ssm The selection model to use.
+     * @param roles The roles for the resource.
+     * @param resource The resource to update.
      */
-    public UpdateResourceRolesAction(final SingleSelectionModel ssm) {
-        super(UI_CONSTANTS.updateRoles());
-        _selectionModel = ssm;
+    public UpdateResourceRolesAction(final ID resource,
+                                      final List<String> roles) {
+        super(GLOBALS.uiConstants().updateRoles(), RequestBuilder.POST);
+        _resource = resource;
+        _roles = roles;
     }
+
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return
-            "/resources/"
-            + _selectionModel.tableSelection().getId()
-            + "/roles";
+        return "/resources/"+_resource+"/roles";
     }
+
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-        final List<String> data = new ArrayList<String>();
-        final JSONArray rawData =
-            JSONParser.parse(response.getText()).isArray();
-        for (int i=0; i<rawData.size(); i++) {
-            data.add(rawData.get(i).isString().stringValue());
+    protected String getBody() {
+        final JSONArray body = new JSONArray();
+        for (int i=0; i<_roles.size(); i++) {
+            body.set(i, new JSONString(_roles.get(i)));
         }
-
-        final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        new UpdateResourceRolesDialog(
-            item.getId(),
-            data)
-        .show();
+        return body.toString();
     }
 }

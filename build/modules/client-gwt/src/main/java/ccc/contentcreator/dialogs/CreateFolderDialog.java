@@ -12,7 +12,7 @@
 package ccc.contentcreator.dialogs;
 
 import ccc.api.ResourceSummary;
-import ccc.contentcreator.actions.CreateFolderAction_;
+import ccc.contentcreator.actions.CreateFolderAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
@@ -80,7 +80,7 @@ public class CreateFolderDialog extends AbstractEditDialog {
     private Runnable createFolder() {
         return new Runnable() {
             public void run() {
-                new CreateFolderAction_(
+                new CreateFolderAction(
                     _parent.getId(),
                     _text.getValue()
                 ){

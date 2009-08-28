@@ -19,24 +19,24 @@ import ccc.contentcreator.actions.ApplyWorkingCopyAction;
 import ccc.contentcreator.actions.ChooseTemplateAction;
 import ccc.contentcreator.actions.ClearWorkingCopyAction;
 import ccc.contentcreator.actions.ComputeTemplateAction;
-import ccc.contentcreator.actions.CreateActionAction;
-import ccc.contentcreator.actions.CreateAliasAction;
-import ccc.contentcreator.actions.EditCacheAction;
-import ccc.contentcreator.actions.EditFolderAction;
 import ccc.contentcreator.actions.IncludeInMainMenuAction;
 import ccc.contentcreator.actions.LockAction;
-import ccc.contentcreator.actions.MoveAction;
+import ccc.contentcreator.actions.OpenCreateActionAction;
+import ccc.contentcreator.actions.OpenCreateAliasAction;
+import ccc.contentcreator.actions.OpenEditCacheAction;
+import ccc.contentcreator.actions.OpenMoveAction;
+import ccc.contentcreator.actions.OpenRenameAction;
+import ccc.contentcreator.actions.OpenUpdateAliasAction;
+import ccc.contentcreator.actions.OpenUpdateFolderAction;
+import ccc.contentcreator.actions.OpenUpdateMetadataAction;
+import ccc.contentcreator.actions.OpenUpdateResourceRolesAction;
+import ccc.contentcreator.actions.OpenUpdateTemplateAction;
 import ccc.contentcreator.actions.PageDeltaAction;
 import ccc.contentcreator.actions.PreviewAction;
 import ccc.contentcreator.actions.PublishAction;
 import ccc.contentcreator.actions.RemoveFromMainMenuAction;
-import ccc.contentcreator.actions.RenameAction;
 import ccc.contentcreator.actions.UnlockAction;
 import ccc.contentcreator.actions.UnpublishAction;
-import ccc.contentcreator.actions.UpdateAliasAction;
-import ccc.contentcreator.actions.UpdateMetadataAction;
-import ccc.contentcreator.actions.UpdateResourceRolesAction;
-import ccc.contentcreator.actions.UpdateTemplateAction;
 import ccc.contentcreator.actions.ViewHistoryAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.dialogs.UpdateFileDialog;
@@ -99,22 +99,22 @@ public class ResourceContextMenu
         _includeMainMenu = new IncludeInMainMenuAction(_table);
         _removeMainMenu = new RemoveFromMainMenuAction(_table);
         _unpublishAction = new UnpublishAction(_table);
-        _createAliasAction = new CreateAliasAction(_table, _table.root());
-        _updateMetadataAction = new UpdateMetadataAction(_table);
+        _createAliasAction = new OpenCreateAliasAction(_table, _table.root());
+        _updateMetadataAction = new OpenUpdateMetadataAction(_table);
         _viewHistory = new ViewHistoryAction(_table);
-        _renameAction = new RenameAction(_table);
-        _moveAction = new MoveAction(_table, _table.root());
+        _renameAction = new OpenRenameAction(_table);
+        _moveAction = new OpenMoveAction(_table, _table.root());
         _unlockAction = new UnlockAction(_table);
         _lockAction = new LockAction(_table);
         _previewAction = new PreviewAction(_table, false);
-        _editFolderAction = new EditFolderAction(_table);
+        _editFolderAction = new OpenUpdateFolderAction(_table);
         _clearWorkingCopyAction = new ClearWorkingCopyAction(_table);
         _previewWorkingCopyAction = new PreviewAction(_table, true);
         _chooseTemplateAction = new ChooseTemplateAction(_table);
-        _createActionAction = new CreateActionAction(_table);
-        _updateRolesAction = new UpdateResourceRolesAction(_table);
+        _createActionAction = new OpenCreateActionAction(_table);
+        _updateRolesAction = new OpenUpdateResourceRolesAction(_table);
         _applyWorkingCopyAction = new ApplyWorkingCopyAction(_table);
-        _editCacheAction = new EditCacheAction(_table);
+        _editCacheAction = new OpenEditCacheAction(_table);
 
         setWidth(CONTEXT_MENU_WIDTH);
 
@@ -379,7 +379,7 @@ public class ResourceContextMenu
 
     // TODO: Factor these methods to actions
     private void updateAlias(final ResourceSummaryModelData item) {
-        new UpdateAliasAction(item, _table.root()).execute();
+        new OpenUpdateAliasAction(item, _table.root()).execute();
     }
 
     private void updatePage(final ResourceSummaryModelData item) {
@@ -419,6 +419,6 @@ public class ResourceContextMenu
     }
 
     private void updateTemplate(final ResourceSummaryModelData item) {
-        new UpdateTemplateAction(item, _table).execute();
+        new OpenUpdateTemplateAction(item, _table).execute();
     }
 }

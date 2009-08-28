@@ -12,18 +12,14 @@
 package ccc.contentcreator.actions;
 
 import ccc.api.TemplateDelta;
-import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.GwtJson;
-import ccc.contentcreator.client.ResourceTable;
-import ccc.contentcreator.dialogs.EditTemplateDialog;
+import ccc.types.ID;
 
-import com.google.gwt.http.client.Response;
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.http.client.RequestBuilder;
 
 
 /**
- * TODO: Add a description for this type.
+ * Remote action for template updating.
  *
  * @author Civic Computing Ltd.
  */
@@ -31,37 +27,36 @@ public class UpdateTemplateAction
     extends
         RemotingAction {
 
-    private final ResourceSummaryModelData _template;
-    private final ResourceTable _table;
+    private final ID _template;
+    private final TemplateDelta _details;
+
 
     /**
      * Constructor.
-     * @param resourceTable The table displaying the template.
+     *
+     * @param details The new details for the template.
      * @param template The template to update.
      */
-    public UpdateTemplateAction(final ResourceSummaryModelData template,
-                                final ResourceTable resourceTable) {
-        super(GLOBALS.uiConstants().editTemplate());
-        _table = resourceTable;
+    public UpdateTemplateAction(final ID template,
+                                 final TemplateDelta details) {
+        super(UI_CONSTANTS.editTemplate(), RequestBuilder.POST);
         _template = template;
+        _details = details;
     }
+
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/templates/"+_template.getId()+"/delta";
+        return "/templates/"+_template;
     }
+
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-        final JSONObject result =
-            JSONParser.parse(response.getText()).isObject();
-        final TemplateDelta delta = new TemplateDelta(new GwtJson(result));
-        new EditTemplateDialog(
-            delta,
-            _template,
-            _table)
-        .show();
+    protected String getBody() {
+        final GwtJson json = new GwtJson();
+        _details.toJson(json);
+        return json.toString();
     }
 }

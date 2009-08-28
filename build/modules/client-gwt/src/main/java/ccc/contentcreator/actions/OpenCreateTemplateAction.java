@@ -10,7 +10,7 @@ import ccc.contentcreator.dialogs.EditTemplateDialog;
  *
  * @author Civic Computing Ltd.
  */
-public final class CreateTemplateAction
+public final class OpenCreateTemplateAction
     implements
         Action {
 
@@ -21,7 +21,7 @@ public final class CreateTemplateAction
      *
      * @param selectionModel The selection model to use.
      */
-    public CreateTemplateAction(
+    public OpenCreateTemplateAction(
           final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;
     }

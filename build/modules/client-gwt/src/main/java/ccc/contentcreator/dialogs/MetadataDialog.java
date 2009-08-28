@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ccc.contentcreator.actions.UpdateMetadataAction_;
+import ccc.contentcreator.actions.UpdateMetadataAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.IGlobals;
@@ -285,7 +285,7 @@ public class MetadataDialog extends AbstractEditDialog {
                 final String title = _title.getValue();
                 final String description = _description.getValue();
 
-                new UpdateMetadataAction_(
+                new UpdateMetadataAction(
                     _resource.getId(),
                     _title.getValue(),
                     _description.getValue(),

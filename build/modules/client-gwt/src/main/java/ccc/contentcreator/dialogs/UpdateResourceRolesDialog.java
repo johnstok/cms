@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import ccc.contentcreator.actions.UpdateResourceRolesAction_;
+import ccc.contentcreator.actions.UpdateResourceRolesAction;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.types.ID;
 
@@ -88,7 +88,7 @@ public class UpdateResourceRolesDialog
                     }
                 }
 
-                new UpdateResourceRolesAction_(_resourceId, validRoles) {
+                new UpdateResourceRolesAction(_resourceId, validRoles) {
                     /** {@inheritDoc} */
                     @Override
                     protected void onNoContent(final Response response) {

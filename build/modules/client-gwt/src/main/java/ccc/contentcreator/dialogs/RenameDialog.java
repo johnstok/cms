@@ -11,7 +11,7 @@
  */
 package ccc.contentcreator.dialogs;
 
-import ccc.contentcreator.actions.RenameAction_;
+import ccc.contentcreator.actions.RenameAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
@@ -88,7 +88,7 @@ public class RenameDialog extends AbstractEditDialog {
     private Runnable rename() {
         return new Runnable() {
             public void run() {
-                new RenameAction_(
+                new RenameAction(
                     _item.getId(),
                     _newName.getValue()
                 ){

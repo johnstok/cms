@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import ccc.api.UserSummary;
-import ccc.contentcreator.actions.CreateUserAction_;
+import ccc.contentcreator.actions.CreateUserAction;
 import ccc.contentcreator.actions.UniqueUsernameAction;
 import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.api.UIConstants;
@@ -120,7 +120,7 @@ public class CreateUserController implements EditController {
                     new HashMap<String, String>(),
                     p);
 
-                new CreateUserAction_(d){
+                new CreateUserAction(d){
                     @Override protected void onOK(final Response response) {
                         // TODO: Refresh the main window.
                         _dialog.close();
